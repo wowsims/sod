@@ -1,0 +1,126 @@
+character_stats_results: {
+ key: "TestFury-CharacterStats-Default"
+ value: {
+  final_stats: 93.94
+  final_stats: 45.54
+  final_stats: 91.74
+  final_stats: 35.64
+  final_stats: 40.04
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 0
+  final_stats: 3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 383.88
+  final_stats: 0
+  final_stats: 8.05949
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1151.58
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 46.97
+  final_stats: 7.41571
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1011.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomAvenger'sMail"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomElementalist'sHide"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomSlayer'sLeather"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-AllItems-StormshroudArmor"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-AllItems-TwilightInvoker'sVestments"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Average-Default"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--NoBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--NoBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-NoBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--NoBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--NoBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-NoBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-SwitchInFrontOfTarget-Default"
+ value: {}
+}

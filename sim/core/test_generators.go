@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -104,6 +105,7 @@ type EncounterCombo struct {
 type SettingsCombos struct {
 	Class       proto.Class
 	Races       []proto.Race
+	Levels      []int32
 	GearSets    []GearSetCombo
 	TalentSets  []TalentsCombo
 	SpecOptions []SpecOptionsCombo
@@ -116,7 +118,7 @@ type SettingsCombos struct {
 }
 
 func (combos *SettingsCombos) NumTests() int {
-	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations))
+	return len(combos.Races) * len(combos.Levels) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations))
 }
 
 func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -126,6 +128,11 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	testIdx /= len(combos.Races)
 	race := combos.Races[raceIdx]
 	testNameParts = append(testNameParts, race.String()[4:])
+
+	levelIdx := testIdx % len(combos.Levels)
+	testIdx /= len(combos.Levels)
+	level := combos.Levels[levelIdx]
+	testNameParts = append(testNameParts, strconv.Itoa(int(level)))
 
 	gearSetIdx := testIdx % len(combos.GearSets)
 	testIdx /= len(combos.GearSets)
@@ -164,6 +171,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 		Raid: SinglePlayerRaidProto(
 			WithSpec(&proto.Player{
 				Race:               race,
+				Level:              level,
 				Class:              combos.Class,
 				Equipment:          gearSetCombo.GearSet,
 				TalentsString:      talentSetCombo.Talents,
@@ -380,6 +388,7 @@ type CharacterSuiteConfig struct {
 	Class proto.Class
 
 	Race        proto.Race
+	Level       int32
 	GearSet     GearSetCombo
 	SpecOptions SpecOptionsCombo
 	Talents     string
@@ -392,6 +401,7 @@ type CharacterSuiteConfig struct {
 	InFrontOfTarget bool
 
 	OtherRaces       []proto.Race
+	OtherLevels      []int32
 	OtherGearSets    []GearSetCombo
 	OtherSpecOptions []SpecOptionsCombo
 	OtherRotations   []RotationCombo
@@ -405,6 +415,8 @@ type CharacterSuiteConfig struct {
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
+	config.Level = max(config.Level, 25)
+	allLevels := append(config.OtherLevels, config.Level)
 	allRaces := append(config.OtherRaces, config.Race)
 	allGearSets := append(config.OtherGearSets, config.GearSet)
 	allTalentSets := []TalentsCombo{{
@@ -417,6 +429,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 	defaultPlayer := WithSpec(
 		&proto.Player{
 			Class:         config.Class,
+			Level:         config.Level,
 			Race:          config.Race,
 			Equipment:     config.GearSet.GearSet,
 			Consumes:      config.Consumes,
@@ -457,6 +470,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 				generator: &SettingsCombos{
 					Class:       config.Class,
 					Races:       allRaces,
+					Levels:      allLevels,
 					GearSets:    allGearSets,
 					TalentSets:  allTalentSets,
 					SpecOptions: allSpecOptions,

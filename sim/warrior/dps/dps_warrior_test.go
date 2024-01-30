@@ -19,12 +19,12 @@ func TestFury(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
 		Talents:     FuryTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_fury"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "blank"),
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
 
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warrior/apls", "fury"),
+			core.GetAplRotation("../../../ui/warrior/apls", "default"),
 		},
 
 		ItemFilter: core.ItemFilter{
@@ -48,12 +48,12 @@ func TestArms(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
 		Talents:     ArmsTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_arms"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "blank"),
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
 
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warrior/apls", "arms"),
+			core.GetAplRotation("../../../ui/warrior/apls", "default"),
 		},
 
 		ItemFilter: core.ItemFilter{
@@ -97,8 +97,8 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FuryTalents = "302023102331-305053000520310053120500351"
-var ArmsTalents = "3022032023335100102012213231251-305-2033"
+var FuryTalents = "303220203-01"
+var ArmsTalents = "303220203-01"
 
 var PlayerOptionsArms = &proto.Player_Warrior{
 	Warrior: &proto.Warrior{

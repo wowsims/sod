@@ -13,7 +13,7 @@ func (warrior *Warrior) registerDevastateSpell() {
 	dynaThreatBonus := 0.05
 
 	weaponMulti := 1.2
-	overallMulti := core.TernaryFloat64(warrior.HasSetBonus(ItemSetWrynnsPlate, 2), 1.05, 1.00)
+	overallMulti := 1.00
 
 	warrior.Devastate = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 47498},

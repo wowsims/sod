@@ -1,11 +1,11 @@
 character_stats_results: {
  key: "TestShadow-CharacterStats-Default"
  value: {
-  final_stats: 34.1
-  final_stats: 41.8
-  final_stats: 59.488
-  final_stats: 129.8
-  final_stats: 143
+  final_stats: 57.64
+  final_stats: 32.34
+  final_stats: 71.3856
+  final_stats: 69.74
+  final_stats: 71.94
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -13,29 +13,30 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 18
+  final_stats: 0
+  final_stats: 7.40556
   final_stats: 0
   final_stats: 0
-  final_stats: 5.0163
+  final_stats: 131
   final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 6.1765
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 2763
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1002.35
+  final_stats: 6
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 1263.1
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1125.18
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1631.88
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 835.856
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -48,151 +49,59 @@ character_stats_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-TwilightInvoker'sVestments"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Average-Default"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-FullBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-FullBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-FullBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-NoBuffs-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-FullBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-NoBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-NoBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-NoBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-NoBuffs-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-APL-default-NoBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-FullBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-NoBuffs-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-NoBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-NoBuffs-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-blank-Basic-default-NoBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-FullBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-FullBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-FullBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-NoBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-NoBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-APL-default-NoBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-FullBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-FullBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-FullBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-NoBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-NoBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-NightElf-blank-Basic-default-NoBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-FullBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-FullBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-FullBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-NoBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-NoBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-APL-default-NoBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-FullBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-FullBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-FullBuffs-ShortSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-NoBuffs-LongMultiTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-NoBuffs-LongSingleTarget"
- value: {}
-}
-dps_results: {
- key: "TestShadow-Settings-Undead-blank-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
  value: {}
 }
 dps_results: {

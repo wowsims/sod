@@ -17,12 +17,15 @@ func TestAffliction(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_affliction"),
+		GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "affi.tank"),
 		Talents:     AfflictionTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "AffItemSwap", SpecOptions: afflictionItemSwap},
+		},
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/tank_warlock/apls", "affi.tank"),
 		},
 
 		ItemFilter: ItemFilter,
@@ -34,14 +37,10 @@ func TestDemonology(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_demo"),
+		GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "destro.tank"),
 		Talents:     DemonologyTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../ui/warlock/apls", "demo"),
-		},
-
 		ItemFilter: ItemFilter,
 	}))
 }
@@ -51,12 +50,12 @@ func TestDestruction(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_destro"),
+		GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "destro.tank"),
 		Talents:     DestructionTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../ui/warlock/apls", "destro"),
+			core.GetAplRotation("../../../ui/tank_warlock/apls", "destro.tank"),
 		},
 		ItemFilter: ItemFilter,
 	}))
@@ -76,9 +75,9 @@ var ItemFilter = core.ItemFilter{
 	},
 }
 
-var AfflictionTalents = "2350002030023510253500331151--550000051"
-var DemonologyTalents = "-203203301035012530135201351-550000052"
-var DestructionTalents = "-03310030003-05203205210331051335230351"
+var AfflictionTalents = "05002-005"
+var DemonologyTalents = "05002-005"
+var DestructionTalents = "05002-005"
 
 var defaultDestroOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
@@ -86,21 +85,21 @@ var defaultDestroOptions = &proto.WarlockOptions{
 	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
 }
 
-var DefaultDestroWarlock = &proto.Player_Warlock{
-	Warlock: &proto.Warlock{
+var DefaultDestroWarlock = &proto.Player_TankWarlock{
+	TankWarlock: &proto.TankWarlock{
 		Options: defaultDestroOptions,
 	},
 }
 
 // ---------------------------------------
-var DefaultAfflictionWarlock = &proto.Player_Warlock{
-	Warlock: &proto.Warlock{
+var DefaultAfflictionWarlock = &proto.Player_TankWarlock{
+	TankWarlock: &proto.TankWarlock{
 		Options: defaultAfflictionOptions,
 	},
 }
 
-var afflictionItemSwap = &proto.Player_Warlock{
-	Warlock: &proto.Warlock{
+var afflictionItemSwap = &proto.Player_TankWarlock{
+	TankWarlock: &proto.TankWarlock{
 		Options: defaultAfflictionOptions,
 	},
 }
@@ -112,8 +111,8 @@ var defaultAfflictionOptions = &proto.WarlockOptions{
 }
 
 // ---------------------------------------
-var DefaultDemonologyWarlock = &proto.Player_Warlock{
-	Warlock: &proto.Warlock{
+var DefaultDemonologyWarlock = &proto.Player_TankWarlock{
+	TankWarlock: &proto.TankWarlock{
 		Options: defaultDemonologyOptions,
 	},
 }

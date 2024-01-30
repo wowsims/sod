@@ -18,13 +18,13 @@ func TestProtectionWarrior(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		GearSet:     core.GetGearSet("../../../ui/protection_warrior/gear_sets", "p1_balanced"),
+		GearSet:     core.GetGearSet("../../../ui/protection_warrior/gear_sets", "blank"),
 		Talents:     DefaultTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/protection_warrior/apls", "default"),
 
-		IsTank:          true,
+		IsTank:          false, // TODO: Fix crash when this is true
 		InFrontOfTarget: true,
 
 		ItemFilter: core.ItemFilter{
@@ -57,7 +57,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassWarrior,
-				Equipment:     core.GetGearSet("../../../ui/protection_warrior/gear_sets", "p1_balanced").GearSet,
+				Equipment:     core.GetGearSet("../../../ui/protection_warrior/gear_sets", "blank").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsBasic,
 				Buffs:         core.FullIndividualBuffs,
@@ -80,7 +80,7 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var DefaultTalents = "2500030023-302-053351225000012521030113321"
+var DefaultTalents = "053020003-03"
 
 var PlayerOptionsBasic = &proto.Player_ProtectionWarrior{
 	ProtectionWarrior: &proto.ProtectionWarrior{

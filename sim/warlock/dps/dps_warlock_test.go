@@ -17,7 +17,7 @@ func TestAffliction(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_affliction"),
+		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets", "destruction"),
 		Talents:     AfflictionTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
@@ -34,12 +34,12 @@ func TestDemonology(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_demo"),
+		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets", "destruction"),
 		Talents:     DemonologyTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../ui/warlock/apls", "demo"),
+			core.GetAplRotation("../../../ui/warlock/apls", "destruction"),
 		},
 
 		ItemFilter: ItemFilter,
@@ -51,12 +51,12 @@ func TestDestruction(t *testing.T) {
 		Class: proto.Class_ClassWarlock,
 		Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../ui/warlock/gear_sets", "p4_destro"),
+		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets", "destruction"),
 		Talents:     DestructionTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../ui/warlock/apls", "destro"),
+			core.GetAplRotation("../../../ui/warlock/apls", "destruction"),
 		},
 		ItemFilter: ItemFilter,
 	}))
@@ -76,9 +76,9 @@ var ItemFilter = core.ItemFilter{
 	},
 }
 
-var AfflictionTalents = "2350002030023510253500331151--550000051"
-var DemonologyTalents = "-203203301035012530135201351-550000052"
-var DestructionTalents = "-03310030003-05203205210331051335230351"
+var AfflictionTalents = "05--50500001"
+var DemonologyTalents = "-13-05502001"
+var DestructionTalents = "-13-05502001"
 
 var defaultDestroOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
