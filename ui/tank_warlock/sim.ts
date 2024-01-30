@@ -118,9 +118,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.BlessingOfWisdom,
-		BuffDebuffInputs.ManaSpringTotem,
-		BuffDebuffInputs.JudgementOfWisdom,
 	],
 	excludeBuffDebuffInputs: [
 		BuffDebuffInputs.BleedDebuff,
