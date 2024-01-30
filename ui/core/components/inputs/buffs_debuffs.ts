@@ -314,12 +314,14 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: AllStatsPercentBuffAlliance,
 		picker: MultiIconPicker,
-		stats: []
+		stats: [],
+		faction: Faction.Alliance,
 	},
 	{
 		config: AllStatsPercentBuffHorde,
 		picker: IconPicker,
-		stats: []
+		stats: [],
+		faction: Faction.Horde,
 	},
 	{
 		config: ArmorBuff,
