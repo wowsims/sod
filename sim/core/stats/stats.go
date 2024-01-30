@@ -190,6 +190,8 @@ func (s Stat) StatName() string {
 		return "ArcaneResistance"
 	case WeaponSkill:
 		return "WeaponSkill"
+	case FeralAttackPower:
+		return "FeralAttackPower"
 	}
 
 	return "none"

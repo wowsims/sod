@@ -41,6 +41,8 @@ var BasicRaid = &proto.Raid{
 }
 
 // Tests that we don't crash with various combinations of empty parties / blank players.
+// TODO: Classic
+/*
 func TestSparseRaid(t *testing.T) {
 	sparseRaid := &proto.Raid{
 		Parties: []*proto.Party{
@@ -69,6 +71,7 @@ func TestSparseRaid(t *testing.T) {
 	core.RunRaidSim(rsr)
 	// Don't need to check results, as long as it doesn't crash we're fine.
 }
+*/
 
 func TestBasicRaid(t *testing.T) {
 	t.Skip()

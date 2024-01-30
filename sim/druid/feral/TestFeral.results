@@ -1,0 +1,218 @@
+character_stats_results: {
+ key: "TestFeral-CharacterStats-Default"
+ value: {
+  final_stats: 128.04
+  final_stats: 125.84
+  final_stats: 152.24
+  final_stats: 75.24
+  final_stats: 87.34
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 2
+  final_stats: 8.46419
+  final_stats: 0
+  final_stats: 0
+  final_stats: 693.42
+  final_stats: 2
+  final_stats: 22.7986
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1327.6
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2057.18
+  final_stats: 32
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 36.29478
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1676.3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10
+  final_stats: 130
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 59
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 16.54052
+  tps: 11.86849
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 18.02845
+  tps: 12.93859
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-StormshroudArmor"
+ value: {
+  dps: 16.97824
+  tps: 12.05455
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 16.4049
+  tps: 11.77156
+ }
+}
+dps_results: {
+ key: "TestFeral-Average-Default"
+ value: {
+  dps: 17.33308
+  tps: 12.41029
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 16.72466
+  tps: 12.40297
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-NoBleed-default-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 10.1973
+  tps: 7.55955
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 16.72466
+  tps: 12.40297
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Default-default-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 10.1973
+  tps: 7.55955
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 17.09264
+  tps: 12.24147
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 16.72466
+  tps: 12.40297
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 10.64098
+  tps: 7.61899
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-25-p1-Flower-Aoe-default-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 10.1973
+  tps: 7.55955
+ }
+}
+dps_results: {
+ key: "TestFeral-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 10.87605
+  tps: 7.78182
+ }
+}

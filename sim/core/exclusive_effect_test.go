@@ -14,7 +14,7 @@ func TestSingleAuraExclusiveDurationNoOverwrite(t *testing.T) {
 		Level:       63,
 		auraTracker: newAuraTracker(),
 	}
-	mangle := MangleAura(&target)
+	mangle := MangleAura(&target, 60)
 
 	sim.CurrentTime = 1 * time.Second
 
@@ -30,7 +30,7 @@ func TestSingleAuraExclusiveDurationOverwrite(t *testing.T) {
 		Level:       63,
 		auraTracker: newAuraTracker(),
 	}
-	mangle := MangleAura(&target)
+	mangle := MangleAura(&target, 60)
 
 	sim.CurrentTime = 1 * time.Second
 

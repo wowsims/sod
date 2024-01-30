@@ -11,7 +11,6 @@ import (
 func (warrior *Warrior) RegisterShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
 	cooldownDur := time.Second * 60
-	cooldownDur = core.TernaryDuration(warrior.HasSetBonus(ItemSetWrynnsPlate, 4), cooldownDur-time.Second*10, cooldownDur)
 
 	warrior.ShieldBlockAura = warrior.RegisterAura(core.Aura{
 		Label:    "Shield Block",

@@ -9,11 +9,11 @@ import (
 )
 
 type FeralDruidRotation struct {
-	// RotationType proto.FeralDruid_Rotation_AplType
-
+	PrimaryBuilder     *druid.DruidSpell
 	MinCombosForRip    int32
 	MaxWaitTime        time.Duration
 	MaintainFaerieFire bool
+	UseSavageRoar      bool
 	UseShredTrick      bool
 	UseRipTrick        bool
 }
@@ -94,12 +94,19 @@ func (cat *FeralDruid) timeToCast(numSpecials int32) time.Duration {
 	return core.DurationFromSeconds(numPowershiftedSpecials*2.0 + numOomSpecials*4.0)
 }
 
-func (cat *FeralDruid) canRip(sim *core.Simulation, isTrick bool) bool {
+func (cat *FeralDruid) canRip(sim *core.Simulation, isTrick bool, usingRoar bool) bool {
 	if cat.Rip.CurDot().IsActive() {
 		return false
 	}
 	// Allow Rip if conservative napkin math estimate says that we can cast the Rip and then build 5 Combo Points in time before the current Savage Roar expires.
-	roarDur := cat.SavageRoarAura.RemainingDuration(sim)
+	var roarDur time.Duration
+
+	if usingRoar {
+		roarDur = cat.SavageRoarAura.RemainingDuration(sim)
+	} else {
+		roarDur = core.NeverExpires
+	}
+
 	fightDur := sim.GetRemainingDuration()
 	remainingFightTimeAfterRoar := fightDur - roarDur
 
@@ -261,7 +268,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	numShiftsToOom := cat.numShiftsRemaining()
 	fightDur := sim.GetRemainingDuration()
 	shredCost := cat.Shred.DefaultCast.Cost
-	mangleCost := cat.MangleCat.DefaultCast.Cost
+	mangleCost := rotation.PrimaryBuilder.DefaultCast.Cost
 	ripCost := cat.Rip.DefaultCast.Cost
 
 	// First determine the next special ability we want to cast
@@ -271,23 +278,23 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	var nextAbility *druid.DruidSpell
 
-	if curCp >= 1 && !hasRoar {
+	if rotation.UseSavageRoar && curCp >= 1 && !hasRoar {
 		nextAbility = cat.SavageRoar
 	} else if isClearcast {
 		nextAbility = cat.Shred
-	} else if (curCp >= rotation.MinCombosForRip || canRipTrick) && cat.canRip(sim, canRipTrick) {
+	} else if (curCp >= rotation.MinCombosForRip || canRipTrick) && cat.canRip(sim, canRipTrick, rotation.UseSavageRoar) {
 		nextAbility = cat.Rip
-	} else if curCp >= 1 && cat.clipRoar(sim) {
+	} else if rotation.UseSavageRoar && curCp >= 1 && cat.clipRoar(sim) {
 		nextAbility = cat.SavageRoar
 	} else if canShredTrick {
 		nextAbility = cat.Shred
 	} else {
-		nextAbility = cat.MangleCat
+		nextAbility = rotation.PrimaryBuilder
 	}
 
 	// Then determine whether to cast vs. wait vs. shift
 	waitForWildStrikesProc := (cat.WildStrikesBuffAura != nil) && !cat.WildStrikesBuffAura.IsActive()
-	poolEnergy := poolMana && ((curCp == 5) || waitForWildStrikesProc) && (nextEnergy < 100) && (nextAbility == cat.MangleCat)
+	poolEnergy := poolMana && ((curCp == 5) || waitForWildStrikesProc) && (nextEnergy < 100) && (nextAbility == rotation.PrimaryBuilder)
 	nextAction := sim.CurrentTime
 
 	if nextAbility.CanCast(sim, cat.CurrentTarget) && !poolEnergy {
@@ -748,10 +755,22 @@ type FeralDruidRotation struct {
 */
 
 func (cat *FeralDruid) setupRotation(config *proto.APLActionCatOptimalRotationAction) {
+	var primaryBuilder *druid.DruidSpell
+
+	if cat.MangleCat != nil {
+		primaryBuilder = cat.MangleCat
+	} else {
+		primaryBuilder = cat.Shred
+	}
+
+	knowsRoar := cat.SavageRoar != nil
+
 	cat.Rotation = FeralDruidRotation{
+		PrimaryBuilder:     primaryBuilder,
 		MinCombosForRip:    config.MinCombosForRip,
 		MaxWaitTime:        core.DurationFromSeconds(float64(config.MaxWaitTime)),
 		MaintainFaerieFire: config.MaintainFaerieFire,
+		UseSavageRoar:      knowsRoar,
 		UseShredTrick:      config.UseShredTrick,
 		UseRipTrick:        false,
 	}

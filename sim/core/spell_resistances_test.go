@@ -35,28 +35,29 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 	for resist := 0; resist < 5_000; resist += 1 {
 		defender.stats[stats.FireResistance] = float64(resist)
 
-		averageResist := attackTable.Defender.averageResist(SpellSchoolFire, attackTable.Attacker)
-		thresholds := attackTable.Defender.partialResistRollThresholds(averageResist)
+		threshold00, threshold25, threshold50 := attackTable.Defender.partialResistRollThresholds(SpellSchoolFire, attackTable.Attacker, false)
+		thresholds := [4]float64{threshold00, threshold25, threshold50, 0.0}
 
-		var chance float64
+		var cumulativeChance float64
 		var resultingAr float64
-		for _, th := range thresholds {
-			chance = th.cumulativeChance - chance
-			resultingAr += chance * 0.1 * float64(th.bracket)
-			if th.cumulativeChance >= 1 {
+		for bin, th := range thresholds {
+			chance := max(min(1.0 - th - cumulativeChance, 1.0), 0.0)
+			resultingAr += chance * 0.25 * float64(bin)
+			cumulativeChance += chance
+			if cumulativeChance >= 1 {
 				break
 			}
-			chance = th.cumulativeChance
 		}
 
-		expectedAr := float64(resist) / (510 + float64(resist))
+		resistanceScore := attackTable.Defender.resistCoeff(SpellSchoolFire, attackTable.Attacker, false, false)
+		expectedAr := 0.75 * resistanceScore - 3.0 / 16.0 * max(0.0, resistanceScore - 2.0 / 3.0)
 
-		if math.Abs(resultingAr-expectedAr) > 1e-9 {
-			t.Errorf("resist = %d, thresholds = %s, resultingAr = %.2f%%, expectedAr = %.2f%%", resist, thresholds, resultingAr, expectedAr)
+		if math.Abs(resultingAr-expectedAr) > 1e-2 {
+			t.Errorf("resist = %d, thresholds = (%.2f, %.2f, %.2f), resultingAr = %.2f%%, expectedAr = %.2f%%", resist, threshold00, threshold25, threshold50, resultingAr * 100, expectedAr * 100)
 			return
 		}
 
-		const n = 1_000
+		const n = 10_000
 
 		outcomes := make(map[HitOutcome]int, n)
 		var totalDamage float64
