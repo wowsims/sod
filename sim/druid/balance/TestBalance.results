@@ -50,49 +50,85 @@ character_stats_results: {
 }
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomElementalist'sHide"
- value: {}
+ value: {
+  dps: 5.7416
+  tps: 5.7416
+ }
 }
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomSlayer'sLeather"
- value: {}
+ value: {
+  dps: 4.57472
+  tps: 4.57472
+ }
 }
 dps_results: {
  key: "TestBalance-AllItems-StormshroudArmor"
- value: {}
+ value: {
+  dps: 4.55727
+  tps: 4.55727
+ }
 }
 dps_results: {
  key: "TestBalance-AllItems-TwilightInvoker'sVestments"
- value: {}
+ value: {
+  dps: 5.66586
+  tps: 5.66586
+ }
 }
 dps_results: {
  key: "TestBalance-Average-Default"
- value: {}
+ value: {
+  dps: 4.65035
+  tps: 4.65035
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 4.55727
+  tps: 4.55727
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 4.55727
+  tps: 4.55727
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 9.58342
+  tps: 9.58342
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 3.23854
+  tps: 3.23854
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 3.23854
+  tps: 3.23854
+ }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 7.14171
+  tps: 7.14171
+ }
 }
 dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
- value: {}
+ value: {
+  dps: 4.55727
+  tps: 4.55727
+ }
 }
