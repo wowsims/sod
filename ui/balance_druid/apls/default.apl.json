@@ -1,7 +1,12 @@
 {
   "type": "TypeAPL",
   "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":5179,"rank":4}}},"doAtValue":{"const":{"val":"-2.05s"}}}
   ],
   "priorityList": [
+    {"action":{"castSpell":{"spellId":{"spellId":417157}}}},
+    {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":414684}}}}},"castSpell":{"spellId":{"spellId":414684}}}},
+    {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":8926,"rank":4}}}}},"castSpell":{"spellId":{"spellId":8926,"rank":4}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":5179,"rank":4}}}}
   ]
 }
