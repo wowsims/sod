@@ -101,8 +101,8 @@ func (druid *Druid) applyStarsurge() {
 
 	level := float64(druid.GetCharacter().Level)
 	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 1.35
-	baseHighDamage := baseCalc * 1.165
+	baseLowDamage := baseCalc * 3.81
+	baseHighDamage := baseCalc * 4.67
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 417157},
@@ -111,7 +111,7 @@ func (druid *Druid) applyStarsurge() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03 * (1 - 0.03*float64(druid.Talents.Moonglow)),
+			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -120,7 +120,7 @@ func (druid *Druid) applyStarsurge() {
 			},
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 6,
 			},
 		},
 
