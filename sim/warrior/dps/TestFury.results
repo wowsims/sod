@@ -73,7 +73,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestFury-Settings-Human-25-blank-Basic--FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic--NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -85,7 +97,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestFury-Settings-Human-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -97,7 +121,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestFury-Settings-Orc-25-blank-Basic--FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic--NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -109,7 +145,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestFury-Settings-Orc-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {

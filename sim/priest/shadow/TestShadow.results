@@ -57,7 +57,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Settings-NightElf-25-blank-APL-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-APL-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -69,7 +81,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Settings-NightElf-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-NightElf-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -81,7 +105,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Settings-Undead-25-blank-APL-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-APL-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -93,7 +129,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Settings-Undead-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-Settings-Undead-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
