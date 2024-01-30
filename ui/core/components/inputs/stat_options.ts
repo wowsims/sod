@@ -18,6 +18,7 @@ export interface ActionInputConfig<T> {
 
 export interface StatOption {
 	stats: Array<Stat>,
+	faction?: Faction
 }
 
 export interface ItemStatOption<T> extends StatOption {
@@ -54,9 +55,13 @@ export function relevantStatOptions<T, OptionsType extends ItemStatOptions<T> | 
 ): StatOptions<T, OptionsType> {
   return options
     .filter(option =>
+			// Filter by faction if there's a faction restriction
+			(!option.faction || option.faction == simUI.player.getFaction()) &&
+			// Filter out excluded options
+			!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config) &&
+			// Compare EP stats
       option.stats.length == 0 ||
       option.stats.some(stat => simUI.individualConfig.epStats.includes(stat)) ||
+			// Check included options
 			simUI.individualConfig.includeBuffDebuffInputs.includes(option.config))
-		.filter(option =>
-			!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config))
 }
