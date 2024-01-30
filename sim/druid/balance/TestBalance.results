@@ -1,49 +1,49 @@
 character_stats_results: {
  key: "TestBalance-CharacterStats-Default"
  value: {
-  final_stats: 75.24
-  final_stats: 36.74
-  final_stats: 76.34
-  final_stats: 59.84
-  final_stats: 63.14
+  final_stats: 79.64
+  final_stats: 38.94
+  final_stats: 132.44
+  final_stats: 140.14
+  final_stats: 113.74
+  final_stats: 110
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 14
+  final_stats: 0
+  final_stats: 20
+  final_stats: 1
+  final_stats: 11.62482
+  final_stats: 0
+  final_stats: 10
+  final_stats: 280.28
+  final_stats: 1
+  final_stats: 7.89135
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 18
-  final_stats: 0
-  final_stats: 7.71421
+  final_stats: 2301.1
   final_stats: 0
   final_stats: 0
-  final_stats: 271.48
-  final_stats: 0
-  final_stats: 7.66585
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1096.6
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1133.98
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 10.59655
-  final_stats: 0
-  final_stats: 0
-  final_stats: 917.3
+  final_stats: 1651.38
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 11.23108
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1478.3
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 15
+  final_stats: 21
+  final_stats: 31
+  final_stats: 9
   final_stats: 0
   final_stats: 0
  }
@@ -51,84 +51,84 @@ character_stats_results: {
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 5.7416
-  tps: 5.7416
+  dps: 21.63495
+  tps: 21.63495
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 4.57472
-  tps: 4.57472
+  dps: 19.57376
+  tps: 19.57376
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-StormshroudArmor"
  value: {
-  dps: 4.55727
-  tps: 4.55727
+  dps: 7.81282
+  tps: 7.81282
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 5.66586
-  tps: 5.66586
+  dps: 21.62409
+  tps: 21.62409
  }
 }
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 4.65035
-  tps: 4.65035
+  dps: 37.91015
+  tps: 37.91015
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-LongMultiTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-FullBuffs-LongMultiTarget"
  value: {
-  dps: 4.55727
-  tps: 4.55727
+  dps: 37.98287
+  tps: 37.98287
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-LongSingleTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4.55727
-  tps: 4.55727
+  dps: 37.98287
+  tps: 37.98287
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-FullBuffs-ShortSingleTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 9.58342
-  tps: 9.58342
+  dps: 40.29015
+  tps: 40.29015
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-LongMultiTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3.23854
-  tps: 3.23854
+  dps: 36.14656
+  tps: 36.14656
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-LongSingleTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3.23854
-  tps: 3.23854
+  dps: 36.14656
+  tps: 36.14656
  }
 }
 dps_results: {
- key: "TestBalance-Settings-Tauren-25-blank-Default-default-NoBuffs-ShortSingleTarget"
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 7.14171
-  tps: 7.14171
+  dps: 39.29645
+  tps: 39.29645
  }
 }
 dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4.55727
-  tps: 4.55727
+  dps: 37.98287
+  tps: 37.98287
  }
 }
