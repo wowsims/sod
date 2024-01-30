@@ -69,7 +69,7 @@ func (druid *Druid) applySunfire() {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage / float64(ticks)) + 0.13*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDotDamage + 0.13*dot.Spell.SpellPower()
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
