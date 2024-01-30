@@ -212,7 +212,7 @@ export const SlipKiksSavvy = withLabel(
 
 // SoD World Buffs
 export const BoonOfBlackfathom = withLabel(
-	makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(430947), fieldName: 'boonOfBlackfathom'}),
+	makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(430947), fieldName: 'boonOfBlackfathom', maxLevel: 39}),
 	'Boon of Blackfathom',
 );
 
