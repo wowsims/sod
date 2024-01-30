@@ -1259,6 +1259,7 @@ export class Player<SpecType extends Spec> {
 			if (loadCategory(SimSettingCategories.Miscellaneous)) {
 				this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
 				this.setName(eventID, proto.name);
+				this.setLevel(eventID, proto.level);
 				this.setRace(eventID, proto.race);
 				this.setProfession1(eventID, proto.profession1);
 				this.setProfession2(eventID, proto.profession2);
