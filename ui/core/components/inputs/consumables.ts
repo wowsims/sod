@@ -108,9 +108,12 @@ export const makeConjuredInput = makeConsumeInputFactory({consumesFieldName: 'de
 export const ExplosiveDenseDynamite = { actionId: ActionId.fromItemId(18641), value: Explosive.ExplosiveDenseDynamite, minLevel: 40 };
 export const ExplosiveThoriumGrenade = { actionId: ActionId.fromItemId(15993), value: Explosive.ExplosiveThoriumGrenade, minLevel: 40 };
 
+export const ExplosiveCoarseDynamite = { actionId: ActionId.fromItemId(4365), value: Explosive.ExplosiveCoarseDynamite};
+
 export const EXPLOSIVES_CONFIG = [
 	{ config: ExplosiveDenseDynamite, stats: [] },
 	{ config: ExplosiveThoriumGrenade, stats: [] },
+	{ config: ExplosiveCoarseDynamite, stats: []},
 ] as ConsumableStatOption<Explosive>[];
 
 export const makeExplosivesInput = makeConsumeInputFactory({consumesFieldName: 'fillerExplosive'});
