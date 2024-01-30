@@ -123,7 +123,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
@@ -135,7 +147,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-LongMultiTarget"
  value: {}
 }
 dps_results: {
