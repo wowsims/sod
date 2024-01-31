@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -187,4 +188,38 @@ func (action *APLActionMove) Execute(sim *Simulation) {
 }
 func (action *APLActionMove) String() string {
 	return fmt.Sprintf("Move(%s)", action.moveRange)
+}
+
+type APLActionCustomRotation struct {
+	defaultAPLActionImpl
+	unit  *Unit
+	agent Agent
+
+	lastExecutedAt time.Duration
+}
+
+func (rot *APLRotation) newActionCustomRotation(config *proto.APLActionCustomRotation) APLActionImpl {
+	agent := rot.unit.Env.GetAgentFromUnit(rot.unit)
+	if agent == nil {
+		panic("Agent not found for custom rotation")
+	}
+
+	return &APLActionCustomRotation{
+		unit:  rot.unit,
+		agent: agent,
+	}
+}
+func (action *APLActionCustomRotation) Reset(sim *Simulation) {
+	action.lastExecutedAt = -1
+}
+func (action *APLActionCustomRotation) IsReady(sim *Simulation) bool {
+	// Prevent infinite loops by only allowing this action to be performed once at each timestamp.
+	return action.lastExecutedAt != sim.CurrentTime
+}
+func (action *APLActionCustomRotation) Execute(sim *Simulation) {
+	action.lastExecutedAt = sim.CurrentTime
+	action.agent.ExecuteCustomRotation(sim)
+}
+func (action *APLActionCustomRotation) String() string {
+	return "Custom Rotation()"
 }

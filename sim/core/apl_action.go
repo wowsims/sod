@@ -132,7 +132,7 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return nil
 	}
 
-	customAction := rot.unit.Env.Raid.GetPlayerFromUnit(rot.unit).NewAPLAction(rot, config)
+	customAction := rot.unit.Env.GetAgentFromUnit(rot.unit).NewAPLAction(rot, config)
 	if customAction != nil {
 		return customAction
 	}
@@ -179,6 +179,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionItemSwap(config.GetItemSwap())
 	case *proto.APLAction_Move:
 		return rot.newActionMove(config.GetMove())
+	case *proto.APLAction_CustomRotation:
+		return rot.newActionCustomRotation(config.GetCustomRotation())
 	default:
 		return nil
 	}

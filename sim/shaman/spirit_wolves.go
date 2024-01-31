@@ -91,8 +91,7 @@ package shaman
 // 	// Nothing
 // }
 
-// func (spiritWolf *SpiritWolf) OnGCDReady(_ *core.Simulation) {
-// 	spiritWolf.DoNothing()
+// func (spiritWolf *SpiritWolf) ExecuteCustomRotation(_ *core.Simulation) {
 // }
 
 // func (spiritWolf *SpiritWolf) Reset(sim *core.Simulation) {

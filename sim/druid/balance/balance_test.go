@@ -17,7 +17,7 @@ func TestBalance(t *testing.T) {
 		Class: proto.Class_ClassDruid,
 		Race:  proto.Race_RaceTauren,
 
-		GearSet:       core.GetGearSet("../../../ui/balance_druid/gear_sets", "blank"),
+		GearSet:       core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_1"),
 		OtherGearSets: []core.GearSetCombo{},
 		Talents:       StandardTalents,
 		Consumes:      FullConsumes,
@@ -28,7 +28,7 @@ func TestBalance(t *testing.T) {
 	}))
 }
 
-var StandardTalents = "5000500302551351--50050312"
+var StandardTalents = "50005003021"
 
 var FullConsumes = &proto.Consumes{
 	Flask: proto.Flask_FlaskUnknown,

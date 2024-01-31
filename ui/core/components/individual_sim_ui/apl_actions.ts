@@ -1,5 +1,4 @@
 import {
-	Class,
 	Spec,
 } from '../../proto/common.js';
 
@@ -29,6 +28,7 @@ import {
 	APLActionMove,
 
 	APLActionCatOptimalRotationAction,
+	APLActionCustomRotation,
 
 	APLValue,
 } from '../../proto/apl.js';
@@ -581,13 +581,22 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 			}),
 		],
 	}),
+	['customRotation']: inputBuilder({
+		label: 'Custom Rotation',
+		//submenu: ['Misc'],
+		shortDescription: 'INTERNAL ONLY',
+		includeIf: (_player: Player<any>, _isPrepull: boolean) => false, // Never show this, because its internal only.
+		newValue: () => APLActionCustomRotation.create(),
+		fields: [
+		],
+	}),
 
 	// Class/spec specific actions
 	['catOptimalRotationAction']: inputBuilder({
 		label: 'Optimal Rotation Action',
 		submenu: ['Feral Druid'],
 		shortDescription: 'Executes optimized Feral DPS rotation using hardcoded legacy algorithm.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
 		newValue: () => APLActionCatOptimalRotationAction.create({
 			minCombosForRip: 3,
 			maxWaitTime: 2.0,

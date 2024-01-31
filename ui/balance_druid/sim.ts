@@ -30,6 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatArcanePower,
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -57,12 +58,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.43,
-			[Stat.StatSpirit]: 0.34,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.82,
-			[Stat.StatSpellHaste]: 0.80,
-			[Stat.StatMP5]: 0.00,
+			[Stat.StatIntellect]: 	0.43,
+			[Stat.StatSpirit]: 			0.34,
+			[Stat.StatSpellPower]: 	1,
+			[Stat.StatArcanePower]: 0.49,
+			[Stat.StatNaturePower]: 0.51,
+			[Stat.StatSpellCrit]: 	0.82,
+			[Stat.StatSpellHaste]: 	0.80,
+			[Stat.StatMP5]: 				0.00,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

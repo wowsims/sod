@@ -188,7 +188,7 @@ func (wp *WarlockPet) Initialize() {
 func (wp *WarlockPet) Reset(_ *core.Simulation) {
 }
 
-func (wp *WarlockPet) OnGCDReady(sim *core.Simulation) {
+func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if wp.manaPooling {
 		maxPossibleCasts := sim.GetRemainingDuration().Seconds() / wp.primaryAbility.CurCast.CastTime.Seconds()
 

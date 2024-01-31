@@ -50,61 +50,91 @@ character_stats_results: {
 }
 dps_results: {
  key: "TestAffliction-AllItems-TwilightInvoker'sVestments"
- value: {}
+ value: {
+  dps: 5.18892
+ }
 }
 dps_results: {
  key: "TestAffliction-Average-Default"
- value: {}
+ value: {
+  dps: 5.22068
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 5.26458
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 5.26458
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 8.13721
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 2.74578
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 2.74578
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 4.43909
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 5.26458
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 5.26458
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 8.13721
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 2.74578
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 2.74578
+ }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 4.43909
+ }
 }
 dps_results: {
  key: "TestAffliction-SwitchInFrontOfTarget-Default"
- value: {}
+ value: {
+  dps: 5.26458
+ }
 }

@@ -15,6 +15,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 	manaCost := [11]float64{0, 25, 50, 75, 105, 150, 190, 235, 280, 325, 375}[rank]
 	level := [11]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52, 58}[rank]
 
+	ticks := core.TernaryInt32(rank < 2, 3, 4)
 	impMf := float64(druid.Talents.ImprovedMoonfire)
 	moonfury := float64(druid.Talents.Moonfury)
 
@@ -40,10 +41,10 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 				Label:    "Moonfire",
 				ActionID: core.ActionID{SpellID: spellId},
 			},
-			NumberOfTicks: core.TernaryInt32(rank < 2, 3, 4),
+			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage / 3.0) + spellDotCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = (baseDotDamage / float64(ticks)) + spellDotCoeff*dot.Spell.SpellPower()
 				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

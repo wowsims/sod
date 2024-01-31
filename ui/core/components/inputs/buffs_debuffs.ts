@@ -212,7 +212,7 @@ export const SlipKiksSavvy = withLabel(
 
 // SoD World Buffs
 export const BoonOfBlackfathom = withLabel(
-	makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(430947), fieldName: 'boonOfBlackfathom'}),
+	makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(430947), fieldName: 'boonOfBlackfathom', maxLevel: 39}),
 	'Boon of Blackfathom',
 );
 
@@ -314,12 +314,14 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: AllStatsPercentBuffAlliance,
 		picker: MultiIconPicker,
-		stats: []
+		stats: [],
+		faction: Faction.Alliance,
 	},
 	{
 		config: AllStatsPercentBuffHorde,
 		picker: IconPicker,
-		stats: []
+		stats: [],
+		faction: Faction.Horde,
 	},
 	{
 		config: ArmorBuff,

@@ -106,7 +106,7 @@ func (hp *HunterPet) Reset(_ *core.Simulation) {
 	hp.uptimePercent = min(1, max(0, hp.hunterOwner.Options.PetUptime))
 }
 
-func (hp *HunterPet) OnGCDReady(sim *core.Simulation) {
+func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	percentRemaining := sim.GetRemainingDurationPercent()
 	if percentRemaining < 1.0-hp.uptimePercent { // once fight is % completed, disable pet.
 		hp.Disable(sim)
@@ -120,6 +120,7 @@ func (hp *HunterPet) OnGCDReady(sim *core.Simulation) {
 	}
 
 	target := hp.CurrentTarget
+
 	if hp.focusDump == nil {
 		hp.specialAbility.Cast(sim, target)
 		return

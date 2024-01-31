@@ -270,3 +270,4 @@ func (pet *Pet) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs) {}
 func (pet *Pet) ApplyTalents()                     {}
 func (pet *Pet) ApplyRunes()                       {}
+func (pet *Pet) OnGCDReady(_ *Simulation)          {}
