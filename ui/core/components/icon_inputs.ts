@@ -1,3 +1,4 @@
+import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
 import {
 	Consumes,
 	Debuffs,
@@ -16,7 +17,6 @@ import { IconEnumPicker, IconEnumPickerDirection, IconEnumValueConfig } from './
 import { IconPicker } from './icon_picker';
 
 import * as InputHelpers from './input_helpers';
-import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
 
 // Component Functions
 

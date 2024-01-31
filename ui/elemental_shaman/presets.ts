@@ -37,14 +37,7 @@ export const ROTATION_PRESET_ADVANCED = PresetUtils.makePresetAPLRotation('Advan
 export const StandardTalents = {
   name: 'Standard',
   data: SavedTalents.create({
-    talentsString: '0532001523212351322301351-005052031',
-  }),
-};
-
-export const Phase4Talents = {
-  name: 'Phase 4',
-  data: SavedTalents.create({
-    talentsString: '0533001523213351322301351-005050031',
+    talentsString: '25003105',
   }),
 };
 

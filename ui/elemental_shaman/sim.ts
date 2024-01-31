@@ -37,6 +37,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatFirePower,
+		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -130,7 +132,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.StandardTalents,
-			Presets.Phase4Talents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [

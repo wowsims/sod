@@ -24,29 +24,27 @@ const (
 )
 
 // Shared precomputation logic for LB and CL.
-func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isLightningOverload bool) core.SpellConfig {
-	mask := core.ProcMaskSpellDamage
-	if isLightningOverload {
-		mask = core.ProcMaskProc
-	}
+func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	flags := SpellFlagElectric | SpellFlagFocusable
-	if !isLightningOverload {
+	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
+
 	spell := core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolNature,
-		ProcMask:     mask,
+		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        flags,
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   core.TernaryFloat64(isLightningOverload, 0, baseCost),
+			FlatCost:   baseCost,
 			Multiplier: 1 - 0.02*float64(shaman.Talents.Convection),
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: baseCastTime - time.Millisecond*100*time.Duration(shaman.Talents.LightningMastery),
+				CastTime: baseCastTime - time.Millisecond*200*time.Duration(shaman.Talents.LightningMastery),
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -54,35 +52,18 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			},
 		},
 
-		BonusHitRating: float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		BonusCritRating: 0 +
 			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
-			core.TernaryFloat64(shaman.Talents.CallOfThunder, 5*core.CritRatingPerCritChance, 0),
+			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
 		DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: shaman.spellThreatMultiplier(),
-	}
-
-	if isLightningOverload {
-		spell.ActionID.Tag = CastTagLightningOverload
-		spell.Cast.DefaultCast.CastTime = 0
-		spell.Cast.DefaultCast.GCD = 0
-		spell.Cast.DefaultCast.Cost = 0
-		spell.Cast.ModifyCast = nil
-		spell.MetricSplits = 0
-		spell.DamageMultiplier *= 0.5
-		spell.ThreatMultiplier = 0
 	}
 
 	return spell
 }
 
+// Leaving this in-place in case we get any applicable items/spells in SoD
 func (shaman *Shaman) electricSpellBonusDamage(spellCoeff float64) float64 {
-	bonusDamage := 0 +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfStorms, 33, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfTheVoid, 55, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfAncestralGuidance, 85, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfHex, 165, 0)
-
-	return bonusDamage * spellCoeff // These items do not benefit from the bonus coeff from shamanism.
+	bonusDamage := float64(0)
+	return bonusDamage * spellCoeff
 }
