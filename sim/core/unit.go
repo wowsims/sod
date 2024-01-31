@@ -604,3 +604,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 
 	return metadata
 }
+
+func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
+	panic("Unimplemented ExecuteCustomRotation")
+}

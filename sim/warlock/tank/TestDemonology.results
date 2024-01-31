@@ -50,37 +50,55 @@ character_stats_results: {
 }
 dps_results: {
  key: "TestDemonology-AllItems-TwilightInvoker'sVestments"
- value: {}
+ value: {
+  dps: 5.17184
+ }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
- value: {}
+ value: {
+  dps: 5.25203
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--FullBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 5.27614
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--FullBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 5.27614
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--FullBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 8.11172
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--NoBuffs-LongMultiTarget"
- value: {}
+ value: {
+  dps: 2.71874
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--NoBuffs-LongSingleTarget"
- value: {}
+ value: {
+  dps: 2.71874
+ }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destro.tank-Demonology Warlock--NoBuffs-ShortSingleTarget"
- value: {}
+ value: {
+  dps: 4.41435
+ }
 }
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
- value: {}
+ value: {
+  dps: 5.27614
+ }
 }

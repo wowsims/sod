@@ -123,7 +123,7 @@ func (ai *Patchwerk25AI) registerFrenzySpell(target *core.Target) {
 	})
 }
 
-func (ai *Patchwerk25AI) DoAction(sim *core.Simulation) {
+func (ai *Patchwerk25AI) ExecuteCustomRotation(sim *core.Simulation) {
 	if ai.Target.CurrentTarget == nil {
 		return
 	}

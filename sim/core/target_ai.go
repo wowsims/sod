@@ -9,7 +9,7 @@ import (
 type TargetAI interface {
 	Initialize(*Target, *proto.Target)
 	Reset(*Simulation)
-	DoAction(*Simulation)
+	ExecuteCustomRotation(*Simulation)
 }
 
 func (target *Target) initialize(config *proto.Target) {
