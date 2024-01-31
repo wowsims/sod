@@ -64,33 +64,6 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 }
 
-func (hunter *Hunter) ApplyRunes() {
-	if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-		statMultiply := 1.1
-		hunter.MultiplyStat(stats.Strength, statMultiply)
-		hunter.MultiplyStat(stats.Stamina, statMultiply)
-		hunter.MultiplyStat(stats.Agility, statMultiply)
-		hunter.MultiplyStat(stats.Intellect, statMultiply)
-		hunter.MultiplyStat(stats.Spirit, statMultiply)
-	}
-
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
-		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
-	}
-
-	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.15
-	}
-
-	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
-	}
-
-	hunter.applySniperTraining()
-	hunter.applyCobraStrikes()
-}
-
 func (hunter *Hunter) critMultiplier(isRanged bool, target *core.Unit) float64 {
 	primaryModifier := 1.0
 	secondaryModifier := 0.0
@@ -108,47 +81,6 @@ func (hunter *Hunter) critMultiplier(isRanged bool, target *core.Unit) float64 {
 	}
 
 	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (hunter *Hunter) applySniperTraining() {
-	if !hunter.HasRune(proto.HunterRune_RuneLegsSniperTraining) {
-		return
-	}
-
-	hunter.SniperTrainingAura = hunter.GetOrRegisterAura(core.Aura{
-		Label:    "Sniper Training",
-		ActionID: core.ActionID{SpellID: 415399},
-		Duration: time.Second * 6,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
-					spell.BonusCritRating += 10 * core.CritRatingPerCritChance
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
-					spell.BonusCritRating -= 10 * core.CritRatingPerCritChance
-				}
-			}
-		},
-	})
-
-	core.ApplyFixedUptimeAura(hunter.SniperTrainingAura, hunter.Options.SniperTrainingUptime, time.Second*6, 0)
-}
-
-func (hunter *Hunter) applyCobraStrikes() {
-	if !hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes) || hunter.pet == nil {
-		return
-	}
-
-	hunter.CobraStrikesAura = hunter.GetOrRegisterAura(core.Aura{
-		Label:     "Cobra Strikes",
-		ActionID:  core.ActionID{SpellID: 425714},
-		Duration:  time.Second * 30,
-		MaxStacks: 2,
-	})
 }
 
 func (hunter *Hunter) applyFrenzy() {

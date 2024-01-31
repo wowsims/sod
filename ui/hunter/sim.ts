@@ -107,6 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			[Stat.StatStamina]: 0.5,
 			[Stat.StatAgility]: 2.65,
 			[Stat.StatIntellect]: 1.1,
+			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 2,
 			[Stat.StatMeleeCrit]: 1.5,
