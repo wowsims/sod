@@ -74,10 +74,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.22,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatFirePower]: 1,
-			[Stat.StatNaturePower]: 1,
-			[Stat.StatSpellCrit]: 0.67,
-			[Stat.StatSpellHaste]: 1.29,
+			[Stat.StatFirePower]: 0.48,
+			[Stat.StatNaturePower]: 0.52,
+			[Stat.StatSpellHit]: 4.52,
+			[Stat.StatSpellCrit]: 1.01,
+			[Stat.StatSpellHaste]: .87,
 			[Stat.StatMP5]: 0.08,
 		}),
 		// Default consumes settings.

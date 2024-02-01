@@ -95,11 +95,7 @@ type Shaman struct {
 	ChainLightningHits      []*core.Spell
 	ChainLightningOverloads []*core.Spell
 
-	LavaBurst         *core.Spell
-	LavaBurstOverload *core.Spell
-
 	FireNova    *core.Spell
-	LavaLash    *core.Spell
 	Stormstrike *core.Spell
 
 	LightningShield     *core.Spell
@@ -135,7 +131,6 @@ type Shaman struct {
 	AncestralAwakening     *core.Spell
 	LesserHealingWave      *core.Spell
 	Riptide                *core.Spell
-	EarthShield            *core.Spell
 
 	HealingWave         *core.Spell
 	HealingWaveOverload *core.Spell
@@ -146,11 +141,19 @@ type Shaman struct {
 	waterShieldManaMetrics *core.ResourceMetrics
 
 	// Runes
+	LavaBurst         *core.Spell
+	LavaBurstOverload *core.Spell
+	MoltenBlast       *core.Spell
+	LavaLash          *core.Spell
+	EarthShield       *core.Spell
+
 	DualWieldSpecAura      *core.Aura
 	OverloadAura           *core.Aura
 	OverloadChance         float64
 	ShieldMasteryAura      *core.Aura
 	TwoHandedMasteryAura   *core.Aura
+	MoltenBlastAura        *core.Aura
+	MoltenBlastResetChance float64
 	MaelstromWeaponAura    *core.Aura
 	WayOfEarthAura         *core.Aura
 	AncestralAwakeningAura *core.Aura
@@ -221,7 +224,6 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerFeralSpirit()
 	// shaman.registerFireElementalTotem()
 	// shaman.registerFireNovaSpell()
-	// shaman.registerLavaLashSpell()
 	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
 	// shaman.registerMagmaTotemSpell()

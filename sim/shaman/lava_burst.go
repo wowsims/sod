@@ -21,11 +21,14 @@ func (shaman *Shaman) applyLavaBurst() {
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
 	level := float64(shaman.Level)
-	spellId := core.TernaryInt32(isOverload, 408491, 408490)
+	spellId := core.TernaryInt32(isOverload, int32(proto.ShamanRune_RuneHandsLavaBurst), 408490)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
-	baseLowDamage := baseCalc * 4.69
-	baseHighDamage := baseCalc * 6.05
+	baseDamageLow := baseCalc * 4.69
+	baseDamageHigh := baseCalc * 6.05
 	spellCoeff := .571
+	castTime := time.Second * 2
+	cooldown := time.Second * 8
+	manaCost := .10
 
 	flags := SpellFlagFocusable
 	if !isOverload {
@@ -41,7 +44,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		Flags:       flags,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: .10,
+			BaseCost: manaCost,
 			// Convection does not currently apply to Lava Burst in SoD
 			// Multiplier: 1 - 0.02*float64(shaman.Talents.Convection),
 		},
@@ -49,12 +52,12 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			DefaultCast: core.Cast{
 				// Lightning Mastery does not currently apply to Lava Burst in SoD
 				// CastTime: time.Second*2 - time.Millisecond*200*time.Duration(shaman.Talents.LightningMastery),
-				CastTime: time.Second * 2,
+				CastTime: castTime,
 				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Second * 8,
+				Duration: cooldown,
 			},
 		},
 
@@ -65,7 +68,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if canOverload && result.Landed() && sim.RandomFloat("LvB Overload") < shaman.OverloadChance {
 				shaman.LavaBurstOverload.Cast(sim, target)

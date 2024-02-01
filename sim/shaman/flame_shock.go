@@ -79,7 +79,11 @@ func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int)
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 		},
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+
+			if shaman.MoltenBlastAura != nil && result.Landed() && sim.RandomFloat("Molten Blast Reset") < shaman.MoltenBlastResetChance {
+				shaman.MoltenBlast.CD.Reset()
+			}
 		},
 	}
 

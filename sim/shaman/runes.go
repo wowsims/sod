@@ -15,8 +15,8 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Hands
 	shaman.applyLavaBurst()
-	// shaman.applyLavaLash()
-	// shaman.applyMoltenBlast()
+	shaman.applyLavaLash()
+	shaman.applyMoltenBlast()
 	// shaman.applyWaterShield()
 
 	// Waist

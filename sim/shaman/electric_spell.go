@@ -57,6 +57,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
 		DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
+		ThreatMultiplier: 1,
 	}
 
 	return spell

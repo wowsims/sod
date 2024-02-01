@@ -120,9 +120,8 @@ var PlayerOptionsAdaptiveFireElemental = &proto.Player_ElementalShaman{
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfBlindingLight,
-	Food:            proto.Food_FoodBlackenedBasilisk,
-	DefaultPotion:   proto.Potions_SuperManaPotion,
-	PrepopPotion:    proto.Potions_DestructionPotion,
-	DefaultConjured: proto.Conjured_ConjuredDarkRune,
+	// Flask:           proto.Flask_FlaskOfBlindingLight,
+	// Food:            proto.Food_FoodBlackenedBasilisk,
+	// DefaultPotion:   proto.Potions_SuperManaPotion,
+	// DefaultConjured: proto.Conjured_ConjuredDarkRune,
 }

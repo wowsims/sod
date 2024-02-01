@@ -162,8 +162,7 @@ enum ShamanImbue {
     NoImbue = 0;
     WindfuryWeapon = 1;
     FlametongueWeapon = 2;
-    FlametongueWeaponDownrank = 3;
-    FrostbrandWeapon = 4;
+    FrostbrandWeapon = 3;
 }
 
 enum ShamanSyncType {
