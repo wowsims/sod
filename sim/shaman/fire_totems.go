@@ -49,7 +49,6 @@ package shaman
 
 // 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 // 			shaman.MagmaTotem.AOEDot().Cancel(sim)
-// 			shaman.FireElemental.Disable(sim)
 // 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 // 			// +1 needed because of rounding issues with totem tick time.
 // 			shaman.NextTotemDrops[FireTotem] = sim.CurrentTime + time.Second*60 + 1
@@ -99,7 +98,6 @@ package shaman
 
 // 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 // 			shaman.SearingTotem.Dot(shaman.CurrentTarget).Cancel(sim)
-// 			shaman.FireElemental.Disable(sim)
 // 			spell.AOEDot().Apply(sim)
 // 			// +1 needed because of rounding issues with totem tick time.
 // 			shaman.NextTotemDrops[FireTotem] = sim.CurrentTime + time.Second*20 + 1

@@ -18,14 +18,12 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p1"),
-		Talents:     StandardTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
-		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "EleFireElemental", SpecOptions: PlayerOptionsAdaptiveFireElemental},
-		},
-		Rotation: core.GetAplRotation("../../../ui/elemental_shaman/apls", "default"),
+		GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p1"),
+		Talents:          StandardTalents,
+		Consumes:         FullConsumes,
+		SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+		OtherSpecOptions: []core.SpecOptionsCombo{},
+		Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/elemental_shaman/apls", "advanced"),
 		},
@@ -93,28 +91,11 @@ var BasicTotems = &proto.ShamanTotems{
 	Fire:  proto.FireTotem_TotemOfWrath,
 }
 
-var FireElementalBasicTotems = &proto.ShamanTotems{
-	Earth:            proto.EarthTotem_TremorTotem,
-	Air:              proto.AirTotem_WindfuryTotem,
-	Water:            proto.WaterTotem_ManaSpringTotem,
-	Fire:             proto.FireTotem_TotemOfWrath,
-	UseFireElemental: true,
-}
-
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
 		Options: &proto.ElementalShaman_Options{
 			Shield: proto.ShamanShield_WaterShield,
 			Totems: BasicTotems,
-		},
-	},
-}
-
-var PlayerOptionsAdaptiveFireElemental = &proto.Player_ElementalShaman{
-	ElementalShaman: &proto.ElementalShaman{
-		Options: &proto.ElementalShaman_Options{
-			Shield: proto.ShamanShield_WaterShield,
-			Totems: FireElementalBasicTotems,
 		},
 	},
 }

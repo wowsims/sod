@@ -100,14 +100,13 @@ var enhShamWFWF = &proto.EnhancementShaman_Options{
 var enhShamFTFT = &proto.EnhancementShaman_Options{
 	Shield:   proto.ShamanShield_LightningShield,
 	SyncType: proto.ShamanSyncType_Auto,
-	ImbueMh:  proto.ShamanImbue_FlametongueWeaponDownrank,
+	ImbueMh:  proto.ShamanImbue_FlametongueWeapon,
 	ImbueOh:  proto.ShamanImbue_FlametongueWeapon,
 	Totems: &proto.ShamanTotems{
-		Earth:            proto.EarthTotem_StrengthOfEarthTotem,
-		Air:              proto.AirTotem_WindfuryTotem,
-		Water:            proto.WaterTotem_ManaSpringTotem,
-		Fire:             proto.FireTotem_MagmaTotem,
-		UseFireElemental: true,
+		Earth: proto.EarthTotem_StrengthOfEarthTotem,
+		Air:   proto.AirTotem_WindfuryTotem,
+		Water: proto.WaterTotem_ManaSpringTotem,
+		Fire:  proto.FireTotem_MagmaTotem,
 	},
 }
 
@@ -119,5 +118,5 @@ var enhShamWFFT = &proto.EnhancementShaman_Options{
 }
 
 var FullConsumes = &proto.Consumes{
-	DefaultConjured: proto.Conjured_ConjuredFlameCap,
+	// DefaultConjured: proto.Conjured_ConjuredFlameCap,
 }
