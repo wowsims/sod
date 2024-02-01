@@ -73,7 +73,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({
-	heroicPresence: false,
 });
 
 export const DefaultDebuffs = Debuffs.create({

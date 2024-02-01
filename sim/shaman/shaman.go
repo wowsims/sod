@@ -85,10 +85,6 @@ type Shaman struct {
 
 	Totems *proto.ShamanTotems
 
-	OverloadAura *core.Aura
-
-	OverloadChance float64
-
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration
 
@@ -133,7 +129,12 @@ type Shaman struct {
 	WrathOfAirTotem      *core.Spell
 	FlametongueTotem     *core.Spell
 
-	MaelstromWeaponAura *core.Aura
+	DualWieldSpecAura    *core.Aura
+	OverloadAura         *core.Aura
+	OverloadChance       float64
+	MaelstromWeaponAura  *core.Aura
+	TwoHandedMasteryAura *core.Aura
+	WayOfEarthAura       *core.Aura
 
 	// Healing Spells
 	tidalWaveProc          *core.Aura
@@ -150,8 +151,6 @@ type Shaman struct {
 	ChainHealOverload *core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
-
-	hasHeroicPresence bool
 }
 
 // Implemented by each Shaman spec.
@@ -206,21 +205,12 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 			shaman.Talents.GuardianTotems == 2,
 		))
 	}
-
-	// if shaman.Talents.UnleashedRage > 0 {
-	// 	raidBuffs.UnleashedRage = true
-	// }
-
-	// if shaman.Talents.ElementalOath > 0 {
-	// 	raidBuffs.ElementalOath = true
-	// }
 }
+
 func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 	if shaman.Talents.ManaTideTotem {
 		partyBuffs.ManaTideTotems++
 	}
-
-	shaman.hasHeroicPresence = partyBuffs.HeroicPresence
 }
 
 func (shaman *Shaman) Initialize() {

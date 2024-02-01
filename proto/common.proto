@@ -446,7 +446,6 @@ message PartyBuffs {
 	
 	// Group buffs
 	int32 mana_tide_totems = 3;
-	bool heroic_presence = 4;
 }
 
 // These are usually individual actions taken by other Characters.
