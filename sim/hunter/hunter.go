@@ -47,22 +47,23 @@ type Hunter struct {
 	AspectOfTheHawk  *core.Spell
 	AspectOfTheViper *core.Spell
 
-	AimedShot       *core.Spell
-	ArcaneShot      *core.Spell
-	ChimeraShot     *core.Spell
-	ExplosiveShotR4 *core.Spell
-	ExplosiveShotR3 *core.Spell
-	ExplosiveTrap   *core.Spell
-	KillCommand     *core.Spell
-	KillShot        *core.Spell
-	MultiShot       *core.Spell
-	RapidFire       *core.Spell
-	RaptorStrike    *core.Spell
-	FlankingStrike  *core.Spell
-	ScorpidSting    *core.Spell
-	SerpentSting    *core.Spell
-	SilencingShot   *core.Spell
-	Volley          *core.Spell
+	AimedShot      *core.Spell
+	ArcaneShot     *core.Spell
+	ChimeraShot    *core.Spell
+	ExplosiveShot  *core.Spell
+	ExplosiveTrap  *core.Spell
+	KillCommand    *core.Spell
+	KillShot       *core.Spell
+	MultiShot      *core.Spell
+	RapidFire      *core.Spell
+	RaptorStrike   *core.Spell
+	FlankingStrike *core.Spell
+	ScorpidSting   *core.Spell
+	SerpentSting   *core.Spell
+	SilencingShot  *core.Spell
+	Volley         *core.Spell
+	CarveMh        *core.Spell
+	CarveOh        *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -110,23 +111,19 @@ func (hunter *Hunter) Initialize() {
 
 	multiShotTimer := hunter.NewTimer()
 	arcaneShotTimer := hunter.NewTimer()
-	//fireTrapTimer := hunter.NewTimer()
 
 	hunter.registerSerpentStingSpell()
+
 	hunter.registerArcaneShotSpell(arcaneShotTimer)
+	hunter.registerExplosiveShotSpell(arcaneShotTimer)
+
 	hunter.registerMultiShotSpell(multiShotTimer)
-	// hunter.registerAimedShotSpell(arcaneShotTimer)
+
 	hunter.registerChimeraShotSpell()
-	// hunter.registerBlackArrowSpell(fireTrapTimer)
-	// hunter.registerExplosiveShotSpell(arcaneShotTimer)
-	// hunter.registerExplosiveTrapSpell(fireTrapTimer)
-	// hunter.registerKillShotSpell()
+
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
-	// hunter.registerScorpidStingSpell()
-	// hunter.registerSilencingShotSpell()
-	// hunter.registerSteadyShotSpell()
-	// hunter.registerVolleySpell()
+	hunter.registerCarveSpell()
 
 	hunter.registerKillCommand()
 	//hunter.registerRapidFireCD()
