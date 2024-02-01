@@ -21,6 +21,7 @@ func (shaman *Shaman) applyLavaBurst() {
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
 	level := float64(shaman.GetCharacter().Level)
+	spellId := core.TernaryInt32(isOverload, 408491, 408490)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
 	baseLowDamage := baseCalc * 4.69
 	baseHighDamage := baseCalc * 6.05
@@ -34,7 +35,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	canOverload := !isOverload && shaman.OverloadAura != nil
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 408490},
+		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       flags,

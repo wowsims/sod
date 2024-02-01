@@ -7,11 +7,20 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const LightningBoltRanks = 10
+
+// First entry is the base spell ID, second entry is the overload's spell ID
+var LightningBoltSpellIds = [LightningBoltRanks + 1][]int32{{0}, {403, 408439}, {529, 408440}, {548, 408441}, {915, 408442}, {943, 408443}, {6041, 408472}, {10391, 408473}, {10392, 408474}, {15207, 408475}, {15208, 408477}}
+var LightningBoltBaseDamage = [LightningBoltRanks + 1][]float64{{0}, {15, 17}, {28, 33}, {48, 57}, {88, 100}, {131, 149}, {179, 202}, {235, 264}, {291, 326}, {357, 400}, {428, 477}}
+var LightningBoltSpellCoef = [LightningBoltRanks + 1]float64{0, .1233, .314, .554, .857, .857, .857, .857, .857, .857, .857}
+var LightningBoltCastTime = [LightningBoltRanks + 1]int32{0, 1500, 2000, 2500, 3000, 3000, 3000, 3000, 3000, 3000, 3000}
+var LightningBoltManaCost = [LightningBoltRanks + 1]float64{0, 15, 30, 45, 75, 105, 135, 165, 195, 230, 265}
+var LightningBoltLevel = [LightningBoltRanks + 1]int{0, 1, 8, 14, 20, 26, 32, 38, 44, 50, 56}
+
 func (shaman *Shaman) registerLightningBoltSpell() {
-	maxRank := 10
 	overloadRuneEquipped := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
-	for i := 1; i <= maxRank; i++ {
+	for i := 1; i <= LightningBoltRanks; i++ {
 		config := shaman.newLightningBoltSpellConfig(i, false)
 
 		if config.RequiredLevel <= int(shaman.Level) {
@@ -25,13 +34,14 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) core.SpellConfig {
-	// TODO: Get updated spell ranks + separate out Lightning Bolt overload ids + damage
-	spellCoeff := [9]float64{0, 0.123, 0.231, 0.443, 0.571, 0.571, 0.571, 0.571, 0.571}[rank]
-	baseDamage := [9][]float64{{0}, {13, 16}, {28, 33}, {48, 57}, {69, 79}, {108, 123}, {148, 167}, {198, 221}, {248, 277}}[rank]
-	spellId := [9]int32{0, 5176, 5177, 5178, 5179, 5180, 6780, 8905, 9912}[rank]
-	manaCost := [9]float64{0, 20, 35, 55, 70, 100, 125, 155, 180}[rank]
-	level := [9]int{0, 1, 6, 14, 22, 30, 38, 46, 54}[rank]
-	castTime := [9]int{0, 1500, 1700, 2000, 2000, 2000, 2000, 2000, 2000}[rank]
+	// First entry is the base spell ID, second entry is the overload's spell ID
+	spellId := LightningBoltSpellIds[rank][core.TernaryInt32(isOverload, 1, 0)]
+	baseDamageLow := LightningBoltBaseDamage[rank][0]
+	baseDamageHigh := LightningBoltBaseDamage[rank][1]
+	spellCoeff := LightningBoltSpellCoef[rank]
+	castTime := LightningBoltCastTime[rank]
+	manaCost := LightningBoltManaCost[rank]
+	level := LightningBoltLevel[rank]
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -40,14 +50,14 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		isOverload,
 	)
 
-	dmgBonus := shaman.electricSpellBonusDamage(0.7143)
+	dmgBonus := shaman.electricSpellBonusDamage(spellCoeff)
 
 	canOverload := !isOverload && shaman.OverloadAura != nil
 
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := dmgBonus + sim.Roll(719, 819) + spellCoeff*spell.SpellPower()
+		baseDamage := dmgBonus + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 		if canOverload && result.Landed() && sim.RandomFloat("LB Overload") < shaman.OverloadChance {
@@ -62,13 +72,4 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	}
 
 	return spell
-}
-
-func (shaman *Shaman) getLightningBoltBaseConfig(
-	actionId core.ActionID,
-	spellCoeff float64,
-	baseDamageLow float64,
-	baseDamageHigh float64,
-) core.SpellConfig {
-
 }
