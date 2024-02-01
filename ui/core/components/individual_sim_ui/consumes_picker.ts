@@ -20,14 +20,14 @@ export class ConsumesPicker extends Component {
 		super(parentElem, 'consumes-picker-root');
 		this.simUI = simUI;
 
-		this.buildPotionsPicker();
-		this.buildFlaskPicker();
-		this.buildWeaponImbuePicker();
-		this.buildFoodPicker();
-		this.buildPhysicalBuffPicker();
-		this.buildSpellPowerBuffPicker();
-		this.buildEngPicker();
-		this.buildPetPicker();
+		// this.buildPotionsPicker();
+		// this.buildFlaskPicker();
+		// this.buildWeaponImbuePicker();
+		// this.buildFoodPicker();
+		// this.buildPhysicalBuffPicker();
+		// this.buildSpellPowerBuffPicker();
+		// this.buildEngPicker();
+		// this.buildPetPicker();
 	}
 
 	private buildPotionsPicker() {

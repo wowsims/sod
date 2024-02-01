@@ -128,20 +128,20 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 	});
 
 	// Enchancement Shaman uses the Fire Elemental Inputs with custom inputs.
-	if (simUI.player.spec != Spec.SpecEnhancementShaman) {
-		const fireElementalBooleanIconInput = InputHelpers.makeBooleanIconInput<ShamanSpecs, ShamanTotems, Player<ShamanSpecs>>({
-			getModObject: (player: Player<ShamanSpecs>) => player,
-			getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems || ShamanTotems.create(),
-			setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: ShamanTotems) => {
-				const newOptions = player.getSpecOptions();
-				newOptions.totems = newVal;
-				player.setSpecOptions(eventID, newOptions);
-			},
-			changeEmitter: (player: Player<Spec.SpecEnhancementShaman>) => player.specOptionsChangeEmitter,
-		}, ActionId.fromSpellId(2894), "useFireElemental");
+	// if (simUI.player.spec != Spec.SpecEnhancementShaman) {
+	// 	const fireElementalBooleanIconInput = InputHelpers.makeBooleanIconInput<ShamanSpecs, ShamanTotems, Player<ShamanSpecs>>({
+	// 		getModObject: (player: Player<ShamanSpecs>) => player,
+	// 		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems || ShamanTotems.create(),
+	// 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: ShamanTotems) => {
+	// 			const newOptions = player.getSpecOptions();
+	// 			newOptions.totems = newVal;
+	// 			player.setSpecOptions(eventID, newOptions);
+	// 		},
+	// 		changeEmitter: (player: Player<Spec.SpecEnhancementShaman>) => player.specOptionsChangeEmitter,
+	// 	}, ActionId.fromSpellId(2894), "useFireElemental");
 
-		new IconPicker(fireElementalContainer, simUI.player, fireElementalBooleanIconInput);
-	}
+	// 	new IconPicker(fireElementalContainer, simUI.player, fireElementalBooleanIconInput);
+	// }
 
 	return contentBlock;
 }

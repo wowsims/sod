@@ -1,10 +1,10 @@
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { element } from 'tsx-vanilla'
+
 import { Tooltip } from 'bootstrap';
 import { EventID, TypedEvent } from '../typed_event.js';
 
 import { Component } from './component.js';
-
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { element, fragment } from 'tsx-vanilla'
 
 /**
  * Data for creating a new input UI element.

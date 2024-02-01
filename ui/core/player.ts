@@ -1299,4 +1299,30 @@ export class Player<SpecType extends Spec> {
 			}))
 		});
 	}
+
+	// Filter a matrix of spell IDs, min and max levels for a matching spell ID
+	getMatchingSpellActionId(src: number[][]): ActionId | null {
+		const match = src.find(([_, minLevel, maxLevel]) =>
+			(!minLevel || minLevel <= this.getLevel()) &&
+			(!maxLevel || maxLevel >= this.getLevel())
+		)
+
+		console.log(this.getLevel(), match)
+
+		if (match) return ActionId.fromSpellId(match[0])
+		return null
+	}
+
+	// Filter a matrix of item IDs, min and max levels for a matching item ID
+	getMatchingItemActionId(src: number[][]): ActionId | null {
+		const match = src.find(([_, minLevel, maxLevel]) =>
+			(!minLevel || minLevel <= this.getLevel()) &&
+			(!maxLevel || maxLevel >= this.getLevel())
+		)
+
+		console.log(this.getLevel(), match)
+
+		if (match) return ActionId.fromItemId(match[0])
+		return null
+	}
 }
