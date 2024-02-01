@@ -1,65 +1,66 @@
 package shaman
 
-// import (
-// 	"time"
+import (
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
+	"time"
+)
 
-// 	"github.com/wowsims/sod/sim/core"
-// 	"github.com/wowsims/sod/sim/core/stats"
-// )
+func (shaman *Shaman) registerShamanisticRageCD() {
+	if !shaman.HasRune(proto.ShamanRune_RuneLegsShamanisticRage) {
+		return
+	}
 
-// func (shaman *Shaman) registerShamanisticRageCD() {
-// 	if !shaman.Talents.ShamanisticRage {
-// 		return
-// 	}
+	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsShamanisticRage)}
+	manaMetrics := shaman.NewManaMetrics(actionID)
+	srAura := shaman.RegisterAura(core.Aura{
+		Label:    "Shamanistic Rage",
+		ActionID: actionID,
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.8
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.8
+		},
+	})
 
-// 	actionID := core.ActionID{SpellID: 30823}
-// 	ppmm := shaman.AutoAttacks.NewPPMManager(15, core.ProcMaskMelee)
-// 	manaMetrics := shaman.NewManaMetrics(actionID)
-// 	srAura := shaman.RegisterAura(core.Aura{
-// 		Label:    "Shamanistic Rage",
-// 		ActionID: actionID,
-// 		Duration: time.Second * 15,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
+	spell := shaman.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagNoOnCastComplete,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    shaman.NewTimer(),
+				Duration: time.Minute * 1,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			srAura.Activate(sim)
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				NumTicks: 15,
+				Period:   time.Second * 1,
+				OnAction: func(sim *core.Simulation) {
+					mana := max(
+						shaman.GetStat(stats.AttackPower)*0.15,
+						shaman.GetStat(stats.SpellPower)*0.10,
+						shaman.GetStat(stats.Healing)*0.06,
+					)
+					shaman.AddMana(sim, mana, manaMetrics)
+				},
+			})
+		},
+	})
 
-// 			if ppmm.Proc(sim, spell.ProcMask, "shamanistic rage") {
-// 				mana := aura.Unit.GetStat(stats.AttackPower) * 0.15
-// 				aura.Unit.AddMana(sim, mana, manaMetrics)
-// 			}
-// 		},
-// 	})
-
-// 	spell := shaman.RegisterSpell(core.SpellConfig{
-// 		ActionID: actionID,
-// 		Flags:    core.SpellFlagNoOnCastComplete,
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD: core.GCDDefault,
-// 			},
-// 			IgnoreHaste: true,
-// 			CD: core.Cooldown{
-// 				Timer:    shaman.NewTimer(),
-// 				Duration: time.Minute * 1,
-// 			},
-// 		},
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			srAura.Activate(sim)
-// 		},
-// 	})
-
-// 	shaman.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: spell,
-// 		Type:  core.CooldownTypeMana,
-// 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-// 			return character.CurrentManaPercent() <= 0.2
-// 		},
-// 	})
-// }
+	shaman.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeMana,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return character.CurrentManaPercent() <= 0.2
+		},
+	})
+}
