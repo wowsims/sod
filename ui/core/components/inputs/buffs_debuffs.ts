@@ -216,6 +216,11 @@ export const BoonOfBlackfathom = withLabel(
 	'Boon of Blackfathom',
 );
 
+export const AshenvalePvpBuff = withLabel(
+	makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(430352), fieldName: 'ashenvalePvpBuff', maxLevel: 39}),
+	'Ashenvale Pvp Buff',
+);
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
 ///////////////////////////////////////////////////////////////////////////
@@ -441,6 +446,14 @@ export const WORLD_BUFFS_CONFIG = [
 			// TODO: Stat.StatRangedCrit,
 			Stat.StatSpellCrit,
 			Stat.StatAttackPower
+		]
+	},
+	{
+		config: AshenvalePvpBuff,
+		picker: IconPicker,
+		stats: [
+			Stat.StatAttackPower,
+			Stat.StatSpellPower,
 		]
 	},
 	{
