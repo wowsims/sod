@@ -72,7 +72,7 @@ var StandardTalents = "-3020503-50005331335310501122331251"
 
 var BasicTotems = &proto.ShamanTotems{
 	Earth: proto.EarthTotem_TremorTotem,
-	Air:   proto.AirTotem_WrathOfAirTotem,
+	Air:   proto.AirTotem_WindfuryTotem,
 	Water: proto.WaterTotem_ManaSpringTotem,
 	Fire:  proto.FireTotem_FlametongueTotem,
 }

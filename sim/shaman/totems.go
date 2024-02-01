@@ -21,14 +21,6 @@ package shaman
 // 	}
 // }
 
-// func (shaman *Shaman) registerWrathOfAirTotemSpell() {
-// 	config := shaman.newTotemSpellConfig(0.11, 3738)
-// 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + time.Second*300
-// 	}
-// 	shaman.WrathOfAirTotem = shaman.RegisterSpell(config)
-// }
-
 // func (shaman *Shaman) registerWindfuryTotemSpell() {
 // 	config := shaman.newTotemSpellConfig(0.11, 8512)
 // 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -189,8 +181,8 @@ package shaman
 
 // func (shaman *Shaman) getAirTotemSpell(totemType proto.AirTotem) *core.Spell {
 // 	switch totemType {
-// 	case proto.AirTotem_WrathOfAirTotem:
-// 		return shaman.WrathOfAirTotem
+// 	case proto.AirTotem_GraceOfAirTotem:
+// 		return shaman.GraceOfAirTotem
 // 	case proto.AirTotem_WindfuryTotem:
 // 		return shaman.WindfuryTotem
 // 	}

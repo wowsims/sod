@@ -49,7 +49,6 @@ func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
-	spell.CritMultiplier = shaman.ElementalCritMultiplier(0)
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := baseDamage + baseSpellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
