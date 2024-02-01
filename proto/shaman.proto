@@ -64,7 +64,7 @@ enum ShamanRune {
 	RuneHealingRain 						= 415236;
 	RuneChestOverload          	= 408438;
 	RuneChestShieldMastery 			= 408524;
-	RuneTwoHandedMsatery 				=	436367;
+	RuneTwoHandedMastery 				=	436367;
 
 	RuneHandsLavaBurst 					= 408490;
 	RuneHandsLavaLash 					= 408507;

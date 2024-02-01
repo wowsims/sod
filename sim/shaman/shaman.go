@@ -129,13 +129,6 @@ type Shaman struct {
 	WrathOfAirTotem      *core.Spell
 	FlametongueTotem     *core.Spell
 
-	DualWieldSpecAura    *core.Aura
-	OverloadAura         *core.Aura
-	OverloadChance       float64
-	MaelstromWeaponAura  *core.Aura
-	TwoHandedMasteryAura *core.Aura
-	WayOfEarthAura       *core.Aura
-
 	// Healing Spells
 	tidalWaveProc          *core.Aura
 	ancestralHealingAmount float64
@@ -151,6 +144,16 @@ type Shaman struct {
 	ChainHealOverload *core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
+
+	// Runes
+	DualWieldSpecAura      *core.Aura
+	OverloadAura           *core.Aura
+	OverloadChance         float64
+	ShieldMasteryAura      *core.Aura
+	TwoHandedMasteryAura   *core.Aura
+	MaelstromWeaponAura    *core.Aura
+	WayOfEarthAura         *core.Aura
+	AncestralAwakeningAura *core.Aura
 }
 
 // Implemented by each Shaman spec.
