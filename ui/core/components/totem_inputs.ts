@@ -109,7 +109,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		values: [
 			{ color: '#baffc9', value: AirTotem.NoAirTotem },
 			{ actionId: ActionId.fromSpellId(8512), value: AirTotem.WindfuryTotem },
-			{ actionId: ActionId.fromSpellId(3738), value: AirTotem.WrathOfAirTotem },
+			{ actionId: ActionId.fromSpellId(8835), value: AirTotem.GraceOfAirTotem },
 		],
 		equals: (a: AirTotem, b: AirTotem) => a == b,
 		zeroValue: AirTotem.NoAirTotem,

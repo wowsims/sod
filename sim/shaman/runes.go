@@ -17,7 +17,6 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyLavaBurst()
 	shaman.applyLavaLash()
 	shaman.applyMoltenBlast()
-	// shaman.applyWaterShield()
 
 	// Waist
 	// shaman.applyFireNova()

@@ -58,7 +58,7 @@ var castersWithElemental = &proto.Party{
 						Shield: proto.ShamanShield_WaterShield,
 						Totems: &proto.ShamanTotems{
 							Earth: proto.EarthTotem_TremorTotem,
-							Air:   proto.AirTotem_WrathOfAirTotem,
+							Air:   proto.AirTotem_WindfuryTotem,
 							Fire:  proto.FireTotem_TotemOfWrath,
 							Water: proto.WaterTotem_ManaSpringTotem,
 						},
@@ -180,7 +180,7 @@ func BenchmarkSimulate(b *testing.B) {
 										SyncType:  proto.ShamanSyncType_SyncMainhandOffhandSwings,
 										Totems: &proto.ShamanTotems{
 											Earth: proto.EarthTotem_TremorTotem,
-											Air:   proto.AirTotem_WrathOfAirTotem,
+											Air:   proto.AirTotem_WindfuryTotem,
 											Fire:  proto.FireTotem_TotemOfWrath,
 											Water: proto.WaterTotem_ManaSpringTotem,
 										},
