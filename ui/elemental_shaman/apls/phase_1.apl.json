@@ -1,0 +1,11 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":915,"rank":4}}},"doAtValue":{"const":{"val":"3.05"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":8052,"rank":2}}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":8052,"rank":2}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":408490}}}},
+    {"action":{"condition":{"cmp":{"op":"OpGt","lhs":{"dotRemainingTime":{"spellId":{"spellId":8052,"rank":2}}},"rhs":{"spellCastTime":{"spellId":{"spellId":915,"rank":4}}}}},"castSpell":{"spellId":{"spellId":915,"rank":4}}}}
+  ]
+}

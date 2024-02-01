@@ -20,7 +20,7 @@ func (shaman *Shaman) applyLavaBurst() {
 }
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
-	level := float64(shaman.GetCharacter().Level)
+	level := float64(shaman.Level)
 	spellId := core.TernaryInt32(isOverload, 408491, 408490)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
 	baseLowDamage := baseCalc * 4.69
@@ -60,13 +60,13 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 
 		// Concussion does not currently apply to Lava Burst in SoD
 		// DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion)
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
 			if canOverload && result.Landed() && sim.RandomFloat("LvB Overload") < shaman.OverloadChance {
 				shaman.LavaBurstOverload.Cast(sim, target)
 			}

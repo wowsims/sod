@@ -21,7 +21,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 
-import DefaultApl from './apls/default.apl.json';
+import Phase1APL from './apls/phase_1.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -32,7 +32,9 @@ export const Phase1PresetGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear
 
 export const DefaultGear = Phase1PresetGear;
 
-export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const Phase1PresetAPL = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
+
+export const DefaultAPL = Phase1PresetAPL
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.

@@ -138,7 +138,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
+			Presets.Phase1PresetAPL,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
@@ -148,7 +148,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	autoRotation: (_: Player<Spec.SpecElementalShaman>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.DefaultAPL.rotation.rotation!;
 	},
 
 	raidSimPresets: [
