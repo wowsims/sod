@@ -55,7 +55,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: 2,
+		ThreatMultiplier: shaman.ShamanThreatMultiplier(2),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {

@@ -65,7 +65,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		// DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion)
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: 1,
+		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()

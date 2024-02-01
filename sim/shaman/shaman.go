@@ -207,7 +207,6 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 func (shaman *Shaman) Initialize() {
 	// shaman.registerChainLightningSpell()
 	// shaman.registerFeralSpirit()
-	// shaman.registerFireElementalTotem()
 	// shaman.registerFireNovaSpell()
 	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
@@ -218,7 +217,6 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerShocks()
 	// shaman.registerStormstrikeSpell()
 	// shaman.registerStrengthOfEarthTotemSpell()
-	// shaman.registerThunderstormSpell()
 	// shaman.registerTremorTotemSpell()
 	// shaman.registerStoneskinTotemSpell()
 	// shaman.registerWindfuryTotemSpell()
@@ -267,4 +265,8 @@ func (shaman *Shaman) Reset(sim *core.Simulation) {
 func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {
 	critBonus := core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0) + secondary
 	return shaman.SpellCritMultiplier(1, critBonus)
+}
+
+func (shaman *Shaman) ShamanThreatMultiplier(secondary float64) float64 {
+	return core.TernaryFloat64(shaman.WayOfEarthAura != nil, 1.5, 1) * secondary
 }
