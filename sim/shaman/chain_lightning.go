@@ -1,60 +1,103 @@
 package shaman
 
-// import (
-// 	"time"
+import (
+	"time"
 
-// 	"github.com/wowsims/sod/sim/core"
-// )
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+)
 
-// func (shaman *Shaman) registerChainLightningSpell() {
-// 	numHits := min(3, shaman.Env.GetNumTargets())
-// 	shaman.ChainLightning = shaman.newChainLightningSpell(false)
-// 	shaman.ChainLightningLOs = []*core.Spell{}
-// 	for i := int32(0); i < numHits; i++ {
-// 		shaman.ChainLightningLOs = append(shaman.ChainLightningLOs, shaman.newChainLightningSpell(true))
-// 	}
-// }
+const ChainLightningRanks = 4
+const ChainLightningTargetCount = 3
 
-// func (shaman *Shaman) newChainLightningSpell(isLightningOverload bool) *core.Spell {
-// 	spellConfig := shaman.newElectricSpellConfig(
-// 		core.ActionID{SpellID: 49271},
-// 		0.26,
-// 		time.Millisecond*2000,
-// 		isLightningOverload)
+// 30% reduction per bounce
+const ChainLightningBounceCoeff = .7
 
-// 	if !isLightningOverload {
-// 		spellConfig.Cast.CD = core.Cooldown{
-// 			Timer:    shaman.NewTimer(),
-// 			Duration: time.Second*6 - []time.Duration{0, 750 * time.Millisecond, 1500 * time.Millisecond, 2500 * time.Millisecond}[shaman.Talents.StormEarthAndFire],
-// 		}
-// 	}
+// First entry is the base spell ID, second entry is the overload's spell ID
+var ChainLightningSpellId = [ChainLightningRanks + 1]int32{0, 421, 930, 2860, 10605}
+var ChainLightningBaseDamage = [ChainLightningRanks + 1][]float64{{0}, {200, 227}, {288, 323}, {391, 438}, {505, 564}}
+var ChainLightningSpellCoef = [ChainLightningRanks + 1]float64{0, .714, .714, .714, .714}
+var ChainLightningManaCost = [ChainLightningRanks + 1]float64{0, 280, 380, 490, 605}
+var ChainLightningLevel = [ChainLightningRanks + 1]int{0, 32, 40, 48, 56}
 
-// 	numHits := min(3, shaman.Env.GetNumTargets())
-// 	dmgReductionPerBounce := core.TernaryFloat64(shaman.HasSetBonus(ItemSetTidefury, 2), 0.83, 0.7)
-// 	dmgBonus := shaman.electricSpellBonusDamage(0.5714)
-// 	spellCoeff := 0.5714 + 0.04*float64(shaman.Talents.Shamanism)
+func (shaman *Shaman) registerChainLightningSpell() {
+	overloadRuneEquipped := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
-// 	canLO := !isLightningOverload && shaman.Talents.LightningOverload > 0
-// 	lightningOverloadChance := float64(shaman.Talents.LightningOverload) * 0.11 / 3
+	shaman.ChainLightning = make([]*core.Spell, ChainLightningRanks+1)
 
-// 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 		bounceCoeff := 1.0
-// 		curTarget := target
-// 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-// 			baseDamage := dmgBonus + sim.Roll(973, 1111) + spellCoeff*spell.SpellPower()
-// 			baseDamage *= bounceCoeff
-// 			result := spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+	if overloadRuneEquipped {
+		shaman.ChainLightningOverload = make([]*core.Spell, ChainLightningRanks+1)
+	}
 
-// 			if canLO && result.Landed() && sim.RandomFloat("CL Lightning Overload") <= lightningOverloadChance {
-// 				shaman.ChainLightningLOs[hitIndex].Cast(sim, curTarget)
-// 			}
+	for rank := 1; rank <= ChainLightningRanks; rank++ {
+		config := shaman.newChainLightningSpellConfig(rank, false)
 
-// 			spell.DealDamage(sim, result)
+		if config.RequiredLevel <= int(shaman.Level) {
+			shaman.ChainLightning[rank] = shaman.RegisterSpell(config)
 
-// 			bounceCoeff *= dmgReductionPerBounce
-// 			curTarget = sim.Environment.NextTargetUnit(curTarget)
-// 		}
-// 	}
+			// TODO: Confirm how CL Overloads work in SoD
+			if overloadRuneEquipped {
+				shaman.ChainLightningOverload[rank] = shaman.RegisterSpell(shaman.newChainLightningSpellConfig(rank, true))
+			}
+		}
+	}
+}
 
-// 	return shaman.RegisterSpell(spellConfig)
-// }
+func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) core.SpellConfig {
+	spellId := ChainLightningSpellId[rank]
+	baseDamageLow := ChainLightningBaseDamage[rank][0]
+	baseDamageHigh := ChainLightningBaseDamage[rank][1]
+	spellCoeff := ChainLightningSpellCoef[rank]
+	manaCost := ChainLightningManaCost[rank]
+	level := ChainLightningLevel[rank]
+
+	cooldown := time.Second * 6
+	castTime := time.Millisecond * 2500
+
+	bonusDamage := shaman.electricSpellBonusDamage(spellCoeff)
+	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+
+	spell := shaman.newElectricSpellConfig(
+		core.ActionID{SpellID: spellId},
+		manaCost,
+		castTime,
+		isOverload,
+	)
+
+	spell.RequiredLevel = level
+	spell.Rank = rank
+
+	if !isOverload {
+		spell.Cast.CD = core.Cooldown{
+			Timer:    shaman.NewTimer(),
+			Duration: cooldown,
+		}
+	}
+
+	numHits := min(ChainLightningTargetCount, shaman.Env.GetNumTargets())
+
+	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		curTarget := target
+		bounceCoeff := 1.0
+		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
+			baseDamage *= bounceCoeff
+			result := spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= ShamanOverloadChance {
+				shaman.ChainLightningOverload[rank].Cast(sim, curTarget)
+			}
+
+			spell.DealDamage(sim, result)
+
+			bounceCoeff *= ChainLightningBounceCoeff
+			curTarget = sim.Environment.NextTargetUnit(curTarget)
+		}
+	}
+
+	if isOverload {
+		shaman.applyOverloadModifiers(&spell)
+	}
+
+	return spell
+}

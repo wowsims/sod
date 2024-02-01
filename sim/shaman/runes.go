@@ -40,7 +40,7 @@ func (shaman *Shaman) applyDualWieldSpec() {
 		return
 	}
 
-	shaman.DualWieldSpecAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Dual Wield Specialization",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestDualWieldSpec)},
 		Duration: core.NeverExpires,
@@ -55,7 +55,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Shield Mastery",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)},
 		Duration: core.NeverExpires,
@@ -70,7 +70,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneTwoHandedMastery)},
 		Duration: core.NeverExpires,
@@ -85,7 +85,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:    "Maelstrom Weapon",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneWaistMaelstromWeapon)},
 		Duration: core.NeverExpires,
@@ -100,7 +100,7 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneWaistPowerSurge)},
 		Duration: core.NeverExpires,
@@ -115,7 +115,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Way of Earth",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
 		Duration: core.NeverExpires,
@@ -130,7 +130,7 @@ func (shaman *Shaman) applyAncestralAwakening() {
 		return
 	}
 
-	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Ancestral Awakening",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetAncestralAwakening)},
 		Duration: core.NeverExpires,

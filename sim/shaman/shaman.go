@@ -64,6 +64,13 @@ const (
 	WaterTotem
 )
 
+type ShamanSpellCode int
+
+const (
+	SpellCode_ShamanLightningBolt ShamanSpellCode = iota
+	SpellCode_ShamanChainLightning
+)
+
 // Shaman represents a shaman character.
 type Shaman struct {
 	core.Character
@@ -78,12 +85,11 @@ type Shaman struct {
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration
 
-	LightningBolt         *core.Spell
-	LightningBoltOverload *core.Spell
+	LightningBolt         []*core.Spell
+	LightningBoltOverload []*core.Spell
 
-	ChainLightning          *core.Spell
-	ChainLightningHits      []*core.Spell
-	ChainLightningOverloads []*core.Spell
+	ChainLightning         []*core.Spell
+	ChainLightningOverload []*core.Spell
 
 	FireNova    *core.Spell
 	Stormstrike *core.Spell
@@ -93,9 +99,9 @@ type Shaman struct {
 
 	Thunderstorm *core.Spell
 
-	EarthShock *core.Spell
-	FlameShock *core.Spell
-	FrostShock *core.Spell
+	EarthShock []*core.Spell
+	FlameShock []*core.Spell
+	FrostShock []*core.Spell
 
 	// Totems
 	StoneskinTotem       *core.Spell
@@ -135,16 +141,7 @@ type Shaman struct {
 	LavaLash          *core.Spell
 	EarthShield       *core.Spell
 
-	DualWieldSpecAura      *core.Aura
-	OverloadAura           *core.Aura
-	OverloadChance         float64
-	ShieldMasteryAura      *core.Aura
-	TwoHandedMasteryAura   *core.Aura
-	MoltenBlastAura        *core.Aura
-	MoltenBlastResetChance float64
-	MaelstromWeaponAura    *core.Aura
-	WayOfEarthAura         *core.Aura
-	AncestralAwakeningAura *core.Aura
+	MaelstromWeaponAura *core.Aura
 }
 
 // Implemented by each Shaman spec.
@@ -205,7 +202,7 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (shaman *Shaman) Initialize() {
-	// shaman.registerChainLightningSpell()
+	shaman.registerChainLightningSpell()
 	// shaman.registerFeralSpirit()
 	// shaman.registerFireNovaSpell()
 	shaman.registerLightningBoltSpell()
@@ -268,5 +265,5 @@ func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {
 }
 
 func (shaman *Shaman) ShamanThreatMultiplier(secondary float64) float64 {
-	return core.TernaryFloat64(shaman.WayOfEarthAura != nil, 1.5, 1) * secondary
+	return core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth), 1.5, 1) * secondary
 }

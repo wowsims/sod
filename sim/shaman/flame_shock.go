@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const FlameShockRanks = 6
@@ -18,16 +19,18 @@ var FlameShockManaCost = [FlameShockRanks + 1]float64{0, 55, 95, 160, 250, 345, 
 var FlameShockLevel = [FlameShockRanks + 1]int{0, 10, 18, 28, 40, 52, 60}
 
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
-	for i := 1; i <= FlameShockRanks; i++ {
-		config := shaman.newFlameShockSpellConfig(shockTimer, i)
+	shaman.FlameShock = make([]*core.Spell, FlameShockRanks+1)
+
+	for rank := 1; rank <= FlameShockRanks; rank++ {
+		config := shaman.newFlameShockSpellConfig(rank, shockTimer)
 
 		if config.RequiredLevel <= int(shaman.Level) {
-			shaman.FlameShock = shaman.RegisterSpell(config)
+			shaman.FlameShock[rank] = shaman.RegisterSpell(config)
 		}
 	}
 }
 
-func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int) core.SpellConfig {
+func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer) core.SpellConfig {
 	spellId := FlameShockSpellId[rank]
 	baseDamage := FlameShockBaseDamage[rank]
 	baseDotDamage := FlameShockBaseDotDamage[rank]
@@ -61,7 +64,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int)
 
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
-			Label: "FlameShock",
+			Label: "Flame Shock",
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
 			},
@@ -69,6 +72,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int)
 				shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
 			},
 		},
+
 		NumberOfTicks: int32(numTicks),
 		TickLength:    tickDuration,
 
@@ -77,10 +81,11 @@ func (shaman *Shaman) newFlameShockSpellConfig(shockTimer *core.Timer, rank int)
 			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 		},
+
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 			result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 
-			if shaman.MoltenBlastAura != nil && result.Landed() && sim.RandomFloat("Molten Blast Reset") < shaman.MoltenBlastResetChance {
+			if shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) && result.Landed() && sim.RandomFloat("Molten Blast Reset") < ShamanMoltenBlastResetChance {
 				shaman.MoltenBlast.CD.Reset()
 			}
 		},

@@ -9,15 +9,16 @@ import (
 // 1 to 5 are used by MaelstromWeapon Stacks
 const CastTagOverload = 6
 
+const ShamanOverloadChance = .50
+
 func (shaman *Shaman) applyOverload() {
 	overloadRuneEquipped := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-	shaman.OverloadChance = core.TernaryFloat64(overloadRuneEquipped, .50, 0)
 
 	if !overloadRuneEquipped {
 		return
 	}
 
-	shaman.OverloadAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Overload",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestOverload)},
 		Duration: core.NeverExpires,

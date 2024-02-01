@@ -35,7 +35,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		flags |= core.SpellFlagAPL
 	}
 
-	canOverload := !isOverload && shaman.OverloadAura != nil
+	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -70,7 +70,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if canOverload && result.Landed() && sim.RandomFloat("LvB Overload") < shaman.OverloadChance {
+			if canOverload && result.Landed() && sim.RandomFloat("LvB Overload") < ShamanOverloadChance {
 				shaman.LavaBurstOverload.Cast(sim, target)
 			}
 

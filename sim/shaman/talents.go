@@ -85,34 +85,31 @@ func (shaman *Shaman) applyElementalFocus() {
 		Duration:  time.Second * 15,
 		MaxStacks: maxStacks,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*core.Spell{
-				shaman.LightningBolt,
-				shaman.ChainLightning,
-				shaman.LavaBurst,
-				shaman.FireNova,
-				shaman.EarthShock,
-				shaman.FlameShock,
-				shaman.FrostShock,
-				// TODO:
-				// shaman.MoltenBlast,
-				// Shaman.FireNova,
-			}, func(spell *core.Spell) bool { return spell != nil })
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.LightningBolt,
+					shaman.ChainLightning,
+					shaman.EarthShock,
+					shaman.FlameShock,
+					shaman.FrostShock,
+					{shaman.LavaBurst},
+					{shaman.MoltenBlast},
+					// TODO:
+					// Shaman.FireNova,
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 1
-			}
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= 1 })
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 1
-			}
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
 				return
 			}
-			if spell.ActionID.Tag == 6 { // Filter LO casts
+			if spell.ActionID.Tag == CastTagOverload { // Filter Overloads
 				return
 			}
 			aura.RemoveStack(sim)
@@ -174,24 +171,31 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
+	var affectedSpells []*core.Spell
+
 	// TODO: Share CD with Natures Swiftness
 
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
 		ActionID: eleMasterActionID,
 		Duration: core.NeverExpires,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.ChainLightning,
+					shaman.LightningBolt,
+					{shaman.LavaBurst},
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier -= 1
-			shaman.LavaBurst.CastTimeMultiplier -= 1
-			shaman.LightningBolt.CastTimeMultiplier -= 1
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier += 1
-			shaman.LavaBurst.CastTimeMultiplier += 1
-			shaman.LightningBolt.CastTimeMultiplier += 1
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != shaman.LightningBolt && spell != shaman.ChainLightning && spell != shaman.LavaBurst {
+			if spell.SpellCode != int(SpellCode_ShamanLightningBolt) && spell.SpellCode != int(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
 				return
 			}
 			// Remove the buff and put skill on CD

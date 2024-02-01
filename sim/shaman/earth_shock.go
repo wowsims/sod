@@ -1,6 +1,9 @@
 package shaman
 
-import "github.com/wowsims/sod/sim/core"
+import (
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+)
 
 const EarthShockRanks = 7
 
@@ -13,20 +16,22 @@ var EarthShockLevel = [EarthShockRanks + 1]int{0, 4, 8, 14, 24, 36, 48, 60}
 
 func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	// Way of Earth gives earth shock a separate timer
-	if shaman.WayOfEarthAura != nil {
+	if shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth) {
 		shockTimer = shaman.NewTimer()
 	}
 
-	for i := 1; i <= EarthShockRanks; i++ {
-		config := shaman.newEarthShockSpellConfig(shockTimer, i)
+	shaman.EarthShock = make([]*core.Spell, EarthShockRanks+1)
+
+	for rank := 1; rank <= EarthShockRanks; rank++ {
+		config := shaman.newEarthShockSpellConfig(rank, shockTimer)
 
 		if config.RequiredLevel <= int(shaman.Level) {
-			shaman.EarthShock = shaman.RegisterSpell(config)
+			shaman.EarthShock[rank] = shaman.RegisterSpell(config)
 		}
 	}
 }
 
-func (shaman *Shaman) newEarthShockSpellConfig(shockTimer *core.Timer, rank int) core.SpellConfig {
+func (shaman *Shaman) newEarthShockSpellConfig(rank int, shockTimer *core.Timer) core.SpellConfig {
 	spellId := EarthShockSpellId[rank]
 	baseDamageLow := EarthShockBaseDamage[rank][0]
 	baseDamageHigh := EarthShockBaseDamage[rank][1]

@@ -14,9 +14,18 @@ var FrostShockManaCost = [FrostShockRanks + 1]float64{0, 115, 225, 325, 430}
 var FrostShockLevel = [FrostShockRanks + 1]int{0, 20, 34, 46, 58}
 
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
+	shaman.FrostShock = make([]*core.Spell, FrostShockRanks+1)
+
+	for rank := 1; rank <= FrostShockRanks; rank++ {
+		config := shaman.newFrostShockSpellConfig(rank, shockTimer)
+
+		if config.RequiredLevel <= int(shaman.Level) {
+			shaman.FrostShock[rank] = shaman.RegisterSpell(config)
+		}
+	}
 }
 
-func (shaman *Shaman) newFrostShockSpellConfig(shockTimer *core.Timer, rank int) core.SpellConfig {
+func (shaman *Shaman) newFrostShockSpellConfig(rank int, shockTimer *core.Timer) core.SpellConfig {
 	spellId := FrostShockSpellId[rank]
 	baseDamageLow := FrostShockBaseDamage[rank][0]
 	baseDamageHigh := FrostShockBaseDamage[rank][1]

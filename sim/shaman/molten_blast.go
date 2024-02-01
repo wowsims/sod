@@ -7,12 +7,14 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ShamanMoltenBlastResetChance = .10
+
 func (shaman *Shaman) applyMoltenBlast() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) {
 		return
 	}
 
-	shaman.MoltenBlastAura = shaman.RegisterAura(core.Aura{
+	shaman.RegisterAura(core.Aura{
 		Label:    "Molten Blast",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
 		Duration: core.NeverExpires,
@@ -29,8 +31,6 @@ func (shaman *Shaman) applyMoltenBlast() {
 	cooldown := time.Second * 6
 	manaCost := .18
 	targetCount := 4
-
-	shaman.MoltenBlastResetChance = .10
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
