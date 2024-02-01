@@ -364,6 +364,7 @@ export class ActionId {
 					name += ' (Queue)';
 				}
 				break;
+			case 'Carve':
 			case 'Whirlwind':
 				if (this.tag == 1) {
 					name += ' (OH)';

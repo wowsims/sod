@@ -41,6 +41,15 @@ func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, at
 	}
 }
 
+func (dot *Dot) OutcomeTickSnapshotCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
+		result.Outcome = OutcomeCrit
+		result.Damage *= dot.Spell.CritMultiplier
+	} else {
+		result.Outcome = OutcomeHit
+	}
+}
+
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, _ *AttackTable) {
 	if dot.Spell.CritMultiplier == 0 {
 		panic("Spell " + dot.Spell.ActionID.String() + " missing CritMultiplier")
