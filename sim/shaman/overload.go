@@ -5,18 +5,9 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-type CastTagOverload int32
-
-const (
-	// This could be value or bitflag if we ended up needing multiple flags at the same time.
-	//1 to 5 are used by MaelstromWeapon Stacks
-	CastTagLightningBoltOverload CastTagOverload = iota + 6
-	CastTagChainLightningOverload
-	CastTagLavaBurstOverload
-
-	CastTagHealingWaveOverload
-	CastTagChainHealOverload
-)
+// This could be value or bitflag if we ended up needing multiple flags at the same time.
+// 1 to 5 are used by MaelstromWeapon Stacks
+const CastTagOverload = 6
 
 func (shaman *Shaman) applyOverload() {
 	overloadRuneEquipped := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
@@ -36,8 +27,8 @@ func (shaman *Shaman) applyOverload() {
 	})
 }
 
-func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig, tag CastTagOverload) {
-	spell.ActionID.Tag = int32(tag)
+func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
+	spell.ActionID.Tag = int32(CastTagOverload)
 	spell.ProcMask = core.ProcMaskProc
 	spell.Cast.DefaultCast.CastTime = 0
 	spell.Cast.DefaultCast.GCD = 0

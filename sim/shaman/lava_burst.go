@@ -76,7 +76,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	}
 
 	if isOverload {
-		shaman.applyOverloadModifiers(&spell, CastTagLavaBurstOverload)
+		shaman.applyOverloadModifiers(&spell)
 	}
 
 	return spell

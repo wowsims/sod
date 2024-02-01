@@ -74,6 +74,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.22,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatFirePower]: 1,
+			[Stat.StatNaturePower]: 1,
 			[Stat.StatSpellCrit]: 0.67,
 			[Stat.StatSpellHaste]: 1.29,
 			[Stat.StatMP5]: 0.08,
@@ -88,6 +90,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
+			aspectOfTheLion: true,
 			divineSpirit: true,
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			moonkinAura: true,
@@ -136,11 +139,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_DEFAULT,
-			Presets.ROTATION_PRESET_ADVANCED,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			Presets.BlankPresetGear,
+			Presets.Phase1PresetGear,
 		],
 	},
 

@@ -10,7 +10,7 @@ import (
 const LightningBoltRanks = 10
 
 // First entry is the base spell ID, second entry is the overload's spell ID
-var LightningBoltSpellIds = [LightningBoltRanks + 1][]int32{{0}, {403, 408439}, {529, 408440}, {548, 408441}, {915, 408442}, {943, 408443}, {6041, 408472}, {10391, 408473}, {10392, 408474}, {15207, 408475}, {15208, 408477}}
+var LightningBoltSpellId = [LightningBoltRanks + 1][]int32{{0}, {403, 408439}, {529, 408440}, {548, 408441}, {915, 408442}, {943, 408443}, {6041, 408472}, {10391, 408473}, {10392, 408474}, {15207, 408475}, {15208, 408477}}
 var LightningBoltBaseDamage = [LightningBoltRanks + 1][]float64{{0}, {15, 17}, {28, 33}, {48, 57}, {88, 100}, {131, 149}, {179, 202}, {235, 264}, {291, 326}, {357, 400}, {428, 477}}
 var LightningBoltSpellCoef = [LightningBoltRanks + 1]float64{0, .1233, .314, .554, .857, .857, .857, .857, .857, .857, .857}
 var LightningBoltCastTime = [LightningBoltRanks + 1]int32{0, 1500, 2000, 2500, 3000, 3000, 3000, 3000, 3000, 3000, 3000}
@@ -35,7 +35,7 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 
 func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	// First entry is the base spell ID, second entry is the overload's spell ID
-	spellId := LightningBoltSpellIds[rank][core.TernaryInt32(isOverload, 1, 0)]
+	spellId := LightningBoltSpellId[rank][core.TernaryInt32(isOverload, 1, 0)]
 	baseDamageLow := LightningBoltBaseDamage[rank][0]
 	baseDamageHigh := LightningBoltBaseDamage[rank][1]
 	spellCoeff := LightningBoltSpellCoef[rank]
@@ -68,7 +68,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	}
 
 	if isOverload {
-		shaman.applyOverloadModifiers(&spell, CastTagLightningBoltOverload)
+		shaman.applyOverloadModifiers(&spell)
 	}
 
 	return spell
