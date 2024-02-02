@@ -34,7 +34,7 @@ export function FireElementalSection(parentElem: HTMLElement, simUI: IndividualS
 			player.rotationChangeEmitter.emit(eventID)
 		},
 		changeEmitter: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-	}, ActionId.fromSpellId(2894), "useFireElemental");
+	}, () => ActionId.fromSpellId(2894), "useFireElemental");
 
 	new IconPicker(fireElementalIconContainer, simUI.player, fireElementalBooleanIconInput);
 
