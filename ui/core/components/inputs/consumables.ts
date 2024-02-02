@@ -140,6 +140,12 @@ export const Sapper = makeBooleanConsumeInput({
 		{ id: 10646, minLevel: 40 },
 	]),
 	fieldName: 'sapper',
+	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
+})
+
+export const makeSapperInput = makeConsumeInputFactory({
+	consumesFieldName: 'sapper',
+	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////

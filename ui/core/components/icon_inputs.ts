@@ -41,13 +41,13 @@ interface BooleanInputConfig<T> {
 	actionId: (player: Player<Spec>) => ActionId | null
 	fieldName: keyof T
 	value?: number
-	faction?: Faction
+	showWhen?: (player: Player<Spec>) => boolean
 }
 
 export function makeBooleanRaidBuffInput<SpecType extends Spec>(config: BooleanInputConfig<RaidBuffs>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
 	return InputHelpers.makeBooleanIconInput<any, RaidBuffs, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
-		showWhen: (player: Player<SpecType>) => (!config.faction || config.faction == player.getFaction()),
+		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getRaid()!.getBuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: RaidBuffs) => player.getRaid()!.setBuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
@@ -65,7 +65,7 @@ export function makeBooleanRaidBuffInput<SpecType extends Spec>(config: BooleanI
 export function makeBooleanIndividualBuffInput<SpecType extends Spec>(config: BooleanInputConfig<IndividualBuffs>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
 	return InputHelpers.makeBooleanIconInput<any, IndividualBuffs, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
-		showWhen: (player: Player<SpecType>) => (!config.faction || config.faction == player.getFaction()),
+		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getBuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: IndividualBuffs) => player.setBuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
@@ -75,6 +75,7 @@ export function makeBooleanIndividualBuffInput<SpecType extends Spec>(config: Bo
 export function makeBooleanConsumeInput<SpecType extends Spec>(config: BooleanInputConfig<Consumes>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
 	return InputHelpers.makeBooleanIconInput<any, Consumes, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
+		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getConsumes(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter])
@@ -83,6 +84,7 @@ export function makeBooleanConsumeInput<SpecType extends Spec>(config: BooleanIn
 export function makeBooleanDebuffInput<SpecType extends Spec>(config: BooleanInputConfig<Debuffs>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
 	return InputHelpers.makeBooleanIconInput<any, Debuffs, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
+		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getRaid()!.getDebuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Debuffs) => player.getRaid()!.setDebuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.debuffsChangeEmitter, player.levelChangeEmitter]),

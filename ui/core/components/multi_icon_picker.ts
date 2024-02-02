@@ -79,7 +79,7 @@ export class MultiIconPicker<ModObject> extends Component {
 
 		this.buildBlankOption();
 
-		this.pickers = config.inputs.map((pickerConfig, _) => {
+		this.pickers = this.config.inputs.map((pickerConfig, _) => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-picker-option', 'dropdown-option');
 			this.dropdownMenu.appendChild(optionContainer);
@@ -90,7 +90,10 @@ export class MultiIconPicker<ModObject> extends Component {
 		simUI.changeEmitter.on(() => {
 			this.updateButtonImage()
 
-			const show = !this.config.showWhen || this.config.showWhen(simUI.sim.raid.getPlayer(0)!);
+			const show = (
+				!this.config.showWhen || this.config.showWhen(simUI.sim.raid.getPlayer(0)!) &&
+				!!this.pickers.find(p => p.showWhen())
+			);
 			if (show) {
 				this.rootElem.classList.remove('hide');
 			} else {
