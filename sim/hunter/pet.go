@@ -60,7 +60,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	// After checking numerous logs it seems pet auto attacks are hitting for less then what they should if following standard attack formulas
 	// TODO: Figure out from where this difference comes
-	hp.AutoAttacks.MHConfig().DamageMultiplier *= 0.6
+	hp.AutoAttacks.MHConfig().DamageMultiplier *= 0.45
 
 	// Happiness
 	hp.PseudoStats.DamageDealtMultiplier *= 1.25

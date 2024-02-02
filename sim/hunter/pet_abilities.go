@@ -195,7 +195,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// TODO: Figure out how LB scales as it doesnt seem to be from SP even tho the spell is listed
 			// with a sp mod
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spell.MeleeAttackPower()*0.3
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spell.MeleeAttackPower()*0.2
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
