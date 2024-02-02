@@ -296,8 +296,8 @@ export const BoglingRootBuff = makeBooleanConsumeInput({actionId: () => ActionId
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
 
-// export const PetScrollOfAgilityV = makeBooleanConsumeInput({actionId: ActionId.fromItemId(27498), fieldName: 'petScrollOfAgility', minLevel: 5});
-// export const PetScrollOfStrengthV = makeBooleanConsumeInput({actionId: ActionId.fromItemId(27503), fieldName: 'petScrollOfStrength', minLevel: 5});
+// export const PetScrollOfAgilityV = makeBooleanConsumeInput({actionId: () => ActionId.fromItemId(27498), fieldName: 'petScrollOfAgility', minLevel: 5});
+// export const PetScrollOfStrengthV = makeBooleanConsumeInput({actionId: () => ActionId.fromItemId(27503), fieldName: 'petScrollOfStrength', minLevel: 5});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 POTIONS

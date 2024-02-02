@@ -12,7 +12,7 @@ import * as InputHelpers from '../core/components/input_helpers.js';
 
 export const Recklessness = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecWarrior>({
 	fieldName: 'useRecklessness',
-	actionId: ActionId.fromSpellId(1719),
+	actionId: () => ActionId.fromSpellId(1719),
 });
 
 export const StartingRage = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecWarrior>({
@@ -29,6 +29,6 @@ export const StanceSnapshot = InputHelpers.makeSpecOptionsBooleanInput<Spec.Spec
 
 export const ShoutPicker = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecWarrior>({
 	fieldName: 'shout',
-	actionId: ActionId.fromSpellId(6673),
+	actionId: () => ActionId.fromSpellId(6673),
 	value: WarriorShout.WarriorShoutBattle,
 });

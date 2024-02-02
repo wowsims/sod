@@ -14,8 +14,8 @@ export const Armor = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecMage, Ar
 	fieldName: 'armor',
 	values: [
 		{ value: ArmorType.NoArmor, tooltip: 'No Armor' },
-		{ actionId: ActionId.fromSpellId(22783), value: ArmorType.MageArmor },
-		{ actionId: ActionId.fromSpellId(10220), value: ArmorType.IceArmor },
+		{ actionId: () => ActionId.fromSpellId(22783), value: ArmorType.MageArmor },
+		{ actionId: () => ActionId.fromSpellId(10220), value: ArmorType.IceArmor },
 	],
 });
 

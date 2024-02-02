@@ -517,7 +517,7 @@ export const FaerieFire = withLabel(
 // TODO: Classic
 // export const MinorArmorDebuff = InputHelpers.makeMultiIconInput([
 // 	makeTristateDebuffInput(ActionId.fromSpellId(770), ActionId.fromSpellId(33602), 'faerieFire'),
-// 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(50511), fieldName: 'curseOfWeakness'}),
+// 	makeBooleanDebuffInput({actionId: () => ActionId.fromSpellId(50511), fieldName: 'curseOfWeakness'}),
 // ], 'Minor ArP');
 
 export const AttackPowerDebuff = InputHelpers.makeMultiIconInput([
