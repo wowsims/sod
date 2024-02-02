@@ -1,6 +1,6 @@
 import { IndividualSimUI } from "../../individual_sim_ui";
 import { Player } from "../../player";
-import { Faction, Spec, Stat } from "../../proto/common";
+import { Spec, Stat } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 
 import { IconEnumPicker, IconEnumPickerConfig } from "../icon_enum_picker";
@@ -12,13 +12,11 @@ export interface ActionInputConfig<T> {
 	value: T
 	minLevel?: number
 	maxLevel?: number
-	faction?: Faction
 	showWhen?: (player: Player<Spec>) => boolean
 }
 
 export interface StatOption {
 	stats: Array<Stat>,
-	faction?: Faction
 }
 
 export interface ItemStatOption<T> extends StatOption {
@@ -55,8 +53,6 @@ export function relevantStatOptions<T, OptionsType extends ItemStatOptions<T> | 
 ): StatOptions<T, OptionsType> {
   return options
     .filter(option =>
-			// Filter by faction if there's a faction restriction
-			(!option.faction  || option.faction == simUI.player.getFaction()) &&
 			// Filter out excluded options
 			!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config) &&
       (

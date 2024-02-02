@@ -54,9 +54,7 @@ function makeConsumeInputFactory<T extends number>(args: ConsumeInputFactoryArgs
 				return {
 					actionId: option.config.actionId,
 					value: option.config.value,
-					showWhen: (player: Player<any>) =>
-						(!option.config.showWhen || option.config.showWhen(player)) &&
-						(option.config.faction || player.getFaction()) == player.getFaction(),
+					showWhen: (player: Player<any>) => !option.config.showWhen || option.config.showWhen(player)
 				} as IconEnumValueConfig<Player<any>, T>;
 			})),
 			equals: (a: T, b: T) => a == b,
