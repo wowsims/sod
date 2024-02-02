@@ -118,6 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.ResistanceBuff,
 	],
 	excludeBuffDebuffInputs: [
 		BuffDebuffInputs.BleedDebuff,

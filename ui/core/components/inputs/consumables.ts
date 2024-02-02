@@ -54,8 +54,6 @@ function makeConsumeInputFactory<T extends number>(args: ConsumeInputFactoryArgs
 					actionId: option.config.actionId,
 					showWhen: (player: Player<any>) =>
 						(!option.config.showWhen || option.config.showWhen(player)) &&
-						(option.config.minLevel || 0) <= player.getLevel() &&
-						(option.config.maxLevel || MAX_CHARACTER_LEVEL) >= player.getLevel() &&
 						(option.config.faction || player.getFaction()) == player.getFaction()
 				} as IconEnumValueConfig<Player<any>, T>;
 				if (option.config.value) rtn.value = option.config.value

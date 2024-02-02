@@ -272,7 +272,7 @@ function makeWrappedIconInput<SpecType extends Spec, ModObject, T>(config: Wrapp
 	const getModObject = config.getModObject;
 	return {
 		type: 'icon',
-		actionId: config.actionId as (modObj: Player<SpecType>) => ActionId | null,
+		actionId: (player: Player<SpecType>) => config.actionId(getModObject(player)),
 		states: config.states,
 		showWhen: config.showWhen as any,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),

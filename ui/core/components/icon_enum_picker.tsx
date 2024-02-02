@@ -18,7 +18,7 @@ export interface IconEnumValueConfig<ModObject, T> {
 	// If actionId is set, shows the icon for that id.
 	// If color is set, shows that color.
 	// If iconUrl is set, shows that icon as grayscale
-	actionId?: ActionId,
+	actionId?: (modObj: ModObject) => ActionId | null,
 	color?: string,
 	iconUrl?: string,
 	// Text to be displayed on the icon.
@@ -191,8 +191,9 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			return;
 		}
 
-		if (valueConfig.actionId) {
-			this.setActionImage(elem, valueConfig.actionId);
+		const actionId = valueConfig.actionId?.(this.modObject)
+		if (actionId) {
+			this.setActionImage(elem, actionId);
 			elem.style.filter = ''
 		} else if (valueConfig.iconUrl) {
 			elem.style.backgroundImage = `url(${valueConfig.iconUrl})`

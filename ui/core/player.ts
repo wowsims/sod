@@ -1307,8 +1307,6 @@ export class Player<SpecType extends Spec> {
 			(!maxLevel || maxLevel >= this.getLevel())
 		)
 
-		console.log(this.getLevel(), match)
-
 		if (match) return ActionId.fromSpellId(match[0])
 		return null
 	}
@@ -1320,9 +1318,8 @@ export class Player<SpecType extends Spec> {
 			(!maxLevel || maxLevel >= this.getLevel())
 		)
 
-		console.log(this.getLevel(), match)
-
 		if (match) return ActionId.fromItemId(match[0])
 		return null
 	}
+
 }

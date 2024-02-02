@@ -81,13 +81,6 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.improvedAnchor2 = ia2.value!;
 		this.counterElem = ce.value!;
 
-		const fillActionid = () => this.config.actionId(this.modObject)?.fillAndSet(this.rootAnchor, true, true);
-		this.config.changedEvent(this.modObject).on(() => {
-			console.log('good')
-			fillActionid()
-		})
-		fillActionid()
-
 		if (this.config.states >= 3 && this.config.improvedId) {
 			this.config.improvedId.fillAndSet(this.improvedAnchor, true, true);
 		}
@@ -95,18 +88,19 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true);
 		}
 
-		if (this.config.showWhen) {
-			config.changedEvent(this.modObject).on(_ => {
-				const show = this.config.showWhen && this.config.showWhen(this.modObject);
-				if (show){
-					this.rootAnchor.classList.remove('hide');
-					this.restoreValue();
-				} else {
-					this.storeValue();
-					this.rootAnchor.classList.add('hide');
-				}
-			});
-		}
+		this.config.changedEvent(this.modObject).on(_ => {
+			const actionId = this.config.actionId(this.modObject)
+			actionId?.fillAndSet(this.rootAnchor, true, true);
+
+			const show = actionId != null && (!this.config.showWhen || this.config.showWhen(this.modObject));
+			if (show) {
+				this.rootElem.classList.remove('hide');
+				this.restoreValue();
+			} else {
+				this.storeValue();
+				this.rootElem.classList.add('hide');
+			}
+		});
 
 		this.init();
 

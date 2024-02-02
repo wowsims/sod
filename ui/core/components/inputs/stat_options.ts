@@ -8,7 +8,7 @@ import { IconPicker, IconPickerConfig } from "../icon_picker";
 import { MultiIconPicker, MultiIconPickerConfig } from "../multi_icon_picker";
 
 export interface ActionInputConfig<T> {
-	actionId: ActionId
+	actionId: () => ActionId | null
 	value: T
 	minLevel?: number
 	maxLevel?: number
@@ -56,12 +56,14 @@ export function relevantStatOptions<T, OptionsType extends ItemStatOptions<T> | 
   return options
     .filter(option =>
 			// Filter by faction if there's a faction restriction
-			(!option.faction || option.faction == simUI.player.getFaction()) &&
+			(!option.faction  || option.faction == simUI.player.getFaction()) &&
 			// Filter out excluded options
 			!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config) &&
-			// Compare EP stats
-      option.stats.length == 0 ||
-      option.stats.some(stat => simUI.individualConfig.epStats.includes(stat)) ||
-			// Check included options
-			simUI.individualConfig.includeBuffDebuffInputs.includes(option.config))
+      (
+				// Compare EP stats
+				option.stats.length == 0 ||
+      	option.stats.some(stat => simUI.individualConfig.epStats.includes(stat)) ||
+				// Check included options
+				simUI.individualConfig.includeBuffDebuffInputs.includes(option.config))
+			)
 }
