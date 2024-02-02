@@ -51,25 +51,25 @@ character_stats_results: {
 dps_results: {
  key: "TestAffliction-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 5.17184
+  dps: 5.76983
  }
 }
 dps_results: {
  key: "TestAffliction-Average-Default"
  value: {
-  dps: 5.25203
+  dps: 5.90876
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap--FullBuffs-LongMultiTarget"
  value: {
-  dps: 5.27614
+  dps: 5.83566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap--FullBuffs-LongSingleTarget"
  value: {
-  dps: 5.27614
+  dps: 5.83566
  }
 }
 dps_results: {
@@ -81,13 +81,13 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap--NoBuffs-LongMultiTarget"
  value: {
-  dps: 2.71874
+  dps: 3.09408
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap--NoBuffs-LongSingleTarget"
  value: {
-  dps: 2.71874
+  dps: 3.09408
  }
 }
 dps_results: {
@@ -99,15 +99,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap-affi.tank-FullBuffs-LongMultiTarget"
  value: {
-  dps: 171.43576
-  tps: 576.91079
+  dps: 173.23372
+  tps: 577.5248
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap-affi.tank-FullBuffs-LongSingleTarget"
  value: {
-  dps: 116.97501
-  tps: 169.74169
+  dps: 117.83311
+  tps: 168.15224
  }
 }
 dps_results: {
@@ -120,34 +120,34 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap-affi.tank-NoBuffs-LongMultiTarget"
  value: {
-  dps: 109.5768
-  tps: 515.51446
+  dps: 110.2295
+  tps: 516.77977
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap-affi.tank-NoBuffs-LongSingleTarget"
  value: {
-  dps: 70.97275
-  tps: 104.03623
+  dps: 70.91184
+  tps: 104.99005
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-AffItemSwap-affi.tank-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 73.29689
-  tps: 98.79096
+  dps: 73.02087
+  tps: 99.88503
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock--FullBuffs-LongMultiTarget"
  value: {
-  dps: 5.27614
+  dps: 5.83566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock--FullBuffs-LongSingleTarget"
  value: {
-  dps: 5.27614
+  dps: 5.83566
  }
 }
 dps_results: {
@@ -159,13 +159,13 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock--NoBuffs-LongMultiTarget"
  value: {
-  dps: 2.71874
+  dps: 3.09408
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock--NoBuffs-LongSingleTarget"
  value: {
-  dps: 2.71874
+  dps: 3.09408
  }
 }
 dps_results: {
@@ -177,15 +177,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock-affi.tank-FullBuffs-LongMultiTarget"
  value: {
-  dps: 171.43576
-  tps: 576.91079
+  dps: 173.23372
+  tps: 577.5248
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock-affi.tank-FullBuffs-LongSingleTarget"
  value: {
-  dps: 116.97501
-  tps: 169.74169
+  dps: 117.83311
+  tps: 168.15224
  }
 }
 dps_results: {
@@ -198,27 +198,27 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock-affi.tank-NoBuffs-LongMultiTarget"
  value: {
-  dps: 109.5768
-  tps: 515.51446
+  dps: 110.2295
+  tps: 516.77977
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock-affi.tank-NoBuffs-LongSingleTarget"
  value: {
-  dps: 70.97275
-  tps: 104.03623
+  dps: 70.91184
+  tps: 104.99005
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-affi.tank-Affliction Warlock-affi.tank-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 73.29689
-  tps: 98.79096
+  dps: 73.02087
+  tps: 99.88503
  }
 }
 dps_results: {
  key: "TestAffliction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5.27614
+  dps: 5.83566
  }
 }
