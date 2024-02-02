@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (shaman *Shaman) registerShamanisticRageCD() {
+func (shaman *Shaman) applyShamanisticRage() {
 	if !shaman.HasRune(proto.ShamanRune_RuneLegsShamanisticRage) {
 		return
 	}

@@ -1,6 +1,8 @@
 package shaman
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -26,7 +28,7 @@ func (shaman *Shaman) ApplyRunes() {
 	// Legs
 	shaman.applyAncestralGuidance()
 	// shaman.applyEarthShield()
-	// shaman.applyShamanisticRage()
+	shaman.applyShamanisticRage()
 	shaman.applyWayOfEarth()
 
 	// Feet
@@ -70,12 +72,35 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		return
 	}
 
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:    "Two-Handed Mastery Proc",
+		ActionID: core.ActionID{SpellID: 436365},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyAttackSpeed(sim, 1/1.3)
+		},
+	})
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneTwoHandedMastery)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+				return
+			}
+
+			if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+				procAura.Activate(sim)
+			} else {
+				procAura.Deactivate(sim)
+			}
 		},
 	})
 }
