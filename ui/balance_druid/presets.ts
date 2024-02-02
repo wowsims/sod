@@ -1,7 +1,6 @@
 import {
 	Consumes,
 	Debuffs,
-	Explosive,
 	Flask,
 	Food,
 	IndividualBuffs,
@@ -52,7 +51,6 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	fillerExplosive: Explosive.ExplosiveCoarseDynamite,
 	flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
 	mainHandImbue: WeaponImbue.BlackfathomManaOil,

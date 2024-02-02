@@ -17,7 +17,7 @@ export const ArmorInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecTan
 	fieldName: 'armor',
 	values: [
 		{ value: Armor.NoArmor, tooltip: 'No Armor' },
-		{ actionId: ActionId.fromSpellId(11735), value: Armor.DemonArmor },
+		{ actionId: () => ActionId.fromSpellId(11735), value: Armor.DemonArmor },
 	],
 });
 
@@ -26,8 +26,8 @@ export const WeaponImbueInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.S
 	values: [
 		{ value: WeaponImbue.NoWeaponImbue, tooltip: 'No Weapon Stone' },
 		// TODO: Classic warlock weapon stone id based on level
-		{ actionId: ActionId.fromItemId(13701), value: WeaponImbue.Firestone },
-		{ actionId: ActionId.fromItemId(13603), value: WeaponImbue.Spellstone },
+		{ actionId: () => ActionId.fromItemId(13701), value: WeaponImbue.Firestone },
+		{ actionId: () => ActionId.fromItemId(13603), value: WeaponImbue.Spellstone },
 	],
 });
 
@@ -35,9 +35,9 @@ export const PetInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecTankW
 	fieldName: 'summon',
 	values: [
 		{ value: Summon.NoSummon, tooltip: 'No Pet' },
-		{ actionId: ActionId.fromSpellId(688), value: Summon.Imp },
-		{ actionId: ActionId.fromSpellId(712), value: Summon.Succubus },
-		{ actionId: ActionId.fromSpellId(691), value: Summon.Felhunter },
+		{ actionId: () => ActionId.fromSpellId(688), value: Summon.Imp },
+		{ actionId: () => ActionId.fromSpellId(712), value: Summon.Succubus },
+		{ actionId: () => ActionId.fromSpellId(691), value: Summon.Felhunter },
 	],
 	changeEmitter: (player: Player<Spec.SpecTankWarlock>) => player.changeEmitter,
 });

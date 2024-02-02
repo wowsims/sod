@@ -1,10 +1,11 @@
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { element, ref } from 'tsx-vanilla';
+
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick } from '../utils.js';
 
 import { Input, InputConfig } from './input.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { element, ref } from 'tsx-vanilla';
 
 // Data for creating an icon-based input component.
 // 
@@ -12,7 +13,7 @@ import { element, ref } from 'tsx-vanilla';
 // ModObject is the object being modified (Sim, Player, or Target).
 // ValueType is either number or boolean.
 export interface IconPickerConfig<ModObject, ValueType> extends InputConfig<ModObject, ValueType> {
-	actionId: ActionId;
+	actionId: (modObj: ModObject) => ActionId | null;
 
 	// The number of possible 'states' this icon can have. Most inputs will use 2
 	// for a bi-state icon (on or off). 0 indicates an unlimited number of states.
@@ -80,8 +81,6 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.improvedAnchor2 = ia2.value!;
 		this.counterElem = ce.value!;
 
-		this.config.actionId.fillAndSet(this.rootAnchor, true, true);
-
 		if (this.config.states >= 3 && this.config.improvedId) {
 			this.config.improvedId.fillAndSet(this.improvedAnchor, true, true);
 		}
@@ -89,18 +88,17 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true);
 		}
 
-		if (this.config.showWhen) {
-			config.changedEvent(this.modObject).on(_ => {
-				const show = this.config.showWhen && this.config.showWhen(this.modObject);
-				if (show){
-					this.rootAnchor.classList.remove('hide');
-					this.restoreValue();
-				} else {
-					this.storeValue();
-					this.rootAnchor.classList.add('hide');
-				}
-			});
-		}
+		this.config.changedEvent(this.modObject).on(_ => {
+			this.config.actionId(this.modObject)?.fillAndSet(this.rootAnchor, true, true);
+
+			if (this.showWhen()) {
+				this.rootElem.classList.remove('hide');
+				this.restoreValue();
+			} else {
+				this.storeValue();
+				this.rootElem.classList.add('hide');
+			}
+		});
 
 		this.init();
 
@@ -166,13 +164,13 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		if (v == 0) {
 			return null;
 		} else if (v == 1) {
-			return this.config.actionId;
+			return this.config.actionId(this.modObject);
 		} else if (v == 2 && this.config.improvedId) {
 			return this.config.improvedId;
 		} else if (v == 3 && this.config.improvedId2) {
 			return this.config.improvedId2;
 		} else {
-			return this.config.actionId;
+			return this.config.actionId(this.modObject);
 		}
 	}
 
@@ -235,5 +233,12 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.setInputValue(this.storedValue);
 		this.inputChanged(TypedEvent.nextEventID());
 		this.storedValue = undefined;
+	}
+
+	showWhen() {
+		return (
+			this.config.actionId(this.modObject) != null &&
+			(!this.config.showWhen || this.config.showWhen(this.modObject))
+		);
 	}
 }

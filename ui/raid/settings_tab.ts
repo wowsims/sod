@@ -151,7 +151,7 @@ export class SettingsTab extends SimTab {
 		const raid = this.simUI.sim.raid;
 
 		return new IconPicker<Raid, boolean>(parent, raid, {
-			actionId: actionId,
+			actionId: () => actionId,
 			states: 2,
 			changedEvent: (raid: Raid) => raid.buffsChangeEmitter,
 			getValue: (raid: Raid) => raid.getBuffs()[field] as unknown as boolean,

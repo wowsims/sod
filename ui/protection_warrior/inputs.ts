@@ -18,6 +18,6 @@ export const StartingRage = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecPro
 
 export const ShoutPicker = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionWarrior>({
 	fieldName: 'shout',
-	actionId: ActionId.fromSpellId(47436),
+	actionId: () => ActionId.fromSpellId(47436),
 	value: WarriorShout.WarriorShoutBattle,
 });

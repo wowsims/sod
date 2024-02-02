@@ -252,7 +252,6 @@ enum Explosive {
 	ExplosiveUnknown = 0;
 	ExplosiveDenseDynamite = 1;
 	ExplosiveThoriumGrenade = 2;
-	ExplosiveCoarseDynamite = 3;
 }
 
 enum Potions {
@@ -374,6 +373,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
+// NextIndex: 35
 message RaidBuffs {
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
@@ -417,12 +417,13 @@ message RaidBuffs {
 	bool frost_resistance_aura = 19;
 	bool frost_resistance_totem = 20;
 	bool fire_resistance_totem = 21;
+	bool fire_resistance_aura = 35;
 	
 	// Miscellaneous
 	TristateEffect thorns = 22;
 	TristateEffect devotion_aura = 23;
 	TristateEffect stoneskin_totem = 24;
-	bool retribution_aura = 25;
+	TristateEffect retribution_aura = 25;
 
 	// Scroll
 	bool scroll_of_protection = 26;
