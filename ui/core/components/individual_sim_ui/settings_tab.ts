@@ -249,17 +249,20 @@ export class SettingsTab extends SimTab {
 	}
 
 	private buildDebuffsSettings() {
+		const debuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_CONFIG, this.simUI);
+		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI) 
+
+		if (!debuffOptions.length && !miscDebuffOptions.length) return
+
 		const contentBlock = new ContentBlock(this.column3, 'debuffs-settings', {
 			header: { title: 'Debuffs', tooltip: Tooltips.DEBUFFS_SECTION }
 		});
 
-		const debuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_CONFIG, this.simUI);
 		this.configureIconSection(
 			contentBlock.bodyElement,
 			debuffOptions.map(options => options.picker && new options.picker(contentBlock.bodyElement, this.simUI.player, options.config as any, this.simUI))
 		);
 
-		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI) 
 		if (miscDebuffOptions.length) {
 			new MultiIconPicker(contentBlock.bodyElement, this.simUI.player, {
 				inputs: miscDebuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,

@@ -263,7 +263,7 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 			{ id: 10601, minLevel: 60 							},
 		]),
 		fieldName: 'natureResistanceTotem',
-		faction: Faction.Horde
+		showWhen: (player) => player.getFaction() == Faction.Horde
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -280,7 +280,7 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 			{ id: 19900, minLevel: 60 							},
 		]),
 		fieldName: 'fireResistanceAura',
-		faction: Faction.Alliance
+		showWhen: (player) => player.getFaction() == Faction.Alliance
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -289,7 +289,7 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 			{ id: 10538, 	minLevel: 58 								},
 		]),
 		fieldName: 'fireResistanceTotem',
-		faction: Faction.Horde
+		showWhen: (player) => player.getFaction() == Faction.Horde
 	}),
 	// Frost
 	makeBooleanRaidBuffInput({
@@ -299,7 +299,7 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 			{ id: 19898, minLevel: 56 							},
 		]),
 		fieldName: 'frostResistanceAura',
-		faction: Faction.Alliance
+		showWhen: (player) => player.getFaction() == Faction.Alliance
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -308,7 +308,7 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 			{ id: 10479, 	minLevel: 54 								},
 		]),
 		fieldName: 'frostResistanceTotem',
-		faction: Faction.Horde
+		showWhen: (player) => player.getFaction() == Faction.Horde
 	}),
 ], 'Resistances');
 

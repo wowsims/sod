@@ -140,6 +140,12 @@ export const Sapper = makeBooleanConsumeInput({
 		{ id: 10646, minLevel: 40 },
 	]),
 	fieldName: 'sapper',
+	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
+})
+
+export const makeSapperInput = makeConsumeInputFactory({
+	consumesFieldName: 'sapper',
+	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -216,7 +222,7 @@ export const BlessedSunfruitJuice: ConsumableInputConfig<Food> = {
 };
 export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 22480, minLevel: 40 },
+		{ id: 18045, minLevel: 40 },
 	]),
 	value: Food.FoodTenderWolfSteak
 };
