@@ -48,23 +48,26 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl,
 	}
 
-	atkSpd := 2.0 // / (1 + 0.15*float64(hp.Talents().CobraReflexes))
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  27,
 			BaseDamageMax:  37,
-			SwingSpeed:     atkSpd,
-			CritMultiplier: 2,
+			SwingSpeed:     2.0,
+			CritMultiplier: hp.MeleeCritMultiplier(1, 0),
 		},
 		AutoSwingMelee: true,
 	})
 
+	// After checking numerous logs it seems pet auto attacks are hitting for less then what they should if following standard attack formulas
+	// TODO: Figure out from where this difference comes
+	hp.AutoAttacks.MHConfig().DamageMultiplier *= 0.6
+
 	// Happiness
 	hp.PseudoStats.DamageDealtMultiplier *= 1.25
 
+	// Family scalars
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= hp.config.Damage
 	hp.PseudoStats.ArmorMultiplier *= hp.config.Armor
-
 	hp.MultiplyStat(stats.Health, hp.config.Health)
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
@@ -100,6 +103,9 @@ func (hp *HunterPet) Initialize() {
 			hp.OnGCDReady(sim)
 		}
 	})
+
+	// TODO: Make this dynamic
+	hp.PseudoStats.DamageDealtMultiplier *= hp.Owner.PseudoStats.DamageDealtMultiplier
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {
@@ -176,9 +182,12 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 
-			stats.MeleeHit:  hitRatingFromOwner,
-			stats.SpellHit:  hitRatingFromOwner * 2,
-			stats.Expertise: ownerHitChance * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+
+			stats.MeleeHit: hitRatingFromOwner,
+			stats.SpellHit: hitRatingFromOwner * 2,
+			//stats.Expertise: ownerHitChance * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 }
@@ -200,6 +209,24 @@ type PetConfig struct {
 // Abilities reference: https://wotlk.wowhead.com/hunter-pets
 // https://wotlk.wowhead.com/guides/hunter-dps-best-pets-taming-loyalty-burning-crusade-classic
 var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
+	proto.Hunter_Options_Cat: {
+		Name:           "Cat",
+		SpecialAbility: Bite,
+		FocusDump:      Claw,
+
+		Health: 1.0,
+		Armor:  1.0,
+		Damage: 1.1,
+	},
+	proto.Hunter_Options_WindSerpent: {
+		Name:           "Wind Serpent",
+		SpecialAbility: Unknown,
+		FocusDump:      LightningBreath,
+
+		Health: 1.0,
+		Armor:  1.0,
+		Damage: 1.07,
+	},
 	proto.Hunter_Options_Bat: {
 		Name: "Bat",
 		//SpecialAbility: SonicBlast,
@@ -235,15 +262,6 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Health: 1.0,
 		Armor:  1.0,
 		Damage: 1.0,
-	},
-	proto.Hunter_Options_Cat: {
-		Name:           "Cat",
-		SpecialAbility: Unknown,
-		FocusDump:      Claw,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.1,
 	},
 	proto.Hunter_Options_Chimaera: {
 		Name: "Chimaera",
@@ -393,15 +411,6 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name: "Turtle",
 		//SpecialAbility: ShellShield,
 		FocusDump: Bite,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_WindSerpent: {
-		Name:           "Wind Serpent",
-		SpecialAbility: LightningBreath,
-		FocusDump:      Bite,
 
 		Health: 1.0,
 		Armor:  1.0,
