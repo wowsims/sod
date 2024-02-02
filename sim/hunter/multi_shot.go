@@ -14,6 +14,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	level := [6]int{0, 18, 30, 42, 54, 60}[rank]
 
 	numHits := min(3, hunter.Env.GetNumTargets())
+	results := make([]*core.SpellResult, numHits)
+
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
@@ -73,12 +75,16 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(curTarget)
 
-				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 
-				spell.WaitTravelTime(sim, func(s *core.Simulation) {
-					spell.DealDamage(sim, result)
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
 
-					if hasCobraStrikes && result.DidCrit() {
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					spell.DealDamage(sim, results[hitIndex])
+
+					if hasCobraStrikes && results[hitIndex].DidCrit() {
 						hunter.CobraStrikesAura.Activate(sim)
 						hunter.CobraStrikesAura.SetStacks(sim, 2)
 					}
@@ -99,10 +105,11 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 							serpentStingAura.NumberOfTicks = serpentStingTicks
 						}
 					}
-				})
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
-			}
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			})
+
 		},
 	}
 }

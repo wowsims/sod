@@ -15,8 +15,8 @@ export const ShamanShieldInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.
 	fieldName: 'shield',
 	values: [
 		{ value: ShamanShield.NoShield, tooltip: 'No Shield' },
-		{ actionId: ActionId.fromSpellId(57960), value: ShamanShield.WaterShield },
-		{ actionId: ActionId.fromSpellId(49281), value: ShamanShield.LightningShield },
+		{ actionId: () => ActionId.fromSpellId(57960), value: ShamanShield.WaterShield },
+		{ actionId: () => ActionId.fromSpellId(49281), value: ShamanShield.LightningShield },
 	],
 });
 
@@ -24,10 +24,10 @@ export const ShamanImbueMH = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 	fieldName: 'imbueMh',
 	values: [
 		{ value: ShamanImbue.NoImbue, tooltip: 'No Main Hand Enchant' },
-		{ actionId: ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
-		{ actionId: ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
-		{ actionId: ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
-		{ actionId: ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
+		{ actionId: () => ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
+		{ actionId: () => ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
+		{ actionId: () => ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
+		{ actionId: () => ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
 	],
 });
 
@@ -35,10 +35,10 @@ export const ShamanImbueOH = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 	fieldName: 'imbueOh',
 	values: [
 		{ value: ShamanImbue.NoImbue, tooltip: 'No Off Hand Enchant' },
-		{ actionId: ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
-		{ actionId: ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
-		{ actionId: ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
-		{ actionId: ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
+		{ actionId: () => ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
+		{ actionId: () => ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
+		{ actionId: () => ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
+		{ actionId: () => ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
 	],
 });
 

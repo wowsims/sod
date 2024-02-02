@@ -91,9 +91,9 @@ func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		paladin.PaladinAura == proto.PaladinAura_DevotionAura,
 		paladin.Talents.ImprovedDevotionAura == 5))
 
-	if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
-		raidBuffs.RetributionAura = true
-	}
+	raidBuffs.RetributionAura = max(raidBuffs.RetributionAura, core.MakeTristateValue(
+		paladin.PaladinAura == proto.PaladinAura_RetributionAura,
+		paladin.Talents.ImprovedRetributionAura == 2))
 
 	if paladin.Talents.SanctifiedRetribution {
 		raidBuffs.SanctifiedRetribution = true

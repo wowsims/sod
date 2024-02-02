@@ -13,6 +13,6 @@ export const ArmorInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecSha
 	fieldName: 'armor',
 	values: [
 		{ value: Armor.NoArmor, tooltip: 'No Inner Fire' },
-		{ actionId: ActionId.fromSpellId(10952), value: Armor.InnerFire },
+		{ actionId: () => ActionId.fromSpellId(10952), value: Armor.InnerFire },
 	],
 });

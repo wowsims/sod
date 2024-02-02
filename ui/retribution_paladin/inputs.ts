@@ -17,17 +17,17 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 	fieldName: 'aura',
 	values: [
 		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
-		{ actionId: ActionId.fromSpellId(54043), value: PaladinAura.RetributionAura },
+		{ actionId: () => ActionId.fromSpellId(54043), value: PaladinAura.RetributionAura },
 	],
 });
 
 export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinSeal>({
 	fieldName: 'seal',
 	values: [
-		{ actionId: ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
-		{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
+		{ actionId: () => ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
+		{ actionId: () => ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
 		{
-			actionId: ActionId.fromSpellId(20424), value: PaladinSeal.Command,
+			actionId: () => ActionId.fromSpellId(20424), value: PaladinSeal.Command,
 			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sealOfCommand,
 		},
 	],
@@ -37,7 +37,7 @@ export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumIconInput<S
 export const JudgementSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinJudgement>({
 	fieldName: 'judgement',
 	values: [
-		{ actionId: ActionId.fromSpellId(20355), value: PaladinJudgement.JudgementOfWisdom },
-		{ actionId: ActionId.fromSpellId(20271), value: PaladinJudgement.JudgementOfLight },
+		{ actionId: () => ActionId.fromSpellId(20355), value: PaladinJudgement.JudgementOfWisdom },
+		{ actionId: () => ActionId.fromSpellId(20271), value: PaladinJudgement.JudgementOfLight },
 	],
 });

@@ -28,6 +28,7 @@ func (hunter *Hunter) registerKillCommand() {
 		Duration:  time.Second * 30,
 		MaxStacks: 3,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// TODO: Make it only work on Claw/Bite after pet abilities refactor
 			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
 				aura.RemoveStack(sim)
 				hunterAura.RemoveStack(sim)

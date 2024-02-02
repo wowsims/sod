@@ -10,7 +10,7 @@ import * as InputHelpers from '../core/components/input_helpers.js';
 
 export const SelfPowerInfusion = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecHealingPriest>({
 	fieldName: 'powerInfusionTarget',
-	actionId: ActionId.fromSpellId(10060),
+	actionId: () => ActionId.fromSpellId(10060),
 	extraCssClasses: [
 		'within-raid-sim-hide',
 	],
@@ -27,10 +27,10 @@ export const SelfPowerInfusion = InputHelpers.makeSpecOptionsBooleanIconInput<Sp
 
 export const InnerFire = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecHealingPriest>({
 	fieldName: 'useInnerFire',
-	actionId: ActionId.fromSpellId(48168),
+	actionId: () => ActionId.fromSpellId(48168),
 });
 
 export const Shadowfiend = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecHealingPriest>({
 	fieldName: 'useShadowfiend',
-	actionId: ActionId.fromSpellId(34433),
+	actionId: () => ActionId.fromSpellId(34433),
 });

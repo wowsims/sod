@@ -11,7 +11,7 @@ import * as InputHelpers from '../core/components/input_helpers.js';
 
 export const SelfInnervate = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecRestorationDruid>({
 	fieldName: 'innervateTarget',
-	actionId: ActionId.fromSpellId(29166),
+	actionId: () => ActionId.fromSpellId(29166),
 	extraCssClasses: [
 		'within-raid-sim-hide',
 	],

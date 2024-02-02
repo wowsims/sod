@@ -87,8 +87,9 @@ export class MultiIconPicker<ModObject> extends Component {
 			return new IconPicker(optionContainer, modObj, pickerConfig);
 		});
 		simUI.sim.waitForInit().then(() => this.updateButtonImage());
-		simUI.changeEmitter.on(() => this.updateButtonImage());
 		simUI.changeEmitter.on(() => {
+			this.updateButtonImage()
+
 			const show = !this.config.showWhen || this.config.showWhen(simUI.sim.raid.getPlayer(0)!);
 			if (show) {
 				this.rootElem.classList.remove('hide');

@@ -101,12 +101,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearBeastMasteryDefault.gear,
+		gear: Presets.GearDefault.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatStamina]: 0.5,
 			[Stat.StatAgility]: 2.65,
 			[Stat.StatIntellect]: 1.1,
+			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 2,
 			[Stat.StatMeleeCrit]: 1.5,
@@ -120,7 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Default rotation settings.
 		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
-		talents: Presets.SurvivalTalents.data,
+		talents: Presets.TalentsBeastMasteryDefault.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -177,40 +178,35 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.BeastMasteryTalents,
-			Presets.MarksmanTalents,
-			Presets.SurvivalTalents,
+			Presets.TalentsBeastMasteryPhase1,
+			Presets.TalentsMarksmanPhase1,
+			Presets.TalentsSurvivalPhase1,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE_DEFAULT,
-			Presets.ROTATION_PRESET_BM,
-			Presets.ROTATION_PRESET_MM,
-			Presets.ROTATION_PRESET_MM_ADVANCED,
-			Presets.ROTATION_PRESET_SV,
-			Presets.ROTATION_PRESET_SV_ADVANCED,
-			Presets.ROTATION_PRESET_AOE,
+			Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearBeastMasteryDefault,
-			Presets.GearMarksmanDefault,
-			Presets.GearSurvivalDefault,
+			Presets.GearBeastMasteryPhase1,
+			Presets.GearMarksmanPhase1,
+			Presets.GearSurvivalPhase1,
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecHunter>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_MM.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
-		}
+	autoRotation: (_player: Player<Spec.SpecHunter>): APLRotation => {
+		// const talentTree = player.getTalentTree();
+		// const numTargets = player.sim.encounter.targets.length;
+		// if (numTargets >= 4) {
+		// 	return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+		// } else if (talentTree == 0) {
+		// 	return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
+		// } else if (talentTree == 1) {
+		// 	return Presets.ROTATION_PRESET_MM.rotation.rotation!;
+		// } else {
+		// 	return Presets.ROTATION_PRESET_SV.rotation.rotation!;
+		// }
+		return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
 	},
 
 	simpleRotation: (player: Player<Spec.SpecHunter>, simple: HunterRotation, cooldowns: Cooldowns): APLRotation => {
@@ -218,7 +214,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 		const serpentSting = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${simple.multiDotSerpentSting ? 3 : 1},"maxOverlap":{"const":{"val":"0ms"}}}}`);
 		const scorpidSting = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":3043},"maxOverlap":{"const":{"val":"0ms"}}}},"castSpell":{"spellId":{"spellId":3043}}}`);
-		const trapWeave = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`);
+		const _trapWeave = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`);
 		const volley = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":58434}}}`);
 		const killShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":61006}}}`);
 		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
@@ -228,7 +224,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		const chimeraShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53209}}}`);
 		const blackArrow = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":63672}}}`);
 		const explosiveShot4 = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":60053}}}}},"castSpell":{"spellId":{"spellId":60053}}}`);
-		const explosiveShot3 = APLAction.fromJsonString(`{"condition":{"dotIsActive":{"spellId":{"spellId":60053}}},"castSpell":{"spellId":{"spellId":60052}}}`);
+		const _explosiveShot3 = APLAction.fromJsonString(`{"condition":{"dotIsActive":{"spellId":{"spellId":60053}}},"castSpell":{"spellId":{"spellId":60052}}}`);
 		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
 
 		const talentTree = player.getTalentTree();
@@ -286,7 +282,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultName: 'Beast Mastery',
 			iconUrl: getSpecIcon(Class.ClassHunter, 0),
 
-			talents: Presets.BeastMasteryTalents.data,
+			talents: Presets.TalentsBeastMasteryDefault.data,
 			specOptions: Presets.BMDefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -297,10 +293,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearBeastMasteryDefault.gear,
+					1: Presets.GearBeastMasteryPhase1.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearBeastMasteryDefault.gear,
+					1: Presets.GearBeastMasteryPhase1.gear,
 				},
 			},
 		},
@@ -309,8 +305,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			tooltip: 'Marksmanship Hunter',
 			defaultName: 'Marksmanship',
 			iconUrl: getSpecIcon(Class.ClassHunter, 1),
-
-			talents: Presets.MarksmanTalents.data,
+			talents: Presets.TalentsMarksmanPhase1.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -321,10 +316,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearMarksmanDefault.gear,
+					1: Presets.GearMarksmanPhase1.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearMarksmanDefault.gear,
+					1: Presets.GearMarksmanPhase1.gear,
 				},
 			},
 		},
@@ -334,7 +329,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultName: 'Survival',
 			iconUrl: getSpecIcon(Class.ClassHunter, 2),
 
-			talents: Presets.SurvivalTalents.data,
+			talents: Presets.TalentsSurvivalDefault.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -345,10 +340,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearSurvivalDefault.gear,
+					1: Presets.GearSurvivalPhase1.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearSurvivalDefault.gear,
+					1: Presets.GearSurvivalPhase1.gear,
 				},
 			},
 		},

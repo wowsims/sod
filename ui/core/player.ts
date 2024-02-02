@@ -39,7 +39,7 @@ import {
 	UIItem_FactionRestriction,
 } from './proto/ui.js';
 
-import { ActionId } from './proto_utils/action_id.js';
+import { ActionId, ActionIdConfig } from './proto_utils/action_id.js';
 import { Database } from './proto_utils/database.js';
 import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item.js';
 import { Gear, ItemSwapGear } from './proto_utils/gear.js';
@@ -1299,4 +1299,27 @@ export class Player<SpecType extends Spec> {
 			}))
 		});
 	}
+
+	// Filter a matrix of spell IDs, min and max levels for a matching spell ID
+	getMatchingSpellActionId(src: ActionIdConfig[]): ActionId | null {
+		const match = src.find((config) =>
+			(!config.minLevel || config.minLevel <= this.getLevel()) &&
+			(!config.maxLevel || config.maxLevel >= this.getLevel())
+		)
+
+		if (match) return ActionId.fromSpellId(match.id)
+		return null
+	}
+
+	// Filter a matrix of item IDs, min and max levels for a matching item ID
+	getMatchingItemActionId(src: ActionIdConfig[]): ActionId | null {
+		const match = src.find((config) =>
+			(!config.minLevel || config.minLevel <= this.getLevel()) &&
+			(!config.maxLevel || config.maxLevel >= this.getLevel())
+		)
+
+		if (match) return ActionId.fromItemId(match.id)
+		return null
+	}
+
 }

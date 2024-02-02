@@ -122,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			leaderOfThePack: true,
 			devotionAura: TristateEffect.TristateEffectImproved,
 			stoneskinTotem: TristateEffect.TristateEffectImproved,
-			retributionAura: true,
+			retributionAura: TristateEffect.TristateEffectImproved,
 			thorns: TristateEffect.TristateEffectImproved,
 			shadowProtection: true,
 		}),
