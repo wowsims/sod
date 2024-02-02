@@ -22,7 +22,7 @@ func TestBalance(t *testing.T) {
 		Talents:       StandardTalents,
 		Consumes:      FullConsumes,
 		SpecOptions:   core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
-		Rotation:      core.GetAplRotation("../../../ui/balance_druid/apls", "default"),
+		Rotation:      core.GetAplRotation("../../../ui/balance_druid/apls", "phase_1"),
 
 		ItemFilter: ItemFilter,
 	}))
