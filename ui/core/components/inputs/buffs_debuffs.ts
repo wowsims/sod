@@ -502,6 +502,14 @@ export const AshenvalePvpBuff = withLabel(
 	'Ashenvale PvP Buff',
 );
 
+export const SparkOfInspiration = withLabel(
+	makeBooleanIndividualBuffInput({
+		actionId: () => ActionId.fromSpellId(438536),
+		fieldName: 'sparkOfInspiration',
+	}),
+	'Spark of Inspiration',
+)
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
 ///////////////////////////////////////////////////////////////////////////
@@ -857,6 +865,11 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[]
 
 export const WORLD_BUFFS_CONFIG = [
+	{
+		config: SparkOfInspiration,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower, Stat.StatMeleeHaste, Stat.StatRangedAttackPower],
+	},
 	{
 		config: BoonOfBlackfathom,
 		picker: IconPicker,
