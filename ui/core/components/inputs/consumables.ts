@@ -222,7 +222,7 @@ export const BlessedSunfruitJuice: ConsumableInputConfig<Food> = {
 };
 export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 22480, minLevel: 40 },
+		{ id: 18045, minLevel: 40 },
 	]),
 	value: Food.FoodTenderWolfSteak
 };
