@@ -284,7 +284,7 @@ func (item WowheadItemResponse) GetRequiredClass() proto.Class {
 	return proto.Class(proto.Class_value[className])
 }
 
-var reqSlotRegex = regexp.MustCompile(`Requires (Back|Belt|Bracer|Chest|Cloak|Feet|Gloves|Hands|Head|Helm|Legs|Pants|Ring|Shoulder|Trinket|Waist|Wrist)`)
+var reqSlotRegex = regexp.MustCompile(`Requires (Back|Belt|Bracer|Chest|Cloak|Boots|Feet|Gloves|Hands|Head|Helm|Legs|Pants|Ring|Shoulder|Trinket|Waist|Wrist)`)
 
 func (item WowheadItemResponse) GetRequiredItemSlot() proto.ItemType {
 	slot := item.GetTooltipRegexString(reqSlotRegex, 1)
@@ -304,6 +304,8 @@ func (item WowheadItemResponse) GetRequiredItemSlot() proto.ItemType {
 		fallthrough
 	case "Cloak":
 		return proto.ItemType_ItemTypeBack
+	case "Boots":
+		fallthrough
 	case "Feet":
 		return proto.ItemType_ItemTypeFeet
 	case "Gloves":

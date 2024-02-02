@@ -108,10 +108,12 @@ enum HunterRune {
 	RuneChestHeartOfTheLion = 409580;
 	RuneChestLoneWolf		= 415370;
 	RuneChestCobraStrikes   = 425713;
+
 	RuneHandsBeastmastery   = 409368;
 	RuneHandsChimeraShot    = 409433;
 	RuneHandsExplosiveShot  = 409552;
 	RuneHandsCarve			= 425711;
+	
 	RuneLegsKillCommand     = 409379;
 	RuneLegsFlankingStrike 	= 415320;
 	RuneLegsSniperTraining 	= 415399;
