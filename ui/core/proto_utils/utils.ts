@@ -1445,7 +1445,7 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 	}
 
 	// end-game SoD items seem to be at-most 5 ilvl above the player level
-	if (item.requiresLevel > player.getLevel() || item.ilvl - 5 > player.getLevel()){
+	if (item.requiresLevel > player.getLevel() || (player.getLevel() < 60 && item.ilvl - 5 > player.getLevel())) {
 		return false
 	}
 
