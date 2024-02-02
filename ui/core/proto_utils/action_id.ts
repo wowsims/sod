@@ -11,6 +11,13 @@ import {
 import { Database } from './database.js';
 import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 
+// Used to filter action IDs by level
+export interface ActionIdConfig {
+	id: number,
+	minLevel?: number,
+	maxLevel?: number,
+}
+
 // Uniquely identifies a specific item / spell / thing in WoW. This object is immutable.
 export class ActionId {
 	readonly itemId: number;
