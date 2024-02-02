@@ -61,13 +61,13 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		this.config = config;
 		this.currentValue = this.config.zeroValue;
 
-		if (config.showWhen) {
-			config.changedEvent(this.modObject).on(_ => {
-				const show = config.showWhen && config.showWhen(this.modObject);
-				if (!show)
-					this.rootElem.classList.add('hide');
-			});
-		}
+		this.config.changedEvent(this.modObject).on(_ => {
+			if (this.showWhen()) {
+				this.rootElem.classList.remove('hide');
+			} else {
+				this.rootElem.classList.add('hide');
+			}
+		});
 
 		if (config.tooltip) {
 			Tooltip.getOrCreateInstance(this.rootElem, {
@@ -75,6 +75,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 				title: config.tooltip
 			});
 		}
+
 		this.rootElem.appendChild(
 			<>
 				<a
@@ -106,7 +107,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		if (this.config.direction == IconEnumPickerDirection.Horizontal)
 			dropdownMenu.style.gridAutoFlow = 'column';
 
-		config.values.forEach((valueConfig, _) => {
+		this.config.values.forEach((valueConfig, _) => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option')
 			dropdownMenu.appendChild(optionContainer);
@@ -115,38 +116,18 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			option.classList.add('icon-picker-button');
 			option.dataset.disableWowheadTouchTooltip='true';
 			optionContainer.appendChild(option);
-			this.setImage(option, valueConfig);
 
-			if (valueConfig.tooltip) {
-				Tooltip.getOrCreateInstance(option, {
-					html: true,
-					title: valueConfig.tooltip
-				});
-			}
+			const updateOption = () => {
+				this.setImage(option, valueConfig);
+				if (this.showValueWhen(valueConfig)) {
+					optionContainer.classList.remove('hide');
+				} else {
+					optionContainer.classList.add('hide');
+				}
+			};
 
-			const show = !valueConfig.showWhen || valueConfig.showWhen(this.modObject);
-			if (!show) optionContainer.classList.add('hide')
-
-			if (valueConfig.showWhen) {
-				config.changedEvent(this.modObject).on(_ => {
-					const show = valueConfig.showWhen && valueConfig.showWhen(this.modObject);
-					const isShown = !optionContainer.classList.contains('hide');
-					if (show) {
-						if (!isShown) {
-							optionContainer.classList.remove('hide');
-							if (this.storedValue == valueConfig.value) {
-								this.restoreValue();
-							}
-							this.setImage(option, valueConfig);
-						}
-					} else if (isShown) {
-						if (this.getInputValue() == valueConfig.value){
-							this.storeValue();
-						}
-						optionContainer.classList.add('hide');
-					}
-				});
-			}
+			this.config.changedEvent(this.modObject).on(updateOption)
+			updateOption();
 
 			option.addEventListener('click', event => {
 				event.preventDefault();
@@ -154,6 +135,13 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 				this.storedValue = undefined;
 				this.inputChanged(TypedEvent.nextEventID());
 			});
+
+			if (valueConfig.tooltip) {
+				Tooltip.getOrCreateInstance(option, {
+					html: true,
+					title: valueConfig.tooltip
+				});
+			}
 		});
 
 		this.init();
@@ -244,5 +232,23 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			this.buttonElem.classList.add('active');
 		else
 			this.buttonElem.classList.remove('active');
+	}
+
+	showWhen(): boolean {
+		return (
+			(!this.config.showWhen || this.config.showWhen(this.modObject)) &&
+			!!this.config.values.find(valueConfig =>
+				valueConfig.actionId &&
+				valueConfig.actionId(this.modObject) != null &&
+				(!valueConfig.showWhen || valueConfig.showWhen(this.modObject))
+			)
+		);
+	}
+
+	showValueWhen(valueConfig: IconEnumValueConfig<ModObject, T>): boolean {
+		return (
+			(!valueConfig.actionId || valueConfig.actionId?.(this.modObject) != null) &&
+			(!valueConfig.showWhen || valueConfig.showWhen(this.modObject))
+		);
 	}
 }

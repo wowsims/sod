@@ -40,9 +40,9 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#ffdfba', value: EarthTotem.NoEarthTotem },
-			{ actionId: ActionId.fromSpellId(58643), value: EarthTotem.StrengthOfEarthTotem },
-			{ actionId: ActionId.fromSpellId(58753), value: EarthTotem.StoneskinTotem },
-			{ actionId: ActionId.fromSpellId(8143), value: EarthTotem.TremorTotem },
+			{ actionId: () => ActionId.fromSpellId(58643), value: EarthTotem.StrengthOfEarthTotem },
+			{ actionId: () => ActionId.fromSpellId(58753), value: EarthTotem.StoneskinTotem },
+			{ actionId: () => ActionId.fromSpellId(8143), value: EarthTotem.TremorTotem },
 		],
 		equals: (a: EarthTotem, b: EarthTotem) => a == b,
 		zeroValue: EarthTotem.NoEarthTotem,
@@ -64,8 +64,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#bae1ff', value: WaterTotem.NoWaterTotem },
-			{ actionId: ActionId.fromSpellId(58774), value: WaterTotem.ManaSpringTotem },
-			{ actionId: ActionId.fromSpellId(58757), value: WaterTotem.HealingStreamTotem },
+			{ actionId: () => ActionId.fromSpellId(58774), value: WaterTotem.ManaSpringTotem },
+			{ actionId: () => ActionId.fromSpellId(58757), value: WaterTotem.HealingStreamTotem },
 		],
 		equals: (a: WaterTotem, b: WaterTotem) => a == b,
 		zeroValue: WaterTotem.NoWaterTotem,
@@ -87,9 +87,9 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
-			{ actionId: ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
-			{ actionId: ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
-			{ actionId: ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
+			{ actionId: () => ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
+			{ actionId: () => ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
+			{ actionId: () => ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
 		],
 		equals: (a: FireTotem, b: FireTotem) => a == b,
 		zeroValue: FireTotem.NoFireTotem,
@@ -111,8 +111,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#baffc9', value: AirTotem.NoAirTotem },
-			{ actionId: ActionId.fromSpellId(8512), value: AirTotem.WindfuryTotem },
-			{ actionId: ActionId.fromSpellId(3738), value: AirTotem.WrathOfAirTotem },
+			{ actionId: () => ActionId.fromSpellId(8512), value: AirTotem.WindfuryTotem },
+			{ actionId: () => ActionId.fromSpellId(3738), value: AirTotem.WrathOfAirTotem },
 		],
 		equals: (a: AirTotem, b: AirTotem) => a == b,
 		zeroValue: AirTotem.NoAirTotem,
@@ -128,20 +128,20 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 	});
 
 	// Enchancement Shaman uses the Fire Elemental Inputs with custom inputs.
-	// if (simUI.player.spec != Spec.SpecEnhancementShaman) {
-	// 	const fireElementalBooleanIconInput = InputHelpers.makeBooleanIconInput<ShamanSpecs, ShamanTotems, Player<ShamanSpecs>>({
-	// 		getModObject: (player: Player<ShamanSpecs>) => player,
-	// 		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems || ShamanTotems.create(),
-	// 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: ShamanTotems) => {
-	// 			const newOptions = player.getSpecOptions();
-	// 			newOptions.totems = newVal;
-	// 			player.setSpecOptions(eventID, newOptions);
-	// 		},
-	// 		changeEmitter: (player: Player<Spec.SpecEnhancementShaman>) => player.specOptionsChangeEmitter,
-	// 	}, ActionId.fromSpellId(2894), "useFireElemental");
+	if (simUI.player.spec != Spec.SpecEnhancementShaman) {
+		const fireElementalBooleanIconInput = InputHelpers.makeBooleanIconInput<ShamanSpecs, ShamanTotems, Player<ShamanSpecs>>({
+			getModObject: (player: Player<ShamanSpecs>) => player,
+			getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems || ShamanTotems.create(),
+			setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: ShamanTotems) => {
+				const newOptions = player.getSpecOptions();
+				newOptions.totems = newVal;
+				player.setSpecOptions(eventID, newOptions);
+			},
+			changeEmitter: (player: Player<Spec.SpecEnhancementShaman>) => player.specOptionsChangeEmitter,
+		}, () => ActionId.fromSpellId(2894), "useFireElemental");
 
-	// 	new IconPicker(fireElementalContainer, simUI.player, fireElementalBooleanIconInput);
-	// }
+		new IconPicker(fireElementalContainer, simUI.player, fireElementalBooleanIconInput);
+	}
 
 	return contentBlock;
 }

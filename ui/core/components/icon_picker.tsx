@@ -89,11 +89,9 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		}
 
 		this.config.changedEvent(this.modObject).on(_ => {
-			const actionId = this.config.actionId(this.modObject)
-			actionId?.fillAndSet(this.rootAnchor, true, true);
+			this.config.actionId(this.modObject)?.fillAndSet(this.rootAnchor, true, true);
 
-			const show = actionId != null && (!this.config.showWhen || this.config.showWhen(this.modObject));
-			if (show) {
+			if (this.showWhen()) {
 				this.rootElem.classList.remove('hide');
 				this.restoreValue();
 			} else {
@@ -235,5 +233,12 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.setInputValue(this.storedValue);
 		this.inputChanged(TypedEvent.nextEventID());
 		this.storedValue = undefined;
+	}
+
+	showWhen() {
+		return (
+			this.config.actionId(this.modObject) != null &&
+			(!this.config.showWhen || this.config.showWhen(this.modObject))
+		);
 	}
 }

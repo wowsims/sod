@@ -7,9 +7,10 @@ import {
 import { TypedEvent } from "../../typed_event";
 
 import { Component } from "../component";
+import { IconEnumPicker } from "../icon_enum_picker";
 import { buildIconInput } from "../icon_inputs.js";
+import { IconPicker } from "../icon_picker";
 import { relevantStatOptions } from "../inputs/stat_options";
-import { TypedIconEnumPickerConfig, TypedIconPickerConfig } from "../input_helpers";
 
 import * as ConsumablesInputs from '../inputs/consumables';
 
@@ -20,14 +21,14 @@ export class ConsumesPicker extends Component {
 		super(parentElem, 'consumes-picker-root');
 		this.simUI = simUI;
 
-		// this.buildPotionsPicker();
-		// this.buildFlaskPicker();
-		// this.buildWeaponImbuePicker();
-		// this.buildFoodPicker();
-		// this.buildPhysicalBuffPicker();
-		// this.buildSpellPowerBuffPicker();
-		// this.buildEngPicker();
-		// this.buildPetPicker();
+		this.buildPotionsPicker();
+		this.buildFlaskPicker();
+		this.buildWeaponImbuePicker();
+		this.buildFoodPicker();
+		this.buildPhysicalBuffPicker();
+		this.buildSpellPowerBuffPicker();
+		this.buildEngPicker();
+		this.buildPetPicker();
 	}
 
 	private buildPotionsPicker() {
@@ -39,28 +40,19 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
 
-		this.buildPickers({
-			// GearChangeEmitter for ConjuredMinorRecombobulator
-			changeEmitters: [this.simUI.player.levelChangeEmitter, this.simUI.player.gearChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makePotionsInput(
-						relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI),
-						'Combat Potion',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeConjuredInput(
-						relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI)
-					),
-				}
-			],
-			parentElem: potionsElem,
-		})
+		const potionsOptions = ConsumablesInputs.makePotionsInput(
+			relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI),
+			'Combat Potion',
+		)
+		buildIconInput(potionsElem, this.simUI.player, potionsOptions);
+
+		const conjuredOptions = ConsumablesInputs.makeConjuredInput(
+			relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI),
+		);
+		buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 	}
 
 	private buildFlaskPicker() {
@@ -72,21 +64,16 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const flasksElem = this.rootElem.querySelector('.consumes-flasks') as HTMLElement;
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makeFlasksInput(
-						relevantStatOptions(ConsumablesInputs.FLASKS_CONFIG, this.simUI)
-					),
-				}
-			],
-			parentElem: flasksElem,
-		})
+		const flasksOptions = ConsumablesInputs.makeFlasksInput(
+			relevantStatOptions(ConsumablesInputs.FLASKS_CONFIG, this.simUI)
+		);
+		const flasksPicker = buildIconInput(flasksElem, this.simUI.player, flasksOptions);
+		
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, [flasksPicker]));
+		this.updateRow(row, [flasksPicker]);
 	}
 
 	private buildWeaponImbuePicker() {
@@ -98,28 +85,23 @@ export class ConsumesPicker extends Component {
     	</div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const imbuesElem = this.rootElem.querySelector('.consumes-weapon-imbues') as HTMLElement;
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter, this.simUI.player.gearChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makeMainHandImbuesInput(
-						relevantStatOptions(ConsumablesInputs.WEAPON_IMBUES_MH_CONFIG, this.simUI),
-						'Main-Hand',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeOffHandImbuesInput(
-						relevantStatOptions(ConsumablesInputs.WEAPON_IMBUES_OH_CONFIG, this.simUI),
-						'Off-Hand',
-					),
-				},
-			],
-			parentElem: imbuesElem,
-		})
+		const mhImbueOptions = ConsumablesInputs.makeMainHandImbuesInput(
+			relevantStatOptions(ConsumablesInputs.WEAPON_IMBUES_MH_CONFIG, this.simUI),
+			'Main-Hand',
+		);
+		const mhPicker = buildIconInput(imbuesElem, this.simUI.player, mhImbueOptions);
+
+		const ohImbueOptions = ConsumablesInputs.makeOffHandImbuesInput(
+			relevantStatOptions(ConsumablesInputs.WEAPON_IMBUES_OH_CONFIG, this.simUI),
+			'Off-Hand',
+		);
+		const ohPicker = buildIconInput(imbuesElem, this.simUI.player, ohImbueOptions);
+
+		TypedEvent.onAny([this.simUI.player.gearChangeEmitter]).on(() => this.updateRow(row, [mhPicker, ohPicker]));
+		this.updateRow(row, [mhPicker, ohPicker]);
 	}
 
 	private buildFoodPicker() {
@@ -131,21 +113,16 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makeFoodInput(
-						relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI),
-					),
-				},
-			],
-			parentElem: foodsElem,
-		})
+		const foodOptions = ConsumablesInputs.makeFoodInput(
+			relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI),
+		);
+		const foodPicker = buildIconInput(foodsElem, this.simUI.player, foodOptions);
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, [foodPicker]));
+		this.updateRow(row, [foodPicker]);
 	}
 
 	private buildPhysicalBuffPicker() {
@@ -162,31 +139,25 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const physicalConsumesElem = this.rootElem.querySelector('.consumes-physical') as HTMLElement;
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makeAgilityConsumeInput(
-						relevantStatOptions(ConsumablesInputs.AGILITY_CONSUMES_CONFIG, this.simUI),
-						'Agility',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeStrengthConsumeInput(
-						relevantStatOptions(ConsumablesInputs.STRENGTH_CONSUMES_CONFIG, this.simUI),
-						'Strength',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.BoglingRootBuff,
-				},
-			],
-			parentElem: physicalConsumesElem,
-		})
+		const agiBuffOptions = ConsumablesInputs.makeAgilityConsumeInput(
+			relevantStatOptions(ConsumablesInputs.AGILITY_CONSUMES_CONFIG, this.simUI),
+			'Agility',
+		);
+		const agiBuffPicker = buildIconInput(physicalConsumesElem, this.simUI.player, agiBuffOptions)
+
+		const strBuffOptions = ConsumablesInputs.makeStrengthConsumeInput(
+			relevantStatOptions(ConsumablesInputs.STRENGTH_CONSUMES_CONFIG, this.simUI),
+			'Strength',
+		);
+		const strBuffPicker = buildIconInput(physicalConsumesElem, this.simUI.player, strBuffOptions);
+
+		buildIconInput(physicalConsumesElem, this.simUI.player, ConsumablesInputs.BoglingRootBuff);
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, [strBuffPicker, agiBuffPicker]));
+		this.updateRow(row, [strBuffPicker, agiBuffPicker]);
 	}
 
 	private buildSpellPowerBuffPicker() {
@@ -198,40 +169,37 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const spellsCnsumesElem = this.rootElem.querySelector('.consumes-spells') as HTMLElement;
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.makeSpellPowerConsumeInput(
-						relevantStatOptions(ConsumablesInputs.SPELL_POWER_CONFIG, this.simUI),
-						'Arcane',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeFirePowerConsumeInput(
-						relevantStatOptions(ConsumablesInputs.FIRE_POWER_CONFIG, this.simUI),
-						'Fire',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeFrostPowerConsumeInput(
-						relevantStatOptions(ConsumablesInputs.FROST_POWER_CONFIG, this.simUI),
-						'Frost',
-					),
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeshadowPowerConsumeInput(
-						relevantStatOptions(ConsumablesInputs.SHADOW_POWER_CONFIG, this.simUI),
-						'Shadow',
-					),
-				},
-			],
-			parentElem: spellsCnsumesElem,
-		})
+		const spBuffOptions = ConsumablesInputs.makeSpellPowerConsumeInput(
+			relevantStatOptions(ConsumablesInputs.SPELL_POWER_CONFIG, this.simUI),
+			'Arcane',
+		);
+		const spBuffPicker =buildIconInput(spellsCnsumesElem, this.simUI.player, spBuffOptions);
+
+		const fireBuffOptions = ConsumablesInputs.makeFirePowerConsumeInput(
+			relevantStatOptions(ConsumablesInputs.FIRE_POWER_CONFIG, this.simUI),
+			'Fire',
+		);
+		const fireBuffPicker =buildIconInput(spellsCnsumesElem, this.simUI.player, fireBuffOptions);
+
+		const frostBuffOptions = ConsumablesInputs.makeFrostPowerConsumeInput(
+			relevantStatOptions(ConsumablesInputs.FROST_POWER_CONFIG, this.simUI),
+			'Frost',
+		);
+		const frostBuffPicker =buildIconInput(spellsCnsumesElem, this.simUI.player, frostBuffOptions);
+
+		const shadowBuffOptions = ConsumablesInputs.makeshadowPowerConsumeInput(
+			relevantStatOptions(ConsumablesInputs.SHADOW_POWER_CONFIG, this.simUI),
+			'Shadow',
+		);
+		const shadowBuffPicker =buildIconInput(spellsCnsumesElem, this.simUI.player, shadowBuffOptions);
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(
+			() => this.updateRow(row, [spBuffPicker, fireBuffPicker, frostBuffPicker, shadowBuffPicker])
+		);
+		this.updateRow(row, [spBuffPicker, fireBuffPicker, frostBuffPicker, shadowBuffPicker]);
 	}
 
 	private buildEngPicker() {
@@ -244,25 +212,21 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const tradeConsumesElem = this.rootElem.querySelector('.consumes-trade') as HTMLElement;
+		
+		const sapperPicker = buildIconInput(tradeConsumesElem, this.simUI.player, ConsumablesInputs.Sapper);
 
-		this.buildPickers({
-			changeEmitters: [this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter],
-			containerElem: rowElem,
-			options: [
-				{
-					getConfig: () => ConsumablesInputs.Sapper,
-				},
-				{
-					getConfig: () => ConsumablesInputs.makeExplosivesInput(
-						relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI),
-						'Explosives',
-					),
-				}
-			],
-			parentElem: tradeConsumesElem,
-		})
+		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(
+			relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI),
+			'Explosives',
+		);
+		const explosivePicker = buildIconInput(tradeConsumesElem, this.simUI.player, explosiveOptions)
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(
+			() => this.updateRow(row, [sapperPicker, explosivePicker])
+		);
+		this.updateRow(row, [sapperPicker , explosivePicker]);
 	}
 
 	private buildPetPicker() {
@@ -282,41 +246,11 @@ export class ConsumesPicker extends Component {
 		this.simUI.individualConfig.petConsumeInputs.map(iconInput => buildIconInput(petConsumesElem, this.simUI.player, iconInput));
 	}
 
-	private buildPickers({containerElem, changeEmitters, options, parentElem}: {
-		containerElem: HTMLElement,
-		changeEmitters: TypedEvent<any>[],
-		options: {
-			getConfig: () => TypedIconPickerConfig<Player<Spec>, boolean> | TypedIconEnumPickerConfig<Player<Spec>, number>
-		}[],
-		parentElem: HTMLElement,
-	}) {
-		const buildPickers = () => {
-			parentElem.innerHTML = '';
-
-			const anyPickersShown = options.map(optionSet => {
-				const config = optionSet.getConfig();
-
-				let isShown: boolean;
-				if (config.type == 'icon') {
-					isShown = !config.showWhen || config.showWhen(this.simUI.player);
-				} else {
-					isShown =
-						(!config.showWhen || config.showWhen(this.simUI.player)) &&
-						config.values.filter(value => !value.showWhen || value.showWhen(this.simUI.player)).length > 1;
-				}
-
-				if (isShown) buildIconInput(parentElem, this.simUI.player, config);
-
-				return isShown;
-			}).filter(isShown => isShown).length > 0;
-
-			if (anyPickersShown)
-				containerElem.classList.remove('hide');
-			else
-				containerElem.classList.add('hide');
-		};
-
-		TypedEvent.onAny(changeEmitters).on(buildPickers)
-		buildPickers()
+	private updateRow(rowElem: HTMLElement, pickers: (IconPicker<Player<Spec>, any> | IconEnumPicker<Player<Spec>, any>)[]) {
+		if (!!pickers.find(p => p?.showWhen())) {
+			rowElem.classList.remove('hide');
+	 } else {
+		 rowElem.classList.add('hide');
+	 }
 	}
 }

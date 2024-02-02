@@ -27,7 +27,7 @@ export type IconInputConfig<ModObject, T> = (
 export const buildIconInput = (parent: HTMLElement, player: Player<Spec>, inputConfig: IconInputConfig<Player<Spec>, any>) => {
 	if (inputConfig.type == 'icon') {
 		return new IconPicker<Player<Spec>, any>(parent, player, inputConfig);
-	} else if (inputConfig.type == 'iconEnum') {
+	} else {
 		return new IconEnumPicker<Player<Spec>, any>(parent, player, inputConfig);
 	}
 };

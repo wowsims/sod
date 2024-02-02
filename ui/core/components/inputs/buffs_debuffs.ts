@@ -146,21 +146,7 @@ export const StrengthBuffHorde = withLabel(
 	}),
 	'Strength',
 );;
-
-export const AgilityBuffAlliance = withLabel(
-	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
-			[3012, 10, 24],
-			[1477, 25, 39],
-			[4425, 40, 54],
-			[10309, 55],
-		]),
-		fieldName: 'scrollOfAgility'
-	}),
-	'Agility',
-);
-
-export const AgilityBuffHorde = InputHelpers.makeMultiIconInput([
+export const GraceOfAir = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
 			[8835, 42, 55],
@@ -170,16 +156,8 @@ export const AgilityBuffHorde = InputHelpers.makeMultiIconInput([
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
 	}),
-	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
-			[3012, 10, 24],
-			[1477, 25, 39],
-			[4425, 40, 54],
-			[10309, 55],
-		]),
-		fieldName: 'scrollOfAgility'
-	}),
-], 'Agility');
+	'Agility',
+);
 
 export const IntellectBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({
@@ -478,7 +456,7 @@ export const BoonOfBlackfathom = withLabel(
 
 export const AshenvalePvpBuff = withLabel(
 	makeBooleanIndividualBuffInput({actionId: (player) => player.getMatchingSpellActionId([[430352, 1, 39]]), fieldName: 'ashenvalePvpBuff'}),
-	'Ashenvale Pvp Buff',
+	'Ashenvale PvP Buff',
 );
 
 ///////////////////////////////////////////////////////////////////////////
@@ -718,13 +696,7 @@ export const RAID_BUFFS_CONFIG = [
 		faction: Faction.Horde,
 	},
 	{
-		config: AgilityBuffAlliance,
-		picker: IconPicker,
-		stats: [Stat.StatAgility],
-		faction: Faction.Alliance,
-	},
-	{
-		config: AgilityBuffHorde,
+		config: GraceOfAir,
 		picker: IconPicker,
 		stats: [Stat.StatAgility],
 		faction: Faction.Horde,

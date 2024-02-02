@@ -252,7 +252,6 @@ enum Explosive {
 	ExplosiveUnknown = 0;
 	ExplosiveDenseDynamite = 1;
 	ExplosiveThoriumGrenade = 2;
-	ExplosiveCoarseDynamite = 3;
 }
 
 enum Potions {
