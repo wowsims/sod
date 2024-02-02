@@ -1,6 +1,7 @@
 import { IconEnumPicker } from '../components/icon_enum_picker.js';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player.js';
+import { Spec } from '../proto/common.js';
 import {
 	AirTotem,
 	EarthTotem,
@@ -14,7 +15,6 @@ import { EventID, TypedEvent } from '../typed_event.js';
 
 import { ContentBlock } from './content_block.js';
 import { Input } from './input.js';
-import { StoneskinTotemInputs, StrengthOfEarthTotemInputs, TremorTotemInput } from './inputs/earth_totems.js';
 
 export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<ShamanSpecs>): ContentBlock {
 	let contentBlock = new ContentBlock(parentElem, 'totems-settings', {
@@ -33,9 +33,9 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#ffdfba', value: EarthTotem.NoEarthTotem },
-			...StrengthOfEarthTotemInputs,
-			...StoneskinTotemInputs,
-			TremorTotemInput,
+			StrengthOfEarthTotem,
+			StoneskinTotem,
+			TremorTotem,
 		],
 		equals: (a: EarthTotem, b: EarthTotem) => a == b,
 		zeroValue: EarthTotem.NoEarthTotem,
@@ -122,3 +122,49 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 
 	return contentBlock;
 }
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Earth Totems
+///////////////////////////////////////////////////////////////////////////
+
+export const StoneskinTotem = {
+	actionId: (player: Player<Spec>) => player.getMatchingSpellActionId([
+		{ id: 8071, 	minLevel: 4, 	maxLevel: 13 	},
+		{ id: 8154, 	minLevel: 14, maxLevel: 23 	},
+		{ id: 8155, 	minLevel: 24, maxLevel: 33 	},
+		{ id: 10406, 	minLevel: 34, maxLevel: 43 	},
+		{ id: 10407, 	minLevel: 44, maxLevel: 53 	},
+		{ id: 10408, 	minLevel: 54 								},
+	]),
+	value: EarthTotem.StoneskinTotem,
+};
+
+export const StrengthOfEarthTotem = {
+	actionId: (player: Player<Spec>) => player.getMatchingSpellActionId([
+		{ id: 8075, 	minLevel: 10, maxLevel: 23 	},
+		{ id: 8160, 	minLevel: 24, maxLevel: 37 	},
+		{ id: 8161, 	minLevel: 38, maxLevel: 51 	},
+		{ id: 10442, 	minLevel: 52, maxLevel: 59 	},
+		{ id: 25361, 	minLevel: 60 								},
+	]),
+	value: EarthTotem.StrengthOfEarthTotem,
+};
+
+export const TremorTotem = {
+	actionId: (player: Player<Spec>) => player.getMatchingSpellActionId([
+		{ id: 8143, minLevel: 18 },
+	]),
+	value: EarthTotem.TremorTotem,
+};
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Fire Totems
+///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Water Totems
+///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Air Totems
+///////////////////////////////////////////////////////////////////////////
