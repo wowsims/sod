@@ -2,7 +2,6 @@ import {
 	Consumes,
 	Flask,
 	Food,
-	Spec,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -30,9 +29,11 @@ import MeleeWeaveP1 from './apls/melee.weave.25.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const GearBeastMasteryDefault = PresetUtils.makePresetGear('Phase 1', Phase1Gear, { talentTree: 0 })
-export const GearMarksmanDefault = PresetUtils.makePresetGear('Phase 1', Phase1Gear, { talentTree: 1 })
-export const GearSurvivalDefault = PresetUtils.makePresetGear('Phase 1', Phase1Gear, { talentTree: 2 })
+export const GearBeastMasteryPhase1 = PresetUtils.makePresetGear('P1 Beast Mastery', Phase1Gear, { talentTree: 0 })
+export const GearMarksmanPhase1 = PresetUtils.makePresetGear('P1 Marksmanship', Phase1Gear, { talentTree: 1 })
+export const GearSurvivalPhase1 = PresetUtils.makePresetGear('P1 Survival', Phase1Gear, { talentTree: 2 })
+
+export const GearDefault = GearBeastMasteryPhase1
 
 export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
@@ -44,26 +45,30 @@ export const ROTATION_PRESET_MELEE_WEAVE_PHASE1 = PresetUtils.makePresetAPLRotat
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
-export const BeastMasteryTalents = {
-	name: 'Beast Mastery',
+export const TalentsBeastMasteryPhase1 = {
+	name: 'P1 Beast Mastery',
 	data: SavedTalents.create({
 		talentsString: '53000200501',
 	}),
 };
 
-export const MarksmanTalents = {
-	name: 'Marksman',
+export const TalentsMarksmanPhase1 = {
+	name: 'P1 Marksmanship',
 	data: SavedTalents.create({
 		talentsString: '-050515',
 	}),
 };
 
-export const SurvivalTalents = {
-	name: 'Survival',
+export const TalentsSurvivalPhase1 = {
+	name: 'P1 Survival',
 	data: SavedTalents.create({
 		talentsString: '--33502001101',
 	}),
 };
+
+export const TalentsBeastMasteryDefault = TalentsBeastMasteryPhase1;
+export const TalentsMarksmanDefault = TalentsMarksmanPhase1;
+export const TalentsSurvivalDefault = TalentsSurvivalPhase1;
 
 export const DefaultOptions = HunterOptions.create({
 	ammo: Ammo.RazorArrow,
