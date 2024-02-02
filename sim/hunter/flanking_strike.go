@@ -27,7 +27,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 			BonusCritRating:  0,
-			DamageMultiplier: 1,
+			DamageMultiplier: 0.5,
 			CritMultiplier:   hunter.pet.MeleeCritMultiplier(1, 0),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
