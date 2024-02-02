@@ -214,7 +214,11 @@ func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 		return
 	}
 
-	wp.primaryAbility.Cast(sim, wp.CurrentTarget)
+	if wp.Unit.CurrentMana() >= wp.primaryAbility.CurCast.Cost {
+		wp.primaryAbility.Cast(sim, wp.CurrentTarget)
+	} else {
+		wp.manaPooling = true
+	}
 }
 
 func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {

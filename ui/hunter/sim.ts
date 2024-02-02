@@ -179,39 +179,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.BeastMasteryTalents,
-			Presets.MarksmanTalents,
-			Presets.SurvivalTalents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE_DEFAULT,
-			Presets.ROTATION_PRESET_BM,
-			Presets.ROTATION_PRESET_MM,
-			Presets.ROTATION_PRESET_MM_ADVANCED,
-			Presets.ROTATION_PRESET_SV,
-			Presets.ROTATION_PRESET_SV_ADVANCED,
-			Presets.ROTATION_PRESET_AOE,
+			Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.GearBeastMasteryDefault,
-			Presets.GearMarksmanDefault,
-			Presets.GearSurvivalDefault,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecHunter>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_MM.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
-		}
+		// const talentTree = player.getTalentTree();
+		// const numTargets = player.sim.encounter.targets.length;
+		// if (numTargets >= 4) {
+		// 	return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+		// } else if (talentTree == 0) {
+		// 	return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
+		// } else if (talentTree == 1) {
+		// 	return Presets.ROTATION_PRESET_MM.rotation.rotation!;
+		// } else {
+		// 	return Presets.ROTATION_PRESET_SV.rotation.rotation!;
+		// }
+		return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
 	},
 
 	simpleRotation: (player: Player<Spec.SpecHunter>, simple: HunterRotation, cooldowns: Cooldowns): APLRotation => {
