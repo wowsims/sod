@@ -32,7 +32,6 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 
 	// Magical resistance.
 	if spell.Flags.Matches(SpellFlagBinary) {
-		// Already accounted for in the binary hit check
 		return 1, OutcomeEmpty
 	}
 
@@ -80,22 +79,25 @@ func (unit *Unit) resistCoeff(school SpellSchool, attacker *Unit, binary bool, p
 		resistance = 0
 	}
 
-	effectiveResistance := resistance
+	levelBasedResist := 0.0
 	if !binary {
-		levelBasedResistance := 0.0
-		if unit.Type == EnemyUnit {
-			levelBasedResistance = LevelBasedNPCSpellResistancePerLevel * float64(max(0, unit.Level-attacker.Level))
-		}
-		effectiveResistance += levelBasedResistance
+		levelBasedResist = unit.levelBasedResist(attacker)
 	}
 
 	// Pre-TBC all dots that dont have an initial damage component
 	// use a 1/10 of the resistance score
 	if pureDot {
-		effectiveResistance /= 10
+		resistance /= 10
 	}
 
-	return min(resistanceCap, effectiveResistance) / resistanceCap
+	return min(resistanceCap, resistance)/resistanceCap + levelBasedResist
+}
+
+func (unit *Unit) levelBasedResist(attacker *Unit) float64 {
+	if unit.Type == EnemyUnit && unit.Level > attacker.Level {
+		return AverageMagicPartialResistPerLevelMultiplier * float64(unit.Level-attacker.Level)
+	}
+	return 0
 }
 
 func (unit *Unit) binaryHitChance(school SpellSchool, attacker *Unit) float64 {
