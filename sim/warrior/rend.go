@@ -29,7 +29,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlagBleed,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10,
+			Cost:   10 - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

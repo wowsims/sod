@@ -51,7 +51,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   5,
+			Cost:   5 - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

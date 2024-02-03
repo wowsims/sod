@@ -18,7 +18,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | SpellFlagBloodSurge,
 
 		RageCost: core.RageCostOptions{
-			Cost:   30,
+			Cost:   30 - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

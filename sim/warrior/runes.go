@@ -13,9 +13,11 @@ func (warrior *Warrior) ApplyRunes() {
 
 	if warrior.GetMHWeapon() != nil { // This check is to stop memory dereference error if unarmed
 		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {
-			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.1, 1)
+			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.2, 1)
 		}
 	}
+
+	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
 
 	warrior.applyBloodFrenzy()
 	warrior.applyFlagellation()
@@ -136,7 +138,7 @@ func (warrior *Warrior) applyBloodSurge() {
 	}
 
 	warrior.BloodSurgeAura = warrior.RegisterAura(core.Aura{
-		Label:    "BloodSurge Proc",
+		Label:    "Blood Surge Proc",
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -155,7 +157,7 @@ func (warrior *Warrior) applyBloodSurge() {
 	})
 
 	warrior.RegisterAura(core.Aura{
-		Label:    "BloodSurge",
+		Label:    "Blood Surge",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -169,7 +171,7 @@ func (warrior *Warrior) applyBloodSurge() {
 				return
 			}
 
-			if sim.RandomFloat("BloodSurge") > 0.3 {
+			if sim.RandomFloat("Blood Surge") > 0.3 {
 				return
 			}
 

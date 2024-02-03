@@ -15,7 +15,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20,
+			Cost:   20 - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -32,7 +32,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 			return warrior.PseudoStats.CanBlock
 		},
 
-		BonusCritRating: 5 * core.CritRatingPerCritChance,
+		BonusCritRating:  5 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1.3,

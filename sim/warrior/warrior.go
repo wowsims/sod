@@ -42,6 +42,9 @@ type Warrior struct {
 	Above80RageCBRActive bool
 	BloodSurgeAura       *core.Aura
 
+	// Rune passive
+	FocusedRageDiscount float64
+
 	// Reaction time values
 	reactionTime       time.Duration
 	lastBloodsurgeProc time.Duration

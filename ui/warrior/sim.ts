@@ -27,7 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	cssScheme: 'warrior',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		"Bonus damage enchant is not working yet.",
+		"Rage conversion is a bit off for non 60s",
 	],
 
 	// All stats for which EP should be calculated.

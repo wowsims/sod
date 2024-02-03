@@ -22,7 +22,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | SpellFlagBloodSurge,
 
 		RageCost: core.RageCostOptions{
-			Cost: 25,
+			Cost: 25 - warrior.FocusedRageDiscount,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
