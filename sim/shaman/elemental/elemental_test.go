@@ -18,15 +18,12 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p1"),
+		GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1"),
 		Talents:          StandardTalents,
 		Consumes:         FullConsumes,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
-		Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "default"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/elemental_shaman/apls", "advanced"),
-		},
+		Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -81,7 +78,7 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "0532001523212351322301351-005052031"
+var StandardTalents = "25003105"
 
 var NoTotems = &proto.ShamanTotems{}
 var BasicTotems = &proto.ShamanTotems{

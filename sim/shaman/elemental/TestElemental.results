@@ -1,0 +1,233 @@
+character_stats_results: {
+ key: "TestElemental-CharacterStats-Default"
+ value: {
+  final_stats: 81.84
+  final_stats: 44.44
+  final_stats: 141.24
+  final_stats: 136.84
+  final_stats: 109.34
+  final_stats: 110
+  final_stats: 0
+  final_stats: 9
+  final_stats: 0
+  final_stats: 0
+  final_stats: 14
+  final_stats: 0
+  final_stats: 22.25
+  final_stats: 1
+  final_stats: 11.89569
+  final_stats: 0
+  final_stats: 10
+  final_stats: 297.28
+  final_stats: 1
+  final_stats: 9.01512
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2277.6
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1662.38
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1489.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 15
+  final_stats: 21
+  final_stats: 31
+  final_stats: 9
+  final_stats: 0
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestElemental-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.01589
+  weights: 0
+  weights: 0.1175
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.54994
+  weights: 0.2551
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 31.96529
+  tps: 31.96529
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 36.17959
+  tps: 36.17959
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 31.96529
+  tps: 31.96529
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-StormshroudArmor"
+ value: {
+  dps: 16.67222
+  tps: 16.67222
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 35.51187
+  tps: 35.51187
+ }
+}
+dps_results: {
+ key: "TestElemental-Average-Default"
+ value: {
+  dps: 36.74255
+  tps: 32.79874
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 37.49985
+  tps: 33.74919
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 37.49985
+  tps: 33.74919
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 48.81344
+  tps: 42.97824
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 27.20855
+  tps: 24.84411
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 27.20855
+  tps: 24.84411
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 45.26758
+  tps: 39.79216
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 37.07302
+  tps: 33.39714
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 37.07302
+  tps: 33.39714
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 48.81344
+  tps: 42.97824
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 27.96593
+  tps: 25.43549
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 27.96593
+  tps: 25.43549
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 45.26758
+  tps: 39.79216
+ }
+}
+dps_results: {
+ key: "TestElemental-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 37.07302
+  tps: 33.39714
+ }
+}
