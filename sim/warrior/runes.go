@@ -27,6 +27,7 @@ func (warrior *Warrior) ApplyRunes() {
 	warrior.applyBloodSurge()
 
 	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
+	// Precise Timing is implemented on slam.go
 
 }
 

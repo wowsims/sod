@@ -4,11 +4,23 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warrior *Warrior) registerSlamSpell() {
 	if warrior.Level < 30 {
 		return
+	}
+
+	var castTime time.Duration
+	var cooldown time.Duration
+
+	if warrior.HasRune(proto.WarriorRune_RunePreciseTiming) {
+		castTime = 0
+		cooldown = 6 * time.Second
+	} else {
+		castTime = time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam)
+		cooldown = 0
 	}
 
 	flatDamageBonus := map[int32]float64{
@@ -36,7 +48,11 @@ func (warrior *Warrior) registerSlamSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam),
+				CastTime: castTime,
+			},
+			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(),
+				Duration: cooldown,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
