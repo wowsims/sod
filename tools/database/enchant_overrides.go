@@ -89,7 +89,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 2646, SpellId: 27837, Name: "2H Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 2564, SpellId: 23800, Name: "Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 803, SpellId: 13898, Name: "Fiery Weapon", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
-	{EffectId: 241, SpellId: 13503, Name: "Lesser Striking", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
+	{EffectId: 241, SpellId: 13503, Name: "Lesser Striking", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 1897, ItemId: 16250, SpellId: 20031, Name: "Superior Striking", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 1900, ItemId: 16252, SpellId: 20034, Name: "Crusader", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 
