@@ -9,7 +9,6 @@ import (
 
 const FlameShockRanks = 6
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var FlameShockSpellId = [FlameShockRanks + 1]int32{0, 8050, 8052, 8053, 10447, 10448, 29228}
 var FlameShockBaseDamage = [FlameShockRanks + 1]float64{0, 25, 51, 95, 164, 245, 292}
 var FlameShockBaseDotDamage = [FlameShockRanks + 1]float64{0, 28, 48, 96, 168, 256, 320}

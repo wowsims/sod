@@ -13,7 +13,6 @@ const ChainLightningTargetCount = 3
 // 30% reduction per bounce
 const ChainLightningBounceCoeff = .7
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var ChainLightningSpellId = [ChainLightningRanks + 1]int32{0, 421, 930, 2860, 10605}
 var ChainLightningBaseDamage = [ChainLightningRanks + 1][]float64{{0}, {200, 227}, {288, 323}, {391, 438}, {505, 564}}
 var ChainLightningSpellCoef = [ChainLightningRanks + 1]float64{0, .714, .714, .714, .714}

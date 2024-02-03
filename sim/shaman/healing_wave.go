@@ -9,7 +9,6 @@ import (
 
 const HealingWaveRanks = 10
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var HealingWaveSpellId = [HealingWaveRanks + 1]int32{0, 331, 332, 547, 913, 939, 959, 8005, 10395, 10396, 25357}
 var HealingWaveBaseHealing = [HealingWaveRanks + 1][]float64{{0}, {36, 47}, {69, 83}, {136, 163}, {279, 328}, {389, 454}, {552, 639}, {759, 874}, {1040, 1191}, {1389, 1583}, {1620, 1850}}
 var HealingWaveSpellCoef = [HealingWaveRanks + 1]float64{0, .123, .271, .5, .793, .857, .857, .857, .857, .857, .857}

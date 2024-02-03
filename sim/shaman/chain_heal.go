@@ -13,7 +13,6 @@ const ChainHealTargetCount = 3
 // 50% reduction per bounce
 const ChainHealBounceCoeff = .5
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622}
 var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {419, 479}}
 var ChainHealSpellCoef = [ChainHealRanks + 1]float64{0, .714, .714}

@@ -9,7 +9,6 @@ import (
 
 const LightningBoltRanks = 10
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var LightningBoltSpellId = [LightningBoltRanks + 1]int32{0, 403, 529, 548, 915, 943, 6041, 10391, 10392, 15207, 15208}
 var LightningBoltBaseDamage = [LightningBoltRanks + 1][]float64{{0}, {15, 17}, {28, 33}, {48, 57}, {88, 100}, {131, 149}, {179, 202}, {235, 264}, {291, 326}, {357, 400}, {428, 477}}
 var LightningBoltSpellCoef = [LightningBoltRanks + 1]float64{0, .1233, .314, .554, .857, .857, .857, .857, .857, .857, .857}

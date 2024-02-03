@@ -9,7 +9,6 @@ import (
 
 const LesserHealingWaveRanks = 6
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var LesserHealingWaveSpellId = [LesserHealingWaveRanks + 1]int32{0, 8004, 8008, 8010, 10466, 10467, 10468}
 var LesserHealingWaveBaseHealing = [LesserHealingWaveRanks + 1][]float64{{0}, {170, 195}, {257, 292}, {349, 394}, {473, 529}, {649, 723}, {832, 928}}
 var LesserHealingWaveSpellCoef = [LesserHealingWaveRanks + 1]float64{0, .429, .429, .429, .429, .429, .429}
