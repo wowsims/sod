@@ -64,6 +64,7 @@ type Hunter struct {
 	Volley         *core.Spell
 	CarveMh        *core.Spell
 	CarveOh        *core.Spell
+	WingClip       *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -116,14 +117,14 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.registerArcaneShotSpell(arcaneShotTimer)
 	hunter.registerExplosiveShotSpell(arcaneShotTimer)
-
+	hunter.registerAimedShotSpell(arcaneShotTimer)
 	hunter.registerMultiShotSpell(multiShotTimer)
-
 	hunter.registerChimeraShotSpell()
 
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
 	hunter.registerCarveSpell()
+	hunter.registerWingClipSpell()
 
 	hunter.registerKillCommand()
 	//hunter.registerRapidFireCD()
