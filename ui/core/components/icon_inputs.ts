@@ -96,13 +96,13 @@ interface TristateInputConfig<T, ModObject> {
 	actionId: (modObj: ModObject) => ActionId | null
 	impId: ActionId
 	fieldName: keyof T
-	faction?: Faction
+	showWhen?: (modObj: ModObject) => boolean
 }
 
 export function makeTristateRaidBuffInput<SpecType extends Spec>(config: TristateInputConfig<RaidBuffs, Player<SpecType>>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, number> {
 	return InputHelpers.makeTristateIconInput<any, RaidBuffs, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
-		showWhen: (player: Player<SpecType>) => (!config.faction || config.faction == player.getFaction()),
+		showWhen: (player: Player<SpecType>) => (!config.showWhen || config.showWhen(player)),
 		getValue: (player: Player<SpecType>) => player.getRaid()!.getBuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: RaidBuffs) => player.getRaid()!.setBuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
@@ -112,7 +112,7 @@ export function makeTristateRaidBuffInput<SpecType extends Spec>(config: Tristat
 export function makeTristateIndividualBuffInput<SpecType extends Spec>(config: TristateInputConfig<IndividualBuffs,  Player<SpecType>>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, number> {
 	return InputHelpers.makeTristateIconInput<any, IndividualBuffs, Player<SpecType>>({
 		getModObject: (player: Player<SpecType>) => player,
-		showWhen: (player: Player<SpecType>) => (!config.faction || config.faction == player.getFaction()),
+		showWhen: (player: Player<SpecType>) => (!config.showWhen || config.showWhen(player)),
 		getValue: (player: Player<SpecType>) => player.getBuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: IndividualBuffs) => player.setBuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter])

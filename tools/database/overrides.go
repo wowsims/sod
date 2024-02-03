@@ -17,6 +17,8 @@ var ItemOverrides = []*proto.UIItem{
 	{Id: 211848, Name: "Blackfathom Mana Oil", Icon: "inv_potion_99", Stats: stats.Stats{stats.MP5: 12, stats.SpellHit: 2}.ToFloatArray()},
 	{Id: 211845, Name: "Blackfathom Sharpening Stone", Icon: "inv_misc_rune_04", Stats: stats.Stats{stats.MeleeHit: 2}.ToFloatArray()},
 
+	// {Id: 209534, Name: "Azshari Arbalest", Icon: "inv_weapon_crossbow_04", Stats: stats.Stats{stats.RangedAttackPower: 17}.ToFloatArray()},
+
 	// SOD Fiery Wrath
 	FieryRandomEnchantItem(6611, "Belt of Fiery Wrath (11)", 29, 24, proto.ItemType_ItemTypeWaist, proto.ArmorType_ArmorTypeCloth, 11, 24, "inv_misc_bandana_01"),
 	FieryRandomEnchantItem(14191, "Gloves of Fiery Wrath (11)", 30, 25, proto.ItemType_ItemTypeHands, proto.ArmorType_ArmorTypeCloth, 11, 27, "inv_gauntlets_20"),
@@ -130,15 +132,19 @@ var ItemAllowList = map[int32]struct{}{
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
+	9653:  {}, // Speedy Racer Goggles
+	12104: {}, // Brindlethorn Tunic
 	17782: {}, // talisman of the binding shard
 	17783: {}, // talisman of the binding fragment
 	17802: {}, // Deprecated version of Thunderfury
+	20522: {}, // Feral Staff
 	33350: {},
 	34576: {}, // Battlemaster's Cruelty
 	34577: {}, // Battlemaster's Depreavity
 	34578: {}, // Battlemaster's Determination
 	34579: {}, // Battlemaster's Audacity
 	34580: {}, // Battlemaster's Perseverence
+
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

@@ -658,6 +658,13 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// SoD World Buffs
+	if individualBuffs.SparkOfInspiration {
+		character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
+		character.AddStat(stats.SpellPower, 42)
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.1
+		character.PseudoStats.RangedSpeedMultiplier *= 1.1
+	}
+
 	if individualBuffs.BoonOfBlackfathom {
 		character.AddStat(stats.MeleeCrit, 2*CritRatingPerCritChance)
 		// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)

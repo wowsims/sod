@@ -44,15 +44,17 @@ export const AllStatsBuff = withLabel(
 );
 
 // Separate Strength buffs allow us to use a boolean pickers for Horde specifically
-export const AllStatsPercentBuffAlliance = InputHelpers.makeMultiIconInput([
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(20217), fieldName: 'blessingOfKings'}),
-	makeBooleanRaidBuffInput({actionId: () => ActionId.fromSpellId(409580), fieldName: 'aspectOfTheLion'}),
+export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput([
+	makeBooleanIndividualBuffInput({
+		actionId: () => ActionId.fromSpellId(20217),
+		fieldName: 'blessingOfKings',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
+	}),
+	makeBooleanRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(409580),
+		fieldName: 'aspectOfTheLion',
+	}),
 ], 'Stats %');
-
-export const AllStatsPercentBuffHorde = withLabel(
-	makeBooleanRaidBuffInput({actionId: () => ActionId.fromSpellId(409580), fieldName: 'aspectOfTheLion'}),
-	'Stats %'
-);
 
 export const ArmorBuff = InputHelpers.makeMultiIconInput([
 	makeTristateRaidBuffInput({
@@ -128,8 +130,13 @@ export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput([
 		]),
 		impId: ActionId.fromSpellId(20048),
 		fieldName: 'blessingOfMight',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
 	}),
-	makeBooleanRaidBuffInput({actionId: () => ActionId.fromSpellId(425600), fieldName: 'hornOfLordaeron'}),
+	makeBooleanRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(425600),
+		fieldName: 'hornOfLordaeron',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
+	}),
 ], 'Paladin Physical');
 
 export const StrengthBuffHorde = withLabel(
@@ -142,10 +149,12 @@ export const StrengthBuffHorde = withLabel(
 			{ id: 25361, 	minLevel: 60 								},
 		]),
 		impId: ActionId.fromSpellId(16295),
-		fieldName: 'strengthOfEarthTotem'
+		fieldName: 'strengthOfEarthTotem',
+		showWhen: (player) => player.getFaction() == Faction.Horde,
 	}),
 	'Strength',
 );;
+
 export const GraceOfAir = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -155,6 +164,7 @@ export const GraceOfAir = withLabel(
 		]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
+		showWhen: (player) => player.getFaction() == Faction.Horde,
 	}),
 	'Agility',
 );
@@ -324,6 +334,7 @@ export const BlessingOfWisdom = withLabel(
 		]),
 		impId: ActionId.fromSpellId(20245),
 		fieldName: 'blessingOfWisdom',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
 	}),
 	'Blessing of Wisdom',
 );
@@ -338,6 +349,7 @@ export const ManaSpringTotem = withLabel(
 		]),
 		impId: ActionId.fromSpellId(16208),
 		fieldName: 'manaSpringTotem',
+		showWhen: (player) => player.getFaction() == Faction.Horde,
 	}),
 	'Mana Spring Totem',
 );
@@ -378,6 +390,7 @@ export const RetributionAura = withLabel(
 		]),
 		impId: ActionId.fromSpellId(20092),
 		fieldName: 'retributionAura',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
 	}),
 	'Retribution Aura',
 );
@@ -488,6 +501,14 @@ export const AshenvalePvpBuff = withLabel(
 	}),
 	'Ashenvale PvP Buff',
 );
+
+export const SparkOfInspiration = withLabel(
+	makeBooleanIndividualBuffInput({
+		actionId: () => ActionId.fromSpellId(438536),
+		fieldName: 'sparkOfInspiration',
+	}),
+	'Spark of Inspiration',
+)
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
@@ -671,6 +692,7 @@ export const JudgementOfWisdom = withLabel(
 			{ id: 20355, minLevel: 58 							},
 		]),
 		fieldName: 'judgementOfWisdom',
+		showWhen: (player) => player.getFaction() == Faction.Alliance,
 	}),
 	'Judgement of Wisdom',
 );
@@ -684,6 +706,7 @@ export const JudgementOfLight = makeBooleanDebuffInput({
 		{ id: 20346, minLevel: 60 							},
 	]),
 	fieldName: 'judgementOfLight',
+	showWhen: (player) => player.getFaction() == Faction.Alliance,
 });
 export const CurseOfVulnerability = makeBooleanDebuffInput({
 	actionId: (player) => player.getMatchingSpellActionId([
@@ -722,16 +745,9 @@ export const RAID_BUFFS_CONFIG = [
 		stats: []
 	},
 	{
-		config: AllStatsPercentBuffAlliance,
+		config: AllStatsPercentBuff,
 		picker: MultiIconPicker,
 		stats: [],
-		faction: Faction.Alliance,
-	},
-	{
-		config: AllStatsPercentBuffHorde,
-		picker: IconPicker,
-		stats: [],
-		faction: Faction.Horde,
 	},
 	{
 		config: ArmorBuff,
@@ -747,19 +763,16 @@ export const RAID_BUFFS_CONFIG = [
 		config: PaladinPhysicalBuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower],
-	 faction: Faction.Alliance,
 	},
 	{
 		config: StrengthBuffHorde,
 		picker: IconPicker,
 		stats: [Stat.StatStrength],
-		faction: Faction.Horde,
 	},
 	{
 		config: GraceOfAir,
 		picker: IconPicker,
 		stats: [Stat.StatAgility],
-		faction: Faction.Horde,
 	},
 	{
 		config: IntellectBuff,
@@ -805,7 +818,6 @@ export const RAID_BUFFS_CONFIG = [
 		config: DamageReductionPercentBuff,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
-		faction: Faction.Alliance,
 	},
 	{
 		config: ResistanceBuff,
@@ -821,13 +833,11 @@ export const RAID_BUFFS_CONFIG = [
 		config: BlessingOfWisdom,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
-		faction: Faction.Alliance,
 	},
 	{
 		config: ManaSpringTotem,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
-		faction: Faction.Horde,
 	},
 
 	// // Misc Buffs
@@ -856,6 +866,11 @@ export const RAID_BUFFS_CONFIG = [
 
 export const WORLD_BUFFS_CONFIG = [
 	{
+		config: SparkOfInspiration,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower, Stat.StatMeleeHaste, Stat.StatRangedAttackPower],
+	},
+	{
 		config: BoonOfBlackfathom,
 		picker: IconPicker,
 		stats: [
@@ -868,10 +883,7 @@ export const WORLD_BUFFS_CONFIG = [
 	{
 		config: AshenvalePvpBuff,
 		picker: IconPicker,
-		stats: [
-			Stat.StatAttackPower,
-			Stat.StatSpellPower,
-		]
+		stats: [Stat.StatAttackPower, Stat.StatSpellPower,],
 	},
 	{
 		config: FengusFerocity,
@@ -906,11 +918,7 @@ export const WORLD_BUFFS_CONFIG = [
 	{
 		config: WarchiefsBlessing,
 		picker: IconPicker,
-		stats: [
-			Stat.StatHealth,
-			Stat.StatMeleeHaste,
-			Stat.StatMP5,
-		]
+		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5]
 	},
 ] as PickerStatOptions[];
 
