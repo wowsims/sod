@@ -258,6 +258,7 @@ enum Potions {
 	UnknownPotion = 0;
 	LesserManaPotion = 1;
 	ManaPotion = 2;
+	GreaterManaPotion = 3;
 }
 
 enum Conjured {
@@ -361,6 +362,7 @@ enum Food {
 	FoodHotWolfRibs = 8;
 	FoodTenderWolfSteak = 9;
 	FoodSmokedSagefish = 10;
+	FoodSagefishDelight = 11;
 }
 
 enum SaygesFortune {
