@@ -12,6 +12,17 @@ func init() {
 	core.AddEffectsToTest = false
 	// Keep these in order by item ID.
 
+	// Lesser Striking
+	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
+	})
+
+	// Fiery Weapon
 	core.NewEnchantEffect(803, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -52,7 +63,7 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 5.0, &ppmm, aura)
 	})
 
-	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
+	// Superior Striking
 	core.AddWeaponEffect(1897, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()
 		if slot == proto.ItemSlot_ItemSlotOffHand {
@@ -62,6 +73,7 @@ func init() {
 		w.BaseDamageMax += 5
 	})
 
+	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
 	// ApplyCrusaderEffect will be applied twice if there is two weapons with this enchant.
 	//   However, it will automatically overwrite one of them, so it should be ok.
 	//   A single application of the aura will handle both mh and oh procs.
