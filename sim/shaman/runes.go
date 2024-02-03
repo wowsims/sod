@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -120,10 +121,41 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 }
 
+const ShamanPowerSurgeProcChance = .05
+
 func (shaman *Shaman) applyPowerSurge() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
 		return
 	}
+
+	var affectedSpells []*core.Spell
+
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:    "Power Surge Proc",
+		ActionID: core.ActionID{SpellID: 440285},
+		Duration: time.Second * 10,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.ChainLightning,
+					shaman.LightningBolt,
+					{shaman.LavaBurst},
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode != int(SpellCode_ShamanLightningBolt) && spell.SpellCode != int(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
+				return
+			}
+			aura.Deactivate(sim)
+		},
+	})
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge",
@@ -131,6 +163,16 @@ func (shaman *Shaman) applyPowerSurge() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && slices.Contains(shaman.FlameShock, spell) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				procAura.Activate(sim)
+			}
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && slices.Contains(shaman.FlameShock, spell) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				procAura.Activate(sim)
+			}
 		},
 	})
 }
