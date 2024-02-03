@@ -48,6 +48,9 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if result.Outcome.Matches(OutcomeMiss) {
 				return
 			}
+			if !spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				return
+			}
 
 			damage := result.Damage
 			if result.Outcome.Matches(OutcomeDodge | OutcomeParry) {
