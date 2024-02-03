@@ -138,10 +138,10 @@ binary_dist: $(OUT_DIR)/.dirstamp
 	rm -rf binary_dist
 	mkdir -p binary_dist
 	cp -r dist/ binary_dist/
-	rm binary_dist/$(BASE_DIR)/lib.wasm
+	rm -f binary_dist/$(BASE_DIR)/lib.wasm
 	rm -rf binary_dist/$(BASE_DIR)/assets/db_inputs
-	rm binary_dist/$(BASE_DIR)/assets/database/db.bin
-	rm binary_dist/$(BASE_DIR)/assets/database/leftover_db.bin
+	rm -f binary_dist/$(BASE_DIR)/assets/database/db.bin
+	rm -f binary_dist/$(BASE_DIR)/assets/database/leftover_db.bin
 
 # Rebuild the protobuf generated code.
 .PHONY: proto
