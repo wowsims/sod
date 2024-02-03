@@ -59,6 +59,10 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.MP5: 3,
 			})
+		case proto.Food_FoodSagefishDelight:
+			character.AddStats(stats.Stats{
+				stats.MP5: 6,
+			})
 		case proto.Food_FoodGrilledSquid:
 			character.AddStats(stats.Stats{
 				stats.Agility: 10,
@@ -257,6 +261,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	minRoll := map[int32]float64{
 		3385:  280.0,
 		3827:  455.0,
+		6149:  700.0,
 		4381:  150.0,
 		12662: 900.0,
 	}[itemId]
@@ -264,6 +269,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	maxRoll := map[int32]float64{
 		3385:  360.0,
 		3827:  585.0,
+		6149:  900.0,
 		4381:  250.0,
 		12662: 1500.0,
 	}[itemId]
@@ -271,6 +277,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	cdDuration := map[int32]time.Duration{
 		3385:  time.Minute * 2,
 		3827:  time.Minute * 2,
+		6149:  time.Minute * 2,
 		4381:  time.Minute * 5,
 		12662: time.Minute * 2,
 	}[itemId]
@@ -304,10 +311,11 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 }
 
 func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	if potionType == proto.Potions_LesserManaPotion || potionType == proto.Potions_ManaPotion {
+	if potionType == proto.Potions_LesserManaPotion || potionType == proto.Potions_ManaPotion || potionType == proto.Potions_GreaterManaPotion {
 		itemId := map[proto.Potions]int32{
-			proto.Potions_LesserManaPotion: 3385,
-			proto.Potions_ManaPotion:       3827,
+			proto.Potions_LesserManaPotion:  3385,
+			proto.Potions_ManaPotion:        3827,
+			proto.Potions_GreaterManaPotion: 6149,
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)
