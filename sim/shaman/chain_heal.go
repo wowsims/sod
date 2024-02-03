@@ -13,11 +13,11 @@ const ChainHealTargetCount = 3
 // 50% reduction per bounce
 const ChainHealBounceCoeff = .5
 
-var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622}
-var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {419, 479}}
-var ChainHealSpellCoef = [ChainHealRanks + 1]float64{0, .714, .714}
-var ChainHealCastTime = [ChainHealRanks + 1]int32{0, 2500, 2500}
-var ChainHealManaCost = [ChainHealRanks + 1]float64{0, 260, 315}
+var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622, 10623}
+var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {419, 479}, {567, 646}}
+var ChainHealSpellCoef = [ChainHealRanks + 1]float64{0, .714, .714, .714}
+var ChainHealCastTime = [ChainHealRanks + 1]int32{0, 2500, 2500, 2500}
+var ChainHealManaCost = [ChainHealRanks + 1]float64{0, 260, 315, 405}
 var ChainHealLevel = [ChainHealRanks + 1]int{0, 40, 46, 54}
 
 func (shaman *Shaman) registerChainHealSpell() {
@@ -51,13 +51,18 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
+	flags := core.SpellFlagHelpful
+	if !isOverload {
+		flags |= core.SpellFlagAPL
+	}
+
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+		Flags:       flags,
 
 		RequiredLevel: level,
 		Rank:          rank,

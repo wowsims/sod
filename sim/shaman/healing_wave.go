@@ -47,13 +47,18 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 	manaCost := HealingWaveManaCost[rank]
 	level := HealingWaveLevel[rank]
 
+	flags := core.SpellFlagHelpful
+	if !isOverload {
+		flags |= core.SpellFlagAPL
+	}
+
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+		Flags:       flags,
 
 		RequiredLevel: level,
 		Rank:          rank,

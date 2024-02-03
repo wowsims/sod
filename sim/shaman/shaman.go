@@ -221,6 +221,8 @@ func (shaman *Shaman) Initialize() {
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()
+
+	shaman.RegisterHealingSpells()
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
