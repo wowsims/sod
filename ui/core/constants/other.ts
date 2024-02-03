@@ -1,4 +1,20 @@
-export const CURRENT_PHASE = 1;
+export enum Phase {
+  Phase1 = 1,
+  Phase2,
+  Phase3,
+  Phase4,
+  Phase5,
+};
+
+export const LEVEL_THRESHOLDS: Record<Phase, number> = {
+  [Phase.Phase1]: 25,
+  [Phase.Phase2]: 40,
+  [Phase.Phase3]: 50,
+  [Phase.Phase4]: 60,
+  [Phase.Phase5]: 60,
+};
+
+export const CURRENT_PHASE = Phase.Phase1;
 
 // Github pages serves our site under the /sod directory (because the repo name is wotlk)
 export const REPO_NAME = 'sod';

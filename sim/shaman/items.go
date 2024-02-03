@@ -1,0 +1,4 @@
+package shaman
+
+func init() {
+}

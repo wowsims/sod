@@ -37,6 +37,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatFirePower,
+		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -72,8 +74,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.22,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.67,
-			[Stat.StatSpellHaste]: 1.29,
+			[Stat.StatFirePower]: 0.48,
+			[Stat.StatNaturePower]: 0.52,
+			[Stat.StatSpellHit]: 4.52,
+			[Stat.StatSpellCrit]: 1.01,
+			[Stat.StatSpellHaste]: .87,
 			[Stat.StatMP5]: 0.08,
 		}),
 		// Default consumes settings.
@@ -86,6 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
+			aspectOfTheLion: true,
 			divineSpirit: true,
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			moonkinAura: true,
@@ -130,21 +136,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.StandardTalents,
-			Presets.Phase4Talents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
-			Presets.ROTATION_PRESET_ADVANCED,
+			Presets.Phase1PresetAPL,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			Presets.BlankPresetGear,
+			Presets.Phase1PresetGear,
 		],
 	},
 
 	autoRotation: (_: Player<Spec.SpecElementalShaman>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.DefaultAPL.rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -5,6 +5,7 @@ import {Player} from '../player.js';
 import {Sim} from '../sim.js';
 import {EventID} from '../typed_event.js';
 import {emptyUnitReference} from '../proto_utils/utils.js';
+import { Phase } from '../constants/other.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
@@ -52,13 +53,12 @@ export function makeShowEPValuesSelector(parent: HTMLElement, sim: Sim): Boolean
 export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim> {
 	return new EnumPicker<Sim>(parent, sim, {
 		extraCssClasses: ['phase-selector'],
-		values: [
-			{ name: 'Phase 1', value: 1 },
-			{ name: 'Phase 2', value: 2 },
-			{ name: 'Phase 3', value: 3 },
-			{ name: 'Phase 4', value: 4 },
-			{ name: 'Phase 5', value: 5 },
-		],
+		values: (Object.keys(Phase).filter((v) => isNaN(Number(v))) as Array<keyof typeof Phase>).map(key => {
+			return {
+				name: `Phase ${Phase[key]}`,
+				value: Phase[key],
+			}
+		}),
 		changedEvent: (sim: Sim) => sim.phaseChangeEmitter,
 		getValue: (sim: Sim) => sim.getPhase(),
 		setValue: (eventID: EventID, sim: Sim, newValue: number) => {

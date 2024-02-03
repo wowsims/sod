@@ -26,6 +26,10 @@ type OnStatsChange func(aura *Aura, sim *Simulation, oldStats stats.Stats, newSt
 // or anything that comes from the final result of the spell.
 type OnSpellHit func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult)
 
+// OnDamage is called after damage is calculated. Use it for proc effects
+// or anything that comes from the final result of dealing damage.
+type OnDamage func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult)
+
 // OnPeriodicDamage is called when dots tick, after damage is calculated. Use it for proc effects
 // or anything that comes from the final result of a tick.
 type OnPeriodicDamage func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult)
@@ -66,6 +70,7 @@ type Aura struct {
 	onSpellHitTakenIndex       int32 // Position of this aura's index in the onSpellHitAuras array.
 	onPeriodicDamageDealtIndex int32 // Position of this aura's index in the onPeriodicDamageAuras array.
 	onPeriodicDamageTakenIndex int32 // Position of this aura's index in the onPeriodicDamageAuras array.
+	onDamageDealtIndex         int32 // Position of this aura's index in the onDamageAuras array.
 	onHealDealtIndex           int32 // Position of this aura's index in the onHealAuras array.
 	onHealTakenIndex           int32 // Position of this aura's index in the onHealAuras array.
 	onPeriodicHealDealtIndex   int32 // Position of this aura's index in the onPeriodicHealAuras array.
@@ -93,6 +98,7 @@ type Aura struct {
 	OnSpellHitTaken       OnSpellHit       // Invoked when a spell hits and this unit is the target.
 	OnPeriodicDamageDealt OnPeriodicDamage // Invoked when a dot tick occurs and this unit is the caster.
 	OnPeriodicDamageTaken OnPeriodicDamage // Invoked when a dot tick occurs and this unit is the target.
+	OnDamageDealt         OnDamage         // Invoked when unit deals damage
 	OnHealDealt           OnSpellHit       // Invoked when a heal hits and this unit is the caster.
 	OnHealTaken           OnSpellHit       // Invoked when a heal hits and this unit is the target.
 	OnPeriodicHealDealt   OnPeriodicDamage // Invoked when a hot tick occurs and this unit is the caster.
@@ -303,6 +309,7 @@ type auraTracker struct {
 	onSpellHitTakenAuras       []*Aura
 	onPeriodicDamageDealtAuras []*Aura
 	onPeriodicDamageTakenAuras []*Aura
+	onDamageDealtAuras         []*Aura
 	onHealDealtAuras           []*Aura
 	onHealTakenAuras           []*Aura
 	onPeriodicHealDealtAuras   []*Aura
@@ -379,6 +386,7 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	newAura.onSpellHitTakenIndex = Inactive
 	newAura.onPeriodicDamageDealtIndex = Inactive
 	newAura.onPeriodicDamageTakenIndex = Inactive
+	newAura.onDamageDealtIndex = Inactive
 	newAura.onHealDealtIndex = Inactive
 	newAura.onHealTakenIndex = Inactive
 	newAura.onPeriodicHealDealtIndex = Inactive
@@ -407,6 +415,7 @@ func (unit *Unit) GetOrRegisterAura(aura Aura) *Aura {
 		curAura.OnSpellHitTaken = aura.OnSpellHitTaken
 		curAura.OnPeriodicDamageDealt = aura.OnPeriodicDamageDealt
 		curAura.OnPeriodicDamageTaken = aura.OnPeriodicDamageTaken
+		curAura.OnDamageDealt = aura.OnDamageDealt
 		curAura.OnHealDealt = aura.OnHealDealt
 		curAura.OnHealTaken = aura.OnHealTaken
 		curAura.OnPeriodicHealDealt = aura.OnPeriodicHealDealt
@@ -471,6 +480,7 @@ func (at *auraTracker) reset(sim *Simulation) {
 	at.onSpellHitTakenAuras = at.onSpellHitTakenAuras[:0]
 	at.onPeriodicDamageDealtAuras = at.onPeriodicDamageDealtAuras[:0]
 	at.onPeriodicDamageTakenAuras = at.onPeriodicDamageTakenAuras[:0]
+	at.onDamageDealtAuras = at.onDamageDealtAuras[:0]
 	at.onHealDealtAuras = at.onHealDealtAuras[:0]
 	at.onHealTakenAuras = at.onHealTakenAuras[:0]
 	at.onPeriodicHealDealtAuras = at.onPeriodicHealDealtAuras[:0]
@@ -602,6 +612,11 @@ func (aura *Aura) Activate(sim *Simulation) {
 		aura.Unit.onPeriodicDamageTakenAuras = append(aura.Unit.onPeriodicDamageTakenAuras, aura)
 	}
 
+	if aura.OnDamageDealt != nil {
+		aura.onDamageDealtIndex = int32(len(aura.Unit.onDamageDealtAuras))
+		aura.Unit.onDamageDealtAuras = append(aura.Unit.onDamageDealtAuras, aura)
+	}
+
 	if aura.OnHealDealt != nil {
 		aura.onHealDealtIndex = int32(len(aura.Unit.onHealDealtAuras))
 		aura.Unit.onHealDealtAuras = append(aura.Unit.onHealDealtAuras, aura)
@@ -710,6 +725,15 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 		aura.onPeriodicDamageTakenIndex = Inactive
 	}
 
+	if aura.onDamageDealtIndex != Inactive {
+		removeOnDamageDealtIndex := aura.onDamageDealtIndex
+		aura.Unit.onDamageDealtAuras = removeBySwappingToBack(aura.Unit.onDamageDealtAuras, removeOnDamageDealtIndex)
+		if removeOnDamageDealtIndex < int32(len(aura.Unit.onDamageDealtAuras)) {
+			aura.Unit.onDamageDealtAuras[removeOnDamageDealtIndex].onDamageDealtIndex = removeOnDamageDealtIndex
+		}
+		aura.onDamageDealtIndex = Inactive
+	}
+
 	if aura.onHealDealtIndex != Inactive {
 		removeOnHealDealtIndex := aura.onHealDealtIndex
 		aura.Unit.onHealDealtAuras = removeBySwappingToBack(aura.Unit.onHealDealtAuras, removeOnHealDealtIndex)
@@ -800,6 +824,17 @@ func (at *auraTracker) OnSpellHitTaken(sim *Simulation, spell *Spell, result *Sp
 			continue
 		}
 		aura.OnSpellHitTaken(aura, sim, spell, result)
+	}
+}
+
+// Invokes the OnDamage event for all tracked Auras.
+func (at *auraTracker) OnDamageDealt(sim *Simulation, spell *Spell, result *SpellResult) {
+	for _, aura := range at.onDamageDealtAuras {
+		// this check is to handle a case where auras are deactivated during iteration.
+		if !aura.active {
+			continue
+		}
+		aura.OnDamageDealt(aura, sim, spell, result)
 	}
 }
 

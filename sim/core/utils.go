@@ -135,6 +135,13 @@ func FilterSlice[T any](src []T, f func(T) bool) []T {
 	return dst
 }
 
+// Iterate over a slice and calls f
+func Each[T any](src []T, f func(T)) {
+	for _, e := range src {
+		f(e)
+	}
+}
+
 // Returns a new map containing only the key/value pairs for which f returns true.
 func FilterMap[K comparable, V any](src map[K]V, f func(K, V) bool) map[K]V {
 	dst := make(map[K]V, len(src))
