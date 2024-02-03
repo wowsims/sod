@@ -57,6 +57,34 @@ message ShamanTalents {
 	bool mana_tide_totem = 46;
 }
 
+enum ShamanRune {
+	RuneNone 										= 0;
+
+	RuneChestDualWieldSpec 			= 408496;
+	RuneHealingRain 						= 415236;
+	RuneChestOverload          	= 408438;
+	RuneChestShieldMastery 			= 408524;
+	RuneTwoHandedMastery 				=	436367;
+
+	RuneHandsLavaBurst 					= 408490;
+	RuneHandsLavaLash 					= 408507;
+	RuneHandsMoltenBlast 				= 425339;
+	RuneHandsWaterShield 				= 408510;
+
+	RuneWaistFireNova 					= 409938;
+	RuneWaistMaelstromWeapon 		= 409946;
+	RuneWaistPowerSurge 				= 415712;
+
+	RuneLegsAncestralGuidance 	= 409324;
+	RuneLegsEarthShield 				= 408514;
+	RuneLegsShamanisticRage 		= 425336;
+	RuneLegsWayOfEarth 					= 408531;
+
+	RuneFeetAncestralAwakening 	= 425879;
+	RuneFeetDecoyTotem 				 	= 425881;
+	RuneFeetSpiritOfTheAlpha 	 	= 409951;
+}
+
 enum EarthTotem {
 	NoEarthTotem = 0;
 	StrengthOfEarthTotem = 1;
@@ -66,8 +94,8 @@ enum EarthTotem {
 
 enum AirTotem {
 	NoAirTotem = 0;
-	WindfuryTotem = 2;
-	WrathOfAirTotem = 3;
+	WindfuryTotem = 1;
+	GraceOfAirTotem = 2;
 }
 
 enum FireTotem {
@@ -102,14 +130,6 @@ message ShamanTotems {
 	// If set, will use mana tide when appropriate.
 	bool use_mana_tide = 5;
 
-	// If set, will use fire elemental totem at the start and revert to regular
-	// fire totems when it expires.
-	bool use_fire_elemental = 6;
-
-	// If set, will revert to regular fire totems when fire elemental goes OOM,
-	// instead of waiting the full 2 minutes.
-	bool recall_fire_elemental_on_oom = 7;
-
 	// If set, any time a 2-minute totem is about to expire, will recall and
 	// replace all totems.
 	bool recall_totems = 8;
@@ -134,8 +154,7 @@ enum ShamanImbue {
     NoImbue = 0;
     WindfuryWeapon = 1;
     FlametongueWeapon = 2;
-    FlametongueWeaponDownrank = 3;
-    FrostbrandWeapon = 4;
+    FrostbrandWeapon = 3;
 }
 
 enum ShamanSyncType {
@@ -152,13 +171,6 @@ message ElementalShaman {
 	message Options {
 		ShamanShield shield = 1;
 		ShamanTotems totems = 3;
-		
-		enum ThunderstormRange {
-			UnsetTSRange = 0;
-			TSInRange = 1;
-			TSOutofRange = 2;
-		}
-		ThunderstormRange thunderstormRange = 4;
 	}
 	Options options = 3;
 }

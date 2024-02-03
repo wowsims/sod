@@ -1,3 +1,4 @@
+import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
 import {
 	Consumes,
 	Debuffs,

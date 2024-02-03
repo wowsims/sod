@@ -318,6 +318,8 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 		}
 	}
 
+	spell.Unit.OnDamageDealt(sim, spell, result)
+
 	spell.DisposeResult(result)
 }
 func (spell *Spell) DealDamage(sim *Simulation, result *SpellResult) {

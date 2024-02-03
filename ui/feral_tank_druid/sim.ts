@@ -120,7 +120,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 			moonkinAura: true,
 		}),
 		partyBuffs: PartyBuffs.create({
-			heroicPresence: true,
 		}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,

@@ -172,6 +172,10 @@
 
 .metrics-table-body tr {
 	border-bottom: $border-default;
+
+	td:first-child {
+		width: 50%;
+	}
 }
 
 .metrics-table-body tr:hover {

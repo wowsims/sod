@@ -63,6 +63,9 @@ type Spell struct {
 	// ID for this spell.
 	ActionID
 
+	// Used to identify spells with multiple ranks that need to be referenced
+	SpellCode int
+
 	// The unit who will perform this spell.
 	Unit *Unit
 
