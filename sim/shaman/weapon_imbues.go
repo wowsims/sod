@@ -128,44 +128,13 @@ package shaman
 // 	shaman.RegisterOnItemSwapWithImbue(3787, &procMask, aura)
 // }
 
-// func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item, isDownranked bool) *core.Spell {
-// 	spellID := 58790
-// 	baseDamage := 68.5
-// 	if isDownranked {
-// 		spellID = 58789
-// 		baseDamage = 64
-// 	}
-
-// 	return shaman.RegisterSpell(core.SpellConfig{
-// 		ActionID:    core.ActionID{SpellID: int32(spellID)},
-// 		SpellSchool: core.SpellSchoolFire,
-// 		ProcMask:    core.ProcMaskWeaponProc,
-
-// 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-// 		DamageMultiplier: 1,
-// 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-// 		ThreatMultiplier: 1,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			if weapon.SwingSpeed != 0 {
-// 				damage := weapon.SwingSpeed * (baseDamage + 0.1/2.6*spell.SpellPower())
-// 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-// 			}
-// 		},
-// 	})
-// }
-
-// func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item, isDownranked bool) {
+// func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 // 	if item == nil || item.TempEnchant == 3781 || item.TempEnchant == 3780 {
 // 		return
 // 	}
 
 // 	spBonus := 211.0
 // 	enchantID := 3781
-// 	if isDownranked {
-// 		spBonus = 186.0
-// 		enchantID = 3780
-// 	}
 
 // 	spMod := 1.0 + 0.1*float64(shaman.Talents.ElementalWeapons)
 
@@ -175,16 +144,16 @@ package shaman
 // 	item.TempEnchant = int32(enchantID)
 // }
 
-// func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask, isDownranked bool) {
+// func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 // 	if procMask == core.ProcMaskUnknown && !shaman.ItemSwap.IsEnabled() {
 // 		return
 // 	}
 
 // 	if procMask.Matches(core.ProcMaskMeleeMH) {
-// 		shaman.ApplyFlametongueImbueToItem(shaman.MainHand(), isDownranked)
+// 		shaman.ApplyFlametongueImbueToItem(shaman.MainHand())
 // 	}
 // 	if procMask.Matches(core.ProcMaskMeleeOH) {
-// 		shaman.ApplyFlametongueImbueToItem(shaman.OffHand(), isDownranked)
+// 		shaman.ApplyFlametongueImbueToItem(shaman.OffHand())
 // 	}
 
 // 	icd := core.Cooldown{
@@ -192,15 +161,11 @@ package shaman
 // 		Duration: time.Millisecond,
 // 	}
 
-// 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand(), isDownranked)
-// 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand(), isDownranked)
+// 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
+// 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
 
 // 	label := "Flametongue Imbue"
 // 	enchantID := 3781
-// 	if isDownranked {
-// 		label = "Flametongue Imbue (downranked)"
-// 		enchantID = 3780
-// 	}
 
 // 	aura := shaman.RegisterAura(core.Aura{
 // 		Label:    label,
