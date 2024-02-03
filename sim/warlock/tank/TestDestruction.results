@@ -51,96 +51,96 @@ character_stats_results: {
 dps_results: {
  key: "TestDestruction-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 5.76983
+  dps: 7.81542
  }
 }
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 5.90876
+  dps: 8.00907
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--FullBuffs-LongMultiTarget"
  value: {
-  dps: 5.83566
+  dps: 7.90461
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--FullBuffs-LongSingleTarget"
  value: {
-  dps: 5.83566
+  dps: 7.90461
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--FullBuffs-ShortSingleTarget"
  value: {
-  dps: 8.11172
+  dps: 10.96249
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--NoBuffs-LongMultiTarget"
  value: {
-  dps: 3.09408
+  dps: 4.17944
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--NoBuffs-LongSingleTarget"
  value: {
-  dps: 3.09408
+  dps: 4.17944
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock--NoBuffs-ShortSingleTarget"
  value: {
-  dps: 4.41435
+  dps: 5.96416
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-FullBuffs-LongMultiTarget"
  value: {
-  dps: 115.26517
-  tps: 534.84191
+  dps: 136.27616
+  tps: 581.70419
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-FullBuffs-LongSingleTarget"
  value: {
-  dps: 81.02741
-  tps: 177.43529
+  dps: 90.0385
+  tps: 206.21457
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 83.89505
-  tps: 173.52299
+  dps: 96.13116
+  tps: 207.4251
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-NoBuffs-LongMultiTarget"
  value: {
-  dps: 63.97281
-  tps: 448.42864
+  dps: 74.51299
+  tps: 471.60838
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-NoBuffs-LongSingleTarget"
  value: {
-  dps: 44.06417
-  tps: 102.83641
+  dps: 47.37361
+  tps: 115.01162
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destro.tank-Destruction Warlock-destro.tank-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 47.3402
-  tps: 100.85579
+  dps: 52.97496
+  tps: 117.21185
  }
 }
 dps_results: {
  key: "TestDestruction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5.83566
+  dps: 7.90461
  }
 }
