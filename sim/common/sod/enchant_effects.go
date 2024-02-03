@@ -12,6 +12,17 @@ func init() {
 	core.AddEffectsToTest = false
 	// Keep these in order by item ID.
 
+	// Lesser Striking
+	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
+	})
+
+	// Fiery Weapon
 	core.NewEnchantEffect(803, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -50,16 +61,6 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 5.0, &ppmm, aura)
-	})
-
-	// Lesser Striking
-	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.MH()
-		if slot == proto.ItemSlot_ItemSlotOffHand {
-			w = agent.GetCharacter().AutoAttacks.OH()
-		}
-		w.BaseDamageMin += 2
-		w.BaseDamageMax += 2
 	})
 
 	// Superior Striking
