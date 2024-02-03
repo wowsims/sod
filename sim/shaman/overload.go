@@ -2,7 +2,6 @@ package shaman
 
 import (
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 // This could be value or bitflag if we ended up needing multiple flags at the same time.
@@ -10,23 +9,6 @@ import (
 const CastTagOverload = 6
 
 const ShamanOverloadChance = .50
-
-func (shaman *Shaman) applyOverload() {
-	overloadRuneEquipped := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-
-	if !overloadRuneEquipped {
-		return
-	}
-
-	shaman.RegisterAura(core.Aura{
-		Label:    "Overload",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestOverload)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-	})
-}
 
 func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
 	spell.ActionID.Tag = int32(CastTagOverload)

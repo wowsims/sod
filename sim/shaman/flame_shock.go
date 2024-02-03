@@ -58,6 +58,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		if result.Landed() {
 			spell.Dot(target).NumberOfTicks = int32(numTicks)
 			spell.Dot(target).Apply(sim)
+
+			if shaman.HasRune(TotemOfAncestralGuidance) {
+				shaman.LastFlameShockTarget = target
+			}
 		}
 		spell.DealDamage(sim, result)
 	}

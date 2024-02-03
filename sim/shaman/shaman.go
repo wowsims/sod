@@ -99,9 +99,10 @@ type Shaman struct {
 
 	Thunderstorm *core.Spell
 
-	EarthShock []*core.Spell
-	FlameShock []*core.Spell
-	FrostShock []*core.Spell
+	EarthShock     []*core.Spell
+	FlameShock     []*core.Spell
+	FlameShockDots []*core.Spell
+	FrostShock     []*core.Spell
 
 	// Totems
 	StoneskinTotem       *core.Spell
@@ -142,6 +143,9 @@ type Shaman struct {
 	EarthShield       *core.Spell
 
 	MaelstromWeaponAura *core.Aura
+
+	// Used by Ancestral Guidance rune
+	LastFlameShockTarget *core.Unit
 }
 
 // Implemented by each Shaman spec.

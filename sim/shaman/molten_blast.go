@@ -14,15 +14,6 @@ func (shaman *Shaman) applyMoltenBlast() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Molten Blast",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-	})
-
 	level := float64(shaman.Level)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
 	baseDamageLow := baseCalc * .72

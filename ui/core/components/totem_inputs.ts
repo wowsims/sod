@@ -57,9 +57,9 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<Sh
 		numColumns: 1,
 		values: [
 			{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
-			{ actionId: () => ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
-			{ actionId: () => ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
-			{ actionId: () => ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
+			SearingTotem,
+			// FireNovaTotem,
+			// MagmaTotem,
 		],
 		equals: (a: FireTotem, b: FireTotem) => a == b,
 		zeroValue: FireTotem.NoFireTotem,
@@ -160,6 +160,26 @@ export const TremorTotem = {
 ///////////////////////////////////////////////////////////////////////////
 //                                 Fire Totems
 ///////////////////////////////////////////////////////////////////////////
+
+export const SearingTotem = {
+	actionId: (player: Player<Spec>) => player.getMatchingSpellActionId([
+		{ id: 3599, minLevel: 10, maxLevel: 19 },
+		{ id: 6363, minLevel: 20, maxLevel: 29 },
+		{ id: 6364, minLevel: 30, maxLevel: 39 },
+		{ id: 6365, minLevel: 40, maxLevel: 49 },
+		{ id: 10437, minLevel: 50, maxLevel: 59 },
+		{ id: 10438, minLevel: 60 },
+	]),
+	value: FireTotem.SearingTotem,
+};
+
+export const MagmaTotem = {
+
+};
+
+export const FireNovaTotem = {
+	
+};
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Water Totems

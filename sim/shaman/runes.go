@@ -9,7 +9,7 @@ func (shaman *Shaman) ApplyRunes() {
 	// Chest
 	shaman.applyDualWieldSpec()
 	// shaman.applyHealingRain()
-	shaman.applyOverload()
+	// shaman.applyOverload()
 	shaman.applyShieldMastery()
 	shaman.applyTwoHandedMastery()
 
@@ -24,7 +24,7 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyPowerSurge()
 
 	// Legs
-	// shaman.applyAncestralGuidance()
+	shaman.applyAncestralGuidance()
 	// shaman.applyEarthShield()
 	// shaman.applyShamanisticRage()
 	shaman.applyWayOfEarth()

@@ -21,7 +21,7 @@ func (shaman *Shaman) applyLavaBurst() {
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
 	level := float64(shaman.Level)
-	spellId := core.TernaryInt32(isOverload, int32(proto.ShamanRune_RuneHandsLavaBurst), 408490)
+	spellId := int32(proto.ShamanRune_RuneHandsLavaBurst)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
 	baseDamageLow := baseCalc * 4.69
 	baseDamageHigh := baseCalc * 6.05
