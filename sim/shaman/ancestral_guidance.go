@@ -21,13 +21,18 @@ func (shaman *Shaman) applyAncestralGuidance() {
 	numHealedAllies := int32(3)
 
 	agDamageSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 409337}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellHealing,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagIgnoreResists,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 	})
 
 	agHealSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 409333}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful,
@@ -39,19 +44,25 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		Duration: duration,
 
 		OnDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == agDamageSpell {
+				return
+			}
+
 			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(numHealedAllies)
 
-			for hitIndex := int32(0); hitIndex < numHealedAllies; hitIndex++ {
+			for hitIndex := int32(0); hitIndex < int32(len(targets)); hitIndex++ {
 				target := targets[hitIndex]
 				baseHealing := result.Damage * damageConversion
 				agHealSpell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 			}
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if shaman.LastFlameShockTarget != nil {
-				baseDamage := result.Damage * healingConversion
-				agDamageSpell.CalcAndDealHealing(sim, shaman.LastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if spell == agHealSpell || shaman.lastFlameShockTarget == nil {
+				return
 			}
+
+			baseDamage := result.Damage * healingConversion
+			agDamageSpell.CalcAndDealDamage(sim, shaman.lastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 

@@ -7,7 +7,6 @@ import (
 
 const EarthShockRanks = 7
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var EarthShockSpellId = [EarthShockRanks + 1]int32{0, 8042, 8044, 8045, 8046, 10412, 10413, 10414}
 var EarthShockBaseDamage = [EarthShockRanks + 1][]float64{{0}, {19, 22}, {35, 38}, {65, 69}, {126, 134}, {235, 249}, {372, 394}, {517, 545}}
 var EarthShockSpellCoef = [EarthShockRanks + 1]float64{0, .154, .212, .299, .386, .386, .386, .386}

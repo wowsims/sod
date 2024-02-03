@@ -1,10 +1,10 @@
 import { Tooltip } from 'bootstrap';
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { element, fragment } from 'tsx-vanilla';
+
 import { EventID, TypedEvent } from '../typed_event.js';
-import { swap } from '../utils.js';
 
 import { Input, InputConfig } from './input.js';
-
-import { element, fragment } from 'tsx-vanilla';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
 

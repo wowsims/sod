@@ -13,7 +13,6 @@ const ChainLightningTargetCount = 3
 // 30% reduction per bounce
 const ChainLightningBounceCoeff = .7
 
-// First entry is the base spell ID, second entry is the overload's spell ID
 var ChainLightningSpellId = [ChainLightningRanks + 1]int32{0, 421, 930, 2860, 10605}
 var ChainLightningBaseDamage = [ChainLightningRanks + 1][]float64{{0}, {200, 227}, {288, 323}, {391, 438}, {505, 564}}
 var ChainLightningSpellCoef = [ChainLightningRanks + 1]float64{0, .714, .714, .714, .714}
@@ -82,13 +81,11 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
 			baseDamage *= bounceCoeff
-			result := spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= ShamanOverloadChance {
 				shaman.ChainLightningOverload[rank].Cast(sim, curTarget)
 			}
-
-			spell.DealDamage(sim, result)
 
 			bounceCoeff *= ChainLightningBounceCoeff
 			curTarget = sim.Environment.NextTargetUnit(curTarget)

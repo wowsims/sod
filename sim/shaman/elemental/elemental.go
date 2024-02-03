@@ -36,9 +36,8 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 		totems.UseFireMcd = true // Control fire totems as MCD.
 	}
 
-	inRange := eleShamOptions.Options.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs),
 	}
 
 	// if mh := ele.GetMHWeapon(); mh != nil {

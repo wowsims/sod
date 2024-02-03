@@ -124,18 +124,3 @@ func (shaman *Shaman) applyWayOfEarth() {
 		},
 	})
 }
-
-func (shaman *Shaman) applyAncestralAwakening() {
-	if !shaman.HasRune(proto.ShamanRune_RuneFeetAncestralAwakening) {
-		return
-	}
-
-	shaman.RegisterAura(core.Aura{
-		Label:    "Ancestral Awakening",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetAncestralAwakening)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-	})
-}

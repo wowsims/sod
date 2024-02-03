@@ -120,7 +120,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			ShamanInputs.InThunderstormRange,
 			OtherInputs.TankAssignment,
 		],
 	},

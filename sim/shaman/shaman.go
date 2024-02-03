@@ -20,13 +20,12 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
+func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs) *Shaman {
 	shaman := &Shaman{
-		Character:           *character,
-		Talents:             &proto.ShamanTalents{},
-		Totems:              totems,
-		SelfBuffs:           selfBuffs,
-		thunderstormInRange: thunderstormRange,
+		Character: *character,
+		Talents:   &proto.ShamanTalents{},
+		Totems:    totems,
+		SelfBuffs: selfBuffs,
 	}
 	shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)})
 
@@ -75,8 +74,6 @@ const (
 type Shaman struct {
 	core.Character
 
-	thunderstormInRange bool // flag if thunderstorm will be in range.
-
 	Talents   *proto.ShamanTalents
 	SelfBuffs SelfBuffs
 
@@ -96,8 +93,6 @@ type Shaman struct {
 
 	LightningShield     *core.Spell
 	LightningShieldAura *core.Aura
-
-	Thunderstorm *core.Spell
 
 	EarthShock     []*core.Spell
 	FlameShock     []*core.Spell
@@ -121,17 +116,15 @@ type Shaman struct {
 	GraceOfAirTotem *core.Spell
 
 	// Healing Spells
-	tidalWaveProc          *core.Aura
-	ancestralHealingAmount float64
-	AncestralAwakening     *core.Spell
-	LesserHealingWave      *core.Spell
-	Riptide                *core.Spell
+	tidalWaveProc *core.Aura
 
-	HealingWave         *core.Spell
-	HealingWaveOverload *core.Spell
+	HealingWave         []*core.Spell
+	HealingWaveOverload []*core.Spell
 
-	ChainHeal         *core.Spell
-	ChainHealOverload *core.Spell
+	LesserHealingWave []*core.Spell
+
+	ChainHeal         []*core.Spell
+	ChainHealOverload []*core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
 
@@ -145,7 +138,10 @@ type Shaman struct {
 	MaelstromWeaponAura *core.Aura
 
 	// Used by Ancestral Guidance rune
-	LastFlameShockTarget *core.Unit
+	lastFlameShockTarget *core.Unit
+
+	AncestralAwakening     *core.Spell
+	ancestralHealingAmount float64
 }
 
 // Implemented by each Shaman spec.
@@ -225,35 +221,14 @@ func (shaman *Shaman) Initialize() {
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()
+
+	shaman.RegisterHealingSpells()
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
-	// shaman.registerAncestralHealingSpell()
-	// shaman.registerLesserHealingWaveSpell()
-	// shaman.registerHealingWaveSpell()
-	// shaman.registerRiptideSpell()
-	// shaman.registerEarthShieldSpell()
-	// shaman.registerChainHealSpell()
-
-	// if shaman.Talents.TidalWaves > 0 {
-	// 	shaman.tidalWaveProc = shaman.GetOrRegisterAura(core.Aura{
-	// 		Label:    "Tidal Wave Proc",
-	// 		ActionID: core.ActionID{SpellID: 53390},
-	// 		Duration: core.NeverExpires,
-	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 			aura.Deactivate(sim)
-	// 		},
-	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-	// 			shaman.HealingWave.CastTimeMultiplier *= 0.7
-	// 			shaman.LesserHealingWave.BonusCritRating += core.CritRatingPerCritChance * 25
-	// 		},
-	// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-	// 			shaman.HealingWave.CastTimeMultiplier /= 0.7
-	// 			shaman.LesserHealingWave.BonusCritRating -= core.CritRatingPerCritChance * 25
-	// 		},
-	// 		MaxStacks: 2,
-	// 	})
-	// }
+	shaman.registerLesserHealingWaveSpell()
+	shaman.registerHealingWaveSpell()
+	shaman.registerChainHealSpell()
 }
 
 func (shaman *Shaman) HasRune(rune proto.ShamanRune) bool {

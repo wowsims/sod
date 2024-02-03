@@ -5,7 +5,7 @@ import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
 import { AdaptiveStringPicker } from '../string_picker.js';
 import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig } from '../dropdown_picker.js';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
 import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
 import { Input, InputConfig } from '../input.js';
 import { ActionID } from '../../proto/common.js';
