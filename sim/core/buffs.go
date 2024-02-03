@@ -1687,6 +1687,8 @@ func ApplyWildStrikes(character *Character) *Aura {
 		Duration: time.Millisecond * 1500,
 	}
 
+	wsBuffAura.Icd = &icd
+
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
