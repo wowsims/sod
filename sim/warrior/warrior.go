@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	SpellFlagBleed = core.SpellFlagAgentReserved1
+	SpellFlagBleed      = core.SpellFlagAgentReserved1
+	SpellFlagBloodSurge = core.SpellFlagAgentReserved2
 )
 
 var TalentTreeSizes = [3]int{31, 27, 27}
@@ -39,6 +40,7 @@ type Warrior struct {
 	BloodrageAura        *core.Aura
 	ConsumedByRageAura   *core.Aura
 	Above80RageCBRActive bool
+	BloodSurgeAura       *core.Aura
 
 	// Reaction time values
 	reactionTime       time.Duration

@@ -22,6 +22,7 @@ func (warrior *Warrior) ApplyRunes() {
 	warrior.applyConsumedByRage()
 	warrior.registerQuickStrike()
 	warrior.registerRagingBlow()
+	warrior.applyBloodSurge()
 
 	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
 
@@ -125,6 +126,54 @@ func (warrior *Warrior) applyConsumedByRage() {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				warrior.ConsumedByRageAura.RemoveStack(sim)
 			}
+		},
+	})
+}
+
+func (warrior *Warrior) applyBloodSurge() {
+	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
+		return
+	}
+
+	warrior.BloodSurgeAura = warrior.RegisterAura(core.Aura{
+		Label:    "BloodSurge Proc",
+		ActionID: core.ActionID{SpellID: 413399},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Slam.DefaultCast.CastTime = 0
+			warrior.Slam.CostMultiplier -= 1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
+			warrior.Slam.CostMultiplier -= 1
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == warrior.Slam { // removed even if slam doesn't land
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "BloodSurge",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.Flags.Matches(SpellFlagBloodSurge) {
+				return
+			}
+
+			if sim.RandomFloat("BloodSurge") > 0.3 {
+				return
+			}
+
+			warrior.BloodSurgeAura.Activate(sim)
 		},
 	})
 }
