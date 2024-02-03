@@ -51,96 +51,96 @@ character_stats_results: {
 dps_results: {
  key: "TestDestruction-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 10.30712
+  dps: 13.95437
  }
 }
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 10.33813
+  dps: 14.01203
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-LongMultiTarget"
  value: {
-  dps: 10.31516
+  dps: 13.94872
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-LongSingleTarget"
  value: {
-  dps: 10.31516
+  dps: 13.94872
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-ShortSingleTarget"
  value: {
-  dps: 14.38029
+  dps: 19.48526
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-LongMultiTarget"
  value: {
-  dps: 5.26949
+  dps: 7.12854
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-LongSingleTarget"
  value: {
-  dps: 5.26949
+  dps: 7.12854
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-ShortSingleTarget"
  value: {
-  dps: 7.66633
+  dps: 10.31302
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-LongMultiTarget"
  value: {
-  dps: 195.92372
-  tps: 447.49655
+  dps: 221.38845
+  tps: 467.88331
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-LongSingleTarget"
  value: {
-  dps: 160.08425
-  tps: 158.96396
+  dps: 172.70908
+  tps: 166.49665
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 185.19555
-  tps: 168.8245
+  dps: 200.14694
+  tps: 176.30687
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-LongMultiTarget"
  value: {
-  dps: 105.51453
-  tps: 358.8711
+  dps: 122.99077
+  tps: 373.74796
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-LongSingleTarget"
  value: {
-  dps: 79.44408
-  tps: 85.1769
+  dps: 87.13746
+  tps: 90.26303
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 97.72898
-  tps: 92.90538
+  dps: 107.37462
+  tps: 98.68147
  }
 }
 dps_results: {
  key: "TestDestruction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 10.31516
+  dps: 13.94872
  }
 }
