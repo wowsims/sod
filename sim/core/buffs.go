@@ -1693,7 +1693,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
 				return
 			}
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
 				return
 			}
 
