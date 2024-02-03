@@ -12,6 +12,46 @@ func init() {
 	core.AddEffectsToTest = false
 	// Keep these in order by item ID.
 
+	core.NewEnchantEffect(803, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForEnchant(803)
+		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 13898},
+			SpellSchool: core.SpellSchoolFire,
+			ProcMask:    core.ProcMaskSpellDamage,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Fiery Weapon",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 5.0, &ppmm, aura)
+	})
+
 	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
 	core.AddWeaponEffect(1897, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()
@@ -32,7 +72,7 @@ func init() {
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		// -4 str per level over 60
-		strBonus := 100.0 - 4.0*float64(agent.GetCharacter().Level/*core.CharacterLevel*/-60)
+		strBonus := 100.0 - 4.0*float64(agent.GetCharacter().Level /*core.CharacterLevel*/ -60)
 		mhAura := character.NewTemporaryStatsAura("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 		ohAura := character.NewTemporaryStatsAura("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 
