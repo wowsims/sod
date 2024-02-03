@@ -25,6 +25,10 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagIgnoreResists,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 	})
 
 	agHealSpell := shaman.RegisterSpell(core.SpellConfig{
@@ -40,19 +44,25 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		Duration: duration,
 
 		OnDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == agDamageSpell {
+				return
+			}
+
 			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(numHealedAllies)
 
-			for hitIndex := int32(0); hitIndex < numHealedAllies; hitIndex++ {
+			for hitIndex := int32(0); hitIndex < int32(len(targets)); hitIndex++ {
 				target := targets[hitIndex]
 				baseHealing := result.Damage * damageConversion
 				agHealSpell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 			}
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if shaman.lastFlameShockTarget != nil {
-				baseDamage := result.Damage * healingConversion
-				agDamageSpell.CalcAndDealHealing(sim, shaman.lastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if spell == agHealSpell || shaman.lastFlameShockTarget == nil {
+				return
 			}
+
+			baseDamage := result.Damage * healingConversion
+			agDamageSpell.CalcAndDealDamage(sim, shaman.lastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 
