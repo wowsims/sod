@@ -35,7 +35,7 @@ echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
 source $HOME/.bashrc
 
-cd wotlk
+cd sod
 
 # Install protobuf compiler and Go plugins
 sudo apt update && sudo apt upgrade
@@ -55,7 +55,7 @@ npm install
 Alternatively, install Docker and your workflow will look something like this:
 ```sh
 git clone https://github.com/wowsims/sod.git
-cd wotlk
+cd sod
 
 # Build the docker image and install npm dependencies (only need to run these once).
 docker build --tag wowsims-sod .
@@ -63,17 +63,17 @@ docker run --rm -v $(pwd):/sod wowsims-sod npm install
 
 # Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/sod wowsims-sod".
 # For convenience, set this as an environment variable:
-WOTLK_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/sod wowsims-sod"
+SOD_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/sod wowsims-sod"
 
 # ... do some coding on the sim ...
 
 # Run tests
-$(echo $WOTLK_CMD) make test
+$(echo $SOD_CMD) make test
 
 # ... do some coding on the UI ...
 
 # Host a local site
-$(echo $WOTLK_CMD) make host
+$(echo $SOD_CMD) make host
 ```
 
 ## Windows

@@ -51,84 +51,84 @@ character_stats_results: {
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 23.2738
-  tps: 24.20084
+  dps: 31.7086
+  tps: 32.63564
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 20.71201
-  tps: 21.46085
+  dps: 28.21556
+  tps: 28.9644
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-StormshroudArmor"
  value: {
-  dps: 8.29133
-  tps: 9.02037
+  dps: 11.30062
+  tps: 12.02966
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 22.4015
-  tps: 23.27574
+  dps: 30.47978
+  tps: 31.35402
  }
 }
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 39.92244
-  tps: 40.8432
+  dps: 54.07271
+  tps: 54.99347
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 39.81764
-  tps: 58.22644
+  dps: 53.85073
+  tps: 72.25953
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 39.81764
-  tps: 40.73808
+  dps: 53.85073
+  tps: 54.77117
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 42.52591
-  tps: 47.12811
+  dps: 57.36598
+  tps: 61.96818
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 37.09083
-  tps: 37.09083
+  dps: 50.65317
+  tps: 50.65317
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 37.09083
-  tps: 37.09083
+  dps: 50.65317
+  tps: 50.65317
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 41.52242
-  tps: 41.52242
+  dps: 55.92235
+  tps: 55.92235
  }
 }
 dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 39.81764
-  tps: 40.73808
+  dps: 53.85073
+  tps: 54.77117
  }
 }
