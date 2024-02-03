@@ -6,7 +6,7 @@ character_stats_results: {
   final_stats: 100.54
   final_stats: 141.24
   final_stats: 119.24
-  final_stats: 245
+  final_stats: 254
   final_stats: 0
   final_stats: 44
   final_stats: 0
@@ -43,7 +43,7 @@ character_stats_results: {
   final_stats: 15
   final_stats: 21
   final_stats: 9
-  final_stats: 9
+  final_stats: 0
   final_stats: 0
   final_stats: 0
  }
@@ -51,96 +51,96 @@ character_stats_results: {
 dps_results: {
  key: "TestDemonology-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 13.95437
+  dps: 14.1562
  }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
  value: {
-  dps: 14.01203
+  dps: 14.21242
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--FullBuffs-LongMultiTarget"
  value: {
-  dps: 13.94872
+  dps: 14.14823
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--FullBuffs-LongSingleTarget"
  value: {
-  dps: 13.94872
+  dps: 14.14823
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--FullBuffs-ShortSingleTarget"
  value: {
-  dps: 19.48526
+  dps: 19.7635
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--NoBuffs-LongMultiTarget"
  value: {
-  dps: 7.12854
+  dps: 7.26237
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--NoBuffs-LongSingleTarget"
  value: {
-  dps: 7.12854
+  dps: 7.26237
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock--NoBuffs-ShortSingleTarget"
  value: {
-  dps: 10.31302
+  dps: 10.50636
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-FullBuffs-LongMultiTarget"
  value: {
-  dps: 221.38845
-  tps: 467.88331
+  dps: 226.56036
+  tps: 471.14116
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-FullBuffs-LongSingleTarget"
  value: {
-  dps: 172.70908
-  tps: 166.49665
+  dps: 177.01686
+  tps: 170.43545
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 200.14694
-  tps: 176.30687
+  dps: 211.88769
+  tps: 187.62689
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-NoBuffs-LongMultiTarget"
  value: {
-  dps: 122.99077
-  tps: 373.74796
+  dps: 125.95668
+  tps: 383.03355
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-NoBuffs-LongSingleTarget"
  value: {
-  dps: 87.13746
-  tps: 90.26303
+  dps: 89.20738
+  tps: 92.45227
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-destruction-Demonology Warlock-destruction-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 107.37462
-  tps: 98.68147
+  dps: 110.29836
+  tps: 101.58771
  }
 }
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 13.94872
+  dps: 14.14823
  }
 }

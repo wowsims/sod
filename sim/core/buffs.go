@@ -1687,13 +1687,15 @@ func ApplyWildStrikes(character *Character) *Aura {
 		Duration: time.Millisecond * 1500,
 	}
 
+	wsBuffAura.Icd = &icd
+
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
 				return
 			}
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
 				return
 			}
 

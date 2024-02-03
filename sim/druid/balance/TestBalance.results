@@ -6,7 +6,7 @@ character_stats_results: {
   final_stats: 132.44
   final_stats: 140.14
   final_stats: 113.74
-  final_stats: 110
+  final_stats: 119
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -43,7 +43,7 @@ character_stats_results: {
   final_stats: 15
   final_stats: 21
   final_stats: 31
-  final_stats: 9
+  final_stats: 0
   final_stats: 0
   final_stats: 0
  }
@@ -51,8 +51,8 @@ character_stats_results: {
 dps_results: {
  key: "TestBalance-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 31.7086
-  tps: 32.63564
+  dps: 32.71318
+  tps: 33.64022
  }
 }
 dps_results: {
@@ -72,63 +72,63 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 30.47978
-  tps: 31.35402
+  dps: 31.44366
+  tps: 32.3179
  }
 }
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 54.07271
-  tps: 54.99347
+  dps: 55.75474
+  tps: 56.6755
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 53.85073
-  tps: 72.25953
+  dps: 55.52666
+  tps: 73.93546
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 53.85073
-  tps: 54.77117
+  dps: 55.52666
+  tps: 56.4471
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 57.36598
-  tps: 61.96818
+  dps: 59.11203
+  tps: 63.71423
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 50.65317
-  tps: 50.65317
+  dps: 52.26406
+  tps: 52.26406
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 50.65317
-  tps: 50.65317
+  dps: 52.26406
+  tps: 52.26406
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 55.92235
-  tps: 55.92235
+  dps: 57.6247
+  tps: 57.6247
  }
 }
 dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 53.85073
-  tps: 54.77117
+  dps: 55.52666
+  tps: 56.4471
  }
 }
