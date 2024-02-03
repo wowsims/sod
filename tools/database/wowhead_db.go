@@ -154,7 +154,7 @@ type WowheadItem struct {
 	Quality       int32 `json:"quality"`
 	Ilvl          int32 `json:"itemLevel"`
 	Phase         int32 `json:"contentPhase"`
-	RequiresLevel int32 `json:"reqlevel"`
+	RequiresLevel int32 `json:"requiredLevel"`
 
 	Stats               WowheadItemStats `json:"stats"`
 	RandomSuffixOptions []int32          `json:"randomEnchants"`
