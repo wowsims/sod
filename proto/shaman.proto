@@ -171,13 +171,6 @@ message ElementalShaman {
 	message Options {
 		ShamanShield shield = 1;
 		ShamanTotems totems = 3;
-		
-		enum ThunderstormRange {
-			UnsetTSRange = 0;
-			TSInRange = 1;
-			TSOutofRange = 2;
-		}
-		ThunderstormRange thunderstormRange = 4;
 	}
 	Options options = 3;
 }

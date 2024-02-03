@@ -21,13 +21,14 @@ func (shaman *Shaman) applyAncestralGuidance() {
 	numHealedAllies := int32(3)
 
 	agDamageSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 409337}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellHealing,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagIgnoreResists,
 	})
 
 	agHealSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 409333}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful,
@@ -48,9 +49,9 @@ func (shaman *Shaman) applyAncestralGuidance() {
 			}
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if shaman.LastFlameShockTarget != nil {
+			if shaman.lastFlameShockTarget != nil {
 				baseDamage := result.Damage * healingConversion
-				agDamageSpell.CalcAndDealHealing(sim, shaman.LastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				agDamageSpell.CalcAndDealHealing(sim, shaman.lastFlameShockTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})

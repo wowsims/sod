@@ -60,7 +60,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 			spell.Dot(target).Apply(sim)
 
 			if shaman.HasRune(TotemOfAncestralGuidance) {
-				shaman.LastFlameShockTarget = target
+				shaman.lastFlameShockTarget = target
 			}
 		}
 		spell.DealDamage(sim, result)
