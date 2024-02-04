@@ -116,7 +116,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		WarriorInputs.ShoutPicker,
-		WarriorInputs.Recklessness,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [

@@ -62,9 +62,10 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 	})
 
-	ssCD := warrior.RegisterSpell(core.SpellConfig{
+	warrior.SweepingStrikes = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		Flags:       core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 30,
@@ -82,10 +83,5 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			ssAura.Activate(sim)
 		},
-	})
-
-	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: ssCD,
-		Type:  core.CooldownTypeDPS,
 	})
 }

@@ -115,20 +115,17 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 		rb.unit.Log(sim, "Gained %0.3f rage from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rb.currentRage, newRage)
 	}
 
-	rb.unit.OnRageChange(sim, metrics)
-
 	rb.currentRage = newRage
 	if !sim.Options.Interactive {
 		rb.unit.Rotation.DoNextAction(sim)
 	}
+	rb.unit.OnRageChange(sim, metrics)
 }
 
 func (rb *rageBar) SpendRage(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to spend negative rage!")
 	}
-
-	rb.unit.OnRageChange(sim, metrics)
 
 	newRage := rb.currentRage - amount
 	metrics.AddEvent(-amount, -amount)
@@ -139,6 +136,7 @@ func (rb *rageBar) SpendRage(sim *Simulation, amount float64, metrics *ResourceM
 
 	rb.currentRage = newRage
 
+	rb.unit.OnRageChange(sim, metrics)
 }
 
 func (rb *rageBar) reset(_ *Simulation) {
