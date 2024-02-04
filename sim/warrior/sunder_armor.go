@@ -20,7 +20,7 @@ func (warrior *Warrior) newSunderArmorSpell(isDevastateEffect bool) *core.Spell 
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15,
+			Cost:   15 - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

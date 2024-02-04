@@ -34,7 +34,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute],
+			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute] - warrior.FocusedRageDiscount,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

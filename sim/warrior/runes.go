@@ -13,17 +13,21 @@ func (warrior *Warrior) ApplyRunes() {
 
 	if warrior.GetMHWeapon() != nil { // This check is to stop memory dereference error if unarmed
 		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {
-			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.1, 1)
+			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.2, 1)
 		}
 	}
+
+	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
 
 	warrior.applyBloodFrenzy()
 	warrior.applyFlagellation()
 	warrior.applyConsumedByRage()
 	warrior.registerQuickStrike()
 	warrior.registerRagingBlow()
+	warrior.applyBloodSurge()
 
 	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
+	// Precise Timing is implemented on slam.go
 
 }
 
@@ -94,10 +98,10 @@ func (warrior *Warrior) applyConsumedByRage() {
 		Duration:  time.Second * 10,
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.2
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
 		},
 	})
 
@@ -125,6 +129,54 @@ func (warrior *Warrior) applyConsumedByRage() {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				warrior.ConsumedByRageAura.RemoveStack(sim)
 			}
+		},
+	})
+}
+
+func (warrior *Warrior) applyBloodSurge() {
+	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
+		return
+	}
+
+	warrior.BloodSurgeAura = warrior.RegisterAura(core.Aura{
+		Label:    "Blood Surge Proc",
+		ActionID: core.ActionID{SpellID: 413399},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Slam.DefaultCast.CastTime = 0
+			warrior.Slam.CostMultiplier -= 1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
+			warrior.Slam.CostMultiplier -= 1
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == warrior.Slam { // removed even if slam doesn't land
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Blood Surge",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.Flags.Matches(SpellFlagBloodSurge) {
+				return
+			}
+
+			if sim.RandomFloat("Blood Surge") > 0.3 {
+				return
+			}
+
+			warrior.BloodSurgeAura.Activate(sim)
 		},
 	})
 }

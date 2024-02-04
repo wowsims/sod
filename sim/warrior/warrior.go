@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	SpellFlagBleed = core.SpellFlagAgentReserved1
+	SpellFlagBleed      = core.SpellFlagAgentReserved1
+	SpellFlagBloodSurge = core.SpellFlagAgentReserved2
 )
 
 var TalentTreeSizes = [3]int{31, 27, 27}
@@ -39,6 +40,10 @@ type Warrior struct {
 	BloodrageAura        *core.Aura
 	ConsumedByRageAura   *core.Aura
 	Above80RageCBRActive bool
+	BloodSurgeAura       *core.Aura
+
+	// Rune passive
+	FocusedRageDiscount float64
 
 	// Reaction time values
 	reactionTime       time.Duration
@@ -115,7 +120,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerBloodthirstSpell(primaryTimer)
 	warrior.registerCleaveSpell()
 	warrior.registerDemoralizingShoutSpell()
-	warrior.registerDevastateSpell()
 	warrior.registerExecuteSpell()
 	warrior.registerHeroicStrikeSpell()
 	warrior.registerMortalStrikeSpell(primaryTimer)

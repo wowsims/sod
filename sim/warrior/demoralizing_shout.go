@@ -16,7 +16,7 @@ func (warrior *Warrior) registerDemoralizingShoutSpell() {
 		Flags:       core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost: 10,
+			Cost: 10 - warrior.FocusedRageDiscount,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

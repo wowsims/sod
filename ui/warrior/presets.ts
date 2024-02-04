@@ -31,14 +31,14 @@ export const RotationFuryDefault = PresetUtils.makePresetAPLRotation('Default', 
 export const Talent25 = {
 	name: 'Level 25',
 	data: SavedTalents.create({
-		talentsString: '303220201-03',
+		talentsString: '303220203-01',
 	}),
 };
 
 export const DefaultOptions = WarriorOptions.create({
 	startingRage: 0,
 	useRecklessness: true,
-	shout: WarriorShout.WarriorShoutCommanding,
+	shout: WarriorShout.WarriorShoutBattle,
 });
 
 export const DefaultConsumes = Consumes.create({

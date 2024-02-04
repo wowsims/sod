@@ -77,6 +77,19 @@ enum WarriorRune {
 	RuneFuriousThunder = 403219;
 	RuneConsumedByRage = 425418;
 	RuneFrenziedAssault = 425412;
+	RuneBloodSurge = 413380;
+	RuneFocusedRage = 29787;
+	RunePreciseTiming = 402922;
+	RuneEnragedRegeneration = 403467;
+	RuneIntervene = 403472;
+	RuneRallyingCry = 426491;
+	RuneCommandingShout = 403446;
+	RuneRampage = 426940;
+	RuneSwordAndBoard = 426978;
+	RuneWreckingCrew = 427065;
+	RuneShieldMastery = 426980;
+	RuneTasteForBlood = 426953;
+	RuneVigilance = 426972;
 }
 
 enum WarriorShout {
