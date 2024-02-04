@@ -672,6 +672,17 @@ export const CurseOfElements = withLabel(
 	'Curse of Elements',
 );
 
+export const CurseOfShadow = withLabel(
+	makeBooleanDebuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 17862, 	minLevel: 44, maxLevel: 59 	},
+			{ id: 17937, 	minLevel: 60 								},
+		]),
+		fieldName: 'curseOfShadow',
+	}),
+	'Curse of Shadow',
+);
+
 export const HuntersMark = withLabel(
 	makeTristateDebuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -991,6 +1002,11 @@ export const DEBUFFS_CONFIG = [
 		config: CurseOfElements,
 		picker: IconPicker,
 		stats: [Stat.StatFirePower, Stat.StatFrostPower],
+	},
+	{
+		config: CurseOfShadow,
+		picker: IconPicker,
+		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
 	},
 	{ 
 		config: AttackPowerDebuff,

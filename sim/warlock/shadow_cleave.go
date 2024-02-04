@@ -14,7 +14,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	manaCost := [11]float64{0, 12, 20, 35, 55, 80, 105, 132, 157, 185, 190}[rank]
 	level := [11]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
 
-	numHits := min(4, warlock.Env.GetNumTargets())
+	numHits := min(3, warlock.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
 	return core.SpellConfig{
@@ -41,7 +41,9 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 			return warlock.MetamorphosisAura.IsActive()
 		},
 
-		BonusCritRating:  float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier: 1,

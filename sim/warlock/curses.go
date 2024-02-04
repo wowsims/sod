@@ -31,8 +31,10 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   2 * float64(warlock.Talents.Suppression) * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness),
+		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.CritRatingPerCritChance,
+		DamageMultiplier: 1 *
+			(1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness)) *
+			(1 + 0.02*float64(warlock.Talents.ShadowMastery)),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  0,
 
@@ -81,6 +83,153 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 			warlock.CurseOfAgony = warlock.GetOrRegisterSpell(config)
 		}
 	}
+}
+
+func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
+	playerLevel := warlock.Level
+
+	warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(core.CurseOfRecklessnessAura)
+
+	spellID := map[int32]int32{
+		25: 704,
+		40: 7658,
+		50: 7659,
+		60: 11717,
+	}[playerLevel]
+
+	manaCost := map[int32]float64{
+		25: 35.0,
+		40: 60.0,
+		50: 90.0,
+		60: 115.0,
+	}[playerLevel]
+
+	warlock.CurseOfRecklessness = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAPL,
+
+		ManaCost: core.ManaCostOptions{
+			FlatCost: manaCost,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
+		ThreatMultiplier: 1,
+		FlatThreatBonus:  156,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if result.Landed() {
+				warlock.CurseOfRecklessnessAuras.Get(target).Activate(sim)
+			}
+		},
+
+		RelatedAuras: []core.AuraArray{warlock.CurseOfRecklessnessAuras},
+	})
+}
+
+func (warlock *Warlock) registerCurseOfElementsSpell() {
+	playerLevel := warlock.Level
+	if playerLevel < 40 {
+		return
+	}
+
+	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
+
+	spellID := map[int32]int32{
+		40: 1490,
+		50: 11721,
+		60: 11722,
+	}[playerLevel]
+
+	manaCost := map[int32]float64{
+		40: 100.0,
+		50: 150.0,
+		60: 200.0,
+	}[playerLevel]
+
+	warlock.CurseOfElements = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAPL,
+
+		ManaCost: core.ManaCostOptions{
+			FlatCost: manaCost,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
+		ThreatMultiplier: 1,
+		FlatThreatBonus:  156,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if result.Landed() {
+				warlock.CurseOfElementsAuras.Get(target).Activate(sim)
+			}
+		},
+
+		RelatedAuras: []core.AuraArray{warlock.CurseOfElementsAuras},
+	})
+}
+
+func (warlock *Warlock) registerCurseOfShadowSpell() {
+	playerLevel := warlock.Level
+	if playerLevel < 50 {
+		return
+	}
+
+	warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(core.CurseOfShadowAura)
+
+	spellID := map[int32]int32{
+		50: 17862,
+		60: 17937,
+	}[playerLevel]
+
+	manaCost := map[int32]float64{
+		50: 150.0,
+		60: 200.0,
+	}[playerLevel]
+
+	warlock.CurseOfShadow = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAPL,
+
+		ManaCost: core.ManaCostOptions{
+			FlatCost: manaCost,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
+		ThreatMultiplier: 1,
+		FlatThreatBonus:  156,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if result.Landed() {
+				warlock.CurseOfShadowAuras.Get(target).Activate(sim)
+			}
+		},
+
+		RelatedAuras: []core.AuraArray{warlock.CurseOfShadowAuras},
+	})
 }
 
 func (warlock *Warlock) registerAmplifyCurseSpell() {

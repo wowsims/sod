@@ -55,9 +55,10 @@ func (warlock *Warlock) registerHauntSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.SpellCritMultiplier(1, 0),
-		ThreatMultiplier:         1,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
+		CritMultiplier:   warlock.SpellCritMultiplier(1, 0),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellPower()

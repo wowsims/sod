@@ -77,6 +77,14 @@ enum WarlockRune {
 	RuneLegsDemonicPact       	  = 425464;
 	RuneLegsEverlastingAffliction = 412689;
 	RuneLegsIncinerate			  = 412758;
+
+	RuneBeltInvocation			  = 426243;
+	RuneBeltGrimoireOfSynergy	  = 426301;
+	RuneBeltShadowAndFlame		  = 426316;
+
+	RuneBootsDemonicKnowledge	  = 412732;
+	RuneBootsDanceOfTheWicked	  = 412798;
+	RuneBootsShadowflame		  = 426320;
 }
 
 message WarlockRotation {

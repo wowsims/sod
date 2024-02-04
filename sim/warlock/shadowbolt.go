@@ -42,7 +42,9 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 			return warlock.MetamorphosisAura == nil || !warlock.MetamorphosisAura.IsActive()
 		},
 
-		BonusCritRating:  float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: damageMulti,
 		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier: 1,

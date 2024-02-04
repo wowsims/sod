@@ -34,8 +34,10 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
-		BonusCritRating:  0,
+		BonusHitRating:  float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
+		BonusCritRating: 0,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
 		ThreatMultiplier: 1,

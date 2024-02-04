@@ -45,9 +45,10 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:           float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.ImprovedDrainLife),
+		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
+		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.ImprovedDrainLife),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -132,7 +133,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			Timer:    warlock.NewTimer(),
 			Duration: 15 * time.Second,
 		}
-		spellConfig.Flags |= core.SpellFlagPureDot
 	} else {
 		spellConfig.Flags |= core.SpellFlagChanneled
 	}

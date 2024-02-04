@@ -51,31 +51,31 @@ character_stats_results: {
 dps_results: {
  key: "TestAffliction-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 7.97382
+  dps: 7.24893
  }
 }
 dps_results: {
  key: "TestAffliction-Average-Default"
  value: {
-  dps: 8.09418
+  dps: 7.35834
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongMultiTarget"
  value: {
-  dps: 8.06923
+  dps: 7.33566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongSingleTarget"
  value: {
-  dps: 8.06923
+  dps: 7.33566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-ShortSingleTarget"
  value: {
-  dps: 11.12498
+  dps: 10.11362
  }
 }
 dps_results: {
@@ -99,19 +99,19 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongMultiTarget"
  value: {
-  dps: 8.06923
+  dps: 7.33566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongSingleTarget"
  value: {
-  dps: 8.06923
+  dps: 7.33566
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-ShortSingleTarget"
  value: {
-  dps: 11.12498
+  dps: 10.11362
  }
 }
 dps_results: {
@@ -135,6 +135,6 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 8.06923
+  dps: 7.33566
  }
 }
