@@ -1,7 +1,10 @@
 import {
+	Conjured,
 	Consumes,
 	Flask,
 	Food,
+	Potions,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -15,6 +18,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 
 import DefaultAPL from './apls/default.apl.json';
+import { BlackfathomSharpeningStone, ConjuredMinorRecombobulator } from 'ui/core/components/inputs/consumables.js';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -43,5 +47,8 @@ export const DefaultOptions = WarriorOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	food: Food.FoodGrilledSquid,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.BlackfathomSharpeningStone,
+	defaultPotion: Potions.UnknownPotion,
 });
