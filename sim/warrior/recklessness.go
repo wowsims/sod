@@ -18,23 +18,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*core.Spell{
-				warrior.HeroicStrike,
-				warrior.Cleave,
-				warrior.Bloodthirst,
-				warrior.Devastate,
-				warrior.Execute,
-				warrior.MortalStrike,
-				warrior.Overpower,
-				warrior.Revenge,
-				warrior.ShieldSlam,
-				warrior.Slam,
-				warrior.ThunderClap,
-				warrior.Whirlwind,
-				warrior.ConcussionBlow,
-			}, func(spell *core.Spell) bool { return spell != nil })
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
 			for _, spell := range affectedSpells {

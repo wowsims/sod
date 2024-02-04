@@ -28,7 +28,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    cdTimer,
-				Duration: time.Second * 4,
+				Duration: time.Second * 6,
 			},
 		},
 
@@ -42,12 +42,6 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + warrior.Bloodthirst.CD.Duration,
-				OnAction: func(_ *core.Simulation) {
-					warrior.Rotation.DoNextAction(sim)
-				},
-			})
 		},
 	})
 }

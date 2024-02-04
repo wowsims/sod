@@ -13,7 +13,7 @@ const (
 	SpellFlagBloodSurge = core.SpellFlagAgentReserved2
 )
 
-var TalentTreeSizes = [3]int{31, 27, 27}
+var TalentTreeSizes = [3]int{18, 17, 17}
 
 type WarriorInputs struct {
 	StanceSnapshot bool
