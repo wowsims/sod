@@ -139,6 +139,10 @@ func applyConsumeEffects(agent Agent) {
 
 	if consumes.SpellPowerBuff != proto.SpellPowerBuff_SpellPowerBuffUnknown {
 		switch consumes.SpellPowerBuff {
+		case proto.SpellPowerBuff_LesserArcaneElixir:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 14,
+			})
 		case proto.SpellPowerBuff_ArcaneElixir:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 20,
