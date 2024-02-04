@@ -35,15 +35,19 @@ type Warlock struct {
 	DrainLife    *core.Spell
 	RainOfFire   *core.Spell
 
-	CurseOfElements      *core.Spell
-	CurseOfElementsAuras core.AuraArray
-	CurseOfWeakness      *core.Spell
-	CurseOfWeaknessAuras core.AuraArray
-	CurseOfTongues       *core.Spell
-	CurseOfTonguesAuras  core.AuraArray
-	CurseOfAgony         *core.Spell
-	CurseOfDoom          *core.Spell
-	AmplifyCurse         *core.Spell
+	CurseOfElements          *core.Spell
+	CurseOfElementsAuras     core.AuraArray
+	CurseOfShadow            *core.Spell
+	CurseOfShadowAuras       core.AuraArray
+	CurseOfRecklessness      *core.Spell
+	CurseOfRecklessnessAuras core.AuraArray
+	CurseOfWeakness          *core.Spell
+	CurseOfWeaknessAuras     core.AuraArray
+	CurseOfTongues           *core.Spell
+	CurseOfTonguesAuras      core.AuraArray
+	CurseOfAgony             *core.Spell
+	CurseOfDoom              *core.Spell
+	AmplifyCurse             *core.Spell
 
 	DemonicEmpowerment      *core.Spell
 	DemonicEmpowermentAura  *core.Aura
@@ -82,12 +86,14 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerIncinerateSpell()
 	warlock.registerShadowBoltSpell()
 	warlock.registerShadowCleaveSpell()
-	// warlock.registerCurseOfElementsSpell()
-	// warlock.registerCurseOfWeaknessSpell()
-	// warlock.registerCurseOfTonguesSpell()
+
+	warlock.registerCurseOfElementsSpell()
+	warlock.registerCurseOfShadowSpell()
+	warlock.registerCurseOfRecklessnessSpell()
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
 	// warlock.registerCurseOfDoomSpell()
+
 	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
 	// warlock.registerSoulFireSpell()

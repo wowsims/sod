@@ -36,16 +36,59 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 	case proto.WarlockOptions_Imp:
 		cfg.Name = "Imp"
 		cfg.PowerModifier = 0.33 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  47,
-			stats.Agility:   25,
-			stats.Stamina:   70,
-			stats.Intellect: 94,
-			stats.Spirit:    95,
-			stats.Mana:      149,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  47,
+				stats.Agility:   25,
+				stats.Stamina:   49,
+				stats.Intellect: 94,
+				stats.Spirit:    95,
+				stats.Mana:      149,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+			break
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  70,
+				stats.Agility:   29,
+				stats.Stamina:   67,
+				stats.Intellect: 163,
+				stats.Spirit:    163,
+				stats.Mana:      149,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+			break
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  70,
+				stats.Agility:   29,
+				stats.Stamina:   67,
+				stats.Intellect: 163,
+				stats.Spirit:    163,
+				stats.Mana:      149,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+			break
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  70,
+				stats.Agility:   29,
+				stats.Stamina:   67,
+				stats.Intellect: 163,
+				stats.Spirit:    163,
+				stats.Mana:      149,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+			break
 		}
 	case proto.WarlockOptions_Succubus:
 		cfg.Name = "Succubus"
@@ -53,9 +96,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		cfg.Stats = stats.Stats{
 			stats.Strength:  50,
 			stats.Agility:   40,
-			stats.Stamina:   100,
-			stats.Intellect: 50,
-			stats.Spirit:    51,
+			stats.Stamina:   87,
+			stats.Intellect: 35,
+			stats.Spirit:    61,
 			stats.Mana:      60,
 			stats.MP5:       0,
 			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
@@ -65,6 +108,29 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			MainHand: core.Weapon{
 				BaseDamageMin:  23,
 				BaseDamageMax:  38,
+				SwingSpeed:     2,
+				CritMultiplier: 2,
+			},
+			AutoSwingMelee: true,
+		}
+	case proto.WarlockOptions_Voidwalker:
+		cfg.Name = "Voidwalker"
+		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
+		cfg.Stats = stats.Stats{
+			stats.Strength:  50,
+			stats.Agility:   40,
+			stats.Stamina:   87,
+			stats.Intellect: 35,
+			stats.Spirit:    61,
+			stats.Mana:      60,
+			stats.MP5:       0,
+			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		}
+		cfg.AutoAttacks = core.AutoAttackOptions{
+			MainHand: core.Weapon{
+				BaseDamageMin:  2,
+				BaseDamageMax:  7,
 				SwingSpeed:     2,
 				CritMultiplier: 2,
 			},

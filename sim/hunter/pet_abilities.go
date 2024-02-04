@@ -84,7 +84,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.MeleeCritMultiplier(1, 0),
+		CritMultiplier:   hp.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -141,7 +141,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.MeleeCritMultiplier(1, 0),
+		CritMultiplier:   hp.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -193,7 +193,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.SpellCritMultiplier(1, 0),
+		CritMultiplier:   hp.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

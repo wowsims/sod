@@ -12,6 +12,7 @@ import (
 func (warlock *Warlock) ApplyRunes() {
 	warlock.applyDemonicTactics()
 	warlock.applyDemonicPact()
+	warlock.applyShadowAndFlame()
 }
 
 func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
@@ -22,6 +23,42 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 	if warlock.Corruption.Dot(target).IsActive() {
 		warlock.Corruption.Dot(target).Rollover(sim)
 	}
+}
+
+func (warlock *Warlock) applyShadowAndFlame() {
+	if !warlock.HasRune(proto.WarlockRune_RuneBeltShadowAndFlame) {
+		return
+	}
+
+	procAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Shadow and Flame proc",
+		ActionID: core.ActionID{SpellID: 426311},
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.10
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.10
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.10
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.10
+		},
+	})
+
+	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+		Label: "Shadow and Flame",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellSchool != core.SpellSchoolFire && spell.SpellSchool != core.SpellSchoolShadow {
+				return
+			}
+
+			if !result.DidCrit() {
+				return
+			}
+
+			procAura.Activate(sim)
+		},
+	}))
 }
 
 func (warlock *Warlock) applyDemonicTactics() {

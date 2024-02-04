@@ -1,6 +1,8 @@
 package warlock
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -17,6 +19,8 @@ func (warlock *Warlock) ApplyTalents() {
 	if warlock.Talents.ImprovedShadowBolt > 0 {
 		warlock.applyImprovedShadowBolt()
 	}
+
+	warlock.applyNightfall()
 }
 
 func (warlock *Warlock) applyImprovedShadowBolt() {
@@ -113,6 +117,47 @@ func (warlock *Warlock) applyFirestone() {
 	}
 }
 
+func (warlock *Warlock) applyNightfall() {
+	if warlock.Talents.Nightfall <= 0 {
+		return
+	}
+
+	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)
+
+	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
+		Label:    "Nightfall Shadow Trance",
+		ActionID: core.ActionID{SpellID: 17941},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.ShadowBolt.CastTimeMultiplier -= 1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.ShadowBolt.CastTimeMultiplier += 1
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// Check if the shadowbolt was instant cast and not a normal one
+			if spell == warlock.ShadowBolt && spell.CurCast.CastTime == 0 {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	warlock.RegisterAura(core.Aura{
+		Label:    "Nightfall Hidden Aura",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == warlock.Corruption || spell == warlock.DrainLife {
+				if sim.Proc(nightfallProcChance, "Nightfall") {
+					warlock.NightfallProcAura.Activate(sim)
+				}
+			}
+		},
+	})
+}
+
 // func (warlock *Warlock) setupPyroclasm() {
 // 	if warlock.Talents.Pyroclasm <= 0 {
 // 		return
@@ -143,47 +188,6 @@ func (warlock *Warlock) applyFirestone() {
 // 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 // 			if (spell == warlock.Conflagrate || spell == warlock.SearingPain) && result.DidCrit() {
 // 				warlock.PyroclasmAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
-
-// func (warlock *Warlock) setupNightfall() {
-// 	if warlock.Talents.Nightfall <= 0 {
-// 		return
-// 	}
-
-// 	nightfallProcChance := 0.02*float64(warlock.Talents.Nightfall)
-
-// 	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
-// 		Label:    "Nightfall Shadow Trance",
-// 		ActionID: core.ActionID{SpellID: 17941},
-// 		Duration: time.Second * 10,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			warlock.ShadowBolt.CastTimeMultiplier -= 1
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			warlock.ShadowBolt.CastTimeMultiplier += 1
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			// Check if the shadowbolt was instant cast and not a normal one
-// 			if spell == warlock.ShadowBolt && spell.CurCast.CastTime == 0 {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 	})
-
-// 	warlock.RegisterAura(core.Aura{
-// 		Label:    "Nightfall Hidden Aura",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell == warlock.Corruption { // TODO: also works on drain life...
-// 				if sim.Proc(nightfallProcChance, "Nightfall") {
-// 					warlock.NightfallProcAura.Activate(sim)
-// 				}
 // 			}
 // 		},
 // 	})

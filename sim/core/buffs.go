@@ -441,7 +441,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStat(stats.FrostResistance, 60-bonusResist)
 	}
 
-	// TODO: Classic Thorns
 	if raidBuffs.Thorns == proto.TristateEffect_TristateEffectImproved {
 		ThornsAura(character, 3)
 	} else if raidBuffs.Thorns == proto.TristateEffect_TristateEffectRegular {
@@ -802,8 +801,23 @@ func RetributionAura(character *Character, sanctifiedRetribution bool) *Aura {
 }
 
 func ThornsAura(character *Character, points int32) *Aura {
-	actionID := ActionID{SpellID: 53307}
-	baseDamage := 73 * (1 + 0.25*float64(points))
+	level := character.Level
+	spellID := map[int32]int32{
+		25: 1075,
+		40: 8914,
+		50: 9756,
+		60: 9910,
+	}[level]
+
+	baseDamage := map[int32]int32{
+		25: 9,
+		40: 12,
+		50: 15,
+		60: 18,
+	}[level]
+
+	actionID := ActionID{SpellID: spellID}
+	damage := float64(baseDamage) * (1 + 0.25*float64(points))
 
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    actionID,
@@ -815,23 +829,19 @@ func ThornsAura(character *Character, points int32) *Aura {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
 		},
 	})
 
-	return character.RegisterAura(Aura{
+	return MakePermanent(character.RegisterAura(Aura{
 		Label:    "Thorns",
 		ActionID: actionID,
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Landed() && spell.SpellSchool == SpellSchoolPhysical {
 				procSpell.Cast(sim, spell.Unit)
 			}
 		},
-	})
+	}))
 }
 
 func BlessingOfSanctuaryAura(character *Character) {

@@ -36,6 +36,7 @@ export const PetInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecTankW
 	values: [
 		{ value: Summon.NoSummon, tooltip: 'No Pet' },
 		{ actionId: () => ActionId.fromSpellId(688), value: Summon.Imp },
+		{ actionId: () => ActionId.fromSpellId(697), value: Summon.Voidwalker },
 		{ actionId: () => ActionId.fromSpellId(712), value: Summon.Succubus },
 		{ actionId: () => ActionId.fromSpellId(691), value: Summon.Felhunter },
 	],

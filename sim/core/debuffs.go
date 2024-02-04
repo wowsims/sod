@@ -23,11 +23,11 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.CurseOfElements {
-		MakePermanent(CurseOfElementsAura(target))
+		MakePermanent(CurseOfElementsAura(target, level))
 	}
 
 	if debuffs.CurseOfShadow {
-		MakePermanent(CurseOfShadowAura(target))
+		MakePermanent(CurseOfShadowAura(target, level))
 	}
 
 	if debuffs.ImprovedScorch && targetIdx == 0 {
@@ -242,39 +242,80 @@ func JudgementOfLightAura(target *Unit) *Aura {
 	})
 }
 
-func CurseOfElementsAura(target *Unit) *Aura {
+func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
+	if playerLevel < 40 {
+		return nil
+	}
+
+	spellID := map[int32]int32{
+		40: 1490,
+		50: 11721,
+		60: 11722,
+	}[playerLevel]
+
+	resistance := map[int32]float64{
+		40: 45,
+		50: 60,
+		60: 75,
+	}[playerLevel]
+
+	dmgMod := map[int32]float64{
+		40: 1.06,
+		50: 1.08,
+		60: 1.10,
+	}[playerLevel]
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Elements",
-		ActionID: ActionID{SpellID: 47865},
+		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: -75, stats.FrostResistance: -75})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1.1
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 1.1
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: -resistance, stats.FrostResistance: -resistance})
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= dmgMod
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= dmgMod
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: 75, stats.FrostResistance: 75})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1.1
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 1.1
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: resistance, stats.FrostResistance: resistance})
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= dmgMod
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= dmgMod
 		},
 	})
 	return aura
 }
 
-func CurseOfShadowAura(target *Unit) *Aura {
+func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
+	if playerLevel < 50 {
+		return nil
+	}
+
+	spellID := map[int32]int32{
+		50: 17862,
+		60: 17937,
+	}[playerLevel]
+
+	resistance := map[int32]float64{
+		50: 60,
+		60: 75,
+	}[playerLevel]
+
+	dmgMod := map[int32]float64{
+		50: 1.08,
+		60: 1.10,
+	}[playerLevel]
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Shadow",
-		ActionID: ActionID{SpellID: 17937},
+		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -75, stats.ShadowResistance: -75})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1.1
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1.1
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -resistance, stats.ShadowResistance: -resistance})
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= dmgMod
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= dmgMod
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: 75, stats.ShadowResistance: 75})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 1.1
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 1.1
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: resistance, stats.ShadowResistance: resistance})
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= dmgMod
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= dmgMod
 		},
 	})
 	return aura

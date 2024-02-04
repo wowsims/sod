@@ -35,7 +35,9 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 			},
 		},
 
-		BonusCritRating:  float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		DamageMultiplierAdditive: 1 +
+			0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier: 1,

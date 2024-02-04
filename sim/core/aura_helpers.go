@@ -172,6 +172,10 @@ func MakeStackingAura(character *Character, config StackingStatAura) *Aura {
 
 // Returns the same Aura for chaining.
 func MakePermanent(aura *Aura) *Aura {
+	if aura == nil {
+		return nil
+	}
+
 	aura.Duration = NeverExpires
 	if aura.OnReset == nil {
 		aura.OnReset = func(aura *Aura, sim *Simulation) {
