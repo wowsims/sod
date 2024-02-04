@@ -54,7 +54,7 @@ func main() {
 	fmt.Printf("Version: %s\n", Version)
 	if !*skipVersionCheck && Version != "development" {
 		go func() {
-			resp, err := http.Get("https://api.github.com/repos/wowsims/classic/releases/latest")
+			resp, err := http.Get("https://api.github.com/repos/wowsims/sod/releases/latest")
 			if err != nil {
 				return
 			}
