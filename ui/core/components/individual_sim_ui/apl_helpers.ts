@@ -3,7 +3,7 @@ import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_uti
 import { Player, UnitMetadata } from '../../player.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
-import { AdaptiveStringPicker } from '../string_picker.js';
+import { AdaptiveStringPicker } from '../inputs/string_picker.js';
 import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
 import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
 import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';

@@ -1,33 +1,27 @@
 package shaman
 
-// import (
-// 	"time"
+import (
+	"github.com/wowsims/sod/sim/core"
+)
 
-// 	"github.com/wowsims/sod/sim/core"
-// 	"github.com/wowsims/sod/sim/core/stats"
-// )
+func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
+	shaman.RegisterOnItemSwap(func(sim *core.Simulation) {
+		mask := core.ProcMaskUnknown
+		if shaman.MainHand().TempEnchant == effectID {
+			mask |= core.ProcMaskMeleeMH
+		}
+		if shaman.OffHand().TempEnchant == effectID {
+			mask |= core.ProcMaskMeleeOH
+		}
+		*procMask = mask
 
-// var TotemOfTheAstralWinds int32 = 27815
-// var TotemOfSplintering int32 = 40710
-
-// func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-// 	shaman.RegisterOnItemSwap(func(sim *core.Simulation) {
-// 		mask := core.ProcMaskUnknown
-// 		if shaman.MainHand().TempEnchant == effectID {
-// 			mask |= core.ProcMaskMeleeMH
-// 		}
-// 		if shaman.OffHand().TempEnchant == effectID {
-// 			mask |= core.ProcMaskMeleeOH
-// 		}
-// 		*procMask = mask
-
-// 		if mask == core.ProcMaskUnknown {
-// 			aura.Deactivate(sim)
-// 		} else {
-// 			aura.Activate(sim)
-// 		}
-// 	})
-// }
+		if mask == core.ProcMaskUnknown {
+			aura.Deactivate(sim)
+		} else {
+			aura.Activate(sim)
+		}
+	})
+}
 
 // func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 // 	apBonus := 1250.0

@@ -154,6 +154,7 @@ enum ShamanImbue {
     WindfuryWeapon = 1;
     FlametongueWeapon = 2;
     FrostbrandWeapon = 3;
+		RockbiterWeapon = 4;
 }
 
 enum ShamanSyncType {
@@ -167,9 +168,12 @@ message ElementalShaman {
 	message Rotation {
 	}
 
+	// NextIndex: 6
 	message Options {
 		ShamanShield shield = 1;
 		ShamanTotems totems = 3;
+		ShamanImbue imbue_mh = 4;
+		ShamanImbue imbue_oh = 5;
 	}
 	Options options = 3;
 }
@@ -178,6 +182,7 @@ message EnhancementShaman {
 	message Rotation {
 	}
 
+	// NextIndex: 7
 	message Options {
 		ShamanShield shield = 1;
 		bool bloodlust = 2 [deprecated = true];
@@ -200,9 +205,11 @@ message RestorationShaman {
 	message Rotation {
 	}
 
+	// NextIndex: 8
 	message Options {
 		ShamanShield shield = 1;
 		ShamanImbue imbue_mh = 4;
+		ShamanImbue imbue_oh = 7;
 		int32 earth_shield_p_p_m = 5;
 		ShamanTotems totems = 6;
 	}

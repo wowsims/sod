@@ -1,19 +1,19 @@
-import { IconEnumPicker } from '../components/icon_enum_picker.js';
-import { IndividualSimUI } from '../individual_sim_ui.js';
-import { Player } from '../player.js';
-import { Spec } from '../proto/common.js';
+import { IconEnumPicker } from '../icon_enum_picker.js';
+import { IndividualSimUI } from '../../individual_sim_ui.js';
+import { Player } from '../../player.js';
+import { Spec } from '../../proto/common.js';
 import {
 	AirTotem,
 	EarthTotem,
 	FireTotem,
 	WaterTotem,
 	ShamanTotems,
-} from '../proto/shaman.js';
-import { ShamanSpecs } from '../proto_utils/utils.js';
-import { EventID, TypedEvent } from '../typed_event.js';
+} from '../../proto/shaman.js';
+import { ShamanSpecs } from '../../proto_utils/utils.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
 
-import { ContentBlock } from './content_block.js';
-import { Input } from './input.js';
+import { ContentBlock } from '../content_block.js';
+import { Input } from '../input.js';
 
 export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<ShamanSpecs>): ContentBlock {
 	let contentBlock = new ContentBlock(parentElem, 'totems-settings', {
