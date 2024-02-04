@@ -28,7 +28,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
 		"Rage conversion is a bit off for non 60s",
-		"Prot oriented Rune: Devastate and Sword and Board is not implemented"
+		"Prot oriented Rune: Devastate and Sword and Board is not yet implemented",
+		"Head and Bracers Rune is not yet implemented"
 	],
 
 	// All stats for which EP should be calculated.
