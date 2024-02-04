@@ -20,7 +20,8 @@ func (warrior *Warrior) registerSlamSpell() {
 		cooldown = 6 * time.Second
 	} else {
 		castTime = time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam)
-		cooldown = 0
+		// To avoid panic on 0s CD duration
+		cooldown = 1 * time.Nanosecond
 	}
 
 	flatDamageBonus := map[int32]float64{

@@ -120,7 +120,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerBloodthirstSpell(primaryTimer)
 	warrior.registerCleaveSpell()
 	warrior.registerDemoralizingShoutSpell()
-	warrior.registerDevastateSpell()
 	warrior.registerExecuteSpell()
 	warrior.registerHeroicStrikeSpell()
 	warrior.registerMortalStrikeSpell(primaryTimer)
