@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
@@ -14,6 +15,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	spellId := [9]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
 	manaCost := [9]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [9]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -67,6 +69,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
 				spell.Dot(target).Apply(sim)
 			}
 		},

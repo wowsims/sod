@@ -12,7 +12,18 @@ import (
 func (warlock *Warlock) ApplyRunes() {
 	warlock.applyDemonicTactics()
 	warlock.applyDemonicPact()
+	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
+	warlock.applyDemonicKnowledge()
+}
+
+func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
+	if dot.RemainingDuration(sim) < time.Second*6 {
+		ticksLeft := dot.NumberOfTicks - dot.TickCount
+		for i := int32(0); i < ticksLeft; i++ {
+			dot.TickOnce(sim)
+		}
+	}
 }
 
 func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
@@ -23,6 +34,81 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 	if warlock.Corruption.Dot(target).IsActive() {
 		warlock.Corruption.Dot(target).Rollover(sim)
 	}
+}
+
+func (warlock *Warlock) applyDemonicKnowledge() {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) || warlock.Pet == nil {
+		return
+	}
+
+	warlock.DemonicKnowledgeAura = warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Demonic Knowledge",
+		ActionID: core.ActionID{SpellID: 412732},
+		Duration: core.NeverExpires,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.1
+			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.AddStatDynamic(sim, stats.SpellPower, -warlock.demonicKnowledgeSp)
+		},
+	})
+}
+
+func (warlock *Warlock) applyGrimoireOfSynergy() {
+	if !warlock.HasRune(proto.WarlockRune_RuneBeltGrimoireOfSynergy) || warlock.Pet == nil {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 426303}
+	dmgMod := 1.05
+	procChance := 0.05
+
+	procAuraConfig := core.Aura{
+		Label:    "Grimoire of Synergy Proc",
+		ActionID: actionID,
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= dmgMod
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= dmgMod
+		},
+	}
+
+	warlockProcAura := warlock.GetOrRegisterAura(procAuraConfig)
+	petProcAura := warlock.Pet.GetOrRegisterAura(procAuraConfig)
+
+	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+		Label: "Grimoire of Synergy",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
+				return
+			}
+
+			if sim.RandomFloat("Grimoire of Synergy") > procChance {
+				return
+			}
+
+			petProcAura.Activate(sim)
+		},
+	}))
+
+	core.MakePermanent(warlock.Pet.GetOrRegisterAura(core.Aura{
+		Label: "Grimoire of Synergy",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
+				return
+			}
+
+			if sim.RandomFloat("Grimoire of Synergy") > procChance {
+				return
+			}
+
+			warlockProcAura.Activate(sim)
+		},
+	}))
 }
 
 func (warlock *Warlock) applyShadowAndFlame() {

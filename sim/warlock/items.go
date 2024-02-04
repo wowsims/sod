@@ -1,5 +1,10 @@
 package warlock
 
+import (
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
+)
+
 func init() {
 	// core.NewItemEffect(32493, func(agent core.Agent) {
 	// 	warlock := agent.(WarlockAgent).GetWarlock()
@@ -18,4 +23,15 @@ func init() {
 	// 		},
 	// 	})
 	// })
+
+	core.NewItemEffect(216509, func(agent core.Agent) {
+		warlock := agent.(WarlockAgent).GetWarlock()
+
+		if warlock.Pet == nil {
+			return
+		}
+
+		warlock.Pet.AddStat(stats.Stamina, 20)
+		warlock.Pet.AddStat(stats.Intellect, 80)
+	})
 }

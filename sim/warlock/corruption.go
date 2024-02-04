@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
@@ -14,7 +15,9 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	manaCost := [8]float64{0, 35, 55, 100, 160, 225, 290, 340}[rank]
 	ticks := [8]int32{0, 4, 5, 6, 6, 6, 6, 6}[rank]
 	level := [8]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
+
 	castTime := time.Millisecond * (2000 - (400 * time.Duration(warlock.Talents.ImprovedCorruption)))
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -63,6 +66,11 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
+
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
+
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
