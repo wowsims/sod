@@ -115,8 +115,8 @@ type Shaman struct {
 	HealingStreamTotem []*core.Spell
 	ManaSpringTotem    []*core.Spell
 
-	WindfuryTotem   *core.Spell
-	GraceOfAirTotem *core.Spell
+	WindfuryTotem   []*core.Spell
+	GraceOfAirTotem []*core.Spell
 
 	// Healing Spells
 	tidalWaveProc *core.Aura
@@ -218,8 +218,8 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerSearingTotemSpell()
 	shaman.registerMagmaTotemSpell()
 	shaman.registerFireNovaTotemSpell()
-	// shaman.registerManaSpringTotemSpell()
-	// shaman.registerHealingStreamTotemSpell()
+	shaman.registerHealingStreamTotemSpell()
+	shaman.registerManaSpringTotemSpell()
 	// shaman.registerWindfuryTotemSpell()
 	// shaman.registerGraceofAirTotem()
 
