@@ -118,13 +118,13 @@ func (warrior *Warrior) applyConsumedByRage() {
 			aura.Activate(sim)
 		},
 		OnRageChange: func(aura *core.Aura, sim *core.Simulation, metrics *core.ResourceMetrics) {
-			if warrior.Above80RageCBRActive {
-				return
-			}
-
 			// Refunding rage should not enable CBR
 			if warrior.CurrentRage() < 80 || metrics.ActionID.OtherID == proto.OtherAction_OtherActionRefund {
 				warrior.Above80RageCBRActive = false
+				return
+			}
+
+			if warrior.Above80RageCBRActive {
 				return
 			}
 
