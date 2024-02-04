@@ -68,6 +68,8 @@ type ShamanSpellCode int
 const (
 	SpellCode_ShamanLightningBolt ShamanSpellCode = iota
 	SpellCode_ShamanChainLightning
+	SpellCode_SearingTotem
+	SpellCode_MagmaTotem
 )
 
 // Shaman represents a shaman character.
@@ -100,18 +102,19 @@ type Shaman struct {
 	FrostShock     []*core.Spell
 
 	// Totems
-	StoneskinTotem       *core.Spell
-	StrengthOfEarthTotem *core.Spell
+	ActiveTotems [4]*core.Spell
+
+	StrengthOfEarthTotem []*core.Spell
+	StoneskinTotem       []*core.Spell
 	TremorTotem          *core.Spell
 
-	SearingTotem  *core.Spell
-	MagmaTotem    *core.Spell
-	FireNovaTotem *core.Spell
+	SearingTotem  []*core.Spell
+	MagmaTotem    []*core.Spell
+	FireNovaTotem []*core.Spell
 
-	HealingStreamTotem *core.Spell
-	ManaSpringTotem    *core.Spell
+	HealingStreamTotem []*core.Spell
+	ManaSpringTotem    []*core.Spell
 
-	TotemOfWrath    *core.Spell
 	WindfuryTotem   *core.Spell
 	GraceOfAirTotem *core.Spell
 
@@ -204,18 +207,19 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 func (shaman *Shaman) Initialize() {
 	shaman.registerChainLightningSpell()
 	// shaman.registerFeralSpirit()
-	// shaman.registerFireNovaSpell()
 	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
-	// shaman.registerMagmaTotemSpell()
-	// shaman.registerManaSpringTotemSpell()
-	// shaman.registerHealingStreamTotemSpell()
-	// shaman.registerSearingTotemSpell()
 	shaman.registerShocks()
 	// shaman.registerStormstrikeSpell()
-	// shaman.registerStrengthOfEarthTotemSpell()
-	// shaman.registerTremorTotemSpell()
-	// shaman.registerStoneskinTotemSpell()
+
+	shaman.registerStrengthOfEarthTotemSpell()
+	shaman.registerStoneskinTotemSpell()
+	shaman.registerTremorTotemSpell()
+	shaman.registerSearingTotemSpell()
+	shaman.registerMagmaTotemSpell()
+	shaman.registerFireNovaTotemSpell()
+	// shaman.registerManaSpringTotemSpell()
+	// shaman.registerHealingStreamTotemSpell()
 	// shaman.registerWindfuryTotemSpell()
 	// shaman.registerGraceofAirTotem()
 
@@ -245,4 +249,8 @@ func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {
 
 func (shaman *Shaman) ShamanThreatMultiplier(secondary float64) float64 {
 	return core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth), 1.5, 1) * secondary
+}
+
+func (shaman *Shaman) TotemManaMultiplier() float64 {
+	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
 }
