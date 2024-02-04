@@ -93,6 +93,11 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 1897, ItemId: 16250, SpellId: 20031, Name: "Superior Striking", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 1900, ItemId: 16252, SpellId: 20034, Name: "Crusader", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 
-	// Ranged TODO: Classic scopes for ranged hit and + damage
-	// {EffectId: 2523, ItemId: 18283, SpellId: 22779, Name: "Biznicks 247x128 Accurascope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.MeleeHit: 0.03}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 32, ItemId: 4406, SpellId: 3975, Name: "Standard Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 33, ItemId: 4407, SpellId: 3976, Name: "Accurate Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 663, ItemId: 10546, SpellId: 12459, Name: "Deadly Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 664, ItemId: 10548, SpellId: 12460, Name: "Sniper Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+
+	// TODO: Add ranged hit stat
+	//{EffectId: 2523, ItemId: 18283, SpellId: 22779, Name: "Biznicks 247x128 Accurascope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.MeleeHit: 3}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
 }

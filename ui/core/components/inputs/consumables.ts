@@ -400,10 +400,17 @@ export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	]),
 	value: SpellPowerBuff.ArcaneElixir,
 };
+export const LesserArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 217398, minLevel: 28 },
+	]),
+	value: SpellPowerBuff.LesserArcaneElixir,
+};
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
 	{ config: GreaterArcaneElixir, 	stats: [Stat.StatSpellPower] },
 	{ config: ArcaneElixir, 		stats: [Stat.StatSpellPower] },
+	{ config: LesserArcaneElixir, 	stats: [Stat.StatSpellPower] },
 ];
 
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesFieldName: 'spellPowerBuff'})
