@@ -121,5 +121,35 @@ func init() {
 		character.PseudoStats.ThreatMultiplier *= 1.02
 	})
 
+	// Ranged Scopes
+	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
+	})
+
+	core.AddWeaponEffect(33, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 3
+		w.BaseDamageMax += 3
+	})
+
+	core.AddWeaponEffect(663, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 5
+		w.BaseDamageMax += 5
+	})
+
+	core.AddWeaponEffect(664, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 7
+		w.BaseDamageMax += 7
+	})
+
+	//core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
+	//character := agent.GetCharacter()
+	// TODO: Add ranged hit +3
+	//})
+
 	core.AddEffectsToTest = true
 }

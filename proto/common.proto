@@ -321,6 +321,7 @@ enum SpellPowerBuff {
 	SpellPowerBuffUnknown = 0;
 	ArcaneElixir = 1;
 	GreaterArcaneElixir = 2;
+	LesserArcaneElixir = 3;
 }
 
 enum ShadowPowerBuff {
