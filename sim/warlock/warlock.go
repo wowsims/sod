@@ -49,9 +49,7 @@ type Warlock struct {
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 
-	DemonicEmpowerment      *core.Spell
-	DemonicEmpowermentAura  *core.Aura
-	DemonicSoulAura         *core.Aura
+	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
 	ImmolationAura          *core.Spell
 	IncinerateAura          *core.Aura
@@ -68,7 +66,8 @@ type Warlock struct {
 	DPSPAggregate float64
 	PreviousTime  time.Duration
 
-	petStmBonusSP float64
+	petStmBonusSP      float64
+	demonicKnowledgeSp float64
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

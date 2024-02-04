@@ -49,6 +49,12 @@ character_stats_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-InfernalPactEssence-216509"
+ value: {
+  dps: 7.58398
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 7.20917

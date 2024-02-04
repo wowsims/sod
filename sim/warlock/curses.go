@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
@@ -13,6 +14,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	baseDamage := [7]float64{0, 7, 15, 27, 42, 65, 87}[rank]
 	manaCost := [7]float64{0, 25, 50, 90, 130, 170, 215}[rank]
 	level := [7]int{0, 8, 18, 28, 38, 48, 58}[rank]
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -66,6 +68,11 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
+
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
+
 				//warlock.CurseOfDoom.Dot(target).Cancel(sim)
 				spell.Dot(target).Apply(sim)
 			}
