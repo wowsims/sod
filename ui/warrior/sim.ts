@@ -37,11 +37,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatExpertise,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatArmor,
 	],
 	epPseudoStats: [
@@ -57,11 +55,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatExpertise,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatArmor,
 	],
 	modifyDisplayStats: (_: Player<Spec.SpecWarrior>) => {
