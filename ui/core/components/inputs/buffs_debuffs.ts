@@ -602,9 +602,10 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput([
 ], 'Attack Power');
 
 // TODO: SoD Mangle
-export const BleedDebuff = InputHelpers.makeMultiIconInput([
-	// makeBooleanDebuffInput({actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle'}),
-], 'Bleed');
+export const BleedDebuff = withLabel(
+	makeBooleanDebuffInput({actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle'}),
+	'Bleed',
+);
 
 export const MeleeAttackSpeedDebuff = withLabel(
 	makeTristateDebuffInput({
@@ -980,7 +981,7 @@ export const DEBUFFS_CONFIG = [
 	// // },
 	{ 
 		config: BleedDebuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower]
 	},
 	{ 
