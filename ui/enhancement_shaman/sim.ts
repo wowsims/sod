@@ -155,7 +155,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			Presets.BlankPresetGear,
+			Presets.Phase1PresetGear,
 		],
 	},
 
