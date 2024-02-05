@@ -16,56 +16,22 @@ import (
 // )
 
 func (shaman *Shaman) ApplyTalents() {
-	// 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
-	// 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
-	// 	shaman.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(shaman.Talents.Anticipation))
-	// 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= []float64{1, 1.04, 1.07, 1.1}[shaman.Talents.WeaponMastery]
+	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
-	// 	shaman.AddStat(stats.Expertise, 3*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
+	shaman.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(shaman.Talents.Anticipation))
+	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.2 * float64(shaman.Talents.WeaponMastery))
 
-	// 	if shaman.Talents.DualWieldSpecialization > 0 && shaman.HasOHWeapon() {
-	// 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*2*float64(shaman.Talents.DualWieldSpecialization))
-	// 	}
-
-	// 	shaman.AddStat(stats.SpellCrit, float64(shaman.Talents.BlessingOfTheEternals)*2*core.CritRatingPerCritChance)
-	// 	if shaman.Talents.Toughness > 0 {
-	// 		shaman.MultiplyStat(stats.Stamina, 1.0+0.02*float64(shaman.Talents.Toughness))
-	// 	}
-	// 	if shaman.Talents.UnrelentingStorm > 0 {
-	// 		shaman.AddStatDependency(stats.Intellect, stats.MP5, 0.04*float64(shaman.Talents.UnrelentingStorm))
-	// 	}
-	// 	if shaman.Talents.AncestralKnowledge > 0 {
-	// 		shaman.MultiplyStat(stats.Intellect, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
-	// 	}
-	// 	if shaman.Talents.MentalQuickness > 0 {
-	// 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.1*float64(shaman.Talents.MentalQuickness))
-	// 	}
-	// 	if shaman.Talents.MentalDexterity > 0 {
-	// 		shaman.AddStatDependency(stats.Intellect, stats.AttackPower, 0.3333*float64(shaman.Talents.MentalDexterity))
-	// 	}
-	// 	if shaman.Talents.NaturesBlessing > 0 {
-	// 		shaman.AddStatDependency(stats.Intellect, stats.SpellPower, 0.1*float64(shaman.Talents.NaturesBlessing))
-	// 	}
-
-	// 	if shaman.Talents.SpiritWeapons {
-	// 		shaman.PseudoStats.CanParry = true
-	// 		shaman.AutoAttacks.MHConfig().ThreatMultiplier *= 0.7 // TODO this looks fishy
-	// 		shaman.AutoAttacks.OHConfig().ThreatMultiplier *= 0.7
-	// 	}
+	if shaman.Talents.AncestralKnowledge > 0 {
+		shaman.MultiplyStat(stats.Intellect, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
+	}
 
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
-	// shaman.applyFlurry()
-	// shaman.applyMaelstromWeapon()
+	shaman.applyFlurry()
 	shaman.registerElementalMasteryCD()
-	// shaman.registerNaturesSwiftnessCD()
-	// shaman.registerShamanisticRageCD()
+	shaman.registerNaturesSwiftnessCD()
 	// shaman.registerManaTideTotemCD()
 }
-
-// func (shaman *Shaman) spellThreatMultiplier() float64 {
-// 	return []float64{1, 0.9, 0.8, 0.7}[shaman.Talents.ElementalPrecision]
-// }
 
 func (shaman *Shaman) applyElementalFocus() {
 	if !shaman.Talents.ElementalFocus {
@@ -92,10 +58,9 @@ func (shaman *Shaman) applyElementalFocus() {
 					shaman.EarthShock,
 					shaman.FlameShock,
 					shaman.FrostShock,
+					shaman.FireNova,
 					{shaman.LavaBurst},
 					{shaman.MoltenBlast},
-					// TODO:
-					// Shaman.FireNova,
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
 		},
@@ -161,7 +126,7 @@ func (shaman *Shaman) applyElementalDevastation() {
 	})
 }
 
-var eleMasterActionID = core.ActionID{SpellID: 16166}
+var ElementalMasteryActionId = core.ActionID{SpellID: 16166}
 
 func (shaman *Shaman) registerElementalMasteryCD() {
 	if !shaman.Talents.ElementalMastery {
@@ -177,7 +142,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
-		ActionID: eleMasterActionID,
+		ActionID: ElementalMasteryActionId,
 		Duration: core.NeverExpires,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
@@ -206,7 +171,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: eleMasterActionID,
+		ActionID: ElementalMasteryActionId,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -225,197 +190,133 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 }
 
-// func (shaman *Shaman) registerNaturesSwiftnessCD() {
-// 	if !shaman.Talents.NaturesSwiftness {
-// 		return
-// 	}
-// 	actionID := core.ActionID{SpellID: 16188}
-// 	cdTimer := shaman.NewTimer()
-// 	cd := time.Minute * 3
+func (shaman *Shaman) registerNaturesSwiftnessCD() {
+	if !shaman.Talents.NaturesSwiftness {
+		return
+	}
+	actionID := core.ActionID{SpellID: 16188}
+	cdTimer := shaman.NewTimer()
+	cd := time.Minute * 3
 
-// 	nsAura := shaman.RegisterAura(core.Aura{
-// 		Label:    "Natures Swiftness",
-// 		ActionID: actionID,
-// 		Duration: core.NeverExpires,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			shaman.ChainLightning.CastTimeMultiplier -= 1
-// 			shaman.LavaBurst.CastTimeMultiplier -= 1
-// 			shaman.LightningBolt.CastTimeMultiplier -= 1
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			shaman.ChainLightning.CastTimeMultiplier += 1
-// 			shaman.LavaBurst.CastTimeMultiplier += 1
-// 			shaman.LightningBolt.CastTimeMultiplier += 1
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell != shaman.LightningBolt && spell != shaman.ChainLightning && spell != shaman.LavaBurst {
-// 				return
-// 			}
+	var affectedSpells []*core.Spell
 
-// 			// Remove the buff and put skill on CD
-// 			aura.Deactivate(sim)
-// 			cdTimer.Set(sim.CurrentTime + cd)
-// 			shaman.UpdateMajorCooldowns()
-// 		},
-// 	})
+	nsAura := shaman.RegisterAura(core.Aura{
+		Label:    "Natures Swiftness",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.LightningBolt,
+					shaman.ChainLightning,
+					shaman.HealingWave,
+					shaman.LesserHealingWave,
+					shaman.ChainHeal,
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			spellTriggersNS := spell.SpellCode != int32(SpellCode_ShamanLightningBolt) &&
+				spell.SpellCode != int32(SpellCode_ShamanChainLightning) &&
+				spell.SpellCode != int32(SpellCode_HealingWave) &&
+				spell.SpellCode != int32(SpellCode_LesserHealingWave) &&
+				spell.SpellCode != int32(SpellCode_ChainHeal)
 
-// 	nsSpell := shaman.RegisterSpell(core.SpellConfig{
-// 		ActionID: actionID,
-// 		Flags:    core.SpellFlagNoOnCastComplete,
-// 		Cast: core.CastConfig{
-// 			CD: core.Cooldown{
-// 				Timer:    cdTimer,
-// 				Duration: cd,
-// 			},
-// 		},
-// 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-// 			// Don't use NS unless we're casting a full-length lightning bolt, which is
-// 			// the only spell shamans have with a cast longer than GCD.
-// 			return !shaman.HasTemporarySpellCastSpeedIncrease()
-// 		},
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			nsAura.Activate(sim)
-// 		},
-// 	})
+			if spellTriggersNS {
+				return
+			}
 
-// 	shaman.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: nsSpell,
-// 		Type:  core.CooldownTypeDPS,
-// 	})
-// }
+			// Remove the buff and put skill on CD
+			aura.Deactivate(sim)
+			cdTimer.Set(sim.CurrentTime + cd)
+			shaman.UpdateMajorCooldowns()
+		},
+	})
 
-// func (shaman *Shaman) applyFlurry() {
-// 	if shaman.Talents.Flurry == 0 {
-// 		return
-// 	}
+	nsSpell := shaman.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagNoOnCastComplete,
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    cdTimer,
+				Duration: cd,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			// Don't use NS unless we're casting a full-length lightning bolt, which is
+			// the only spell shamans have with a cast longer than GCD.
+			return !shaman.HasTemporarySpellCastSpeedIncrease()
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			nsAura.Activate(sim)
+		},
+	})
 
-// 	bonus := 1.0 + 0.06*float64(shaman.Talents.Flurry)
+	shaman.AddMajorCooldown(core.MajorCooldown{
+		Spell: nsSpell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
 
-// 	if shaman.HasSetBonus(ItemSetEarthshatterBattlegear, 4) {
-// 		bonus += 0.05
-// 	}
+func (shaman *Shaman) applyFlurry() {
+	if shaman.Talents.Flurry == 0 {
+		return
+	}
 
-// 	inverseBonus := 1 / bonus
+	bonus := 1.0 + 0.06*float64(shaman.Talents.Flurry)
 
-// 	procAura := shaman.RegisterAura(core.Aura{
-// 		Label:     "Flurry Proc",
-// 		ActionID:  core.ActionID{SpellID: 16280},
-// 		Duration:  core.NeverExpires,
-// 		MaxStacks: 3,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			shaman.MultiplyMeleeSpeed(sim, bonus)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			shaman.MultiplyMeleeSpeed(sim, inverseBonus)
-// 		},
-// 	})
+	inverseBonus := 1 / bonus
 
-// 	icd := core.Cooldown{
-// 		Timer:    shaman.NewTimer(),
-// 		Duration: time.Millisecond * 500,
-// 	}
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:     "Flurry Proc",
+		ActionID:  core.ActionID{SpellID: 16280},
+		Duration:  core.NeverExpires,
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, bonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, inverseBonus)
+		},
+	})
 
-// 	shaman.RegisterAura(core.Aura{
-// 		Label:    "Flurry",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-// 				return
-// 			}
+	icd := core.Cooldown{
+		Timer:    shaman.NewTimer(),
+		Duration: time.Millisecond * 500,
+	}
 
-// 			if result.Outcome.Matches(core.OutcomeCrit) {
-// 				procAura.Activate(sim)
-// 				procAura.SetStacks(sim, 3)
-// 				icd.Reset() // the "charge protection" ICD isn't up yet
-// 				return
-// 			}
+	shaman.RegisterAura(core.Aura{
+		Label:    "Flurry",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
 
-// 			// Remove a stack.
-// 			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
-// 				icd.Use(sim)
-// 				procAura.RemoveStack(sim)
-// 			}
-// 		},
-// 	})
-// }
+			if result.Outcome.Matches(core.OutcomeCrit) {
+				procAura.Activate(sim)
+				procAura.SetStacks(sim, 3)
+				icd.Reset() // the "charge protection" ICD isn't up yet
+				return
+			}
 
-// func (shaman *Shaman) applyMaelstromWeapon() {
-// 	if shaman.Talents.MaelstromWeapon == 0 {
-// 		return
-// 	}
-
-// 	var t10BonusAura *core.Aura
-// 	enhT10Bonus := false
-// 	if shaman.HasSetBonus(ItemSetFrostWitchBattlegear, 4) {
-// 		enhT10Bonus = true
-
-// 		statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, 1.2)
-// 		t10BonusAura = shaman.RegisterAura(core.Aura{
-// 			Label:    "Maelstrom Power",
-// 			ActionID: core.ActionID{SpellID: 70831},
-// 			Duration: time.Second * 10,
-// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 				shaman.EnableDynamicStatDep(sim, statDep)
-// 			},
-// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 				shaman.DisableDynamicStatDep(sim, statDep)
-// 			},
-// 		})
-// 	}
-
-// 	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
-// 	// for LB / CL / LvB
-// 	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
-
-// 	// For sim purposes maelstrom weapon only impacts CL / LB
-// 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
-// 		Label:     "MaelstromWeapon Proc",
-// 		ActionID:  core.ActionID{SpellID: 53817},
-// 		Duration:  time.Second * 30,
-// 		MaxStacks: 5,
-// 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-// 			multDiff := 0.2 * float64(newStacks-oldStacks)
-// 			shaman.LightningBolt.CastTimeMultiplier -= multDiff
-// 			shaman.ChainLightning.CastTimeMultiplier -= multDiff
-
-// 			if enhT10Bonus && shaman.MaelstromWeaponAura.GetStacks() == 5 {
-// 				if sim.RandomFloat("Maelstrom Power") < 0.15 {
-// 					t10BonusAura.Activate(sim)
-// 				}
-// 			}
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.Flags.Matches(SpellFlagElectric) {
-// 				return
-// 			}
-// 			shaman.MaelstromWeaponAura.Deactivate(sim)
-// 		},
-// 	})
-
-// 	ppmm := shaman.AutoAttacks.NewPPMManager(core.TernaryFloat64(shaman.HasSetBonus(ItemSetWorldbreakerBattlegear, 4), 2.4, 2.0)*
-// 		float64(shaman.Talents.MaelstromWeapon), core.ProcMaskMelee)
-// 	// This aura is hidden, just applies stacks of the proc aura.
-// 	shaman.RegisterAura(core.Aura{
-// 		Label:    "MaelstromWeapon",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
-
-// 			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
-// 				shaman.MaelstromWeaponAura.Activate(sim)
-// 				shaman.MaelstromWeaponAura.AddStack(sim)
-// 			}
-// 		},
-// 	})
-// }
+			// Remove a stack.
+			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
+				icd.Use(sim)
+				procAura.RemoveStack(sim)
+			}
+		},
+	})
+}
 
 // func (shaman *Shaman) registerManaTideTotemCD() {
 // 	if !shaman.Talents.ManaTideTotem {

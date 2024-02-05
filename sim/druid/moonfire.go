@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -61,7 +62,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 		},
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:    "Moonfire",
+				Label:    fmt.Sprintf("Moonfire (Rank %d)", rank),
 				ActionID: core.ActionID{SpellID: spellId},
 			},
 			NumberOfTicks: ticks,

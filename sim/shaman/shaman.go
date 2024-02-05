@@ -91,6 +91,8 @@ const (
 	SpellCode_ShamanLightningBolt ShamanSpellCode = iota
 	SpellCode_ShamanChainLightning
 
+	SpellCode_HealingWave
+	SpellCode_LesserHealingWave
 	SpellCode_ChainHeal
 
 	SpellCode_SearingTotem
@@ -116,7 +118,6 @@ type Shaman struct {
 	ChainLightning         []*core.Spell
 	ChainLightningOverload []*core.Spell
 
-	FireNova    *core.Spell
 	Stormstrike *core.Spell
 
 	LightningShield     *core.Spell
@@ -164,8 +165,10 @@ type Shaman struct {
 	LavaLash          *core.Spell
 	EarthShield       *core.Spell
 
-	PowerSurgeAura      *core.Aura
+	FireNova []*core.Spell
+
 	MaelstromWeaponAura *core.Aura
+	PowerSurgeAura      *core.Aura
 
 	// Used by Ancestral Guidance rune
 	lastFlameShockTarget *core.Unit
@@ -237,7 +240,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
 	shaman.registerShocks()
-	// shaman.registerStormstrikeSpell()
+	shaman.registerStormstrikeSpell()
 
 	// Imbues
 	// In the Initialize due to frost brand adding the aura to the enemy

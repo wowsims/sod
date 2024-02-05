@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -73,7 +74,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
-			Label: "Flame Shock",
+			Label: fmt.Sprintf("Flame Shock (Rank %d)", rank),
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 					shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
