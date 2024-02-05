@@ -19,13 +19,10 @@ func TestFury(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
 		Talents:     FuryTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "blank"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warrior/apls", "default"),
-		},
+		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
 
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypePlate,
@@ -48,13 +45,10 @@ func TestArms(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
 		Talents:     ArmsTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "blank"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
-
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warrior/apls", "default"),
-		},
+		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
 
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypePlate,
@@ -76,7 +70,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassWarrior,
-				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_fury").GearSet,
+				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsFury,
 				TalentsString: FuryTalents,

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
@@ -53,15 +54,20 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellPower()
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					dot.SnapshotBaseDamage *= 1.4
-				}
-
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				hasLof := false
+				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+					hasLof = true
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1.4
+				}
+
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+
+				if hasLof {
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1.4
+				}
 			},
 		},
 
