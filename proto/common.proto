@@ -502,6 +502,7 @@ message Consumes {
 	bool bogling_root = 19;
 }
 
+// NextIndex: 26
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -540,6 +541,9 @@ message Debuffs {
 	// ArP items
 	bool crystal_yield = 21;
 	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
+
+	// Bleed
+	bool mangle = 25;
 }
 
 enum MobType {

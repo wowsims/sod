@@ -9,7 +9,12 @@ import (
 )
 
 func (warrior *Warrior) ApplyRunes() {
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury), 1.1, 1)
+	if warrior.GetMHWeapon() != nil && warrior.GetOHWeapon() != nil { // This check is to stop memory dereference error if unarmed
+		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeMainHand || warrior.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand &&
+			warrior.GetOHWeapon().HandType == proto.HandType_HandTypeOffHand || warrior.GetOHWeapon().HandType == proto.HandType_HandTypeOneHand {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury), 1.1, 1)
+		}
+	}
 
 	if warrior.GetMHWeapon() != nil { // This check is to stop memory dereference error if unarmed
 		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {

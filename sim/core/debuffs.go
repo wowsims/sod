@@ -46,6 +46,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfVulnerabilityAura(target))
 	}
 
+	if debuffs.Mangle {
+		MakePermanent(MangleAura(target, level))
+	}
+
 	if debuffs.CrystalYield {
 		MakePermanent(CrystalYieldAura(target))
 	}
@@ -374,7 +378,7 @@ func CurseOfVulnerabilityAura(target *Unit) *Aura {
 	})
 }
 
-func MangleAura(target *Unit, level int32) *Aura {
+func MangleAura(target *Unit, playerLevel int32) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Mangle",
 		ActionID: ActionID{SpellID: 409828},
