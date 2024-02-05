@@ -40,7 +40,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			return warlock.Immolate.Dot(target).IsActive()
 		},
 
-		BonusCritRating:          0 + float64(warlock.Talents.Devastation)*core.CritRatingPerCritChance,
+		BonusCritRating:          float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         1,

@@ -49,6 +49,7 @@ type Warlock struct {
 	CurseOfAgony             *core.Spell
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
+	Shadowflame              *core.Spell
 
 	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
@@ -62,6 +63,7 @@ type Warlock struct {
 	AmplifyCurseAura        *core.Aura
 	ImprovedShadowBoltAuras core.AuraArray
 	LakeOfFireAuras         core.AuraArray
+	ShadowflameAuras        core.AuraArray
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64
@@ -70,7 +72,6 @@ type Warlock struct {
 	petStmBonusSP        float64
 	demonicKnowledgeSp   float64
 	demonicSacrificeAura *core.Aura
-	soulLinkAura         *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -105,6 +106,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerDemonicGraceSpell()
 	warlock.registerDrainLifeSpell()
 	warlock.registerRainOfFireSpell()
+	warlock.registerShadowflameSpell()
 
 	warlock.registerCurseOfElementsSpell()
 	warlock.registerCurseOfShadowSpell()

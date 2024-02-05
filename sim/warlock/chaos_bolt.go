@@ -22,7 +22,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		ActionID:    core.ActionID{SpellID: 403629},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagIgnoreResists,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.07,

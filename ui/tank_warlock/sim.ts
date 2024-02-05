@@ -39,6 +39,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatSpellPenetration,
+		Stat.StatMP5,
 
 		// Tank stats
 		Stat.StatStrength,

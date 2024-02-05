@@ -15,6 +15,7 @@ func (warlock *Warlock) ApplyRunes() {
 	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
 	warlock.applyDemonicKnowledge()
+	warlock.applyDanceOfTheWicked()
 }
 
 func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
@@ -34,6 +35,55 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 	if warlock.Corruption.Dot(target).IsActive() {
 		warlock.Corruption.Dot(target).Rollover(sim)
 	}
+}
+
+func (warlock *Warlock) applyDanceOfTheWicked() {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsDanceOfTheWicked) {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 412800}
+	dodgeModifier := warlock.NewDynamicStatDependency(stats.SpellCrit, stats.Dodge, 1)
+
+	dotwAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Dance of the Wicked Proc",
+		ActionID: actionId,
+		Duration: 15 * time.Second,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.EnableDynamicStatDep(sim, dodgeModifier)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.DisableDynamicStatDep(sim, dodgeModifier)
+		},
+	})
+
+	manaMetric := warlock.NewManaMetrics(actionId)
+
+	var petMetric *core.ResourceMetrics
+	if warlock.Pet != nil {
+		petMetric = warlock.Pet.NewManaMetrics(actionId)
+	}
+
+	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+		Label: "Dance of the Wicked",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
+				return
+			}
+
+			if !result.DidCrit() {
+				return
+			}
+
+			dotwAura.Activate(sim)
+
+			warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
+			if warlock.Pet != nil && warlock.Pet.IsActive() {
+				warlock.Pet.AddMana(sim, warlock.Pet.MaxMana()*0.02, petMetric)
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) applyDemonicKnowledge() {

@@ -52,12 +52,13 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellPower()
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 
 				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
 					dot.SnapshotBaseDamage *= 1.4
 				}
 
-				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
