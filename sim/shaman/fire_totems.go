@@ -40,6 +40,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   int32(SpellCode_SearingTotem),
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
@@ -79,7 +80,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int(SpellCode_MagmaTotem) {
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_MagmaTotem) {
 				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
 			}
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
@@ -124,6 +125,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   int32(SpellCode_MagmaTotem),
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
@@ -163,7 +165,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int(SpellCode_SearingTotem) {
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_SearingTotem) {
 				shaman.ActiveTotems[FireTotem].Dot(shaman.CurrentTarget).Cancel(sim)
 			}
 			spell.AOEDot().Apply(sim)
@@ -248,10 +250,10 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int(SpellCode_SearingTotem) {
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_SearingTotem) {
 				shaman.ActiveTotems[FireTotem].Dot(shaman.CurrentTarget).Cancel(sim)
 			}
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int(SpellCode_MagmaTotem) {
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_MagmaTotem) {
 				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
 			}
 			spell.AOEDot().Apply(sim)
