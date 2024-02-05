@@ -83,6 +83,9 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_MagmaTotem) {
 				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
 			}
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_FireNovaTotem) {
+				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
+			}
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			// +1 needed because of rounding issues with totem tick time.
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + duration + 1
@@ -168,6 +171,9 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_SearingTotem) {
 				shaman.ActiveTotems[FireTotem].Dot(shaman.CurrentTarget).Cancel(sim)
 			}
+			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == int32(SpellCode_FireNovaTotem) {
+				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
+			}
 			spell.AOEDot().Apply(sim)
 			// +1 needed because of rounding issues with totem tick time.
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + duration + 1
@@ -203,6 +209,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	baseDamageLow := FireNovaTotemBaseDamage[rank][0]
 	baseDamageHigh := FireNovaTotemBaseDamage[rank][1]
 	spellCoeff := FireNovaTotemSpellCoeff[rank]
+	cooldown := time.Second * 15
 	manaCost := FireNovaTotemManaCost[rank]
 	level := FireNovaTotemLevel[rank]
 
@@ -212,6 +219,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
+		SpellCode:   int32(SpellCode_FireNovaTotem),
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
@@ -226,6 +234,10 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    shaman.NewTimer(),
+				Duration: cooldown,
 			},
 		},
 
