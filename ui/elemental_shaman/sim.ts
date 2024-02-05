@@ -3,15 +3,12 @@ import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
 import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
 	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import {
 	APLRotation,
@@ -23,6 +20,7 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
+// import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {

@@ -23,7 +23,7 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
-import * as ShamanInputs from './inputs.js';
+// import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
