@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -119,7 +120,13 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 	if !sim.Options.Interactive {
 		rb.unit.Rotation.DoNextAction(sim)
 	}
-	rb.unit.OnRageChange(sim, metrics)
+	StartDelayedAction(sim, DelayedActionOptions{
+		DoAt: sim.CurrentTime + time.Millisecond*1,
+		OnAction: func(sim *Simulation) {
+			rb.unit.OnRageChange(sim, metrics)
+		},
+	})
+
 }
 
 func (rb *rageBar) SpendRage(sim *Simulation, amount float64, metrics *ResourceMetrics) {
