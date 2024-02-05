@@ -63,6 +63,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-InsulatedLeathers"
+ value: {
+  dps: 27.07719
+  tps: 19.34134
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-StormshroudArmor"
  value: {
   dps: 16.9913
