@@ -201,7 +201,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			return spell.castFailureHelper(sim, "casting/channeling while moving not allowed!")
 		}
 
-		// TODO: Fix with removal of ChannelTime?
 		// Non melee casts
 		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.enabled {
 			restartMeleeAt := sim.CurrentTime + spell.CurCast.CastTime

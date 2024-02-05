@@ -38,15 +38,17 @@ func (action *APLActionCastSpell) String() string {
 
 type APLActionChannelSpell struct {
 	defaultAPLActionImpl
-	spell       *Spell
-	target      UnitReference
-	interruptIf APLValue
-	allowRecast bool
+	spell            *Spell
+	target           UnitReference
+	interruptIf      APLValue
+	instantInterrupt bool
+	allowRecast      bool
 }
 
 func (rot *APLRotation) newActionChannelSpell(config *proto.APLActionChannelSpell) APLActionImpl {
 	interruptIf := rot.coerceTo(rot.newAPLValue(config.InterruptIf), proto.APLValueType_ValueTypeBool)
-	if interruptIf == nil {
+	instantInterrupt := config.InstantInterrupt
+	if interruptIf == nil && !instantInterrupt {
 		return rot.newActionCastSpell(&proto.APLActionCastSpell{
 			SpellId: config.SpellId,
 			Target:  config.Target,
@@ -67,10 +69,11 @@ func (rot *APLRotation) newActionChannelSpell(config *proto.APLActionChannelSpel
 	}
 
 	return &APLActionChannelSpell{
-		spell:       spell,
-		target:      target,
-		interruptIf: interruptIf,
-		allowRecast: config.AllowRecast,
+		spell:            spell,
+		target:           target,
+		interruptIf:      interruptIf,
+		instantInterrupt: instantInterrupt,
+		allowRecast:      config.AllowRecast,
 	}
 }
 func (action *APLActionChannelSpell) GetAPLValues() []APLValue {
@@ -81,8 +84,16 @@ func (action *APLActionChannelSpell) IsReady(sim *Simulation) bool {
 }
 func (action *APLActionChannelSpell) Execute(sim *Simulation) {
 	action.spell.Cast(sim, action.target.Get())
-	action.spell.Unit.Rotation.interruptChannelIf = action.interruptIf
-	action.spell.Unit.Rotation.allowChannelRecastOnInterrupt = action.allowRecast
+
+	if action.instantInterrupt {
+		dot := action.spell.Unit.ChanneledDot
+		if dot != nil {
+			dot.Cancel(sim)
+		}
+	} else {
+		action.spell.Unit.Rotation.interruptChannelIf = action.interruptIf
+		action.spell.Unit.Rotation.allowChannelRecastOnInterrupt = action.allowRecast
+	}
 }
 func (action *APLActionChannelSpell) String() string {
 	return fmt.Sprintf("Channel Spell(%s, interruptIf=%s)", action.spell.ActionID, action.interruptIf)
