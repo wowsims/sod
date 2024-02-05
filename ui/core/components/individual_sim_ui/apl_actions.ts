@@ -390,7 +390,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		shortDescription: 'Channels the spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		fullDescription: `
 			<p>The difference between channeling a spell vs casting the spell is that channels can be interrupted. If the <b>Interrupt If</b> parameter is empty, this action is equivalent to <b>Cast</b>.</p>
-			<p>The channel will be interrupted only if all of the following are true:</p>
+			<p>The channel will be interrupted only if Instant Interrupt is true OR all of the following are true:</p>
 			<ul>
 				<li>Immediately following a tick of the channel</li>
 				<li>The <b>Interrupt If</b> condition evaluates to <b>True</b></li>
@@ -412,6 +412,9 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 			AplValues.valueFieldConfig('interruptIf', {
 				label: 'Interrupt If',
 				labelTooltip: 'Condition which must be true to allow the channel to be interrupted.',
+			}),
+			AplHelpers.booleanFieldConfig('instantInterrupt', 'Instant Interrupt', {
+				labelTooltip: 'If checked, interrupts of this channel will happen instantly after the cast.',
 			}),
 			AplHelpers.booleanFieldConfig('allowRecast', 'Recast', {
 				labelTooltip: 'If checked, interrupts of this channel will recast the spell.',

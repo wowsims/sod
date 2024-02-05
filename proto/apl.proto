@@ -172,6 +172,7 @@ message APLActionChannelSpell {
     UnitReference target = 2;
 
     APLValue interrupt_if = 3;
+    bool instant_interrupt = 4;
     bool allow_recast = 5;
 }
 
