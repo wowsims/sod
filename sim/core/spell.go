@@ -14,6 +14,8 @@ type CanCastCondition func(sim *Simulation, target *Unit) bool
 type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
+	// Used to identify spells with multiple ranks that need to be referenced
+	SpellCode     int32
 	SpellSchool   SpellSchool
 	ProcMask      ProcMask
 	Flags         SpellFlag
@@ -64,7 +66,7 @@ type Spell struct {
 	ActionID
 
 	// Used to identify spells with multiple ranks that need to be referenced
-	SpellCode int
+	SpellCode int32
 
 	// The unit who will perform this spell.
 	Unit *Unit
@@ -197,6 +199,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	spell := &Spell{
 		ActionID:     config.ActionID,
+		SpellCode:    config.SpellCode,
 		Unit:         unit,
 		SpellSchool:  config.SpellSchool,
 		ProcMask:     config.ProcMask,

@@ -195,7 +195,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != int(SpellCode_ShamanLightningBolt) && spell.SpellCode != int(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
+			if spell.SpellCode != int32(SpellCode_ShamanLightningBolt) && spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
 				return
 			}
 			// Remove the buff and put skill on CD
