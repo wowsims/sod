@@ -2,6 +2,7 @@ package sod
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -77,7 +78,6 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 			a.GetCharacter().AddStat(stats.AttackPower, 14)
 		},
 	},
-
 })
 
 var ItemSetBlackfathomAvengerMail = core.NewItemSet(core.ItemSet{
@@ -109,3 +109,42 @@ var ItemSetBlackfathomSlayerLeather = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
+	Name: "Insulated Leather",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.MeleeCrit, 1)
+			c.AddStat(stats.SpellCrit, 1)
+		},
+		// TODO: Implement Feral set bonus
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			applyWeaponSpecialization(c, 3, proto.WeaponType_WeaponTypeDagger)
+		},
+	},
+})
+
+var ItemSetHazardSuit = core.NewItemSet(core.ItemSet{
+	Name: "H.A.Z.A.R.D. Suit",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Defense, 7)
+			c.AddStat(stats.AttackPower, 16)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.MeleeHit, 1)
+		},
+	},
+})
+
+func applyWeaponSpecialization(character *core.Character, weaponSkillBonus float64, weaponTypes ...proto.WeaponType) {
+	mask := character.GetProcMaskForTypes(weaponTypes...)
+
+	if mask == core.ProcMaskMelee || (mask == core.ProcMaskMeleeMH && !character.HasOHWeapon()) {
+		character.AddStat(stats.WeaponSkill, weaponSkillBonus)
+	}
+}

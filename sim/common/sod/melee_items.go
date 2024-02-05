@@ -145,5 +145,93 @@ func init() {
 		})
 	})
 
+	// Hyperconductive Goldwrap
+	core.NewItemEffect(215115, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		buffAuraCrit := character.GetOrRegisterAura(core.Aura{
+			Label:    "Coin Flip: Crit",
+			ActionID: core.ActionID{SpellID: 437698},
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.MeleeCrit, 10)
+				character.AddStatDynamic(sim, stats.SpellCrit, 10)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.MeleeCrit, -10)
+				character.AddStatDynamic(sim, stats.SpellCrit, -10)
+			},
+		})
+
+		buffAuraMs := character.GetOrRegisterAura(core.Aura{
+			Label:    "Coin Flip: Movement Speed",
+			ActionID: core.ActionID{SpellID: 437699},
+			Duration: time.Second * 30,
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 437368},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 15,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				if sim.RandomFloat("Coin Flip") > 0.5 {
+					buffAuraCrit.Activate(sim)
+				} else {
+					buffAuraMs.Activate(sim)
+				}
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	// Glowing Gneuro-Linked Cowl
+	core.NewItemEffect(215166, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Gneuro-Logical Shock",
+			ActionID: core.ActionID{SpellID: 437349},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.MeleeHaste, 20)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.MeleeHaste, -20)
+			},
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 437349},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
