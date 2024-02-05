@@ -83,6 +83,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 					baseDmg *= modifier
 				}
 				dot.SnapshotBaseDamage = baseDmg
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 
 				// Drain Life heals so it snapshots target modifiers
