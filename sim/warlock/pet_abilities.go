@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (wp *WarlockPet) registerFireboltSpell() {
@@ -13,6 +14,10 @@ func (wp *WarlockPet) registerFireboltSpell() {
 
 	if rank == 0 {
 		rank = 1
+	}
+
+	if wp.owner.Options.MaxFireboltRank != proto.WarlockOptions_NoMaximum {
+		rank = min(rank, int(wp.owner.Options.MaxFireboltRank))
 	}
 
 	spellCoeff := [8]float64{0, .164, .314, .529, .571, .571, .571, .571}[rank]
