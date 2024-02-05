@@ -21,7 +21,7 @@ import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 
-import DefaultAPL from './apls/default.apl.json';
+import Phase1APL from './apls/phase_1.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -36,8 +36,10 @@ export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 Fury', Phase1Gear, 
 export const GearArmsDefault = GearArmsPhase1;
 export const GearFuryDefault = GearFuryPhase1;
 
-export const RotationArmsDefault = PresetUtils.makePresetAPLRotation('Default', DefaultAPL);
-export const RotationFuryDefault = PresetUtils.makePresetAPLRotation('Default', DefaultAPL);
+export const APLPhase1 = PresetUtils.makePresetAPLRotation('P1 Preset', Phase1APL);
+
+export const RotationArmsDefault = APLPhase1;
+export const RotationFuryDefault = APLPhase1;
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
@@ -63,11 +65,12 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-	leaderOfThePack: true,
+	battleShout: TristateEffect.TristateEffectImproved,
 	devotionAura: TristateEffect.TristateEffectImproved,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
 	stoneskinTotem: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
 })
 
 export const DefaultDebuffs = Debuffs.create({
