@@ -13,7 +13,7 @@ const (
 	SpellFlagBloodSurge = core.SpellFlagAgentReserved2
 )
 
-var TalentTreeSizes = [3]int{31, 27, 27}
+var TalentTreeSizes = [3]int{18, 17, 17}
 
 type WarriorInputs struct {
 	StanceSnapshot bool
@@ -58,6 +58,9 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	Bloodrage            *core.Spell
+	DeathWish            *core.Spell
+	Recklessness         *core.Spell
+	SweepingStrikes      *core.Spell
 	BerserkerRage        *core.Spell
 	Bloodthirst          *core.Spell
 	DemoralizingShout    *core.Spell

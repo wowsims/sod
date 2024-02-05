@@ -167,17 +167,22 @@ var JudgementOfWisdomAuraLabel = "Judgement of Wisdom"
 
 // TODO: Classic verify logic
 func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
-	actionID := ActionID{SpellID: 20357}
+	spellID := map[int32]int32{
+		40: 20186,
+		50: 20354,
+		60: 20355,
+	}[level]
+	actionID := ActionID{SpellID: spellID}
 
 	jowMana := 0.0
 	if level < 38 {
 		return nil
 	} else if level < 48 {
-		jowMana = 50.0
+		jowMana = 33.0
 	} else if level < 58 {
-		jowMana = 71.0
+		jowMana = 46.0
 	} else {
-		jowMana = 90.0
+		jowMana = 59.0
 	}
 
 	return target.GetOrRegisterAura(Aura{
@@ -194,23 +199,21 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 				return // Phantom spells (Romulo's, Lightning Capacitor, etc.) don't proc JoW.
 			}
 
+			procChance := 0.5
 			if spell.ProcMask.Matches(ProcMaskWhiteHit | ProcMaskRanged) {
 				// Apparently ranged/melee can still proc on miss
-				if !unit.AutoAttacks.PPMProc(sim, 15, ProcMaskWhiteHit|ProcMaskRanged, "jow", spell) {
+				if sim.RandomFloat("JoW Proc") > procChance {
 					return
 				}
 			} else { // spell casting
+				if !spell.ProcMask.Matches(ProcMaskDirect) {
+					return
+				}
+
 				if !result.Landed() {
 					return
 				}
 
-				ct := spell.CurCast.CastTime.Seconds()
-				if ct == 0 {
-					// Current theory is that insta-cast is treated as min GCD from retail.
-					// Perhaps this is a bug introduced in classic when converting JoW to wotlk.
-					ct = 0.75
-				}
-				procChance := ct * 0.25 // ct / 60.0 * 15.0PPM (algebra) = ct*0.25
 				if sim.RandomFloat("jow") > procChance {
 					return
 				}

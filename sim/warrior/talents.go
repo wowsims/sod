@@ -249,7 +249,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 12292}
+	actionID := core.ActionID{SpellID: 12328}
 
 	deathWishAura := warrior.RegisterAura(core.Aura{
 		Label:    "Death Wish",
@@ -266,9 +266,9 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
 
-	deathWishSpell := warrior.RegisterSpell(core.SpellConfig{
+	warrior.DeathWish = warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-
+		Flags:    core.SpellFlagAPL,
 		RageCost: core.RageCostOptions{
 			Cost: 10,
 		},
@@ -284,11 +284,6 @@ func (warrior *Warrior) registerDeathWishCD() {
 			deathWishAura.Activate(sim)
 			warrior.WaitUntil(sim, sim.CurrentTime+core.GCDDefault)
 		},
-	})
-
-	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: deathWishSpell,
-		Type:  core.CooldownTypeDPS,
 	})
 }
 

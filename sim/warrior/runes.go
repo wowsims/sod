@@ -99,9 +99,14 @@ func (warrior *Warrior) applyConsumedByRage() {
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
+			warrior.Above80RageCBRActive = true
+		},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Above80RageCBRActive = true
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
+			warrior.Above80RageCBRActive = false
 		},
 	})
 
@@ -109,17 +114,22 @@ func (warrior *Warrior) applyConsumedByRage() {
 		Label:    "Consumed By Rage Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Above80RageCBRActive = false
 			aura.Activate(sim)
 		},
 		OnRageChange: func(aura *core.Aura, sim *core.Simulation, metrics *core.ResourceMetrics) {
-			if !warrior.Above80RageCBRActive && warrior.CurrentRage() >= 80 && metrics.ActionID.OtherID != proto.OtherAction_OtherActionRefund {
-				warrior.ConsumedByRageAura.Activate(sim)
-				warrior.ConsumedByRageAura.SetStacks(sim, 12)
-				warrior.Above80RageCBRActive = true
-			} else if warrior.Above80RageCBRActive && warrior.CurrentRage() < 80 {
+			// Refunding rage should not enable CBR
+			if warrior.CurrentRage() < 80 || metrics.ActionID.OtherID == proto.OtherAction_OtherActionRefund {
 				warrior.Above80RageCBRActive = false
+				return
 			}
 
+			if warrior.Above80RageCBRActive {
+				return
+			}
+
+			warrior.ConsumedByRageAura.Activate(sim)
+			warrior.ConsumedByRageAura.SetStacks(sim, 12)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !warrior.ConsumedByRageAura.IsActive() {
