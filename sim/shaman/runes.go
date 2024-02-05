@@ -139,7 +139,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			affectedSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					shaman.ChainLightning,
-					{shaman.ChainHeal},
+					shaman.ChainHeal,
 					{shaman.LavaBurst},
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
@@ -155,7 +155,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != int(SpellCode_ShamanLightningBolt) && spell.SpellCode != int(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
+			if spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
 				return
 			}
 			aura.Deactivate(sim)
