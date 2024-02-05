@@ -33,7 +33,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.CritRatingPerCritChance,
+		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 *
 			(1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness)) *
 			(1 + 0.02*float64(warlock.Talents.ShadowMastery)),
