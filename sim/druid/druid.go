@@ -44,13 +44,13 @@ type Druid struct {
 	MangleCat            *DruidSpell
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
-	Moonfire             *DruidSpell
+	Moonfire             []*DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
 	Rip                  *DruidSpell
 	SavageRoar           *DruidSpell
 	Shred                *DruidSpell
-	Starfire             *DruidSpell
+	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
 	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
@@ -60,7 +60,7 @@ type Druid struct {
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
-	Wrath                *DruidSpell
+	Wrath                []*DruidSpell
 
 	CatForm  *DruidSpell
 	BearForm *DruidSpell
