@@ -61,6 +61,10 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-InsulatedLeathers"
+ value: {}
+}
+dps_results: {
  key: "TestEnhancement-AllItems-StormshroudArmor"
  value: {}
 }
