@@ -138,12 +138,16 @@ func (shaman *Shaman) applyPowerSurge() {
 			affectedSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					shaman.ChainLightning,
-					shaman.LightningBolt,
+					{shaman.ChainHeal},
 					{shaman.LavaBurst},
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.LavaBurst.CD.Reset()
+			for _, spell := range affectedSpells {
+				spell.CD.Reset()
+			}
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
