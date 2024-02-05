@@ -203,6 +203,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	baseDamageLow := FireNovaTotemBaseDamage[rank][0]
 	baseDamageHigh := FireNovaTotemBaseDamage[rank][1]
 	spellCoeff := FireNovaTotemSpellCoeff[rank]
+	cooldown := time.Second * 15
 	manaCost := FireNovaTotemManaCost[rank]
 	level := FireNovaTotemLevel[rank]
 
@@ -226,6 +227,10 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    shaman.NewTimer(),
+				Duration: cooldown,
 			},
 		},
 
