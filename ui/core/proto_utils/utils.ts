@@ -1445,7 +1445,7 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 	}
 
 	// Most items are filtered by required level but some items slip past, so fall back to +10 ilvl for players under level 60 for now
-	if (item.requiresLevel > player.getLevel() || (player.getLevel() < 60 && item.ilvl - 10 > player.getLevel())) {
+	if (item.requiresLevel > player.getLevel() || (item.requiresLevel == 0 && player.getLevel() < 60 && item.ilvl - 10 > player.getLevel())) {
 		return false
 	}
 
