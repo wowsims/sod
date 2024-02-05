@@ -20,9 +20,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 
-import DefaultFt from './apls/default_ft.apl.json';
-import DefaultWf from './apls/default_wf.apl.json';
-import Phase3Apl from './apls/phase_3.apl.json';
+import Phase1APL from './apls/phase_1.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -33,30 +31,23 @@ export const Phase1PresetGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear
 
 export const DefaultGear = Phase1PresetGear
 
-export const ROTATION_FT_DEFAULT = PresetUtils.makePresetAPLRotation('Default FT', DefaultFt);
-export const ROTATION_WF_DEFAULT = PresetUtils.makePresetAPLRotation('Default WF', DefaultWf);
-export const ROTATION_PHASE_3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3Apl);
+export const Phase1PresetAPL = PresetUtils.makePresetAPLRotation('P1 Preset', Phase1APL);
+
+export const DefaultAPL = Phase1PresetAPL
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
-	name: 'Standard',
+	name: 'P1 Preset',
 	data: SavedTalents.create({
-		talentsString: '053030152-30405003105021333031131031051',
-	}),
-};
-
-export const Phase3Talents = {
-	name: 'Phase 3',
-	data: SavedTalents.create({
-		talentsString: '053030152-30505003105001333031131131051',
+		talentsString: '-5005202101',
 	}),
 };
 
 export const DefaultOptions = EnhancementShamanOptions.create({
 	shield: ShamanShield.LightningShield,
-	imbueMh: ShamanImbue.WindfuryWeapon,
-	imbueOh: ShamanImbue.FlametongueWeapon,
+	imbueMh: ShamanImbue.RockbiterWeapon,
+	imbueOh: ShamanImbue.RockbiterWeapon,
 	syncType: ShamanSyncType.Auto,
 });
 
@@ -66,6 +57,8 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
+	aspectOfTheLion: true,
+	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
 	leaderOfThePack: true,
@@ -76,10 +69,9 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	sunderArmor: true,
-	curseOfWeakness: TristateEffect.TristateEffectRegular,
 	curseOfElements: true,
+	curseOfRecklessness: true,
 	faerieFire: true,
-	judgementOfWisdom: true,
 });
 
 export const OtherDefaults = {

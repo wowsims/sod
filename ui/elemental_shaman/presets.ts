@@ -1,8 +1,11 @@
 import {
   Consumes,
+  Debuffs,
   Flask,
   Food,
   Profession,
+  RaidBuffs,
+  TristateEffect,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -11,6 +14,7 @@ import {
   EarthTotem,
   ElementalShaman_Options as ElementalShamanOptions,
   FireTotem,
+  ShamanImbue,
   ShamanShield,
   ShamanTotems,
   WaterTotem,
@@ -47,22 +51,38 @@ export const StandardTalents = {
 
 export const DefaultOptions = ElementalShamanOptions.create({
   shield: ShamanShield.WaterShield,
+  imbueMh: ShamanImbue.RockbiterWeapon,
+	imbueOh: ShamanImbue.RockbiterWeapon,
   totems: ShamanTotems.create({
     earth: EarthTotem.StrengthOfEarthTotem,
+    fire: FireTotem.SearingTotem,
+    water: WaterTotem.HealingStreamTotem,
     air: AirTotem.WindfuryTotem,
-    fire: FireTotem.TotemOfWrath,
-    water: WaterTotem.ManaSpringTotem,
   }),
 });
-
-export const OtherDefaults = {
-    distanceFromTarget: 20,
-    profession1: Profession.Engineering,
-    profession2: Profession.Tailoring,
-    nibelungAverageCasts: 11,
-}
 
 export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
 });
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	aspectOfTheLion: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	arcaneBrilliance: true,
+	leaderOfThePack: true,
+	moonkinAura: true,
+	divineSpirit: true,
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfElements: true,
+  improvedScorch: true,
+});
+
+export const OtherDefaults = {
+  distanceFromTarget: 20,
+  profession1: Profession.Engineering,
+  profession2: Profession.Tailoring,
+  nibelungAverageCasts: 11,
+}

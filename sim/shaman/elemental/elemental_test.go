@@ -85,7 +85,7 @@ var BasicTotems = &proto.ShamanTotems{
 	Earth: proto.EarthTotem_TremorTotem,
 	Air:   proto.AirTotem_WindfuryTotem,
 	Water: proto.WaterTotem_ManaSpringTotem,
-	Fire:  proto.FireTotem_TotemOfWrath,
+	Fire:  proto.FireTotem_SearingTotem,
 }
 
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{

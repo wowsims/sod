@@ -40,7 +40,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 	}
 
 	enh := &EnhancementShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs),
 	}
 
 	// Enable Auto Attacks for this spec
@@ -52,34 +52,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 
 	enh.ApplySyncType(enhOptions.Options.SyncType)
 
-	if !enh.HasMHWeapon() {
-		enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
-	}
-
-	if !enh.HasOHWeapon() {
-		enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
-	}
-
-	enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
-	enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
-
-	enh.SpiritWolves = &shaman.SpiritWolves{
-		SpiritWolf1: enh.NewSpiritWolf(1),
-		SpiritWolf2: enh.NewSpiritWolf(2),
-	}
-
 	return enh
-}
-
-func (enh *EnhancementShaman) getImbueProcMask(imbue proto.ShamanImbue) core.ProcMask {
-	var mask core.ProcMask
-	if enh.SelfBuffs.ImbueMH == imbue {
-		mask |= core.ProcMaskMeleeMH
-	}
-	if enh.SelfBuffs.ImbueOH == imbue {
-		mask |= core.ProcMaskMeleeOH
-	}
-	return mask
 }
 
 type EnhancementShaman struct {
@@ -92,18 +65,6 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 
 func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
-	// In the Initialize due to frost brand adding the aura to the enemy
-	enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
-
-	if enh.ItemSwap.IsEnabled() {
-		mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-		enh.ApplyFlametongueImbueToItem(mh, true)
-		oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-		enh.ApplyFlametongueImbueToItem(oh, false)
-		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
-			enh.ApplySyncType(proto.ShamanSyncType_Auto)
-		})
-	}
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {
