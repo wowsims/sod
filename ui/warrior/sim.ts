@@ -1,11 +1,9 @@
 import {
 	Class,
-	Debuffs,
 	Faction,
 	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat, PseudoStat,
 	TristateEffect,
@@ -93,24 +91,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-			leaderOfThePack: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
-		debuffs: Debuffs.create({
-			sunderArmor: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-			faerieFire: true,
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
