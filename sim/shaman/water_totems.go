@@ -39,14 +39,14 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	healInterval := time.Second * 2
 
 	config := shaman.newTotemSpellConfig(manaCost, spellId)
+	config.RequiredLevel = level
+	config.Rank = rank
+
 	healSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: healId},
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
-
-		RequiredLevel: level,
-		Rank:          rank,
 
 		DamageMultiplier: 1 + (.02 * float64(shaman.Talents.Purification)) + 0.05*float64(shaman.Talents.RestorativeTotems),
 		CritMultiplier:   1,

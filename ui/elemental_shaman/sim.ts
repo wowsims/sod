@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.StandardTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -122,7 +122,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.StandardTalents,
+			Presets.TalentsPhase1,
+			Presets.TalentsPhase2,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
@@ -130,8 +131,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.BlankPresetGear,
-			Presets.Phase1PresetGear,
+			Presets.GearBlank,
+			Presets.GearPhase1,
 		],
 	},
 
@@ -146,7 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultName: 'Elemental',
 			iconUrl: getSpecIcon(Class.ClassShaman, 0),
 
-			talents: Presets.StandardTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

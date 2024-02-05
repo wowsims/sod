@@ -26,23 +26,32 @@ import Phase1APL from './apls/phase_1.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BlankPresetGear = PresetUtils.makePresetGear('Blank', BlankGear);
-export const Phase1PresetGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 
-export const DefaultGear = Phase1PresetGear
+export const DefaultGear = GearPhase1
 
-export const Phase1PresetAPL = PresetUtils.makePresetAPLRotation('P1 Preset', Phase1APL);
+export const Phase1PresetAPL = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 
 export const DefaultAPL = Phase1PresetAPL
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
-export const StandardTalents = {
-	name: 'P1 Preset',
+export const TalentsPhase1 = {
+	name: 'Phase 1',
 	data: SavedTalents.create({
 		talentsString: '-5005202101',
 	}),
 };
+
+export const TalentsPhase2 = {
+	name: 'Phase 2',
+	data: SavedTalents.create({
+		talentsString: '-5005202105023051',
+	}),
+};
+
+export const DefaultTalents = TalentsPhase1;
 
 export const DefaultOptions = EnhancementShamanOptions.create({
 	shield: ShamanShield.LightningShield,
