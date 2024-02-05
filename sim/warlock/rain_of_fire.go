@@ -13,6 +13,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 	baseDamage := [5]float64{0, 42, 92, 155, 226}[rank]
 	manaCost := [5]float64{0, 295, 605, 885, 1185}[rank]
 	level := [5]int{0, 20, 34, 46, 58}[rank]
+	hasRune := warlock.HasRune(proto.WarlockRune_RuneChestLakeOfFire)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -65,6 +66,10 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 				}
 			}
 			spell.AOEDot().Apply(sim)
+
+			if hasRune {
+				spell.Unit.ChanneledDot.Cancel(sim)
+			}
 		},
 	}
 }

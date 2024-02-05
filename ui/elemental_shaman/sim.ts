@@ -1,6 +1,5 @@
 import { ShamanImbueInputMH, ShamanImbueInputOH } from '../core/components/inputs/shaman_imbues.js';
 import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
-import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import {
 	Class,
 	Faction,
@@ -113,7 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		],
 	},
 	customSections: [
-		TotemsSection,
+		// TotemsSection,
 	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

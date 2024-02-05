@@ -120,6 +120,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-InsulatedLeathers"
+ value: {
+  dps: 29.82286
+  tps: 29.82286
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-StormshroudArmor"
  value: {
   dps: 15.99758
