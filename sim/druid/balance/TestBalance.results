@@ -63,6 +63,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-InsulatedLeathers"
+ value: {
+  dps: 13.96755
+  tps: 14.72959
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-StormshroudArmor"
  value: {
   dps: 11.23378

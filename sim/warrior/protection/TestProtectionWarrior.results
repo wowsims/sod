@@ -111,6 +111,14 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-H.A.Z.A.R.D.Suit"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-InsulatedLeathers"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-StormshroudArmor"
  value: {}
 }

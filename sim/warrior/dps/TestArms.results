@@ -67,6 +67,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-H.A.Z.A.R.D.Suit"
+ value: {
+  dps: 2.59731
+  tps: 9.12661
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-InsulatedLeathers"
+ value: {
+  dps: 2.8796
+  tps: 9.24084
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-StormshroudArmor"
  value: {
   dps: 0.62238
