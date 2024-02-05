@@ -110,6 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		WarlockInputs.PetInput,
+		WarlockInputs.ImpFireboltRank,
 		WarlockInputs.ArmorInput,
 		WarlockInputs.WeaponImbueInput,
 	],
