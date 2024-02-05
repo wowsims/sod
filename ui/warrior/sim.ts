@@ -146,6 +146,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			Presets.GearBlank,
+			Presets.GearArmsPhase1,
+			Presets.GearArmsDWPhase1,
+			Presets.GearFuryPhase1,
 		],
 	},
 
