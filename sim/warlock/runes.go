@@ -41,6 +41,23 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		return
 	}
 
+	wp := warlock.Pet
+	oldPetEnable := wp.OnPetEnable
+	wp.OnPetEnable = func(sim *core.Simulation) {
+		if oldPetEnable != nil {
+			oldPetEnable(sim)
+		}
+		warlock.DemonicKnowledgeAura.Activate(sim)
+	}
+
+	oldPetDisable := wp.OnPetDisable
+	wp.OnPetDisable = func(sim *core.Simulation) {
+		if oldPetDisable != nil {
+			oldPetDisable(sim)
+		}
+		warlock.DemonicKnowledgeAura.Deactivate(sim)
+	}
+
 	warlock.DemonicKnowledgeAura = warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Demonic Knowledge",
 		ActionID: core.ActionID{SpellID: 412732},
