@@ -1,5 +1,3 @@
-import pako from 'pako';
-
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { SimSettingCategories } from './sim';
@@ -283,43 +281,30 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	private loadSettings() {
 		const initEventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
-			let loadedSettings = false;
-
-			let hash = window.location.hash;
-			if (hash.length > 1) {
-				// Remove leading '#'
-				hash = hash.substring(1);
-				try {
-					const binary = atob(hash);
-					const bytes = new Uint8Array(binary.length);
-					for (let i = 0; i < bytes.length; i++) {
-						bytes[i] = binary.charCodeAt(i);
-					}
-
-					const settingsBytes = pako.inflate(bytes);
-					const settings = IndividualSimSettings.fromBinary(settingsBytes);
-					this.fromProto(initEventID, settings);
-					loadedSettings = true;
-				} catch (e) {
-					console.warn('Failed to parse settings from window hash: ' + e);
-				}
-			}
-			window.location.hash = '';
+			this.applyDefaults(initEventID);
 
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
-			if (!loadedSettings && savedSettings != null) {
+			if (savedSettings != null) {
 				try {
 					const settings = IndividualSimSettings.fromJsonString(savedSettings);
 					this.fromProto(initEventID, settings);
-					loadedSettings = true;
 				} catch (e) {
 					console.warn('Failed to parse saved settings: ' + e);
 				}
 			}
 
-			if (!loadedSettings) {
-				this.applyDefaults(initEventID);
+			// Loading from link needs to happen after loading saved settings, so that partial link imports
+			// (e.g. rotation only) include the previous settings for other categories.
+			try {
+				const urlParseResults = Importers.IndividualLinkImporter.tryParseUrlLocation(window.location);
+				if (urlParseResults) {
+					this.fromProto(initEventID, urlParseResults.settings, urlParseResults.categories);
+				}
+			} catch (e) {
+				console.warn('Failed to parse link settings: ' + e);
 			}
+			window.location.hash = '';
+
 			this.player.setName(initEventID, 'Player');
 
 			// This needs to go last so it doesn't re-store things as they are initialized.
