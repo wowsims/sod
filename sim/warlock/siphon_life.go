@@ -5,33 +5,23 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
-	masterChanneler := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
-	soulSiphon := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
+	spellId := [5]int32{0, 18265, 18879, 18880, 18881}[rank]
+	baseDamage := [5]float64{0, 15, 22, 33, 45}[rank]
+	manaCost := [5]float64{0, 150, 205, 285, 365}[rank]
+	level := [5]int{0, 0, 38, 48, 58}[rank]
 
-	spellId := [7]int32{0, 689, 699, 709, 7651, 11699, 11700}[rank]
-	spellCoeff := [7]float64{0, .078, .1, .1, .1, .1, .1}[rank]
-	baseDamage := [7]float64{0, 10, 17, 29, 41, 55, 71}[rank]
-	manaCost := [7]float64{0, 55, 85, 135, 185, 240, 300}[rank]
-	level := [7]int{0, 14, 22, 30, 38, 46, 54}[rank]
-
-	ticks := core.TernaryInt32(masterChanneler, 15, 5)
-
-	if masterChanneler {
-		manaCost *= 2
-	}
-
+	spellCoeff := 0.05
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 
-	spellConfig := core.SpellConfig{
+	return core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -41,66 +31,39 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
-				// ChannelTime: channelTime,
 			},
 		},
 
 		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
 		DamageMultiplierAdditive: 1 +
 			0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.ImprovedDrainLife),
+		DamageMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Drain Life-" + warlock.Label + strconv.Itoa(rank),
+				Label: "Siphon Life-" + warlock.Label + strconv.Itoa(rank),
 			},
-			NumberOfTicks:       ticks,
-			TickLength:          1 * time.Second,
+			NumberOfTicks:       10,
+			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: false,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseDmg := baseDamage + spellCoeff*dot.Spell.SpellPower()
-				if soulSiphon {
-					modifier := 1.0
 
-					hasAura := func(target *core.Unit, label string, rank int) bool {
-						for i := 1; i <= rank; i++ {
-							if target.HasActiveAura(label + strconv.Itoa(rank)) {
-								return true
-							}
-						}
-						return false
-					}
-					if hasAura(target, "Corruption-"+warlock.Label, 7) {
-						modifier += .06
-					}
-					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
-						modifier += .06
-					}
-					if target.HasActiveAura("Haunt-" + warlock.Label) {
-						modifier += .06
-					}
-					baseDmg *= modifier
-				}
 				dot.SnapshotBaseDamage = baseDmg
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 
-				// Drain Life heals so it snapshots target modifiers
+				// Siphon Life heals so it snapshots target modifiers
 				dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Remove target modifiers for the tick only
 				dot.Spell.Flags |= core.SpellFlagIgnoreTargetModifiers
-				//dot.Spell.Flags ^= core.SpellFlagBinary
 				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				// revert flag changes
 				dot.Spell.Flags ^= core.SpellFlagIgnoreTargetModifiers
-				//dot.Spell.Flags |= core.SpellFlagBinary
 
 				health := result.Damage
-				if masterChanneler {
-					health *= 1.5
-				}
 				warlock.GainHealth(sim, health, healthMetrics)
 			},
 		},
@@ -110,11 +73,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 
-				dot := spell.Dot(target)
-				dot.Apply(sim)
-				dot.UpdateExpires(sim, dot.ExpiresAt())
-
-				warlock.EverlastingAfflictionRefresh(sim, target)
+				spell.Dot(target).Apply(sim)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
@@ -127,27 +86,16 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			}
 		},
 	}
-
-	if masterChanneler {
-		spellConfig.Cast.CD = core.Cooldown{
-			Timer:    warlock.NewTimer(),
-			Duration: 15 * time.Second,
-		}
-	} else {
-		spellConfig.Flags |= core.SpellFlagChanneled
-	}
-
-	return spellConfig
 }
 
-func (warlock *Warlock) registerDrainLifeSpell() {
-	maxRank := 6
+func (warlock *Warlock) registerSiphonLifeSpell() {
+	maxRank := 4
 
 	for i := 1; i <= maxRank; i++ {
-		config := warlock.getDrainLifeBaseConfig(i)
+		config := warlock.getSiphonLifeBaseConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.DrainLife = warlock.GetOrRegisterSpell(config)
+			warlock.SiphonLife = warlock.GetOrRegisterSpell(config)
 		}
 	}
 }
