@@ -127,7 +127,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.Phase1PresetAPL,
+			Presets.APLPhase1,
+			Presets.APLPhase1AG,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
