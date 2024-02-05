@@ -90,6 +90,9 @@ type ShamanSpellCode int
 const (
 	SpellCode_ShamanLightningBolt ShamanSpellCode = iota
 	SpellCode_ShamanChainLightning
+
+	SpellCode_ChainHeal
+
 	SpellCode_SearingTotem
 	SpellCode_MagmaTotem
 	SpellCode_FireNovaTotem
@@ -161,6 +164,7 @@ type Shaman struct {
 	LavaLash          *core.Spell
 	EarthShield       *core.Spell
 
+	PowerSurgeAura      *core.Aura
 	MaelstromWeaponAura *core.Aura
 
 	// Used by Ancestral Guidance rune

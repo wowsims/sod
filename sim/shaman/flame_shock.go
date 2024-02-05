@@ -51,6 +51,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
+	spell.Cast.IgnoreHaste = true
+
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := baseDamage + baseSpellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
@@ -60,6 +62,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 			if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 				shaman.lastFlameShockTarget = target
+			}
+
+			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				shaman.PowerSurgeAura.Activate(sim)
 			}
 		}
 		spell.DealDamage(sim, result)
@@ -94,6 +100,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 			if shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) && result.Landed() && sim.RandomFloat("Molten Blast Reset") < ShamanMoltenBlastResetChance {
 				shaman.MoltenBlast.CD.Reset()
+			}
+
+			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				shaman.PowerSurgeAura.Activate(sim)
 			}
 		},
 	}
