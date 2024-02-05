@@ -1,5 +1,4 @@
 import {
-	Conjured,
 	Consumes,
 	Flask,
 	Food,
@@ -16,6 +15,8 @@ import {
 import * as PresetUtils from '../core/preset_utils.js';
 
 import BlankGear from './gear_sets/blank.gear.json';
+import Phase1Gear from './gear_sets/phase_1.gear.json';
+import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 
 import DefaultAPL from './apls/default.apl.json';
 
@@ -23,8 +24,14 @@ import DefaultAPL from './apls/default.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const GearArmsDefault = PresetUtils.makePresetGear('Blank', BlankGear, { talentTree: 0 });
-export const GearFuryDefault = PresetUtils.makePresetGear('Blank', BlankGear, { talentTree: 1 });
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+
+export const GearArmsPhase1 = PresetUtils.makePresetGear('P1 Arms 2H', Phase1Gear, { talentTree: 0 });
+export const GearArmsDWPhase1 = PresetUtils.makePresetGear('P1 Arms DW', Phase1DWGear, { talentTree: 0 });
+export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 Fury', Phase1Gear, { talentTree: 1 });
+
+export const GearArmsDefault = GearArmsPhase1;
+export const GearFuryDefault = GearFuryPhase1;
 
 export const RotationArmsDefault = PresetUtils.makePresetAPLRotation('Default', DefaultAPL);
 export const RotationFuryDefault = PresetUtils.makePresetAPLRotation('Default', DefaultAPL);

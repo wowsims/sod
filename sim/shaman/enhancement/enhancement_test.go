@@ -18,18 +18,15 @@ func TestEnhancement(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "p1"),
+		GearSet:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
 		Talents:     StandardTalents,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "FT", SpecOptions: PlayerOptionsFTFT},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "WF", SpecOptions: PlayerOptionsWFWF},
 		},
-		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_ft"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_wf"),
-			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_3"),
-		},
+		Rotation:       core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
+		OtherRotations: []core.RotationCombo{},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -55,7 +52,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassShaman,
-				Equipment:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "p1").GearSet,
+				Equipment:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1").GearSet,
 				TalentsString: StandardTalents,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsFTFT,
@@ -76,7 +73,7 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "053030152-30405003105021333031131031051"
+var StandardTalents = "-5005202101"
 
 var PlayerOptionsWFWF = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
@@ -108,13 +105,6 @@ var enhShamFTFT = &proto.EnhancementShaman_Options{
 		Water: proto.WaterTotem_ManaSpringTotem,
 		Fire:  proto.FireTotem_MagmaTotem,
 	},
-}
-
-var enhShamWFFT = &proto.EnhancementShaman_Options{
-	Shield:   proto.ShamanShield_LightningShield,
-	SyncType: proto.ShamanSyncType_NoSync,
-	ImbueMh:  proto.ShamanImbue_WindfuryWeapon,
-	ImbueOh:  proto.ShamanImbue_FlametongueWeapon,
 }
 
 var FullConsumes = &proto.Consumes{

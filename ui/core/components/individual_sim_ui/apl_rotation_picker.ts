@@ -9,7 +9,7 @@ import {
 } from '../../proto/apl.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
-import { AdaptiveStringPicker } from '../string_picker.js';
+import { AdaptiveStringPicker } from '../inputs/string_picker.js';
 
 import { ActionId } from '../../proto_utils/action_id.js';
 import { SimUI } from '../../sim_ui.js';

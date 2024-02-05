@@ -1,14 +1,14 @@
+import { ShamanImbueInputMH, ShamanImbueInputOH } from '../core/components/inputs/shaman_imbues.js';
+import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
+import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
 	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import {
 	APLRotation,
@@ -17,11 +17,10 @@ import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-import { TotemsSection } from '../core/components/totem_inputs.js';
 
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
-import * as ShamanInputs from './inputs.js';
+// import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
@@ -89,28 +88,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			aspectOfTheLion: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
 		}),
-		debuffs: Debuffs.create({
-			faerieFire: true,
-			judgementOfWisdom: true,
-			curseOfElements: true,
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		ShamanInputs.ShamanShieldInput,
+		ShamanShieldInput<Spec.SpecElementalShaman>(),
+		ShamanImbueInputMH<Spec.SpecElementalShaman>(),
+		ShamanImbueInputOH<Spec.SpecElementalShaman>(),
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [

@@ -34,6 +34,7 @@ type Warlock struct {
 	DemonicGrace *core.Spell
 	DrainLife    *core.Spell
 	RainOfFire   *core.Spell
+	SiphonLife   *core.Spell
 
 	CurseOfElements          *core.Spell
 	CurseOfElementsAuras     core.AuraArray
@@ -66,8 +67,10 @@ type Warlock struct {
 	DPSPAggregate float64
 	PreviousTime  time.Duration
 
-	petStmBonusSP      float64
-	demonicKnowledgeSp float64
+	petStmBonusSP        float64
+	demonicKnowledgeSp   float64
+	demonicSacrificeAura *core.Aura
+	soulLinkAura         *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -85,24 +88,16 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerIncinerateSpell()
 	warlock.registerShadowBoltSpell()
 	warlock.registerShadowCleaveSpell()
-
-	warlock.registerCurseOfElementsSpell()
-	warlock.registerCurseOfShadowSpell()
-	warlock.registerCurseOfRecklessnessSpell()
-	warlock.registerCurseOfAgonySpell()
-	warlock.registerAmplifyCurseSpell()
-	// warlock.registerCurseOfDoomSpell()
-
 	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
 	// warlock.registerSoulFireSpell()
 	// warlock.registerUnstableAfflictionSpell()
 	// warlock.registerDrainSoulSpell()
-	// warlock.registerConflagrateSpell()
+	warlock.registerConflagrateSpell()
 	warlock.registerHauntSpell()
-	// warlock.registerDemonicEmpowermentSpell()
+	warlock.registerSiphonLifeSpell()
 	warlock.registerMetamorphosisSpell()
-	// warlock.registerDarkPactSpell()
+	warlock.registerDarkPactSpell()
 	warlock.registerShadowBurnSpell()
 	warlock.registerSearingPainSpell()
 	// warlock.registerInfernoSpell()
@@ -110,6 +105,13 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerDemonicGraceSpell()
 	warlock.registerDrainLifeSpell()
 	warlock.registerRainOfFireSpell()
+
+	warlock.registerCurseOfElementsSpell()
+	warlock.registerCurseOfShadowSpell()
+	warlock.registerCurseOfRecklessnessSpell()
+	warlock.registerCurseOfAgonySpell()
+	warlock.registerAmplifyCurseSpell()
+	// warlock.registerCurseOfDoomSpell()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

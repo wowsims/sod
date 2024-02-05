@@ -1,6 +1,6 @@
-import { EventID, TypedEvent } from '../typed_event.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
 
-import { Input, InputConfig } from './input.js';
+import { Input, InputConfig } from '../input.js';
 
 /**
  * Data for creating a string picker.

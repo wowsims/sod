@@ -1,6 +1,7 @@
 import { IndividualSimUI } from "../../individual_sim_ui";
 import { Player } from "../../player";
 import {
+	Class,
 	Spec,
 	Stat,
 } from "../../proto/common";
@@ -23,7 +24,9 @@ export class ConsumesPicker extends Component {
 
 		this.buildPotionsPicker();
 		this.buildFlaskPicker();
-		this.buildWeaponImbuePicker();
+		if (this.simUI.player.getClass() != Class.ClassShaman) {
+			this.buildWeaponImbuePicker();
+		}
 		this.buildFoodPicker();
 		this.buildPhysicalBuffPicker();
 		this.buildSpellPowerBuffPicker();

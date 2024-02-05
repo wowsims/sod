@@ -24,15 +24,17 @@ func RegisterElementalShaman() {
 }
 
 func NewElementalShaman(character *core.Character, options *proto.Player) *ElementalShaman {
-	eleShamOptions := options.GetElementalShaman()
+	eleOptions := options.GetElementalShaman()
 
 	selfBuffs := shaman.SelfBuffs{
-		Shield: eleShamOptions.Options.Shield,
+		Shield:  eleOptions.Options.Shield,
+		ImbueMH: eleOptions.Options.ImbueMh,
+		ImbueOH: eleOptions.Options.ImbueOh,
 	}
 
 	totems := &proto.ShamanTotems{}
-	if eleShamOptions.Options.Totems != nil {
-		totems = eleShamOptions.Options.Totems
+	if eleOptions.Options.Totems != nil {
+		totems = eleOptions.Options.Totems
 		totems.UseFireMcd = true // Control fire totems as MCD.
 	}
 

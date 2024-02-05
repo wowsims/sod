@@ -57,7 +57,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.Stamina:   67,
 				stats.Intellect: 163,
 				stats.Spirit:    163,
-				stats.Mana:      149,
+				stats.Mana:      318,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
@@ -70,7 +70,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.Stamina:   67,
 				stats.Intellect: 163,
 				stats.Spirit:    163,
-				stats.Mana:      149,
+				stats.Mana:      318,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
@@ -83,7 +83,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.Stamina:   67,
 				stats.Intellect: 163,
 				stats.Spirit:    163,
-				stats.Mana:      149,
+				stats.Mana:      318,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
@@ -93,25 +93,95 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 	case proto.WarlockOptions_Succubus:
 		cfg.Name = "Succubus"
 		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  50,
-			stats.Agility:   40,
-			stats.Stamina:   87,
-			stats.Intellect: 35,
-			stats.Spirit:    61,
-			stats.Mana:      60,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
-		}
-		cfg.AutoAttacks = core.AutoAttackOptions{
-			MainHand: core.Weapon{
-				BaseDamageMin:  23,
-				BaseDamageMax:  38,
-				SwingSpeed:     2,
-				CritMultiplier: 2,
-			},
-			AutoSwingMelee: true,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  50,
+				stats.Agility:   40,
+				stats.Stamina:   87,
+				stats.Intellect: 35,
+				stats.Spirit:    61,
+				stats.Mana:      119,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  23,
+					BaseDamageMax:  38,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+			break
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      521,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  41,
+					BaseDamageMax:  61,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+			break
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      521,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  41,
+					BaseDamageMax:  61,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+			break
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      521,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  41,
+					BaseDamageMax:  61,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+			break
 		}
 	case proto.WarlockOptions_Voidwalker:
 		cfg.Name = "Voidwalker"
@@ -191,59 +261,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
 	}
 
-	if warlock.Talents.MasterDemonologist > 0 {
-		md := core.Aura{
-			Label:    "Master Demonologist",
-			ActionID: core.ActionID{SpellID: 23825},
-			Duration: core.NeverExpires,
-			OnGain: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				}
-			},
-			OnExpire: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				}
-			},
-		}
-
-		mdLockAura := warlock.RegisterAura(md)
-		mdPetAura := wp.RegisterAura(md)
-
-		wp.OnPetEnable = func(sim *core.Simulation) {
-			mdLockAura.Activate(sim)
-			mdPetAura.Activate(sim)
-		}
-
-		wp.OnPetDisable = func(sim *core.Simulation) {
-			mdLockAura.Deactivate(sim)
-			mdPetAura.Deactivate(sim)
-		}
-	}
-
-	if warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) {
-		oldPetEnable := wp.OnPetEnable
-		wp.OnPetEnable = func(sim *core.Simulation) {
-			if oldPetEnable != nil {
-				oldPetEnable(sim)
-			}
-			warlock.DemonicKnowledgeAura.Activate(sim)
-		}
-
-		oldPetDisable := wp.OnPetDisable
-		wp.OnPetDisable = func(sim *core.Simulation) {
-			if oldPetDisable != nil {
-				oldPetDisable(sim)
-			}
-			warlock.DemonicKnowledgeAura.Deactivate(sim)
-		}
+	if warlock.Talents.FelIntellect > 0 {
+		wp.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
 	}
 
 	// core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)

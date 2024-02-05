@@ -1,4 +1,6 @@
-import { TotemsSection } from '../core/components/totem_inputs.js';
+import { ShamanImbueInputMH, ShamanImbueInputOH } from '../core/components/inputs/shaman_imbues.js';
+import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
+import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
@@ -14,7 +16,6 @@ import {
 	Stat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import { ShamanImbue } from '../core/proto/shaman.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 
@@ -113,9 +114,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		ShamanInputs.ShamanShieldInput,
-		ShamanInputs.ShamanImbueMH,
-		ShamanInputs.ShamanImbueOH,
+		ShamanShieldInput<Spec.SpecEnhancementShaman>(),
+		ShamanImbueInputMH<Spec.SpecEnhancementShaman>(),
+		ShamanImbueInputOH<Spec.SpecEnhancementShaman>(),
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
@@ -147,35 +148,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.StandardTalents,
-			Presets.Phase3Talents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_FT_DEFAULT,
-			Presets.ROTATION_WF_DEFAULT,
-			Presets.ROTATION_PHASE_3,
+			Presets.Phase1PresetAPL,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			Presets.BlankPresetGear,
+			Presets.Phase1PresetGear,
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-		const hasT94P = player.getCurrentStats().sets.includes('Triumphant Nobundo\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Nobundo\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Triumphant Thrall\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Thrall\'s Battlegear (4pc)');
-		const options = player.getSpecOptions();
-
-		if (hasT94P) {
-			console.log("has set");
-			return Presets.ROTATION_PHASE_3.rotation.rotation!;
-		} else if (options.imbueMh == ShamanImbue.FlametongueWeapon) {
-			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_WF_DEFAULT.rotation.rotation!;
-		}
+	autoRotation: (_): APLRotation => {
+		return Presets.DefaultAPL.rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -468,6 +468,14 @@ export const makeshadowPowerConsumeInput = makeConsumeInputFactory({consumesFiel
 //                                 Weapon Imbues
 ///////////////////////////////////////////////////////////////////////////
 
+// Wild Strikes
+export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
+	actionId: () => ActionId.fromSpellId(407975),
+	value: WeaponImbue.WildStrikes,
+};
+
+// Other Imbues
+
 export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
 		{ id: 18262, minLevel: 50 },
@@ -502,23 +510,19 @@ export const BlackfathomSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromItemId(211845),
 	value: WeaponImbue.BlackfathomSharpeningStone,
 };
-export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
-	actionId: () => ActionId.fromSpellId(407975),
-	value: WeaponImbue.WildStrikes,
-};
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: ElementalSharpeningStone, 	stats: [Stat.StatAttackPower] },
-	{ config: BrillianWizardOil, 			stats: [Stat.StatSpellPower] },
-	{ config: BrilliantManaOil, 			stats: [Stat.StatHealing, Stat.StatSpellPower] },
-	{ config: DenseSharpeningStone, 		stats: [Stat.StatAttackPower] },
-	{ config: BlackfathomManaOil, 			stats: [Stat.StatSpellPower, Stat.StatMP5] },
-	{ config: BlackfathomSharpeningStone, 	stats: [Stat.StatMeleeHit] },
+	{ config: BrillianWizardOil, 					stats: [Stat.StatSpellPower] },
+	{ config: BrilliantManaOil, 					stats: [Stat.StatHealing, Stat.StatSpellPower] },
+	{ config: DenseSharpeningStone, 			stats: [Stat.StatAttackPower] },
+	{ config: BlackfathomManaOil, 				stats: [Stat.StatSpellPower, Stat.StatMP5] },
+	{ config: BlackfathomSharpeningStone, stats: [Stat.StatMeleeHit] },
 ];
 
 export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
-	...WEAPON_IMBUES_OH_CONFIG,
 	{ config: WildStrikes, stats: [Stat.StatMeleeHit] },
+	...WEAPON_IMBUES_OH_CONFIG,
 ];
 
 export const makeMainHandImbuesInput = makeConsumeInputFactory({
