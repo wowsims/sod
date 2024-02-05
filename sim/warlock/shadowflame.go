@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) registerShadowflameSpell() {
@@ -63,29 +64,38 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// Use fire school for dot modifiers
 				dot.Spell.SpellSchool = core.SpellSchoolFire
+				dot.Spell.SchoolIndex = stats.SchoolIndexFire
 
 				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellPower()
 				dot.SnapshotBaseDamage *= emberstormMulti
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					dot.SnapshotBaseDamage *= 1.4
-				}
-
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 
 				// Revert to shadow school
 				dot.Spell.SpellSchool = core.SpellSchoolShadow
+				dot.Spell.SchoolIndex = stats.SchoolIndexShadow
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Use fire school for dot modifiers
 				dot.Spell.SpellSchool = core.SpellSchoolFire
+				dot.Spell.SchoolIndex = stats.SchoolIndexFire
+
+				hasLof := false
+				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+					hasLof = true
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1.4
+				}
 
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 
+				if hasLof {
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1.4
+				}
+
 				// Revert to shadow school
 				dot.Spell.SpellSchool = core.SpellSchoolShadow
+				dot.Spell.SchoolIndex = stats.SchoolIndexShadow
 			},
 		},
 

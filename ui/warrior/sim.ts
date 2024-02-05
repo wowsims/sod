@@ -131,6 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			Presets.APLPhase1,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
