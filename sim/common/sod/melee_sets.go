@@ -111,7 +111,7 @@ var ItemSetBlackfathomSlayerLeather = core.NewItemSet(core.ItemSet{
 })
 
 var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
-	Name: "Insulated Leather",
+	Name: "Insulated Leathers",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
