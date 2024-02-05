@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warrior *Warrior) RegisterRecklessnessCD() {
@@ -12,7 +13,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 1719}
-	var affectedSpells []*core.Spell
 
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
@@ -20,15 +20,12 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating += 100 * core.CritRatingPerCritChance
-			}
+			warrior.AddStatDynamic(sim, stats.MeleeCrit, 100)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier /= 1.2
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
-			}
+			warrior.AddStatDynamic(sim, stats.MeleeCrit, -100)
+
 		},
 	})
 
