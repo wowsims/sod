@@ -90,24 +90,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			aspectOfTheLion: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
 		}),
-		debuffs: Debuffs.create({
-			faerieFire: true,
-			judgementOfWisdom: true,
-			curseOfElements: true,
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [

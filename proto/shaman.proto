@@ -185,7 +185,6 @@ message EnhancementShaman {
 	// NextIndex: 7
 	message Options {
 		ShamanShield shield = 1;
-		bool bloodlust = 2 [deprecated = true];
 		ShamanSyncType sync_type = 3;
 		ShamanImbue imbue_mh = 4;
 		ShamanImbue imbue_oh = 5;

@@ -67,7 +67,7 @@ func applyRaceEffects(agent Agent) {
 		}
 
 		// Blood Fury
-		actionID := ActionID{SpellID: 33697}
+		actionID := ActionID{SpellID: 20572}
 		apBonus := float64(character.Level)*4 + 2
 		spBonus := float64(character.Level)*2 + 3
 		bloodFuryAura := character.NewTemporaryStatsAura("Blood Fury", actionID, stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}, time.Second*15)

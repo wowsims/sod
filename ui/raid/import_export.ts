@@ -639,8 +639,6 @@ const fullTypeToSpec: Record<string, Spec> = {
 const racialSpells: Array<{ id: number, name: string, race: Race }> = [
 	{ id: 26297, name: 'Berserking', race: Race.RaceTroll },
 	{ id: 20572, name: 'Blood Fury (AP)', race: Race.RaceOrc },
-	{ id: 33697, name: 'Blood Fury (AP+SP)', race: Race.RaceOrc },
-	{ id: 33702, name: 'Blood Fury (SP)', race: Race.RaceOrc },
 	{ id: 20589, name: 'Escape Artist', race: Race.RaceGnome },
 	{ id: 20594, name: 'Stoneform', race: Race.RaceDwarf },
 	{ id: 20549, name: 'War Stomp', race: Race.RaceTauren },

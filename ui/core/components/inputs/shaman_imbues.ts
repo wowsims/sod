@@ -66,7 +66,7 @@ export const ShamanImbueInputMH = <SpecType extends ShamanSpec>() =>
 			FrostbrandWeaponImbue,
 		],
 		showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotMainHand) != null,
-		changeEmitter: (player) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter]),
+		changeEmitter: (player) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter, player.gearChangeEmitter]),
 	});
 
 export const ShamanImbueInputOH = <SpecType extends ShamanSpec>() =>
@@ -80,5 +80,5 @@ export const ShamanImbueInputOH = <SpecType extends ShamanSpec>() =>
 			FrostbrandWeaponImbue,
 		],
 		showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null,
-		changeEmitter: (player) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter]),
+		changeEmitter: (player) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter, player.gearChangeEmitter]),
 	});

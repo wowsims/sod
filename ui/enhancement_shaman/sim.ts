@@ -16,7 +16,6 @@ import {
 	Stat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import { ShamanImbue } from '../core/proto/shaman.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 
@@ -149,13 +148,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.StandardTalents,
-			Presets.Phase3Talents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_FT_DEFAULT,
-			Presets.ROTATION_WF_DEFAULT,
-			Presets.ROTATION_PHASE_3,
+			Presets.Phase1PresetAPL,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
@@ -163,14 +159,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-		const options = player.getSpecOptions();
-
-		if (options.imbueMh == ShamanImbue.FlametongueWeapon) {
-			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_WF_DEFAULT.rotation.rotation!;
-		}
+	autoRotation: (_): APLRotation => {
+		return Presets.DefaultAPL.rotation.rotation!;
 	},
 
 	raidSimPresets: [

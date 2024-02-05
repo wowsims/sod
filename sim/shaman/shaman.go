@@ -45,7 +45,29 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStat(stats.MP5, shaman.MaxMana()*.01)
 	}
 
+	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.ShamanImbue_RockbiterWeapon))
+	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+
+	if !shaman.HasMHWeapon() {
+		shaman.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
+	}
+
+	if !shaman.HasOHWeapon() {
+		shaman.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
+	}
+
 	return shaman
+}
+
+func (shaman *Shaman) getImbueProcMask(imbue proto.ShamanImbue) core.ProcMask {
+	var mask core.ProcMask
+	if shaman.SelfBuffs.ImbueMH == imbue {
+		mask |= core.ProcMaskMeleeMH
+	}
+	if shaman.SelfBuffs.ImbueOH == imbue {
+		mask |= core.ProcMaskMeleeOH
+	}
+	return mask
 }
 
 // Which buffs this shaman is using.
@@ -205,13 +227,31 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (shaman *Shaman) Initialize() {
+	// Core abilities
 	shaman.registerChainLightningSpell()
-	// shaman.registerFeralSpirit()
 	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
 	shaman.registerShocks()
 	// shaman.registerStormstrikeSpell()
 
+	// Imbues
+	// In the Initialize due to frost brand adding the aura to the enemy
+	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(proto.ShamanImbue_RockbiterWeapon))
+	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
+	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
+
+	// if shaman.ItemSwap.IsEnabled() {
+	// 	mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
+	// 	shaman.ApplyFlametongueImbueToItem(mh, true)
+	// 	oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
+	// 	shaman.ApplyFlametongueImbueToItem(oh, false)
+	// 	shaman.RegisterOnItemSwap(func(_ *core.Simulation) {
+	// 		shaman.ApplySyncType(proto.ShamanSyncType_Auto)
+	// 	})
+	// }
+
+	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()
 	shaman.registerStoneskinTotemSpell()
 	shaman.registerTremorTotemSpell()
