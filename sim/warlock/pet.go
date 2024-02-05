@@ -298,6 +298,10 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		}
 	}
 
+	if warlock.Talents.FelIntellect > 0 {
+		wp.AddStatDependency(stats.Mana, stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
+	}
+
 	if warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) {
 		oldPetEnable := wp.OnPetEnable
 		wp.OnPetEnable = func(sim *core.Simulation) {
