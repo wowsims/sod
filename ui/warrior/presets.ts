@@ -1,8 +1,11 @@
 import {
 	Consumes,
+	Debuffs,
 	Flask,
 	Food,
 	Potions,
+	RaidBuffs,
+	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -58,3 +61,18 @@ export const DefaultConsumes = Consumes.create({
 	offHandImbue: WeaponImbue.BlackfathomSharpeningStone,
 	defaultPotion: Potions.UnknownPotion,
 });
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
+	leaderOfThePack: true,
+	devotionAura: TristateEffect.TristateEffectImproved,
+	stoneskinTotem: TristateEffect.TristateEffectImproved,
+})
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfWeakness: TristateEffect.TristateEffectRegular,
+	faerieFire: true,
+	mangle: true,
+	sunderArmor: true,
+})
