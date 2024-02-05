@@ -67,8 +67,10 @@ type Warlock struct {
 	DPSPAggregate float64
 	PreviousTime  time.Duration
 
-	petStmBonusSP      float64
-	demonicKnowledgeSp float64
+	petStmBonusSP        float64
+	demonicKnowledgeSp   float64
+	demonicSacrificeAura *core.Aura
+	soulLinkAura         *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

@@ -261,63 +261,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
 	}
 
-	if warlock.Talents.MasterDemonologist > 0 {
-		md := core.Aura{
-			Label:    "Master Demonologist",
-			ActionID: core.ActionID{SpellID: 23825},
-			Duration: core.NeverExpires,
-			OnGain: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				}
-			},
-			OnExpire: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				}
-			},
-		}
-
-		mdLockAura := warlock.RegisterAura(md)
-		mdPetAura := wp.RegisterAura(md)
-
-		wp.OnPetEnable = func(sim *core.Simulation) {
-			mdLockAura.Activate(sim)
-			mdPetAura.Activate(sim)
-		}
-
-		wp.OnPetDisable = func(sim *core.Simulation) {
-			mdLockAura.Deactivate(sim)
-			mdPetAura.Deactivate(sim)
-		}
-	}
-
 	if warlock.Talents.FelIntellect > 0 {
 		wp.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
-	}
-
-	if warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) {
-		oldPetEnable := wp.OnPetEnable
-		wp.OnPetEnable = func(sim *core.Simulation) {
-			if oldPetEnable != nil {
-				oldPetEnable(sim)
-			}
-			warlock.DemonicKnowledgeAura.Activate(sim)
-		}
-
-		oldPetDisable := wp.OnPetDisable
-		wp.OnPetDisable = func(sim *core.Simulation) {
-			if oldPetDisable != nil {
-				oldPetDisable(sim)
-			}
-			warlock.DemonicKnowledgeAura.Deactivate(sim)
-		}
 	}
 
 	// core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)

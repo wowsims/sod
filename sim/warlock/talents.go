@@ -21,6 +21,189 @@ func (warlock *Warlock) ApplyTalents() {
 	}
 
 	warlock.applyNightfall()
+	warlock.applyMasterDemonologist()
+	warlock.applyDemonicSacrifice()
+	warlock.applySoulLink()
+}
+
+func (warlock *Warlock) applyMasterDemonologist() {
+	if warlock.Talents.MasterDemonologist == 0 || warlock.Pet == nil {
+		return
+	}
+
+	masterDemonologistConfig := core.Aura{
+		Label:    "Master Demonologist",
+		ActionID: core.ActionID{SpellID: 23825},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, _ *core.Simulation) {
+			switch warlock.Options.Summon {
+			case proto.WarlockOptions_Imp:
+				aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Succubus:
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Voidwalker:
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			}
+		},
+		OnExpire: func(aura *core.Aura, _ *core.Simulation) {
+			switch warlock.Options.Summon {
+			case proto.WarlockOptions_Imp:
+				aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Succubus:
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Voidwalker:
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			}
+		},
+	}
+
+	wp := warlock.Pet
+
+	mdLockAura := warlock.RegisterAura(masterDemonologistConfig)
+	mdPetAura := wp.RegisterAura(masterDemonologistConfig)
+
+	wp.OnPetEnable = func(sim *core.Simulation) {
+		mdLockAura.Activate(sim)
+		mdPetAura.Activate(sim)
+	}
+
+	wp.OnPetDisable = func(sim *core.Simulation) {
+		mdLockAura.Deactivate(sim)
+		mdPetAura.Deactivate(sim)
+	}
+}
+
+func (warlock *Warlock) applySoulLink() {
+	if !warlock.Talents.SoulLink || warlock.Pet == nil {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 19028}
+	soulLinkConfig := core.Aura{
+		Label:    "Soul Link Aura",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.03
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.03
+		},
+	}
+
+	warlockSlAura := warlock.RegisterAura(soulLinkConfig)
+	petSlAura := warlock.Pet.RegisterAura(soulLinkConfig)
+
+	wp := warlock.Pet
+	oldPetDisable := wp.OnPetDisable
+	wp.OnPetDisable = func(sim *core.Simulation) {
+		if oldPetDisable != nil {
+			oldPetDisable(sim)
+		}
+		if warlockSlAura.IsActive() {
+			warlockSlAura.Deactivate(sim)
+		}
+		if petSlAura.IsActive() {
+			petSlAura.Deactivate(sim)
+		}
+	}
+
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warlock.Pet != nil && warlock.Pet.IsActive()
+		},
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.2,
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			warlockSlAura.Activate(sim)
+			petSlAura.Activate(sim)
+		},
+	})
+}
+
+func (warlock *Warlock) applyDemonicSacrifice() {
+	if !warlock.Talents.DemonicSacrifice || warlock.Pet == nil {
+		return
+	}
+
+	wp := warlock.Pet
+	oldPetEnable := wp.OnPetEnable
+	wp.OnPetEnable = func(sim *core.Simulation) {
+		if oldPetEnable != nil {
+			oldPetEnable(sim)
+		}
+		if warlock.demonicSacrificeAura.IsActive() {
+			warlock.demonicSacrificeAura.Deactivate(sim)
+			warlock.demonicSacrificeAura = nil
+		}
+	}
+
+	impAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Burning Wish",
+		ActionID: core.ActionID{SpellID: 18789},
+		Duration: 30 * time.Minute,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.15
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.15
+		},
+	})
+
+	succubusAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Touch of Shadow",
+		ActionID: core.ActionID{SpellID: 18791},
+		Duration: 30 * time.Minute,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.15
+		},
+	})
+
+	warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 18788},
+		SpellSchool: core.SpellSchoolShadow,
+		Flags:       core.SpellFlagAPL,
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warlock.Pet != nil && warlock.Pet.IsActive()
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			switch warlock.Options.Summon {
+			case proto.WarlockOptions_Imp:
+				warlock.demonicSacrificeAura = impAura
+				break
+			case proto.WarlockOptions_Succubus:
+				warlock.demonicSacrificeAura = succubusAura
+				break
+			case proto.WarlockOptions_Voidwalker:
+				break
+			case proto.WarlockOptions_Felhunter:
+				break
+			}
+
+			if warlock.demonicSacrificeAura != nil {
+				warlock.demonicSacrificeAura.Activate(sim)
+				warlock.Pet.Disable(sim)
+			}
+		},
+	})
 }
 
 func (warlock *Warlock) applyImprovedShadowBolt() {
