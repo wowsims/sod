@@ -18,7 +18,6 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 
 import DefaultAPL from './apls/default.apl.json';
-import { BlackfathomSharpeningStone, ConjuredMinorRecombobulator } from 'ui/core/components/inputs/consumables.js';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to

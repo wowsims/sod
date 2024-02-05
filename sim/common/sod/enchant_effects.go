@@ -27,7 +27,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		procMask := character.GetProcMaskForEnchant(803)
-		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
+		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 13898},
@@ -60,7 +60,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 5.0, &ppmm, aura)
+		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
 	})
 
 	// Superior Striking
