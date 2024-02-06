@@ -134,7 +134,7 @@ export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 10507, minLevel: 40 },
 	]),
-	value: Explosive.ExplosiveDenseDynamite,
+	value: Explosive.ExplosiveSolidDynamite,
 };
 
 export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
