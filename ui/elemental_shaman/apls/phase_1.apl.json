@@ -7,6 +7,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":915,"rank":4}}},"doAtValue":{"const":{"val":"-3.05s"}}}
   ],
   "priorityList": [
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"75%"}}}},"castSpell":{"spellId":{"spellId":425336}}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":8052,"rank":2}}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":8052,"rank":2}}}},
     {"action":{"castSpell":{"spellId":{"spellId":408490}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":6363,"rank":2}}}}},"castSpell":{"spellId":{"spellId":6363,"rank":2}}}},
