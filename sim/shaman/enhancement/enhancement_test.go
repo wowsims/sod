@@ -14,17 +14,23 @@ func init() {
 
 func TestEnhancement(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassShaman,
+		Class:       proto.Class_ClassShaman,
+		Level:       25,
+		OtherLevels: []int32{40},
+
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
-		Talents:     StandardTalents,
+		GearSet:       core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
+		OtherGearSets: []core.GearSetCombo{},
+
+		Talents:     phase2Talents,
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "FT", SpecOptions: PlayerOptionsFTFT},
+		SpecOptions: core.SpecOptionsCombo{Label: "RB", SpecOptions: PlayerOptionsRBRB},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "WF", SpecOptions: PlayerOptionsWFWF},
 		},
+
 		Rotation:       core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
 		OtherRotations: []core.RotationCombo{},
 
@@ -52,10 +58,11 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassShaman,
+				Level:         40,
 				Equipment:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1").GearSet,
-				TalentsString: StandardTalents,
+				TalentsString: phase2Talents,
 				Consumes:      FullConsumes,
-				Spec:          PlayerOptionsFTFT,
+				Spec:          PlayerOptionsRBRB,
 				Buffs:         core.FullIndividualBuffs,
 			},
 			core.FullPartyBuffs,
@@ -73,7 +80,8 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "-5005202101"
+var phase1Talents = "-5005202101"
+var phase2Talents = "-5005202105023051"
 
 var PlayerOptionsWFWF = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
@@ -81,9 +89,9 @@ var PlayerOptionsWFWF = &proto.Player_EnhancementShaman{
 	},
 }
 
-var PlayerOptionsFTFT = &proto.Player_EnhancementShaman{
+var PlayerOptionsRBRB = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
-		Options: enhShamFTFT,
+		Options: enhShamRBRB,
 	},
 }
 
@@ -94,16 +102,16 @@ var enhShamWFWF = &proto.EnhancementShaman_Options{
 	ImbueOh:  proto.ShamanImbue_WindfuryWeapon,
 }
 
-var enhShamFTFT = &proto.EnhancementShaman_Options{
+var enhShamRBRB = &proto.EnhancementShaman_Options{
 	Shield:   proto.ShamanShield_LightningShield,
 	SyncType: proto.ShamanSyncType_Auto,
-	ImbueMh:  proto.ShamanImbue_FlametongueWeapon,
-	ImbueOh:  proto.ShamanImbue_FlametongueWeapon,
+	ImbueMh:  proto.ShamanImbue_RockbiterWeapon,
+	ImbueOh:  proto.ShamanImbue_RockbiterWeapon,
 	Totems: &proto.ShamanTotems{
 		Earth: proto.EarthTotem_StrengthOfEarthTotem,
 		Air:   proto.AirTotem_WindfuryTotem,
 		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_MagmaTotem,
+		Fire:  proto.FireTotem_SearingTotem,
 	},
 }
 

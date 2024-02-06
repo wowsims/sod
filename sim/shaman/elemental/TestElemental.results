@@ -54,18 +54,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03922
+  weights: -0.10625
   weights: 0
-  weights: 0.19424
-  weights: 0
-  weights: 0
+  weights: 0.22432
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.97957
-  weights: 0.28699
+  weights: 0
+  weights: 0
+  weights: 1.1366
+  weights: 0.62896
   weights: 0
   weights: 0
   weights: 0
@@ -101,161 +101,749 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 42.69265
-  tps: 42.35645
+  dps: 55.06811
+  tps: 55.14914
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 47.16671
-  tps: 44.86585
+  dps: 60.37344
+  tps: 57.91387
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 42.69265
-  tps: 41.96834
+  dps: 53.28689
+  tps: 52.75475
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 38.13683
-  tps: 31.14848
+  dps: 43.50756
+  tps: 36.39432
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 42.29519
-  tps: 32.86004
+  dps: 49.48124
+  tps: 39.91586
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-InsulatedLeathers"
  value: {
-  dps: 33.3416
-  tps: 26.45565
+  dps: 36.92861
+  tps: 29.44144
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-IrradiatedGarments"
  value: {
-  dps: 47.52339
-  tps: 37.67935
+  dps: 53.70651
+  tps: 43.56863
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-StormshroudArmor"
  value: {
-  dps: 21.75885
-  tps: 14.93026
+  dps: 24.10857
+  tps: 16.84091
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 47.07071
-  tps: 44.75387
+  dps: 59.08823
+  tps: 56.57853
  }
 }
 dps_results: {
  key: "TestElemental-Average-Default"
  value: {
-  dps: 54.11759
-  tps: 45.31212
+  dps: 62.94936
+  tps: 52.52576
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 54.8439
-  tps: 167.00068
+  dps: 62.72016
+  tps: 173.52454
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 54.8439
-  tps: 46.29304
+  dps: 62.72016
+  tps: 52.72729
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 56.66507
-  tps: 47.15263
+  dps: 76.75586
+  tps: 63.61246
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 39.64612
-  tps: 74.7519
+  dps: 43.54171
+  tps: 78.15243
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 39.64612
-  tps: 29.8644
+  dps: 43.54171
+  tps: 33.26493
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 55.89555
-  tps: 42.6813
+  dps: 69.02399
+  tps: 53.52765
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 15.71787
+  tps: 13.36855
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 15.71787
+  tps: 13.36855
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 18.30551
+  tps: 15.27704
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 15.19247
+  tps: 12.93904
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 15.19247
+  tps: 12.93904
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 17.00697
+  tps: 14.19632
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 99.30587
+  tps: 198.27198
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 99.30587
+  tps: 79.12171
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 103.79759
+  tps: 82.2263
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 76.49102
+  tps: 107.76735
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 76.49102
+  tps: 57.89235
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 101.96003
+  tps: 77.50141
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 18.62424
+  tps: 15.70624
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 18.62424
+  tps: 15.70624
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 21.42153
+  tps: 17.76851
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 18.08152
+  tps: 15.25866
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 18.08152
+  tps: 15.25866
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 20.12933
+  tps: 16.65727
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 140.96344
+  tps: 391.32236
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 140.96344
+  tps: 122.02811
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 143.16561
+  tps: 123.52126
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 82.04484
+  tps: 132.40613
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 82.04484
+  tps: 64.71863
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 134.5914
+  tps: 107.1479
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 134.38748
+  tps: 368.7142
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 134.38748
+  tps: 116.22603
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 195.08737
+  tps: 165.32588
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 78.06868
+  tps: 126.64984
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 78.06868
+  tps: 58.96234
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 125.9922
+  tps: 98.13529
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 182.57778
+  tps: 366.83252
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 182.57778
+  tps: 148.41059
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 186.98515
+  tps: 151.21908
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 135.14262
+  tps: 171.05353
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 135.14262
+  tps: 104.79103
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 176.67908
+  tps: 136.57385
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 191.82043
+  tps: 418.53576
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 191.82043
+  tps: 160.86066
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 251.51084
+  tps: 207.98258
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 116.50968
+  tps: 155.59142
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 116.50968
+  tps: 89.32892
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 194.30841
+  tps: 152.80198
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 54.92522
-  tps: 165.42004
+  dps: 62.81033
+  tps: 171.84083
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 54.92522
-  tps: 46.25678
+  dps: 62.81033
+  tps: 52.61108
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 56.66507
-  tps: 47.07622
+  dps: 76.64427
+  tps: 63.44055
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 39.59237
-  tps: 73.41301
+  dps: 43.24583
+  tps: 76.25665
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 39.59237
-  tps: 29.95051
+  dps: 43.24583
+  tps: 32.79415
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 55.89555
-  tps: 42.6063
+  dps: 67.95438
+  tps: 52.75701
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 15.71787
+  tps: 13.36855
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 15.71787
+  tps: 13.36855
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 18.30551
+  tps: 15.27704
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 15.19247
+  tps: 12.93904
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 15.19247
+  tps: 12.93904
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 17.00697
+  tps: 14.19632
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 98.0137
+  tps: 195.64063
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 98.0137
+  tps: 78.05682
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 103.79759
+  tps: 82.1438
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 76.78813
+  tps: 108.104
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 76.78813
+  tps: 58.229
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 101.94831
+  tps: 77.48968
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 18.62424
+  tps: 15.70624
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 18.62424
+  tps: 15.70624
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 21.42153
+  tps: 17.76851
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 18.08152
+  tps: 15.25866
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 18.08152
+  tps: 15.25866
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 20.12933
+  tps: 16.65727
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 140.9385
+  tps: 389.96849
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 140.9385
+  tps: 121.93673
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 143.04092
+  tps: 123.34327
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 81.1138
+  tps: 129.32534
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 81.1138
+  tps: 63.06284
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 134.5914
+  tps: 107.0729
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 132.13063
+  tps: 363.60675
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 132.13063
+  tps: 114.09578
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 195.61514
+  tps: 165.48897
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 80.12087
+  tps: 127.0427
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 80.12087
+  tps: 60.7802
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 130.59472
+  tps: 102.66257
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 182.57778
+  tps: 367.30382
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 182.57778
+  tps: 148.43415
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 186.98515
+  tps: 151.17729
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 134.50286
+  tps: 168.57257
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 134.50286
+  tps: 103.73507
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 176.67908
+  tps: 136.49885
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 190.30104
+  tps: 415.50946
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 190.30104
+  tps: 159.54943
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 251.51084
+  tps: 207.91625
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 116.85078
+  tps: 155.25985
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 116.85078
+  tps: 90.42235
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 193.07466
+  tps: 152.14122
  }
 }
 dps_results: {
  key: "TestElemental-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 54.92522
-  tps: 46.25678
+  dps: 62.81033
+  tps: 52.61108
  }
 }
