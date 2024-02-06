@@ -129,11 +129,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		rotations: [
 			Presets.APLPhase1,
 			Presets.APLPhase1AG,
+			Presets.APLPhase2,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.GearBlank,
 			Presets.GearPhase1,
+			Presets.GearPhase2,
 		],
 	},
 
@@ -159,10 +161,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.DefaultGear.gear,
+					1: Presets.GearPhase1.gear,
+					2: Presets.GearPhase2.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.DefaultGear.gear,
+					1: Presets.GearPhase1.gear,
+					2: Presets.GearPhase2.gear,
 				},
 			},
 		},
