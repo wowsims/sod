@@ -1051,19 +1051,15 @@ export const specToEligibleRaces: Record<Spec, Array<Race>> = {
 
 // Specs that can dual wield. This could be based on class, except that
 // Enhancement Shaman learn dual wield from a talent.
-const dualWieldSpecs: Array<Spec> = [
-	Spec.SpecHunter,
-	Spec.SpecRogue,
-	Spec.SpecWarrior,
-	Spec.SpecProtectionWarrior,
+const dualWieldClasses: Array<Class> = [
+	Class.ClassHunter,
+	Class.ClassRogue,
+	Class.ClassShaman,
+	Class.ClassWarrior
 ];
+
 export function canDualWield(player: Player<Spec>): boolean {
-	return (
-		dualWieldSpecs.includes(player.spec) ||
-		(player.getClass() == Class.ClassShaman && player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == ShamanRune.RuneChestDualWieldSpec)
-		// TODO: Hunter Dual Wielding
-		// (player.getClass() == Class.ClassHunter && player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == HunterRune.RuneFeetDualWieldSpe
-	);
+	return dualWieldClasses.includes(player.getClass());
 }
 
 const tankSpecs: Array<Spec> = [
