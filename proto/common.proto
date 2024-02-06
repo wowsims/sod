@@ -502,7 +502,7 @@ message Consumes {
 	bool bogling_root = 19;
 }
 
-// NextIndex: 26
+// NextIndex: 27
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
