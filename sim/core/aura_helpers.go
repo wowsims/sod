@@ -20,7 +20,6 @@ const (
 	CallbackOnSpellHitDealt AuraCallback = 1 << iota
 	CallbackOnSpellHitTaken
 	CallbackOnPeriodicDamageDealt
-	CallbackOnDamageDealt
 	CallbackOnHealDealt
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
@@ -103,9 +102,6 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	}
 	if config.Callback.Matches(CallbackOnPeriodicDamageDealt) {
 		aura.OnPeriodicDamageDealt = callback
-	}
-	if config.Callback.Matches(CallbackOnDamageDealt) {
-		aura.OnDamageDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnHealDealt) {
 		aura.OnHealDealt = callback
