@@ -49,9 +49,27 @@ character_stats_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 7.08449
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 7.35035
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-InfernalPactEssence-216509"
  value: {
   dps: 7.58398
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-IrradiatedGarments"
+ value: {
+  dps: 7.65959
  }
 }
 dps_results: {
