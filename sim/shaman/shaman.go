@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -8,10 +9,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{25, 29, 26}
-
-// Start looking to refresh 5 minute totems at 4:55.
-const TotemRefreshTime5M = time.Second * 295
+var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
 	SpellFlagShock     = core.SpellFlagAgentReserved1
@@ -29,6 +27,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 	shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)})
 
+	fmt.Println()
 	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	shaman.EnableManaBar()
 

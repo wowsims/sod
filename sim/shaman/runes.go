@@ -39,16 +39,42 @@ func (shaman *Shaman) ApplyRunes() {
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {
-	if !shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec) {
+	if !shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec) || !shaman.HasMHWeapon() || !shaman.HasOHWeapon() {
 		return
 	}
 
+	meleeHit := float64(core.MeleeHitRatingPerHitChance * 10)
+	spellHit := float64(core.SpellHitRatingPerHitChance * 10)
+
+	shaman.AddStat(stats.MeleeHit, meleeHit)
+	shaman.AddStat(stats.SpellHit, spellHit)
+
+	dwBonusApplied := true
+
 	shaman.RegisterAura(core.Aura{
-		Label:    "Dual Wield Specialization",
+		Label:    "DW Spec Trigger",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestDualWieldSpec)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+				return
+			}
+
+			if shaman.HasMHWeapon() && shaman.HasOHWeapon() {
+				if dwBonusApplied {
+					return
+				} else {
+					shaman.AddStat(stats.MeleeHit, meleeHit)
+					shaman.AddStat(stats.SpellHit, spellHit)
+				}
+			} else {
+				shaman.AddStat(stats.MeleeHit, -1*meleeHit)
+				shaman.AddStat(stats.SpellHit, -1*spellHit)
+				dwBonusApplied = false
+			}
 		},
 	})
 }
@@ -73,15 +99,18 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		return
 	}
 
+	procSpellId := int32(436365)
+	attackSpeedMultiplier := 1.3
+
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Proc",
-		ActionID: core.ActionID{SpellID: 436365},
+		ActionID: core.ActionID{SpellID: procSpellId},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1.3)
+			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyAttackSpeed(sim, 1/1.3)
+			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
 		},
 	})
 
@@ -136,14 +165,20 @@ func (shaman *Shaman) applyPowerSurge() {
 		},
 	)
 
-	var affectedSpells []*core.Spell
+	var spellsAffectedByReset []*core.Spell
+	var spellsAffectedByInstantCast []*core.Spell
 
 	shaman.PowerSurgeAura = shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge Proc",
 		ActionID: core.ActionID{SpellID: 440285},
 		Duration: time.Second * 10,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
+			spellsAffectedByReset = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.ChainLightning,
+					{shaman.LavaBurst},
+				}), func(spell *core.Spell) bool { return spell != nil })
+			spellsAffectedByInstantCast = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					shaman.ChainLightning,
 					shaman.ChainHeal,
@@ -152,13 +187,13 @@ func (shaman *Shaman) applyPowerSurge() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.LavaBurst.CD.Reset()
-			for _, spell := range affectedSpells {
+			for _, spell := range spellsAffectedByReset {
 				spell.CD.Reset()
 			}
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+			core.Each(spellsAffectedByInstantCast, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+			core.Each(spellsAffectedByInstantCast, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell.SpellCode != int32(SpellCode_ChainHeal) && spell != shaman.LavaBurst {
