@@ -68,7 +68,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
-				priest.AddShadowWeavingStack(sim)
+				priest.AddShadowWeavingStack(sim, target)
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)

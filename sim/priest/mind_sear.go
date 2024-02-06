@@ -27,7 +27,7 @@ func (priest *Priest) getMindSearTickSpell(numTicks int32) *core.Spell {
 		result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 		if result.Landed() {
-			priest.AddShadowWeavingStack(sim)
+			priest.AddShadowWeavingStack(sim, target)
 		}
 	}
 	return priest.GetOrRegisterSpell(config)

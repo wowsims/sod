@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -10,27 +11,34 @@ import (
 
 var WITH_DB = false
 
+var rwMutex = sync.RWMutex{}
 var ItemsByID = map[int32]Item{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 
 func addToDatabase(newDB *proto.SimDatabase) {
 	for _, v := range newDB.Items {
+		rwMutex.Lock()
 		if _, ok := ItemsByID[v.Id]; !ok {
 			ItemsByID[v.Id] = ItemFromProto(v)
 		}
+		rwMutex.Unlock()
 	}
 
 	for _, v := range newDB.RandomSuffixes {
+		rwMutex.Lock()
 		if _, ok := RandomSuffixesByID[v.Id]; !ok {
 			RandomSuffixesByID[v.Id] = RandomSuffixFromProto(v)
 		}
+		rwMutex.Unlock()
 	}
 
 	for _, v := range newDB.Enchants {
+		rwMutex.Lock()
 		if _, ok := EnchantsByEffectID[v.EffectId]; !ok {
 			EnchantsByEffectID[v.EffectId] = EnchantFromProto(v)
 		}
+		rwMutex.Unlock()
 	}
 
 	for _, v := range newDB.Runes {
