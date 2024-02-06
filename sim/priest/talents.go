@@ -85,15 +85,8 @@ func (priest *Priest) applyShadowWeaving() {
 		return
 	}
 
-	priest.ShadowWeavingAura = priest.GetOrRegisterAura(core.Aura{
-		Label:     "Shadow Weaving",
-		ActionID:  core.ActionID{SpellID: 15258},
-		Duration:  time.Second * 15,
-		MaxStacks: 5,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.0 + 0.03*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.0 + 0.03*float64(newStacks)
-		},
+	priest.ShadowWeavingAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.ShadowWeavingAura(unit, int(priest.Talents.ShadowWeaving))
 	})
 }
 

@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -46,7 +47,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		ActionID:    core.ActionID{SpellID: healId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
 		DamageMultiplier: 1 + (.02 * float64(shaman.Talents.Purification)) + 0.05*float64(shaman.Talents.RestorativeTotems),
 		CritMultiplier:   1,
@@ -60,7 +61,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 
 	config.Hot = core.DotConfig{
 		Aura: core.Aura{
-			Label: "HealingStreamHot",
+			Label: fmt.Sprintf("Healing Stream HoT (Rank %d)", rank),
 		},
 		NumberOfTicks: int32(duration / healInterval),
 		TickLength:    healInterval,

@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -45,7 +46,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Immolate",
+				Label: "Immolate-" + warlock.Label + strconv.Itoa(rank),
 			},
 
 			NumberOfTicks: 5,

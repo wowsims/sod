@@ -22,6 +22,22 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(ImprovedShadowBoltAura(target, 5))
 	}
 
+	if debuffs.ShadowWeaving {
+		aura := ShadowWeavingAura(target, 5)
+		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+			Period:          time.Millisecond * 1500,
+			NumTicks:        5,
+			TickImmediately: true,
+			Priority:        ActionPriorityDOT, // High prio so it comes before actual warrior sunders.
+			OnAction: func(sim *Simulation) {
+				aura.Activate(sim)
+				if aura.IsActive() {
+					aura.AddStack(sim)
+				}
+			},
+		}, raid)
+	}
+
 	if debuffs.CurseOfElements {
 		MakePermanent(CurseOfElementsAura(target, level))
 	}
@@ -133,8 +149,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 }
 
-func ImprovedShadowBoltAura(unit *Unit, level int32) *Aura {
-	damageMulti := 1. + 0.04*float64(level)
+func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
+	damageMulti := 1. + 0.04*float64(rank)
 	return unit.RegisterAura(Aura{
 		Label:     "Improved Shadow Bolt",
 		ActionID:  ActionID{SpellID: 17800},
@@ -156,6 +172,20 @@ func ImprovedShadowBoltAura(unit *Unit, level int32) *Aura {
 			}
 
 			aura.RemoveStack(sim)
+		},
+	})
+}
+
+func ShadowWeavingAura(unit *Unit, rank int) *Aura {
+	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	return unit.RegisterAura(Aura{
+		Label:     "Shadow Weaving",
+		ActionID:  ActionID{SpellID: spellId},
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexShadow] /= 1.0 + 0.03*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexShadow] *= 1.0 + 0.03*float64(newStacks)
 		},
 	})
 }
