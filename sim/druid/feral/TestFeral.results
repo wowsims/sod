@@ -63,10 +63,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 23.73666
+  tps: 16.95282
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 24.09949
+  tps: 17.21034
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-InsulatedLeathers"
  value: {
   dps: 27.07719
   tps: 19.34134
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-IrradiatedGarments"
+ value: {
+  dps: 24.17849
+  tps: 17.26761
  }
 }
 dps_results: {

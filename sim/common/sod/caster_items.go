@@ -1,14 +1,54 @@
 package sod
 
-
 import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	// Gneuro-Linked Arcano-Filament Monocle
+	core.NewItemEffect(215111, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Charged Inspiration",
+			ActionID: core.ActionID{SpellID: 437327},
+			Duration: time.Second * 12,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.SpellPower, 50)
+				character.PseudoStats.CostMultiplier *= 0.5
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.SpellPower, -50)
+				character.PseudoStats.CostMultiplier /= 0.5
+			},
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 437327},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
 
 	core.NewItemEffect(21625, func(agent core.Agent) { // Scarab Brooch
 		character := agent.GetCharacter()

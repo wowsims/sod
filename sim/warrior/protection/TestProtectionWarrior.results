@@ -115,7 +115,19 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-HyperconductiveMender'sMeditation"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-HyperconductiveWizard'sAttire"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-InsulatedLeathers"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-IrradiatedGarments"
  value: {}
 }
 dps_results: {

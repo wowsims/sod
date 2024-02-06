@@ -63,10 +63,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 17.25927
+  tps: 18.14011
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 17.19152
+  tps: 18.15816
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-InsulatedLeathers"
  value: {
   dps: 13.84061
   tps: 14.60265
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-IrradiatedGarments"
+ value: {
+  dps: 19.40091
+  tps: 20.36755
  }
 }
 dps_results: {

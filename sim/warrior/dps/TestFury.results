@@ -74,10 +74,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 2.22495
+  tps: 8.66649
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 2.27356
+  tps: 8.77355
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-InsulatedLeathers"
  value: {
   dps: 2.8796
   tps: 9.24084
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-IrradiatedGarments"
+ value: {
+  dps: 2.33652
+  tps: 8.82201
  }
 }
 dps_results: {
