@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -129,9 +128,17 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
+	intMP5Rate := .15
+
+	shaman.AddStats(
+		stats.Stats{
+			stats.MP5: shaman.GetStat(stats.Intellect) * intMP5Rate,
+		},
+	)
+
 	var affectedSpells []*core.Spell
 
-	procAura := shaman.RegisterAura(core.Aura{
+	shaman.PowerSurgeAura = shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge Proc",
 		ActionID: core.ActionID{SpellID: 440285},
 		Duration: time.Second * 10,
@@ -141,8 +148,7 @@ func (shaman *Shaman) applyPowerSurge() {
 					shaman.ChainLightning,
 					shaman.ChainHeal,
 					{shaman.LavaBurst},
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
+				}), func(spell *core.Spell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.LavaBurst.CD.Reset()
@@ -155,29 +161,10 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
+			if spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell.SpellCode != int32(SpellCode_ChainHeal) && spell != shaman.LavaBurst {
 				return
 			}
 			aura.Deactivate(sim)
-		},
-	})
-
-	shaman.RegisterAura(core.Aura{
-		Label:    "Power Surge",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneWaistPowerSurge)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(shaman.FlameShock, spell) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
-				procAura.Activate(sim)
-			}
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(shaman.FlameShock, spell) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
-				procAura.Activate(sim)
-			}
 		},
 	})
 }
@@ -193,64 +180,6 @@ func (shaman *Shaman) applyWayOfEarth() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-		},
-	})
-}
-
-func (shaman *Shaman) applyShamanisticRage() {
-	if !shaman.HasRune(proto.ShamanRune_RuneLegsShamanisticRage) {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsShamanisticRage)}
-	manaMetrics := shaman.NewManaMetrics(actionID)
-	srAura := shaman.RegisterAura(core.Aura{
-		Label:    "Shamanistic Rage",
-		ActionID: actionID,
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.8
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.8
-		},
-	})
-
-	spell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
-				Duration: time.Minute * 1,
-			},
-		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			srAura.Activate(sim)
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				NumTicks: 15,
-				Period:   time.Second * 1,
-				OnAction: func(sim *core.Simulation) {
-					mana := max(
-						shaman.GetStat(stats.AttackPower)*0.15,
-						shaman.GetStat(stats.SpellPower)*0.10,
-						shaman.GetStat(stats.Healing)*0.06,
-					)
-					shaman.AddMana(sim, mana, manaMetrics)
-				},
-			})
-		},
-	})
-
-	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
-		Type:  core.CooldownTypeMana,
-		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return character.CurrentManaPercent() <= 0.2
 		},
 	})
 }

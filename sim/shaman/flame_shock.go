@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -51,6 +52,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
+	spell.Cast.IgnoreHaste = true
+
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := baseDamage + baseSpellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
@@ -61,13 +64,17 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 			if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 				shaman.lastFlameShockTarget = target
 			}
+
+			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				shaman.PowerSurgeAura.Activate(sim)
+			}
 		}
 		spell.DealDamage(sim, result)
 	}
 
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
-			Label: "Flame Shock",
+			Label: fmt.Sprintf("Flame Shock (Rank %d)", rank),
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 					shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
@@ -94,6 +101,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 			if shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) && result.Landed() && sim.RandomFloat("Molten Blast Reset") < ShamanMoltenBlastResetChance {
 				shaman.MoltenBlast.CD.Reset()
+			}
+
+			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				shaman.PowerSurgeAura.Activate(sim)
 			}
 		},
 	}

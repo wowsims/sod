@@ -56,6 +56,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   int32(SpellCode_HealingWave),
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       flags,

@@ -33,7 +33,7 @@ export const Phase1PresetGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear
 
 export const DefaultGear = Phase1PresetGear;
 
-export const APLBalancePhase1 = PresetUtils.makePresetAPLRotation('P1 Preset', Phase1APL);
+export const APLBalancePhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 
 export const DEFAULT_APL = APLBalancePhase1
 

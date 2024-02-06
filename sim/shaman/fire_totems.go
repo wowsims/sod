@@ -1,9 +1,11 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const SearingTotemRanks = 6
@@ -57,6 +59,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
@@ -64,7 +67,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "SearingTotem",
+				Label: fmt.Sprintf("Searing Totem (Rank %d)", rank),
 			},
 			// These are the real tick values, but searing totem doesn't start its next
 			// cast until the previous missile hits the target. We don't have an option
@@ -145,6 +148,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
@@ -153,7 +157,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "MagmaTotem",
+				Label: fmt.Sprintf("Magma Totem (Rank %d)", rank),
 			},
 			NumberOfTicks: int32(duration / attackInterval),
 			TickLength:    attackInterval,
@@ -193,6 +197,10 @@ var FireNovaTotemManaCost = [FireNovaTotemRanks + 1]float64{0, 95, 170, 280, 395
 var FireNovaTotemLevel = [FireNovaTotemRanks + 1]int{0, 12, 22, 32, 42, 52}
 
 func (shaman *Shaman) registerFireNovaTotemSpell() {
+	if shaman.HasRune(proto.ShamanRune_RuneWaistFireNova) {
+		return
+	}
+
 	shaman.FireNovaTotem = make([]*core.Spell, FireNovaTotemRanks+1)
 
 	for rank := 1; rank <= FireNovaTotemRanks; rank++ {
@@ -235,6 +243,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
 				Duration: cooldown,
@@ -247,7 +256,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "FireNovaTotem",
+				Label: fmt.Sprintf("Fire Nova Totem (Rank %d)", rank),
 			},
 			NumberOfTicks: 1,
 			TickLength:    attackInterval,
