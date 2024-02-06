@@ -70,13 +70,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.22,
+			[Stat.StatIntellect]: 0.10,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatFirePower]: 0.48,
-			[Stat.StatNaturePower]: 0.52,
-			[Stat.StatSpellHit]: 4.52,
-			[Stat.StatSpellCrit]: 1.01,
-			[Stat.StatSpellHaste]: .87,
+			[Stat.StatFirePower]: 0.63,
+			[Stat.StatNaturePower]: 0.37,
+			[Stat.StatSpellHit]: 4.16,
+			[Stat.StatSpellCrit]: .90,
+			[Stat.StatSpellHaste]: .76,
 			[Stat.StatMP5]: 0.08,
 		}),
 		// Default consumes settings.
