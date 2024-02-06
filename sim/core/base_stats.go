@@ -124,7 +124,7 @@ var ClassBaseCrit = map[proto.Class]stats.Stats{
 // Melee/Ranged crit agi scaling
 // TODO: Level 40 and 50 values!
 var CritPerAgiAtLevel = map[proto.Class]map[int]float64{
-	proto.Class_ClassUnknown: {25: 0.0, 45: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassUnknown: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassWarrior: {25: 0.1111, 40: 0.0755, 50: 0.0604, 60: 0.0500},
 	proto.Class_ClassPaladin: {25: 0.1075, 40: 0.0753, 50: 0.0618, 60: 0.0506},
 	proto.Class_ClassHunter:  {25: 0.0515, 40: 0.0312, 50: 0.0239, 60: 0.0189},
