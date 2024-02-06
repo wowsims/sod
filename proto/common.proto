@@ -250,8 +250,9 @@ enum TristateEffect {
 
 enum Explosive {
 	ExplosiveUnknown = 0;
-	ExplosiveDenseDynamite = 1;
-	ExplosiveThoriumGrenade = 2;
+	ExplosiveSolidDynamite = 1;
+	ExplosiveDenseDynamite = 2;
+	ExplosiveThoriumGrenade = 3;
 }
 
 enum Potions {
@@ -265,6 +266,11 @@ enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
+}
+
+enum EnchantedSigil {
+	UnknownSigil = 0;
+	InnovationSigil = 1;
 }
 
 enum Flask {
@@ -500,6 +506,7 @@ message Consumes {
 	Potions default_potion = 17;
 	Conjured default_conjured = 18;
 	bool bogling_root = 19;
+	EnchantedSigil enchanted_sigil = 20;
 }
 
 // NextIndex: 27

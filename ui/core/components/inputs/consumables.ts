@@ -3,6 +3,7 @@ import {
 	AgilityElixir,
 	Conjured,
 	Consumes,
+	EnchantedSigil,
 	Explosive,
 	FirePowerBuff,
 	Flask,
@@ -96,18 +97,45 @@ export const ConjuredDemonicRune: ConsumableInputConfig<Conjured> = {
 		{ id: 12662, minLevel: 40 },
 	]),
 	value: Conjured.ConjuredDemonicRune
-};
+}
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
-	{ config: ConjuredMinorRecombobulator, 	stats: [Stat.StatIntellect] },
+	{ config: ConjuredMinorRecombobulator, 			stats: [Stat.StatIntellect] },
 	{ config: ConjuredDemonicRune, 					stats: [Stat.StatIntellect] },
 ]
 
 export const makeConjuredInput = makeConsumeInputFactory({consumesFieldName: 'defaultConjured'});
 
 ///////////////////////////////////////////////////////////////////////////
+//                             ENCHANTING SIGIL
+///////////////////////////////////////////////////////////////////////////
+
+export const EnchantedSigilInnovation: ConsumableInputConfig<EnchantedSigil> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 217308, minLevel: 40 },
+	]),
+	value: EnchantedSigil.InnovationSigil,
+};
+
+export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+	{ config: EnchantedSigilInnovation, 	stats: [] },
+];
+
+export const makeEncanthedSigilInput = makeConsumeInputFactory({
+	consumesFieldName: 'enchantedSigil',
+	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Enchanting),
+});
+
+///////////////////////////////////////////////////////////////////////////
 //                                 EXPLOSIVES
 ///////////////////////////////////////////////////////////////////////////
+
+export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 10507, minLevel: 40 },
+	]),
+	value: Explosive.ExplosiveDenseDynamite,
+};
 
 export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -115,6 +143,7 @@ export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
 	]),
 	value: Explosive.ExplosiveDenseDynamite,
 };
+
 export const ExplosiveThoriumGrenade: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 15993, minLevel: 50 },
@@ -122,8 +151,8 @@ export const ExplosiveThoriumGrenade: ConsumableInputConfig<Explosive> = {
 	value: Explosive.ExplosiveThoriumGrenade,
 };
 
-// TODO: Add more SoD explosives + implement on back-end
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
+	{ config: ExplosiveSolidDynamite, 	stats: [] },
 	{ config: ExplosiveDenseDynamite, 	stats: [] },
 	{ config: ExplosiveThoriumGrenade, 	stats: [] },
 ];
