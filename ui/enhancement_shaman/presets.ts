@@ -4,13 +4,13 @@ import {
 	Flask,
 	Food,
 	RaidBuffs,
-	TristateEffect
+	TristateEffect,
+	WeaponImbue
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	EnhancementShaman_Options as EnhancementShamanOptions,
-	ShamanImbue,
 	ShamanShield,
 	ShamanSyncType,
 } from '../core/proto/shaman.js';
@@ -55,14 +55,14 @@ export const DefaultTalents = TalentsPhase1;
 
 export const DefaultOptions = EnhancementShamanOptions.create({
 	shield: ShamanShield.LightningShield,
-	imbueMh: ShamanImbue.RockbiterWeapon,
-	imbueOh: ShamanImbue.RockbiterWeapon,
 	syncType: ShamanSyncType.Auto,
 });
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
+	mainHandImbue: WeaponImbue.RockbiterWeapon,
+  offHandImbue: WeaponImbue.RockbiterWeapon,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

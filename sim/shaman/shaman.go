@@ -239,7 +239,7 @@ func (shaman *Shaman) Initialize() {
 	// In the Initialize due to frost brand adding the aura to the enemy
 	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
 	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
-	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_Windfury))
+	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 
 	// if shaman.ItemSwap.IsEnabled() {

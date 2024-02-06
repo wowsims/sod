@@ -1725,10 +1725,10 @@ func ApplyWindfury(character *Character) *Aura {
 		Duration:  icdDuration,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStats(stats.Stats{stats.AttackPower: bonusAP})
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStats(stats.Stats{stats.AttackPower: -bonusAP})
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
 		},
 	})
 

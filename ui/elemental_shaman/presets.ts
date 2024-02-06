@@ -6,6 +6,7 @@ import {
   Profession,
   RaidBuffs,
   TristateEffect,
+  WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -14,7 +15,6 @@ import {
   EarthTotem,
   ElementalShaman_Options as ElementalShamanOptions,
   FireTotem,
-  ShamanImbue,
   ShamanShield,
   ShamanTotems,
   WaterTotem,
@@ -66,8 +66,6 @@ export const DefaultTalents = TalentsPhase1;
 
 export const DefaultOptions = ElementalShamanOptions.create({
   shield: ShamanShield.LightningShield,
-  imbueMh: ShamanImbue.RockbiterWeapon,
-	imbueOh: ShamanImbue.RockbiterWeapon,
   totems: ShamanTotems.create({
     earth: EarthTotem.StrengthOfEarthTotem,
     fire: FireTotem.SearingTotem,
@@ -79,6 +77,8 @@ export const DefaultOptions = ElementalShamanOptions.create({
 export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
+  mainHandImbue: WeaponImbue.RockbiterWeapon,
+  offHandImbue: WeaponImbue.RockbiterWeapon,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

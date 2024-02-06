@@ -2,6 +2,7 @@ import {
 	Consumes,
 	Flask,
 	Food,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -43,4 +44,6 @@ export const DefaultOptions = RestorationShamanOptions.create({
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
+	mainHandImbue: WeaponImbue.RockbiterWeapon,
+	offHandImbue: WeaponImbue.RockbiterWeapon,
 });
