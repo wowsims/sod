@@ -80,6 +80,7 @@ func (shaman *Shaman) applyDualWieldSpec() {
 	})
 }
 
+// TODO: Not functional
 func (shaman *Shaman) applyShieldMastery() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestShieldMastery) {
 		return
@@ -141,12 +142,63 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		return
 	}
 
+	buffSpellId := 408505
+	buffDuration := time.Second * 30
+
+	ppm := 10.0
+
+	var affectedSpells []*core.Spell
+	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
+	// for LB / CL / LvB
+	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
+
+	// For sim purposes maelstrom weapon only impacts CL / LB
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
-		Label:    "Maelstrom Weapon",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneWaistMaelstromWeapon)},
+		Label:     "MaelstromWeapon Proc",
+		ActionID:  core.ActionID{SpellID: int32(buffSpellId)},
+		Duration:  buffDuration,
+		MaxStacks: 5,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					shaman.LightningBolt,
+					shaman.ChainLightning,
+					shaman.HealingWave,
+					shaman.LesserHealingWave,
+					shaman.ChainHeal,
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			multDiff := 0.2 * float64(newStacks-oldStacks)
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= multDiff })
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Flags.Matches(SpellFlagElectric) {
+				return
+			}
+			shaman.MaelstromWeaponAura.Deactivate(sim)
+		},
+	})
+
+	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+
+	// This aura is hidden, just applies stacks of the proc aura.
+	shaman.RegisterAura(core.Aura{
+		Label:    "MaelstromWeapon",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+				shaman.MaelstromWeaponAura.Activate(sim)
+				shaman.MaelstromWeaponAura.AddStack(sim)
+			}
 		},
 	})
 }
