@@ -661,6 +661,16 @@ export const SpellWintersChillDebuff = withLabel(
 	'Winters Chill',
 );
 
+export const SpellShadowWeavingDebuff = withLabel(
+	makeBooleanDebuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 15334, minLevel: 40 },
+		]),
+		fieldName: 'shadowWeaving',
+	}),
+	'Shadow Weaving',
+);
+
 export const CurseOfElements = withLabel(
 	makeBooleanDebuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -998,6 +1008,11 @@ export const DEBUFFS_CONFIG = [
 		config: SpellWintersChillDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatFrostPower]
+	},
+	{ 
+		config: SpellShadowWeavingDebuff,
+		picker: IconPicker,
+		stats: [Stat.StatShadowPower]
 	},
 	{
 		config: CurseOfElements,

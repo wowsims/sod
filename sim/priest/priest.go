@@ -14,8 +14,8 @@ type Priest struct {
 
 	Latency float64
 
-	InnerFocusAura    *core.Aura
-	ShadowWeavingAura *core.Aura
+	InnerFocusAura     *core.Aura
+	ShadowWeavingAuras core.AuraArray
 
 	BindingHeal       *core.Spell
 	CircleOfHealing   *core.Spell
@@ -88,14 +88,14 @@ func (priest *Priest) RegisterHealingSpells() {
 	priest.registerRenewSpell()
 }
 
-func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation) {
-	if priest.ShadowWeavingAura == nil {
+func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
+	if priest.ShadowWeavingAuras == nil {
 		return
 	}
 
 	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
-		priest.ShadowWeavingAura.Activate(sim)
-		priest.ShadowWeavingAura.AddStack(sim)
+		priest.ShadowWeavingAuras.Get(target).Activate(sim)
+		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
 	}
 }
 

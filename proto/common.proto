@@ -514,6 +514,7 @@ message Debuffs {
 	bool winters_chill = 6;
 	bool improved_shadow_bolt = 7;
 	bool improved_scorch = 8;
+	bool shadow_weaving = 26;
 
 	// Bonus physical damage
 	bool gift_of_arthas = 9;
@@ -544,6 +545,7 @@ message Debuffs {
 
 	// Bleed
 	bool mangle = 25;
+
 }
 
 enum MobType {
