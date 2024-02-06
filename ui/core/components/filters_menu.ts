@@ -16,7 +16,7 @@ import {
 	classToEligibleRangedWeaponTypes,
 	classToEligibleWeaponTypes,
 	classToMaxArmorType,
-	isDualWieldSpec,
+	canDualWield,
 } from '../proto_utils/utils.js';
 import { Player } from '../player.js';
 import { Sim } from '../sim.js';
@@ -181,7 +181,7 @@ export class FiltersMenu extends BaseModal {
 					sim.setFilters(eventID, filters);
 				},
 			});
-			if (isDualWieldSpec(player.spec)) {
+			if (canDualWield(player)) {
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
 					label: 'Min OH Speed',
 					//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',

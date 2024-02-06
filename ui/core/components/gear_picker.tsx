@@ -41,7 +41,7 @@ import {
 // eslint-disable-next-line unused-imports/no-unused-imports
 import { element, fragment, ref } from 'tsx-vanilla';
 
-import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
+import { canDualWield, itemTypeToSlotsMap } from '../proto_utils/utils.js';
 import { Clusterize } from './virtual_scroll/clusterize.js';
 
 const EP_TOOLTIP = `
@@ -237,6 +237,7 @@ export class ItemPicker extends Component {
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
+			
 			loadItems();
 
 			const gearData = {
@@ -263,9 +264,19 @@ export class ItemPicker extends Component {
 
 		player.levelChangeEmitter.on(loadItems)
 
-		player.gearChangeEmitter.on(() => {
-			this.item = player.getEquippedItem(slot);
-		});
+		// Shamans and Hunters can equip/unequip Dual Wield Specialization so we need to continuously update off-hands
+		if (slot == ItemSlot.ItemSlotOffHand) {
+			this.player.gearChangeEmitter.on((eventId: EventID) => {
+				loadItems()
+				if (!canDualWield(player)) {
+					this.player.equipItem(eventId, this.slot, null);
+				}
+				this.item = this.item = player.getEquippedItem(slot)
+			})
+		} else {
+			player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
+		}
+
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
