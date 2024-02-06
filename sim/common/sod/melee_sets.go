@@ -137,6 +137,7 @@ var ItemSetHazardSuit = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.MeleeHit, 1)
+			c.AddStat(stats.SpellHit, 1)
 		},
 	},
 })
