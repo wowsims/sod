@@ -1042,19 +1042,16 @@ func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
 			AuraTag:          PowerInfusionAuraTag,
 			CooldownPriority: CooldownPriorityDefault,
 			AuraDuration:     PowerInfusionDuration,
-			AuraCD:           time.Duration(float64(PowerInfusionCD) * 0.8), // All disc priests take Ascension talent.
+			AuraCD:           PowerInfusionCD,
 			Type:             CooldownTypeDPS,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				// Haste portion doesn't stack with Bloodlust, so prefer to wait.
-				return !character.HasActiveAura("Bloodlust-" + BloodlustActionID.WithTag(-1).String())
-			},
 			AddAura: func(sim *Simulation, character *Character) { piAura.Activate(sim) },
 		},
 		numPowerInfusions)
 }
 
 func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
+	spBonus := character.NewDynamicMultiplyStat(stats.SpellPower, 1.2)
 	actionID := ActionID{SpellID: 10060, Tag: actionTag}
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "PowerInfusion-" + actionID.String(),
@@ -1062,17 +1059,12 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if character.HasManaBar() {
-				character.PseudoStats.CostMultiplier -= 0.2
-			}
+			character.EnableDynamicStatDep(sim, spBonus)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			if character.HasManaBar() {
-				character.PseudoStats.CostMultiplier += 0.2
-			}
+			character.DisableDynamicStatDep(sim, spBonus)
 		},
 	})
-	multiplyCastSpeedEffect(aura, 1.2)
 	return aura
 }
 
