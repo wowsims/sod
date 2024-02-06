@@ -266,17 +266,15 @@ export class ItemPicker extends Component {
 
 		// Shamans and Hunters can equip/unequip Dual Wield Specialization so we need to continuously update off-hands
 		if (slot == ItemSlot.ItemSlotOffHand) {
-			this.player.gearChangeEmitter.on((eventId: EventID) => {
+			this.player.runeChangeEmitter.on((_eventId: EventID) => {
 				loadItems()
 				if (!canDualWield(player)) {
-					this.player.equipItem(eventId, this.slot, null);
+					this.player.equipItem(TypedEvent.nextEventID(), this.slot, null);
 				}
-				this.item = this.item = player.getEquippedItem(slot)
 			})
-		} else {
-			player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
 		}
 
+		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
@@ -535,8 +533,9 @@ export class SelectorModal extends BaseModal {
 						heroic: false,
 						onEquip: (eventID, rune: Rune) => {
 							const equippedItem = gearData.getEquippedItem();
-							if (equippedItem)
+							if (equippedItem) {
 								gearData.equipItem(eventID, equippedItem.withRune(rune));
+							}
 						},
 					};
 				}),
@@ -544,8 +543,9 @@ export class SelectorModal extends BaseModal {
 				equippedItem => equippedItem?.rune,
 				eventID => {
 					const equippedItem = gearData.getEquippedItem();
-					if (equippedItem)
+					if (equippedItem) {
 						gearData.equipItem(eventID, equippedItem.withRune(null));
+					}
 				});
 
 		this.addRandomSuffixTab(equippedItem, gearData);
