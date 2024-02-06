@@ -346,6 +346,7 @@ enum FrostPowerBuff {
 	ElixirOfFrostPower = 1;
 }
 
+// NextIndex: 13
 enum WeaponImbue {
 	WeaponImbueUnknown = 0;
 	BrilliantManaOil = 1;
@@ -354,7 +355,16 @@ enum WeaponImbue {
 	ElementalSharpeningStone = 4;
 	BlackfathomManaOil = 5;
 	BlackfathomSharpeningStone = 6;
+
+	// Windfury Imbues
 	WildStrikes = 7;
+	Windfury = 8;
+
+	// Shaman imbues
+	RockbiterWeapon = 9;
+	FlametongueWeapon = 10;
+	FrostbrandWeapon = 11;
+	WindfuryWeapon = 12;
 }
 
 enum Food {
@@ -408,7 +418,6 @@ message RaidBuffs {
 	
 	// AP+
 	bool trueshot_aura = 9;
-	bool windfury_totem = 10;
 	bool furious_howl = 11;
 
 	// Crit

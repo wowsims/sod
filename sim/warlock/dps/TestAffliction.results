@@ -85,75 +85,75 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongMultiTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 7.33566
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-LongSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 7.33566
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-ShortSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 10.11362
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-LongMultiTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 4.29527
+  dps: 5.61351
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-LongSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 4.29527
+  dps: 5.61351
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-ShortSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-AffItemSwap--NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 6.09684
+  dps: 7.96628
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongMultiTarget"
- value: {
-  dps: 7.33566
- }
-}
-dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-LongSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 7.33566
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-ShortSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 7.33566
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 10.11362
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-LongMultiTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 4.29527
+  dps: 5.61351
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-LongSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 4.29527
+  dps: 5.61351
  }
 }
 dps_results: {
- key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-ShortSingleTarget"
+ key: "TestAffliction-Settings-Orc-25-destruction-Affliction Warlock--NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 6.09684
+  dps: 7.96628
  }
 }
 dps_results: {

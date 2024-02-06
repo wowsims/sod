@@ -122,84 +122,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-LongMultiTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.4182
   tps: 7.64414
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-LongSingleTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.4182
   tps: 0.67747
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-ShortSingleTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 2.09102
   tps: 3.38735
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-LongMultiTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.25301
   tps: 7.52167
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-LongSingleTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.25301
   tps: 0.555
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-ShortSingleTarget"
+ key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.26506
   tps: 2.775
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-LongMultiTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.44317
   tps: 7.66267
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-LongSingleTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.44317
   tps: 0.69601
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-ShortSingleTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 2.21583
   tps: 3.48003
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-LongMultiTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.27661
   tps: 7.53922
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-LongSingleTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.27661
   tps: 0.57255
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-ShortSingleTarget"
+ key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.38307
   tps: 2.86277

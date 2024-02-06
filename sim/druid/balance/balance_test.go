@@ -30,9 +30,12 @@ func TestBalance(t *testing.T) {
 
 var StandardTalents = "50005003021"
 
-var FullConsumes = &proto.Consumes{
-	Flask: proto.Flask_FlaskUnknown,
-	Food:  proto.Food_FoodUnknown,
+var FullConsumes = core.ConsumesCombo{
+	Label: "Full Consumes",
+	Consumes: &proto.Consumes{
+		Flask: proto.Flask_FlaskUnknown,
+		Food:  proto.Food_FoodUnknown,
+	},
 }
 
 var PlayerOptionsAdaptive = &proto.Player_BalanceDruid{

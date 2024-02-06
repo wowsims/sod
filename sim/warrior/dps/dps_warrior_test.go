@@ -71,7 +71,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassWarrior,
 				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1").GearSet,
-				Consumes:      FullConsumes,
+				Consumes:      FullConsumes.Consumes,
 				Spec:          PlayerOptionsFury,
 				TalentsString: FuryTalents,
 				Buffs:         core.FullIndividualBuffs,
@@ -112,9 +112,12 @@ var warriorOptions = &proto.Warrior_Options{
 	Shout:           proto.WarriorShout_WarriorShoutBattle,
 }
 
-var FullConsumes = &proto.Consumes{
-	// Flask:         proto.Flask_FlaskOfEndlessRage,
-	// DefaultPotion: proto.Potions_PotionOfSpeed,
-	// PrepopPotion:  proto.Potions_PotionOfSpeed,
-	// Food:          proto.Food_FoodFishFeast,
+var FullConsumes = core.ConsumesCombo{
+	Label:    "Full Consumes",
+	Consumes: &proto.Consumes{
+		// Flask:         proto.Flask_FlaskOfEndlessRage,
+		// DefaultPotion: proto.Potions_PotionOfSpeed,
+		// PrepopPotion:  proto.Potions_PotionOfSpeed,
+		// Food:          proto.Food_FoodFishFeast,
+	},
 }

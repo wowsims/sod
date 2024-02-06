@@ -13,7 +13,7 @@ var RockbiterWeaponEnchantId = [RockbiterWeaponRanks + 1]int32{0, 29, 6, 1, 503,
 var RockbiterWeaponBonusAP = [RockbiterWeaponRanks + 1]float64{0, 50, 79, 118, 138, 319, 490, 653}
 var RockbiterWeaponLevel = [RockbiterWeaponRanks + 1]int32{0, 1, 8, 16, 24, 34, 44, 54}
 
-var RockbiterRankByLevel = map[int32]int32{
+var RockbiterWeaponRankByLevel = map[int32]int32{
 	25: 4,
 	40: 5,
 	50: 6,
@@ -26,7 +26,7 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 	}
 
 	level := shaman.GetCharacter().Level
-	rank := RockbiterRankByLevel[level]
+	rank := RockbiterWeaponRankByLevel[level]
 	enchantId := RockbiterWeaponEnchantId[rank]
 	bonusAP := RockbiterWeaponBonusAP[rank] * (1 + .07*float64(shaman.Talents.ElementalWeapons))
 
@@ -78,7 +78,7 @@ func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
 	}
 
 	level := shaman.GetCharacter().Level
-	rank := RockbiterRankByLevel[level]
+	rank := RockbiterWeaponRankByLevel[level]
 	enchantId := RockbiterWeaponEnchantId[rank]
 	bonusAP := RockbiterWeaponBonusAP[rank]
 

@@ -96,6 +96,10 @@ type BuffsCombo struct {
 	Party    *proto.PartyBuffs
 	Debuffs  *proto.Debuffs
 	Player   *proto.IndividualBuffs
+	Consumes []ConsumesCombo
+}
+type ConsumesCombo struct {
+	Label    string
 	Consumes *proto.Consumes
 }
 type EncounterCombo struct {
@@ -118,7 +122,7 @@ type SettingsCombos struct {
 }
 
 func (combos *SettingsCombos) NumTests() int {
-	return len(combos.Races) * len(combos.Levels) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations))
+	return len(combos.Races) * len(combos.Levels) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * max(1, len(combos.Buffs[0].Consumes))
 }
 
 func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -163,6 +167,11 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	buffsCombo := combos.Buffs[buffsIdx]
 	testNameParts = append(testNameParts, buffsCombo.Label)
 
+	consumesIdx := testIdx % len(combos.Buffs[1].Consumes)
+	testIdx /= len(combos.Buffs[1].Consumes)
+	consumesCombo := combos.Buffs[1].Consumes[consumesIdx]
+	testNameParts = append(testNameParts, consumesCombo.Label)
+
 	encounterIdx := testIdx % len(combos.Encounters)
 	encounterCombo := combos.Encounters[encounterIdx]
 	testNameParts = append(testNameParts, encounterCombo.Label)
@@ -175,7 +184,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Class:              combos.Class,
 				Equipment:          gearSetCombo.GearSet,
 				TalentsString:      talentSetCombo.Talents,
-				Consumes:           buffsCombo.Consumes,
+				Consumes:           consumesCombo.Consumes,
 				Buffs:              buffsCombo.Player,
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
@@ -394,7 +403,7 @@ type CharacterSuiteConfig struct {
 	Talents     string
 	Rotation    RotationCombo
 
-	Consumes *proto.Consumes
+	Consumes ConsumesCombo
 
 	IsHealer        bool
 	IsTank          bool
@@ -405,6 +414,7 @@ type CharacterSuiteConfig struct {
 	OtherGearSets    []GearSetCombo
 	OtherSpecOptions []SpecOptionsCombo
 	OtherRotations   []RotationCombo
+	OtherConsumes    []ConsumesCombo
 
 	ItemFilter ItemFilter
 
@@ -425,6 +435,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 	}}
 	allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
 	allRotations := append(config.OtherRotations, config.Rotation)
+	allConsumeOptions := append(config.OtherConsumes, config.Consumes)
 
 	defaultPlayer := WithSpec(
 		&proto.Player{
@@ -432,7 +443,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Level:         config.Level,
 			Race:          config.Race,
 			Equipment:     config.GearSet.GearSet,
-			Consumes:      config.Consumes,
+			Consumes:      config.Consumes.Consumes,
 			Buffs:         FullIndividualBuffs,
 			TalentsString: config.Talents,
 			Profession1:   proto.Profession_Engineering,
@@ -485,7 +496,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Party:    FullPartyBuffs,
 							Debuffs:  FullDebuffs,
 							Player:   FullIndividualBuffs,
-							Consumes: config.Consumes,
+							Consumes: allConsumeOptions,
 						},
 					},
 					IsHealer:   config.IsHealer,

@@ -51,7 +51,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:      proto.Race_RaceTauren,
 				Class:     proto.Class_ClassDruid,
 				Equipment: core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1").GearSet,
-				Consumes:  FullConsumes,
+				Consumes:  FullConsumes.Consumes,
 				Spec:      PlayerOptionsMonoCat,
 				Buffs:     core.FullIndividualBuffs,
 
@@ -104,12 +104,15 @@ var PlayerOptionsFlowerCatAoe = &proto.Player_FeralDruid{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	// BattleElixir:    proto.BattleElixir_ElixirOfMajorAgility,
-	// GuardianElixir:  proto.GuardianElixir_ElixirOfMajorMageblood,
-	// Food:            proto.Food_FoodGrilledMudfish,
-	// DefaultPotion:   proto.Potions_HastePotion,
-	// DefaultConjured: proto.Conjured_ConjuredDarkRune,
+var FullConsumes = core.ConsumesCombo{
+	Label:    "Full Consumes",
+	Consumes: &proto.Consumes{
+		// BattleElixir:    proto.BattleElixir_ElixirOfMajorAgility,
+		// GuardianElixir:  proto.GuardianElixir_ElixirOfMajorMageblood,
+		// Food:            proto.Food_FoodGrilledMudfish,
+		// DefaultPotion:   proto.Potions_HastePotion,
+		// DefaultConjured: proto.Conjured_ConjuredDarkRune,
+	},
 }
 
 var P2GearDoubleArmorPenTrinkets = core.EquipmentSpecFromJsonString(`

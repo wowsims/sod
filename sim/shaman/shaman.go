@@ -41,26 +41,20 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStat(stats.MP5, shaman.MaxMana()*.01)
 	}
 
-	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.ShamanImbue_RockbiterWeapon))
-	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-
-	if !shaman.HasMHWeapon() {
-		shaman.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
-	}
-
-	if !shaman.HasOHWeapon() {
-		shaman.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
-	}
+	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
+	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
+	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
+	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 
 	return shaman
 }
 
-func (shaman *Shaman) getImbueProcMask(imbue proto.ShamanImbue) core.ProcMask {
+func (shaman *Shaman) getImbueProcMask(character *core.Character, imbue proto.WeaponImbue) core.ProcMask {
 	var mask core.ProcMask
-	if shaman.SelfBuffs.ImbueMH == imbue {
+	if character.Consumes.MainHandImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
 	}
-	if shaman.SelfBuffs.ImbueOH == imbue {
+	if shaman.Consumes.OffHandImbue == imbue {
 		mask |= core.ProcMaskMeleeOH
 	}
 	return mask
@@ -68,9 +62,7 @@ func (shaman *Shaman) getImbueProcMask(imbue proto.ShamanImbue) core.ProcMask {
 
 // Which buffs this shaman is using.
 type SelfBuffs struct {
-	Shield  proto.ShamanShield
-	ImbueMH proto.ShamanImbue
-	ImbueOH proto.ShamanImbue
+	Shield proto.ShamanShield
 }
 
 // Indexes into NextTotemDrops for self buffs
@@ -220,7 +212,10 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		}
 		raidBuffs.GraceOfAirTotem = max(raidBuffs.StrengthOfEarthTotem, totem)
 	case proto.AirTotem_WindfuryTotem:
-		raidBuffs.WindfuryTotem = true
+		character := shaman.GetCharacter()
+		if character.Consumes.MainHandImbue == proto.WeaponImbue_WeaponImbueUnknown {
+			core.ApplyWindfury(character)
+		}
 	}
 }
 
@@ -231,6 +226,8 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (shaman *Shaman) Initialize() {
+	character := shaman.GetCharacter()
+
 	// Core abilities
 	shaman.registerChainLightningSpell()
 	shaman.registerLightningBoltSpell()
@@ -240,10 +237,10 @@ func (shaman *Shaman) Initialize() {
 
 	// Imbues
 	// In the Initialize due to frost brand adding the aura to the enemy
-	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(proto.ShamanImbue_RockbiterWeapon))
-	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
-	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
+	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
+	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
+	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_Windfury))
+	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 
 	// if shaman.ItemSwap.IsEnabled() {
 	// 	mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)

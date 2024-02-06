@@ -71,7 +71,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Level:         40,
 				Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p2").GearSet,
 				TalentsString: phase2Talents,
-				Consumes:      FullConsumes,
+				Consumes:      FullConsumes.Consumes,
 				Spec:          PlayerOptionsAdaptive,
 				Buffs:         core.FullIndividualBuffs,
 				Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2").Rotation,
@@ -105,17 +105,18 @@ var BasicTotems = &proto.ShamanTotems{
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
 		Options: &proto.ElementalShaman_Options{
-			Shield:  proto.ShamanShield_WaterShield,
-			ImbueMh: proto.ShamanImbue_RockbiterWeapon,
-			ImbueOh: proto.ShamanImbue_RockbiterWeapon,
-			Totems:  BasicTotems,
+			Shield: proto.ShamanShield_WaterShield,
+			Totems: BasicTotems,
 		},
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	// Flask:           proto.Flask_FlaskOfBlindingLight,
-	// Food:            proto.Food_FoodBlackenedBasilisk,
-	// DefaultPotion:   proto.Potions_SuperManaPotion,
-	// DefaultConjured: proto.Conjured_ConjuredDarkRune,
+var FullConsumes = core.ConsumesCombo{
+	Label:    "Full Consumes",
+	Consumes: &proto.Consumes{
+		// Flask:           proto.Flask_FlaskOfBlindingLight,
+		// Food:            proto.Food_FoodBlackenedBasilisk,
+		// DefaultPotion:   proto.Potions_SuperManaPotion,
+		// DefaultConjured: proto.Conjured_ConjuredDarkRune,
+	},
 }

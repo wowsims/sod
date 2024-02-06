@@ -24,11 +24,13 @@ func TestEnhancement(t *testing.T) {
 		GearSet:       core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
 		OtherGearSets: []core.GearSetCombo{},
 
-		Talents:     phase2Talents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "RB", SpecOptions: PlayerOptionsRBRB},
+		Talents:       phase2Talents,
+		Consumes:      FullConsumesRBRB,
+		OtherConsumes: []core.ConsumesCombo{},
+
+		SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
 		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "WF", SpecOptions: PlayerOptionsWFWF},
+			{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
 		},
 
 		Rotation:       core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
@@ -61,8 +63,9 @@ func BenchmarkSimulate(b *testing.B) {
 				Level:         40,
 				Equipment:     core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1").GearSet,
 				TalentsString: phase2Talents,
-				Consumes:      FullConsumes,
-				Spec:          PlayerOptionsRBRB,
+				Rotation:      core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1").Rotation,
+				Consumes:      FullConsumesRBRB.Consumes,
+				Spec:          PlayerOptionsSyncAuto,
 				Buffs:         core.FullIndividualBuffs,
 			},
 			core.FullPartyBuffs,
@@ -83,30 +86,21 @@ func BenchmarkSimulate(b *testing.B) {
 var phase1Talents = "-5005202101"
 var phase2Talents = "-5005202105023051"
 
-var PlayerOptionsWFWF = &proto.Player_EnhancementShaman{
+var PlayerOptionsSyncDelayOH = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
-		Options: enhShamWFWF,
+		Options: optionsSyncDelayOffhand,
 	},
 }
 
-var PlayerOptionsRBRB = &proto.Player_EnhancementShaman{
+var PlayerOptionsSyncAuto = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
-		Options: enhShamRBRB,
+		Options: optionsSyncAuto,
 	},
 }
 
-var enhShamWFWF = &proto.EnhancementShaman_Options{
+var optionsSyncDelayOffhand = &proto.EnhancementShaman_Options{
 	Shield:   proto.ShamanShield_WaterShield,
 	SyncType: proto.ShamanSyncType_DelayOffhandSwings,
-	ImbueMh:  proto.ShamanImbue_WindfuryWeapon,
-	ImbueOh:  proto.ShamanImbue_WindfuryWeapon,
-}
-
-var enhShamRBRB = &proto.EnhancementShaman_Options{
-	Shield:   proto.ShamanShield_LightningShield,
-	SyncType: proto.ShamanSyncType_Auto,
-	ImbueMh:  proto.ShamanImbue_RockbiterWeapon,
-	ImbueOh:  proto.ShamanImbue_RockbiterWeapon,
 	Totems: &proto.ShamanTotems{
 		Earth: proto.EarthTotem_StrengthOfEarthTotem,
 		Air:   proto.AirTotem_WindfuryTotem,
@@ -115,6 +109,47 @@ var enhShamRBRB = &proto.EnhancementShaman_Options{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	// DefaultConjured: proto.Conjured_ConjuredFlameCap,
+var optionsSyncAuto = &proto.EnhancementShaman_Options{
+	Shield:   proto.ShamanShield_LightningShield,
+	SyncType: proto.ShamanSyncType_Auto,
+	Totems: &proto.ShamanTotems{
+		Earth: proto.EarthTotem_StrengthOfEarthTotem,
+		Air:   proto.AirTotem_WindfuryTotem,
+		Water: proto.WaterTotem_ManaSpringTotem,
+		Fire:  proto.FireTotem_MagmaTotem,
+	},
+}
+
+var baseConsumables = &proto.Consumes{}
+
+var FullConsumesRBRB = core.ConsumesCombo{
+	Label: "RB/RB",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  baseConsumables.DefaultPotion,
+		Food:           baseConsumables.Food,
+		Flask:          baseConsumables.Flask,
+		AgilityElixir:  baseConsumables.AgilityElixir,
+		StrengthBuff:   baseConsumables.StrengthBuff,
+		SpellPowerBuff: baseConsumables.SpellPowerBuff,
+		FirePowerBuff:  baseConsumables.FirePowerBuff,
+
+		MainHandImbue: proto.WeaponImbue_RockbiterWeapon,
+		OffHandImbue:  proto.WeaponImbue_RockbiterWeapon,
+	},
+}
+
+var FullConsumesWFWF = core.ConsumesCombo{
+	Label: "WF/WF",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  baseConsumables.DefaultPotion,
+		Food:           baseConsumables.Food,
+		Flask:          baseConsumables.Flask,
+		AgilityElixir:  baseConsumables.AgilityElixir,
+		StrengthBuff:   baseConsumables.StrengthBuff,
+		SpellPowerBuff: baseConsumables.SpellPowerBuff,
+		FirePowerBuff:  baseConsumables.FirePowerBuff,
+
+		MainHandImbue: proto.WeaponImbue_WindfuryWeapon,
+		OffHandImbue:  proto.WeaponImbue_WindfuryWeapon,
+	},
 }
