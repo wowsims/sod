@@ -85,7 +85,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
-		Duration: time.Second * 3,
+		Duration: time.Millisecond * 1500,
 	}
 
 	mhSpell := shaman.newWindfuryImbueSpell(true)

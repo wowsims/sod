@@ -14,27 +14,14 @@ func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit, level int32) *cor
 	duration := time.Second * 12
 
 	return target.GetOrRegisterAura(core.Aura{
-		Label:     fmt.Sprintf("Stormstrike-%s", shaman.Label),
-		ActionID:  StormstrikeActionID,
-		Duration:  duration,
-		MaxStacks: 2,
+		Label:    fmt.Sprintf("Stormstrike-%s", shaman.Label),
+		ActionID: StormstrikeActionID,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.AttackTables[aura.Unit.UnitIndex].NatureDamageTakenMultiplier *= 1.2
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.AttackTables[aura.Unit.UnitIndex].NatureDamageTakenMultiplier /= 1.2
-		},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Unit != &shaman.Unit {
-				return
-			}
-			if spell.SpellSchool != core.SpellSchoolNature {
-				return
-			}
-			if !result.Landed() || result.Damage == 0 {
-				return
-			}
-			aura.RemoveStack(sim)
 		},
 	})
 }
@@ -65,8 +52,8 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		return
 	}
 
-	manaCost := .21
-	cooldown := time.Second * 20
+	manaCost := .063
+	cooldown := time.Second * 6
 
 	mhHit := shaman.newStormstrikeHitSpell(true)
 	ohHit := shaman.newStormstrikeHitSpell(false)
