@@ -58,6 +58,7 @@ func (shaman *Shaman) applyDualWieldSpec() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
+		// Perform additional checks for later weapon-swapping
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
 				return
