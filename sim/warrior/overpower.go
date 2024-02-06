@@ -31,13 +31,13 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(outcomeMask) {
 				warrior.OverpowerAura.Activate(sim)
-				warrior.lastOverpowerProc = sim.CurrentTime
 			}
 		},
 	})
 
 	warrior.OverpowerAura = warrior.RegisterAura(core.Aura{
 		Label:    "Overpower Aura",
+		ActionID: core.ActionID{SpellID: spellID},
 		Duration: time.Second * 5,
 	})
 

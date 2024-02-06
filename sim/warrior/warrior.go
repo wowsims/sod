@@ -48,7 +48,6 @@ type Warrior struct {
 	// Reaction time values
 	reactionTime       time.Duration
 	lastBloodsurgeProc time.Duration
-	lastOverpowerProc  time.Duration
 	LastAMTick         time.Duration
 
 	BattleShout *core.Spell
