@@ -14,16 +14,27 @@ func init() {
 
 func TestElemental(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassShaman,
+		Class:       proto.Class_ClassShaman,
+		Level:       25,
+		OtherLevels: []int32{40},
+
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1"),
-		Talents:          StandardTalents,
+		GearSet: core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2"),
+		},
+
+		Talents:          phase2Talents,
 		Consumes:         FullConsumes,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
-		Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1"),
+
+		Rotation: core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -57,17 +68,19 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassShaman,
-				Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p1").GearSet,
-				TalentsString: StandardTalents,
+				Level:         40,
+				Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "p2").GearSet,
+				TalentsString: phase2Talents,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsAdaptive,
 				Buffs:         core.FullIndividualBuffs,
+				Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2").Rotation,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,
 			core.FullDebuffs),
 		Encounter: &proto.Encounter{
-			Duration: 300,
+			Duration: 120,
 			Targets: []*proto.Target{
 				core.NewDefaultTarget(),
 			},
@@ -78,7 +91,8 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "25003105"
+var phase1Talents = "25003105"
+var phase2Talents = "350031550002151"
 
 var NoTotems = &proto.ShamanTotems{}
 var BasicTotems = &proto.ShamanTotems{
@@ -91,8 +105,10 @@ var BasicTotems = &proto.ShamanTotems{
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
 		Options: &proto.ElementalShaman_Options{
-			Shield: proto.ShamanShield_WaterShield,
-			Totems: BasicTotems,
+			Shield:  proto.ShamanShield_WaterShield,
+			ImbueMh: proto.ShamanImbue_RockbiterWeapon,
+			ImbueOh: proto.ShamanImbue_RockbiterWeapon,
+			Totems:  BasicTotems,
 		},
 	},
 }

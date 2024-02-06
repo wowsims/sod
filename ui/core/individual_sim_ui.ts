@@ -196,7 +196,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.spec,
 			knownIssues: config.knownIssues,
 			launchStatus: simLaunchStatuses[player.spec],
-			noticeText: '',
+			noticeText: 'Disclaimer: Phase 2 support is still in early development. Item and spell effects may not be implemented.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
