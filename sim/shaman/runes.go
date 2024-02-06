@@ -43,6 +43,11 @@ func (shaman *Shaman) applyDualWieldSpec() {
 		return
 	}
 
+	if shaman.HasMHWeapon() && shaman.HasOHWeapon() {
+		shaman.AddStat(stats.MeleeHit, 10)
+		shaman.AddStat(stats.SpellHit, 10)
+	}
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Dual Wield Specialization",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestDualWieldSpec)},
