@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 8.58936
   final_stats: 0
   final_stats: 0
-  final_stats: 490.88
+  final_stats: 501.88
   final_stats: 11
   final_stats: 21.49182
   final_stats: 0
@@ -51,32 +51,32 @@ character_stats_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 14.61135
-  tps: 19.42493
+  dps: 14.93566
+  tps: 19.7885
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 16.82813
-  tps: 20.81223
+  dps: 17.03362
+  tps: 21.04898
   hps: 0.6528
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 14.68525
-  tps: 19.49882
+  dps: 14.7386
+  tps: 19.55259
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-InsulatedLeathers"
  value: {
-  dps: 10.77886
-  tps: 8.64429
+  dps: 11.07081
+  tps: 8.93624
   hps: 0.6
  }
 }
@@ -91,216 +91,216 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 16.72711
-  tps: 20.71493
+  dps: 16.96907
+  tps: 20.99275
   hps: 0.6528
  }
 }
 dps_results: {
  key: "TestEnhancement-Average-Default"
  value: {
-  dps: 16.6978
-  tps: 21.31217
+  dps: 16.78891
+  tps: 21.41012
   hps: 0.60021
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 17.67887
-  tps: 158.67787
+  dps: 17.83066
+  tps: 159.41435
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 17.67887
-  tps: 21.97279
+  dps: 17.83066
+  tps: 22.15381
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 19.64224
-  tps: 20.8747
+  dps: 19.80959
+  tps: 21.04204
   hps: 3.13603
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 13.92438
-  tps: 131.85794
+  dps: 14.44025
+  tps: 136.61839
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 13.92438
-  tps: 17.11979
+  dps: 14.44025
+  tps: 17.89024
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-FT-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 17.60354
-  tps: 18.34476
+  dps: 17.72298
+  tps: 18.4642
   hps: 3.13603
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 16.90455
-  tps: 156.15828
+  dps: 17.04714
+  tps: 156.58624
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 16.90455
-  tps: 21.08382
+  dps: 17.04714
+  tps: 21.24068
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 18.51856
-  tps: 19.99564
+  dps: 18.67194
+  tps: 20.15419
   hps: 3.13603
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 12.61505
-  tps: 121.57876
+  dps: 12.42652
+  tps: 121.01042
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 12.61505
-  tps: 15.34865
+  dps: 12.42652
+  tps: 15.18216
   hps: 0.62721
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-WF-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 15.97577
-  tps: 16.5736
+  dps: 15.92803
+  tps: 16.52586
   hps: 3.13603
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 16.6313
-  tps: 157.65121
+  dps: 16.72085
+  tps: 157.87132
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 16.6313
-  tps: 21.25013
+  dps: 16.72085
+  tps: 21.34621
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 17.94377
-  tps: 19.62292
+  dps: 18.04297
+  tps: 19.74609
   hps: 3
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 12.77461
-  tps: 119.68698
+  dps: 12.85654
+  tps: 121.85003
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 12.77461
-  tps: 15.79656
+  dps: 12.85654
+  tps: 15.94054
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-FT-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 15.88815
-  tps: 17.12563
+  dps: 15.94787
+  tps: 17.19168
   hps: 3
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-FullBuffs-LongMultiTarget"
  value: {
-  dps: 16.00126
-  tps: 155.60422
+  dps: 16.08546
+  tps: 155.94806
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-FullBuffs-LongSingleTarget"
  value: {
-  dps: 16.00126
-  tps: 20.51786
+  dps: 16.08546
+  tps: 20.61504
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 16.92355
-  tps: 18.977
+  dps: 17.01427
+  tps: 19.06958
   hps: 3
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-NoBuffs-LongMultiTarget"
  value: {
-  dps: 11.32692
-  tps: 111.936
+  dps: 11.00252
+  tps: 107.81301
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-NoBuffs-LongSingleTarget"
  value: {
-  dps: 11.32692
-  tps: 14.0564
+  dps: 11.00252
+  tps: 13.64109
   hps: 0.6
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-WF-phase_1-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 14.41634
-  tps: 15.52925
+  dps: 14.31517
+  tps: 15.42736
   hps: 3
  }
 }
 dps_results: {
  key: "TestEnhancement-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 13.50307
-  tps: 18.09364
+  dps: 13.55375
+  tps: 18.15142
   hps: 0.6
  }
 }
