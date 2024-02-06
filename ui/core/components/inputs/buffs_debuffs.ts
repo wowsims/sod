@@ -652,7 +652,7 @@ export const SpellScorchDebuff = withLabel(
 		]),
 		fieldName: 'improvedScorch',
 	}),
-	'Improved Scorch',
+	'Fire Damage',
 );
 
 export const SpellWintersChillDebuff = withLabel(
@@ -662,8 +662,21 @@ export const SpellWintersChillDebuff = withLabel(
 		]),
 		fieldName: 'wintersChill',
 	}),
-	'Winters Chill',
+	'Frost Damage',
 );
+
+export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput([
+	makeBooleanDebuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 17364, minLevel: 40 },
+		]),
+		fieldName: 'stormstrike',
+	}),
+	makeBooleanDebuffInput({
+		actionId: () => ActionId.fromSpellId(408258),
+		fieldName: 'dreamstate',
+	})
+], 'Nature Damage')
 
 export const SpellShadowWeavingDebuff = withLabel(
 	makeBooleanDebuffInput({
@@ -1018,7 +1031,12 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatFrostPower]
 	},
-	{ 
+	{
+		config: NatureSpellDamageDebuff,
+		picker: MultiIconPicker,
+		stats: [Stat.StatNaturePower],
+	},
+	{
 		config: SpellShadowWeavingDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatShadowPower]

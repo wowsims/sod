@@ -54,6 +54,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(WintersChillAura(target, 5))
 	}
 
+	if debuffs.Stormstrike {
+		MakePermanent(StormstrikeAura(target, level))
+	} else if debuffs.Dreamstate {
+		MakePermanent(DreamstateAura(target, level))
+	}
+
 	if debuffs.GiftOfArthas {
 		MakePermanent(GiftOfArthasAura(target))
 	}
@@ -147,6 +153,40 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.ScorpidSting && targetIdx == 0 {
 		MakePermanent(ScorpidStingAura(target))
 	}
+}
+
+func StormstrikeAura(unit *Unit, rank int32) *Aura {
+	damageMulti := 1.2
+	duration := time.Second * 12
+
+	return unit.RegisterAura(Aura{
+		Label:    "Stormstrike",
+		ActionID: ActionID{SpellID: 17364},
+		Duration: duration,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= damageMulti
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= damageMulti
+		},
+	})
+}
+
+func DreamstateAura(unit *Unit, rank int32) *Aura {
+	damageMulti := 1.2
+	duration := time.Second * 12
+
+	return unit.RegisterAura(Aura{
+		Label:    "Dreamstate",
+		ActionID: ActionID{SpellID: 408258},
+		Duration: duration,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= damageMulti
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= damageMulti
+		},
+	})
 }
 
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {

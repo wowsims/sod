@@ -518,7 +518,7 @@ message Consumes {
 	EnchantedSigil enchanted_sigil = 20;
 }
 
-// NextIndex: 27
+// NextIndex: 29
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -531,6 +531,8 @@ message Debuffs {
 	bool improved_shadow_bolt = 7;
 	bool improved_scorch = 8;
 	bool shadow_weaving = 26;
+	bool stormstrike = 27;
+	bool dreamstate = 28;
 
 	// Bonus physical damage
 	bool gift_of_arthas = 9;
