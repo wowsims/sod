@@ -265,7 +265,6 @@ export class Player<SpecType extends Spec> {
 	readonly consumesChangeEmitter = new TypedEvent<void>('PlayerConsumes');
 	readonly bonusStatsChangeEmitter = new TypedEvent<void>('PlayerBonusStats');
 	readonly gearChangeEmitter = new TypedEvent<void>('PlayerGear');
-	readonly runeChangeEmitter = new TypedEvent<void>('PlayerGearRune');
 	readonly itemSwapChangeEmitter = new TypedEvent<void>('PlayerItemSwap');
 	readonly professionChangeEmitter = new TypedEvent<void>('PlayerProfession');
 	readonly raceChangeEmitter = new TypedEvent<void>('PlayerRace');
@@ -318,7 +317,6 @@ export class Player<SpecType extends Spec> {
 			this.consumesChangeEmitter,
 			this.bonusStatsChangeEmitter,
 			this.gearChangeEmitter,
-			this.runeChangeEmitter,
 			this.itemSwapChangeEmitter,
 			this.professionChangeEmitter,
 			this.raceChangeEmitter,
@@ -598,11 +596,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
-		this.setGear(
-			eventID,
-			this.gear.withEquippedItem(slot, newItem, this.canDualWield2H()),
-			this.gear.getEquippedItem(slot)?.rune != newItem?.rune,
-		);
+		this.setGear(eventID, this.gear.withEquippedItem(slot, newItem, this.canDualWield2H()));
 	}
 
 	getEquippedItem(slot: ItemSlot): EquippedItem | null {
@@ -613,15 +607,11 @@ export class Player<SpecType extends Spec> {
 		return this.gear;
 	}
 
-	setGear(eventID: EventID, newGear: Gear, runeChanged=false) {
+	setGear(eventID: EventID, newGear: Gear) {
 		if (newGear.equals(this.gear))
 			return;
 
 		this.gear = newGear;
-
-		if (runeChanged) {
-			this.runeChangeEmitter.emit(eventID);
-		}
 		this.gearChangeEmitter.emit(eventID);
 	}
 
