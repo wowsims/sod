@@ -43,8 +43,8 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		ActionID: actionID,
 		Duration: duration,
 
-		OnDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == agDamageSpell {
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == agDamageSpell || spell.ProcMask != core.ProcMaskSpellDamage {
 				return
 			}
 
