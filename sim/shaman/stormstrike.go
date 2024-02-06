@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 var StormstrikeActionID = core.ActionID{SpellID: 17364}
@@ -105,7 +106,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 
 				mhHit(sim, target, spell)
 
-				if shaman.AutoAttacks.IsDualWielding {
+				if shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec) && shaman.AutoAttacks.IsDualWielding {
 					ohHit(sim, target, spell)
 				}
 
