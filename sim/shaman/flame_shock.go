@@ -78,11 +78,17 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 					shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
+					if shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
+						shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
+					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 					shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
+					if shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
+						shaman.LavaBurstOverload.BonusCritRating -= 100 * core.CritRatingPerCritChance
+					}
 				}
 			},
 		},

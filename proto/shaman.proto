@@ -64,25 +64,25 @@ enum ShamanRune {
 	RuneHealingRain 						= 415236;
 	RuneChestOverload          	= 408438;
 	RuneChestShieldMastery 			= 408524;
-	RuneTwoHandedMastery 				=	436367;
+	RuneTwoHandedMastery 				=	436364;
 
 	RuneHandsLavaBurst 					= 408490;
 	RuneHandsLavaLash 					= 408507;
 	RuneHandsMoltenBlast 				= 425339;
 	RuneHandsWaterShield 				= 408510;
 
-	RuneWaistFireNova 					= 409938;
-	RuneWaistMaelstromWeapon 		= 409946;
-	RuneWaistPowerSurge 				= 415712;
+	RuneWaistFireNova 					= 408339;
+	RuneWaistMaelstromWeapon 		= 408498;
+	RuneWaistPowerSurge 				= 415100;
 
 	RuneLegsAncestralGuidance 	= 409324;
 	RuneLegsEarthShield 				= 408514;
 	RuneLegsShamanisticRage 		= 425336;
 	RuneLegsWayOfEarth 					= 408531;
 
-	RuneFeetAncestralAwakening 	= 425879;
-	RuneFeetDecoyTotem 				 	= 425881;
-	RuneFeetSpiritOfTheAlpha 	 	= 409951;
+	RuneFeetAncestralAwakening 	= 425858;
+	RuneFeetDecoyTotem 				 	= 425874;
+	RuneFeetSpiritOfTheAlpha 	 	= 408696;
 }
 
 enum EarthTotem {

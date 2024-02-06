@@ -60,7 +60,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) func(*core.Simulation, *
 }
 
 func (shaman *Shaman) registerStormstrikeSpell() {
-	if shaman.Level < 40 {
+	if !shaman.Talents.Stormstrike {
 		return
 	}
 
