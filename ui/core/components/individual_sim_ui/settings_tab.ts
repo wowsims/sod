@@ -90,6 +90,9 @@ export class SettingsTab extends SimTab {
 			this.buildDebuffsSettings();
 			this.buildSavedDataPickers();
 		}
+
+		// Force an event so that the pickers update state
+		this.simUI.player.buffsChangeEmitter.emit(TypedEvent.nextEventID());
 	}
 
 	private buildEncounterSettings() {

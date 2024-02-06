@@ -61,7 +61,7 @@ export const TalentsPhase2 = {
 export const DefaultTalents = TalentsPhase1;
 
 export const DefaultOptions = ElementalShamanOptions.create({
-  shield: ShamanShield.WaterShield,
+  shield: ShamanShield.LightningShield,
   imbueMh: ShamanImbue.RockbiterWeapon,
 	imbueOh: ShamanImbue.RockbiterWeapon,
   totems: ShamanTotems.create({
