@@ -10,7 +10,7 @@ const FrostbrandWeaponRanks = 5
 
 var FrostbrandWeaponSpellId = [FrostbrandWeaponRanks + 1]int32{0, 8033, 8038, 10456, 16355, 16356}
 var FrostbrandWeaponEnchantId = [FrostbrandWeaponRanks + 1]int32{0, 2, 12, 524, 1667, 1668}
-var FrostbrandWeaponBaseDamage = [FrostbrandWeaponRanks + 1]float64{0, 48, 77, 124, 166, 187}
+var FrostbrandWeaponBaseDamage = [FrostbrandWeaponRanks + 1]float64{0, 46, 77, 94, 142, 187}
 var FrostbrandWeaponLevel = [FrostbrandWeaponRanks + 1]int32{0, 20, 28, 38, 48, 58}
 
 var FrostbrandWeaponRankByLevel = map[int32]int32{

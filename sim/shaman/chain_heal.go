@@ -14,7 +14,7 @@ const ChainHealTargetCount = 3
 const ChainHealBounceCoeff = .5
 
 var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622, 10623}
-var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {419, 479}, {567, 646}}
+var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {416, 477}, {567, 646}}
 var ChainHealSpellCoef = [ChainHealRanks + 1]float64{0, .714, .714, .714}
 var ChainHealCastTime = [ChainHealRanks + 1]int32{0, 2500, 2500, 2500}
 var ChainHealManaCost = [ChainHealRanks + 1]float64{0, 260, 315, 405}
