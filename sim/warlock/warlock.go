@@ -63,7 +63,6 @@ type Warlock struct {
 	AmplifyCurseAura        *core.Aura
 	ImprovedShadowBoltAuras core.AuraArray
 	LakeOfFireAuras         core.AuraArray
-	ShadowflameAuras        core.AuraArray
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64

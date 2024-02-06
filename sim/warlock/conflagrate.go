@@ -37,7 +37,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.Immolate.Dot(target).IsActive()
+			return warlock.Immolate.Dot(target).IsActive() || (warlock.Shadowflame != nil && warlock.Shadowflame.Dot(target).IsActive())
 		},
 
 		BonusCritRating:          float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
@@ -46,7 +46,6 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// takes the SP of the immolate (or shadowflame) dot on the target
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellPower()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
@@ -57,8 +56,22 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			if !result.Landed() {
 				return
 			}
-			warlock.Immolate.Dot(target).Deactivate(sim)
-			//warlock.ShadowflameDot.Deactivate(sim)
+
+			if warlock.Shadowflame != nil {
+				immoDot := warlock.Immolate.Dot(target)
+				sfDot := warlock.Shadowflame.Dot(target)
+
+				immoTime := core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
+				shadowflameTime := core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)
+
+				if immoTime < shadowflameTime {
+					warlock.Immolate.Dot(target).Deactivate(sim)
+				} else {
+					warlock.Shadowflame.Dot(target).Deactivate(sim)
+				}
+			} else {
+				warlock.Immolate.Dot(target).Deactivate(sim)
+			}
 		},
 	}
 }

@@ -55,7 +55,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Shadowflame",
+				Label: "Shadowflame" + warlock.Label,
 			},
 
 			NumberOfTicks: 4,
