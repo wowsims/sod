@@ -135,7 +135,7 @@ export const makeExplosivesInput = makeConsumeInputFactory({
 
 export const Sapper = makeBooleanConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 10646, minLevel: 40 },
+		{ id: 10646, minLevel: 50 },
 	]),
 	fieldName: 'sapper',
 	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
@@ -232,7 +232,7 @@ export const NightfinSoup: ConsumableInputConfig<Food> = {
 };
 export const GrilledSquid: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13928, minLevel: 35 },
+		{ id: 13928, minLevel: 50 },
 	]),
 	value: Food.FoodGrilledSquid,
 };
@@ -333,7 +333,12 @@ export const ElixirOfOgresStrength: ConsumableInputConfig<StrengthBuff> = {
 	value: StrengthBuff.ElixirOfOgresStrength,
 };
 export const ScrollOfStrength: ConsumableInputConfig<StrengthBuff> = {
-	actionId: () => ActionId.fromItemId(10310),
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 954, 	minLevel: 10, maxLevel: 24 	},
+		{ id: 2289, 	minLevel: 25, maxLevel: 39 	},
+		{ id: 4426, 	minLevel: 40, maxLevel: 54 	},
+		{ id: 10310, 	minLevel: 55 								},
+	]),
 	value: StrengthBuff.ScrollOfStrength,
 };
 
