@@ -62,6 +62,7 @@ import {
 	RestorationShaman,
 	RestorationShaman_Options as RestorationShamanOptions,
 	RestorationShaman_Rotation as RestorationShamanRotation,
+	ShamanRune,
 	ShamanTalents,
 } from '../proto/shaman.js';
 import { 
@@ -1050,15 +1051,15 @@ export const specToEligibleRaces: Record<Spec, Array<Race>> = {
 
 // Specs that can dual wield. This could be based on class, except that
 // Enhancement Shaman learn dual wield from a talent.
-const dualWieldSpecs: Array<Spec> = [
-	Spec.SpecEnhancementShaman,
-	Spec.SpecHunter,
-	Spec.SpecRogue,
-	Spec.SpecWarrior,
-	Spec.SpecProtectionWarrior,
+const dualWieldClasses: Array<Class> = [
+	Class.ClassHunter,
+	Class.ClassRogue,
+	Class.ClassShaman,
+	Class.ClassWarrior
 ];
-export function isDualWieldSpec(spec: Spec): boolean {
-	return dualWieldSpecs.includes(spec);
+
+export function canDualWield(player: Player<Spec>): boolean {
+	return dualWieldClasses.includes(player.getClass());
 }
 
 const tankSpecs: Array<Spec> = [
@@ -1461,7 +1462,8 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 
 		if ((item.handType == HandType.HandTypeOffHand || (item.handType == HandType.HandTypeOneHand && slot == ItemSlot.ItemSlotOffHand))
 			&& ![WeaponType.WeaponTypeShield, WeaponType.WeaponTypeOffHand].includes(item.weaponType)
-			&& !dualWieldSpecs.includes(spec)) {
+			&& !canDualWield(player)
+		) {
 			return false;
 		}
 

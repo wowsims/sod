@@ -22,6 +22,22 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(ImprovedShadowBoltAura(target, 5))
 	}
 
+	if debuffs.ShadowWeaving {
+		aura := ShadowWeavingAura(target, 5)
+		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+			Period:          time.Millisecond * 1500,
+			NumTicks:        5,
+			TickImmediately: true,
+			Priority:        ActionPriorityDOT, // High prio so it comes before actual warrior sunders.
+			OnAction: func(sim *Simulation) {
+				aura.Activate(sim)
+				if aura.IsActive() {
+					aura.AddStack(sim)
+				}
+			},
+		}, raid)
+	}
+
 	if debuffs.CurseOfElements {
 		MakePermanent(CurseOfElementsAura(target, level))
 	}
@@ -133,8 +149,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 }
 
-func ImprovedShadowBoltAura(unit *Unit, level int32) *Aura {
-	damageMulti := 1. + 0.04*float64(level)
+func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
+	damageMulti := 1. + 0.04*float64(rank)
 	return unit.RegisterAura(Aura{
 		Label:     "Improved Shadow Bolt",
 		ActionID:  ActionID{SpellID: 17800},
@@ -156,6 +172,20 @@ func ImprovedShadowBoltAura(unit *Unit, level int32) *Aura {
 			}
 
 			aura.RemoveStack(sim)
+		},
+	})
+}
+
+func ShadowWeavingAura(unit *Unit, rank int) *Aura {
+	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	return unit.RegisterAura(Aura{
+		Label:     "Shadow Weaving",
+		ActionID:  ActionID{SpellID: spellId},
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexShadow] /= 1.0 + 0.03*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexShadow] *= 1.0 + 0.03*float64(newStacks)
 		},
 	})
 }
@@ -278,15 +308,13 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: -resistance, stats.FrostResistance: -resistance})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= dmgMod
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= dmgMod
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: resistance, stats.FrostResistance: resistance})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= dmgMod
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= dmgMod
 		},
 	})
+	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod)
 	return aura
 }
 
@@ -316,16 +344,26 @@ func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -resistance, stats.ShadowResistance: -resistance})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= dmgMod
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= dmgMod
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: resistance, stats.ShadowResistance: resistance})
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= dmgMod
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= dmgMod
 		},
 	})
+	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod)
 	return aura
+}
+
+func spellSchoolDamageEffect(aura *Aura, school stats.SchoolIndex, multiplier float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("spellDamage"+strconv.Itoa(int(school)), false, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[school] *= multiplier
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[school] /= multiplier
+		},
+	})
 }
 
 func spellDamageEffect(aura *Aura, multiplier float64) *ExclusiveEffect {

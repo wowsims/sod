@@ -237,6 +237,7 @@ export class ItemPicker extends Component {
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
+			
 			loadItems();
 
 			const gearData = {
@@ -262,10 +263,7 @@ export class ItemPicker extends Component {
 		});
 
 		player.levelChangeEmitter.on(loadItems)
-
-		player.gearChangeEmitter.on(() => {
-			this.item = player.getEquippedItem(slot);
-		});
+		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
@@ -524,8 +522,9 @@ export class SelectorModal extends BaseModal {
 						heroic: false,
 						onEquip: (eventID, rune: Rune) => {
 							const equippedItem = gearData.getEquippedItem();
-							if (equippedItem)
+							if (equippedItem) {
 								gearData.equipItem(eventID, equippedItem.withRune(rune));
+							}
 						},
 					};
 				}),
@@ -533,8 +532,9 @@ export class SelectorModal extends BaseModal {
 				equippedItem => equippedItem?.rune,
 				eventID => {
 					const equippedItem = gearData.getEquippedItem();
-					if (equippedItem)
+					if (equippedItem) {
 						gearData.equipItem(eventID, equippedItem.withRune(null));
+					}
 				});
 
 		this.addRandomSuffixTab(equippedItem, gearData);

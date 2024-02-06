@@ -12,6 +12,49 @@ func init() {
 	core.AddEffectsToTest = false
 	// Keep these in order by item ID.
 
+	// Fiery Blaze
+	core.NewEnchantEffect(36, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		procChance := 0.15
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 6296},
+			SpellSchool: core.SpellSchoolFire,
+			ProcMask:    core.ProcMaskSpellDamage,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					damage := sim.Roll(9, 13)
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				}
+
+			},
+		})
+
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Fiery Blaze",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if sim.RandomFloat("Fiery Blaze") < procChance {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterOnSwapItemForEffect(36, aura)
+	})
+
 	// Lesser Striking
 	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()
@@ -61,6 +104,16 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
+	})
+
+	// Striking
+	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 3
+		w.BaseDamageMax += 3
 	})
 
 	// Superior Striking

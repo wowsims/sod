@@ -27,7 +27,7 @@ func (priest *Priest) getMindFlayTickSpell(rank int, numTicks int32, baseDamage 
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			if result.Landed() {
-				priest.AddShadowWeavingStack(sim)
+				priest.AddShadowWeavingStack(sim, target)
 			}
 		},
 	})
