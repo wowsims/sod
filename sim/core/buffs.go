@@ -467,14 +467,16 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 			updateStats = updateStats.Multiply(1.3)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.BloodPact > 0 {
+	} else if raidBuffs.ScrollOfStamina {
+		character.AddStats(BuffSpellByLevel[ScrollOfStamina][level])
+	}
+
+	if raidBuffs.BloodPact > 0 {
 		updateStats := BuffSpellByLevel[BloodPact][level]
 		if raidBuffs.BloodPact == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.3)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfStamina {
-		character.AddStats(BuffSpellByLevel[ScrollOfStamina][level])
 	}
 
 	if raidBuffs.ShadowProtection {
@@ -1626,29 +1628,6 @@ func CommandingShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePt
 		BuildPhase: CharacterBuildPhaseBuffs,
 	})
 	healthBonusEffect(aura, 2255*(1+0.05*float64(commandingPresencePts)))
-	return aura
-}
-
-func BloodPactAura(unit *Unit, impImpPts int32) *Aura {
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Blood Pact",
-		ActionID:   ActionID{SpellID: 11767},
-		Duration:   NeverExpires,
-		BuildPhase: CharacterBuildPhaseBuffs,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.Stamina: 42 * (0.1 * float64(impImpPts)),
-			})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.Stamina: -42 * (0.1 * float64(impImpPts)),
-			})
-		},
-	})
 	return aura
 }
 

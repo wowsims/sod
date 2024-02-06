@@ -94,6 +94,18 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput([
 		impId: ActionId.fromSpellId(14767),
 		fieldName: 'powerWordFortitude'
 	}),
+	makeBooleanRaidBuffInput({
+		actionId: (player) => player.getMatchingItemActionId([
+			{ id: 1180, 	minLevel: 5, 	maxLevel: 19 	},
+			{ id: 1711, 	minLevel: 20, maxLevel: 34 	},
+			{ id: 4422, 	minLevel: 35, maxLevel: 49 	},
+			{ id: 10307, 	minLevel: 50 								},
+		]),
+		fieldName: 'scrollOfStamina'
+	}),
+], 'Stamina');
+
+export const BloodPactBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
 			{ id: 6307, 	minLevel: 4, 	maxLevel: 13 	},
@@ -105,16 +117,8 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput([
 		impId: ActionId.fromSpellId(18696),
 		fieldName: 'bloodPact'
 	}),
-	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
-			{ id: 1180, 	minLevel: 5, 	maxLevel: 19 	},
-			{ id: 1711, 	minLevel: 20, maxLevel: 34 	},
-			{ id: 4422, 	minLevel: 35, maxLevel: 49 	},
-			{ id: 10307, 	minLevel: 50 								},
-		]),
-		fieldName: 'scrollOfStamina'
-	}),
-], 'Stamina');
+	'BloodPact',
+);;
 
 // Separate Strength buffs allow us to use boolean pickers for each
 export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput([
@@ -779,6 +783,11 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: StaminaBuff,
 		picker: MultiIconPicker,
+		stats: [Stat.StatStamina]
+	},
+	{
+		config: BloodPactBuff,
+		picker: IconPicker,
 		stats: [Stat.StatStamina]
 	},
 	{
