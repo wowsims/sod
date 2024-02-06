@@ -8,10 +8,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{25, 29, 26}
-
-// Start looking to refresh 5 minute totems at 4:55.
-const TotemRefreshTime5M = time.Second * 295
+var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
 	SpellFlagShock     = core.SpellFlagAgentReserved1
@@ -33,8 +30,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	shaman.EnableManaBar()
 
 	// Add Shaman stat dependencies
-	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	shaman.AddStatDependency(stats.Agility, stats.AttackPower, 1)
+	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
