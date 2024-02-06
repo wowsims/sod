@@ -13,7 +13,6 @@ import {
 	Race,
 	Spec,
 	Stat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
@@ -76,22 +75,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.48,
-			[Stat.StatAgility]: 1.59,
-			[Stat.StatStrength]: 1.1,
-			[Stat.StatSpellPower]: 1.13,
+			[Stat.StatIntellect]: .35,
+			[Stat.StatAgility]: 1.46,
+			[Stat.StatStrength]: 2.15,
+			[Stat.StatSpellPower]: 1.75,
 			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 0.91,
-			[Stat.StatSpellHaste]: 0.37,
+			[Stat.StatSpellCrit]: 0.96,
+			[Stat.StatSpellHaste]: 0,
 			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 1.38,
-			[Stat.StatMeleeCrit]: 0.81,
-			[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-			[Stat.StatArmorPenetration]: 0.48,
-			[Stat.StatExpertise]: 0, //default EP assumes cap
+			[Stat.StatMeleeHit]: 10.85,
+			[Stat.StatMeleeCrit]: 12.72,
+			[Stat.StatMeleeHaste]: 12.19, //haste is complicated
+			[Stat.StatArmorPenetration]: 0.20,
+			[Stat.StatExpertise]: 1.29, //default EP assumes cap
 		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 5.21,
-			[PseudoStat.PseudoStatOffHandDps]: 2.21,
+			[PseudoStat.PseudoStatMainHandDps]: 7.52,
+			[PseudoStat.PseudoStatOffHandDps]: 6.26,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -104,9 +103,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},
