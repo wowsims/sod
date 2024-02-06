@@ -143,51 +143,51 @@ dps_results: {
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-Full Consumes-LongMultiTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-Full Consumes-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-Full Consumes-LongMultiTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-Full Consumes-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestProtectionWarrior-Settings-Human-25-blank-Basic-default-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-Full Consumes-LongMultiTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-Full Consumes-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-Full Consumes-LongMultiTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-Full Consumes-LongSingleTarget"
  value: {}
 }
 dps_results: {
- key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestProtectionWarrior-Settings-Orc-25-blank-Basic-default-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {}
 }
 dps_results: {

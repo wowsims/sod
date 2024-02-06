@@ -9,7 +9,7 @@ import (
 
 // Registers all consume-related effects to the Agent.
 // TODO: Classic Consumes
-func applyConsumeEffects(agent Agent) {
+func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	character := agent.GetCharacter()
 	consumes := character.Consumes
 	if consumes == nil {
@@ -231,6 +231,8 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue) {
 			if !character.HasRuneById(int32(proto.DruidRune_RuneChestWildStrikes)) {
 				ApplyWildStrikes(character)
 			}
+		case proto.WeaponImbue_Windfury:
+			ApplyWindfury(character)
 		}
 	}
 }

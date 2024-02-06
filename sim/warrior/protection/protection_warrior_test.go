@@ -58,7 +58,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassWarrior,
 				Equipment:     core.GetGearSet("../../../ui/protection_warrior/gear_sets", "blank").GearSet,
-				Consumes:      FullConsumes,
+				Consumes:      FullConsumes.Consumes,
 				Spec:          PlayerOptionsBasic,
 				Buffs:         core.FullIndividualBuffs,
 				TalentsString: DefaultTalents,
@@ -93,7 +93,10 @@ var warriorOptions = &proto.ProtectionWarrior_Options{
 	StartingRage: 0,
 }
 
-var FullConsumes = &proto.Consumes{
-	// BattleElixir:   proto.BattleElixir_ElixirOfMastery,
-	// GuardianElixir: proto.GuardianElixir_GiftOfArthas,
+var FullConsumes = core.ConsumesCombo{
+	Label:    "Full Consumes",
+	Consumes: &proto.Consumes{
+		// BattleElixir:   proto.BattleElixir_ElixirOfMastery,
+		// GuardianElixir: proto.GuardianElixir_GiftOfArthas,
+	},
 }

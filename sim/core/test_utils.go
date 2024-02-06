@@ -62,7 +62,6 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	StrengthOfEarthTotem: proto.TristateEffect_TristateEffectImproved,
 	Thorns:               proto.TristateEffect_TristateEffectImproved,
 	TrueshotAura:         true,
-	WindfuryTotem:        true,
 }
 var FullPartyBuffs = &proto.PartyBuffs{
 	//BraidedEterniumChain: true,

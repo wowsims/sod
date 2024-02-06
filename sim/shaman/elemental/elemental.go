@@ -27,9 +27,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 	eleOptions := options.GetElementalShaman()
 
 	selfBuffs := shaman.SelfBuffs{
-		Shield:  eleOptions.Options.Shield,
-		ImbueMH: eleOptions.Options.ImbueMh,
-		ImbueOH: eleOptions.Options.ImbueOh,
+		Shield: eleOptions.Options.Shield,
 	}
 
 	totems := &proto.ShamanTotems{}

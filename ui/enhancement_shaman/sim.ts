@@ -1,4 +1,3 @@
-import { ShamanImbueInputMH, ShamanImbueInputOH } from '../core/components/inputs/shaman_imbues.js';
 import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
@@ -110,8 +109,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		ShamanShieldInput<Spec.SpecEnhancementShaman>(),
-		ShamanImbueInputMH<Spec.SpecEnhancementShaman>(),
-		ShamanImbueInputOH<Spec.SpecEnhancementShaman>(),
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [

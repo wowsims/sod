@@ -27,6 +27,7 @@ import { makeBooleanConsumeInput } from "../icon_inputs";
 import { ActionInputConfig, ItemStatOption } from "./stat_options";
 
 import * as InputHelpers from '../input_helpers';
+import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from "./shaman_imbues";
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T,
@@ -502,6 +503,16 @@ export const makeshadowPowerConsumeInput = makeConsumeInputFactory({consumesFiel
 //                                 Weapon Imbues
 ///////////////////////////////////////////////////////////////////////////
 
+// Windfury (Buff)
+export const Windfury: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingSpellActionId([
+		{ id: 8516, 	minLevel: 32, maxLevel: 41	},
+		{ id: 10608, 	minLevel: 42, maxLevel: 51	},
+		{ id: 10610, 	minLevel: 52								},
+	]),
+	value: WeaponImbue.Windfury,
+};
+
 // Wild Strikes
 export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(407975),
@@ -545,18 +556,32 @@ export const BlackfathomSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
 	value: WeaponImbue.BlackfathomSharpeningStone,
 };
 
-export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
+const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
+	{ config: RockbiterWeaponImbue,		stats: [] },
+	{ config: FlametongueWeaponImbue,	stats: [] },
+	{ config: FrostbrandWeaponImbue,	stats: [] },
+	{ config: WindfuryWeaponImbue,		stats: [] },
+]
+
+const CONSUMABLES_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: ElementalSharpeningStone, 	stats: [Stat.StatAttackPower] },
 	{ config: BrillianWizardOil, 					stats: [Stat.StatSpellPower] },
 	{ config: BrilliantManaOil, 					stats: [Stat.StatHealing, Stat.StatSpellPower] },
 	{ config: DenseSharpeningStone, 			stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomManaOil, 				stats: [Stat.StatSpellPower, Stat.StatMP5] },
 	{ config: BlackfathomSharpeningStone, stats: [Stat.StatMeleeHit] },
+]
+
+export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
+	...SHAMAN_IMBUES,
+	...CONSUMABLES_IMBUES,
 ];
 
 export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
-	{ config: WildStrikes, stats: [Stat.StatMeleeHit] },
-	...WEAPON_IMBUES_OH_CONFIG,
+	...SHAMAN_IMBUES,
+	{ config: Windfury, 		stats: [Stat.StatMeleeHit] },
+	{ config: WildStrikes, 	stats: [Stat.StatMeleeHit] },
+	...CONSUMABLES_IMBUES,
 ];
 
 export const makeMainHandImbuesInput = makeConsumeInputFactory({

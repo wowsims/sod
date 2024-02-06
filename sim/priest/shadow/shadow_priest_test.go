@@ -46,9 +46,12 @@ func TestShadow(t *testing.T) {
 
 var DefaultTalents = "5042001303--5002505103501051"
 
-var FullConsumes = &proto.Consumes{
-	Flask: proto.Flask_FlaskUnknown,
-	Food:  proto.Food_FoodUnknown,
+var FullConsumes = core.ConsumesCombo{
+	Label: "Full Consumes",
+	Consumes: &proto.Consumes{
+		Flask: proto.Flask_FlaskUnknown,
+		Food:  proto.Food_FoodUnknown,
+	},
 }
 
 var PlayerOptionsBasic = &proto.Player_ShadowPriest{

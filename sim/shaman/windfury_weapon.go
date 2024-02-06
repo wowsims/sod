@@ -71,6 +71,9 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	rank := WindfuryWeaponRankByLevel[level]
 	enchantId := WindfuryWeaponEnchantId[rank]
 
+	icdDuration := time.Millisecond * 1500
+	buffDuration := time.Minute * 5
+
 	if procMask.Matches(core.ProcMaskMeleeMH) {
 		shaman.MainHand().TempEnchant = enchantId
 	}
@@ -85,7 +88,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
-		Duration: time.Millisecond * 1500,
+		Duration: icdDuration,
 	}
 
 	mhSpell := shaman.newWindfuryImbueSpell(true)
@@ -93,7 +96,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Windfury Imbue",
-		Duration: core.NeverExpires,
+		Duration: buffDuration,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -119,4 +122,26 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	})
 
 	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, aura)
+}
+
+func (shaman *Shaman) ApplyWindfuryImbue(procMask core.ProcMask) {
+	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.HasMHWeapon() {
+		shaman.ApplyWindfuryImbueToItem(shaman.MainHand())
+	}
+
+	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.HasOHWeapon() {
+		shaman.ApplyWindfuryImbueToItem(shaman.OffHand())
+	}
+}
+
+func (shaman *Shaman) ApplyWindfuryImbueToItem(item *core.Item) {
+	if item == nil {
+		return
+	}
+
+	level := shaman.GetCharacter().Level
+	rank := WindfuryWeaponRankByLevel[level]
+	enchantId := WindfuryWeaponEnchantId[rank]
+
+	item.TempEnchant = enchantId
 }

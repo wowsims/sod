@@ -126,8 +126,11 @@ var defaultDemonologyOptions = &proto.WarlockOptions{
 
 // ---------------------------------------------------------
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfSupremePower,
-	DefaultPotion: proto.Potions_ManaPotion,
-	Food:          proto.Food_FoodBlessSunfruit,
+var FullConsumes = core.ConsumesCombo{
+	Label: "Full Consumes",
+	Consumes: &proto.Consumes{
+		Flask:         proto.Flask_FlaskOfSupremePower,
+		DefaultPotion: proto.Potions_ManaPotion,
+		Food:          proto.Food_FoodBlessSunfruit,
+	},
 }

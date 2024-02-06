@@ -1,4 +1,3 @@
-import { ShamanImbueInputMH, ShamanImbueInputOH } from '../core/components/inputs/shaman_imbues.js';
 import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
 import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import {
@@ -106,8 +105,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		ShamanShieldInput<Spec.SpecRestorationShaman>(),
-		ShamanImbueInputMH<Spec.SpecRestorationShaman>(),
-		ShamanImbueInputOH<Spec.SpecRestorationShaman>(),
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [

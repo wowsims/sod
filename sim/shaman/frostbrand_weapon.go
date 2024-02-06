@@ -100,3 +100,25 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 
 	shaman.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3784, 9.0, &ppmm, aura)
 }
+
+func (shaman *Shaman) ApplyFrostbrandImbue(procMask core.ProcMask) {
+	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.HasMHWeapon() {
+		shaman.ApplyFrostbrandImbueToItem(shaman.MainHand())
+	}
+
+	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.HasOHWeapon() {
+		shaman.ApplyFrostbrandImbueToItem(shaman.OffHand())
+	}
+}
+
+func (shaman *Shaman) ApplyFrostbrandImbueToItem(item *core.Item) {
+	if item == nil {
+		return
+	}
+
+	level := shaman.GetCharacter().Level
+	rank := FrostbrandWeaponRankByLevel[level]
+	enchantId := FrostbrandWeaponEnchantId[rank]
+
+	item.TempEnchant = enchantId
+}

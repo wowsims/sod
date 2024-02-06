@@ -586,11 +586,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStats(updateStats)
 	}
 
-	// TODO: Classic windfury Totem update
-	// if raidBuffs.WindfuryTotem > 0 {
-	// 	character.PseudoStats.MeleeSpeedMultiplier *= GetTristateValueFloat(raidBuffs.WindfuryTotem, 1.16, 1.20)
-	// }
-
 	// World Buffs
 	if individualBuffs.RallyingCryOfTheDragonslayer {
 		character.AddStat(stats.SpellCrit, 10*SpellCritRatingPerCritChance)
@@ -1701,4 +1696,77 @@ func ApplyWildStrikes(character *Character) *Aura {
 	}))
 
 	return wsBuffAura
+}
+
+const WindfuryRanks = 3
+
+var (
+	WindfuryBuffLevelToRank = []int32{
+		25: 0,
+		40: 1,
+		50: 2,
+		60: 3,
+	}
+	WindfuryBuffSpellId = [WindfuryRanks + 1]int32{0, 8516, 10608, 10610}
+	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 315}
+)
+
+func ApplyWindfury(character *Character) *Aura {
+	level := character.Level
+	rank := WindfuryBuffLevelToRank[level]
+	spellId := WindfuryBuffSpellId[rank]
+	bonusAP := WindfuryBuffBonusAP[rank]
+
+	icdDuration := time.Millisecond * 1500
+
+	windfuryBuffAura := character.GetOrRegisterAura(Aura{
+		Label:     "Windfury Buff",
+		ActionID:  ActionID{SpellID: spellId},
+		Duration:  icdDuration,
+		MaxStacks: 2,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
+		},
+	})
+
+	icd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: icdDuration,
+	}
+
+	windfuryBuffAura.Icd = &icd
+
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label: "Windfury",
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
+				return
+			}
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
+				return
+			}
+
+			if windfuryBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				windfuryBuffAura.RemoveStack(sim)
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			if sim.RandomFloat("Windfury") > 0.2 {
+				return
+			}
+
+			windfuryBuffAura.Activate(sim)
+			windfuryBuffAura.SetStacks(sim, 2)
+			icd.Use(sim)
+			aura.Unit.AutoAttacks.ExtraMHAttack(sim)
+		},
+	}))
+
+	return windfuryBuffAura
 }
