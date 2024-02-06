@@ -179,10 +179,22 @@ func applyConsumeEffects(agent Agent) {
 		})
 	}
 
+	if consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
+		switch consumes.EnchantedSigil {
+		case proto.EnchantedSigil_InnovationSigil:
+			character.AddStats(stats.Stats{
+				stats.AttackPower: 20,
+				stats.SpellDamage: 20,
+				stats.Healing:     20,
+			})
+		}
+	}
+
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)
-	// registerExplosivesCD(agent, consumes)
+	registerExplosivesCD(agent, consumes)
 }
+
 func addImbueStats(character *Character, imbue proto.WeaponImbue) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
@@ -221,6 +233,99 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue) {
 			}
 		}
 	}
+}
+
+var SapperActionID = ActionID{ItemID: 10646}
+var SolidDynamiteActionID = ActionID{ItemID: 10507}
+var DenseDynamiteActionID = ActionID{ItemID: 18641}
+var ThoriumGrenadeActionID = ActionID{ItemID: 15993}
+
+func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
+	character := agent.GetCharacter()
+	hasFiller := consumes.FillerExplosive != proto.Explosive_ExplosiveUnknown
+
+	if !character.HasProfession(proto.Profession_Engineering) {
+		return
+	}
+	if !consumes.Sapper && !hasFiller {
+		return
+	}
+	sharedTimer := character.NewTimer()
+
+	if consumes.Sapper {
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    character.newSapperSpell(sharedTimer),
+			Type:     CooldownTypeDPS | CooldownTypeExplosive,
+			Priority: CooldownPriorityLow + 30,
+		})
+	}
+
+	if hasFiller {
+		var filler *Spell
+		switch consumes.FillerExplosive {
+		case proto.Explosive_ExplosiveSolidDynamite:
+			filler = character.newSolidDynamiteSpell(sharedTimer)
+		case proto.Explosive_ExplosiveDenseDynamite:
+			filler = character.newDenseDynamiteSpell(sharedTimer)
+		case proto.Explosive_ExplosiveThoriumGrenade:
+			filler = character.newThoriumGrenadeSpell(sharedTimer)
+		}
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    filler,
+			Type:     CooldownTypeDPS | CooldownTypeExplosive,
+			Priority: CooldownPriorityLow + 10,
+		})
+	}
+}
+
+// Creates a spell object for the common explosive case.
+func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, _ float64, _ float64) SpellConfig {
+	dealSelfDamage := actionID.SameAction(SapperActionID)
+
+	return SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: school,
+		ProcMask:    ProcMaskEmpty,
+
+		Cast: CastConfig{
+			CD: cooldown,
+			SharedCD: Cooldown{
+				Timer:    sharedTimer,
+				Duration: time.Minute,
+			},
+		},
+
+		// Explosives always have 1% resist chance, so just give them hit cap.
+		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		DamageMultiplier: 1,
+		CritMultiplier:   2,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+
+			if dealSelfDamage {
+				baseDamage := sim.Roll(minDamage, maxDamage)
+				spell.CalcAndDealDamage(sim, &character.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+		},
+	}
+}
+func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
+}
+func (character *Character) newSolidDynamiteSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SolidDynamiteActionID, SpellSchoolFire, 213, 287, Cooldown{}, 0, 0))
+}
+func (character *Character) newDenseDynamiteSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, DenseDynamiteActionID, SpellSchoolFire, 340, 460, Cooldown{}, 0, 0))
+}
+func (character *Character) newThoriumGrenadeSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ThoriumGrenadeActionID, SpellSchoolFire, 300, 500, Cooldown{}, 0, 0))
 }
 
 func registerPotionCD(agent Agent, consumes *proto.Consumes) {

@@ -31,6 +31,7 @@ export class ConsumesPicker extends Component {
 		this.buildPhysicalBuffPicker();
 		this.buildSpellPowerBuffPicker();
 		this.buildEngPicker();
+		this.buildEnchPicker();
 		this.buildPetPicker();
 
 		// Force an event so that the pickers update state
@@ -213,26 +214,51 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
       <div class="consumes-row input-root input-inline">
         <label class="form-label">Engineering</label>
-        <div class="consumes-row-inputs consumes-trade">
+        <div class="consumes-row-inputs consumes-engi">
 				</div>
       </div>
     `;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const tradeConsumesElem = this.rootElem.querySelector('.consumes-trade') as HTMLElement;
+		const engiConsumesElem = this.rootElem.querySelector('.consumes-engi') as HTMLElement;
 		
-		const sapperPicker = buildIconInput(tradeConsumesElem, this.simUI.player, ConsumablesInputs.Sapper);
+		const sapperPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.Sapper);
 
 		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(
 			relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI),
 			'Explosives',
 		);
-		const explosivePicker = buildIconInput(tradeConsumesElem, this.simUI.player, explosiveOptions)
+		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosiveOptions)
 
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(
 			() => this.updateRow(row, [sapperPicker, explosivePicker])
 		);
 		this.updateRow(row, [sapperPicker , explosivePicker]);
+	}
+
+	private buildEnchPicker() {
+		let fragment = document.createElement('fragment');
+		fragment.innerHTML = `
+      <div class="consumes-row input-root input-inline">
+        <label class="form-label">Enchanting</label>
+        <div class="consumes-row-inputs consumes-ench">
+				</div>
+      </div>
+    `;
+
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const enchConsumesElem = this.rootElem.querySelector('.consumes-ench') as HTMLElement;
+
+		const enchantedSigilOptions = ConsumablesInputs.makeEncanthedSigilInput(
+			relevantStatOptions(ConsumablesInputs.ENCHANTEDSIGILCONFIG, this.simUI),
+			'Enchanted Sigils',
+		);
+		const enchantedSigilpicker = buildIconInput(enchConsumesElem, this.simUI.player, enchantedSigilOptions)
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(
+			() => this.updateRow(row, [enchantedSigilpicker])
+		);
+		this.updateRow(row, [enchantedSigilpicker]);
 	}
 
 	private buildPetPicker() {
