@@ -3,6 +3,7 @@ package shaman
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -49,6 +50,10 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 
 	bonusDamage := shaman.electricSpellBonusDamage(spellCoeff)
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+
+	if shaman.HasSetBonus(item_sets.ItemSetElectromanticStormbringer, 3) {
+		castTime -= 200
+	}
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
