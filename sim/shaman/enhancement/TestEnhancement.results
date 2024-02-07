@@ -77,6 +77,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 13.24699
+  tps: 10.22221
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 12.05599
