@@ -117,33 +117,46 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 24)
 		},
-		3: func(a core.Agent) {
-			char := a.GetCharacter()
-			if !char.HasManaBar() {
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			if !c.HasManaBar() {
 				return
 			}
-			metrics := char.NewManaMetrics(core.ActionID{SpellID: 435982})
-			proc := char.RegisterSpell(core.SpellConfig{
+			metrics := c.NewManaMetrics(core.ActionID{SpellID: 435982})
+			proc := c.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 435981},
 				SpellSchool: core.SpellSchoolHoly,
 				ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
-					char.AddMana(sim, 100, metrics)
+					c.AddMana(sim, 100, metrics)
 				},
 			})
-			char.RegisterAura(core.Aura{
+			c.RegisterAura(core.Aura{
 				Label:    "Electromantic Devastator's Mail 3pc",
 				ActionID: core.ActionID{SpellID: 435982},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
 				},
+				// Modeled after WotLK JoW https://github.com/wowsims/wotlk/blob/master/sim/core/debuffs.go#L202
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Landed() {
-						return
+					procChance := 0.05
+					if spell.ProcMask.Matches(core.ProcMaskEmpty | core.ProcMaskProc | core.ProcMaskWeaponProc) {
+						return // Phantom spells don't proc
 					}
-					if sim.RandomFloat("Electromantic Devastator's Mail 3pc") < 0.05 {
-						proc.Cast(sim, result.Target)
+
+					if spell.ProcMask.Matches(core.ProcMaskWhiteHit | core.ProcMaskRanged) { // Ranged/melee can proc on miss
+						if sim.RandomFloat("Electromantic Devastator's Mail 3pc") > procChance {
+							return
+						}
+					} else { // Spell Casting only procs on hits
+						if !result.Landed() {
+							return
+						}
+						if sim.RandomFloat("Electromantic Devastator's Mail 3pc") > procChance {
+							return
+						}
 					}
+					proc.Cast(sim, result.Target)
 				},
 			})
 		},
