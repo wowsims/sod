@@ -69,6 +69,12 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 
 			if hasRune {
 				spell.Unit.ChanneledDot.Cancel(sim)
+
+				sim.AddPendingAction(&core.PendingAction{
+					NextActionAt: sim.CurrentTime,
+					Priority:     core.ActionPriorityGCD,
+					OnAction:     spell.Unit.Rotation.DoNextAction,
+				})
 			}
 		},
 	}

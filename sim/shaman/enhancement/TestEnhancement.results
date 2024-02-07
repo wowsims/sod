@@ -52,21 +52,21 @@ dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 15.11539
-  tps: 20.10247
+  tps: 20.07299
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 15.84597
-  tps: 20.76668
+  tps: 20.71658
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomSlayer'sLeather"
  value: {
   dps: 14.97196
-  tps: 19.95903
+  tps: 19.92051
  }
 }
 dps_results: {
@@ -122,356 +122,356 @@ dps_results: {
  key: "TestEnhancement-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 15.79656
-  tps: 20.72428
+  tps: 20.58711
  }
 }
 dps_results: {
  key: "TestEnhancement-Average-Default"
  value: {
   dps: 17.00859
-  tps: 21.84375
+  tps: 21.806
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 17.31311
-  tps: 162.21528
+  tps: 161.65408
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 17.31311
-  tps: 21.96354
+  tps: 21.93548
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 18.50561
-  tps: 20.05001
+  tps: 20.03134
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 15.78961
-  tps: 182.75797
+  tps: 182.68597
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 15.78961
-  tps: 21.59015
+  tps: 21.58655
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 16.81947
-  tps: 17.89982
+  tps: 17.89315
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 17.31311
-  tps: 161.6602
+  tps: 160.87678
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 17.31311
-  tps: 21.93578
+  tps: 21.89661
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 18.50561
-  tps: 20.57791
+  tps: 20.49745
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 15.78961
-  tps: 178.86597
+  tps: 179.37597
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 15.78961
-  tps: 21.39555
+  tps: 21.42105
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 16.81947
-  tps: 17.81982
+  tps: 17.86232
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 38.51739
-  tps: 189.02206
+  tps: 191.28943
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 38.51739
-  tps: 41.95752
+  tps: 42.07088
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 40.04106
-  tps: 44.32114
+  tps: 44.20889
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 31.48323
-  tps: 193.3394
+  tps: 191.22007
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 31.48323
-  tps: 35.7933
+  tps: 35.68733
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 32.6734
-  tps: 35.03789
+  tps: 34.92455
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 38.51739
-  tps: 180.08698
+  tps: 179.62941
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 38.51739
-  tps: 41.51076
+  tps: 41.48788
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 40.04106
-  tps: 43.41128
+  tps: 43.4293
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 31.48323
-  tps: 183.1914
+  tps: 181.34393
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 31.48323
-  tps: 35.2859
+  tps: 35.19353
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 32.6734
-  tps: 34.71355
+  tps: 34.57102
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 16.77693
-  tps: 161.78458
+  tps: 161.02792
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 16.77693
-  tps: 21.53284
+  tps: 21.495
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 17.61918
-  tps: 19.34276
+  tps: 19.32192
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 15.28621
-  tps: 182.20376
+  dps: 15.24928
+  tps: 182.19605
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 15.28621
-  tps: 21.18668
+  dps: 15.24928
+  tps: 21.1473
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 15.89451
-  tps: 17.15036
+  tps: 17.14369
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 16.77693
-  tps: 161.2295
+  tps: 158.496
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 16.77693
-  tps: 21.50508
+  tps: 21.36841
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 17.61918
-  tps: 19.87065
+  tps: 19.27742
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 15.24928
-  tps: 178.71271
+  tps: 178.68438
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 15.24928
-  tps: 20.97313
+  tps: 20.97171
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 15.89451
-  tps: 17.11286
+  tps: 17.09869
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 37.1681
-  tps: 188.01508
+  tps: 189.65995
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 37.1681
-  tps: 40.87041
+  tps: 40.95265
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 37.78126
-  tps: 42.4362
+  tps: 42.38256
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 30.20335
-  tps: 192.27318
+  tps: 190.17918
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 30.20335
-  tps: 34.75115
+  tps: 34.64645
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 30.542
-  tps: 33.30188
+  tps: 33.18855
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 37.1681
-  tps: 179.45766
+  tps: 179.03326
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 37.1681
-  tps: 40.44254
+  tps: 40.42132
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 37.78126
-  tps: 41.57821
+  tps: 41.59623
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
   dps: 30.20335
-  tps: 182.15052
+  tps: 180.26645
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
   dps: 30.20335
-  tps: 34.24502
+  tps: 34.15081
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
   dps: 30.542
-  tps: 32.97755
+  tps: 32.82587
  }
 }
 dps_results: {
  key: "TestEnhancement-SwitchInFrontOfTarget-Default"
  value: {
   dps: 13.65088
-  tps: 18.40679
+  tps: 18.36896
  }
 }
