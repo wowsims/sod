@@ -61,7 +61,7 @@ function makeConsumeInputFactory<T extends number>(args: ConsumeInputFactoryArgs
 			})),
 			equals: (a: T, b: T) => a == b,
 			zeroValue: 0 as T,	
-			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.gearChangeEmitter]),
+			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.gearChangeEmitter, player.professionChangeEmitter]),
 			showWhen: (player: Player<any>) => !args.showWhen || args.showWhen(player),
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -119,7 +119,7 @@ export const EnchantedSigilInnovation: ConsumableInputConfig<EnchantedSigil> = {
 };
 
 export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
-	{ config: EnchantedSigilInnovation, 	stats: [] },
+	{ config: EnchantedSigilInnovation, stats: [] },
 ];
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({
