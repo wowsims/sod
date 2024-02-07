@@ -68,7 +68,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 215 + 0.2*(dot.Spell.SpellPower()+idolSpellPower)
+				dot.SnapshotBaseDamage = 215 + 0.2*(dot.Spell.SpellDamage()+idolSpellPower)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

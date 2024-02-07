@@ -23,8 +23,8 @@ func (shaman *Shaman) applyMoltenBlast() {
 	manaCost := .18
 	targetCount := 4
 
-	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
+	shaman.MoltenBlast = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,

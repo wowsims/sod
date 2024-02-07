@@ -16,7 +16,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 451 + 0.129*spell.SpellPower()
+			damage := 451 + 0.129*spell.SpellDamage()
 			// damage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)

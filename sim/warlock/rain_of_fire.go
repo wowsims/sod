@@ -45,7 +45,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 			AffectedByCastSpeed: false,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

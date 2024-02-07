@@ -59,7 +59,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spell.SpellPower()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

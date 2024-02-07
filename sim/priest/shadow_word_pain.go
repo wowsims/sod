@@ -56,7 +56,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/6 + (dotTickCoeff * dot.Spell.SpellPower())
+				dot.SnapshotBaseDamage = baseDamage/6 + (dotTickCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -78,7 +78,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		// 		dot := spell.Dot(target)
 		// 		return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 		// 	} else {
-		// 		baseDamage := baseDamage/6 + (dotTickCoeff * spell.SpellPower())
+		// 		baseDamage := baseDamage/6 + (dotTickCoeff * spell.SpellDamage())
 		// 		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 		// 	}
 		// },

@@ -39,7 +39,7 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1 - (0.15 * float64(mage.Talents.BurningSoul)),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

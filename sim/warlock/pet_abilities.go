@@ -48,7 +48,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 
 			if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
 				baseDamage *= 1.4
@@ -100,7 +100,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage + spellCoeff*spell.SpellPower()
+			baseDamage := baseDamage + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -185,7 +185,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 // 		ThreatMultiplier: 1,
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := sim.Roll(97+1, 97+41) + 0.429*spell.SpellPower()
+// 			baseDamage := sim.Roll(97+1, 97+41) + 0.429*spell.SpellDamage()
 
 // 			w := wp.owner
 // 			spells := []*core.Spell{

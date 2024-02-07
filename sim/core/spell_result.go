@@ -114,6 +114,10 @@ func (spell *Spell) SpellPower() float64 {
 		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
+func (spell *Spell) SpellDamage() float64 {
+	return spell.SpellPower() + spell.Unit.GetStat(stats.SpellDamage)
+}
+
 func (spell *Spell) SpellPowerSchool() float64 {
 	switch spell.SpellSchool {
 	case SpellSchoolArcane:
@@ -173,7 +177,7 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) HealingPower(target *Unit) float64 {
-	return spell.SpellPower() + target.PseudoStats.BonusHealingTaken
+	return spell.SpellPower() + spell.Unit.GetStat(stats.Healing) + target.PseudoStats.BonusHealingTaken
 }
 func (spell *Spell) healingCritRating() float64 {
 	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
@@ -209,11 +213,6 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	result := spell.NewResult(target)
 	result.Damage = baseDamage
-	if spell.ProcMask.Matches(ProcMaskSpellDamage) {
-		result.Damage += spell.Unit.GetStat(stats.SpellDamage)
-	} else if spell.ProcMask.Matches(ProcMaskSpellHealing) {
-		result.Damage += spell.Unit.GetStat(stats.Healing)
-	}
 
 	if sim.Log == nil {
 		result.Damage *= attackerMultiplier

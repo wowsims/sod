@@ -24,7 +24,7 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int, numTicks int32, baseDotDa
 		CritMultiplier:   1, // No crit on channels
 		ThreatMultiplier: 1 - 0.2*float64(mage.Talents.ArcaneSubtlety),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDotDamage + (spellCoeff * spell.SpellPower())
+			damage := baseDotDamage + (spellCoeff * spell.SpellDamage())
 
 			// TODO: Classic review Arcane missiles snap shot mechanics for Arcane Blast rune
 			if mage.ArcaneBlastAura != nil && mage.ArcaneBlastAura.IsActive() {
@@ -95,7 +95,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := (baseDotDamage + (spellCoeff * spell.SpellPower()))
+			baseDamage := (baseDotDamage + (spellCoeff * spell.SpellDamage()))
 
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedTick)
 		},

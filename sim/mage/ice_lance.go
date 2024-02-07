@@ -32,7 +32,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.FrostChanneling),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(55, 66) + 0.143*spell.SpellPower() // https://www.wowhead.com/classic/spell=400640/ice-lance
+			baseDamage := sim.Roll(55, 66) + 0.143*spell.SpellDamage() // https://www.wowhead.com/classic/spell=400640/ice-lance
 			baseDamage *= core.TernaryFloat64(mage.FingersOfFrostAura.IsActive(), 3, 1)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 

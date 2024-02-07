@@ -43,7 +43,7 @@ func (shaman *Shaman) newFrostShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.Rank = rank
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
+		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 		spell.CalcAndDealDamage(sim, target, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
 	}
 

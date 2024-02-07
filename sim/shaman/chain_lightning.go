@@ -80,7 +80,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 		curTarget := target
 		bounceCoeff := 1.0
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
+			baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			baseDamage *= bounceCoeff
 			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
 

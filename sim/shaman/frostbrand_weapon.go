@@ -47,7 +47,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage + 0.1*spell.SpellPower()
+			baseDamage := baseDamage + 0.1*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

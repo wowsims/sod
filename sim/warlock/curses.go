@@ -48,7 +48,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellPower())
+				dot.SnapshotBaseDamage = 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 
@@ -60,7 +60,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				if dot.TickCount%4 == 0 { // CoA ramp up
-					dot.SnapshotBaseDamage += 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellPower())
+					dot.SnapshotBaseDamage += 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
 				}
 			},
 		},

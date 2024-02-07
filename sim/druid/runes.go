@@ -69,7 +69,7 @@ func (druid *Druid) applySunfire() {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + 0.13*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDotDamage + 0.13*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -83,7 +83,7 @@ func (druid *Druid) applySunfire() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.15*spell.SpellPower()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.15*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
@@ -130,7 +130,7 @@ func (druid *Druid) applyStarsurge() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spell.SpellPower()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

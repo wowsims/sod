@@ -54,7 +54,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/float64(ticks) + (dotTickCoeff * dot.Spell.SpellPower())
+				dot.SnapshotBaseDamage = baseDamage/float64(ticks) + (dotTickCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
@@ -81,7 +81,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage/float64(ticks) + (dotTickCoeff * spell.SpellPower())
+				baseDamage := baseDamage/float64(ticks) + (dotTickCoeff * spell.SpellDamage())
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

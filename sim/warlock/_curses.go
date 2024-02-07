@@ -116,7 +116,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			NumberOfTicks: 1,
 			TickLength:    time.Minute,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 7300 + 2*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = 7300 + 2*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
