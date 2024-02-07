@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
@@ -8,9 +9,6 @@ import {
 	Stat, PseudoStat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -68,7 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearArmsDefault.gear,
+		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatStrength]: 2.72,
@@ -87,7 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.Talent25.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -127,28 +125,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.Talent25
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.APLPhase1,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.GearBlank,
-			Presets.GearArmsPhase1,
-			Presets.GearArmsDWPhase1,
-			Presets.GearFuryPhase1,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecWarrior>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		if (talentTree == 0) {
-			return Presets.RotationArmsDefault.rotation.rotation!;
-		} else {
-			return Presets.RotationFuryDefault.rotation.rotation!;
-		}
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -158,7 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Arms',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 0),
 
-			talents: Presets.Talent25.data,
+			talents: Presets.DefaultTalentsArms.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -169,10 +163,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearArmsDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearArmsDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},
@@ -182,7 +176,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Fury',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 1),
 
-			talents: Presets.Talent25.data,
+			talents: Presets.DefaultTalentsFury.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -193,10 +187,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearFuryDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearFuryDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 			},
 		},

@@ -1,6 +1,6 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
-	Cooldowns,
 	Debuffs,
 	Faction,
 	IndividualBuffs,
@@ -24,7 +24,6 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import {
-	Hunter_Rotation as HunterRotation,
 	Hunter_Rotation_StingType as StingType,
 	Hunter_Rotation_RotationType,
 } from '../core/proto/hunter.js';
@@ -103,7 +102,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearDefault.gear,
+		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatStamina]: 0.5,
@@ -123,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Default rotation settings.
 		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
-		talents: Presets.TalentsBeastMasteryDefault.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -180,38 +179,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.TalentsBeastMasteryPhase1,
-			Presets.TalentsMarksmanPhase1,
-			Presets.TalentsSurvivalPhase1,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearBeastMasteryPhase1,
-			Presets.GearMarksmanPhase1,
-			Presets.GearSurvivalPhase1,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (_player: Player<Spec.SpecHunter>): APLRotation => {
-		// const talentTree = player.getTalentTree();
-		// const numTargets = player.sim.encounter.targets.length;
-		// if (numTargets >= 4) {
-		// 	return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		// } else if (talentTree == 0) {
-		// 	return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
-		// } else if (talentTree == 1) {
-		// 	return Presets.ROTATION_PRESET_MM.rotation.rotation!;
-		// } else {
-		// 	return Presets.ROTATION_PRESET_SV.rotation.rotation!;
-		// }
-		return Presets.ROTATION_PRESET_MELEE_WEAVE_PHASE1.rotation.rotation!;
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
-	simpleRotation: (player: Player<Spec.SpecHunter>, simple: HunterRotation, cooldowns: Cooldowns): APLRotation => {
+	simpleRotation: (player, simple, cooldowns) => {
 		let [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const serpentSting = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${simple.multiDotSerpentSting ? 3 : 1},"maxOverlap":{"const":{"val":"0ms"}}}}`);
@@ -284,7 +271,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultName: 'Beast Mastery',
 			iconUrl: getSpecIcon(Class.ClassHunter, 0),
 
-			talents: Presets.TalentsBeastMasteryDefault.data,
+			talents: Presets.DefaultTalentsBeastMastery.data,
 			specOptions: Presets.BMDefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -295,10 +282,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearBeastMasteryPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearBeastMasteryPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},
@@ -307,7 +294,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			tooltip: 'Marksmanship Hunter',
 			defaultName: 'Marksmanship',
 			iconUrl: getSpecIcon(Class.ClassHunter, 1),
-			talents: Presets.TalentsMarksmanPhase1.data,
+			talents: Presets.DefaultTalentsMarksman.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -318,10 +305,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearMarksmanPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearMarksmanPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 			},
 		},
@@ -331,7 +318,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultName: 'Survival',
 			iconUrl: getSpecIcon(Class.ClassHunter, 2),
 
-			talents: Presets.TalentsSurvivalDefault.data,
+			talents: Presets.DefaultTalentsSurvival.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -342,10 +329,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearSurvivalPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearSurvivalPhase1.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 			},
 		},

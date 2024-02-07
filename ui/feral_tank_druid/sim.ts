@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Debuffs,
@@ -11,9 +12,6 @@ import {
 	Stat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import { Player } from '../core/player.js';
@@ -106,7 +104,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		// Default rotation settings.
 		simpleRotation: Presets.DefaultRotation,
 		// Default talents.
-		talents: Presets.StandardTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -165,20 +163,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.StandardTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_DEFAULT,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (): APLRotation => {
-		return Presets.ROTATION_DEFAULT.rotation.rotation!;
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
 	raidSimPresets: [

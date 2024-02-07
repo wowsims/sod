@@ -1,3 +1,4 @@
+import { Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Flask,
@@ -28,9 +29,26 @@ import RuptureMutilateExposeApl from './apls/rupture_mutilate_expose.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const GearAssassinationDefault = PresetUtils.makePresetGear('Blank', BlankGear, { talentTree: 0 });
-export const GearCombatDefault = PresetUtils.makePresetGear('Blank', BlankGear, { talentTree: 0 });
-export const GearSubtletyDefault = PresetUtils.makePresetGear('Blank', BlankGear, { talentTree: 0 });
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearBlank,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultGear = GearPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 APL Presets
+///////////////////////////////////////////////////////////////////////////
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { talentTree: 0 });
 export const ROTATION_PRESET_RUPTURE_MUTILATE = PresetUtils.makePresetAPLRotation('Rupture Mutilate', RuptureMutilateApl, { talentTree: 0 });
@@ -42,8 +60,35 @@ export const ROTATION_PRESET_COMBAT_CLEAVE_SND = PresetUtils.makePresetAPLRotati
 export const ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE = PresetUtils.makePresetAPLRotation('Combat Cleave SND w/ Expose', CombatCleaveSndExposeApl, { talentTree: 1 });
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fan AOE', FanAoeApl);
 
+export const APLPresets = {
+  [Phase.Phase1]: [
+    ROTATION_PRESET_MUTILATE,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
+  25: {
+		0: APLPresets[Phase.Phase1][0],
+		1: APLPresets[Phase.Phase1][0],
+		2: APLPresets[Phase.Phase1][0],
+	},
+  40: {
+		0: APLPresets[Phase.Phase1][0],
+		1: APLPresets[Phase.Phase1][0],
+		2: APLPresets[Phase.Phase1][0],
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Talent Presets
+///////////////////////////////////////////////////////////////////////////
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
+
 export const CombatHackTalents = {
 	name: 'Combat Axes/Swords',
 	data: SavedTalents.create({
@@ -92,6 +137,27 @@ export const HemoSubtletyTalents = {
 		talentsString: '30532010135--502201203032112135011503122',
 	}),
 }
+
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    AssassinationTalents137,
+		CombatHackTalents,
+		SubtletyTalents,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultTalentsAssassin = TalentPresets[Phase.Phase1][0];
+export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase1][1];
+export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][2];
+
+export const DefaultTalents = DefaultTalentsAssassin;
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Options
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = RogueOptions.create({
 	mhImbue: Poison.DeadlyPoison,
