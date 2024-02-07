@@ -12,7 +12,7 @@ const SearingTotemRanks = 6
 
 var SearingTotemSpellId = [SearingTotemRanks + 1]int32{0, 3599, 6363, 6364, 6365, 10437, 10438}
 var SearingTotemBaseDamage = [SearingTotemRanks + 1][]float64{{0}, {9, 11}, {13, 17}, {19, 25}, {26, 34}, {33, 45}, {40, 54}}
-var SearingTotemSpellCoef = [SearingTotemRanks + 1]float64{0, 0, .267, .147, .227, 0, 0}
+var SearingTotemSpellCoef = [SearingTotemRanks + 1]float64{0, .052, .083, .083, .083, .083, .083}
 var SearingTotemManaCost = [SearingTotemRanks + 1]float64{0, 25, 45, 75, 110, 145, 170}
 var SearingTotemDuration = [SearingTotemRanks + 1]int{0, 30, 35, 40, 45, 50, 55}
 var SearingTotemLevel = [SearingTotemRanks + 1]int{0, 10, 20, 30, 40, 50, 60}
