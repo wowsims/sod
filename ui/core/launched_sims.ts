@@ -1,3 +1,4 @@
+import { Phase } from './constants/other';
 import { Class, Spec } from './proto/common';
 import { specToClass } from './proto_utils/utils';
 
@@ -6,42 +7,104 @@ import { specToClass } from './proto_utils/utils';
 
 export enum LaunchStatus {
 	Unlaunched,
-	Phase_1,
-	Phase_2,
-	Phase_3,
-	Phase_4,
-	Phase_5,
+	Alpha,
+	Beta,
 };
 
-export const raidSimStatus: LaunchStatus = LaunchStatus.Unlaunched;
+export type SimStatus = {
+	phase: Phase,
+	status: LaunchStatus
+}
+
+export const raidSimStatus: SimStatus = {
+	phase: Phase.Phase1,
+	status: LaunchStatus.Unlaunched,
+}
 
 // This list controls which links are shown in the top-left dropdown menu.
-export const simLaunchStatuses: Record<Spec, LaunchStatus> = {
-	[Spec.SpecBalanceDruid]: LaunchStatus.Phase_1,
-	[Spec.SpecFeralDruid]: LaunchStatus.Phase_1,
-	[Spec.SpecFeralTankDruid]: LaunchStatus.Unlaunched,
-	[Spec.SpecRestorationDruid]: LaunchStatus.Unlaunched,
-	[Spec.SpecElementalShaman]: LaunchStatus.Phase_1,
-	[Spec.SpecEnhancementShaman]: LaunchStatus.Phase_1,
-	[Spec.SpecRestorationShaman]: LaunchStatus.Unlaunched,
-	[Spec.SpecHunter]: LaunchStatus.Phase_1,
-	[Spec.SpecMage]: LaunchStatus.Unlaunched,
-	[Spec.SpecRogue]: LaunchStatus.Unlaunched,
-	[Spec.SpecHolyPaladin]: LaunchStatus.Unlaunched,
-	[Spec.SpecProtectionPaladin]: LaunchStatus.Unlaunched,
-	[Spec.SpecRetributionPaladin]: LaunchStatus.Unlaunched,
-	[Spec.SpecHealingPriest]: LaunchStatus.Unlaunched,
-	[Spec.SpecShadowPriest]: LaunchStatus.Unlaunched,
-	[Spec.SpecWarlock]: LaunchStatus.Phase_1,
-	[Spec.SpecTankWarlock]: LaunchStatus.Phase_1,
-	[Spec.SpecWarrior]: LaunchStatus.Phase_1,
-	[Spec.SpecProtectionWarrior]: LaunchStatus.Unlaunched,
+export const simLaunchStatuses: Record<Spec, SimStatus> = {
+	[Spec.SpecBalanceDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecFeralDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecFeralTankDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecRestorationDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecElementalShaman]: {
+		phase: Phase.Phase2,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecEnhancementShaman]: {
+		phase: Phase.Phase2,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecRestorationShaman]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecHunter]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecMage]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecRogue]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecHolyPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecProtectionPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecRetributionPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecHealingPriest]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecShadowPriest]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecWarlock]: {
+		phase: Phase.Phase2,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecTankWarlock]: {
+		phase: Phase.Phase2,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecWarrior]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Alpha,
+	},
+	[Spec.SpecProtectionWarrior]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
 };
 
 export function getLaunchedSims(): Array<Spec> {
 	return Object.keys(simLaunchStatuses)
 		.map(specStr => parseInt(specStr) as Spec)
-		.filter(spec => simLaunchStatuses[spec] > LaunchStatus.Unlaunched);
+		.filter(spec => simLaunchStatuses[spec].status > LaunchStatus.Unlaunched);
 }
 
 export function getLaunchedSimsForClass(klass: Class): Array<Spec> {
@@ -51,5 +114,5 @@ export function getLaunchedSimsForClass(klass: Class): Array<Spec> {
 }
 
 export function isSimLaunched(specIndex: Spec): boolean {
-	return simLaunchStatuses[specIndex] > LaunchStatus.Unlaunched;
+	return simLaunchStatuses[specIndex].status > LaunchStatus.Unlaunched;
 }

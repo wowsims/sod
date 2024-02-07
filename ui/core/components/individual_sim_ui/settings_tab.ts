@@ -1,5 +1,6 @@
 import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from "../../individual_sim_ui";
+import { simLaunchStatuses } from '../../launched_sims';
 import {
 	Consumes,
 	Debuffs,
@@ -118,9 +119,10 @@ export class SettingsTab extends SimTab {
 			true
 		);
 
+		const levels = [25,40,50,60].filter((_level, i) => i < simLaunchStatuses[this.simUI.player.spec].phase)
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			label: 'Level',
-			values: [25,40,50,60].map(level => {
+			values: levels.map(level => {
 				return {
 					name: `Level ${level}`,
 					value: level,
