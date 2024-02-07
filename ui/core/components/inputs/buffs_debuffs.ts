@@ -207,7 +207,7 @@ export const SpiritBuff = InputHelpers.makeMultiIconInput([
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: (player) => player.getMatchingItemActionId([
-			{ id: 1181, 								maxLevel: 14 	},
+			{ id: 1181, 				maxLevel: 14 	},
 			{ id: 1712, 	minLevel: 15, maxLevel: 29 	},
 			{ id: 4424, 	minLevel: 30, maxLevel: 44 	},
 			{ id: 10306, 	minLevel: 45 								},

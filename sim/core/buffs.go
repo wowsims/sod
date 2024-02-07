@@ -59,6 +59,20 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Intellect: 31,
 		},
 	},
+	DivineSpirit: {
+		25: stats.Stats{
+			stats.Spirit: 0,
+		},
+		40: stats.Stats{
+			stats.Spirit: 23,
+		},
+		50: stats.Stats{
+			stats.Spirit: 33,
+		},
+		60: stats.Stats{
+			stats.Spirit: 40,
+		},
+	},
 	AspectOfTheWild: {
 		25: stats.Stats{
 			stats.NatureResistance: 0,

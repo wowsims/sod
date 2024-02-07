@@ -255,16 +255,20 @@ export class CharacterStats extends Component {
 			displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
 		} else if (stat == Stat.StatSpellHit) {
 			displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
+		} else if ( stat == Stat.StatSpellDamage) {
+			const spDmg = Math.round(rawValue);
+			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
+			displayStr = (baseSp + spDmg) + ` (+${spDmg})`;
 		} else if (
 			stat == Stat.StatArcanePower || 
 			stat == Stat.StatFirePower || 
 			stat == Stat.StatFrostPower || 
 			stat == Stat.StatHolyPower || 
 			stat == Stat.StatNaturePower || 
-			stat == Stat.StatShadowPower
+			stat == Stat.StatShadowPower 
 		) {
 			const spDmg = Math.round(rawValue);
-			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
+			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower)+deltaStats.getStat(Stat.StatSpellDamage));
 			displayStr = (baseSp + spDmg) + ` (+${spDmg})`;
 		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
 			displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
