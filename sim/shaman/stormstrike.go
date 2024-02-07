@@ -89,7 +89,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 			if result.Landed() {
 				ssDebuffAura := ssDebuffAuras.Get(target)
 				ssDebuffAura.Activate(sim)
-				ssDebuffAura.SetStacks(sim, 4)
 
 				mhHit(sim, target, spell)
 
