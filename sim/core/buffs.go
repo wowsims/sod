@@ -1062,8 +1062,6 @@ func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
 }
 
 func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
-	spBonus := character.NewDynamicMultiplyStat(stats.SpellPower, 1.2)
-	sdBonus := character.NewDynamicMultiplyStat(stats.SpellDamage, 1.2)
 	actionID := ActionID{SpellID: 10060, Tag: actionTag}
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "PowerInfusion-" + actionID.String(),
@@ -1071,12 +1069,10 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.EnableDynamicStatDep(sim, spBonus)
-			character.EnableDynamicStatDep(sim, sdBonus)
+			character.PseudoStats.DamageDealtMultiplier *= 1.2
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.DisableDynamicStatDep(sim, spBonus)
-			character.DisableDynamicStatDep(sim, sdBonus)
+			character.PseudoStats.DamageDealtMultiplier /= 1.2
 		},
 	})
 	return aura
