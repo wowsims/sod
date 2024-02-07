@@ -8,7 +8,7 @@ import (
 )
 
 func (shaman *Shaman) applyLavaLash() {
-	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) {
+	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) || !shaman.AutoAttacks.IsDualWielding {
 		return
 	}
 
