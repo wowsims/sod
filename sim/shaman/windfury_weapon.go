@@ -24,7 +24,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	level := shaman.GetCharacter().Level
 	rank := WindfuryWeaponRankByLevel[level]
 	SpellId := WindfuryWeaponSpellId[rank]
-	bonusAP := WindfuryWeaponBonusAP[rank] * (1 + .13*float64(shaman.Talents.ElementalWeapons))
+	bonusAP := WindfuryWeaponBonusAP[rank] * (1 + .1333*float64(shaman.Talents.ElementalWeapons))
 
 	tag := 1
 	procMask := core.ProcMaskMeleeMHSpecial
