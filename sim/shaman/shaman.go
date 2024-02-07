@@ -292,6 +292,10 @@ func (shaman *Shaman) ShamanThreatMultiplier(secondary float64) float64 {
 	return core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth), 1.5, 1) * secondary
 }
 
+func (shaman *Shaman) ConcussionMultiplier() float64 {
+	return 1 + 0.01*float64(shaman.Talents.Concussion)
+}
+
 func (shaman *Shaman) TotemManaMultiplier() float64 {
 	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
 }

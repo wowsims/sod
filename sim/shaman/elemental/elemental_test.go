@@ -92,7 +92,7 @@ func BenchmarkSimulate(b *testing.B) {
 }
 
 var phase1Talents = "25003105"
-var phase2Talents = "350031550002151"
+var phase2Talents = "550031550000151"
 
 var NoTotems = &proto.ShamanTotems{}
 var BasicTotems = &proto.ShamanTotems{

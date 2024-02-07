@@ -61,8 +61,6 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			},
 		},
 
-		// Concussion does not currently apply to Lava Burst in SoD
-		// DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion)
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
