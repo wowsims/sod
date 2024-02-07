@@ -46,7 +46,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
 				baseDamage *= 1.4

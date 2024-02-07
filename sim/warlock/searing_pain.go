@@ -49,7 +49,7 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 		ThreatMultiplier:         2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellPower()
+			damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
 				damage *= 1.4

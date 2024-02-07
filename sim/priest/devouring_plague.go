@@ -51,7 +51,7 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/8 + (spellCoeff * dot.Spell.SpellPower())
+				dot.SnapshotBaseDamage = baseDamage/8 + (spellCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -74,7 +74,7 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage/8 + (spellCoeff * spell.SpellPower())
+				baseDamage := baseDamage/8 + (spellCoeff * spell.SpellDamage())
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

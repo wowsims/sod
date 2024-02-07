@@ -22,7 +22,7 @@ func (priest *Priest) getMindFlayTickSpell(rank int, numTicks int32, baseDamage 
 		CritMultiplier:   1.0,
 		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage/3 + (spellCoeff * spell.SpellPower())
+			damage := baseDamage/3 + (spellCoeff * spell.SpellDamage())
 			damage *= priest.MindFlayModifier
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
 
@@ -84,7 +84,7 @@ func (priest *Priest) getMindFlaySpellConfig(rank int) core.SpellConfig {
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := (baseDamage + (spellCoeff * spell.SpellPower())) / 3
+			baseDamage := (baseDamage + (spellCoeff * spell.SpellDamage())) / 3
 
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 		},

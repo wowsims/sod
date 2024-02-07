@@ -45,7 +45,7 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -54,7 +54,7 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + directCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + directCoeff*spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)

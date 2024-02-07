@@ -156,10 +156,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.BonusCritRating += core.CritRatingPerCritChance * 100
+				spell.CostMultiplier -= 1
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
+				spell.CostMultiplier += 1
+			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellCode != int32(SpellCode_ShamanLightningBolt) && spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {

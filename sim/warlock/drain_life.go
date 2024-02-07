@@ -59,7 +59,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			AffectedByCastSpeed: false,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDmg := baseDamage + spellCoeff*dot.Spell.SpellPower()
+				baseDmg := baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				if soulSiphon {
 					modifier := 1.0
 
@@ -123,7 +123,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDmg := baseDamage + spellCoeff*spell.SpellPower()
+				baseDmg := baseDamage + spellCoeff*spell.SpellDamage()
 				return spell.CalcPeriodicDamage(sim, target, baseDmg, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

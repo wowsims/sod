@@ -66,7 +66,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				dot.Spell.SpellSchool = core.SpellSchoolFire
 				dot.Spell.SchoolIndex = stats.SchoolIndexFire
 
-				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotBaseDamage *= emberstormMulti
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
@@ -100,7 +100,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var baseDamage = baseDamage + baseSpellCoeff*spell.SpellPower()
+			var baseDamage = baseDamage + baseSpellCoeff*spell.SpellDamage()
 			baseDamage *= shadowMasteryMulti
 
 			curTarget := target

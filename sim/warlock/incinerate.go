@@ -56,7 +56,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var baseDamage = sim.Roll(baseLowDamage, baseHightDamage) + spellCoeff*spell.SpellPower()
+			var baseDamage = sim.Roll(baseLowDamage, baseHightDamage) + spellCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
 				baseDamage *= 1.4

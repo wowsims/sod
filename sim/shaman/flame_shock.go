@@ -55,7 +55,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.Cast.IgnoreHaste = true
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := baseDamage + baseSpellCoeff*spell.SpellPower()
+		baseDamage := baseDamage + baseSpellCoeff*spell.SpellDamage()
 		result := spell.CalcDamage(sim, target, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
 			spell.Dot(target).NumberOfTicks = int32(numTicks)
@@ -97,7 +97,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		TickLength:    tickDuration,
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			baseDamage := (baseDotDamage / float64(numTicks)) + dotSpellCoeff*dot.Spell.SpellPower()
+			baseDamage := (baseDotDamage / float64(numTicks)) + dotSpellCoeff*dot.Spell.SpellDamage()
 			dot.SnapshotBaseDamage = baseDamage * shaman.ConcussionMultiplier()
 			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])

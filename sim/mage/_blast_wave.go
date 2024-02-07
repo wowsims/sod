@@ -36,7 +36,7 @@ func (mage *Mage) registerBlastWaveSpell() {
 		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(1047, 1233) + 0.193*spell.SpellPower()
+				baseDamage := sim.Roll(1047, 1233) + 0.193*spell.SpellDamage()
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

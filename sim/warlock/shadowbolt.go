@@ -52,7 +52,7 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellPower()
+				baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)

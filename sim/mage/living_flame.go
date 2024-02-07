@@ -51,7 +51,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + 0.143*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDamage + 0.143*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

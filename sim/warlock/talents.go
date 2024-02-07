@@ -271,7 +271,7 @@ func (warlock *Warlock) applyFirestone() {
 			DamageMultiplierAdditive: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(damageMin, damageMax) + spellCoeff*spell.SpellPower()
+				baseDamage := sim.Roll(damageMin, damageMax) + spellCoeff*spell.SpellDamage()
 
 				// TODO: Test if LoF Buffs this
 				//if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {

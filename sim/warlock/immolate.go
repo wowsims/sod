@@ -53,7 +53,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
@@ -73,7 +73,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (baseDamage + directCoeff*spell.SpellPower()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
+			baseDamage := (baseDamage + directCoeff*spell.SpellDamage()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
@@ -88,7 +88,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := dotDamage + dotCoeff*spell.SpellPower()
+				baseDamage := dotDamage + dotCoeff*spell.SpellDamage()
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
@@ -157,7 +157,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 // 			TickLength:    time.Second * 3,
 
 // 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-// 				dot.SnapshotBaseDamage = 157 + 0.2*dot.Spell.SpellPower()
+// 				dot.SnapshotBaseDamage = 157 + 0.2*dot.Spell.SpellDamage()
 // 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 // 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 
@@ -171,7 +171,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 // 		},
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := 460 + 0.2*spell.SpellPower()
+// 			baseDamage := 460 + 0.2*spell.SpellDamage()
 // 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 // 			if result.Landed() {
 // 				spell.Dot(target).Apply(sim)

@@ -56,7 +56,7 @@ func (mage *Mage) registerFlamestrikeSpell(rank8 bool) *core.Spell {
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
 				target := mage.CurrentTarget
-				dot.SnapshotBaseDamage = dotDamage + 0.122*dot.Spell.SpellPower()*spCoeffMultiplier
+				dot.SnapshotBaseDamage = dotDamage + 0.122*dot.Spell.SpellDamage()*spCoeffMultiplier
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -67,7 +67,7 @@ func (mage *Mage) registerFlamestrikeSpell(rank8 bool) *core.Spell {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dmgFromSP := 0.243 * spell.SpellPower() * spCoeffMultiplier
+			dmgFromSP := 0.243 * spell.SpellDamage() * spCoeffMultiplier
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Roll(minDamage, maxDamage) + dmgFromSP
 				baseDamage *= sim.Encounter.AOECapMultiplier()

@@ -77,7 +77,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			NumberOfTicks: int32(duration / attackInterval),
 			TickLength:    attackInterval,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellPower()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellDamage()
 				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
@@ -163,7 +163,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			TickLength:    attackInterval,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := baseDamage + spellCoeff*dot.Spell.SpellPower()
+				baseDamage := baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
@@ -262,7 +262,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			TickLength:    attackInterval,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellPower()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellDamage()
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)

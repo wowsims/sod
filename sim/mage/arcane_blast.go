@@ -52,7 +52,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + .714*spell.SpellPower()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + .714*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

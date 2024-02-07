@@ -28,7 +28,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		ThreatMultiplier: 1 - 0.2*float64(mage.Talents.ArcaneSubtlety),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dmgFromSP := (1.5 / 3.5 / 2) * spell.SpellPower()
+			dmgFromSP := (1.5 / 3.5 / 2) * spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Roll(538, 582) + dmgFromSP
 				baseDamage *= sim.Encounter.AOECapMultiplier()

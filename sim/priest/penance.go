@@ -74,7 +74,7 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			AffectedByCastSpeed: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dmg := baseDamage + (spellCoeff * dot.Spell.SpellPower())
+				dmg := baseDamage + (spellCoeff * dot.Spell.SpellDamage())
 				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dmg, dot.OutcomeTick)
 			},
 		}, core.DotConfig{}),
