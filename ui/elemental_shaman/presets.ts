@@ -82,16 +82,20 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
+  arcaneBrilliance: true,
 	aspectOfTheLion: true,
+  battleShout: TristateEffect.TristateEffectImproved,
+  divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	arcaneBrilliance: true,
 	leaderOfThePack: true,
+  manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
-	divineSpirit: true,
+  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
+  dreamstate: true,
   improvedScorch: true,
 });
 
@@ -99,5 +103,4 @@ export const OtherDefaults = {
   distanceFromTarget: 20,
   profession1: Profession.Engineering,
   profession2: Profession.Tailoring,
-  nibelungAverageCasts: 11,
 }
