@@ -130,6 +130,7 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 					c.AddMana(sim, 100, metrics)
 				},
 			})
+			procChance := 0.05
 			c.RegisterAura(core.Aura{
 				Label:    "Electromantic Devastator's Mail 3pc",
 				ActionID: core.ActionID{SpellID: 435982},
@@ -139,7 +140,6 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 				},
 				// Modeled after WotLK JoW https://github.com/wowsims/wotlk/blob/master/sim/core/debuffs.go#L202
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					procChance := 0.05
 					if spell.ProcMask.Matches(core.ProcMaskEmpty | core.ProcMaskProc | core.ProcMaskWeaponProc) {
 						return // Phantom spells don't proc
 					}
