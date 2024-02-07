@@ -40,6 +40,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatArmorPenetration,
 		Stat.StatExpertise,
 		Stat.StatSpellPower,
+		Stat.StatFirePower,
+		Stat.StatNaturePower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
@@ -74,22 +76,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: .35,
-			[Stat.StatAgility]: 1.46,
-			[Stat.StatStrength]: 2.15,
-			[Stat.StatSpellPower]: 1.75,
+			[Stat.StatIntellect]: 1.92,
+			[Stat.StatAgility]: .46,
+			[Stat.StatStrength]: 1.92,
+			[Stat.StatSpellPower]: .89,
+			[Stat.StatFirePower]: .46,
+			[Stat.StatNaturePower]: .43,
 			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 0.96,
+			[Stat.StatSpellCrit]: 1.59,
 			[Stat.StatSpellHaste]: 0,
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 10.85,
-			[Stat.StatMeleeCrit]: 12.72,
-			[Stat.StatMeleeHaste]: 12.19, //haste is complicated
-			[Stat.StatArmorPenetration]: 0.20,
+			[Stat.StatMeleeCrit]: 6.63,
+			[Stat.StatMeleeHaste]: 8.66, //haste is complicated
+			[Stat.StatArmorPenetration]: 0.12,
 			[Stat.StatExpertise]: 1.29, //default EP assumes cap
 		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 7.52,
-			[PseudoStat.PseudoStatOffHandDps]: 6.26,
+			[PseudoStat.PseudoStatMainHandDps]: 6.80,
+			[PseudoStat.PseudoStatOffHandDps]: 5.19,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

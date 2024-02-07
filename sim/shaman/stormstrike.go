@@ -58,8 +58,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	mhHit := shaman.newStormstrikeHitSpell(true)
 	ohHit := shaman.newStormstrikeHitSpell(false)
 
-	ssDebuffAuras := shaman.NewEnemyAuraArray(shaman.StormstrikeDebuffAura)
-
 	shaman.Stormstrike = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    StormstrikeActionID,
 		SpellSchool: core.SpellSchoolPhysical,
@@ -87,8 +85,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				ssDebuffAura := ssDebuffAuras.Get(target)
-				ssDebuffAura.Activate(sim)
+				core.StormstrikeAura(target, shaman.Level).Activate(sim)
 
 				mhHit(sim, target, spell)
 
