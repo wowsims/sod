@@ -159,7 +159,7 @@ func StormstrikeAura(unit *Unit, rank int32) *Aura {
 	damageMulti := 1.2
 	duration := time.Second * 12
 
-	return unit.RegisterAura(Aura{
+	return unit.GetOrRegisterAura(Aura{
 		Label:    "Stormstrike",
 		ActionID: ActionID{SpellID: 17364},
 		Duration: duration,
@@ -176,7 +176,7 @@ func DreamstateAura(unit *Unit, rank int32) *Aura {
 	damageMulti := 1.2
 	duration := time.Second * 12
 
-	return unit.RegisterAura(Aura{
+	return unit.GetOrRegisterAura(Aura{
 		Label:    "Dreamstate",
 		ActionID: ActionID{SpellID: 408258},
 		Duration: duration,
