@@ -73,15 +73,15 @@ const (
 	WaterTotem
 )
 
-type ShamanSpellCode int
-
 const (
-	SpellCode_ShamanLightningBolt ShamanSpellCode = iota
+	SpellCode_ShamanNone int32 = iota
+	SpellCode_ShamanLightningBolt
 	SpellCode_ShamanChainLightning
+	SpellCode_ShamanLavaBurst
 
-	SpellCode_HealingWave
-	SpellCode_LesserHealingWave
-	SpellCode_ChainHeal
+	SpellCode_ShamanHealingWave
+	SpellCode_ShamanLesserHealingWave
+	SpellCode_ShamanChainHeal
 
 	SpellCode_SearingTotem
 	SpellCode_MagmaTotem

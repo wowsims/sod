@@ -60,7 +60,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   int32(SpellCode_ChainHeal),
+		SpellCode:   SpellCode_ShamanChainHeal,
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       flags,
