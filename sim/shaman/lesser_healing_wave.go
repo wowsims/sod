@@ -39,7 +39,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   int32(SpellCode_LesserHealingWave),
+		SpellCode:   SpellCode_ShamanLesserHealingWave,
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
