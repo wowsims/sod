@@ -42,6 +42,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	numTicks := 4
 	tickDuration := time.Second * 3
 
+	if shaman.Ranged().ID == TotemInvigoratingFlame {
+		manaCost -= 10
+	}
+
 	spell := shaman.newShockSpellConfig(
 		core.ActionID{SpellID: spellId},
 		core.SpellSchoolFire,
