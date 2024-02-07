@@ -110,6 +110,46 @@ var ItemSetBlackfathomSlayerLeather = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
+	Name: "Electromantic Devastator's Mail",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 24)
+		},
+		3: func(a core.Agent) {
+			char := a.GetCharacter()
+			if !char.HasManaBar() {
+				return
+			}
+			metrics := char.NewManaMetrics(core.ActionID{SpellID: 435982})
+			proc := char.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 435981},
+				SpellSchool: core.SpellSchoolHoly,
+				ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
+					char.AddMana(sim, 100, metrics)
+				},
+			})
+			char.RegisterAura(core.Aura{
+				Label:    "Electromantic Devastator's Mail 3pc",
+				ActionID: core.ActionID{SpellID: 435982},
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() {
+						return
+					}
+					if sim.RandomFloat("Electromantic Devastator's Mail 3pc") < 0.05 {
+						proc.Cast(sim, result.Target)
+					}
+				},
+			})
+		},
+	},
+})
+
 var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 	Name: "Insulated Leathers",
 	Bonuses: map[int32]core.ApplyEffect{

@@ -111,6 +111,10 @@ dps_results: {
  value: {}
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-ElectromanticDevastator'sMail"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-H.A.Z.A.R.D.Suit"
  value: {}
 }

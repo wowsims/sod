@@ -67,6 +67,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 2.77504
+  tps: 9.15833
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-H.A.Z.A.R.D.Suit"
  value: {
   dps: 2.59731

@@ -70,6 +70,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 12.53676
+  tps: 11.61298
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 12.05599
