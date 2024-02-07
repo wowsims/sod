@@ -54,8 +54,7 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
-		applyWeaponSpecialization(character, 5,
-			proto.WeaponType_WeaponTypeMace, proto.WeaponType_WeaponTypeSword)
+		character.ApplyWeaponSpecialization(5, proto.WeaponType_WeaponTypeMace, proto.WeaponType_WeaponTypeSword)
 	case proto.Race_RaceNightElf:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
@@ -92,8 +91,7 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		applyWeaponSpecialization(character, 5,
-			proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
+		character.ApplyWeaponSpecialization(5, proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
 	case proto.Race_RaceTauren:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
@@ -146,13 +144,5 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceUndead:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
-	}
-}
-
-func applyWeaponSpecialization(character *Character, weaponSkillBonus float64, weaponTypes ...proto.WeaponType) {
-	mask := character.GetProcMaskForTypes(weaponTypes...)
-
-	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
-		character.AddStat(stats.WeaponSkill, weaponSkillBonus)
 	}
 }
