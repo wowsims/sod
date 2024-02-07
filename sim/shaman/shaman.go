@@ -51,10 +51,10 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 
 func (shaman *Shaman) getImbueProcMask(character *core.Character, imbue proto.WeaponImbue) core.ProcMask {
 	var mask core.ProcMask
-	if character.Consumes.MainHandImbue == imbue {
+	if shaman.HasMHWeapon() && shaman.Consumes.MainHandImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
 	}
-	if shaman.Consumes.OffHandImbue == imbue {
+	if shaman.HasOHWeapon() && shaman.Consumes.OffHandImbue == imbue {
 		mask |= core.ProcMaskMeleeOH
 	}
 	return mask
