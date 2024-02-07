@@ -31,7 +31,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*2500 - (time.Millisecond * 100 * time.Duration(warlock.Talents.Bane)),
+				CastTime: time.Millisecond * 2500,
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),

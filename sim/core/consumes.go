@@ -141,15 +141,15 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		switch consumes.SpellPowerBuff {
 		case proto.SpellPowerBuff_LesserArcaneElixir:
 			character.AddStats(stats.Stats{
-				stats.SpellPower: 14,
+				stats.SpellDamage: 14,
 			})
 		case proto.SpellPowerBuff_ArcaneElixir:
 			character.AddStats(stats.Stats{
-				stats.SpellPower: 20,
+				stats.SpellDamage: 20,
 			})
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
 			character.AddStats(stats.Stats{
-				stats.SpellPower: 35,
+				stats.SpellDamage: 35,
 			})
 		}
 	}
@@ -184,8 +184,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		case proto.EnchantedSigil_InnovationSigil:
 			character.AddStats(stats.Stats{
 				stats.AttackPower: 20,
-				stats.SpellDamage: 20,
-				stats.Healing:     20,
+				stats.SpellPower:  20,
 			})
 		}
 	}
