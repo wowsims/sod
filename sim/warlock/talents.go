@@ -16,6 +16,10 @@ func (warlock *Warlock) ApplyTalents() {
 		warlock.MultiplyStat(stats.Spirit, 1-.01*(float64(warlock.Talents.DemonicEmbrace)))
 	}
 
+	if warlock.Talents.FelIntellect > 0 {
+		warlock.Pet.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
+	}
+
 	if warlock.Talents.ImprovedShadowBolt > 0 {
 		warlock.applyImprovedShadowBolt()
 	}
