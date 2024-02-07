@@ -197,7 +197,7 @@ const (
 	SpellFlagPrepullPotion                                  // Indicates this spell is the prepull potion.
 	SpellFlagCombatPotion                                   // Indicates this spell is the combat potion.
 	SpellFlagResetAttackSwing                               // Indicates this spell resets the melee swing timer.
-	SpellFlagHunterRanged                                   // Indicates this spell is hunters Auto shot spell
+	SpellFlagCastTimeNoGCD                                  // Indicates this spell is hunters Auto shot spell
 	SpellFlagPureDot                                        // Indicates this spell is a dot with no initial damage component
 
 	// Used to let agents categorize their spells.

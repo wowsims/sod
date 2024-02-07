@@ -253,6 +253,8 @@ enum Explosive {
 	ExplosiveSolidDynamite = 1;
 	ExplosiveDenseDynamite = 2;
 	ExplosiveThoriumGrenade = 3;
+	ExplosiveEzThroRadiationBomb = 4;
+	ExplosiveHighYieldRadiationBomb = 5;
 }
 
 enum Potions {
