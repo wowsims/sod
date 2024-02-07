@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Debuffs,
@@ -10,7 +11,6 @@ import {
 	Stat,
 	TristateEffect
 } from '../core/proto/common.js';
-import {APLRotation} from '../core/proto/apl.js';
 import {Stats} from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import {Player} from '../core/player.js';
@@ -56,7 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearArcaneDefault.gear,
+		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.48,
@@ -132,20 +132,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	presets: {
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_ARCANE,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.DefaultTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearArcaneDefault,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (_player: Player<Spec.SpecMage>): APLRotation => {
-		return Presets.ROTATION_PRESET_ARCANE.rotation.rotation!;
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -155,7 +158,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Arcane',
 			iconUrl: getSpecIcon(Class.ClassMage, 0),
 
-			talents: Presets.DefaultTalents.data,
+			talents: Presets.DefaultTalentsArcane.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,
@@ -167,10 +170,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearArcaneDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearArcaneDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},
@@ -180,7 +183,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Fire',
 			iconUrl: getSpecIcon(Class.ClassMage, 1),
 
-			talents: Presets.DefaultTalents.data,
+			talents: Presets.DefaultTalentsFire.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,
@@ -192,10 +195,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearFireDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearFireDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 			},
 		},
@@ -205,7 +208,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Frost',
 			iconUrl: getSpecIcon(Class.ClassMage, 2),
 
-			talents: Presets.DefaultTalents.data,
+			talents: Presets.DefaultTalentsFrost.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,
@@ -217,10 +220,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearFrostDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearFrostDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 			},
 		},

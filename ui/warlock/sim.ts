@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
@@ -7,10 +8,6 @@ import {
 	Spec,
 	Stat,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
-
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -21,7 +18,6 @@ import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
-import { WarlockOptions_Summon, WarlockRune } from '../core/proto/warlock.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	cssClass: 'warlock-sim-ui',
@@ -114,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearDestructionDefault.gear,
+		gear: Presets.DefaultGear.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
@@ -132,7 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.DestroTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 
@@ -195,28 +191,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.DestroTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.RotationDestructionDefault,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearDestructionDefault,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecWarlock>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		if (talentTree == 0) {
-			return Presets.RotationAfflictionDefault.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.RotationDemonologyDefault.rotation.rotation!;
-		} else {
-			return Presets.RotationDestructionDefault.rotation.rotation!;
-		}
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -226,7 +218,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultName: 'Affliction',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 0),
 
-			talents: Presets.DestroTalents.data,
+			talents: Presets.DefaultTalentsAffliction.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -237,10 +229,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearAfflictionDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearAfflictionDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -251,7 +243,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultName: 'Demonology',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 1),
 
-			talents: Presets.DestroTalents.data,
+			talents: Presets.DefaultTalentsDemonology.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -262,10 +254,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearDemonologyDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearDemonologyDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -276,7 +268,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultName: 'Destruction',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 2),
 
-			talents: Presets.DestroTalents.data,
+			talents: Presets.DefaultTalentsDestruction.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -287,10 +279,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearDestructionDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearDestructionDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][2].gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
