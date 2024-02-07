@@ -18,6 +18,7 @@ func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
 	spell.Cast.DefaultCast.Cost = 0
 	spell.Cast.ModifyCast = nil
 	spell.ManaCost.BaseCost = 0
+	spell.ManaCost.FlatCost = 0
 	spell.MetricSplits = 0
 	spell.DamageMultiplier *= 0.5
 	spell.ThreatMultiplier = 0

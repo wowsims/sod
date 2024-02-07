@@ -54,18 +54,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18149
+  weights: -0.15694
   weights: 0
-  weights: 0.15875
-  weights: 0
-  weights: 0
+  weights: 0.18856
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.14233
-  weights: 0.27213
+  weights: 0
+  weights: 0
+  weights: 1.01998
+  weights: 0.34638
   weights: 0
   weights: 0
   weights: 0
@@ -171,22 +171,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Average-Default"
  value: {
-  dps: 52.07029
-  tps: 46.69513
+  dps: 59.65326
+  tps: 52.73111
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 51.9311
-  tps: 167.34693
+  dps: 60.2832
+  tps: 174.29613
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 51.9311
-  tps: 46.54968
+  dps: 60.2832
+  tps: 53.49888
  }
 }
 dps_results: {
@@ -199,22 +199,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 36.28575
-  tps: 74.58055
+  dps: 39.28774
+  tps: 76.76575
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 36.28575
-  tps: 29.69305
+  dps: 39.28774
+  tps: 31.87825
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 60.84828
-  tps: 48.87552
+  dps: 68.30847
+  tps: 55.00918
  }
 }
 dps_results: {
@@ -262,36 +262,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 82.77193
-  tps: 190.55073
+  dps: 94.06028
+  tps: 199.54961
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 82.77193
-  tps: 71.32098
+  dps: 94.06028
+  tps: 80.6378
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 95.56045
-  tps: 81.19447
+  tps: 81.17355
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 61.14087
-  tps: 100.61374
+  dps: 68.85798
+  tps: 105.94833
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-25-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 61.14087
-  tps: 50.73874
+  dps: 68.85798
+  tps: 56.07333
  }
 }
 dps_results: {
@@ -346,36 +346,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 133.05642
-  tps: 390.98031
+  dps: 133.59356
+  tps: 377.0183
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 133.05642
-  tps: 119.58833
+  dps: 133.59356
+  tps: 119.14158
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 132.92251
-  tps: 116.83085
+  tps: 115.97122
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 70.40437
-  tps: 125.98016
+  dps: 81.43178
+  tps: 133.98499
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 70.40437
-  tps: 58.29266
+  dps: 81.43178
+  tps: 66.29749
  }
 }
 dps_results: {
@@ -388,78 +388,78 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 117.95374
-  tps: 354.55112
+  dps: 138.45668
+  tps: 374.43958
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 117.95374
-  tps: 105.5507
+  dps: 138.45668
+  tps: 121.64203
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 185.92137
-  tps: 162.5715
+  dps: 202.19663
+  tps: 175.49632
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 72.44961
-  tps: 126.16271
+  dps: 81.17287
+  tps: 131.1687
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 72.44961
-  tps: 58.47521
+  dps: 81.17287
+  tps: 63.4812
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 121.55332
-  tps: 99.35739
+  dps: 145.77013
+  tps: 118.28223
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 171.09875
-  tps: 414.57757
+  tps: 336.11458
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 171.09875
-  tps: 150.20838
+  tps: 146.28523
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 175.24557
-  tps: 152.10937
+  tps: 144.47073
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 113.67541
-  tps: 159.60077
+  dps: 138.36811
+  tps: 178.85655
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 113.67541
-  tps: 93.33827
+  dps: 138.36811
+  tps: 112.59405
  }
 }
 dps_results: {
@@ -472,57 +472,57 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 157.50562
-  tps: 391.79879
+  dps: 184.11558
+  tps: 416.84752
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 157.50562
-  tps: 137.8842
+  dps: 184.11558
+  tps: 159.06162
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 238.87753
-  tps: 206.2784
+  tps: 205.70217
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 103.22297
-  tps: 150.48827
+  dps: 115.43081
+  tps: 156.62549
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 103.22297
-  tps: 84.22577
+  dps: 115.43081
+  tps: 90.36299
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 169.30486
-  tps: 137.65785
+  dps: 206.00239
+  tps: 165.92165
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 51.95275
-  tps: 165.73979
+  dps: 60.06287
+  tps: 172.09444
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 51.95275
-  tps: 46.51004
+  dps: 60.06287
+  tps: 52.86469
  }
 }
 dps_results: {
@@ -535,22 +535,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 35.99181
-  tps: 72.70583
+  dps: 39.16225
+  tps: 75.016
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 35.99181
-  tps: 29.24333
+  dps: 39.16225
+  tps: 31.5535
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 61.00193
-  tps: 49.14419
+  dps: 68.14216
+  tps: 54.76787
  }
 }
 dps_results: {
@@ -598,36 +598,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 81.36012
-  tps: 187.64071
+  dps: 93.96779
+  tps: 197.86697
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 81.36012
-  tps: 69.97846
+  dps: 93.96779
+  tps: 80.51849
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 95.56045
-  tps: 81.11197
+  tps: 81.09132
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 60.29741
-  tps: 99.51695
+  dps: 67.88809
+  tps: 105.13099
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-25-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 60.29741
-  tps: 49.64195
+  dps: 67.88809
+  tps: 55.25599
  }
 }
 dps_results: {
@@ -682,36 +682,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 133.21041
-  tps: 389.8536
+  dps: 133.55022
+  tps: 376.55766
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 133.21041
-  tps: 119.68069
+  dps: 133.55022
+  tps: 119.07982
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 132.81029
-  tps: 116.68658
+  tps: 115.80682
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 69.44936
-  tps: 123.73315
+  dps: 80.26468
+  tps: 131.92924
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 69.44936
-  tps: 57.47065
+  dps: 80.26468
+  tps: 65.66674
  }
 }
 dps_results: {
@@ -724,78 +724,78 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 116.24958
-  tps: 350.58185
+  dps: 135.57158
+  tps: 369.4262
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 116.24958
-  tps: 103.23985
+  dps: 135.57158
+  tps: 118.74066
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 185.27913
-  tps: 162.15395
+  dps: 202.17122
+  tps: 175.43762
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 73.21034
-  tps: 125.36076
+  dps: 80.31681
+  tps: 129.34524
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 73.21034
-  tps: 59.09826
+  dps: 80.31681
+  tps: 63.08274
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_1-Adaptive-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 121.53973
-  tps: 98.01347
+  dps: 146.6511
+  tps: 119.36473
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 171.09875
-  tps: 414.85594
+  tps: 336.55489
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 171.09875
-  tps: 150.22229
+  tps: 146.30724
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 175.24557
-  tps: 152.09554
+  tps: 144.82034
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 111.63461
-  tps: 156.27434
+  dps: 134.93904
+  tps: 174.6807
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 111.63461
-  tps: 91.43684
+  dps: 134.93904
+  tps: 109.8432
  }
 }
 dps_results: {
@@ -808,49 +808,49 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 159.54478
-  tps: 392.97946
+  dps: 185.361
+  tps: 415.81557
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 159.54478
-  tps: 140.87662
+  dps: 185.361
+  tps: 159.62147
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 238.87753
-  tps: 206.20037
+  tps: 205.65452
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 101.64889
-  tps: 147.77512
+  dps: 117.8961
+  tps: 156.97296
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 101.64889
-  tps: 82.93762
+  dps: 117.8961
+  tps: 92.13546
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-40-phase_2-Adaptive-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 164.92478
-  tps: 132.76099
+  dps: 206.73805
+  tps: 166.48227
  }
 }
 dps_results: {
  key: "TestElemental-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 51.95275
-  tps: 46.51004
+  dps: 60.06287
+  tps: 52.86469
  }
 }
