@@ -38,12 +38,14 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
+	procChance := 0.1
 
 	// TODO: fix this.
 	// Right now: Set to 2 so that the spell that cast it consumes a charge down to expected 2.
 	// Correct fix would be to figure out how to make 'onCastComplete' fire before 'onspellhitdealt' without breaking all the other things.
 	maxStacks := int32(2)
+
+	var affectedSpells []*core.Spell
 
 	clearcastingAura := shaman.RegisterAura(core.Aura{
 		Label:     "Clearcasting",
@@ -91,11 +93,11 @@ func (shaman *Shaman) applyElementalFocus() {
 			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
 				return
 			}
-			if !result.Outcome.Matches(core.OutcomeCrit) {
-				return
+
+			if result.Landed() && sim.RandomFloat("LvB Overload") < procChance {
+				clearcastingAura.Activate(sim)
+				clearcastingAura.SetStacks(sim, maxStacks)
 			}
-			clearcastingAura.Activate(sim)
-			clearcastingAura.SetStacks(sim, maxStacks)
 		},
 	})
 }
