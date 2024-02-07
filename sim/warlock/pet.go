@@ -49,7 +49,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 			}
-			break
 		case 40:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  70,
@@ -62,7 +61,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 			}
-			break
 		case 50:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  70,
@@ -75,7 +73,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 			}
-			break
 		case 60:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  70,
@@ -88,7 +85,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 			}
-			break
 		}
 	case proto.WarlockOptions_Succubus:
 		cfg.Name = "Succubus"
@@ -115,7 +111,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				},
 				AutoSwingMelee: true,
 			}
-			break
 		case 40:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  74,
@@ -137,7 +132,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				},
 				AutoSwingMelee: true,
 			}
-			break
 		case 50:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  74,
@@ -159,7 +153,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				},
 				AutoSwingMelee: true,
 			}
-			break
 		case 60:
 			cfg.Stats = stats.Stats{
 				stats.Strength:  74,
@@ -181,7 +174,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 				},
 				AutoSwingMelee: true,
 			}
-			break
 		}
 	case proto.WarlockOptions_Voidwalker:
 		cfg.Name = "Voidwalker"
@@ -259,10 +251,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	if warlock.Options.Summon != proto.WarlockOptions_Imp { // imps generally don't melee
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
-	}
-
-	if warlock.Talents.FelIntellect > 0 {
-		wp.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
 	}
 
 	// core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
