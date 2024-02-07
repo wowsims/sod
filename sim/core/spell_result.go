@@ -209,6 +209,11 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	result := spell.NewResult(target)
 	result.Damage = baseDamage
+	if spell.ProcMask.Matches(ProcMaskSpellDamage) {
+		result.Damage += spell.Unit.GetStat(stats.SpellDamage)
+	} else if spell.ProcMask.Matches(ProcMaskSpellHealing) {
+		result.Damage += spell.Unit.GetStat(stats.Healing)
+	}
 
 	if sim.Log == nil {
 		result.Damage *= attackerMultiplier
