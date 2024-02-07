@@ -28,7 +28,6 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 	level := shaman.GetCharacter().Level
 	rank := RockbiterWeaponRankByLevel[level]
 	enchantId := RockbiterWeaponEnchantId[rank]
-	bonusAP := RockbiterWeaponBonusAP[rank] * (1 + .07*float64(shaman.Talents.ElementalWeapons))
 
 	duration := time.Minute * 5
 
@@ -44,19 +43,6 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Rockbiter Imbue",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: bonusAP,
-			})
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: bonusAP,
-			})
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * bonusAP,
-			})
-		},
 	})
 
 	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, aura)
@@ -80,8 +66,8 @@ func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
 	level := shaman.GetCharacter().Level
 	rank := RockbiterWeaponRankByLevel[level]
 	enchantId := RockbiterWeaponEnchantId[rank]
-	bonusAP := RockbiterWeaponBonusAP[rank]
 
+	bonusAP := RockbiterWeaponBonusAP[rank] * (1 + (20.0/3/100)*float64(shaman.Talents.ElementalWeapons))
 	newStats := stats.Stats{stats.AttackPower: bonusAP}
 
 	item.Stats = item.Stats.Add(newStats)
