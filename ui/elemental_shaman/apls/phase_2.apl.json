@@ -11,7 +11,7 @@
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":10447,"rank":4}}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":10447,"rank":4}}}},
     {"action":{"castSpell":{"spellId":{"spellId":408490}}}},
     {"action":{"castSpell":{"spellId":{"spellId":16166}}}},
-    {"hide":true,"action":{"castSpell":{"spellId":{"spellId":930,"rank":2}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":930,"rank":2}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":6365,"rank":4}}}}},"castSpell":{"spellId":{"spellId":6365,"rank":4}}}},
     {"action":{"castSpell":{"spellId":{"spellId":10391,"rank":7}}}}
   ]

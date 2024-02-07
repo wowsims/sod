@@ -16,6 +16,7 @@ import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 // import * as ShamanInputs from './inputs.js';
@@ -99,6 +100,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.BattleShoutBuff,
+		BuffDebuffInputs.StrengthBuffHorde,
 	],
 	excludeBuffDebuffInputs: [
 	],

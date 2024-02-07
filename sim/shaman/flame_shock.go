@@ -14,7 +14,7 @@ var FlameShockSpellId = [FlameShockRanks + 1]int32{0, 8050, 8052, 8053, 10447, 1
 var FlameShockBaseDamage = [FlameShockRanks + 1]float64{0, 25, 51, 95, 164, 245, 292}
 var FlameShockBaseDotDamage = [FlameShockRanks + 1]float64{0, 28, 48, 96, 168, 256, 320}
 var FlameShockBaseSpellCoef = [FlameShockRanks + 1]float64{0, .134, .198, .214, .214, .214, .214}
-var FlameShockDotSpellCoef = [FlameShockRanks + 1]float64{0, .134, .198, .214, .214, .214, .214}
+var FlameShockDotSpellCoef = [FlameShockRanks + 1]float64{0, .063, .093, .1, .1, .1, .1}
 var FlameShockManaCost = [FlameShockRanks + 1]float64{0, 55, 95, 160, 250, 345, 410}
 var FlameShockLevel = [FlameShockRanks + 1]int{0, 10, 18, 28, 40, 52, 60}
 
@@ -55,8 +55,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.Cast.IgnoreHaste = true
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		damage := baseDamage + baseSpellCoeff*spell.SpellPower()
-		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		baseDamage := baseDamage + baseSpellCoeff*spell.SpellPower()
+		result := spell.CalcDamage(sim, target, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
 			spell.Dot(target).NumberOfTicks = int32(numTicks)
 			spell.Dot(target).Apply(sim)
@@ -97,7 +97,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		TickLength:    tickDuration,
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			dot.SnapshotBaseDamage = (baseDotDamage / float64(numTicks)) + dotSpellCoeff*dot.Spell.SpellPower()
+			baseDamage := (baseDotDamage / float64(numTicks)) + dotSpellCoeff*dot.Spell.SpellPower()
+			dot.SnapshotBaseDamage = baseDamage * shaman.ConcussionMultiplier()
 			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 		},
