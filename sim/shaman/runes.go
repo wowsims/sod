@@ -166,6 +166,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 					shaman.HealingWave,
 					shaman.LesserHealingWave,
 					shaman.ChainHeal,
+					{shaman.LavaBurst},
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
 		},

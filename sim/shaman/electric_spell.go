@@ -55,7 +55,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		BonusCritRating: 0 +
 			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
 			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 	}
