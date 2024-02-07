@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Debuffs,
@@ -29,11 +30,32 @@ import Phase1APL from './apls/phase_1.apl.json';
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
 export const DefaultGear = GearPhase1
 
-export const Phase1PresetAPL = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
+export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 
-export const DefaultAPL = Phase1PresetAPL
+export const APLPresets = {
+  [Phase.Phase1]: [
+    APLPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
+  25: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase1][0],
+};
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
@@ -51,7 +73,16 @@ export const TalentsPhase2 = {
 	}),
 };
 
-export const DefaultTalents = TalentsPhase1;
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    TalentsPhase1,
+  ],
+  [Phase.Phase2]: [
+    TalentsPhase2,
+  ]
+};
+
+export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
 
 export const DefaultOptions = EnhancementShamanOptions.create({
 	shield: ShamanShield.LightningShield,

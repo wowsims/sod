@@ -1,4 +1,5 @@
 import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
@@ -8,9 +9,6 @@ import {
 	Spec,
 	Stat,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
@@ -122,25 +120,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.TalentsPhase1,
-			Presets.TalentsPhase2,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.APLPhase1,
-			Presets.APLPhase1AG,
-			Presets.APLPhase2,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.GearBlank,
-			Presets.GearPhase1,
-			Presets.GearPhase2,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (_: Player<Spec.SpecElementalShaman>): APLRotation => {
-		return Presets.DefaultAPL.rotation.rotation!;
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -161,12 +158,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearPhase1.gear,
-					2: Presets.GearPhase2.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase2][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearPhase1.gear,
-					2: Presets.GearPhase2.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase2][0].gear,
 				},
 			},
 		},

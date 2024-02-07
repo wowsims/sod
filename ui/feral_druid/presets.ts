@@ -1,3 +1,4 @@
+import { Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Flask,
@@ -22,15 +23,49 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/p1.gear.json';
 
+import DefaultApl from './apls/default.apl.json';
+
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BlankPreset = PresetUtils.makePresetGear('Blank', BlankGear);
-export const DefaultGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
 
-import DefaultApl from './apls/default.apl.json';
-export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
+
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultGear = GearPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 APL Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const APLPhase1 = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
+
+export const APLPresets = {
+  [Phase.Phase1]: [
+    APLPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
+  25: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase1][0],
+};
 
 export const DefaultRotation = FeralDruidRotation.create({
 	maintainFaerieFire: false,
@@ -43,14 +78,34 @@ export const DefaultRotation = FeralDruidRotation.create({
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
 
+///////////////////////////////////////////////////////////////////////////
+//                                 Talent Presets
+///////////////////////////////////////////////////////////////////////////
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
-export const StandardTalents = {
+
+export const TalentsPhase1 = {
 	name: 'Standard',
 	data: SavedTalents.create({
 		talentsString: '500005001--05',
 	}),
 };
+
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    TalentsPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Options
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = FeralDruidOptions.create({
 	latencyMs: 100,
