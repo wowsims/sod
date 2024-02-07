@@ -72,8 +72,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 11.85564
-  tps: 10.12279
+  dps: 11.89845
+  tps: 10.15238
  }
 }
 dps_results: {
@@ -107,8 +107,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-IrradiatedGarments"
  value: {
-  dps: 13.27003
-  tps: 10.16994
+  dps: 13.32315
+  tps: 10.21395
  }
 }
 dps_results: {
