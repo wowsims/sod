@@ -21,7 +21,7 @@ import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
-import { WarlockRune } from 'ui/core/proto/warlock.js';
+import { WarlockOptions_Summon, WarlockRune } from '../core/proto/warlock.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	cssClass: 'warlock-sim-ui',
@@ -65,12 +65,46 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 	],
+	// TODO: Figure out a way to get the stat but right now this comes out wrong
+	// due to pet scaling and player getting some dynamic buffs which we cant get here
 	// modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
 	// 	let stats = new Stats();
 		
-	// 	// TODO:
+	// 	// Demonic Knowledge rune
 	// 	if (player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == WarlockRune.RuneBootsDemonicKnowledge) {
-	// 		stats = stats.addStat(Stat.StatSpellPower, 1);
+	// 		let petIntStaMap = new Map<number, Map<WarlockOptions_Summon, number>>([
+	// 			[25, new Map<WarlockOptions_Summon, number>([
+	// 				[WarlockOptions_Summon.Imp, 49 + 94],
+	// 				[WarlockOptions_Summon.Succubus, 87 + 35],
+	// 			])],
+	// 			[40, new Map<WarlockOptions_Summon, number>([
+	// 				[WarlockOptions_Summon.Imp, 67 + 163],
+	// 				[WarlockOptions_Summon.Succubus, 148 + 49],
+	// 			])],
+	// 			[50, new Map<WarlockOptions_Summon, number>([
+	// 				[WarlockOptions_Summon.Imp, 67 + 163],
+	// 				[WarlockOptions_Summon.Succubus, 148 + 49],
+	// 			])],
+	// 			[60, new Map<WarlockOptions_Summon, number>([
+	// 				[WarlockOptions_Summon.Imp, 67 + 163],
+	// 				[WarlockOptions_Summon.Succubus, 148 + 49],
+	// 			])],
+	// 		]);
+
+	// 		// Base stats
+	// 		let currentTotal = petIntStaMap.get(player.getLevel())!.get(player.getSpecOptions().summon)!;
+
+	// 		// Bonus item stats
+	// 		let trinketId = 216509
+	// 		if (player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.id == trinketId || player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.id == trinketId) {
+	// 			currentTotal = currentTotal + 100;
+	// 		}
+
+	// 		// Player scaled stats
+	// 		let playerStats = Stats.fromProto(player.getCurrentStats().finalStats)
+	// 		currentTotal = currentTotal + playerStats.getStat(Stat.StatIntellect) * 0.3 + playerStats.getStat(Stat.StatStamina) * (player.getSpecOptions().summon == WarlockOptions_Summon.Imp ? 0.66 : 0.75)
+			
+	// 		stats = stats.addStat(Stat.StatSpellPower, currentTotal * 0.1);
 	// 	}
 
 	// 	return {
