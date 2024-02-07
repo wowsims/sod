@@ -25,7 +25,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		"Most abilities and pets are work in progress"
+		"Everything P2 should now be functional."
 	],
 
 	// All stats for which EP should be calculated.
@@ -33,6 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -62,6 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatSpellHit,
@@ -85,6 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			[Stat.StatIntellect]: 0.18,
 			[Stat.StatSpirit]: 0.54,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatShadowPower]: 1,
 			[Stat.StatSpellHit]: 0.93,

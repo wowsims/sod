@@ -153,12 +153,12 @@ func init() {
 			ActionID: core.ActionID{SpellID: 437698},
 			Duration: time.Second * 30,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeCrit, 10)
-				character.AddStatDynamic(sim, stats.SpellCrit, 10)
+				character.AddStatDynamic(sim, stats.MeleeCrit, 3)
+				character.AddStatDynamic(sim, stats.SpellCrit, 3)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeCrit, -10)
-				character.AddStatDynamic(sim, stats.SpellCrit, -10)
+				character.AddStatDynamic(sim, stats.MeleeCrit, -3)
+				character.AddStatDynamic(sim, stats.SpellCrit, -3)
 			},
 		})
 

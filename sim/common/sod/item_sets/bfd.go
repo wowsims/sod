@@ -41,7 +41,6 @@ var ItemSetBlackfathomElementalistHide = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 9)
-			c.AddStat(stats.Healing, 9)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -57,7 +56,6 @@ var ItemSetBlackfathomInvokerVestaments = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 9)
-			c.AddStat(stats.Healing, 9)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()

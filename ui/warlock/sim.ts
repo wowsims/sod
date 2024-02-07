@@ -21,6 +21,7 @@ import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
+import { WarlockRune } from 'ui/core/proto/warlock.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	cssClass: 'warlock-sim-ui',
@@ -33,25 +34,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatIntellect,
+		Stat.StatStamina,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
+		Stat.StatFirePower,
+		Stat.StatShadowPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatFirePower,
-		Stat.StatShadowPower,
 		Stat.StatSpellPenetration,
-
-		// Pet Related Stats
-		Stat.StatStrength,
-		Stat.StatStamina,
-		Stat.StatAttackPower,
-		Stat.StatArmorPenetration,
-		Stat.StatAgility,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -60,8 +53,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatHealth,
 		Stat.StatMana,
 		Stat.StatIntellect,
+		Stat.StatStamina,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatSpellHit,
@@ -69,8 +64,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellHaste,
 		Stat.StatSpellPenetration,
 		Stat.StatMP5,
-		Stat.StatStamina,
 	],
+	// modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
+	// 	let stats = new Stats();
+		
+	// 	// TODO:
+	// 	if (player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == WarlockRune.RuneBootsDemonicKnowledge) {
+	// 		stats = stats.addStat(Stat.StatSpellPower, 1);
+	// 	}
+
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.
@@ -81,6 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			[Stat.StatIntellect]: 0.18,
 			[Stat.StatSpirit]: 0.54,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatShadowPower]: 1,
 			[Stat.StatSpellHit]: 0.93,
@@ -117,6 +124,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		// Physical buffs that affect pets
+		BuffDebuffInputs.MajorArmorDebuff,
+		BuffDebuffInputs.CurseOfRecklessness,
+		BuffDebuffInputs.FaerieFire,
+		BuffDebuffInputs.PaladinPhysicalBuff,
+		BuffDebuffInputs.StrengthBuffHorde,
+		BuffDebuffInputs.BattleShoutBuff,
+		BuffDebuffInputs.TrueshotAuraBuff,
+		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CurseOfVulnerability,
+		BuffDebuffInputs.GiftOfArthas,
+		BuffDebuffInputs.CrystalYield,
+		BuffDebuffInputs.AncientCorrosivePoison,
 	],
 	excludeBuffDebuffInputs: [
 		BuffDebuffInputs.BleedDebuff,
