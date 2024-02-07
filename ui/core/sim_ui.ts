@@ -12,6 +12,7 @@ import { EventID, TypedEvent } from './typed_event.js';
 
 import { SimTab } from './components/sim_tab.js';
 import { BaseModal } from './components/base_modal.js';
+import { CURRENT_PHASE } from './constants/other.js';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [
@@ -221,10 +222,8 @@ export abstract class SimUI extends Component {
 		let statusStr = '';
 		if (config.launchStatus == LaunchStatus.Unlaunched) {
 			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.launchStatus == LaunchStatus.Alpha) {
-			statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
-		} else if (config.launchStatus == LaunchStatus.Beta) {
-			statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
+		} else if (config.launchStatus < CURRENT_PHASE) {
+			statusStr = `This sim is supported up to phase ${config.launchStatus}. Phase ${CURRENT_PHASE} items and abilities may not yet be functional.`;
 		}
 		if (statusStr) {
 			config.knownIssues = [statusStr].concat(config.knownIssues || []);

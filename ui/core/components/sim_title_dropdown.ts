@@ -253,15 +253,10 @@ export class SimTitleDropdown extends Component {
 	}
 
 	private launchStatusLabel(data: SpecOptions | RaidOptions): string {
-		if (
-			(data.type == 'Raid' && raidSimStatus == LaunchStatus.Launched) ||
-			(data.type == 'Spec' && simLaunchStatuses[data.index] == LaunchStatus.Launched)
-		) return "";
-
 		let label = data.type == 'Raid' ? LaunchStatus[raidSimStatus] : LaunchStatus[simLaunchStatuses[data.index]];
 		let elem = document.createElement('span');
 		elem.classList.add('launch-status-label', 'text-brand');
-		elem.textContent = label;
+		elem.textContent = label.replace('_', ' ');
 
 		return elem.outerHTML;
 	}

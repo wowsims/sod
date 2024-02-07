@@ -6,23 +6,25 @@ import { specToClass } from './proto_utils/utils';
 
 export enum LaunchStatus {
 	Unlaunched,
-	Alpha,
-	Beta,
-	Launched,
-}
+	Phase_1,
+	Phase_2,
+	Phase_3,
+	Phase_4,
+	Phase_5,
+};
 
-export const raidSimStatus: LaunchStatus = LaunchStatus.Beta;
+export const raidSimStatus: LaunchStatus = LaunchStatus.Unlaunched;
 
 // This list controls which links are shown in the top-left dropdown menu.
 export const simLaunchStatuses: Record<Spec, LaunchStatus> = {
-	[Spec.SpecBalanceDruid]: LaunchStatus.Alpha,
-	[Spec.SpecFeralDruid]: LaunchStatus.Alpha,
+	[Spec.SpecBalanceDruid]: LaunchStatus.Phase_1,
+	[Spec.SpecFeralDruid]: LaunchStatus.Phase_1,
 	[Spec.SpecFeralTankDruid]: LaunchStatus.Unlaunched,
 	[Spec.SpecRestorationDruid]: LaunchStatus.Unlaunched,
-	[Spec.SpecElementalShaman]: LaunchStatus.Alpha,
-	[Spec.SpecEnhancementShaman]: LaunchStatus.Alpha,
+	[Spec.SpecElementalShaman]: LaunchStatus.Phase_1,
+	[Spec.SpecEnhancementShaman]: LaunchStatus.Phase_1,
 	[Spec.SpecRestorationShaman]: LaunchStatus.Unlaunched,
-	[Spec.SpecHunter]: LaunchStatus.Alpha,
+	[Spec.SpecHunter]: LaunchStatus.Phase_1,
 	[Spec.SpecMage]: LaunchStatus.Unlaunched,
 	[Spec.SpecRogue]: LaunchStatus.Unlaunched,
 	[Spec.SpecHolyPaladin]: LaunchStatus.Unlaunched,
@@ -30,9 +32,9 @@ export const simLaunchStatuses: Record<Spec, LaunchStatus> = {
 	[Spec.SpecRetributionPaladin]: LaunchStatus.Unlaunched,
 	[Spec.SpecHealingPriest]: LaunchStatus.Unlaunched,
 	[Spec.SpecShadowPriest]: LaunchStatus.Unlaunched,
-	[Spec.SpecWarlock]: LaunchStatus.Alpha,
-	[Spec.SpecTankWarlock]: LaunchStatus.Alpha,
-	[Spec.SpecWarrior]: LaunchStatus.Alpha,
+	[Spec.SpecWarlock]: LaunchStatus.Phase_1,
+	[Spec.SpecTankWarlock]: LaunchStatus.Phase_1,
+	[Spec.SpecWarrior]: LaunchStatus.Phase_1,
 	[Spec.SpecProtectionWarrior]: LaunchStatus.Unlaunched,
 };
 
