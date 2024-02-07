@@ -8,6 +8,7 @@ import (
 )
 
 func (druid *Druid) ApplyRunes() {
+	druid.applyEclipse()
 	druid.applyFuryOfStormRage()
 	druid.applySunfire()
 	druid.applyStarsurge()
@@ -29,6 +30,127 @@ func (druid *Druid) applyFuryOfStormRage() {
 			aura.Activate(sim)
 		},
 	})
+}
+
+func (druid *Druid) applyEclipse() {
+
+	if !druid.HasRune(proto.DruidRune_RuneBeltEclipse) {
+		return
+	}
+	WrathRanks := len(druid.Wrath)
+	StarfireRanks := len(druid.Starfire)
+
+	// Solar
+	solarProcMultiplier := 30.0
+	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
+		Label:     "Solar Eclipse proc",
+		Duration:  time.Second * 15,
+		MaxStacks: 4,
+		ActionID:  core.ActionID{SpellID: 408250},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for rank := 1; rank <= WrathRanks; rank++ {
+				druid.Wrath[rank].BonusCritRating += solarProcMultiplier
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for rank := 1; rank <= WrathRanks; rank++ {
+				druid.Wrath[rank].BonusCritRating -= solarProcMultiplier
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			MatchWrath := false
+
+			// Are we casting Wrath
+			for rank := 1; rank <= WrathRanks; rank++ {
+				if druid.Wrath[rank].IsEqual(spell) {
+					MatchWrath = true
+				}
+			}
+			if !MatchWrath {
+				return
+			}
+			if !result.Landed() {
+				return
+			}
+
+			aura.RemoveStack(sim)
+		},
+	})
+
+	// Lunar
+	lunarBonusCrit := 30.0
+	druid.LunarEclipseProcAura = druid.RegisterAura(core.Aura{
+		Label:     "Lunar Eclipse proc",
+		Duration:  time.Second * 15,
+		MaxStacks: 4,
+		ActionID:  core.ActionID{SpellID: 408255},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for rank := 1; rank <= StarfireRanks; rank++ {
+				druid.Starfire[rank].BonusCritRating += lunarBonusCrit
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for rank := 1; rank <= StarfireRanks; rank++ {
+				druid.Starfire[rank].BonusCritRating -= lunarBonusCrit
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			MatchStarfire := false
+
+			// Are we casting Starfire
+			for rank := 1; rank <= StarfireRanks; rank++ {
+				if druid.Starfire[rank].IsEqual(spell) {
+					MatchStarfire = true
+				}
+			}
+			if !MatchStarfire {
+				return
+			}
+			if !result.Landed() {
+				return
+			}
+
+			aura.RemoveStack(sim)
+		},
+	})
+
+	druid.EclipseAura = druid.RegisterAura(core.Aura{
+		Label:    "Eclipse",
+		Duration: core.NeverExpires,
+		ActionID: core.ActionID{SpellID: 408248}, // Check please
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			MatchWrath := false
+			MatchStarfire := false
+
+			// Are we casting Wrath
+			for rank := 1; rank <= WrathRanks; rank++ {
+				if druid.Wrath[rank].IsEqual(spell) {
+					MatchWrath = true
+				}
+			}
+			if MatchWrath {
+				// Proc Lunar
+				druid.LunarEclipseProcAura.Activate(sim)
+				druid.LunarEclipseProcAura.SetStacks(sim, 1)
+			}
+
+			// Are we casting Starfire
+			for rank := 1; rank <= StarfireRanks; rank++ {
+				if druid.Starfire[rank].IsEqual(spell) {
+					MatchStarfire = true
+				}
+			}
+			if MatchStarfire {
+				// Proc Solar
+				druid.SolarEclipseProcAura.Activate(sim)
+				druid.SolarEclipseProcAura.SetStacks(sim, 2)
+			}
+		},
+	})
+
 }
 
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044

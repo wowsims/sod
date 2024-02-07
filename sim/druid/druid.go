@@ -72,6 +72,7 @@ type Druid struct {
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	EnrageAura               *core.Aura
+	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FuryOfStormrageAura      *core.Aura
@@ -82,6 +83,8 @@ type Druid struct {
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
+	SolarEclipseProcAura     *core.Aura
+	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
