@@ -1,3 +1,4 @@
+import { Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Flask,
@@ -21,12 +22,50 @@ import DefaultApl from './apls/default.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const DefaultGear = PresetUtils.makePresetGear('Blank', BlankGear);
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
 
-export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearBlank,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultGear = GearPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 APL Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const APLPhase1 = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+export const APLPresets = {
+  [Phase.Phase1]: [
+    APLPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
+  25: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase1][0],
+};
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Talent presets
+///////////////////////////////////////////////////////////////////////////
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
+
 export const AuraMasteryTalents = {
 	name: 'Aura Mastery',
 	data: SavedTalents.create({
@@ -34,13 +73,27 @@ export const AuraMasteryTalents = {
 	}),
 };
 
-
 export const DivineSacTalents = {
 	name: 'Divine Sacrifice & Guardian',
 	data: SavedTalents.create({
 		talentsString: '03-453201002-05222051203331302133201331',
 	}),
 };
+
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    AuraMasteryTalents,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Options
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	aura: PaladinAura.RetributionAura,

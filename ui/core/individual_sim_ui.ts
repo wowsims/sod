@@ -118,8 +118,10 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		gear: EquipmentSpec,
 		epWeights: Stats,
 		consumes: Consumes,
+
 		rotationType?: APLRotationType,
 		simpleRotation?: SpecRotation<SpecType>,
+
 		talents: SavedTalents,
 		specOptions: SpecOptions<SpecType>,
 
