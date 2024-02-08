@@ -190,8 +190,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if effectiveTime := spell.CurCast.EffectiveTime(); effectiveTime != 0 {
-			if spell.Flags.Matches(SpellFlagHunterRanged) {
-				effectiveTime = min(effectiveTime, spell.Unit.GCD.TimeToReady(sim))
+			if spell.Flags.Matches(SpellFlagCastTimeNoGCD) {
+				effectiveTime = max(effectiveTime, spell.Unit.GCD.TimeToReady(sim))
 			}
 			spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
 			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)

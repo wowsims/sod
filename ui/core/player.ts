@@ -68,9 +68,11 @@ import {
 } from './proto_utils/utils.js';
 
 import { getLanguageCode } from './constants/lang.js';
-import { Sim, SimSettingCategories } from './sim.js';
+import { LEVEL_THRESHOLDS } from './constants/other.js';
+import { simLaunchStatuses } from './launched_sims.js';
 import { MAX_PARTY_SIZE, Party } from './party.js';
 import { Raid } from './raid.js';
+import { Sim, SimSettingCategories } from './sim.js';
 import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
@@ -292,7 +294,7 @@ export class Player<SpecType extends Spec> {
 
 		this.spec = spec;
 		this.race = specToEligibleRaces[this.spec][0];
-		this.level = Mechanics.CURRENT_LEVEL_CAP;
+		this.level = LEVEL_THRESHOLDS[simLaunchStatuses[this.spec].phase]
 		this.specTypeFunctions = specTypeFunctions[this.spec] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 

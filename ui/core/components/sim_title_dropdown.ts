@@ -253,15 +253,11 @@ export class SimTitleDropdown extends Component {
 	}
 
 	private launchStatusLabel(data: SpecOptions | RaidOptions): string {
-		if (
-			(data.type == 'Raid' && raidSimStatus == LaunchStatus.Launched) ||
-			(data.type == 'Spec' && simLaunchStatuses[data.index] == LaunchStatus.Launched)
-		) return "";
-
-		let label = data.type == 'Raid' ? LaunchStatus[raidSimStatus] : LaunchStatus[simLaunchStatuses[data.index]];
+		const status = data.type == 'Raid' ? raidSimStatus.status : simLaunchStatuses[data.index].status;
+		const phase = data.type == 'Raid' ? raidSimStatus.phase : simLaunchStatuses[data.index].phase;
 		let elem = document.createElement('span');
 		elem.classList.add('launch-status-label', 'text-brand');
-		elem.textContent = label;
+		elem.textContent = status == LaunchStatus.Unlaunched ? 'Not Yet Supported' : `Phase ${phase} - ${LaunchStatus[status]}`
 
 		return elem.outerHTML;
 	}

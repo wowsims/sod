@@ -39,6 +39,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_ShamanLavaBurst,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       flags,

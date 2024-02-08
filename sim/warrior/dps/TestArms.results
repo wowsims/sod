@@ -51,15 +51,15 @@ character_stats_results: {
 dps_results: {
  key: "TestArms-AllItems-StormshroudArmor"
  value: {
-  dps: 0.61913
-  tps: 1.46068
+  dps: 0.63077
+  tps: 1.46868
  }
 }
 dps_results: {
  key: "TestArms-Average-Default"
  value: {
-  dps: 0.49971
-  tps: 0.78193
+  dps: 0.5098
+  tps: 0.78905
  }
 }
 dps_results: {
@@ -107,49 +107,49 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.39387
-  tps: 7.62718
+  dps: 0.39547
+  tps: 7.62814
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.39387
-  tps: 0.66051
+  dps: 0.39547
+  tps: 0.66147
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 1.96936
-  tps: 3.30255
+  dps: 1.97737
+  tps: 3.30736
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.26679
-  tps: 7.53273
+  dps: 0.26832
+  tps: 7.53365
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.26679
-  tps: 0.56606
+  dps: 0.26832
+  tps: 0.56698
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 1.33394
-  tps: 2.83031
+  dps: 1.34162
+  tps: 2.83492
  }
 }
 dps_results: {
  key: "TestArms-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 0.28442
-  tps: 0.57295
+  dps: 0.28602
+  tps: 0.57391
  }
 }

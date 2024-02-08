@@ -1,3 +1,4 @@
+import { Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Debuffs,
@@ -28,25 +29,72 @@ import Phase1APL from './apls/phase_1.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BlankPresetGear = PresetUtils.makePresetGear('Blank', BlankGear);
-export const Phase1PresetGear = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
 
-export const DefaultGear = Phase1PresetGear;
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 
-export const APLBalancePhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
 
-export const DEFAULT_APL = APLBalancePhase1
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultGear = GearPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 APL Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
+
+export const APLPresets = {
+  [Phase.Phase1]: [
+    APLPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
+  25: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase1][0],
+};
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Talent Presets
+///////////////////////////////////////////////////////////////////////////
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
-export const Phase1PresetTalents = {
+
+export const TalentsPhase1 = {
 	name: 'Phase 1',
 	data: SavedTalents.create({
 		talentsString: '50005003021',
 	}),
 };
 
-export const DefaultTalents = Phase1PresetTalents;
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    TalentsPhase1,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Options
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = BalanceDruidOptions.create({
 	innervateTarget: UnitReference.create(),

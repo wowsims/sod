@@ -5,13 +5,14 @@ import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SimHeader } from './components/sim_header';
 import { Spec } from './proto/common.js';
 import { ActionId } from './proto_utils/action_id.js';
-import { LaunchStatus } from './launched_sims.js';
+import { LaunchStatus, SimStatus } from './launched_sims.js';
 
 import { Sim, SimError } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
 
 import { SimTab } from './components/sim_tab.js';
 import { BaseModal } from './components/base_modal.js';
+import { CURRENT_PHASE } from './constants/other.js';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [
@@ -30,7 +31,7 @@ export interface SimUIConfig {
 	cssScheme: string;
 	// The spec, if an individual sim, or null if the raid sim.
 	spec: Spec | null,
-	launchStatus: LaunchStatus,
+	simStatus: SimStatus,
 	knownIssues?: Array<string>,
 	noticeText?: string,
 }
@@ -219,12 +220,10 @@ export abstract class SimUI extends Component {
 
 	private addKnownIssues(config: SimUIConfig) {
 		let statusStr = '';
-		if (config.launchStatus == LaunchStatus.Unlaunched) {
+		if (config.simStatus.status == LaunchStatus.Unlaunched) {
 			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.launchStatus == LaunchStatus.Alpha) {
-			statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
-		} else if (config.launchStatus == LaunchStatus.Beta) {
-			statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
+		} else if (config.simStatus.phase < CURRENT_PHASE) {
+			statusStr = `This sim is supported up to phase ${config.simStatus.phase}. Phase ${CURRENT_PHASE} items and abilities may not yet be functional.`;
 		}
 		if (statusStr) {
 			config.knownIssues = [statusStr].concat(config.knownIssues || []);
