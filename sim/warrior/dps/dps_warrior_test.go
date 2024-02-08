@@ -18,11 +18,11 @@ func TestFury(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		Talents:     FuryTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
+		Talents:     P2FuryTalents,
+		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_dw"),
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+		SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
+		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2"),
 
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypePlate,
@@ -44,10 +44,10 @@ func TestArms(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		Talents:     ArmsTalents,
+		Talents:     P1ArmsTalents,
 		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
+		SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
 
 		ItemFilter: core.ItemFilter{
@@ -70,10 +70,10 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassWarrior,
-				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1").GearSet,
+				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2").GearSet,
 				Consumes:      FullConsumes.Consumes,
 				Spec:          PlayerOptionsFury,
-				TalentsString: FuryTalents,
+				TalentsString: P2FuryTalents,
 				Buffs:         core.FullIndividualBuffs,
 			},
 			core.FullPartyBuffs,
@@ -91,8 +91,9 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FuryTalents = "303220203-01"
-var ArmsTalents = "303220203-01"
+var P1FuryTalents = "303220203-01"
+var P1ArmsTalents = "303220203-01"
+var P2FuryTalents = "-05050005405010051"
 
 var PlayerOptionsArms = &proto.Player_Warrior{
 	Warrior: &proto.Warrior{

@@ -63,84 +63,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.36777
   tps: 7.60778
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.36777
   tps: 0.64111
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.83885
   tps: 3.20557
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.24323
   tps: 7.5152
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.24323
   tps: 0.54854
  }
 }
 dps_results: {
- key: "TestArms-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.21615
   tps: 2.74268
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.39406
   tps: 7.62708
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.39406
   tps: 0.66042
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.97032
   tps: 3.30209
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
   dps: 0.26832
   tps: 7.53365
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
   dps: 0.26832
   tps: 0.56698
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
   dps: 1.34162
   tps: 2.83492
