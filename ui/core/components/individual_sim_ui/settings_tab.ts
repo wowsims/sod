@@ -128,9 +128,9 @@ export class SettingsTab extends SimTab {
 					value: level,
 				};
 			}),
-			changedEvent: sim => sim.levelChangeEmitter,
-			getValue: sim => sim.getLevel(),
-			setValue: (eventID, sim, newValue) => sim.setLevel(eventID, newValue),
+			changedEvent: player => player.levelChangeEmitter,
+			getValue: player => player.getLevel(),
+			setValue: (eventID, player, newValue) => player.setLevel(eventID, newValue),
 		});
 
 		const races = specToEligibleRaces[this.simUI.player.spec];
@@ -142,9 +142,9 @@ export class SettingsTab extends SimTab {
 					value: race,
 				};
 			}),
-			changedEvent: sim => sim.raceChangeEmitter,
-			getValue: sim => sim.getRace(),
-			setValue: (eventID, sim, newValue) => sim.setRace(eventID, newValue),
+			changedEvent: player => player.raceChangeEmitter,
+			getValue: player => player.getRace(),
+			setValue: (eventID, player, newValue) => player.setRace(eventID, newValue),
 		});		
 
 		if (this.simUI.individualConfig.playerInputs?.inputs.length) {
@@ -163,9 +163,9 @@ export class SettingsTab extends SimTab {
 					value: p,
 				};
 			}),
-			changedEvent: sim => sim.professionChangeEmitter,
-			getValue: sim => sim.getProfession1(),
-			setValue: (eventID, sim, newValue) => sim.setProfession1(eventID, newValue),
+			changedEvent: player => player.professionChangeEmitter,
+			getValue: player => player.getProfession1(),
+			setValue: (eventID, player, newValue) => player.setProfession1(eventID, newValue),
 		});
 
 		new EnumPicker(professionGroup, this.simUI.player, {
@@ -176,9 +176,9 @@ export class SettingsTab extends SimTab {
 					value: p,
 				};
 			}),
-			changedEvent: sim => sim.professionChangeEmitter,
-			getValue: sim => sim.getProfession2(),
-			setValue: (eventID, sim, newValue) => sim.setProfession2(eventID, newValue),
+			changedEvent: player => player.professionChangeEmitter,
+			getValue: player => player.getProfession2(),
+			setValue: (eventID, player, newValue) => player.setProfession2(eventID, newValue),
 		});
 	}
 

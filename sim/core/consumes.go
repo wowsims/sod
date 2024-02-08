@@ -171,16 +171,22 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		}
 	}
 
-	if consumes.ShadowPowerBuff {
-		character.AddStats(stats.Stats{
-			stats.ShadowPower: 40,
-		})
+	if consumes.ShadowPowerBuff != proto.ShadowPowerBuff_ShadowPowerBuffUnknown {
+		switch consumes.ShadowPowerBuff {
+		case proto.ShadowPowerBuff_ElixirOfShadowPower:
+			character.AddStats(stats.Stats{
+				stats.ShadowPower: 40,
+			})
+		}
 	}
 
-	if consumes.FrostPowerBuff {
-		character.AddStats(stats.Stats{
-			stats.FrostPower: 15,
-		})
+	if consumes.FrostPowerBuff != proto.FrostPowerBuff_FrostPowerBuffUnknown {
+		switch consumes.FrostPowerBuff {
+		case proto.FrostPowerBuff_ElixirOfFrostPower:
+			character.AddStats(stats.Stats{
+				stats.FrostPower: 15,
+			})
+		}
 	}
 
 	if character.HasProfession(proto.Profession_Enchanting) && consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
