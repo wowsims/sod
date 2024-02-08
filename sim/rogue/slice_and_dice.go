@@ -7,9 +7,23 @@ import (
 )
 
 func (rogue *Rogue) registerSliceAndDice() {
-	actionID := core.ActionID{SpellID: 6774}
+	hasteBonusByRank := map[int32]float64{
+		25: 0.20,
+		40: 0.20,
+		50: 0.30,
+		60: 0.30,
+	}[rogue.Level]
 
-	durationMultiplier := 1.0 + 0.25*float64(rogue.Talents.ImprovedSliceAndDice)
+	spellID := map[int32]int32{
+		25: 5171,
+		40: 5171,
+		50: 6774,
+		60: 6774,
+	}[rogue.Level]
+
+	actionID := core.ActionID{SpellID: spellID}
+
+	durationMultiplier := 1.0 + 0.15*float64(rogue.Talents.ImprovedSliceAndDice)
 	durationBonus := time.Duration(0)
 	rogue.sliceAndDiceDurations = [6]time.Duration{
 		0,
@@ -20,11 +34,8 @@ func (rogue *Rogue) registerSliceAndDice() {
 		time.Duration(float64(time.Second*21+durationBonus) * durationMultiplier),
 	}
 
-	hasteBonus := 1.4
-	if rogue.HasSetBonus(Tier6, 2) {
-		hasteBonus += 0.05
-	}
-	inverseHasteBonus := 1.0 / hasteBonus
+	hasteBonus := 1 + hasteBonusByRank
+	inverseHasteBonus := 1.0 / hasteBonusByRank
 
 	rogue.SliceAndDiceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Slice and Dice",

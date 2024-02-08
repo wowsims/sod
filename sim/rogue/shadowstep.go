@@ -1,11 +1,6 @@
 package rogue
 
-import (
-	"time"
-
-	"github.com/wowsims/sod/sim/core"
-)
-
+/**
 func (rogue *Rogue) registerShadowstepCD() {
 	if !rogue.Talents.Shadowstep {
 		return
@@ -71,4 +66,4 @@ func (rogue *Rogue) registerShadowstepCD() {
 			rogue.ShadowstepAura.Activate(sim)
 		},
 	})
-}
+}*/

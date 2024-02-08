@@ -1,12 +1,6 @@
 package rogue
 
-import (
-	"math"
-	"time"
-
-	"github.com/wowsims/sod/sim/core"
-)
-
+/**
 func (rogue *Rogue) registerKillingSpreeSpell() {
 	mhWeaponSwing := rogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
@@ -103,4 +97,4 @@ func (rogue *Rogue) registerKillingSpreeSpell() {
 			return true
 		},
 	})
-}
+}*/

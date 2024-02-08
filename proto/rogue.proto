@@ -64,25 +64,39 @@ message RogueTalents {
 	bool premeditation = 51;
 }
 
+enum RogueRune {
+	RogueRuneNone = 0;
+	RuneDeadlyBrew = 1;
+	RuneJustAFleshWound = 2;
+	RuneQuickDraw = 3;
+	RuneSlaughterFromTheShadows = 4;
+	RuneBetweenTheEyes = 5;
+	RuneBladeDance = 6;
+	RuneEnvenom = 7;
+	RuneMainGauche = 8;
+	RuneMutilate = 9;
+	RuneSaberSlash = 10;
+	RuneShadowstrike = 11;
+	RuneShiv = 12;
+}
+
 message Rogue {
 	message Rotation {
 	}
 	
 	message Options {
-		UnitReference tricks_of_the_trade_target = 1;
 		enum PoisonImbue {
 			NoPoison = 0;
 			InstantPoison = 1;
 			DeadlyPoison = 2;
 			WoundPoison = 3;
 		}
-		PoisonImbue mh_imbue = 2;
-		PoisonImbue oh_imbue = 3;
-		int32 starting_overkill_duration = 4;
-		bool apply_poisons_manually = 5;
+		PoisonImbue mh_imbue = 1;
+		PoisonImbue oh_imbue = 2;
+		bool apply_poisons_manually = 3;
+		bool assume_bleed_active = 4;
+		float vanish_break_time = 5;
 		int32 honor_of_thieves_crit_rate = 6;
-		bool assume_bleed_active = 7;
-		float vanish_break_time = 8;
 	}
 	Options options = 3;
 }

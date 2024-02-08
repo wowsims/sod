@@ -7,8 +7,22 @@ import (
 )
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
+	flatDamageBonus := map[int32]float64{
+		25: 15,
+		40: 33,
+		50: 52,
+		60: 68,
+	}[rogue.Level]
+
+	spellID := map[int32]int32{
+		25: 1759,
+		40: 8621,
+		50: 11293,
+		60: 11294,
+	}[rogue.Level]
+
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48638},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
@@ -24,20 +38,14 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0) +
-			[]float64{0, 2, 4, 6}[rogue.Talents.TurnTheTables]*core.CritRatingPerCritChance,
 		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			0.03*float64(rogue.Talents.Aggression) +
-			0.05*float64(rogue.Talents.BladeTwisting) +
-			core.TernaryFloat64(rogue.Talents.SurpriseAttacks, 0.1, 0) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
+			0.02*float64(rogue.Talents.Aggression),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := 180 +
+			baseDamage := flatDamageBonus +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 				spell.BonusWeaponDamage()
 

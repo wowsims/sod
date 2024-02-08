@@ -666,14 +666,7 @@ const externalCDSpells: Array<{ id: number, name: string, class: Class, applyFun
 			options.powerInfusionTarget = raidTarget;
 			return options;
 		}
-	},
-	{
-		id: 57933, name: 'Tricks of the Trade', class: Class.ClassRogue, applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
-			const options = player.getSpecOptions() as SpecOptions<RogueSpecs>;
-			options.tricksOfTheTradeTarget = raidTarget;
-			return options;
-		}
-	},
+	}
 ];
 
 // Healing spells which only affect the caster's party.

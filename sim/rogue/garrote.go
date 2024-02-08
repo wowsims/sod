@@ -8,8 +8,22 @@ import (
 
 func (rogue *Rogue) registerGarrote() {
 	numTicks := int32(6)
+	baseDamage := map[int32]float64{
+		25: 204,
+		40: 354,
+		50: 444,
+		60: 552,
+	}[rogue.Level]
+
+	spellID := map[int32]int32{
+		25: 8631,
+		40: 8633,
+		50: 11289,
+		60: 11290,
+	}[rogue.Level]
+
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48676},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
@@ -29,9 +43,7 @@ func (rogue *Rogue) registerGarrote() {
 		},
 
 		DamageMultiplier: 1 +
-			0.15*float64(rogue.Talents.BloodSpatter) +
-			0.10*float64(rogue.Talents.Opportunity) +
-			0.02*float64(rogue.Talents.FindWeakness),
+			0.04*float64(rogue.Talents.Opportunity),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -42,7 +54,7 @@ func (rogue *Rogue) registerGarrote() {
 			NumberOfTicks: numTicks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 119 + dot.Spell.MeleeAttackPower()*0.07
+				dot.SnapshotBaseDamage = baseDamage + dot.Spell.MeleeAttackPower()*0.07
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},

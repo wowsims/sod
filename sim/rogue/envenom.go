@@ -4,23 +4,24 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (rogue *Rogue) registerEnvenom() {
+	if !rogue.HasRune(proto.RogueRune_RuneEnvenom) {
+		return
+	}
+
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
 		ActionID: core.ActionID{SpellID: 57993},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.deadlyPoisonProcChanceBonus += 0.15
-			rogue.UpdateInstantPoisonPPM(0.75)
+			rogue.instantPoisonProcChanceBonus += 0.75
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.deadlyPoisonProcChanceBonus -= 0.15
-			rogue.UpdateInstantPoisonPPM(0.0)
+			rogue.instantPoisonProcChanceBonus -= 0.75
 		},
 	})
-
-	chanceToRetainStacks := []float64{0, 0.33, 0.66, 1}[rogue.Talents.MasterPoisoner]
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 57993},
@@ -30,9 +31,8 @@ func (rogue *Rogue) registerEnvenom() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          35,
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Cost:   35,
+			Refund: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -48,8 +48,7 @@ func (rogue *Rogue) registerEnvenom() {
 		},
 
 		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.VilePoisons],
+			[]float64{0.0, 0.04, 0.08, 0.12, 0.16, 0.2}[rogue.Talents.VilePoisons],
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
@@ -72,14 +71,6 @@ func (rogue *Rogue) registerEnvenom() {
 
 			if result.Landed() {
 				rogue.ApplyFinisher(sim, spell)
-				rogue.ApplyCutToTheChase(sim)
-				if !sim.Proc(chanceToRetainStacks, "Master Poisoner") {
-					if newStacks := dp.GetStacks() - comboPoints; newStacks > 0 {
-						dp.SetStacks(sim, newStacks)
-					} else {
-						dp.Cancel(sim)
-					}
-				}
 			} else {
 				spell.IssueRefund(sim)
 			}

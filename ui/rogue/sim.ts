@@ -106,7 +106,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -127,7 +126,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 	],
 
 	defaults: {
@@ -152,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AssassinationTalents137.data,
+		talents: Presets.CombatHackTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.

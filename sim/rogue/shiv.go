@@ -8,19 +8,24 @@ import (
 )
 
 func (rogue *Rogue) registerShivSpell() {
+	if !rogue.HasRune(proto.RogueRune_RuneShiv) {
+		return
+	}
+
 	baseCost := 20.0
 	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
-		baseCost = rogue.costModifier(20 + 10*ohWeapon.SwingSpeed)
+		baseCost = rogue.costModifier(baseCost + 10*ohWeapon.SwingSpeed)
 	}
 
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 5938},
+		ActionID:    core.ActionID{SpellID: 424799},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: baseCost,
+			Cost:   baseCost,
+			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,16 +34,15 @@ func (rogue *Rogue) registerShivSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			core.TernaryFloat64(rogue.Talents.SurpriseAttacks, 0.1, 0)) * rogue.dwsMultiplier(),
+		DamageMultiplier: 1 * rogue.dwsMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
+			// TODO: cannot Miss
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())

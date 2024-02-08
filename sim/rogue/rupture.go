@@ -6,21 +6,24 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-const RuptureEnergyCost = 25.0
-const RuptureSpellID = 48672
-
 func (rogue *Rogue) registerRupture() {
+	spellID := map[int32]int32{
+		25: 1943,
+		40: 8640,
+		50: 11273,
+		60: 11275,
+	}[rogue.Level]
+
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: RuptureSpellID},
+		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          RuptureEnergyCost,
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Cost:   25,
+			Refund: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,10 +39,6 @@ func (rogue *Rogue) registerRupture() {
 		},
 
 		DamageMultiplier: 1 +
-			0.15*float64(rogue.Talents.BloodSpatter) +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier7, 2), 0.1, 0) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier8, 4), 0.2, 0) +
 			0.1*float64(rogue.Talents.SerratedBlades),
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
@@ -67,11 +66,9 @@ func (rogue *Rogue) registerRupture() {
 			rogue.BreakStealth(sim)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				numberOfTicks := 3 + rogue.ComboPoints()
 				dot := spell.Dot(target)
 				dot.Spell = spell
-				dot.NumberOfTicks = numberOfTicks
-				dot.MaxStacks = numberOfTicks // slightly hacky; used to determine max extra ticks from Glyph of Backstab
+				dot.NumberOfTicks = rogue.RuptureTicks(rogue.ComboPoints())
 				dot.Apply(sim)
 				rogue.ApplyFinisher(sim, spell)
 			} else {
@@ -83,8 +80,21 @@ func (rogue *Rogue) registerRupture() {
 }
 
 func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
-	return 127 +
-		18*float64(comboPoints) +
+	baseTickDamage := map[int32]float64{
+		25: 8,
+		40: 18,
+		50: 27,
+		60: 60,
+	}[rogue.Level]
+
+	comboTickDamage := map[int32]float64{
+		25: 2,
+		40: 4,
+		50: 5,
+		60: 8,
+	}[rogue.Level]
+
+	return (baseTickDamage+comboTickDamage*float64(comboPoints))*(3+float64(comboPoints)) +
 		[]float64{0, 0.06 / 4, 0.12 / 5, 0.18 / 6, 0.24 / 7, 0.30 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
 }
 

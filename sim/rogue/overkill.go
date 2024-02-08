@@ -1,13 +1,12 @@
 package rogue
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/core"
 )
 
 var OverkillActionID = core.ActionID{SpellID: 58426}
 
+/**
 func (rogue *Rogue) registerOverkill() {
 	if !rogue.Talents.Overkill {
 		return
@@ -29,4 +28,4 @@ func (rogue *Rogue) registerOverkill() {
 			rogue.ApplyEnergyTickMultiplier(-0.3)
 		},
 	})
-}
+} */

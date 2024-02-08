@@ -189,7 +189,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:      proto.Race_RaceTroll,
 				Class:     proto.Class_ClassRogue,
 				Equipment: core.GetGearSet("../../ui/rogue/gear_sets", "p1_combat").GearSet,
-				Consumes:  FullConsumes,
+				Consumes:  SoloConsumes,
 				Spec:      PlayerOptionsCombatDI,
 				Buffs:     core.FullIndividualBuffs,
 				Rotation:  core.GetAplRotation("../../ui/rogue/apls", "combat_cleave_snd").Rotation,
@@ -299,10 +299,17 @@ var DeadlyDeadly = &proto.Rogue_Options{
 	OhImbue: proto.Rogue_Options_DeadlyPoison,
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfEndlessRage,
-	DefaultPotion:   proto.Potions_PotionOfSpeed,
-	DefaultConjured: proto.Conjured_ConjuredRogueThistleTea,
+var FullConsumes = core.ConsumesCombo{
+	Label: "Elixir",
+	Consumes: &proto.Consumes{
+		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
+		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var SoloConsumes = &proto.Consumes{
+	AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
+	StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
 }
 
 var GearWithoutRED = core.EquipmentSpecFromJsonString(`{"items":[
