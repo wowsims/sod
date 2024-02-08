@@ -148,7 +148,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
-		MakePermanent(InsectSwarmAura(target))
+		MakePermanent(InsectSwarmAura(target, 24977))
 	}
 	if debuffs.ScorpidSting && targetIdx == 0 {
 		MakePermanent(ScorpidStingAura(target))
@@ -836,10 +836,10 @@ func AtkSpeedReductionEffect(aura *Aura, speedMultiplier float64) *ExclusiveEffe
 	})
 }
 
-func InsectSwarmAura(target *Unit) *Aura {
+func InsectSwarmAura(target *Unit, spellId int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "InsectSwarmMiss",
-		ActionID: ActionID{SpellID: 24977},
+		ActionID: ActionID{SpellID: spellId},
 		Duration: time.Second * 12,
 	})
 	increasedMissEffect(aura, 0.02)

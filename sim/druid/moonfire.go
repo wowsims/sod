@@ -34,7 +34,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 	spellCoeff := MoonfiresSpellCoeff[rank]
 	spellDotCoeff := MoonfiresSellDotCoeff[rank]
 	baseDamageLow := MoonfireBaseDamage[rank][0]
-	baseDamageHigh := MoonfireBaseDamage[rank][0]
+	baseDamageHigh := MoonfireBaseDamage[rank][1]
 	baseDotDamage := MoonfireBaseDotDamage[rank]
 	manaCost := MoonfireManaCost[rank]
 	level := MoonfireLevel[rank]

@@ -42,7 +42,7 @@ type Druid struct {
 	FrenziedRegeneration *DruidSpell
 	Hurricane            *DruidSpell
 	HurricaneTickSpell   *DruidSpell
-	InsectSwarm          *DruidSpell
+	InsectSwarm          []*DruidSpell
 	GiftOfTheWild        *DruidSpell
 	Lacerate             *DruidSpell
 	Languish             *DruidSpell
@@ -187,7 +187,7 @@ func (druid *Druid) Initialize() {
 
 func (druid *Druid) RegisterBalanceSpells() {
 	// druid.registerHurricaneSpell()
-	// druid.registerInsectSwarmSpell()
+	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
