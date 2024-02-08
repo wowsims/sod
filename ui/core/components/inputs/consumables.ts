@@ -276,7 +276,8 @@ export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 };
 export const NightfinSoup: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13931, minLevel: 35 },
+		// Requires Skill 250
+		{ id: 13931, minLevel: 41 },
 	]),
 	value: Food.FoodNightfinSoup,
 };
@@ -451,7 +452,8 @@ export const GreaterArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 9155, minLevel: 37 },
+		// Requires skill 235
+		{ id: 9155, minLevel: 41 },
 	]),
 	value: SpellPowerBuff.ArcaneElixir,
 };
@@ -473,7 +475,8 @@ export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesField
 // Fire
 export const ElixirOfGreaterFirepower: ConsumableInputConfig<FirePowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 21546, minLevel: 40 },
+		// Requires skill 250
+		{ id: 21546, minLevel: 41 },
 	]),
 	value: FirePowerBuff.ElixirOfGreaterFirepower,
 };
