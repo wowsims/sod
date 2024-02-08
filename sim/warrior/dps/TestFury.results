@@ -51,91 +51,105 @@ character_stats_results: {
 dps_results: {
  key: "TestFury-AllItems-StormshroudArmor"
  value: {
-  dps: 0.39463
-  tps: 1.32771
+  dps: 1.20911
+  tps: 3.00062
  }
 }
 dps_results: {
  key: "TestFury-Average-Default"
  value: {
-  tps: 0.36679
+  dps: 1.67711
+  tps: 3.28698
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  tps: 7.33333
+  dps: 1.74201
+  tps: 42.06028
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  tps: 0.36667
+  dps: 1.74201
+  tps: 3.42694
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  tps: 1.83333
+  dps: 3.52272
+  tps: 5.65151
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  tps: 7.33333
+  dps: 0.9842
+  tps: 41.45403
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  tps: 0.36667
+  dps: 0.9842
+  tps: 2.8207
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  tps: 1.83333
+  dps: 2.01085
+  tps: 4.44201
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  tps: 7.33333
+  dps: 1.73886
+  tps: 42.05776
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  tps: 0.36667
+  dps: 1.73886
+  tps: 3.42442
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  tps: 1.83333
+  dps: 3.55108
+  tps: 5.6742
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  tps: 7.33333
+  dps: 0.99576
+  tps: 41.46328
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  tps: 0.36667
+  dps: 0.99576
+  tps: 2.82994
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  tps: 1.83333
+  dps: 2.03446
+  tps: 4.4609
  }
 }
 dps_results: {
  key: "TestFury-SwitchInFrontOfTarget-Default"
  value: {
-  tps: 0.36667
+  dps: 1.1312
+  tps: 2.9383
  }
 }
