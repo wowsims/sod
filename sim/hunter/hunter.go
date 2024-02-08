@@ -73,8 +73,6 @@ type Hunter struct {
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
 
-	AspectOfTheHawkAura    *core.Aura
-	AspectOfTheViperAura   *core.Aura
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
