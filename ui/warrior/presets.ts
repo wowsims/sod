@@ -73,13 +73,13 @@ export const APLPresets = {
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
   25: {
 		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][1],
-		2: APLPresets[Phase.Phase1][2],
+		1: APLPresets[Phase.Phase1][0],
+		2: APLPresets[Phase.Phase1][0],
 	},
   40: {
 		0: APLPresets[Phase.Phase2][0],
-		1: APLPresets[Phase.Phase2][1],
-		2: APLPresets[Phase.Phase2][2],
+		1: APLPresets[Phase.Phase2][0],
+		2: APLPresets[Phase.Phase2][0],
 	}
 };
 
