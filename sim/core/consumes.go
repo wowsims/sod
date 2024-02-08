@@ -105,6 +105,10 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Agility: 25,
 			})
+		case proto.AgilityElixir_ElixirOfAgility:
+			character.AddStats(stats.Stats{
+				stats.Agility: 15,
+			})
 		case proto.AgilityElixir_ElixirOfLesserAgility:
 			character.AddStats(stats.Stats{
 				stats.Agility: 8,
