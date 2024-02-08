@@ -75,6 +75,7 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 		},
 		4: func(a core.Agent) {
 			a.GetCharacter().AddStat(stats.AttackPower, 14)
+			a.GetCharacter().AddStat(stats.RangedAttackPower, 14)
 		},
 	},
 })

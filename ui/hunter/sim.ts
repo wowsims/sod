@@ -180,88 +180,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
+			...Presets.TalentPresets[Phase.Phase2],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
+			...Presets.APLPresets[Phase.Phase2],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
+			...Presets.GearPresets[Phase.Phase2],
 		],
 	},
 
 	autoRotation: (player) => {
 		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
-	},
-
-	simpleRotation: (player, simple, cooldowns) => {
-		let [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		const serpentSting = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${simple.multiDotSerpentSting ? 3 : 1},"maxOverlap":{"const":{"val":"0ms"}}}}`);
-		const scorpidSting = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":3043},"maxOverlap":{"const":{"val":"0ms"}}}},"castSpell":{"spellId":{"spellId":3043}}}`);
-		const _trapWeave = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`);
-		const volley = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":58434}}}`);
-		const killShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":61006}}}`);
-		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
-		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
-		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
-		const silencingShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":34490}}}`);
-		const chimeraShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53209}}}`);
-		const blackArrow = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":63672}}}`);
-		const explosiveShot4 = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":60053}}}}},"castSpell":{"spellId":{"spellId":60053}}}`);
-		const _explosiveShot3 = APLAction.fromJsonString(`{"condition":{"dotIsActive":{"spellId":{"spellId":60053}}},"castSpell":{"spellId":{"spellId":60052}}}`);
-		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
-
-		const talentTree = player.getTalentTree();
-		if (simple.type == Hunter_Rotation_RotationType.Aoe) {
-			actions.push(...[
-				simple.sting == StingType.ScorpidSting ? scorpidSting : null,
-				simple.sting == StingType.SerpentSting ? serpentSting : null,
-				volley,
-			].filter(a => a) as Array<APLAction>)
-		} else if (talentTree == 0) { // BM
-			actions.push(...[
-				killShot,
-				simple.sting == StingType.ScorpidSting ? scorpidSting : null,
-				simple.sting == StingType.SerpentSting ? serpentSting : null,
-				aimedShot,
-				multiShot,
-				steadyShot,
-			].filter(a => a) as Array<APLAction>)
-		} else if (talentTree == 1) { // MM
-			actions.push(...[
-				silencingShot,
-				killShot,
-				simple.sting == StingType.ScorpidSting ? scorpidSting : null,
-				simple.sting == StingType.SerpentSting ? serpentSting : null,
-				chimeraShot,
-				aimedShot,
-				multiShot,
-				steadyShot,
-			].filter(a => a) as Array<APLAction>)
-		} else if (talentTree == 2) { // SV
-			actions.push(...[
-				killShot,
-				explosiveShot4,
-				simple.sting == StingType.ScorpidSting ? scorpidSting : null,
-				simple.sting == StingType.SerpentSting ? serpentSting : null,
-				blackArrow,
-				aimedShot,
-				multiShot,
-				steadyShot,
-			].filter(a => a) as Array<APLAction>)
-		}
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action => APLListItem.create({
-				action: action,
-			}))
-		});
 	},
 	
 	raidSimPresets: [

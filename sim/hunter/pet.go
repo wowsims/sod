@@ -15,13 +15,6 @@ type HunterPet struct {
 
 	KillCommandAura *core.Aura
 
-	claw            *core.Spell
-	bite            *core.Spell
-	furiousHowl     *core.Spell
-	screech         *core.Spell
-	scorpidPoison   *core.Spell
-	lightningBreath *core.Spell
-
 	specialAbility *core.Spell
 	focusDump      *core.Spell
 
@@ -40,6 +33,77 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	}
 	petConfig := PetConfigs[hunter.Options.PetType]
 
+	hunterPetBaseStats := stats.Stats{}
+
+	baseMinDamage := 0.0
+	baseMaxDamage := 0.0
+	attackSpeed := 2.0
+
+	switch hunter.Level {
+	case 25:
+		baseMinDamage = 15
+		baseMaxDamage = 20
+		hunterPetBaseStats = stats.Stats{
+			stats.Strength:  53,
+			stats.Agility:   45,
+			stats.Stamina:   120,
+			stats.Intellect: 29,
+			stats.Spirit:    39,
+
+			stats.AttackPower: -20,
+
+			// Add 1.8% because pets aren't affected by that component of crit suppression.
+			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
+		}
+	case 40:
+		baseMinDamage = 25
+		baseMaxDamage = 40
+		hunterPetBaseStats = stats.Stats{
+			stats.Strength:  78,
+			stats.Agility:   66,
+			stats.Stamina:   160,
+			stats.Intellect: 37,
+			stats.Spirit:    55,
+
+			stats.AttackPower: -20,
+
+			// Add 1.8% because pets aren't affected by that component of crit suppression.
+			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
+		}
+	case 50:
+		// TODO:
+		baseMinDamage = 25
+		baseMaxDamage = 40
+		hunterPetBaseStats = stats.Stats{
+			stats.Strength:  78,
+			stats.Agility:   66,
+			stats.Stamina:   160,
+			stats.Intellect: 37,
+			stats.Spirit:    55,
+
+			stats.AttackPower: -20,
+
+			// Add 1.8% because pets aren't affected by that component of crit suppression.
+			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
+		}
+	case 60:
+		// TODO:
+		baseMinDamage = 25
+		baseMaxDamage = 40
+		hunterPetBaseStats = stats.Stats{
+			stats.Strength:  78,
+			stats.Agility:   66,
+			stats.Stamina:   160,
+			stats.Intellect: 37,
+			stats.Spirit:    55,
+
+			stats.AttackPower: -20,
+
+			// Add 1.8% because pets aren't affected by that component of crit suppression.
+			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
+		}
+	}
+
 	hp := &HunterPet{
 		Pet:         core.NewPet(petConfig.Name, &hunter.Character, hunterPetBaseStats, hunter.makeStatInheritance(), true, false),
 		config:      petConfig,
@@ -50,9 +114,9 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  27,
-			BaseDamageMax:  37,
-			SwingSpeed:     2.0,
+			BaseDamageMin:  baseMinDamage * (attackSpeed / 2.0),
+			BaseDamageMax:  baseMaxDamage * (attackSpeed / 2.0),
+			SwingSpeed:     attackSpeed,
 			CritMultiplier: hp.MeleeCritMultiplier(1, 0),
 		},
 		AutoSwingMelee: true,
@@ -156,15 +220,6 @@ func (hp *HunterPet) killCommandMult() float64 {
 		return 1
 	}
 	return 1 + 0.2*float64(hp.KillCommandAura.GetStacks())
-}
-
-var hunterPetBaseStats = stats.Stats{
-	stats.Agility:     45,
-	stats.Strength:    53,
-	stats.AttackPower: -20, // Apparently pets and warriors have a AP penalty.
-
-	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 }
 
 const PetExpertiseScale = 3.25

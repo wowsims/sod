@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -32,8 +33,8 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 	}
 
 	actionID := core.ActionID{SpellID: spellId}
-	hunter.AspectOfTheHawkAura = hunter.NewTemporaryStatsAuraWrapped(
-		"Aspect of the Hawk",
+	aspectOfTheHawkAura := hunter.NewTemporaryStatsAuraWrapped(
+		"Aspect of the Hawk"+strconv.Itoa(rank),
 		actionID,
 		stats.Stats{
 			stats.RangedAttackPower: rap,
@@ -57,15 +58,11 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 		RequiredLevel: level,
 
-		// ManaCost: core.ManaCostOptions{
-		// 	FlatCost: manaCost,
-		// },
-
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if hunter.AspectOfTheHawkAura.IsActive() {
-				hunter.AspectOfTheHawkAura.Deactivate(sim)
+			if aspectOfTheHawkAura.IsActive() {
+				aspectOfTheHawkAura.Deactivate(sim)
 			} else {
-				hunter.AspectOfTheHawkAura.Activate(sim)
+				aspectOfTheHawkAura.Activate(sim)
 			}
 		},
 	}
