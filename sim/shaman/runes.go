@@ -23,7 +23,7 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyMoltenBlast()
 
 	// Waist
-	// shaman.applyFireNova()
+	shaman.applyFireNova()
 	shaman.applyMaelstromWeapon()
 	shaman.applyPowerSurge()
 
@@ -149,7 +149,15 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	ppm := 10.0
 
 	var affectedSpells []*core.Spell
-	var affectedSpellCodes []int32
+	var affectedSpellCodes = []int32{
+		SpellCode_ShamanLightningBolt,
+		SpellCode_ShamanChainLightning,
+		SpellCode_ShamanLavaBurst,
+		SpellCode_ShamanHealingWave,
+		SpellCode_ShamanLesserHealingWave,
+		SpellCode_ShamanChainHeal,
+	}
+
 	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
 	// for LB / CL / LvB
 	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
@@ -171,15 +179,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 					shaman.ChainHeal,
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
-
-			affectedSpellCodes = []int32{
-				SpellCode_ShamanLightningBolt,
-				SpellCode_ShamanChainLightning,
-				SpellCode_ShamanLavaBurst,
-				SpellCode_ShamanHealingWave,
-				SpellCode_ShamanLesserHealingWave,
-				SpellCode_ShamanChainHeal,
-			}
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			multDiff := 0.2 * float64(newStacks-oldStacks)
@@ -232,20 +231,19 @@ func (shaman *Shaman) applyPowerSurge() {
 		},
 	)
 
-	var spellsAffectedByReset []*core.Spell
-	var spellsAffectedByInstantCast []*core.Spell
+	var affectedSpells []*core.Spell
+	var affectedSpellCodes = []int32{
+		SpellCode_ShamanChainLightning,
+		SpellCode_ShamanChainHeal,
+		SpellCode_ShamanLavaBurst,
+	}
 
 	shaman.PowerSurgeAura = shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge Proc",
 		ActionID: core.ActionID{SpellID: 440285},
 		Duration: time.Second * 10,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			spellsAffectedByReset = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.ChainLightning,
-					{shaman.LavaBurst},
-				}), func(spell *core.Spell) bool { return spell != nil })
-			spellsAffectedByInstantCast = core.FilterSlice(
+			affectedSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					shaman.ChainLightning,
 					shaman.ChainHeal,
@@ -253,17 +251,18 @@ func (shaman *Shaman) applyPowerSurge() {
 				}), func(spell *core.Spell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.LavaBurst.CD.Reset()
-			for _, spell := range spellsAffectedByReset {
-				spell.CD.Reset()
-			}
-			core.Each(spellsAffectedByInstantCast, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier -= 1
+				if spell.CD.Timer != nil {
+					spell.CD.Reset()
+				}
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(spellsAffectedByInstantCast, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != SpellCode_ShamanChainLightning && spell.SpellCode != SpellCode_ShamanChainHeal && spell != shaman.LavaBurst {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
 			aura.Deactivate(sim)

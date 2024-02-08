@@ -37,8 +37,9 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
-	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + duration
+	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
+		shaman.ActiveTotems[EarthTotem] = spell
 	}
 	return spell
 }
@@ -46,7 +47,6 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 const GraceOfAirTotemRanks = 3
 
 var GraceOfAirTotemSpellId = [GraceOfAirTotemRanks + 1]int32{0, 8835, 10627, 25359}
-var GraceOfAirTotemBonusAgi = [GraceOfAirTotemRanks + 1]float64{0, 43, 67, 77}
 var GraceOfAirTotemManaCost = [GraceOfAirTotemRanks + 1]float64{0, 155, 250, 310}
 var GraceOfAirTotemLevel = [GraceOfAirTotemRanks + 1]int{0, 42, 56, 60}
 
@@ -64,8 +64,6 @@ func (shaman *Shaman) registerGraceOfAirTotemSpell() {
 
 func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 	spellId := GraceOfAirTotemSpellId[rank]
-	// TODO: The sim won't respect the value of a totem dropped via the APL. It uses hard-coded values from buffs.go
-	// bonusDamage := GraceOfAirTotemBonusAgi[rank]
 	manaCost := GraceOfAirTotemManaCost[rank]
 	level := GraceOfAirTotemLevel[rank]
 
@@ -74,8 +72,11 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
-	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + duration
+		shaman.ActiveTotems[AirTotem] = spell
+
+		core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, 1+.075*float64(shaman.Talents.EnhancingTotems)).Activate(sim)
 	}
 	return spell
 }

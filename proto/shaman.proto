@@ -111,6 +111,7 @@ enum WaterTotem {
 	HealingStreamTotem = 2;
 }
 
+// Deprecated on 2024-02-08. Use APL totems instead
 message ShamanTotems {
 	// Not used here, but used by APL
 	enum TotemType {
@@ -163,7 +164,7 @@ message ElementalShaman {
 	// NextIndex: 6
 	message Options {
 		ShamanShield shield = 1;
-		ShamanTotems totems = 3;
+		ShamanTotems totems = 3 [deprecated=true];
 	}
 	Options options = 3;
 }
@@ -176,7 +177,7 @@ message EnhancementShaman {
 	message Options {
 		ShamanShield shield = 1;
 		ShamanSyncType sync_type = 3;
-		ShamanTotems totems = 6;
+		ShamanTotems totems = 6 [deprecated=true];
 	}
 	Options options = 3;
 }
@@ -196,7 +197,7 @@ message RestorationShaman {
 	message Options {
 		ShamanShield shield = 1;
 		int32 earth_shield_p_p_m = 5;
-		ShamanTotems totems = 6;
+		ShamanTotems totems = 6 [deprecated=true];
 	}
 	Options options = 3;
 }

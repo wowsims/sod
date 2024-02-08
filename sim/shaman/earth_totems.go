@@ -37,6 +37,8 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
+
+		core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, 1+.075*float64(shaman.Talents.EnhancingTotems)).Activate(sim)
 	}
 	return spell
 }
