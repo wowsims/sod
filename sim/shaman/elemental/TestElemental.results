@@ -155,6 +155,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 36.59021
+  tps: 32.11727
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-IrradiatedGarments"
  value: {
   dps: 40.89068

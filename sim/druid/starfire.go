@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -35,13 +36,15 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 	castTime := 3500
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolNature,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_DruidStarfire,
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+
 		RequiredLevel: level,
 		Rank:          rank,
-		SpellCode:     SpellCode_DruidStarfire,
+
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
@@ -53,13 +56,13 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 			CastTime: druid.NaturesGraceCastTime(),
 		},
 
-		BonusCritRating:  0,
-		DamageMultiplier: 1 + 0.02*float64(druid.Talents.Moonfury),
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.VengeanceCritMultiplier(),
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

@@ -38,38 +38,34 @@ func (druid *Druid) applyEclipse() {
 		return
 	}
 
+	solarCritBonus := 30.0
+	lunarCastTimeReduction := time.Second * 1
+
 	// Solar
-	solarProcMultiplier := 30.0
-	var affectedWrathSpells []*DruidSpell
 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Solar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedWrathSpells = core.FilterSlice(
-				druid.Wrath, func(spell *DruidSpell) bool { return spell != nil },
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(
+				core.FilterSlice(druid.Wrath, func(spell *DruidSpell) bool { return spell != nil }),
+				func(spell *DruidSpell) {
+					spell.BonusCritRating += solarCritBonus
+				},
 			)
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating += solarProcMultiplier
-			})
-		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating -= solarProcMultiplier
-			})
+			core.Each(
+				core.FilterSlice(druid.Wrath, func(spell *DruidSpell) bool { return spell != nil }),
+				func(spell *DruidSpell) {
+					spell.BonusCritRating -= solarCritBonus
+				},
+			)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Assert we are casting wrath
-			if spell.SpellCode != SpellCode_DruidWrath &&
-				//Do we proc this starsurge
-				spell.SpellCode != SpellCode_DruidStarsurge {
-				return
-			}
-
-			if !result.Landed() {
+			if !result.Landed() || spell.SpellCode != SpellCode_DruidWrath {
 				return
 			}
 
@@ -78,38 +74,30 @@ func (druid *Druid) applyEclipse() {
 	})
 
 	// Lunar
-	lunarBonusCrit := 30.0
-	var affectedLunarSpells []*DruidSpell
 	druid.LunarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Lunar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedLunarSpells = append(
-				druid.Starfire,
-				druid.Starsurge, // Does this proc eclipse?
-			)
-			affectedLunarSpells = core.FilterSlice(
-				affectedLunarSpells, func(spell *DruidSpell) bool { return spell != nil },
-			)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating += lunarBonusCrit
-			})
+			core.Each(
+				core.FilterSlice(druid.Starfire, func(spell *DruidSpell) bool { return spell != nil }),
+				func(spell *DruidSpell) {
+					spell.DefaultCast.CastTime -= lunarCastTimeReduction
+				},
+			)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating -= lunarBonusCrit
-			})
+			core.Each(
+				core.FilterSlice(druid.Starfire, func(spell *DruidSpell) bool { return spell != nil }),
+				func(spell *DruidSpell) {
+					spell.DefaultCast.CastTime += lunarCastTimeReduction
+				},
+			)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Assert we are casting Starfire
-			if spell.SpellCode != SpellCode_DruidStarfire {
-				return
-			}
-			if !result.Landed() {
+			if !result.Landed() || spell.SpellCode != SpellCode_DruidStarfire {
 				return
 			}
 
@@ -129,13 +117,14 @@ func (druid *Druid) applyEclipse() {
 			case SpellCode_DruidWrath:
 				// Proc Lunar
 				druid.LunarEclipseProcAura.Activate(sim)
-				druid.LunarEclipseProcAura.SetStacks(sim, 1)
-
+				// Wrath gives 1 stack of starfire bonus
+				druid.LunarEclipseProcAura.AddStack(sim)
 			case SpellCode_DruidStarfire:
 				// Proc Solar
 				druid.SolarEclipseProcAura.Activate(sim)
-				druid.SolarEclipseProcAura.SetStacks(sim, 2)
-
+				// Starfire gives 2 staacks of wrath bonus
+				druid.SolarEclipseProcAura.AddStack(sim)
+				druid.SolarEclipseProcAura.AddStack(sim)
 			default:
 				return
 			}
@@ -154,16 +143,17 @@ func (druid *Druid) applySunfire() {
 	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
 	baseLowDamage := baseCalc * 1.3
 	baseHighDamage := baseCalc * 1.52
+	spellCoeff := .15
+	spellDotCoeff := .13
 	baseDotDamage := baseCalc * 0.65
 	ticks := int32(4)
-	impMf := float64(druid.Talents.ImprovedMoonfire)
-	moonfury := float64(druid.Talents.Moonfury)
 
 	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414684},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.21,
 		},
@@ -173,6 +163,7 @@ func (druid *Druid) applySunfire() {
 				CastTime: 0,
 			},
 		},
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:    "Sunfire",
@@ -181,7 +172,7 @@ func (druid *Druid) applySunfire() {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + 0.13*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage = baseDotDamage*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -189,13 +180,13 @@ func (druid *Druid) applySunfire() {
 			},
 		},
 
-		BonusCritRating:  2 * impMf * core.SpellCritRatingPerCritChance,
-		DamageMultiplier: 1 + 0.02*impMf + 0.02*moonfury,
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.VengeanceCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.15*spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier()*druid.ImprovedMoonfireDamageMultiplier() + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
@@ -218,10 +209,11 @@ func (druid *Druid) applyStarsurge() {
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 417157},
+		SpellCode:   SpellCode_DruidStarsurge,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
-		SpellCode:   SpellCode_DruidStarsurge, // Please check if this is right - Starsurge affected by all Starfire talents/procs?
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
@@ -236,13 +228,12 @@ func (druid *Druid) applyStarsurge() {
 			},
 		},
 
-		BonusCritRating:  0,
-		DamageMultiplier: 1 + 0.02*float64(druid.Talents.Moonfury),
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.VengeanceCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

@@ -92,6 +92,18 @@ var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetInsulatedSorcerorLeather = core.NewItemSet(core.ItemSet{
+	Name: "Insulated Sorceror's Leathers",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 16)
+		},
+		// TODO: Implement Feral set bonus
+		3: func(agent core.Agent) {},
+	},
+})
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Mail
 ///////////////////////////////////////////////////////////////////////////
