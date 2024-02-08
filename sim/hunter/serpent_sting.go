@@ -17,7 +17,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
-		ProcMask:      core.ProcMaskEmpty,
+		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -36,9 +36,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.DistanceFromTarget >= 8
 		},
-
-		// Need to specially apply LethalShots here, because this spell uses an empty proc mask
-		BonusCritRating: 1 * core.CritRatingPerCritChance * float64(hunter.Talents.LethalShots),
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
