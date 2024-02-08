@@ -42,10 +42,10 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	}
 
 	if character.HasMHWeapon() {
-		addImbueStats(character, consumes.MainHandImbue)
+		addImbueStats(character, consumes.MainHandImbue, true)
 	}
 	if character.HasOHWeapon() {
-		addImbueStats(character, consumes.OffHandImbue)
+		addImbueStats(character, consumes.OffHandImbue, false)
 	}
 
 	if consumes.Food != proto.Food_FoodUnknown {
@@ -205,7 +205,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	registerExplosivesCD(agent, consumes)
 }
 
-func addImbueStats(character *Character, imbue proto.WeaponImbue) {
+func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
 		case proto.WeaponImbue_BrillianWizardOil:
@@ -218,11 +218,13 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue) {
 				stats.MP5:     5,
 				stats.Healing: 25,
 			})
-		// TODO: Classic
-		// case proto.WeaponImbue_DenseSharpeningStone:
-		// 	character.AddStats(stats.Stats{
-		// 		stats.WeaponDamage??: 5,
-		// 	})
+		case proto.WeaponImbue_DenseSharpeningStone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 8
+			weapon.BaseDamageMax += 8
 		case proto.WeaponImbue_ElementalSharpeningStone:
 			character.AddStats(stats.Stats{
 				stats.MeleeCrit: 2 * CritRatingPerCritChance,
