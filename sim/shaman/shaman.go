@@ -79,6 +79,13 @@ const (
 	SpellCode_ShamanChainLightning
 	SpellCode_ShamanLavaBurst
 
+	SpellCode_ShamanEarthShock
+	SpellCode_ShamanFlameShock
+	SpellCode_ShamanFrostShock
+
+	SpellCode_ShamanMoltenBlast
+	SpellCode_ShamanFireNova
+
 	SpellCode_ShamanHealingWave
 	SpellCode_ShamanLesserHealingWave
 	SpellCode_ShamanChainHeal
