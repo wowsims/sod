@@ -335,7 +335,7 @@ export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 };
 export const ElixirOfGreaterAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 9187, minLevel: 38 },
+		{ id: 9187, minLevel: 41 },
 	]),
 	value: AgilityElixir.ElixirOfGreaterAgility,
 };
