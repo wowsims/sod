@@ -25,6 +25,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 
 	shaman.MoltenBlast = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
+		SpellCode:   SpellCode_ShamanMoltenBlast,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
