@@ -162,13 +162,15 @@ export class Encounter {
 	}
 
 	applyDefaults(eventID: EventID) {
+		const level = this.sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
+		const presetTarget = this.presetTargets.find(preset => (preset.target?.level ?? 0) >= level) ?? this.presetTargets[0];
 		this.fromProto(eventID, EncounterProto.create({
 			duration: 60,
 			durationVariation: 5,
 			executeProportion20: 0.2,
 			executeProportion25: 0.25,
 			executeProportion35: 0.35,
-			targets: [this.presetTargets[0].target!],
+			targets: [presetTarget.target!],
 		}));
 	}
 
