@@ -9,15 +9,16 @@ import {
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
+// TODO: change tooltip based on level and available rank of poison
 
 export const MainHandImbue = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRogue, Poison>({
 	fieldName: 'mhImbue',
 	numColumns: 1,
 	values: [
 		{ value: Poison.NoPoison, tooltip: 'No Main Hand Poison' },
-		{ actionId: () => ActionId.fromItemId(43233), value: Poison.DeadlyPoison },
-		{ actionId: () => ActionId.fromItemId(43231), value: Poison.InstantPoison },
-		{ actionId: () => ActionId.fromItemId(43235), value: Poison.WoundPoison },
+		{ actionId: () => ActionId.fromItemId(2823), value: Poison.DeadlyPoison },
+		{ actionId: () => ActionId.fromItemId(8679), value: Poison.InstantPoison },
+		{ actionId: () => ActionId.fromItemId(11325), value: Poison.WoundPoison },
 	],
 });
 
@@ -26,9 +27,9 @@ export const OffHandImbue = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecR
 	numColumns: 1,
 	values: [
 		{ value: Poison.NoPoison, tooltip: 'No Off Hand Poison' },
-		{ actionId: () => ActionId.fromItemId(43233), value: Poison.DeadlyPoison },
-		{ actionId: () => ActionId.fromItemId(43231), value: Poison.InstantPoison },
-		{ actionId: () => ActionId.fromItemId(43235), value: Poison.WoundPoison },
+		{ actionId: () => ActionId.fromItemId(2823), value: Poison.DeadlyPoison },
+		{ actionId: () => ActionId.fromItemId(8679), value: Poison.InstantPoison },
+		{ actionId: () => ActionId.fromItemId(11325), value: Poison.WoundPoison },
 	],
 });
 

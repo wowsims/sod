@@ -35,7 +35,7 @@ func (rogue *Rogue) registerSliceAndDice() {
 	}
 
 	hasteBonus := 1 + hasteBonusByRank
-	inverseHasteBonus := 1.0 / hasteBonusByRank
+	inverseHasteBonus := 1.0 / hasteBonus
 
 	rogue.SliceAndDiceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Slice and Dice",
