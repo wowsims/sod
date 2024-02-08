@@ -335,9 +335,16 @@ export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 };
 export const ElixirOfGreaterAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		// Requires skill 240
 		{ id: 9187, minLevel: 41 },
 	]),
 	value: AgilityElixir.ElixirOfGreaterAgility,
+};
+export const ElixirOfAgility: ConsumableInputConfig<AgilityElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 8949, minLevel: 27 },
+	]),
+	value: AgilityElixir.ElixirOfAgility,
 };
 export const ElixirOfLesserAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -358,6 +365,7 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfTheMongoose, 		stats: [Stat.StatAgility] },
 	{ config: ElixirOfGreaterAgility, 	stats: [Stat.StatAgility] },
+	{ config: ElixirOfAgility,		 	stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, 	stats: [Stat.StatAgility] },
 	{ config: ScrollOfAgility, 			stats: [Stat.StatAgility] },
 ];
