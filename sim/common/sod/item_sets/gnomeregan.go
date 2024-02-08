@@ -102,6 +102,7 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 24)
+			c.AddStat(stats.RangedAttackPower, 24)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -171,6 +172,7 @@ var ItemSetHazardSuit = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			c.AddStat(stats.Defense, 7)
 			c.AddStat(stats.AttackPower, 16)
+			c.AddStat(stats.RangedAttackPower, 16)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
