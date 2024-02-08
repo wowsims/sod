@@ -38,6 +38,14 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 		moonkin.SelfBuffs.InnervateTarget = balanceOptions.Options.InnervateTarget
 	}
 
+	// moonkin.EnableEnergyBar(100.0)
+
+	// Enable Auto Attacks for this spec
+	// moonkin.EnableAutoAttacks(moonkin, core.AutoAttackOptions{
+	// 	MainHand:       moonkin.GetCatWeapon(),
+	// 	AutoSwingMelee: true,
+	// })
+
 	return moonkin
 }
 
@@ -59,4 +67,5 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
 	moonkin.RegisterBalanceSpells()
+	// moonkin.RegisterFeralCatSpells()
 }
