@@ -11,6 +11,7 @@ import {
 	RaidBuffs,
 	Spec,
 	Stat,
+	Target,
 	TristateEffect,
 	WeaponType
 } from '../core/proto/common.js';
@@ -40,13 +41,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			return {
 				updateOn: simUI.sim.encounter.changeEmitter,
 				getContent: () => {
-					let hasNoArmor = false
-					for (const target of simUI.sim.encounter.targets) {
-						if (new Stats(target.stats).getStat(Stat.StatArmor) <= 0) {
-							hasNoArmor = true
-							break
-						}
-					}
+					const hasNoArmor = !!(simUI.sim.encounter.targets ?? []).find((target: Target) => new Stats(target.stats).getStat(Stat.StatArmor) <= 0)
 					if (hasNoArmor) {
 						return 'One or more targets have no armor. Check advanced encounter settings.';
 					} else {

@@ -106,8 +106,8 @@ export const TalentPresets = {
 
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultTalentsAssassin = TalentPresets[Phase.Phase1][0];
-export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase1][1];
-export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][2];
+export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase1][0];
+export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][0];
 
 export const DefaultTalents = DefaultTalentsAssassin;
 
