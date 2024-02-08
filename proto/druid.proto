@@ -74,6 +74,7 @@ enum DruidRune {
 	RuneLegsSavageRoar      	  = 407988;
 	RuneLegsLifebloom       	  = 409824;
 	RuneLegsSkullBash       	  = 410176;
+	RuneBeltEclipse       	      = 408248;
 }
 
 message BalanceDruid {

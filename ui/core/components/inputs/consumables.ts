@@ -17,7 +17,8 @@ import {
 	SpellPowerBuff,
 	Stat,
 	StrengthBuff,
-	WeaponImbue } from "../../proto/common";
+	WeaponImbue, 
+	WeaponType} from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 import { EventID, TypedEvent } from "../../typed_event";
 
@@ -621,5 +622,9 @@ export const makeMainHandImbuesInput = makeConsumeInputFactory({
 });
 export const makeOffHandImbuesInput = makeConsumeInputFactory({
 	consumesFieldName: 'offHandImbue',
-	showWhen: (player) => !!player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand),
+	showWhen: (player) => {
+		return ![WeaponType.WeaponTypeUnknown, WeaponType.WeaponTypeOffHand, WeaponType.WeaponTypeShield].includes(
+			player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType ?? WeaponType.WeaponTypeUnknown
+		)
+	},
 });

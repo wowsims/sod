@@ -1,0 +1,13 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":778,"rank":2}}},"doAtValue":{"const":{"val":"-1.5s"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"spellCanCast":{"spellId":{"spellId":417157}}},"castSpell":{"spellId":{"spellId":417157}}}},
+    {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":414684}}}}},"castSpell":{"spellId":{"spellId":414684}}}},
+    {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":8929,"rank":7}}}}},"castSpell":{"spellId":{"spellId":8929,"rank":7}}}},
+    {"action":{"condition":{"currentMana":{}},"sequence":{"name":"w","actions":[{"castSpell":{"spellId":{"spellId":6780,"rank":6}}},{"castSpell":{"spellId":{"spellId":6780,"rank":6}}},{"resetSequence":{"sequenceName":"s"}},{"sequence":{"name":"s"}}]}}},
+    {"action":{"condition":{"currentMana":{}},"sequence":{"name":"s","actions":[{"castSpell":{"spellId":{"spellId":8950,"rank":3}}},{"resetSequence":{"sequenceName":"w"}},{"sequence":{"name":"w"}}]}}}
+  ]
+}

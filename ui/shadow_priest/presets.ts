@@ -7,6 +7,7 @@ import {
 	IndividualBuffs,
 	Profession,
 	RaidBuffs,
+	ShadowPowerBuff,
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
@@ -100,7 +101,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.BrillianWizardOil,
 	food: Food.FoodNightfinSoup,
 	spellPowerBuff: SpellPowerBuff.SpellPowerBuffUnknown,
-	shadowPowerBuff: true,
+	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
