@@ -40,25 +40,31 @@ func (druid *Druid) applyEclipse() {
 
 	// Solar
 	solarProcMultiplier := 30.0
+	var affectedWrathSpells []*DruidSpell
 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Solar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedWrathSpells = core.FilterSlice(
+				druid.Wrath, func(spell *DruidSpell) bool { return spell != nil },
+			)
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Wrath, func(spell *DruidSpell) {
+			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
 				if spell == nil {
 					return
 				}
-				spell.BonusCritRating += solarProcMultiplier
+				spell.Spell.BonusCritRating += solarProcMultiplier
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Wrath, func(spell *DruidSpell) {
+			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
 				if spell == nil {
 					return
 				}
-				spell.BonusCritRating -= solarProcMultiplier
+				spell.Spell.BonusCritRating -= solarProcMultiplier
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -77,25 +83,31 @@ func (druid *Druid) applyEclipse() {
 
 	// Lunar
 	lunarBonusCrit := 30.0
+	var affectedLunarSpells []*DruidSpell
 	druid.LunarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Lunar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedLunarSpells = core.FilterSlice(
+				druid.Starfire, func(spell *DruidSpell) bool { return spell != nil },
+			)
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Starfire, func(spell *DruidSpell) {
+			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				if spell == nil {
 					return
 				}
-				spell.BonusCritRating += lunarBonusCrit
+				spell.Spell.BonusCritRating += lunarBonusCrit
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Starfire, func(spell *DruidSpell) {
+			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				if spell == nil {
 					return
 				}
-				spell.BonusCritRating -= lunarBonusCrit
+				spell.Spell.BonusCritRating -= lunarBonusCrit
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
