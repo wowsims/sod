@@ -73,8 +73,6 @@ type Hunter struct {
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
 
-	AspectOfTheHawkAura    *core.Aura
-	AspectOfTheViperAura   *core.Aura
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
@@ -134,7 +132,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerImmolationTrapSpell(fireTraps)
 
 	hunter.registerKillCommand()
-	//hunter.registerRapidFireCD()
+	hunter.registerRapidFire()
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
