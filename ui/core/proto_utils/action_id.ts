@@ -364,12 +364,20 @@ export class ActionId {
 					name += ' (Snapshot)';
 				}
 				break;
-			case 'Raptor Strike':
 			case 'Heroic Strike':
 			case 'Cleave':
 			case 'Maul':
 				if (this.tag == 1) {
 					name += ' (Queue)';
+				}
+				break;
+			case 'Raptor Strike':
+				if (this.tag == 0) {
+					name += ' (Main Hand)';
+				} else if (this.tag == 1) {
+					name += ' (Queue)';
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
 				}
 				break;
 			case 'Carve':

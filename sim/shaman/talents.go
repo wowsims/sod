@@ -168,7 +168,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != int32(SpellCode_ShamanLightningBolt) && spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell != shaman.LavaBurst {
+			if spell.SpellCode != SpellCode_ShamanLightningBolt && spell.SpellCode != SpellCode_ShamanChainLightning && spell != shaman.LavaBurst {
 				return
 			}
 			// Remove the buff and put skill on CD
@@ -230,11 +230,11 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			spellTriggersNS := spell.SpellCode != int32(SpellCode_ShamanLightningBolt) &&
-				spell.SpellCode != int32(SpellCode_ShamanChainLightning) &&
-				spell.SpellCode != int32(SpellCode_HealingWave) &&
-				spell.SpellCode != int32(SpellCode_LesserHealingWave) &&
-				spell.SpellCode != int32(SpellCode_ChainHeal)
+			spellTriggersNS := spell.SpellCode != SpellCode_ShamanLightningBolt &&
+				spell.SpellCode != SpellCode_ShamanChainLightning &&
+				spell.SpellCode != SpellCode_ShamanHealingWave &&
+				spell.SpellCode != SpellCode_ShamanLesserHealingWave &&
+				spell.SpellCode != SpellCode_ShamanChainHeal
 
 			if spellTriggersNS {
 				return

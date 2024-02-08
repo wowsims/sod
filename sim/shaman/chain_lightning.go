@@ -63,7 +63,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 		isOverload,
 	)
 
-	spell.SpellCode = int32(SpellCode_ShamanChainLightning)
+	spell.SpellCode = SpellCode_ShamanChainLightning
 	spell.RequiredLevel = level
 	spell.Rank = rank
 

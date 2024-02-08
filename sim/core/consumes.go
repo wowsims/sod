@@ -179,7 +179,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		})
 	}
 
-	if consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
+	if character.HasProfession(proto.Profession_Enchanting) && consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
 		switch consumes.EnchantedSigil {
 		case proto.EnchantedSigil_InnovationSigil:
 			character.AddStats(stats.Stats{
@@ -240,20 +240,19 @@ var SapperActionID = ActionID{ItemID: 10646}
 var SolidDynamiteActionID = ActionID{ItemID: 10507}
 var DenseDynamiteActionID = ActionID{ItemID: 18641}
 var ThoriumGrenadeActionID = ActionID{ItemID: 15993}
+var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
+var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
 	hasFiller := consumes.FillerExplosive != proto.Explosive_ExplosiveUnknown
 
-	if !character.HasProfession(proto.Profession_Engineering) {
-		return
-	}
 	if !consumes.Sapper && !hasFiller {
 		return
 	}
 	sharedTimer := character.NewTimer()
 
-	if consumes.Sapper {
+	if consumes.Sapper && character.HasProfession(proto.Profession_Engineering) {
 		character.AddMajorCooldown(MajorCooldown{
 			Spell:    character.newSapperSpell(sharedTimer),
 			Type:     CooldownTypeDPS | CooldownTypeExplosive,
@@ -262,6 +261,10 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 
 	if hasFiller {
+		if consumes.FillerExplosive != proto.Explosive_ExplosiveEzThroRadiationBomb && !character.HasProfession(proto.Profession_Engineering) {
+			return
+		}
+
 		var filler *Spell
 		switch consumes.FillerExplosive {
 		case proto.Explosive_ExplosiveSolidDynamite:
@@ -270,6 +273,10 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			filler = character.newDenseDynamiteSpell(sharedTimer)
 		case proto.Explosive_ExplosiveThoriumGrenade:
 			filler = character.newThoriumGrenadeSpell(sharedTimer)
+		case proto.Explosive_ExplosiveEzThroRadiationBomb:
+			filler = character.newEzThroRadiationBombSpell(sharedTimer)
+		case proto.Explosive_ExplosiveHighYieldRadiationBomb:
+			filler = character.newHighYieldRadiationBombSpell(sharedTimer)
 		}
 
 		character.AddMajorCooldown(MajorCooldown{
@@ -281,16 +288,26 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 }
 
 // Creates a spell object for the common explosive case.
-func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, _ float64, _ float64) SpellConfig {
-	dealSelfDamage := actionID.SameAction(SapperActionID)
+func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
+	isSapper := actionID.SameAction(SapperActionID)
+
+	var defaultCast Cast
+	if !isSapper {
+		defaultCast = Cast{
+			CastTime: time.Second,
+		}
+	}
 
 	return SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: school,
 		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagCastTimeNoGCD,
 
 		Cast: CastConfig{
-			CD: cooldown,
+			DefaultCast: defaultCast,
+			CD:          cooldown,
+			IgnoreHaste: true,
 			SharedCD: Cooldown{
 				Timer:    sharedTimer,
 				Duration: time.Minute,
@@ -309,8 +326,8 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 
-			if dealSelfDamage {
-				baseDamage := sim.Roll(minDamage, maxDamage)
+			if isSapper {
+				baseDamage := sim.Roll(selfMinDamage, selfMaxDamage)
 				spell.CalcAndDealDamage(sim, &character.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
@@ -327,6 +344,87 @@ func (character *Character) newDenseDynamiteSpell(sharedTimer *Timer) *Spell {
 }
 func (character *Character) newThoriumGrenadeSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ThoriumGrenadeActionID, SpellSchoolFire, 300, 500, Cooldown{}, 0, 0))
+}
+
+// Creates a spell object for the common explosive case.
+func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, actionID ActionID, minDamage float64, maxDamage float64, dotDamage float64, cooldown Cooldown) SpellConfig {
+	return SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: SpellSchoolFire,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagCastTimeNoGCD,
+
+		Cast: CastConfig{
+			DefaultCast: Cast{
+				CastTime: time.Second,
+			},
+			IgnoreHaste: true,
+			CD:          cooldown,
+			SharedCD: Cooldown{
+				Timer:    sharedTimer,
+				Duration: time.Minute,
+			},
+		},
+
+		// Explosives always have 1% resist chance, so just give them hit cap.
+		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		DamageMultiplier: 1,
+		CritMultiplier:   2,
+		ThreatMultiplier: 1,
+
+		Dot: DotConfig{
+			Aura: Aura{
+				Label: actionID.String(),
+			},
+
+			NumberOfTicks: 5,
+			TickLength:    time.Second * 2,
+
+			OnSnapshot: func(sim *Simulation, target *Unit, dot *Dot, isRollover bool) {
+				// Use nature school for dot modifiers
+				dot.Spell.SpellSchool = SpellSchoolNature
+				dot.Spell.SchoolIndex = stats.SchoolIndexNature
+
+				dot.SnapshotBaseDamage = dotDamage
+
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+
+				// Revert to fire school
+				dot.Spell.SpellSchool = SpellSchoolFire
+				dot.Spell.SchoolIndex = stats.SchoolIndexFire
+			},
+			OnTick: func(sim *Simulation, target *Unit, dot *Dot) {
+				// Use nature school for dot ticks
+				dot.Spell.SpellSchool = SpellSchoolNature
+				dot.Spell.SchoolIndex = stats.SchoolIndexNature
+
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+
+				// Revert to fire school
+				dot.Spell.SpellSchool = SpellSchoolFire
+				dot.Spell.SchoolIndex = stats.SchoolIndexFire
+			},
+		},
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
+
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				if result.Landed() {
+					spell.Dot(aoeTarget).Apply(sim)
+				}
+			}
+		},
+	}
+}
+func (character *Character) newEzThroRadiationBombSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(sharedTimer, EzThroRadiationBombActionID, 112, 188, 10, Cooldown{}))
+}
+func (character *Character) newHighYieldRadiationBombSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(sharedTimer, HighYieldRadiationBombActionID, 150, 250, 25, Cooldown{}))
 }
 
 func registerPotionCD(agent Agent, consumes *proto.Consumes) {

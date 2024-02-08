@@ -31,6 +31,10 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
 	}
 
+	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
+		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
+	}
+
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 }

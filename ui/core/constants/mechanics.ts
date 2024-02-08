@@ -1,8 +1,8 @@
-import { LEVEL_THRESHOLDS, Phase } from "./other";
+import { CURRENT_PHASE, LEVEL_THRESHOLDS, Phase } from "./other";
 
 export const MAX_CHARACTER_LEVEL = LEVEL_THRESHOLDS[Phase.Phase5];
 export const MAX_TALENT_POINTS = MAX_CHARACTER_LEVEL - 9;
-export const CURRENT_LEVEL_CAP = 25;
+export const CURRENT_LEVEL_CAP = LEVEL_THRESHOLDS[CURRENT_PHASE];
 export const BOSS_LEVEL = MAX_CHARACTER_LEVEL + 3;
 
 export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 32.79 / 4;

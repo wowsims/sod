@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class, 
 	Debuffs,
@@ -13,9 +14,6 @@ import {
 	TristateEffect,
 	WeaponType
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -134,7 +132,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearAssassinationDefault.gear,
+		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatAgility]: 1.86,
@@ -208,47 +206,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.AssassinationTalents137,
-			Presets.AssassinationTalents182,
-			Presets.AssassinationTalentsBF,
-			Presets.CombatHackTalents,
-			Presets.CombatCQCTalents,
-			Presets.SubtletyTalents,
-			Presets.HemoSubtletyTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.ROTATION_PRESET_MUTILATE,
-			Presets.ROTATION_PRESET_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT,
-			Presets.ROTATION_PRESET_COMBAT_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearAssassinationDefault,
-			Presets.GearCombatDefault,
-			Presets.GearSubtletyDefault,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecRogue>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_COMBAT_EXPOSE.rotation.rotation!;
-		} else {
-			// TODO: Need a sub rotation here
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
-		}
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -258,7 +232,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			defaultName: 'Assassination',
 			iconUrl: getSpecIcon(Class.ClassRogue, 0),
 
-			talents: Presets.AssassinationTalents137.data,
+			talents: Presets.DefaultTalentsAssassin.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -269,10 +243,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearAssassinationDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearAssassinationDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},
@@ -282,7 +256,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			defaultName: 'Combat',
 			iconUrl: getSpecIcon(Class.ClassRogue, 1),
 
-			talents: Presets.CombatCQCTalents.data,
+			talents: Presets.DefaultTalentsCombat.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -293,10 +267,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearCombatDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearCombatDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},

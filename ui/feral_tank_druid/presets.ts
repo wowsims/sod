@@ -1,3 +1,4 @@
+import { Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Flask,
@@ -21,7 +22,26 @@ import DefaultApl from './apls/default.apl.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const DefaultGear = PresetUtils.makePresetGear('Blank', BlankGear);
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+
+export const GearPresets = {
+  [Phase.Phase1]: [
+    GearBlank,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultGear = GearPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 APL Presets
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultRotation = DruidRotation.create({
 	maulRageThreshold: 25,
@@ -29,16 +49,50 @@ export const DefaultRotation = DruidRotation.create({
 	lacerateTime: 8.0,
 });
 
-export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const DefaultAPL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+export const APLPresets = {
+  [Phase.Phase1]: [
+    DefaultAPL,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
+  25: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase1][0],
+};
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Talent Presets
+///////////////////////////////////////////////////////////////////////////
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
+
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
 		talentsString: '-503232132322010353120300313511-20350001',
 	}),
 };
+
+export const TalentPresets = {
+  [Phase.Phase1]: [
+    StandardTalents,
+  ],
+  [Phase.Phase2]: [
+  ]
+};
+
+// TODO: Add Phase 2 preset and pull from map
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Options
+///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = DruidOptions.create({
 	innervateTarget: UnitReference.create(),

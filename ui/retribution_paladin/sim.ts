@@ -1,3 +1,4 @@
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Debuffs,
@@ -10,9 +11,6 @@ import {
 	Stat, PseudoStat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -96,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AuraMasteryTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -150,21 +148,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.AuraMasteryTalents,
-			Presets.DivineSacTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.DefaultGear,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	autoRotation: (player) => {
+		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -174,7 +174,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultName: 'Retribution',
 			iconUrl: getSpecIcon(Class.ClassPaladin, 2),
 
-			talents: Presets.AuraMasteryTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -185,10 +185,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.DefaultGear.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.DefaultGear.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},
