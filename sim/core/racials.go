@@ -67,19 +67,19 @@ func applyRaceEffects(agent Agent) {
 
 		// Blood Fury
 		actionID := ActionID{SpellID: 20572}
+		var bloodFuryAP float64
 		bloodFuryAura := character.RegisterAura(Aura{
 			Label:    "Blood Fury",
 			ActionID: actionID,
 			Duration: time.Second * 15,
 			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
 			OnGain: func(aura *Aura, sim *Simulation) {
-				apBonus := (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
-				character.AddStatDynamic(sim, stats.AttackPower, apBonus)
+				bloodFuryAP := (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
+				character.AddStatDynamic(sim, stats.AttackPower, bloodFuryAP)
 			},
 
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				apBonus := (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
-				character.AddStatDynamic(sim, stats.AttackPower, -apBonus)
+				character.AddStatDynamic(sim, stats.AttackPower, -bloodFuryAP)
 			},
 		})
 
