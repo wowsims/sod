@@ -18,6 +18,8 @@ import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 
+import { LEVEL_THRESHOLDS } from './constants/other';
+
 import {
 	Consumes,
 	Debuffs,
@@ -58,7 +60,6 @@ import * as Exporters from './components/exporters';
 import * as Importers from './components/importers';
 import * as IconInputs from './components/icon_inputs';
 import * as InputHelpers from './components/input_helpers';
-import * as Mechanics from './constants/mechanics';
 import * as Tooltips from './constants/tooltips';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
@@ -190,6 +191,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	tankRefStat?: Stat;
 
 	readonly bt: BulkTab;
+	spec: any;
 
 	constructor(parentElem: HTMLElement, player: Player<SpecType>, config: IndividualSimUIConfig<SpecType>) {
 		super(parentElem, player.sim, {
@@ -197,7 +199,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			cssScheme: config.cssScheme,
 			spec: player.spec,
 			knownIssues: config.knownIssues,
-			launchStatus: simLaunchStatuses[player.spec],
+			simStatus: simLaunchStatuses[player.spec],
 			noticeText: 'Disclaimer: Phase 2 support is still in early development. Item and spell effects may not be implemented.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
@@ -386,7 +388,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			//Special case for Totem of Wrath keeps buff and debuff sync'd
 			this.player.applySharedDefaults(eventID);
 			this.player.setRace(eventID, specToEligibleRaces[this.player.spec][0]);
-			this.player.setLevel(eventID, Mechanics.CURRENT_LEVEL_CAP);
+			this.player.setLevel(eventID, LEVEL_THRESHOLDS[simLaunchStatuses[this.player.spec].phase]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
