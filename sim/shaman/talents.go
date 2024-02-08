@@ -23,7 +23,7 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
 	if shaman.Talents.AncestralKnowledge > 0 {
-		shaman.MultiplyStat(stats.Intellect, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
+		shaman.MultiplyStat(stats.Mana, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
 	}
 
 	shaman.applyElementalFocus()
