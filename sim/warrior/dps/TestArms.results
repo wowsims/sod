@@ -51,15 +51,15 @@ character_stats_results: {
 dps_results: {
  key: "TestArms-AllItems-StormshroudArmor"
  value: {
-  dps: 0.67936
-  tps: 1.50325
+  dps: 0.67812
+  tps: 1.50236
  }
 }
 dps_results: {
  key: "TestArms-Average-Default"
  value: {
-  dps: 0.51737
-  tps: 0.79468
+  dps: 0.51553
+  tps: 0.7933
  }
 }
 dps_results: {
@@ -107,22 +107,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.39808
-  tps: 7.63005
+  dps: 0.39668
+  tps: 7.629
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.39808
-  tps: 0.66338
+  dps: 0.39668
+  tps: 0.66233
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 1.99042
-  tps: 3.31692
+  dps: 1.98338
+  tps: 3.31166
  }
 }
 dps_results: {
@@ -149,7 +149,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 0.28828
-  tps: 0.57554
+  dps: 0.28722
+  tps: 0.57477
  }
 }
