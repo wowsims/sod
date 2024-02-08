@@ -14,6 +14,12 @@ const (
 
 var TalentTreeSizes = [3]int{16, 16, 15}
 
+const (
+	SpellCode_DruidWrath int32 = iota
+	SpellCode_DruidStarfire
+	SpellCode_DruidStarsurge
+)
+
 type Druid struct {
 	core.Character
 	SelfBuffs
@@ -72,6 +78,7 @@ type Druid struct {
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	EnrageAura               *core.Aura
+	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FuryOfStormrageAura      *core.Aura
@@ -82,6 +89,8 @@ type Druid struct {
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
+	SolarEclipseProcAura     *core.Aura
+	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
