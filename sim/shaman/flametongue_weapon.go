@@ -34,7 +34,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + .05*float64(shaman.Talents.ElementalWeapons),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 

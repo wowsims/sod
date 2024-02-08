@@ -21,6 +21,8 @@ var safeDepsOrder = []Stat{
 	AttackPower,
 	RangedAttackPower,
 	SpellPower,
+	SpellDamage,
+	Healing,
 	Health,
 	Mana,
 	MP5,

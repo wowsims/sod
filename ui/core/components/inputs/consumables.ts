@@ -124,7 +124,7 @@ export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({
 	consumesFieldName: 'enchantedSigil',
-	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Enchanting),
+	showWhen: (player) => player.hasProfession(Profession.Enchanting),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -135,6 +135,7 @@ export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 10507, minLevel: 40 },
 	]),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveSolidDynamite,
 };
 
@@ -142,6 +143,7 @@ export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 18641, minLevel: 50 },
 	]),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveDenseDynamite,
 };
 
@@ -149,18 +151,36 @@ export const ExplosiveThoriumGrenade: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 15993, minLevel: 50 },
 	]),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveThoriumGrenade,
 };
 
+export const ExplosiveEzThroRadiationBomb: ConsumableInputConfig<Explosive> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 215168, minLevel: 40 },
+	]),
+	value: Explosive.ExplosiveEzThroRadiationBomb,
+};
+
+export const ExplosiveHighYealdRadiationBomb: ConsumableInputConfig<Explosive> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 215127, minLevel: 40 },
+	]),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	value: Explosive.ExplosiveHighYieldRadiationBomb,
+};
+
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
-	{ config: ExplosiveSolidDynamite, 	stats: [] },
-	{ config: ExplosiveDenseDynamite, 	stats: [] },
-	{ config: ExplosiveThoriumGrenade, 	stats: [] },
+	{ config: ExplosiveEzThroRadiationBomb, 	stats: [] },
+	{ config: ExplosiveHighYealdRadiationBomb, 	stats: [] },
+	{ config: ExplosiveSolidDynamite, 			stats: [] },
+	{ config: ExplosiveDenseDynamite,		 	stats: [] },
+	{ config: ExplosiveThoriumGrenade, 			stats: [] },
 ];
 
 export const makeExplosivesInput = makeConsumeInputFactory({
 	consumesFieldName: 'fillerExplosive',
-	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
+	//showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
 });
 
 export const Sapper = makeBooleanConsumeInput({
@@ -168,12 +188,12 @@ export const Sapper = makeBooleanConsumeInput({
 		{ id: 10646, minLevel: 50 },
 	]),
 	fieldName: 'sapper',
-	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
 })
 
 export const makeSapperInput = makeConsumeInputFactory({
 	consumesFieldName: 'sapper',
-	showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
+	showWhen: (player) => player.hasProfession(Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -256,7 +276,8 @@ export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 };
 export const NightfinSoup: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13931, minLevel: 35 },
+		// Requires Skill 250
+		{ id: 13931, minLevel: 41 },
 	]),
 	value: Food.FoodNightfinSoup,
 };
@@ -431,7 +452,8 @@ export const GreaterArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 9155, minLevel: 37 },
+		// Requires skill 235
+		{ id: 9155, minLevel: 41 },
 	]),
 	value: SpellPowerBuff.ArcaneElixir,
 };
@@ -453,7 +475,8 @@ export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesField
 // Fire
 export const ElixirOfGreaterFirepower: ConsumableInputConfig<FirePowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 21546, minLevel: 40 },
+		// Requires skill 250
+		{ id: 21546, minLevel: 41 },
 	]),
 	value: FirePowerBuff.ElixirOfGreaterFirepower,
 };

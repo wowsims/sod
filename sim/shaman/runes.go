@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -148,6 +149,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	ppm := 10.0
 
 	var affectedSpells []*core.Spell
+	var affectedSpellCodes []int32
 	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
 	// for LB / CL / LvB
 	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
@@ -163,21 +165,32 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				core.Flatten([][]*core.Spell{
 					shaman.LightningBolt,
 					shaman.ChainLightning,
+					{shaman.LavaBurst},
 					shaman.HealingWave,
 					shaman.LesserHealingWave,
 					shaman.ChainHeal,
-					{shaman.LavaBurst},
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
+
+			affectedSpellCodes = []int32{
+				SpellCode_ShamanLightningBolt,
+				SpellCode_ShamanChainLightning,
+				SpellCode_ShamanLavaBurst,
+				SpellCode_ShamanHealingWave,
+				SpellCode_ShamanLesserHealingWave,
+				SpellCode_ShamanChainHeal,
+			}
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			multDiff := 0.2 * float64(newStacks-oldStacks)
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= multDiff })
+			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= multDiff })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagElectric) {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
+
 			shaman.MaelstromWeaponAura.Deactivate(sim)
 		},
 	})
@@ -250,7 +263,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(spellsAffectedByInstantCast, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != int32(SpellCode_ShamanChainLightning) && spell.SpellCode != int32(SpellCode_ChainHeal) && spell != shaman.LavaBurst {
+			if spell.SpellCode != SpellCode_ShamanChainLightning && spell.SpellCode != SpellCode_ShamanChainHeal && spell != shaman.LavaBurst {
 				return
 			}
 			aura.Deactivate(sim)

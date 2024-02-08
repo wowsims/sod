@@ -16,6 +16,8 @@ func (hunter *Hunter) registerCarveSpell() {
 	numHits := hunter.Env.GetNumTargets()
 	results := make([]*core.SpellResult, numHits)
 
+	hasDwRune := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
+
 	if hunter.AutoAttacks.IsDualWielding {
 		hunter.CarveOh = hunter.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID.WithTag(1),
@@ -23,7 +25,7 @@ func (hunter *Hunter) registerCarveSpell() {
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-			DamageMultiplier: 1,
+			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1),
 			CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		})
 	}
@@ -78,7 +80,7 @@ func (hunter *Hunter) registerCarveSpell() {
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := 0.5*spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-						spell.BonusWeaponDamage()
+						spell.BonusWeaponDamage()*0.5
 
 					results[hitIndex] = hunter.CarveOh.CalcDamage(sim, curTarget, baseDamage, hunter.CarveOh.OutcomeMeleeWeaponSpecialHitAndCrit)
 

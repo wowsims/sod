@@ -9328,7 +9328,6 @@
 {"id":415352,"name":"Engrave Belt - Melee Specialist","icon":"inv_axe_03","class":2,"type":8,"requiresLevel":1},
 {"id":415370,"name":"Engrave Chest - Lone Wolf","icon":"ability_mount_whitedirewolf","class":2,"type":5,"requiresLevel":1},
 {"id":415399,"name":"Engrave Pants - Sniper Training","icon":"ability_hunter_snipershot","class":2,"type":9,"requiresLevel":1},
-{"id":415423,"name":"Engrave Belt - Aspect of the Viper","icon":"ability_hunter_aspectoftheviper","class":2,"type":8,"requiresLevel":1},
 {"id":415739,"name":"Engrave Chest - Strength of Soul","icon":"spell_holy_greaterblessingofsanctuary","class":5,"type":5,"requiresLevel":1},
 {"id":417046,"name":"Engrave Boots - King of the Jungle","icon":"ability_druid_kingofthejungle","class":1,"type":10,"requiresLevel":1},
 {"id":417135,"name":"Engrave Helm - Gale Winds","icon":"spell_frost_windwalkon","class":1,"type":1,"requiresLevel":1},

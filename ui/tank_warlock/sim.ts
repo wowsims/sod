@@ -1,4 +1,4 @@
-import { APLRotation } from '../core/proto/apl.js';
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearAfflictionTankDefault.gear,
+		gear: Presets.DefaultGear.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
@@ -98,7 +98,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AfflictionTankTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 
@@ -155,32 +155,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.AfflictionTankTalents,
-			Presets.DestroTalents,
+			...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.RotationAfflictionTankDefault,
-			Presets.RotationDestructionTankDefault,
+			...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[CURRENT_PHASE],
 		],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearAfflictionTankDefault,
-			Presets.GearDestructionTankDefault,
+			...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecTankWarlock>): APLRotation => {
+	autoRotation: (player) => {
 		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
-		const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
-		if (hasMasterChanneler) {
-			return Presets.RotationAfflictionTankDefault.rotation.rotation!;
-		} else if (hasLakeOfFire) {
-			return Presets.RotationDestructionTankDefault.rotation.rotation!;
-		} else {
-			return Presets.RotationDestructionTankDefault.rotation.rotation!;
+		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
+
+		if (player.getLevel() == 25) {
+			// Affliction vs Destruction
+			const specNumber = hasMasterChanneler ? 0 : 1
+			return Presets.DefaultAPLs[25][specNumber].rotation.rotation!;
 		}
+		return Presets.DefaultAPLs[40][0].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -201,10 +201,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearAfflictionTankDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearAfflictionTankDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -226,10 +226,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearDestructionTankDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearDestructionTankDefault.gear,
+					1: Presets.GearPresets[Phase.Phase1][1].gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

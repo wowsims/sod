@@ -1,12 +1,11 @@
 import { EmbeddedDetailedResults } from "../core/components/detailed_results.js";
-import { LogRunner } from "../core/components/detailed_results/log_runner.js";
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from "../core/components/raid_sim_action.js";
 
 import { Player } from "../core/player.js";
 import { Raid as RaidProto } from "../core/proto/api.js";
-import { Class, Encounter as EncounterProto, RaidBuffs, TristateEffect } from "../core/proto/common.js";
+import { Class, Encounter as EncounterProto, TristateEffect } from "../core/proto/common.js";
 import { Blessings } from "../core/proto/paladin.js";
-import { BlessingsAssignments, RaidSimSettings, SavedEncounter } from "../core/proto/ui.js";
+import { BlessingsAssignments, RaidSimSettings } from "../core/proto/ui.js";
 import { playerToSpec } from "../core/proto_utils/utils.js";
 import { Sim } from "../core/sim.js";
 import { SimUI } from "../core/sim_ui.js";
@@ -49,7 +48,7 @@ export class RaidSimUI extends SimUI {
 			cssClass: 'raid-sim-ui',
 			cssScheme: 'raid',
 			spec: null,
-			launchStatus: raidSimStatus,
+			simStatus: raidSimStatus,
 			knownIssues: (config.knownIssues || []).concat(extraKnownIssues),
 		});
 

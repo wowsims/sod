@@ -42,7 +42,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskEmpty,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + .05*float64(shaman.Talents.ElementalWeapons),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 
