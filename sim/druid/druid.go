@@ -17,6 +17,7 @@ var TalentTreeSizes = [3]int{16, 16, 15}
 const (
 	SpellCode_DruidWrath int32 = iota
 	SpellCode_DruidStarfire
+	SpellCode_DruidStarsurge
 )
 
 type Druid struct {
@@ -264,10 +265,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 type DruidSpell struct {
 	*core.Spell
 	FormMask DruidForm
-}
-
-func (ds *DruidSpell) AsSpell() *core.Spell {
-	return ds.Spell // Access the embedded Spell field
 }
 
 func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {

@@ -53,23 +53,19 @@ func (druid *Druid) applyEclipse() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
-				if spell == nil {
-					return
-				}
 				spell.Spell.BonusCritRating += solarProcMultiplier
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedWrathSpells, func(spell *DruidSpell) {
-				if spell == nil {
-					return
-				}
 				spell.Spell.BonusCritRating -= solarProcMultiplier
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Assert we are  casting wrath
-			if spell.SpellCode != SpellCode_DruidWrath {
+			// Assert we are casting wrath
+			if spell.SpellCode != SpellCode_DruidWrath &&
+				//Do we proc this starsurge
+				spell.SpellCode != SpellCode_DruidStarsurge {
 				return
 			}
 
@@ -90,23 +86,21 @@ func (druid *Druid) applyEclipse() {
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedLunarSpells = append(
+				druid.Starfire,
+				druid.Starsurge, // Does this proc eclipse?
+			)
 			affectedLunarSpells = core.FilterSlice(
-				druid.Starfire, func(spell *DruidSpell) bool { return spell != nil },
+				affectedLunarSpells, func(spell *DruidSpell) bool { return spell != nil },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				if spell == nil {
-					return
-				}
 				spell.Spell.BonusCritRating += lunarBonusCrit
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				if spell == nil {
-					return
-				}
 				spell.Spell.BonusCritRating -= lunarBonusCrit
 			})
 		},
@@ -227,7 +221,7 @@ func (druid *Druid) applyStarsurge() {
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
-		SpellCode:   int32(SpellCode_DruidStarfire), // Please check if this is right - Starsurge affected by all Starfire talents/procs?
+		SpellCode:   SpellCode_DruidStarsurge, // Please check if this is right - Starsurge affected by all Starfire talents/procs?
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
