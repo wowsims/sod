@@ -114,10 +114,12 @@ func init() {
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.1)
+				character.MultiplyRangedSpeed(sim, 1.1)
 				character.PseudoStats.ThreatMultiplier *= 1.2
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.0/1.1)
+				character.MultiplyRangedSpeed(sim, 1.0/1.1)
 				character.PseudoStats.ThreatMultiplier /= 1.2
 			},
 		})
@@ -203,10 +205,12 @@ func init() {
 			ActionID: core.ActionID{SpellID: 437349},
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeHaste, 20)
+				character.MultiplyAttackSpeed(sim, 1.2)
+				character.MultiplyRangedSpeed(sim, 1.2)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeHaste, -20)
+				character.MultiplyAttackSpeed(sim, 1.0/1.2)
+				character.MultiplyRangedSpeed(sim, 1.0/1.2)
 			},
 		})
 

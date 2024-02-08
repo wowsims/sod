@@ -6,13 +6,12 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (hunter *Hunter) registerRapidFireCD() {
-	actionID := core.ActionID{SpellID: 3045}
-
-	var manaMetrics *core.ResourceMetrics
-	if hunter.Talents.RapidRecuperation > 0 {
-		manaMetrics = hunter.NewManaMetrics(core.ActionID{SpellID: 53232})
+func (hunter *Hunter) registerRapidFire() {
+	if hunter.Level < 26 {
+		return
 	}
+
+	actionID := core.ActionID{SpellID: 3045}
 
 	hasteMultiplier := 1.4
 
@@ -20,19 +19,9 @@ func (hunter *Hunter) registerRapidFireCD() {
 		Label:    "Rapid Fire",
 		ActionID: actionID,
 		Duration: time.Second * 15,
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
-
-			if manaMetrics != nil {
-				manaPerTick := 0.02 * float64(hunter.Talents.RapidRecuperation) * hunter.MaxMana()
-				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period:   time.Second * 3,
-					NumTicks: 5,
-					OnAction: func(sim *core.Simulation) {
-						hunter.AddMana(sim, manaPerTick, manaMetrics)
-					},
-				})
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, 1/hasteMultiplier)
@@ -43,17 +32,13 @@ func (hunter *Hunter) registerRapidFireCD() {
 		ActionID: actionID,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			FlatCost: 100,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.RapidKilling),
+				Duration: time.Minute * 5,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			// Make sure we don't reuse after a Readiness cast.
-			return !hunter.RapidFireAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
