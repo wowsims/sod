@@ -63,8 +63,10 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 		this.config.changedEvent(this.modObject).on(_ => {
 			if (this.showWhen()) {
+				this.restoreValue();
 				this.rootElem.classList.remove('hide');
 			} else {
+				this.storeValue();
 				this.rootElem.classList.add('hide');
 			}
 		});
@@ -123,6 +125,11 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 					optionContainer.classList.remove('hide');
 				} else {
 					optionContainer.classList.add('hide');
+					// Zero out the picker if the selected option is hidden
+					if (this.currentValue == valueConfig.value) {
+						this.setInputValue(this.config.zeroValue)
+						this.inputChanged(TypedEvent.nextEventID())
+					}
 				}
 			};
 
@@ -152,7 +159,9 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 	 * restoration. Useful for events which trigger the element
 	 * on and off.
 	 */
-	public storeValue(){
+	storeValue() {
+		if (typeof this.storedValue !== 'undefined') return;
+
 		this.storedValue = this.getInputValue();
 		this.setInputValue(this.config.zeroValue);
 		this.inputChanged(TypedEvent.nextEventID());
@@ -161,8 +170,8 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 	/**
 	 * Restores value of current input and shows the element.
 	 */
-	public restoreValue(){
-		if (!this.storedValue) return;
+	restoreValue() {
+		if (typeof this.storedValue === 'undefined') return;
 
 		this.setInputValue(this.storedValue);
 		this.inputChanged(TypedEvent.nextEventID());
