@@ -567,23 +567,13 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing {
-		updateStats := BuffSpellByLevel[StrengthOfEarth][level]
-		if raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.15)
-		}
-		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfStrength {
-		character.AddStats(BuffSpellByLevel[ScrollOfStrength][level])
+		multiplier := TernaryFloat64(raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, character.Level, multiplier))
 	}
 
 	if raidBuffs.GraceOfAirTotem > 0 {
-		updateStats := BuffSpellByLevel[GraceOfAir][level]
-		if raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.15)
-		}
-		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfAgility {
-		character.AddStats(BuffSpellByLevel[ScrollOfAgility][level])
+		multiplier := TernaryFloat64(raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, character.Level, multiplier))
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 {
@@ -1550,6 +1540,54 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 			})
 		},
 	})
+}
+
+func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	spellId := map[int32]int32{
+		25: 8160,
+		40: 8161,
+		50: 8161,
+		60: 25361,
+	}[level]
+	duration := time.Minute * 2
+	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Strength of Earth Totem",
+		ActionID:   ActionID{SpellID: spellId},
+		Duration:   duration,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
+}
+
+func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	spellId := map[int32]int32{
+		50: 8835,
+		60: 25359,
+	}[level]
+	duration := time.Minute * 2
+	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier)
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Grace of Air Totem",
+		ActionID:   ActionID{SpellID: spellId},
+		Duration:   duration,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
 }
 
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, level int32) *Aura {
