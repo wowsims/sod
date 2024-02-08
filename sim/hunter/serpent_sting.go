@@ -17,7 +17,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
-		ProcMask:      core.ProcMaskEmpty,
+		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -36,9 +36,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.DistanceFromTarget >= 8
 		},
-
-		// Need to specially apply LethalShots here, because this spell uses an empty proc mask
-		BonusCritRating: 1 * core.CritRatingPerCritChance * float64(hunter.Talents.LethalShots),
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
@@ -81,7 +78,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
-	spellCoeff := [10]float64{0, .08, .125, .185, .2, .2, .2, .2, .2, .2}[rank]
+	spellCoeff := 0.4
 
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
@@ -90,12 +87,12 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		DamageMultiplier:         0.4,
+		DamageMultiplier:         1,
 		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage + spellCoeff*spell.SpellPower()
+			baseDamage := baseDamage*0.4 + spellCoeff*spell.SpellPower()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 		},
 	})
