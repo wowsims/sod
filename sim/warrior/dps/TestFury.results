@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 5
   final_stats: 0
   final_stats: 0
-  final_stats: 756.48
+  final_stats: 751.88
   final_stats: 5
   final_stats: 29.79165
   final_stats: 0
@@ -31,7 +31,7 @@ character_stats_results: {
   final_stats: 102
   final_stats: 0
   final_stats: 0
-  final_stats: 114.62
+  final_stats: 113.47
   final_stats: 24.61157
   final_stats: 0
   final_stats: 0
@@ -51,36 +51,36 @@ character_stats_results: {
 dps_results: {
  key: "TestFury-AllItems-StormshroudArmor"
  value: {
-  dps: 1.20911
-  tps: 3.00062
+  dps: 1.20162
+  tps: 2.99463
  }
 }
 dps_results: {
  key: "TestFury-Average-Default"
  value: {
-  dps: 1.67711
-  tps: 3.28698
+  dps: 1.66773
+  tps: 3.27947
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.74201
-  tps: 42.06028
+  dps: 1.7322
+  tps: 42.05243
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.74201
-  tps: 3.42694
+  dps: 1.7322
+  tps: 3.41909
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 3.52272
-  tps: 5.65151
+  dps: 3.50295
+  tps: 5.63569
  }
 }
 dps_results: {
@@ -107,22 +107,22 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.73886
-  tps: 42.05776
+  dps: 1.72915
+  tps: 42.04998
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.73886
-  tps: 3.42442
+  dps: 1.72915
+  tps: 3.41665
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 3.55108
-  tps: 5.6742
+  dps: 3.53131
+  tps: 5.65838
  }
 }
 dps_results: {
@@ -149,7 +149,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1.1312
-  tps: 2.9383
+  dps: 1.12415
+  tps: 2.93265
  }
 }
