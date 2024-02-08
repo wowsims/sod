@@ -304,6 +304,7 @@ enum AgilityElixir {
 	ElixirOfGreaterAgility = 2;
 	ElixirOfLesserAgility = 3;
 	ScrollOfAgility = 4;
+	ElixirOfAgility = 5;
 }
 
 enum ManaRegenElixir {

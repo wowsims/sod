@@ -103,21 +103,29 @@ message HunterPetTalents {
 }
 
 enum HunterRune {
-	HunterRuneNone 			= 0;
-	RuneChestMasterMarksman = 409428;
-	RuneChestHeartOfTheLion = 409580;
-	RuneChestLoneWolf		= 415370;
-	RuneChestCobraStrikes   = 425713;
+	HunterRuneNone 						= 0;
+	RuneChestMasterMarksman 			= 409428;
+	RuneChestHeartOfTheLion 			= 409580;
+	RuneChestLoneWolf					= 415370;
+	RuneChestCobraStrikes   			= 425713;
 
-	RuneHandsBeastmastery   = 409368;
-	RuneHandsChimeraShot    = 409433;
-	RuneHandsExplosiveShot  = 409552;
-	RuneHandsCarve			= 425711;
+	RuneHandsBeastmastery   			= 409368;
+	RuneHandsChimeraShot    			= 409433;
+	RuneHandsExplosiveShot  			= 409552;
+	RuneHandsCarve						= 425711;
 	
-	RuneLegsKillCommand     = 409379;
-	RuneLegsFlankingStrike 	= 415320;
-	RuneLegsSniperTraining 	= 415399;
-	RuneLegsSerpentSpread 	= 425738;
+	RuneLegsKillCommand     			= 409379;
+	RuneLegsFlankingStrike 				= 415320;
+	RuneLegsSniperTraining 				= 415399;
+	RuneLegsSerpentSpread 				= 425738;
+
+	RuneBeltExposeWeakness 				= 409504;
+	RuneBeltMeleeSpecialist 			= 415352;
+	RuneBeltSteadyShot 					= 437123;
+
+	RuneBootsTrapLauncher 				= 409541;
+	RuneBootsDualWieldSpecialization 	= 409687;
+	RuneBootsInvigoration				= 437997;
 }
 
 message Hunter {

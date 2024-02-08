@@ -41,7 +41,7 @@ func (warrior *Warrior) applyDeepWounds() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).ApplyOrRefresh(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
@@ -57,22 +57,29 @@ func (warrior *Warrior) applyDeepWounds() {
 				return
 			}
 			if result.Outcome.Matches(core.OutcomeCrit) {
-				warrior.procDeepWounds(sim, result.Target)
+				warrior.procDeepWounds(sim, result.Target, spell.IsOH())
 			}
 		},
 	})
 }
 
-func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit) {
+func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, isOh bool) {
 	dot := warrior.DeepWounds.Dot(target)
 
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	attackTable := warrior.AttackTables[target.UnitIndex]
 
-	adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable)
-	tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(attackTable, false)
-	awd := (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) + dot.Spell.BonusWeaponDamage()) * adm * tdm
+	var awd float64
+	if isOh {
+		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable)
+		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(attackTable, false)
+		awd = ((warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5) + dot.Spell.BonusWeaponDamage()) * adm * tdm
+	} else { // MH
+		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable)
+		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(attackTable, false)
+		awd = (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) + dot.Spell.BonusWeaponDamage()) * adm * tdm
+	}
 
 	newDamage := awd * 0.2 * float64(warrior.Talents.DeepWounds)
 

@@ -236,7 +236,7 @@ export const BattleShoutBuff = withLabel(
 export const TrueshotAuraBuff = withLabel(
 	makeBooleanRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
-			{ id: 20906, minLevel: 40 },
+			{ id: 19506, minLevel: 40 },
 		]),
 		fieldName: 'trueshotAura'
 	}),
@@ -439,20 +439,39 @@ export const PowerInfusion = withLabel(
 ///////////////////////////////////////////////////////////////////////////
 
 export const RallyingCryOfTheDragonslayer = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(22888), fieldName: 'rallyingCryOfTheDragonslayer'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 22888, minLevel: 51 },
+		]),
+		fieldName: 'rallyingCryOfTheDragonslayer',
+	}),
 	'Rallying Cry of the Dragonslayer',
 );
-
 export const SpiritOfZandalar = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(24425), fieldName: 'spiritOfZandalar'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 24425, minLevel: 51 },
+		]),
+		fieldName: 'spiritOfZandalar',
+	}),
 	'Spirit of Zandalar',
 );
 export const SongflowerSerenade = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(15366), fieldName: 'songflowerSerenade'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 15366, minLevel: 50 },
+		]),
+		fieldName: 'songflowerSerenade',
+	}),
 	'Songflower Serenade',
 );
 export const WarchiefsBlessing = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(16609), fieldName: 'warchiefsBlessing'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 16609, minLevel: 51 },
+		]),
+		fieldName: 'warchiefsBlessing',
+	}),
 	`Warchief's Blessing`,
 );
 
@@ -473,15 +492,30 @@ export const SaygesStamina = { actionId: () => ActionId.fromSpellId(23737), valu
 
 // Dire Maul Buffs
 export const FengusFerocity = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(22817), fieldName: 'fengusFerocity'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 22817, minLevel: 51 },
+		]),
+		fieldName: 'fengusFerocity',
+	}),
 	`Fengus' Ferocity`,
 );
 export const MoldarsMoxie = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(22818), fieldName: 'moldarsMoxie'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 22818, minLevel: 51 },
+		]),
+		fieldName: 'moldarsMoxie',
+	}),
 	`Moldar's Moxie`,
 );
 export const SlipKiksSavvy = withLabel(
-	makeBooleanIndividualBuffInput({actionId: () => ActionId.fromSpellId(22820), fieldName: 'slipkiksSavvy'}),
+	makeBooleanIndividualBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 22820, minLevel: 51 },
+		]),
+		fieldName: 'slipkiksSavvy',
+	}),
 	`Slip'kik's Savvy`,
 );
 

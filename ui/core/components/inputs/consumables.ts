@@ -276,7 +276,8 @@ export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 };
 export const NightfinSoup: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13931, minLevel: 35 },
+		// Requires Skill 250
+		{ id: 13931, minLevel: 41 },
 	]),
 	value: Food.FoodNightfinSoup,
 };
@@ -334,9 +335,16 @@ export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 };
 export const ElixirOfGreaterAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 9187, minLevel: 38 },
+		// Requires skill 240
+		{ id: 9187, minLevel: 41 },
 	]),
 	value: AgilityElixir.ElixirOfGreaterAgility,
+};
+export const ElixirOfAgility: ConsumableInputConfig<AgilityElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 8949, minLevel: 27 },
+	]),
+	value: AgilityElixir.ElixirOfAgility,
 };
 export const ElixirOfLesserAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -357,6 +365,7 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfTheMongoose, 		stats: [Stat.StatAgility] },
 	{ config: ElixirOfGreaterAgility, 	stats: [Stat.StatAgility] },
+	{ config: ElixirOfAgility,		 	stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, 	stats: [Stat.StatAgility] },
 	{ config: ScrollOfAgility, 			stats: [Stat.StatAgility] },
 ];
@@ -451,7 +460,8 @@ export const GreaterArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 9155, minLevel: 37 },
+		// Requires skill 235
+		{ id: 9155, minLevel: 41 },
 	]),
 	value: SpellPowerBuff.ArcaneElixir,
 };
@@ -473,7 +483,8 @@ export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesField
 // Fire
 export const ElixirOfGreaterFirepower: ConsumableInputConfig<FirePowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 21546, minLevel: 40 },
+		// Requires skill 250
+		{ id: 21546, minLevel: 41 },
 	]),
 	value: FirePowerBuff.ElixirOfGreaterFirepower,
 };

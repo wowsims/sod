@@ -55,32 +55,31 @@ export const DefaultGear = GearPresets[Phase.Phase1][0];
 
 import AfflictionTankAPL from './apls/affi.tank.apl.json';
 import DestroTankAPL from './apls/destro.tank.apl.json';
+import P2TankAPL from './apls/destro.tank.apl.json';
 
 export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('Affliction Tank', AfflictionTankAPL);
-export const APLDemonologyTankPhase1 = PresetUtils.makePresetAPLRotation('Demonology Tank', DestroTankAPL);
 export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('Destruction Tank', DestroTankAPL);
+export const APLTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Tank', P2TankAPL);
+
 
 export const APLPresets = {
-  [Phase.Phase1]: [
-    APLAfflictionTankPhase1,
-		APLDemonologyTankPhase1,
+  	[Phase.Phase1]: [
+    	APLAfflictionTankPhase1,
 		APLDestructionTankPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+  	],
+  	[Phase.Phase2]: [
+		APLTankPhase2
+  	]
 };
 
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
-  25: {
+  	25: {
 		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][1],
-		2: APLPresets[Phase.Phase1][2],
+		1: APLPresets[Phase.Phase1][2],
 	},
-  40: {
-		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][1],
-		2: APLPresets[Phase.Phase1][2],
+  	40: {
+		0: APLPresets[Phase.Phase2][0],
 	}
 };
 
@@ -105,13 +104,21 @@ export const TalentsDestructionTankPhase1 = {
 	}),
 };
 
+export const TalentsTankPhase2 = {
+	name: 'Phase 2',
+	data: SavedTalents.create({
+		talentsString: '-03-0550201',
+	}),
+};
+
 export const TalentPresets = {
-  [Phase.Phase1]: [
-    TalentsAfflictionTankPhase1,
+  	[Phase.Phase1]: [
+    	TalentsAfflictionTankPhase1,
 		TalentsDestructionTankPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+  	],
+  	[Phase.Phase2]: [
+		TalentsTankPhase2
+  	]
 };
 
 // TODO: Add Phase 2 preset and pull from map

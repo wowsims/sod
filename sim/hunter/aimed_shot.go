@@ -38,10 +38,16 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 				GCD:      core.GCDDefault,
 				CastTime: time.Second * 3,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    timer,
 				Duration: time.Second * 6,
+			},
+			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
+			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			CastTime: func(spell *core.Spell) time.Duration {
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -56,9 +62,8 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.2*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				hunter.AmmoDamageBonus +
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+				hunter.NormalizedAmmoDamageBonus +
 				spell.BonusWeaponDamage() +
 				baseDamage
 
