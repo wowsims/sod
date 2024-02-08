@@ -47,12 +47,18 @@ func (druid *Druid) applyEclipse() {
 		ActionID:  core.ActionID{SpellID: 408250},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Wrath, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating += solarProcMultiplier
+				if spell == nil {
+					return
+				}
+				spell.BonusCritRating += solarProcMultiplier
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Wrath, func(spell *DruidSpell) {
-				spell.Spell.BonusCritRating -= solarProcMultiplier
+				if spell == nil {
+					return
+				}
+				spell.BonusCritRating -= solarProcMultiplier
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -78,11 +84,17 @@ func (druid *Druid) applyEclipse() {
 		ActionID:  core.ActionID{SpellID: 408255},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Starfire, func(spell *DruidSpell) {
+				if spell == nil {
+					return
+				}
 				spell.BonusCritRating += lunarBonusCrit
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Starfire, func(spell *DruidSpell) {
+				if spell == nil {
+					return
+				}
 				spell.BonusCritRating -= lunarBonusCrit
 			})
 		},
