@@ -44,7 +44,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 		Rank:          rank,
 		MissileSpeed:  20,
-
+		SpellCode:     SpellCode_DruidWrath,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: core.TernaryFloat64(druid.FuryOfStormrageAura != nil, 0, manaCost),
 		},

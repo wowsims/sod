@@ -37,8 +37,6 @@ func (druid *Druid) applyEclipse() {
 	if !druid.HasRune(proto.DruidRune_RuneBeltEclipse) {
 		return
 	}
-	WrathRanks := len(druid.Wrath)
-	StarfireRanks := len(druid.Starfire)
 
 	// Solar
 	solarProcMultiplier := 30.0
@@ -48,27 +46,21 @@ func (druid *Druid) applyEclipse() {
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for rank := 1; rank <= WrathRanks; rank++ {
-				druid.Wrath[rank].BonusCritRating += solarProcMultiplier
-			}
+			core.Each(druid.Wrath, func(spell *DruidSpell) {
+				spell.Spell.BonusCritRating += solarProcMultiplier
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for rank := 1; rank <= WrathRanks; rank++ {
-				druid.Wrath[rank].BonusCritRating -= solarProcMultiplier
-			}
+			core.Each(druid.Wrath, func(spell *DruidSpell) {
+				spell.Spell.BonusCritRating -= solarProcMultiplier
+			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			MatchWrath := false
-
-			// Are we casting Wrath
-			for rank := 1; rank <= WrathRanks; rank++ {
-				if druid.Wrath[rank].IsEqual(spell) {
-					MatchWrath = true
-				}
-			}
-			if !MatchWrath {
+			// Assert we are  casting wrath
+			if spell.SpellCode != SpellCode_DruidWrath {
 				return
 			}
+
 			if !result.Landed() {
 				return
 			}
@@ -85,25 +77,18 @@ func (druid *Druid) applyEclipse() {
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for rank := 1; rank <= StarfireRanks; rank++ {
-				druid.Starfire[rank].BonusCritRating += lunarBonusCrit
-			}
+			core.Each(druid.Starfire, func(spell *DruidSpell) {
+				spell.BonusCritRating += lunarBonusCrit
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for rank := 1; rank <= StarfireRanks; rank++ {
-				druid.Starfire[rank].BonusCritRating -= lunarBonusCrit
-			}
+			core.Each(druid.Starfire, func(spell *DruidSpell) {
+				spell.BonusCritRating -= lunarBonusCrit
+			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			MatchStarfire := false
-
-			// Are we casting Starfire
-			for rank := 1; rank <= StarfireRanks; rank++ {
-				if druid.Starfire[rank].IsEqual(spell) {
-					MatchStarfire = true
-				}
-			}
-			if !MatchStarfire {
+			// Assert we are casting Starfire
+			if spell.SpellCode != SpellCode_DruidStarfire {
 				return
 			}
 			if !result.Landed() {
@@ -117,36 +102,24 @@ func (druid *Druid) applyEclipse() {
 	druid.EclipseAura = druid.RegisterAura(core.Aura{
 		Label:    "Eclipse",
 		Duration: core.NeverExpires,
-		ActionID: core.ActionID{SpellID: 408248}, // Check please
+		ActionID: core.ActionID{SpellID: 408248},
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			MatchWrath := false
-			MatchStarfire := false
-
-			// Are we casting Wrath
-			for rank := 1; rank <= WrathRanks; rank++ {
-				if druid.Wrath[rank].IsEqual(spell) {
-					MatchWrath = true
-				}
-			}
-			if MatchWrath {
+			switch spell.SpellCode {
+			case SpellCode_DruidWrath:
 				// Proc Lunar
 				druid.LunarEclipseProcAura.Activate(sim)
 				druid.LunarEclipseProcAura.SetStacks(sim, 1)
-			}
 
-			// Are we casting Starfire
-			for rank := 1; rank <= StarfireRanks; rank++ {
-				if druid.Starfire[rank].IsEqual(spell) {
-					MatchStarfire = true
-				}
-			}
-			if MatchStarfire {
+			case SpellCode_DruidStarfire:
 				// Proc Solar
 				druid.SolarEclipseProcAura.Activate(sim)
 				druid.SolarEclipseProcAura.SetStacks(sim, 2)
+
+			default:
+				return
 			}
 		},
 	})
@@ -173,7 +146,6 @@ func (druid *Druid) applySunfire() {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
-
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.21,
 		},
@@ -231,7 +203,7 @@ func (druid *Druid) applyStarsurge() {
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
-
+		SpellCode:   int32(SpellCode_DruidStarfire), // Please check if this is right - Starsurge affected by all Starfire talents/procs?
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},

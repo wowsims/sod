@@ -41,7 +41,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		Flags:         core.SpellFlagAPL,
 		RequiredLevel: level,
 		Rank:          rank,
-
+		SpellCode:     SpellCode_DruidStarfire,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
