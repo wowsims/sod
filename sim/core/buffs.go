@@ -670,6 +670,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
 		character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
 		character.AddStat(stats.AttackPower, 20)
+		character.AddStat(stats.RangedAttackPower, 20)
 		character.AddStat(stats.SpellPower, 25)
 	}
 

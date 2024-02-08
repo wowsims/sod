@@ -183,8 +183,9 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		switch consumes.EnchantedSigil {
 		case proto.EnchantedSigil_InnovationSigil:
 			character.AddStats(stats.Stats{
-				stats.AttackPower: 20,
-				stats.SpellPower:  20,
+				stats.AttackPower:       20,
+				stats.RangedAttackPower: 20,
+				stats.SpellPower:        20,
 			})
 		}
 	}

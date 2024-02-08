@@ -62,9 +62,8 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.2*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				hunter.AmmoDamageBonus +
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+				hunter.NormalizedAmmoDamageBonus +
 				spell.BonusWeaponDamage() +
 				baseDamage
 

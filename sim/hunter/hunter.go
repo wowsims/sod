@@ -52,6 +52,7 @@ type Hunter struct {
 	ChimeraShot    *core.Spell
 	ExplosiveShot  *core.Spell
 	ExplosiveTrap  *core.Spell
+	ImmolationTrap *core.Spell
 	KillCommand    *core.Spell
 	KillShot       *core.Spell
 	MultiShot      *core.Spell
@@ -120,11 +121,17 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerAimedShotSpell(arcaneShotTimer)
 	hunter.registerMultiShotSpell(multiShotTimer)
 	hunter.registerChimeraShotSpell()
+	hunter.registerSteadyShotSpell()
 
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
+
+	fireTraps := hunter.NewTimer()
+
+	hunter.registerExplosiveTrapSpell(fireTraps)
+	hunter.registerImmolationTrapSpell(fireTraps)
 
 	hunter.registerKillCommand()
 	//hunter.registerRapidFireCD()
