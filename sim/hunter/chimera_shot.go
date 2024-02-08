@@ -49,9 +49,8 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.2*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				hunter.AmmoDamageBonus +
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+				hunter.NormalizedAmmoDamageBonus +
 				spell.BonusWeaponDamage()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
