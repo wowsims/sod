@@ -4,6 +4,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -198,7 +199,6 @@ func (druid *Druid) applySunfire() {
 	})
 }
 
-// TODO: Classic verify star surge numbers
 func (druid *Druid) applyStarsurge() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsStarsurge) {
 		return
@@ -234,11 +234,16 @@ func (druid *Druid) applyStarsurge() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.VengeanceCritMultiplier(),
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
+				druid.NaturesGraceProcAura.Activate(sim)
+			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
