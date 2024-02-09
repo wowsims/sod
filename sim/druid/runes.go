@@ -4,6 +4,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -234,6 +235,7 @@ func (druid *Druid) applyStarsurge() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.VengeanceCritMultiplier(),
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
