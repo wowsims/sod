@@ -199,7 +199,6 @@ func (druid *Druid) applySunfire() {
 	})
 }
 
-// TODO: Classic verify star surge numbers
 func (druid *Druid) applyStarsurge() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsStarsurge) {
 		return
@@ -241,6 +240,10 @@ func (druid *Druid) applyStarsurge() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
+				druid.NaturesGraceProcAura.Activate(sim)
+			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
