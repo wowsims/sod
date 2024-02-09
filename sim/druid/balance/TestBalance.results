@@ -114,8 +114,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 55.49145
-  tps: 56.41221
+  dps: 55.39244
+  tps: 56.3132
  }
 }
 dps_results: {
@@ -135,29 +135,29 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 60.14399
-  tps: 64.74619
+  dps: 58.03327
+  tps: 62.63547
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 52.66508
-  tps: 52.66508
+  dps: 52.58487
+  tps: 52.58487
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 52.66508
-  tps: 52.66508
+  dps: 52.58487
+  tps: 52.58487
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 58.82808
-  tps: 58.82808
+  dps: 56.75419
+  tps: 56.75419
  }
 }
 dps_results: {
