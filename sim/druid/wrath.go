@@ -68,6 +68,10 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)*druid.MoonfuryDamageMultiplier() + spellCoeff*spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
+			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
+				druid.NaturesGraceProcAura.Activate(sim)
+			}
+
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

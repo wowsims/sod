@@ -222,8 +222,7 @@ func (env *Environment) setupAttackTables() {
 
 			if attacker.Type == PlayerUnit {
 				character := env.Raid.GetPlayerFromUnit(attacker).GetCharacter()
-				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock ||
-					character.Spec == proto.Spec_SpecBalanceDruid || character.Spec == proto.Spec_SpecElementalShaman {
+				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock {
 					ModNonMeleeAttackTable(attacker.AttackTables[idx], attacker, defender)
 				}
 			}

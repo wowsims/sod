@@ -213,6 +213,9 @@ func (aura *Aura) SetStacks(sim *Simulation, newStacks int32) {
 func (aura *Aura) AddStack(sim *Simulation) {
 	aura.SetStacks(sim, aura.stacks+1)
 }
+func (aura *Aura) AddStacks(sim *Simulation, numStacks int32) {
+	aura.SetStacks(sim, aura.stacks+numStacks)
+}
 func (aura *Aura) RemoveStack(sim *Simulation) {
 	aura.SetStacks(sim, aura.stacks-1)
 }

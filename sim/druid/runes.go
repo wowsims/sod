@@ -1,8 +1,10 @@
 package druid
 
 import (
+	"slices"
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -41,31 +43,33 @@ func (druid *Druid) applyEclipse() {
 	solarCritBonus := 30.0
 	lunarCastTimeReduction := time.Second * 1
 
+	var affectedSolarSpells []*DruidSpell
+	var affectedLunarSpells []*DruidSpell
+
 	// Solar
 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Solar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(
-				core.FilterSlice(druid.Wrath, func(spell *DruidSpell) bool { return spell != nil }),
-				func(spell *DruidSpell) {
-					spell.BonusCritRating += solarCritBonus
-				},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSolarSpells = core.FilterSlice(
+				core.Flatten([][]*DruidSpell{druid.Wrath, {druid.Starsurge}}),
+				func(spell *DruidSpell) bool { return spell != nil },
 			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
+				spell.BonusCritRating += solarCritBonus
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(
-				core.FilterSlice(druid.Wrath, func(spell *DruidSpell) bool { return spell != nil }),
-				func(spell *DruidSpell) {
-					spell.BonusCritRating -= solarCritBonus
-				},
-			)
+			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
+				spell.BonusCritRating -= solarCritBonus
+			})
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Assert we are casting wrath
-			if !result.Landed() || spell.SpellCode != SpellCode_DruidWrath {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode != SpellCode_DruidWrath && spell.SpellCode != SpellCode_DruidStarsurge {
 				return
 			}
 
@@ -79,25 +83,24 @@ func (druid *Druid) applyEclipse() {
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(
-				core.FilterSlice(druid.Starfire, func(spell *DruidSpell) bool { return spell != nil }),
-				func(spell *DruidSpell) {
-					spell.DefaultCast.CastTime -= lunarCastTimeReduction
-				},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedLunarSpells = core.FilterSlice(
+				core.Flatten([][]*DruidSpell{druid.Starfire}),
+				func(spell *DruidSpell) bool { return spell != nil },
 			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
+				spell.DefaultCast.CastTime -= lunarCastTimeReduction
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(
-				core.FilterSlice(druid.Starfire, func(spell *DruidSpell) bool { return spell != nil }),
-				func(spell *DruidSpell) {
-					spell.DefaultCast.CastTime += lunarCastTimeReduction
-				},
-			)
+			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
+				spell.DefaultCast.CastTime += lunarCastTimeReduction
+			})
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Assert we are casting Starfire
-			if !result.Landed() || spell.SpellCode != SpellCode_DruidStarfire {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode != SpellCode_DruidStarfire {
 				return
 			}
 
@@ -113,20 +116,20 @@ func (druid *Druid) applyEclipse() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			switch spell.SpellCode {
-			case SpellCode_DruidWrath:
-				// Proc Lunar
-				druid.LunarEclipseProcAura.Activate(sim)
-				// Wrath gives 1 stack of starfire bonus
-				druid.LunarEclipseProcAura.AddStack(sim)
-			case SpellCode_DruidStarfire:
-				// Proc Solar
-				druid.SolarEclipseProcAura.Activate(sim)
-				// Starfire gives 2 staacks of wrath bonus
-				druid.SolarEclipseProcAura.AddStack(sim)
-				druid.SolarEclipseProcAura.AddStack(sim)
-			default:
+			if !slices.Contains([]int32{SpellCode_DruidWrath, SpellCode_DruidStarfire, SpellCode_DruidStarsurge}, spell.SpellCode) || !result.Landed() {
 				return
+			}
+
+			if spell.SpellCode == SpellCode_DruidWrath || spell.SpellCode == SpellCode_DruidStarsurge {
+				druid.LunarEclipseProcAura.Activate(sim)
+				// Solar gives 1 stack of lunar bonus
+				druid.LunarEclipseProcAura.AddStack(sim)
+			}
+
+			if spell.SpellCode == SpellCode_DruidStarfire || spell.SpellCode == SpellCode_DruidStarsurge {
+				druid.SolarEclipseProcAura.Activate(sim)
+				// Lunar gives 2 staacks of solar bonus
+				druid.SolarEclipseProcAura.AddStacks(sim, 2)
 			}
 		},
 	})
@@ -196,7 +199,6 @@ func (druid *Druid) applySunfire() {
 	})
 }
 
-// TODO: Classic verify star surge numbers
 func (druid *Druid) applyStarsurge() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsStarsurge) {
 		return
@@ -214,6 +216,8 @@ func (druid *Druid) applyStarsurge() {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
+		MissileSpeed: 24,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
 		},
@@ -230,11 +234,20 @@ func (druid *Druid) applyStarsurge() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.VengeanceCritMultiplier(),
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
+				druid.NaturesGraceProcAura.Activate(sim)
+			}
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }
