@@ -74,7 +74,7 @@ func applyRaceEffects(agent Agent) {
 			Duration: time.Second * 15,
 			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
 			OnGain: func(aura *Aura, sim *Simulation) {
-				bloodFuryAP := (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
+				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
 				character.AddStatDynamic(sim, stats.AttackPower, bloodFuryAP)
 			},
 
