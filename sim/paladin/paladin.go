@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"fmt"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -27,7 +29,7 @@ type Paladin struct {
 	// DivineStorm           *core.Spell
 	// HolyWrath             *core.Spell
 	// Consecration          *core.Spell
-	// CrusaderStrike        *core.Spell
+	CrusaderStrike *core.Spell
 	// Exorcism              *core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
@@ -125,7 +127,7 @@ func (paladin *Paladin) Initialize() {
 	// paladin.setupSealOfRighteousness()
 	// paladin.setupJudgementRefresh()
 
-	// paladin.registerCrusaderStrikeSpell()
+	paladin.registerCrusaderStrikeSpell()
 	// paladin.registerDivineStormSpell()
 	// paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
@@ -192,6 +194,11 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.PseudoStats.BaseParry += 0.05
 
 	return paladin
+}
+
+func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
+	fmt.Println(rune, int32(rune))
+	return paladin.HasRuneById(int32(rune))
 }
 
 // Shared 30sec cooldown for Divine Protection and Avenging Wrath

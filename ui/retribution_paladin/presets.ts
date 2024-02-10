@@ -56,6 +56,7 @@ export const APLPresets = {
     APLPhase1,
   ],
   [Phase.Phase2]: [
+	APLPhase1,
   ]
 };
 
@@ -103,7 +104,7 @@ export const TalentPresets = {
   ]
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase2][0];
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

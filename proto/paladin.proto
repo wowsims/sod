@@ -57,7 +57,7 @@ message PaladinTalents {
 
 enum PaladinRune {
 	PaladinRuneNone = 0;
-	RuneHandsCrusaderStrike	= 409914;
+	RuneHandsCrusaderStrike	= 407676;
 	RuneHandsHandOfReckoning = 407631;
 	RuneHandsBeaconOfLight = 407613;
 	RuneLegsInspirationExemplar = 407880;
