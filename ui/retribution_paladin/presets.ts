@@ -15,6 +15,7 @@ import {
 import * as PresetUtils from '../core/preset_utils.js';
 
 import BlankGear from './gear_sets/blank.gear.json';
+import Phase1Gear from './gear_sets/p1gear.json';
 
 import DefaultApl from './apls/default.apl.json';
 
@@ -26,13 +27,15 @@ import DefaultApl from './apls/default.apl.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+// export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearPhase1 = PresetUtils.makePresetGear('2h Ret', Phase1Gear);
 
 export const GearPresets = {
   [Phase.Phase1]: [
-    GearBlank,
+    GearPhase1,
   ],
   [Phase.Phase2]: [
+	GearPhase1,
   ]
 };
 
