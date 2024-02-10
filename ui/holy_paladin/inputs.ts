@@ -2,7 +2,6 @@ import { Spec } from '../core/proto/common.js';
 
 import {
 	PaladinAura,
-	PaladinJudgement,
 } from '../core/proto/paladin.js';
 
 import * as InputHelpers from '../core/components/input_helpers.js';
@@ -20,13 +19,3 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecHoly
 	],
 });
 
-export const JudgementSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecHolyPaladin>({
-	fieldName: 'judgement',
-	label: 'Judgement',
-	labelTooltip: 'Judgement debuff you will use on the target during the encounter.',
-	values: [
-		{ name: 'None', value: PaladinJudgement.NoJudgement },
-		{ name: 'Wisdom', value: PaladinJudgement.JudgementOfWisdom },
-		{ name: 'Light', value: PaladinJudgement.JudgementOfLight },
-	],
-});

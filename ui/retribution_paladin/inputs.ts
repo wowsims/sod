@@ -4,7 +4,6 @@ import { ActionId } from '../core/proto_utils/action_id.js';
 
 import {
 	PaladinAura,
-	PaladinJudgement,
 	PaladinSeal,
 } from '../core/proto/paladin.js';
 
@@ -24,20 +23,12 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinSeal>({
 	fieldName: 'seal',
 	values: [
-		{ actionId: () => ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
 		{ actionId: () => ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
 		{
-			actionId: () => ActionId.fromSpellId(20424), value: PaladinSeal.Command,
+			actionId: () => ActionId.fromSpellId(20375), value: PaladinSeal.Command,
 			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sealOfCommand,
 		},
 	],
 	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,
 });
 
-export const JudgementSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinJudgement>({
-	fieldName: 'judgement',
-	values: [
-		{ actionId: () => ActionId.fromSpellId(20355), value: PaladinJudgement.JudgementOfWisdom },
-		{ actionId: () => ActionId.fromSpellId(20271), value: PaladinJudgement.JudgementOfLight },
-	],
-});

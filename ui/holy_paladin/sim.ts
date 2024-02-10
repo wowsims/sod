@@ -115,7 +115,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			OtherInputs.TankAssignment,
 			OtherInputs.InspirationUptime,
 			HolyPaladinInputs.AuraSelection,
-			HolyPaladinInputs.JudgementSelection,
 		],
 	},
 	encounterPicker: {

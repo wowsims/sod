@@ -8,7 +8,6 @@ import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	PaladinAura,
-	PaladinJudgement,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../core/proto/paladin.js';
 
@@ -89,7 +88,6 @@ export const DefaultTalents = TalentPresets[Phase.Phase1][0];
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	aura: PaladinAura.RetributionAura,
-	judgement: PaladinJudgement.JudgementOfWisdom,
 });
 
 export const DefaultConsumes = Consumes.create({
