@@ -37,8 +37,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
@@ -59,8 +57,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
@@ -86,8 +82,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			[Stat.StatMeleeHit]: 1.96,
 			[Stat.StatMeleeCrit]: 1.16,
 			[Stat.StatMeleeHaste]: 1.44,
-			[Stat.StatArmorPenetration]: 0.76,
-			[Stat.StatExpertise]: 1.80,
 		}, {
 			[PseudoStat.PseudoStatMainHandDps]: 7.33,
 		}),
@@ -125,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		RetributionPaladinInputs.AuraSelection,
+		// RetributionPaladinInputs.AuraSelection,
 		RetributionPaladinInputs.StartingSealSelection,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.

@@ -69,13 +69,19 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
+export const P1RetTalents = {
+	name: 'P1 Ret',
+	data: SavedTalents.create({
+		talentsString: '--05230051',
+	})
+};
+
 export const P2DeepRetTalents = {
 	name: 'P2 Deep Ret',
 	data: SavedTalents.create({
 		talentsString: '--532300512003151',
 	}),
 };
-
 
 export const P2ShockadinTalents = {
 	name: 'P2 Shockadin',
@@ -86,8 +92,7 @@ export const P2ShockadinTalents = {
 
 export const TalentPresets = {
   [Phase.Phase1]: [
-    P2DeepRetTalents,
-	P2ShockadinTalents
+    P1RetTalents,
   ],
   [Phase.Phase2]: [
 	P2DeepRetTalents,
@@ -95,7 +100,6 @@ export const TalentPresets = {
   ]
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
