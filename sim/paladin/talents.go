@@ -64,7 +64,7 @@ func (paladin *Paladin) ApplyTalents() {
 	// paladin.applyReckoning()
 	// paladin.applyArdentDefender()
 	// paladin.applyCrusade()
-	// paladin.applyWeaponSpecialization()
+	paladin.applyWeaponSpecialization()
 	// paladin.applyVengeance()
 	// paladin.applyHeartOfTheCrusader()
 	// paladin.applyVindication()
@@ -326,11 +326,14 @@ func (paladin *Paladin) applyWeaponSpecialization() {
 
 	switch mhWeapon.HandType {
 	case proto.HandType_HandTypeTwoHand:
-		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+		// Apparently in classic 1h and 2h spec apply to *all* damage dealt, regardless of it rolling physical
+		// paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+		if paladin.Talents.TwoHandedWeaponSpecialization > 0 {
+			paladin.PseudoStats.DamageDealtMultiplier *= 1.00 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+		}
 	case proto.HandType_HandTypeOneHand, proto.HandType_HandTypeMainHand:
 		if paladin.Talents.OneHandedWeaponSpecialization > 0 {
-			// Talent points are 4%, 7%, 10%
-			paladin.PseudoStats.DamageDealtMultiplier *= 1.01 + 0.03*float64(paladin.Talents.OneHandedWeaponSpecialization)
+			paladin.PseudoStats.DamageDealtMultiplier *= 1.00 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
 		}
 	}
 }
