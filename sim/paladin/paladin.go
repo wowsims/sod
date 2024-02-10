@@ -26,7 +26,7 @@ type Paladin struct {
 	// CurrentJudgement *core.Aura
 
 	// DivinePlea            *core.Spell
-	// DivineStorm           *core.Spell
+	DivineStorm *core.Spell
 	// HolyWrath             *core.Spell
 	// Consecration          *core.Spell
 	CrusaderStrike *core.Spell
@@ -128,7 +128,7 @@ func (paladin *Paladin) Initialize() {
 	// paladin.setupJudgementRefresh()
 
 	paladin.registerCrusaderStrikeSpell()
-	// paladin.registerDivineStormSpell()
+	paladin.registerDivineStormSpell()
 	// paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
