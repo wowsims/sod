@@ -33,7 +33,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 	flags := core.SpellFlagNone
 	formMask := Humanoid | Moonkin
 
-	if druid.InForm(Cat | Bear) && druid.Talents.FaerieFireFeral {
+	if druid.InForm(Cat|Bear) && druid.Talents.FaerieFireFeral {
 		actionID = core.ActionID{SpellID: map[int32]int32{
 			25: 16857,
 			40: 17390,
@@ -49,7 +49,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 			Duration: time.Second * 6,
 		}
 	}
-	flags |= core.SpellFlagAPL
+	flags |= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
 
 	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return core.FaerieFireAura(target, level)
@@ -73,7 +73,6 @@ func (druid *Druid) registerFaerieFireSpell() {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  flatThreatBonus,
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.BalanceCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
@@ -100,5 +99,5 @@ func (druid *Druid) ShouldFaerieFire(sim *core.Simulation, target *core.Unit) bo
 	}
 
 	debuff := druid.FaerieFireAuras.Get(target)
-	return !debuff.IsActive() || debuff.RemainingDuration(sim) < time.Second * 4
+	return !debuff.IsActive() || debuff.RemainingDuration(sim) < time.Second*4
 }

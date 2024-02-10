@@ -27,9 +27,6 @@ export class ConsumesPicker extends Component {
 		this.buildEngPicker();
 		this.buildEnchPicker();
 		this.buildPetPicker();
-
-		// Force an event so that the pickers update state
-		this.simUI.player.consumesChangeEmitter.emit(TypedEvent.nextEventID());
 	}
 
 	private buildPotionsPicker() {

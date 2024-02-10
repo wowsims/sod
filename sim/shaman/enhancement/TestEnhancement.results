@@ -105,6 +105,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 12.4133
+  tps: 9.68996
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-IrradiatedGarments"
  value: {
   dps: 13.62019

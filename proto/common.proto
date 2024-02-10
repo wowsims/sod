@@ -508,9 +508,9 @@ message Consumes {
 	StrengthBuff strength_buff = 7;
 	AttackPowerBuff attack_power_buff = 8;
 	SpellPowerBuff spell_power_buff = 9;
-	bool shadow_power_buff = 10;
+	ShadowPowerBuff shadow_power_buff = 10;
 	FirePowerBuff fire_power_buff = 11;
-	bool frost_power_buff = 12;
+	FrostPowerBuff frost_power_buff = 12;
 	bool sapper = 13;
 	Explosive filler_explosive = 14;
 	WeaponImbue main_hand_imbue = 15;
