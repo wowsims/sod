@@ -142,169 +142,169 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 17.64554
-  tps: 162.18788
+  dps: 17.18032
+  tps: 161.82815
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 17.64554
-  tps: 22.27797
+  dps: 17.18032
+  tps: 21.91824
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 18.86754
-  tps: 20.39445
+  dps: 18.06567
+  tps: 19.77175
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 16.00539
-  tps: 182.92842
+  dps: 15.53522
+  tps: 182.562
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 16.00539
-  tps: 21.80367
+  dps: 15.53522
+  tps: 21.43725
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 17.24391
-  tps: 18.31759
+  dps: 16.44399
+  tps: 17.69317
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 17.64554
-  tps: 161.79263
+  dps: 17.18032
+  tps: 161.4329
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 17.64554
-  tps: 22.25821
+  dps: 17.18032
+  tps: 21.89848
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 18.86754
-  tps: 20.92985
+  dps: 18.06567
+  tps: 20.30715
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 16.00539
-  tps: 179.64842
+  dps: 15.53522
+  tps: 179.22533
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 16.00539
-  tps: 21.63967
+  dps: 15.53522
+  tps: 21.27041
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 17.24391
-  tps: 18.28676
+  dps: 16.44399
+  tps: 17.66234
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 40.09299
-  tps: 192.99896
+  dps: 38.92962
+  tps: 192.09223
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 40.09299
-  tps: 43.65318
+  dps: 38.92962
+  tps: 42.74645
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 41.64308
-  tps: 45.8122
+  dps: 39.67815
+  tps: 44.27401
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 32.55177
-  tps: 212.53495
+  dps: 31.43583
+  tps: 211.65682
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 32.55177
-  tps: 37.7682
+  dps: 31.43583
+  tps: 36.89007
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Auto-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 34.36819
-  tps: 36.06475
+  dps: 32.51468
+  tps: 34.60665
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 40.09299
-  tps: 181.24406
+  dps: 38.92962
+  tps: 180.33733
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 40.09299
-  tps: 43.06543
+  dps: 38.92962
+  tps: 42.15871
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-FullBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 41.64308
-  tps: 45.03132
+  dps: 39.67815
+  tps: 43.49313
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 32.55177
-  tps: 201.94633
+  dps: 31.43583
+  tps: 201.06417
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 32.55177
-  tps: 37.23876
+  dps: 31.43583
+  tps: 36.36044
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
-  dps: 34.36819
-  tps: 35.85152
+  dps: 32.51468
+  tps: 34.39341
  }
 }
 dps_results: {
