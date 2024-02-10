@@ -2,6 +2,7 @@ package paladin
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -65,7 +66,7 @@ func (paladin *Paladin) ApplyTalents() {
 	// paladin.applyArdentDefender()
 	// paladin.applyCrusade()
 	paladin.applyWeaponSpecialization()
-	// paladin.applyVengeance()
+	paladin.applyVengeance()
 	// paladin.applyHeartOfTheCrusader()
 	// paladin.applyVindication()
 	// paladin.applyArtOfWar()
@@ -326,7 +327,7 @@ func (paladin *Paladin) applyWeaponSpecialization() {
 
 	switch mhWeapon.HandType {
 	case proto.HandType_HandTypeTwoHand:
-		// Apparently in classic 1h and 2h spec apply to *all* damage dealt, regardless of it rolling physical
+		// Apparently in classic, 1h and 2h spec apply to *all* damage dealt, regardless of it rolling physical
 		// paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
 		if paladin.Talents.TwoHandedWeaponSpecialization > 0 {
 			paladin.PseudoStats.DamageDealtMultiplier *= 1.00 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
@@ -340,44 +341,45 @@ func (paladin *Paladin) applyWeaponSpecialization() {
 
 func (paladin *Paladin) maybeProcVengeance(sim *core.Simulation, result *core.SpellResult) {
 	if result.DidCrit() && paladin.Talents.Vengeance > 0 {
-		// paladin.VengeanceAura.Activate(sim)
-		// paladin.VengeanceAura.AddStack(sim)
+		paladin.VengeanceAura.Activate(sim)
+		paladin.VengeanceAura.AddStack(sim)
 	}
 }
 
 // I don't know if the new stack of vengeance applies to the crit that triggered it or not
 // Need to check this
-// func (paladin *Paladin) applyVengeance() {
-// 	if paladin.Talents.Vengeance == 0 {
-// 		return
-// 	}
+func (paladin *Paladin) applyVengeance() {
+	if paladin.Talents.Vengeance == 0 {
+		fmt.Println("no vengeance")
+		return
+	}
 
-// 	bonusPerStack := 0.01 * float64(paladin.Talents.Vengeance)
-// 	paladin.VengeanceAura = paladin.RegisterAura(core.Aura{
-// 		Label:     "Vengeance Proc",
-// 		ActionID:  core.ActionID{SpellID: 20057},
-// 		Duration:  time.Second * 30,
-// 		MaxStacks: 3,
-// 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1 + (bonusPerStack * float64(oldStacks))
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + (bonusPerStack * float64(oldStacks))
+	bonusPerStack := 0.03 * float64(paladin.Talents.Vengeance)
+	paladin.VengeanceAura = paladin.RegisterAura(core.Aura{
+		Label:     "Vengeance Proc",
+		ActionID:  core.ActionID{SpellID: 20059},
+		Duration:  time.Second * 8,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1 + (bonusPerStack * float64(oldStacks))
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + (bonusPerStack * float64(oldStacks))
 
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 + (bonusPerStack * float64(newStacks))
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (bonusPerStack * float64(newStacks))
-// 		},
-// 	})
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 + (bonusPerStack * float64(newStacks))
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (bonusPerStack * float64(newStacks))
+		},
+	})
 
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Vengeance",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			paladin.maybeProcVengeance(sim, result)
-// 		},
-// 	})
-// }
+	paladin.RegisterAura(core.Aura{
+		Label:    "Vengeance",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.maybeProcVengeance(sim, result)
+		},
+	})
+}
 
 // func (paladin *Paladin) applyHeartOfTheCrusader() {
 // 	if paladin.Talents.HeartOfTheCrusader == 0 {
