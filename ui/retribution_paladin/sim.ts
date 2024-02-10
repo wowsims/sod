@@ -171,17 +171,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Horde]: Race.RaceUnknown,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
 			},
 		},

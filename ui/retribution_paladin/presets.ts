@@ -18,7 +18,6 @@ import {
 
 import * as PresetUtils from '../core/preset_utils.js';
 
-import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/p1gear.json';
 
 import DefaultApl from './apls/default.apl.json';
