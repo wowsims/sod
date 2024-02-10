@@ -3,6 +3,10 @@ import {
 	Consumes,
 	Flask,
 	Food,
+	Potions,
+	AgilityElixir,
+	StrengthBuff,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -113,5 +117,10 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	food: Food.FoodSmokedSagefish,
+	defaultPotion: Potions.GreaterManaPotion,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	agilityElixir: AgilityElixir.ElixirOfLesserAgility,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	boglingRoot: false,
 });
