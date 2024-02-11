@@ -23,6 +23,7 @@ func (paladin *Paladin) registerDivineStormSpell() {
 	numHits := min(4, paladin.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
+	// Divine Storm should not be ap normalised, but should be tested in SoD.
 	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407778},
 		SpellSchool: core.SpellSchoolPhysical,

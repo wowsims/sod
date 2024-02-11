@@ -28,7 +28,7 @@ type Paladin struct {
 	// DivinePlea            *core.Spell
 	DivineStorm *core.Spell
 	// HolyWrath             *core.Spell
-	// Consecration          *core.Spell
+	Consecration   *core.Spell
 	CrusaderStrike *core.Spell
 	// Exorcism              *core.Spell
 	// HolyShield            *core.Spell
@@ -129,7 +129,7 @@ func (paladin *Paladin) Initialize() {
 
 	paladin.registerCrusaderStrikeSpell()
 	paladin.registerDivineStormSpell()
-	// paladin.registerConsecrationSpell()
+	paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
 
