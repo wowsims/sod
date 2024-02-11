@@ -82,7 +82,7 @@ export const P1RetTalents = {
 	})
 };
 
-export const P2DeepRetTalents = {
+export const P2RetTalents = {
 	name: 'P2 Ret',
 	data: SavedTalents.create({
 		talentsString: '--532300512003151',
@@ -101,7 +101,7 @@ export const TalentPresets = {
     P1RetTalents,
   ],
   [Phase.Phase2]: [
-	P2DeepRetTalents,
+	P2RetTalents,
 	P2ShockadinTalents
   ]
 };
