@@ -336,12 +336,12 @@ export class RaidWCLImporter extends Importer {
 		wclPlayers.forEach(player => {
 			let professions = distinct(player.inferredProfessions.concat(player.player.getGear().getProfessionRequirements()));
 			if (professions.length == 0) {
-				professions = [Profession.Engineering, Profession.Jewelcrafting];
+				professions = [Profession.Engineering, Profession.Enchanting];
 			} else if (professions.length == 1) {
 				if (professions[0] != Profession.Engineering) {
 					professions.push(Profession.Engineering);
 				} else {
-					professions.push(Profession.Jewelcrafting);
+					professions.push(Profession.Enchanting);
 				}
 			}
 			player.player.setProfessions(eventID, professions);
@@ -549,7 +549,7 @@ class WCLSimPlayer {
 		this.player.setTalentsString(eventID, this.preset.talents.talentsString);
 		this.player.setConsumes(eventID, this.preset.consumes);
 		this.player.setSpecOptions(eventID, this.preset.specOptions);
-		this.player.setProfessions(eventID, [Profession.Engineering, Profession.Jewelcrafting]);
+		this.player.setProfessions(eventID, [Profession.Engineering, Profession.Enchanting]);
 
 		// Apply settings from report data.
 		this.player.setName(eventID, data.name);
