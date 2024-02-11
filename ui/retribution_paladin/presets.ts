@@ -28,22 +28,24 @@ import DefaultApl from './apls/default.apl.json';
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
-import Phase1Gear from './gear_sets/p1gear.json';
+import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
+import Phase2RetGearJson from './gear_sets/p2ret.gear.json'
 
 // export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
-export const GearPhase1 = PresetUtils.makePresetGear('2h Ret', Phase1Gear);
+export const Phase1RetGear = PresetUtils.makePresetGear('P1 Ret', Phase1RetGearJson);
+export const Phase2RetGear = PresetUtils.makePresetGear('P2 Ret', Phase2RetGearJson);
 
 export const GearPresets = {
   [Phase.Phase1]: [
-    GearPhase1,
+    Phase1RetGear,
   ],
   [Phase.Phase2]: [
-	GearPhase1,
+	Phase2RetGear,
   ]
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase1][0];
+export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -81,7 +83,7 @@ export const P1RetTalents = {
 };
 
 export const P2DeepRetTalents = {
-	name: 'P2 Deep Ret',
+	name: 'P2 Ret',
 	data: SavedTalents.create({
 		talentsString: '--532300512003151',
 	}),

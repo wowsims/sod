@@ -68,6 +68,12 @@ enum PaladinRune {
 	RuneChestSealofMartyrdom = 407798;
 	RuneChestHornOfLordaeron = 425600;
 	RuneChestDivineStorm = 407778;
+	RuneWaistEnlightenedJudgements = 426173;
+	RuneWaistInfusionOfLight = 426065;
+	RuneWaistSheathOfLight = 426158;
+	RuneFeetGuardedByTheLight = 415059;
+	RuneFeetSacredShield = 412019;
+	RuneFeetTheArtOfWar = 426157;
 }
 
 enum Blessings {
