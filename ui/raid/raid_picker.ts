@@ -670,7 +670,7 @@ class NewPlayerPicker extends Component {
 						newPlayer.setConsumes(eventID, matchingPreset.consumes);
 						newPlayer.setName(eventID, matchingPreset.defaultName);
 						newPlayer.setProfession1(eventID, matchingPreset.otherDefaults?.profession1 || Profession.Engineering);
-						newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Jewelcrafting);
+						newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Enchanting);
 						newPlayer.setDistanceFromTarget(eventID, matchingPreset.otherDefaults?.distanceFromTarget || 0);
 
 						// Need to wait because the gear might not be loaded yet.
