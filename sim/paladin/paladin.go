@@ -30,7 +30,7 @@ type Paladin struct {
 	// HolyWrath             *core.Spell
 	Consecration   *core.Spell
 	CrusaderStrike *core.Spell
-	// Exorcism              *core.Spell
+	Exorcism       *core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
 	// HandOfReckoning       *core.Spell
@@ -133,7 +133,7 @@ func (paladin *Paladin) Initialize() {
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
 
-	// paladin.registerExorcismSpell()
+	paladin.registerExorcismSpell()
 	// paladin.registerHolyShieldSpell()
 	// paladin.registerHammerOfTheRighteousSpell()
 	// paladin.registerHandOfReckoningSpell()
