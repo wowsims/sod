@@ -18,7 +18,6 @@ import {
 
 import * as PresetUtils from '../core/preset_utils.js';
 
-import Phase1Gear from './gear_sets/p1gear.json';
 
 import DefaultApl from './apls/default.apl.json';
 
@@ -29,6 +28,7 @@ import DefaultApl from './apls/default.apl.json';
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
+import Phase1Gear from './gear_sets/p1gear.json';
 
 // export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearPhase1 = PresetUtils.makePresetGear('2h Ret', Phase1Gear);
@@ -63,7 +63,7 @@ export const APLPresets = {
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
   25: APLPresets[Phase.Phase1][0],
-  40: APLPresets[Phase.Phase1][0],
+  40: APLPresets[Phase.Phase2][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ export const TalentPresets = {
   ]
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

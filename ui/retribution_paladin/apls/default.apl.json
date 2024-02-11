@@ -6,6 +6,7 @@
       {"action":{"autocastOtherCooldowns":{}}},
       {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
       {"action":{"castSpell":{"spellId":{"spellId":407778}}}},
-      {"action":{"castSpell":{"spellId":{"spellId":26573}}}}
+      {"action":{"castSpell":{"spellId":{"spellId":26573}}}},
+      {"action":{"castSpell":{"spellId":{"spellId":879}}}}
      ]
   }
