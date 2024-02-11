@@ -79,6 +79,7 @@ type Warrior struct {
 	DeepWounds           *core.Spell
 	ConcussionBlow       *core.Spell
 	RagingBlow           *core.Spell
+	Hamstring            *core.Spell
 
 	HeroicStrike       *core.Spell
 	QuickStrike        *core.Spell
@@ -132,7 +133,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerThunderClapSpell()
 	warrior.registerWhirlwindSpell()
 	warrior.registerConcussionBlowSpell()
-	warrior.RegisterRendSpell()
+	warrior.registerRendSpell()
+	warrior.registerHamstringSpell()
 
 	warrior.SunderArmor = warrior.newSunderArmorSpell(false)
 	warrior.SunderArmorDevastate = warrior.newSunderArmorSpell(true)
