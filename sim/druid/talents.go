@@ -41,12 +41,32 @@ func (druid *Druid) setupNaturesGrace() {
 		return
 	}
 
+	ngWrathGCD := time.Millisecond * 1000
+
+	var wrathSpells []*DruidSpell
+
 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
 		Label:    "Natures Grace Proc",
 		ActionID: core.ActionID{SpellID: 16886},
 		Duration: time.Second * 15,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if aura.TimeActive(sim) >= spell.CastTime() {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			wrathSpells = core.FilterSlice(
+				core.Flatten([][]*DruidSpell{druid.Wrath}),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(wrathSpells, func(spell *DruidSpell) {
+				spell.Spell.DefaultCast.GCD = ngWrathGCD
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(wrathSpells, func(spell *DruidSpell) {
+				spell.Spell.DefaultCast.GCD = core.GCDDefault
+			})
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.CastTime() > 0 && aura.TimeActive(sim) >= spell.CastTime() {
 				aura.Deactivate(sim)
 			}
 		},
@@ -59,10 +79,10 @@ func (druid *Druid) setupNaturesGrace() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.DidCrit() {
-				return
+			// Spells with travel times have their own calculation prior to the travel time to prevent issues with back-to-back casts
+			if spell.TravelTime() > 0 && result.DidCrit() {
+				druid.NaturesGraceProcAura.Activate(sim)
 			}
-			druid.NaturesGraceProcAura.Activate(sim)
 		},
 	})
 }
@@ -251,4 +271,20 @@ func (druid *Druid) applyOmenOfClarity() {
 			druid.ClearcastingAura.Activate(sim)
 		},
 	})
+}
+
+func (druid *Druid) ImprovedMoonfireDamageMultiplier() float64 {
+	return 1 + .02*float64(druid.Talents.ImprovedMoonfire)
+}
+
+func (druid *Druid) ImprovedMoonfireCritBonus() float64 {
+	return 2 * float64(druid.Talents.ImprovedMoonfire)
+}
+
+func (druid *Druid) MoonfuryDamageMultiplier() float64 {
+	return 1 + 0.02*float64(druid.Talents.Moonfury)
+}
+
+func (druid *Druid) VengeanceCritMultiplier() float64 {
+	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
 }

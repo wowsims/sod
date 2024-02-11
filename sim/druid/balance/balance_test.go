@@ -28,7 +28,7 @@ func TestBalance(t *testing.T) {
 	}))
 }
 
-var StandardTalents = "50005003021"
+var StandardTalents = "5000500302541051"
 
 var FullConsumes = core.ConsumesCombo{
 	Label: "Full Consumes",
