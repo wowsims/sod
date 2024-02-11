@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_sets"
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -37,14 +38,16 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 	level := WrathLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolNature,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_DruidWrath,
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+
 		RequiredLevel: level,
 		Rank:          rank,
 		MissileSpeed:  20,
-		SpellCode:     SpellCode_DruidWrath,
+
 		ManaCost: core.ManaCostOptions{
 			FlatCost: core.TernaryFloat64(druid.FuryOfStormrageAura != nil, 0, manaCost),
 		},
@@ -56,14 +59,18 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 			CastTime: druid.NaturesGraceCastTime(),
 		},
 
-		BonusCritRating:  0,
-		DamageMultiplier: 1 + 0.02*float64(druid.Talents.Moonfury),
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.VengeanceCritMultiplier(),
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)*druid.MoonfuryDamageMultiplier() + spellCoeff*spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
+				druid.NaturesGraceProcAura.Activate(sim)
+			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

@@ -15,7 +15,8 @@ const (
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
-	SpellCode_DruidWrath int32 = iota
+	SpellCode_DruidNone int32 = iota
+	SpellCode_DruidWrath
 	SpellCode_DruidStarfire
 	SpellCode_DruidStarsurge
 )
@@ -128,10 +129,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
 	}
-}
-
-func (druid *Druid) BalanceCritMultiplier() float64 {
-	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
 }
 
 func (druid *Druid) NaturesGraceCastTime() func(spell *core.Spell) time.Duration {
