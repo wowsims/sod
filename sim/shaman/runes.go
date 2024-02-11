@@ -194,7 +194,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 	})
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMeleeWhiteHit)
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
