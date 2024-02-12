@@ -2,6 +2,10 @@
 
 @import "./filters_menu";
 
+$source-cell-width: 12rem;
+$ep-cell-width: 4rem;
+$favorite-cell-width: 2rem;
+
 .gear-picker-root {
   display: flex;
   flex-wrap: wrap;
@@ -190,13 +194,36 @@
 }
 
 .selector-modal-list-labels {
+  display: flex;
+  padding-right: map-get($spacers, 2);
+  margin-right: map-get($spacers, 3);
   margin-bottom: map-get($spacers, 2);
   font-size: 1.125rem;
 
-  .ep-delta-label {
+  label {
+    font-weight: normal;
+  }
+
+  .item-label {
+    flex: 1;
+  }
+
+  .source-label {
+    width: $source-cell-width;
+    margin-left: map-get($spacers, 3);
+  }
+
+  .ep-label {
+    width: $ep-cell-width;
+    margin-left: map-get($spacers, 3);
     display: flex;
     align-items: center;
     float: right;
+  }
+
+  .favorite-label {
+    width: $favorite-cell-width;
+    margin-left: map-get($spacers, 3);
   }
 }
 
@@ -268,12 +295,13 @@
 
 .selector-modal-list-item-source-container {
 	margin-left: map-get($spacers, 3);
-	width: 12rem;
+	width: $source-cell-width;
 }
 
 .selector-modal-list-item-favorite {
+  width: $favorite-cell-width;
 	margin-left: map-get($spacers, 3);
-	color: yellow;
+	color: $brand;
 }
 
 .selector-modal-list-item-favorite:hover {
@@ -283,21 +311,21 @@
 }
 
 .selector-modal-list-item-ep {
+  width: $ep-cell-width;
+  margin-left: map-get($spacers, 3);
 	display: flex;
-	font-size: 1rem;
-	font-weight: 800;
-}
+  align-items: flex-end;
 
-.selector-modal-list-item-ep > span {
-	min-width: 3rem;
-  display: inline-block;
-	color: white;
-	text-align: right;
-}
+  &> span {
+    display: inline-block;
+    color: white;
+    text-align: right;
+  }
 
-.heroic-label {
-  margin-left: map-get($spacers, 1);
-  color: $item-quality-uncommon;  
+  .selector-modal-list-item-ep-delta {
+    margin-left: map-get($spacers, 1);
+    font-size: .8rem;
+  }
 }
 
 @include media-breakpoint-down(lg) {

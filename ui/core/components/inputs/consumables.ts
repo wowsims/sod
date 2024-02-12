@@ -553,11 +553,24 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 
 // Other Imbues
 
-export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+// Weapon Oils
+export const MinorWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 18262, minLevel: 50 },
+		{ id: 20744, minLevel: 5, maxLevel: 29 },
 	]),
-	value: WeaponImbue.ElementalSharpeningStone,
+	value: WeaponImbue.MinorWizardOil,
+};
+export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 20746, minLevel: 30, maxLevel: 44 },
+	]),
+	value: WeaponImbue.LesserWizardOil,
+};
+export const MinorManaOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 20745, minLevel: 20, maxLevel: 44 },
+	]),
+	value: WeaponImbue.MinorManaOil,
 };
 export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
@@ -571,17 +584,23 @@ export const BrilliantManaOil: ConsumableInputConfig<WeaponImbue> = {
 	]),
 	value: WeaponImbue.BrilliantManaOil,
 };
-export const DenseSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 12404, minLevel: 35 },
-	]),
-	value: WeaponImbue.DenseSharpeningStone,
-};
 export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
 		{ id: 211848, minLevel: 25 },
 	]),
 	value: WeaponImbue.BlackfathomManaOil,
+};
+export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 18262, minLevel: 50 },
+	]),
+	value: WeaponImbue.ElementalSharpeningStone,
+};
+export const DenseSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 12404, minLevel: 35 },
+	]),
+	value: WeaponImbue.DenseSharpeningStone,
 };
 export const BlackfathomSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromItemId(211845),
@@ -596,11 +615,14 @@ const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ]
 
 const CONSUMABLES_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
-	{ config: ElementalSharpeningStone, 	stats: [Stat.StatAttackPower] },
+	{ config: MinorWizardOil, 					stats: [Stat.StatSpellPower] },
+	{ config: LesserWizardOil, 					stats: [Stat.StatSpellPower] },
 	{ config: BrillianWizardOil, 					stats: [Stat.StatSpellPower] },
+	{ config: MinorManaOil, 					stats: [Stat.StatHealing, Stat.StatSpellPower] },
 	{ config: BrilliantManaOil, 					stats: [Stat.StatHealing, Stat.StatSpellPower] },
-	{ config: DenseSharpeningStone, 			stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomManaOil, 				stats: [Stat.StatSpellPower, Stat.StatMP5] },
+	{ config: ElementalSharpeningStone, 	stats: [Stat.StatAttackPower] },
+	{ config: DenseSharpeningStone, 			stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomSharpeningStone, stats: [Stat.StatMeleeHit] },
 ]
 

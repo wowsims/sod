@@ -4,7 +4,7 @@ character_stats_results: {
   final_stats: 132.44
   final_stats: 121.44
   final_stats: 136.84
-  final_stats: 68.244
+  final_stats: 62.04
   final_stats: 68.64
   final_stats: 0
   final_stats: 0
@@ -24,7 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1248.66
+  final_stats: 1213.38
   final_stats: 0
   final_stats: 0
   final_stats: 1966.38
@@ -347,6 +347,8 @@ dps_results: {
  value: {
   dps: 16.31032
   tps: 17.56282
+  dps: 16.31032
+  tps: 17.56282
  }
 }
 dps_results: {
@@ -387,6 +389,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Troll-25-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-ShortSingleTarget"
  value: {
+  dps: 16.31032
+  tps: 17.51782
   dps: 16.31032
   tps: 17.51782
  }

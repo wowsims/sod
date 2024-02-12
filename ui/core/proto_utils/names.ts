@@ -9,11 +9,7 @@ import {
 	Stat,
 	WeaponType,
 } from '../proto/common.js';
-import {
-	DungeonDifficulty,
-	RaidFilterOption,
-	SourceFilterOption,
-} from '../proto/ui.js';
+import { SourceFilterOption } from '../proto/ui.js';
 import { ResourceType } from '../proto/api.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -102,8 +98,6 @@ export const professionNames: Map<Profession, string> = new Map([
 	[Profession.Enchanting, 'Enchanting'],
 	[Profession.Engineering, 'Engineering'],
 	[Profession.Herbalism, 'Herbalism'],
-	[Profession.Inscription, 'Inscription'],
-	[Profession.Jewelcrafting, 'Jewelcrafting'],
 	[Profession.Leatherworking, 'Leatherworking'],
 	[Profession.Mining, 'Mining'],
 	[Profession.Skinning, 'Skinning'],
@@ -309,15 +303,3 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidIcecrownCitadel, 'Icecrown Citadel'],
 // 	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
 // ]);
-
-export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
-	[DungeonDifficulty.DifficultyUnknown, 'Unknown'],
-	[DungeonDifficulty.DifficultyNormal, 'N'],
-	[DungeonDifficulty.DifficultyHeroic, 'H'],
-	[DungeonDifficulty.DifficultyTitanRuneAlpha, 'TRA'],
-	[DungeonDifficulty.DifficultyTitanRuneBeta, 'TRB'],
-	[DungeonDifficulty.DifficultyRaid10, '10N'],
-	[DungeonDifficulty.DifficultyRaid10H, '10H'],
-	[DungeonDifficulty.DifficultyRaid25, '25N'],
-	[DungeonDifficulty.DifficultyRaid25H, '25H'],
-]);
