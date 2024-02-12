@@ -128,8 +128,8 @@ export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
   enchantedSigil: EnchantedSigil.InnovationSigil,
-  mainHandImbue: WeaponImbue.RockbiterWeapon,
-  offHandImbue: WeaponImbue.RockbiterWeapon,
+  mainHandImbue: WeaponImbue.BrillianWizardOil,
+  offHandImbue: WeaponImbue.BrillianWizardOil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

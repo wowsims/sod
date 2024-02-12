@@ -347,21 +347,31 @@ enum FrostPowerBuff {
 	ElixirOfFrostPower = 1;
 }
 
-// NextIndex: 16
+// NextIndex: 21
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
-	BrilliantManaOil = 1;
-	BrillianWizardOil = 2;
+	
+	// Oils
 	MinorWizardOil = 13;
-	MinorManaOil = 15;
 	LesserWizardOil = 14;
+	WizardOil = 20;
+	BrillianWizardOil = 2;
+
+	MinorManaOil = 15;
+	LesserManaOil = 16;
+	BrilliantManaOil = 1;
+	BlackfathomManaOil = 5;
 
 	// Sharpening Stones
+	SolidSharpeningStone = 17;
 	DenseSharpeningStone = 3;
 	ElementalSharpeningStone = 4;
-	BlackfathomManaOil = 5;
 	BlackfathomSharpeningStone = 6;
+
+	// Weightstones
+	SolidWeightstone = 18;
+	DenseWeightstone = 19;
 
 	// Windfury Imbues
 	WildStrikes = 7;
@@ -372,7 +382,6 @@ enum WeaponImbue {
 	FlametongueWeapon = 10;
 	FrostbrandWeapon = 11;
 	WindfuryWeapon = 12;
-
 }
 
 enum Food {
