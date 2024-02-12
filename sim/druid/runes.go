@@ -18,6 +18,7 @@ func (druid *Druid) ApplyRunes() {
 	druid.applySavageRoar()
 	druid.applyWildStrikes()
 	druid.applyBerserkCD()
+	druid.applyKingOfTheJungle()
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -264,4 +265,10 @@ func (druid *Druid) applyWildStrikes() {
 	}
 
 	druid.WildStrikesBuffAura = core.ApplyWildStrikes(druid.GetCharacter())
+}
+
+func (druid *Druid) applyKingOfTheJungle() {
+	if druid.HasRune(proto.DruidRune_RuneFeetKingOfTheJungle) {
+		druid.registerTigersFurySpellKotJ()
+	}
 }
