@@ -4,7 +4,6 @@ import { Component } from './component';
 import { FiltersMenu } from './filters_menu';
 import { Input, InputConfig } from './input';
 import {
-	makePhaseSelector,
 	makeShow1hWeaponsSelector,
 	makeShow2hWeaponsSelector,
 	makeShowEPValuesSelector,
@@ -775,7 +774,6 @@ export class ItemList<T> {
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..."/>
 					{label == 'Items' && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
-					<div className="selector-modal-phase-selector"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
@@ -815,7 +813,6 @@ export class ItemList<T> {
 		}
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
-		makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		if (label == 'Items') {
 			const filtersButton = this.tabContent.getElementsByClassName('selector-modal-filters-button')[0] as HTMLElement;
@@ -1060,7 +1057,6 @@ export class ItemList<T> {
 		);
 
 		if (this.label == 'Items') {
-			if ((itemData.item as unknown as Item).name == "Gneuro-Conductive Channeler's Hood") console.log(item)
 			listItemElem.appendChild(
 				<div className='selector-modal-list-item-source-container'>
 					{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}
