@@ -18,7 +18,8 @@ import {
 	Stat,
 	StrengthBuff,
 	WeaponImbue, 
-	WeaponType} from "../../proto/common";
+	WeaponType
+} from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 import { EventID, TypedEvent } from "../../typed_event";
 
