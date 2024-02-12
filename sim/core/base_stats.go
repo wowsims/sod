@@ -146,7 +146,7 @@ var CritPerIntAtLevel = map[proto.Class]map[int]float64{
 	proto.Class_ClassShaman:  {25: 0.0422, 40: 0.0262, 50: 0.0210, 60: 0.0169}, // TODO: Level 50 value!
 	proto.Class_ClassMage:    {25: 0.0475, 40: 0.0283, 50: 0.0214, 60: 0.0168}, // TODO: Level 40 and 50 values!
 	proto.Class_ClassWarlock: {25: 0.0429, 40: 0.0267, 50: 0.0207, 60: 0.0165}, // TODO: Level 40 and 50 values!
-	proto.Class_ClassDruid:   {25: 0.0427, 40: 0.0274, 50: 0.0208, 60: 0.0167}, // TODO: Level 50 value!
+	proto.Class_ClassDruid:   {25: 0.0427, 40: 0.0260, 50: 0.0208, 60: 0.0167}, // TODO: Level 50 value!
 }
 
 var ClassBaseStats = map[proto.Class]map[int]stats.Stats{
