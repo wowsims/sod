@@ -14,7 +14,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	}
 
 	level := float64(warlock.GetCharacter().Level)
-	baseSpellCoeff := 0.715
+	baseSpellCoeff := 0.0715
 	dotSpellCoeff := 0.022
 
 	baseCalc := (6.568597 + 0.672028*level + 0.031721*level*level)
