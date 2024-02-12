@@ -208,6 +208,18 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
+		case proto.WeaponImbue_MinorWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 8,
+			})
+		case proto.WeaponImbue_MinorManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5: 4,
+			})
+		case proto.WeaponImbue_LesserWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 16,
+			})
 		case proto.WeaponImbue_BrillianWizardOil:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 36,
