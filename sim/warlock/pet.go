@@ -229,6 +229,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
 
+	// TODO: This is the LK lvl 80 value!
+	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritRatingPerCritChance/166.66667)
+
 	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	wp.AddStat(stats.AttackPower, -20)
 

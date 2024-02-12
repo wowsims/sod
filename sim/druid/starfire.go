@@ -38,7 +38,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_DruidStarfire,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
