@@ -165,7 +165,7 @@ export const ExplosiveEzThroRadiationBomb: ConsumableInputConfig<Explosive> = {
 	value: Explosive.ExplosiveEzThroRadiationBomb,
 };
 
-export const ExplosiveHighYealdRadiationBomb: ConsumableInputConfig<Explosive> = {
+export const ExplosiveHighYieldRadiationBomb: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 215127, minLevel: 40 },
 	]),
@@ -174,11 +174,11 @@ export const ExplosiveHighYealdRadiationBomb: ConsumableInputConfig<Explosive> =
 };
 
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
-	{ config: ExplosiveEzThroRadiationBomb, 	stats: [] },
-	{ config: ExplosiveHighYealdRadiationBomb, 	stats: [] },
-	{ config: ExplosiveSolidDynamite, 			stats: [] },
-	{ config: ExplosiveDenseDynamite,		 	stats: [] },
-	{ config: ExplosiveThoriumGrenade, 			stats: [] },
+	{ config: ExplosiveEzThroRadiationBomb, 		stats: [] },
+	{ config: ExplosiveHighYieldRadiationBomb, 	stats: [] },
+	{ config: ExplosiveSolidDynamite, 					stats: [] },
+	{ config: ExplosiveDenseDynamite,		 				stats: [] },
+	{ config: ExplosiveThoriumGrenade, 					stats: [] },
 ];
 
 export const makeExplosivesInput = makeConsumeInputFactory({
