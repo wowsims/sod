@@ -19,8 +19,6 @@ import {
 import * as PresetUtils from '../core/preset_utils.js';
 
 
-import DefaultApl from './apls/default.apl.json';
-
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
@@ -51,14 +49,18 @@ export const DefaultGear = GearPresets[Phase.Phase2][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLPhase1 = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+import APLP1RetJson from './apls/p1ret.apl.json';
+import APLP2RetJson from './apls/p2ret.apl.json';
+
+export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
+export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret', APLP2RetJson);
 
 export const APLPresets = {
   [Phase.Phase1]: [
-    APLPhase1,
+    APLP1Ret,
   ],
   [Phase.Phase2]: [
-	APLPhase1,
+	APLP2Ret,
   ]
 };
 
