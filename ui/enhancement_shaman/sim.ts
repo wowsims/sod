@@ -102,6 +102,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({

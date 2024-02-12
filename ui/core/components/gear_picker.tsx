@@ -1170,7 +1170,7 @@ export class ItemList<T> {
 		}
 
 		const makeAnchor = (href:string, inner:string) => {
-			return <a href={href}><small>{inner}</small></a>;
+			return <a href={href} target="_blank"><small>{inner}</small></a>;
 		}
 
 		const source = item.sources[0];

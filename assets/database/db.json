@@ -9144,7 +9144,7 @@
 {"id":2163,"name":"of Striking","stats":[11,11,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
 ],
 "enchants":[
-{"effectId":2,"spellId":7454,"name":"Enchant Cloak - Minor Resistence","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],"quality":1},
+{"effectId":2,"spellId":7454,"name":"Enchant Cloak - Minor Resistance","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],"quality":1},
 {"effectId":15,"itemId":2304,"spellId":2831,"name":"Light Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":16,"itemId":2313,"spellId":2832,"name":"Medium Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":17,"itemId":4265,"spellId":2833,"name":"Heavy Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
@@ -9161,7 +9161,7 @@
 {"effectId":66,"spellId":7457,"name":"Enchant Bracer - Minor Stamina","type":6,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":66,"spellId":7863,"name":"Enchant Boots - Minor Stamina","type":10,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":241,"spellId":13503,"name":"Enchant Weapon - Lesser Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":241,"spellId":7745,"name":"Enchant 2H Weapon - Minor Impact","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":241,"spellId":7745,"name":"Enchant 2H Weapon - Minor Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":242,"spellId":7748,"name":"Enchant Chest - Lesser Health","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":243,"spellId":7766,"name":"Enchant Bracer - Minor Spirit","type":6,"stats":[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":246,"spellId":7776,"name":"Enchant Chest - Lesser Mana","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -9174,12 +9174,12 @@
 {"effectId":254,"spellId":7857,"name":"Enchant Chest - Health","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":255,"spellId":7859,"name":"Enchant Bracer - Lesser Spirit","type":6,"stats":[0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":255,"spellId":13687,"name":"Enchant Boots - Lesser Spirit","type":10,"stats":[0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
-{"effectId":255,"spellId":13380,"name":"Enchant 2H Weapon - Lesser Spirit","type":13,"stats":[0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
+{"effectId":255,"spellId":13380,"name":"Enchant 2H Weapon - Lesser Spirit","type":13,"enchantType":1,"stats":[0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":256,"spellId":7861,"name":"Enchant Cloak - Lesser Fire Resistance","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":663,"itemId":10546,"spellId":12459,"name":"Deadly Scope","type":14,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":664,"itemId":10548,"spellId":12460,"name":"Sniper Scope","type":14,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":723,"spellId":13622,"name":"Enchant Bracer - Lesser Intellect","type":6,"stats":[0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":723,"spellId":7793,"name":"Enchant 2H Weapon - Lesser Intellect","type":13,"stats":[0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":723,"spellId":7793,"name":"Enchant 2H Weapon - Lesser Intellect","type":13,"enchantType":1,"stats":[0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":724,"spellId":13501,"name":"Enchant Bracer - Lesser Stamina","type":6,"stats":[0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":724,"spellId":13644,"name":"Enchant Boots - Lesser Stamina","type":10,"stats":[0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":744,"spellId":13421,"name":"Enchant Cloak - Lesser Protection","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
@@ -9206,7 +9206,7 @@
 {"effectId":865,"spellId":13698,"name":"Enchant Gloves - Skinning","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":866,"spellId":13700,"name":"Enchant Chest - Lesser Stats","type":5,"stats":[2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":884,"spellId":13746,"name":"Enchant Cloak - Greater Defense","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":903,"spellId":13794,"name":"Enchant Cloak - Resistence","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0],"quality":1},
+{"effectId":903,"spellId":13794,"name":"Enchant Cloak - Resistance","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0],"quality":1},
 {"effectId":904,"spellId":13815,"name":"Enchant Gloves - Agility","type":7,"stats":[0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":905,"spellId":13822,"name":"Enchant Bracer - Intellect","type":6,"stats":[0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":906,"spellId":13841,"name":"Enchant Gloves - Advanced Mining","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -9217,12 +9217,11 @@
 {"effectId":924,"spellId":7428,"name":"Enchant Bracer - Minor Deflect","type":6,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":925,"spellId":13646,"name":"Enchant Bracer - Lesser Deflection","type":6,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":943,"spellId":13693,"name":"Enchant Weapon - Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":1843,"itemId":15564,"spellId":19057,"name":"Rugged Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":1897,"spellId":13695,"name":"Enchant 2H Weapon - Impact","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":1897,"spellId":13695,"name":"Enchant 2H Weapon - Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2443,"spellId":21931,"name":"Enchant Weapon - Winter's Might","type":13,"stats":[0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2463,"spellId":13657,"name":"Enchant Cloak - Fire Resistance","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":7210,"spellId":435481,"name":"Enchant Weapon - Dismantle","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7223,"spellId":435903,"name":"Enchant Chest - Retricutioner","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4}
 ],
 "runes":[
@@ -11999,12 +11998,11 @@
 {"id":415467,"name":"Mass Regeneration","icon":"inv_enchant_essencenetherlarge","requiresLevel":1},
 {"id":425168,"name":"Arcane Surge","icon":"spell_arcane_arcanetorrent","requiresLevel":1},
 {"id":425169,"name":"Icy Veins","icon":"spell_frost_coldhearted","requiresLevel":1},
-{"id":435481,"name":"Enchant Weapon - Dismantle","icon":"spell_holy_greaterheal"},
 {"id":435903,"name":"Enchant Chest - Retricutioner","icon":"spell_holy_greaterheal"}
 ],
 "encounters":[
 {"path":"SoD/Level 25","targets":[{"path":"SoD/Level 25","target":{"id":213334,"name":"Level 25","level":27,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,1104,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":400,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
-{"path":"SoD/Level 40","targets":[{"path":"SoD/Level 40","target":{"id":213334,"name":"Level 40","level":42,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,2053,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":1000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
+{"path":"SoD/Level 40","targets":[{"path":"SoD/Level 40","target":{"id":213334,"name":"Level 40","level":42,"mobType":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,2053,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":1000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
 {"path":"SoD/Level 50","targets":[{"path":"SoD/Level 50","target":{"id":213334,"name":"Level 50","level":52,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,2053,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":2000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
 {"path":"SoD/Level 60","targets":[{"path":"SoD/Level 60","target":{"id":213334,"name":"Level 60","level":63,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":3000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]}
 ]
