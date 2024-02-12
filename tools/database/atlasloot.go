@@ -19,8 +19,10 @@ func ReadAtlasLootData() *WowDatabase {
 	// and we want to overwrite with the earliest value.
 	// readAtlasLootSourceData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source-wrath.lua")
 	// readAtlasLootSourceData(db, proto.Expansion_ExpansionTbc, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source-tbc.lua")
+	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_SoD/AtlasLootClassic_Data/source.lua")
 	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source.lua")
 
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_SoD/AtlasLootClassic_DungeonsAndRaids/data.lua")
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
 	// readAtlasLootDungeonData(db, proto.Expansion_ExpansionTbc, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-tbc.lua")
 	// readAtlasLootDungeonData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-wrath.lua")
@@ -78,7 +80,9 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	}
 
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
-	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
+	regex := regexp.MustCompile(`\r?\n`)
+	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
+	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
 
 	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?items = {(.*?)@@@}@@@`)
 	npcNameAndIDPattern := regexp.MustCompile(`^[^@]*?AL\["(.*?)"\]\)?,(.*?(@@@\s*npcID = {?(\d+),))?`)

@@ -2,6 +2,8 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Debuffs,
+	EnchantedSigil,
+	Profession,
 	RaidBuffs,
 	TristateEffect,
 	WeaponImbue
@@ -111,6 +113,7 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WindfuryWeapon,
   offHandImbue: WeaponImbue.WindfuryWeapon,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -136,4 +139,6 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
+	profession1: Profession.Enchanting,
+  profession2: Profession.Leatherworking,
 };
