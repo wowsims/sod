@@ -89,7 +89,7 @@ export class EquippedItem {
 	 * Replaces the item and tries to keep the existing enchants if possible.
 	 */
 	withItem(item: Item): EquippedItem {
-		let newEnchant = null;
+		let newEnchant;
 		if (this._enchant && enchantAppliesToItem(this._enchant, item))
 			newEnchant = this._enchant;
 
