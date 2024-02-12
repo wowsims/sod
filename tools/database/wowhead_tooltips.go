@@ -213,6 +213,14 @@ var natureResistanceRegex = regexp.MustCompile(`\+([0-9]+) Nature Resistance`)
 var shadowResistanceRegex = regexp.MustCompile(`\+([0-9]+) Shadow Resistance`)
 var bonusArmorRegex = regexp.MustCompile(`Has ([0-9]+) bonus armor`)
 
+// Match "Requires <a href=\"/...\" class="...">Profession</a> (level)"
+var alchemyRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Alchemy<\/a> \([0-9]+\)`)
+var blacksmithingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Blacksmithing<\/a> \([0-9]+\)`)
+var enchantingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Enchanting<\/a> \([0-9]+\)`)
+var engineeringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Engineering<\/a> \([0-9]+\)`)
+var leatherworkingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Leatherworking<\/a> \([0-9]+\)`)
+var tailoringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Tailoring<\/a> \([0-9]+\)`)
+
 func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
@@ -610,7 +618,7 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
-	return &proto.UIItem{
+	itemProto := &proto.UIItem{
 		Id:   item.ID,
 		Name: item.GetName(),
 		Icon: item.GetIcon(),
@@ -638,6 +646,18 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
 	}
+
+	if item.GetRequiredProfession() != proto.Profession_ProfessionUnknown {
+		itemProto.Sources = append(itemProto.Sources, &proto.UIItemSource{
+			Source: &proto.UIItemSource_Crafted{
+				Crafted: &proto.CraftedSource{
+					Profession: item.GetRequiredProfession(),
+				},
+			},
+		})
+	}
+
+	return itemProto
 }
 
 var itemSetNameRegex = regexp.MustCompile(`<a href="/classic/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
@@ -661,5 +681,19 @@ func (item WowheadItemResponse) IsHeroic() bool {
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {
-	return proto.Profession_ProfessionUnknown
+	if alchemyRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Alchemy
+	} else if blacksmithingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Blacksmithing
+	} else if enchantingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Enchanting
+	} else if engineeringRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Engineering
+	} else if leatherworkingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Leatherworking
+	} else if tailoringRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Tailoring
+	} else {
+		return proto.Profession_ProfessionUnknown
+	}
 }
