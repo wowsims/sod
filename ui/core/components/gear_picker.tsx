@@ -473,7 +473,7 @@ export class SelectorModal extends BaseModal {
 				return {
 					item: enchant,
 					id: enchant.effectId,
-					actionId: enchant.spellId ? ActionId.fromSpellId(enchant.spellId) : ActionId.fromItemId(enchant.itemId),
+					actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
 					name: enchant.name,
 					quality: enchant.quality,
 					phase: enchant.phase || 1,
@@ -994,7 +994,13 @@ export class ItemList<T> {
 			sortFn = (itemA, itemB) => {
 				const diff = this.computeEP(itemB) - this.computeEP(itemA);
 				// if EP is same, sort by ilvl
-				if (Math.abs(diff) < 0.01) return (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
+				if (Math.abs(diff) < 0.01) {
+					if ((itemB as unknown as Item).ilvl && (itemA as unknown as Item).ilvl) {
+						return (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
+					} else {
+						return (itemB as unknown as Item).name < (itemA as unknown as Item).name ? 1 : -1;
+					}
+				}
 				return diff;
 			}
 		}
