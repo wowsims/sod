@@ -17,6 +17,7 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyMangle()
 	druid.applySavageRoar()
 	druid.applyWildStrikes()
+	druid.applyBerserkCD()
 }
 
 func (druid *Druid) applyFuryOfStormRage() {

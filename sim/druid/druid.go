@@ -49,6 +49,7 @@ type Druid struct {
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
+	Berserk              *DruidSpell
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
@@ -192,7 +193,6 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 // TODO: Classic feral
 func (druid *Druid) RegisterFeralCatSpells() {
-	// druid.registerBerserkCD()
 	druid.registerCatFormSpell()
 	// druid.registerBearFormSpell()
 	// druid.registerEnrageSpell()
