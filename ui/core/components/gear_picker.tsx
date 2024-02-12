@@ -783,10 +783,10 @@ export class ItemList<T> {
 					<button className="selector-modal-remove-button btn btn-danger">Unequip Item</button>
 				</div>
 				<div className="selector-modal-list-labels">
-					<label className="item-label">Item</label>
-					<label className="source-label">Source</label>
+					<label className="item-label"><small>Item</small></label>
+					<label className="source-label"><small>Source</small></label>
 					<label className="ep-label">
-						EP
+						<small>EP</small>
 						<i className="fa-solid fa-plus-minus fa-2xs"></i>
 						<button
 							ref={epButton}
