@@ -26,11 +26,11 @@ import * as PresetUtils from '../core/preset_utils.js';
 
 import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
-import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase2Gear from './gear_sets/phase_2_items.gear.json';
 
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase1AGAPL from './apls/phase_1_ag.apl.json';
-import Phase2APL from './apls/phase_2.apl.json';
+import Phase2APL from './apls/phase_2_items.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to

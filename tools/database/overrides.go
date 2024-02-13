@@ -78,6 +78,8 @@ var ItemAllowList = map[int32]struct{}{
 	// SOD
 	211848: {},
 	211845: {},
+	215111: {}, // Gneuro-Linked Arcano-Filament Monocle
+	215114: {}, // Glowing Hyperconductive Scale Coif
 }
 
 // Keep these sorted by item ID.
@@ -358,6 +360,10 @@ var SharedSpellsIcons = []int32{
 	401556,
 	400574,
 	400573,
+
+	// Gnomeregan on-use item effects
+	437327,
+	437362,
 }
 
 // If any of these match the item name, don't include it.
