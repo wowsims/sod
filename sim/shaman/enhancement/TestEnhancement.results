@@ -72,29 +72,29 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 12.024
-  tps: 10.23052
+  dps: 11.78418
+  tps: 9.9907
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 13.38095
-  tps: 10.39467
+  dps: 13.28141
+  tps: 10.31041
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 12.36335
-  tps: 10.10381
+  dps: 12.29233
+  tps: 10.00039
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 12.67858
-  tps: 9.8485
+  dps: 12.60195
+  tps: 9.82408
  }
 }
 dps_results: {
@@ -107,15 +107,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 11.98103
-  tps: 9.37057
+  dps: 12.11035
+  tps: 9.42616
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-IrradiatedGarments"
  value: {
-  dps: 13.30291
-  tps: 10.14413
+  dps: 13.28878
+  tps: 10.2332
  }
 }
 dps_results: {
