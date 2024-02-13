@@ -1,4 +1,4 @@
-package phase_1
+package item_sets
 
 import (
 	"github.com/wowsims/sod/sim/core"

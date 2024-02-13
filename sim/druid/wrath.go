@@ -3,7 +3,7 @@ package druid
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/sod/phase_2_items"
+	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -61,7 +61,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.VengeanceCritMultiplier(),
-		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(phase_2_items.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
+		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

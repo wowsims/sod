@@ -1,4 +1,4 @@
-package phase_2_items
+package item_sets
 
 import (
 	"time"

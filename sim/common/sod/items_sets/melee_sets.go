@@ -1,4 +1,4 @@
-package sod
+package item_sets
 
 import (
 	"github.com/wowsims/sod/sim/core"

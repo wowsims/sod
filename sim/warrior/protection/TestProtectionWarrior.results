@@ -99,10 +99,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestProtectionWarrior-AllItems-StormshroudArmor"
- value: {}
-}
-dps_results: {
  key: "TestProtectionWarrior-Average-Default"
  value: {}
 }

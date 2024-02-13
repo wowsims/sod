@@ -49,13 +49,6 @@ character_stats_results: {
  }
 }
 dps_results: {
- key: "TestArms-AllItems-StormshroudArmor"
- value: {
-  dps: 0.62749
-  tps: 1.46637
- }
-}
-dps_results: {
  key: "TestArms-Average-Default"
  value: {
   dps: 0.51114
