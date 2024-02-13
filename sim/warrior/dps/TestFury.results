@@ -1,9 +1,9 @@
 character_stats_results: {
  key: "TestFury-CharacterStats-Default"
  value: {
-  final_stats: 247.94
-  final_stats: 151.14
-  final_stats: 181.94
+  final_stats: 227.04
+  final_stats: 157.74
+  final_stats: 192.94
   final_stats: 43.34
   final_stats: 42.24
   final_stats: 0
@@ -14,28 +14,28 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 18
+  final_stats: 3
   final_stats: 4
-  final_stats: 4
   final_stats: 0
   final_stats: 0
-  final_stats: 789.28
-  final_stats: 4
-  final_stats: 28.79165
-  final_stats: 0
-  final_stats: 0
+  final_stats: 747.48
+  final_stats: 3
+  final_stats: 29.52491
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 2851.78
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2864.98
   final_stats: 102
   final_stats: 0
   final_stats: 0
-  final_stats: 122.82
-  final_stats: 24.61157
+  final_stats: 112.37
+  final_stats: 25.68631
   final_stats: 0
   final_stats: 0
-  final_stats: 1913.4
+  final_stats: 2023.4
   final_stats: 5
   final_stats: 0
   final_stats: 10
@@ -51,98 +51,98 @@ character_stats_results: {
 dps_results: {
  key: "TestFury-Average-Default"
  value: {
-  dps: 1.89237
-  tps: 3.45918
+  dps: 1.79497
+  tps: 3.38126
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.79419
-  tps: 42.10202
+  dps: 1.68902
+  tps: 42.01788
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.79419
-  tps: 3.46869
+  dps: 1.68902
+  tps: 3.38455
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 3.66368
-  tps: 5.76428
+  dps: 3.48404
+  tps: 5.62056
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.03891
-  tps: 41.4978
+  dps: 0.96647
+  tps: 41.43985
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.03891
-  tps: 2.86446
+  dps: 0.96647
+  tps: 2.80651
  }
 }
 dps_results: {
  key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 2.14464
-  tps: 4.54905
+  dps: 1.99511
+  tps: 4.42942
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.96819
-  tps: 42.24122
+  dps: 1.86729
+  tps: 42.1605
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.96819
-  tps: 3.60789
+  dps: 1.86729
+  tps: 3.52717
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 4.23762
-  tps: 6.22343
+  dps: 4.01658
+  tps: 6.0466
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 1.1713
-  tps: 41.60371
+  dps: 1.08846
+  tps: 41.53743
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 1.1713
-  tps: 2.97038
+  dps: 1.08846
+  tps: 2.9041
  }
 }
 dps_results: {
  key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 2.57446
-  tps: 4.8929
+  dps: 2.39054
+  tps: 4.74577
  }
 }
 dps_results: {
  key: "TestFury-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1.27059
-  tps: 3.0498
+  dps: 1.1236
+  tps: 2.93221
  }
 }
