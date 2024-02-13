@@ -35,9 +35,9 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage float64
 			if isMH {
-				baseDamage = 20 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = rogue.RuneAbilityBaseDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			} else {
-				baseDamage = 20 + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = rogue.RuneAbilityBaseDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 			// TODO: Add support for all poison effects
 			if rogue.DeadlyPoison.Dot(target).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
@@ -51,6 +51,11 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 
 func (rogue *Rogue) registerMutilateSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneMutilate) {
+		return
+	}
+
+	// Requires Daggers (2 of them)
+	if !rogue.HasDagger(core.MainHand) || !rogue.HasDagger(core.OffHand) {
 		return
 	}
 

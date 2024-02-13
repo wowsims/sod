@@ -14,7 +14,7 @@ func (rogue *Rogue) registerEnvenom() {
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
-		ActionID: core.ActionID{SpellID: 57993},
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.instantPoisonProcChanceBonus += 0.75
 		},
@@ -24,7 +24,7 @@ func (rogue *Rogue) registerEnvenom() {
 	})
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 57993},
+		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
@@ -58,14 +58,14 @@ func (rogue *Rogue) registerEnvenom() {
 			// - the aura is active even if the attack fails to land
 			// - the aura is applied before the hit effect
 			// See: https://github.com/where-fore/rogue-wotlk/issues/32
-			rogue.EnvenomAura.Duration = time.Second * time.Duration(1+comboPoints)
+			rogue.EnvenomAura.Duration = rogue.EnvenomDuration(rogue.ComboPoints())
 			rogue.EnvenomAura.Activate(sim)
 
 			dp := rogue.DeadlyPoison.Dot(target)
 			// - 215 base is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := 215*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
+			baseDamage := rogue.RuneAbilityBaseDamage()*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

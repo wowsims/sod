@@ -4,9 +4,14 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (rogue *Rogue) registerSwordSpecialization(mask core.ProcMask) {
+	if rogue.Talents.SwordSpecialization == 0 || rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeSword) == core.ProcMaskUnknown {
+		return
+	}
+
 	// https://wotlk.wowhead.com/spell=13964/sword-specialization, proc mask = 20.
 	var swordSpecSpell *core.Spell
 	icd := core.Cooldown{

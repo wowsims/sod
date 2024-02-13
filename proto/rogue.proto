@@ -66,18 +66,18 @@ message RogueTalents {
 
 enum RogueRune {
 	RogueRuneNone = 0;
-	RuneDeadlyBrew = 1;
-	RuneJustAFleshWound = 2;
-	RuneQuickDraw = 3;
-	RuneSlaughterFromTheShadows = 4;
-	RuneBetweenTheEyes = 5;
-	RuneBladeDance = 6;
-	RuneEnvenom = 7;
-	RuneMainGauche = 8;
-	RuneMutilate = 9;
-	RuneSaberSlash = 10;
-	RuneShadowstrike = 11;
-	RuneShiv = 12;
+	RuneDeadlyBrew = 399965;
+	RuneJustAFleshWound = 400014;
+	RuneQuickDraw = 398196;
+	RuneSlaughterFromTheShadows = 424925;
+	RuneBetweenTheEyes = 400009;
+	RuneBladeDance = 400012;
+	RuneEnvenom = 399963;
+	RuneMainGauche = 424919;
+	RuneMutilate = 399956;
+	RuneSaberSlash = 424785;
+	RuneShadowstrike = 399985;
+	RuneShiv = 424799;
 }
 
 message Rogue {
