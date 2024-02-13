@@ -4,7 +4,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/wowsims/sod/sim/common/sod/item_sets"
+	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
