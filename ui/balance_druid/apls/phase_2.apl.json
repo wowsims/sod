@@ -4,6 +4,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":8950,"rank":3}}},"doAtValue":{"const":{"val":"-3.09"}}}
   ],
   "priorityList": [
+    {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"spellCanCast":{"spellId":{"spellId":417157}}},"castSpell":{"spellId":{"spellId":417157}}}},
     {"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":414684}}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"9"}}}}]}},"castSpell":{"spellId":{"spellId":414684}}}},
     {"hide":true,"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":8929,"rank":7}}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"9"}}}}]}},"castSpell":{"spellId":{"spellId":8929,"rank":7}}}},

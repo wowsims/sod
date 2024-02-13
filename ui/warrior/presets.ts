@@ -5,6 +5,7 @@ import {
 	Flask,
 	Food,
 	Potions,
+	Profession,
 	RaidBuffs,
 	TristateEffect,
 	WeaponImbue,
@@ -54,7 +55,7 @@ export const DefaultGear = GearPresets[Phase.Phase2][0];
 ///////////////////////////////////////////////////////////////////////////
 
 import Phase1APL from './apls/phase_1.apl.json';
-import Phase2APL from './apls/phase_2_items.apl.json'
+import Phase2APL from './apls/phase_2.apl.json'
 
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('P1 Preset', Phase1APL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('P2 Preset', Phase2APL);
@@ -152,3 +153,8 @@ export const DefaultDebuffs = Debuffs.create({
 	mangle: true,
 	sunderArmor: true,
 })
+
+export const OtherDefaults = {
+  profession1: Profession.Enchanting,
+  profession2: Profession.Leatherworking,
+}

@@ -255,10 +255,10 @@ func init() {
 			ActionID: actionId,
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MeleeSpeedMultiplier *= 1.2
+				character.MultiplyAttackSpeed(sim, 1.2)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MeleeSpeedMultiplier /= 1.2
+				character.MultiplyAttackSpeed(sim, 1.0/1.2)
 			},
 		})
 

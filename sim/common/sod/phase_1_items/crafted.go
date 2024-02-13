@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func init() {
@@ -49,7 +50,7 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeDPS,
+			Type:     core.CooldownTypeSurvival,
 		})
 	})
 
@@ -101,7 +102,64 @@ func init() {
 		})
 	})
 
+	// Void-Touched Leather Gauntlets
+	core.NewItemEffect(211502, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 429868}
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Void Madness",
+			ActionID: actionID,
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.1
+				character.PseudoStats.ThreatMultiplier *= 1.2
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.1
+				character.PseudoStats.ThreatMultiplier /= 1.2
+			},
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Mail
 	///////////////////////////////////////////////////////////////////////////
+
+	// Shifting Silver Breastplate
+	// core.NewItemEffect(210794, func(agent core.Agent) {
+	// 	// Nothing to do
+	// })
+
+	core.AddEffectsToTest = true
 }
