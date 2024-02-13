@@ -100,8 +100,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-StormshroudArmor"
  value: {
-  dps: 12.27773
-  tps: 13.00677
+  dps: 12.13374
+  tps: 12.86278
  }
 }
 dps_results: {
@@ -114,56 +114,56 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 61.0596
-  tps: 61.98036
+  dps: 60.83614
+  tps: 61.7569
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 61.17397
-  tps: 79.58277
+  dps: 60.91753
+  tps: 79.32633
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 61.17397
-  tps: 62.09441
+  dps: 60.91753
+  tps: 61.83797
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 62.0261
-  tps: 66.6283
+  dps: 60.7439
+  tps: 65.3461
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 58.82957
-  tps: 58.82957
+  dps: 58.57313
+  tps: 58.57313
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 58.82957
-  tps: 58.82957
+  dps: 58.57313
+  tps: 58.57313
  }
 }
 dps_results: {
  key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 61.58205
-  tps: 61.58205
+  dps: 60.29985
+  tps: 60.29985
  }
 }
 dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 61.17397
-  tps: 62.09441
+  dps: 60.91753
+  tps: 61.83797
  }
 }
