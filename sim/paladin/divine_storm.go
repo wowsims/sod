@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -11,14 +10,8 @@ import (
 func (paladin *Paladin) registerDivineStormSpell() {
 
 	if !paladin.HasRune(proto.PaladinRune_RuneChestDivineStorm) {
-		fmt.Println(
-			"vetoing DS", proto.PaladinRune_RuneChestDivineStorm,
-		)
 		return
 	}
-	fmt.Println(
-		"DS rune found, registering DS",
-	)
 
 	numHits := min(4, paladin.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)

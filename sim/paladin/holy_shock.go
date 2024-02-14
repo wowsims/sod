@@ -6,12 +6,19 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+const ranksHolyShock = 3
+
+var holyShockLevels = [ranksHolyShock + 1]int{0, 40, 48, 56}
+var holyShockSpellIds = [ranksHolyShock + 1]int32{0, 20473, 20929, 20930}
+var holyShockBaseDamages = [ranksHolyShock + 1][]float64{{0}, {204, 220}, {279, 301}, {365, 395}}
+var holyShockManaCosts = [ranksHolyShock + 1]float64{0, 225, 275, 325}
+
 func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
-	spellId := [4]int32{0, 20473, 20929, 20930}[rank]
-	baseDamageLow := [4]float64{0, 204, 365}[rank]
-	baseDamageHigh := [4]float64{0, 220, 301, 395}[rank]
-	manaCost := [4]float64{0, 225, 275, 325}[rank]
-	level := [4]int{0, 40, 48, 56}[rank]
+	spellId := holyShockSpellIds[rank]
+	baseDamageLow := holyShockBaseDamages[rank][0]
+	baseDamageHigh := holyShockBaseDamages[rank][1]
+	manaCost := holyShockManaCosts[rank]
+	level := holyShockLevels[rank]
 
 	spellCoeff := 0.429
 	actionID := core.ActionID{SpellID: spellId}
@@ -44,34 +51,22 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
-
-			// bonusCrit := core.TernaryFloat64(
-			// 	guaranteed_crit,
-			// 	100*core.CritRatingPerCritChance,
-			// 	0)
-
-			// spell.BonusCritRating += bonusCrit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			// spell.BonusCritRating -= bonusCrit
 		},
 	}
 
 }
 
-// Exorcism in SoD is by default castable only on demon and undead targets.
-// If the paladin has the Exorcist leg rune equipped, they can cast the spell on
-// any target and it additonally always crits on demon and undead targets.
 func (paladin *Paladin) registerHolyShockSpell() {
-
+	// If the player has Holy Shock talented, register all ranksHolyShock up to their level.
 	if !paladin.Talents.HolyShock {
 		return
 	}
 
-	maxRank := 3
-	for i := 1; i <= maxRank; i++ {
-		config := paladin.getHolyShockBaseConfig(i)
-		if config.RequiredLevel <= int(paladin.Level) {
-			paladin.HolyShock = paladin.GetOrRegisterSpell(config)
+	paladin.HolyShock = make([]*core.Spell, ranksHolyShock+1)
+	for rank := 1; rank <= ranksHolyShock; rank++ {
+		if int(paladin.Level) >= holyShockLevels[rank] {
+			paladin.HolyShock[rank] = paladin.RegisterSpell(paladin.getHolyShockBaseConfig(rank))
 		}
 	}
 }

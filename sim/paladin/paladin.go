@@ -1,7 +1,7 @@
 package paladin
 
 import (
-	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	SealDuration                = time.Second * 30
 	SpellFlagSecondaryJudgement = core.SpellFlagAgentReserved1
 	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
 )
@@ -31,7 +32,7 @@ type Paladin struct {
 	Consecration   *core.Spell
 	CrusaderStrike *core.Spell
 	Exorcism       *core.Spell
-	HolyShock      *core.Spell
+	HolyShock      []*core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
 	// HandOfReckoning       *core.Spell
@@ -41,7 +42,7 @@ type Paladin struct {
 	// JudgementOfLight      *core.Spell
 	// HammerOfWrath         *core.Spell
 	// SealOfVengeance       *core.Spell
-	// SealOfRighteousness   *core.Spell
+	SealOfRighteousness []*core.Spell
 	// SealOfCommand *core.Spell
 	// AvengingWrath         *core.Spell
 	// DivineProtection      *core.Spell
@@ -56,7 +57,7 @@ type Paladin struct {
 	// JudgementOfLightAura    *core.Aura
 	// SealOfVengeanceAura     *core.Aura
 	// SealOfCommandAura *core.Aura
-	// SealOfRighteousnessAura *core.Aura
+	SealOfRighteousnessAura []*core.Aura
 	// AvengingWrathAura       *core.Aura
 	// DivineProtectionAura    *core.Aura
 	// ForbearanceAura         *core.Aura
@@ -90,26 +91,7 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 }
 
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.DevotionAura = max(raidBuffs.DevotionAura, core.MakeTristateValue(
-	// 	paladin.PaladinAura == proto.PaladinAura_DevotionAura,
-	// 	paladin.Talents.ImprovedDevotionAura == 5))
-
-	// raidBuffs.RetributionAura = max(raidBuffs.RetributionAura, core.MakeTristateValue(
-	// 	paladin.PaladinAura == proto.PaladinAura_RetributionAura,
-	// 	paladin.Talents.ImprovedRetributionAura == 2))
-
-	// if paladin.Talents.SanctifiedRetribution {
-	// 	raidBuffs.SanctifiedRetribution = true
-	// }
-
-	// if paladin.Talents.SwiftRetribution == 3 {
-	// 	raidBuffs.SwiftRetribution = paladin.Talents.SwiftRetribution == 3 // TODO: Fix-- though having something between 0/3 and 3/3 is unlikely
-	// }
-
-	// TODO: Figure out a way to just start with 1 DG cooldown available without making a redundant Spell
-	//if paladin.Talents.DivineGuardian == 2 {
-	//	raidBuffs.divineGuardians++
-	//}
+	// Buffs are handled explicitly through APLs now
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -120,7 +102,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
 
 	// paladin.registerSealOfVengeanceSpellAndAura()
-	// paladin.registerSealOfRighteousnessSpellAndAura()
+	paladin.registerSealOfRighteousnessSpellAndAura()
 	// paladin.registerSealOfCommandSpellAndAura()
 	// paladin.setupSealOfTheCrusader()
 	// paladin.setupSealOfWisdom()
@@ -200,11 +182,19 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 }
 
 func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
-	fmt.Println(rune, int32(rune))
 	return paladin.HasRuneById(int32(rune))
 }
 
-// Shared 30sec cooldown for Divine Protection and Avenging Wrath
-func (paladin *Paladin) GetMutualLockoutDPAW() *core.Timer {
-	return paladin.Character.GetOrInitTimer(&paladin.mutualLockoutDPAW)
+func (paladin *Paladin) Has1hEquipped() bool {
+	if paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand {
+		return true
+	}
+	return false
+}
+
+func (paladin *Paladin) Has2hEquipped() bool {
+	if paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {
+		return true
+	}
+	return false
 }
