@@ -1,8 +1,6 @@
 package core
 
 import (
-	"math/rand"
-
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -159,13 +157,14 @@ func (spell *Spell) OutcomeMagicHit(sim *Simulation, result *SpellResult, attack
 func (spell *Spell) OutcomeMeleeWhite(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	unit := spell.Unit
 	roll := sim.RandomFloat("White Hit Table")
+	glanceRoll := sim.RandomFloat("White Hit Glancing Penalty")
 	chance := 0.0
 
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance) &&
-			!result.applyAttackTableGlance(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableGlance(spell, attackTable, roll, &chance, glanceRoll) &&
 			!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableCrit(spell, attackTable, roll, &chance) {
 			result.applyAttackTableHit(spell)
@@ -173,7 +172,7 @@ func (spell *Spell) OutcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 	} else {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
-			!result.applyAttackTableGlance(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableGlance(spell, attackTable, roll, &chance, glanceRoll) &&
 			!result.applyAttackTableCrit(spell, attackTable, roll, &chance) {
 			result.applyAttackTableHit(spell)
 		}
@@ -456,13 +455,13 @@ func (result *SpellResult) applyAttackTableParry(spell *Spell, attackTable *Atta
 	return false
 }
 
-func (result *SpellResult) applyAttackTableGlance(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
+func (result *SpellResult) applyAttackTableGlance(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, glanceRoll float64) bool {
 	*chance += attackTable.BaseGlanceChance
 
 	if roll < *chance {
 		result.Outcome = OutcomeGlance
 		spell.SpellMetrics[result.Target.UnitIndex].Glances++
-		result.Damage *= attackTable.GlanceMultiplierMin + rand.Float64()*(attackTable.GlanceMultiplierMax-attackTable.GlanceMultiplierMin)
+		result.Damage *= attackTable.GlanceMultiplierMin + glanceRoll*(attackTable.GlanceMultiplierMax-attackTable.GlanceMultiplierMin)
 		return true
 	}
 	return false
