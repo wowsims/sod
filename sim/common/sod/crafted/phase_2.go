@@ -211,10 +211,10 @@ func init() {
 			ActionID: actionId,
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CastSpeedMultiplier *= 1.2
+				character.MultiplyCastSpeed(1.2)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CastSpeedMultiplier /= 1.2
+				character.MultiplyCastSpeed(1 / 1.2)
 			},
 		})
 

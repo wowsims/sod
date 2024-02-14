@@ -117,6 +117,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods,
 
 	defaults: {
+		race?: Race
 		gear: EquipmentSpec,
 		epWeights: Stats,
 		consumes: Consumes,
@@ -388,7 +389,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 			//Special case for Totem of Wrath keeps buff and debuff sync'd
 			this.player.applySharedDefaults(eventID);
-			this.player.setRace(eventID, specToEligibleRaces[this.player.spec][0]);
+			this.player.setRace(eventID, this.individualConfig.defaults.race ?? specToEligibleRaces[this.player.spec][0]);
 			this.player.setLevel(eventID, LEVEL_THRESHOLDS[simLaunchStatuses[this.player.spec].phase]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
 			this.player.setItemSwapGear(eventID, new ItemSwapGear({}));
