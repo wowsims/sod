@@ -8,9 +8,12 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPicker } from './boolean_picker.js';
 import { Tooltip } from 'bootstrap';
 
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { element, fragment } from 'tsx-vanilla';
+
 export interface ItemSwapConfig {
 	itemSlots: Array<ItemSlot>;
-	tooltip?: string;
+	note?: string;
 }
 
 export class ItemSwapPicker<SpecType extends Spec> extends Component {
@@ -34,13 +37,20 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 
 		const swapPickerContainer = document.createElement('div');
 		swapPickerContainer.classList.add('input-root', 'input-inline');
-
 		this.rootElem.appendChild(swapPickerContainer);
+
+		let noteElem: Element
+		if (config.note) {
+			noteElem = this.rootElem.appendChild(<p className="form-text">{config.note}</p>);
+		}
+
 		const toggleEnabled = () => {
 			if (!player.getEnableItemSwap()) {
 				swapPickerContainer.classList.add('hide');
+				noteElem.classList.add('hide');
 			} else {
 				swapPickerContainer.classList.remove('hide');
+				noteElem.classList.remove('hide');
 			}
 		};
 		player.itemSwapChangeEmitter.on(toggleEnabled);
@@ -50,11 +60,6 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		label.classList.add('form-label');
 		label.textContent = "Item Swap";
 		swapPickerContainer.appendChild(label);
-
-		if (config.tooltip) {
-			label.setAttribute('data-bs-title', config.tooltip);
-			Tooltip.getOrCreateInstance(label);
-		}
 
 		let itemSwapContainer = Input.newGroupContainer();
 		itemSwapContainer.classList.add('icon-group');
