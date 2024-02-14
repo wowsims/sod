@@ -9222,6 +9222,7 @@
 {"effectId":1897,"spellId":13695,"name":"Enchant 2H Weapon - Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2443,"spellId":21931,"name":"Enchant Weapon - Winter's Might","type":13,"stats":[0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2463,"spellId":13657,"name":"Enchant Cloak - Fire Resistance","type":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":7210,"spellId":435481,"name":"Enchant Weapon - Dismantle","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7223,"spellId":435903,"name":"Enchant Chest - Retricutioner","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4}
 ],
 "runes":[
@@ -11998,6 +11999,7 @@
 {"id":415467,"name":"Mass Regeneration","icon":"inv_enchant_essencenetherlarge","requiresLevel":1},
 {"id":425168,"name":"Arcane Surge","icon":"spell_arcane_arcanetorrent","requiresLevel":1},
 {"id":425169,"name":"Icy Veins","icon":"spell_frost_coldhearted","requiresLevel":1},
+{"id":435481,"name":"Enchant Weapon - Dismantle","icon":"spell_holy_greaterheal"},
 {"id":435903,"name":"Enchant Chest - Retricutioner","icon":"spell_holy_greaterheal"},
 {"id":437327,"name":"Charged Inspiration","icon":"ability_mage_incantersabsorbtion"},
 {"id":437362,"name":"Hyperconductive Shock","icon":"spell_shaman_staticshock"}
