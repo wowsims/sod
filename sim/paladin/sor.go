@@ -145,7 +145,8 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
+			Multiplier: 1.0 - (float64(paladin.Talents.Benediction) * 0.03),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
