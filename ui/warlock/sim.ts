@@ -24,7 +24,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		"Most abilities and pets are work in progress"
 	],
 
 	// All stats for which EP should be calculated.
@@ -216,61 +215,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecWarlock,
-			tooltip: 'Affliction DPS',
-			defaultName: 'Affliction',
-			iconUrl: getSpecIcon(Class.ClassWarlock, 0),
-
-			talents: Presets.DefaultTalentsAffliction.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
-				[Faction.Horde]: Race.RaceOrc,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-			},
-			otherDefaults: Presets.OtherDefaults,
-		},
-		{
-			spec: Spec.SpecWarlock,
-			tooltip: 'Demonology DPS',
-			defaultName: 'Demonology',
-			iconUrl: getSpecIcon(Class.ClassWarlock, 1),
-
-			talents: Presets.DefaultTalentsDemonology.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
-				[Faction.Horde]: Race.RaceOrc,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-			},
-			otherDefaults: Presets.OtherDefaults,
-		},
-		{
-			spec: Spec.SpecWarlock,
 			tooltip: 'Destruction DPS',
 			defaultName: 'Destruction',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 2),
 
-			talents: Presets.DefaultTalentsDestruction.data,
+			talents: Presets.DestroMgiTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -281,10 +230,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
+					1: Presets.FireImpGearPreset.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
+					1: Presets.FireImpGearPreset.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
