@@ -47,10 +47,10 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		const toggleEnabled = () => {
 			if (!player.getEnableItemSwap()) {
 				swapPickerContainer.classList.add('hide');
-				noteElem.classList.add('hide');
+				noteElem?.classList.add('hide');
 			} else {
 				swapPickerContainer.classList.remove('hide');
-				noteElem.classList.remove('hide');
+				noteElem?.classList.remove('hide');
 			}
 		};
 		player.itemSwapChangeEmitter.on(toggleEnabled);
