@@ -6,12 +6,12 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-const ranksHolyShock = 3
+const holyShockRanks = 3
 
-var holyShockLevels = [ranksHolyShock + 1]int{0, 40, 48, 56}
-var holyShockSpellIds = [ranksHolyShock + 1]int32{0, 20473, 20929, 20930}
-var holyShockBaseDamages = [ranksHolyShock + 1][]float64{{0}, {204, 220}, {279, 301}, {365, 395}}
-var holyShockManaCosts = [ranksHolyShock + 1]float64{0, 225, 275, 325}
+var holyShockLevels = [holyShockRanks + 1]int{0, 40, 48, 56}
+var holyShockSpellIds = [holyShockRanks + 1]int32{0, 20473, 20929, 20930}
+var holyShockBaseDamages = [holyShockRanks + 1][]float64{{0}, {204, 220}, {279, 301}, {365, 395}}
+var holyShockManaCosts = [holyShockRanks + 1]float64{0, 225, 275, 325}
 
 func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 	spellId := holyShockSpellIds[rank]
@@ -58,13 +58,13 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 }
 
 func (paladin *Paladin) registerHolyShockSpell() {
-	// If the player has Holy Shock talented, register all ranksHolyShock up to their level.
+	// If the player has Holy Shock talented, register all holyShockRanks up to their level.
 	if !paladin.Talents.HolyShock {
 		return
 	}
 
-	paladin.HolyShock = make([]*core.Spell, ranksHolyShock+1)
-	for rank := 1; rank <= ranksHolyShock; rank++ {
+	paladin.HolyShock = make([]*core.Spell, holyShockRanks+1)
+	for rank := 1; rank <= holyShockRanks; rank++ {
 		if int(paladin.Level) >= holyShockLevels[rank] {
 			paladin.HolyShock[rank] = paladin.RegisterSpell(paladin.getHolyShockBaseConfig(rank))
 		}

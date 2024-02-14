@@ -29,7 +29,7 @@ type Paladin struct {
 	// DivinePlea            *core.Spell
 	DivineStorm *core.Spell
 	// HolyWrath             *core.Spell
-	Consecration   *core.Spell
+	Consecration   []*core.Spell
 	CrusaderStrike *core.Spell
 	Exorcism       *core.Spell
 	HolyShock      []*core.Spell

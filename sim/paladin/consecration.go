@@ -7,11 +7,18 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+const consecrationRanks = 5
+
+var consecrationLevels = [consecrationRanks + 1]int{0, 20, 30, 40, 50, 60}
+var consecrationSpellIDs = [consecrationRanks + 1]int32{0, 26573, 20116, 20922, 20923, 20924}
+var consecrationBaseDamages = [consecrationRanks + 1]float64{0, 64 / 8, 120 / 8, 192 / 8, 280 / 8, 384 / 8}
+var consecrationManaCosts = [consecrationRanks + 1]float64{0, 135, 235, 320, 435, 565}
+
 func (paladin *Paladin) getConsecrationBaseConfig(rank int) core.SpellConfig {
-	spellId := [4]int32{0, 26573, 20116, 20922}[rank]
-	baseDamage := [4]float64{0, 8, 15, 24}[rank]
-	manaCost := [4]float64{0, 135, 235, 320}[rank]
-	level := [4]int{0, 20, 30, 40}[rank]
+	spellId := consecrationSpellIDs[rank]
+	baseDamage := consecrationBaseDamages[rank]
+	manaCost := consecrationManaCosts[rank]
+	level := consecrationLevels[rank]
 
 	spellCoeff := 0.042
 	actionID := core.ActionID{SpellID: spellId}
@@ -68,12 +75,11 @@ func (paladin *Paladin) registerConsecrationSpell() {
 	if !paladin.Talents.Consecration {
 		return
 	}
-
-	maxRank := 3 // for p2, can update for p3 onwards
-	for i := 1; i <= maxRank; i++ {
-		config := paladin.getConsecrationBaseConfig(i)
+	paladin.Consecration = make([]*core.Spell, consecrationRanks+1)
+	for rank := 1; rank <= consecrationRanks; rank++ {
+		config := paladin.getConsecrationBaseConfig(rank)
 		if config.RequiredLevel <= int(paladin.Level) {
-			paladin.Consecration = paladin.GetOrRegisterSpell(config)
+			paladin.Consecration[rank] = paladin.GetOrRegisterSpell(config)
 		}
 	}
 }

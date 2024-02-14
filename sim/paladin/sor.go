@@ -18,7 +18,7 @@ var sorEffectBasePoints = [sorRanks + 1]float64{0, 107, 215, 351, 540, 784, 1081
 var sorEffectRealPointsPerLevel = [sorRanks + 1]float64{0, 18, 17, 23, 31, 37, 41, 47, 47}
 var sorLevelMinMaxEffects = [sorRanks + 1][]int32{{0}, {1, 7}, {10, 16}, {18, 24}, {26, 32}, {34, 40}, {42, 48}, {50, 56}, {58, 60}}
 
-// SoR Rank 3 has approximately double the seemingly intended spellpower scaling
+// SoR Rank 3 has approximately double the seemingly-intended spellpower scaling
 var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.1, 0.1, 0.1, 0.1, 0.1}
 
 func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int) {
