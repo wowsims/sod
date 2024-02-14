@@ -91,6 +91,8 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 10,
 			})
+		case proto.Food_FoodDragonbreathChili:
+			MakePermanent(DragonBreathChiliAura(&character.Unit))
 		}
 	}
 
@@ -348,6 +350,42 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			Priority: CooldownPriorityLow + 10,
 		})
 	}
+}
+
+func DragonBreathChiliAura(unit *Unit) *Aura {
+	baseDamage := 60.0
+	procChance := .05
+
+	procSpell := unit.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 15851},
+		SpellSchool: SpellSchoolFire,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNone,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, baseDamage+spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:    "Dragonbreath Chili",
+		ActionID: ActionID{SpellID: 15852},
+		Duration: NeverExpires,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+	return aura
 }
 
 // Creates a spell object for the common explosive case.
