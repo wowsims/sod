@@ -204,9 +204,9 @@ export class SettingsTab extends SimTab {
 			!inputs.extraCssClasses || !inputs.extraCssClasses?.includes('within-raid-sim-hide')
 		)
 
-		const swapSlots = this.simUI.individualConfig.itemSwapSlots || [];
+		const itemSwapConfig = this.simUI.individualConfig.itemSwapConfig
 
-		if (settings.length || swapSlots.length) {
+		if (settings.length || itemSwapConfig?.itemSlots.length) {
 			const contentBlock = new ContentBlock(this.column2, 'other-settings', {
 				header: { title: 'Other' }
 			});
@@ -218,10 +218,8 @@ export class SettingsTab extends SimTab {
 				})
 			}
 
-			if (swapSlots.length) {
-				const _itemSwapPicker = new ItemSwapPicker(contentBlock.bodyElement, this.simUI, this.simUI.player, {
-					itemSlots: swapSlots,
-				});
+			if (itemSwapConfig?.itemSlots.length) {
+				new ItemSwapPicker(contentBlock.bodyElement, this.simUI, this.simUI.player, itemSwapConfig);
 			}
 		}
 	}
