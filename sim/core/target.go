@@ -246,6 +246,13 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 			table.MeleeCritSuppression = -(baseWeaponSkill - targetDefense) * 0.0004
 		}
 
+		// TODO (maybe): This is technically not correct, but it shouldn't matter outside of edge cases.
+		// These 1.8% should only be subtracted from crit chance gained from auras,
+		// i.e. talents, gear and buffs, NOT base crit and crit from agility!
+		// See https://github.com/magey/classic-warrior/wiki/Attack-table#critical-strike
+		// That means if a character with <2% crit from auras attacks a +3 level target the sim will be wrong.
+		// The chance of that being the case once bosses are +3 in SoD should be very small though.
+		// Most (all?) affected specs have crit in their talents to begin with.
 		if (defender.Level - attacker.Level) >= 3 {
 			table.MeleeCritSuppression += 0.018
 		}
