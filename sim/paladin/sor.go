@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/wowsims/sod/sim/core"
@@ -21,6 +22,12 @@ var sorLevelMinMaxEffects = [sorRanks + 1][]int32{{0}, {1, 7}, {10, 16}, {18, 24
 // SoR Rank 3 has approximately double the seemingly-intended spellpower scaling
 var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.1, 0.1, 0.1, 0.1, 0.1}
 
+var jorSpellIDs = [sorRanks + 1]int32{0, 20187, 20280, 20281, 20282, 20283, 20284, 20285, 20286}
+var jorEffectBasePoints = [sorRanks + 1]float64{0, 14, 24, 38, 56, 77, 101, 130, 161}
+var jorEffectRealPointsPerLevel = [sorRanks + 1]float64{0, 1.8, 1.9, 2.4, 2.8, 3.1, 3.8, 4.1, 4.1}
+var jorEffectDieSides = [sorRanks + 1]float64{0, 1, 3, 5, 7, 9, 11, 13, 17}
+var jorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.144, 0.312, 0.462, 0.5, 0.5, 0.5, 0.5, 0.5}
+
 func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int) {
 	spellIdAura := sorAuraSpellIds[rank]
 	spellIdProc := sorProcSpellIds[rank]
@@ -29,6 +36,13 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	scalingLevelMin := sorLevelMinMaxEffects[rank][0]
 	scalingLevelMax := sorLevelMinMaxEffects[rank][1]
 	effectBonusCoefficient := sorEffectBonusCoefficient[rank]
+
+	jorSpellID := jorSpellIDs[rank]
+	jorBasePoints := jorEffectBasePoints[rank]
+	jorPointsPerLevel := jorEffectRealPointsPerLevel[rank]
+	jorDieSides := jorEffectDieSides[rank]
+	jorBonusCoefficient := jorEffectBonusCoefficient[rank]
+
 	manaCost := sorManaCosts[rank]
 	level := sorLevels[rank]
 
@@ -45,20 +59,24 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		1+0.03*float64(paladin.Talents.ImprovedSealOfRighteousness),
 		1.0)
 	baseDamageNoSP := baseCoefficientFinal / 100 * handednessModifier * weaponSpeed * impSoRModifier
+
+	baseJoRMinDamage := jorBasePoints + float64(levelsToScale)*jorPointsPerLevel
+	baseJoRMaxDamage := baseJoRMinDamage + jorDieSides
+	fmt.Println(baseJoRMinDamage, baseJoRMaxDamage)
 	/*
 	 * Seal of Righteousness is an Spell/Aura that when active makes the paladin capable of procing
 	 * 2 different SpellIDs depending on a paladin's casted spell or melee swing.
 	 * NOTE:
 	 *   Seal of Righteousness is unique in that it is the only seal that can proc off its own judgements.
 	 *
-	 * SpellID 20187 (Judgement of Righteousness):
-	 *   - Procs off of any "Primary" Judgement (JoL, JoW, JoJ).
+	 * (Judgement of Righteousness):
+	 *   - Procs off of the dummy Judgement spell.
 	 *   - Cannot miss or be dodged/parried/blocked.
 	 *   - Deals a flat damage that is affected by Improved SoR talent, and
 	 *     has a spellpower scaling that is unaffacted by that talent.
 	 *   - Crits off of a spell modifier.
 	 *
-	 * SpellID 20154 (Seal of Righteousness):
+	 * (Seal of Righteousness):
 	 *   - Procs off of white hits.
 	 *   - Cannot miss or be dodged/parried if the underlying white hit lands.
 	 *   - Deals damage that is a function of weapon speed, and spellpower.
@@ -66,34 +84,25 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	 *   - CANNOT CRIT.
 	 */
 
-	// onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-	// 	ActionID:    core.ActionID{SpellID: 20187}, // Judgement of Righteousness.
-	// 	SpellSchool: core.SpellSchoolHoly,
-	// 	ProcMask:    core.ProcMaskMeleeSpecial,
-	// 	Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: jorSpellID}, // Judgement of Righteousness.
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
-	// 	// BonusCritRating: (6 * float64(paladin.Talents.Fanaticism) * core.CritRatingPerCritChance) +
-	// 	// 	(core.TernaryFloat64(paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 4), 5, 0) * core.CritRatingPerCritChance),
+		DamageMultiplier: 1,
+		CritMultiplier:   1.5,
+		ThreatMultiplier: 1,
 
-	// 	// DamageMultiplier: 1 *
-	// 	// 	(1 + paladin.getItemSetLightswornBattlegearBonus4() + paladin.getTalentSealsOfThePureBonus() +
-	// 	// 		paladin.getTalentTheArtOfWarBonus()) *
-	// 	// 	(1 + paladin.getTalentTwoHandedWeaponSpecializationBonus()),
-	// 	DamageMultiplier: 1,
-	// 	CritMultiplier:   1, // paladin.MeleeCritMultiplier(),
-	// 	ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// i = 1 + 0.2 * AP + 0.32 * HolP
+			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellPower()
+			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+			// spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
-	// 	ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 		// i = 1 + 0.2 * AP + 0.32 * HolP
-	// 		baseDamage := 12 + .32*spell.SpellPower()
-
-	// 		// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
-	// 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-	// 	},
-	// })
-	// sealSpellId := [4]int32{0, 21084, 20287, 20288, 20289, 21084}[rank]
-	// baseDamage := [4]float64{}[rank]
-	// manaCost := [4]float64{0, 225, 275, 325}[rank]
+		},
+	})
 
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 
@@ -103,9 +112,6 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,
 
-		// DamageMultiplier: 1 *
-		// 	(1 + paladin.getItemSetLightswornBattlegearBonus4() + paladin.getItemSetAegisPlateBonus2() + paladin.getTalentSealsOfThePureBonus()) *
-		// 	(1 + paladin.getTalentTwoHandedWeaponSpecializationBonus()),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
@@ -133,6 +139,9 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 			}
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				onSwingProc.Cast(sim, result.Target)
+			}
+			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
+				onJudgementProc.Cast(sim, result.Target)
 			}
 
 		},
