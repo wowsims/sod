@@ -49,6 +49,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		DamageMultiplierAdditive: 1 +
 			0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.ImprovedDrainLife),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -93,7 +94,9 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				// Remove target modifiers for the tick only
 				dot.Spell.Flags |= core.SpellFlagIgnoreTargetModifiers
 				//dot.Spell.Flags ^= core.SpellFlagBinary
+
 				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+
 				// revert flag changes
 				dot.Spell.Flags ^= core.SpellFlagIgnoreTargetModifiers
 				//dot.Spell.Flags |= core.SpellFlagBinary
@@ -113,7 +116,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 
 				dot := spell.Dot(target)
 				dot.Apply(sim)
-				dot.UpdateExpires(sim, dot.ExpiresAt())
 
 				warlock.EverlastingAfflictionRefresh(sim, target)
 			}
