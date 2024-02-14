@@ -88,6 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		talents: Presets.TalentsPhase2Fury.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({

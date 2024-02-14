@@ -158,11 +158,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		SpellCode_ShamanChainHeal,
 	}
 
-	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
-	// for LB / CL / LvB
-	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
-
-	// For sim purposes maelstrom weapon only impacts CL / LB
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
 		ActionID:  core.ActionID{SpellID: int32(buffSpellId)},

@@ -18,7 +18,8 @@ import {
 	Stat,
 	StrengthBuff,
 	WeaponImbue, 
-	WeaponType} from "../../proto/common";
+	WeaponType
+} from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 import { EventID, TypedEvent } from "../../typed_event";
 
@@ -29,6 +30,7 @@ import { ActionInputConfig, ItemStatOption } from "./stat_options";
 
 import * as InputHelpers from '../input_helpers';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from "./shaman_imbues";
+import { isBluntWeaponType, isSharpWeaponType } from "../../proto_utils/utils";
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T,
@@ -50,7 +52,7 @@ function makeConsumeInputFactory<T extends number>(args: ConsumeInputFactoryArgs
 		return {
 			type: 'iconEnum',
 			tooltip: tooltip,
-			numColumns: options.length > 5 ? 2 : 1,
+			numColumns: options.length > 11 ? 4 : options.length > 8 ? 3 : options.length > 5 ? 2 : 1,
 			values: [
 				{ value: 0 } as unknown as IconEnumValueConfig<Player<any>, T>,
 			].concat(options.map(option => {
@@ -163,7 +165,7 @@ export const ExplosiveEzThroRadiationBomb: ConsumableInputConfig<Explosive> = {
 	value: Explosive.ExplosiveEzThroRadiationBomb,
 };
 
-export const ExplosiveHighYealdRadiationBomb: ConsumableInputConfig<Explosive> = {
+export const ExplosiveHighYieldRadiationBomb: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 215127, minLevel: 40 },
 	]),
@@ -172,11 +174,11 @@ export const ExplosiveHighYealdRadiationBomb: ConsumableInputConfig<Explosive> =
 };
 
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
-	{ config: ExplosiveEzThroRadiationBomb, 	stats: [] },
-	{ config: ExplosiveHighYealdRadiationBomb, 	stats: [] },
-	{ config: ExplosiveSolidDynamite, 			stats: [] },
-	{ config: ExplosiveDenseDynamite,		 	stats: [] },
-	{ config: ExplosiveThoriumGrenade, 			stats: [] },
+	{ config: ExplosiveEzThroRadiationBomb, 		stats: [] },
+	{ config: ExplosiveHighYieldRadiationBomb, 	stats: [] },
+	{ config: ExplosiveSolidDynamite, 					stats: [] },
+	{ config: ExplosiveDenseDynamite,		 				stats: [] },
+	{ config: ExplosiveThoriumGrenade, 					stats: [] },
 ];
 
 export const makeExplosivesInput = makeConsumeInputFactory({
@@ -227,10 +229,10 @@ export const FlaskOfChromaticResistance: ConsumableInputConfig<Flask> = {
 };
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
-	{ config: FlaskOfTheTitans, 			stats: [Stat.StatStamina] },
+	{ config: FlaskOfTheTitans, 					stats: [Stat.StatStamina] },
 	{ config: FlaskOfDistilledWisdom, 		stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfSupremePower, 			stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfChromaticResistance, 	stats: [Stat.StatStamina] },
+	{ config: FlaskOfSupremePower, 				stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
 ];
 
 export const makeFlasksInput = makeConsumeInputFactory({consumesFieldName: 'flask'});
@@ -244,6 +246,12 @@ export const DirgesKickChimaerokChops: ConsumableInputConfig<Food> = {
 		{ id: 21023, minLevel: 55 },
 	]),
 	value: Food.FoodDirgesKickChimaerokChops,
+};
+export const GrilledSquid: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 13928, minLevel: 50 },
+	]),
+	value: Food.FoodGrilledSquid,
 };
 export const SmokedDesertDumpling: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -269,12 +277,6 @@ export const BlessedSunfruitJuice: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodBlessedSunfruitJuice,
 };
-export const TenderWolfSteak: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 18045, minLevel: 40 },
-	]),
-	value: Food.FoodTenderWolfSteak
-};
 export const NightfinSoup: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		// Requires Skill 250
@@ -282,11 +284,17 @@ export const NightfinSoup: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodNightfinSoup,
 };
-export const GrilledSquid: ConsumableInputConfig<Food> = {
+export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13928, minLevel: 50 },
+		{ id: 18045, minLevel: 40 },
 	]),
-	value: Food.FoodGrilledSquid,
+	value: Food.FoodTenderWolfSteak
+};
+export const DragonBreathChili: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 12217, minLevel: 35 },
+	]),
+	value: Food.FoodDragonbreathChili
 };
 export const HotWolfRibs: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -308,17 +316,17 @@ export const SagefishDelight: ConsumableInputConfig<Food> = {
 };
 
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
+	{ config: BlessSunfruit, 						stats: [Stat.StatStrength] },
+	{ config: BlessedSunfruitJuice, 		stats: [Stat.StatSpirit] },
 	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
-	{ config: SmokedDesertDumpling, 	stats: [Stat.StatStrength] },
-	{ config: RunnTumTuberSurprise, 	stats: [Stat.StatIntellect] },
-	{ config: BlessSunfruit, 			stats: [Stat.StatStrength] },
-	{ config: BlessedSunfruitJuice, 	stats: [Stat.StatSpirit] },
-	{ config: TenderWolfSteak, 			stats: [Stat.StatStamina, Stat.StatSpirit] },
-	{ config: NightfinSoup, 			stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: GrilledSquid, 			stats: [Stat.StatAgility] },
-	{ config: HotWolfRibs, 				stats: [Stat.StatSpirit] },
-	{ config: SmokedSagefish, 			stats: [Stat.StatMP5] },
-	{ config: SagefishDelight, 			stats: [Stat.StatMP5] },
+	{ config: DragonBreathChili, 				stats: [] },
+	{ config: GrilledSquid, 						stats: [Stat.StatAgility] },
+	{ config: HotWolfRibs, 							stats: [Stat.StatSpirit] },
+	{ config: RunnTumTuberSurprise, 		stats: [Stat.StatIntellect] },
+	{ config: SagefishDelight, 					stats: [Stat.StatMP5] },
+	{ config: SmokedDesertDumpling, 		stats: [Stat.StatStrength] },
+	{ config: SmokedSagefish, 					stats: [Stat.StatMP5] },
+	{ config: TenderWolfSteak, 					stats: [Stat.StatStamina, Stat.StatSpirit] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({consumesFieldName: 'food'});
@@ -365,10 +373,10 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfTheMongoose, 		stats: [Stat.StatAgility] },
-	{ config: ElixirOfGreaterAgility, 	stats: [Stat.StatAgility] },
-	{ config: ElixirOfAgility,		 	stats: [Stat.StatAgility] },
+	{ config: ElixirOfGreaterAgility, stats: [Stat.StatAgility] },
+	{ config: ElixirOfAgility,		 		stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, 	stats: [Stat.StatAgility] },
-	{ config: ScrollOfAgility, 			stats: [Stat.StatAgility] },
+	{ config: ScrollOfAgility, 				stats: [Stat.StatAgility] },
 ];
 
 export const makeAgilityConsumeInput = makeConsumeInputFactory({consumesFieldName: 'agilityElixir'});
@@ -403,10 +411,10 @@ export const ScrollOfStrength: ConsumableInputConfig<StrengthBuff> = {
 };
 
 export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
-	{ config: JujuPower,				stats: [Stat.StatStrength] },
-	{ config: ElixirOfGiants,			stats: [Stat.StatStrength] },
+	{ config: JujuPower,							stats: [Stat.StatStrength] },
+	{ config: ElixirOfGiants,					stats: [Stat.StatStrength] },
 	{ config: ElixirOfOgresStrength,	stats: [Stat.StatStrength] },
-	{ config: ScrollOfStrength, 		stats: [Stat.StatStrength] },
+	{ config: ScrollOfStrength, 			stats: [Stat.StatStrength] },
 ];
 
 export const makeStrengthConsumeInput = makeConsumeInputFactory({consumesFieldName: 'strengthBuff'});
@@ -441,9 +449,9 @@ export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
 };
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: LesserManaPotion,  stats: [Stat.StatIntellect] },
-	{ config: ManaPotion, 		 stats: [Stat.StatIntellect] },
-	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
+	{ config: LesserManaPotion,		stats: [Stat.StatIntellect] },
+	{ config: ManaPotion, 		 		stats: [Stat.StatIntellect] },
+	{ config: GreaterManaPotion,	stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});
@@ -474,9 +482,9 @@ export const LesserArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
-	{ config: GreaterArcaneElixir, 	stats: [Stat.StatSpellPower] },
-	{ config: ArcaneElixir, 		stats: [Stat.StatSpellPower] },
-	{ config: LesserArcaneElixir, 	stats: [Stat.StatSpellPower] },
+	{ config: GreaterArcaneElixir,	stats: [Stat.StatSpellPower] },
+	{ config: ArcaneElixir, 				stats: [Stat.StatSpellPower] },
+	{ config: LesserArcaneElixir,		stats: [Stat.StatSpellPower] },
 ];
 
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesFieldName: 'spellPowerBuff'})
@@ -553,11 +561,25 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 
 // Other Imbues
 
-export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+// Wizard Oils
+export const MinorWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 18262, minLevel: 50 },
+		{ id: 20744, minLevel: 5 },
 	]),
-	value: WeaponImbue.ElementalSharpeningStone,
+	value: WeaponImbue.MinorWizardOil,
+};
+export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 20746, minLevel: 30},
+	]),
+	value: WeaponImbue.LesserWizardOil,
+};
+export const WizardOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		// SoD Phase 3?
+		{ id: 20750, minLevel: 41 },
+	]),
+	value: WeaponImbue.WizardOil,
 };
 export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
@@ -565,17 +587,26 @@ export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	]),
 	value: WeaponImbue.BrillianWizardOil,
 };
+
+// Mana Oils
+export const MinorManaOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 20745, minLevel: 20 },
+	]),
+	value: WeaponImbue.MinorManaOil,
+};
+export const LesserManaOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		// SoD phase 3?
+		{ id: 20747, minLevel: 41 },
+	]),
+	value: WeaponImbue.LesserManaOil,
+};
 export const BrilliantManaOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
 		{ id: 20748, minLevel: 45 },
 	]),
 	value: WeaponImbue.BrilliantManaOil,
-};
-export const DenseSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 12404, minLevel: 35 },
-	]),
-	value: WeaponImbue.DenseSharpeningStone,
 };
 export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: (player) => player.getMatchingItemActionId([
@@ -583,9 +614,63 @@ export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 	]),
 	value: WeaponImbue.BlackfathomManaOil,
 };
-export const BlackfathomSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
-	actionId: () => ActionId.fromItemId(211845),
-	value: WeaponImbue.BlackfathomSharpeningStone,
+
+// Sharpening Stones
+export const SolidSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: (player) => player.getMatchingItemActionId([
+			{ id: 7964, minLevel: 35 },
+		]),
+		value: WeaponImbue.SolidSharpeningStone,
+		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
+};
+export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: (player) => player.getMatchingItemActionId([
+			// SoD Phase 3?
+			{ id: 12404, minLevel: 41 },
+		]),
+		value: WeaponImbue.DenseSharpeningStone,
+		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
+};
+export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: (player) => player.getMatchingItemActionId([
+			{ id: 18262, minLevel: 50 },
+		]),
+		value: WeaponImbue.ElementalSharpeningStone,
+		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
+};
+export const BlackfathomSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: () => ActionId.fromItemId(211845),
+		value: WeaponImbue.BlackfathomSharpeningStone,
+		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
+};
+
+// Weightstones
+export const SolidWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: (player) => player.getMatchingItemActionId([
+			{ id: 7965, minLevel: 35 },
+		]),
+		value: WeaponImbue.SolidWeightstone,
+		showWhen: (player) => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
+};
+export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: (player) => player.getMatchingItemActionId([
+			// SoD Phase 3?
+			{ id: 12643, minLevel: 41 },
+		]),
+		value: WeaponImbue.DenseWeightstone,
+		showWhen: (player) => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+	}
 };
 
 const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
@@ -595,25 +680,36 @@ const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: WindfuryWeaponImbue,		stats: [] },
 ]
 
-const CONSUMABLES_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
-	{ config: ElementalSharpeningStone, 	stats: [Stat.StatAttackPower] },
-	{ config: BrillianWizardOil, 					stats: [Stat.StatSpellPower] },
-	{ config: BrilliantManaOil, 					stats: [Stat.StatHealing, Stat.StatSpellPower] },
-	{ config: DenseSharpeningStone, 			stats: [Stat.StatAttackPower] },
-	{ config: BlackfathomManaOil, 				stats: [Stat.StatSpellPower, Stat.StatMP5] },
-	{ config: BlackfathomSharpeningStone, stats: [Stat.StatMeleeHit] },
+const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
+	{ config: MinorWizardOil, 		stats: [Stat.StatSpellPower] },
+	{ config: LesserWizardOil, 		stats: [Stat.StatSpellPower] },
+	{ config: WizardOil, 					stats: [Stat.StatSpellPower] },
+	{ config: BrillianWizardOil,	stats: [Stat.StatSpellPower] },
+
+	{ config: MinorManaOil, 			stats: [Stat.StatHealing, Stat.StatSpellPower] },
+	{ config: LesserManaOil, 			stats: [Stat.StatHealing, Stat.StatSpellPower] },
+	{ config: BrilliantManaOil, 	stats: [Stat.StatHealing, Stat.StatSpellPower] },
+	{ config: BlackfathomManaOil, stats: [Stat.StatSpellPower, Stat.StatMP5] },
+
+	{ config: SolidSharpeningStone(slot), 			stats: [Stat.StatAttackPower] },
+	{ config: DenseSharpeningStone(slot), 			stats: [Stat.StatAttackPower] },
+	{ config: ElementalSharpeningStone(slot), 	stats: [Stat.StatAttackPower] },
+	{ config: BlackfathomSharpeningStone(slot), stats: [Stat.StatMeleeHit] },
+
+	{ config: SolidWeightstone(slot), stats: [Stat.StatAttackPower] },
+	{ config: DenseWeightstone(slot), stats: [Stat.StatAttackPower] },
 ]
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	...SHAMAN_IMBUES,
-	...CONSUMABLES_IMBUES,
+	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotOffHand),
 ];
 
 export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	...SHAMAN_IMBUES,
 	{ config: Windfury, 		stats: [Stat.StatMeleeHit] },
 	{ config: WildStrikes, 	stats: [Stat.StatMeleeHit] },
-	...CONSUMABLES_IMBUES,
+	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotMainHand),
 ];
 
 export const makeMainHandImbuesInput = makeConsumeInputFactory({

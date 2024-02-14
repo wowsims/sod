@@ -24,6 +24,7 @@ func (warlock *Warlock) ApplyTalents() {
 		warlock.applyImprovedShadowBolt()
 	}
 
+	warlock.applyWeaponImbue()
 	warlock.applyNightfall()
 	warlock.applyMasterDemonologist()
 	warlock.applyDemonicSacrifice()
@@ -287,14 +288,17 @@ func (warlock *Warlock) applyFirestone() {
 		})
 
 		core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: spellId},
-			Label:    "Firestone Proc",
+			Label: "Firestone Proc",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
 				}
 
-				if !ppm.Proc(sim, spell.ProcMask, "Firestone Proc") {
+				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !ppm.Proc(sim, core.ProcMaskMelee, "Firestone Proc") {
 					return
 				}
 

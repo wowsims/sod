@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (warrior *Warrior) RegisterRendSpell() {
+func (warrior *Warrior) registerRendSpell() {
 	dotTicks := int32(5)
 	baseDamage := map[int32]float64{
 		25: 45,
