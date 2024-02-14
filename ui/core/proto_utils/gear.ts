@@ -25,7 +25,8 @@ abstract class BaseGear {
 	abstract getItemSlots(): ItemSlot[]
 
 	equals(other: BaseGear): boolean {
-		return this.asArray().every((thisItem, slot) => equalsOrBothNull(thisItem, other.getEquippedItem(slot), (a, b) => a.equals(b)));
+		const otherArray = other.asArray();
+		return this.asArray().every((thisItem, slot) => equalsOrBothNull(thisItem, otherArray[slot], (a, b) => a.equals(b)))
 	}
 
 	getEquippedItem(slot: ItemSlot): EquippedItem | null {
@@ -187,7 +188,6 @@ export class Gear extends BaseGear {
  * This is an immutable type.
  */
 export class ItemSwapGear extends BaseGear {
-
 	constructor(gear: Partial<InternalGear>) {
 		super(gear);
 	}

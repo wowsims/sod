@@ -205,15 +205,12 @@ func (shaman *Shaman) Initialize() {
 	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 
-	// if shaman.ItemSwap.IsEnabled() {
-	// 	mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-	// 	shaman.ApplyFlametongueImbueToItem(mh, true)
-	// 	oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-	// 	shaman.ApplyFlametongueImbueToItem(oh, false)
-	// 	shaman.RegisterOnItemSwap(func(_ *core.Simulation) {
-	// 		shaman.ApplySyncType(proto.ShamanSyncType_Auto)
-	// 	})
-	// }
+	if shaman.ItemSwap.IsEnabled() {
+		mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
+		shaman.ApplyRockbiterImbueToItem(mh)
+		oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
+		shaman.ApplyRockbiterImbueToItem(oh)
+	}
 
 	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()

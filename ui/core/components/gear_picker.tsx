@@ -2,7 +2,6 @@ import { professionNames, slotNames } from '../proto_utils/names.js';
 import { BaseModal } from './base_modal';
 import { Component } from './component';
 import { FiltersMenu } from './filters_menu';
-import { Input, InputConfig } from './input';
 import {
 	makeShow1hWeaponsSelector,
 	makeShow2hWeaponsSelector,
@@ -29,7 +28,6 @@ import {
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
-	Spec,
 } from '../proto/common';
 import {
 	DatabaseFilters,
@@ -288,22 +286,22 @@ export class ItemPicker extends Component {
 	}
 }
 
-export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<Player<SpecType>, ValueType> {
-	private readonly config: InputConfig<Player<SpecType>, ValueType>;
+export class IconItemSwapPicker extends Component {
+
 	private readonly iconAnchor: HTMLAnchorElement;
-	private readonly player: Player<SpecType>;
+	private readonly socketsContainerElem: HTMLElement;
+	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items and enchants that are eligible for this slot
+	// All items, enchants, and runes that are eligible for this slot
 	private _items: Array<Item> = [];
 	private _enchants: Array<Enchant> = [];
 	private _runes: Array<Rune> = [];
 
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<SpecType>, slot: ItemSlot, config: InputConfig<Player<SpecType>, ValueType>) {
-		super(parent, 'icon-picker-root', player, config)
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot) {
+		super(parent, 'icon-picker-root')
 		this.rootElem.classList.add('icon-picker');
 		this.player = player;
-		this.config = config;
 		this.slot = slot;
 
 		this.iconAnchor = document.createElement('a');
@@ -311,18 +309,20 @@ export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<
 		this.iconAnchor.target = '_blank';
 		this.rootElem.prepend(this.iconAnchor);
 
+		this.socketsContainerElem = document.createElement('div')
+		this.socketsContainerElem.classList.add('item-picker-sockets-container')
+		this.iconAnchor.appendChild(this.socketsContainerElem);
+
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
 			this._runes = this.player.getRunes(slot);
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					let isg = this.player.getItemSwapGear();
-					this.player.setItemSwapGear(eventID, isg.withEquippedItem(this.slot, equippedItem, player.canDualWield2H()));
-					this.inputChanged(eventID);
+					this.player.equipItemSwapitem(eventID, this.slot, equippedItem);
 				},
-				getEquippedItem: () => this.player.getItemSwapGear().getEquippedItem(this.slot),
-				changeEvent: config.changedEvent(player),
+				getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+				changeEvent: player.itemSwapChangeEmitter,
 			}
 
 			this.iconAnchor.addEventListener('click', (event: Event) => {
@@ -337,29 +337,23 @@ export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<
 					gearData: gearData,
 				});
 			});
-		}).finally(() => this.init());
+		});
 
+		player.itemSwapChangeEmitter.on(() => {
+			this.update(player.getItemSwapGear().getEquippedItem(slot));
+		});
 	}
 
-	getInputElem(): HTMLElement {
-		return this.iconAnchor;
-	}
-	getInputValue(): ValueType {
-		return this.player.getItemSwapGear().toProto() as unknown as ValueType
-	}
-
-	setInputValue(_: ValueType): void {
+	update(newItem: EquippedItem | null) {
 		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		this.iconAnchor.removeAttribute('data-wowhead');
 		this.iconAnchor.href = "#";
+		this.socketsContainerElem.innerText = '';
 
-		const equippedItem = this.player.getItemSwapGear().getEquippedItem(this.slot);
-		if (equippedItem) {
+		if (newItem) {
 			this.iconAnchor.classList.add("active")
-
-			equippedItem.asActionId().fillAndSet(this.iconAnchor, true, true);
-			this.player.setWowheadData(equippedItem, this.iconAnchor);
-
+			this.player.setWowheadData(newItem, this.iconAnchor);
+			newItem.asActionId().fill().then(filledId => filledId.setBackgroundAndHref(this.iconAnchor));
 		} else {
 			this.iconAnchor.classList.remove("active")
 		}
@@ -847,9 +841,7 @@ export class ItemList<T> {
 		});
 
 		const removeButton = this.tabContent.getElementsByClassName('selector-modal-remove-button')[0] as HTMLButtonElement;
-		removeButton.addEventListener('click', _ => {
-			onRemove(TypedEvent.nextEventID());
-		});
+		removeButton.addEventListener('click', _ => onRemove(TypedEvent.nextEventID()));
 
 		if (label.startsWith("Enchants")) {
 			removeButton.textContent = 'Remove Enchant';

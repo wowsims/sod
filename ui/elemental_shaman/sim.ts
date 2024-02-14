@@ -4,6 +4,7 @@ import {
 	Class,
 	Faction,
 	IndividualBuffs,
+	ItemSlot,
 	PartyBuffs,
 	Race,
 	Spec,
@@ -53,6 +54,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatAttackPower,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		let stats = new Stats();
@@ -108,6 +110,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		inputs: [
 			OtherInputs.TankAssignment,
 		],
+	},
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+		tooltip: "Swap items will be given max-rank Rockbiter Weapon",
 	},
 	customSections: [
 		// TotemsSection,
