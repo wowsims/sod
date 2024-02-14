@@ -99,7 +99,55 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-BlackfathomAvenger'sMail"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-BlackfathomElementalist'sHide"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-BlackfathomSlayer'sLeather"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ElectromanticDevastator'sMail"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ElectromanticStormbringer'sChain"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-H.A.Z.A.R.D.Suit"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-HyperconductiveMender'sMeditation"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-HyperconductiveWizard'sAttire"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-InsulatedLeathers"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-InsulatedSorceror'sLeathers"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-IrradiatedGarments"
+ value: {}
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-StormshroudArmor"
+ value: {}
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-TwilightInvoker'sVestments"
  value: {}
 }
 dps_results: {

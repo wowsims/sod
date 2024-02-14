@@ -3,7 +3,7 @@ package druid
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/sod/item_sets"
+	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -38,7 +38,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_DruidStarfire,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 

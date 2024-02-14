@@ -53,6 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatAttackPower,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		let stats = new Stats();

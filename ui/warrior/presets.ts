@@ -5,6 +5,7 @@ import {
 	Flask,
 	Food,
 	Potions,
+	Profession,
 	RaidBuffs,
 	TristateEffect,
 	WeaponImbue,
@@ -152,3 +153,8 @@ export const DefaultDebuffs = Debuffs.create({
 	mangle: true,
 	sunderArmor: true,
 })
+
+export const OtherDefaults = {
+  profession1: Profession.Enchanting,
+  profession2: Profession.Leatherworking,
+}

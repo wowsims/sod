@@ -91,6 +91,8 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 10,
 			})
+		case proto.Food_FoodDragonbreathChili:
+			MakePermanent(DragonBreathChiliAura(&character.Unit))
 		}
 	}
 
@@ -208,16 +210,53 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
+		// Wizard Oils
+		case proto.WeaponImbue_MinorWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 8,
+			})
+		case proto.WeaponImbue_LesserWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 16,
+			})
+		case proto.WeaponImbue_WizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 24,
+			})
 		case proto.WeaponImbue_BrillianWizardOil:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 36,
 				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
 			})
+
+		// Mana Oils
+		case proto.WeaponImbue_MinorManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5: 4,
+			})
+		case proto.WeaponImbue_LesserManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5: 8,
+			})
 		case proto.WeaponImbue_BrilliantManaOil:
 			character.AddStats(stats.Stats{
-				stats.MP5:     5,
+				stats.MP5:     12,
 				stats.Healing: 25,
 			})
+		case proto.WeaponImbue_BlackfathomManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5:      12,
+				stats.SpellHit: 2 * SpellHitRatingPerHitChance,
+			})
+
+		// Sharpening Stones
+		case proto.WeaponImbue_SolidSharpeningStone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 6
+			weapon.BaseDamageMax += 6
 		case proto.WeaponImbue_DenseSharpeningStone:
 			weapon := character.AutoAttacks.MH()
 			if !isMh {
@@ -229,15 +268,28 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 			character.AddStats(stats.Stats{
 				stats.MeleeCrit: 2 * CritRatingPerCritChance,
 			})
-		case proto.WeaponImbue_BlackfathomManaOil:
-			character.AddStats(stats.Stats{
-				stats.MP5:      12,
-				stats.SpellHit: 2 * SpellHitRatingPerHitChance,
-			})
 		case proto.WeaponImbue_BlackfathomSharpeningStone:
 			character.AddStats(stats.Stats{
 				stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
 			})
+
+		// Weightstones
+		case proto.WeaponImbue_SolidWeightstone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 6
+			weapon.BaseDamageMax += 6
+		case proto.WeaponImbue_DenseWeightstone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 8
+			weapon.BaseDamageMax += 8
+
+		// Windfury
 		case proto.WeaponImbue_WildStrikes:
 			//protect against double application if wild strikes is selected by a feral in sim settings
 			if !character.HasRuneById(int32(proto.DruidRune_RuneChestWildStrikes)) {
@@ -298,6 +350,42 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			Priority: CooldownPriorityLow + 10,
 		})
 	}
+}
+
+func DragonBreathChiliAura(unit *Unit) *Aura {
+	baseDamage := 60.0
+	procChance := .05
+
+	procSpell := unit.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 15851},
+		SpellSchool: SpellSchoolFire,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNone,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, baseDamage+spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:    "Dragonbreath Chili",
+		ActionID: ActionID{SpellID: 15852},
+		Duration: NeverExpires,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+	return aura
 }
 
 // Creates a spell object for the common explosive case.

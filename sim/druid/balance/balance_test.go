@@ -14,21 +14,30 @@ func init() {
 
 func TestBalance(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassDruid,
-		Race:  proto.Race_RaceTauren,
+		Class:       proto.Class_ClassDruid,
+		Race:        proto.Race_RaceTauren,
+		Level:       25,
+		OtherLevels: []int32{40},
 
-		GearSet:       core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_1"),
-		OtherGearSets: []core.GearSetCombo{},
-		Talents:       StandardTalents,
-		Consumes:      FullConsumes,
-		SpecOptions:   core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
-		Rotation:      core.GetAplRotation("../../../ui/balance_druid/apls", "phase_1"),
+		GearSet: core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_2"),
+		},
+
+		Talents:     phase2Talents,
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
+		Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_1"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/balance_druid/apls", "phase_2"),
+		},
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var StandardTalents = "5000500302541051"
+var phase1Talents = "50005003021"
+var phase2Talents = "5000500302541051"
 
 var FullConsumes = core.ConsumesCombo{
 	Label: "Full Consumes",
