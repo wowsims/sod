@@ -133,7 +133,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+		tooltip: "Swap items will be given max-rank Rockbiter Weapon",
+	},
 	customSections: [
 		// TotemsSection,
 	],
