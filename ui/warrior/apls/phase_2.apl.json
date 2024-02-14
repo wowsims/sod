@@ -5,6 +5,7 @@
     {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-0.5s"}}}
   ],
   "priorityList": [
+    {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"31s"}}}},"castSpell":{"spellId":{"spellId":12328}}}},
     {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":402877}}}}},"castSpell":{"spellId":{"spellId":2687}}}},
     {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":402877}}}}},"castSpell":{"spellId":{"spellId":18499}}}},

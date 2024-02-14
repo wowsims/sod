@@ -2,6 +2,7 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
   Consumes,
   Debuffs,
+  EnchantedSigil,
   Flask,
   Food,
   Profession,
@@ -126,8 +127,9 @@ export const DefaultOptions = ElementalShamanOptions.create({
 export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
-  mainHandImbue: WeaponImbue.RockbiterWeapon,
-  offHandImbue: WeaponImbue.RockbiterWeapon,
+  enchantedSigil: EnchantedSigil.InnovationSigil,
+  mainHandImbue: WeaponImbue.BrillianWizardOil,
+  offHandImbue: WeaponImbue.BrillianWizardOil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -150,6 +152,6 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
   distanceFromTarget: 20,
-  profession1: Profession.Engineering,
-  profession2: Profession.Tailoring,
+  profession1: Profession.Enchanting,
+  profession2: Profession.Leatherworking,
 }

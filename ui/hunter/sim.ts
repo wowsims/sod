@@ -1,4 +1,4 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Debuffs,
@@ -13,25 +13,14 @@ import {
 	Stat, PseudoStat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import {
-	APLAction,
-	APLListItem,
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
-import {
-	Hunter_Rotation_StingType as StingType,
-	Hunter_Rotation_RotationType,
-} from '../core/proto/hunter.js';
-
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
-import * as AplUtils from '../core/proto_utils/apl_utils.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -125,6 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			aspectOfTheLion: true,

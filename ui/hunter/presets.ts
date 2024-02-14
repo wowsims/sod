@@ -3,6 +3,7 @@ import {
 	Consumes,
 	Flask,
 	Food,
+	Profession,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -165,3 +166,8 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
 });
+
+export const OtherDefaults = {
+  profession1: Profession.Engineering,
+  profession2: Profession.Leatherworking,
+}

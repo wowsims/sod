@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 20
   final_stats: 0
-  final_stats: 11.60664
+  final_stats: 10.7592
   final_stats: 0
   final_stats: 10
   final_stats: 206.14
@@ -99,43 +99,43 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 186.0561
-  tps: 434.06405
+  dps: 185.11742
+  tps: 433.12536
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 186.0561
-  tps: 181.59205
+  dps: 185.11742
+  tps: 180.65336
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 214.77681
-  tps: 194.08594
+  dps: 212.77867
+  tps: 192.08781
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 172.80757
-  tps: 465.91749
+  dps: 172.17808
+  tps: 465.288
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 172.80757
-  tps: 175.19215
+  dps: 172.17808
+  tps: 174.56266
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 204.72309
-  tps: 193.85028
+  dps: 204.04569
+  tps: 193.17287
  }
 }
 dps_results: {

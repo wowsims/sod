@@ -44,7 +44,7 @@ func addLevel40(bossPrefix string) {
 			Id:        213334, // TODO:
 			Name:      "Level 40",
 			Level:     42,
-			MobType:   proto.MobType_MobTypeUndead,
+			MobType:   proto.MobType_MobTypeMechanical,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
