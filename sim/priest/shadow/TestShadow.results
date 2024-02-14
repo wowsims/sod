@@ -49,6 +49,22 @@ character_stats_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-HyperconductiveMender'sMeditation"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-AllItems-HyperconductiveWizard'sAttire"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-AllItems-IrradiatedGarments"
+ value: {}
+}
+dps_results: {
+ key: "TestShadow-AllItems-TwilightInvoker'sVestments"
+ value: {}
+}
+dps_results: {
  key: "TestShadow-Average-Default"
  value: {}
 }
