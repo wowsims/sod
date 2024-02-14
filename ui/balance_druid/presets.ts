@@ -2,6 +2,7 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Debuffs,
+	EnchantedSigil,
 	Flask,
 	Food,
 	IndividualBuffs,
@@ -118,6 +119,7 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
 	food: Food.FoodUnknown,
 	mainHandImbue: WeaponImbue.BlackfathomManaOil,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -144,6 +146,6 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 18,
-	profession1: Profession.Engineering,
-	profession2: Profession.Tailoring,
+	profession1: Profession.Enchanting,
+	profession2: Profession.Leatherworking,
 };
