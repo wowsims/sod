@@ -1006,8 +1006,8 @@ const rogueRaces = [
 ];
 const shamanRaces = [
 	Race.RaceOrc,
-	Race.RaceTauren,
 	Race.RaceTroll,
+	Race.RaceTauren,
 ];
 const warlockRaces = [
 	Race.RaceGnome,
