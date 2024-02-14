@@ -1,7 +1,13 @@
 @use "sass:map";
 
 .item-swap-picker-root {
+  label {
+    width: unset !important;
+  }
+
   .picker-group {
+    // Override a width: 100% from the default picker group
+    width: unset;
     align-items: center;
     justify-content: flex-end;
 
