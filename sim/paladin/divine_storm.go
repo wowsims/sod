@@ -38,14 +38,14 @@ func (paladin *Paladin) registerDivineStormSpell() {
 		},
 
 		BonusCritRating:  core.CritRatingPerCritChance,
-		DamageMultiplier: 1.1,
+		DamageMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
+				baseDamage := 1.1*spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
 					spell.BonusWeaponDamage()
 
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

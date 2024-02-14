@@ -12,8 +12,8 @@ const sor1hModifier = 0.85
 const sor2hModifier = 1.2
 
 var sorLevels = [sorRanks + 1]int{0, 1, 10, 18, 26, 34, 42, 50, 58}
-var sorAuraSpellIds = [sorRanks + 1]int32{0, 20154, 20287, 20288, 20289, 20290, 20291, 20292, 20293}
 var sorManaCosts = [sorRanks + 1]float64{0, 20, 40, 60, 90, 120, 140, 170, 200}
+var sorAuraSpellIds = [sorRanks + 1]int32{0, 20154, 20287, 20288, 20289, 20290, 20291, 20292, 20293}
 var sorProcSpellIds = [sorRanks + 1]int32{0, 25742, 25740, 25739, 25738, 25737, 25736, 25735, 25713}
 var sorEffectBasePoints = [sorRanks + 1]float64{0, 107, 215, 351, 540, 784, 1081, 1406, 1785}
 var sorEffectRealPointsPerLevel = [sorRanks + 1]float64{0, 18, 17, 23, 31, 37, 41, 47, 47}
@@ -91,7 +91,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1.5,
+		CritMultiplier:   paladin.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -44,7 +44,7 @@ type Paladin struct {
 	// HammerOfWrath         *core.Spell
 	// SealOfVengeance       *core.Spell
 	SealOfRighteousness []*core.Spell
-	// SealOfCommand *core.Spell
+	SealOfCommand       []*core.Spell
 	// AvengingWrath         *core.Spell
 	// DivineProtection      *core.Spell
 	// SovDotSpell           *core.Spell
@@ -57,8 +57,9 @@ type Paladin struct {
 	// JudgementOfWisdomAura   *core.Aura
 	// JudgementOfLightAura    *core.Aura
 	// SealOfVengeanceAura     *core.Aura
-	// SealOfCommandAura *core.Aura
+
 	SealOfRighteousnessAura []*core.Aura
+	SealOfCommandAura       []*core.Aura
 	// AvengingWrathAura       *core.Aura
 	// DivineProtectionAura    *core.Aura
 	// ForbearanceAura         *core.Aura
@@ -101,7 +102,7 @@ func (paladin *Paladin) Initialize() {
 	// paladin.registerSealOfVengeanceSpellAndAura()
 	paladin.registerSealOfRighteousnessSpellAndAura()
 	paladin.registerJudgementSpell()
-	// paladin.registerSealOfCommandSpellAndAura()
+	paladin.registerSealOfCommandSpellAndAura()
 	// paladin.setupSealOfTheCrusader()
 	// paladin.setupSealOfWisdom()
 	// paladin.setupSealOfLight()

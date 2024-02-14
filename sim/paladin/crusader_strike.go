@@ -32,12 +32,12 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 			},
 		},
 		BonusCritRating:  core.CritRatingPerCritChance,
-		DamageMultiplier: 0.75,
+		DamageMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
+			baseDamage := 0.75*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 				spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
