@@ -1,47 +1,47 @@
 character_stats_results: {
  key: "TestDestruction-CharacterStats-Default"
  value: {
-  final_stats: 77.44
-  final_stats: 36.74
-  final_stats: 113.41
-  final_stats: 141.24
-  final_stats: 119.24
-  final_stats: 254
+  final_stats: 78.54
+  final_stats: 37.84
+  final_stats: 140.14
+  final_stats: 174.24
+  final_stats: 126.94
+  final_stats: 371
   final_stats: 0
-  final_stats: 44
-  final_stats: 0
-  final_stats: 0
+  final_stats: 14
   final_stats: 0
   final_stats: 0
-  final_stats: 20
   final_stats: 0
-  final_stats: 10.7592
   final_stats: 0
-  final_stats: 10
-  final_stats: 206.14
+  final_stats: 33
+  final_stats: 2
+  final_stats: 14.1749
   final_stats: 0
+  final_stats: 0
+  final_stats: 207.24
+  final_stats: 2
+  final_stats: 7
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2831.6
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1551.18
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1500.4
   final_stats: 5
+  final_stats: 10
   final_stats: 0
+  final_stats: 22
   final_stats: 0
-  final_stats: 0
-  final_stats: 2336.6
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1418.98
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1233.1
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 15
-  final_stats: 21
+  final_stats: 160
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -51,120 +51,114 @@ character_stats_results: {
 dps_results: {
  key: "TestDestruction-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 12.7897
+  dps: 12.99321
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 13.35037
- }
-}
-dps_results: {
- key: "TestDestruction-AllItems-InfernalPactEssence-216509"
- value: {
-  dps: 13.53647
+  dps: 13.52551
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-IrradiatedGarments"
  value: {
-  dps: 13.88424
+  dps: 14.09383
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 12.86928
+  dps: 13.00885
  }
 }
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 12.92039
+  dps: 15.06996
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 12.86203
+  dps: 15.03589
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 12.86203
+  dps: 15.03589
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 17.96682
+  dps: 23.29129
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 9.49293
+  dps: 11.14118
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 9.49293
+  dps: 11.14118
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock--NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock--NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 13.72867
+  dps: 17.85159
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 189.05402
-  tps: 435.30858
+  dps: 222.14932
+  tps: 205.2317
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 189.05402
-  tps: 184.28565
+  dps: 222.14932
+  tps: 205.2317
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 223.91067
-  tps: 202.84356
+  dps: 395.89706
+  tps: 363.38598
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 175.6707
-  tps: 468.08718
+  dps: 174.02859
+  tps: 161.48436
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 175.6707
-  tps: 177.84192
+  dps: 174.02859
+  tps: 161.48436
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-25-destruction-Destruction Warlock-destruction-NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-25-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 207.77038
-  tps: 196.83085
+  dps: 363.95548
+  tps: 339.19794
  }
 }
 dps_results: {
  key: "TestDestruction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 12.86203
+  dps: 15.03589
  }
 }
