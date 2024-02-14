@@ -180,7 +180,7 @@ func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.registerFaerieFireSpell()
-	// druid.registerInnervateCD()
+	druid.registerInnervateCD()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
