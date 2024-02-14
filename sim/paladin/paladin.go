@@ -31,7 +31,7 @@ type Paladin struct {
 	// HolyWrath             *core.Spell
 	Consecration   []*core.Spell
 	CrusaderStrike *core.Spell
-	Exorcism       *core.Spell
+	Exorcism       []*core.Spell
 	HolyShock      []*core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
