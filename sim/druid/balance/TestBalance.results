@@ -161,6 +161,300 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 33.0604
+  tps: 43.6655
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 33.0604
+  tps: 33.59065
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 33.03235
+  tps: 35.16801
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 32.13696
+  tps: 32.13696
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 32.13696
+  tps: 32.13696
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_1-Default-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 32.82904
+  tps: 32.82904
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 102.88453
+  tps: 124.19733
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 102.88453
+  tps: 103.95017
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 106.7322
+  tps: 111.69948
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 100.36065
+  tps: 100.36065
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 100.36065
+  tps: 100.36065
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 106.98319
+  tps: 106.98319
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 62.15304
+  tps: 69.90224
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 62.15304
+  tps: 62.5405
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 62.05179
+  tps: 63.86563
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 61.67812
+  tps: 61.67812
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 61.67812
+  tps: 61.67812
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-25-phase_2-Default-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 61.38657
+  tps: 61.38657
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 115.70634
+  tps: 235.34579
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 115.70634
+  tps: 121.68832
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 114.2282
+  tps: 124.22293
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 102.91597
+  tps: 102.91597
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 102.91597
+  tps: 102.91597
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 113.87893
+  tps: 113.87893
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 124.55498
+  tps: 232.04758
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 124.55498
+  tps: 129.92961
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 117.73747
+  tps: 127.91979
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 125.81317
+  tps: 125.81317
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 125.81317
+  tps: 125.81317
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_1-Default-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 117.20238
+  tps: 117.20238
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 181.31128
+  tps: 300.36622
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 181.31128
+  tps: 187.26402
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 190.41167
+  tps: 199.37695
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 168.50212
+  tps: 168.50212
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 168.50212
+  tps: 168.50212
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 188.74505
+  tps: 188.74505
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 223.52802
+  tps: 349.48962
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 223.52802
+  tps: 229.8261
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 231.44896
+  tps: 243.05316
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 206.02085
+  tps: 206.02085
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 206.02085
+  tps: 206.02085
+ }
+}
+dps_results: {
+ key: "TestBalance-Settings-Tauren-40-phase_2-Default-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 230.77126
+  tps: 230.77126
+ }
+}
+dps_results: {
  key: "TestBalance-SwitchInFrontOfTarget-Default"
  value: {
   dps: 60.91753

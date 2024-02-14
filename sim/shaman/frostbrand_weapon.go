@@ -40,7 +40,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskWeaponProc,
 
 		DamageMultiplier: 1 + .05*float64(shaman.Talents.ElementalWeapons),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),

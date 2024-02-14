@@ -384,6 +384,7 @@ enum WeaponImbue {
 	WindfuryWeapon = 12;
 }
 
+// NextIndex: 13
 enum Food {
 	FoodUnknown = 0;
 	FoodGrilledSquid = 1;
@@ -397,6 +398,7 @@ enum Food {
 	FoodTenderWolfSteak = 9;
 	FoodSmokedSagefish = 10;
 	FoodSagefishDelight = 11;
+	FoodDragonbreathChili = 12;
 }
 
 enum SaygesFortune {
