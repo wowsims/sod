@@ -60,9 +60,14 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				if rogue.HasRune(proto.RogueRune_RuneWaylay) {
+					rogue.WaylayAuras.Get(target).Activate(sim)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
 		},
+
+		RelatedAuras: []core.AuraArray{rogue.WaylayAuras},
 	})
 }

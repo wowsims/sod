@@ -69,7 +69,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier(40),
+			Cost:   40,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -86,6 +86,10 @@ func (rogue *Rogue) registerMutilateSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit) // Miss/Dodge/Parry/Hit
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
+
+				if rogue.HasRune(proto.RogueRune_RuneWaylay) {
+					rogue.WaylayAuras.Get(target).Activate(sim)
+				}
 				rogue.MutilateMH.Cast(sim, target)
 				rogue.MutilateOH.Cast(sim, target)
 			} else {

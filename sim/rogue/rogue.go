@@ -61,11 +61,14 @@ type Rogue struct {
 	MutilateOH     *core.Spell
 	Shiv           *core.Spell
 	SinisterStrike *core.Spell
+	SaberSlash     *core.Spell
+	MainGauche     *core.Spell
 	Shadowstep     *core.Spell
 	Preparation    *core.Spell
 	Premeditation  *core.Spell
 	ColdBlood      *core.Spell
 	Vanish         *core.Spell
+	Shadowstrike   *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -88,6 +91,7 @@ type Rogue struct {
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura
 	StealthAura          *core.Aura
+	WaylayAuras          core.AuraArray
 
 	woundPoisonDebuffAuras core.AuraArray
 
@@ -125,7 +129,6 @@ func (rogue *Rogue) Initialize() {
 
 	rogue.costModifier = rogue.makeCostModifier()
 
-	rogue.registerStealthAura()
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
 	rogue.registerEviscerate()
@@ -135,14 +138,24 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerHemorrhageSpell()
 	rogue.registerInstantPoisonSpell()
 	rogue.registerWoundPoisonSpell()
-	rogue.registerMutilateSpell()
 	rogue.registerRupture()
-	rogue.registerShivSpell()
 	rogue.registerSinisterStrikeSpell()
 	rogue.registerSliceAndDice()
 	rogue.registerThistleTeaCD()
 	rogue.registerAmbushSpell()
+
+	// Rune
+	rogue.registerWaylayAura()
+	rogue.registerMasterOfSubtlety()
+	rogue.registerMainGaucheSpell()
+	rogue.registerSaberSlashSpell()
+	rogue.registerShivSpell()
+	rogue.registerShadowstrikeSpell()
+	rogue.registerMutilateSpell()
 	rogue.registerEnvenom()
+
+	// Stealth
+	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()

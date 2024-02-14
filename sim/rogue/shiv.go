@@ -24,7 +24,7 @@ func (rogue *Rogue) registerShivSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   baseCost,
+			Cost:   baseCost - []float64{0, 3, 5}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

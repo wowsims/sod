@@ -824,6 +824,16 @@ func ThunderClapAura(target *Unit, points int32, playerLevel int32) *Aura {
 	return aura
 }
 
+func WaylayAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Waylay",
+		ActionID: ActionID{SpellID: 408699},
+		Duration: time.Second * 8,
+	})
+	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
 func AtkSpeedReductionEffect(aura *Aura, speedMultiplier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("AtkSpdReduction", false, ExclusiveEffect{
 		Priority: speedMultiplier,
