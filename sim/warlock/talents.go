@@ -268,20 +268,15 @@ func (warlock *Warlock) applyFirestone() {
 		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: core.SpellSchoolFire,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskEmpty,
 
-			CritMultiplier:           1.5,
+			CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 			DamageMultiplier:         1,
 			ThreatMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(damageMin, damageMax) + spellCoeff*spell.SpellDamage()
-
-				// TODO: Test if LoF Buffs this
-				//if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				//	baseDamage *= 1.4
-				//}
 
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 			},

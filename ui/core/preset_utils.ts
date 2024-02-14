@@ -44,6 +44,7 @@ export interface PresetGearOptions {
 
 export interface PresetRotationOptions {
     talentTree?: number,
+    customCondition?: (player: Player<any>) => boolean,
 }
 
 export function makePresetGear(name: string, gearJson: any, options?: PresetGearOptions): PresetGear {
@@ -99,6 +100,9 @@ function makePresetRotationHelper(name: string, rotation: SavedRotation, options
     let conditions: Array<(player: Player<any>) => boolean> = [];
     if (options?.talentTree != undefined) {
         conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
+    }
+    if (options?.customCondition != undefined) {
+        conditions.push(options.customCondition);
     }
 
     return {
