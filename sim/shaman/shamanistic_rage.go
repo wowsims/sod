@@ -45,18 +45,19 @@ func (shaman *Shaman) applyShamanisticRage() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			selfManaGained := max(
+				shaman.GetStat(stats.AttackPower)*apCoeff,
+				shaman.GetStat(stats.SpellPower)*spCoeff,
+				shaman.GetStat(stats.Healing)*hpCoeff,
+			)
+
 			// TODO: Raid mana regain
 			srAura.Activate(sim)
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				NumTicks: 15,
 				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
-					mana := max(
-						shaman.GetStat(stats.AttackPower)*apCoeff,
-						shaman.GetStat(stats.SpellPower)*spCoeff,
-						shaman.GetStat(stats.Healing)*hpCoeff,
-					)
-					shaman.AddMana(sim, mana, manaMetrics)
+					shaman.AddMana(sim, selfManaGained, manaMetrics)
 				},
 			})
 		},
