@@ -218,6 +218,34 @@ func init() {
 			},
 		})
 
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionId,
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			// TODO: Verify if SP affects the damage
+			Flags: core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// TODO: Verify if this can crit
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeMagicCrit)
+				if sim.Log != nil {
+					character.Log(sim, "Took %.1f damage from Hyperconductive Shock.", result.Damage)
+				}
+				character.RemoveHealth(sim, result.Damage)
+				buffAura.Activate(sim)
+			},
+		})
+
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
 			Flags:    core.SpellFlagNoOnCastComplete,
@@ -230,7 +258,7 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				buffAura.Activate(sim)
+				spell.Cast(sim, &character.Unit)
 			},
 		})
 

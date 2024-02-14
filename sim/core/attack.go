@@ -582,19 +582,34 @@ func (aa *AutoAttacks) MaybeReplaceMHSwing(sim *Simulation, mhSwingSpell *Spell)
 	return aa.mh.replaceSwing(sim, mhSwingSpell)
 }
 
-func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
+// Updates swing timers for main-hand, off-hand, and ranged weapons
+// flatMultipliers can be provided to apply flat speed increases (e.g. Troll Berserking for mana users)
+// The first multiplier applies to the main-hand swing speed
+// The second multiplier applies to the off-hand swing speed
+// The third multiplier applies to the ranged swing speed
+func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation, flatMultipliers ...float64) {
 	if !aa.enabled {
 		return
 	}
 
 	if aa.AutoSwingRanged {
-		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedSwingSpeed())
+		newRangedSwingSpeed := aa.ranged.unit.RangedSwingSpeed()
+		if len(flatMultipliers) > 2 {
+			newRangedSwingSpeed *= flatMultipliers[2]
+		}
+
+		aa.ranged.updateSwingDuration(newRangedSwingSpeed)
 		// ranged attack speed changes aren't applied mid-"swing"
 	}
 
 	if aa.AutoSwingMelee {
 		oldSwingSpeed := aa.mh.curSwingSpeed
-		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
+		newMHSwingSpeed := aa.mh.unit.SwingSpeed()
+		if len(flatMultipliers) > 0 {
+			newMHSwingSpeed *= flatMultipliers[0]
+		}
+
+		aa.mh.updateSwingDuration(newMHSwingSpeed)
 		f := oldSwingSpeed / aa.mh.curSwingSpeed
 
 		if remainingSwingTime := aa.mh.swingAt - sim.CurrentTime; remainingSwingTime > 0 {
@@ -604,7 +619,12 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 		sim.rescheduleWeaponAttack(aa.mh.swingAt)
 
 		if aa.IsDualWielding {
-			aa.oh.updateSwingDuration(aa.mh.curSwingSpeed)
+			newOHSwingSpeed := aa.oh.curSwingSpeed
+			if len(flatMultipliers) > 1 {
+				newMHSwingSpeed *= flatMultipliers[1]
+			}
+
+			aa.oh.updateSwingDuration(newOHSwingSpeed)
 
 			if remainingSwingTime := aa.oh.swingAt - sim.CurrentTime; remainingSwingTime > 0 {
 				aa.oh.swingAt = sim.CurrentTime + time.Duration(float64(remainingSwingTime)*f)

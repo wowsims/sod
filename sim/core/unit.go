@@ -312,8 +312,13 @@ func (unit *Unit) SpellGCD() time.Duration {
 }
 
 func (unit *Unit) updateCastSpeed() {
-	unit.CastSpeed = 1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))))
+	unit.CastSpeed = (1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))))) * unit.PseudoStats.FlatCastSpeedMultiplier
 }
+func (unit *Unit) FlatIncreaseCastSpeed(amount float64) {
+	unit.PseudoStats.FlatCastSpeedMultiplier -= amount
+	unit.updateCastSpeed()
+}
+
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 	unit.updateCastSpeed()
@@ -358,6 +363,16 @@ func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
 
 func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
+	unit.AutoAttacks.UpdateSwingTimers(sim)
+}
+
+func (unit *Unit) FlatIncreaseAttackSpeed(sim *Simulation, amount float64) {
+	unit.PseudoStats.FlatMeleeSpeedMultiplier -= amount
+	unit.PseudoStats.FlatRangedSpeedMultiplier -= amount
+
+	for _, pet := range unit.DynamicMeleeSpeedPets {
+		pet.dynamicMeleeSpeedInheritance(amount)
+	}
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
