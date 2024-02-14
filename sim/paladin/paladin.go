@@ -26,13 +26,14 @@ type Paladin struct {
 	CurrentSeal *core.Aura
 	// CurrentJudgement *core.Aura
 
-	// DivinePlea            *core.Spell
-	DivineStorm *core.Spell
-	// HolyWrath             *core.Spell
-	Consecration   []*core.Spell
 	CrusaderStrike *core.Spell
-	Exorcism       []*core.Spell
-	HolyShock      []*core.Spell
+	DivineStorm    *core.Spell
+
+	Consecration []*core.Spell
+	Exorcism     []*core.Spell
+	HolyShock    []*core.Spell
+
+	Judgement *core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
 	// HandOfReckoning       *core.Spell
@@ -62,15 +63,11 @@ type Paladin struct {
 	// DivineProtectionAura    *core.Aura
 	// ForbearanceAura         *core.Aura
 	VengeanceAura *core.Aura
-
+	// HolyWrath             *core.Spell
 	// SealOfWisdomAura        *core.Aura
 	// SealOfLightAura         *core.Aura
-
 	// ArtOfWarInstantCast *core.Aura
-
 	// SpiritualAttunementMetrics *core.ResourceMetrics
-
-	// HasTuralyonsOrLiadrinsBattlegear2Pc bool
 
 	DemonAndUndeadTargetCount int32
 
@@ -103,6 +100,7 @@ func (paladin *Paladin) Initialize() {
 
 	// paladin.registerSealOfVengeanceSpellAndAura()
 	paladin.registerSealOfRighteousnessSpellAndAura()
+	paladin.registerJudgementSpell()
 	// paladin.registerSealOfCommandSpellAndAura()
 	// paladin.setupSealOfTheCrusader()
 	// paladin.setupSealOfWisdom()
@@ -115,10 +113,9 @@ func (paladin *Paladin) Initialize() {
 
 	paladin.registerConsecrationSpell()
 	paladin.registerHolyShockSpell()
+	paladin.registerExorcismSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
-
-	paladin.registerExorcismSpell()
 	// paladin.registerHolyShieldSpell()
 	// paladin.registerHammerOfTheRighteousSpell()
 	// paladin.registerHandOfReckoningSpell()
