@@ -28,7 +28,8 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		DamageMultiplierAdditive: 1 +
 			0.04*float64(rogue.Talents.Opportunity),
 		DamageMultiplier: 1 *
-			core.TernaryFloat64(isMH, 1, rogue.dwsMultiplier()),
+			core.TernaryFloat64(isMH, 1, rogue.dwsMultiplier()) *
+			[]float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
