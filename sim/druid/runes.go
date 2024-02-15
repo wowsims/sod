@@ -9,13 +9,33 @@ import (
 )
 
 func (druid *Druid) ApplyRunes() {
-	druid.applyEclipse()
+	// Chest
 	druid.applyFuryOfStormRage()
-	druid.applySunfire()
-	druid.applyStarsurge()
-	druid.applyMangle()
-	druid.applySavageRoar()
+	// druid.applyLivingSeed()
+	// druid.applySurvivalOfTheFittest()
 	druid.applyWildStrikes()
+
+	// Hands
+	// druid.applyLacerate()
+	druid.applyMangle()
+	druid.applySunfire()
+	// druid.applyWildGrowth()
+
+	// Belt
+	// druid.applyBerserk()
+	druid.applyEclipse()
+	// druid.applyNourish()
+
+	// Legs
+	druid.applyStarsurge()
+	druid.applySavageRoar()
+	// druid.applyLifebloom()
+	// druid.applySkullBash()
+
+	// Feet
+	druid.applyDreamstate()
+	// druid.applyKingOfTheJungle()
+	// druid.applySurvivalInstincts()
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -34,7 +54,6 @@ func (druid *Druid) applyFuryOfStormRage() {
 }
 
 func (druid *Druid) applyEclipse() {
-
 	if !druid.HasRune(proto.DruidRune_RuneBeltEclipse) {
 		return
 	}
@@ -92,13 +111,11 @@ func (druid *Druid) applyEclipse() {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				spell.DefaultCast.CastTime -= lunarCastTimeReduction
 			})
-			druid.Starsurge.BonusCritRating += 30.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				spell.DefaultCast.CastTime += lunarCastTimeReduction
 			})
-			druid.Starsurge.BonusCritRating -= 30.0
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellCode != SpellCode_DruidStarfire {
@@ -211,4 +228,41 @@ func (druid *Druid) applyWildStrikes() {
 	}
 
 	druid.WildStrikesBuffAura = core.ApplyWildStrikes(druid.GetCharacter())
+}
+
+func (druid *Druid) applyDreamstate() {
+	if !druid.HasRune(proto.DruidRune_RuneFeetDreamstate) {
+		return
+	}
+
+	manaRegenDuration := time.Second * 8
+
+	manaRegenAura := druid.RegisterAura(core.Aura{
+		Label:    "Dreamstate Mana Regen",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
+		Duration: manaRegenDuration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.PseudoStats.SpiritRegenRateCasting += .5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.PseudoStats.SpiritRegenRateCasting -= .5
+		},
+	})
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Dreamstate Trigger",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() {
+				return
+			}
+
+			manaRegenAura.Activate(sim)
+			core.DreamstateAura(result.Target).Activate(sim)
+		},
+	})
 }

@@ -5,12 +5,16 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var ItemSetBlackfathomAvengerMail = core.NewItemSet(core.ItemSet{
-	Name: "Blackfathom Avenger's Mail",
+///////////////////////////////////////////////////////////////////////////
+//                                 Cloth
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetBlackfathomInvokerVestaments = core.NewItemSet(core.ItemSet{
+	Name: "Twilight Invoker's Vestments",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.AttackPower, 12)
+			c.AddStat(stats.SpellPower, 9)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -19,6 +23,10 @@ var ItemSetBlackfathomAvengerMail = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Leather
+///////////////////////////////////////////////////////////////////////////
 
 var ItemSetBlackfathomSlayerLeather = core.NewItemSet(core.ItemSet{
 	Name: "Blackfathom Slayer's Leather",
@@ -40,7 +48,7 @@ var ItemSetBlackfathomElementalistHide = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 9)
+			c.AddStat(stats.SpellPower, 12)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -50,12 +58,16 @@ var ItemSetBlackfathomElementalistHide = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetBlackfathomInvokerVestaments = core.NewItemSet(core.ItemSet{
-	Name: "Twilight Invoker's Vestments",
+///////////////////////////////////////////////////////////////////////////
+//                                 Mail
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetBlackfathomAvengerMail = core.NewItemSet(core.ItemSet{
+	Name: "Blackfathom Avenger's Mail",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 9)
+			c.AddStat(stats.AttackPower, 12)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()

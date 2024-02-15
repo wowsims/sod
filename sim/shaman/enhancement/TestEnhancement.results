@@ -58,8 +58,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 13.31659
-  tps: 18.21456
+  dps: 16.22106
+  tps: 21.07983
  }
 }
 dps_results: {
@@ -289,15 +289,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongMultiTarget"
  value: {
-  dps: 25.71252
-  tps: 195.24773
+  dps: 31.38231
+  tps: 201.03088
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-40-phase_1-Sync Delay OH-phase_1-NoBuffs-RB/RB-LongSingleTarget"
  value: {
-  dps: 25.71252
-  tps: 30.6475
+  dps: 31.38231
+  tps: 36.32295
  }
 }
 dps_results: {
