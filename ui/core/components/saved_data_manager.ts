@@ -186,11 +186,14 @@ export class SavedDataManager<ModObject, T> extends Component {
 		if (this.userData.length == 0 && this.presets.length == 0)
 			this.savedDataDiv.classList.add('hide');
 
+		// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
+		window.localStorage.setItem(this.config.storageKey.replace('wotlk', 'sod'), JSON.stringify(userData));
 		window.localStorage.setItem(this.config.storageKey, JSON.stringify(userData));
 	}
 
 	// Load data from window.localStorage.
 	loadUserData() {
+		// TODO: Swap reads to sod after 1 week on 2024-02-22
 		const dataStr = window.localStorage.getItem(this.config.storageKey);
 		if (!dataStr)
 			return;
