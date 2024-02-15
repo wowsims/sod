@@ -20,7 +20,8 @@ var sorEffectRealPointsPerLevel = [sorRanks + 1]float64{0, 18, 17, 23, 31, 37, 4
 var sorLevelMinMaxEffects = [sorRanks + 1][]int32{{0}, {1, 7}, {10, 16}, {18, 24}, {26, 32}, {34, 40}, {42, 48}, {50, 56}, {58, 60}}
 
 // SoR Rank 3 has approximately double the seemingly-intended spellpower scaling
-var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.1, 0.1, 0.1, 0.1, 0.1}
+// Changed 15/02/24 on a hotfix, now all ranks beyond rank 3 benefit from the rank 3 coefficient
+var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.184, 0.184, 0.184, 0.184, 0.184}
 
 var jorSpellIDs = [sorRanks + 1]int32{0, 20187, 20280, 20281, 20282, 20283, 20284, 20285, 20286}
 var jorEffectBasePoints = [sorRanks + 1]float64{0, 14, 24, 38, 56, 77, 101, 130, 161}
