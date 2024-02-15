@@ -93,6 +93,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellPower()

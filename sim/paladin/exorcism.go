@@ -58,6 +58,7 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
+		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellPower()

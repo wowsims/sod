@@ -46,6 +46,8 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
+		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage) + socJudgeSpellCoeff*spell.SpellPower()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)

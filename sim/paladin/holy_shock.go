@@ -56,7 +56,7 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
-
+		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

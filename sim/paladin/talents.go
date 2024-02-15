@@ -123,6 +123,10 @@ func (paladin *Paladin) getTalentTwoHandedWeaponSpecializationBonus() float64 {
 	return 0.02 * float64(paladin.Talents.TwoHandedWeaponSpecialization)
 }
 
+func (paladin *Paladin) getBonusCritChanceFromHolyPower() float64 {
+	return core.CritRatingPerCritChance * float64(paladin.Talents.HolyPower)
+}
+
 // func (paladin *Paladin) getTalentSanctityOfBattleBonus() float64 {
 // 	return 0.05 * float64(paladin.Talents.SanctityOfBattle)
 // }
