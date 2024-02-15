@@ -21,7 +21,7 @@ func (paladin *Paladin) registerJudgementSpell() {
 	paladin.Judgement = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskProc, // can proc TaJ itself and from seal
+		ProcMask:    core.ProcMaskEmpty, // can proc TaJ itself and from seal
 		Flags:       SpellFlagPrimaryJudgement | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
