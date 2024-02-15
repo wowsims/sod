@@ -34,7 +34,6 @@ func (druid *Druid) applyFuryOfStormRage() {
 }
 
 func (druid *Druid) applyEclipse() {
-
 	if !druid.HasRune(proto.DruidRune_RuneBeltEclipse) {
 		return
 	}
