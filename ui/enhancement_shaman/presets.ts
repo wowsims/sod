@@ -51,9 +51,11 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
+import Phase2APLWithSwap from './apls/phase_2_swap.apl.json';
 
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
+export const APLPhase2Swap = PresetUtils.makePresetAPLRotation('Phase 2 (Swap)', Phase2APLWithSwap);
 
 export const APLPresets = {
   [Phase.Phase1]: [
@@ -61,6 +63,7 @@ export const APLPresets = {
   ],
   [Phase.Phase2]: [
 		APLPhase2,
+		APLPhase2Swap,
   ]
 };
 
