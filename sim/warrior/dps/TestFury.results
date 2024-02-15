@@ -128,8 +128,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-StormshroudArmor"
  value: {
-  dps: 1.32432
-  tps: 3.09279
+  dps: 0.80079
+  tps: 2.67396
  }
 }
 dps_results: {
