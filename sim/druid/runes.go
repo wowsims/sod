@@ -111,13 +111,11 @@ func (druid *Druid) applyEclipse() {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				spell.DefaultCast.CastTime -= lunarCastTimeReduction
 			})
-			druid.Starsurge.BonusCritRating += 30.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
 				spell.DefaultCast.CastTime += lunarCastTimeReduction
 			})
-			druid.Starsurge.BonusCritRating -= 30.0
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellCode != SpellCode_DruidStarfire {
