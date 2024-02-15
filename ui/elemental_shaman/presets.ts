@@ -129,10 +129,10 @@ export const DefaultOptions = ElementalShamanOptions.create({
 
 export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	food: Food.FoodSagefishDelight,
   enchantedSigil: EnchantedSigil.InnovationSigil,
-  mainHandImbue: WeaponImbue.BrillianWizardOil,
-  offHandImbue: WeaponImbue.BrillianWizardOil,
+  mainHandImbue: WeaponImbue.LesserWizardOil,
+  offHandImbue: WeaponImbue.LesserWizardOil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

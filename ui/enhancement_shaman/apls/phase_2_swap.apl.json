@@ -7,8 +7,8 @@
     {"action":{"castSpell":{"spellId":{"spellId":20572}}},"doAtValue":{"const":{"val":"-.25s"}}}
   ],
   "priorityList": [
-    {"action":{"castSpell":{"spellId":{"spellId":437349}}}},
-    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"castSpell":{"spellId":{"spellId":437362}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":437362}}}}},"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"65%"}}}},{"spellIsReady":{"spellId":{"spellId":425336}}}]}},"sequence":{"name":"mana","actions":[{"itemSwap":{"swapSet":"Swap1"}},{"castSpell":{"spellId":{"spellId":425336}}},{"itemSwap":{"swapSet":"Main"}},{"resetSequence":{"sequenceName":"mana"}}]}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"55%"}}}},"castSpell":{"spellId":{"itemId":6149}}}},
     {"action":{"castSpell":{"spellId":{"spellId":17364,"rank":1}}}},
