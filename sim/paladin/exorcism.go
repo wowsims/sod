@@ -43,6 +43,11 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
+			Multiplier: core.TernaryFloat64(
+				paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar),
+				0.2,
+				1.0,
+			),
 		},
 
 		Cast: core.CastConfig{

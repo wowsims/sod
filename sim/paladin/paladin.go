@@ -174,16 +174,13 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// Paladins get 0.0167 dodge per agi. ~1% per 59.88
 	paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
 
-	// Paladins get more melee haste from haste than other classes
-	paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-
-	// Paladins get 1 block value per 2 str
-	paladin.AddStatDependency(stats.Strength, stats.BlockValue, .5)
+	// Paladins get 1 block value per 20 str
+	paladin.AddStatDependency(stats.Strength, stats.BlockValue, .05)
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	// Base dodge is unaffected by Diminishing Returns
+	// No diminishing returns in Vanilla.
 	paladin.PseudoStats.BaseDodge += 0.034943
 	paladin.PseudoStats.BaseParry += 0.05
 

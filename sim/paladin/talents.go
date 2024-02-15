@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -12,21 +11,11 @@ import (
 // TODO:
 // Sanctified Wrath (Damage penetration, questions over affected stats)
 
-func (paladin *Paladin) ToughnessArmorMultiplier() float64 {
-	return 1.0 + 0.02*float64(paladin.Talents.Toughness)
-}
-
 func (paladin *Paladin) ApplyTalents() {
-	fmt.Println(paladin.Talents.Conviction)
+	paladin.AddStat(stats.MeleeHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
+	paladin.AddStat(stats.Defense, float64(paladin.Talents.Anticipation)*core.CritRatingPerCritChance)
 	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
-	// paladin.AddStat(stats.SpellCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
-	// paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
-	// paladin.AddStat(stats.SpellCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
-
-	// paladin.PseudoStats.BaseParry += 0.01 * float64(paladin.Talents.Deflection)
-	// paladin.PseudoStats.BaseDodge += 0.01 * float64(paladin.Talents.Anticipation)
-
-	// paladin.ApplyEquipScaling(stats.Armor, paladin.ToughnessArmorMultiplier())
+	paladin.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(paladin.Talents.Toughness))
 
 	if paladin.Talents.DivineStrength > 0 {
 		paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
@@ -34,6 +23,10 @@ func (paladin *Paladin) ApplyTalents() {
 	if paladin.Talents.DivineIntellect > 0 {
 		paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
 	}
+	if paladin.Talents.ShieldSpecialization > 0 {
+		paladin.MultiplyStat(stats.BlockValue, 1.0+0.1*float64(paladin.Talents.ShieldSpecialization))
+	}
+	paladin.PseudoStats.BaseParry += 0.1 * float64(paladin.Talents.Deflection)
 
 	// if paladin.Talents.SheathOfLight > 0 {
 	// 	// doesn't implement HOT
@@ -393,7 +386,6 @@ func (paladin *Paladin) maybeProcVengeance(sim *core.Simulation, result *core.Sp
 // Need to check this
 func (paladin *Paladin) applyVengeance() {
 	if paladin.Talents.Vengeance == 0 {
-		fmt.Println("no vengeance")
 		return
 	}
 
@@ -419,7 +411,9 @@ func (paladin *Paladin) applyVengeance() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.maybeProcVengeance(sim, result)
+			if spell.ProcMask.Matches(core.ProcMaskMelee) {
+				paladin.maybeProcVengeance(sim, result)
+			}
 		},
 	})
 }
