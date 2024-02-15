@@ -16,6 +16,11 @@ const (
 
 var TalentTreeSizes = [3]int{14, 15, 15}
 
+const (
+	SpellCode_PaladinNone = iota
+	SpellCode_PaladinHolyShock
+)
+
 type Paladin struct {
 	core.Character
 

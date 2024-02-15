@@ -8,15 +8,13 @@ import (
 )
 
 func (paladin *Paladin) registerDivineStormSpell() {
-
 	if !paladin.HasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
 	}
-
 	numHits := min(4, paladin.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
-	// Divine Storm should not be ap normalised, but should be tested in SoD.
+	// Divine Storm is reportedly not ap normalised, but should be explicitly tested in SoD.
 	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407778},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -37,11 +35,9 @@ func (paladin *Paladin) registerDivineStormSpell() {
 			},
 		},
 
-		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const actionIDCS = 407676
-
 func (paladin *Paladin) registerCrusaderStrikeSpell() {
 	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
@@ -31,7 +29,6 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,

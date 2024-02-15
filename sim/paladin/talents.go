@@ -28,12 +28,12 @@ func (paladin *Paladin) ApplyTalents() {
 
 	// paladin.ApplyEquipScaling(stats.Armor, paladin.ToughnessArmorMultiplier())
 
-	// if paladin.Talents.DivineStrength > 0 {
-	// 	paladin.MultiplyStat(stats.Strength, 1.0+0.03*float64(paladin.Talents.DivineStrength))
-	// }
-	// if paladin.Talents.DivineIntellect > 0 {
-	// 	paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
-	// }
+	if paladin.Talents.DivineStrength > 0 {
+		paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
+	}
+	if paladin.Talents.DivineIntellect > 0 {
+		paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
+	}
 
 	// if paladin.Talents.SheathOfLight > 0 {
 	// 	// doesn't implement HOT
@@ -76,9 +76,48 @@ func (paladin *Paladin) ApplyTalents() {
 	// paladin.applyGuardedByTheLight()
 }
 
+// func applyIllumination(paladin *Paladin) {
+// 	if paladin.Talents.Illumination == 0 {
+// 		return
+// 	}
+// 	actionID := core.ActionID{SpellID: 20215}
+
+// 	paladin.RegisterAura(core.Aura{
+// 		Label:    "Illumination",
+// 		ActionID: actionID,
+// 		Duration: core.NeverExpires,
+// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+// 			aura.Activate(sim)
+// 		},
+// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || !result.Outcome.Matches(core.OutcomeCrit) {
+// 				return
+// 			}
+// 			if spell.SpellCode != SpellCode_PaladinHolyShock {
+// 				return
+// 			}
+// 			paladin.AddMana(sim, spell.manaCost)
+// 		},
+// 	})
+// }
+
 // func (paladin *Paladin) getTalentSealsOfThePureBonus() float64 {
 // 	return 0.03 * float64(paladin.Talents.SealsOfThePure)
 // }
+
+var IlluminationSpellIDs = [6]int32{0, 20210, 20213, 20214, 20212, 20215}
+
+func (paladin *Paladin) getIlluminationActionID() core.ActionID {
+	// If no points in Illumination return a dummy spellID, the ActionID itself
+	// won't be used.
+	spellID := IlluminationSpellIDs[1]
+	if paladin.Talents.Illumination > 0 {
+		spellID = IlluminationSpellIDs[paladin.Talents.Illumination]
+	}
+	return core.ActionID{
+		SpellID: spellID,
+	}
+}
 
 func (paladin *Paladin) getTalentTwoHandedWeaponSpecializationBonus() float64 {
 	return 0.02 * float64(paladin.Talents.TwoHandedWeaponSpecialization)

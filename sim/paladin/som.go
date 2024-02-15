@@ -47,7 +47,8 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	// TODO: SoM also procs on a variety of weapon proc effects like Talwar's shadow bolt.
 	// There is a brief icd preventing SoM and weapon procs chaining back and forth, they
 	// can proc each other exactly once.
-	// When the rates are figured out
+	// We need the proc rates figured out to see if they differ between weapons and what variables
+	// the proc rates may be a function of.
 	icd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Millisecond * 5,

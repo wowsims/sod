@@ -95,12 +95,9 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// i = 1 + 0.2 * AP + 0.32 * HolP
 			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellPower()
 			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-			// spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
-
 		},
 	})
 

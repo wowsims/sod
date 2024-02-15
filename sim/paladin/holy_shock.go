@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const holyShockRanks = 3
@@ -22,6 +23,8 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 
 	spellCoeff := 0.429
 	actionID := core.ActionID{SpellID: spellId}
+	procChance := 0.2 * float64(paladin.Talents.Illumination) // Chance for Illumination to refund Mana on crit.
+	manaMetrics := paladin.NewManaMetrics(paladin.getIlluminationActionID())
 
 	return core.SpellConfig{
 		ActionID:      actionID,
@@ -30,9 +33,14 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		RequiredLevel: level,
 		Rank:          rank,
-
+		SpellCode:     SpellCode_PaladinHolyShock,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
+			Multiplier: core.TernaryFloat64(
+				paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar),
+				0.2,
+				1.0,
+			),
 		},
 
 		Cast: core.CastConfig{
@@ -51,7 +59,13 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if !result.Outcome.Matches(core.OutcomeCrit) {
+				return
+			}
+			if procChance == 1 || sim.RandomFloat("Illumination") < procChance {
+				paladin.AddMana(sim, manaCost, manaMetrics)
+			}
 		},
 	}
 
