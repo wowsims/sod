@@ -22,19 +22,35 @@ func (shaman *Shaman) applyShamanisticRage() {
 
 	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsShamanisticRage)}
 	manaMetrics := shaman.NewManaMetrics(actionID)
-	srAura := shaman.RegisterAura(core.Aura{
+	srAura := shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
 		ActionID: actionID,
 		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
+
+			// Sham rage mana gain is snapshotted on cast
+			// TODO: Raid mana regain
+			var manaPerTick = max(
+				shaman.GetStat(stats.AttackPower)*apCoeff,
+				shaman.GetStat(stats.SpellPower)*spCoeff,
+				shaman.GetStat(stats.Healing)*hpCoeff,
+			)
+
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				NumTicks: 15,
+				Period:   time.Second * 1,
+				OnAction: func(sim *core.Simulation) {
+					shaman.AddMana(sim, manaPerTick, manaMetrics)
+				},
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
 		},
 	})
 
-	spell := shaman.RegisterSpell(core.SpellConfig{
+	srSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -45,25 +61,12 @@ func (shaman *Shaman) applyShamanisticRage() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			// TODO: Raid mana regain
 			srAura.Activate(sim)
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				NumTicks: 15,
-				Period:   time.Second * 1,
-				OnAction: func(sim *core.Simulation) {
-					mana := max(
-						shaman.GetStat(stats.AttackPower)*apCoeff,
-						shaman.GetStat(stats.SpellPower)*spCoeff,
-						shaman.GetStat(stats.Healing)*hpCoeff,
-					)
-					shaman.AddMana(sim, mana, manaMetrics)
-				},
-			})
 		},
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: srSpell,
 		Type:  core.CooldownTypeMana,
 	})
 }

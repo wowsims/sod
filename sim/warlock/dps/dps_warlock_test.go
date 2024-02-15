@@ -114,7 +114,7 @@ var DefaultDemonologyWarlock = &proto.Player_Warlock{
 
 var defaultDemonologyOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Imp,
+	Summon:      proto.WarlockOptions_Succubus,
 	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
 }
 
