@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -18,6 +19,24 @@ func init() {
 
 		// Assumes that the user will swap pummelers to have the buff for the whole fight.
 		character.AddStat(stats.MeleeHaste, 500)
+	})
+
+	// Pip's Skinner
+	core.NewItemEffect(12709, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			character.AddStat(stats.AttackPower, 45)
+		}
+	})
+
+	// Fiendish Machete
+	core.NewItemEffect(18310, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
+			character.AddStat(stats.AttackPower, 36)
+		}
 	})
 
 	//Thunderfury
@@ -101,6 +120,15 @@ func init() {
 				}
 			},
 		})
+	})
+
+	// Mark of the Champion
+	core.NewItemEffect(23206, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.AddStat(stats.AttackPower, 150)
+		}
 	})
 
 	core.AddEffectsToTest = true
