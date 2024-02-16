@@ -251,11 +251,11 @@ func (warrior *Warrior) registerDeathWishCD() {
 		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
-			warrior.PseudoStats.ArmorMultiplier *= 1.2
+			warrior.PseudoStats.ArmorMultiplier *= 0.8
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.2
-			warrior.PseudoStats.ArmorMultiplier /= 1.2
+			warrior.PseudoStats.ArmorMultiplier /= 0.8
 		},
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
