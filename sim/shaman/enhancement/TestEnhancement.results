@@ -114,8 +114,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-IrradiatedGarments"
  value: {
-  dps: 10.51914
-  tps: 7.46357
+  dps: 10.48499
+  tps: 7.42942
  }
 }
 dps_results: {
