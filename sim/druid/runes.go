@@ -22,7 +22,7 @@ func (druid *Druid) ApplyRunes() {
 	// druid.applyWildGrowth()
 
 	// Belt
-	// druid.applyBerserk()
+	druid.applyBerserk()
 	druid.applyEclipse()
 	// druid.applyNourish()
 
@@ -34,7 +34,7 @@ func (druid *Druid) ApplyRunes() {
 
 	// Feet
 	druid.applyDreamstate()
-	// druid.applyKingOfTheJungle()
+	druid.applyKingOfTheJungle()
 	// druid.applySurvivalInstincts()
 }
 

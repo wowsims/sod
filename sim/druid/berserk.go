@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (druid *Druid) applyBerserkCD() {
+func (druid *Druid) applyBerserk() {
 	if !druid.HasRune(proto.DruidRune_RuneBeltBerserk) {
 		return
 	}
