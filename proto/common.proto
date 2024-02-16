@@ -284,6 +284,7 @@ enum Potions {
 	LesserManaPotion = 1;
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
+	MildlyIrradiatedRejuvPotion = 4;
 }
 
 enum Conjured {

@@ -438,20 +438,30 @@ export const LesserManaPotion: ConsumableInputConfig<Potions> = {
 	value: Potions.LesserManaPotion,
 };
 export const ManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(3827),
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3827, minLevel: 22 },
+	]),
 	value: Potions.ManaPotion,
-	minLevel: 22,
 };
 export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(6149),
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 6149, minLevel: 31 },
+	]),
 	value: Potions.GreaterManaPotion,
-	minLevel: 31,
+};
+export const MildlyIrradiatedRejuvPotion: ConsumableInputConfig<Potions> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 215162, minLevel: 35 },
+	]),
+	value: Potions.MildlyIrradiatedRejuvPotion,
+	showWhen: (player) => player.hasProfession(Profession.Alchemy),
 };
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: LesserManaPotion,		stats: [Stat.StatIntellect] },
-	{ config: ManaPotion, 		 		stats: [Stat.StatIntellect] },
-	{ config: GreaterManaPotion,	stats: [Stat.StatIntellect] },
+	{ config: MildlyIrradiatedRejuvPotion, 	stats: [] },
+	{ config: GreaterManaPotion,						stats: [Stat.StatIntellect] },
+	{ config: ManaPotion, 		 							stats: [Stat.StatIntellect] },
+	{ config: LesserManaPotion,							stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});

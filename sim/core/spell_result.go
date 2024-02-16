@@ -94,7 +94,8 @@ func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 	hitRating := spell.Unit.stats[stats.MeleeHit] +
 		spell.BonusHitRating +
 		attackTable.Defender.PseudoStats.BonusMeleeHitRatingTaken
-	return hitRating / (MeleeHitRatingPerHitChance * 100)
+	hitChance := hitRating / (MeleeHitRatingPerHitChance * 100)
+	return max(hitChance-attackTable.HitSuppression, 0)
 }
 
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {

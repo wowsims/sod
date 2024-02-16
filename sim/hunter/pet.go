@@ -211,7 +211,11 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 			_ = hp.focusDump.Cast(sim, target) || hp.specialAbility.Cast(sim, target)
 		}
 	} else {
-		_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
+		if hp.specialAbility.IsReady(sim) {
+			_ = hp.specialAbility.Cast(sim, target)
+		} else {
+			_ = hp.focusDump.Cast(sim, target)
+		}
 	}
 }
 
