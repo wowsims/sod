@@ -148,7 +148,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	buffSpellId := 408505
 	buffDuration := time.Second * 30
 
-	ppm := 15.0
+	ppm := core.TernaryFloat64(shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon, 15, 10)
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{
