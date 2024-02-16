@@ -489,7 +489,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 				dot.SnapshotBaseDamage = dotDamage
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
 				// Revert to fire school
 				dot.Spell.SpellSchool = SpellSchoolFire

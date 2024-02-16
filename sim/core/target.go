@@ -179,11 +179,60 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
+func GetWeaponSkill(unit *Unit, weapon *Item) int {
+	if weapon == nil {
+		return 0
+	}
+
+	if weapon.HandType == proto.HandType_HandTypeTwoHand {
+		switch weapon.WeaponType {
+		case proto.WeaponType_WeaponTypeAxe:
+			return unit.PseudoStats.AxeSkill
+		case proto.WeaponType_WeaponTypeMace:
+			return unit.PseudoStats.MaceSkill
+		case proto.WeaponType_WeaponTypeSword:
+			return unit.PseudoStats.SwordSkill
+		default:
+			return 0
+		}
+	} else if weapon.RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown {
+		switch weapon.RangedWeaponType {
+		case proto.RangedWeaponType_RangedWeaponTypeBow:
+			return unit.PseudoStats.BowSkill
+		case proto.RangedWeaponType_RangedWeaponTypeCrossbow:
+			return unit.PseudoStats.CrossbowSkill
+		case proto.RangedWeaponType_RangedWeaponTypeGun:
+			return unit.PseudoStats.GunSkill
+		case proto.RangedWeaponType_RangedWeaponTypeThrown:
+			return unit.PseudoStats.ThrownSkill
+		default:
+			return 0
+		}
+	} else {
+		switch weapon.WeaponType {
+		case proto.WeaponType_WeaponTypeAxe:
+			return unit.PseudoStats.AxeSkill
+		case proto.WeaponType_WeaponTypeFist:
+			return unit.PseudoStats.UnarmedSkill
+		case proto.WeaponType_WeaponTypeMace:
+			return unit.PseudoStats.MaceSkill
+		case proto.WeaponType_WeaponTypeSword:
+			return unit.PseudoStats.SwordSkill
+		case proto.WeaponType_WeaponTypeDagger:
+			return unit.PseudoStats.DaggerSkill
+		default:
+			return 0
+		}
+	}
+}
+
 // Holds cached values for outcome/damage calculations, for a specific attacker+defender pair.
 // These are updated dynamically when attacker or defender stats change.
 type AttackTable struct {
 	Attacker *Unit
 	Defender *Unit
+
+	Weapon *Item
 
 	BaseMissChance      float64
 	BaseSpellMissChance float64
@@ -204,11 +253,12 @@ type AttackTable struct {
 	HealingDealtMultiplier       float64
 }
 
-func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
+func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 	// Source: https://github.com/magey/classic-warrior/wiki/Attack-table
 	table := &AttackTable{
 		Attacker: attacker,
 		Defender: defender,
+		Weapon:   weapon,
 
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,
@@ -218,7 +268,7 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	}
 
 	if defender.Type == EnemyUnit {
-		weaponSkill := float64(attacker.Level*5) + attacker.stats[stats.WeaponSkill]
+		weaponSkill := float64(attacker.Level*5) + float64(GetWeaponSkill(attacker, weapon))
 
 		if weaponSkill-float64(defender.Level*5) > 10 {
 			hitSuppression := (float64(defender.Level*5) - weaponSkill - 10) * 0.002
@@ -254,7 +304,7 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 }
 
 func ModNonMeleeAttackTable(table *AttackTable, attacker *Unit, defender *Unit) {
-	weaponSkill := float64(attacker.Level*5) + attacker.stats[stats.WeaponSkill]
+	weaponSkill := float64(attacker.Level * 5)
 
 	table.BaseGlanceChance = 0.8 // min((float64(attacker.Level)-10)*0.03, 0.6)
 

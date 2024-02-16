@@ -81,7 +81,7 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 }
 
 func (cat *FeralDruid) MissChance() float64 {
-	at := cat.AttackTables[cat.CurrentTarget.UnitIndex]
+	at := cat.AttackTables[cat.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand]
 	miss := at.BaseMissChance - cat.Shred.PhysicalHitChance(at)
 	dodge := at.BaseDodgeChance - cat.Shred.ExpertisePercentage() - cat.CurrentTarget.PseudoStats.DodgeReduction
 	return miss + dodge

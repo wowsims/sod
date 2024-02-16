@@ -114,8 +114,7 @@ enum Stat {
 	StatBonusArmor = 40;
 	StatHealing = 41;
 	StatSpellDamage = 42;
-	StatWeaponSkill = 43;
-	StatFeralAttackPower = 44;
+	StatFeralAttackPower = 43;
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 }
@@ -131,6 +130,24 @@ enum PseudoStat {
 	PseudoStatBlockValueMultiplier = 3;
 	PseudoStatDodge = 4;
 	PseudoStatParry = 5;
+
+	// Melee Weapon Skill
+	PseudoStatUnarmedSkill = 6;
+	PseudoStatDaggerSkill = 7;
+	PseudoStatSwordSkill = 8;
+	PseudoStatMaceSkill = 9;
+	PseudoStatAxeSkill = 10;
+	PseudoStatTwoHandSwordSkill = 11;
+	PseudoStatTwoHandMaceSkill = 12;
+	PseudoStatTwoHandAxeSkill = 13;
+	PseudoStatPolearmSkill = 14;
+	PseudoStatStaffSkill = 15;
+
+	// Ranged Weapon Skill
+	PseudoStatBowSkill = 16;
+	PseudoStatCrossbowSkill = 17;
+	PsuedoStatGunSkill = 18;
+	PseudoStatThrownSkill = 19;
 }
 
 message UnitStats {
@@ -196,6 +213,13 @@ enum RangedWeaponType {
 	RangedWeaponTypeTotem = 7;
 	RangedWeaponTypeWand = 8;
 	RangedWeaponTypeSigil = 9;
+}
+
+enum CastType {
+	CastTypeUnknown = 0;
+	CastTypeMainHand = 1;
+	CastTypeOffHand = 2;
+	CastTypeRanged = 3;
 }
 
 // All slots on the gear menu where a single item can be worn.

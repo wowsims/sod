@@ -224,14 +224,6 @@ func (character *Character) EquipStats() stats.Stats {
 	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
 }
 
-func (character *Character) ApplyWeaponSpecialization(weaponSkillBonus float64, weaponTypes ...proto.WeaponType) {
-	mask := character.GetProcMaskForTypes(weaponTypes...)
-
-	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
-		character.AddStat(stats.WeaponSkill, weaponSkillBonus)
-	}
-}
-
 func (character *Character) HasRuneById(id int32) bool {
 	return character.runesMap[id]
 }

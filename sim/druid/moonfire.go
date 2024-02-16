@@ -68,7 +68,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = (baseDotDamage/float64(ticks))*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -169,7 +169,7 @@ func (spell *Spell) spellCritRating(target *Unit) float64 {
 }
 func (spell *Spell) SpellCritChance(target *Unit) float64 {
 	// TODO: Classic verify crit suppression
-	return spell.spellCritRating(target) / (SpellCritRatingPerCritChance * 100) // - spell.Unit.AttackTables[target.UnitIndex].SpellCritSuppression
+	return spell.spellCritRating(target) / (SpellCritRatingPerCritChance * 100) // - spell.Unit.AttackTables[target.UnitIndex][spell.CastType].SpellCritSuppression
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 	critChance := spell.SpellCritChance(target)
@@ -200,7 +200,7 @@ func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *Spe
 
 // For spells that do no damage but still have a hit/miss check.
 func (spell *Spell) CalcOutcome(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
-	attackTable := spell.Unit.AttackTables[target.UnitIndex]
+	attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 	result := spell.NewResult(target)
 
 	outcomeApplier(sim, result, attackTable)
@@ -209,7 +209,7 @@ func (spell *Spell) CalcOutcome(sim *Simulation, target *Unit, outcomeApplier Ou
 }
 
 func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage float64, attackerMultiplier float64, isPeriodic bool, outcomeApplier OutcomeApplier) *SpellResult {
-	attackTable := spell.Unit.AttackTables[target.UnitIndex]
+	attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 
 	result := spell.NewResult(target)
 	result.Damage = baseDamage
@@ -271,11 +271,11 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	return result
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
@@ -348,7 +348,7 @@ func (dot *Dot) CalcAndDealPeriodicSnapshotDamage(sim *Simulation, target *Unit,
 }
 
 func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHealing float64, casterMultiplier float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackTable := spell.Unit.AttackTables[target.UnitIndex]
+	attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 
 	result := spell.NewResult(target)
 	result.Damage = baseHealing
