@@ -146,7 +146,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	buffSpellId := 408505
 	buffDuration := time.Second * 30
 
-	ppm := 10.0
+	ppm := 15.0
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{
