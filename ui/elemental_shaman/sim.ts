@@ -4,6 +4,7 @@ import {
 	Class,
 	Faction,
 	IndividualBuffs,
+	ItemSlot,
 	PartyBuffs,
 	Race,
 	Spec,
@@ -65,17 +66,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	defaults: {
+		race: Race.RaceTroll,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.10,
+			[Stat.StatIntellect]: 0.14,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatFirePower]: 0.63,
-			[Stat.StatNaturePower]: 0.37,
-			[Stat.StatSpellHit]: 4.16,
-			[Stat.StatSpellCrit]: .90,
-			[Stat.StatSpellHaste]: .76,
+			[Stat.StatFirePower]: 0.36,
+			[Stat.StatNaturePower]: 0.64,
+			[Stat.StatSpellHit]: 8.9,
+			[Stat.StatSpellCrit]: 3.94,
+			[Stat.StatSpellHaste]: 5.22,
 			[Stat.StatMP5]: 0.08,
 		}),
 		// Default consumes settings.
@@ -109,6 +111,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		inputs: [
 			OtherInputs.TankAssignment,
 		],
+	},
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+		note: "Swap items are given the highest available rank of Rockbiter Weapon",
 	},
 	customSections: [
 		// TotemsSection,
@@ -154,7 +160,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceUnknown,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},

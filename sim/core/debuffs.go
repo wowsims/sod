@@ -57,7 +57,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Stormstrike {
 		MakePermanent(StormstrikeAura(target, level))
 	} else if debuffs.Dreamstate {
-		MakePermanent(DreamstateAura(target, level))
+		MakePermanent(DreamstateAura(target))
 	}
 
 	if debuffs.GiftOfArthas {
@@ -172,7 +172,7 @@ func StormstrikeAura(unit *Unit, rank int32) *Aura {
 	})
 }
 
-func DreamstateAura(unit *Unit, rank int32) *Aura {
+func DreamstateAura(unit *Unit) *Aura {
 	damageMulti := 1.2
 	duration := time.Second * 12
 
@@ -191,7 +191,7 @@ func DreamstateAura(unit *Unit, rank int32) *Aura {
 
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	damageMulti := 1. + 0.04*float64(rank)
-	return unit.RegisterAura(Aura{
+	return unit.GetOrRegisterAura(Aura{
 		Label:     "Improved Shadow Bolt",
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,

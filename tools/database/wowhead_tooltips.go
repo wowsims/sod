@@ -153,11 +153,11 @@ func (item WowheadItemResponse) GetIntValue(pattern *regexp.Regexp) int {
 }
 
 var armorRegex = regexp.MustCompile(`<!--amr-->([0-9]+) Armor`)
-var agilityRegex = regexp.MustCompile(`<!--stat3-->\+([0-9]+) Agility`)
-var strengthRegex = regexp.MustCompile(`<!--stat4-->\+([0-9]+) Strength`)
-var intellectRegex = regexp.MustCompile(`<!--stat5-->\+([0-9]+) Intellect`)
-var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
-var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
+var agilityRegex = regexp.MustCompile(`<!--stat3-->([+-][0-9]+) Agility`)
+var strengthRegex = regexp.MustCompile(`<!--stat4-->([+-][0-9]+) Strength`)
+var intellectRegex = regexp.MustCompile(`<!--stat5-->([+-][0-9]+) Intellect`)
+var spiritRegex = regexp.MustCompile(`<!--stat6-->([+-][0-9]+) Spirit`)
+var staminaRegex = regexp.MustCompile(`<!--stat7-->([+-][0-9]+) Stamina`)
 var spellHealingRegex = regexp.MustCompile(`Increases healing done by spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to <!--rtg45-->([0-9]+)\.`)

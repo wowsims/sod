@@ -72,7 +72,7 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "-503202132322010053120230310511-205503012"
+var StandardTalents = "500005001--05"
 
 var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{

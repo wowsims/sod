@@ -73,6 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	],
 
 	defaults: {
+		race: Race.RaceTroll,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
@@ -133,7 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+		note: "Swap items are given the highest available rank of Rockbiter Weapon",
+	},
 	customSections: [
 		// TotemsSection,
 	],
