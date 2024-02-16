@@ -54,10 +54,7 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Second * 15,
-			},
+			CD: *paladin.ExorcismCooldown,
 		},
 
 		DamageMultiplier: 1,
@@ -66,7 +63,7 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellDamage()
 
 			bonusCrit := core.TernaryFloat64(
 				guaranteed_crit,
@@ -85,7 +82,10 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 // If the paladin has the Exorcist leg rune equipped, they can cast the spell on
 // any target and it additonally always crits on demon and undead targets.
 func (paladin *Paladin) registerExorcismSpell() {
-
+	paladin.ExorcismCooldown = &core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Second * 15,
+	}
 	guaranteed_crit := false
 	target := paladin.CurrentTarget
 	target_is_demon_or_undead := (target.MobType == proto.MobType_MobTypeDemon) ||
@@ -102,6 +102,7 @@ func (paladin *Paladin) registerExorcismSpell() {
 	}
 
 	paladin.Exorcism = make([]*core.Spell, exorcismRanks+1)
+
 	for rank := 1; rank <= exorcismRanks; rank++ {
 		config := paladin.getExorcismBaseConfig(rank, guaranteed_crit)
 		if config.RequiredLevel <= int(paladin.Level) {

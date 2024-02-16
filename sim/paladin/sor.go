@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/wowsims/sod/sim/core"
@@ -63,7 +62,6 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 	baseJoRMinDamage := jorBasePoints + float64(levelsToScale)*jorPointsPerLevel
 	baseJoRMaxDamage := baseJoRMinDamage + jorDieSides
-	fmt.Println(baseJoRMinDamage, baseJoRMaxDamage)
 	/*
 	 * Seal of Righteousness is an Spell/Aura that when active makes the paladin capable of procing
 	 * 2 different SpellIDs depending on a paladin's casted spell or melee swing.

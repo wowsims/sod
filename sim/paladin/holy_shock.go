@@ -47,10 +47,7 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Second * 30,
-			},
+			CD: *paladin.HolyShockCooldown,
 		},
 
 		DamageMultiplier: 1,
@@ -58,7 +55,7 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 		CritMultiplier:   paladin.SpellCritMultiplier(),
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
@@ -73,6 +70,10 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 
 func (paladin *Paladin) registerHolyShockSpell() {
 	// If the player has Holy Shock talented, register all holyShockRanks up to their level.
+	paladin.HolyShockCooldown = &core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Second * 15,
+	}
 	if !paladin.Talents.HolyShock {
 		return
 	}

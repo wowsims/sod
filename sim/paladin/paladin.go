@@ -33,10 +33,13 @@ type Paladin struct {
 
 	CrusaderStrike *core.Spell
 	DivineStorm    *core.Spell
+	Consecration   []*core.Spell
 
-	Consecration []*core.Spell
-	Exorcism     []*core.Spell
-	HolyShock    []*core.Spell
+	// These cooldowns need reset from elsewhere in the package.
+	Exorcism          []*core.Spell
+	ExorcismCooldown  *core.Cooldown
+	HolyShock         []*core.Spell
+	HolyShockCooldown *core.Cooldown
 
 	Judgement *core.Spell
 	// HolyShield            *core.Spell
