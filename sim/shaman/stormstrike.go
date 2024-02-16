@@ -40,7 +40,8 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) func(*core.Simulation, *
 		if isMH {
 			baseDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 		} else {
-			baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage = (spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()) *
+				shaman.AutoAttacks.OHConfig().DamageMultiplier
 		}
 
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
