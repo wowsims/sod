@@ -483,6 +483,10 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 
 	if spell.SpellSchool.Matches(SpellSchoolNature) {
 		multiplier *= attackTable.NatureDamageTakenMultiplier
+
+		if spell.ProcMask.Matches(ProcMaskWeaponProc) {
+			multiplier *= attackTable.Defender.PseudoStats.PoisonDamageTakenMultiplier
+		}
 	} else if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
 	}

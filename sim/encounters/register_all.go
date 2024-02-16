@@ -7,8 +7,8 @@ import (
 func init() {
 	// TODO: Classic encounters?
 	// naxxramas.Register()
-	addLevel25("SoD")
-	addLevel40("SoD")
+	addLevel25("Blackfathom Deeps")
+	addLevel40("Gnomeregan")
 	addLevel50("SoD")
 	addLevel60("SoD")
 }

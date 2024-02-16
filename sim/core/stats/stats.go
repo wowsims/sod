@@ -385,8 +385,10 @@ type PseudoStats struct {
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc.)
 	SchoolCritTakenMultiplier   [SchoolLen]float64 // For spell school crit (arcane, fire, shadow, etc.)
 
-	DiseaseDamageTakenMultiplier          float64
-	PeriodicPhysicalDamageTakenMultiplier float64
+	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
+	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
+	PeriodicPhysicalDamageTakenMultiplier float64 // Modifies damage taken from periodic physical effects NOT bleeds
+	PoisonDamageTakenMultiplier           float64 // Modifies damage taken from poison effects
 
 	ArmorMultiplier float64 // Major/minor/special multiplicative armor modifiers
 
@@ -425,8 +427,10 @@ func NewPseudoStats() PseudoStats {
 		SchoolDamageTakenMultiplier: NewSchoolFloatArray(),
 		SchoolCritTakenMultiplier:   NewSchoolFloatArray(),
 
+		BleedDamageTakenMultiplier:            1,
 		DiseaseDamageTakenMultiplier:          1,
 		PeriodicPhysicalDamageTakenMultiplier: 1,
+		PoisonDamageTakenMultiplier:           1,
 
 		ArmorMultiplier: 1,
 
