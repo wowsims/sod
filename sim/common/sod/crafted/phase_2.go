@@ -113,9 +113,11 @@ func init() {
 	// Glowing Gneuro-Linked Cowl
 	core.NewItemEffect(215166, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		actionId := core.ActionID{SpellID: 437349}
+
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Gneuro-Logical Shock",
-			ActionID: core.ActionID{SpellID: 437349},
+			ActionID: actionId,
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.2)
@@ -127,8 +129,36 @@ func init() {
 			},
 		})
 
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionId,
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			// TODO: Verify if SP affects the damage
+			Flags: core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// TODO: Verify if this can crit
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(343, 757), spell.OutcomeMagicCrit)
+				if sim.Log != nil {
+					character.Log(sim, "Took %.1f damage from Gneuro-Logical Shock.", result.Damage)
+				}
+				character.RemoveHealth(sim, result.Damage)
+				buffAura.Activate(sim)
+			},
+		})
+
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 437349},
+			ActionID: actionId,
 			Flags:    core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
@@ -139,7 +169,7 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				buffAura.Activate(sim)
+				spell.Cast(sim, &character.Unit)
 			},
 		})
 
@@ -218,6 +248,34 @@ func init() {
 			},
 		})
 
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionId,
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			// TODO: Verify if SP affects the damage
+			Flags: core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// TODO: Verify if this can crit
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeMagicCrit)
+				if sim.Log != nil {
+					character.Log(sim, "Took %.1f damage from Hyperconductive Shock.", result.Damage)
+				}
+				character.RemoveHealth(sim, result.Damage)
+				buffAura.Activate(sim)
+			},
+		})
+
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
 			Flags:    core.SpellFlagNoOnCastComplete,
@@ -230,7 +288,7 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				buffAura.Activate(sim)
+				spell.Cast(sim, &character.Unit)
 			},
 		})
 
@@ -242,7 +300,7 @@ func init() {
 	})
 
 	///////////////////////////////////////////////////////////////////////////
-	//                                 Mail
+	//                                 Plate
 	///////////////////////////////////////////////////////////////////////////
 
 	// Tempered Interference-Negating Helmet
