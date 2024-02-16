@@ -5,12 +5,15 @@ import (
 )
 
 func (warrior *Warrior) registerDemoralizingShoutSpell() {
+	rank := core.LevelToDebuffRank[core.DemoralizingShout][warrior.Level]
+	actionId := core.DemoralizingShoutSpellId[rank]
+
 	warrior.DemoralizingShoutAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return core.DemoralizingShoutAura(target, warrior.Talents.BoomingVoice, warrior.Talents.ImprovedDemoralizingShout, warrior.Level)
 	})
 
 	warrior.DemoralizingShout = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 25203},
+		ActionID:    core.ActionID{SpellID: actionId},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,

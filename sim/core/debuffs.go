@@ -8,6 +8,22 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+type DebuffName int32
+
+const (
+	// General Buffs
+	DemoralizingShout DebuffName = iota
+)
+
+var LevelToDebuffRank = map[DebuffName]map[int32]int32{
+	DemoralizingShout: {
+		25: 2,
+		40: 3,
+		50: 4,
+		60: 5,
+	},
+}
+
 func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, raid *proto.Raid) {
 	level := raid.Parties[0].Players[0].Level
 	if debuffs.JudgementOfWisdom && targetIdx == 0 {
@@ -772,20 +788,23 @@ func DemoralizingRoarAura(target *Unit, points int32, playerLevel int32) *Aura {
 	return aura
 }
 
-// TODO: Classic
+const DemoralizingShoutRanks = 5
+
+var DemoralizingShoutSpellId = [DemoralizingShoutRanks + 1]int32{0, 1160, 6190, 11554, 11555, 11556}
+var DemoralizingShoutBaseAP = [DemoralizingShoutRanks + 1]float64{0, 45, 56, 76, 111, 146}
+var DemoralizingShoutLevel = [DemoralizingShoutRanks + 1]int{0, 14, 24, 34, 44, 54}
+
 func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32, playerLevel int32) *Aura {
+	rank := LevelToDebuffRank[DemoralizingShout][target.Level]
+	spellId := DemoralizingShoutSpellId[rank]
+	baseAPReduction := DemoralizingShoutBaseAP[rank]
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "DemoralizingShout-" + strconv.Itoa(int(impDemoShoutPts)),
-		ActionID: ActionID{SpellID: 11556},
+		ActionID: ActionID{SpellID: spellId},
 		Duration: time.Duration(float64(time.Second*30) * (1 + 0.1*float64(boomingVoicePts))),
 	})
-	apReduction := map[int32]float64{
-		25: 56,
-		40: 76,
-		50: 111,
-		60: 146,
-	}[playerLevel]
-	apReductionEffect(aura, apReduction*(1+0.08*float64(impDemoShoutPts)))
+	apReductionEffect(aura, baseAPReduction*(1+0.08*float64(impDemoShoutPts)))
 	return aura
 }
 

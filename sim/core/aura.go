@@ -885,11 +885,24 @@ func (auras AuraArray) Get(target *Unit) *Aura {
 	return auras[target.UnitIndex]
 }
 
-func (caster *Unit) NewAllyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
+func (caster *Unit) NewRaidAuraArray(makeAura func(*Unit) *Aura) AuraArray {
 	auras := make([]*Aura, len(caster.Env.AllUnits))
 	for _, target := range caster.Env.AllUnits {
 		if target.Type != EnemyUnit {
 			auras[target.UnitIndex] = makeAura(target)
+		}
+	}
+	return auras
+}
+
+func (caster *Unit) NewPartyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
+	party := caster.Env.Raid.GetPlayerParty(caster)
+
+	auras := make([]*Aura, len(party.Players))
+	for partyIndex, player := range party.Players {
+		target := &player.GetCharacter().Unit
+		if target.Type != EnemyUnit {
+			auras[partyIndex] = makeAura(target)
 		}
 	}
 	return auras
