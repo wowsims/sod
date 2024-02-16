@@ -44,6 +44,8 @@ func (shaman *Shaman) applyDualWieldSpec() {
 		return
 	}
 
+	shaman.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
+
 	meleeHit := float64(core.MeleeHitRatingPerHitChance * 10)
 	spellHit := float64(core.SpellHitRatingPerHitChance * 10)
 
