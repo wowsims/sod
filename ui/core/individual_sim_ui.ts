@@ -288,7 +288,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		const initEventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			this.applyDefaults(initEventID);
-
+			// TODO: Swap reads to sod after 1 week on 2024-02-22
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
 			if (savedSettings != null) {
 				try {
@@ -316,6 +316,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// This needs to go last so it doesn't re-store things as they are initialized.
 			this.changeEmitter.on(_ => {
 				const jsonStr = IndividualSimSettings.toJsonString(this.toProto());
+
+				// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
+				window.localStorage.setItem(this.getSettingsStorageKey().replace('wotlk', 'sod'), jsonStr);
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
 		});
