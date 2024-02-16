@@ -93,8 +93,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-IrradiatedGarments"
  value: {
-  dps: 21.31304
-  tps: 15.78009
+  dps: 20.88936
+  tps: 15.47794
  }
 }
 dps_results: {

@@ -121,8 +121,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-IrradiatedGarments"
  value: {
-  dps: 0.862
-  tps: 2.72294
+  dps: 0.8484
+  tps: 2.71205
  }
 }
 dps_results: {
