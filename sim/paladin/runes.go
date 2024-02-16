@@ -11,6 +11,7 @@ import (
 func (paladin *Paladin) ApplyRunes() {
 	paladin.registerTheArtOfWar()
 	paladin.registerSheathOfLight()
+	paladin.registerGuardedByTheLight()
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
@@ -72,4 +73,47 @@ func (paladin *Paladin) registerSheathOfLight() {
 		},
 	})
 
+}
+
+func (paladin *Paladin) registerGuardedByTheLight() {
+
+	if !paladin.HasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 415058}
+	manaMetrics := paladin.NewManaMetrics(actionID)
+	var manaPA *core.PendingAction
+
+	guardedAura := paladin.RegisterAura(core.Aura{
+		Label:    "Guarded by the Light",
+		Duration: time.Second*15 + 1,
+		ActionID: actionID,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 3,
+				OnAction: func(sim *core.Simulation) {
+					paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
+				},
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			manaPA.Cancel(sim)
+		},
+	})
+
+	paladin.RegisterAura(core.Aura{
+		Label:    "Guarded by the Light (rune)",
+		Duration: core.NeverExpires,
+		ActionID: core.ActionID{SpellID: 415755},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskWhiteHit) {
+				return
+			}
+			guardedAura.Activate(sim)
+		},
+	})
 }
