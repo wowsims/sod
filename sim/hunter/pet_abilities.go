@@ -170,7 +170,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 
 	spellID := map[int32]int32{
 		25: 25009,
-		40: 25010,
+		40: 25009, // rank 4 not available in SoD Phase 2
 		50: 25011,
 		60: 25012,
 	}[hp.Owner.Level]
