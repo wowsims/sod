@@ -247,6 +247,12 @@ export const DirgesKickChimaerokChops: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodDirgesKickChimaerokChops,
 };
+export const GrilledSquid: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 13928, minLevel: 50 },
+	]),
+	value: Food.FoodGrilledSquid,
+};
 export const SmokedDesertDumpling: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 20452, minLevel: 45 },
@@ -271,12 +277,6 @@ export const BlessedSunfruitJuice: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodBlessedSunfruitJuice,
 };
-export const TenderWolfSteak: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 18045, minLevel: 40 },
-	]),
-	value: Food.FoodTenderWolfSteak
-};
 export const NightfinSoup: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		// Requires Skill 250
@@ -284,11 +284,17 @@ export const NightfinSoup: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodNightfinSoup,
 };
-export const GrilledSquid: ConsumableInputConfig<Food> = {
+export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 13928, minLevel: 50 },
+		{ id: 18045, minLevel: 40 },
 	]),
-	value: Food.FoodGrilledSquid,
+	value: Food.FoodTenderWolfSteak
+};
+export const DragonBreathChili: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 12217, minLevel: 35 },
+	]),
+	value: Food.FoodDragonbreathChili
 };
 export const HotWolfRibs: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
@@ -310,17 +316,17 @@ export const SagefishDelight: ConsumableInputConfig<Food> = {
 };
 
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
-	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
-	{ config: SmokedDesertDumpling, 		stats: [Stat.StatStrength] },
-	{ config: RunnTumTuberSurprise, 		stats: [Stat.StatIntellect] },
 	{ config: BlessSunfruit, 						stats: [Stat.StatStrength] },
 	{ config: BlessedSunfruitJuice, 		stats: [Stat.StatSpirit] },
-	{ config: TenderWolfSteak, 					stats: [Stat.StatStamina, Stat.StatSpirit] },
-	{ config: NightfinSoup, 						stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
+	{ config: DragonBreathChili, 				stats: [] },
 	{ config: GrilledSquid, 						stats: [Stat.StatAgility] },
 	{ config: HotWolfRibs, 							stats: [Stat.StatSpirit] },
-	{ config: SmokedSagefish, 					stats: [Stat.StatMP5] },
+	{ config: RunnTumTuberSurprise, 		stats: [Stat.StatIntellect] },
 	{ config: SagefishDelight, 					stats: [Stat.StatMP5] },
+	{ config: SmokedDesertDumpling, 		stats: [Stat.StatStrength] },
+	{ config: SmokedSagefish, 					stats: [Stat.StatMP5] },
+	{ config: TenderWolfSteak, 					stats: [Stat.StatStamina, Stat.StatSpirit] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({consumesFieldName: 'food'});
@@ -432,20 +438,30 @@ export const LesserManaPotion: ConsumableInputConfig<Potions> = {
 	value: Potions.LesserManaPotion,
 };
 export const ManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(3827),
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3827, minLevel: 22 },
+	]),
 	value: Potions.ManaPotion,
-	minLevel: 22,
 };
 export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(6149),
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 6149, minLevel: 31 },
+	]),
 	value: Potions.GreaterManaPotion,
-	minLevel: 31,
+};
+export const MildlyIrradiatedRejuvPotion: ConsumableInputConfig<Potions> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 215162, minLevel: 35 },
+	]),
+	value: Potions.MildlyIrradiatedRejuvPotion,
+	showWhen: (player) => player.hasProfession(Profession.Alchemy),
 };
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: LesserManaPotion,		stats: [Stat.StatIntellect] },
-	{ config: ManaPotion, 		 		stats: [Stat.StatIntellect] },
-	{ config: GreaterManaPotion,	stats: [Stat.StatIntellect] },
+	{ config: MildlyIrradiatedRejuvPotion, 	stats: [] },
+	{ config: GreaterManaPotion,						stats: [Stat.StatIntellect] },
+	{ config: ManaPotion, 		 							stats: [Stat.StatIntellect] },
+	{ config: LesserManaPotion,							stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});

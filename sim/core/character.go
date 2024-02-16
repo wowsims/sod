@@ -439,7 +439,6 @@ func (character *Character) Finalize() {
 	character.Unit.finalize()
 
 	character.majorCooldownManager.finalize()
-	character.ItemSwap.finalize()
 }
 
 func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {

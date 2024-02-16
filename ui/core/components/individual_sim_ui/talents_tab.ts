@@ -114,7 +114,7 @@ export class TalentsTab extends SimTab {
 					player.setTalentsString(eventID, newTalents.talentsString);
 				});
 			},
-			changeEmitters: [this.simUI.player.talentsChangeEmitter],
+			changeEmitters: [this.simUI.player.talentsChangeEmitter, this.simUI.player.levelChangeEmitter],
 			equals: (a: SavedTalents, b: SavedTalents) => SavedTalents.equals(a, b),
 			toJson: (a: SavedTalents) => SavedTalents.toJson(a),
 			fromJson: (obj: any) => SavedTalents.fromJson(obj),
@@ -128,6 +128,7 @@ export class TalentsTab extends SimTab {
 					name: config.name,
 					isPreset: true,
 					data: config.data,
+					enableWhen: config.enableWhen,
 				});
 			});
 		});

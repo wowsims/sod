@@ -91,6 +91,8 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 10,
 			})
+		case proto.Food_FoodDragonbreathChili:
+			MakePermanent(DragonBreathChiliAura(&character.Unit))
 		}
 	}
 
@@ -350,6 +352,42 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
+func DragonBreathChiliAura(unit *Unit) *Aura {
+	baseDamage := 60.0
+	procChance := .05
+
+	procSpell := unit.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 15851},
+		SpellSchool: SpellSchoolFire,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNone,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, baseDamage+spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:    "Dragonbreath Chili",
+		ActionID: ActionID{SpellID: 15852},
+		Duration: NeverExpires,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+	return aura
+}
+
 // Creates a spell object for the common explosive case.
 func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
 	isSapper := actionID.SameAction(SapperActionID)
@@ -590,6 +628,33 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)
+	} else if potionType == proto.Potions_MildlyIrradiatedRejuvPotion {
+		actionID := ActionID{ItemID: 215162}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		manaMetrics := character.NewManaMetrics(actionID)
+		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
+		return MajorCooldown{
+			Type: CooldownTypeDPS,
+			Spell: character.GetOrRegisterSpell(SpellConfig{
+				ActionID: actionID,
+				Flags:    SpellFlagNoOnCastComplete,
+				Cast: CastConfig{
+					CD: Cooldown{
+						Timer:    potionCD,
+						Duration: time.Minute * 2,
+					},
+				},
+				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
+					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
+
+					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+					character.AddMana(sim, manaGain, manaMetrics)
+
+					aura.Activate(sim)
+				},
+			}),
+		}
 	} else {
 		return MajorCooldown{}
 	}

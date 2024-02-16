@@ -3,6 +3,7 @@ package sod
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/shaman"
 )
 
 func init() {
@@ -182,47 +183,88 @@ func init() {
 	// })
 
 	// Weapon - Dismantle
-	// core.NewEnchantEffect(7210, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	core.NewEnchantEffect(7210, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	// TODO: The mechanism for procs is not known yet
-	// 	procChance := 0.5
+		procChance := 0.10
+		baseDamageLow := 60.0
+		baseDamageHigh := 90.0
 
-	// 	procSpell := character.RegisterSpell(core.SpellConfig{
-	// 		ActionID:    core.ActionID{SpellID: 435481},
-	// 		SpellSchool: core.SpellSchoolPhysical,
-	// 		ProcMask:    core.ProcMaskEmpty,
-	// 		Flags:       core.SpellFlagIgnoreTargetModifiers | core.SpellFlagIgnoreAttackerModifiers,
+		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 439164},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskSpellDamage,
 
-	// 		DamageMultiplier: 1,
-	// 		CritMultiplier:   1,
-	// 		ThreatMultiplier: 1,
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
+			ThreatMultiplier: 1,
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			damage := sim.Roll(60, 90)
-	// 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
-	// 		},
-	// 	})
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(baseDamageLow, baseDamageHigh), spell.OutcomeMagicHitAndCrit)
+			},
+		})
 
-	// 	aura := character.GetOrRegisterAura(core.Aura{
-	// 		Label:    "Enchant Weapon - Dismantle",
-	// 		Duration: core.NeverExpires,
-	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 			aura.Activate(sim)
-	// 		},
-	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if !result.Landed() || result.Target.MobType != proto.MobType_MobTypeMechanical {
-	// 				return
-	// 			}
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Enchant Weapon - Dismantle",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// Dismantle only procs on hits that land
+				if !result.Landed() {
+					return
+				}
 
-	// 			if sim.RandomFloat("Dismantle") < procChance {
-	// 				procSpell.Cast(sim, result.Target)
-	// 			}
-	// 		},
-	// 	})
+				// Dismantle only procs on Mechanical units
+				if result.Target.MobType != proto.MobType_MobTypeMechanical {
+					return
+				}
 
-	// 	character.ItemSwap.RegisterOnSwapItemForEffect(7210, aura)
-	// })
+				// Dismantle only procs on attacks from the player character (not pet attacks or totems)
+				if spell.Unit != &character.Unit || shaman.SpellFlagTotem.Matches(spell.Flags) {
+					return
+				}
+
+				// Dismantle only procs on direct attacks, not proc effects or DoT ticks
+				if core.ProcMaskProc.Matches(spell.ProcMask) || core.ProcMaskWeaponProc.Matches(spell.ProcMask) {
+					return
+				}
+
+				// TODO: Confirm: Dismantle can not proc itself
+				if spell == procSpell {
+					return
+				}
+
+				// Main-Hand hits only trigger Dismantle if the MH weapon is enchanted with Dismantle
+				if core.ProcMaskMeleeMH.Matches(spell.ProcMask) && (character.GetMHWeapon() == nil || character.GetMHWeapon().Enchant.EffectID != 7210) {
+					return
+				}
+
+				// Off-Hand hits only trigger Dismantle if the MH weapon is enchanted with Dismantle
+				if core.ProcMaskMeleeOH.Matches(spell.ProcMask) && (character.GetOHWeapon() == nil || character.GetOHWeapon().Enchant.EffectID != 7210) {
+					return
+				}
+
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+					if sim.RandomFloat("Dismantle") < procChance {
+						// Spells proc both Main-Hand and Off-Hand if both are enchanted
+						if character.GetMHWeapon() != nil && character.GetMHWeapon().Enchant.EffectID == 7210 {
+							procSpell.Cast(sim, result.Target)
+						}
+						if character.GetOHWeapon() != nil && character.GetOHWeapon().Enchant.EffectID == 7210 {
+							procSpell.Cast(sim, result.Target)
+						}
+					}
+				} else if sim.RandomFloat("Dismantle") < procChance {
+					// Physical hits only proc on the hand that was hit with
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterOnSwapItemForEffect(7210, aura)
+	})
 
 	// Cloak - Subtlety
 	// core.NewEnchantEffect(2621, func(agent core.Agent) {

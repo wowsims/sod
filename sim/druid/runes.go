@@ -4,19 +4,38 @@ import (
 	"slices"
 	"time"
 
-	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (druid *Druid) ApplyRunes() {
-	druid.applyEclipse()
+	// Chest
 	druid.applyFuryOfStormRage()
-	druid.applySunfire()
-	druid.applyStarsurge()
-	druid.applyMangle()
-	druid.applySavageRoar()
+	// druid.applyLivingSeed()
+	// druid.applySurvivalOfTheFittest()
 	druid.applyWildStrikes()
+
+	// Hands
+	// druid.applyLacerate()
+	druid.applyMangle()
+	druid.applySunfire()
+	// druid.applyWildGrowth()
+
+	// Belt
+	// druid.applyBerserk()
+	druid.applyEclipse()
+	// druid.applyNourish()
+
+	// Legs
+	druid.applyStarsurge()
+	druid.applySavageRoar()
+	// druid.applyLifebloom()
+	// druid.applySkullBash()
+
+	// Feet
+	druid.applyDreamstate()
+	// druid.applyKingOfTheJungle()
+	// druid.applySurvivalInstincts()
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -35,7 +54,6 @@ func (druid *Druid) applyFuryOfStormRage() {
 }
 
 func (druid *Druid) applyEclipse() {
-
 	if !druid.HasRune(proto.DruidRune_RuneBeltEclipse) {
 		return
 	}
@@ -199,59 +217,6 @@ func (druid *Druid) applySunfire() {
 	})
 }
 
-func (druid *Druid) applyStarsurge() {
-	if !druid.HasRune(proto.DruidRune_RuneLegsStarsurge) {
-		return
-	}
-
-	level := float64(druid.GetCharacter().Level)
-	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 3.81
-	baseHighDamage := baseCalc * 4.67
-
-	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 417157},
-		SpellCode:   SpellCode_DruidStarsurge,
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
-
-		MissileSpeed: 24,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01 * (1 - 0.03*float64(druid.Talents.Moonglow)),
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: 0,
-			},
-			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
-				Duration: time.Second * 6,
-			},
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   druid.VengeanceCritMultiplier(),
-		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
-				druid.NaturesGraceProcAura.Activate(sim)
-			}
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
-		},
-	})
-}
-
 func (druid *Druid) applyMangle() {
 	druid.applyMangleCat()
 	//druid.applyMangleBear()
@@ -263,4 +228,41 @@ func (druid *Druid) applyWildStrikes() {
 	}
 
 	druid.WildStrikesBuffAura = core.ApplyWildStrikes(druid.GetCharacter())
+}
+
+func (druid *Druid) applyDreamstate() {
+	if !druid.HasRune(proto.DruidRune_RuneFeetDreamstate) {
+		return
+	}
+
+	manaRegenDuration := time.Second * 8
+
+	manaRegenAura := druid.RegisterAura(core.Aura{
+		Label:    "Dreamstate Mana Regen",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
+		Duration: manaRegenDuration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.PseudoStats.SpiritRegenRateCasting += .5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.PseudoStats.SpiritRegenRateCasting -= .5
+		},
+	})
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Dreamstate Trigger",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() {
+				return
+			}
+
+			manaRegenAura.Activate(sim)
+			core.DreamstateAura(result.Target).Activate(sim)
+		},
+	})
 }

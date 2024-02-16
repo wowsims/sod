@@ -44,6 +44,8 @@ func (shaman *Shaman) applyDualWieldSpec() {
 		return
 	}
 
+	shaman.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
+
 	meleeHit := float64(core.MeleeHitRatingPerHitChance * 10)
 	spellHit := float64(core.SpellHitRatingPerHitChance * 10)
 
@@ -146,7 +148,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	buffSpellId := 408505
 	buffDuration := time.Second * 30
 
-	ppm := 10.0
+	ppm := core.TernaryFloat64(shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon, 15, 10)
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{
@@ -158,11 +160,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		SpellCode_ShamanChainHeal,
 	}
 
-	// TODO: Don't forget to make it so that AA don't reset when casting when MW is active
-	// for LB / CL / LvB
-	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
-
-	// For sim purposes maelstrom weapon only impacts CL / LB
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
 		ActionID:  core.ActionID{SpellID: int32(buffSpellId)},
@@ -194,7 +191,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 	})
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMeleeWhiteHit)
+	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
