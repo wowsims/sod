@@ -15,15 +15,26 @@ var holyShockBaseDamages = [holyShockRanks + 1][]float64{{0}, {204, 220}, {279, 
 var holyShockManaCosts = [holyShockRanks + 1]float64{0, 225, 275, 325}
 
 func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
+	level := holyShockLevels[rank]
 	spellId := holyShockSpellIds[rank]
 	baseDamageLow := holyShockBaseDamages[rank][0]
 	baseDamageHigh := holyShockBaseDamages[rank][1]
 	manaCost := holyShockManaCosts[rank]
-	level := holyShockLevels[rank]
+
+	// Art of War reduces cost by 80%
+	hasAoW := paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
+	manaCostMultiplier := core.TernaryFloat64(hasAoW, 0.2, 1.0)
+	// Infusion of Light increases base damage by 20%
+	hasInfusion := paladin.HasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
+	damageMultiplier := core.TernaryFloat64(hasInfusion, 1.2, 1.0)
+	manaCostActual := core.TernaryFloat64(
+		hasAoW,
+		manaCost*manaCostMultiplier,
+		manaCost,
+	)
 
 	spellCoeff := 0.429
 	actionID := core.ActionID{SpellID: spellId}
-	procChance := 0.2 * float64(paladin.Talents.Illumination) // Chance for Illumination to refund Mana on crit.
 	manaMetrics := paladin.NewManaMetrics(paladin.getIlluminationActionID())
 
 	return core.SpellConfig{
@@ -35,12 +46,8 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 		SpellCode:     SpellCode_PaladinHolyShock,
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
-			Multiplier: core.TernaryFloat64(
-				paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar),
-				0.2,
-				1.0,
-			),
+			FlatCost:   manaCost,
+			Multiplier: manaCostMultiplier,
 		},
 
 		Cast: core.CastConfig{
@@ -50,19 +57,22 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 			CD: *paladin.HolyShockCooldown,
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if !result.Outcome.Matches(core.OutcomeCrit) {
+			// If we crit, Infusion of Light refunds base mana cost and resets Holy Shock/Exorcism.
+			if !result.Outcome.Matches(core.OutcomeCrit) || !hasInfusion {
 				return
 			}
-			if procChance == 1 || sim.RandomFloat("Illumination") < procChance {
-				paladin.AddMana(sim, manaCost, manaMetrics)
-			}
+			// The mana refund in game is bugged and will often refund more mana than intended.
+			// For now, refund the base cost if no AoW rune equipped, or the actual cost if it is.
+			paladin.AddMana(sim, manaCostActual, manaMetrics)
+			paladin.HolyShockCooldown.Reset()
+			paladin.ExorcismCooldown.Reset()
 		},
 	}
 

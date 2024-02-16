@@ -42,7 +42,7 @@ func (paladin *Paladin) registerJudgementSpell() {
 			// } else {
 			// 	jow.Activate(sim)
 			// }
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeRangedHit)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 		},
 
 		// RelatedAuras: []core.AuraArray{jowAuras},

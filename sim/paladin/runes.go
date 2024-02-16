@@ -9,6 +9,11 @@ import (
 )
 
 func (paladin *Paladin) ApplyRunes() {
+
+	if paladin.HasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
+		paladin.AddStat(stats.SpellHit, float64(core.SpellHitRatingPerHitChance*17.0))
+	}
+
 	paladin.registerTheArtOfWar()
 	paladin.registerSheathOfLight()
 	paladin.registerGuardedByTheLight()
