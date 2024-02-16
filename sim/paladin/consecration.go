@@ -14,7 +14,7 @@ var consecrationSpellIDs = [consecrationRanks + 1]int32{0, 26573, 20116, 20922, 
 var consecrationBaseDamages = [consecrationRanks + 1]float64{0, 64 / 8, 120 / 8, 192 / 8, 280 / 8, 384 / 8}
 var consecrationManaCosts = [consecrationRanks + 1]float64{0, 135, 235, 320, 435, 565}
 
-func (paladin *Paladin) getConsecrationBaseConfig(rank int) core.SpellConfig {
+func (paladin *Paladin) getConsecrationBaseConfig(rank int, shared_cooldown *core.Cooldown) core.SpellConfig {
 	spellId := consecrationSpellIDs[rank]
 	baseDamage := consecrationBaseDamages[rank]
 	manaCost := consecrationManaCosts[rank]
@@ -38,10 +38,7 @@ func (paladin *Paladin) getConsecrationBaseConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Second * 8,
-			},
+			CD: *shared_cooldown,
 		},
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -75,9 +72,14 @@ func (paladin *Paladin) registerConsecrationSpell() {
 	if !paladin.Talents.Consecration {
 		return
 	}
+
+	shared_cooldown := &core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Second * 8,
+	}
 	paladin.Consecration = make([]*core.Spell, consecrationRanks+1)
 	for rank := 1; rank <= consecrationRanks; rank++ {
-		config := paladin.getConsecrationBaseConfig(rank)
+		config := paladin.getConsecrationBaseConfig(rank, shared_cooldown)
 		if config.RequiredLevel <= int(paladin.Level) {
 			paladin.Consecration[rank] = paladin.GetOrRegisterSpell(config)
 		}
