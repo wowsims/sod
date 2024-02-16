@@ -140,10 +140,10 @@ var EnchantOverrides = []*proto.UIEnchant{
 	// {EffectId: 1887, SpellId: 20023, Name: "Enchant Boots - Greater Agility", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 
 	// Weapon
-	{EffectId: 249, SpellId: 7786, Name: "Enchant Weapon - Minor Beastslaying", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
+	{EffectId: 249, SpellId: 7786, Name: "Enchant Weapon - Minor Beastslayer", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 250, SpellId: 7788, Name: "Enchant Weapon - Minor Striking", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 241, SpellId: 13503, Name: "Enchant Weapon - Lesser Striking", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
-	{EffectId: 853, SpellId: 13653, Name: "Enchant Weapon - Lesser Beastslaying", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
+	{EffectId: 853, SpellId: 13653, Name: "Enchant Weapon - Lesser Beastslayer", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 854, SpellId: 13655, Name: "Enchant Weapon - Lesser Elemental Slayer", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 2443, SpellId: 21931, Name: "Enchant Weapon - Winter's Might", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.FrostPower: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 943, SpellId: 13693, Name: "Enchant Weapon - Striking", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
