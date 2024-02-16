@@ -60,7 +60,6 @@ const (
 	BonusArmor
 	Healing
 	SpellDamage
-	DoNotUseWeaponSkill // Deprecated but we can't remove this index
 	FeralAttackPower
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
