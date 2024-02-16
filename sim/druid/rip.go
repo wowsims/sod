@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := int32(6)
+	ripBaseNumTicks := int32(8)
 
 	comboPointCoeff := map[int32]float64{
 		25: 24.0,
