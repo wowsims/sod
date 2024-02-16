@@ -20,9 +20,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 		stats: stats.Stats{},
 	}
 
-	attackerChar := attacker.Env.Raid.GetPlayerFromUnit(attacker).GetCharacter()
-
-	attackTable := NewAttackTable(attacker, defender, attackerChar.GetMHWeapon())
+	attackTable := NewAttackTable(attacker, defender, nil)
 
 	sim := NewSim(&proto.RaidSimRequest{
 		SimOptions: &proto.SimOptions{},

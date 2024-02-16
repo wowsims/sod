@@ -221,13 +221,16 @@ func (env *Environment) setupAttackTables() {
 			if attacker.AttackTables[idx] == nil {
 				attacker.AttackTables[idx] = make(map[proto.CastType]*AttackTable)
 			}
+
 			if attacker.Type == PlayerUnit {
 				character := env.Raid.GetPlayerFromUnit(attacker).GetCharacter()
-				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock {
+				weapons := []*Item{character.GetMHWeapon(), character.GetOHWeapon(), character.GetRangedWeapon()}
+
+				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock || weapons[0] == nil {
 					attacker.AttackTables[idx][proto.CastType_CastTypeMainHand] = NewAttackTable(attacker, defender, character.GetMHWeapon())
 					ModNonMeleeAttackTable(attacker.AttackTables[idx][proto.CastType_CastTypeMainHand], attacker, defender)
 				} else {
-					for i, weapon := range []*Item{character.GetMHWeapon(), character.GetOHWeapon(), character.GetRangedWeapon()} {
+					for i, weapon := range weapons {
 						if weapon != nil {
 							var weaponSlot proto.CastType
 							switch i {
