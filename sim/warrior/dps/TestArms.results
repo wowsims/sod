@@ -118,8 +118,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-IrradiatedGarments"
  value: {
-  dps: 1.82171
-  tps: 7.08574
+  dps: 1.80177
+  tps: 7.07125
  }
 }
 dps_results: {
