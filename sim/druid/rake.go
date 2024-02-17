@@ -10,7 +10,7 @@ type RakeRankInfo struct {
 	id            int32
 	level         int32
 	initialDamage float64
-	dotDamage     float64
+	dotTickDamage float64
 }
 
 var rakeSpells = []RakeRankInfo{
@@ -18,31 +18,29 @@ var rakeSpells = []RakeRankInfo{
 		id:            1822,
 		level:         24,
 		initialDamage: 19.0,
-		dotDamage:     39.0,
+		dotTickDamage: 13.0,
 	},
 	{
 		id:            1823,
 		level:         34,
 		initialDamage: 29.0,
-		dotDamage:     57.0,
+		dotTickDamage: 19.0,
 	},
 	{
 
 		id:            1824,
 		level:         44,
 		initialDamage: 43.0,
-		dotDamage:     75.0,
+		dotTickDamage: 25.0,
 	},
 	{
 
 		id:            9904,
 		level:         54,
 		initialDamage: 58.0,
-		dotDamage:     96.0,
+		dotTickDamage: 32.0,
 	},
 }
-
-var rakeTicks = 3.0
 
 // SoD balance passive EFFECT1 and EFFECT2 mod for Rake
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
@@ -62,7 +60,7 @@ func (druid *Druid) registerRakeSpell() {
 
 func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 	damageInitial := rakeRank.initialDamage * baseDmgMultiplier
-	damageDotTick := (rakeRank.dotDamage / rakeTicks) * baseDmgMultiplier
+	damageDotTick := rakeRank.dotTickDamage * baseDmgMultiplier
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: rakeRank.id},
