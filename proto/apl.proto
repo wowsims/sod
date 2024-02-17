@@ -255,6 +255,7 @@ message APLActionCatOptimalRotationAction {
     bool use_shred_trick = 4;
 }
 
+message APLActionCastPaladinPrimarySeal {
 }
 
 message APLActionMove {
