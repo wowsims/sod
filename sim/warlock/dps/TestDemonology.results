@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 24.55242
   final_stats: 0
   final_stats: 0
-  final_stats: 201.74
+  final_stats: 197.99
   final_stats: 2
   final_stats: 17
   final_stats: 0
@@ -45,61 +45,60 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 2.58242
+  dps: 2.58027
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 2.72282
+  dps: 2.72067
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2.99526
+  dps: 2.99311
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-IrradiatedGarments"
  value: {
-  dps: 2.78245
+  dps: 2.7803
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 2.66035
+  dps: 2.6582
  }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
  value: {
-  dps: 2.97852
+  dps: 2.97632
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock--FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 2.99384
+  dps: 2.99169
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock--FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 2.99384
+  dps: 2.99169
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock--FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 3.3759
+  dps: 3.3739
  }
 }
 dps_results: {
@@ -123,21 +122,21 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock-demonology-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 204.00757
+  dps: 204.00536
   tps: 200.81566
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock-demonology-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 204.00757
+  dps: 204.00536
   tps: 200.81566
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-25-fire.succubus-Demonology Warlock-demonology-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 281.14515
+  dps: 281.14309
   tps: 277.47015
  }
 }
@@ -165,6 +164,6 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2.99384
+  dps: 2.99169
  }
 }

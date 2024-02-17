@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -87,7 +86,7 @@ var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 		// TODO: Implement Feral set bonus
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.ApplyWeaponSpecialization(3, proto.WeaponType_WeaponTypeDagger)
+			c.PseudoStats.DaggersSkill += 3
 		},
 	},
 })

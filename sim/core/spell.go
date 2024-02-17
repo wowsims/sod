@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -19,6 +20,7 @@ type SpellConfig struct {
 	SpellSchool   SpellSchool
 	ProcMask      ProcMask
 	Flags         SpellFlag
+	CastType      proto.CastType
 	MissileSpeed  float64
 	BaseCost      float64
 	MetricSplits  int
@@ -80,6 +82,9 @@ type Spell struct {
 
 	// Flags
 	Flags SpellFlag
+
+	// From which slot this spell cast. Usually from Mainhand
+	CastType proto.CastType
 
 	// Speed in yards/second. Spell missile speeds can be found in the game data.
 	// Example: https://wow.tools/dbc/?dbc=spellmisc&build=3.4.0.44996
@@ -175,6 +180,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		config.DamageMultiplier = 1
 	}
 
+	// Default CastSlot to mainhand
+	if config.CastType == proto.CastType_CastTypeUnknown {
+		config.CastType = proto.CastType_CastTypeMainHand
+	}
+
 	if (config.DamageMultiplier != 0 || config.ThreatMultiplier != 0) && config.ProcMask == ProcMaskUnknown {
 		panic("ProcMask for spell " + config.ActionID.String() + " not set")
 	}
@@ -204,6 +214,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		SpellSchool:  config.SpellSchool,
 		ProcMask:     config.ProcMask,
 		Flags:        config.Flags,
+		CastType:     config.CastType,
 		MissileSpeed: config.MissileSpeed,
 
 		DefaultCast:        config.Cast.DefaultCast,

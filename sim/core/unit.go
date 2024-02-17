@@ -130,7 +130,7 @@ type Unit struct {
 
 	cdTimers []*Timer
 
-	AttackTables                []*AttackTable
+	AttackTables                []map[proto.CastType]*AttackTable
 	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
 
 	GCD *Timer

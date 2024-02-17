@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -27,6 +28,7 @@ const (
 	StrengthOfEarth
 	TrueshotAura
 	HornOfLordaeron
+	Windfury
 
 	// Resistance
 	AspectOfTheWild
@@ -42,6 +44,30 @@ const (
 	ScrollOfStrength
 	ScrollOfStamina
 )
+
+var LevelToBuffRank = map[BuffName]map[int32]int32{
+	BattleShout: {
+		25: 3,
+		40: 4,
+		50: 5,
+		60: 7,
+	},
+	GraceOfAir: {
+		50: 1,
+		60: 3,
+	},
+	StrengthOfEarth: {
+		25: 2,
+		40: 3,
+		50: 3,
+		60: 5,
+	},
+	Windfury: {
+		40: 1,
+		50: 2,
+		60: 3,
+	},
+}
 
 // Stats from buffs pre-tristate buffs
 var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
@@ -550,7 +576,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// }
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, level))
+		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
 
 	if raidBuffs.HornOfLordaeron {
@@ -568,12 +594,12 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 
 	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing {
 		multiplier := TernaryFloat64(raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
-		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, character.Level, multiplier))
+		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
 	}
 
 	if raidBuffs.GraceOfAirTotem > 0 {
 		multiplier := TernaryFloat64(raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
-		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, character.Level, multiplier))
+		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 {
@@ -1545,12 +1571,8 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 }
 
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
-	spellId := map[int32]int32{
-		25: 8160,
-		40: 8161,
-		50: 8161,
-		60: 25361,
-	}[level]
+	rank := LevelToBuffRank[BattleShout][unit.Level]
+	spellId := BattleShoutSpellId[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
 
@@ -1592,31 +1614,33 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 	return aura
 }
 
-func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, level int32) *Aura {
-	spellID := map[int32]int32{
-		25: 6192,
-		40: 11549,
-		50: 11550,
-		60: 25289,
-	}[level]
+const BattleShoutRanks = 7
 
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Battle Shout",
-		ActionID:   ActionID{SpellID: spellID},
+var BattleShoutSpellId = [BattleShoutRanks + 1]int32{0, 6673, 5242, 6192, 11549, 11550, 11551, 25289}
+var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 193, 232}
+var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
+
+func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *Aura {
+	rank := LevelToBuffRank[BattleShout][unit.Level]
+	spellId := BattleShoutSpellId[rank]
+	baseAP := BattleShoutBaseAP[rank]
+
+	return unit.GetOrRegisterAura(Aura{
+		Label:      fmt.Sprintf("Battle Shout"),
+		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(BuffSpellByLevel[BattleShout][level][stats.AttackPower] * (1 + 0.05*float64(impBattleShout))),
+				stats.AttackPower: baseAP * (1 + 0.05*float64(impBattleShout)),
 			})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(BuffSpellByLevel[BattleShout][level][stats.AttackPower]*(1+0.05*float64(impBattleShout))),
+				stats.AttackPower: -1 * baseAP * (1 + 0.05*float64(impBattleShout)),
 			})
 		},
 	})
-	return aura
 }
 
 func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
