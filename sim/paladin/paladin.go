@@ -83,8 +83,6 @@ type Paladin struct {
 	// SpiritualAttunementMetrics *core.ResourceMetrics
 
 	DemonAndUndeadTargetCount int32
-
-	mutualLockoutDPAW *core.Timer
 }
 
 // Implemented by each Paladin spec.
@@ -195,15 +193,9 @@ func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
 }
 
 func (paladin *Paladin) Has1hEquipped() bool {
-	if paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand {
-		return true
-	}
-	return false
+	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand
 }
 
 func (paladin *Paladin) Has2hEquipped() bool {
-	if paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {
-		return true
-	}
-	return false
+	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
 }

@@ -73,6 +73,7 @@ message APLAction {
 
         // Class or Spec-specific actions
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
+        APLActionCastPaladinPrimarySeal cast_paladin_primary_seal = 21;
 
         // Internal use only, not exposed in UI.
         APLActionCustomRotation custom_rotation = 20;
@@ -254,12 +255,16 @@ message APLActionCatOptimalRotationAction {
     bool use_shred_trick = 4;
 }
 
+}
+
 message APLActionMove {
     APLValue range_from_target = 1;
 }
 
 message APLActionCustomRotation {
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////
 //                                  VALUES

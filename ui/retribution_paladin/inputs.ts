@@ -30,7 +30,6 @@ export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumIconInput<S
 			actionId: () => ActionId.fromSpellId(20375), value: PaladinSeal.Command,
 			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sealOfCommand,
 		},
-		{ actionId: () => ActionId.fromSpellId(20166), value: PaladinSeal.Wisdom },
 		// the comparison below needs fixed
 		// {
 		// 	actionId: () => ActionId.fromSpellId(407799), value: PaladinSeal.Martyrdom,

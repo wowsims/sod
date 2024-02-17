@@ -99,13 +99,9 @@ enum PaladinAura {
 
 enum PaladinSeal {
 	NoSeal = 0;
-	Command = 1;
-	Righteousness = 2;
-	Martyrdom = 3;
-	Wisdom = 4;
-	Light = 5;
-	Justice = 6;
-	Crusader = 7;
+	Righteousness = 1;
+	Martyrdom = 2;
+	Command = 3;
 }
 
 message RetributionPaladin {
