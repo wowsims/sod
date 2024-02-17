@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := int32(6)
+	ripBaseNumTicks := int32(8)
 
 	comboPointCoeff := map[int32]float64{
 		25: 24.0,
@@ -65,7 +65,7 @@ func (druid *Druid) registerRipSpell() {
 				dot.SnapshotBaseDamage = (ripBase + comboPointCoeff*cp + 0.06*ap*cpScaling) / float64(dot.NumberOfTicks)
 
 				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.SnapshotCritChance = 0
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}

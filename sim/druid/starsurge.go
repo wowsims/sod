@@ -20,7 +20,7 @@ func (druid *Druid) applyStarsurge() {
 	baseHighDamage := baseCalc * 3.04
 	spellCoeff := .429
 
-	starfireAuraMultiplier := 1 + .66
+	starfireAuraMultiplier := 1 + .80
 	starfireAuraDuration := time.Second * 15
 
 	starfireDamageAura := druid.RegisterAura(core.Aura{

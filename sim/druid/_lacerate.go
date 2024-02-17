@@ -58,7 +58,7 @@ func (druid *Druid) registerLacerateSpell() {
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 
 				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.Spell.DamageMultiplier = tickDamageMul
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)

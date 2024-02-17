@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func init() {
@@ -62,6 +64,15 @@ func init() {
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
+	})
+
+	// Mark of the Champion
+	core.NewItemEffect(23207, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.AddStat(stats.SpellDamage, 85)
+		}
 	})
 
 	core.AddEffectsToTest = true

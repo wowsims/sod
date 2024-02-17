@@ -59,6 +59,7 @@ message UIItem {
 	double weapon_damage_min = 13;
 	double weapon_damage_max = 14;
 	double weapon_speed = 15;
+	map<int32, double> weapon_skills = 28;
 
 	int32 ilvl = 16;
 	int32 phase = 17;
@@ -95,13 +96,6 @@ enum Expansion {
 enum DungeonDifficulty {
 	DifficultyUnknown = 0;
 	DifficultyNormal = 1;
-	DifficultyHeroic = 2;
-	DifficultyTitanRuneAlpha = 7;
-	DifficultyTitanRuneBeta = 8;
-	DifficultyRaid10 = 3;
-	DifficultyRaid10H = 4;
-	DifficultyRaid25 = 5;
-	DifficultyRaid25H = 6;
 }
 
 message UIItemSource {
@@ -182,11 +176,43 @@ enum SourceFilterOption {
 	SourceQuest = 2;
 	SourceDungeon = 3;
 	SourceRaid = 4;
-	SourceWorldBoss = 5;
+	// SourceWorldBoss = 5;
+	SourceWorldBOE = 6;
+}
+
+enum DungeonFilterOption {
+	DungeonUnknown = 0;
+	DungeonRagefireChasm = 2437;
+	DungeonDeadmines = 1581;
+	DungeonWailingCaverns = 718;
+	DungeonShadowfangKeep = 209;
+	// DungeonBlackfathomDeeps = 719;
+	DungeonStockades = 717;
+	// DungeonGnomeregan = 721;
+	DungeonRazorfenKraul = 491;
+	DungeonScarletMonestary = 796; // All 4 wings use the same Zone ID
+	DungeonRazorfenDowns = 722;
+	DungeonUldaman = 1337;
+	DungeonZulFarrak = 1176;
+	DungeonMaraudon = 2100;
+	DungeonSunkenTemple = 1477;
+	DungeonBlackrockDepths = 1584;
+	DungeonScholomance = 2057;
+	DungeonStratholme = 2017;
+	DungeonBlackrockSpire = 1583;
+	DungeonDireMaul = 2557;
 }
 
 enum RaidFilterOption {
 	RaidUnknown = 0;
+	RaidBlackfathomDeeps = 719;
+	RaidGnomeregan = 721;
+	RaidMoltenCore = 2717;
+	RaidBlackwingLair = 2677;
+	RaidZulGurub = 1977;
+	RaidRuinsOfAQ = 3428;
+	RaidTempleOfAQ = 3429;
+	RaidNaxxramas = 3456;
 }
 
 // Next tag: 20.

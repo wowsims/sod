@@ -3,13 +3,15 @@ package sod
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/shaman"
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
-	// Fiery Blaze
+	// Weapon - Fiery Blaze
+	// TODO: Handle on a per-weapon basis?
 	core.NewEnchantEffect(36, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		procChance := 0.15
@@ -52,7 +54,42 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEffect(36, aura)
 	})
 
-	// Fiery Weapon
+	// Weapon - Lesser Striking
+	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
+	})
+
+	// Weapon - Beast Slaying
+	core.AddWeaponEffect(249, func(agent core.Agent, slot proto.ItemSlot) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			w := character.AutoAttacks.MH()
+			if slot == proto.ItemSlot_ItemSlotOffHand {
+				w = character.AutoAttacks.OH()
+			}
+
+			w.BaseDamageMin += 2
+			w.BaseDamageMax += 2
+		}
+	})
+
+	// Weapon - Minor Striking
+	core.AddWeaponEffect(250, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 1
+		w.BaseDamageMax += 1
+	})
+
+	// Weapon - Fiery Weapon
 	// core.NewEnchantEffect(803, func(agent core.Agent) {
 	// 	character := agent.GetCharacter()
 
@@ -93,37 +130,7 @@ func init() {
 	// 	character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
 	// })
 
-	// Minor Striking
-	core.AddWeaponEffect(250, func(agent core.Agent, slot proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.MH()
-		if slot == proto.ItemSlot_ItemSlotOffHand {
-			w = agent.GetCharacter().AutoAttacks.OH()
-		}
-		w.BaseDamageMin += 1
-		w.BaseDamageMax += 1
-	})
-
-	// Lesser Striking
-	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.MH()
-		if slot == proto.ItemSlot_ItemSlotOffHand {
-			w = agent.GetCharacter().AutoAttacks.OH()
-		}
-		w.BaseDamageMin += 2
-		w.BaseDamageMax += 2
-	})
-
-	// Striking
-	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.MH()
-		if slot == proto.ItemSlot_ItemSlotOffHand {
-			w = agent.GetCharacter().AutoAttacks.OH()
-		}
-		w.BaseDamageMin += 3
-		w.BaseDamageMax += 3
-	})
-
-	// Greater Striking
+	// Weapon - Greater Striking
 	// core.AddWeaponEffect(805, func(agent core.Agent, slot proto.ItemSlot) {
 	// 	w := agent.GetCharacter().AutoAttacks.MH()
 	// 	if slot == proto.ItemSlot_ItemSlotOffHand {
@@ -132,6 +139,46 @@ func init() {
 	// 	w.BaseDamageMin += 4
 	// 	w.BaseDamageMax += 4
 	// })
+
+	// Weapon - Lesser Beastslayer
+	core.AddWeaponEffect(853, func(agent core.Agent, slot proto.ItemSlot) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			w := character.AutoAttacks.MH()
+			if slot == proto.ItemSlot_ItemSlotOffHand {
+				w = character.AutoAttacks.OH()
+			}
+
+			w.BaseDamageMin += 6
+			w.BaseDamageMax += 6
+		}
+	})
+
+	// Weapon - Lesser Elemental Slayer
+	core.AddWeaponEffect(854, func(agent core.Agent, slot proto.ItemSlot) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
+			w := character.AutoAttacks.MH()
+			if slot == proto.ItemSlot_ItemSlotOffHand {
+				w = character.AutoAttacks.OH()
+			}
+
+			w.BaseDamageMin += 6
+			w.BaseDamageMax += 6
+		}
+	})
+
+	// Weapon - Striking
+	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		if slot == proto.ItemSlot_ItemSlotOffHand {
+			w = agent.GetCharacter().AutoAttacks.OH()
+		}
+		w.BaseDamageMin += 3
+		w.BaseDamageMax += 3
+	})
 
 	// Superior Striking
 	// core.AddWeaponEffect(1897, func(agent core.Agent, slot proto.ItemSlot) {
@@ -180,6 +227,35 @@ func init() {
 	// 	})
 
 	// 	character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
+	// })
+
+	// Weapon - Winter's Might
+	core.NewEnchantEffect(2443, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		bonus := 0.0
+
+		if character.HasMHWeapon() && character.GetMHWeapon().Enchant.EffectID == 2443 {
+			bonus += 7.0
+		}
+
+		if character.HasOHWeapon() && character.GetOHWeapon().Enchant.EffectID == 2443 {
+			bonus += 7.0
+		}
+
+		character.AddStat(stats.FrostPower, bonus)
+	})
+
+	// Globes - Threat
+	// core.NewEnchantEffect(2613, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	character.PseudoStats.ThreatMultiplier *= 1.02
+	// })
+
+	// Cloak - Subtlety
+	// core.NewEnchantEffect(2621, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	character.PseudoStats.ThreatMultiplier *= 0.98
 	// })
 
 	// Weapon - Dismantle
@@ -265,18 +341,6 @@ func init() {
 
 		character.ItemSwap.RegisterOnSwapItemForEffect(7210, aura)
 	})
-
-	// Cloak - Subtlety
-	// core.NewEnchantEffect(2621, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
-	// 	character.PseudoStats.ThreatMultiplier *= 0.98
-	// })
-
-	// Globes - Threat
-	// core.NewEnchantEffect(2613, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
-	// 	character.PseudoStats.ThreatMultiplier *= 1.02
-	// })
 
 	// Ranged Scopes
 	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {

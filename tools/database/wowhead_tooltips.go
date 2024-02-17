@@ -52,6 +52,7 @@ type ItemResponse interface {
 	GetTooltipRegexValue(pattern *regexp.Regexp, matchIdx int) int
 	GetIntValue(pattern *regexp.Regexp) int
 	GetStats() Stats
+	GetWeaponSkillsMap() map[proto.PseudoStat]float64
 	GetClassAllowlist() []proto.Class
 	IsEquippable() bool
 	GetItemLevel() int
@@ -153,11 +154,11 @@ func (item WowheadItemResponse) GetIntValue(pattern *regexp.Regexp) int {
 }
 
 var armorRegex = regexp.MustCompile(`<!--amr-->([0-9]+) Armor`)
-var agilityRegex = regexp.MustCompile(`<!--stat3-->\+([0-9]+) Agility`)
-var strengthRegex = regexp.MustCompile(`<!--stat4-->\+([0-9]+) Strength`)
-var intellectRegex = regexp.MustCompile(`<!--stat5-->\+([0-9]+) Intellect`)
-var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
-var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
+var agilityRegex = regexp.MustCompile(`<!--stat3-->([+-][0-9]+) Agility`)
+var strengthRegex = regexp.MustCompile(`<!--stat4-->([+-][0-9]+) Strength`)
+var intellectRegex = regexp.MustCompile(`<!--stat5-->([+-][0-9]+) Intellect`)
+var spiritRegex = regexp.MustCompile(`<!--stat6-->([+-][0-9]+) Spirit`)
+var staminaRegex = regexp.MustCompile(`<!--stat7-->([+-][0-9]+) Stamina`)
 var spellHealingRegex = regexp.MustCompile(`Increases healing done by spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to <!--rtg45-->([0-9]+)\.`)
@@ -195,6 +196,22 @@ var expertiseRegex = regexp.MustCompile(`Increases your expertise rating by <!--
 var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
+
+var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
+var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
+var daggersSkill = regexp.MustCompile(`Increased Daggers \+([0-9]+)\.`)
+var unarmedSkill = regexp.MustCompile(`Increased Unarmed \+([0-9]+)\.`)
+
+var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-Handed Axes \+([0-9]+)\.`)
+var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-Handed Swords \+([0-9]+)\.`)
+var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-Handed Maces \+([0-9]+)\.`)
+var stavesSkill = regexp.MustCompile(`Increased Staves \+([0-9]+)\.`)
+var polearmsSkill = regexp.MustCompile(`Increased Polearms \+([0-9]+)\.`)
+
+var thrownSkill = regexp.MustCompile(`Increased Thrown \+([0-9]+)\.`)
+var bowsSkill = regexp.MustCompile(`Increased Bows \+([0-9]+)\.`)
+var crossbowsSkill = regexp.MustCompile(`Increased Crossbows \+([0-9]+)\.`)
+var gunsSkill = regexp.MustCompile(`Increased Guns \+([0-9]+)\.`)
 
 var defenseRegex = regexp.MustCompile(`Increased Defense \+([0-9]+)\.`)
 var blockRegex = regexp.MustCompile(`Increases your shield block rating by <!--rtg15-->([0-9]+)\.`)
@@ -265,6 +282,24 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatShadowResistance:  float64(item.GetIntValue(shadowResistanceRegex)),
 		proto.Stat_StatHealing:           float64(item.GetIntValue(spellHealingRegex)),
 		proto.Stat_StatFeralAttackPower:  float64(item.GetIntValue(feralAttackPowerRegex)),
+	}
+}
+
+func (item WowheadItemResponse) GetWeaponSkillsMap() map[int32]float64 {
+	return map[int32]float64{
+		int32(proto.WeaponSkill_WeaponSkillAxes):            float64(item.GetIntValue(axesSkill)),
+		int32(proto.WeaponSkill_WeaponSkillSwords):          float64(item.GetIntValue(swordsSkill)),
+		int32(proto.WeaponSkill_WeaponSkillDaggers):         float64(item.GetIntValue(daggersSkill)),
+		int32(proto.WeaponSkill_WeaponSkillUnarmed):         float64(item.GetIntValue(unarmedSkill)),
+		int32(proto.WeaponSkill_WeaponSkillTwoHandedAxes):   float64(item.GetIntValue(twoHandedAxesSkill)),
+		int32(proto.WeaponSkill_WeaponSkillTwoHandedSwords): float64(item.GetIntValue(twoHandedSwordsSkill)),
+		int32(proto.WeaponSkill_WeaponSkillTwoHandedMaces):  float64(item.GetIntValue(twoHandedMacesSkill)),
+		int32(proto.WeaponSkill_WeaponSkillStaves):          float64(item.GetIntValue(stavesSkill)),
+		int32(proto.WeaponSkill_WeaponSkillPolearms):        float64(item.GetIntValue(polearmsSkill)),
+		int32(proto.WeaponSkill_WeaponSkillThrown):          float64(item.GetIntValue(thrownSkill)),
+		int32(proto.WeaponSkill_WeaponSkillBows):            float64(item.GetIntValue(bowsSkill)),
+		int32(proto.WeaponSkill_WeaponSkillCrossbows):       float64(item.GetIntValue(crossbowsSkill)),
+		int32(proto.WeaponSkill_WeaponSkillGuns):            float64(item.GetIntValue(gunsSkill)),
 	}
 }
 
@@ -630,6 +665,8 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		RangedWeaponType: item.GetRangedWeaponType(),
 
 		Stats: toSlice(item.GetStats()),
+
+		WeaponSkills: item.GetWeaponSkillsMap(),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,

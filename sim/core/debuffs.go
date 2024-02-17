@@ -207,7 +207,7 @@ func DreamstateAura(unit *Unit) *Aura {
 
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	damageMulti := 1. + 0.04*float64(rank)
-	return unit.RegisterAura(Aura{
+	return unit.GetOrRegisterAura(Aura{
 		Label:     "Improved Shadow Bolt",
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,
