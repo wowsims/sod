@@ -288,6 +288,7 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
 	[SourceFilterOption.SourceWorldBoss, 'World Boss'],
+	[SourceFilterOption.SourceWorldBOE, 'World BoEs'],
 ]);
 // export const raidNames: Map<RaidFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidUnknown, 'Unknown'],

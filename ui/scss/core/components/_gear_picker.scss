@@ -314,7 +314,7 @@ $favorite-cell-width: 2rem;
   width: $ep-cell-width;
   margin-left: map-get($spacers, 3);
 	display: flex;
-  align-items: flex-end;
+  align-items: center;
 
   &> span {
     display: inline-block;
