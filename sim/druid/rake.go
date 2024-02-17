@@ -90,7 +90,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 				dot.SnapshotCritChance = 0
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
@@ -119,7 +119,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			baseDamage := damageInitial + 0.04*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
-			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
 			critMod := (critChance * (spell.CritMultiplier - 1))
 			initial.Damage *= 1 + critMod
