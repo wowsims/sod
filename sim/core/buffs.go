@@ -1375,8 +1375,8 @@ const ShatteringThrowCD = time.Minute * 5
 
 var InnervateAuraTag = "Innervate"
 
-const InnervateDuration = time.Second * 10
-const InnervateCD = time.Minute * 3
+const InnervateDuration = time.Second * 20
+const InnervateCD = time.Minute * 6
 
 func InnervateManaThreshold(character *Character) float64 {
 	if character.Class == proto.Class_ClassMage {
@@ -1423,21 +1423,22 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 
 func InnervateAura(character *Character, actionTag int32) *Aura {
 	actionID := ActionID{SpellID: 29166, Tag: actionTag}
-	manaMetrics := character.NewManaMetrics(actionID)
+	// TODO: Add metrics for increased regen from spirit (either add here and align ticks to mana tick or create mana tick hook?)
+	// manaMetrics := character.NewManaMetrics(actionID)
 	return character.GetOrRegisterAura(Aura{
 		Label:    "Innervate-" + actionID.String(),
 		Tag:      InnervateAuraTag,
 		ActionID: actionID,
 		Duration: InnervateDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			const manaPerTick = 3496 * 2.25 / 10 // WotLK druid's base mana
-			StartPeriodicAction(sim, PeriodicActionOptions{
-				Period:   InnervateDuration / 10,
-				NumTicks: 10,
-				OnAction: func(sim *Simulation) {
-					character.AddMana(sim, manaPerTick, manaMetrics)
-				},
-			})
+			character.PseudoStats.SpiritRegenMultiplier += 4
+			character.PseudoStats.ForceFullSpiritRegen = true
+			character.UpdateManaRegenRates()
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			character.PseudoStats.SpiritRegenMultiplier -= 4
+			character.PseudoStats.ForceFullSpiritRegen = false
+			character.UpdateManaRegenRates()
 		},
 	})
 }

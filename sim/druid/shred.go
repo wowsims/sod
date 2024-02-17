@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	shredDamageMultiplier := 2.25
+	shredDamageMultiplier := 3.0
 
 	flatDamageBonus := map[int32]float64{
 		25: 54.0,
