@@ -40,7 +40,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	}
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	cat.maxRipTicks = 6
+	cat.maxRipTicks = druid.RipTicks
 
 	cat.EnableEnergyBar(100.0)
 
