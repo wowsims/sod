@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -19,6 +20,7 @@ func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagAPL,
+		CastType:    proto.CastType_CastTypeRanged,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -48,10 +50,10 @@ func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
 			Aura: core.Aura{
 				Label: "BlackArrow",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.06
+					hunter.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeRanged].DamageTakenMultiplier *= 1.06
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.06
+					hunter.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeRanged].DamageTakenMultiplier /= 1.06
 				},
 			},
 			NumberOfTicks: 5,
@@ -59,7 +61,7 @@ func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// scales slightly better (11.5%) than the tooltip implies (10%), but isn't affected by Hunter's Mark
 				dot.SnapshotBaseDamage = 553 + 0.023*(dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -53,7 +53,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 					.04*dot.Spell.MeleeAttackPower() +
 					.04*(dot.Spell.SpellPower()+bonusSpellPower)
 
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
