@@ -42,6 +42,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 }
 
 type Stats [46]float64
+type WeaponSkills [14]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -52,7 +53,7 @@ type ItemResponse interface {
 	GetTooltipRegexValue(pattern *regexp.Regexp, matchIdx int) int
 	GetIntValue(pattern *regexp.Regexp) int
 	GetStats() Stats
-	GetWeaponSkillsMap() map[proto.PseudoStat]float64
+	GetWeaponSkills() []float64
 	GetClassAllowlist() []proto.Class
 	IsEquippable() bool
 	GetItemLevel() int
@@ -202,9 +203,9 @@ var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
 var daggersSkill = regexp.MustCompile(`Increased Daggers \+([0-9]+)\.`)
 var unarmedSkill = regexp.MustCompile(`Increased Unarmed \+([0-9]+)\.`)
 
-var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-Handed Axes \+([0-9]+)\.`)
-var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-Handed Swords \+([0-9]+)\.`)
-var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-Handed Maces \+([0-9]+)\.`)
+var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-handed Axes \+([0-9]+)\.`)
+var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-handed Swords \+([0-9]+)\.`)
+var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-handed Maces \+([0-9]+)\.`)
 var stavesSkill = regexp.MustCompile(`Increased Staves \+([0-9]+)\.`)
 var polearmsSkill = regexp.MustCompile(`Increased Polearms \+([0-9]+)\.`)
 
@@ -285,8 +286,11 @@ func (item WowheadItemResponse) GetStats() Stats {
 	}
 }
 
-func (item WowheadItemResponse) GetWeaponSkillsMap() []float64 {
-	return []float64{
+func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
+	if item.ID == 215380 {
+		fmt.Println(item.GetIntValue(twoHandedAxesSkill))
+	}
+	return WeaponSkills{
 		float64(item.GetIntValue(axesSkill)),
 		float64(item.GetIntValue(swordsSkill)),
 		float64(item.GetIntValue(daggersSkill)),
@@ -666,7 +670,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 
 		Stats: toSlice(item.GetStats()),
 
-		WeaponSkills: item.GetWeaponSkillsMap(),
+		WeaponSkills: weaponSkillsToSlice(item.GetWeaponSkills()),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,
