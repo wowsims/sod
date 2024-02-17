@@ -18,10 +18,12 @@ func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit, level int32) *cor
 		ActionID: StormstrikeActionID,
 		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AttackTables[aura.Unit.UnitIndex].NatureDamageTakenMultiplier *= 1.2
+			shaman.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].NatureDamageTakenMultiplier *= 1.2
+			shaman.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeOffHand].NatureDamageTakenMultiplier *= 1.2
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AttackTables[aura.Unit.UnitIndex].NatureDamageTakenMultiplier /= 1.2
+			shaman.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].NatureDamageTakenMultiplier /= 1.2
+			shaman.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeOffHand].NatureDamageTakenMultiplier /= 1.2
 		},
 	})
 }

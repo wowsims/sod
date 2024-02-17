@@ -216,15 +216,37 @@ func (env *Environment) setupAttackTables() {
 	}
 
 	for _, attacker := range env.AllUnits {
-		attacker.AttackTables = make([]*AttackTable, len(env.AllUnits))
+		attacker.AttackTables = make([]map[proto.CastType]*AttackTable, len(env.AllUnits))
 		for idx, defender := range env.AllUnits {
-			attacker.AttackTables[idx] = NewAttackTable(attacker, defender)
+			if attacker.AttackTables[idx] == nil {
+				attacker.AttackTables[idx] = make(map[proto.CastType]*AttackTable)
+			}
 
 			if attacker.Type == PlayerUnit {
 				character := env.Raid.GetPlayerFromUnit(attacker).GetCharacter()
-				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock {
-					ModNonMeleeAttackTable(attacker.AttackTables[idx], attacker, defender)
+				weapons := []*Item{character.GetMHWeapon(), character.GetOHWeapon(), character.GetRangedWeapon()}
+
+				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock || weapons[0] == nil {
+					attacker.AttackTables[idx][proto.CastType_CastTypeMainHand] = NewAttackTable(attacker, defender, weapons[0])
+					ModNonMeleeAttackTable(attacker.AttackTables[idx][proto.CastType_CastTypeMainHand], attacker, defender, weapons[0])
+				} else {
+					for i, weapon := range weapons {
+						if weapon != nil {
+							var weaponSlot proto.CastType
+							switch i {
+							case 0:
+								weaponSlot = proto.CastType_CastTypeMainHand
+							case 1:
+								weaponSlot = proto.CastType_CastTypeOffHand
+							case 2:
+								weaponSlot = proto.CastType_CastTypeRanged
+							}
+							attacker.AttackTables[idx][weaponSlot] = NewAttackTable(attacker, defender, weapon)
+						}
+					}
 				}
+			} else {
+				attacker.AttackTables[idx][proto.CastType_CastTypeMainHand] = NewAttackTable(attacker, defender, nil)
 			}
 		}
 	}

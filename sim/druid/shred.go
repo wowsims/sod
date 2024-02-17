@@ -89,7 +89,7 @@ func (druid *Druid) registerShredSpell() {
 
 			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
-			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
 			critMod := (critChance * (spell.CritMultiplier - 1))
 
