@@ -150,6 +150,7 @@ func (warrior *Warrior) applyConsumedByRage() {
 
 func (warrior *Warrior) applyBloodSurge() {
 	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
+	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
 		return
 	}
 
@@ -158,15 +159,19 @@ func (warrior *Warrior) applyBloodSurge() {
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Slam.DefaultCast.CastTime = 0
-			warrior.Slam.CostMultiplier -= 1
+			if warrior.Slam != nil {
+				warrior.Slam.DefaultCast.CastTime = 0
+				warrior.Slam.CostMultiplier -= 1
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
-			warrior.Slam.CostMultiplier += 1
+			if warrior.Slam != nil {
+				warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
+				warrior.Slam.CostMultiplier += 1
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warrior.Slam { // removed even if slam doesn't land
+			if warrior.Slam != nil && spell == warrior.Slam { // removed even if slam doesn't land
 				aura.Deactivate(sim)
 			}
 		},
