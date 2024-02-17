@@ -6,30 +6,68 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+type RipRankInfo struct {
+	id              int32
+	level           int32
+	dmgTickBase     float64
+	dmgTickPerCombo float64
+}
+
+var ripRanks = []RipRankInfo{
+	{
+		id:              1079,
+		level:           20,
+		dmgTickBase:     3.0,
+		dmgTickPerCombo: 4.0,
+	},
+	{
+		id:              9492,
+		level:           28,
+		dmgTickBase:     4.0,
+		dmgTickPerCombo: 7.0,
+	},
+	{
+		id:              9493,
+		level:           36,
+		dmgTickBase:     6.0,
+		dmgTickPerCombo: 9.0,
+	},
+	{
+		id:              9752,
+		level:           44,
+		dmgTickBase:     9.0,
+		dmgTickPerCombo: 14.0,
+	},
+	{
+		id:              9894,
+		level:           52,
+		dmgTickBase:     12.0,
+		dmgTickPerCombo: 20.0,
+	},
+	{
+		id:              9896,
+		level:           60,
+		dmgTickBase:     17.0,
+		dmgTickPerCombo: 28.0,
+	},
+}
+
+var RipTicks int32 = 8
+
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := int32(8)
+	// Add highest available Rip rank for level.
+	for rank := len(ripRanks) - 1; rank >= 0; rank-- {
+		if druid.Level >= ripRanks[rank].level {
+			config := druid.newRipSpellConfig(ripRanks[rank])
+			druid.Rip = druid.RegisterSpell(Cat, config)
+			return
+		}
+	}
+}
 
-	comboPointCoeff := map[int32]float64{
-		25: 24.0,
-		40: 54.0,
-		50: 120.0,
-		60: 168.0,
-	}[druid.Level]
-
-	ripBase := map[int32]float64{
-		25: 18.0,
-		40: 36.0,
-		50: 72.0,
-		60: 102.0,
-	}[druid.Level]
-
-	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: map[int32]int32{
-			25: 1079,
-			40: 9493,
-			50: 9752,
-			60: 9896,
-		}[druid.Level]},
+func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
+	return core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: ripRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -53,7 +91,10 @@ func (druid *Druid) registerRipSpell() {
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
-			NumberOfTicks: ripBaseNumTicks,
+			Aura: core.Aura{
+				Label: "Rip",
+			},
+			NumberOfTicks: RipTicks,
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -62,7 +103,7 @@ func (druid *Druid) registerRipSpell() {
 
 				cpScaling := core.TernaryFloat64(cp == 5, 4, cp)
 
-				dot.SnapshotBaseDamage = (ripBase + comboPointCoeff*cp + 0.06*ap*cpScaling) / float64(dot.NumberOfTicks)
+				dot.SnapshotBaseDamage = (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + 0.01*ap*cpScaling)
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
@@ -80,7 +121,7 @@ func (druid *Druid) registerRipSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = ripBaseNumTicks
+				dot.NumberOfTicks = RipTicks
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
@@ -88,7 +129,7 @@ func (druid *Druid) registerRipSpell() {
 			}
 			spell.DealOutcome(sim, result)
 		},
-	})
+	}
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
