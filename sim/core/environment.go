@@ -227,8 +227,8 @@ func (env *Environment) setupAttackTables() {
 				weapons := []*Item{character.GetMHWeapon(), character.GetOHWeapon(), character.GetRangedWeapon()}
 
 				if character.Class == proto.Class_ClassMage || character.Class == proto.Class_ClassPriest || character.Class == proto.Class_ClassWarlock || weapons[0] == nil {
-					attacker.AttackTables[idx][proto.CastType_CastTypeMainHand] = NewAttackTable(attacker, defender, character.GetMHWeapon())
-					ModNonMeleeAttackTable(attacker.AttackTables[idx][proto.CastType_CastTypeMainHand], attacker, defender)
+					attacker.AttackTables[idx][proto.CastType_CastTypeMainHand] = NewAttackTable(attacker, defender, weapons[0])
+					ModNonMeleeAttackTable(attacker.AttackTables[idx][proto.CastType_CastTypeMainHand], attacker, defender, weapons[0])
 				} else {
 					for i, weapon := range weapons {
 						if weapon != nil {

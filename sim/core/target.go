@@ -179,7 +179,7 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
-func GetWeaponSkill(unit *Unit, weapon *Item) int {
+func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 	if weapon == nil {
 		return 0
 	}
@@ -187,22 +187,26 @@ func GetWeaponSkill(unit *Unit, weapon *Item) int {
 	if weapon.HandType == proto.HandType_HandTypeTwoHand {
 		switch weapon.WeaponType {
 		case proto.WeaponType_WeaponTypeAxe:
-			return unit.PseudoStats.AxeSkill
+			return unit.PseudoStats.TwoHandedAxesSkill
 		case proto.WeaponType_WeaponTypeMace:
-			return unit.PseudoStats.MaceSkill
+			return unit.PseudoStats.TwoHandedMacesSkill
 		case proto.WeaponType_WeaponTypeSword:
-			return unit.PseudoStats.SwordSkill
+			return unit.PseudoStats.TwoHandedSwordsSkill
+		case proto.WeaponType_WeaponTypePolearm:
+			return unit.PseudoStats.PolearmsSkill
+		case proto.WeaponType_WeaponTypeStaff:
+			return unit.PseudoStats.StavesSkill
 		default:
 			return 0
 		}
 	} else if weapon.RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown {
 		switch weapon.RangedWeaponType {
 		case proto.RangedWeaponType_RangedWeaponTypeBow:
-			return unit.PseudoStats.BowSkill
+			return unit.PseudoStats.BowsSkill
 		case proto.RangedWeaponType_RangedWeaponTypeCrossbow:
-			return unit.PseudoStats.CrossbowSkill
+			return unit.PseudoStats.CrossbowsSkill
 		case proto.RangedWeaponType_RangedWeaponTypeGun:
-			return unit.PseudoStats.GunSkill
+			return unit.PseudoStats.GunsSkill
 		case proto.RangedWeaponType_RangedWeaponTypeThrown:
 			return unit.PseudoStats.ThrownSkill
 		default:
@@ -211,15 +215,15 @@ func GetWeaponSkill(unit *Unit, weapon *Item) int {
 	} else {
 		switch weapon.WeaponType {
 		case proto.WeaponType_WeaponTypeAxe:
-			return unit.PseudoStats.AxeSkill
+			return unit.PseudoStats.AxesSkill
 		case proto.WeaponType_WeaponTypeFist:
 			return unit.PseudoStats.UnarmedSkill
 		case proto.WeaponType_WeaponTypeMace:
-			return unit.PseudoStats.MaceSkill
+			return unit.PseudoStats.MacesSkill
 		case proto.WeaponType_WeaponTypeSword:
-			return unit.PseudoStats.SwordSkill
+			return unit.PseudoStats.SwordsSkill
 		case proto.WeaponType_WeaponTypeDagger:
-			return unit.PseudoStats.DaggerSkill
+			return unit.PseudoStats.DaggersSkill
 		default:
 			return 0
 		}
@@ -269,7 +273,7 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 	}
 
 	if defender.Type == EnemyUnit {
-		weaponSkill := float64(attacker.Level*5) + float64(GetWeaponSkill(attacker, weapon))
+		weaponSkill := float64(attacker.Level*5) + GetWeaponSkill(attacker, weapon)
 		baseWeaponSkill := float64(attacker.Level * 5)
 		targetDefense := float64(defender.Level * 5)
 
@@ -319,8 +323,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 	return table
 }
 
-func ModNonMeleeAttackTable(table *AttackTable, attacker *Unit, defender *Unit) {
-	weaponSkill := float64(attacker.Level * 5)
+func ModNonMeleeAttackTable(table *AttackTable, attacker *Unit, defender *Unit, weapon *Item) {
+	weaponSkill := float64(attacker.Level*5) + float64(GetWeaponSkill(attacker, weapon))
 
 	table.BaseGlanceChance = 0.8 // min((float64(attacker.Level)-10)*0.03, 0.6)
 

@@ -358,22 +358,22 @@ type PseudoStats struct {
 	Shapeshifted bool
 
 	// Weapon Skills
-	UnarmedSkill      int
-	DaggerSkill       int
-	SwordSkill        int
-	MaceSkill         int
-	AxeSkill          int
-	TwoHandSwordSkill int
-	TwoHandMaceSkill  int
-	TwoHandAxeSkill   int
-	PolearmSkill      int
-	StaffSkill        int
+	UnarmedSkill         float64
+	DaggersSkill         float64
+	SwordsSkill          float64
+	MacesSkill           float64
+	AxesSkill            float64
+	TwoHandedSwordsSkill float64
+	TwoHandedMacesSkill  float64
+	TwoHandedAxesSkill   float64
+	PolearmsSkill        float64
+	StavesSkill          float64
 
 	// Ranged Skills
-	BowSkill      int
-	CrossbowSkill int
-	GunSkill      int
-	ThrownSkill   int
+	BowsSkill      float64
+	CrossbowsSkill float64
+	GunsSkill      float64
+	ThrownSkill    float64
 
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
@@ -456,15 +456,19 @@ func NewPseudoStats() PseudoStats {
 
 		HealingTakenMultiplier: 1,
 		UnarmedSkill:           0,
-		DaggerSkill:            0,
-		SwordSkill:             0,
-		MaceSkill:              0,
-		AxeSkill:               0,
-		TwoHandSwordSkill:      0,
-		TwoHandMaceSkill:       0,
-		TwoHandAxeSkill:        0,
-		PolearmSkill:           0,
-		StaffSkill:             0,
+		DaggersSkill:           0,
+		SwordsSkill:            0,
+		MacesSkill:             0,
+		AxesSkill:              0,
+		TwoHandedSwordsSkill:   0,
+		TwoHandedMacesSkill:    0,
+		TwoHandedAxesSkill:     0,
+		PolearmsSkill:          0,
+		StavesSkill:            0,
+		BowsSkill:              0,
+		GunsSkill:              0,
+		CrossbowsSkill:         0,
+		ThrownSkill:            0,
 	}
 }
 

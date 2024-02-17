@@ -86,7 +86,7 @@ var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 		// TODO: Implement Feral set bonus
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.PseudoStats.DaggerSkill += 3
+			c.PseudoStats.DaggersSkill += 3
 		},
 	},
 })

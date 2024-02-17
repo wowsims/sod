@@ -55,10 +55,10 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
-		character.PseudoStats.MaceSkill += 5
-		character.PseudoStats.TwoHandMaceSkill += 5
-		character.PseudoStats.SwordSkill += 5
-		character.PseudoStats.TwoHandSwordSkill += 5
+		character.PseudoStats.MacesSkill += 5
+		character.PseudoStats.TwoHandedMacesSkill += 5
+		character.PseudoStats.SwordsSkill += 5
+		character.PseudoStats.TwoHandedSwordsSkill += 5
 	case proto.Race_RaceNightElf:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
@@ -107,8 +107,8 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		character.PseudoStats.AxeSkill += 5
-		character.PseudoStats.TwoHandAxeSkill += 5
+		character.PseudoStats.AxesSkill += 5
+		character.PseudoStats.TwoHandedAxesSkill += 5
 	case proto.Race_RaceTauren:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)

@@ -164,6 +164,20 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.BonusMHDps += character.bonusMHDps
 			character.PseudoStats.BonusOHDps += character.bonusOHDps
 			character.PseudoStats.BonusRangedDps += character.bonusRangedDps
+			character.PseudoStats.AxesSkill += ps[proto.PseudoStat_PseudoStatAxesSkill]
+			character.PseudoStats.SwordsSkill += ps[proto.PseudoStat_PseudoStatSwordsSkill]
+			character.PseudoStats.DaggersSkill += ps[proto.PseudoStat_PseudoStatDaggersSkill]
+			character.PseudoStats.UnarmedSkill += ps[proto.PseudoStat_PseudoStatUnarmedSkill]
+			character.PseudoStats.TwoHandedAxesSkill += ps[proto.PseudoStat_PseudoStatTwoHandedAxesSkill]
+			character.PseudoStats.TwoHandedSwordsSkill += ps[proto.PseudoStat_PseudoStatTwoHandedSwordsSkill]
+			character.PseudoStats.TwoHandedMacesSkill += ps[proto.PseudoStat_PseudoStatTwoHandedMacesSkill]
+			character.PseudoStats.PolearmsSkill += ps[proto.PseudoStat_PseudoStatPolearmsSkill]
+			character.PseudoStats.StavesSkill += ps[proto.PseudoStat_PseudoStatStavesSkill]
+			character.PseudoStats.ThrownSkill += ps[proto.PseudoStat_PseudoStatThrownSkill]
+			character.PseudoStats.BowsSkill += ps[proto.PseudoStat_PseudoStatBowsSkill]
+			character.PseudoStats.CrossbowsSkill += ps[proto.PseudoStat_PseudoStatCrossbowsSkill]
+			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
+
 		}
 	}
 
@@ -242,6 +256,24 @@ func (character *Character) addUniversalStatDependencies() {
 	character.AddStatDependency(stats.Agility, stats.Armor, 2)
 }
 
+func (character *Character) applyWeaponSkills() {
+	for _, item := range character.Equipment {
+		character.PseudoStats.AxesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillAxes)]
+		character.PseudoStats.SwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillSwords)]
+		character.PseudoStats.DaggersSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillDaggers)]
+		character.PseudoStats.UnarmedSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillUnarmed)]
+		character.PseudoStats.TwoHandedAxesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedAxes)]
+		character.PseudoStats.TwoHandedSwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedSwords)]
+		character.PseudoStats.TwoHandedMacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedMaces)]
+		character.PseudoStats.StavesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillStaves)]
+		character.PseudoStats.PolearmsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillPolearms)]
+		character.PseudoStats.ThrownSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillThrown)]
+		character.PseudoStats.BowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillBows)]
+		character.PseudoStats.CrossbowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillCrossbows)]
+		character.PseudoStats.GunsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillGuns)]
+	}
+}
+
 // Returns a partially-filled PlayerStats proto for use in the CharacterStats api call.
 func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) *proto.PlayerStats {
 	playerStats := &proto.PlayerStats{}
@@ -258,6 +290,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	playerStats.BaseStats = measureStats()
 
 	character.applyEquipment()
+	character.applyWeaponSkills()
 	character.applyItemEffects(agent)
 	character.applyItemSetBonusEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseGear)
@@ -574,8 +607,21 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
 		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
-		proto.PseudoStat_PseudoStatDodge: character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
-		proto.PseudoStat_PseudoStatParry: character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
+		proto.PseudoStat_PseudoStatDodge:                character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
+		proto.PseudoStat_PseudoStatParry:                character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
+		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),
+		proto.PseudoStat_PseudoStatSwordsSkill:          float64(character.PseudoStats.SwordsSkill),
+		proto.PseudoStat_PseudoStatDaggersSkill:         float64(character.PseudoStats.DaggersSkill),
+		proto.PseudoStat_PseudoStatUnarmedSkill:         float64(character.PseudoStats.UnarmedSkill),
+		proto.PseudoStat_PseudoStatTwoHandedAxesSkill:   float64(character.PseudoStats.TwoHandedAxesSkill),
+		proto.PseudoStat_PseudoStatTwoHandedSwordsSkill: float64(character.PseudoStats.TwoHandedSwordsSkill),
+		proto.PseudoStat_PseudoStatTwoHandedMacesSkill:  float64(character.PseudoStats.TwoHandedMacesSkill),
+		proto.PseudoStat_PseudoStatPolearmsSkill:        float64(character.PseudoStats.PolearmsSkill),
+		proto.PseudoStat_PseudoStatStavesSkill:          float64(character.PseudoStats.StavesSkill),
+		proto.PseudoStat_PseudoStatThrownSkill:          float64(character.PseudoStats.ThrownSkill),
+		proto.PseudoStat_PseudoStatBowsSkill:            float64(character.PseudoStats.BowsSkill),
+		proto.PseudoStat_PseudoStatCrossbowsSkill:       float64(character.PseudoStats.CrossbowsSkill),
+		proto.PseudoStat_PseudoStatGunsSkill:            float64(character.PseudoStats.GunsSkill),
 	}
 }
 

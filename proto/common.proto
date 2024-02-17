@@ -133,20 +133,20 @@ enum PseudoStat {
 
 	// Melee Weapon Skill
 	PseudoStatUnarmedSkill = 6;
-	PseudoStatDaggerSkill = 7;
-	PseudoStatSwordSkill = 8;
-	PseudoStatMaceSkill = 9;
-	PseudoStatAxeSkill = 10;
-	PseudoStatTwoHandSwordSkill = 11;
-	PseudoStatTwoHandMaceSkill = 12;
-	PseudoStatTwoHandAxeSkill = 13;
-	PseudoStatPolearmSkill = 14;
-	PseudoStatStaffSkill = 15;
+	PseudoStatDaggersSkill = 7;
+	PseudoStatSwordsSkill = 8;
+	PseudoStatMacesSkill = 9;
+	PseudoStatAxesSkill = 10;
+	PseudoStatTwoHandedSwordsSkill = 11;
+	PseudoStatTwoHandedMacesSkill = 12;
+	PseudoStatTwoHandedAxesSkill = 13;
+	PseudoStatPolearmsSkill = 14;
+	PseudoStatStavesSkill = 15;
 
 	// Ranged Weapon Skill
-	PseudoStatBowSkill = 16;
-	PseudoStatCrossbowSkill = 17;
-	PsuedoStatGunSkill = 18;
+	PseudoStatBowsSkill = 16;
+	PseudoStatCrossbowsSkill = 17;
+	PseudoStatGunsSkill = 18;
 	PseudoStatThrownSkill = 19;
 }
 
@@ -193,6 +193,24 @@ enum WeaponType {
 	WeaponTypeStaff = 8;
 	WeaponTypeSword = 9;
 }
+
+enum WeaponSkill {
+    WeaponSkillUnknown = 0;
+    WeaponSkillAxes = 1;
+    WeaponSkillSwords = 2;
+    WeaponSkillDaggers = 3;
+    WeaponSkillUnarmed = 4;
+    WeaponSkillTwoHandedAxes = 5;
+    WeaponSkillTwoHandedSwords = 6;
+    WeaponSkillTwoHandedMaces = 7;
+    WeaponSkillPolearms = 8;
+    WeaponSkillStaves = 9;
+    WeaponSkillThrown = 10;
+    WeaponSkillBows = 11;
+    WeaponSkillCrossbows = 12;
+    WeaponSkillGuns = 13;
+}
+
 
 enum HandType {
 	HandTypeUnknown = 0;
@@ -738,6 +756,7 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
+	map<int32, double> weapon_skills = 15;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when
