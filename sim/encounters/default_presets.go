@@ -48,8 +48,8 @@ func addLevel40(bossPrefix string) {
 			TankIndex: 0,
 
 			Stats: stats.Stats{
-				stats.Health:      127_393, // TODO:
-				stats.Armor:       4000,    // Approx average armor of Gnomeregan bosses
+				stats.Health:      279_345, // TODO:
+				stats.Armor:       2053,    // Approx average armor of Gnomeregan bosses
 				stats.AttackPower: 574,     // TODO:
 			}.ToFloatArray(),
 
@@ -62,34 +62,10 @@ func addLevel40(bossPrefix string) {
 			DualWieldPenalty: false,
 			TargetInputs:     make([]*proto.TargetInput, 0),
 		},
-		AI: NewSoDLvl40AI(),
 	})
 	core.AddPresetEncounter("Level 40", []string{
 		bossPrefix + "/Level 40",
 	})
-}
-
-type SodLvl40AI struct {
-	Target *core.Target
-}
-
-func NewSoDLvl40AI() core.AIFactory {
-	return func() core.TargetAI {
-		return &SodLvl40AI{}
-	}
-}
-
-func (ai *SodLvl40AI) Initialize(target *core.Target, _ *proto.Target) {
-	target.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier = .8
-	target.Unit.PseudoStats.PoisonDamageTakenMultiplier = .8
-
-	ai.Target = target
-}
-
-func (ai *SodLvl40AI) Reset(*core.Simulation) {
-}
-
-func (ai *SodLvl40AI) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 func addLevel50(bossPrefix string) {

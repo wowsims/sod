@@ -9160,8 +9160,8 @@
 {"effectId":63,"spellId":13538,"name":"Enchant Chest - Lesser Absorption","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":66,"spellId":7457,"name":"Enchant Bracer - Minor Stamina","type":6,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":66,"spellId":7863,"name":"Enchant Boots - Minor Stamina","type":10,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":241,"spellId":13503,"name":"Enchant Weapon - Lesser Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":241,"spellId":7745,"name":"Enchant 2H Weapon - Minor Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":241,"spellId":13503,"name":"Enchant Weapon - Lesser Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":242,"spellId":7748,"name":"Enchant Chest - Lesser Health","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":243,"spellId":7766,"name":"Enchant Bracer - Minor Spirit","type":6,"stats":[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":246,"spellId":7776,"name":"Enchant Chest - Lesser Mana","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -9216,8 +9216,8 @@
 {"effectId":911,"spellId":13890,"name":"Enchant Boots - Minor Speed","type":10,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":924,"spellId":7428,"name":"Enchant Bracer - Minor Deflect","type":6,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":925,"spellId":13646,"name":"Enchant Bracer - Lesser Deflection","type":6,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
-{"effectId":943,"spellId":13693,"name":"Enchant Weapon - Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":943,"spellId":13693,"name":"Enchant Weapon - Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":1843,"itemId":15564,"spellId":19057,"name":"Rugged Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":1897,"spellId":13695,"name":"Enchant 2H Weapon - Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2443,"spellId":21931,"name":"Enchant Weapon - Winter's Might","type":13,"stats":[0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
@@ -12005,8 +12005,9 @@
 {"id":437362,"name":"Hyperconductive Shock","icon":"spell_shaman_staticshock"}
 ],
 "encounters":[
-{"path":"Blackfathom Deeps/Level 25","targets":[{"path":"Blackfathom Deeps/Level 25","target":{"id":213334,"name":"Level 25","level":27,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,1104,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":400,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
-{"path":"Gnomeregan/Level 40","targets":[{"path":"Gnomeregan/Level 40","target":{"id":218537,"name":"Level 40","level":42,"mobType":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,4000,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":1000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
+{"path":"SoD/Level 25","targets":[{"path":"SoD/Level 25","target":{"id":213334,"name":"Level 25","level":27,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,1104,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":400,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
+{"path":"SoD/Level 40","targets":[{"path":"SoD/Level 40","target":{"id":218537,"name":"Level 40","level":42,"mobType":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,2053,0,0,0,0,0,0,0,279345,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":1000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
+{"path":"SoD/Level 40 Mechanical","targets":[{"path":"SoD/Level 40 Mechanical","target":{"id":218537,"name":"Level 40 Mechanical","level":42,"mobType":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,4000,0,0,0,0,0,0,0,279345,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":1000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
 {"path":"SoD/Level 50","targets":[{"path":"SoD/Level 50","target":{"id":213334,"name":"Level 50","level":52,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,2053,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":2000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
 {"path":"SoD/Level 60","targets":[{"path":"SoD/Level 60","target":{"id":213334,"name":"Level 60","level":63,"mobType":8,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0,0],"minBaseDamage":3000,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]}
 ]
