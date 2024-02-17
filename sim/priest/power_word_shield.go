@@ -56,7 +56,7 @@ func (priest *Priest) registerPowerWordShieldSpell() {
 		},
 	})
 
-	priest.WeakenedSouls = priest.NewAllyAuraArray(func(target *core.Unit) *core.Aura {
+	priest.WeakenedSouls = priest.NewRaidAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Weakened Soul",
 			ActionID: core.ActionID{SpellID: 6788},
