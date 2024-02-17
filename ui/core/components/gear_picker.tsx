@@ -1157,18 +1157,22 @@ export class ItemList<T> {
 	}
 
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
-		if (!item.sources || item.sources.length == 0) {
-			return <></>;
+		const makeAnchor = (href:string, inner:string | JSX.Element) => {
+			return <a href={href} target="_blank"><small>{inner}</small></a>;
 		}
 
-		const makeAnchor = (href:string, inner:string) => {
-			return <a href={href} target="_blank"><small>{inner}</small></a>;
+		if (!item.sources || item.sources.length == 0) {
+			if (item.randomSuffixOptions.length) {
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			}
+
+			return <></>;
 		}
 
 		const source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-			return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+			return makeAnchor( ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
@@ -1177,27 +1181,14 @@ export class ItemList<T> {
 				throw new Error('No zone found for item: ' + item);
 			}
 
-			let rtnEl = makeAnchor( ActionId.makeZoneUrl(zone.id), `${zone.name}`);
-
 			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
-				rtnEl.appendChild(document.createElement('br'));
-				rtnEl.appendChild(makeAnchor(ActionId.makeNpcUrl(npc.id), `${npc.name + category}`));
-			} else if (src.otherName) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${src.otherName + category}</small></a>
-				`;*/
-			} else if (category) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${category}</small></a>
-				`;*/
+				return makeAnchor(ActionId.makeNpcUrl(npc.id), <span>{zone.name}<br />{npc.name + category}</span>);
 			}
-			return rtnEl;
+			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
 		} else if (source.source.oneofKind == 'quest') {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), src.name);
+			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
 			return makeAnchor(ActionId.makeNpcUrl(src.npcId), src.npcName);
