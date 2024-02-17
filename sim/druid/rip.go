@@ -91,6 +91,9 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Rip",
+			},
 			NumberOfTicks: RipTicks,
 			TickLength:    time.Second * 2,
 

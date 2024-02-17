@@ -84,6 +84,9 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Rake",
+			},
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
