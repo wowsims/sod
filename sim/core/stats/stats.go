@@ -67,6 +67,29 @@ const (
 	Len
 )
 
+type WeaponSkills [WeaponSkillLen]float64
+
+type WeaponSkill byte
+
+const (
+	WeaponSkillUnknown WeaponSkill = iota
+	WeaponSkillAxes
+	WeaponSkillSwords
+	WeaponSkillDaggers
+	WeaponSkillUnarmed
+	WeaponSkillTwoHandedAxes
+	WeaponSkillTwoHandedSwords
+	WeaponSkillTwoHandedMaces
+	WeaponSkillPolearms
+	WeaponSkillStaves
+	WeaponSkillThrown
+	WeaponSkillBows
+	WeaponSkillCrossbows
+	WeaponSkillGuns
+
+	WeaponSkillLen
+)
+
 var PseudoStatsLen = len(proto.PseudoStat_name)
 var UnitStatsLen = int(Len) + PseudoStatsLen
 
@@ -196,6 +219,12 @@ func (s Stat) StatName() string {
 
 func FromFloatArray(values []float64) Stats {
 	var stats Stats
+	copy(stats[:], values)
+	return stats
+}
+
+func WeaponSkillsFloatArray(values []float64) WeaponSkills {
+	var stats WeaponSkills
 	copy(stats[:], values)
 	return stats
 }
