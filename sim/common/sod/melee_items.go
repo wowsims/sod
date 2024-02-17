@@ -26,7 +26,7 @@ func init() {
 			ActionID:         tickActionID,
 			SpellSchool:      core.SpellSchoolPhysical,
 			ProcMask:         core.ProcMaskMeleeMHSpecial,
-			DamageMultiplier: 1 * character.PseudoStats.DamageDealtMultiplier,
+			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
