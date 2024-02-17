@@ -60,7 +60,7 @@ func (paladin *Paladin) registerSealOfVengeanceSpellAndAura() {
 					.025*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage = tickValue * float64(dot.GetStacks())
 
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)

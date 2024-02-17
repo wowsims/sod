@@ -40,7 +40,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	}
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	cat.maxRipTicks = 6
+	cat.maxRipTicks = druid.RipTicks
 
 	cat.EnableEnergyBar(100.0)
 
@@ -48,7 +48,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 
 	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
 		// Base paw weapon.
-		MainHand:       cat.GetCatWeapon(),
+		MainHand:       cat.GetCatWeapon(cat.Level),
 		AutoSwingMelee: true,
 	})
 	/*
@@ -81,7 +81,7 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 }
 
 func (cat *FeralDruid) MissChance() float64 {
-	at := cat.AttackTables[cat.CurrentTarget.UnitIndex]
+	at := cat.AttackTables[cat.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand]
 	miss := at.BaseMissChance - cat.Shred.PhysicalHitChance(at)
 	dodge := at.BaseDodgeChance - cat.Shred.ExpertisePercentage() - cat.CurrentTarget.PseudoStats.DodgeReduction
 	return miss + dodge

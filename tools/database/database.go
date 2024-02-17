@@ -331,3 +331,7 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 func toSlice(stats Stats) []float64 {
 	return stats[:]
 }
+
+func weaponSkillsToSlice(weaponSkills WeaponSkills) []float64 {
+	return weaponSkills[:]
+}

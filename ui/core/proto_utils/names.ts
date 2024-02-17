@@ -9,7 +9,7 @@ import {
 	Stat,
 	WeaponType,
 } from '../proto/common.js';
-import { SourceFilterOption } from '../proto/ui.js';
+import { RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 import { ResourceType } from '../proto/api.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -287,8 +287,10 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceQuest, 'Quest'],
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
-	[SourceFilterOption.SourceWorldBoss, 'World Boss'],
+	// [SourceFilterOption.SourceWorldBoss, 'World Boss'],
+	[SourceFilterOption.SourceWorldBOE, 'World Drops'],
 ]);
+
 // export const raidNames: Map<RaidFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidUnknown, 'Unknown'],
 // 	[RaidFilterOption.RaidVanilla, 'Vanilla'],
@@ -303,3 +305,25 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidIcecrownCitadel, 'Icecrown Citadel'],
 // 	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
 // ]);
+
+export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
+	[RepLevel.RepLevelUnknown]:			'Unknown',
+	[RepLevel.RepLevelHated]: 			'Hated',
+	[RepLevel.RepLevelHostile]: 		'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 	'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 		'Neutral',
+	[RepLevel.RepLevelFriendly]: 		'Friendly',
+	[RepLevel.RepLevelHonored]: 		'Honored',
+	[RepLevel.RepLevelRevered]: 		'Revered',
+	[RepLevel.RepLevelExalted]: 		'Exalted',
+};
+
+export const REP_FACTION_NAMES: Record<RepFaction, string> = {
+	[RepFaction.RepFactionUnknown]: 						'Unknown',
+	[RepFaction.RepFactionSilverwingSentinels]: 'Silverwing Sentinels',
+	[RepFaction.RepFactionWarsongOutriders]: 		'Warsong Outriders',
+	[RepFaction.RepFactionLeagueOfArathor]: 		'The League of Arathor',
+	[RepFaction.RepFactionDefilers]: 						'The Defilers',
+	[RepFaction.RepFactionStormpikeGuard]: 			'Stormpike Guard',
+	[RepFaction.RepFactionFrostwolfClan]: 			'Frostwolf Clan',
+};

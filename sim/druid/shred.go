@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	shredDamageMultiplier := 2.25
+	shredDamageMultiplier := 3.0
 
 	flatDamageBonus := map[int32]float64{
 		25: 54.0,
@@ -89,7 +89,7 @@ func (druid *Druid) registerShredSpell() {
 
 			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
-			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
 			critMod := (critChance * (spell.CritMultiplier - 1))
 

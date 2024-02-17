@@ -8,7 +8,7 @@ import (
 
 const ShoutExpirationThreshold = time.Second * 3
 
-func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras core.AuraArray) *core.Spell {
+func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, allyAuras core.AuraArray) *core.Spell {
 	return warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
@@ -35,8 +35,15 @@ func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras c
 	})
 }
 
-func (warrior *Warrior) registerShouts() {
-	warrior.BattleShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 47436}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.BattleShoutAura(unit, warrior.Talents.ImprovedBattleShout, warrior.Talents.BoomingVoice, warrior.Level)
+func (warrior *Warrior) registerBattleShout() {
+	rank := core.LevelToBuffRank[core.BattleShout][warrior.Level]
+	actionId := core.BattleShoutSpellId[rank]
+
+	warrior.BattleShout = warrior.newShoutSpellConfig(core.ActionID{SpellID: actionId}, warrior.NewPartyAuraArray(func(unit *core.Unit) *core.Aura {
+		return core.BattleShoutAura(unit, warrior.Talents.ImprovedBattleShout, warrior.Talents.BoomingVoice)
 	}))
+}
+
+func (warrior *Warrior) registerShouts() {
+	warrior.registerBattleShout()
 }

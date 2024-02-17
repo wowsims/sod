@@ -34,6 +34,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.setupNaturesGrace()
 	druid.applyMoonkinForm()
 	druid.applyOmenOfClarity()
+	druid.applyBloodFrenzy()
 }
 
 func (druid *Druid) setupNaturesGrace() {
@@ -186,6 +187,35 @@ func (druid *Druid) setupNaturesGrace() {
 // 		},
 // 	})
 // }
+
+func (druid *Druid) applyBloodFrenzy() {
+	if druid.Talents.BloodFrenzy == 0 {
+		return
+	}
+
+	procChance := []float64{0, 0.5, 1}[druid.Talents.BloodFrenzy]
+	actionID := core.ActionID{SpellID: 16953}
+	cpMetrics := druid.NewComboPointMetrics(actionID)
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Blood Frenzy",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Cat) {
+				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
+					if result.Outcome.Matches(core.OutcomeCrit) {
+						if sim.Proc(procChance, "Blood Frenzy") {
+							druid.AddComboPoints(sim, 1, cpMetrics)
+						}
+					}
+				}
+			}
+		},
+	})
+}
 
 // TODO: Class druid omen
 func (druid *Druid) applyOmenOfClarity() {

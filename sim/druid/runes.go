@@ -22,7 +22,7 @@ func (druid *Druid) ApplyRunes() {
 	// druid.applyWildGrowth()
 
 	// Belt
-	// druid.applyBerserk()
+	druid.applyBerserk()
 	druid.applyEclipse()
 	// druid.applyNourish()
 
@@ -34,7 +34,7 @@ func (druid *Druid) ApplyRunes() {
 
 	// Feet
 	druid.applyDreamstate()
-	// druid.applyKingOfTheJungle()
+	druid.applyKingOfTheJungle()
 	// druid.applySurvivalInstincts()
 }
 
@@ -228,6 +228,12 @@ func (druid *Druid) applyWildStrikes() {
 	}
 
 	druid.WildStrikesBuffAura = core.ApplyWildStrikes(druid.GetCharacter())
+}
+
+func (druid *Druid) applyKingOfTheJungle() {
+	if druid.HasRune(proto.DruidRune_RuneFeetKingOfTheJungle) {
+		druid.registerTigersFurySpellKotJ()
+	}
 }
 
 func (druid *Druid) applyDreamstate() {

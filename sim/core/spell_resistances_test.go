@@ -20,7 +20,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 		stats: stats.Stats{},
 	}
 
-	attackTable := NewAttackTable(attacker, defender)
+	attackTable := NewAttackTable(attacker, defender, nil)
 
 	sim := NewSim(&proto.RaidSimRequest{
 		SimOptions: &proto.SimOptions{},
@@ -41,7 +41,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 		var cumulativeChance float64
 		var resultingAr float64
 		for bin, th := range thresholds {
-			chance := max(min(1.0 - th - cumulativeChance, 1.0), 0.0)
+			chance := max(min(1.0-th-cumulativeChance, 1.0), 0.0)
 			resultingAr += chance * 0.25 * float64(bin)
 			cumulativeChance += chance
 			if cumulativeChance >= 1 {
@@ -50,10 +50,10 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 		}
 
 		resistanceScore := attackTable.Defender.resistCoeff(SpellSchoolFire, attackTable.Attacker, false, false)
-		expectedAr := 0.75 * resistanceScore - 3.0 / 16.0 * max(0.0, resistanceScore - 2.0 / 3.0)
+		expectedAr := 0.75*resistanceScore - 3.0/16.0*max(0.0, resistanceScore-2.0/3.0)
 
 		if math.Abs(resultingAr-expectedAr) > 1e-2 {
-			t.Errorf("resist = %d, thresholds = (%.2f, %.2f, %.2f), resultingAr = %.2f%%, expectedAr = %.2f%%", resist, threshold00, threshold25, threshold50, resultingAr * 100, expectedAr * 100)
+			t.Errorf("resist = %d, thresholds = (%.2f, %.2f, %.2f), resultingAr = %.2f%%, expectedAr = %.2f%%", resist, threshold00, threshold25, threshold50, resultingAr*100, expectedAr*100)
 			return
 		}
 

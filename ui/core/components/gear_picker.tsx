@@ -1,4 +1,4 @@
-import { professionNames, slotNames } from '../proto_utils/names.js';
+import { REP_FACTION_NAMES, REP_LEVEL_NAMES, professionNames, slotNames } from '../proto_utils/names.js';
 import { BaseModal } from './base_modal';
 import { Component } from './component';
 import { FiltersMenu } from './filters_menu';
@@ -33,6 +33,7 @@ import {
 	DatabaseFilters,
 	UIEnchant as Enchant,
 	UIItem as Item,
+	RepFaction,
 	UIRune as Rune,
 } from '../proto/ui.js';
 // eslint-disable-next-line unused-imports/no-unused-imports
@@ -1157,18 +1158,26 @@ export class ItemList<T> {
 	}
 
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
-		if (!item.sources || item.sources.length == 0) {
-			return <></>;
-		}
-
-		const makeAnchor = (href:string, inner:string) => {
+		const makeAnchor = (href:string, inner:string | JSX.Element) => {
 			return <a href={href} target="_blank"><small>{inner}</small></a>;
 		}
 
-		const source = item.sources[0];
+		if (!item.sources || item.sources.length == 0) {
+			if (item.randomSuffixOptions.length) {
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			}
+
+			return <></>;
+		}
+
+		let source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-			return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+
+			if (src.spellId) {
+				return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+			}
+			return makeAnchor( ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
@@ -1177,30 +1186,30 @@ export class ItemList<T> {
 				throw new Error('No zone found for item: ' + item);
 			}
 
-			let rtnEl = makeAnchor( ActionId.makeZoneUrl(zone.id), `${zone.name}`);
-
 			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
-				rtnEl.appendChild(document.createElement('br'));
-				rtnEl.appendChild(makeAnchor(ActionId.makeNpcUrl(npc.id), `${npc.name + category}`));
+				return makeAnchor(ActionId.makeNpcUrl(npc.id), <span>{zone.name}<br />{npc.name + category}</span>);
 			} else if (src.otherName) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${src.otherName + category}</small></a>
-				`;*/
-			} else if (category) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${category}</small></a>
-				`;*/
+				return makeAnchor(ActionId.makeZoneUrl(zone.id), <span>{zone.name}<br />{src.otherName}</span>);
 			}
-			return rtnEl;
-		} else if (source.source.oneofKind == 'quest') {
+			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
+		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), src.name);
+			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
+		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
+			const factionNames = item.sources.
+				filter(source => source.source.oneofKind == 'rep').
+				map(source => source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown])
+			const src = source.source.rep;
+			return makeAnchor(ActionId.makeItemUrl(item.id), (
+				<>
+					{factionNames.map(name => (<span>{name}<br /></span>))}
+					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
+				</>
+			))
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
-			return makeAnchor(ActionId.makeNpcUrl(src.npcId), src.npcName);
+			return makeAnchor(ActionId.makeNpcUrl(src.npcId), <span>Sold by<br />{src.npcName}</span>);
 		}
 		return <></>;
 	}
