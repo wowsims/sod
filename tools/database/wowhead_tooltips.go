@@ -287,9 +287,6 @@ func (item WowheadItemResponse) GetStats() Stats {
 }
 
 func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
-	if item.ID == 215380 {
-		fmt.Println(item.GetIntValue(twoHandedAxesSkill))
-	}
 	return WeaponSkills{
 		float64(item.GetIntValue(axesSkill)),
 		float64(item.GetIntValue(swordsSkill)),
