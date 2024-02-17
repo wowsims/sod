@@ -150,7 +150,6 @@ func (warrior *Warrior) applyConsumedByRage() {
 
 func (warrior *Warrior) applyBloodSurge() {
 	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
-	if !warrior.HasRune(proto.WarriorRune_RuneBloodSurge) {
 		return
 	}
 
