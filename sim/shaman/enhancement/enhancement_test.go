@@ -21,8 +21,10 @@ func TestEnhancement(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:       core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
-		OtherGearSets: []core.GearSetCombo{},
+		GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_2"),
+		},
 
 		Talents:       phase2Talents,
 		Consumes:      FullConsumesRBRB,
@@ -33,8 +35,10 @@ func TestEnhancement(t *testing.T) {
 			{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
 		},
 
-		Rotation:       core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
-		OtherRotations: []core.RotationCombo{},
+		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_2"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
