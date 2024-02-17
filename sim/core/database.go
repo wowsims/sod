@@ -62,7 +62,7 @@ type Item struct {
 	Stats        stats.Stats // Stats applied to wearer
 	Quality      proto.ItemQuality
 	SetName      string // Empty string if not part of a set.
-	WeaponSkills map[int32]float64
+	WeaponSkills stats.WeaponSkills
 
 	// Modified for each instance of the item.
 	RandomSuffix RandomSuffix
@@ -87,7 +87,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SwingSpeed:       pData.WeaponSpeed,
 		Stats:            stats.FromFloatArray(pData.Stats),
 		SetName:          pData.SetName,
-		WeaponSkills:     pData.WeaponSkills,
+		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
 	}
 }
 

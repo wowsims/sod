@@ -42,6 +42,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 }
 
 type Stats [46]float64
+type WeaponSkills [14]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -52,7 +53,7 @@ type ItemResponse interface {
 	GetTooltipRegexValue(pattern *regexp.Regexp, matchIdx int) int
 	GetIntValue(pattern *regexp.Regexp) int
 	GetStats() Stats
-	GetWeaponSkillsMap() map[proto.PseudoStat]float64
+	GetWeaponSkills() []float64
 	GetClassAllowlist() []proto.Class
 	IsEquippable() bool
 	GetItemLevel() int
@@ -202,9 +203,9 @@ var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
 var daggersSkill = regexp.MustCompile(`Increased Daggers \+([0-9]+)\.`)
 var unarmedSkill = regexp.MustCompile(`Increased Unarmed \+([0-9]+)\.`)
 
-var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-Handed Axes \+([0-9]+)\.`)
-var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-Handed Swords \+([0-9]+)\.`)
-var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-Handed Maces \+([0-9]+)\.`)
+var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-handed Axes \+([0-9]+)\.`)
+var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-handed Swords \+([0-9]+)\.`)
+var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-handed Maces \+([0-9]+)\.`)
 var stavesSkill = regexp.MustCompile(`Increased Staves \+([0-9]+)\.`)
 var polearmsSkill = regexp.MustCompile(`Increased Polearms \+([0-9]+)\.`)
 
@@ -285,21 +286,21 @@ func (item WowheadItemResponse) GetStats() Stats {
 	}
 }
 
-func (item WowheadItemResponse) GetWeaponSkillsMap() map[int32]float64 {
-	return map[int32]float64{
-		int32(proto.WeaponSkill_WeaponSkillAxes):            float64(item.GetIntValue(axesSkill)),
-		int32(proto.WeaponSkill_WeaponSkillSwords):          float64(item.GetIntValue(swordsSkill)),
-		int32(proto.WeaponSkill_WeaponSkillDaggers):         float64(item.GetIntValue(daggersSkill)),
-		int32(proto.WeaponSkill_WeaponSkillUnarmed):         float64(item.GetIntValue(unarmedSkill)),
-		int32(proto.WeaponSkill_WeaponSkillTwoHandedAxes):   float64(item.GetIntValue(twoHandedAxesSkill)),
-		int32(proto.WeaponSkill_WeaponSkillTwoHandedSwords): float64(item.GetIntValue(twoHandedSwordsSkill)),
-		int32(proto.WeaponSkill_WeaponSkillTwoHandedMaces):  float64(item.GetIntValue(twoHandedMacesSkill)),
-		int32(proto.WeaponSkill_WeaponSkillStaves):          float64(item.GetIntValue(stavesSkill)),
-		int32(proto.WeaponSkill_WeaponSkillPolearms):        float64(item.GetIntValue(polearmsSkill)),
-		int32(proto.WeaponSkill_WeaponSkillThrown):          float64(item.GetIntValue(thrownSkill)),
-		int32(proto.WeaponSkill_WeaponSkillBows):            float64(item.GetIntValue(bowsSkill)),
-		int32(proto.WeaponSkill_WeaponSkillCrossbows):       float64(item.GetIntValue(crossbowsSkill)),
-		int32(proto.WeaponSkill_WeaponSkillGuns):            float64(item.GetIntValue(gunsSkill)),
+func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
+	return WeaponSkills{
+		float64(item.GetIntValue(axesSkill)),
+		float64(item.GetIntValue(swordsSkill)),
+		float64(item.GetIntValue(daggersSkill)),
+		float64(item.GetIntValue(unarmedSkill)),
+		float64(item.GetIntValue(twoHandedAxesSkill)),
+		float64(item.GetIntValue(twoHandedSwordsSkill)),
+		float64(item.GetIntValue(twoHandedMacesSkill)),
+		float64(item.GetIntValue(stavesSkill)),
+		float64(item.GetIntValue(polearmsSkill)),
+		float64(item.GetIntValue(thrownSkill)),
+		float64(item.GetIntValue(bowsSkill)),
+		float64(item.GetIntValue(crossbowsSkill)),
+		float64(item.GetIntValue(gunsSkill)),
 	}
 }
 
@@ -666,7 +667,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 
 		Stats: toSlice(item.GetStats()),
 
-		WeaponSkills: item.GetWeaponSkillsMap(),
+		WeaponSkills: weaponSkillsToSlice(item.GetWeaponSkills()),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,

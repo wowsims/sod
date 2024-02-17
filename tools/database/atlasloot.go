@@ -15,17 +15,9 @@ import (
 func ReadAtlasLootData() *WowDatabase {
 	db := NewWowDatabase()
 
-	// Read these in reverse order, because some items are listed in multiple expansions
-	// and we want to overwrite with the earliest value.
-	// readAtlasLootSourceData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source-wrath.lua")
-	// readAtlasLootSourceData(db, proto.Expansion_ExpansionTbc, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source-tbc.lua")
 	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_Data/source.lua")
-	// readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source.lua")
-
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_DungeonsAndRaids/data.lua")
-	// readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
-	// readAtlasLootDungeonData(db, proto.Expansion_ExpansionTbc, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-tbc.lua")
-	// readAtlasLootDungeonData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-wrath.lua")
+	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_PvP/data.lua")
 
 	readZoneData(db)
 
@@ -40,7 +32,7 @@ func readAtlasLootSourceData(db *WowDatabase, expansion proto.Expansion, srcUrl 
 
 	itemPattern := regexp.MustCompile(`^\[([0-9]+)\] = {(.*)},$`)
 	typePattern := regexp.MustCompile(`\[3\] = (\d+),.*\[4\] = (\d+)`)
-	lines := strings.Split(srcTxt, "\n")
+	lines := strings.Split(srcTxt, "\r\n")
 	for _, line := range lines {
 		match := itemPattern.FindStringSubmatch(line)
 		if match != nil {
@@ -176,6 +168,63 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	}
 }
 
+func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl string) {
+	srcTxt, err := tools.ReadWeb(srcUrl)
+	if err != nil {
+		log.Fatalf("Error reading atlasloot file %s", err)
+	}
+
+	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
+	regex := regexp.MustCompile(`\r?\n`)
+	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
+	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
+
+	bgPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?items = {(.*?)@@@}@@@`)
+	repLevelPattern := regexp.MustCompile(`{ -- [\w]+Rep(Friendly|Honored|Revered|Exalted)@@@\s+name =(.*?@@@\s+},?@@@\s+},?)`)
+	factionItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+)_DIFF\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
+	for _, bgMatch := range bgPattern.FindAllStringSubmatch(srcTxt, -1) {
+		fmt.Printf("BG: %s\n", bgMatch[1])
+		zoneID, _ := strconv.Atoi(bgMatch[2])
+		db.MergeZone(&proto.UIZone{
+			Id:        int32(zoneID),
+			Expansion: expansion,
+		})
+
+		for _, repLevelMatch := range repLevelPattern.FindAllStringSubmatch(bgMatch[3], -1) {
+			repLevel := repLevelMatch[1]
+			fmt.Printf("Reputation: %s\n", repLevel)
+
+			for _, factionMatch := range factionItemsPattern.FindAllStringSubmatch(repLevelMatch[2], -1) {
+				faction := factionMatch[1]
+				fmt.Printf("Faction: %s\n", faction)
+
+				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(factionMatch[0], -1) {
+					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+
+					idStr := itemParams[1]
+					itemID, _ := strconv.Atoi(idStr)
+					//fmt.Printf("Item: %d\n", itemID)
+					repSource := &proto.RepSource{
+						RepFactionId: AtlasLootPVPFactions[zoneID][faction],
+						RepLevel:     AtlasLootRepLevels[repLevel],
+						FactionId:    core.Ternary(faction == "ALLIANCE", proto.Faction_Alliance, proto.Faction_Horde),
+					}
+
+					item := &proto.UIItem{Id: int32(itemID)}
+					item.Sources = append(item.Sources, &proto.UIItemSource{
+						Source: &proto.UIItemSource_Rep{
+							Rep: repSource,
+						},
+					})
+
+					db.MergeItem(item)
+				}
+			}
+		}
+	}
+}
+
 func readZoneData(db *WowDatabase) {
 	zoneIDs := make([]int32, 0, len(db.Zones))
 	for zoneID := range db.Zones {
@@ -203,6 +252,7 @@ func readZoneData(db *WowDatabase) {
 }
 
 var AtlasLootProfessionIDs = map[int]proto.Profession{
+	3: proto.Profession_Leatherworking,
 	//4: proto.Profession_FirstAid,
 	5: proto.Profession_Blacksmithing,
 	6: proto.Profession_Leatherworking,
@@ -213,6 +263,39 @@ var AtlasLootProfessionIDs = map[int]proto.Profession{
 	12: proto.Profession_Engineering,
 	13: proto.Profession_Enchanting,
 }
+
 var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
 	"NORMAL_DIFF": proto.DungeonDifficulty_DifficultyNormal,
+}
+
+var AtlasLootPVPFactions = map[int]map[string]proto.RepFaction{
+	3277: {
+		// Silverwing Sentinels
+		"ALLIANCE": proto.RepFaction_RepFactionSilverwingSentinels,
+		// Warsong Outriders
+		"HORDE": proto.RepFaction_RepFactionWarsongOutriders,
+	},
+	3358: {
+		// The League of Arathor
+		"ALLIANCE": proto.RepFaction_RepFactionLeagueOfArathor,
+		// The Defilers
+		"HORDE": proto.RepFaction_RepFactionDefilers,
+	},
+	2597: {
+		// Stormpike Guard
+		"ALLIANCE": proto.RepFaction_RepFactionStormpikeGuard,
+		// Frostwolf Clan
+		"HORDE": proto.RepFaction_RepFactionFrostwolfClan,
+	},
+}
+
+var AtlasLootRepLevels = map[string]proto.RepLevel{
+	"Hated":      proto.RepLevel_RepLevelHated,
+	"Hostile":    proto.RepLevel_RepLevelHostile,
+	"Unfriendly": proto.RepLevel_RepLevelUnfriendly,
+	"Neutral":    proto.RepLevel_RepLevelNeutral,
+	"Friendly":   proto.RepLevel_RepLevelFriendly,
+	"Honored":    proto.RepLevel_RepLevelHonored,
+	"Revered":    proto.RepLevel_RepLevelRevered,
+	"Exalted":    proto.RepLevel_RepLevelExalted,
 }
