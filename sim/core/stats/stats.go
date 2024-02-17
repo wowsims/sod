@@ -60,7 +60,6 @@ const (
 	BonusArmor
 	Healing
 	SpellDamage
-	WeaponSkill
 	FeralAttackPower
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
@@ -188,8 +187,6 @@ func (s Stat) StatName() string {
 		return "ShadowResistance"
 	case ArcaneResistance:
 		return "ArcaneResistance"
-	case WeaponSkill:
-		return "WeaponSkill"
 	case FeralAttackPower:
 		return "FeralAttackPower"
 	}
@@ -360,6 +357,24 @@ type PseudoStats struct {
 	// Blocks certain cooldowns
 	Shapeshifted bool
 
+	// Weapon Skills
+	UnarmedSkill         float64
+	DaggersSkill         float64
+	SwordsSkill          float64
+	MacesSkill           float64
+	AxesSkill            float64
+	TwoHandedSwordsSkill float64
+	TwoHandedMacesSkill  float64
+	TwoHandedAxesSkill   float64
+	PolearmsSkill        float64
+	StavesSkill          float64
+
+	// Ranged Skills
+	BowsSkill      float64
+	CrossbowsSkill float64
+	GunsSkill      float64
+	ThrownSkill    float64
+
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
 	///////////////////////////////////////////////////
@@ -440,6 +455,20 @@ func NewPseudoStats() PseudoStats {
 		ArmorMultiplier: 1,
 
 		HealingTakenMultiplier: 1,
+		UnarmedSkill:           0,
+		DaggersSkill:           0,
+		SwordsSkill:            0,
+		MacesSkill:             0,
+		AxesSkill:              0,
+		TwoHandedSwordsSkill:   0,
+		TwoHandedMacesSkill:    0,
+		TwoHandedAxesSkill:     0,
+		PolearmsSkill:          0,
+		StavesSkill:            0,
+		BowsSkill:              0,
+		GunsSkill:              0,
+		CrossbowsSkill:         0,
+		ThrownSkill:            0,
 	}
 }
 
