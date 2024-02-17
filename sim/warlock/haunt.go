@@ -27,10 +27,10 @@ func (warlock *Warlock) registerHauntSpell() {
 			ActionID: actionID,
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier *= debuffMult
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier *= debuffMult
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier /= debuffMult
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier /= debuffMult
 			},
 		})
 	})

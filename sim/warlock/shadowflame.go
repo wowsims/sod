@@ -70,7 +70,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				dot.SnapshotBaseDamage *= emberstormMulti
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
 				// Revert to shadow school
 				dot.Spell.SpellSchool = core.SpellSchoolShadow

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -68,16 +69,17 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
-	attackTable := warrior.AttackTables[target.UnitIndex]
+	attackTableMh := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
+	attackTableOh := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeOffHand]
 
 	var awd float64
 	if isOh {
-		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable)
-		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(attackTable, false)
+		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTableOh)
+		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(attackTableOh, false)
 		awd = ((warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5) + dot.Spell.BonusWeaponDamage()) * adm * tdm
 	} else { // MH
-		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable)
-		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(attackTable, false)
+		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTableMh)
+		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(attackTableMh, false)
 		awd = (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) + dot.Spell.BonusWeaponDamage()) * adm * tdm
 	}
 

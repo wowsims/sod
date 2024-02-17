@@ -59,6 +59,7 @@ message UIItem {
 	double weapon_damage_min = 13;
 	double weapon_damage_max = 14;
 	double weapon_speed = 15;
+	map<int32, double> weapon_skills = 28;
 
 	int32 ilvl = 16;
 	int32 phase = 17;
