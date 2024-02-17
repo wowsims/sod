@@ -1,0 +1,238 @@
+character_stats_results: {
+ key: "TestFury-CharacterStats-Default"
+ value: {
+  final_stats: 227.04
+  final_stats: 157.74
+  final_stats: 192.94
+  final_stats: 43.34
+  final_stats: 42.24
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 3
+  final_stats: 5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 743.73
+  final_stats: 3
+  final_stats: 30.52491
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2864.98
+  final_stats: 102
+  final_stats: 0
+  final_stats: 0
+  final_stats: 112.37
+  final_stats: 25.68631
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2023.4
+  final_stats: 5
+  final_stats: 0
+  final_stats: 10
+  final_stats: 5
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 0.98257
+  tps: 2.81939
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 0.89329
+  tps: 2.74797
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 0.93525
+  tps: 2.78153
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 0.94296
+  tps: 2.7877
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 0.85791
+  tps: 2.71966
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-H.A.Z.A.R.D.Suit"
+ value: {
+  dps: 0.97604
+  tps: 2.81417
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 0.85791
+  tps: 2.71966
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 0.85791
+  tps: 2.71966
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-InsulatedLeathers"
+ value: {
+  dps: 0.96132
+  tps: 2.80239
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 0.85791
+  tps: 2.71966
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-IrradiatedGarments"
+ value: {
+  dps: 0.84431
+  tps: 2.70878
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-StormshroudArmor"
+ value: {
+  dps: 0.79707
+  tps: 2.67099
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 0.89329
+  tps: 2.74797
+ }
+}
+dps_results: {
+ key: "TestFury-Average-Default"
+ value: {
+  dps: 1.17445
+  tps: 2.88485
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 1.04211
+  tps: 41.50035
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 1.04211
+  tps: 2.86702
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 2.15389
+  tps: 4.55644
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 0.61959
+  tps: 41.16234
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 0.61959
+  tps: 2.529
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Human-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 1.28329
+  tps: 3.85996
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 1.11689
+  tps: 41.56018
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 1.11689
+  tps: 2.92685
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 2.31244
+  tps: 4.68329
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 0.68017
+  tps: 41.21081
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 0.68017
+  tps: 2.57747
+ }
+}
+dps_results: {
+ key: "TestFury-Settings-Orc-25-phase_2_dw-Fury-phase_2-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 1.41844
+  tps: 3.96809
+ }
+}
+dps_results: {
+ key: "TestFury-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 0.34991
+  tps: 2.31326
+ }
+}
