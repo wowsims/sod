@@ -780,6 +780,7 @@ export class ItemList<T> {
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..."/>
 					{label == 'Items' && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
+					{/* <div className="selector-modal-phase-selector"></div> */}
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
@@ -817,6 +818,8 @@ export class ItemList<T> {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
 		}
+
+		// makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
 
@@ -969,9 +972,10 @@ export class ItemList<T> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			if (listItemData.phase > this.player.sim.getPhase()) {
-				return false;
-			}
+			// TODO: We can bring this back at level 60 but for now this isn't working correctly because a lot of gear is incorrectly labeled
+			// if (listItemData.phase > this.player.sim.getPhase()) {
+			// 	return false;
+			// }
 
 			if (this.searchInput.value.length > 0) {
 				const searchQuery = this.searchInput.value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '').split(" ");
