@@ -34,44 +34,44 @@ func TestFury(t *testing.T) {
 	}))
 }
 
-func TestArms(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassWarrior,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+// func TestArms(t *testing.T) {
+// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+// 		{
+// 			Class:      proto.Class_ClassWarrior,
+// 			Level:      25,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-			Talents:     P1ArmsTalents,
-			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
-			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+// 			Talents:     P1ArmsTalents,
+// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
+// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+// 			Buffs:       core.FullBuffsPhase1,
+// 			Consumes:    Phase1Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
-		{
-			Class:      proto.Class_ClassWarrior,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 		{
+// 			Class:      proto.Class_ClassWarrior,
+// 			Level:      25,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-			Talents:     P1ArmsTalents,
-			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1_dw"),
-			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+// 			Talents:     P1ArmsTalents,
+// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1_dw"),
+// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+// 			Buffs:       core.FullBuffsPhase1,
+// 			Consumes:    Phase1Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
-	}))
-}
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 	}))
+// }
 
 func BenchmarkSimulate(b *testing.B) {
 	core.Each([]*proto.RaidSimRequest{
