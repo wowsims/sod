@@ -16,8 +16,8 @@ func (rogue *Rogue) registerThistleTeaCD() {
 	actionID := core.ActionID{ItemID: 7676}
 	energyMetrics := rogue.NewEnergyMetrics(actionID)
 
-	// Restores 100 Energy with penalty of 2 per level over 40
-	energyRegen := 100 - math.Max(float64(rogue.Level-40), 0.0)*2
+	// Restores 100 Energy for all levels in Classic, prior to 2.0
+	energyRegen := 100
 
 	thistleTeaSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -43,7 +43,7 @@ func (rogue *Rogue) registerThistleTeaCD() {
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			// Make sure we have plenty of room so we dont energy cap right after using.
-			return rogue.CurrentEnergy() <= 60
+			return rogue.CurrentEnergy() <= 10
 		},
 	})
 }
