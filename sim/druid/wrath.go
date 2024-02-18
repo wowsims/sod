@@ -59,7 +59,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 			CastTime: druid.NaturesGraceCastTime(),
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + core.Ternary(druid.Ranged().ID == IdolOfWrath, .02, 0),
 		CritMultiplier:   druid.VengeanceCritMultiplier(),
 		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
