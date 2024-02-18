@@ -222,19 +222,6 @@ export class ItemPicker extends Component {
 		const loadItems = () => this._items = this.player.getItems(this.slot);
 		const loadItem = () => this.item = player.getEquippedItem(slot);
 
-		player.levelChangeEmitter.on(loadItems);
-		player.gearChangeEmitter.on(loadItem);
-		player.professionChangeEmitter.on(() => {
-			if (this._equippedItem != null) {
-				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
-			}
-		});
-
-		this.addOnDisposeCallback(() => {
-			player.levelChangeEmitter.off(loadItems);
-			player.itemSwapChangeEmitter.on(loadItems);
-		});
-
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
@@ -261,6 +248,19 @@ export class ItemPicker extends Component {
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
+
+			player.levelChangeEmitter.on(loadItems);
+			player.gearChangeEmitter.on(loadItem);
+			player.professionChangeEmitter.on(() => {
+				if (this._equippedItem != null) {
+					this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
+				}
+			});
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
 		});
 	}
 
@@ -321,14 +321,6 @@ export class IconItemSwapPicker extends Component {
 
 		const loadItems = () => this._items = this.player.getItems(slot);
 
-		player.levelChangeEmitter.on(loadItems);
-		player.itemSwapChangeEmitter.on(loadItems);
-
-		this.addOnDisposeCallback(() => {
-			player.levelChangeEmitter.off(loadItems);
-			player.itemSwapChangeEmitter.on(loadItems);
-		});
-
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
@@ -352,6 +344,14 @@ export class IconItemSwapPicker extends Component {
 					eligibleRunes: this._runes,
 					gearData: gearData,
 				});
+			});
+
+			player.levelChangeEmitter.on(loadItems);
+			player.itemSwapChangeEmitter.on(loadItems);
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
 			});
 		});
 	}
