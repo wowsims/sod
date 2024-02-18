@@ -1,6 +1,6 @@
 import pako from 'pako';
 // eslint-disable-next-line unused-imports/no-unused-imports
-import { element } from 'tsx-vanilla';
+import { element, ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
@@ -48,19 +48,18 @@ export abstract class Exporter extends BaseModal {
 			getContent: () => this.textElem.innerHTML,
 			text: 'Copy',
 			tooltip: 'Copy to clipboard',
-		})
+		});
 
 		if (options.allowDownload) {
+			const downloadBtnRef = ref<HTMLButtonElement>()
 			this.footer!.appendChild(
-				<button className="exporter-button btn btn-primary download-button">
+				<button className="exporter-button btn btn-primary download-button" ref={downloadBtnRef}>
 					<i className="fa fa-download me-1"></i>
 					Download
 				</button>
-			)
-		}
+			);
 
-		if (options.allowDownload) {
-			const downloadButton = this.rootElem.getElementsByClassName('download-button')[0] as HTMLElement;
+			const downloadButton = downloadBtnRef.value!;
 			downloadButton.addEventListener('click', _event => {
 				const data = this.textElem.textContent!;
 				downloadString(data, 'wowsims.json');
