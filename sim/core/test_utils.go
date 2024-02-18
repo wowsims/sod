@@ -32,12 +32,11 @@ var AverageDefaultSimTestOptions = &proto.SimOptions{
 const ShortDuration = 60
 const LongDuration = 300
 
-var DefaultTargetProto = &proto.Target{
-	Level: CharacterMaxLevel + 3,
+var DefaultTargetProtoLvl25 = &proto.Target{
+	Level: 27,
 	Stats: stats.Stats{
-		stats.Armor:       10643,
+		stats.Armor:       1104,
 		stats.AttackPower: 320,
-		stats.BlockValue:  54,
 	}.ToFloatArray(),
 	MobType: proto.MobType_MobTypeDemon,
 
@@ -47,53 +46,166 @@ var DefaultTargetProto = &proto.Target{
 	DamageSpread:  0.3333,
 }
 
-var FullRaidBuffs = &proto.RaidBuffs{
+var DefaultTargetProtoLvl40 = &proto.Target{
+	Level: 42,
+	Stats: stats.Stats{
+		stats.Armor:       1104,
+		stats.AttackPower: 320,
+	}.ToFloatArray(),
+	MobType: proto.MobType_MobTypeDemon,
+
+	SwingSpeed:    2,
+	MinBaseDamage: 4192.05,
+	ParryHaste:    true,
+	DamageSpread:  0.3333,
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Raid Buffs
+///////////////////////////////////////////////////////////////////////////
+
+var FullRaidBuffsPhase1 = &proto.RaidBuffs{
 	ArcaneBrilliance:     true,
+	AspectOfTheLion:      true,
 	BattleShout:          proto.TristateEffect_TristateEffectImproved,
+	BloodPact:            proto.TristateEffect_TristateEffectImproved,
 	DevotionAura:         proto.TristateEffect_TristateEffectImproved,
-	DivineSpirit:         true,
 	GiftOfTheWild:        proto.TristateEffect_TristateEffectImproved,
-	LeaderOfThePack:      true,
-	ManaSpringTotem:      proto.TristateEffect_TristateEffectRegular,
-	MoonkinAura:          true,
 	PowerWordFortitude:   proto.TristateEffect_TristateEffectImproved,
-	ShadowProtection:     true,
-	GraceOfAirTotem:      proto.TristateEffect_TristateEffectImproved,
+	RetributionAura:      proto.TristateEffect_TristateEffectImproved,
 	StrengthOfEarthTotem: proto.TristateEffect_TristateEffectImproved,
 	Thorns:               proto.TristateEffect_TristateEffectImproved,
-	TrueshotAura:         true,
 }
-var FullPartyBuffs = &proto.PartyBuffs{
-	//BraidedEterniumChain: true,
-	ManaTideTotems: 1,
+
+var FullRaidBuffsPhase2 = &proto.RaidBuffs{
+	ArcaneBrilliance:      true,
+	AspectOfTheLion:       true,
+	BattleShout:           proto.TristateEffect_TristateEffectImproved,
+	BloodPact:             proto.TristateEffect_TristateEffectImproved,
+	DevotionAura:          proto.TristateEffect_TristateEffectImproved,
+	DivineSpirit:          true,
+	FireResistanceAura:    true,
+	FireResistanceTotem:   true,
+	FrostResistanceAura:   true,
+	FrostResistanceTotem:  true,
+	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
+	LeaderOfThePack:       true,
+	ManaSpringTotem:       proto.TristateEffect_TristateEffectImproved,
+	MoonkinAura:           true,
+	NatureResistanceTotem: true,
+	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
+	RetributionAura:       proto.TristateEffect_TristateEffectImproved,
+	ShadowProtection:      true,
+	StrengthOfEarthTotem:  proto.TristateEffect_TristateEffectImproved,
+	Thorns:                proto.TristateEffect_TristateEffectImproved,
+	TrueshotAura:          true,
 }
-var FullIndividualBuffs = &proto.IndividualBuffs{
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Party Buffs
+///////////////////////////////////////////////////////////////////////////
+
+var FullPartyBuffs = &proto.PartyBuffs{}
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Individual Buffs
+///////////////////////////////////////////////////////////////////////////
+
+var FullIndividualBuffsPhase1 = &proto.IndividualBuffs{
+	AshenvalePvpBuff:  true,
+	BlessingOfKings:   true,
+	BlessingOfMight:   proto.TristateEffect_TristateEffectImproved,
+	BlessingOfWisdom:  proto.TristateEffect_TristateEffectImproved,
+	BoonOfBlackfathom: true,
+	SaygesFortune:     proto.SaygesFortune_SaygesDamage,
+}
+
+var FullIndividualBuffsPhase2 = &proto.IndividualBuffs{
 	BlessingOfKings:     true,
 	BlessingOfMight:     proto.TristateEffect_TristateEffectImproved,
 	BlessingOfSanctuary: true,
 	BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
+	SaygesFortune:       proto.SaygesFortune_SaygesDamage,
+	SparkOfInspiration:  true,
 }
 
-var FullDebuffs = &proto.Debuffs{
-	CurseOfElements:   true,
-	CurseOfWeakness:   proto.TristateEffect_TristateEffectImproved,
-	ExposeArmor:       proto.TristateEffect_TristateEffectImproved,
-	FaerieFire:        true,
-	GiftOfArthas:      true,
-	InsectSwarm:       true,
-	JudgementOfLight:  true,
-	JudgementOfWisdom: true,
-	ScorpidSting:      true,
-	SunderArmor:       true,
-	ThunderClap:       proto.TristateEffect_TristateEffectImproved,
+///////////////////////////////////////////////////////////////////////////
+//                                 Debuffs
+///////////////////////////////////////////////////////////////////////////
+
+var FullDebuffsPhase1 = &proto.Debuffs{
+	CurseOfElements:      true,
+	CurseOfRecklessness:  true,
+	CurseOfVulnerability: true,
+	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
+	DemoralizingRoar:     proto.TristateEffect_TristateEffectImproved,
+	DemoralizingShout:    proto.TristateEffect_TristateEffectImproved,
+	Dreamstate:           true,
+	ExposeArmor:          proto.TristateEffect_TristateEffectImproved,
+	FaerieFire:           true,
+	InsectSwarm:          true,
+	ImprovedShadowBolt:   true,
+	ScorpidSting:         true,
+	SunderArmor:          true,
+	ThunderClap:          proto.TristateEffect_TristateEffectImproved,
 }
 
-func NewDefaultTarget() *proto.Target {
-	return DefaultTargetProto // seems to be read-only
+var FullDebuffsPhase2 = &proto.Debuffs{
+	CurseOfElements:      true,
+	CurseOfRecklessness:  true,
+	CurseOfVulnerability: true,
+	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
+	DemoralizingRoar:     proto.TristateEffect_TristateEffectImproved,
+	DemoralizingShout:    proto.TristateEffect_TristateEffectImproved,
+	Dreamstate:           true,
+	ExposeArmor:          proto.TristateEffect_TristateEffectImproved,
+	FaerieFire:           true,
+	InsectSwarm:          true,
+	ImprovedScorch:       true,
+	ImprovedShadowBolt:   true,
+	JudgementOfLight:     true,
+	JudgementOfWisdom:    true,
+	ScorpidSting:         true,
+	ShadowWeaving:        true,
+	Stormstrike:          true,
+	SunderArmor:          true,
+	ThunderClap:          proto.TristateEffect_TristateEffectImproved,
+	WintersChill:         true,
 }
 
-func MakeDefaultEncounterCombos() []EncounterCombo {
-	var DefaultTarget = NewDefaultTarget()
+///////////////////////////////////////////////////////////////////////////
+//                                 Full Buffs
+///////////////////////////////////////////////////////////////////////////
+
+var FullBuffsPhase1 = BuffsCombo{
+	Label: "Phase 1 Buffs",
+
+	Debuffs: FullDebuffsPhase1,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase1,
+	Raid:    FullRaidBuffsPhase1,
+}
+
+var FullBuffsPhase2 = BuffsCombo{
+	Label: "Phase 2 Buffs",
+
+	Debuffs: FullDebuffsPhase2,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase2,
+	Raid:    FullRaidBuffsPhase2,
+}
+
+func NewDefaultTarget(playerLevel int32) *proto.Target {
+	switch playerLevel {
+	case 40:
+		return DefaultTargetProtoLvl40
+	default:
+		return DefaultTargetProtoLvl25
+	}
+}
+
+func MakeDefaultEncounterCombos(playerLevel int32) []EncounterCombo {
+	var DefaultTarget = NewDefaultTarget(playerLevel)
 
 	multipleTargets := make([]*proto.Target, 20)
 	for i := range multipleTargets {
@@ -138,7 +250,7 @@ func MakeDefaultEncounterCombos() []EncounterCombo {
 	}
 }
 
-func MakeSingleTargetEncounter(variation float64) *proto.Encounter {
+func MakeSingleTargetEncounter(playerLevel int32, variation float64) *proto.Encounter {
 	return &proto.Encounter{
 		Duration:             LongDuration,
 		DurationVariation:    variation,
@@ -146,7 +258,7 @@ func MakeSingleTargetEncounter(variation float64) *proto.Encounter {
 		ExecuteProportion_25: 0.25,
 		ExecuteProportion_35: 0.35,
 		Targets: []*proto.Target{
-			NewDefaultTarget(),
+			NewDefaultTarget(playerLevel),
 		},
 	}
 }

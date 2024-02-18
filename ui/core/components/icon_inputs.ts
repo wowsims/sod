@@ -1,4 +1,3 @@
-import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
 import {
 	Consumes,
 	Debuffs,
@@ -88,7 +87,7 @@ export function makeBooleanDebuffInput<SpecType extends Spec>(config: BooleanInp
 		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getRaid()!.getDebuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Debuffs) => player.getRaid()!.setDebuffs(eventID, newVal),
-		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.debuffsChangeEmitter, player.levelChangeEmitter]),
+		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.debuffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
 	}, config.actionId, config.fieldName, config.value);
 }
 
