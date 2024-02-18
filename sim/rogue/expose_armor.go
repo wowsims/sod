@@ -12,14 +12,15 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 	})
 
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 8647},
+		//TODO - update for each rank
+		ActionID:     core.ActionID{SpellID: 8650},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   25.0 - 5*float64(rogue.Talents.ImprovedExposeArmor),
+			Cost:   25.0,
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
