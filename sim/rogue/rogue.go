@@ -41,8 +41,6 @@ type Rogue struct {
 	Talents *proto.RogueTalents
 	Options *proto.Rogue_Options
 
-	bleedCategory *core.ExclusiveCategory
-
 	sliceAndDiceDurations [6]time.Duration
 
 	Backstab       *core.Spell
@@ -79,8 +77,6 @@ type Rogue struct {
 	lastDeadlyPoisonProcMask core.ProcMask
 
 	instantPoisonProcChanceBonus float64
-	instantPoisonProcChance      float64
-	woundPoisonProcChance        float64
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
@@ -248,10 +244,7 @@ func (rogue *Rogue) HasDagger(hand core.Hand) bool {
 
 // Check if the rogue is considered in "stealth" for the purpose of casting abilities
 func (rogue *Rogue) IsStealthed() bool {
-	if rogue.StealthAura.IsActive() {
-		return true
-	}
-	return false
+	return rogue.StealthAura.IsActive()
 }
 
 // Agent is a generic way to access underlying rogue on any of the agents.
