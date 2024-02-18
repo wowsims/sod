@@ -25,6 +25,8 @@ import { SimUI } from '../sim_ui.js';
 import { Input } from './input.js';
 import { BaseModal } from './base_modal.js';
 
+import * as Mechanics from '../constants/mechanics.js';
+
 export interface EncounterPickerConfig {
 	showExecuteProportion: boolean,
 }
@@ -184,7 +186,7 @@ class AdvancedEncounterModal extends BaseModal {
 				encounter.targets = newValue;
 				encounter.targetsChangeEmitter.emit(eventID);
 			},
-			newItem: () => Encounter.defaultTargetProto(),
+			newItem: () => Encounter.getPresetTargetForLevel(simUI.sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP, simUI.sim).target!,
 			copyItem: (oldItem: TargetProto) => TargetProto.clone(oldItem),
 			newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Encounter, TargetProto>, index: number, config: ListItemPickerConfig<Encounter, TargetProto>) => new TargetPicker(parent, encounter, index, config),
 		});
