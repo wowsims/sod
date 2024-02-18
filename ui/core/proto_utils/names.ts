@@ -9,11 +9,7 @@ import {
 	Stat,
 	WeaponType,
 } from '../proto/common.js';
-import {
-	DungeonDifficulty,
-	RaidFilterOption,
-	SourceFilterOption,
-} from '../proto/ui.js';
+import { RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 import { ResourceType } from '../proto/api.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -102,8 +98,6 @@ export const professionNames: Map<Profession, string> = new Map([
 	[Profession.Enchanting, 'Enchanting'],
 	[Profession.Engineering, 'Engineering'],
 	[Profession.Herbalism, 'Herbalism'],
-	[Profession.Inscription, 'Inscription'],
-	[Profession.Jewelcrafting, 'Jewelcrafting'],
 	[Profession.Leatherworking, 'Leatherworking'],
 	[Profession.Mining, 'Mining'],
 	[Profession.Skinning, 'Skinning'],
@@ -293,8 +287,10 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceQuest, 'Quest'],
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
-	[SourceFilterOption.SourceWorldBoss, 'World Boss'],
+	// [SourceFilterOption.SourceWorldBoss, 'World Boss'],
+	[SourceFilterOption.SourceWorldBOE, 'World Drops'],
 ]);
+
 // export const raidNames: Map<RaidFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidUnknown, 'Unknown'],
 // 	[RaidFilterOption.RaidVanilla, 'Vanilla'],
@@ -310,14 +306,24 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 // 	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
 // ]);
 
-export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
-	[DungeonDifficulty.DifficultyUnknown, 'Unknown'],
-	[DungeonDifficulty.DifficultyNormal, 'N'],
-	[DungeonDifficulty.DifficultyHeroic, 'H'],
-	[DungeonDifficulty.DifficultyTitanRuneAlpha, 'TRA'],
-	[DungeonDifficulty.DifficultyTitanRuneBeta, 'TRB'],
-	[DungeonDifficulty.DifficultyRaid10, '10N'],
-	[DungeonDifficulty.DifficultyRaid10H, '10H'],
-	[DungeonDifficulty.DifficultyRaid25, '25N'],
-	[DungeonDifficulty.DifficultyRaid25H, '25H'],
-]);
+export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
+	[RepLevel.RepLevelUnknown]:			'Unknown',
+	[RepLevel.RepLevelHated]: 			'Hated',
+	[RepLevel.RepLevelHostile]: 		'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 	'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 		'Neutral',
+	[RepLevel.RepLevelFriendly]: 		'Friendly',
+	[RepLevel.RepLevelHonored]: 		'Honored',
+	[RepLevel.RepLevelRevered]: 		'Revered',
+	[RepLevel.RepLevelExalted]: 		'Exalted',
+};
+
+export const REP_FACTION_NAMES: Record<RepFaction, string> = {
+	[RepFaction.RepFactionUnknown]: 						'Unknown',
+	[RepFaction.RepFactionSilverwingSentinels]: 'Silverwing Sentinels',
+	[RepFaction.RepFactionWarsongOutriders]: 		'Warsong Outriders',
+	[RepFaction.RepFactionLeagueOfArathor]: 		'The League of Arathor',
+	[RepFaction.RepFactionDefilers]: 						'The Defilers',
+	[RepFaction.RepFactionStormpikeGuard]: 			'Stormpike Guard',
+	[RepFaction.RepFactionFrostwolfClan]: 			'Frostwolf Clan',
+};

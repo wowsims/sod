@@ -79,6 +79,13 @@ const (
 	SpellCode_ShamanChainLightning
 	SpellCode_ShamanLavaBurst
 
+	SpellCode_ShamanEarthShock
+	SpellCode_ShamanFlameShock
+	SpellCode_ShamanFrostShock
+
+	SpellCode_ShamanMoltenBlast
+	SpellCode_ShamanFireNova
+
 	SpellCode_ShamanHealingWave
 	SpellCode_ShamanLesserHealingWave
 	SpellCode_ShamanChainHeal
@@ -177,52 +184,8 @@ func (shaman *Shaman) GetCharacter() *core.Character {
 	return &shaman.Character
 }
 
-// TODO: Totem buffs are party-wide
 func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	switch shaman.Totems.Earth {
-	case proto.EarthTotem_StrengthOfEarthTotem:
-		totem := proto.TristateEffect_TristateEffectRegular
-		if shaman.Talents.EnhancingTotems == 3 {
-			totem = proto.TristateEffect_TristateEffectImproved
-		}
-		raidBuffs.StrengthOfEarthTotem = max(raidBuffs.StrengthOfEarthTotem, totem)
-	case proto.EarthTotem_StoneskinTotem:
-		raidBuffs.StoneskinTotem = max(raidBuffs.StoneskinTotem, core.MakeTristateValue(
-			true,
-			shaman.Talents.GuardianTotems == 2,
-		))
-	}
-
-	switch shaman.Totems.Fire {
-	}
-
-	switch shaman.Totems.Water {
-	case proto.WaterTotem_ManaSpringTotem:
-		raidBuffs.ManaSpringTotem = max(raidBuffs.ManaSpringTotem, proto.TristateEffect_TristateEffectRegular)
-		if shaman.Talents.RestorativeTotems == 5 {
-			raidBuffs.ManaSpringTotem = proto.TristateEffect_TristateEffectImproved
-		}
-	}
-
-	switch shaman.Totems.Air {
-	case proto.AirTotem_GraceOfAirTotem:
-		totem := proto.TristateEffect_TristateEffectRegular
-		if shaman.Talents.EnhancingTotems == 3 {
-			totem = proto.TristateEffect_TristateEffectImproved
-		}
-		raidBuffs.GraceOfAirTotem = max(raidBuffs.StrengthOfEarthTotem, totem)
-	case proto.AirTotem_WindfuryTotem:
-		character := shaman.GetCharacter()
-		if character.Consumes.MainHandImbue == proto.WeaponImbue_WeaponImbueUnknown {
-			core.ApplyWindfury(character)
-		}
-	}
-}
-
-func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if shaman.Talents.ManaTideTotem {
-		partyBuffs.ManaTideTotems++
-	}
+	// Buffs are handled explicitly through APLs now
 }
 
 func (shaman *Shaman) Initialize() {
@@ -242,15 +205,12 @@ func (shaman *Shaman) Initialize() {
 	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 
-	// if shaman.ItemSwap.IsEnabled() {
-	// 	mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-	// 	shaman.ApplyFlametongueImbueToItem(mh, true)
-	// 	oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-	// 	shaman.ApplyFlametongueImbueToItem(oh, false)
-	// 	shaman.RegisterOnItemSwap(func(_ *core.Simulation) {
-	// 		shaman.ApplySyncType(proto.ShamanSyncType_Auto)
-	// 	})
-	// }
+	if shaman.ItemSwap.IsEnabled() {
+		mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
+		shaman.ApplyRockbiterImbueToItem(mh)
+		oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
+		shaman.ApplyRockbiterImbueToItem(oh)
+	}
 
 	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()

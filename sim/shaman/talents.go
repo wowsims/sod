@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -22,7 +23,7 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
 	if shaman.Talents.AncestralKnowledge > 0 {
-		shaman.MultiplyStat(stats.Intellect, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
+		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
 	}
 
 	shaman.applyElementalFocus()
@@ -139,6 +140,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cd := time.Minute * 3
 
 	var affectedSpells []*core.Spell
+	var affectedSpellCodes = []int32{
+		SpellCode_ShamanLightningBolt,
+		SpellCode_ShamanChainLightning,
+		SpellCode_ShamanLavaBurst,
+		SpellCode_ShamanEarthShock,
+		SpellCode_ShamanFlameShock,
+		SpellCode_ShamanFrostShock,
+		SpellCode_ShamanFireNova,
+		SpellCode_ShamanMoltenBlast,
+	}
 
 	// TODO: Share CD with Natures Swiftness
 
@@ -149,9 +160,14 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
-					shaman.ChainLightning,
 					shaman.LightningBolt,
+					shaman.ChainLightning,
 					{shaman.LavaBurst},
+					shaman.EarthShock,
+					shaman.FlameShock,
+					shaman.FrostShock,
+					shaman.FireNova,
+					{shaman.MoltenBlast},
 				}), func(spell *core.Spell) bool { return spell != nil },
 			)
 		},
@@ -168,7 +184,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != SpellCode_ShamanLightningBolt && spell.SpellCode != SpellCode_ShamanChainLightning && spell != shaman.LavaBurst {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
 			// Remove the buff and put skill on CD

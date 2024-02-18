@@ -76,7 +76,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				if stacks := dot.GetStacks(); stacks > 0 {
 					dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.09*dot.Spell.MeleeAttackPower(), 0)) * float64(stacks)
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
 			},

@@ -1,155 +1,294 @@
 character_stats_results: {
- key: "TestFury-CharacterStats-Default"
+ key: "TestFury-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 198.44
-  final_stats: 107.14
-  final_stats: 140.14
-  final_stats: 41.14
-  final_stats: 45.54
+  final_stats: 289.52
+  final_stats: 188.98
+  final_stats: 349.14
+  final_stats: 61.38
+  final_stats: 80.08
+  final_stats: 42
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 18
-  final_stats: 0
+  final_stats: 24
   final_stats: 3
+  final_stats: 9
   final_stats: 0
   final_stats: 0
-  final_stats: 610.88
-  final_stats: 0
-  final_stats: 15.90325
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 2494.78
-  final_stats: 18
-  final_stats: 8
-  final_stats: 0
-  final_stats: 99.22
-  final_stats: 17.44663
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1495.4
+  final_stats: 1041.01
+  final_stats: 5
+  final_stats: 27.32468
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 10
-  final_stats: 30
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3048.96
+  final_stats: 152
+  final_stats: 0
+  final_stats: 0
+  final_stats: 142.69
+  final_stats: 30.77342
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3960.4
+  final_stats: 18.5
+  final_stats: 13.5
+  final_stats: 83.5
+  final_stats: 18.5
+  final_stats: 23.5
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
  }
 }
-dps_results: {
- key: "TestFury-AllItems-StormshroudArmor"
+stat_weights_results: {
+ key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  dps: 0.63077
-  tps: 1.46868
+  weights: 0.02442
+  weights: 0.03246
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.00966
+  weights: 0.04584
+  weights: 0.17849
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
  }
 }
 dps_results: {
- key: "TestFury-Average-Default"
+ key: "TestFury-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 0.5098
-  tps: 0.78905
+  dps: 14.55285
+  tps: 16.57353
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestFury-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 0.36918
-  tps: 7.60883
+  dps: 13.68271
+  tps: 15.8768
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestFury-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 0.36918
-  tps: 0.64217
+  dps: 14.3237
+  tps: 16.38986
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestFury-Lvl40-AllItems-CarvedDriftwoodIcon-209575"
  value: {
-  dps: 1.84589
-  tps: 3.21084
+  dps: 18.23428
+  tps: 19.60862
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestFury-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 0.24323
-  tps: 7.5152
+  dps: 14.37668
+  tps: 16.43226
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestFury-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 0.24323
-  tps: 0.54854
+  dps: 13.34188
+  tps: 15.61353
  }
 }
 dps_results: {
- key: "TestFury-Settings-Human-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestFury-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 1.21615
-  tps: 2.74268
+  dps: 14.50269
+  tps: 16.53371
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
+ key: "TestFury-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 0.39547
-  tps: 7.62814
+  dps: 13.34188
+  tps: 15.61353
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
+ key: "TestFury-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 0.39547
-  tps: 0.66147
+  dps: 13.4308
+  tps: 15.67502
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestFury-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 1.97737
-  tps: 3.30736
+  dps: 14.76759
+  tps: 16.75871
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
+ key: "TestFury-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 0.26832
-  tps: 7.53365
+  dps: 13.4308
+  tps: 15.67502
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
+ key: "TestFury-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 0.26832
-  tps: 0.56698
+  dps: 13.55312
+  tps: 15.77278
  }
 }
 dps_results: {
- key: "TestFury-Settings-Orc-25-phase_1-Basic-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
+ key: "TestFury-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 1.34162
-  tps: 2.83492
+  dps: 12.87245
+  tps: 15.22046
  }
 }
 dps_results: {
- key: "TestFury-SwitchInFrontOfTarget-Default"
+ key: "TestFury-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 0.28602
-  tps: 0.57391
+  dps: 13.56498
+  tps: 15.78261
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Average-Default"
+ value: {
+  dps: 17.84466
+  tps: 19.26088
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 20.48117
+  tps: 60.55831
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 17.42555
+  tps: 18.96025
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 31.17307
+  tps: 31.56286
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 10.42563
+  tps: 51.75235
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 8.77013
+  tps: 11.89934
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 14.3923
+  tps: 18.10827
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 22.29934
+  tps: 62.14216
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 18.45646
+  tps: 19.7865
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 35.21638
+  tps: 34.80513
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 11.36004
+  tps: 52.55522
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 9.31649
+  tps: 12.33726
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 16.56257
+  tps: 19.84864
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 17.61981
+  tps: 19.10709
  }
 }

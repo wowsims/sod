@@ -41,7 +41,7 @@ export class FiltersMenu extends BaseModal {
 		let section = this.newSection('Factions');
 
 		new EnumPicker(section, player.sim, {
-			label: 'Faction Restrictions',
+			extraCssClasses: ['w-50'],
 			values: [
 				UIItem_FactionRestriction.UNSPECIFIED,
 				UIItem_FactionRestriction.ALLIANCE_ONLY,

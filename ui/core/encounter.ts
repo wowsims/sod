@@ -1,19 +1,14 @@
+import { UnitMetadataList } from './player.js';
 import {
 	Encounter as EncounterProto,
-	MobType,
-	SpellSchool,
-	Stat,
 	Target as TargetProto,
-	TargetInput,
 	PresetEncounter,
 	PresetTarget,
 } from './proto/common.js';
-import { Stats } from './proto_utils/stats.js';
-import * as Mechanics from './constants/mechanics.js';
-
 import { Sim } from './sim.js';
-import { UnitMetadataList } from './player.js';
 import { EventID, TypedEvent } from './typed_event.js';
+
+import * as Mechanics from './constants/mechanics.js';
 
 // Manages all the settings for an Encounter.
 export class Encounter {
@@ -25,6 +20,7 @@ export class Encounter {
 	private executeProportion25: number = 0.25;
 	private executeProportion35: number = 0.35;
 	private useHealth: boolean = false;
+
 	targets!: Array<TargetProto>;
 	targetsMetadata: UnitMetadataList;
 	presetTargets!: Array<PresetTarget>;
@@ -38,19 +34,20 @@ export class Encounter {
 
 	constructor(sim: Sim) {
 		this.sim = sim;
-
-		sim.waitForInit().then(() => {
-			this.presetTargets = sim.db.getAllPresetTargets();
-			this.targets = [this.presetTargets[0].target!];
-		});
-
 		this.targetsMetadata = new UnitMetadataList();
 
-		[
-			this.targetsChangeEmitter,
-			this.durationChangeEmitter,
-			this.executeProportionChangeEmitter,
-		].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
+		sim.waitForInit().then(() => {
+			const level = sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
+			const presetTarget = Encounter.getPresetTargetForLevel(level, sim)
+
+			this.targets = [presetTarget.target!];
+
+			[
+				this.targetsChangeEmitter,
+				this.durationChangeEmitter,
+				this.executeProportionChangeEmitter,
+			].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
+		})
 	}
 
 	get primaryTarget(): TargetProto {
@@ -162,33 +159,21 @@ export class Encounter {
 	}
 
 	applyDefaults(eventID: EventID) {
+		const level = this.sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
+		const presetTarget = Encounter.getPresetTargetForLevel(level, this.sim)
 		this.fromProto(eventID, EncounterProto.create({
 			duration: 60,
 			durationVariation: 5,
 			executeProportion20: 0.2,
 			executeProportion25: 0.25,
 			executeProportion35: 0.35,
-			targets: [this.presetTargets[0].target!],
+			targets: [presetTarget.target!],
 		}));
 	}
 
-	static defaultTargetProto(): TargetProto {
-		return TargetProto.create({
-			level: Mechanics.BOSS_LEVEL,
-			mobType: MobType.MobTypeGiant,
-			tankIndex: 0,
-			swingSpeed: 2,
-			minBaseDamage: 65000,
-			dualWield: false,
-			dualWieldPenalty: false,
-			parryHaste: true,
-			spellSchool: SpellSchool.SpellSchoolPhysical,
-			stats: Stats.fromMap({
-				[Stat.StatArmor]: 3731,
-				[Stat.StatAttackPower]: 805,
-				[Stat.StatBlockValue]: 76,
-			}).asArray(),
-			targetInputs: new Array<TargetInput>(0),
-		});
+	static getPresetTargetForLevel(playerLevel: number, sim: Sim): PresetTarget {
+		const presetTargets = sim.db.getAllPresetTargets();
+		const target = presetTargets.find(target => target?.target?.level && target?.target?.level > playerLevel);
+		return target ?? presetTargets[0];
 	}
 }

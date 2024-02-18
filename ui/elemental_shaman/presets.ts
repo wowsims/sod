@@ -2,6 +2,7 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
   Consumes,
   Debuffs,
+  EnchantedSigil,
   Flask,
   Food,
   Profession,
@@ -23,14 +24,6 @@ import {
 
 import * as PresetUtils from '../core/preset_utils.js';
 
-import BlankGear from './gear_sets/blank.gear.json';
-import Phase1Gear from './gear_sets/phase_1.gear.json';
-import Phase2Gear from './gear_sets/phase_2.gear.json';
-
-import Phase1APL from './apls/phase_1.apl.json';
-import Phase1AGAPL from './apls/phase_1_ag.apl.json';
-import Phase2APL from './apls/phase_2.apl.json';
-
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
@@ -38,6 +31,10 @@ import Phase2APL from './apls/phase_2.apl.json';
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
+
+import BlankGear from './gear_sets/blank.gear.json';
+import Phase1Gear from './gear_sets/phase_1.gear.json';
+import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
@@ -58,9 +55,15 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
+import Phase1APL from './apls/phase_1.apl.json';
+import Phase1AGAPL from './apls/phase_1_ag.apl.json';
+import Phase2APL from './apls/phase_2.apl.json';
+import Phase2APLWithSwap from './apls/phase_2_swap.apl.json';
+
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 export const APLPhase1AG = PresetUtils.makePresetAPLRotation('Phase 1 (AG)', Phase1AGAPL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
+export const APLPhase2Swap = PresetUtils.makePresetAPLRotation('Phase 2 (Swap)', Phase2APLWithSwap);
 
 export const APLPresets = {
   [Phase.Phase1]: [
@@ -69,6 +72,7 @@ export const APLPresets = {
   ],
   [Phase.Phase2]: [
     APLPhase2,
+    APLPhase2Swap,
   ]
 };
 
@@ -125,9 +129,10 @@ export const DefaultOptions = ElementalShamanOptions.create({
 
 export const DefaultConsumes = Consumes.create({
   flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
-  mainHandImbue: WeaponImbue.RockbiterWeapon,
-  offHandImbue: WeaponImbue.RockbiterWeapon,
+	food: Food.FoodSagefishDelight,
+  enchantedSigil: EnchantedSigil.InnovationSigil,
+  mainHandImbue: WeaponImbue.LesserWizardOil,
+  offHandImbue: WeaponImbue.LesserWizardOil,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -150,6 +155,6 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
   distanceFromTarget: 20,
-  profession1: Profession.Engineering,
-  profession2: Profession.Tailoring,
+  profession1: Profession.Enchanting,
+  profession2: Profession.Leatherworking,
 }

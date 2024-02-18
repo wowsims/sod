@@ -88,7 +88,7 @@ func (druid *Druid) applyMangleCat() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 3,
+		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 2.7,
 		CritMultiplier:   druid.MeleeCritMultiplier(1, 0),
 		ThreatMultiplier: 1,
 

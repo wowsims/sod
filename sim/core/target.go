@@ -179,13 +179,67 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
+func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
+	if weapon == nil {
+		return 0
+	}
+
+	if weapon.HandType == proto.HandType_HandTypeTwoHand {
+		switch weapon.WeaponType {
+		case proto.WeaponType_WeaponTypeAxe:
+			return unit.PseudoStats.TwoHandedAxesSkill
+		case proto.WeaponType_WeaponTypeMace:
+			return unit.PseudoStats.TwoHandedMacesSkill
+		case proto.WeaponType_WeaponTypeSword:
+			return unit.PseudoStats.TwoHandedSwordsSkill
+		case proto.WeaponType_WeaponTypePolearm:
+			return unit.PseudoStats.PolearmsSkill
+		case proto.WeaponType_WeaponTypeStaff:
+			return unit.PseudoStats.StavesSkill
+		default:
+			return 0
+		}
+	} else if weapon.RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown {
+		switch weapon.RangedWeaponType {
+		case proto.RangedWeaponType_RangedWeaponTypeBow:
+			return unit.PseudoStats.BowsSkill
+		case proto.RangedWeaponType_RangedWeaponTypeCrossbow:
+			return unit.PseudoStats.CrossbowsSkill
+		case proto.RangedWeaponType_RangedWeaponTypeGun:
+			return unit.PseudoStats.GunsSkill
+		case proto.RangedWeaponType_RangedWeaponTypeThrown:
+			return unit.PseudoStats.ThrownSkill
+		default:
+			return 0
+		}
+	} else {
+		switch weapon.WeaponType {
+		case proto.WeaponType_WeaponTypeAxe:
+			return unit.PseudoStats.AxesSkill
+		case proto.WeaponType_WeaponTypeFist:
+			return unit.PseudoStats.UnarmedSkill
+		case proto.WeaponType_WeaponTypeMace:
+			return unit.PseudoStats.MacesSkill
+		case proto.WeaponType_WeaponTypeSword:
+			return unit.PseudoStats.SwordsSkill
+		case proto.WeaponType_WeaponTypeDagger:
+			return unit.PseudoStats.DaggersSkill
+		default:
+			return 0
+		}
+	}
+}
+
 // Holds cached values for outcome/damage calculations, for a specific attacker+defender pair.
 // These are updated dynamically when attacker or defender stats change.
 type AttackTable struct {
 	Attacker *Unit
 	Defender *Unit
 
+	Weapon *Item
+
 	BaseMissChance      float64
+	HitSuppression      float64
 	BaseSpellMissChance float64
 	BaseBlockChance     float64
 	BaseDodgeChance     float64
@@ -204,11 +258,12 @@ type AttackTable struct {
 	HealingDealtMultiplier       float64
 }
 
-func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
+func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 	// Source: https://github.com/magey/classic-warrior/wiki/Attack-table
 	table := &AttackTable{
 		Attacker: attacker,
 		Defender: defender,
+		Weapon:   weapon,
 
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,
@@ -218,25 +273,40 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	}
 
 	if defender.Type == EnemyUnit {
-		weaponSkill := float64(attacker.Level*5) + attacker.stats[stats.WeaponSkill]
+		weaponSkill := float64(attacker.Level*5) + GetWeaponSkill(attacker, weapon)
+		baseWeaponSkill := float64(attacker.Level * 5)
+		targetDefense := float64(defender.Level * 5)
 
-		if weaponSkill-float64(defender.Level*5) > 10 {
-			hitSuppression := (float64(defender.Level*5) - weaponSkill - 10) * 0.002
-			table.BaseMissChance = 0.05 + (float64(defender.Level*5)-weaponSkill)*0.002 + hitSuppression
+		if targetDefense-weaponSkill > 10 {
+			table.HitSuppression = (targetDefense - weaponSkill - 10) * 0.002
+			table.BaseMissChance = 0.05 + (targetDefense-weaponSkill)*0.002
 		} else {
-			table.BaseMissChance = 0.05 + (float64(defender.Level*5)-weaponSkill)*0.001
+			table.HitSuppression = 0
+			table.BaseMissChance = 0.05 + (targetDefense-weaponSkill)*0.001
 		}
 
 		table.BaseSpellMissChance = UnitLevelFloat64(defender.Level-attacker.Level, 0.04, 0.05, 0.06, 0.17)
 		table.BaseBlockChance = 0.05
-		table.BaseDodgeChance = 0.05 + (float64(defender.Level*5)-weaponSkill)*0.001
-		table.BaseParryChance = 0.05 + (float64(defender.Level*5)-weaponSkill)*0.001
-		table.BaseGlanceChance = 0.1 + (float64(defender.Level*5)-min(float64(attacker.Level*5), weaponSkill))*0.02
+		table.BaseDodgeChance = 0.05 + (targetDefense-weaponSkill)*0.001
+		table.BaseParryChance = 0.05 + (targetDefense-weaponSkill)*0.001
+		table.BaseGlanceChance = 0.1 + (targetDefense-min(float64(attacker.Level*5), weaponSkill))*0.02
 
-		table.GlanceMultiplierMin = max(min(1.3-0.05*(float64(defender.Level*5)-weaponSkill), 0.91), 0.01)
-		table.GlanceMultiplierMax = max(min(1.2-0.03*(float64(defender.Level*5)-weaponSkill), 0.99), 0.2)
+		table.GlanceMultiplierMin = max(min(1.3-0.05*(targetDefense-weaponSkill), 0.91), 0.01)
+		table.GlanceMultiplierMax = max(min(1.2-0.03*(targetDefense-weaponSkill), 0.99), 0.2)
 
-		table.MeleeCritSuppression = float64(defender.Level-attacker.Level) * 5 * 0.0004
+		if baseWeaponSkill-targetDefense < 0 {
+			table.MeleeCritSuppression = -(baseWeaponSkill - targetDefense) * 0.002
+		} else {
+			table.MeleeCritSuppression = -(baseWeaponSkill - targetDefense) * 0.0004
+		}
+
+		// TODO (maybe): This is technically not correct, but it shouldn't matter outside of edge cases.
+		// These 1.8% should only be subtracted from crit chance gained from auras,
+		// i.e. talents, gear and buffs, NOT base crit and crit from agility!
+		// See https://github.com/magey/classic-warrior/wiki/Attack-table#critical-strike
+		// That means if a character with <2% crit from auras attacks a +3 level target the sim will be wrong.
+		// The chance of that being the case once bosses are +3 in SoD should be very small though.
+		// Most (all?) affected specs have crit in their talents to begin with.
 		if (defender.Level - attacker.Level) >= 3 {
 			table.MeleeCritSuppression += 0.018
 		}
@@ -253,8 +323,8 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	return table
 }
 
-func ModNonMeleeAttackTable(table *AttackTable, attacker *Unit, defender *Unit) {
-	weaponSkill := float64(attacker.Level*5) + attacker.stats[stats.WeaponSkill]
+func ModNonMeleeAttackTable(table *AttackTable, attacker *Unit, defender *Unit, weapon *Item) {
+	weaponSkill := float64(attacker.Level*5) + float64(GetWeaponSkill(attacker, weapon))
 
 	table.BaseGlanceChance = 0.8 // min((float64(attacker.Level)-10)*0.03, 0.6)
 

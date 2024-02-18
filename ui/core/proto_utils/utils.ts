@@ -62,7 +62,6 @@ import {
 	RestorationShaman,
 	RestorationShaman_Options as RestorationShamanOptions,
 	RestorationShaman_Rotation as RestorationShamanRotation,
-	ShamanRune,
 	ShamanTalents,
 } from '../proto/shaman.js';
 import { 
@@ -1007,8 +1006,8 @@ const rogueRaces = [
 ];
 const shamanRaces = [
 	Race.RaceOrc,
-	Race.RaceTauren,
 	Race.RaceTroll,
+	Race.RaceTauren,
 ];
 const warlockRaces = [
 	Race.RaceGnome,

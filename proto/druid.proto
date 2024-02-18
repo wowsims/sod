@@ -62,18 +62,34 @@ message DruidTalents {
 
 enum DruidRune {
 	DruidRuneNone = 0;
-	RuneChestWildStrikes          = 407977;
-	RuneChestSurvivalOfTheFittest = 411115;
-	RuneChestLivingSeed           = 414677;
-	RuneChestFuryOfStormrage      = 414799;
-	RuneHandsMangle        	      = 407995;
-	RuneHandsWildGrowth     	  = 408120;
-	RuneHandsLacerate     	      = 414644;
-	RuneHandsSunfire     	      = 414684;
-	RuneLegsStarsurge      	      = 417157;
-	RuneLegsSavageRoar      	  = 407988;
-	RuneLegsLifebloom       	  = 409824;
-	RuneLegsSkullBash       	  = 410176;
+
+	// Chest
+	RuneChestFuryOfStormrage			= 414799;
+	RuneChestLivingSeed						= 414677;
+	RuneChestSurvivalOfTheFittest	= 411115;
+	RuneChestWildStrikes					= 407977;
+
+	// Hands
+	RuneHandsLacerate							= 414644;
+	RuneHandsMangle								= 407995;
+	RuneHandsSunfire							= 414684;
+	RuneHandsWildGrowth						= 408120;
+
+	// Belt
+	RuneBeltBerserk 							= 417141;
+	RuneBeltEclipse								= 408248;
+	RuneBeltNourish								= 408247;
+
+	// Legs
+	RuneLegsStarsurge							= 417157;
+	RuneLegsSavageRoar						= 407988;
+	RuneLegsLifebloom							= 409824;
+	RuneLegsSkullBash							= 410176;
+
+	// Feet
+	RuneFeetDreamstate 						= 408258;
+	RuneFeetKingOfTheJungle 			=	417046;
+	RuneFeetSurvivalInstincts 		= 408024;
 }
 
 message BalanceDruid {

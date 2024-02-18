@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -87,8 +86,20 @@ var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 		// TODO: Implement Feral set bonus
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.ApplyWeaponSpecialization(3, proto.WeaponType_WeaponTypeDagger)
+			c.PseudoStats.DaggersSkill += 3
 		},
+	},
+})
+
+var ItemSetInsulatedSorcerorLeather = core.NewItemSet(core.ItemSet{
+	Name: "Insulated Sorceror's Leathers",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 16)
+		},
+		// TODO: Implement Feral set bonus
+		3: func(agent core.Agent) {},
 	},
 })
 
@@ -102,6 +113,7 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 24)
+			c.AddStat(stats.RangedAttackPower, 24)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -171,6 +183,7 @@ var ItemSetHazardSuit = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			c.AddStat(stats.Defense, 7)
 			c.AddStat(stats.AttackPower, 16)
+			c.AddStat(stats.RangedAttackPower, 16)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()

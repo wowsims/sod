@@ -55,6 +55,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 
 	bonusDamage := shaman.electricSpellBonusDamage(spellCoeff)
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	overloadChance := .1667
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -84,7 +85,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 			baseDamage *= bounceCoeff
 			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
 
-			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= ShamanOverloadChance {
+			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= overloadChance {
 				shaman.ChainLightningOverload[rank].Cast(sim, curTarget)
 			}
 

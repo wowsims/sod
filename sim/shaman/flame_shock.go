@@ -42,6 +42,10 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	numTicks := 4
 	tickDuration := time.Second * 3
 
+	if shaman.Ranged().ID == TotemInvigoratingFlame {
+		manaCost -= 10
+	}
+
 	spell := shaman.newShockSpellConfig(
 		core.ActionID{SpellID: spellId},
 		core.SpellSchoolFire,
@@ -49,6 +53,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		shockTimer,
 	)
 
+	spell.SpellCode = SpellCode_ShamanFlameShock
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
@@ -100,7 +105,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 			baseDamage := (baseDotDamage / float64(numTicks)) + dotSpellCoeff*dot.Spell.SpellDamage()
 			dot.SnapshotBaseDamage = baseDamage * shaman.ConcussionMultiplier()
 			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

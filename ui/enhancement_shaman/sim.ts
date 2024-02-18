@@ -73,28 +73,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	],
 
 	defaults: {
+		race: Race.RaceTroll,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.92,
-			[Stat.StatAgility]: .46,
-			[Stat.StatStrength]: 1.92,
-			[Stat.StatSpellPower]: .89,
-			[Stat.StatFirePower]: .46,
-			[Stat.StatNaturePower]: .43,
-			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 1.59,
-			[Stat.StatSpellHaste]: 0,
+			[Stat.StatIntellect]: .02,
+			[Stat.StatAgility]: 1.12,
+			[Stat.StatStrength]: 2.29,
+			[Stat.StatSpellPower]: 1.15,
+			[Stat.StatFirePower]: 0.63,
+			[Stat.StatNaturePower]: 0.48,
+			[Stat.StatSpellHit]: 0.03, //default EP assumes cap
+			[Stat.StatSpellCrit]: 1.94,
+			[Stat.StatSpellHaste]: 2.97,
 			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 10.85,
-			[Stat.StatMeleeCrit]: 6.63,
-			[Stat.StatMeleeHaste]: 8.66, //haste is complicated
-			[Stat.StatArmorPenetration]: 0.12,
-			[Stat.StatExpertise]: 1.29, //default EP assumes cap
+			[Stat.StatMeleeHit]: 9.62,
+			[Stat.StatMeleeCrit]: 14.80,
+			[Stat.StatMeleeHaste]: 11.84, //haste is complicated
+			[Stat.StatArmorPenetration]: 0.35,
+			[Stat.StatExpertise]: 1.92, //default EP assumes cap
 		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 6.80,
-			[PseudoStat.PseudoStatOffHandDps]: 5.19,
+			[PseudoStat.PseudoStatMainHandDps]: 8.15,
+			[PseudoStat.PseudoStatOffHandDps]: 5.81,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -102,6 +103,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
@@ -132,7 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+		note: "Swap items are given the highest available rank of Rockbiter Weapon",
+	},
 	customSections: [
 		// TotemsSection,
 	],

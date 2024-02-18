@@ -35,6 +35,13 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	// So this is probably only the base value formula and will be slightly wrong for most target
 	rageConversion := 0.0091107836*float64(unit.Level^2) + 3.225598133*float64(unit.Level) + 4.2652911
 
+	// Observed Rage Conversion from testing (This is more accurate)
+	if unit.Level == 25 {
+		rageConversion = 82.25
+	} else if unit.Level == 40 {
+		rageConversion = 140.5
+	}
+
 	unit.SetCurrentPowerBar(RageBar)
 	unit.RegisterAura(Aura{
 		Label:    "RageBar",

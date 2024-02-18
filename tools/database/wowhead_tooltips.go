@@ -42,6 +42,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 }
 
 type Stats [46]float64
+type WeaponSkills [14]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -52,6 +53,7 @@ type ItemResponse interface {
 	GetTooltipRegexValue(pattern *regexp.Regexp, matchIdx int) int
 	GetIntValue(pattern *regexp.Regexp) int
 	GetStats() Stats
+	GetWeaponSkills() []float64
 	GetClassAllowlist() []proto.Class
 	IsEquippable() bool
 	GetItemLevel() int
@@ -153,11 +155,11 @@ func (item WowheadItemResponse) GetIntValue(pattern *regexp.Regexp) int {
 }
 
 var armorRegex = regexp.MustCompile(`<!--amr-->([0-9]+) Armor`)
-var agilityRegex = regexp.MustCompile(`<!--stat3-->\+([0-9]+) Agility`)
-var strengthRegex = regexp.MustCompile(`<!--stat4-->\+([0-9]+) Strength`)
-var intellectRegex = regexp.MustCompile(`<!--stat5-->\+([0-9]+) Intellect`)
-var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
-var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
+var agilityRegex = regexp.MustCompile(`<!--stat3-->([+-][0-9]+) Agility`)
+var strengthRegex = regexp.MustCompile(`<!--stat4-->([+-][0-9]+) Strength`)
+var intellectRegex = regexp.MustCompile(`<!--stat5-->([+-][0-9]+) Intellect`)
+var spiritRegex = regexp.MustCompile(`<!--stat6-->([+-][0-9]+) Spirit`)
+var staminaRegex = regexp.MustCompile(`<!--stat7-->([+-][0-9]+) Stamina`)
 var spellHealingRegex = regexp.MustCompile(`Increases healing done by spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to <!--rtg45-->([0-9]+)\.`)
@@ -196,6 +198,23 @@ var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
 
+var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
+var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
+var daggersSkill = regexp.MustCompile(`Increased Daggers \+([0-9]+)\.`)
+var unarmedSkill = regexp.MustCompile(`Increased Fist Weapons \+([0-9]+)\.`)
+var macesSkill = regexp.MustCompile(`Increased Maces \+([0-9]+)\.`)
+
+var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-handed Axes \+([0-9]+)\.`)
+var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-handed Swords \+([0-9]+)\.`)
+var twoHandedMacesSkill = regexp.MustCompile(`Increased Two-handed Maces \+([0-9]+)\.`)
+var stavesSkill = regexp.MustCompile(`Increased Staves \+([0-9]+)\.`)
+var polearmsSkill = regexp.MustCompile(`Increased Polearms \+([0-9]+)\.`)
+
+var thrownSkill = regexp.MustCompile(`Increased Thrown \+([0-9]+)\.`)
+var bowsSkill = regexp.MustCompile(`Increased Bows \+([0-9]+)\.`)
+var crossbowsSkill = regexp.MustCompile(`Increased Crossbows \+([0-9]+)\.`)
+var gunsSkill = regexp.MustCompile(`Increased Guns \+([0-9]+)\.`)
+
 var defenseRegex = regexp.MustCompile(`Increased Defense \+([0-9]+)\.`)
 var blockRegex = regexp.MustCompile(`Increases your shield block rating by <!--rtg15-->([0-9]+)\.`)
 var blockRegex2 = regexp.MustCompile(`Increases your shield block rating by ([0-9]+)\.`)
@@ -212,6 +231,14 @@ var frostResistanceRegex = regexp.MustCompile(`\+([0-9]+) Frost Resistance`)
 var natureResistanceRegex = regexp.MustCompile(`\+([0-9]+) Nature Resistance`)
 var shadowResistanceRegex = regexp.MustCompile(`\+([0-9]+) Shadow Resistance`)
 var bonusArmorRegex = regexp.MustCompile(`Has ([0-9]+) bonus armor`)
+
+// Match "Requires <a href=\"/...\" class="...">Profession</a> (level)"
+var alchemyRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Alchemy<\/a> \([0-9]+\)`)
+var blacksmithingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Blacksmithing<\/a> \([0-9]+\)`)
+var enchantingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Enchanting<\/a> \([0-9]+\)`)
+var engineeringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Engineering<\/a> \([0-9]+\)`)
+var leatherworkingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Leatherworking<\/a> \([0-9]+\)`)
+var tailoringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Tailoring<\/a> \([0-9]+\)`)
 
 func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2))
@@ -257,6 +284,25 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatShadowResistance:  float64(item.GetIntValue(shadowResistanceRegex)),
 		proto.Stat_StatHealing:           float64(item.GetIntValue(spellHealingRegex)),
 		proto.Stat_StatFeralAttackPower:  float64(item.GetIntValue(feralAttackPowerRegex)),
+	}
+}
+
+func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
+	return WeaponSkills{
+		float64(item.GetIntValue(axesSkill)),
+		float64(item.GetIntValue(swordsSkill)),
+		float64(item.GetIntValue(daggersSkill)),
+		float64(item.GetIntValue(unarmedSkill)),
+		float64(item.GetIntValue(macesSkill)),
+		float64(item.GetIntValue(twoHandedAxesSkill)),
+		float64(item.GetIntValue(twoHandedSwordsSkill)),
+		float64(item.GetIntValue(twoHandedMacesSkill)),
+		float64(item.GetIntValue(stavesSkill)),
+		float64(item.GetIntValue(polearmsSkill)),
+		float64(item.GetIntValue(thrownSkill)),
+		float64(item.GetIntValue(bowsSkill)),
+		float64(item.GetIntValue(crossbowsSkill)),
+		float64(item.GetIntValue(gunsSkill)),
 	}
 }
 
@@ -610,7 +656,7 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
-	return &proto.UIItem{
+	itemProto := &proto.UIItem{
 		Id:   item.ID,
 		Name: item.GetName(),
 		Icon: item.GetIcon(),
@@ -622,6 +668,8 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		RangedWeaponType: item.GetRangedWeaponType(),
 
 		Stats: toSlice(item.GetStats()),
+
+		WeaponSkills: weaponSkillsToSlice(item.GetWeaponSkills()),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,
@@ -638,6 +686,18 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
 	}
+
+	if item.GetRequiredProfession() != proto.Profession_ProfessionUnknown {
+		itemProto.Sources = append(itemProto.Sources, &proto.UIItemSource{
+			Source: &proto.UIItemSource_Crafted{
+				Crafted: &proto.CraftedSource{
+					Profession: item.GetRequiredProfession(),
+				},
+			},
+		})
+	}
+
+	return itemProto
 }
 
 var itemSetNameRegex = regexp.MustCompile(`<a href="/classic/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
@@ -661,5 +721,19 @@ func (item WowheadItemResponse) IsHeroic() bool {
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {
-	return proto.Profession_ProfessionUnknown
+	if alchemyRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Alchemy
+	} else if blacksmithingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Blacksmithing
+	} else if enchantingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Enchanting
+	} else if engineeringRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Engineering
+	} else if leatherworkingRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Leatherworking
+	} else if tailoringRegex.MatchString(item.Tooltip) {
+		return proto.Profession_Tailoring
+	} else {
+		return proto.Profession_ProfessionUnknown
+	}
 }

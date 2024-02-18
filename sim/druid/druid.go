@@ -14,6 +14,13 @@ const (
 
 var TalentTreeSizes = [3]int{16, 16, 15}
 
+const (
+	SpellCode_DruidNone int32 = iota
+	SpellCode_DruidWrath
+	SpellCode_DruidStarfire
+	SpellCode_DruidStarsurge
+)
+
 type Druid struct {
 	core.Character
 	SelfBuffs
@@ -42,6 +49,7 @@ type Druid struct {
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
+	Berserk              *DruidSpell
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
@@ -72,6 +80,7 @@ type Druid struct {
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	EnrageAura               *core.Aura
+	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FuryOfStormrageAura      *core.Aura
@@ -82,6 +91,8 @@ type Druid struct {
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
+	SolarEclipseProcAura     *core.Aura
+	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
@@ -119,10 +130,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
 	}
-}
-
-func (druid *Druid) BalanceCritMultiplier() float64 {
-	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
 }
 
 func (druid *Druid) NaturesGraceCastTime() func(spell *core.Spell) time.Duration {
@@ -173,7 +180,7 @@ func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.registerFaerieFireSpell()
-	// druid.registerInnervateCD()
+	druid.registerInnervateCD()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -186,15 +193,14 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 // TODO: Classic feral
 func (druid *Druid) RegisterFeralCatSpells() {
-	// druid.registerBerserkCD()
 	druid.registerCatFormSpell()
 	// druid.registerBearFormSpell()
 	// druid.registerEnrageSpell()
-	// druid.registerFerociousBiteSpell()
+	druid.registerFerociousBiteSpell()
 	// druid.registerMangleBearSpell()
 	// druid.registerMaulSpell()
 	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
+	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerShredSpell()
 	// druid.registerSwipeBearSpell()

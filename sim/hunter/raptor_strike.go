@@ -21,8 +21,35 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	manaCost := [9]float64{0, 15, 25, 35, 45, 55, 70, 80, 100}[rank]
 	level := [9]int{0, 1, 8, 16, 24, 32, 40, 48, 56}[rank]
 	hasFlankingStrike := hunter.HasRune(proto.HunterRune_RuneLegsFlankingStrike)
+	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
+	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
-	return core.SpellConfig{
+	if hasMeleeSpecialist {
+		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
+	}
+
+	hasOHSpell := hasDualWieldSpec && hunter.AutoAttacks.IsDualWielding
+
+	dwSpecMulti := 1.0
+	var ohSpell *core.Spell
+	if hasOHSpell {
+		if hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
+			dwSpecMulti = 1.3
+		}
+
+		ohSpell = hunter.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: spellId}.WithTag(2),
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskMeleeOHSpecial,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+
+			BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+			DamageMultiplier: 1.5 * dwSpecMulti,
+			CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
+		})
+	}
+
+	spellConfig := core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		ProcMask:      core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeMHSpecial,
@@ -37,7 +64,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * time.Duration(core.TernaryInt(hasMeleeSpecialist, 3, 6)),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -45,29 +72,57 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * dwSpecMulti,
 		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage +
+			mhBaseDamage := baseDamage +
 				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
 				spell.BonusWeaponDamage()
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-				baseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
 			}
 
 			if hasFlankingStrike && sim.RandomFloat("Flanking Strike Refresh") < 0.2 {
 				hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, mhBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			if ohSpell != nil {
+				ohSpell.Cast(sim, target)
+
+				ohBaseDamage := baseDamage*0.5 +
+					spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
+					spell.BonusWeaponDamage()*0.5
+
+				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
+					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+				}
+
+				ohSpell.CalcAndDealDamage(sim, target, ohBaseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			}
 
 			if hunter.curQueueAura != nil {
 				hunter.curQueueAura.Deactivate(sim)
 			}
+
+			if hasMeleeSpecialist && sim.RandomFloat("Raptor Strike Reset") < 0.3 {
+				spell.CD.Reset()
+			}
 		},
 	}
+
+	if hasMeleeSpecialist {
+		spellConfig.ProcMask ^= core.ProcMaskMeleeMHAuto
+		spellConfig.Flags |= core.SpellFlagAPL
+		spellConfig.Cast.DefaultCast = core.Cast{
+			GCD: core.GCDDefault,
+		}
+	}
+
+	return spellConfig
 }
 
 func (hunter *Hunter) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
@@ -116,12 +171,15 @@ func (hunter *Hunter) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
 func (hunter *Hunter) registerRaptorStrikeSpell() {
 	maxRank := 8
 
+	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getRaptorStrikeConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.RaptorStrike = hunter.GetOrRegisterSpell(config)
-			hunter.makeQueueSpellsAndAura(hunter.RaptorStrike)
+			if !hasMeleeSpecialist {
+				hunter.makeQueueSpellsAndAura(hunter.RaptorStrike)
+			}
 		}
 	}
 }

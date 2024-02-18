@@ -1,12 +1,11 @@
 import { EmbeddedDetailedResults } from "../core/components/detailed_results.js";
-import { LogRunner } from "../core/components/detailed_results/log_runner.js";
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from "../core/components/raid_sim_action.js";
 
 import { Player } from "../core/player.js";
 import { Raid as RaidProto } from "../core/proto/api.js";
-import { Class, Encounter as EncounterProto, RaidBuffs, TristateEffect } from "../core/proto/common.js";
+import { Class, Encounter as EncounterProto, TristateEffect } from "../core/proto/common.js";
 import { Blessings } from "../core/proto/paladin.js";
-import { BlessingsAssignments, RaidSimSettings, SavedEncounter } from "../core/proto/ui.js";
+import { BlessingsAssignments, RaidSimSettings } from "../core/proto/ui.js";
 import { playerToSpec } from "../core/proto_utils/utils.js";
 import { Sim } from "../core/sim.js";
 import { SimUI } from "../core/sim_ui.js";
@@ -49,7 +48,7 @@ export class RaidSimUI extends SimUI {
 			cssClass: 'raid-sim-ui',
 			cssScheme: 'raid',
 			spec: null,
-			launchStatus: raidSimStatus,
+			simStatus: raidSimStatus,
 			knownIssues: (config.knownIssues || []).concat(extraKnownIssues),
 		});
 
@@ -77,6 +76,7 @@ export class RaidSimUI extends SimUI {
 		TypedEvent.freezeAllAndDo(() => {
 			let loadedSettings = false;
 
+			// TODO: Swap reads to sod after 1 week on 2024-02-22
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
 			if (savedSettings != null) {
 				try {
@@ -95,6 +95,8 @@ export class RaidSimUI extends SimUI {
 			// This needs to go last so it doesn't re-store things as they are initialized.
 			this.changeEmitter.on(eventID => {
 				const jsonStr = RaidSimSettings.toJsonString(this.toProto());
+				// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
+				window.localStorage.setItem(this.getSettingsStorageKey().replace('wotlk', 'sod'), jsonStr);
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
 		});
@@ -236,7 +238,7 @@ export class RaidSimUI extends SimUI {
 
 	// Returns the actual key to use for local storage, based on the given key part and the site context.
 	getStorageKey(keyPart: string): string {
-		return '__wotlk_raid__' + keyPart;
+		return '__sod_raid__' + keyPart;
 	}
 
 	getSavedRaidStorageKey(): string {

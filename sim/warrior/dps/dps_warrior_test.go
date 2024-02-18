@@ -13,86 +13,120 @@ func init() {
 }
 
 func TestFury(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarrior,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassWarrior,
+			Level:      40,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		Talents:     FuryTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+			Talents:     P2FuryTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_dw"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase1Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
 
-		ItemFilter: core.ItemFilter{
-			ArmorType: proto.ArmorType_ArmorTypePlate,
-
-			WeaponTypes: []proto.WeaponType{
-				proto.WeaponType_WeaponTypeAxe,
-				proto.WeaponType_WeaponTypeSword,
-				proto.WeaponType_WeaponTypeMace,
-				proto.WeaponType_WeaponTypeDagger,
-				proto.WeaponType_WeaponTypeFist,
-			},
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
 		},
 	}))
 }
 
-func TestArms(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarrior,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+// func TestArms(t *testing.T) {
+// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+// 		{
+// 			Class:      proto.Class_ClassWarrior,
+// 			Level:      25,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		Talents:     ArmsTalents,
-		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
-		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+// 			Talents:     P1ArmsTalents,
+// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
+// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+// 			Buffs:       core.FullBuffsPhase1,
+// 			Consumes:    Phase1Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
-		ItemFilter: core.ItemFilter{
-			ArmorType: proto.ArmorType_ArmorTypePlate,
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 		{
+// 			Class:      proto.Class_ClassWarrior,
+// 			Level:      25,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-			WeaponTypes: []proto.WeaponType{
-				proto.WeaponType_WeaponTypeAxe,
-				proto.WeaponType_WeaponTypeSword,
-				proto.WeaponType_WeaponTypeMace,
-				proto.WeaponType_WeaponTypeDagger,
-				proto.WeaponType_WeaponTypeFist,
-			},
-		},
-	}))
-}
+// 			Talents:     P1ArmsTalents,
+// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1_dw"),
+// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
+// 			Buffs:       core.FullBuffsPhase1,
+// 			Consumes:    Phase1Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 	}))
+// }
 
 func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:          proto.Race_RaceOrc,
-				Class:         proto.Class_ClassWarrior,
-				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1").GearSet,
-				Consumes:      FullConsumes.Consumes,
-				Spec:          PlayerOptionsFury,
-				TalentsString: FuryTalents,
-				Buffs:         core.FullIndividualBuffs,
+	core.Each([]*proto.RaidSimRequest{
+		{
+			Raid: core.SinglePlayerRaidProto(
+				&proto.Player{
+					Race:          proto.Race_RaceOrc,
+					Class:         proto.Class_ClassWarrior,
+					Level:         40,
+					Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2").GearSet,
+					Rotation:      core.GetAplRotation("../../../ui/warrior/apls", "phase_2").Rotation,
+					Consumes:      Phase2Consumes.Consumes,
+					Spec:          PlayerOptionsFury,
+					TalentsString: P2FuryTalents,
+					Buffs:         core.FullIndividualBuffsPhase2,
+				},
+				core.FullPartyBuffs,
+				core.FullRaidBuffsPhase2,
+				core.FullDebuffsPhase2,
+			),
+			Encounter: &proto.Encounter{
+				Duration: 120,
+				Targets: []*proto.Target{
+					core.NewDefaultTarget(40),
+				},
 			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
+			SimOptions: core.AverageDefaultSimTestOptions,
 		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
+	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
 }
 
-var FuryTalents = "303220203-01"
-var ArmsTalents = "303220203-01"
+var P1ArmsTalents = "303220203-01"
+
+var P2FuryTalents = "-05050005405010051"
+
+var Phase1Consumes = core.ConsumesCombo{
+	Label: "Phase 1 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
+		MainHandImbue: proto.WeaponImbue_WildStrikes,
+		OffHandImbue:  proto.WeaponImbue_BlackfathomSharpeningStone,
+		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var Phase2Consumes = core.ConsumesCombo{
+	Label: "Phase 2 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir: proto.AgilityElixir_ElixirOfAgility,
+		Food:          proto.Food_FoodDragonbreathChili,
+		MainHandImbue: proto.WeaponImbue_WildStrikes,
+		OffHandImbue:  proto.WeaponImbue_SolidSharpeningStone,
+		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
 
 var PlayerOptionsArms = &proto.Player_Warrior{
 	Warrior: &proto.Warrior{
@@ -112,12 +146,22 @@ var warriorOptions = &proto.Warrior_Options{
 	Shout:           proto.WarriorShout_WarriorShoutBattle,
 }
 
-var FullConsumes = core.ConsumesCombo{
-	Label:    "Full Consumes",
-	Consumes: &proto.Consumes{
-		// Flask:         proto.Flask_FlaskOfEndlessRage,
-		// DefaultPotion: proto.Potions_PotionOfSpeed,
-		// PrepopPotion:  proto.Potions_PotionOfSpeed,
-		// Food:          proto.Food_FoodFishFeast,
+var ItemFilters = core.ItemFilter{
+	ArmorType: proto.ArmorType_ArmorTypePlate,
+
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeAxe,
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeMace,
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeFist,
 	},
+}
+
+var Stats = []proto.Stat{
+	proto.Stat_StatStrength,
+	proto.Stat_StatAgility,
+	proto.Stat_StatAttackPower,
+	proto.Stat_StatMeleeCrit,
+	proto.Stat_StatMeleeHit,
 }

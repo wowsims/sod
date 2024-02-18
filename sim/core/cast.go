@@ -160,7 +160,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if !config.IgnoreHaste {
-			spell.CurCast.GCD = spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)
+			// Era does not have GCD haste reduction
+			// spell.CurCast.GCD = spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)
 			spell.CurCast.CastTime = config.CastTime(spell)
 		}
 

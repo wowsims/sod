@@ -24,6 +24,7 @@ func (warlock *Warlock) ApplyTalents() {
 		warlock.applyImprovedShadowBolt()
 	}
 
+	warlock.applyWeaponImbue()
 	warlock.applyNightfall()
 	warlock.applyMasterDemonologist()
 	warlock.applyDemonicSacrifice()
@@ -267,9 +268,9 @@ func (warlock *Warlock) applyFirestone() {
 		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: core.SpellSchoolFire,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskEmpty,
 
-			CritMultiplier:           1.5,
+			CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 			DamageMultiplier:         1,
 			ThreatMultiplier:         1,
 			DamageMultiplierAdditive: 1,
@@ -277,24 +278,22 @@ func (warlock *Warlock) applyFirestone() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(damageMin, damageMax) + spellCoeff*spell.SpellDamage()
 
-				// TODO: Test if LoF Buffs this
-				//if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				//	baseDamage *= 1.4
-				//}
-
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 			},
 		})
 
 		core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: spellId},
-			Label:    "Firestone Proc",
+			Label: "Firestone Proc",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
 				}
 
-				if !ppm.Proc(sim, spell.ProcMask, "Firestone Proc") {
+				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !ppm.Proc(sim, core.ProcMaskMelee, "Firestone Proc") {
 					return
 				}
 

@@ -42,10 +42,10 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	}
 
 	if character.HasMHWeapon() {
-		addImbueStats(character, consumes.MainHandImbue)
+		addImbueStats(character, consumes.MainHandImbue, true)
 	}
 	if character.HasOHWeapon() {
-		addImbueStats(character, consumes.OffHandImbue)
+		addImbueStats(character, consumes.OffHandImbue, false)
 	}
 
 	if consumes.Food != proto.Food_FoodUnknown {
@@ -91,6 +91,8 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 10,
 			})
+		case proto.Food_FoodDragonbreathChili:
+			MakePermanent(DragonBreathChiliAura(&character.Unit))
 		}
 	}
 
@@ -104,6 +106,10 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		case proto.AgilityElixir_ElixirOfGreaterAgility:
 			character.AddStats(stats.Stats{
 				stats.Agility: 25,
+			})
+		case proto.AgilityElixir_ElixirOfAgility:
+			character.AddStats(stats.Stats{
+				stats.Agility: 15,
 			})
 		case proto.AgilityElixir_ElixirOfLesserAgility:
 			character.AddStats(stats.Stats{
@@ -167,24 +173,31 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		}
 	}
 
-	if consumes.ShadowPowerBuff {
-		character.AddStats(stats.Stats{
-			stats.ShadowPower: 40,
-		})
+	if consumes.ShadowPowerBuff != proto.ShadowPowerBuff_ShadowPowerBuffUnknown {
+		switch consumes.ShadowPowerBuff {
+		case proto.ShadowPowerBuff_ElixirOfShadowPower:
+			character.AddStats(stats.Stats{
+				stats.ShadowPower: 40,
+			})
+		}
 	}
 
-	if consumes.FrostPowerBuff {
-		character.AddStats(stats.Stats{
-			stats.FrostPower: 15,
-		})
+	if consumes.FrostPowerBuff != proto.FrostPowerBuff_FrostPowerBuffUnknown {
+		switch consumes.FrostPowerBuff {
+		case proto.FrostPowerBuff_ElixirOfFrostPower:
+			character.AddStats(stats.Stats{
+				stats.FrostPower: 15,
+			})
+		}
 	}
 
 	if character.HasProfession(proto.Profession_Enchanting) && consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
 		switch consumes.EnchantedSigil {
 		case proto.EnchantedSigil_InnovationSigil:
 			character.AddStats(stats.Stats{
-				stats.AttackPower: 20,
-				stats.SpellPower:  20,
+				stats.AttackPower:       20,
+				stats.RangedAttackPower: 20,
+				stats.SpellPower:        20,
 			})
 		}
 	}
@@ -194,37 +207,89 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	registerExplosivesCD(agent, consumes)
 }
 
-func addImbueStats(character *Character, imbue proto.WeaponImbue) {
+func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
+		// Wizard Oils
+		case proto.WeaponImbue_MinorWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 8,
+			})
+		case proto.WeaponImbue_LesserWizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 16,
+			})
+		case proto.WeaponImbue_WizardOil:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 24,
+			})
 		case proto.WeaponImbue_BrillianWizardOil:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 36,
 				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
 			})
+
+		// Mana Oils
+		case proto.WeaponImbue_MinorManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5: 4,
+			})
+		case proto.WeaponImbue_LesserManaOil:
+			character.AddStats(stats.Stats{
+				stats.MP5: 8,
+			})
 		case proto.WeaponImbue_BrilliantManaOil:
 			character.AddStats(stats.Stats{
-				stats.MP5:     5,
+				stats.MP5:     12,
 				stats.Healing: 25,
-			})
-		// TODO: Classic
-		// case proto.WeaponImbue_DenseSharpeningStone:
-		// 	character.AddStats(stats.Stats{
-		// 		stats.WeaponDamage??: 5,
-		// 	})
-		case proto.WeaponImbue_ElementalSharpeningStone:
-			character.AddStats(stats.Stats{
-				stats.MeleeCrit: 2 * CritRatingPerCritChance,
 			})
 		case proto.WeaponImbue_BlackfathomManaOil:
 			character.AddStats(stats.Stats{
 				stats.MP5:      12,
 				stats.SpellHit: 2 * SpellHitRatingPerHitChance,
 			})
+
+		// Sharpening Stones
+		case proto.WeaponImbue_SolidSharpeningStone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 6
+			weapon.BaseDamageMax += 6
+		case proto.WeaponImbue_DenseSharpeningStone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 8
+			weapon.BaseDamageMax += 8
+		case proto.WeaponImbue_ElementalSharpeningStone:
+			character.AddStats(stats.Stats{
+				stats.MeleeCrit: 2 * CritRatingPerCritChance,
+			})
 		case proto.WeaponImbue_BlackfathomSharpeningStone:
 			character.AddStats(stats.Stats{
 				stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
 			})
+
+		// Weightstones
+		case proto.WeaponImbue_SolidWeightstone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 6
+			weapon.BaseDamageMax += 6
+		case proto.WeaponImbue_DenseWeightstone:
+			weapon := character.AutoAttacks.MH()
+			if !isMh {
+				weapon = character.AutoAttacks.OH()
+			}
+			weapon.BaseDamageMin += 8
+			weapon.BaseDamageMax += 8
+
+		// Windfury
 		case proto.WeaponImbue_WildStrikes:
 			//protect against double application if wild strikes is selected by a feral in sim settings
 			if !character.HasRuneById(int32(proto.DruidRune_RuneChestWildStrikes)) {
@@ -285,6 +350,42 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			Priority: CooldownPriorityLow + 10,
 		})
 	}
+}
+
+func DragonBreathChiliAura(unit *Unit) *Aura {
+	baseDamage := 60.0
+	procChance := .05
+
+	procSpell := unit.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 15851},
+		SpellSchool: SpellSchoolFire,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNone,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, baseDamage+spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:    "Dragonbreath Chili",
+		ActionID: ActionID{SpellID: 15852},
+		Duration: NeverExpires,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+	return aura
 }
 
 // Creates a spell object for the common explosive case.
@@ -388,7 +489,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 				dot.SnapshotBaseDamage = dotDamage
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
 				// Revert to fire school
 				dot.Spell.SpellSchool = SpellSchoolFire
@@ -527,6 +628,33 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)
+	} else if potionType == proto.Potions_MildlyIrradiatedRejuvPotion {
+		actionID := ActionID{ItemID: 215162}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		manaMetrics := character.NewManaMetrics(actionID)
+		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
+		return MajorCooldown{
+			Type: CooldownTypeDPS,
+			Spell: character.GetOrRegisterSpell(SpellConfig{
+				ActionID: actionID,
+				Flags:    SpellFlagNoOnCastComplete,
+				Cast: CastConfig{
+					CD: Cooldown{
+						Timer:    potionCD,
+						Duration: time.Minute * 2,
+					},
+				},
+				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
+					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
+
+					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+					character.AddMana(sim, manaGain, manaMetrics)
+
+					aura.Activate(sim)
+				},
+			}),
+		}
 	} else {
 		return MajorCooldown{}
 	}

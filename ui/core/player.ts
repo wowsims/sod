@@ -31,6 +31,7 @@ import {
 	UnitStats,
 } from './proto/common.js';
 import {
+	DungeonFilterOption,
 	UIEnchant as Enchant,
 	UIItem as Item,
 	RaidFilterOption,
@@ -68,9 +69,11 @@ import {
 } from './proto_utils/utils.js';
 
 import { getLanguageCode } from './constants/lang.js';
-import { Sim, SimSettingCategories } from './sim.js';
+import { LEVEL_THRESHOLDS } from './constants/other.js';
+import { simLaunchStatuses } from './launched_sims.js';
 import { MAX_PARTY_SIZE, Party } from './party.js';
 import { Raid } from './raid.js';
+import { Sim, SimSettingCategories } from './sim.js';
 import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
@@ -292,7 +295,7 @@ export class Player<SpecType extends Spec> {
 
 		this.spec = spec;
 		this.race = specToEligibleRaces[this.spec][0];
-		this.level = Mechanics.CURRENT_LEVEL_CAP;
+		this.level = LEVEL_THRESHOLDS[simLaunchStatuses[this.spec].phase]
 		this.specTypeFunctions = specTypeFunctions[this.spec] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
@@ -625,6 +628,14 @@ export class Player<SpecType extends Spec> {
 
 		this.enableItemSwap = newEnableItemSwap;
 		this.itemSwapChangeEmitter.emit(eventID);
+	}
+
+	equipItemSwapitem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
+		this.setItemSwapGear(eventID, this.itemSwapGear.withEquippedItem(slot, newItem, this.canDualWield2H()));
+	}
+
+	getItemSwapItem(slot: ItemSlot): EquippedItem | null {
+		return this.itemSwapGear.getEquippedItem(slot);
 	}
 
 	getItemSwapGear(): ItemSwapGear {
@@ -1039,18 +1050,6 @@ export class Player<SpecType extends Spec> {
 		ItemSlot.ItemSlotOffHand,
 	];
 
-	static readonly RAID_IDS: Partial<Record<RaidFilterOption, number>> = {
-		// [RaidFilterOption.RaidNaxxramas]: 3456,
-		// [RaidFilterOption.RaidEyeOfEternity]: 4500,
-		// [RaidFilterOption.RaidObsidianSanctum]: 4493,
-		// [RaidFilterOption.RaidVaultOfArchavon]: 4603,
-		// [RaidFilterOption.RaidUlduar]: 4273,
-		// [RaidFilterOption.RaidTrialOfTheCrusader]: 4722,
-		// [RaidFilterOption.RaidOnyxiasLair]: 2159,
-		// [RaidFilterOption.RaidIcecrownCitadel]: 4812,
-		// [RaidFilterOption.RaidRubySanctum]: 4987,
-	};
-
 	filterItemData<T>(itemData: Array<T>, getItemFunc: (val: T) => Item, slot: ItemSlot): Array<T> {
 		const filters = this.sim.getFilters();
 
@@ -1065,16 +1064,46 @@ export class Player<SpecType extends Spec> {
 		if (!filters.sources.includes(SourceFilterOption.SourceCrafting)) {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'crafted'));
 		}
+
 		if (!filters.sources.includes(SourceFilterOption.SourceQuest)) {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'quest'));
 		}
 
-		for (const [raidOptionStr, zoneId] of Object.entries(Player.RAID_IDS)) {
-			const raidOption = parseInt(raidOptionStr) as RaidFilterOption;
-			if (!filters.raids.includes(raidOption)) {
-				itemData = filterItems(itemData, item =>
-					!item.sources.some(itemSrc =>
-						itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId));
+		if (!filters.sources.includes(SourceFilterOption.SourceDungeon)) {
+			for (const zoneName in DungeonFilterOption) {
+				const zoneId = DungeonFilterOption[zoneName]
+
+				if (typeof zoneId == "number") {
+					itemData = filterItems(itemData, item =>
+						!item.sources.some(itemSrc =>
+							itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId
+						)
+					);
+				}
+			}
+		}
+
+		if (!filters.sources.includes(SourceFilterOption.SourceRaid)) {
+			for (const zoneName in RaidFilterOption) {
+				const zoneId = RaidFilterOption[zoneName]
+
+				if (typeof zoneId == "number") {
+					itemData = filterItems(itemData, item =>
+						!item.sources.some(itemSrc =>
+							itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId
+						)
+					);
+				}
+			}
+		}
+
+		if (!filters.sources.includes(SourceFilterOption.SourceWorldBOE)) {
+			for (const zoneName in RaidFilterOption) {
+				const zoneId = RaidFilterOption[zoneName]
+
+				if (typeof zoneId == "number") {
+					itemData = filterItems(itemData, item => item.randomSuffixOptions.length == 0);
+				}
 			}
 		}
 

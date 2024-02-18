@@ -8,6 +8,7 @@ import { CharacterStats, StatMods } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
+import { ItemSwapConfig } from './components/item_swap_picker';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
@@ -17,6 +18,8 @@ import { GearTab } from './components/individual_sim_ui/gear_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
+
+import { LEVEL_THRESHOLDS } from './constants/other';
 
 import {
 	Consumes,
@@ -39,7 +42,7 @@ import {
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation_Type as APLRotationType } from './proto/apl';
-
+import { ItemSwapGear } from './proto_utils/gear';
 import { professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
 import {
@@ -58,7 +61,6 @@ import * as Exporters from './components/exporters';
 import * as Importers from './components/importers';
 import * as IconInputs from './components/icon_inputs';
 import * as InputHelpers from './components/input_helpers';
-import * as Mechanics from './constants/mechanics';
 import * as Tooltips from './constants/tooltips';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
@@ -115,6 +117,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods,
 
 	defaults: {
+		race?: Race
 		gear: EquipmentSpec,
 		epWeights: Stats,
 		consumes: Consumes,
@@ -144,7 +147,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	otherInputs: InputSection;
 	// Currently, many classes don't support item swapping, and only in certain slots.
 	// So enable it only where it is supported.
-	itemSwapSlots?: Array<ItemSlot>,
+	itemSwapConfig?: ItemSwapConfig,
 
 	// For when extra sections are needed (e.g. Shaman totems)
 	customSections?: Array<(parentElem: HTMLElement, simUI: IndividualSimUI<SpecType>) => ContentBlock>,
@@ -190,6 +193,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	tankRefStat?: Stat;
 
 	readonly bt: BulkTab;
+	spec: any;
 
 	constructor(parentElem: HTMLElement, player: Player<SpecType>, config: IndividualSimUIConfig<SpecType>) {
 		super(parentElem, player.sim, {
@@ -197,7 +201,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			cssScheme: config.cssScheme,
 			spec: player.spec,
 			knownIssues: config.knownIssues,
-			launchStatus: simLaunchStatuses[player.spec],
+			simStatus: simLaunchStatuses[player.spec],
 			noticeText: 'Disclaimer: Phase 2 support is still in early development. Item and spell effects may not be implemented.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
@@ -207,7 +211,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
 
-		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
+		if ((config.itemSwapConfig?.itemSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
 			itemSwapEnabledSpecs.push(player.spec);
 		}
 
@@ -233,7 +237,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				} else if (talentPoints < this.player.getLevel() - 9) {
 					return 'Unspent talent points.';
 				} else if (talentPoints > this.player.getLevel() - 9) {
-					return 'More talent points spent than current level selected.';
+					return Tooltips.TOO_MANY_TALENT_POINTS;
 				} else {
 					return '';
 				}
@@ -284,7 +288,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		const initEventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			this.applyDefaults(initEventID);
-
+			// TODO: Swap reads to sod after 1 week on 2024-02-22
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
 			if (savedSettings != null) {
 				try {
@@ -312,6 +316,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// This needs to go last so it doesn't re-store things as they are initialized.
 			this.changeEmitter.on(_ => {
 				const jsonStr = IndividualSimSettings.toJsonString(this.toProto());
+
+				// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
+				window.localStorage.setItem(this.getSettingsStorageKey().replace('wotlk', 'sod'), jsonStr);
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
 		});
@@ -385,9 +392,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 			//Special case for Totem of Wrath keeps buff and debuff sync'd
 			this.player.applySharedDefaults(eventID);
-			this.player.setRace(eventID, specToEligibleRaces[this.player.spec][0]);
-			this.player.setLevel(eventID, Mechanics.CURRENT_LEVEL_CAP);
+			this.player.setRace(eventID, this.individualConfig.defaults.race ?? specToEligibleRaces[this.player.spec][0]);
+			this.player.setLevel(eventID, LEVEL_THRESHOLDS[simLaunchStatuses[this.player.spec].phase]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
+			this.player.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
 			this.player.setSpecOptions(eventID, this.individualConfig.defaults.specOptions);

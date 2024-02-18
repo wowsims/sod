@@ -57,23 +57,21 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating: 0,
-		DamageMultiplierAdditive: 1 +
-			.05*float64(hunter.Talents.Barrage),
-		DamageMultiplier: 1,
-		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
-		ThreatMultiplier: 1,
+		BonusCritRating:          0,
+		DamageMultiplierAdditive: 1 + .05*float64(hunter.Talents.Barrage),
+		DamageMultiplier:         1,
+		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 
-			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				hunter.AmmoDamageBonus +
-				spell.BonusWeaponDamage() +
-				baseDamage
+			sharedDmg := spell.BonusWeaponDamage() + baseDamage
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(curTarget)
+				baseDamage := sharedDmg +
+					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+					hunter.NormalizedAmmoDamageBonus
 
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 

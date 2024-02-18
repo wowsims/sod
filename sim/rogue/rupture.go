@@ -53,7 +53,7 @@ func (rogue *Rogue) registerRupture() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = rogue.RuptureDamage(rogue.ComboPoints())
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},

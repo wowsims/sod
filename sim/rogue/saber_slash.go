@@ -47,7 +47,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				if stacks := dot.GetStacks(); stacks > 0 {
 					dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(stacks)
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.SnapshotCritChance = 0
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}

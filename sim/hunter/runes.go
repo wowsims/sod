@@ -31,8 +31,84 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
 	}
 
+	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
+		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
+	}
+
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
+	hunter.applyExposeWeakness()
+	hunter.applyInvigoration()
+}
+
+func (hunter *Hunter) applyInvigoration() {
+	if !hunter.HasRune(proto.HunterRune_RuneBootsInvigoration) || hunter.pet == nil {
+		return
+	}
+
+	procSpellId := core.ActionID{SpellID: 437999}
+	metrics := hunter.NewManaMetrics(procSpellId)
+	procSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID:    procSpellId,
+		SpellSchool: core.SpellSchoolNature,
+		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
+			hunter.AddMana(sim, hunter.MaxMana()*0.05, metrics)
+		},
+	})
+
+	core.MakePermanent(hunter.pet.GetOrRegisterAura(core.Aura{
+		Label: "Invigoration",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+				return
+			}
+
+			if !result.DidCrit() {
+				return
+			}
+
+			procSpell.Cast(sim, result.Target)
+		},
+	}))
+}
+
+func (hunter *Hunter) applyExposeWeakness() {
+	if !hunter.HasRune(proto.HunterRune_RuneBeltExposeWeakness) {
+		return
+	}
+
+	apBonus := hunter.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 0.4)
+	apRangedBonus := hunter.NewDynamicStatDependency(stats.Agility, stats.RangedAttackPower, 0.4)
+
+	procAura := hunter.GetOrRegisterAura(core.Aura{
+		Label:    "Expose Weakness Proc",
+		ActionID: core.ActionID{SpellID: 409507},
+		Duration: time.Second * 7,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.EnableDynamicStatDep(sim, apBonus)
+			hunter.EnableDynamicStatDep(sim, apRangedBonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.DisableDynamicStatDep(sim, apBonus)
+			hunter.DisableDynamicStatDep(sim, apRangedBonus)
+		},
+	})
+
+	core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+		Label: "Expose Weakness",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+				return
+			}
+
+			if !result.DidCrit() {
+				return
+			}
+
+			procAura.Activate(sim)
+		},
+	}))
 }
 
 func (hunter *Hunter) applySniperTraining() {

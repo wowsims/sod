@@ -63,6 +63,12 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 
 func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
+
+	if enh.ItemSwap.IsEnabled() {
+		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
+			enh.ApplySyncType(proto.ShamanSyncType_Auto)
+		})
+	}
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {

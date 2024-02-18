@@ -146,7 +146,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			OtherInputs.ChannelClipDelay,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -175,10 +177,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
 		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
 
-		// Affliction vs Destruction
-		const specNumber = hasMasterChanneler ? 0 : 2
-
-		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		if (player.getLevel() == 25) {
+			// Affliction vs Destruction
+			const specNumber = hasMasterChanneler ? 0 : 1
+			return Presets.DefaultAPLs[25][specNumber].rotation.rotation!;
+		}
+		return Presets.DefaultAPLs[40][0].rotation.rotation!;
 	},
 
 	raidSimPresets: [

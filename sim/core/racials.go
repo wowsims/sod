@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -54,7 +55,10 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
-		character.ApplyWeaponSpecialization(5, proto.WeaponType_WeaponTypeMace, proto.WeaponType_WeaponTypeSword)
+		character.PseudoStats.MacesSkill += 5
+		character.PseudoStats.TwoHandedMacesSkill += 5
+		character.PseudoStats.SwordsSkill += 5
+		character.PseudoStats.TwoHandedSwordsSkill += 5
 	case proto.Race_RaceNightElf:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
@@ -67,9 +71,21 @@ func applyRaceEffects(agent Agent) {
 
 		// Blood Fury
 		actionID := ActionID{SpellID: 20572}
-		apBonus := float64(character.Level)*4 + 2
-		spBonus := float64(character.Level)*2 + 3
-		bloodFuryAura := character.NewTemporaryStatsAura("Blood Fury", actionID, stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}, time.Second*15)
+		var bloodFuryAP float64
+		bloodFuryAura := character.RegisterAura(Aura{
+			Label:    "Blood Fury",
+			ActionID: actionID,
+			Duration: time.Second * 15,
+			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
+			OnGain: func(aura *Aura, sim *Simulation) {
+				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
+				character.AddStatDynamic(sim, stats.AttackPower, bloodFuryAP)
+			},
+
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.AddStatDynamic(sim, stats.AttackPower, -bloodFuryAP)
+			},
+		})
 
 		spell := character.RegisterSpell(SpellConfig{
 			ActionID: actionID,
@@ -91,7 +107,8 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		character.ApplyWeaponSpecialization(5, proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
+		character.PseudoStats.AxesSkill += 5
+		character.PseudoStats.TwoHandedAxesSkill += 5
 	case proto.Race_RaceTauren:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
@@ -109,19 +126,55 @@ func applyRaceEffects(agent Agent) {
 		// Berserking
 		actionID := ActionID{SpellID: 26297}
 
-		berserkingAura := character.RegisterAura(Aura{
-			Label:    "Berserking (Troll)",
-			ActionID: actionID,
-			Duration: time.Second * 10,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1.2)
-				character.MultiplyAttackSpeed(sim, 1.2)
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1 / 1.2)
-				character.MultiplyAttackSpeed(sim, 1/1.2)
-			},
-		})
+		var berserkingAura *Aura
+		var berserkingPct float64
+		if character.HasManaBar() {
+			// Mana-using classes gain a flat % reduction in attack and cast speed
+			berserkingAura = character.RegisterAura(Aura{
+				Label:    "Berserking (Troll)",
+				ActionID: actionID,
+				Duration: time.Second * 10,
+				OnGain: func(aura *Aura, sim *Simulation) {
+					healthPctMissing := 1 - character.CurrentHealthPercent()
+					// 10% base + 1/3 of missing health percentage up to a max of 30%
+					berserkingPct = math.Min(.1+(healthPctMissing/3), .3)
+
+					character.FlatIncreaseCastSpeed(berserkingPct)
+					character.FlatIncreaseAttackSpeed(sim, berserkingPct)
+
+					if sim.Log != nil {
+						character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+					}
+				},
+				OnExpire: func(aura *Aura, sim *Simulation) {
+					character.FlatIncreaseCastSpeed(-1 * berserkingPct)
+					character.FlatIncreaseAttackSpeed(sim, -1*berserkingPct)
+				},
+			})
+		} else {
+			// Non-mana bar classes gain a flat % reduction in attack and cast speed
+			berserkingAura = character.RegisterAura(Aura{
+				Label:    "Berserking (Troll)",
+				ActionID: actionID,
+				Duration: time.Second * 10,
+				OnGain: func(aura *Aura, sim *Simulation) {
+					healthPctMissing := 1 - character.CurrentHealthPercent()
+					// 10% base + 1/3 of missing health percentage up to a max of 30%
+					berserkingPct := math.Min(.1+(healthPctMissing/3), .3)
+
+					character.MultiplyCastSpeed(1 + berserkingPct)
+					character.MultiplyAttackSpeed(sim, 1+berserkingPct)
+
+					if sim.Log != nil {
+						character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+					}
+				},
+				OnExpire: func(aura *Aura, sim *Simulation) {
+					character.MultiplyCastSpeed(1/1 + berserkingPct)
+					character.MultiplyAttackSpeed(sim, 1/1+berserkingPct)
+				},
+			})
+		}
 
 		berserkingSpell := character.RegisterSpell(SpellConfig{
 			ActionID: actionID,

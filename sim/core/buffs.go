@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -27,6 +28,7 @@ const (
 	StrengthOfEarth
 	TrueshotAura
 	HornOfLordaeron
+	Windfury
 
 	// Resistance
 	AspectOfTheWild
@@ -42,6 +44,30 @@ const (
 	ScrollOfStrength
 	ScrollOfStamina
 )
+
+var LevelToBuffRank = map[BuffName]map[int32]int32{
+	BattleShout: {
+		25: 3,
+		40: 4,
+		50: 5,
+		60: 7,
+	},
+	GraceOfAir: {
+		50: 1,
+		60: 3,
+	},
+	StrengthOfEarth: {
+		25: 2,
+		40: 3,
+		50: 3,
+		60: 5,
+	},
+	Windfury: {
+		40: 1,
+		50: 2,
+		60: 3,
+	},
+}
 
 // Stats from buffs pre-tristate buffs
 var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
@@ -550,7 +576,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// }
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, level))
+		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
 
 	if raidBuffs.HornOfLordaeron {
@@ -567,23 +593,13 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing {
-		updateStats := BuffSpellByLevel[StrengthOfEarth][level]
-		if raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.15)
-		}
-		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfStrength {
-		character.AddStats(BuffSpellByLevel[ScrollOfStrength][level])
+		multiplier := TernaryFloat64(raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
 	}
 
 	if raidBuffs.GraceOfAirTotem > 0 {
-		updateStats := BuffSpellByLevel[GraceOfAir][level]
-		if raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.15)
-		}
-		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfAgility {
-		character.AddStats(BuffSpellByLevel[ScrollOfAgility][level])
+		multiplier := TernaryFloat64(raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 {
@@ -680,6 +696,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
 		character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
 		character.AddStat(stats.AttackPower, 20)
+		character.AddStat(stats.RangedAttackPower, 20)
 		character.AddStat(stats.SpellPower, 25)
 	}
 
@@ -1358,8 +1375,8 @@ const ShatteringThrowCD = time.Minute * 5
 
 var InnervateAuraTag = "Innervate"
 
-const InnervateDuration = time.Second * 10
-const InnervateCD = time.Minute * 3
+const InnervateDuration = time.Second * 20
+const InnervateCD = time.Minute * 6
 
 func InnervateManaThreshold(character *Character) float64 {
 	if character.Class == proto.Class_ClassMage {
@@ -1406,21 +1423,22 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 
 func InnervateAura(character *Character, actionTag int32) *Aura {
 	actionID := ActionID{SpellID: 29166, Tag: actionTag}
-	manaMetrics := character.NewManaMetrics(actionID)
+	// TODO: Add metrics for increased regen from spirit (either add here and align ticks to mana tick or create mana tick hook?)
+	// manaMetrics := character.NewManaMetrics(actionID)
 	return character.GetOrRegisterAura(Aura{
 		Label:    "Innervate-" + actionID.String(),
 		Tag:      InnervateAuraTag,
 		ActionID: actionID,
 		Duration: InnervateDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			const manaPerTick = 3496 * 2.25 / 10 // WotLK druid's base mana
-			StartPeriodicAction(sim, PeriodicActionOptions{
-				Period:   InnervateDuration / 10,
-				NumTicks: 10,
-				OnAction: func(sim *Simulation) {
-					character.AddMana(sim, manaPerTick, manaMetrics)
-				},
-			})
+			character.PseudoStats.SpiritRegenMultiplier += 4
+			character.PseudoStats.ForceFullSpiritRegen = true
+			character.UpdateManaRegenRates()
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			character.PseudoStats.SpiritRegenMultiplier -= 4
+			character.PseudoStats.ForceFullSpiritRegen = false
+			character.UpdateManaRegenRates()
 		},
 	})
 }
@@ -1552,31 +1570,77 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	})
 }
 
-func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, level int32) *Aura {
-	spellID := map[int32]int32{
-		25: 6192,
-		40: 11549,
-		50: 11550,
-		60: 25289,
-	}[level]
+func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	rank := LevelToBuffRank[BattleShout][unit.Level]
+	spellId := BattleShoutSpellId[rank]
+	duration := time.Minute * 2
+	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
 
 	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Battle Shout",
-		ActionID:   ActionID{SpellID: spellID},
+		Label:      "Strength of Earth Totem",
+		ActionID:   ActionID{SpellID: spellId},
+		Duration:   duration,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
+}
+
+func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	spellId := map[int32]int32{
+		50: 8835,
+		60: 25359,
+	}[level]
+	duration := time.Minute * 2
+	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier)
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Grace of Air Totem",
+		ActionID:   ActionID{SpellID: spellId},
+		Duration:   duration,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
+}
+
+const BattleShoutRanks = 7
+
+var BattleShoutSpellId = [BattleShoutRanks + 1]int32{0, 6673, 5242, 6192, 11549, 11550, 11551, 25289}
+var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 193, 232}
+var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
+
+func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *Aura {
+	rank := LevelToBuffRank[BattleShout][unit.Level]
+	spellId := BattleShoutSpellId[rank]
+	baseAP := BattleShoutBaseAP[rank]
+
+	return unit.GetOrRegisterAura(Aura{
+		Label:      fmt.Sprintf("Battle Shout"),
+		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(BuffSpellByLevel[BattleShout][level][stats.AttackPower] * (1 + 0.05*float64(impBattleShout))),
+				stats.AttackPower: baseAP * (1 + 0.05*float64(impBattleShout)),
 			})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(BuffSpellByLevel[BattleShout][level][stats.AttackPower]*(1+0.05*float64(impBattleShout))),
+				stats.AttackPower: -1 * baseAP * (1 + 0.05*float64(impBattleShout)),
 			})
 		},
 	})
-	return aura
 }
 
 func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {

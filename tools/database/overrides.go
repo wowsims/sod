@@ -17,7 +17,35 @@ var ItemOverrides = []*proto.UIItem{
 	{Id: 211848, Name: "Blackfathom Mana Oil", Icon: "inv_potion_99", Stats: stats.Stats{stats.MP5: 12, stats.SpellHit: 2}.ToFloatArray()},
 	{Id: 211845, Name: "Blackfathom Sharpening Stone", Icon: "inv_misc_rune_04", Stats: stats.Stats{stats.MeleeHit: 2}.ToFloatArray()},
 
-	// {Id: 209534, Name: "Azshari Arbalest", Icon: "inv_weapon_crossbow_04", Stats: stats.Stats{stats.RangedAttackPower: 17}.ToFloatArray()},
+	{Id: 10019, Sources: []*proto.UIItemSource{{
+		Source: &proto.UIItemSource_Crafted{
+			Crafted: &proto.CraftedSource{
+				Profession: proto.Profession_Tailoring, SpellId: 3759,
+			},
+		},
+	}}},
+
+	// Updated profession items not updated in the AtlasLoot DB
+	// Crimson Silk Robe
+	{Id: 217245, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439085}}}}},
+	// Black Mageweave Vest
+	{Id: 217246, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439086}}}}},
+	// Enchanter's Cowl
+	{Id: 217257, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439102}}}}},
+	// Big Voodoo Mask
+	{Id: 217259, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Leatherworking, SpellId: 439105}}}}},
+	// Big Voodoo Robe
+	{Id: 217261, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Leatherworking, SpellId: 439108}}}}},
+	// Turtle Scale Breastplate
+	{Id: 217268, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Leatherworking, SpellId: 439116}}}}},
+	// Turtle Scale Gloves
+	{Id: 217270, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Leatherworking, SpellId: 439118}}}}},
+	// Golden Scale Cuirass
+	{Id: 217277, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Blacksmithing, SpellId: 439124}}}}},
+	// Golden Scale Coif
+	{Id: 217279, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Blacksmithing, SpellId: 439126}}}}},
+	// Golden Scale Leggings
+	{Id: 217285, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Blacksmithing, SpellId: 439132}}}}},
 
 	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
 	// {Id: 44093, Stats: stats.Stats{stats.MeleeCrit: 30, stats.SpellCrit: 30, stats.Resilience: 13, stats.AttackPower: 34}.ToFloatArray()},
@@ -78,22 +106,26 @@ var ItemAllowList = map[int32]struct{}{
 	// SOD
 	211848: {},
 	211845: {},
+	215111: {}, // Gneuro-Linked Arcano-Filament Monocle
+	215114: {}, // Glowing Hyperconductive Scale Coif
 }
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
-	9653:  {}, // Speedy Racer Goggles
-	12104: {}, // Brindlethorn Tunic
-	17782: {}, // talisman of the binding shard
-	17783: {}, // talisman of the binding fragment
-	17802: {}, // Deprecated version of Thunderfury
-	20522: {}, // Feral Staff
-	33350: {},
-	34576: {}, // Battlemaster's Cruelty
-	34577: {}, // Battlemaster's Depreavity
-	34578: {}, // Battlemaster's Determination
-	34579: {}, // Battlemaster's Audacity
-	34580: {}, // Battlemaster's Perseverence
+	9653:   {}, // Speedy Racer Goggles
+	12104:  {}, // Brindlethorn Tunic
+	12805:  {}, // Orb of Fire
+	17782:  {}, // talisman of the binding shard
+	17783:  {}, // talisman of the binding fragment
+	17802:  {}, // Deprecated version of Thunderfury
+	20522:  {}, // Feral Staff
+	215116: {}, // UNUSED - Hyperconductive Speed Belt
+	33350:  {},
+	34576:  {}, // Battlemaster's Cruelty
+	34577:  {}, // Battlemaster's Depreavity
+	34578:  {}, // Battlemaster's Determination
+	34579:  {}, // Battlemaster's Audacity
+	34580:  {}, // Battlemaster's Perseverence
 
 }
 
@@ -358,6 +390,10 @@ var SharedSpellsIcons = []int32{
 	401556,
 	400574,
 	400573,
+
+	// Gnomeregan on-use item effects
+	437327,
+	437362,
 }
 
 // If any of these match the item name, don't include it.

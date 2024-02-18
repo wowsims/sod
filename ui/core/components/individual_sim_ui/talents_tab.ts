@@ -2,7 +2,7 @@ import { IndividualSimUI } from "../../individual_sim_ui";
 import { Player } from "../../player";
 import { EventID, TypedEvent } from "../../typed_event";
 
-import { Class, Spec } from "../../proto/common";
+import { Spec } from "../../proto/common";
 import { SavedTalents } from "../../proto/ui";
 
 import { classTalentsConfig } from "../../talents/factory";
@@ -10,8 +10,6 @@ import { TalentsPicker } from "../../talents/talents_picker";
 
 import { SavedDataManager } from "../saved_data_manager";
 import { SimTab } from "../sim_tab";
-
-import * as Mechanics from '../../constants/mechanics';
 
 export class TalentsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -35,12 +33,7 @@ export class TalentsTab extends SimTab {
 	}
 
 	protected buildTabContent() {
-    if (this.simUI.player.getClass() == Class.ClassHunter) {
-      this.buildHunterPickers();
-    } else {
-      this.buildTalentsPicker(this.leftPanel);
-    }
-
+    this.buildTalentsPicker(this.leftPanel);
     this.buildSavedTalentsPicker();
 	}
 
@@ -54,51 +47,7 @@ export class TalentsTab extends SimTab {
         player.setTalentsString(eventID, newValue);
       },
       pointsPerRow: 5,
-      maxPoints: Mechanics.MAX_TALENT_POINTS,
     });
-  }
-
-  private buildHunterPickers() {
-    this.leftPanel.innerHTML = `
-      <div class="hunter-talents-pickers-container tab-content">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link active"
-              type="button"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#player-talents-tab"
-              aria-controls="#player-talents-tab"
-              aria-selected="true"
-            >
-              Player
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link"
-              type="button"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#pet-talents-tab"
-              aria-controls="#pet-talents-tab"
-              aria-selected="false"
-            >
-              Pet</a
-            >
-          </li>
-        </ul>
-        <div id="player-talents-tab" class="tab-pane fade active show" role="tabpanel">
-        </div>
-        <div id="pet-talents-tab" class="tab-pane fade" role="tabpanel">
-        </div>
-      </div>
-    `
-
-    const playerTab = this.leftPanel.querySelector('#player-talents-tab') as HTMLElement;
-
-    this.buildTalentsPicker(playerTab);
   }
 
   private buildSavedTalentsPicker() {
@@ -114,7 +63,7 @@ export class TalentsTab extends SimTab {
 					player.setTalentsString(eventID, newTalents.talentsString);
 				});
 			},
-			changeEmitters: [this.simUI.player.talentsChangeEmitter],
+			changeEmitters: [this.simUI.player.talentsChangeEmitter, this.simUI.player.levelChangeEmitter],
 			equals: (a: SavedTalents, b: SavedTalents) => SavedTalents.equals(a, b),
 			toJson: (a: SavedTalents) => SavedTalents.toJson(a),
 			fromJson: (obj: any) => SavedTalents.fromJson(obj),
@@ -128,6 +77,7 @@ export class TalentsTab extends SimTab {
 					name: config.name,
 					isPreset: true,
 					data: config.data,
+					enableWhen: config.enableWhen,
 				});
 			});
 		});

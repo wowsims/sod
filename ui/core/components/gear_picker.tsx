@@ -1,10 +1,8 @@
-import { difficultyNames, professionNames, slotNames } from '../proto_utils/names.js';
+import { REP_FACTION_NAMES, REP_LEVEL_NAMES, professionNames, slotNames } from '../proto_utils/names.js';
 import { BaseModal } from './base_modal';
 import { Component } from './component';
 import { FiltersMenu } from './filters_menu';
-import { Input, InputConfig } from './input';
 import {
-	makePhaseSelector,
 	makeShow1hWeaponsSelector,
 	makeShow2hWeaponsSelector,
 	makeShowEPValuesSelector,
@@ -30,12 +28,12 @@ import {
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
-	Spec,
 } from '../proto/common';
 import {
 	DatabaseFilters,
 	UIEnchant as Enchant,
 	UIItem as Item,
+	RepFaction,
 	UIRune as Rune,
 } from '../proto/ui.js';
 // eslint-disable-next-line unused-imports/no-unused-imports
@@ -48,10 +46,6 @@ const EP_TOOLTIP = `
 	EP (Equivalence Points) is way of comparing items by multiplying the raw stats of an item with your current stat weights.
 	More EP does not necessarily mean more DPS, as EP doesn't take into account stat caps and non-linear stat calculations.
 `
-
-const createHeroicLabel = () => {
-	return (<span className='heroic-label'>[H]</span>);
-}
 
 export class GearPicker extends Component {
 	// ItemSlot is used as the index
@@ -150,12 +144,6 @@ export class ItemRenderer extends Component {
 			this.nameElem.textContent += ' ' + newItem.randomSuffix.name
 		}
 
-		if (newItem.item.heroic) {
-			this.nameElem.insertAdjacentElement('beforeend', createHeroicLabel());
-		} else {
-			this.nameElem.querySelector('.heroic-label')?.remove();
-		}
-
 		setItemQualityCssClass(this.nameElem, newItem.item.quality);
 
 		this.player.setWowheadData(newItem, this.iconElem);
@@ -230,15 +218,15 @@ export class ItemPicker extends Component {
 		this.simUI = simUI;
 		this.player = player;
 		this.itemElem = new ItemRenderer(this.rootElem, player);
-		this.item = player.getEquippedItem(slot);
 
 		const loadItems = () => this._items = this.player.getItems(this.slot);
+		const loadItem = () => this.item = player.getEquippedItem(slot);
 
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
-			
 			loadItems();
+			loadItem();
 
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
@@ -260,14 +248,19 @@ export class ItemPicker extends Component {
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
-		});
 
-		player.levelChangeEmitter.on(loadItems)
-		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
-		player.professionChangeEmitter.on(() => {
-			if (this._equippedItem != null) {
-				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
-			}
+			player.levelChangeEmitter.on(loadItems);
+			player.gearChangeEmitter.on(loadItem);
+			player.professionChangeEmitter.on(() => {
+				if (this._equippedItem != null) {
+					this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
+				}
+			});
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
 		});
 	}
 
@@ -299,22 +292,22 @@ export class ItemPicker extends Component {
 	}
 }
 
-export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<Player<SpecType>, ValueType> {
-	private readonly config: InputConfig<Player<SpecType>, ValueType>;
+export class IconItemSwapPicker extends Component {
+
 	private readonly iconAnchor: HTMLAnchorElement;
-	private readonly player: Player<SpecType>;
+	private readonly socketsContainerElem: HTMLElement;
+	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items and enchants that are eligible for this slot
+	// All items, enchants, and runes that are eligible for this slot
 	private _items: Array<Item> = [];
 	private _enchants: Array<Enchant> = [];
 	private _runes: Array<Rune> = [];
 
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<SpecType>, slot: ItemSlot, config: InputConfig<Player<SpecType>, ValueType>) {
-		super(parent, 'icon-picker-root', player, config)
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot) {
+		super(parent, 'icon-picker-root')
 		this.rootElem.classList.add('icon-picker');
 		this.player = player;
-		this.config = config;
 		this.slot = slot;
 
 		this.iconAnchor = document.createElement('a');
@@ -322,18 +315,22 @@ export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<
 		this.iconAnchor.target = '_blank';
 		this.rootElem.prepend(this.iconAnchor);
 
+		this.socketsContainerElem = document.createElement('div')
+		this.socketsContainerElem.classList.add('item-picker-sockets-container')
+		this.iconAnchor.appendChild(this.socketsContainerElem);
+
+		const loadItems = () => this._items = this.player.getItems(slot);
+
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
 			this._runes = this.player.getRunes(slot);
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					let isg = this.player.getItemSwapGear();
-					this.player.setItemSwapGear(eventID, isg.withEquippedItem(this.slot, equippedItem, player.canDualWield2H()));
-					this.inputChanged(eventID);
+					this.player.equipItemSwapitem(eventID, this.slot, equippedItem);
 				},
-				getEquippedItem: () => this.player.getItemSwapGear().getEquippedItem(this.slot),
-				changeEvent: config.changedEvent(player),
+				getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+				changeEvent: player.itemSwapChangeEmitter,
 			}
 
 			this.iconAnchor.addEventListener('click', (event: Event) => {
@@ -348,29 +345,27 @@ export class IconItemSwapPicker<SpecType extends Spec, ValueType> extends Input<
 					gearData: gearData,
 				});
 			});
-		}).finally(() => this.init());
 
+			player.levelChangeEmitter.on(loadItems);
+			player.itemSwapChangeEmitter.on(loadItems);
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
+		});
 	}
 
-	getInputElem(): HTMLElement {
-		return this.iconAnchor;
-	}
-	getInputValue(): ValueType {
-		return this.player.getItemSwapGear().toProto() as unknown as ValueType
-	}
-
-	setInputValue(_: ValueType): void {
+	update(newItem: EquippedItem | null) {
 		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		this.iconAnchor.removeAttribute('data-wowhead');
 		this.iconAnchor.href = "#";
+		this.socketsContainerElem.innerText = '';
 
-		const equippedItem = this.player.getItemSwapGear().getEquippedItem(this.slot);
-		if (equippedItem) {
+		if (newItem) {
 			this.iconAnchor.classList.add("active")
-
-			equippedItem.asActionId().fillAndSet(this.iconAnchor, true, true);
-			this.player.setWowheadData(equippedItem, this.iconAnchor);
-
+			this.player.setWowheadData(newItem, this.iconAnchor);
+			newItem.asActionId().fill().then(filledId => filledId.setBackgroundAndHref(this.iconAnchor));
 		} else {
 			this.iconAnchor.classList.remove("active")
 		}
@@ -458,7 +453,6 @@ export class SelectorModal extends BaseModal {
 					actionId: ActionId.fromItem(item),
 					name: item.name,
 					quality: item.quality,
-					heroic: item.heroic,
 					phase: item.phase,
 					baseEP: this.player.computeItemEP(item, slot),
 					ignoreEPFilter: false,
@@ -485,13 +479,12 @@ export class SelectorModal extends BaseModal {
 				return {
 					item: enchant,
 					id: enchant.effectId,
-					actionId: enchant.spellId ? ActionId.fromSpellId(enchant.spellId) : ActionId.fromItemId(enchant.itemId),
+					actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
 					name: enchant.name,
 					quality: enchant.quality,
 					phase: enchant.phase || 1,
 					baseEP: this.player.computeStatsEP(new Stats(enchant.stats)),
 					ignoreEPFilter: true,
-					heroic: false,
 					onEquip: (eventID, enchant: Enchant) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem)
@@ -519,7 +512,6 @@ export class SelectorModal extends BaseModal {
 						phase: 1,
 						baseEP: 1,
 						ignoreEPFilter: true,
-						heroic: false,
 						onEquip: (eventID, rune: Rune) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) {
@@ -569,7 +561,6 @@ export class SelectorModal extends BaseModal {
 					name: randomSuffix.name,
 					quality: itemProto.quality,
 					phase: itemProto.phase,
-					heroic: false,
 					baseEP: this.player.computeRandomSuffixEP(randomSuffix),
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix: ItemRandomSuffix) => {
@@ -707,7 +698,6 @@ export interface ItemData<T> {
 	phase: number,
 	baseEP: number,
 	ignoreEPFilter: boolean,
-	heroic: boolean,
 	onEquip: (eventID: EventID, item: T) => void,
 }
 
@@ -790,7 +780,6 @@ export class ItemList<T> {
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..."/>
 					{label == 'Items' && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
-					<div className="selector-modal-phase-selector"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
@@ -798,9 +787,10 @@ export class ItemList<T> {
 					<button className="selector-modal-remove-button btn btn-danger">Unequip Item</button>
 				</div>
 				<div className="selector-modal-list-labels">
-					<label>Item</label>
-					<label className="ep-delta-label">
-						EP
+					<label className="item-label"><small>Item</small></label>
+					<label className="source-label"><small>Source</small></label>
+					<label className="ep-label">
+						<small>EP</small>
 						<i className="fa-solid fa-plus-minus fa-2xs"></i>
 						<button
 							ref={epButton}
@@ -808,6 +798,7 @@ export class ItemList<T> {
 							<i className="far fa-question-circle fa-lg"></i>
 						</button>
 					</label>
+					<label className="favorite-label"></label>
 				</div>
 				<ul className="selector-modal-list"></ul>
 			</div>
@@ -828,7 +819,6 @@ export class ItemList<T> {
 		}
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
-		makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		if (label == 'Items') {
 			const filtersButton = this.tabContent.getElementsByClassName('selector-modal-filters-button')[0] as HTMLElement;
@@ -863,9 +853,7 @@ export class ItemList<T> {
 		});
 
 		const removeButton = this.tabContent.getElementsByClassName('selector-modal-remove-button')[0] as HTMLButtonElement;
-		removeButton.addEventListener('click', _ => {
-			onRemove(TypedEvent.nextEventID());
-		});
+		removeButton.addEventListener('click', _ => onRemove(TypedEvent.nextEventID()));
 
 		if (label.startsWith("Enchants")) {
 			removeButton.textContent = 'Remove Enchant';
@@ -948,7 +936,9 @@ export class ItemList<T> {
 				epDeltaElem.textContent = '';
 				if (itemData.item) {
 					const listItemEP = this.computeEP(itemData.item);
-					formatDeltaTextElem(epDeltaElem, newEP, listItemEP, 0);
+					if (newEP != listItemEP) {
+						formatDeltaTextElem(epDeltaElem, newEP, listItemEP, 0);
+					}
 				}
 			}
 		});
@@ -1008,7 +998,13 @@ export class ItemList<T> {
 			sortFn = (itemA, itemB) => {
 				const diff = this.computeEP(itemB) - this.computeEP(itemA);
 				// if EP is same, sort by ilvl
-				if (Math.abs(diff) < 0.01) return (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
+				if (Math.abs(diff) < 0.01) {
+					if ((itemB as unknown as Item).ilvl && (itemA as unknown as Item).ilvl) {
+						return (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
+					} else {
+						return (itemB as unknown as Item).name < (itemA as unknown as Item).name ? 1 : -1;
+					}
+				}
 				return diff;
 			}
 		}
@@ -1029,7 +1025,7 @@ export class ItemList<T> {
 	}
 
 	public hideOrShowEPValues() {
-		const labels = this.tabContent.getElementsByClassName("ep-delta-label")
+		const labels = this.tabContent.getElementsByClassName("ep-label")
 		const container = this.tabContent.getElementsByClassName("selector-modal-list")
 		const show = this.player.sim.getShowEPValues();
 		const display = show ? "" : "none"
@@ -1050,20 +1046,20 @@ export class ItemList<T> {
 		const itemData = item.data;
 		const itemEP = this.computeEP(itemData.item);
 
-		const equipedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
-		const equipdItemId = equipedItem ? (this.label == 'Enchants' ? (equipedItem as unknown as Enchant).effectId : (equipedItem as unknown as Item).id) : 0;
+		const equippedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
+		const equippedItemID = equippedItem ? (this.label == 'Enchants' ? (equippedItem as unknown as Enchant).effectId : (equippedItem as unknown as Item).id) : 0;
+		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0
 
 		const nameElem = ref<HTMLLabelElement>();
 		const anchorElem = ref<HTMLAnchorElement>();
 		const iconElem = ref<HTMLImageElement>();
 		const listItemElem = (
-			<li className={`selector-modal-list-item ${equipdItemId == itemData.id ? 'active' : ''}`} dataset={{idx: item.idx.toString()}}>
+			<li className={`selector-modal-list-item ${equippedItemID == itemData.id ? 'active' : ''}`} dataset={{idx: item.idx.toString()}}>
 				<div className='selector-modal-list-label-cell'>
 					<a className='selector-modal-list-item-link' ref={anchorElem} dataset={{whtticon:'false'}}>
 						<img className='selector-modal-list-item-icon' ref={iconElem}></img>
 						<label className='selector-modal-list-item-name' ref={nameElem}>
 							{itemData.name}
-							{itemData.heroic && createHeroicLabel()}
 						</label>
 					</a>
 				</div>
@@ -1078,8 +1074,22 @@ export class ItemList<T> {
 			)
 		}
 
-		let favoriteElem = ref<HTMLButtonElement>();
 
+		if (this.slot != ItemSlot.ItemSlotTrinket1 && this.slot != ItemSlot.ItemSlotTrinket2) {
+			listItemElem.appendChild(
+				<div className='selector-modal-list-item-ep'>
+					<span className='selector-modal-list-item-ep-value'>
+						{itemEP < 9.95 ? itemEP.toFixed(1).toString() : Math.round(itemEP).toString()}
+					</span>
+					<span
+						className='selector-modal-list-item-ep-delta'
+						ref={(e) => itemData.item && equippedItemEP != itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
+					></span>
+				</div>
+			);
+		}
+
+		let favoriteElem = ref<HTMLButtonElement>();
 		listItemElem.appendChild(
 			<div>
 				<button className="selector-modal-list-item-favorite btn btn-link p-0"
@@ -1089,24 +1099,6 @@ export class ItemList<T> {
 				</button>
 			</div>
 		)
-
-
-		if (this.slot != ItemSlot.ItemSlotTrinket1 && this.slot != ItemSlot.ItemSlotTrinket2) {
-			listItemElem.appendChild(
-				<div className='selector-modal-list-item-ep'>
-					<span className='selector-modal-list-item-ep-value'>
-						{itemEP < 9.95 ? itemEP.toFixed(1).toString() : Math.round(itemEP).toString()}
-					</span>
-				</div>
-			);
-		}
-
-		listItemElem.appendChild(
-			<div className='selector-modal-list-item-ep'>
-				<span className='selector-modal-list-item-ep-delta'
-					ref={(e) => itemData.item && formatDeltaTextElem(e, equipedItem ? this.computeEP(equipedItem) : 0, itemEP, 0)}></span>
-			</div>
-		);
 
 		anchorElem.value!.addEventListener('click', (event: Event) => {
 			event.preventDefault();
@@ -1177,18 +1169,26 @@ export class ItemList<T> {
 	}
 
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
+		const makeAnchor = (href:string, inner:string | JSX.Element) => {
+			return <a href={href} target="_blank"><small>{inner}</small></a>;
+		}
+
 		if (!item.sources || item.sources.length == 0) {
+			if (item.randomSuffixOptions.length) {
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			}
+
 			return <></>;
 		}
 
-		const makeAnchor = (href:string, inner:string) => {
-			return <a href={href}><small>{inner}</small></a>;
-		}
-
-		const source = item.sources[0];
+		let source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-			return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+
+			if (src.spellId) {
+				return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+			}
+			return makeAnchor( ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
@@ -1197,30 +1197,30 @@ export class ItemList<T> {
 				throw new Error('No zone found for item: ' + item);
 			}
 
-			let rtnEl = makeAnchor( ActionId.makeZoneUrl(zone.id), `${zone.name} (${difficultyNames.get(src.difficulty) ?? 'Unknown'})`);
-
 			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
-				rtnEl.appendChild(document.createElement('br'));
-				rtnEl.appendChild(makeAnchor(ActionId.makeNpcUrl(npc.id), `${npc.name + category}`));
+				return makeAnchor(ActionId.makeNpcUrl(npc.id), <span>{zone.name}<br />{npc.name + category}</span>);
 			} else if (src.otherName) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${src.otherName + category}</small></a>
-				`;*/
-			} else if (category) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${category}</small></a>
-				`;*/
+				return makeAnchor(ActionId.makeZoneUrl(zone.id), <span>{zone.name}<br />{src.otherName}</span>);
 			}
-			return rtnEl;
-		} else if (source.source.oneofKind == 'quest') {
+			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
+		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), src.name);
+			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
+		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
+			const factionNames = item.sources.
+				filter(source => source.source.oneofKind == 'rep').
+				map(source => source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown])
+			const src = source.source.rep;
+			return makeAnchor(ActionId.makeItemUrl(item.id), (
+				<>
+					{factionNames.map(name => (<span>{name}<br /></span>))}
+					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
+				</>
+			))
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
-			return makeAnchor(ActionId.makeNpcUrl(src.npcId), src.npcName);
+			return makeAnchor(ActionId.makeNpcUrl(src.npcId), <span>Sold by<br />{src.npcName}</span>);
 		}
 		return <></>;
 	}

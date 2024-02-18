@@ -41,15 +41,15 @@ func addLevel40(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        213334, // TODO:
+			Id:        218537, // TODO:
 			Name:      "Level 40",
 			Level:     42,
-			MobType:   proto.MobType_MobTypeUndead,
+			MobType:   proto.MobType_MobTypeMechanical,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
-				stats.Health:      127_393, // TODO:
-				stats.Armor:       2053,    // TODO:
+				stats.Health:      279_345, // TODO:
+				stats.Armor:       2053,    // Approx average armor of Gnomeregan bosses
 				stats.AttackPower: 574,     // TODO:
 			}.ToFloatArray(),
 

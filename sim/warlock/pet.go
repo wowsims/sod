@@ -229,6 +229,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
 
+	// TODO: This is the LK lvl 80 value!
+	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritRatingPerCritChance/166.66667)
+
 	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	wp.AddStat(stats.AttackPower, -20)
 
@@ -280,6 +283,10 @@ func (wp *WarlockPet) Reset(_ *core.Simulation) {
 }
 
 func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
+	if wp.primaryAbility == nil {
+		return
+	}
+
 	if wp.manaPooling {
 		maxPossibleCasts := sim.GetRemainingDuration().Seconds() / wp.primaryAbility.CurCast.CastTime.Seconds()
 
@@ -337,14 +344,17 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 		// does correctly not include ff/misery
 		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
 
+		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
+
 		// TODO: Classic warlock pet stat deps
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina] * core.Ternary(warlock.Options.Summon == proto.WarlockOptions_Imp, 0.66, 0.75),
 			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
 			stats.Armor:            ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower:      ownerStats[stats.SpellPower] * 0.57,
+			stats.AttackPower:      highestSchoolPower * 0.57,
 			stats.MP5:              ownerStats[stats.MP5] * 0.3,
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
+			stats.SpellDamage:      ownerStats[stats.SpellDamage] * 0.15,
 			stats.FirePower:        ownerStats[stats.FirePower] * 0.15,
 			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
