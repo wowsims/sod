@@ -1,0 +1,574 @@
+character_stats_results: {
+ key: "TestSV-Lvl25-CharacterStats-Default"
+ value: {
+  final_stats: 98.494
+  final_stats: 196.504
+  final_stats: 164.681
+  final_stats: 52.514
+  final_stats: 80.344
+  final_stats: 25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 21
+  final_stats: 6
+  final_stats: 5.43799
+  final_stats: 0
+  final_stats: 0
+  final_stats: 523.718
+  final_stats: 3
+  final_stats: 12.11996
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1118.71
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2068.508
+  final_stats: 492.008
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1793.9862
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10
+  final_stats: 40
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestSV-Lvl40-CharacterStats-Default"
+ value: {
+  final_stats: 136.62
+  final_stats: 281.842
+  final_stats: 315.04
+  final_stats: 105.38
+  final_stats: 96.58
+  final_stats: 42
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 24
+  final_stats: 6
+  final_stats: 14.13966
+  final_stats: 0
+  final_stats: 0
+  final_stats: 924.572
+  final_stats: 6
+  final_stats: 15.53981
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2405.7
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3140.684
+  final_stats: 855.684
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4001.14
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 83.5
+  final_stats: 13.5
+  final_stats: 23.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 14
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestSV-Lvl25-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0.35889
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.02054
+  weights: 1.84379
+  weights: 1.5683
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.10299
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestSV-Lvl40-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0.38244
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 2.04987
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.11999
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 157.77436
+  tps: 85.57769
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 166.93026
+  tps: 90.02168
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 162.78659
+  tps: 89.33543
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 192.09684
+  tps: 110.95893
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 167.61431
+  tps: 95.43505
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 177.03719
+  tps: 97.01162
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 167.64906
+  tps: 96.21126
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-InsulatedLeathers"
+ value: {
+  dps: 162.67877
+  tps: 91.85773
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 166.76809
+  tps: 94.98519
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-IrradiatedGarments"
+ value: {
+  dps: 172.27064
+  tps: 99.39973
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 169.95967
+  tps: 94.15886
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-StormshroudArmor"
+ value: {
+  dps: 138.98671
+  tps: 85.02869
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 161.90846
+  tps: 88.16529
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Average-Default"
+ value: {
+  dps: 172.36505
+  tps: 95.34043
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 180.08623
+  tps: 108.67432
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 168.35724
+  tps: 94.08707
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 224.13056
+  tps: 113.2703
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 84.3248
+  tps: 58.60267
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 80.42592
+  tps: 53.76291
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Dwarf-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 104.34126
+  tps: 60.6411
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 182.82265
+  tps: 107.19064
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 171.68531
+  tps: 95.64829
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 227.86864
+  tps: 113.5375
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 85.72592
+  tps: 59.46251
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 81.1023
+  tps: 54.02123
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-melee.weave.p1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 104.45373
+  tps: 62.85663
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl25-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 170.36168
+  tps: 94.35077
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 222.05017
+  tps: 135.80136
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 217.75796
+  tps: 132.30859
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 228.33571
+  tps: 140.91556
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 236.64124
+  tps: 146.59594
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 219.18626
+  tps: 133.01957
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 219.18626
+  tps: 133.00734
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 221.11808
+  tps: 134.07051
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
+ value: {
+  dps: 234.58372
+  tps: 144.56738
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 221.11808
+  tps: 134.07051
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
+ value: {
+  dps: 221.28724
+  tps: 133.5016
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 234.27862
+  tps: 143.95186
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-StormshroudArmor"
+ value: {
+  dps: 226.66491
+  tps: 136.59532
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 215.79259
+  tps: 130.72306
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Average-Default"
+ value: {
+  dps: 238.69008
+  tps: 148.45003
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 233.53673
+  tps: 149.50435
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 233.53673
+  tps: 147.48718
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 257.45701
+  tps: 164.22328
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 112.01082
+  tps: 81.57597
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 112.01082
+  tps: 81.57597
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 124.43299
+  tps: 91.33237
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 238.20284
+  tps: 149.82835
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 238.20284
+  tps: 147.81118
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 262.56665
+  tps: 164.66863
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 113.74518
+  tps: 81.76278
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 113.74518
+  tps: 81.76278
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 126.37972
+  tps: 91.59626
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 238.20284
+  tps: 147.81118
+ }
+}

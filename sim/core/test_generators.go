@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -109,7 +108,7 @@ type EncounterCombo struct {
 type SettingsCombos struct {
 	Class       proto.Class
 	Races       []proto.Race
-	Levels      []int32
+	Level       int32
 	GearSets    []GearSetCombo
 	TalentSets  []TalentsCombo
 	SpecOptions []SpecOptionsCombo
@@ -122,7 +121,7 @@ type SettingsCombos struct {
 }
 
 func (combos *SettingsCombos) NumTests() int {
-	return len(combos.Races) * len(combos.Levels) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * max(1, len(combos.Buffs[0].Consumes))
+	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * max(1, len(combos.Buffs[0].Consumes))
 }
 
 func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -132,11 +131,6 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	testIdx /= len(combos.Races)
 	race := combos.Races[raceIdx]
 	testNameParts = append(testNameParts, race.String()[4:])
-
-	levelIdx := testIdx % len(combos.Levels)
-	testIdx /= len(combos.Levels)
-	level := combos.Levels[levelIdx]
-	testNameParts = append(testNameParts, strconv.Itoa(int(level)))
 
 	gearSetIdx := testIdx % len(combos.GearSets)
 	testIdx /= len(combos.GearSets)
@@ -180,7 +174,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 		Raid: SinglePlayerRaidProto(
 			WithSpec(&proto.Player{
 				Race:               race,
-				Level:              level,
+				Level:              combos.Level,
 				Class:              combos.Class,
 				Equipment:          gearSetCombo.GearSet,
 				TalentsString:      talentSetCombo.Talents,
@@ -403,6 +397,7 @@ type CharacterSuiteConfig struct {
 	Talents     string
 	Rotation    RotationCombo
 
+	Buffs    BuffsCombo
 	Consumes ConsumesCombo
 
 	IsHealer        bool
@@ -410,7 +405,6 @@ type CharacterSuiteConfig struct {
 	InFrontOfTarget bool
 
 	OtherRaces       []proto.Race
-	OtherLevels      []int32
 	OtherGearSets    []GearSetCombo
 	OtherSpecOptions []SpecOptionsCombo
 	OtherRotations   []RotationCombo
@@ -424,152 +418,157 @@ type CharacterSuiteConfig struct {
 	Cooldowns *proto.Cooldowns
 }
 
-func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
-	config.Level = max(config.Level, 25)
-	allLevels := append(config.OtherLevels, config.Level)
-	allRaces := append(config.OtherRaces, config.Race)
-	allGearSets := append(config.OtherGearSets, config.GearSet)
-	allTalentSets := []TalentsCombo{{
-		Label:   "Talents",
-		Talents: config.Talents,
-	}}
-	allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
-	allRotations := append(config.OtherRotations, config.Rotation)
-	allConsumeOptions := append(config.OtherConsumes, config.Consumes)
+func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGenerator {
+	return MapSlice(configs, func(config CharacterSuiteConfig) TestGenerator {
+		config.Level = max(config.Level, 25)
+		allRaces := append(config.OtherRaces, config.Race)
+		allGearSets := append(config.OtherGearSets, config.GearSet)
+		allTalentSets := []TalentsCombo{{
+			Label:   "Talents",
+			Talents: config.Talents,
+		}}
+		allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
+		allRotations := append(config.OtherRotations, config.Rotation)
+		allConsumeOptions := append(config.OtherConsumes, config.Consumes)
 
-	defaultPlayer := WithSpec(
-		&proto.Player{
-			Class:         config.Class,
-			Level:         config.Level,
-			Race:          config.Race,
-			Equipment:     config.GearSet.GearSet,
-			Consumes:      config.Consumes.Consumes,
-			Buffs:         FullIndividualBuffs,
-			TalentsString: config.Talents,
-			Profession1:   proto.Profession_Engineering,
-			Rotation:      config.Rotation.Rotation,
-			Cooldowns:     config.Cooldowns,
+		defaultPlayer := WithSpec(
+			&proto.Player{
+				Class:         config.Class,
+				Level:         config.Level,
+				Race:          config.Race,
+				Equipment:     config.GearSet.GearSet,
+				Consumes:      config.Consumes.Consumes,
+				Buffs:         config.Buffs.Player,
+				TalentsString: config.Talents,
+				Profession1:   proto.Profession_Engineering,
+				Rotation:      config.Rotation.Rotation,
+				Cooldowns:     config.Cooldowns,
 
-			InFrontOfTarget:    config.InFrontOfTarget,
-			DistanceFromTarget: 30,
-			ReactionTimeMs:     150,
-			ChannelClipDelayMs: 50,
-		},
-		config.SpecOptions.SpecOptions)
+				InFrontOfTarget:    config.InFrontOfTarget,
+				DistanceFromTarget: 30,
+				ReactionTimeMs:     150,
+				ChannelClipDelayMs: 50,
+			},
+			config.SpecOptions.SpecOptions)
 
-	defaultRaid := SinglePlayerRaidProto(defaultPlayer, FullPartyBuffs, FullRaidBuffs, FullDebuffs)
-	if config.IsTank {
-		defaultRaid.Tanks = append(defaultRaid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
-	}
-	if config.IsHealer {
-		defaultRaid.TargetDummies = 1
-	}
+		defaultRaid := SinglePlayerRaidProto(defaultPlayer, config.Buffs.Party, config.Buffs.Raid, config.Buffs.Debuffs)
+		if config.IsTank {
+			defaultRaid.Tanks = append(defaultRaid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
+		}
+		if config.IsHealer {
+			defaultRaid.TargetDummies = 1
+		}
 
-	generator := &CombinedTestGenerator{
-		subgenerators: []SubGenerator{
-			{
-				name: "CharacterStats",
-				generator: &SingleCharacterStatsTestGenerator{
-					Name: "Default",
-					Request: &proto.ComputeStatsRequest{
-						Raid: defaultRaid,
+		generator := &CombinedTestGenerator{
+			subgenerators: []SubGenerator{
+				{
+					name: makeGeneratorName("CharacterStats", config.Level),
+					generator: &SingleCharacterStatsTestGenerator{
+						Name: "Default",
+						Request: &proto.ComputeStatsRequest{
+							Raid: defaultRaid,
+						},
+					},
+				},
+				{
+					name: makeGeneratorName("Settings", config.Level),
+					generator: &SettingsCombos{
+						Class:       config.Class,
+						Races:       allRaces,
+						Level:       config.Level,
+						GearSets:    allGearSets,
+						TalentSets:  allTalentSets,
+						SpecOptions: allSpecOptions,
+						Rotations:   allRotations,
+						Buffs: []BuffsCombo{
+							{
+								Label: "NoBuffs",
+							},
+							{
+								Label:    "FullBuffs",
+								Raid:     config.Buffs.Raid,
+								Party:    config.Buffs.Party,
+								Debuffs:  config.Buffs.Debuffs,
+								Player:   config.Buffs.Player,
+								Consumes: allConsumeOptions,
+							},
+						},
+						IsHealer:   config.IsHealer,
+						Encounters: MakeDefaultEncounterCombos(config.Level),
+						SimOptions: DefaultSimTestOptions,
+						Cooldowns:  config.Cooldowns,
+					},
+				},
+				{
+					name: makeGeneratorName("AllItems", config.Level),
+					generator: &ItemsTestGenerator{
+						Player:     defaultPlayer,
+						RaidBuffs:  config.Buffs.Raid,
+						PartyBuffs: config.Buffs.Party,
+						Debuffs:    config.Buffs.Debuffs,
+						Encounter:  MakeSingleTargetEncounter(config.Level, 0),
+						SimOptions: DefaultSimTestOptions,
+						ItemFilter: config.ItemFilter,
+						IsHealer:   config.IsHealer,
 					},
 				},
 			},
-			{
-				name: "Settings",
-				generator: &SettingsCombos{
-					Class:       config.Class,
-					Races:       allRaces,
-					Levels:      allLevels,
-					GearSets:    allGearSets,
-					TalentSets:  allTalentSets,
-					SpecOptions: allSpecOptions,
-					Rotations:   allRotations,
-					Buffs: []BuffsCombo{
-						{
-							Label: "NoBuffs",
-						},
-						{
-							Label:    "FullBuffs",
-							Raid:     FullRaidBuffs,
-							Party:    FullPartyBuffs,
-							Debuffs:  FullDebuffs,
-							Player:   FullIndividualBuffs,
-							Consumes: allConsumeOptions,
-						},
-					},
-					IsHealer:   config.IsHealer,
-					Encounters: MakeDefaultEncounterCombos(),
-					SimOptions: DefaultSimTestOptions,
-					Cooldowns:  config.Cooldowns,
-				},
-			},
-			{
-				name: "AllItems",
-				generator: &ItemsTestGenerator{
-					Player:     defaultPlayer,
-					RaidBuffs:  FullRaidBuffs,
-					PartyBuffs: FullPartyBuffs,
-					Debuffs:    FullDebuffs,
-					Encounter:  MakeSingleTargetEncounter(0),
-					SimOptions: DefaultSimTestOptions,
-					ItemFilter: config.ItemFilter,
-					IsHealer:   config.IsHealer,
-				},
-			},
-		},
-	}
+		}
 
-	newRaid := googleProto.Clone(defaultRaid).(*proto.Raid)
-	newRaid.Parties[0].Players[0].InFrontOfTarget = !newRaid.Parties[0].Players[0].InFrontOfTarget
+		newRaid := googleProto.Clone(defaultRaid).(*proto.Raid)
+		newRaid.Parties[0].Players[0].InFrontOfTarget = !newRaid.Parties[0].Players[0].InFrontOfTarget
 
-	generator.subgenerators = append(generator.subgenerators, SubGenerator{
-		name: "SwitchInFrontOfTarget",
-		generator: &SingleDpsTestGenerator{
-			Name: "Default",
-			Request: &proto.RaidSimRequest{
-				Raid:       newRaid,
-				Encounter:  MakeSingleTargetEncounter(0),
-				SimOptions: DefaultSimTestOptions,
-			},
-		},
-	})
-
-	if len(config.StatsToWeigh) > 0 {
 		generator.subgenerators = append(generator.subgenerators, SubGenerator{
-			name: "StatWeights",
-			generator: &SingleStatWeightsTestGenerator{
+			name: makeGeneratorName("SwitchInFrontOfTarget", config.Level),
+			generator: &SingleDpsTestGenerator{
 				Name: "Default",
-				Request: &proto.StatWeightsRequest{
-					Player:     defaultPlayer,
-					RaidBuffs:  FullRaidBuffs,
-					PartyBuffs: FullPartyBuffs,
-					Debuffs:    FullDebuffs,
-					Encounter:  MakeSingleTargetEncounter(0),
-					SimOptions: StatWeightsDefaultSimTestOptions,
-					Tanks:      defaultRaid.Tanks,
-
-					StatsToWeigh:    config.StatsToWeigh,
-					EpReferenceStat: config.EPReferenceStat,
+				Request: &proto.RaidSimRequest{
+					Raid:       newRaid,
+					Encounter:  MakeSingleTargetEncounter(config.Level, 0),
+					SimOptions: DefaultSimTestOptions,
 				},
 			},
 		})
-	}
 
-	// Add this separately, so it's always last, which makes it easy to find in the
-	// displayed test results.
-	generator.subgenerators = append(generator.subgenerators, SubGenerator{
-		name: "Average",
-		generator: &SingleDpsTestGenerator{
-			Name: "Default",
-			Request: &proto.RaidSimRequest{
-				Raid:       defaultRaid,
-				Encounter:  MakeSingleTargetEncounter(5),
-				SimOptions: AverageDefaultSimTestOptions,
+		if len(config.StatsToWeigh) > 0 {
+			generator.subgenerators = append(generator.subgenerators, SubGenerator{
+				name: makeGeneratorName("StatWeights", config.Level),
+				generator: &SingleStatWeightsTestGenerator{
+					Name: "Default",
+					Request: &proto.StatWeightsRequest{
+						Player:     defaultPlayer,
+						RaidBuffs:  config.Buffs.Raid,
+						PartyBuffs: config.Buffs.Party,
+						Debuffs:    config.Buffs.Debuffs,
+						Encounter:  MakeSingleTargetEncounter(config.Level, 0),
+						SimOptions: StatWeightsDefaultSimTestOptions,
+						Tanks:      defaultRaid.Tanks,
+
+						StatsToWeigh:    config.StatsToWeigh,
+						EpReferenceStat: config.EPReferenceStat,
+					},
+				},
+			})
+		}
+
+		// Add this separately, so it's always last, which makes it easy to find in the
+		// displayed test results.
+		generator.subgenerators = append(generator.subgenerators, SubGenerator{
+			name: makeGeneratorName("Average", config.Level),
+			generator: &SingleDpsTestGenerator{
+				Name: "Default",
+				Request: &proto.RaidSimRequest{
+					Raid:       defaultRaid,
+					Encounter:  MakeSingleTargetEncounter(config.Level, 5),
+					SimOptions: AverageDefaultSimTestOptions,
+				},
 			},
-		},
-	})
+		})
 
-	return generator
+		return generator
+	})
+}
+
+func makeGeneratorName(base string, level int32) string {
+	return fmt.Sprintf("Lvl%d-%s", level, base)
 }

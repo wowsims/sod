@@ -538,7 +538,8 @@ export const makeFrostPowerConsumeInput = makeConsumeInputFactory({consumesField
 // Shadow
 export const ElixirOfShadowPower: ConsumableInputConfig<ShadowPowerBuff> = {
 	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 9264, minLevel: 40 },
+		// SoD Phase 3?
+		{ id: 9264, minLevel: 41 },
 	]),
 	value: ShadowPowerBuff.ElixirOfShadowPower,
 };

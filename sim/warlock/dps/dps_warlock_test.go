@@ -13,72 +13,89 @@ func init() {
 }
 
 func TestAffliction(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassWarlock,
-		Race:  proto.Race_RaceOrc,
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 40,
+			Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "shadow"),
-		Talents:     AfflictionTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warlock/apls/p2", "affliction"),
+			Talents:     Phase2AfflictionTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "shadow"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p2", "affliction"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-
-		ItemFilter: ItemFilter,
 	}))
 }
 
 func TestDemonology(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassWarlock,
-		Race:  proto.Race_RaceOrc,
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 40,
+			Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "fire.succubus"),
-		Talents:     DemonologyTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warlock/apls/p2", "demonology"),
+			Talents:     Phase2DemonologyTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "fire.succubus"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p2", "demonology"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-
-		ItemFilter: ItemFilter,
 	}))
 }
 
 func TestDestruction(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassWarlock,
-		Race:  proto.Race_RaceOrc,
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 25,
+			Race:  proto.Race_RaceOrc,
 
-		GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "fire.imp"),
-		Talents:     DestructionTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warlock/apls/p2", "fire.imp"),
+			Talents:     Phase1DestructionTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p1", "destruction"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p1", "destruction"),
+			Buffs:       core.FullBuffsPhase1,
+			Consumes:    Phase1Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-		ItemFilter: ItemFilter,
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 40,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase2DestructionTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p2", "fire.imp"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p2", "fire.imp"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
-var ItemFilter = core.ItemFilter{
-	WeaponTypes: []proto.WeaponType{
-		proto.WeaponType_WeaponTypeSword,
-		proto.WeaponType_WeaponTypeDagger,
-	},
-	HandTypes: []proto.HandType{
-		proto.HandType_HandTypeOffHand,
-	},
-	ArmorType: proto.ArmorType_ArmorTypeCloth,
-	RangedWeaponTypes: []proto.RangedWeaponType{
-		proto.RangedWeaponType_RangedWeaponTypeWand,
-	},
-}
+var Phase1DestructionTalents = "-03-0550201"
 
-var AfflictionTalents = "3500253012201105--1"
-var DemonologyTalents = "-2050033132501051"
-var DestructionTalents = "-01-055020512000415"
+var Phase2AfflictionTalents = "3500253012201105--1"
+var Phase2DemonologyTalents = "-2050033132501051"
+var Phase2DestructionTalents = "-01-055020512000415"
 
 var defaultDestroOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
@@ -120,11 +137,44 @@ var defaultDemonologyOptions = &proto.WarlockOptions{
 
 // ---------------------------------------------------------
 
-var FullConsumes = core.ConsumesCombo{
-	Label: "Full Consumes",
+var Phase1Consumes = core.ConsumesCombo{
+	Label: "Phase 1 Consumes",
 	Consumes: &proto.Consumes{
-		Flask:         proto.Flask_FlaskOfSupremePower,
 		DefaultPotion: proto.Potions_ManaPotion,
-		Food:          proto.Food_FoodBlessSunfruit,
+		FirePowerBuff: proto.FirePowerBuff_ElixirOfFirepower,
+		Food:          proto.Food_FoodSmokedSagefish,
+		MainHandImbue: proto.WeaponImbue_BlackfathomManaOil,
 	},
+}
+
+var Phase2Consumes = core.ConsumesCombo{
+	Label: "Phase 2 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_ManaPotion,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfFirepower,
+		Food:           proto.Food_FoodSagefishDelight,
+		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_LesserArcaneElixir,
+	},
+}
+
+var ItemFilters = core.ItemFilter{
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeDagger,
+	},
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeOffHand,
+	},
+	ArmorType: proto.ArmorType_ArmorTypeCloth,
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeWand,
+	},
+}
+
+var Stats = []proto.Stat{
+	proto.Stat_StatIntellect,
+	proto.Stat_StatSpellPower,
+	proto.Stat_StatSpellHit,
+	proto.Stat_StatSpellCrit,
 }
