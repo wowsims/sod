@@ -20,6 +20,7 @@ export class Encounter {
 	private executeProportion25: number = 0.25;
 	private executeProportion35: number = 0.35;
 	private useHealth: boolean = false;
+
 	targets!: Array<TargetProto>;
 	targetsMetadata: UnitMetadataList;
 	presetTargets!: Array<PresetTarget>;
@@ -33,13 +34,13 @@ export class Encounter {
 
 	constructor(sim: Sim) {
 		this.sim = sim;
+		this.targetsMetadata = new UnitMetadataList();
 
 		sim.waitForInit().then(() => {
 			const level = sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
 			const presetTarget = Encounter.getPresetTargetForLevel(level, sim)
 
 			this.targets = [presetTarget.target!];
-			this.targetsMetadata = new UnitMetadataList();
 
 			[
 				this.targetsChangeEmitter,
