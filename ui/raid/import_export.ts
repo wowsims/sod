@@ -1,5 +1,6 @@
 import { Exporter } from '../core/components/exporters';
 import { Importer } from '../core/components/importers';
+import { RaidSimPreset } from '../core/individual_sim_ui';
 import { RaidSimSettings } from '../core/proto/ui';
 import { EventID, TypedEvent } from '../core/typed_event';
 import { Party as PartyProto, Player as PlayerProto, Raid as RaidProto } from '../core/proto/api';
@@ -35,7 +36,8 @@ import { bucket, distinct} from '../core/utils';
 
 import { playerPresets } from './presets';
 import { RaidSimUI } from './raid_sim_ui';
-import { RaidSimPreset } from 'ui/core/individual_sim_ui';
+
+import * as Mechanics from '../core/constants/mechanics.js';
 
 export class RaidJsonImporter extends Importer {
 	private readonly simUI: RaidSimUI;
@@ -469,7 +471,7 @@ export class RaidWCLImporter extends Importer {
 
 		// Build a manual target list if no preset encounter exists.
 		if (encounter.targets.length === 0) {
-			encounter.targets.push(Encounter.defaultTargetProto());
+			encounter.targets.push(Encounter.getPresetTargetForLevel(Mechanics.CURRENT_LEVEL_CAP, this.simUI.sim).target!);
 		}
 
 		return encounter;
