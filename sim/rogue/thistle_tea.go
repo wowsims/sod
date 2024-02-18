@@ -1,7 +1,6 @@
 package rogue
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -17,7 +16,7 @@ func (rogue *Rogue) registerThistleTeaCD() {
 	energyMetrics := rogue.NewEnergyMetrics(actionID)
 
 	// Restores 100 Energy for all levels in Classic, prior to 2.0
-	energyRegen := 100
+	energyRegen := 100.0
 
 	thistleTeaSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
