@@ -405,13 +405,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-Lvl40-AllItems-Mind-ExpandingMushroom-209576"
- value: {
-  dps: 529.33649
-  tps: 538.63862
- }
-}
-dps_results: {
  key: "TestBalance-Lvl40-AllItems-StormshroudArmor"
  value: {
   dps: 111.09526

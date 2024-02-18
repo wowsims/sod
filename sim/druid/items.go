@@ -12,8 +12,12 @@ const (
 )
 
 func init() {
+	core.AddEffectsToTest = false
+
 	core.NewItemEffect(IdolMindExpandingMushroom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.Spirit, 5)
 	})
+
+	core.AddEffectsToTest = true
 }
