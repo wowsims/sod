@@ -10,7 +10,7 @@ func (warrior *Warrior) registerBloodrageCD() {
 	actionID := core.ActionID{SpellID: 2687}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
-	instantRage := 10.0 + []float64{2, 5}[warrior.Talents.ImprovedBloodrage]
+	instantRage := 10.0 + []float64{0, 2, 5}[warrior.Talents.ImprovedBloodrage]
 	ragePerSec := 1.0
 
 	warrior.BloodrageAura = warrior.RegisterAura(core.Aura{
