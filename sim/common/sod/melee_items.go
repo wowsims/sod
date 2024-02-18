@@ -21,6 +21,7 @@ func init() {
 
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}
+		auraActionID := core.ActionID{SpellID: 433801}
 
 		ravegerBladestormTickSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         tickActionID,
@@ -39,31 +40,38 @@ func init() {
 			},
 		})
 
-		ravagerBladestormSpell := character.GetOrRegisterSpell(core.SpellConfig{
+		character.GetOrRegisterSpell(core.SpellConfig{
 			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			ActionID:    procActionID,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			Flags:       core.SpellFlagChanneled,
-
 			Dot: core.DotConfig{
 				IsAOE: true,
 				Aura: core.Aura{
-					Label: "Ravager Bladestorm",
+					Label: "Ravager Whirlwind",
 				},
 				NumberOfTicks:       3,
 				TickLength:          time.Second * 3,
 				AffectedByCastSpeed: false,
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					ravegerBladestormTickSpell.Cast(sim, target)
-					if !dot.IsActive() {
-						character.AutoAttacks.EnableAutoSwing(sim)
-					}
 				},
 			},
+		})
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.AOEDot().Apply(sim)
+		ravagerBladestormAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Ravager Bladestorm",
+			ActionID: auraActionID,
+			Duration: time.Second * 9,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AutoAttacks.CancelAutoSwing(sim)
+				dotSpell := character.GetSpell(procActionID)
+				dotSpell.AOEDot().Apply(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AutoAttacks.EnableAutoSwing(sim)
+				dotSpell := character.GetSpell(procActionID)
+				dotSpell.AOEDot().Cancel(sim)
 			},
 		})
 
@@ -75,7 +83,7 @@ func init() {
 				}
 
 				if ppmm.Proc(sim, spell.ProcMask, "Ravager") {
-					ravagerBladestormSpell.Cast(sim, result.Target)
+					ravagerBladestormAura.Activate(sim)
 				}
 			},
 		}))
@@ -228,7 +236,7 @@ func init() {
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
 		})
-  })
+	})
 
 	// Mark of the Champion
 	core.NewItemEffect(23206, func(agent core.Agent) {
