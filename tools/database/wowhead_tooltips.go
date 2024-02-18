@@ -201,7 +201,8 @@ var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
 var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
 var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
 var daggersSkill = regexp.MustCompile(`Increased Daggers \+([0-9]+)\.`)
-var unarmedSkill = regexp.MustCompile(`Increased Unarmed \+([0-9]+)\.`)
+var unarmedSkill = regexp.MustCompile(`Increased Fist Weapons \+([0-9]+)\.`)
+var macesSkill = regexp.MustCompile(`Increased Maces \+([0-9]+)\.`)
 
 var twoHandedAxesSkill = regexp.MustCompile(`Increased Two-handed Axes \+([0-9]+)\.`)
 var twoHandedSwordsSkill = regexp.MustCompile(`Increased Two-handed Swords \+([0-9]+)\.`)
@@ -292,6 +293,7 @@ func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
 		float64(item.GetIntValue(swordsSkill)),
 		float64(item.GetIntValue(daggersSkill)),
 		float64(item.GetIntValue(unarmedSkill)),
+		float64(item.GetIntValue(macesSkill)),
 		float64(item.GetIntValue(twoHandedAxesSkill)),
 		float64(item.GetIntValue(twoHandedSwordsSkill)),
 		float64(item.GetIntValue(twoHandedMacesSkill)),
