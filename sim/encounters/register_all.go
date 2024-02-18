@@ -9,6 +9,7 @@ func init() {
 	// naxxramas.Register()
 	addLevel25("SoD")
 	addLevel40("SoD")
+	addGnomereganMechanical("SoD")
 	addLevel50("SoD")
 	addLevel60("SoD")
 }
