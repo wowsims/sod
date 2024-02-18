@@ -38,12 +38,7 @@ export class Encounter {
 
 	constructor(sim: Sim) {
 		this.sim = sim;
-
-		sim.waitForInit().then(() => {
-			this.presetTargets = sim.db.getAllPresetTargets();
-			this.targets = [this.presetTargets[0].target!];
-		});
-
+		this.targets = [Encounter.defaultTargetProto()];
 		this.targetsMetadata = new UnitMetadataList();
 
 		[
