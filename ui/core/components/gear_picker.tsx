@@ -220,13 +220,10 @@ export class ItemPicker extends Component {
 		this.itemElem = new ItemRenderer(this.rootElem, player);
 		this.item = player.getEquippedItem(slot);
 
-		const loadItems = () => this._items = this.player.getItems(this.slot);
-
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
-			
-			loadItems();
+			this._items = this.player.getItems(this.slot);
 
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
@@ -250,7 +247,7 @@ export class ItemPicker extends Component {
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
 		});
 
-		player.levelChangeEmitter.on(loadItems)
+		player.levelChangeEmitter.on(() => this._items = this.player.getItems(this.slot));
 		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
@@ -340,9 +337,8 @@ export class IconItemSwapPicker extends Component {
 			});
 		});
 
-		player.itemSwapChangeEmitter.on(() => {
-			this.update(player.getItemSwapGear().getEquippedItem(slot));
-		});
+		player.levelChangeEmitter.on(() => this._items = this.player.getItems(slot));
+		player.itemSwapChangeEmitter.on(() => this.update(player.getItemSwapGear().getEquippedItem(slot)));
 	}
 
 	update(newItem: EquippedItem | null) {
