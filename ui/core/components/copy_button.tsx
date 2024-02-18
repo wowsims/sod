@@ -1,6 +1,6 @@
 import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line unused-imports/no-unused-imports
-import { element, fragment, ref } from 'tsx-vanilla';
+import { element, ref } from 'tsx-vanilla';
 
 import { Component } from "./component";
 
