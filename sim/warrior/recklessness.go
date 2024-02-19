@@ -51,7 +51,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			}
 
 			reckAura.Activate(sim)
-			warrior.WaitUntil(sim, sim.CurrentTime+core.GCDDefault)
 		},
 	})
 
