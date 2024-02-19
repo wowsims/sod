@@ -28,21 +28,23 @@ func (shaman *Shaman) registerChainLightningSpell() {
 		shaman.ChainLightningOverload = make([]*core.Spell, ChainLightningRanks+1)
 	}
 
+	cdTimer := shaman.NewTimer()
+
 	for rank := 1; rank <= ChainLightningRanks; rank++ {
-		config := shaman.newChainLightningSpellConfig(rank, false)
+		config := shaman.newChainLightningSpellConfig(rank, cdTimer, false)
 
 		if config.RequiredLevel <= int(shaman.Level) {
 			shaman.ChainLightning[rank] = shaman.RegisterSpell(config)
 
 			// TODO: Confirm how CL Overloads work in SoD
 			if overloadRuneEquipped {
-				shaman.ChainLightningOverload[rank] = shaman.RegisterSpell(shaman.newChainLightningSpellConfig(rank, true))
+				shaman.ChainLightningOverload[rank] = shaman.RegisterSpell(shaman.newChainLightningSpellConfig(rank, cdTimer, true))
 			}
 		}
 	}
 }
 
-func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) core.SpellConfig {
+func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer, isOverload bool) core.SpellConfig {
 	spellId := ChainLightningSpellId[rank]
 	baseDamageLow := ChainLightningBaseDamage[rank][0]
 	baseDamageHigh := ChainLightningBaseDamage[rank][1]
@@ -70,7 +72,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, isOverload bool) co
 
 	if !isOverload {
 		spell.Cast.CD = core.Cooldown{
-			Timer:    shaman.NewTimer(),
+			Timer:    cdTimer,
 			Duration: cooldown,
 		}
 	}
