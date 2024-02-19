@@ -178,47 +178,180 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 	case proto.WarlockOptions_Voidwalker:
 		cfg.Name = "Voidwalker"
 		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  50,
-			stats.Agility:   40,
-			stats.Stamina:   87,
-			stats.Intellect: 35,
-			stats.Spirit:    61,
-			stats.Mana:      60,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
-		}
-		cfg.AutoAttacks = core.AutoAttackOptions{
-			MainHand: core.Weapon{
-				BaseDamageMin:  2,
-				BaseDamageMax:  7,
-				SwingSpeed:     2,
-				CritMultiplier: 2,
-			},
-			AutoSwingMelee: true,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  50,
+				stats.Agility:   40,
+				stats.Stamina:   87,
+				stats.Intellect: 35,
+				stats.Spirit:    61,
+				stats.Mana:      60,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  2,
+					BaseDamageMax:  7,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
 		}
 	case proto.WarlockOptions_Felhunter:
 		cfg.Name = "Felhunter"
 		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  314,
-			stats.Agility:   90,
-			stats.Stamina:   328,
-			stats.Intellect: 150,
-			stats.Spirit:    209,
-			stats.Mana:      1559,
-			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
-		}
-		cfg.AutoAttacks = core.AutoAttackOptions{
-			MainHand: core.Weapon{
-				BaseDamageMin:  88.8,
-				BaseDamageMax:  133.3,
-				SwingSpeed:     2,
-				CritMultiplier: 2,
-			},
-			AutoSwingMelee: true,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  50,
+				stats.Agility:   40,
+				stats.Stamina:   87,
+				stats.Intellect: 35,
+				stats.Spirit:    61,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
 		}
 	}
 
