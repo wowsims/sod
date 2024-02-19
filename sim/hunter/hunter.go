@@ -44,8 +44,6 @@ type Hunter struct {
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
 
-	curAspect *core.Aura
-
 	AimedShot      *core.Spell
 	ArcaneShot     *core.Spell
 	ChimeraShot    *core.Spell

@@ -52,23 +52,25 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 			}
 		})
 
+	aspectOfTheHawkAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+
 	return core.SpellConfig{
 		ActionID:      actionID,
 		Flags:         core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
 
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.curAspect != aspectOfTheHawkAura
+			return !aspectOfTheHawkAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if hunter.curAspect != nil {
-				hunter.curAspect.Deactivate(sim)
-			}
-
-			hunter.curAspect = aspectOfTheHawkAura
-			hunter.curAspect.Activate(sim)
+			aspectOfTheHawkAura.Activate(sim)
 		},
 	}
 }
@@ -91,7 +93,7 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 
 	var manaPA *core.PendingAction
 
-	baseManaRegenMultiplier := 0.01
+	baseManaRegenMultiplier := 0.02
 
 	aspectOfTheViperAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Aspect of the Viper",
@@ -127,21 +129,23 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 		},
 	})
 
+	aspectOfTheViperAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+
 	hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.curAspect != aspectOfTheViperAura
+			return !aspectOfTheViperAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if hunter.curAspect != nil {
-				hunter.curAspect.Deactivate(sim)
-			}
-
-			hunter.curAspect = aspectOfTheViperAura
-			hunter.curAspect.Activate(sim)
+			aspectOfTheViperAura.Activate(sim)
 		},
 	})
 }
