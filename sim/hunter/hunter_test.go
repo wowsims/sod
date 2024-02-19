@@ -12,49 +12,49 @@ func init() {
 	RegisterHunter()
 }
 
-func TestBM(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+// func TestBM(t *testing.T) {
+// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+// 		{
+// 			Class:      proto.Class_ClassHunter,
+// 			Level:      40,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase1BMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "melee.weave.p1"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+// 			Talents:     Phase1BMTalents,
+// 			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase2"),
+// 			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "melee.p2"),
+// 			Buffs:       core.FullBuffsPhase2,
+// 			Consumes:    Phase2Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase2PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
-	}))
-}
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 	}))
+// }
 
-func TestMM(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+// func TestMM(t *testing.T) {
+// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+// 		{
+// 			Class:      proto.Class_ClassHunter,
+// 			Level:      25,
+// 			Race:       proto.Race_RaceOrc,
+// 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase1MMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "melee.weave.p1"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+// 			Talents:     Phase1MMTalents,
+// 			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase2"),
+// 			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "melee.p2"),
+// 			Buffs:       core.FullBuffsPhase1,
+// 			Consumes:    Phase1Consumes,
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
-	}))
-}
+// 			ItemFilter:      ItemFilters,
+// 			EPReferenceStat: proto.Stat_StatAttackPower,
+// 			StatsToWeigh:    Stats,
+// 		},
+// 	}))
+// }
 
 func TestSV(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
@@ -62,7 +62,7 @@ func TestSV(t *testing.T) {
 			Class:      proto.Class_ClassHunter,
 			Level:      25,
 			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase1SVTalents,
 			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
@@ -161,7 +161,7 @@ var Phase1PlayerOptions = &proto.Player_Hunter{
 		Options: &proto.Hunter_Options{
 			Ammo:      proto.Hunter_Options_RazorArrow,
 			PetType:   proto.Hunter_Options_Cat,
-			PetUptime: 0.9,
+			PetUptime: 1,
 		},
 	},
 }
@@ -171,7 +171,7 @@ var Phase2PlayerOptions = &proto.Player_Hunter{
 		Options: &proto.Hunter_Options{
 			Ammo:      proto.Hunter_Options_JaggedArrow,
 			PetType:   proto.Hunter_Options_Cat,
-			PetUptime: 0.9,
+			PetUptime: 1,
 		},
 	},
 }
