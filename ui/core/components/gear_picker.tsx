@@ -422,6 +422,19 @@ export class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
 
 		this.setData();
+
+		this.body.appendChild(
+			<div className="d-flex align-items-center form-text mt-3">
+				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
+				<span>
+					If gear is missing check your gear filters and your level in the "Settings" tab.
+					<br />
+					If the problem persists, save any un-saved data, click the
+					<i className="fas fa-cog mx-1"></i>
+					to open your sim options, then click the "Restore Defaults".
+				</span>
+			</div>
+		)
 	}
 
 	// Could be 'Items' 'Enchants' or 'Rune'
