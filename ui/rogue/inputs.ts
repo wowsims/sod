@@ -4,7 +4,7 @@ import { ActionId } from '../core/proto_utils/action_id.js';
 import * as InputHelpers from '../core/components/input_helpers.js';
 
 import {
-	PoisonImbue as Poison,
+	RogueOptions_PoisonImbue as Poison,
 } from '../core/proto/rogue.js';
 
 // Configuration for spec-specific UI elements on the settings tab.

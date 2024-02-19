@@ -51,7 +51,7 @@ import {
 	ShadowPriest_Options as ShadowPriestOptions,
 	ShadowPriest_Rotation as ShadowPriestRotation,
 } from '../proto/priest.js';
-import { Rogue, Rogue_Options as RogueOptions, Rogue_Rotation as RogueRotation, RogueTalents } from '../proto/rogue.js';
+import { Rogue, RogueOptions as RogueOptions, Rogue_Rotation as RogueRotation, RogueTalents } from '../proto/rogue.js';
 import {
 	ElementalShaman,
 	ElementalShaman_Options as ElementalShamanOptions,
@@ -152,6 +152,7 @@ export const specNames: Record<Spec, string> = {
 	[Spec.SpecHunter]: 'Hunter',
 	[Spec.SpecMage]: 'Mage',
 	[Spec.SpecRogue]: 'Rogue',
+	[Spec.SpecTankRogue]: 'Tank Rogue',
 	[Spec.SpecHolyPaladin]: 'Holy Paladin',
 	[Spec.SpecProtectionPaladin]: 'Protection Paladin',
 	[Spec.SpecRetributionPaladin]: 'Retribution Paladin',
@@ -255,6 +256,7 @@ export const titleIcons: Record<Class | Spec, string> = {
 	[Spec.SpecHunter]: '/sod/assets/img/hunter_icon.png',
 	[Spec.SpecMage]: '/sod/assets/img/mage_icon.png',
 	[Spec.SpecRogue]: '/sod/assets/img/rogue_icon.png',
+	[Spec.SpecTankRogue]: '/sod/assets/img/rogue_icon.png',
 	[Spec.SpecHolyPaladin]: '/sod/assets/img/holy_paladin_icon.png',
 	[Spec.SpecProtectionPaladin]: '/sod/assets/img/protection_paladin_icon.png',
 	[Spec.SpecRetributionPaladin]: '/sod/assets/img/retribution_icon.png',
@@ -438,6 +440,7 @@ export type SpecOptions<T extends Spec> =
 	T extends Spec.SpecHunter ? HunterOptions :
 	T extends Spec.SpecMage ? MageOptions :
 	T extends Spec.SpecRogue ? RogueOptions :
+	T extends Spec.SpecTankRogue ? RogueOptions :
 	T extends Spec.SpecHolyPaladin ? HolyPaladinOptions :
 	T extends Spec.SpecProtectionPaladin ? ProtectionPaladinOptions :
 	T extends Spec.SpecRetributionPaladin ? RetributionPaladinOptions :
@@ -799,6 +802,28 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 			? player.spec.rogue.options || RogueOptions.create()
 			: RogueOptions.create(),
 	},
+	[Spec.SpecTankRogue]: {
+		rotationCreate: () => RogueRotation.create(),
+		rotationEquals: (a, b) => RogueRotation.equals(a as RogueRotation, b as RogueRotation),
+		rotationCopy: (a) => RogueRotation.clone(a as RogueRotation),
+		rotationToJson: (a) => RogueRotation.toJson(a as RogueRotation),
+		rotationFromJson: (obj) => RogueRotation.fromJson(obj),
+
+		talentsCreate: () => RogueTalents.create(),
+		talentsEquals: (a, b) => RogueTalents.equals(a as RogueTalents, b as RogueTalents),
+		talentsCopy: (a) => RogueTalents.clone(a as RogueTalents),
+		talentsToJson: (a) => RogueTalents.toJson(a as RogueTalents),
+		talentsFromJson: (obj) => RogueTalents.fromJson(obj),
+
+		optionsCreate: () => RogueOptions.create(),
+		optionsEquals: (a, b) => RogueOptions.equals(a as RogueOptions, b as RogueOptions),
+		optionsCopy: (a) => RogueOptions.clone(a as RogueOptions),
+		optionsToJson: (a) => RogueOptions.toJson(a as RogueOptions),
+		optionsFromJson: (obj) => RogueOptions.fromJson(obj),
+		optionsFromPlayer: (player) => player.spec.oneofKind == 'rogue'
+			? player.spec.rogue.options || RogueOptions.create()
+			: RogueOptions.create(),
+	},
 	[Spec.SpecHealingPriest]: {
 		rotationCreate: () => HealingPriestRotation.create(),
 		rotationEquals: (a, b) => HealingPriestRotation.equals(a as HealingPriestRotation, b as HealingPriestRotation),
@@ -953,6 +978,7 @@ export const specToClass: Record<Spec, Class> = {
 	[Spec.SpecHunter]: Class.ClassHunter,
 	[Spec.SpecMage]: Class.ClassMage,
 	[Spec.SpecRogue]: Class.ClassRogue,
+	[Spec.SpecTankRogue]: Class.ClassRogue,
 	[Spec.SpecHolyPaladin]: Class.ClassPaladin,
 	[Spec.SpecProtectionPaladin]: Class.ClassPaladin,
 	[Spec.SpecRetributionPaladin]: Class.ClassPaladin,
@@ -1040,6 +1066,7 @@ export const specToEligibleRaces: Record<Spec, Array<Race>> = {
 	[Spec.SpecProtectionPaladin]: paladinRaces,
 	[Spec.SpecRetributionPaladin]: paladinRaces,
 	[Spec.SpecRogue]: rogueRaces,
+	[Spec.SpecTankRogue]: rogueRaces,
 	[Spec.SpecHealingPriest]: priestRaces,
 	[Spec.SpecShadowPriest]: priestRaces,
 	[Spec.SpecWarlock]: warlockRaces,
@@ -1112,6 +1139,7 @@ export const specToLocalStorageKey: Record<Spec, string> = {
 	[Spec.SpecProtectionPaladin]: '__wotlk_protection_paladin',
 	[Spec.SpecRetributionPaladin]: '__wotlk_retribution_paladin',
 	[Spec.SpecRogue]: '__wotlk_rogue',
+	[Spec.SpecTankRogue]: '__wotlk_tank_rogue',
 	[Spec.SpecHealingPriest]: '__wotlk_healing_priest',
 	[Spec.SpecShadowPriest]: '__wotlk_shadow_priest',
 	[Spec.SpecWarlock]: '__wotlk_warlock',
@@ -1228,6 +1256,14 @@ export function withSpecProto<SpecType extends Spec>(
 			copy.spec = {
 				oneofKind: 'rogue',
 				rogue: Rogue.create({
+					options: specOptions as RogueOptions,
+				}),
+			};
+			return copy;
+		case Spec.SpecTankRogue:
+			copy.spec = {
+				oneofKind: 'tankRogue',
+				tankRogue: Rogue.create({
 					options: specOptions as RogueOptions,
 				}),
 			};

@@ -136,7 +136,7 @@ func (rogue *Rogue) procDeadlyPoison(sim *core.Simulation, spell *core.Spell, re
 }
 
 // Get the mask for poison to determine hand
-func (rogue *Rogue) getPoisonProcMask(imbue proto.PoisonImbue) core.ProcMask {
+func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core.ProcMask {
 	var mask core.ProcMask
 	if rogue.Options.MhImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
@@ -149,7 +149,7 @@ func (rogue *Rogue) getPoisonProcMask(imbue proto.PoisonImbue) core.ProcMask {
 
 // Apply Deadly Poison to weapon and enable procs
 func (rogue *Rogue) applyDeadlyPoison() {
-	procMask := rogue.getPoisonProcMask(proto.PoisonImbue_DeadlyPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_DeadlyPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
@@ -173,7 +173,7 @@ func (rogue *Rogue) applyDeadlyPoison() {
 
 // Apply Wound Poison to weapon and enable procs
 func (rogue *Rogue) applyWoundPoison() {
-	procMask := rogue.getPoisonProcMask(proto.PoisonImbue_WoundPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_WoundPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
@@ -328,7 +328,7 @@ func (rogue *Rogue) GetWoundPoisonProcChance() float64 {
 
 // Apply Instant Poison to weapon and enable procs
 func (rogue *Rogue) applyInstantPoison() {
-	procMask := rogue.getPoisonProcMask(proto.PoisonImbue_InstantPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}

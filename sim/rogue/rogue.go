@@ -8,23 +8,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-func RegisterRogue() {
-	core.RegisterAgentFactory(
-		proto.Player_Rogue{},
-		proto.Spec_SpecRogue,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewRogue(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Rogue)
-			if !ok {
-				panic("Invalid spec value for Rogue!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 const (
 	SpellFlagBuilder     = core.SpellFlagAgentReserved2
 	SpellFlagFinisher    = core.SpellFlagAgentReserved3
@@ -39,7 +22,7 @@ type Rogue struct {
 	core.Character
 
 	Talents *proto.RogueTalents
-	Options *proto.Rogue_Options
+	Options *proto.RogueOptions
 
 	sliceAndDiceDurations [6]time.Duration
 
@@ -180,13 +163,12 @@ func (rogue *Rogue) SpellCritMultiplier() float64 {
 	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
 }
 
-func NewRogue(character *core.Character, options *proto.Player) *Rogue {
-	rogueOptions := options.GetRogue()
+func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {
 
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},
-		Options:   rogueOptions.Options,
+		Options:   rogueOptions,
 	}
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
@@ -212,19 +194,6 @@ func NewRogue(character *core.Character, options *proto.Player) *Rogue {
 
 	return rogue
 }
-
-// Apply the effects of the Cut to the Chase talent
-// TODO: Put a fresh instance of SnD rather than use the original as per client
-/**
-func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
-	if rogue.Talents.CutToTheChase > 0 && rogue.SliceAndDiceAura.IsActive() {
-		procChance := float64(rogue.Talents.CutToTheChase) * 0.2
-		if sim.Proc(procChance, "Cut to the Chase") {
-			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
-			rogue.SliceAndDiceAura.Activate(sim)
-		}
-	}
-}*/
 
 // Deactivate Stealth if it is active. This must be added to all abilities that cause Stealth to fade.
 func (rogue *Rogue) BreakStealth(sim *core.Simulation) {

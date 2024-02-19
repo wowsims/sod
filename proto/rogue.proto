@@ -86,38 +86,29 @@ enum RogueRune {
 	RunePoisonedKnife = 425102;
 }
 
-enum PoisonImbue {
-	NoPoison = 0;
-	InstantPoison = 1;
-	DeadlyPoison = 2;
-	WoundPoison = 3;
+message RogueOptions {
+	enum PoisonImbue {
+		NoPoison = 0;
+		InstantPoison = 1;
+		DeadlyPoison = 2;
+		WoundPoison = 3;
+	}
+
+	PoisonImbue mh_imbue = 1;
+	PoisonImbue oh_imbue = 2;
+	bool apply_poisons_manually = 3;
 }
 
 message Rogue {
 	message Rotation {
 	}
-	
-	message Options {
-		PoisonImbue mh_imbue = 1;
-		PoisonImbue oh_imbue = 2;
-		bool apply_poisons_manually = 3;
-		bool assume_bleed_active = 4;
-		float vanish_break_time = 5;
-		int32 honor_of_thieves_crit_rate = 6;
-	}
-	Options options = 3;
+
+	RogueOptions options = 2;
 }
 
 message TankRogue {
 	message Rotation {
 	}
 
-	message Options {
-		PoisonImbue mh_imbue = 1;
-		PoisonImbue oh_imbue = 2;
-		bool apply_poisons_manually = 3;
-		float vanish_break_time = 4;
-		// tank option things
-	}
-	Options options = 3;
+	RogueOptions options = 2;
 }

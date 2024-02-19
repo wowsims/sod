@@ -21,7 +21,7 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import {
-	PoisonImbue,
+	RogueOptions_PoisonImbue as PoisonImbue,
 } from '../core/proto/rogue.js';
 
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';

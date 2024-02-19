@@ -7,8 +7,8 @@ import {
 import { SavedTalents } from '../core/proto/ui.js';
 
 import {
-	PoisonImbue as Poison,
-	Rogue_Options as RogueOptions,
+	RogueOptions_PoisonImbue as Poison,
+	RogueOptions,
 } from '../core/proto/rogue.js';
 
 import * as PresetUtils from '../core/preset_utils.js';
@@ -119,8 +119,6 @@ export const DefaultOptions = RogueOptions.create({
 	mhImbue: Poison.DeadlyPoison,
 	ohImbue: Poison.InstantPoison,
 	applyPoisonsManually: false,
-	vanishBreakTime: 0.1,
-	honorOfThievesCritRate: 400,
 });
 
 export const DefaultConsumes = Consumes.create({
