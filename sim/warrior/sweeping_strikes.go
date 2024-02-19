@@ -18,7 +18,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -31,7 +31,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 	ssAura := warrior.RegisterAura(core.Aura{
 		Label:     "Sweeping Strikes",
 		ActionID:  actionID,
-		Duration:  core.NeverExpires,
+		Duration:  time.Second * 10,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, 5)
@@ -62,10 +62,9 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 	})
 
-	warrior.SweepingStrikes = warrior.RegisterSpell(core.SpellConfig{
+	SweepingStrikes := warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 30,
@@ -76,12 +75,14 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				Duration: time.Second * 30,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.GetNumTargets() > 1
-		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			ssAura.Activate(sim)
 		},
+	})
+
+	warrior.AddMajorCooldown(core.MajorCooldown{
+		Spell: SweepingStrikes,
+		Type:  core.CooldownTypeDPS,
 	})
 }

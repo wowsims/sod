@@ -29,11 +29,13 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		},
 	})
 
-	warrior.Recklessness = warrior.RegisterSpell(core.SpellConfig{
+	Recklessness := warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Minute * 30,
@@ -51,5 +53,10 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			reckAura.Activate(sim)
 			warrior.WaitUntil(sim, sim.CurrentTime+core.GCDDefault)
 		},
+	})
+
+	warrior.AddMajorCooldown(core.MajorCooldown{
+		Spell: Recklessness,
+		Type:  core.CooldownTypeDPS,
 	})
 }
