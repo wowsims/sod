@@ -387,7 +387,7 @@ dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 473.42308
-  tps: 168.8449
+  tps: 168.86195
  }
 }
 dps_results: {
@@ -401,7 +401,7 @@ dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
   dps: 482.03203
-  tps: 174.38822
+  tps: 174.40527
  }
 }
 dps_results: {
@@ -415,7 +415,7 @@ dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
   dps: 424.22263
-  tps: 170.75035
+  tps: 170.76578
  }
 }
 dps_results: {
@@ -428,29 +428,29 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 428.51354
-  tps: 172.50478
+  dps: 428.61304
+  tps: 172.40414
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 448.3646
-  tps: 181.67008
+  dps: 448.86515
+  tps: 182.02199
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 427.12703
-  tps: 171.08426
+  dps: 427.1983
+  tps: 171.11686
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 429.43566
-  tps: 171.21402
+  dps: 429.67183
+  tps: 171.17705
  }
 }
 dps_results: {
@@ -463,8 +463,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 635.14598
-  tps: 157.34052
+  dps: 635.19365
+  tps: 157.46394
  }
 }
 dps_results: {
@@ -505,15 +505,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 590.87884
-  tps: 482.37246
+  dps: 587.8741
+  tps: 494.41576
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 333.81199
-  tps: 100.78605
+  dps: 335.80643
+  tps: 101.90734
  }
 }
 dps_results: {
@@ -547,15 +547,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 596.89255
-  tps: 486.96301
+  dps: 600.65731
+  tps: 500.07354
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-phase2-Basic-melee.p2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 336.64634
-  tps: 101.10058
+  dps: 339.57242
+  tps: 101.98531
  }
 }
 dps_results: {

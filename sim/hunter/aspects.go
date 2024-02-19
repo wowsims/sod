@@ -93,7 +93,7 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 
 	var manaPA *core.PendingAction
 
-	baseManaRegenMultiplier := 0.01
+	baseManaRegenMultiplier := 0.02
 
 	aspectOfTheViperAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Aspect of the Viper",
