@@ -21,7 +21,6 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 
 	warrior.BerserkerRage = warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -37,5 +36,10 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 			warrior.BerserkerRageAura.Activate(sim)
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return warrior.StanceMatches(BerserkerStance) },
+	})
+
+	warrior.AddMajorCooldown(core.MajorCooldown{
+		Spell: warrior.BerserkerRage,
+		Type:  core.CooldownTypeDPS,
 	})
 }
