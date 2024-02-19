@@ -58,12 +58,17 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 		RequiredLevel: level,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.curAspect != aspectOfTheHawkAura
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if aspectOfTheHawkAura.IsActive() {
-				aspectOfTheHawkAura.Deactivate(sim)
-			} else {
-				aspectOfTheHawkAura.Activate(sim)
+			if hunter.curAspect != nil {
+				hunter.curAspect.Deactivate(sim)
 			}
+
+			hunter.curAspect = aspectOfTheHawkAura
+			hunter.curAspect.Activate(sim)
 		},
 	}
 }
@@ -75,7 +80,68 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 		config := hunter.getAspectOfTheHawkSpellConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.AspectOfTheHawk = hunter.GetOrRegisterSpell(config)
+			hunter.GetOrRegisterSpell(config)
 		}
 	}
+}
+
+func (hunter *Hunter) registerAspectOfTheViperSpell() {
+	actionID := core.ActionID{SpellID: 415423}
+	manaMetrics := hunter.NewManaMetrics(actionID)
+
+	var manaPA *core.PendingAction
+
+	baseManaRegenMultiplier := 0.01
+	manaPerRangedHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.Ranged().SwingSpeed
+	manaPerMHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.MH().SwingSpeed
+	manaPerOHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.OH().SwingSpeed
+
+	aspectOfTheViperAura := hunter.GetOrRegisterAura(core.Aura{
+		Label:    "Aspect of the Viper",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier *= 0.9
+
+			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 3,
+				OnAction: func(s *core.Simulation) {
+					hunter.AddMana(sim, hunter.MaxMana()*0.1, manaMetrics)
+				},
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier /= 0.9
+			manaPA.Cancel(sim)
+		},
+
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.AutoAttacks.RangedAuto() {
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerRangedHitMultiplier, manaMetrics)
+			} else if spell == hunter.AutoAttacks.MHAuto() {
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerMHHitMultiplier, manaMetrics)
+			} else if spell == hunter.AutoAttacks.OHAuto() {
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerOHHitMultiplier, manaMetrics)
+			}
+		},
+	})
+
+	hunter.GetOrRegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.curAspect != aspectOfTheViperAura
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			if hunter.curAspect != nil {
+				hunter.curAspect.Deactivate(sim)
+			}
+
+			hunter.curAspect = aspectOfTheViperAura
+			hunter.curAspect.Activate(sim)
+		},
+	})
 }
