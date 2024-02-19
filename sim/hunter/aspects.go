@@ -58,6 +58,10 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 		RequiredLevel: level,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.curAspect != aspectOfTheHawkAura
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			if hunter.curAspect != nil {
 				hunter.curAspect.Deactivate(sim)
@@ -126,6 +130,10 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 	hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.curAspect != aspectOfTheViperAura
+		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			if hunter.curAspect != nil {
