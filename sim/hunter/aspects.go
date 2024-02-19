@@ -92,9 +92,6 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 	var manaPA *core.PendingAction
 
 	baseManaRegenMultiplier := 0.01
-	manaPerRangedHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.Ranged().SwingSpeed
-	manaPerMHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.MH().SwingSpeed
-	manaPerOHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.OH().SwingSpeed
 
 	aspectOfTheViperAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Aspect of the Viper",
@@ -118,10 +115,13 @@ func (hunter *Hunter) registerAspectOfTheViperSpell() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.AutoAttacks.RangedAuto() {
+				manaPerRangedHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.Ranged().SwingSpeed
 				hunter.AddMana(sim, hunter.MaxMana()*manaPerRangedHitMultiplier, manaMetrics)
 			} else if spell == hunter.AutoAttacks.MHAuto() {
+				manaPerMHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.MH().SwingSpeed
 				hunter.AddMana(sim, hunter.MaxMana()*manaPerMHHitMultiplier, manaMetrics)
 			} else if spell == hunter.AutoAttacks.OHAuto() {
+				manaPerOHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.OH().SwingSpeed
 				hunter.AddMana(sim, hunter.MaxMana()*manaPerOHHitMultiplier, manaMetrics)
 			}
 		},
