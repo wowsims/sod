@@ -278,7 +278,6 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			deathWishAura.Activate(sim)
-			warrior.WaitUntil(sim, sim.CurrentTime+core.GCDDefault)
 		},
 	})
 
