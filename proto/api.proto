@@ -64,13 +64,14 @@ message Player {
 		HealingPriest healing_priest = 29;
 		ShadowPriest shadow_priest = 30;
 		Rogue rogue = 32;
-		ElementalShaman elemental_shaman = 33;
-		EnhancementShaman enhancement_shaman = 34;
-		RestorationShaman restoration_shaman = 35;
-		Warlock warlock = 36;
-		Warrior warrior = 37;
-		ProtectionWarrior protection_warrior = 38;
-		TankWarlock tank_warlock = 39;
+		TankRogue tank_rogue = 33;
+		ElementalShaman elemental_shaman = 34;
+		EnhancementShaman enhancement_shaman = 35;
+		RestorationShaman restoration_shaman = 36;
+		Warlock warlock = 37;
+		Warrior warrior = 38;
+		ProtectionWarrior protection_warrior = 39;
+		TankWarlock tank_warlock = 40;
 	}
 }
 

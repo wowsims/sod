@@ -7,7 +7,7 @@ import {
 import { SavedTalents } from '../core/proto/ui.js';
 
 import {
-	Rogue_Options_PoisonImbue as Poison,
+	PoisonImbue as Poison,
 	Rogue_Options as RogueOptions,
 } from '../core/proto/rogue.js';
 

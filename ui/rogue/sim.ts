@@ -21,7 +21,7 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import {
-	Rogue_Options_PoisonImbue,
+	PoisonImbue,
 } from '../core/proto/rogue.js';
 
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
@@ -78,10 +78,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 					if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined' || !simUI.player.getSpecOptions().applyPoisonsManually) {
 						return '';
 					}
-					if (mhWeaponSpeed < ohWeaponSpeed && ohImbue == Rogue_Options_PoisonImbue.DeadlyPoison) {
+					if (mhWeaponSpeed < ohWeaponSpeed && ohImbue == PoisonImbue.DeadlyPoison) {
 						return 'Deadly poison applied to slower (off hand) weapon.';
 					}
-					if (ohWeaponSpeed < mhWeaponSpeed && mhImbue == Rogue_Options_PoisonImbue.DeadlyPoison) {
+					if (ohWeaponSpeed < mhWeaponSpeed && mhImbue == PoisonImbue.DeadlyPoison) {
 						return 'Deadly poison applied to slower (main hand) weapon.';
 					}
 					return '';
@@ -283,15 +283,15 @@ export class RogueSimUI extends IndividualSimUI<Spec.SpecRogue> {
 					return
 				}
 				if (encounter.targets.length > 3) {
-					options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-					options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
+					options.mhImbue = PoisonImbue.InstantPoison
+					options.ohImbue = PoisonImbue.InstantPoison
 				} else {
 					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
+						options.mhImbue = PoisonImbue.DeadlyPoison
+						options.ohImbue = PoisonImbue.InstantPoison
 					} else {
-						options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.DeadlyPoison
+						options.mhImbue = PoisonImbue.InstantPoison
+						options.ohImbue = PoisonImbue.DeadlyPoison
 					}
 				}
 			}
@@ -307,15 +307,15 @@ export class RogueSimUI extends IndividualSimUI<Spec.SpecRogue> {
 					return
 				}
 				if (encounter.targets.length > 3) {
-					options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-					options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
+					options.mhImbue = PoisonImbue.InstantPoison
+					options.ohImbue = PoisonImbue.InstantPoison
 				} else {
 					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
+						options.mhImbue = PoisonImbue.DeadlyPoison
+						options.ohImbue = PoisonImbue.InstantPoison
 					} else {
-						options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.DeadlyPoison
+						options.mhImbue = PoisonImbue.InstantPoison
+						options.ohImbue = PoisonImbue.DeadlyPoison
 					}
 				}
 			}
