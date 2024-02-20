@@ -120,6 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
+		RetributionPaladinInputs.PrimarySealSelection,
 		// RetributionPaladinInputs.AuraSelection,
 		// RetributionPaladinInputs.StartingSealSelection,
 	],
@@ -133,7 +134,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		inputs: [
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
-			RetributionPaladinInputs.PrimarySealSelection,
 		],
 	},
 	encounterPicker: {

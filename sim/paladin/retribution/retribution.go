@@ -58,24 +58,16 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[1]
 
 	switch ret.PrimarySeal {
-	case proto.PaladinSeal_RighteousnessRank1:
-		ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[1]
-	case proto.PaladinSeal_RighteousnessRank2:
-		ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[2]
+	case proto.PaladinSeal_Righteousness:
+		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
+	case proto.PaladinSeal_Command:
+		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
+	case proto.PaladinSeal_Martyrdom:
+		ret.PrimarySealSpell = ret.Paladin.SealOfMartyrdom
 	}
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.Paladin.Reset(sim)
 	ret.CurrentSeal = nil
-
-	// case proto.PaladinSeal_Vengeance:
-	// 	ret.CurrentSeal = ret.SealOfVengeanceAura
-	// 	ret.SealOfVengeanceAura.Activate(sim)
-	// case proto.PaladinSeal_Command:
-	// 	ret.CurrentSeal = ret.SealOfCommandAura
-	// 	ret.SealOfCommandAura.Activate(sim)
-	// case proto.PaladinSeal_Righteousness:
-	// 	ret.CurrentSeal = ret.SealOfRighteousnessAura
-	// 	ret.SealOfRighteousnessAura.Activate(sim)
 }

@@ -23,15 +23,16 @@ const (
 
 type Paladin struct {
 	core.Character
+	Talents *proto.PaladinTalents
 
 	PaladinAura proto.PaladinAura
-
-	Talents *proto.PaladinTalents
 
 	CurrentSeal      *core.Aura
 	PrimarySealSpell *core.Spell
 
-	// CurrentJudgement *core.Aura
+	// Variables for max rank seal spells, used in APL Actions.
+	MaxRankRighteousness int
+	MaxRankCommand       int
 
 	CrusaderStrike *core.Spell
 	DivineStorm    *core.Spell
@@ -42,15 +43,13 @@ type Paladin struct {
 	ExorcismCooldown  *core.Cooldown
 	HolyShock         []*core.Spell
 	HolyShockCooldown *core.Cooldown
-
-	Judgement *core.Spell
+	Judgement         *core.Spell
+	DivineFavor       *core.Spell
 	// HolyShield            *core.Spell
 	// HammerOfTheRighteous  *core.Spell
 	// HandOfReckoning       *core.Spell
 	// ShieldOfRighteousness *core.Spell
 	// AvengersShield        *core.Spell
-	// JudgementOfWisdom     *core.Spell
-	// JudgementOfLight      *core.Spell
 	// HammerOfWrath         *core.Spell
 	// SealOfVengeance       *core.Spell
 	SealOfRighteousness []*core.Spell
@@ -61,7 +60,6 @@ type Paladin struct {
 	// SovDotSpell           *core.Spell
 	// SealOfWisdom        *core.Spell
 	// SealOfLight         *core.Spell
-	DivineFavor *core.Spell
 
 	// HolyShieldAura          *core.Aura
 	// RighteousFuryAura       *core.Aura
@@ -202,13 +200,13 @@ func (paladin *Paladin) Has2hEquipped() bool {
 	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
 }
 
-// func (paladin *Paladin) ProcessPrimarySeal() {
-// 	paladin.PrimarySealSpell = paladin.SealOfRighteousness[1]
-
-// 	switch paladin.PrimarySeal {
-// 	case proto.PaladinSeal_RighteousnessRank1:
-// 		paladin.PrimarySealSpell = paladin.SealOfRighteousness[1]
-// 	case proto.PaladinSeal_RighteousnessRank2:
-// 		paladin.PrimarySealSpell = paladin.SealOfRighteousness[2]
-// 	}
-// }
+func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
+	var returnSpell *core.Spell
+	switch seal {
+	case proto.PaladinSeal_Righteousness:
+		returnSpell = paladin.SealOfRighteousness[paladin.MaxRankRighteousness]
+	case proto.PaladinSeal_Command:
+		returnSpell = paladin.SealOfCommand[paladin.MaxRankCommand]
+	}
+	return returnSpell
+}

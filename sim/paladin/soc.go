@@ -140,6 +140,7 @@ func (paladin *Paladin) registerSealOfCommandSpellAndAura() {
 
 	for rank := 1; rank <= socRanks; rank++ {
 		if int(paladin.Level) >= socLevels[rank] {
+			paladin.MaxRankCommand = rank
 			paladin.applySealOfCommandSpellAndAuraBaseConfig(rank)
 		}
 	}

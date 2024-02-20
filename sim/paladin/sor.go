@@ -177,6 +177,7 @@ func (paladin *Paladin) registerSealOfRighteousnessSpellAndAura() {
 
 	for rank := 1; rank <= sorRanks; rank++ {
 		if int(paladin.Level) >= sorLevels[rank] {
+			paladin.MaxRankRighteousness = rank
 			paladin.applySealOfRighteousnessSpellAndAuraBaseConfig(rank)
 		}
 	}
