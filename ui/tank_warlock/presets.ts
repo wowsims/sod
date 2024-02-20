@@ -65,10 +65,10 @@ export const APLTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Tank', P2Tank
 export const APLPresets = {
   	[Phase.Phase1]: [
     	APLAfflictionTankPhase1,
-		APLDestructionTankPhase1,
+			APLDestructionTankPhase1,
   	],
   	[Phase.Phase2]: [
-		APLTankPhase2
+			APLTankPhase2
   	]
 };
 
@@ -114,10 +114,10 @@ export const TalentsTankPhase2 = {
 export const TalentPresets = {
   	[Phase.Phase1]: [
     	TalentsAfflictionTankPhase1,
-		TalentsDestructionTankPhase1,
+			TalentsDestructionTankPhase1,
   	],
   	[Phase.Phase2]: [
-		TalentsTankPhase2
+			TalentsTankPhase2
   	]
 };
 

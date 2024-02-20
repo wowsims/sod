@@ -49,6 +49,7 @@ type Druid struct {
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
+	Berserk              *DruidSpell
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
@@ -179,7 +180,7 @@ func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.registerFaerieFireSpell()
-	// druid.registerInnervateCD()
+	druid.registerInnervateCD()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -192,15 +193,14 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 // TODO: Classic feral
 func (druid *Druid) RegisterFeralCatSpells() {
-	// druid.registerBerserkCD()
 	druid.registerCatFormSpell()
 	// druid.registerBearFormSpell()
 	// druid.registerEnrageSpell()
-	// druid.registerFerociousBiteSpell()
+	druid.registerFerociousBiteSpell()
 	// druid.registerMangleBearSpell()
 	// druid.registerMaulSpell()
 	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
+	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerShredSpell()
 	// druid.registerSwipeBearSpell()

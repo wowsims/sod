@@ -291,9 +291,9 @@ func (paladin *Paladin) applyCrusade() {
 					crusadeMod := 1.0 + (0.01 * float64(paladin.Talents.Crusade))
 					switch unit.MobType {
 					case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeDemon, proto.MobType_MobTypeUndead, proto.MobType_MobTypeElemental:
-						paladin.AttackTables[unit.UnitIndex].DamageDealtMultiplier *= crusadeMod * crusadeMod
+						paladin.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= crusadeMod * crusadeMod
 					default:
-						paladin.AttackTables[unit.UnitIndex].DamageDealtMultiplier *= crusadeMod
+						paladin.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= crusadeMod
 					}
 				}
 				applied = true

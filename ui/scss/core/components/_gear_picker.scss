@@ -229,10 +229,11 @@ $favorite-cell-width: 2rem;
 
 .selector-modal-list {
   width: 100%;
-	max-height: 70vh;
+	max-height: 65vh;
 	overflow-y: auto;
 	overflow-x: hidden;
   padding: 0;
+  margin-bottom: 0;
   
   &.hide-ep {
     .selector-modal-list-item-ep {
@@ -314,7 +315,7 @@ $favorite-cell-width: 2rem;
   width: $ep-cell-width;
   margin-left: map-get($spacers, 3);
 	display: flex;
-  align-items: flex-end;
+  align-items: center;
 
   &> span {
     display: inline-block;

@@ -1,9 +1,13 @@
 import {BooleanPicker} from '../components/boolean_picker.js';
+import { CURRENT_PHASE } from '../constants/other.js';
 import {UnitReference} from '../proto/common.js';
 import {Player} from '../player.js';
 import {Sim} from '../sim.js';
 import {EventID} from '../typed_event.js';
 import {emptyUnitReference} from '../proto_utils/utils.js';
+
+import { EnumPicker } from './enum_picker.js';
+import { CURRENT_LEVEL_CAP } from '../constants/mechanics.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
@@ -44,6 +48,24 @@ export function makeShowEPValuesSelector(parent: HTMLElement, sim: Sim): Boolean
 		getValue: (sim: Sim) => sim.getShowEPValues(),
 		setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
 			sim.setShowEPValues(eventID, newValue);
+		},
+	});
+}
+
+export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim> {
+	return new EnumPicker<Sim>(parent, sim, {
+		extraCssClasses: ['phase-selector'],
+		values: [
+			{ name: 'Phase 5', value: 5, level: 60 },
+			{ name: 'Phase 4', value: 4, level: 60 },
+			{ name: 'Phase 3', value: 3, level: 50 },
+			{ name: 'Phase 2', value: 2, level: 40 },
+			{ name: 'Phase 1', value: 1, level: 25 },
+		].filter(p => p.value <= CURRENT_PHASE && p.level <= (sim.raid.getPlayer(0)?.getLevel() ?? CURRENT_LEVEL_CAP)),
+		changedEvent: (sim: Sim) => sim.phaseChangeEmitter,
+		getValue: (sim: Sim) => sim.getPhase(),
+		setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+			sim.setPhase(eventID, newValue);
 		},
 	});
 }

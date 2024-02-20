@@ -10,7 +10,7 @@ import (
 	"github.com/wowsims/sod/sim/druid/feral"
 	// restoDruid "github.com/wowsims/sod/sim/druid/restoration"
 	// feralTank "github.com/wowsims/sod/sim/druid/tank"
-	// _ "github.com/wowsims/sod/sim/encounters"
+	_ "github.com/wowsims/sod/sim/encounters"
 	"github.com/wowsims/sod/sim/hunter"
 	"github.com/wowsims/sod/sim/mage"
 

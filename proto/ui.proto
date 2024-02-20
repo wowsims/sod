@@ -59,6 +59,7 @@ message UIItem {
 	double weapon_damage_min = 13;
 	double weapon_damage_max = 14;
 	double weapon_speed = 15;
+	repeated double weapon_skills = 28;
 
 	int32 ilvl = 16;
 	int32 phase = 17;
@@ -95,13 +96,28 @@ enum Expansion {
 enum DungeonDifficulty {
 	DifficultyUnknown = 0;
 	DifficultyNormal = 1;
-	DifficultyHeroic = 2;
-	DifficultyTitanRuneAlpha = 7;
-	DifficultyTitanRuneBeta = 8;
-	DifficultyRaid10 = 3;
-	DifficultyRaid10H = 4;
-	DifficultyRaid25 = 5;
-	DifficultyRaid25H = 6;
+}
+
+enum RepLevel {
+	RepLevelUnknown 		= 0;
+	RepLevelHated 			= 1;
+	RepLevelHostile 		= 2;
+	RepLevelUnfriendly 	= 3;
+	RepLevelNeutral 		= 4;
+	RepLevelFriendly 		= 5;
+	RepLevelHonored 		= 6;
+	RepLevelRevered 		= 7;
+	RepLevelExalted 		= 8;
+}
+
+enum RepFaction {
+	RepFactionUnknown 						= 0;
+	RepFactionSilverwingSentinels = 890;
+	RepFactionWarsongOutriders 		= 889;
+	RepFactionLeagueOfArathor 		= 509;
+	RepFactionDefilers 						= 510;
+	RepFactionStormpikeGuard 			= 730;
+	RepFactionFrostwolfClan 			= 729;
 }
 
 message UIItemSource {
@@ -110,6 +126,7 @@ message UIItemSource {
 		DropSource drop = 2;
 		QuestSource quest = 3;
 		SoldBySource sold_by = 4;
+		RepSource rep = 5;
 	}
 }
 message CraftedSource {
@@ -131,6 +148,11 @@ message SoldBySource {
 	int32 npc_id = 1;
 	string npc_name = 2;
 	int32 zone_id = 3;
+}
+message RepSource {
+	RepFaction rep_faction_id = 1;
+	RepLevel rep_level 				= 2;
+	Faction faction_id 				= 3;
 }
 
 message UIEnchant {
@@ -182,11 +204,43 @@ enum SourceFilterOption {
 	SourceQuest = 2;
 	SourceDungeon = 3;
 	SourceRaid = 4;
-	SourceWorldBoss = 5;
+	// SourceWorldBoss = 5;
+	SourceWorldBOE = 6;
+}
+
+enum DungeonFilterOption {
+	DungeonUnknown = 0;
+	DungeonRagefireChasm = 2437;
+	DungeonDeadmines = 1581;
+	DungeonWailingCaverns = 718;
+	DungeonShadowfangKeep = 209;
+	// DungeonBlackfathomDeeps = 719;
+	DungeonStockades = 717;
+	// DungeonGnomeregan = 721;
+	DungeonRazorfenKraul = 491;
+	DungeonScarletMonestary = 796; // All 4 wings use the same Zone ID
+	DungeonRazorfenDowns = 722;
+	DungeonUldaman = 1337;
+	DungeonZulFarrak = 1176;
+	DungeonMaraudon = 2100;
+	DungeonSunkenTemple = 1477;
+	DungeonBlackrockDepths = 1584;
+	DungeonScholomance = 2057;
+	DungeonStratholme = 2017;
+	DungeonBlackrockSpire = 1583;
+	DungeonDireMaul = 2557;
 }
 
 enum RaidFilterOption {
 	RaidUnknown = 0;
+	RaidBlackfathomDeeps = 719;
+	RaidGnomeregan = 721;
+	RaidMoltenCore = 2717;
+	RaidBlackwingLair = 2677;
+	RaidZulGurub = 1977;
+	RaidRuinsOfAQ = 3428;
+	RaidTempleOfAQ = 3429;
+	RaidNaxxramas = 3456;
 }
 
 // Next tag: 20.

@@ -1,4 +1,6 @@
 import pako from 'pako';
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { element, ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
@@ -18,6 +20,7 @@ import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedP
 
 import { BaseModal } from './base_modal';
 import { BooleanPicker } from './boolean_picker';
+import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
 
 import * as Mechanics from '../constants/mechanics';
@@ -38,40 +41,25 @@ export abstract class Exporter extends BaseModal {
 		this.body.innerHTML = `
 			<textarea spellCheck="false" class="exporter-textarea form-control"></textarea>
 		`;
-		this.footer!.innerHTML = `
-			<button class="exporter-button btn btn-primary clipboard-button me-2">
-				<i class="fas fa-clipboard"></i>
-				Copy to Clipboard
-			</button>
-			${options.allowDownload ? `
-				<button class="exporter-button btn btn-primary download-button">
-					<i class="fa fa-download"></i>
-					Download
-				</button>
-			` : ''
-			}
-		`;
-
 		this.textElem = this.rootElem.getElementsByClassName('exporter-textarea')[0] as HTMLElement;
 
-		const clipboardButton = this.rootElem.getElementsByClassName('clipboard-button')[0] as HTMLElement;
-		clipboardButton.addEventListener('click', _event => {
-			const data = this.textElem.textContent!;
-			if (navigator.clipboard == undefined) {
-				alert(data);
-			} else {
-				navigator.clipboard.writeText(data);
-				const originalContent = clipboardButton.innerHTML;
-				clipboardButton.style.width = `${clipboardButton.getBoundingClientRect().width.toFixed(3)}px`;
-				clipboardButton.innerHTML = `<i class="fas fa-check"></i>&nbsp;Copied`;
-				setTimeout(() => {
-					clipboardButton.innerHTML = originalContent;
-				}, 1500);
-			}
+		new CopyButton(this.footer!, {
+			extraCssClasses: ['btn-primary', 'me-2'],
+			getContent: () => this.textElem.innerHTML,
+			text: 'Copy',
+			tooltip: 'Copy to clipboard',
 		});
 
 		if (options.allowDownload) {
-			const downloadButton = this.rootElem.getElementsByClassName('download-button')[0] as HTMLElement;
+			const downloadBtnRef = ref<HTMLButtonElement>()
+			this.footer!.appendChild(
+				<button className="exporter-button btn btn-primary download-button" ref={downloadBtnRef}>
+					<i className="fa fa-download me-1"></i>
+					Download
+				</button>
+			);
+
+			const downloadButton = downloadBtnRef.value!;
 			downloadButton.addEventListener('click', _event => {
 				const data = this.textElem.textContent!;
 				downloadString(data, 'wowsims.json');
@@ -388,7 +376,6 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatShadowResistance]: 'shadowResistance',
 		[Stat.StatBonusArmor]: 'armorBonus',
 		[Stat.StatHealing]: 'Healing',
-		[Stat.StatWeaponSkill]: 'weaponSkill',
 		[Stat.StatFeralAttackPower]: 'feralAttackPower',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
@@ -486,7 +473,6 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatShadowResistance]: 'ShadowResistance',
 		[Stat.StatBonusArmor]: 'Armor2',
 		[Stat.StatHealing]: 'Healing',
-		[Stat.StatWeaponSkill]: 'WeaponSkill',
 		[Stat.StatFeralAttackPower]: 'FeralAttackPower',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {

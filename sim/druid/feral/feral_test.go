@@ -12,67 +12,63 @@ func init() {
 	RegisterFeralDruid()
 }
 
-var FeralItemFilter = core.ItemFilter{
-	WeaponTypes: []proto.WeaponType{
-		proto.WeaponType_WeaponTypeDagger,
-		proto.WeaponType_WeaponTypeMace,
-		proto.WeaponType_WeaponTypeOffHand,
-		proto.WeaponType_WeaponTypeStaff,
-		proto.WeaponType_WeaponTypePolearm,
-	},
-	ArmorType: proto.ArmorType_ArmorTypeLeather,
-	RangedWeaponTypes: []proto.RangedWeaponType{
-		proto.RangedWeaponType_RangedWeaponTypeIdol,
-	},
-}
-
 func TestFeral(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassDruid,
-		Race:  proto.Race_RaceTauren,
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassDruid,
+			Level:      25,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-		GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1"),
-		Talents:     StandardTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
-		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
-			{Label: "Flower-Aoe", SpecOptions: PlayerOptionsFlowerCatAoe},
+			Talents:     Phase1Talents,
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1"),
+			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "default"),
+			Buffs:       core.FullBuffsPhase1,
+			Consumes:    Phase1Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
+				{Label: "Flower-Aoe", SpecOptions: PlayerOptionsFlowerCatAoe},
+			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
 		},
-		Rotation:   core.GetAplRotation("../../../ui/feral_druid/apls", "default"),
-		ItemFilter: FeralItemFilter,
 	}))
 }
 
 func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:      proto.Race_RaceTauren,
-				Class:     proto.Class_ClassDruid,
-				Equipment: core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1").GearSet,
-				Consumes:  FullConsumes.Consumes,
-				Spec:      PlayerOptionsMonoCat,
-				Buffs:     core.FullIndividualBuffs,
+	core.Each([]*proto.RaidSimRequest{
+		{
+			Raid: core.SinglePlayerRaidProto(
+				&proto.Player{
+					Race:      proto.Race_RaceTauren,
+					Class:     proto.Class_ClassDruid,
+					Level:     25,
+					Equipment: core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1").GearSet,
+					Rotation:  core.GetAplRotation("../../../ui/feral_druid/apls", "default").Rotation,
+					Consumes:  Phase1Consumes.Consumes,
+					Spec:      PlayerOptionsMonoCat,
+					Buffs:     core.FullIndividualBuffsPhase1,
 
-				InFrontOfTarget: true,
+					InFrontOfTarget: true,
+				},
+				core.FullPartyBuffs,
+				core.FullRaidBuffsPhase1,
+				core.FullDebuffsPhase1),
+			Encounter: &proto.Encounter{
+				Duration: 120,
+				Targets: []*proto.Target{
+					core.NewDefaultTarget(25),
+				},
 			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
+			SimOptions: core.AverageDefaultSimTestOptions,
 		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
+	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
 }
 
-var StandardTalents = "500005001--05"
+var Phase1Talents = "500005001--05"
 
 var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
@@ -104,36 +100,36 @@ var PlayerOptionsFlowerCatAoe = &proto.Player_FeralDruid{
 	},
 }
 
-var FullConsumes = core.ConsumesCombo{
-	Label:    "Full Consumes",
+var Phase1Consumes = core.ConsumesCombo{
+	Label: "Phase 1 Consumes",
 	Consumes: &proto.Consumes{
-		// BattleElixir:    proto.BattleElixir_ElixirOfMajorAgility,
-		// GuardianElixir:  proto.GuardianElixir_ElixirOfMajorMageblood,
-		// Food:            proto.Food_FoodGrilledMudfish,
-		// DefaultPotion:   proto.Potions_HastePotion,
-		// DefaultConjured: proto.Conjured_ConjuredDarkRune,
+		AgilityElixir:   proto.AgilityElixir_ElixirOfLesserAgility,
+		DefaultConjured: proto.Conjured_ConjuredMinorRecombobulator,
+		DefaultPotion:   proto.Potions_ManaPotion,
+		Food:            proto.Food_FoodSmokedSagefish,
+		MainHandImbue:   proto.WeaponImbue_WildStrikes,
+		StrengthBuff:    proto.StrengthBuff_ElixirOfOgresStrength,
 	},
 }
 
-var P2GearDoubleArmorPenTrinkets = core.EquipmentSpecFromJsonString(`
-{
-	"items": [
-	{"id":46161,"enchant":3817},
-	{"id":45517},
-	{"id":45245,"enchant":3808},
-	{"id":46032,"enchant":3605},
-	{"id":45473,"enchant":3832},
-	{"id":45869,"enchant":3845},
-	{"id":46158,"enchant":3604},
-	{"id":46095},
-	{"id":45536,"enchant":3823},
-	{"id":45564,"enchant":3606},
-	{"id":46048},
-	{"id":45608},
-	{"id":45931},
-	{"id":40256},
-	{"id":45613,"enchant":3789},
-	{},
-	{"id":40713}
-  ]
-}`)
+var ItemFilters = core.ItemFilter{
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeMace,
+		proto.WeaponType_WeaponTypeOffHand,
+		proto.WeaponType_WeaponTypeStaff,
+		proto.WeaponType_WeaponTypePolearm,
+	},
+	ArmorType: proto.ArmorType_ArmorTypeLeather,
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeIdol,
+	},
+}
+
+var Stats = []proto.Stat{
+	proto.Stat_StatStrength,
+	proto.Stat_StatAgility,
+	proto.Stat_StatAttackPower,
+	proto.Stat_StatMeleeCrit,
+	proto.Stat_StatMeleeHit,
+}

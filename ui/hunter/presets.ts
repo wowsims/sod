@@ -27,8 +27,8 @@ import * as PresetUtils from '../core/preset_utils.js';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import Phase1Gear from './gear_sets/phase1.json';
-import Phase2Gear from './gear_sets/phase2.json';
+import Phase1Gear from './gear_sets/phase1.gear.json';
+import Phase2Gear from './gear_sets/phase2.gear.json';
 
 export const GearBeastMasteryPhase1 = PresetUtils.makePresetGear('P1 Beast Mastery', Phase1Gear, { talentTree: 0 })
 export const GearMarksmanPhase1 = PresetUtils.makePresetGear('P1 Marksmanship', Phase1Gear, { talentTree: 1 })
@@ -54,8 +54,8 @@ export const DefaultGear = GearPhase2;
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import MeleeWeaveP1 from './apls/melee.weave.p1.json';
-import MeleeP2 from './apls/melee.p2.json';
+import MeleeWeaveP1 from './apls/melee.weave.p1.apl.json';
+import MeleeP2 from './apls/melee.p2.apl.json';
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('Melee Weave P1', MeleeWeaveP1);
 export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('Melee P2', MeleeP2);

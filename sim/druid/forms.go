@@ -42,8 +42,9 @@ func (druid *Druid) ClearForm(sim *core.Simulation) {
 }
 
 // TODO: don't hardcode numbers
-func (druid *Druid) GetCatWeapon() core.Weapon {
-	return core.Weapon{
+func (druid *Druid) GetCatWeapon(level int32) core.Weapon {
+	// Level 25 values
+	claws := core.Weapon{
 		BaseDamageMin:        16.3866,
 		BaseDamageMax:        24.5799,
 		SwingSpeed:           1.0,
@@ -51,6 +52,13 @@ func (druid *Druid) GetCatWeapon() core.Weapon {
 		CritMultiplier:       druid.MeleeCritMultiplier(1, 0),
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 	}
+
+	if level == 40 {
+		claws.BaseDamageMin = 27.80305996
+		claws.BaseDamageMax = 41.70460054
+	}
+
+	return claws
 }
 
 // Func (druid *Druid) GetBearWeapon() core.Weapon {
@@ -117,7 +125,7 @@ func (druid *Druid) registerCatFormSpell() {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
 	}
 
-	clawWeapon := druid.GetCatWeapon()
+	clawWeapon := druid.GetCatWeapon(druid.Level)
 
 	predBonus := stats.Stats{}
 

@@ -1,4 +1,4 @@
-import { professionNames, slotNames } from '../proto_utils/names.js';
+import { REP_FACTION_NAMES, REP_LEVEL_NAMES, professionNames, slotNames } from '../proto_utils/names.js';
 import { BaseModal } from './base_modal';
 import { Component } from './component';
 import { FiltersMenu } from './filters_menu';
@@ -33,6 +33,7 @@ import {
 	DatabaseFilters,
 	UIEnchant as Enchant,
 	UIItem as Item,
+	RepFaction,
 	UIRune as Rune,
 } from '../proto/ui.js';
 // eslint-disable-next-line unused-imports/no-unused-imports
@@ -217,15 +218,15 @@ export class ItemPicker extends Component {
 		this.simUI = simUI;
 		this.player = player;
 		this.itemElem = new ItemRenderer(this.rootElem, player);
-		this.item = player.getEquippedItem(slot);
 
 		const loadItems = () => this._items = this.player.getItems(this.slot);
+		const loadItem = () => this.item = player.getEquippedItem(slot);
 
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
-			
 			loadItems();
+			loadItem();
 
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
@@ -247,14 +248,19 @@ export class ItemPicker extends Component {
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
-		});
 
-		player.levelChangeEmitter.on(loadItems)
-		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
-		player.professionChangeEmitter.on(() => {
-			if (this._equippedItem != null) {
-				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
-			}
+			player.levelChangeEmitter.on(loadItems);
+			player.gearChangeEmitter.on(loadItem);
+			player.professionChangeEmitter.on(() => {
+				if (this._equippedItem != null) {
+					this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
+				}
+			});
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
 		});
 	}
 
@@ -313,6 +319,8 @@ export class IconItemSwapPicker extends Component {
 		this.socketsContainerElem.classList.add('item-picker-sockets-container')
 		this.iconAnchor.appendChild(this.socketsContainerElem);
 
+		const loadItems = () => this._items = this.player.getItems(slot);
+
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
@@ -337,10 +345,14 @@ export class IconItemSwapPicker extends Component {
 					gearData: gearData,
 				});
 			});
-		});
 
-		player.itemSwapChangeEmitter.on(() => {
-			this.update(player.getItemSwapGear().getEquippedItem(slot));
+			player.levelChangeEmitter.on(loadItems);
+			player.itemSwapChangeEmitter.on(loadItems);
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
 		});
 	}
 
@@ -410,6 +422,19 @@ export class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
 
 		this.setData();
+
+		this.body.appendChild(
+			<div className="d-flex align-items-center form-text mt-3">
+				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
+				<span>
+					If gear is missing, check your gear filters and your level in the "Settings" tab.
+					<br />
+					If the problem persists, save any un-saved data, click the
+					<i className="fas fa-cog mx-1"></i>
+					to open your sim options, then click the "Restore Defaults".
+				</span>
+			</div>
+		)
 	}
 
 	// Could be 'Items' 'Enchants' or 'Rune'
@@ -768,6 +793,7 @@ export class ItemList<T> {
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..."/>
 					{label == 'Items' && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
+					{/* <div className="selector-modal-phase-selector"></div> */}
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
@@ -805,6 +831,8 @@ export class ItemList<T> {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
 		}
+
+		// makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
 
@@ -957,9 +985,10 @@ export class ItemList<T> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			if (listItemData.phase > this.player.sim.getPhase()) {
-				return false;
-			}
+			// TODO: We can bring this back at level 60 but for now this isn't working correctly because a lot of gear is incorrectly labeled
+			// if (listItemData.phase > this.player.sim.getPhase()) {
+			// 	return false;
+			// }
 
 			if (this.searchInput.value.length > 0) {
 				const searchQuery = this.searchInput.value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '').split(" ");
@@ -1157,18 +1186,26 @@ export class ItemList<T> {
 	}
 
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
-		if (!item.sources || item.sources.length == 0) {
-			return <></>;
-		}
-
-		const makeAnchor = (href:string, inner:string) => {
+		const makeAnchor = (href:string, inner:string | JSX.Element) => {
 			return <a href={href} target="_blank"><small>{inner}</small></a>;
 		}
 
-		const source = item.sources[0];
+		if (!item.sources || item.sources.length == 0) {
+			if (item.randomSuffixOptions.length) {
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			}
+
+			return <></>;
+		}
+
+		let source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-			return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+
+			if (src.spellId) {
+				return makeAnchor( ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+			}
+			return makeAnchor( ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
@@ -1177,30 +1214,30 @@ export class ItemList<T> {
 				throw new Error('No zone found for item: ' + item);
 			}
 
-			let rtnEl = makeAnchor( ActionId.makeZoneUrl(zone.id), `${zone.name}`);
-
 			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
-				rtnEl.appendChild(document.createElement('br'));
-				rtnEl.appendChild(makeAnchor(ActionId.makeNpcUrl(npc.id), `${npc.name + category}`));
+				return makeAnchor(ActionId.makeNpcUrl(npc.id), <span>{zone.name}<br />{npc.name + category}</span>);
 			} else if (src.otherName) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${src.otherName + category}</small></a>
-				`;*/
-			} else if (category) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${category}</small></a>
-				`;*/
+				return makeAnchor(ActionId.makeZoneUrl(zone.id), <span>{zone.name}<br />{src.otherName}</span>);
 			}
-			return rtnEl;
-		} else if (source.source.oneofKind == 'quest') {
+			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
+		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), src.name);
+			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
+		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
+			const factionNames = item.sources.
+				filter(source => source.source.oneofKind == 'rep').
+				map(source => source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown])
+			const src = source.source.rep;
+			return makeAnchor(ActionId.makeItemUrl(item.id), (
+				<>
+					{factionNames.map(name => (<span>{name}<br /></span>))}
+					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
+				</>
+			))
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
-			return makeAnchor(ActionId.makeNpcUrl(src.npcId), src.npcName);
+			return makeAnchor(ActionId.makeNpcUrl(src.npcId), <span>Sold by<br />{src.npcName}</span>);
 		}
 		return <></>;
 	}

@@ -69,64 +69,64 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 1.9474
-  tps: 7.17719
+  dps: 2.71144
+  tps: 9.10651
  }
 }
 dps_results: {
  key: "TestArms-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 1.82171
-  tps: 7.08574
+  dps: 2.29669
+  tps: 8.71891
  }
 }
 dps_results: {
  key: "TestArms-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 1.99508
-  tps: 7.2117
+  dps: 2.68035
+  tps: 9.18777
  }
 }
 dps_results: {
  key: "TestArms-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 1.82171
-  tps: 7.08574
+  dps: 2.29669
+  tps: 8.71891
  }
 }
 dps_results: {
  key: "TestArms-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 1.82171
-  tps: 7.08574
+  dps: 2.33785
+  tps: 8.82079
  }
 }
 dps_results: {
  key: "TestArms-AllItems-InsulatedLeathers"
  value: {
-  dps: 1.97329
-  tps: 7.19584
+  dps: 2.98917
+  tps: 9.32229
  }
 }
 dps_results: {
  key: "TestArms-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 1.82171
-  tps: 7.08574
+  dps: 2.33785
+  tps: 8.82079
  }
 }
 dps_results: {
  key: "TestArms-AllItems-IrradiatedGarments"
  value: {
-  dps: 1.80177
-  tps: 7.07125
+  dps: 2.49147
+  tps: 8.94163
  }
 }
 dps_results: {
  key: "TestArms-AllItems-StormshroudArmor"
  value: {
-  dps: 0.3232
-  tps: 1.20733
+  dps: 0.63074
+  tps: 1.46867
  }
 }
 dps_results: {
@@ -138,98 +138,98 @@ dps_results: {
 dps_results: {
  key: "TestArms-Average-Default"
  value: {
-  dps: 0.234
-  tps: 0.55496
+  dps: 0.52087
+  tps: 0.79461
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.17557
-  tps: 7.468
+  dps: 0.41661
+  tps: 7.64295
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.17557
-  tps: 0.50133
+  dps: 0.41661
+  tps: 0.67628
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 0.87784
-  tps: 2.50665
+  dps: 2.08304
+  tps: 3.38141
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.11034
-  tps: 7.41791
+  dps: 0.25301
+  tps: 7.52167
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.11034
-  tps: 0.45125
+  dps: 0.25301
+  tps: 0.555
  }
 }
 dps_results: {
  key: "TestArms-Settings-Human-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 0.5517
-  tps: 2.25623
+  dps: 1.26506
+  tps: 2.775
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.2439
-  tps: 7.87789
+  dps: 0.45038
+  tps: 7.66768
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.2439
-  tps: 0.56289
+  dps: 0.45038
+  tps: 0.70102
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 1.16944
-  tps: 2.74692
+  dps: 2.2519
+  tps: 3.50508
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 0.16046
-  tps: 7.81703
+  dps: 0.27603
+  tps: 7.53849
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 0.16046
-  tps: 0.50203
+  dps: 0.27603
+  tps: 0.57182
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-25-phase_1-Arms-phase_1-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 0.7701
-  tps: 2.45333
+  dps: 1.38013
+  tps: 2.85912
  }
 }
 dps_results: {
  key: "TestArms-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 0.13873
-  tps: 0.47876
+  dps: 0.33966
+  tps: 0.61244
  }
 }

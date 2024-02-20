@@ -114,7 +114,7 @@ export class TypedEvent<T> {
 		try {
 			func();
 		} catch (e) {
-			console.error('Caught error in freezeAllAndDo: ' + e);
+			console.error('Caught error in freezeAllAndDo: ' + e, (e as Error).stack);
 		} finally {
 			freezeCount--;
 			if (freezeCount > 0) {

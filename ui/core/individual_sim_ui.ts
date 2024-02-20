@@ -237,7 +237,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				} else if (talentPoints < this.player.getLevel() - 9) {
 					return 'Unspent talent points.';
 				} else if (talentPoints > this.player.getLevel() - 9) {
-					return 'More talent points spent than current level selected.';
+					return Tooltips.TOO_MANY_TALENT_POINTS;
 				} else {
 					return '';
 				}

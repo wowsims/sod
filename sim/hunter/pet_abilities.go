@@ -156,14 +156,14 @@ func (hp *HunterPet) newBite() *core.Spell {
 func (hp *HunterPet) newLightningBreath() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 36,
-		40: 51,
+		40: 36,
 		50: 78,
 		60: 99,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 41,
-		40: 60,
+		40: 41,
 		50: 91,
 		60: 113,
 	}[hp.Owner.Level]
@@ -307,7 +307,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -357,7 +357,7 @@ func (hp *HunterPet) newSporeCloud() *core.Spell {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(22, 28) + (0.049/3)*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -401,7 +401,7 @@ func (hp *HunterPet) newVenomWebSpray() *core.Spell {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 46 + 0.07*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

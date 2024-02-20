@@ -60,12 +60,34 @@ const (
 	BonusArmor
 	Healing
 	SpellDamage
-	WeaponSkill
 	FeralAttackPower
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
 	Len
+)
+
+type WeaponSkills [WeaponSkillLen]float64
+
+type WeaponSkill byte
+
+const (
+	WeaponSkillUnknown WeaponSkill = iota
+	WeaponSkillAxes
+	WeaponSkillSwords
+	WeaponSkillDaggers
+	WeaponSkillUnarmed
+	WeaponSkillTwoHandedAxes
+	WeaponSkillTwoHandedSwords
+	WeaponSkillTwoHandedMaces
+	WeaponSkillPolearms
+	WeaponSkillStaves
+	WeaponSkillThrown
+	WeaponSkillBows
+	WeaponSkillCrossbows
+	WeaponSkillGuns
+
+	WeaponSkillLen
 )
 
 var PseudoStatsLen = len(proto.PseudoStat_name)
@@ -188,8 +210,6 @@ func (s Stat) StatName() string {
 		return "ShadowResistance"
 	case ArcaneResistance:
 		return "ArcaneResistance"
-	case WeaponSkill:
-		return "WeaponSkill"
 	case FeralAttackPower:
 		return "FeralAttackPower"
 	}
@@ -199,6 +219,12 @@ func (s Stat) StatName() string {
 
 func FromFloatArray(values []float64) Stats {
 	var stats Stats
+	copy(stats[:], values)
+	return stats
+}
+
+func WeaponSkillsFloatArray(values []float64) WeaponSkills {
+	var stats WeaponSkills
 	copy(stats[:], values)
 	return stats
 }
@@ -319,11 +345,11 @@ type PseudoStats struct {
 	RangedSpeedMultiplier float64
 
 	FiveSecondRuleRefreshTime time.Duration // last time a spell was cast
-	SpiritRegenRateCasting    float64       // percentage of spirit regen allowed during casting
+	SpiritRegenRateCasting    float64       // percentage of spirit regen allowed during casting. Spell effect MOD_MANA_REGEN_INTERRUPT (134)
 
 	// Both of these are currently only used for innervate.
 	ForceFullSpiritRegen  bool    // If set, automatically uses full spirit regen regardless of FSR refresh time.
-	SpiritRegenMultiplier float64 // Multiplier on spirit portion of mana regen.
+	SpiritRegenMultiplier float64 // Multiplier on spirit portion of mana regen. For spell effect MOD_POWER_REGEN_PERCENT (110)
 
 	// If true, allows block/parry.
 	InFrontOfTarget bool
@@ -360,6 +386,24 @@ type PseudoStats struct {
 	// Blocks certain cooldowns
 	Shapeshifted bool
 
+	// Weapon Skills
+	UnarmedSkill         float64
+	DaggersSkill         float64
+	SwordsSkill          float64
+	MacesSkill           float64
+	AxesSkill            float64
+	TwoHandedSwordsSkill float64
+	TwoHandedMacesSkill  float64
+	TwoHandedAxesSkill   float64
+	PolearmsSkill        float64
+	StavesSkill          float64
+
+	// Ranged Skills
+	BowsSkill      float64
+	CrossbowsSkill float64
+	GunsSkill      float64
+	ThrownSkill    float64
+
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
 	///////////////////////////////////////////////////
@@ -390,8 +434,10 @@ type PseudoStats struct {
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc.)
 	SchoolCritTakenMultiplier   [SchoolLen]float64 // For spell school crit (arcane, fire, shadow, etc.)
 
-	DiseaseDamageTakenMultiplier          float64
-	PeriodicPhysicalDamageTakenMultiplier float64
+	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
+	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
+	PeriodicPhysicalDamageTakenMultiplier float64 // Modifies damage taken from periodic physical effects NOT bleeds
+	PoisonDamageTakenMultiplier           float64 // Modifies damage taken from poison effects
 
 	ArmorMultiplier float64 // Major/minor/special multiplicative armor modifiers
 
@@ -434,12 +480,28 @@ func NewPseudoStats() PseudoStats {
 		SchoolDamageTakenMultiplier: NewSchoolFloatArray(),
 		SchoolCritTakenMultiplier:   NewSchoolFloatArray(),
 
+		BleedDamageTakenMultiplier:            1,
 		DiseaseDamageTakenMultiplier:          1,
 		PeriodicPhysicalDamageTakenMultiplier: 1,
+		PoisonDamageTakenMultiplier:           1,
 
 		ArmorMultiplier: 1,
 
 		HealingTakenMultiplier: 1,
+		UnarmedSkill:           0,
+		DaggersSkill:           0,
+		SwordsSkill:            0,
+		MacesSkill:             0,
+		AxesSkill:              0,
+		TwoHandedSwordsSkill:   0,
+		TwoHandedMacesSkill:    0,
+		TwoHandedAxesSkill:     0,
+		PolearmsSkill:          0,
+		StavesSkill:            0,
+		BowsSkill:              0,
+		GunsSkill:              0,
+		CrossbowsSkill:         0,
+		ThrownSkill:            0,
 	}
 }
 
