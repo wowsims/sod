@@ -83,10 +83,10 @@ var ItemSetInsulatedLeather = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.MeleeCrit, 1)
 			c.AddStat(stats.SpellCrit, 1)
 		},
-		// TODO: Implement Feral set bonus
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.PseudoStats.DaggersSkill += 3
+			c.AddStat(stats.FeralAttackPower, 20)
 		},
 	},
 })
@@ -98,7 +98,6 @@ var ItemSetInsulatedSorcerorLeather = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 16)
 		},
-		// TODO: Implement Feral set bonus
 		3: func(agent core.Agent) {},
 	},
 })
