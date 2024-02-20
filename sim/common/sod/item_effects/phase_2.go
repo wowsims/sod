@@ -36,6 +36,64 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
+
+	// Miniaturized Combustion Chamber
+	core.NewItemEffect(213347, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 435167}
+		manaMetrics := character.NewManaMetrics(actionID)
+
+		manaRoll := 0.0
+		dmgRoll := 0.0
+
+		regChannel := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled | core.SpellFlagAPL,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 30,
+				},
+			},
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Miniaturized Combustion Chamber",
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						character.AutoAttacks.CancelAutoSwing(sim)
+						manaRoll = sim.RollWithLabel(1, 150, "Miniaturized Combustion Chamber")
+						dmgRoll = sim.RollWithLabel(1, 150, "Miniaturized Combustion Chamber")
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						character.AutoAttacks.EnableAutoSwing(sim)
+					},
+				},
+				SelfOnly:      true,
+				NumberOfTicks: 10,
+				TickLength:    time.Second,
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					character.AddMana(sim, manaRoll, manaMetrics)
+					character.RemoveHealth(sim, dmgRoll)
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				spell.SelfHot().Apply(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    regChannel,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeMana,
+		})
+	})
+
+	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
 
