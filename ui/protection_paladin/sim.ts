@@ -166,7 +166,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
 			ProtectionPaladinInputs.AuraSelection,
-			ProtectionPaladinInputs.StartingSealSelection,
+			// ProtectionPaladinInputs.StartingSealSelection,
 			OtherInputs.InFrontOfTarget,
 		],
 	},

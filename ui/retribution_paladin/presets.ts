@@ -120,7 +120,7 @@ export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	aura: PaladinAura.RetributionAura,
-	seal: PaladinSeal.Righteousness,
+	primarySeal: PaladinSeal.RighteousnessRank1,
 });
 
 export const DefaultConsumes = Consumes.create({
@@ -136,5 +136,5 @@ export const DefaultConsumes = Consumes.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Blacksmithing,
-  }
+  };
   

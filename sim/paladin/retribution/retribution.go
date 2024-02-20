@@ -29,8 +29,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	pal := paladin.NewPaladin(character, options.TalentsString)
 
 	ret := &RetributionPaladin{
-		Paladin: pal,
-		Seal:    retOptions.Options.Seal,
+		Paladin:     pal,
+		PrimarySeal: retOptions.Options.PrimarySeal,
 	}
 
 	// ret.PaladinAura = retOptions.Options.Aura
@@ -46,7 +46,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	Seal proto.PaladinSeal
+	PrimarySeal proto.PaladinSeal
 }
 
 func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
@@ -55,13 +55,20 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
-	// ret.RegisterAvengingWrathCD()
+	ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[1]
+
+	switch ret.PrimarySeal {
+	case proto.PaladinSeal_RighteousnessRank1:
+		ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[1]
+	case proto.PaladinSeal_RighteousnessRank2:
+		ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[2]
+	}
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.Paladin.Reset(sim)
+	ret.CurrentSeal = nil
 
-	switch ret.Seal {
 	// case proto.PaladinSeal_Vengeance:
 	// 	ret.CurrentSeal = ret.SealOfVengeanceAura
 	// 	ret.SealOfVengeanceAura.Activate(sim)
@@ -71,5 +78,4 @@ func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	// case proto.PaladinSeal_Righteousness:
 	// 	ret.CurrentSeal = ret.SealOfRighteousnessAura
 	// 	ret.SealOfRighteousnessAura.Activate(sim)
-	}
 }

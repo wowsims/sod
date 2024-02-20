@@ -20,15 +20,15 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProt
 	],
 });
 
-export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProtectionPaladin>({
-	fieldName: 'seal',
-	label: 'Seal',
-	labelTooltip: 'The seal active before encounter',
-	values: [
-		{ name: 'Righteousness', value: PaladinSeal.Righteousness },
-		{ name: 'Command', value: PaladinSeal.Command },
-	],
-});
+// export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProtectionPaladin>({
+// 	fieldName: 'seal',
+// 	label: 'Seal',
+// 	labelTooltip: 'The seal active before encounter',
+// 	values: [
+// 		{ name: 'Righteousness', value: PaladinSeal.Righteousness },
+// 		{ name: 'Command', value: PaladinSeal.Command },
+// 	],
+// });
 
 // export const UseAvengingWrath = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecProtectionPaladin>({
 // 	fieldName: 'useAvengingWrath',

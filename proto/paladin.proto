@@ -99,9 +99,11 @@ enum PaladinAura {
 
 enum PaladinSeal {
 	NoSeal = 0;
-	Righteousness = 1;
-	Martyrdom = 2;
-	Command = 3;
+	RighteousnessRank1 = 1;
+	RighteousnessRank2 = 2;
+	RighteousnessRank3 = 3;
+	RighteousnessRank4 = 4;
+	RighteousnessRank5 = 5;
 }
 
 message RetributionPaladin {
@@ -109,7 +111,7 @@ message RetributionPaladin {
 	}
 	
 	message Options {
-		PaladinSeal seal = 1;
+		PaladinSeal primarySeal = 1;
 		PaladinAura aura = 2;
 	}
 	Options options = 3;
@@ -120,7 +122,7 @@ message ProtectionPaladin {
 	}
 
 	message Options {
-		PaladinSeal seal = 1;
+		PaladinSeal primarySeal = 1;
 		PaladinAura aura = 2;
 	}
 	Options options = 3;
@@ -131,7 +133,7 @@ message HolyPaladin {
 	}
 
 	message Options {
-		PaladinSeal seal = 1;
+		PaladinSeal primarySeal = 1;
 		PaladinAura aura = 2;
 	}
 	Options options = 3;

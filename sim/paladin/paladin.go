@@ -28,7 +28,9 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	CurrentSeal *core.Aura
+	CurrentSeal      *core.Aura
+	PrimarySealSpell *core.Spell
+
 	// CurrentJudgement *core.Aura
 
 	CrusaderStrike *core.Spell
@@ -199,3 +201,14 @@ func (paladin *Paladin) Has1hEquipped() bool {
 func (paladin *Paladin) Has2hEquipped() bool {
 	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
 }
+
+// func (paladin *Paladin) ProcessPrimarySeal() {
+// 	paladin.PrimarySealSpell = paladin.SealOfRighteousness[1]
+
+// 	switch paladin.PrimarySeal {
+// 	case proto.PaladinSeal_RighteousnessRank1:
+// 		paladin.PrimarySealSpell = paladin.SealOfRighteousness[1]
+// 	case proto.PaladinSeal_RighteousnessRank2:
+// 		paladin.PrimarySealSpell = paladin.SealOfRighteousness[2]
+// 	}
+// }

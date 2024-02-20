@@ -31,6 +31,8 @@ func (impl *APLActionCastPaladinPrimarySeal) GetNextAction(*core.Simulation) *co
 
 func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, config *proto.APLActionCastPaladinPrimarySeal) core.APLActionImpl {
 
+	// Here we should figure out the relevant seal from the dropdown and apply it here.
+
 	return &APLActionCastPaladinPrimarySeal{
 		paladin: paladin,
 	}
@@ -46,18 +48,9 @@ func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, c
 // }
 
 func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
-
 	paladin := action.paladin
-	// paladin.SealOfMartyrdom
-
-	paladin.Exorcism[1].Cast(sim, paladin.CurrentTarget)
-
-	// rotAction := &core.PendingAction{
-	// 	Priority:     core.ActionPriorityGCD,
-	// 	OnAction:     paladin.executePrimarySeal,
-	// 	NextActionAt: sim.CurrentTime,
-	// }
-	// sim.AddPendingAction(rotAction)
+	paladin.PrimarySealSpell.Cast(sim, paladin.CurrentTarget)
+	// paladin.Exorcism[1].Cast(sim, paladin.CurrentTarget)
 	action.lastAction = sim.CurrentTime
 }
 

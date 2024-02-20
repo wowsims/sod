@@ -1,8 +1,6 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -49,10 +47,10 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	// can proc each other exactly once.
 	// We need the proc rates figured out to see if they differ between weapons and what variables
 	// the proc rates may be a function of.
-	icd := core.Cooldown{
-		Timer:    paladin.NewTimer(),
-		Duration: time.Millisecond * 5,
-	}
+	// icd := core.Cooldown{
+	// 	Timer:    paladin.NewTimer(),
+	// 	Duration: time.Millisecond * 5,
+	// }
 
 	auraActionID := core.ActionID{SpellID: 407798}
 	paladin.SealOfMartyrdomAura = paladin.RegisterAura(core.Aura{
@@ -69,9 +67,9 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 				onSwingProc.Cast(sim, result.Target)
 			}
 			if spell.ProcMask.Matches(core.ProcMaskProc) {
-				if icd.IsReady(sim) {
-					icd.Use(sim)
-				}
+				// if icd.IsReady(sim) {
+				// 	icd.Use(sim)
+				// }
 				onSwingProc.Cast(sim, result.Target)
 			}
 			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
