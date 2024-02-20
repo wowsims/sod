@@ -434,6 +434,10 @@ func (unit *Unit) initMovement() {
 }
 
 func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
+	if moveRange == unit.DistanceFromTarget {
+		return
+	}
+
 	tickPeriod := 0.5
 
 	moveDistance := moveRange - unit.DistanceFromTarget

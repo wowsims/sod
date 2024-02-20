@@ -156,14 +156,14 @@ func (hp *HunterPet) newBite() *core.Spell {
 func (hp *HunterPet) newLightningBreath() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 36,
-		40: 51,
+		40: 36,
 		50: 78,
 		60: 99,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 41,
-		40: 60,
+		40: 41,
 		50: 91,
 		60: 113,
 	}[hp.Owner.Level]

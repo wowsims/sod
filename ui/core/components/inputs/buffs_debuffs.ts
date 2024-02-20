@@ -789,7 +789,8 @@ export const CurseOfVulnerability = makeBooleanDebuffInput({
 });
 export const GiftOfArthas = makeBooleanDebuffInput({
 	actionId: (player) => player.getMatchingSpellActionId([
-		{ id: 11374, minLevel: 38 },
+		// SoD Phase 3?
+		{ id: 11374, minLevel: 41 },
 	]),
 	fieldName: 'giftOfArthas',
 });
@@ -1111,7 +1112,6 @@ export const DEBUFFS_CONFIG = [
 		config: JudgementOfWisdom,
 		picker: IconPicker,
 		stats: [Stat.StatMP5, Stat.StatIntellect],
-		faction: Faction.Alliance,
 	},
 ] as PickerStatOptions[];
 

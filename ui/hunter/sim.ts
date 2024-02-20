@@ -47,6 +47,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
+		Stat.StatNaturePower,
+		Stat.StatArcanePower,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatRangedDps,
@@ -68,6 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
+		Stat.StatNaturePower,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecHunter>) => {
 		let stats = new Stats();
@@ -103,6 +106,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			[Stat.StatMeleeCrit]: 1.5,
 			[Stat.StatMeleeHaste]: 1.39,
 			[Stat.StatArmorPenetration]: 1.32,
+			[Stat.StatSpellPower]: 0.1,
+			[Stat.StatNaturePower]: 0.1,
 		}, {
 			[PseudoStat.PseudoStatRangedDps]: 6.32,
 		}),

@@ -218,15 +218,15 @@ export class ItemPicker extends Component {
 		this.simUI = simUI;
 		this.player = player;
 		this.itemElem = new ItemRenderer(this.rootElem, player);
-		this.item = player.getEquippedItem(slot);
 
 		const loadItems = () => this._items = this.player.getItems(this.slot);
+		const loadItem = () => this.item = player.getEquippedItem(slot);
 
 		player.sim.waitForInit().then(() => {
 			this._enchants = this.player.getEnchants(this.slot);
 			this._runes = this.player.getRunes(this.slot);
-			
 			loadItems();
+			loadItem();
 
 			const gearData = {
 				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
@@ -248,14 +248,19 @@ export class ItemPicker extends Component {
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
-		});
 
-		player.levelChangeEmitter.on(loadItems)
-		player.gearChangeEmitter.on(() => this.item = player.getEquippedItem(slot));
-		player.professionChangeEmitter.on(() => {
-			if (this._equippedItem != null) {
-				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
-			}
+			player.levelChangeEmitter.on(loadItems);
+			player.gearChangeEmitter.on(loadItem);
+			player.professionChangeEmitter.on(() => {
+				if (this._equippedItem != null) {
+					this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
+				}
+			});
+
+			this.addOnDisposeCallback(() => {
+				player.levelChangeEmitter.off(loadItems);
+				player.itemSwapChangeEmitter.on(loadItems);
+			});
 		});
 	}
 
@@ -294,7 +299,7 @@ export class IconItemSwapPicker extends Component {
 	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items, enchants, and runes that are eligible for this slot
+	// All items and enchants that are eligible for this slot
 	private _items: Array<Item> = [];
 	private _enchants: Array<Enchant> = [];
 	private _runes: Array<Rune> = [];
@@ -318,11 +323,12 @@ export class IconItemSwapPicker extends Component {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
 			this._runes = this.player.getRunes(slot);
+
 			const gearData = {
-				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					this.player.equipItemSwapitem(eventID, this.slot, equippedItem);
+				equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
+					player.equipItemSwapitem(eventID, this.slot, newItem)
 				},
-				getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+				getEquippedItem: () => player.getItemSwapItem(this.slot),
 				changeEvent: player.itemSwapChangeEmitter,
 			}
 
@@ -353,13 +359,13 @@ export class IconItemSwapPicker extends Component {
 
 		if (newItem) {
 			this.iconAnchor.classList.add("active")
+
+			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
-			newItem.asActionId().fill().then(filledId => filledId.setBackgroundAndHref(this.iconAnchor));
 		} else {
 			this.iconAnchor.classList.remove("active")
 		}
 	}
-
 }
 
 export interface GearData {
@@ -411,6 +417,19 @@ export class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
 
 		this.setData();
+
+		this.body.appendChild(
+			<div className="d-flex align-items-center form-text mt-3">
+				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
+				<span>
+					If gear is missing, check your gear filters and your level in the "Settings" tab.
+					<br />
+					If the problem persists, save any un-saved data, click the
+					<i className="fas fa-cog mx-1"></i>
+					to open your sim options, then click the "Restore Defaults".
+				</span>
+			</div>
+		)
 	}
 
 	// Could be 'Items' 'Enchants' or 'Rune'
@@ -769,6 +788,7 @@ export class ItemList<T> {
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..."/>
 					{label == 'Items' && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
+					{/* <div className="selector-modal-phase-selector"></div> */}
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
@@ -806,6 +826,8 @@ export class ItemList<T> {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
 		}
+
+		// makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
 
@@ -958,9 +980,10 @@ export class ItemList<T> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			if (listItemData.phase > this.player.sim.getPhase()) {
-				return false;
-			}
+			// TODO: We can bring this back at level 60 but for now this isn't working correctly because a lot of gear is incorrectly labeled
+			// if (listItemData.phase > this.player.sim.getPhase()) {
+			// 	return false;
+			// }
 
 			if (this.searchInput.value.length > 0) {
 				const searchQuery = this.searchInput.value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '').split(" ");

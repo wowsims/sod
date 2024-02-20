@@ -154,7 +154,7 @@ type TestGenerator interface {
 	GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest)
 }
 
-func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
+func RunTestSuite(t *testing.T, suiteName string, generators []TestGenerator) {
 	testSuite := NewIndividualTestSuite(suiteName)
 	var currentTestName string
 
@@ -170,113 +170,115 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 		t.Fail()
 	}
 
-	numTests := generator.NumTests()
-	for i := 0; i < numTests; i++ {
-		testName, csr, swr, rsr := generator.GetTest(i)
-		if strings.Contains(testName, "Average") && testing.Short() {
-			continue
-		}
-		currentTestName = testName
-
-		t.Run(currentTestName, func(t *testing.T) {
-			fullTestName := suiteName + "-" + testName
-			if csr != nil {
-				testSuite.TestCharacterStats(fullTestName, csr)
-				if actualCharacterStats, ok := testSuite.testResults.CharacterStatsResults[fullTestName]; ok {
-					actualStats := stats.FromFloatArray(actualCharacterStats.FinalStats)
-					if expectedCharacterStats, ok := expectedResults.CharacterStatsResults[fullTestName]; ok {
-						expectedStats := stats.FromFloatArray(expectedCharacterStats.FinalStats)
-						if !actualStats.EqualsWithTolerance(expectedStats, tolerance) {
-							t.Logf("Stats expected %v but was %v", expectedStats, actualStats)
-							t.Fail()
-						}
-					} else {
-						t.Logf("Unexpected test %s with stats: %v", fullTestName, actualStats)
-						t.Fail()
-					}
-				} else if !ok {
-					t.Logf("Missing Result for test %s", fullTestName)
-					t.Fail()
-				}
-			} else if swr != nil {
-				testSuite.TestStatWeights(fullTestName, swr)
-				if actualStatWeights, ok := testSuite.testResults.StatWeightsResults[fullTestName]; ok {
-					actualWeights := stats.FromFloatArray(actualStatWeights.Weights)
-					if expectedStatWeights, ok := expectedResults.StatWeightsResults[fullTestName]; ok {
-						expectedWeights := stats.FromFloatArray(expectedStatWeights.Weights)
-						if !actualWeights.EqualsWithTolerance(expectedWeights, tolerance) {
-							t.Logf("Weights expected %v but was %v", expectedWeights, actualWeights)
-							t.Fail()
-						}
-					} else {
-						t.Logf("Unexpected test %s with stat weights: %v", fullTestName, actualWeights)
-						t.Fail()
-					}
-				} else if !ok {
-					t.Logf("Missing Result for test %s", fullTestName)
-					t.Fail()
-				}
-			} else if rsr != nil && !strings.Contains(testName, "Casts") {
-				testSuite.TestDPS(fullTestName, rsr)
-				if actualDpsResult, ok := testSuite.testResults.DpsResults[fullTestName]; ok {
-					if expectedDpsResult, ok := expectedResults.DpsResults[fullTestName]; ok {
-						// Check whichever of DPS/HPS is larger first, so we get better test diff printouts.
-						if actualDpsResult.Dps < actualDpsResult.Hps {
-							if actualDpsResult.Hps < expectedDpsResult.Hps-tolerance || actualDpsResult.Hps > expectedDpsResult.Hps+tolerance {
-								t.Logf("HPS expected %0.03f but was %0.03f!.", expectedDpsResult.Hps, actualDpsResult.Hps)
-								t.Fail()
-							}
-						}
-						if actualDpsResult.Dps < expectedDpsResult.Dps-tolerance || actualDpsResult.Dps > expectedDpsResult.Dps+tolerance {
-							t.Logf("DPS expected %0.03f but was %0.03f!.", expectedDpsResult.Dps, actualDpsResult.Dps)
-							t.Fail()
-						}
-						if actualDpsResult.Dps >= actualDpsResult.Hps {
-							if actualDpsResult.Hps < expectedDpsResult.Hps-tolerance || actualDpsResult.Hps > expectedDpsResult.Hps+tolerance {
-								t.Logf("HPS expected %0.03f but was %0.03f!.", expectedDpsResult.Hps, actualDpsResult.Hps)
-								t.Fail()
-							}
-						}
-
-						if actualDpsResult.Tps < expectedDpsResult.Tps-tolerance || actualDpsResult.Tps > expectedDpsResult.Tps+tolerance {
-							t.Logf("TPS expected %0.03f but was %0.03f!.", expectedDpsResult.Tps, actualDpsResult.Tps)
-							t.Fail()
-						}
-						if actualDpsResult.Dtps < expectedDpsResult.Dtps-tolerance || actualDpsResult.Dtps > expectedDpsResult.Dtps+tolerance {
-							t.Logf("DTPS expected %0.03f but was %0.03f!.", expectedDpsResult.Dtps, actualDpsResult.Dtps)
-							t.Fail()
-						}
-					} else {
-						t.Logf("Unexpected test %s with %0.03f DPS!", fullTestName, actualDpsResult.Dps)
-						t.Fail()
-					}
-				} else if !ok {
-					t.Logf("Missing Result for test %s", fullTestName)
-					t.Fail()
-				}
-			} else if rsr != nil && strings.Contains(testName, "Casts") {
-				testSuite.TestCasts(fullTestName, rsr)
-				if actualCastsResult, ok := testSuite.testResults.CastsResults[fullTestName]; ok {
-					if expectedCastsResult, ok := expectedResults.CastsResults[fullTestName]; ok {
-						for action, casts := range actualCastsResult.Casts {
-							if casts < expectedCastsResult.Casts[action]-tolerance || casts > expectedCastsResult.Casts[action]+tolerance {
-								t.Logf("Expected %0.03f casts of %s but was %0.03f!.", expectedCastsResult.Casts[action], action, casts)
-								t.Fail()
-							}
-						}
-					} else {
-						t.Logf("Unexpected test %s", fullTestName)
-						t.Fail()
-					}
-				} else if !ok {
-					t.Logf("Missing Result for test %s", fullTestName)
-					t.Fail()
-				}
-			} else {
-				panic("No test request provided")
+	Each(generators, func(generator TestGenerator) {
+		numTests := generator.NumTests()
+		for i := 0; i < numTests; i++ {
+			testName, csr, swr, rsr := generator.GetTest(i)
+			if strings.Contains(testName, "Average") && testing.Short() {
+				continue
 			}
-		})
-	}
+			currentTestName = testName
+
+			t.Run(currentTestName, func(t *testing.T) {
+				fullTestName := suiteName + "-" + testName
+				if csr != nil {
+					testSuite.TestCharacterStats(fullTestName, csr)
+					if actualCharacterStats, ok := testSuite.testResults.CharacterStatsResults[fullTestName]; ok {
+						actualStats := stats.FromFloatArray(actualCharacterStats.FinalStats)
+						if expectedCharacterStats, ok := expectedResults.CharacterStatsResults[fullTestName]; ok {
+							expectedStats := stats.FromFloatArray(expectedCharacterStats.FinalStats)
+							if !actualStats.EqualsWithTolerance(expectedStats, tolerance) {
+								t.Logf("Stats expected %v but was %v", expectedStats, actualStats)
+								t.Fail()
+							}
+						} else {
+							t.Logf("Unexpected test %s with stats: %v", fullTestName, actualStats)
+							t.Fail()
+						}
+					} else if !ok {
+						t.Logf("Missing Result for test %s", fullTestName)
+						t.Fail()
+					}
+				} else if swr != nil {
+					testSuite.TestStatWeights(fullTestName, swr)
+					if actualStatWeights, ok := testSuite.testResults.StatWeightsResults[fullTestName]; ok {
+						actualWeights := stats.FromFloatArray(actualStatWeights.Weights)
+						if expectedStatWeights, ok := expectedResults.StatWeightsResults[fullTestName]; ok {
+							expectedWeights := stats.FromFloatArray(expectedStatWeights.Weights)
+							if !actualWeights.EqualsWithTolerance(expectedWeights, tolerance) {
+								t.Logf("Weights expected %v but was %v", expectedWeights, actualWeights)
+								t.Fail()
+							}
+						} else {
+							t.Logf("Unexpected test %s with stat weights: %v", fullTestName, actualWeights)
+							t.Fail()
+						}
+					} else if !ok {
+						t.Logf("Missing Result for test %s", fullTestName)
+						t.Fail()
+					}
+				} else if rsr != nil && !strings.Contains(testName, "Casts") {
+					testSuite.TestDPS(fullTestName, rsr)
+					if actualDpsResult, ok := testSuite.testResults.DpsResults[fullTestName]; ok {
+						if expectedDpsResult, ok := expectedResults.DpsResults[fullTestName]; ok {
+							// Check whichever of DPS/HPS is larger first, so we get better test diff printouts.
+							if actualDpsResult.Dps < actualDpsResult.Hps {
+								if actualDpsResult.Hps < expectedDpsResult.Hps-tolerance || actualDpsResult.Hps > expectedDpsResult.Hps+tolerance {
+									t.Logf("HPS expected %0.03f but was %0.03f!.", expectedDpsResult.Hps, actualDpsResult.Hps)
+									t.Fail()
+								}
+							}
+							if actualDpsResult.Dps < expectedDpsResult.Dps-tolerance || actualDpsResult.Dps > expectedDpsResult.Dps+tolerance {
+								t.Logf("DPS expected %0.03f but was %0.03f!.", expectedDpsResult.Dps, actualDpsResult.Dps)
+								t.Fail()
+							}
+							if actualDpsResult.Dps >= actualDpsResult.Hps {
+								if actualDpsResult.Hps < expectedDpsResult.Hps-tolerance || actualDpsResult.Hps > expectedDpsResult.Hps+tolerance {
+									t.Logf("HPS expected %0.03f but was %0.03f!.", expectedDpsResult.Hps, actualDpsResult.Hps)
+									t.Fail()
+								}
+							}
+
+							if actualDpsResult.Tps < expectedDpsResult.Tps-tolerance || actualDpsResult.Tps > expectedDpsResult.Tps+tolerance {
+								t.Logf("TPS expected %0.03f but was %0.03f!.", expectedDpsResult.Tps, actualDpsResult.Tps)
+								t.Fail()
+							}
+							if actualDpsResult.Dtps < expectedDpsResult.Dtps-tolerance || actualDpsResult.Dtps > expectedDpsResult.Dtps+tolerance {
+								t.Logf("DTPS expected %0.03f but was %0.03f!.", expectedDpsResult.Dtps, actualDpsResult.Dtps)
+								t.Fail()
+							}
+						} else {
+							t.Logf("Unexpected test %s with %0.03f DPS!", fullTestName, actualDpsResult.Dps)
+							t.Fail()
+						}
+					} else if !ok {
+						t.Logf("Missing Result for test %s", fullTestName)
+						t.Fail()
+					}
+				} else if rsr != nil && strings.Contains(testName, "Casts") {
+					testSuite.TestCasts(fullTestName, rsr)
+					if actualCastsResult, ok := testSuite.testResults.CastsResults[fullTestName]; ok {
+						if expectedCastsResult, ok := expectedResults.CastsResults[fullTestName]; ok {
+							for action, casts := range actualCastsResult.Casts {
+								if casts < expectedCastsResult.Casts[action]-tolerance || casts > expectedCastsResult.Casts[action]+tolerance {
+									t.Logf("Expected %0.03f casts of %s but was %0.03f!.", expectedCastsResult.Casts[action], action, casts)
+									t.Fail()
+								}
+							}
+						} else {
+							t.Logf("Unexpected test %s", fullTestName)
+							t.Fail()
+						}
+					} else if !ok {
+						t.Logf("Missing Result for test %s", fullTestName)
+						t.Fail()
+					}
+				} else {
+					panic("No test request provided")
+				}
+			})
+		}
+	})
 
 	testSuite.Done(t)
 
