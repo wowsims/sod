@@ -15,14 +15,13 @@ func (shaman *Shaman) applyLavaLash() {
 	cooldown := time.Second * 6
 	manaCost := .01
 
-	llDamageMultiplier := 1.5
 	imbueMultiplier := core.TernaryFloat64(shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon, 1.5, 1)
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -39,12 +38,13 @@ func (shaman *Shaman) applyLavaLash() {
 			},
 		},
 
-		DamageMultiplier: llDamageMultiplier * imbueMultiplier * shaman.AutoAttacks.OHConfig().DamageMultiplier,
+		DamageMultiplier: 1.5 * imbueMultiplier,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := (spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()) *
+				shaman.AutoAttacks.OHConfig().DamageMultiplier
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})

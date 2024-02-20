@@ -30,24 +30,9 @@ func TestEnhancement(t *testing.T) {
 				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
 			},
 
-<<<<<<< HEAD
-		GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_2"),
-		},
-
-		Talents:       phase2Talents,
-		Consumes:      FullConsumesRBRB,
-		OtherConsumes: []core.ConsumesCombo{},
-
-		SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
-		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
-=======
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
->>>>>>> master
 		},
 		{
 			Class:      proto.Class_ClassShaman,
@@ -55,12 +40,6 @@ func TestEnhancement(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-<<<<<<< HEAD
-		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_1"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_2"),
-		},
-=======
 			Talents:  Phase2Talents,
 			GearSet:  core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_2"),
 			Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_2"),
@@ -74,7 +53,6 @@ func TestEnhancement(t *testing.T) {
 			OtherSpecOptions: []core.SpecOptionsCombo{
 				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
 			},
->>>>>>> master
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
