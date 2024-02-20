@@ -13,14 +13,11 @@
 
     &> * {
       margin-bottom: 0 !important;
+      margin-right: 0 !important;
+      
+      &:not(:first-child) {
+        margin-left: map-get($spacers, 1);
+      }
     }
-
-    &> :last-child {
-      margin-right: 0;
-    }
-  }
-
-  .input-root:not(:last-child) {
-    margin-right: map.get($spacers, 1);
   }
 }
