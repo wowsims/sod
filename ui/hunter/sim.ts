@@ -1,17 +1,13 @@
 import { Phase } from '../core/constants/other.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	RangedWeaponType,
 	Spec,
 	Stat, PseudoStat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
@@ -121,23 +117,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			aspectOfTheLion: true,
-			arcaneBrilliance: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			homunculi: 70, // 70% average uptime default
-			faerieFire: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.

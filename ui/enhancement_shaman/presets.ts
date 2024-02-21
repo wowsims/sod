@@ -3,8 +3,10 @@ import {
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	IndividualBuffs,
 	Profession,
 	RaidBuffs,
+	SaygesFortune,
 	TristateEffect,
 	WeaponImbue
 } from '../core/proto/common.js';
@@ -132,11 +134,17 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	trueshotAura: true,
 });
 
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
+});
+
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
 	curseOfRecklessness: true,
 	dreamstate: true,
 	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
 	improvedScorch: true,
 	sunderArmor: true,
 });
