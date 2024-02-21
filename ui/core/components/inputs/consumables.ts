@@ -192,7 +192,7 @@ export const Sapper = makeBooleanConsumeInput({
 	]),
 	fieldName: 'sapper',
 	showWhen: (player) => player.hasProfession(Profession.Engineering),
-})
+});
 
 export const makeSapperInput = makeConsumeInputFactory({
 	consumesFieldName: 'sapper',
@@ -449,22 +449,22 @@ export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
 	]),
 	value: Potions.GreaterManaPotion,
 };
-export const MildlyIrradiatedRejuvPotion: ConsumableInputConfig<Potions> = {
-	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 215162, minLevel: 35 },
-	]),
-	value: Potions.MildlyIrradiatedRejuvPotion,
-	showWhen: (player) => player.hasProfession(Profession.Alchemy),
-};
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: MildlyIrradiatedRejuvPotion, 	stats: [] },
 	{ config: GreaterManaPotion,						stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, 		 							stats: [Stat.StatIntellect] },
 	{ config: LesserManaPotion,							stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});
+
+export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 215162, minLevel: 35 },
+	]),
+	fieldName: 'mildlyIrradiatedRejuvPot',
+	showWhen: (player) => player.hasProfession(Profession.Alchemy),
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 SPELL DAMAGE CONSUMES
