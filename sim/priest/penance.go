@@ -7,23 +7,25 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (priest *Priest) registerPenanceHealSpell() {
-	priest.PenanceHeal = priest.makePenanceSpell(true)
-}
-
 func (priest *Priest) RegisterPenanceSpell() {
 	if !priest.HasRune(proto.PriestRune_RuneHandsPenance) {
 		return
 	}
 	priest.Penance = priest.makePenanceSpell(false)
+	priest.PenanceHeal = priest.makePenanceSpell(true)
 }
 
 // https://www.wowhead.com/classic/spell=402284/penance
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044
 func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
-	var procMask core.ProcMask
-	// TODO: Classic verify numbers
+	level := float64(priest.GetCharacter().Level)
+	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level) * 1.28
+	baseHealing := (38.258376 + 0.904195*level + 0.161311*level*level) * .85
 	spellCoeff := 0.285
+	manaCost := .16
+	cooldown := time.Second * 12
+
+	var procMask core.ProcMask
 	flags := core.SpellFlagChanneled | core.SpellFlagAPL
 	if isHeal {
 		flags |= core.SpellFlagHelpful
@@ -31,10 +33,6 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 	} else {
 		procMask = core.ProcMaskSpellDamage
 	}
-
-	level := float64(priest.GetCharacter().Level)
-	baseCalc := (9.456667 + 0.635108*level + 0.039063*level*level)
-	baseDamage := baseCalc * 1.28
 
 	return priest.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: 402284},
@@ -44,7 +42,7 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 		RequiredLevel: 1,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.16,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -52,7 +50,7 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: cooldown,
 			},
 		},
 
@@ -78,7 +76,6 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dmg, dot.OutcomeTick)
 			},
 		}, core.DotConfig{}),
-		// TODO: Classic healing
 		Hot: core.Ternary(isHeal, core.DotConfig{
 			Aura: core.Aura{
 				Label: "Penance",
@@ -88,8 +85,8 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			AffectedByCastSpeed: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseHealing := sim.Roll(1484, 1676) + 0.5362*dot.Spell.HealingPower(target)
-				dot.Spell.CalcAndDealPeriodicHealing(sim, target, baseHealing, dot.Spell.OutcomeHealingCrit)
+				healing := baseHealing + spellCoeff*dot.Spell.HealingPower(target)
+				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healing, dot.Spell.OutcomeHealingCrit)
 			},
 		}, core.DotConfig{}),
 

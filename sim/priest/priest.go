@@ -8,40 +8,53 @@ import (
 
 var TalentTreeSizes = [3]int{15, 16, 16}
 
+const (
+	SpellCode_PriestNone int32 = iota
+	SpellCode_PriestFlashHeal
+	SpellCode_PriestHeal
+	SpellCode_PriestGreaterHeal
+)
+
 type Priest struct {
 	core.Character
 	Talents *proto.PriestTalents
 
 	Latency float64
 
+	// Auras
 	InnerFocusAura     *core.Aura
 	ShadowWeavingAuras core.AuraArray
+	WeakenedSouls      core.AuraArray
 
-	BindingHeal       *core.Spell
+	// Base Damage Spells
+	DevouringPlague []*core.Spell
+	HolyFire        []*core.Spell
+	MindBlast       []*core.Spell
+	MindFlay        [][]*core.Spell
+	ShadowWordPain  []*core.Spell
+	Smite           []*core.Spell
+
+	// Base Healing Spells
+	FlashHeal       []*core.Spell
+	GreaterHeal     []*core.Spell
+	PowerWordShield []*core.Spell
+	PrayerOfHealing []*core.Spell
+	Renew           []*core.Spell
+
+	// Other Base Spells
+	InnerFocus *core.Spell
+
+	// Runes
 	CircleOfHealing   *core.Spell
-	DevouringPlague   *core.Spell
-	FlashHeal         *core.Spell
-	GreaterHeal       *core.Spell
-	HolyFire          *core.Spell
-	InnerFocus        *core.Spell
-	ShadowWordPain    *core.Spell
-	MindBlast         *core.Spell
-	MindFlay          *core.Spell
-	MindFlayModifier  float64
-	MindBlastModifier float64
-	MindSear          *core.Spell
+	MindFlayModifier  float64       // For Twisted Faith
+	MindBlastModifier float64       // For Twisted Faith
+	MindSear          []*core.Spell // 1 entry for each tick
 	Penance           *core.Spell
 	PenanceHeal       *core.Spell
-	PowerWordShield   *core.Spell
-	PrayerOfHealing   *core.Spell
 	PrayerOfMending   *core.Spell
-	Renew             *core.Spell
 	EmpoweredRenew    *core.Spell
 	ShadowWordDeath   *core.Spell
-	Smite             *core.Spell
 	VoidPlague        *core.Spell
-
-	WeakenedSouls core.AuraArray
 
 	ProcPrayerOfMending core.ApplySpellResults
 
@@ -65,7 +78,6 @@ func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
-	priest.registerSetBonuses()
 	priest.registerMindBlast()
 	priest.registerMindFlay()
 	priest.registerShadowWordPainSpell()
@@ -77,15 +89,11 @@ func (priest *Priest) Initialize() {
 }
 
 func (priest *Priest) RegisterHealingSpells() {
-	priest.registerPenanceHealSpell()
-	priest.registerBindingHealSpell()
-	priest.registerCircleOfHealingSpell()
-	priest.registerFlashHealSpell()
-	priest.registerGreaterHealSpell()
-	priest.registerPowerWordShieldSpell()
-	priest.registerPrayerOfHealingSpell()
-	priest.registerPrayerOfMendingSpell()
-	priest.registerRenewSpell()
+	// priest.registerFlashHealSpell()
+	// priest.registerGreaterHealSpell()
+	// priest.registerPowerWordShieldSpell()
+	// priest.registerPrayerOfHealingSpell()
+	// priest.registerRenewSpell()
 }
 
 func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {

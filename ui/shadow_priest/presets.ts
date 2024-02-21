@@ -1,4 +1,4 @@
-import { Phase } from '../core/constants/other.js';
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Consumes,
 	Debuffs,
@@ -72,23 +72,30 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const StandardTalents = {
-	name: 'Standard',
+export const TalentsPhase1 = {
+	name: 'Phase 1',
 	data: SavedTalents.create({
-		talentsString: '5042001303--5002505103501051',
+		talentsString: '-20535000001',
+	}),
+};
+
+export const TalentsPhase2 = {
+	name: 'Phase 2',
+	data: SavedTalents.create({
+		talentsString: '--5022204002501251',
 	}),
 };
 
 export const TalentPresets = {
   [Phase.Phase1]: [
-    StandardTalents,
+		TalentsPhase1,
   ],
   [Phase.Phase2]: [
-  ]
+		TalentsPhase2,
+  ],
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

@@ -1,85 +1,118 @@
 package priest
 
 import (
-	"strconv"
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
-	return core.SpellConfig{
-		SpellSchool:      core.SpellSchoolShadow,
-		ProcMask:         core.ProcMaskProc,
-		BonusHitRating:   float64(priest.Talents.ShadowFocus) * 1 * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  0,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
-		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
+const MindSearTicks = 5
+
+func (priest *Priest) registerMindSearSpell() {
+	if !priest.HasRune(proto.PriestRune_RuneHandsMindSear) {
+		return
+	}
+
+	priest.MindSear = make([]*core.Spell, MindSearTicks)
+
+	var tick int32
+	for tick = 1; tick < MindSearTicks; tick++ {
+		priest.MindSear[tick] = priest.GetOrRegisterSpell(priest.newMindSearSpellConfig(tick))
 	}
 }
 
-func (priest *Priest) getMindSearTickSpell(numTicks int32) *core.Spell {
-	config := priest.getMindSearBaseConfig()
-	config.ActionID = core.ActionID{SpellID: 53022}.WithTag(numTicks)
-	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		damage := sim.Roll(70, 78) + spell.SpellDamage()
-		result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
+	spellId := int32(proto.PriestRune_RuneHandsMindSear)
+	manaCost := .28
 
-		if result.Landed() {
-			priest.AddShadowWeavingStack(sim, target)
-		}
-	}
-	return priest.GetOrRegisterSpell(config)
-}
-
-func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
-	numTicks := numTicksIdx
+	numTicks := tickIdx
 	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
-	if numTicksIdx == 0 {
+	if tickIdx == 0 {
 		numTicks = 5
 		flags |= core.SpellFlagAPL
 	}
+	tickLength := time.Second
 
-	mindSearTickSpell := priest.getMindSearTickSpell(numTicksIdx)
+	mindSearTickSpell := priest.newMindSearTickSpell(tickIdx)
 
-	config := priest.getMindSearBaseConfig()
-	config.ActionID = core.ActionID{SpellID: 53023}.WithTag(numTicksIdx)
-	config.Flags = flags
-	config.ManaCost = core.ManaCostOptions{
-		BaseCost: 0.28,
-	}
-	config.Cast = core.CastConfig{
-		DefaultCast: core.Cast{
-			GCD: core.GCDDefault,
+	return core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       flags,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: manaCost,
 		},
-	}
-	config.Dot = core.DotConfig{
-		Aura: core.Aura{
-			Label: "MindSear-" + strconv.Itoa(int(numTicksIdx)),
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
 		},
-		NumberOfTicks:       numTicks,
-		TickLength:          time.Second,
-		AffectedByCastSpeed: true,
-		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if aoeTarget != target {
-					mindSearTickSpell.Cast(sim, aoeTarget)
-					mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
+
+		BonusHitRating:   priest.shadowHitModifier(),
+		BonusCritRating:  0,
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: fmt.Sprintf("MindSear-%d", tickIdx),
+			},
+			NumberOfTicks:       numTicks,
+			TickLength:          tickLength,
+			AffectedByCastSpeed: false,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					if aoeTarget != target {
+						mindSearTickSpell.Cast(sim, aoeTarget)
+						mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
+					}
 				}
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
+
+			if result.Landed() {
+				spell.Dot(target).Apply(sim)
+			}
+			spell.DealOutcome(sim, result)
+		},
+	}
+}
+
+func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
+	level := float64(priest.Level)
+	spellId := int32(proto.PriestRune_RuneHandsMindSear)
+	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
+	baseDamageLow := baseDamage * .7
+	baseDamageHigh := baseDamage * .78
+	spellCoeff := 0.15 // classic penalty for mf having a slow effect
+
+	return priest.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellId}.WithTag(numTicks),
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
+
+		BonusHitRating:   1, // Not an independent hit once initial lands
+		BonusCritRating:  0,
+		DamageMultiplier: 1,
+		CritMultiplier:   1.0,
+		ThreatMultiplier: priest.shadowThreatModifier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damage := sim.Roll(baseDamageLow, baseDamageHigh) + (spellCoeff * spell.SpellDamage())
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
+
+			if result.Landed() {
+				priest.AddShadowWeavingStack(sim, target)
 			}
 		},
-	}
-	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-		if result.Landed() {
-			spell.Dot(target).Apply(sim)
-			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
-		}
-	}
-	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		baseDamage := sim.Roll(70, 78) + spell.SpellDamage()
-		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
-	}
-	return priest.GetOrRegisterSpell(config)
+	})
 }

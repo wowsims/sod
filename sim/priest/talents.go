@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -47,6 +48,18 @@ func (priest *Priest) ApplyTalents() {
 	}
 }
 
+func (priest *Priest) holyCritModifier() float64 {
+	return float64(priest.Talents.HolySpecialization) * 1 * core.CritRatingPerCritChance
+}
+
+func (priest *Priest) shadowHitModifier() float64 {
+	return float64(priest.Talents.ShadowFocus) * 2 * core.SpellHitRatingPerHitChance
+}
+
+func (priest *Priest) shadowThreatModifier() float64 {
+	return 1 - 0.08*float64(priest.Talents.ShadowAffinity)
+}
+
 func (priest *Priest) applyInspiration() {
 	if priest.Talents.Inspiration == 0 {
 		return
@@ -67,13 +80,7 @@ func (priest *Priest) applyInspiration() {
 			aura.Activate(sim)
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == priest.FlashHeal ||
-				spell == priest.GreaterHeal ||
-				spell == priest.BindingHeal ||
-				spell == priest.PrayerOfMending ||
-				spell == priest.PrayerOfHealing ||
-				spell == priest.CircleOfHealing ||
-				spell == priest.PenanceHeal {
+			if slices.Contains([]int32{SpellCode_PriestFlashHeal, SpellCode_PriestHeal, SpellCode_PriestGreaterHeal}, spell.SpellCode) {
 				auras[result.Target.UnitIndex].Activate(sim)
 			}
 		},
