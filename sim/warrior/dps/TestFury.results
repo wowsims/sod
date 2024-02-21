@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.02245
-  weights: 0.03291
+  weights: 0.02292
+  weights: 0.0335
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00872
-  weights: 0.03222
-  weights: 0.17154
+  weights: 0.00891
+  weights: 0.03429
+  weights: 0.17301
   weights: 0
   weights: 0
   weights: 0
@@ -99,106 +99,106 @@ stat_weights_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 13.63784
-  tps: 15.3857
+  dps: 13.67604
+  tps: 15.42497
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 12.81685
-  tps: 14.72829
+  dps: 12.85554
+  tps: 14.76795
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 13.45255
-  tps: 15.25138
+  dps: 13.49296
+  tps: 15.29279
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-CarvedDriftwoodIcon-209575"
  value: {
-  dps: 17.02798
-  tps: 18.20412
+  dps: 17.27693
+  tps: 18.41463
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 13.49445
-  tps: 15.28492
+  dps: 13.53517
+  tps: 15.32658
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 12.50114
-  tps: 14.48439
+  dps: 12.53824
+  tps: 14.52242
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 13.59857
-  tps: 15.35532
+  dps: 13.63683
+  tps: 15.39464
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 12.50114
-  tps: 14.48439
+  dps: 12.53824
+  tps: 14.52242
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 12.58601
-  tps: 14.54337
+  dps: 12.62492
+  tps: 14.58321
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 13.81588
-  tps: 15.54225
+  dps: 13.85594
+  tps: 15.58338
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 12.58601
-  tps: 14.54337
+  dps: 12.62492
+  tps: 14.58321
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 12.721
-  tps: 14.65127
+  dps: 12.76
+  tps: 14.69118
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 12.06638
-  tps: 14.11252
+  dps: 12.10168
+  tps: 14.14867
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 12.69912
-  tps: 14.63411
+  dps: 12.73781
+  tps: 14.67377
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
-  dps: 16.77651
-  tps: 17.97962
+  dps: 16.85719
+  tps: 18.02302
  }
 }
 dps_results: {
@@ -246,49 +246,49 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 21.13087
-  tps: 57.02601
+  dps: 21.19267
+  tps: 57.08656
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 17.2376
-  tps: 18.37197
+  dps: 17.48917
+  tps: 18.58456
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 35.21638
-  tps: 34.47179
+  dps: 36.19061
+  tps: 35.25118
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 10.73026
-  tps: 47.96987
+  dps: 10.71622
+  tps: 47.95494
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 8.77884
-  tps: 11.43837
+  dps: 8.81356
+  tps: 11.47382
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 16.56257
-  tps: 19.51531
+  dps: 16.54436
+  tps: 19.50074
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 16.59182
-  tps: 17.86721
+  dps: 16.80175
+  tps: 18.04559
  }
 }
