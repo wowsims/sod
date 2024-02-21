@@ -100,6 +100,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 			}
 			paladin.CurrentSeal = aura
 			paladin.CurrentSeal.Activate(sim)
+			paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
 		},
 	})
 }

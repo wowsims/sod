@@ -156,6 +156,7 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValuePrimarySealRemainingTime primary_seal_remaining_time = 64;
     }
 }
 
@@ -467,4 +468,6 @@ message APLValueWarlockShouldRecastDrainSoul {
 }
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
+}
+message APLValuePrimarySealRemainingTime {
 }

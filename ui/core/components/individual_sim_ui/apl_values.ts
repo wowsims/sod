@@ -64,6 +64,7 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 	APLValueCatNewSavageRoarDuration,
+	APLValuePrimarySealRemainingTime,
 	APLValueAutoTimeToNext_AutoType as AutoType,
 } from '../../proto/apl.js';
 
@@ -924,5 +925,14 @@ const valueKindFactories: {[f in NonNullable<APLValueKind>]: ValueKindConfig<APL
 		fields: [
 			AplHelpers.unitFieldConfig('targetUnit', 'targets'),
 		],
+	}),
+	'primarySealRemainingTime': inputBuilder({
+		label: 'Primary Seal Remaining Time',
+		submenu: ['Paladin'],
+		shortDescription: 'Returns the amount of time remaining until the Paladin\'s Primary Seal aura will expire.',
+		newValue: APLValuePrimarySealRemainingTime.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		fields: [
+		]
 	}),
 };

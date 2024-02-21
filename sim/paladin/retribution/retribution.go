@@ -55,8 +55,13 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
-	ret.PrimarySealSpell = ret.Paladin.SealOfRighteousness[1]
+}
 
+func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
+	ret.Paladin.Reset(sim)
+	ret.CurrentSeal = nil
+
+	// Set the primary seal for APL actions.
 	switch ret.PrimarySeal {
 	case proto.PaladinSeal_Righteousness:
 		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
@@ -65,9 +70,4 @@ func (ret *RetributionPaladin) Initialize() {
 	case proto.PaladinSeal_Martyrdom:
 		ret.PrimarySealSpell = ret.Paladin.SealOfMartyrdom
 	}
-}
-
-func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
-	ret.Paladin.Reset(sim)
-	ret.CurrentSeal = nil
 }

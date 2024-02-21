@@ -1,5 +1,6 @@
 import { Player } from '../core/player.js';
 import { ItemSlot, Spec } from '../core/proto/common.js';
+import { TypedEvent } from '../core/typed_event.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 
 import {
@@ -21,19 +22,27 @@ import * as InputHelpers from '../core/components/input_helpers.js';
 // });
 
 // The below is used in the custom APL action "Cast Primary Seal".
+// Only shows SoC if it's talented, only shows SoM if the relevant rune is equipped.
 export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinSeal>({
 	fieldName: 'primarySeal',
 	values: [
-		{ actionId: () => ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
+		{ 
+			actionId: () => ActionId.fromSpellId(20154),
+			value: PaladinSeal.Righteousness 
+		},
 		{
-			actionId: () => ActionId.fromSpellId(20375), value: PaladinSeal.Command,
+			actionId: () => ActionId.fromSpellId(20375),
+			value: PaladinSeal.Command,
 			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sealOfCommand,
 		},
 		{
-			actionId: () => ActionId.fromSpellId(407798), value: PaladinSeal.Martyrdom,
+			actionId: () => ActionId.fromSpellId(407798),
+			value: PaladinSeal.Martyrdom,
 			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == PaladinRune.RuneChestSealofMartyrdom,
 		},
 	],
-	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,
+	// changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,
+	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter]),
+
 });
 

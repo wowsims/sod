@@ -7,6 +7,45 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// The APLValue for the remaining duration of the primary seal aura.
+
+func (paladin *Paladin) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
+	switch config.Value.(type) {
+	case *proto.APLValue_PrimarySealRemainingTime:
+		return paladin.newValuePrimarySealRemainingTime(rot, config.GetPrimarySealRemainingTime())
+	default:
+		return nil
+	}
+}
+
+type APLValuePrimarySealRemainingTime struct {
+	core.DefaultAPLValueImpl
+	paladin *Paladin
+}
+
+func (paladin *Paladin) newValuePrimarySealRemainingTime(rot *core.APLRotation, config *proto.APLValuePrimarySealRemainingTime) core.APLValue {
+	return &APLValuePrimarySealRemainingTime{
+		paladin: paladin,
+	}
+}
+
+func (value *APLValuePrimarySealRemainingTime) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+
+func (value *APLValuePrimarySealRemainingTime) GetDuration(sim *core.Simulation) time.Duration {
+	paladin := value.paladin
+	// if paladin.CurrentSeal == nil {
+	// 	return 0
+	// }
+	return max(paladin.CurrentSealExpiration - sim.CurrentTime)
+}
+
+func (value *APLValuePrimarySealRemainingTime) String() string {
+	return "Primary Seal Remaining Time()"
+}
+
+// The APLAction for casting the primary Seal
 func (paladin *Paladin) NewAPLAction(rot *core.APLRotation, config *proto.APLAction) core.APLActionImpl {
 	switch config.Action.(type) {
 	case *proto.APLAction_CastPaladinPrimarySeal:
@@ -18,7 +57,6 @@ func (paladin *Paladin) NewAPLAction(rot *core.APLRotation, config *proto.APLAct
 
 type APLActionCastPaladinPrimarySeal struct {
 	paladin    *Paladin
-	seal       proto.PaladinSeal
 	lastAction time.Duration
 }
 
@@ -30,22 +68,10 @@ func (impl *APLActionCastPaladinPrimarySeal) GetNextAction(*core.Simulation) *co
 }
 
 func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, config *proto.APLActionCastPaladinPrimarySeal) core.APLActionImpl {
-
-	// Here we should figure out the relevant seal from the dropdown and apply it here.
-
 	return &APLActionCastPaladinPrimarySeal{
 		paladin: paladin,
 	}
 }
-
-// func (paladin *Paladin) executePrimarySeal(sim *core.Simulation) {
-// 	if !paladin.GCD.IsReady(sim) {
-// 		return
-// 	}
-// 	// Dummy cast until inputs are linked up.
-// 	paladin.Exorcism[1].Cast(sim, paladin.CurrentTarget)
-// 	paladin.SealOfMartyrdom.Cast
-// }
 
 func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
 	paladin := action.paladin

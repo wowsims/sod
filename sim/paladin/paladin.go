@@ -27,8 +27,9 @@ type Paladin struct {
 
 	PaladinAura proto.PaladinAura
 
-	CurrentSeal      *core.Aura
-	PrimarySealSpell *core.Spell
+	CurrentSeal           *core.Aura
+	CurrentSealExpiration time.Duration
+	PrimarySealSpell      *core.Spell
 
 	// Variables for max rank seal spells, used in APL Actions.
 	MaxRankRighteousness int

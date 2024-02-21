@@ -166,6 +166,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 			}
 			paladin.CurrentSeal = aura
 			paladin.CurrentSeal.Activate(sim)
+			paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
 		},
 	})
 }
