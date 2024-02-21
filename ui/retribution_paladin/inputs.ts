@@ -42,7 +42,7 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 		},
 	],
 	// changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,
-	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter]),
+	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter]),
 
 });
 
