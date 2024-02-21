@@ -210,6 +210,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)
+	registerMildlyIrradiatedRejuvCD(agent, consumes)
 	registerExplosivesCD(agent, consumes)
 }
 
@@ -639,8 +640,7 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 		return
 	}
 
-	var defaultMCD MajorCooldown
-	defaultMCD = makePotionActivation(defaultPotion, character, potionCD)
+	defaultMCD := makePotionActivation(defaultPotion, character, potionCD)
 
 	if defaultMCD.Spell != nil {
 		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
@@ -729,33 +729,6 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)
-	} else if potionType == proto.Potions_MildlyIrradiatedRejuvPotion {
-		actionID := ActionID{ItemID: 215162}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		manaMetrics := character.NewManaMetrics(actionID)
-		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
-		return MajorCooldown{
-			Type: CooldownTypeDPS,
-			Spell: character.GetOrRegisterSpell(SpellConfig{
-				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete,
-				Cast: CastConfig{
-					CD: Cooldown{
-						Timer:    potionCD,
-						Duration: time.Minute * 2,
-					},
-				},
-				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
-					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
-
-					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
-					character.AddMana(sim, manaGain, manaMetrics)
-
-					aura.Activate(sim)
-				},
-			}),
-		}
 	} else {
 		return MajorCooldown{}
 	}
@@ -772,5 +745,38 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 		}[conjuredType]
 
 		character.AddMajorCooldown(makeManaConsumableMCD(itemId, character, character.GetConjuredCD()))
+	}
+}
+
+func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
+	character := agent.GetCharacter()
+
+	if consumes.MildlyIrradiatedRejuvPot {
+		actionID := ActionID{ItemID: 215162}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		manaMetrics := character.NewManaMetrics(actionID)
+		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
+		character.AddMajorCooldown(MajorCooldown{
+			Type: CooldownTypeDPS,
+			Spell: character.GetOrRegisterSpell(SpellConfig{
+				ActionID: actionID,
+				Flags:    SpellFlagNoOnCastComplete,
+				Cast: CastConfig{
+					CD: Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute * 2,
+					},
+				},
+				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
+					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
+
+					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+					character.AddMana(sim, manaGain, manaMetrics)
+
+					aura.Activate(sim)
+				},
+			}),
+		})
 	}
 }
