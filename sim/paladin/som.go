@@ -29,7 +29,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 407799},
 		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskMeleeSpecial, // This needs figured out properly
+		ProcMask:         core.ProcMaskEmpty, // This needs figured out properly
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    1,
 		DamageMultiplier: 1.0,

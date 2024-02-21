@@ -11,7 +11,7 @@ const socRanks = 5
 const socProcSpellCoeff = 0.29
 const socJudgeSpellCoeff = 0.423
 
-var socLevels = [socRanks + 1]int{0, 20, 30, 40, 60, 50}
+var socLevels = [socRanks + 1]int{0, 20, 30, 40, 50, 60}
 var socManaCosts = [socRanks + 1]float64{0, 65, 110, 140, 180, 210}
 var socAuraSpellIDs = [socRanks + 1]int32{0, 20375, 20915, 20918, 20919, 20920}
 var socProcSpellIDs = [socRanks + 1]int32{0, 20424, 20944, 20945, 20946, 20947}

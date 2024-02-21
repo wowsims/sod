@@ -35,11 +35,10 @@ type Paladin struct {
 	MaxRankRighteousness int
 	MaxRankCommand       int
 
-	CrusaderStrike *core.Spell
-	DivineStorm    *core.Spell
-	Consecration   []*core.Spell
-
-	// These cooldowns need reset from elsewhere in the package.
+	// Active abilities and shared cooldowns that need externally manipulated.
+	CrusaderStrike    *core.Spell
+	DivineStorm       *core.Spell
+	Consecration      []*core.Spell
 	Exorcism          []*core.Spell
 	ExorcismCooldown  *core.Cooldown
 	HolyShock         []*core.Spell
@@ -47,42 +46,23 @@ type Paladin struct {
 	Judgement         *core.Spell
 	DivineFavor       *core.Spell
 	// HolyShield            *core.Spell
-	// HammerOfTheRighteous  *core.Spell
-	// HandOfReckoning       *core.Spell
-	// ShieldOfRighteousness *core.Spell
-	// AvengersShield        *core.Spell
 	// HammerOfWrath         *core.Spell
-	// SealOfVengeance       *core.Spell
+	// HolyWrath             *core.Spell
+
+	// Seal spells and their associated auras
 	SealOfRighteousness []*core.Spell
 	SealOfCommand       []*core.Spell
 	SealOfMartyrdom     *core.Spell
-	// AvengingWrath         *core.Spell
-	// DivineProtection      *core.Spell
-	// SovDotSpell           *core.Spell
-	// SealOfWisdom        *core.Spell
-	// SealOfLight         *core.Spell
-
-	// HolyShieldAura          *core.Aura
-	// RighteousFuryAura       *core.Aura
-	// DivinePleaAura          *core.Aura
-	// JudgementOfWisdomAura   *core.Aura
-	// JudgementOfLightAura    *core.Aura
-	// SealOfVengeanceAura     *core.Aura
 
 	SealOfRighteousnessAura []*core.Aura
 	SealOfCommandAura       []*core.Aura
 	SealOfMartyrdomAura     *core.Aura
-	// AvengingWrathAura       *core.Aura
-	// DivineProtectionAura    *core.Aura
-	// ForbearanceAura         *core.Aura
+
+	// Auras from talents
 	DivineFavorAura *core.Aura
 	VengeanceAura   *core.Aura
-	// HolyWrath             *core.Spell
-	// SealOfWisdomAura        *core.Aura
-	// SealOfLightAura         *core.Aura
-	// ArtOfWarInstantCast *core.Aura
-	// SpiritualAttunementMetrics *core.ResourceMetrics
 
+	// Placeholder for any auto-rotation with exo/HW.
 	DemonAndUndeadTargetCount int32
 }
 
@@ -110,20 +90,16 @@ func (paladin *Paladin) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
 	paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
 
-	// paladin.registerSealOfVengeanceSpellAndAura()
-	paladin.registerSealOfRighteousnessSpellAndAura()
+	// Judgement and Seals
 	paladin.registerJudgementSpell()
+	paladin.registerSealOfRighteousnessSpellAndAura()
+
 	paladin.registerSealOfCommandSpellAndAura()
 	paladin.registerSealOfMartyrdomSpellAndAura()
-	// paladin.setupSealOfTheCrusader()
-	// paladin.setupSealOfWisdom()
-	// paladin.setupSealOfLight()
-	// paladin.setupSealOfRighteousness()
-	// paladin.setupJudgementRefresh()
 
+	// Active abilities
 	paladin.registerCrusaderStrikeSpell()
 	paladin.registerDivineStormSpell()
-
 	paladin.registerConsecrationSpell()
 	paladin.registerHolyShockSpell()
 	paladin.registerExorcismSpell()
@@ -131,16 +107,6 @@ func (paladin *Paladin) Initialize() {
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
 	// paladin.registerHolyShieldSpell()
-	// paladin.registerHammerOfTheRighteousSpell()
-	// paladin.registerHandOfReckoningSpell()
-	// paladin.registerShieldOfRighteousnessSpell()
-	// paladin.registerAvengersShieldSpell()
-	// paladin.registerJudgements()
-
-	// paladin.registerSpiritualAttunement()
-	// paladin.registerDivinePleaSpell()
-	// paladin.registerDivineProtectionSpell()
-	// paladin.registerForbearanceDebuff()
 
 	for i := int32(0); i < paladin.Env.GetNumTargets(); i++ {
 		unit := paladin.Env.GetTargetUnit(i)
@@ -152,7 +118,6 @@ func (paladin *Paladin) Initialize() {
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 	paladin.CurrentSeal = nil
-	// paladin.CurrentJudgement = nil
 }
 
 // maybe need to add stat dependencies
@@ -163,11 +128,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	}
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
-	// This is used to cache its effect in talents.go
-	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
-
 	paladin.PseudoStats.CanParry = true
-
 	paladin.EnableManaBar()
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
@@ -202,6 +163,7 @@ func (paladin *Paladin) Has2hEquipped() bool {
 }
 
 func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
+	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
 	var returnSpell *core.Spell
 	switch seal {
 	case proto.PaladinSeal_Righteousness:
