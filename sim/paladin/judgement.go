@@ -43,6 +43,8 @@ func (paladin *Paladin) registerJudgementSpell() {
 			// 	jow.Activate(sim)
 			// }
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			paladin.CurrentSealExpiration = sim.CurrentTime
+			paladin.CurrentSeal.Deactivate(sim)
 		},
 
 		// RelatedAuras: []core.AuraArray{jowAuras},
