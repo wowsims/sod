@@ -6,13 +6,15 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (paladin *Paladin) canJudgement(sim *core.Simulation) bool {
-	return paladin.CurrentSeal != nil && paladin.CurrentSeal.IsActive() && paladin.Judgement.IsReady(sim)
+func (paladin *Paladin) canJudgement(sim *core.Simulation, _ *core.Unit) bool {
+	return paladin.CurrentSeal != nil && paladin.CurrentSeal.IsActive()
 }
 
 func (paladin *Paladin) registerJudgementSpell() {
-	// jowAuras := paladin.NewEnemyAuraArray(core.JudgementOfWisdomAura)
-
+	// Judgement functions as a dummy spell in vanilla.
+	// It rolls on the spell hit table and can only miss or hit.
+	// Individual seals have their own effects that this spell triggers,
+	// that are handled in the implementation of the seal auras.
 	paladin.Judgement = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
@@ -33,20 +35,13 @@ func (paladin *Paladin) registerJudgementSpell() {
 				Duration: (time.Second * 10) - (time.Second * time.Duration(paladin.Talents.ImprovedJudgement)),
 			},
 		},
-
+		ExtraCastCondition: paladin.canJudgement,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Primary Judgements cannot crit or be dodged, parried, or blocked-- only miss. (Unless target is a hunter.)
-			// jow := jowAuras.Get(target)
-			// if jow.IsActive() {
-			// 	jow.Refresh(sim)
-			// } else {
-			// 	jow.Activate(sim)
-			// }
+			// The judgement dummy spell only roles spell hit in classic.
+			// Subsequent judgement effects from seals have their own outcomes.
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			paladin.CurrentSealExpiration = sim.CurrentTime
 			paladin.CurrentSeal.Deactivate(sim)
 		},
-
-		// RelatedAuras: []core.AuraArray{jowAuras},
 	})
 }
