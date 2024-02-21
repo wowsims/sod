@@ -6,7 +6,6 @@ import {
 	EnchantedSigil,
 	Explosive,
 	FirePowerBuff,
-	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -142,36 +141,44 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodSmokedSagefish,
-	defaultPotion: Potions.GreaterManaPotion,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
 	agilityElixir: AgilityElixir.ElixirOfAgility,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
 	fillerExplosive: Explosive.ExplosiveEzThroRadiationBomb,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	blessingOfWisdom: TristateEffect.TristateEffectRegular,
+	battleShout: TristateEffect.TristateEffectImproved,
+	bloodPact: TristateEffect.TristateEffectImproved,
+	divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
+	moonkinAura: true,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
+	trueshotAura: true,
 	thorns: TristateEffect.TristateEffectRegular,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfKings: true,
+	blessingOfMight: TristateEffect.TristateEffectImproved,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	sparkOfInspiration: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	homunculi: 100,
-	faerieFire: true,
-	improvedScorch: true,
 	curseOfElements: true,
+	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
+	improvedScorch: true,
+	shadowWeaving: true,
 });
 
 export const OtherDefaults = {

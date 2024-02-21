@@ -41,11 +41,17 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		}
 	}
 
+	// There must be a nicer way to do this...
+	shadowOilIcd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Second * 10,
+	}
+
 	if character.HasMHWeapon() {
-		addImbueStats(character, consumes.MainHandImbue, true)
+		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
 	if character.HasOHWeapon() {
-		addImbueStats(character, consumes.OffHandImbue, false)
+		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 
 	if consumes.Food != proto.Food_FoodUnknown {
@@ -204,10 +210,11 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)
+	registerMildlyIrradiatedRejuvCD(agent, consumes)
 	registerExplosivesCD(agent, consumes)
 }
 
-func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
+func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, shadowOilIcd Cooldown) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
 		// Wizard Oils
@@ -297,8 +304,103 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 			}
 		case proto.WeaponImbue_Windfury:
 			ApplyWindfury(character)
+		case proto.WeaponImbue_ShadowOil:
+			registerShadowOil(character, isMh, shadowOilIcd)
+		case proto.WeaponImbue_FrostOil:
+			registerFrostOil(character, isMh)
 		}
 	}
+}
+
+func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
+	procChance := 0.15
+
+	procSpell := character.GetOrRegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 1382},
+		SpellSchool: SpellSchoolShadow,
+		ProcMask:    ProcMaskSpellDamage,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   character.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			damage := sim.Roll(52, 61) + spell.SpellPower()*0.56
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	label := " MH"
+	procMask := ProcMaskMeleeMH
+	if !isMh {
+		label = " OH"
+		procMask = ProcMaskMeleeOH
+	}
+
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label: "Shadow Oil" + label,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.ProcMask.Matches(procMask) {
+				return
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			if sim.RandomFloat("Shadow Oil") < procChance {
+				icd.Use(sim)
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
+}
+
+func registerFrostOil(character *Character, isMh bool) {
+	procChance := 0.10
+
+	procSpell := character.GetOrRegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 1191},
+		SpellSchool: SpellSchoolFrost,
+		ProcMask:    ProcMaskSpellDamage,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   character.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			damage := sim.Roll(33, 38) + spell.SpellPower()*0.269
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	label := " MH"
+	procMask := ProcMaskMeleeMHAuto
+	if !isMh {
+		label = " OH"
+		procMask = ProcMaskMeleeOHAuto
+	}
+
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label: "Frost Oil" + label,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.ProcMask.Matches(procMask) {
+				return
+			}
+
+			if sim.RandomFloat("Frost Oil") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
 }
 
 var SapperActionID = ActionID{ItemID: 10646}
@@ -538,8 +640,7 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 		return
 	}
 
-	var defaultMCD MajorCooldown
-	defaultMCD = makePotionActivation(defaultPotion, character, potionCD)
+	defaultMCD := makePotionActivation(defaultPotion, character, potionCD)
 
 	if defaultMCD.Spell != nil {
 		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
@@ -628,33 +729,6 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)
-	} else if potionType == proto.Potions_MildlyIrradiatedRejuvPotion {
-		actionID := ActionID{ItemID: 215162}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		manaMetrics := character.NewManaMetrics(actionID)
-		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
-		return MajorCooldown{
-			Type: CooldownTypeDPS,
-			Spell: character.GetOrRegisterSpell(SpellConfig{
-				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete,
-				Cast: CastConfig{
-					CD: Cooldown{
-						Timer:    potionCD,
-						Duration: time.Minute * 2,
-					},
-				},
-				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
-					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
-
-					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
-					character.AddMana(sim, manaGain, manaMetrics)
-
-					aura.Activate(sim)
-				},
-			}),
-		}
 	} else {
 		return MajorCooldown{}
 	}
@@ -671,5 +745,38 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 		}[conjuredType]
 
 		character.AddMajorCooldown(makeManaConsumableMCD(itemId, character, character.GetConjuredCD()))
+	}
+}
+
+func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
+	character := agent.GetCharacter()
+
+	if consumes.MildlyIrradiatedRejuvPot {
+		actionID := ActionID{ItemID: 215162}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		manaMetrics := character.NewManaMetrics(actionID)
+		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
+		character.AddMajorCooldown(MajorCooldown{
+			Type: CooldownTypeDPS,
+			Spell: character.GetOrRegisterSpell(SpellConfig{
+				ActionID: actionID,
+				Flags:    SpellFlagNoOnCastComplete,
+				Cast: CastConfig{
+					CD: Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute * 2,
+					},
+				},
+				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+					healthGain := sim.RollWithLabel(340, 460, "Mildly Irradiated Rejuvenation Potion")
+					manaGain := sim.RollWithLabel(262, 438, "Mildly Irradiated Rejuvenation Potion")
+
+					character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+					character.AddMana(sim, manaGain, manaMetrics)
+
+					aura.Activate(sim)
+				},
+			}),
+		})
 	}
 }

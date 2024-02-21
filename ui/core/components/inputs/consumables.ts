@@ -192,7 +192,7 @@ export const Sapper = makeBooleanConsumeInput({
 	]),
 	fieldName: 'sapper',
 	showWhen: (player) => player.hasProfession(Profession.Engineering),
-})
+});
 
 export const makeSapperInput = makeConsumeInputFactory({
 	consumesFieldName: 'sapper',
@@ -449,22 +449,22 @@ export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
 	]),
 	value: Potions.GreaterManaPotion,
 };
-export const MildlyIrradiatedRejuvPotion: ConsumableInputConfig<Potions> = {
-	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 215162, minLevel: 35 },
-	]),
-	value: Potions.MildlyIrradiatedRejuvPotion,
-	showWhen: (player) => player.hasProfession(Profession.Alchemy),
-};
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: MildlyIrradiatedRejuvPotion, 	stats: [] },
 	{ config: GreaterManaPotion,						stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, 		 							stats: [Stat.StatIntellect] },
 	{ config: LesserManaPotion,							stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});
+
+export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 215162, minLevel: 35 },
+	]),
+	fieldName: 'mildlyIrradiatedRejuvPot',
+	showWhen: (player) => player.hasProfession(Profession.Alchemy),
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 SPELL DAMAGE CONSUMES
@@ -684,6 +684,20 @@ export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 	}
 };
 
+// Spell Oils
+export const ShadowOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3824, minLevel: 25 },
+	]),
+	value: WeaponImbue.ShadowOil,
+};
+export const FrostOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3829, minLevel: 40 },
+	]),
+	value: WeaponImbue.FrostOil,
+};
+
 const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: RockbiterWeaponImbue,		stats: [] },
 	{ config: FlametongueWeaponImbue,	stats: [] },
@@ -709,6 +723,9 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 
 	{ config: SolidWeightstone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseWeightstone(slot), stats: [Stat.StatAttackPower] },
+
+	{ config: ShadowOil, stats: [Stat.StatAttackPower] },
+	{ config: FrostOil, stats: [Stat.StatAttackPower] },
 ]
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [

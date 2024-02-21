@@ -477,43 +477,43 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 602.22587
-  tps: 845.83155
+  dps: 593.87619
+  tps: 836.58045
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 571.67632
-  tps: 470.42082
+  dps: 570.07483
+  tps: 470.29426
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 675.54321
-  tps: 580.09308
+  dps: 660.79596
+  tps: 562.69563
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 248.72957
-  tps: 344.20133
+  dps: 246.68448
+  tps: 341.16011
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 230.75941
-  tps: 183.51013
+  dps: 236.06448
+  tps: 187.77976
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 455.02468
-  tps: 385.57807
+  dps: 447.82105
+  tps: 377.70194
  }
 }
 dps_results: {

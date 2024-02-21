@@ -1,9 +1,19 @@
 import { Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
-	Flask,
+	Debuffs,
+	EnchantedSigil,
 	Food,
+	IndividualBuffs,
+	Potions,
 	Profession,
+	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -163,11 +173,49 @@ export const BMDefaultOptions = HunterOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.SolidWeightstone,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+});
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+  arcaneBrilliance: true,
+	bloodPact: TristateEffect.TristateEffectImproved,
+	aspectOfTheLion: true,
+  battleShout: TristateEffect.TristateEffectImproved,
+  divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
+  manaSpringTotem: TristateEffect.TristateEffectImproved,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
+  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	trueshotAura: true,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  blessingOfMight: TristateEffect.TristateEffectImproved,
+  blessingOfWisdom: TristateEffect.TristateEffectRegular,
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	dreamstate: true,
+	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
+	huntersMark: TristateEffect.TristateEffectImproved,
+	mangle: true,
+	stormstrike: true,
+	sunderArmor: true,
 });
 
 export const OtherDefaults = {
-  profession1: Profession.Engineering,
+  profession1: Profession.Enchanting,
   profession2: Profession.Leatherworking,
 }
