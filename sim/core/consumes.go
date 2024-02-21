@@ -41,11 +41,17 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 		}
 	}
 
+	// There must be a nicer way to do this...
+	shadowOilIcd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Second * 10,
+	}
+
 	if character.HasMHWeapon() {
-		addImbueStats(character, consumes.MainHandImbue, true)
+		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
 	if character.HasOHWeapon() {
-		addImbueStats(character, consumes.OffHandImbue, false)
+		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 
 	if consumes.Food != proto.Food_FoodUnknown {
@@ -208,7 +214,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	registerExplosivesCD(agent, consumes)
 }
 
-func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
+func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, shadowOilIcd Cooldown) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {
 		// Wizard Oils
@@ -298,8 +304,103 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool) {
 			}
 		case proto.WeaponImbue_Windfury:
 			ApplyWindfury(character)
+		case proto.WeaponImbue_ShadowOil:
+			registerShadowOil(character, isMh, shadowOilIcd)
+		case proto.WeaponImbue_FrostOil:
+			registerFrostOil(character, isMh)
 		}
 	}
+}
+
+func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
+	procChance := 0.15
+
+	procSpell := character.GetOrRegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 1382},
+		SpellSchool: SpellSchoolShadow,
+		ProcMask:    ProcMaskSpellDamage,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   character.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			damage := sim.Roll(52, 61) + spell.SpellPower()*0.56
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	label := " MH"
+	procMask := ProcMaskMeleeMH
+	if !isMh {
+		label = " OH"
+		procMask = ProcMaskMeleeOH
+	}
+
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label: "Shadow Oil" + label,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.ProcMask.Matches(procMask) {
+				return
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			if sim.RandomFloat("Shadow Oil") < procChance {
+				icd.Use(sim)
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
+}
+
+func registerFrostOil(character *Character, isMh bool) {
+	procChance := 0.10
+
+	procSpell := character.GetOrRegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 1191},
+		SpellSchool: SpellSchoolFrost,
+		ProcMask:    ProcMaskSpellDamage,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   character.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			damage := sim.Roll(33, 38) + spell.SpellPower()*0.269
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	label := " MH"
+	procMask := ProcMaskMeleeMHAuto
+	if !isMh {
+		label = " OH"
+		procMask = ProcMaskMeleeOHAuto
+	}
+
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label: "Frost Oil" + label,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if !spell.ProcMask.Matches(procMask) {
+				return
+			}
+
+			if sim.RandomFloat("Frost Oil") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
 }
 
 var SapperActionID = ActionID{ItemID: 10646}

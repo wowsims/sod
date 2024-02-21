@@ -425,6 +425,10 @@ enum WeaponImbue {
 	FlametongueWeapon = 10;
 	FrostbrandWeapon = 11;
 	WindfuryWeapon = 12;
+
+	// Spell Oils
+	ShadowOil = 21;
+	FrostOil = 22;
 }
 
 // NextIndex: 13

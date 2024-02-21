@@ -684,6 +684,20 @@ export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 	}
 };
 
+// Spell Oils
+export const ShadowOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3824, minLevel: 25 },
+	]),
+	value: WeaponImbue.ShadowOil,
+};
+export const FrostOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3829, minLevel: 40 },
+	]),
+	value: WeaponImbue.FrostOil,
+};
+
 const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: RockbiterWeaponImbue,		stats: [] },
 	{ config: FlametongueWeaponImbue,	stats: [] },
@@ -709,6 +723,9 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 
 	{ config: SolidWeightstone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseWeightstone(slot), stats: [Stat.StatAttackPower] },
+
+	{ config: ShadowOil, stats: [Stat.StatAttackPower] },
+	{ config: FrostOil, stats: [Stat.StatAttackPower] },
 ]
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
