@@ -1,6 +1,9 @@
 package paladin
 
-import "github.com/wowsims/sod/sim/core"
+import (
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+)
 
 // Libram IDs
 const (
@@ -10,7 +13,9 @@ const (
 
 func init() {
 	core.NewItemEffect(LibramDiscardedTenetsOfTheSilverHand, func(agent core.Agent) {
-		// character := agent.GetCharacter()
-		// character.PseudoStats.
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.PseudoStats.MobTypeAttackPower += 15
+		}
 	})
 }

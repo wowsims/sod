@@ -143,7 +143,9 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 		},
 	})
-
+	if paladin.Ranged().ID == LibramOfBenediction {
+		manaCost -= 10
+	}
 	aura := paladin.SealOfRighteousnessAura[rank]
 	paladin.SealOfRighteousness[rank] = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    auraActionID, // Seal of Righteousness self buff.

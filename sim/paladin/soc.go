@@ -107,7 +107,9 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		},
 	})
-
+	if paladin.Ranged().ID == LibramOfBenediction {
+		manaCost -= 10
+	}
 	aura := paladin.SealOfCommandAura[rank]
 	paladin.SealOfCommand[rank] = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    auraActionID,
