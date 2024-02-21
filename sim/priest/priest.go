@@ -45,16 +45,19 @@ type Priest struct {
 	InnerFocus *core.Spell
 
 	// Runes
-	CircleOfHealing   *core.Spell
-	MindFlayModifier  float64       // For Twisted Faith
-	MindBlastModifier float64       // For Twisted Faith
-	MindSear          []*core.Spell // 1 entry for each tick
-	Penance           *core.Spell
-	PenanceHeal       *core.Spell
-	PrayerOfMending   *core.Spell
-	EmpoweredRenew    *core.Spell
-	ShadowWordDeath   *core.Spell
-	VoidPlague        *core.Spell
+	CircleOfHealing             *core.Spell
+	MindFlayModifier            float64 // For Twisted Faith
+	MindBlastModifier           float64 // For Twisted Faith
+	MindBlastCritChanceModifier float64
+	MindSear                    []*core.Spell // 1 entry for each tick
+	MindSpike                   *core.Spell
+	MindSpikeAuras              core.AuraArray
+	Penance                     *core.Spell
+	PenanceHeal                 *core.Spell
+	PrayerOfMending             *core.Spell
+	EmpoweredRenew              *core.Spell
+	ShadowWordDeath             *core.Spell
+	VoidPlague                  *core.Spell
 
 	ProcPrayerOfMending core.ApplySpellResults
 

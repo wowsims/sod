@@ -40,11 +40,11 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   float64(priest.Talents.ShadowFocus) * 2 * core.SpellHitRatingPerHitChance,
+		BonusHitRating:   priest.shadowHitModifier(),
 		BonusCritRating:  0,
-		DamageMultiplier: 1,
+		DamageMultiplier: priest.forceOfWillCritRating(),
 		CritMultiplier:   1,
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
+		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

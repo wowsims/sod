@@ -41,8 +41,8 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		},
 
 		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  0,
-		DamageMultiplier: 1,
+		BonusCritRating:  priest.forceOfWillCritRating(),
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 

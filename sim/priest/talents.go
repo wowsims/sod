@@ -13,7 +13,10 @@ func (priest *Priest) ApplyTalents() {
 	priest.applyShadowWeaving()
 	priest.registerInnerFocus()
 
+	// Meditation
 	priest.PseudoStats.SpiritRegenRateCasting = []float64{0.0, 0.17, 0.33, 0.5}[priest.Talents.Meditation]
+
+	// Spell Warding
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 - .02*float64(priest.Talents.SpellWarding)
@@ -32,23 +35,30 @@ func (priest *Priest) ApplyTalents() {
 	}
 
 	if priest.Talents.MentalStrength > 0 {
-		priest.MultiplyStat(stats.Intellect, 1.0+0.03*float64(priest.Talents.MentalStrength))
+		priest.MultiplyStat(stats.Intellect, 1.0+0.02*float64(priest.Talents.MentalStrength))
 	}
 
 	if priest.Talents.ImprovedPowerWordFortitude > 0 {
-		priest.MultiplyStat(stats.Stamina, 1.0+.02*float64(priest.Talents.ImprovedPowerWordFortitude))
-	}
-
-	if priest.Talents.SpiritOfRedemption {
-		priest.MultiplyStat(stats.Spirit, 1.05)
+		priest.MultiplyStat(stats.Stamina, 1.0+.15*float64(priest.Talents.ImprovedPowerWordFortitude))
 	}
 
 	if priest.Talents.SilentResolve > 0 {
-		priest.PseudoStats.ThreatMultiplier *= 1 - []float64{0, .04, .08, .12, .16, .20}[priest.Talents.SilentResolve]
+		priest.PseudoStats.ThreatMultiplier *= 1 - (.04 * float64(priest.Talents.SilentResolve))
 	}
 }
 
-func (priest *Priest) holyCritModifier() float64 {
+func (priest *Priest) forceOfWillDamageModifier() float64 {
+	return 1 + .01*float64(priest.Talents.ForceOfWill)
+}
+
+func (priest *Priest) forceOfWillCritRating() float64 {
+	return 1 * core.CritRatingPerCritChance
+}
+
+func (priest *Priest) searingLightDamageModifier() float64 {
+	return 1 + 0.05*float64(priest.Talents.SearingLight)
+}
+func (priest *Priest) holySpecCritRating() float64 {
 	return float64(priest.Talents.HolySpecialization) * 1 * core.CritRatingPerCritChance
 }
 

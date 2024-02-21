@@ -101,9 +101,9 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 
 		BonusHitRating:   1, // Not an independent hit once initial lands
-		BonusCritRating:  0,
-		DamageMultiplier: 1,
-		CritMultiplier:   1.0,
+		BonusCritRating:  priest.forceOfWillCritRating(),
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
+		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

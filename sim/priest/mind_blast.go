@@ -60,8 +60,9 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			},
 		},
 
+		BonusCritRating:  priest.forceOfWillCritRating(),
 		BonusHitRating:   priest.shadowHitModifier(),
-		DamageMultiplier: 1,
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
@@ -76,6 +77,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
+				priest.MindSpikeAuras.Get(target).Deactivate(sim)
 			}
 
 			spell.DealDamage(sim, result)

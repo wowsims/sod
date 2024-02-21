@@ -121,7 +121,7 @@ func (priest *Priest) newMindFlagTickSpell(rank int, numTicks int32) *core.Spell
 
 		BonusHitRating:   1, // Not an independent hit once initial lands
 		BonusCritRating:  0,
-		DamageMultiplier: 1,
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		CritMultiplier:   1.0,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
