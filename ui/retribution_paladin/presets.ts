@@ -51,20 +51,17 @@ export const DefaultGear = GearPresets[Phase.Phase2][0];
 ///////////////////////////////////////////////////////////////////////////
 
 import APLP1RetJson from './apls/p1ret.apl.json';
-import APLP2RetSoCJson from './apls/p2retsoc.apl.json';
-import APLP2RetSoMJson from './apls/p2retsom.apl.json';
+import APLP2RetJson from './apls/p2ret.apl.json';
 
 export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
-export const APLP2RetSoC = PresetUtils.makePresetAPLRotation('P2 Ret SoC', APLP2RetSoCJson);
-export const APLP2RetSoM = PresetUtils.makePresetAPLRotation('P2 Ret SoM', APLP2RetSoMJson);
+export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret', APLP2RetJson);
 
 export const APLPresets = {
   [Phase.Phase1]: [
     APLP1Ret,
   ],
   [Phase.Phase2]: [
-	APLP2RetSoC,
-	APLP2RetSoM,
+	APLP2Ret,
   ]
 };
 
