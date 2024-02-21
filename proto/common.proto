@@ -504,6 +504,7 @@ message RaidBuffs {
 	TristateEffect devotion_aura = 23;
 	TristateEffect stoneskin_totem = 24;
 	TristateEffect retribution_aura = 25;
+	bool sanctity_aura = 36;
 
 	// Scroll
 	bool scroll_of_protection = 26;

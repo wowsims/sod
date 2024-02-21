@@ -25,12 +25,12 @@ func (paladin *Paladin) ApplyTalents() {
 	}
 	paladin.PseudoStats.BaseParry += 0.1 * float64(paladin.Talents.Deflection)
 
-	// paladin.applyRedoubt()
-	// paladin.applyReckoning()
-	// paladin.applyArdentDefender()
 	paladin.applyWeaponSpecialization()
 	paladin.applyVengeance()
 	// paladin.applyRighteousVengeance()
+	// paladin.applyRedoubt()
+	// paladin.applyReckoning()
+	// paladin.applyArdentDefender()
 }
 
 var IlluminationSpellIDs = [6]int32{0, 20210, 20213, 20214, 20212, 20215}
@@ -45,10 +45,6 @@ func (paladin *Paladin) getIlluminationActionID() core.ActionID {
 	return core.ActionID{
 		SpellID: spellID,
 	}
-}
-
-func (paladin *Paladin) getTalentTwoHandedWeaponSpecializationBonus() float64 {
-	return 0.02 * float64(paladin.Talents.TwoHandedWeaponSpecialization)
 }
 
 func (paladin *Paladin) getBonusCritChanceFromHolyPower() float64 {
@@ -220,29 +216,6 @@ func (paladin *Paladin) applyVengeance() {
 		},
 	})
 }
-
-// func (paladin *Paladin) applyHeartOfTheCrusader() {
-// 	if paladin.Talents.HeartOfTheCrusader == 0 {
-// 		return
-// 	}
-
-// 	hotcAuras := paladin.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-// 		return core.HeartOfTheCrusaderDebuff(target, paladin.Talents.HeartOfTheCrusader)
-// 	})
-
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Heart of the Crusader",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell.Flags.Matches(SpellFlagSecondaryJudgement) {
-// 				hotcAuras.Get(result.Target).Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
 
 // func (paladin *Paladin) applyVindication() {
 // 	if paladin.Talents.Vindication == 0 {

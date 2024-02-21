@@ -29,6 +29,7 @@ const (
 	TrueshotAura
 	HornOfLordaeron
 	Windfury
+	SanctityAura
 
 	// Resistance
 	AspectOfTheWild
@@ -550,6 +551,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.MultiplyStat(stats.Spirit, kingsAgiIntSpiAmount)
 	}
 
+	if raidBuffs.SanctityAura {
+		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+	}
 	// TODO: Classic
 	if individualBuffs.BlessingOfSanctuary {
 		character.PseudoStats.DamageTakenMultiplier *= 0.97

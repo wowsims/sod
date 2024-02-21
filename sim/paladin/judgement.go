@@ -14,11 +14,11 @@ func (paladin *Paladin) registerJudgementSpell() {
 	// Judgement functions as a dummy spell in vanilla.
 	// It rolls on the spell hit table and can only miss or hit.
 	// Individual seals have their own effects that this spell triggers,
-	// that are handled in the implementation of the seal auras.
+	// that are handled in the implementations of the seal auras.
 	paladin.Judgement = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty, // can proc TaJ itself and from seal
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagPrimaryJudgement | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -37,7 +37,7 @@ func (paladin *Paladin) registerJudgementSpell() {
 		},
 		ExtraCastCondition: paladin.canJudgement,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// The judgement dummy spell only roles spell hit in classic.
+			// The judgement dummy spell only rolls spell hit in classic.
 			// Subsequent judgement effects from seals have their own outcomes.
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			paladin.CurrentSealExpiration = sim.CurrentTime
