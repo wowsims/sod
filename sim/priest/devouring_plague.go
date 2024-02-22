@@ -19,6 +19,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 	if priest.Race != proto.Race_RaceUndead {
 		return
 	}
+
 	priest.DevouringPlague = make([]*core.Spell, DevouringPlagueRanks+1)
 	cdTimer := priest.NewTimer()
 
@@ -27,15 +28,20 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 
 		if config.RequiredLevel <= int(priest.Level) {
 			priest.DevouringPlague[rank] = priest.GetOrRegisterSpell(config)
+			priest.AddMajorCooldown(core.MajorCooldown{
+				Spell:    priest.DevouringPlague[rank],
+				Priority: 1,
+				Type:     core.CooldownTypeDPS,
+			})
 		}
 	}
 }
 
 func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
-	spellId := SmiteSpellId[rank]
-	baseDamage := SmiteBaseDamage[rank][0]
-	manaCost := SmiteManaCost[rank]
-	level := SmiteLevel[rank]
+	spellId := DevouringPlagueSpellId[rank]
+	baseDamage := DevouringPlagueBaseDamage[rank]
+	manaCost := DevouringPlagueManaCost[rank]
+	level := DevouringPlagueLevel[rank]
 
 	spellCoeff := 0.063
 

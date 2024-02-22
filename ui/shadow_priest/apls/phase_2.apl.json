@@ -9,9 +9,10 @@
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"30%"}}}},"castSpell":{"spellId":{"spellId":425294}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":425204}}}}},"castSpell":{"spellId":{"spellId":425204}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":2767,"rank":5}}}}},"castSpell":{"spellId":{"spellId":2767,"rank":5}}}},
-    {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"castSpell":{"spellId":{"spellId":8106,"rank":6}}}},
     {"action":{"castSpell":{"spellId":{"spellId":401955}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":19277,"rank":3}}}},
+    {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"castSpell":{"spellId":{"spellId":431655}}}}
   ]
 }

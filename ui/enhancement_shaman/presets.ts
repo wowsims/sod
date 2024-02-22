@@ -1,12 +1,17 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	FirePowerBuff,
 	IndividualBuffs,
+	Potions,
 	Profession,
 	RaidBuffs,
 	SaygesFortune,
+	SpellPowerBuff,
+	StrengthBuff,
 	TristateEffect,
 	WeaponImbue
 } from '../core/proto/common.js';
@@ -116,9 +121,14 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	defaultPotion: Potions.GreaterManaPotion,
+  enchantedSigil: EnchantedSigil.InnovationSigil,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	mainHandImbue: WeaponImbue.WindfuryWeapon,
   offHandImbue: WeaponImbue.WindfuryWeapon,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
