@@ -48,7 +48,7 @@ func applyRaceEffects(agent Agent) {
 
 		character.AddMajorCooldown(MajorCooldown{
 			Spell: spell,
-			Type:  CooldownTypeDPS,
+			Type:  CooldownTypeSurvival,
 		})
 	case proto.Race_RaceGnome:
 		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
