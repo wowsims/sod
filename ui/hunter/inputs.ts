@@ -1,7 +1,7 @@
 import { ItemSlot, Spec } from '../core/proto/common.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { Player } from '../core/player.js';
-import { TypedEvent } from '../core/typed_event.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
 import { makePetTypeInputConfig } from '../core/talents/hunter_pet.js';
 
 import * as InputHelpers from '../core/components/input_helpers.js';
@@ -13,6 +13,7 @@ import {
 	Hunter_Options_QuiverBonus as QuiverBonus,
 	HunterRune,
 	Hunter_Options_PetType,
+	Hunter,
 } from '../core/proto/hunter.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
@@ -80,6 +81,12 @@ export const PetAttackSpeed = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecH
 	float: true,
 	showWhen: (player) => player.getSpecOptions().petType != Hunter_Options_PetType.PetNone,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.specOptionsChangeEmitter]),
+	setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newVal: number) => {
+		const clampedValue = Math.max(1.0, Math.min(2.5, newVal))
+		const newMessage = player.getSpecOptions();
+		newMessage.petAttackSpeed = clampedValue;
+		player.setSpecOptions(eventID, newMessage);
+	}
 });
 
 export const HunterRotationConfig = {
