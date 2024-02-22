@@ -1,6 +1,8 @@
 package hunter
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -193,14 +195,14 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	target := hp.CurrentTarget
 
 	if hp.focusDump == nil {
-		if hp.specialAbility.CanCast(sim, target) {
-			hp.specialAbility.Cast(sim, target)
+		if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
 	}
 	if hp.specialAbility == nil {
-		if hp.focusDump.CanCast(sim, target) {
-			hp.focusDump.Cast(sim, target)
+		if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
 	}
@@ -213,9 +215,13 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 		}
 	} else {
 		if hp.specialAbility.IsReady(sim) {
-			_ = hp.specialAbility.Cast(sim, target)
-		} else {
-			_ = hp.focusDump.Cast(sim, target)
+			if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+			}
+		} else if hp.focusDump.IsReady(sim) {
+			if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+			}
 		}
 	}
 }
