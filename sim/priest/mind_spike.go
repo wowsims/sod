@@ -18,8 +18,9 @@ func (priest *Priest) registerMindSpikeSpell() {
 func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	level := float64(priest.GetCharacter().Level)
 	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
-	baseDamageLow := baseDamage * 1.11
-	baseDamageHigh := baseDamage * 1.29
+	// 2024-02-22 tuning 10% buff
+	baseDamageLow := baseDamage * 1.11 * 1.1
+	baseDamageHigh := baseDamage * 1.29 * 1.1
 	spellCoeff := .429
 	manaCost := .06
 	castTime := time.Millisecond * 1500
@@ -30,7 +31,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
-		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
+		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 

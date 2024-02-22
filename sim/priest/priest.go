@@ -120,11 +120,6 @@ func New(char *core.Character, talents string) *Priest {
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	priest.EnableManaBar()
-	priest.ShadowfiendPet = priest.NewShadowfiend()
-	priest.HomunculiPets = make([]*Homunculus, 3)
-	priest.HomunculiPets[0] = priest.NewHomunculus(202390)
-	priest.HomunculiPets[1] = priest.NewHomunculus(202392)
-	priest.HomunculiPets[2] = priest.NewHomunculus(202391)
 
 	priest.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[priest.Class][int(priest.Level)]*core.SpellCritRatingPerCritChance)
 
@@ -132,6 +127,12 @@ func New(char *core.Character, talents string) *Priest {
 	priest.SpiritManaRegenPerSecond = func() float64 {
 		return 6.25 + priest.GetStat(stats.Spirit)/8
 	}
+
+	priest.ShadowfiendPet = priest.NewShadowfiend()
+	priest.HomunculiPets = make([]*Homunculus, 3)
+	priest.HomunculiPets[0] = priest.NewHomunculus(1, 202390)
+	priest.HomunculiPets[1] = priest.NewHomunculus(2, 202392)
+	priest.HomunculiPets[2] = priest.NewHomunculus(3, 202391)
 
 	return priest
 }

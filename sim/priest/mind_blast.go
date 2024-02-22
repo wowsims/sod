@@ -30,6 +30,8 @@ func (priest *Priest) registerMindBlast() {
 
 func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 	spellId := MindBlastSpellId[rank]
+	// 2024-02-22 In-game tooltip is ~10% higher than what wowhead shows
+	// Un-accounted for 10% mind blast buff?
 	baseDamageLow := MindBlastBaseDamage[rank][0]
 	baseDamageHigh := MindBlastBaseDamage[rank][1]
 	spellCoeff := MindBlastSpellCoef[rank]

@@ -13,9 +13,9 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 	}
 
 	level := float64(priest.GetCharacter().Level)
-	// TODO: Probably wrong after Feb 20th nerfs
-	baseCalc := (9.456667 + 0.635108*level + 0.039063*level*level)
-	baseLowDamage := baseCalc * 5.3
+	// 2024-02-22 In-game value is ~66% base damage after tuning
+	baseCalc := (9.456667 + 0.635108*level + 0.039063*level*level) * .66
+	baseLowDamage := baseCalc * 5.32
 	baseHightDamage := baseCalc * 6.2
 	spellCoeff := 0.429
 	manaCost := .12

@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -15,7 +16,7 @@ type Homunculus struct {
 	PrimarySpell *core.Spell
 }
 
-func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
+func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 	baseDamageMin := 0.0
 	baseDamageMax := 0.0
 	homunculusBaseStats := stats.Stats{}
@@ -24,8 +25,8 @@ func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
 	case 40:
 		// 40 stats
 		// TODO: All of the stats and stat inheritance needs to be verified
-		baseDamageMin = 25
-		baseDamageMax = 25
+		baseDamageMin = 20
+		baseDamageMax = 30
 		homunculusBaseStats = stats.Stats{
 			stats.Strength:    0,
 			stats.Agility:     0,
@@ -42,7 +43,7 @@ func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
 
 	homunculus := &Homunculus{
 		npcID:  npcID,
-		Pet:    core.NewPet("Homunculi", &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, false),
+		Pet:    core.NewPet(fmt.Sprintf("Homunculi (%d)", idx), &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, false),
 		Priest: priest,
 	}
 
@@ -58,12 +59,10 @@ func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
 	homunculus.EnableAutoAttacks(homunculus, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			// TODO: Check stats
-			BaseDamageMin:        baseDamageMin,
-			BaseDamageMax:        baseDamageMax,
-			SwingSpeed:           2,
-			NormalizedSwingSpeed: 2,
-			CritMultiplier:       priest.DefaultMeleeCritMultiplier(),
-			SpellSchool:          core.SpellSchoolPhysical,
+			BaseDamageMin:  baseDamageMin,
+			BaseDamageMax:  baseDamageMax,
+			SwingSpeed:     2,
+			CritMultiplier: priest.DefaultMeleeCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})

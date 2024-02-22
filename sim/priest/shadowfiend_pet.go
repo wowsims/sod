@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -21,23 +22,27 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiendBaseStats := stats.Stats{}
 	switch priest.Level {
 	case 25:
+		// TODO
 	case 40:
 		// 40 stats
 		// TODO: All of the stats and stat inheritance needs to be verified
-		baseDamageMin = 140
-		baseDamageMax = 151
+		baseDamageMin = 44
+		baseDamageMax = 56
 		shadowfiendBaseStats = stats.Stats{
-			stats.Strength:    74,
-			stats.Agility:     59,
-			stats.Stamina:     181,
-			stats.Intellect:   49,
-			stats.Spirit:      97,
-			stats.AttackPower: 0,
-			// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
-			stats.MeleeCrit: 8 * core.CritRatingPerCritChance,
+			stats.Strength:  74,
+			stats.Agility:   58,
+			stats.Stamina:   148,
+			stats.Intellect: 49,
+			stats.Spirit:    97,
+			stats.Mana:      653,
+			stats.MP5:       0,
+			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 		}
 	case 50:
+		// TODO
 	case 60:
+		// TODO
 	}
 
 	shadowfiend := &Shadowfiend{
@@ -54,6 +59,74 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		},
 	}))
 
+	shadowfiend.registerShadowCrawlSpell()
+
+	shadowfiend.PseudoStats.DamageTakenMultiplier *= 0.1
+
+	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:  baseDamageMin,
+			BaseDamageMax:  baseDamageMax,
+			SwingSpeed:     1.5,
+			CritMultiplier: priest.DefaultMeleeCritMultiplier(),
+		},
+		AutoSwingMelee: true,
+	})
+
+	shadowfiend.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	shadowfiend.AddStat(stats.AttackPower, -20)
+
+	// core.ApplyPetConsumeEffects(&shadowfiend.Character, priest.Consumes)
+
+	priest.AddPet(shadowfiend)
+
+	return shadowfiend
+}
+
+func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
+		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
+		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
+
+		// TODO: Needs more verification
+		return stats.Stats{
+			stats.Stamina:          ownerStats[stats.Stamina] * .75,
+			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
+			stats.Armor:            ownerStats[stats.Armor] * 0.35,
+			stats.AttackPower:      highestSchoolPower * 0.57,
+			stats.MP5:              ownerStats[stats.MP5] * 0.3,
+			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
+			stats.SpellDamage:      ownerStats[stats.SpellDamage] * 0.15,
+			stats.FirePower:        ownerStats[stats.FirePower] * 0.15,
+			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
+			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
+			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
+			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+		}
+	}
+}
+
+func (shadowfiend *Shadowfiend) Initialize() {
+}
+
+func (shadowfiend *Shadowfiend) ExecuteCustomRotation(sim *core.Simulation) {
+	shadowfiend.Shadowcrawl.Cast(sim, nil)
+}
+
+func (shadowfiend *Shadowfiend) Reset(sim *core.Simulation) {
+	shadowfiend.ShadowcrawlAura.Deactivate(sim)
+	shadowfiend.Disable(sim)
+}
+
+func (shadowfiend *Shadowfiend) OnPetDisable(sim *core.Simulation) {
+	shadowfiend.ShadowcrawlAura.Deactivate(sim)
+}
+
+func (shadowfiend *Shadowfiend) GetPet() *core.Pet {
+	return &shadowfiend.Pet
+}
+
+func (shadowfiend *Shadowfiend) registerShadowCrawlSpell() {
 	actionID := core.ActionID{SpellID: 401990}
 	shadowfiend.ShadowcrawlAura = shadowfiend.GetOrRegisterAura(core.Aura{
 		Label:    "Shadowcrawl",
@@ -83,53 +156,4 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 			shadowfiend.ShadowcrawlAura.Activate(sim)
 		},
 	})
-
-	shadowfiend.PseudoStats.DamageTakenMultiplier *= 0.1
-
-	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
-		MainHand: core.Weapon{
-			BaseDamageMin:        baseDamageMin,
-			BaseDamageMax:        baseDamageMax,
-			SwingSpeed:           1.5,
-			NormalizedSwingSpeed: 1.5,
-			CritMultiplier:       2,
-			SpellSchool:          core.SpellSchoolShadow,
-		},
-		AutoSwingMelee: true,
-	})
-
-	shadowfiend.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
-
-	// core.ApplyPetConsumeEffects(&shadowfiend.Character, priest.Consumes)
-
-	priest.AddPet(shadowfiend)
-
-	return shadowfiend
-}
-
-func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		// TODO Scaling
-		return stats.Stats{}
-	}
-}
-
-func (shadowfiend *Shadowfiend) Initialize() {
-}
-
-func (shadowfiend *Shadowfiend) ExecuteCustomRotation(sim *core.Simulation) {
-	shadowfiend.Shadowcrawl.Cast(sim, nil)
-}
-
-func (shadowfiend *Shadowfiend) Reset(sim *core.Simulation) {
-	shadowfiend.ShadowcrawlAura.Deactivate(sim)
-	shadowfiend.Disable(sim)
-}
-
-func (shadowfiend *Shadowfiend) OnPetDisable(sim *core.Simulation) {
-	shadowfiend.ShadowcrawlAura.Deactivate(sim)
-}
-
-func (shadowfiend *Shadowfiend) GetPet() *core.Pet {
-	return &shadowfiend.Pet
 }
