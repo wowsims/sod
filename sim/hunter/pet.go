@@ -39,7 +39,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	baseMinDamage := 0.0
 	baseMaxDamage := 0.0
-	attackSpeed := 2.0
+	attackSpeed := hunter.Options.PetAttackSpeed
 
 	switch hunter.Level {
 	case 25:

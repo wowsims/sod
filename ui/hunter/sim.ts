@@ -142,6 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			HunterInputs.PetAttackSpeed,
 			HunterInputs.PetUptime,
 			HunterInputs.SniperTrainingUptime,
 			OtherInputs.DistanceFromTarget,

@@ -12,6 +12,7 @@ import {
 	Hunter_Options_Ammo as Ammo,
 	Hunter_Options_QuiverBonus as QuiverBonus,
 	HunterRune,
+	Hunter_Options_PetType,
 } from '../core/proto/hunter.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
@@ -70,6 +71,15 @@ export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec
 	percent: true,
 	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == HunterRune.RuneLegsSniperTraining,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
+});
+
+export const PetAttackSpeed = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecHunter>({
+	fieldName: 'petAttackSpeed',
+	label: 'Pet Attack Speed',
+	labelTooltip: 'The pets auto attacks speed.',
+	float: true,
+	showWhen: (player) => player.getSpecOptions().petType != Hunter_Options_PetType.PetNone,
+	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.specOptionsChangeEmitter]),
 });
 
 export const HunterRotationConfig = {

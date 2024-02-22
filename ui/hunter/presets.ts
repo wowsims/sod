@@ -66,6 +66,7 @@ export const DefaultGear = GearPhase2;
 
 import MeleeWeaveP1 from './apls/melee.weave.p1.apl.json';
 import MeleeP2 from './apls/melee.p2.apl.json';
+import { PetAttackSpeed } from './inputs.js';
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('Melee Weave P1', MeleeWeaveP1);
 export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('Melee P2', MeleeP2);
@@ -161,7 +162,8 @@ export const DefaultOptions = HunterOptions.create({
 	petType: PetType.WindSerpent,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const BMDefaultOptions = HunterOptions.create({
@@ -169,7 +171,8 @@ export const BMDefaultOptions = HunterOptions.create({
 	petType: PetType.Cat,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const DefaultConsumes = Consumes.create({
