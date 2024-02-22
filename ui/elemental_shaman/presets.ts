@@ -5,8 +5,10 @@ import {
   EnchantedSigil,
   Flask,
   Food,
+  IndividualBuffs,
   Profession,
   RaidBuffs,
+  SaygesFortune,
   TristateEffect,
   WeaponImbue,
 } from '../core/proto/common.js';
@@ -145,6 +147,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
   manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
   strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
 });
 
 export const DefaultDebuffs = Debuffs.create({

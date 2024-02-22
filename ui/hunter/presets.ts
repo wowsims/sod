@@ -1,9 +1,19 @@
 import { Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
-	Flask,
+	Debuffs,
+	EnchantedSigil,
 	Food,
+	IndividualBuffs,
+	Potions,
 	Profession,
+	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -56,6 +66,7 @@ export const DefaultGear = GearPhase2;
 
 import MeleeWeaveP1 from './apls/melee.weave.p1.apl.json';
 import MeleeP2 from './apls/melee.p2.apl.json';
+import { PetAttackSpeed } from './inputs.js';
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('Melee Weave P1', MeleeWeaveP1);
 export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('Melee P2', MeleeP2);
@@ -151,7 +162,8 @@ export const DefaultOptions = HunterOptions.create({
 	petType: PetType.WindSerpent,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const BMDefaultOptions = HunterOptions.create({
@@ -159,15 +171,54 @@ export const BMDefaultOptions = HunterOptions.create({
 	petType: PetType.Cat,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.SolidWeightstone,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+});
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+  arcaneBrilliance: true,
+	bloodPact: TristateEffect.TristateEffectImproved,
+	aspectOfTheLion: true,
+  battleShout: TristateEffect.TristateEffectImproved,
+  divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
+  manaSpringTotem: TristateEffect.TristateEffectImproved,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
+  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	trueshotAura: true,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  blessingOfMight: TristateEffect.TristateEffectImproved,
+  blessingOfWisdom: TristateEffect.TristateEffectRegular,
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	dreamstate: true,
+	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
+	huntersMark: TristateEffect.TristateEffectImproved,
+	mangle: true,
+	stormstrike: true,
+	sunderArmor: true,
 });
 
 export const OtherDefaults = {
-  profession1: Profession.Engineering,
+  profession1: Profession.Enchanting,
   profession2: Profession.Leatherworking,
 }

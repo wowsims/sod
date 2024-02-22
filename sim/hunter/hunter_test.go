@@ -159,9 +159,10 @@ var Phase2Consumes = core.ConsumesCombo{
 var Phase1PlayerOptions = &proto.Player_Hunter{
 	Hunter: &proto.Hunter{
 		Options: &proto.Hunter_Options{
-			Ammo:      proto.Hunter_Options_RazorArrow,
-			PetType:   proto.Hunter_Options_Cat,
-			PetUptime: 1,
+			Ammo:           proto.Hunter_Options_RazorArrow,
+			PetType:        proto.Hunter_Options_Cat,
+			PetUptime:      1,
+			PetAttackSpeed: 2.0,
 		},
 	},
 }
@@ -169,9 +170,10 @@ var Phase1PlayerOptions = &proto.Player_Hunter{
 var Phase2PlayerOptions = &proto.Player_Hunter{
 	Hunter: &proto.Hunter{
 		Options: &proto.Hunter_Options{
-			Ammo:      proto.Hunter_Options_JaggedArrow,
-			PetType:   proto.Hunter_Options_Cat,
-			PetUptime: 1,
+			Ammo:           proto.Hunter_Options_JaggedArrow,
+			PetType:        proto.Hunter_Options_Cat,
+			PetUptime:      1,
+			PetAttackSpeed: 2.0,
 		},
 	},
 }

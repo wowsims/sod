@@ -14,24 +14,22 @@
     border: $border-default;
     transition: border-color .15s ease-in-out;
     background-size: cover;
+    position: relative;
+    display: block;
+    background-color: grey;
     filter: grayscale(1);
 
     &.active {
       border-color: $success;
       filter: none;
     }
-
-    .gem-socket-container {
-      --gem-width: 0.8rem;
-    }
   }
 
-  .icon-picker-button,
-  .icon-dropdown-option {
-    position: relative;
-    display: block;
-    background-color: grey;
+  .icon-picker-button {
+    cursor: pointer;
+  }
 
+  .icon-dropdown-option {
     .icon-picker-label {
       position: absolute;
       bottom: 0;

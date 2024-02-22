@@ -91,6 +91,9 @@ func applyRaceEffects(agent Agent) {
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast: CastConfig{
+				DefaultCast: Cast{
+					GCD: GCDDefault,
+				},
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
@@ -170,8 +173,8 @@ func applyRaceEffects(agent Agent) {
 					}
 				},
 				OnExpire: func(aura *Aura, sim *Simulation) {
-					character.MultiplyCastSpeed(1/1 + berserkingPct)
-					character.MultiplyAttackSpeed(sim, 1/1+berserkingPct)
+					character.MultiplyCastSpeed(1 / (1 + berserkingPct))
+					character.MultiplyAttackSpeed(sim, 1/(1+berserkingPct))
 				},
 			})
 		}

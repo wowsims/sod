@@ -3,13 +3,15 @@ import {
 	AgilityElixir,
 	Consumes,
 	Debuffs,
+	EnchantedSigil,
 	FirePowerBuff,
-	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
 	Profession,
 	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue
@@ -139,36 +141,52 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodSmokedSagefish,
-	defaultPotion: Potions.ManaPotion,
-	mainHandImbue: WeaponImbue.BlackfathomManaOil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	agilityElixir: AgilityElixir.ElixirOfLesserAgility,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.BlackfathomManaOil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
-	divineSpirit: true,
 	aspectOfTheLion: true,
+	battleShout: TristateEffect.TristateEffectImproved,
+	bloodPact: TristateEffect.TristateEffectImproved,
+	devotionAura: TristateEffect.TristateEffectImproved,
+	divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
+	moonkinAura: true,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
+	trueshotAura: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	blessingOfKings: true,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
+	blessingOfSanctuary: true,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	saygesFortune: SaygesFortune.SaygesDamage,
+	sparkOfInspiration: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	homunculi: 70, // 70% average uptime default
+	curseOfElements: true,
+	curseOfRecklessness: true,
+	demoralizingShout: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
+	improvedScorch: true,
+	shadowWeaving: true,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 5,
-	profession1: Profession.Engineering,
-	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
+	distanceFromTarget: 5,
+	profession1: Profession.Enchanting,
+	profession2: Profession.Tailoring,
 };

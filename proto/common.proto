@@ -297,12 +297,12 @@ enum Explosive {
 	ExplosiveHighYieldRadiationBomb = 5;
 }
 
+// NextIndex: 5
 enum Potions {
 	UnknownPotion = 0;
 	LesserManaPotion = 1;
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
-	MildlyIrradiatedRejuvPotion = 4;
 }
 
 enum Conjured {
@@ -425,6 +425,10 @@ enum WeaponImbue {
 	FlametongueWeapon = 10;
 	FrostbrandWeapon = 11;
 	WindfuryWeapon = 12;
+
+	// Spell Oils
+	ShadowOil = 21;
+	FrostOil = 22;
 }
 
 // NextIndex: 13
@@ -557,6 +561,7 @@ message IndividualBuffs {
 	bool spark_of_inspiration = 17;
 }
 
+// NextIndex: 22
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -578,6 +583,7 @@ message Consumes {
 	Conjured default_conjured = 18;
 	bool bogling_root = 19;
 	EnchantedSigil enchanted_sigil = 20;
+	bool mildly_irradiated_rejuv_pot = 21;
 }
 
 // NextIndex: 29
