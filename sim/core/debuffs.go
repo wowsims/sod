@@ -234,7 +234,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
 	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
-	return unit.RegisterAura(Aura{
+	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
 		Duration:  time.Second * 15,
@@ -648,11 +648,33 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	return aura
 }
 
+func HomunculiAttackSpeedAura(target *Unit, playerLevel int32) *Aura {
+	multiplier := 1.1
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Cripple (Homunculus)",
+		ActionID: ActionID{SpellID: 402808},
+		Duration: time.Second * 15,
+	})
+
+	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1/multiplier)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, multiplier)
+		},
+	})
+
+	return aura
+}
+
 func HomunculiArmorAura(target *Unit, playerLevel int32) *Aura {
 	arpen := float64(185 + 35*(playerLevel-1))
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Homunculi",
+		Label:    "Degrade (Homunculus)",
 		ActionID: ActionID{SpellID: 402818},
 		Duration: time.Second * 15,
 	})
@@ -664,6 +686,28 @@ func HomunculiArmorAura(target *Unit, playerLevel int32) *Aura {
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
+		},
+	})
+
+	return aura
+}
+
+func HomunculiAttackPowerAura(target *Unit, playerLevel int32) *Aura {
+	ap := float64(190 + 3*(playerLevel-1))
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Demoralize (Homunculus)",
+		ActionID: ActionID{SpellID: 402811},
+		Duration: time.Second * 15,
+	})
+
+	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{
+		Priority: ap,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			target.AddStatDynamic(sim, stats.AttackPower, -1*ap)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			target.AddStatDynamic(sim, stats.AttackPower, ap)
 		},
 	})
 
