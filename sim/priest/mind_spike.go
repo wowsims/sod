@@ -25,7 +25,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	castTime := time.Millisecond * 1500
 
 	priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.ShadowWeavingAura(unit, int(priest.Talents.ShadowWeaving))
+		return priest.newMindSpikeAura(unit)
 	})
 
 	return core.SpellConfig{
@@ -71,7 +71,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	}
 }
 
-func (priest *Priest) MindSpikeAura(unit *core.Unit) *core.Aura {
+func (priest *Priest) newMindSpikeAura(unit *core.Unit) *core.Aura {
 	return unit.RegisterAura(core.Aura{
 		Label:     "Mind Spike",
 		ActionID:  core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},

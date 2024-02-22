@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const MindBlastRanks = 9
@@ -72,12 +73,15 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.BonusCritRating += float64(30 * priest.MindSpikeAuras.Get(target).GetStacks() * core.CritRatingPerCritChance)
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()*priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
-				priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+					priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				}
 			}
 
 			spell.DealDamage(sim, result)

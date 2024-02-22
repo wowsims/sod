@@ -46,6 +46,12 @@ type Priest struct {
 
 	// Runes
 	CircleOfHealing             *core.Spell
+	Dispersion                  *core.Spell
+	DispersionAura              *core.Aura
+	EmpoweredRenew              *core.Spell
+	Homunculi                   *core.Spell
+	HomunculiAura               *core.Aura
+	HomunculiPets               []*Homunculus
 	MindFlayModifier            float64 // For Twisted Faith
 	MindBlastModifier           float64 // For Twisted Faith
 	MindBlastCritChanceModifier float64
@@ -55,7 +61,9 @@ type Priest struct {
 	Penance                     *core.Spell
 	PenanceHeal                 *core.Spell
 	PrayerOfMending             *core.Spell
-	EmpoweredRenew              *core.Spell
+	Shadowfiend                 *core.Spell
+	ShadowfiendAura             *core.Aura
+	ShadowfiendPet              *Shadowfiend
 	ShadowWordDeath             *core.Spell
 	VoidPlague                  *core.Spell
 
@@ -99,17 +107,6 @@ func (priest *Priest) RegisterHealingSpells() {
 	// priest.registerRenewSpell()
 }
 
-func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
-	if priest.ShadowWeavingAuras == nil {
-		return
-	}
-
-	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
-		priest.ShadowWeavingAuras.Get(target).Activate(sim)
-		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
-	}
-}
-
 func (priest *Priest) Reset(_ *core.Simulation) {
 	priest.MindFlayModifier = 1
 	priest.MindBlastModifier = 1
@@ -123,6 +120,11 @@ func New(char *core.Character, talents string) *Priest {
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	priest.EnableManaBar()
+	priest.ShadowfiendPet = priest.NewShadowfiend()
+	priest.HomunculiPets = make([]*Homunculus, 3)
+	priest.HomunculiPets[0] = priest.NewHomunculus(202390)
+	priest.HomunculiPets[1] = priest.NewHomunculus(202392)
+	priest.HomunculiPets[2] = priest.NewHomunculus(202391)
 
 	priest.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[priest.Class][int(priest.Level)]*core.SpellCritRatingPerCritChance)
 

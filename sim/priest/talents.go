@@ -52,18 +52,18 @@ func (priest *Priest) forceOfWillDamageModifier() float64 {
 }
 
 func (priest *Priest) forceOfWillCritRating() float64 {
-	return 1 * core.CritRatingPerCritChance
+	return 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
 }
 
 func (priest *Priest) searingLightDamageModifier() float64 {
 	return 1 + 0.05*float64(priest.Talents.SearingLight)
 }
 func (priest *Priest) holySpecCritRating() float64 {
-	return float64(priest.Talents.HolySpecialization) * 1 * core.CritRatingPerCritChance
+	return 1 * float64(priest.Talents.HolySpecialization) * core.CritRatingPerCritChance
 }
 
 func (priest *Priest) shadowHitModifier() float64 {
-	return float64(priest.Talents.ShadowFocus) * 2 * core.SpellHitRatingPerHitChance
+	return 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
 }
 
 func (priest *Priest) shadowThreatModifier() float64 {
@@ -105,6 +105,17 @@ func (priest *Priest) applyShadowWeaving() {
 	priest.ShadowWeavingAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ShadowWeavingAura(unit, int(priest.Talents.ShadowWeaving))
 	})
+}
+
+func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
+	if priest.ShadowWeavingAuras == nil {
+		return
+	}
+
+	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
+		priest.ShadowWeavingAuras.Get(target).Activate(sim)
+		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
+	}
 }
 
 func (priest *Priest) registerInnerFocus() {

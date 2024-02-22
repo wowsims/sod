@@ -16,16 +16,14 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 	cooldown := time.Second * 6
 
 	var ticks int32 = 6
-	baseTickDamage := (9.456667 + 0.635108*level + 0.039063*level*level) * 117 / 100
+	baseTickDamage := (9.456667 + 0.635108*level + 0.039063*level*level) * 1.17
 	spellCoeff := .166
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 425204},
-		SpellSchool:   core.SpellSchoolShadow,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
-		Rank:          1,
-		RequiredLevel: 1,
+		ActionID:    core.ActionID{SpellID: 425204},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
