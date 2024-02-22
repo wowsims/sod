@@ -80,7 +80,6 @@ enum PriestRune {
 	RuneLegsHomunculi						= 402799;
 	RuneLegsPowerWordBarrier		= 425207;
 	RuneLegsPrayerOfMending			= 401859;
-	RuneLegsShadowfiend					= 401977;
 	RuneLegsSharedPain					= 401969;
 
 	RuneFeetDispersion					= 425294;

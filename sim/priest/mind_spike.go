@@ -30,7 +30,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
-		SpellSchool: core.SpellSchoolShadow,
+		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
@@ -81,7 +81,7 @@ func (priest *Priest) newMindSpikeAura(unit *core.Unit) *core.Aura {
 			core.Each(priest.MindBlast, func(spell *core.Spell) {
 				if spell != nil {
 					spell.BonusCritRating -= .3 * float64(oldStacks)
-					spell.BonusCritRating += .3 * float64(oldStacks)
+					spell.BonusCritRating += .3 * float64(newStacks)
 				}
 			})
 		},

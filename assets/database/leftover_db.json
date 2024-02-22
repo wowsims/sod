@@ -1565,7 +1565,6 @@
 {"id":401946,"name":"Engrave Gloves - Circle of Healing","icon":"spell_holy_circleofrenewal","class":5,"type":7,"requiresLevel":1},
 {"id":401955,"name":"Engrave Gloves - Shadow Word - Death","icon":"spell_shadow_demonicfortitude","class":5,"type":7,"requiresLevel":1},
 {"id":401969,"name":"Engrave Pants - Shared Pain","icon":"spell_shadow_gathershadows","class":5,"type":9,"requiresLevel":1},
-{"id":401977,"name":"Engrave Pants - Shadowfiend","icon":"spell_shadow_shadowfiend","class":5,"type":9,"requiresLevel":1},
 {"id":402004,"name":"Engrave Boots - Pain Suppression","icon":"spell_holy_painsupression","class":5,"type":10,"requiresLevel":1},
 {"id":402174,"name":"Engrave Gloves - Penance","icon":"spell_holy_penance","class":5,"type":7,"requiresLevel":1},
 {"id":402799,"name":"Engrave Pants - Homunculi","icon":"spell_shadow_twistedfaith","class":5,"type":9,"requiresLevel":1},

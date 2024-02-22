@@ -68,13 +68,13 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			damage := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()*priest.MindBlastModifier
+			damage := ((baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
 			return spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.BonusCritRating += float64(30 * priest.MindSpikeAuras.Get(target).GetStacks() * core.CritRatingPerCritChance)
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()*priest.MindBlastModifier
+			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

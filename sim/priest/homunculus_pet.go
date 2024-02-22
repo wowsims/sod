@@ -42,7 +42,7 @@ func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
 
 	homunculus := &Homunculus{
 		npcID:  npcID,
-		Pet:    core.NewPet("Homunculus", &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, false),
+		Pet:    core.NewPet("Homunculi", &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, false),
 		Priest: priest,
 	}
 
@@ -62,8 +62,8 @@ func (priest *Priest) NewHomunculus(npcID int32) *Homunculus {
 			BaseDamageMax:        baseDamageMax,
 			SwingSpeed:           2,
 			NormalizedSwingSpeed: 2,
-			CritMultiplier:       2,
-			SpellSchool:          core.SpellSchoolShadow,
+			CritMultiplier:       priest.DefaultMeleeCritMultiplier(),
+			SpellSchool:          core.SpellSchoolPhysical,
 		},
 		AutoSwingMelee: true,
 	})
@@ -86,8 +86,9 @@ func (homunculus *Homunculus) newHomunculusCrippleSpell() core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 402808},
 		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoLogs,
+
+		ProcMask: core.ProcMaskEmpty,
+		Flags:    core.SpellFlagNoLogs,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

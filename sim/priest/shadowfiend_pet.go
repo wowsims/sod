@@ -54,7 +54,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		},
 	}))
 
-	actionID := core.ActionID{SpellID: 63619}
+	actionID := core.ActionID{SpellID: 401990}
 	shadowfiend.ShadowcrawlAura = shadowfiend.GetOrRegisterAura(core.Aura{
 		Label:    "Shadowcrawl",
 		ActionID: actionID,

@@ -22,11 +22,13 @@ func (priest *Priest) ApplyRunes() {
 	priest.registerHomunculiSpell()
 	// priest.registerPowerWordBarrierSpell() // TODO
 	// priest.registerPrayerOfMendingSpell() // TODO
-	priest.registerShadowfiendSpell()
 	// priest.registerSharedPainSpell() // Nothing to do
 
 	// Feet
 	priest.registerDispersionSpell()
 	// priest.registerPainSuppressionSpell() // TODO
 	// priest.registerSpiritOfTheRedeemerSpell() // TODO
+
+	// Skill Books
+	priest.registerShadowfiendSpell()
 }

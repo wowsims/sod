@@ -4,15 +4,10 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (priest *Priest) registerShadowfiendSpell() {
-	if !priest.HasRune(proto.PriestRune_RuneLegsShadowfiend) {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: int32(proto.PriestRune_RuneLegsShadowfiend)}
+	actionID := core.ActionID{SpellID: 401977}
 	duration := time.Second * 15
 	cooldown := time.Minute * 5
 

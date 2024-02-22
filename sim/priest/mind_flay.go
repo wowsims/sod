@@ -126,7 +126,7 @@ func (priest *Priest) newMindFlagTickSpell(rank int, numTicks int32) *core.Spell
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage/MindFlayTicks + (spellCoeff*spell.SpellDamage())*priest.MindFlayModifier
+			damage := (baseDamage/MindFlayTicks + (spellCoeff * spell.SpellDamage())) * priest.MindFlayModifier
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			if result.Landed() {
