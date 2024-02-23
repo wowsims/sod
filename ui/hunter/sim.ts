@@ -19,6 +19,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
+import { HunterRune } from '../core/proto/hunter.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	cssClass: 'hunter-sim-ui',
@@ -172,7 +173,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	},
 
 	autoRotation: (player) => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const hasMeleeSpecialist = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist
+		if (hasMeleeSpecialist) {
+			return Presets.DefaultAPLs[player.getLevel()][2].rotation.rotation!;
+		}else {
+			return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+		}
 	},
 	
 	raidSimPresets: [
