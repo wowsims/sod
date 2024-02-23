@@ -36,7 +36,7 @@ func (shaman *Shaman) ApplyRunes() {
 	// Feet
 	shaman.applyAncestralAwakening()
 	// shaman.applyDecoyTotem()
-	// shaman.applySpiritOfTheAlpha()
+	shaman.applySpiritOfTheAlpha()
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {
@@ -105,7 +105,11 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	}
 
 	procSpellId := int32(436365)
+
+	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.3
+	apMultiplier := 1.1
+	spellHitIncrease := float64(core.SpellHitRatingPerHitChance * 10)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Proc",
@@ -113,9 +117,13 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
+			shaman.MultiplyStat(stats.AttackPower, apMultiplier)
+			shaman.AddStat(stats.SpellHit, spellHitIncrease)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
+			shaman.MultiplyStat(stats.AttackPower, 1/apMultiplier)
+			shaman.AddStat(stats.SpellHit, -1*spellHitIncrease)
 		},
 	})
 
@@ -220,13 +228,9 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	intMP5Rate := .15
-
-	shaman.AddStats(
-		stats.Stats{
-			stats.MP5: shaman.GetStat(stats.Intellect) * intMP5Rate,
-		},
-	)
+	// TODO: Figure out how this actually works becaue the 2024-02-27 tuning notes make it sound like
+	// this is not just a fully passive stat boost
+	shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{
@@ -280,4 +284,14 @@ func (shaman *Shaman) applyWayOfEarth() {
 			aura.Activate(sim)
 		},
 	})
+}
+
+func (shaman *Shaman) applySpiritOfTheAlpha() {
+	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) {
+		return
+	}
+
+	// Spirit of the Alpha currently gives +20% AP when used on another target.
+	// Assume this as a default
+	shaman.MultiplyStat(stats.AttackPower, 1.2)
 }
