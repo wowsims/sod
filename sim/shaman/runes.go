@@ -104,16 +104,12 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		return
 	}
 
-	// Two-handed mastery gives +10% AP
-	shaman.MultiplyStat(stats.AttackPower, 1.1)
-
-	// Two-handed mastery gives +10% spell hit after hitting a target with a two-hander
-	// Since this will be applied almost immediately, just add the stats baseline instead of
-	// Managing an aura for now.
-	shaman.AddStat(stats.SpellHit, float64(core.SpellHitRatingPerHitChance*10))
-
 	procSpellId := int32(436365)
+
+	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.3
+	apMultiplier := 1.1
+	spellHitIncrease := float64(core.SpellHitRatingPerHitChance * 10)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Proc",
@@ -121,9 +117,13 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
+			shaman.MultiplyStat(stats.AttackPower, apMultiplier)
+			shaman.AddStat(stats.SpellHit, spellHitIncrease)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
+			shaman.MultiplyStat(stats.AttackPower, 1/apMultiplier)
+			shaman.AddStat(stats.SpellHit, -1*spellHitIncrease)
 		},
 	})
 
