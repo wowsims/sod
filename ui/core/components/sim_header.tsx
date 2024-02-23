@@ -4,7 +4,7 @@ import { SimUI } from '../sim_ui';
 import { Tooltip } from 'bootstrap';
 import { SimTab } from './sim_tab';
 
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 interface ToolbarLinkArgs {
@@ -115,13 +115,13 @@ export class SimHeader extends Component {
 	private addToolbarLink(args: ToolbarLinkArgs): HTMLElement {
 		let item = (
 			<div className="sim-toolbar-item">
-				<a 
+				<a
 					href={args.href ? args.href : 'javascript:void(0)'}
 					className={args.classes}
 					target={args.href ? "_blank" : '_self'}
 				>
 					{args.icon && <i className={args.icon}></i>}
-					{args.text ? ` ${args.text} ` : ''} 
+					{args.text ? ` ${args.text} ` : ''}
 				</a>
 			</div>);
 
