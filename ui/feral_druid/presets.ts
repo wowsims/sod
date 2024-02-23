@@ -98,9 +98,9 @@ export const TalentsPhase1 = {
 };
 
 export const TalentsPhase2 = {
-	name: 'Phase 1',
+	name: 'Phase 2',
 	data: SavedTalents.create({
-		talentsString: '-500052032320211-05',
+		talentsString: '-550002032320211-05',
 	}),
 };
 
