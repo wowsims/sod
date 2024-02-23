@@ -78,8 +78,8 @@ export const APLPresets = {
     	APLMeleeWeavePhase1,
   	],
   	[Phase.Phase2]: [
-			APLRangedPhase2,
-			APLMeleePhase2,
+		APLRangedPhase2,
+		APLMeleePhase2,
   	],
 };
 
@@ -91,7 +91,7 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase1][0],
 	},
   40: {
-		0: APLPresets[Phase.Phase2][0],
+		0: APLPresets[Phase.Phase2][1],
 		1: APLPresets[Phase.Phase2][0],
 		2: APLPresets[Phase.Phase2][1],
 	}
@@ -161,8 +161,8 @@ export const TalentPresets = {
 
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultTalentsBeastMastery = TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsMarksman 		= TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsSurvival 		= TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsMarksman 	= TalentPresets[CURRENT_PHASE][1];
+export const DefaultTalentsSurvival 	= TalentPresets[CURRENT_PHASE][2];
 
 export const DefaultTalents = TalentsSurvivalPhase2;
 
@@ -200,36 +200,32 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-  arcaneBrilliance: true,
-	bloodPact: TristateEffect.TristateEffectImproved,
+	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-  battleShout: TristateEffect.TristateEffectImproved,
-  divineSpirit: true,
+	battleShout: TristateEffect.TristateEffectRegular,
+	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	trueshotAura: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-  blessingOfMight: TristateEffect.TristateEffectImproved,
-  blessingOfWisdom: TristateEffect.TristateEffectRegular,
-  sparkOfInspiration: true,
-  saygesFortune: SaygesFortune.SaygesDamage
+	blessingOfMight: TristateEffect.TristateEffectRegular,
+  	blessingOfWisdom: TristateEffect.TristateEffectRegular,
+  	sparkOfInspiration: true,
+  	saygesFortune: SaygesFortune.SaygesDamage
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	dreamstate: true,
 	faerieFire: true,
-	homunculi: 70, // 70% average uptime default
-	huntersMark: TristateEffect.TristateEffectImproved,
+	homunculi: 100, // 70% average uptime default
 	mangle: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {
 	distanceFromTarget: 15,
-  profession1: Profession.Enchanting,
-  profession2: Profession.Leatherworking,
+  	profession1: Profession.Enchanting,
+  	profession2: Profession.Leatherworking,
 }
