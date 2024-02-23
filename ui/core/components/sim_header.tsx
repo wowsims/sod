@@ -4,6 +4,7 @@ import { SimUI } from '../sim_ui';
 import { Tooltip } from 'bootstrap';
 import { SimTab } from './sim_tab';
 
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { element, fragment } from 'tsx-vanilla';
 
 interface ToolbarLinkArgs {
@@ -249,6 +250,7 @@ export class SimHeader extends Component {
 			parent: container,
 			text: "Support our devs",
 			icon: "fab fa-patreon fa-lg",
+			tooltip: "Support us on Patreon",
 			classes: "patreon-link link-alt"
 		})
 	}
