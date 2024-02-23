@@ -119,6 +119,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	// Auto attacks
 	case *proto.APLValue_AutoTimeToNext:
 		return rot.newValueAutoTimeToNext(config.GetAutoTimeToNext())
+	case *proto.APLValue_AutoSwingTime:
+		return rot.newValueAutoSwingTime(config.GetAutoSwingTime())
 
 	// Spells
 	case *proto.APLValue_SpellCanCast:
