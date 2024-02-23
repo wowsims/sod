@@ -40,7 +40,6 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
 				damage := (baseDamage * weapon.SwingSpeed) + spellCoeff*spell.SpellDamage()
-				damage *= 1 + .05*float64(shaman.Talents.ElementalWeapons)
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
