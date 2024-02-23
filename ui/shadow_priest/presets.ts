@@ -128,14 +128,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	sparkOfInspiration: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	judgementOfWisdom: true,
 });
 
 export const OtherDefaults = {

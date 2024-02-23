@@ -79,10 +79,10 @@ func (priest *Priest) GetCharacter() *core.Character {
 func (priest *Priest) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ShadowProtection = true
 	raidBuffs.DivineSpirit = true
-
-	raidBuffs.PowerWordFortitude = max(raidBuffs.PowerWordFortitude, core.MakeTristateValue(
-		true,
-		priest.Talents.ImprovedPowerWordFortitude == 2))
+	raidBuffs.PowerWordFortitude = max(
+		raidBuffs.PowerWordFortitude,
+		core.MakeTristateValue(true, priest.Talents.ImprovedPowerWordFortitude == 2),
+	)
 }
 
 func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {

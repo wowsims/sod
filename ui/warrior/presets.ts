@@ -148,7 +148,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
 	stoneskinTotem: TristateEffect.TristateEffectImproved,
-	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
 	trueshotAura: true,
 })
 

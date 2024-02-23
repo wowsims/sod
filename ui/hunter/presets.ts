@@ -66,7 +66,6 @@ export const DefaultGear = GearPhase2;
 
 import MeleeWeaveP1 from './apls/melee.weave.p1.apl.json';
 import MeleeP2 from './apls/melee.p2.apl.json';
-import { PetAttackSpeed } from './inputs.js';
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('Melee Weave P1', MeleeWeaveP1);
 export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('Melee P2', MeleeP2);
@@ -194,9 +193,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
   divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
-  manaSpringTotem: TristateEffect.TristateEffectImproved,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
-  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 	trueshotAura: true,
 });
 
@@ -214,7 +211,6 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	huntersMark: TristateEffect.TristateEffectImproved,
 	mangle: true,
-	stormstrike: true,
 	sunderArmor: true,
 });
 
