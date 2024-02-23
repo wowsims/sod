@@ -109,8 +109,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
-		// Default rotation settings.
-		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
