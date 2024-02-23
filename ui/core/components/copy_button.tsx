@@ -1,5 +1,6 @@
 import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element, ref } from 'tsx-vanilla';
 
 import { Component } from "./component";
 
