@@ -1,0 +1,581 @@
+character_stats_results: {
+ key: "TestRetribution-Lvl25-CharacterStats-Default"
+ value: {
+  final_stats: 201.74
+  final_stats: 111.54
+  final_stats: 151.91
+  final_stats: 58.74
+  final_stats: 58.2362
+  final_stats: 25
+  final_stats: 0
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 4
+  final_stats: 5.59702
+  final_stats: 0
+  final_stats: 0
+  final_stats: 641.13
+  final_stats: 1
+  final_stats: 19.69055
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1153.1
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2461.58
+  final_stats: 38
+  final_stats: 8
+  final_stats: 0
+  final_stats: 9.972
+  final_stats: 25.70561
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1605.1
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestRetribution-Lvl40-CharacterStats-Default"
+ value: {
+  final_stats: 282.92
+  final_stats: 142.78
+  final_stats: 362.34
+  final_stats: 116.38
+  final_stats: 98.3444
+  final_stats: 42
+  final_stats: 0
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 24
+  final_stats: 1
+  final_stats: 16.4095
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1077.81
+  final_stats: 1
+  final_stats: 22.45133
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2452.7
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3527.56
+  final_stats: 202
+  final_stats: 0
+  final_stats: 0
+  final_stats: 13.939
+  final_stats: 32.90521
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4064.4
+  final_stats: 18.5
+  final_stats: 13.5
+  final_stats: 83.5
+  final_stats: 18.5
+  final_stats: 23.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 14
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestRetribution-Lvl25-StatWeights-Default"
+ value: {
+  weights: 0.13535
+  weights: 0.09041
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.10027
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.24705
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.06152
+  weights: 0.73916
+  weights: 0.67005
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestRetribution-Lvl40-StatWeights-Default"
+ value: {
+  weights: 0.15889
+  weights: 0.29594
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.15389
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.88263
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.07222
+  weights: 1.5298
+  weights: 2.91542
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 67.30028
+  tps: 71.63683
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 67.28853
+  tps: 72.73214
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 66.74894
+  tps: 71.08549
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 64.00357
+  tps: 69.68927
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 65.53697
+  tps: 70.78653
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-H.A.Z.A.R.D.Suit"
+ value: {
+  dps: 64.96748
+  tps: 69.30403
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 59.97563
+  tps: 64.66122
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 65.2921
+  tps: 70.94117
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-InsulatedLeathers"
+ value: {
+  dps: 65.03976
+  tps: 69.37631
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 63.83979
+  tps: 69.23928
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-IrradiatedGarments"
+ value: {
+  dps: 66.23772
+  tps: 71.60749
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-StormshroudArmor"
+ value: {
+  dps: 26.37882
+  tps: 28.98422
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 66.8081
+  tps: 71.95369
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Average-Default"
+ value: {
+  dps: 98.20403
+  tps: 104.47463
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 177.8305
+  tps: 301.47569
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 97.2203
+  tps: 103.40256
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 104.37689
+  tps: 109.09956
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 93.61164
+  tps: 198.88832
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 46.64275
+  tps: 51.90658
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 59.91923
+  tps: 67.91244
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 180.1172
+  tps: 304.93651
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 97.76991
+  tps: 104.01087
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 105.09694
+  tps: 109.88148
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 95.02604
+  tps: 201.07172
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 47.29646
+  tps: 52.59874
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-Settings-Human-p1ret-Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 60.16429
+  tps: 68.22
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 93.6483
+  tps: 99.88926
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-BlackfathomAvenger'sMail"
+ value: {
+  dps: 128.88573
+  tps: 140.21889
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 128.25512
+  tps: 140.39913
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 128.4994
+  tps: 139.83256
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
+ value: {
+  dps: 205.84796
+  tps: 219.4503
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-ElectromanticDevastator'sMail"
+ value: {
+  dps: 121.60521
+  tps: 133.78281
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-ElectromanticStormbringer'sChain"
+ value: {
+  dps: 122.52509
+  tps: 134.05335
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
+ value: {
+  dps: 122.24501
+  tps: 133.28472
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 115.57895
+  tps: 126.2275
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 122.04804
+  tps: 134.10081
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-InsulatedLeathers"
+ value: {
+  dps: 123.28051
+  tps: 134.3383
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 120.29925
+  tps: 131.95956
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-IrradiatedGarments"
+ value: {
+  dps: 124.56403
+  tps: 136.15783
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-StormshroudArmor"
+ value: {
+  dps: 58.93904
+  tps: 63.12018
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 127.40706
+  tps: 139.24028
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Average-Default"
+ value: {
+  dps: 203.53659
+  tps: 216.83519
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 385.6455
+  tps: 660.61068
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 204.34024
+  tps: 217.63147
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 214.95897
+  tps: 228.86536
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 209.67719
+  tps: 443.34864
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 111.44972
+  tps: 122.40048
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Dwarf-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 131.08325
+  tps: 144.15959
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 386.78589
+  tps: 662.29962
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 204.74577
+  tps: 218.06269
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 214.6182
+  tps: 228.54395
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 211.46357
+  tps: 447.09306
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 112.47805
+  tps: 123.53027
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-Settings-Human-p2ret-Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 130.87488
+  tps: 143.99876
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 194.14874
+  tps: 207.39906
+ }
+}
