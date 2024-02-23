@@ -214,6 +214,11 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	registerExplosivesCD(agent, consumes)
 }
 
+func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
+	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
+	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
+}
+
 func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, shadowOilIcd Cooldown) {
 	if imbue != proto.WeaponImbue_WeaponImbueUnknown {
 		switch imbue {

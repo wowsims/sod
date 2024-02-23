@@ -15,6 +15,7 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import * as HunterInputs from './inputs.js';
@@ -131,6 +132,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: HunterInputs.HunterRotationConfig,
 	petConsumeInputs: [
+		ConsumablesInputs.PetScrollOfAgility,
+		ConsumablesInputs.PetScrollOfStrength,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [

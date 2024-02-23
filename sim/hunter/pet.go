@@ -140,7 +140,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/62.77)
 
-	//core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
+	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
 
@@ -170,9 +170,6 @@ func (hp *HunterPet) Initialize() {
 			hp.OnGCDReady(sim)
 		}
 	})
-
-	// TODO: Make this dynamic
-	hp.PseudoStats.DamageDealtMultiplier *= hp.Owner.PseudoStats.DamageDealtMultiplier
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {

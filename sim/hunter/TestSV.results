@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestSV-Lvl25-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.50952
+  weights: 0.4879
   weights: 0
   weights: 0
   weights: 0
@@ -117,8 +117,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.02013
-  weights: 1.96989
-  weights: 2.17592
+  weights: 1.79596
+  weights: 2.01022
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12583
+  weights: 0.11979
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.77177
+  weights: 0.75458
   weights: 0
   weights: 0
   weights: 0
@@ -167,7 +167,7 @@ stat_weights_results: {
   weights: 0
   weights: 0.25465
   weights: 0
-  weights: 4.37266
+  weights: 4.24749
   weights: 0
   weights: 0
   weights: 0
@@ -175,7 +175,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.14188
+  weights: 0.13831
   weights: 0
   weights: 0
   weights: 0
@@ -197,126 +197,126 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 206.21858
+  dps: 191.44397
   tps: 84.84989
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 214.04022
+  dps: 199.62675
   tps: 90.3987
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 212.46148
+  dps: 197.36389
   tps: 88.67054
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BloodlashBow-216516"
  value: {
-  dps: 213.92125
+  dps: 198.6534
   tps: 99.35266
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 243.81108
+  dps: 228.79598
   tps: 111.18327
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 214.07767
+  dps: 199.9797
   tps: 95.56786
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 224.15888
+  dps: 210.06712
   tps: 97.64518
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 214.5349
+  dps: 200.35875
   tps: 96.08204
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 212.04801
+  dps: 197.15544
   tps: 92.08208
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 212.96268
+  dps: 198.77703
   tps: 94.31299
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 220.39429
+  dps: 206.1375
   tps: 100.43492
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 220.19248
+  dps: 204.78853
   tps: 93.31788
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 177.23359
+  dps: 166.2239
   tps: 85.11904
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 208.36876
+  dps: 194.14038
   tps: 87.85323
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Average-Default"
  value: {
-  dps: 223.48438
+  dps: 208.05787
   tps: 95.3306
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 231.36291
+  dps: 216.55944
   tps: 109.58573
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 220.60344
+  dps: 205.87631
   tps: 97.2125
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 276.48766
+  dps: 260.77134
   tps: 115.12684
  }
 }
@@ -344,21 +344,21 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 233.21722
+  dps: 217.79348
   tps: 107.15447
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 222.43181
+  dps: 207.01984
   tps: 95.42019
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 278.0175
+  dps: 261.74856
   tps: 112.83775
  }
 }
@@ -386,126 +386,126 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 220.67093
+  dps: 205.28949
   tps: 94.65765
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 534.67217
+  dps: 519.5714
   tps: 167.79299
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 522.23894
+  dps: 507.30528
   tps: 164.64684
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 543.87927
+  dps: 528.54537
   tps: 173.11873
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 511.00958
+  dps: 496.48168
   tps: 187.98958
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 481.10136
+  dps: 467.16268
   tps: 171.50666
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 478.36481
+  dps: 464.42613
   tps: 168.54057
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 483.90349
+  dps: 469.92296
   tps: 175.11373
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 506.64185
+  dps: 492.20732
   tps: 184.34757
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 482.10583
+  dps: 468.12302
   tps: 173.66541
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 484.85409
+  dps: 470.74302
   tps: 173.74919
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 795.2603
+  dps: 779.98805
   tps: 180.83629
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 684.05561
+  dps: 669.24568
   tps: 158.887
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 518.88146
+  dps: 504.01615
   tps: 162.91489
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 801.65258
+  dps: 786.29341
   tps: 185.70001
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1327.4784
+  dps: 1312.75614
   tps: 760.66377
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 793.43671
+  dps: 778.71126
   tps: 184.51224
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 792.20227
+  dps: 776.91328
   tps: 196.99464
  }
 }
@@ -533,21 +533,21 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1341.5345
+  dps: 1326.00873
   tps: 757.42573
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 805.34837
+  dps: 790.04578
   tps: 184.91262
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 817.24888
+  dps: 801.09193
   tps: 200.63754
  }
 }
@@ -575,7 +575,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 769.38617
+  dps: 754.10299
   tps: 184.87766
  }
 }
