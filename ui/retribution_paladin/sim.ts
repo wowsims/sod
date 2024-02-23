@@ -26,7 +26,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
 	],
-
+	warnings: [
+		(simUI: IndividualSimUI<Spec.SpecRetributionPaladin>) => {
+			return {
+				updateOn: simUI.player.changeEmitter,
+				getContent: () => {
+					if (simUI.player.getSpecOptions().primarySeal == 0) {
+							return `Your previously selected seal is no longer available because of a talent or rune change. 
+							No seal will be cast with this configuration. Please select an available seal in the Settings>Player menu.`;
+					} else {
+						return '';
+					}
+				},
+			};
+		},
+	],
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStrength,

@@ -71,10 +71,13 @@ func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, c
 }
 
 func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
-	paladin := action.paladin
-	paladin.PrimarySealSpell.Cast(sim, paladin.CurrentTarget)
-	// paladin.Exorcism[1].Cast(sim, paladin.CurrentTarget)
 	action.lastAction = sim.CurrentTime
+	paladin := action.paladin
+	// If the player options are incorrectly configured, then no primary seal will be selected.
+	if paladin.PrimarySealSpell == nil {
+		return
+	}
+	paladin.PrimarySealSpell.Cast(sim, paladin.CurrentTarget)
 }
 
 func (action *APLActionCastPaladinPrimarySeal) IsReady(sim *core.Simulation) bool {

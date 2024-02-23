@@ -69,5 +69,11 @@ func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
 	case proto.PaladinSeal_Martyrdom:
 		ret.PrimarySealSpell = ret.Paladin.SealOfMartyrdom
+	// The following provisions for when a player has chosen a seal in the UI
+	// which is no longer viable based on rune/talent changes. This stops the
+	// APL being hung up on conditions where the current seal APL value is nearing
+	// expiry.
+	case proto.PaladinSeal_NoSeal:
+		ret.Paladin.CurrentSealExpiration = 100000000
 	}
 }
