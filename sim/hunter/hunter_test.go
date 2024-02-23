@@ -44,22 +44,8 @@ func TestBM(t *testing.T) {
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase2PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      40,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
-
-			Talents:     Phase2BMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p2_ranged"),
-			Buffs:       core.FullBuffsPhase2,
-			Consumes:    Phase2Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase2PlayerOptions},
+			OtherGearSets:  []core.GearSetCombo{core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged")},
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../ui/hunter/apls", "p2_ranged")},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
