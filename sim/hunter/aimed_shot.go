@@ -25,6 +25,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		SpellSchool:   core.SpellSchoolPhysical,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,
