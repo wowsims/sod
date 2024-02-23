@@ -35,6 +35,7 @@ import {
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
 	APLValueAutoTimeToNext,
+	APLValueAutoTimeToNext_AttackType as AutoAttackType,
 	APLValueSpellCanCast,
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
@@ -64,7 +65,8 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 	APLValueCatNewSavageRoarDuration,
-	APLValueAutoTimeToNext_AutoType as AutoType,
+	APLValueAutoSwingTime,
+	APLValueAutoSwingTime_SwingType as AutoSwingType,
 } from '../../proto/apl.js';
 
 import { EventID } from '../../typed_event.js';
@@ -318,17 +320,34 @@ function mathOperatorFieldConfig(field: string): AplHelpers.APLPickerBuilderFiel
 function autoTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: () => AutoType.Any,
+		newValue: () => AutoAttackType.Any,
 		factory: (parent, player, config) => new TextDropdownPicker(parent, player, {
 			...config,
 			defaultLabel: 'None',
 			equals: (a, b) => a == b,
 			values: [
-				{ value: AutoType.Any, label: 'Any' },
-				{ value: AutoType.Melee, label: 'Melee' },
-				{ value: AutoType.MainHand, label: 'Main Hand' },
-				{ value: AutoType.OffHand, label: 'Off Hand' },
-				{ value: AutoType.Ranged, label: 'Ranged' },
+				{ value: AutoAttackType.Any, label: 'Any' },
+				{ value: AutoAttackType.Melee, label: 'Melee' },
+				{ value: AutoAttackType.MainHand, label: 'Main Hand' },
+				{ value: AutoAttackType.OffHand, label: 'Off Hand' },
+				{ value: AutoAttackType.Ranged, label: 'Ranged' },
+			],
+		}),
+	};
+}
+
+function autoSwingTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
+	return {
+		field: field,
+		newValue: () => AutoSwingType.MainHand,
+		factory: (parent, player, config) => new TextDropdownPicker(parent, player, {
+			...config,
+			defaultLabel: 'None',
+			equals: (a, b) => a == b,
+			values: [
+				{ value: AutoSwingType.MainHand, label: 'Main Hand' },
+				{ value: AutoSwingType.OffHand, label: 'Off Hand' },
+				{ value: AutoSwingType.Ranged, label: 'Ranged' },
 			],
 		}),
 	};
@@ -642,6 +661,15 @@ const valueKindFactories: {[f in NonNullable<APLValueKind>]: ValueKindConfig<APL
 		newValue: APLValueAutoTimeToNext.create,
 		fields: [
 			autoTypeFieldConfig('autoType')
+		],
+	}),
+	'autoSwingTime': inputBuilder({
+		label: 'Auto Swing Time',
+		submenu: ['Auto'],
+		shortDescription: 'Total swing duration including all haste buffs.',
+		newValue: APLValueAutoSwingTime.create,
+		fields: [
+			autoSwingTypeFieldConfig('autoType')
 		],
 	}),
 

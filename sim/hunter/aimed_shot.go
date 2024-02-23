@@ -37,7 +37,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
+				CastTime: time.Millisecond * 3500,
 			},
 			CD: core.Cooldown{
 				Timer:    timer,

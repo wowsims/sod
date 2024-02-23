@@ -34,7 +34,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				CastTime: time.Millisecond * 2000,
 			},
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
