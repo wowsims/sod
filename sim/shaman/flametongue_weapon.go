@@ -11,7 +11,6 @@ const FlametongueWeaponRanks = 6
 var FlametongueWeaponSpellId = [FlametongueWeaponRanks + 1]int32{0, 8024, 8027, 8030, 16339, 16341, 16342}
 var FlametongueWeaponEnchantId = [FlametongueWeaponRanks + 1]int32{0, 5, 4, 3, 523, 1665, 1666}
 var FlametongueWeaponMaxDamage = [FlametongueWeaponRanks + 1]float64{0, 18, 26, 42, 57, 85, 112}
-var FlametongueWeaponLevel = [FlametongueWeaponRanks + 1]int32{0, 10, 18, 26, 36, 46, 56}
 
 var FlametongueWeaponRankByLevel = map[int32]int32{
 	25: 2,
@@ -40,7 +39,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				damage := (baseDamage / 4.0 * weapon.SwingSpeed) + spellCoeff*spell.SpellDamage()
+				damage := (baseDamage * weapon.SwingSpeed) + spellCoeff*spell.SpellDamage()
 				damage *= 1 + .05*float64(shaman.Talents.ElementalWeapons)
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			}

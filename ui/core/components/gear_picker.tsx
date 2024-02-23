@@ -299,7 +299,7 @@ export class IconItemSwapPicker extends Component {
 	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items, enchants, and runes that are eligible for this slot
+	// All items and enchants that are eligible for this slot
 	private _items: Array<Item> = [];
 	private _enchants: Array<Enchant> = [];
 	private _runes: Array<Rune> = [];
@@ -319,17 +319,16 @@ export class IconItemSwapPicker extends Component {
 		this.socketsContainerElem.classList.add('item-picker-sockets-container')
 		this.iconAnchor.appendChild(this.socketsContainerElem);
 
-		const loadItems = () => this._items = this.player.getItems(slot);
-
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
 			this._runes = this.player.getRunes(slot);
+
 			const gearData = {
-				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					this.player.equipItemSwapitem(eventID, this.slot, equippedItem);
+				equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
+					player.equipItemSwapitem(eventID, this.slot, newItem)
 				},
-				getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+				getEquippedItem: () => player.getItemSwapItem(this.slot),
 				changeEvent: player.itemSwapChangeEmitter,
 			}
 
@@ -345,14 +344,10 @@ export class IconItemSwapPicker extends Component {
 					gearData: gearData,
 				});
 			});
+		});
 
-			player.levelChangeEmitter.on(loadItems);
-			player.itemSwapChangeEmitter.on(loadItems);
-
-			this.addOnDisposeCallback(() => {
-				player.levelChangeEmitter.off(loadItems);
-				player.itemSwapChangeEmitter.on(loadItems);
-			});
+		player.itemSwapChangeEmitter.on(() => {
+			this.update(player.getItemSwapGear().getEquippedItem(slot));
 		});
 	}
 
@@ -364,13 +359,13 @@ export class IconItemSwapPicker extends Component {
 
 		if (newItem) {
 			this.iconAnchor.classList.add("active")
+
+			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
-			newItem.asActionId().fill().then(filledId => filledId.setBackgroundAndHref(this.iconAnchor));
 		} else {
 			this.iconAnchor.classList.remove("active")
 		}
 	}
-
 }
 
 export interface GearData {
@@ -422,6 +417,19 @@ export class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
 
 		this.setData();
+
+		this.body.appendChild(
+			<div className="d-flex align-items-center form-text mt-3">
+				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
+				<span>
+					If gear is missing, check your gear filters and your level in the "Settings" tab.
+					<br />
+					If the problem persists, save any un-saved data, click the
+					<i className="fas fa-cog mx-1"></i>
+					to open your sim options, then click the "Restore Defaults".
+				</span>
+			</div>
+		)
 	}
 
 	// Could be 'Items' 'Enchants' or 'Rune'

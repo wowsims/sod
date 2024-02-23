@@ -1,12 +1,15 @@
 import { Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
 	Debuffs,
-	Flask,
+	EnchantedSigil,
 	Food,
-	Potions,
+	IndividualBuffs,
 	Profession,
 	RaidBuffs,
+	SaygesFortune,
+	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
@@ -131,11 +134,12 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DenseSharpeningStone,
-	defaultPotion: Potions.UnknownPotion,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -144,12 +148,21 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
 	stoneskinTotem: TristateEffect.TristateEffectImproved,
-	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
+	trueshotAura: true,
 })
 
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  blessingOfMight: TristateEffect.TristateEffectImproved,
+  blessingOfKings: true,
+	blessingOfWisdom: TristateEffect.TristateEffectRegular,
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
+});
+
 export const DefaultDebuffs = Debuffs.create({
-	curseOfWeakness: TristateEffect.TristateEffectRegular,
+	curseOfRecklessness: true,
 	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
 	mangle: true,
 	sunderArmor: true,
 })

@@ -48,7 +48,7 @@ func applyRaceEffects(agent Agent) {
 
 		character.AddMajorCooldown(MajorCooldown{
 			Spell: spell,
-			Type:  CooldownTypeDPS,
+			Type:  CooldownTypeSurvival,
 		})
 	case proto.Race_RaceGnome:
 		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
@@ -91,6 +91,9 @@ func applyRaceEffects(agent Agent) {
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast: CastConfig{
+				DefaultCast: Cast{
+					GCD: GCDDefault,
+				},
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
@@ -170,8 +173,8 @@ func applyRaceEffects(agent Agent) {
 					}
 				},
 				OnExpire: func(aura *Aura, sim *Simulation) {
-					character.MultiplyCastSpeed(1/1 + berserkingPct)
-					character.MultiplyAttackSpeed(sim, 1/1+berserkingPct)
+					character.MultiplyCastSpeed(1 / (1 + berserkingPct))
+					character.MultiplyAttackSpeed(sim, 1/(1+berserkingPct))
 				},
 			})
 		}

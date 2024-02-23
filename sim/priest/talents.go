@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -12,7 +13,10 @@ func (priest *Priest) ApplyTalents() {
 	priest.applyShadowWeaving()
 	priest.registerInnerFocus()
 
+	// Meditation
 	priest.PseudoStats.SpiritRegenRateCasting = []float64{0.0, 0.17, 0.33, 0.5}[priest.Talents.Meditation]
+
+	// Spell Warding
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 - .02*float64(priest.Talents.SpellWarding)
@@ -20,7 +24,8 @@ func (priest *Priest) ApplyTalents() {
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 - .02*float64(priest.Talents.SpellWarding)
 
-	priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1 + (0.2 * float64(priest.Talents.Darkness))
+	// Darkness
+	priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1 + .02*float64(priest.Talents.Darkness)
 
 	if priest.Talents.Shadowform {
 		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
@@ -31,20 +36,39 @@ func (priest *Priest) ApplyTalents() {
 	}
 
 	if priest.Talents.MentalStrength > 0 {
-		priest.MultiplyStat(stats.Intellect, 1.0+0.03*float64(priest.Talents.MentalStrength))
+		priest.MultiplyStat(stats.Intellect, 1.0+0.02*float64(priest.Talents.MentalStrength))
 	}
 
 	if priest.Talents.ImprovedPowerWordFortitude > 0 {
-		priest.MultiplyStat(stats.Stamina, 1.0+.02*float64(priest.Talents.ImprovedPowerWordFortitude))
-	}
-
-	if priest.Talents.SpiritOfRedemption {
-		priest.MultiplyStat(stats.Spirit, 1.05)
+		priest.MultiplyStat(stats.Stamina, 1.0+.15*float64(priest.Talents.ImprovedPowerWordFortitude))
 	}
 
 	if priest.Talents.SilentResolve > 0 {
-		priest.PseudoStats.ThreatMultiplier *= 1 - []float64{0, .04, .08, .12, .16, .20}[priest.Talents.SilentResolve]
+		priest.PseudoStats.ThreatMultiplier *= 1 - (.04 * float64(priest.Talents.SilentResolve))
 	}
+}
+
+func (priest *Priest) forceOfWillDamageModifier() float64 {
+	return 1 + .01*float64(priest.Talents.ForceOfWill)
+}
+
+func (priest *Priest) forceOfWillCritRating() float64 {
+	return 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
+}
+
+func (priest *Priest) searingLightDamageModifier() float64 {
+	return 1 + 0.05*float64(priest.Talents.SearingLight)
+}
+func (priest *Priest) holySpecCritRating() float64 {
+	return 1 * float64(priest.Talents.HolySpecialization) * core.CritRatingPerCritChance
+}
+
+func (priest *Priest) shadowHitModifier() float64 {
+	return 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
+}
+
+func (priest *Priest) shadowThreatModifier() float64 {
+	return 1 - 0.08*float64(priest.Talents.ShadowAffinity)
 }
 
 func (priest *Priest) applyInspiration() {
@@ -67,13 +91,7 @@ func (priest *Priest) applyInspiration() {
 			aura.Activate(sim)
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == priest.FlashHeal ||
-				spell == priest.GreaterHeal ||
-				spell == priest.BindingHeal ||
-				spell == priest.PrayerOfMending ||
-				spell == priest.PrayerOfHealing ||
-				spell == priest.CircleOfHealing ||
-				spell == priest.PenanceHeal {
+			if slices.Contains([]int32{SpellCode_PriestFlashHeal, SpellCode_PriestHeal, SpellCode_PriestGreaterHeal}, spell.SpellCode) {
 				auras[result.Target.UnitIndex].Activate(sim)
 			}
 		},
@@ -88,6 +106,17 @@ func (priest *Priest) applyShadowWeaving() {
 	priest.ShadowWeavingAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ShadowWeavingAura(unit, int(priest.Talents.ShadowWeaving))
 	})
+}
+
+func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
+	if priest.ShadowWeavingAuras == nil {
+		return
+	}
+
+	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
+		priest.ShadowWeavingAuras.Get(target).Activate(sim)
+		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
+	}
 }
 
 func (priest *Priest) registerInnerFocus() {

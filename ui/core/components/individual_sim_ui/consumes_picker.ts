@@ -38,19 +38,24 @@ export class ConsumesPicker extends Component {
       </div>
     `;
 
-		this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
 
 		const potionsOptions = ConsumablesInputs.makePotionsInput(
 			relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI),
 			'Combat Potion',
 		)
-		buildIconInput(potionsElem, this.simUI.player, potionsOptions);
+		const potionsPicker = buildIconInput(potionsElem, this.simUI.player, potionsOptions);
 
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(
 			relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI),
 		);
-		buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
+		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
+		const irradiatedRejuvPicker = buildIconInput(potionsElem, this.simUI.player, ConsumablesInputs.MildlyIrradiatedRejuvPotion);
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(() => {
+			this.updateRow(row, [potionsPicker, conjuredPicker, irradiatedRejuvPicker]);
+		});
 	}
 
 	private buildFlaskPicker() {

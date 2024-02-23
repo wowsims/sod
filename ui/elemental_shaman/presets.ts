@@ -3,10 +3,14 @@ import {
   Consumes,
   Debuffs,
   EnchantedSigil,
-  Flask,
+  FirePowerBuff,
   Food,
+  IndividualBuffs,
+  Potions,
   Profession,
   RaidBuffs,
+  SaygesFortune,
+  SpellPowerBuff,
   TristateEffect,
   WeaponImbue,
 } from '../core/proto/common.js';
@@ -128,11 +132,13 @@ export const DefaultOptions = ElementalShamanOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-  flask: Flask.FlaskUnknown,
-	food: Food.FoodSagefishDelight,
+  defaultPotion: Potions.GreaterManaPotion,
   enchantedSigil: EnchantedSigil.InnovationSigil,
+  firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	food: Food.FoodSagefishDelight,
   mainHandImbue: WeaponImbue.LesserWizardOil,
   offHandImbue: WeaponImbue.LesserWizardOil,
+  spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -145,6 +151,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
   manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
   strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  sparkOfInspiration: true,
+  saygesFortune: SaygesFortune.SaygesDamage
 });
 
 export const DefaultDebuffs = Debuffs.create({

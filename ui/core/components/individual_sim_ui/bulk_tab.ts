@@ -262,7 +262,6 @@ export class BulkTab extends SimTab {
 	}
 
 	private loadSettings() {
-		// TODO: Swap reads to sod after 1 week on 2024-02-22
 		const storedSettings = window.localStorage.getItem(this.getSettingsKey());
 		if (storedSettings != null) {
 			let settings = BulkSettings.fromJsonString(storedSettings, { ignoreUnknownFields: true })
@@ -277,8 +276,6 @@ export class BulkTab extends SimTab {
 		const settings = this.createBulkSettings();
 		const setStr = BulkSettings.toJsonString(settings, { enumAsInteger: true })
 
-		// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
-		window.localStorage.setItem(this.getSettingsKey().replace('wotlk', 'sod'), setStr);
 		window.localStorage.setItem(this.getSettingsKey(), setStr);
 	}
 

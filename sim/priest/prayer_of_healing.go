@@ -1,43 +1,37 @@
 package priest
 
-import (
-	"time"
+// func (priest *Priest) registerPrayerOfHealingSpell() {
+// 	priest.PrayerOfHealing = priest.RegisterSpell(core.SpellConfig{
+// 		ActionID:    core.ActionID{SpellID: 48072},
+// 		SpellSchool: core.SpellSchoolHoly,
+// 		ProcMask:    core.ProcMaskSpellHealing,
+// 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
-	"github.com/wowsims/sod/sim/core"
-)
+// 		ManaCost: core.ManaCostOptions{
+// 			BaseCost:   0.48,
+// 			Multiplier: 1,
+// 		},
+// 		Cast: core.CastConfig{
+// 			DefaultCast: core.Cast{
+// 				GCD:      core.GCDDefault,
+// 				CastTime: time.Second * 3,
+// 			},
+// 		},
 
-func (priest *Priest) registerPrayerOfHealingSpell() {
-	priest.PrayerOfHealing = priest.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48072},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+// 		BonusCritRating:  float64(priest.Talents.HolySpecialization),
+// 		DamageMultiplier: 1 + .02*float64(priest.Talents.SpiritualHealing),
+// 		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
+// 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.48,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
-			},
-		},
+// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+// 			targetAgent := target.Env.Raid.GetPlayerFromUnitIndex(target.UnitIndex)
+// 			party := targetAgent.GetCharacter().Party
 
-		BonusCritRating:  float64(priest.Talents.HolySpecialization),
-		DamageMultiplier: 1 + .02*float64(priest.Talents.SpiritualHealing),
-		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
-		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			targetAgent := target.Env.Raid.GetPlayerFromUnitIndex(target.UnitIndex)
-			party := targetAgent.GetCharacter().Party
-
-			for _, partyAgent := range party.PlayersAndPets {
-				partyTarget := &partyAgent.GetCharacter().Unit
-				baseHealing := sim.Roll(2109, 2228) + 0.526*spell.HealingPower(partyTarget)
-				spell.CalcAndDealHealing(sim, partyTarget, baseHealing, spell.OutcomeHealingCrit)
-			}
-		},
-	})
-}
+// 			for _, partyAgent := range party.PlayersAndPets {
+// 				partyTarget := &partyAgent.GetCharacter().Unit
+// 				baseHealing := sim.Roll(2109, 2228) + 0.526*spell.HealingPower(partyTarget)
+// 				spell.CalcAndDealHealing(sim, partyTarget, baseHealing, spell.OutcomeHealingCrit)
+// 			}
+// 		},
+// 	})
+// }
