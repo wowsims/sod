@@ -146,8 +146,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-  blessingOfMight: TristateEffect.TristateEffectImproved,
-  blessingOfWisdom: TristateEffect.TristateEffectRegular,
   sparkOfInspiration: true,
   saygesFortune: SaygesFortune.SaygesDamage
 });

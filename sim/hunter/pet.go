@@ -1,6 +1,8 @@
 package hunter
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -37,12 +39,12 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	baseMinDamage := 0.0
 	baseMaxDamage := 0.0
-	attackSpeed := 2.0
+	attackSpeed := hunter.Options.PetAttackSpeed
 
 	switch hunter.Level {
 	case 25:
-		baseMinDamage = 15
-		baseMaxDamage = 20
+		baseMinDamage = 6.5 * attackSpeed
+		baseMaxDamage = 12.5 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
 			stats.Strength:  53,
 			stats.Agility:   45,
@@ -56,8 +58,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	case 40:
-		baseMinDamage = 25
-		baseMaxDamage = 40
+		baseMinDamage = 9.5 * attackSpeed
+		baseMaxDamage = 15.5 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
 			stats.Strength:  78,
 			stats.Agility:   66,
@@ -72,8 +74,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	case 50:
 		// TODO:
-		baseMinDamage = 25
-		baseMaxDamage = 40
+		baseMinDamage = 9.5 * attackSpeed
+		baseMaxDamage = 15.5 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
 			stats.Strength:  78,
 			stats.Agility:   66,
@@ -88,8 +90,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	case 60:
 		// TODO:
-		baseMinDamage = 25
-		baseMaxDamage = 40
+		baseMinDamage = 9.5 * attackSpeed
+		baseMaxDamage = 15.5 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
 			stats.Strength:  78,
 			stats.Agility:   66,
@@ -114,8 +116,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  baseMinDamage * (attackSpeed / 2.0),
-			BaseDamageMax:  baseMaxDamage * (attackSpeed / 2.0),
+			BaseDamageMin:  baseMinDamage,
+			BaseDamageMax:  baseMaxDamage,
 			SwingSpeed:     attackSpeed,
 			CritMultiplier: hp.MeleeCritMultiplier(1, 0),
 		},
@@ -193,14 +195,14 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	target := hp.CurrentTarget
 
 	if hp.focusDump == nil {
-		if hp.specialAbility.CanCast(sim, target) {
-			hp.specialAbility.Cast(sim, target)
+		if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
 	}
 	if hp.specialAbility == nil {
-		if hp.focusDump.CanCast(sim, target) {
-			hp.focusDump.Cast(sim, target)
+		if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
 	}
@@ -213,9 +215,13 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 		}
 	} else {
 		if hp.specialAbility.IsReady(sim) {
-			_ = hp.specialAbility.Cast(sim, target)
-		} else {
-			_ = hp.focusDump.Cast(sim, target)
+			if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+			}
+		} else if hp.focusDump.IsReady(sim) {
+			if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+			}
 		}
 	}
 }

@@ -161,7 +161,8 @@ export const DefaultOptions = HunterOptions.create({
 	petType: PetType.WindSerpent,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const BMDefaultOptions = HunterOptions.create({
@@ -169,7 +170,8 @@ export const BMDefaultOptions = HunterOptions.create({
 	petType: PetType.Cat,
 	petTalents: {},
 	petUptime: 1,
-	quiverBonus: Hunter_Options_QuiverBonus.Speed14
+	quiverBonus: Hunter_Options_QuiverBonus.Speed14,
+	petAttackSpeed: 2.0,
 });
 
 export const DefaultConsumes = Consumes.create({
@@ -191,9 +193,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
   divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
-  manaSpringTotem: TristateEffect.TristateEffectImproved,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
-  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 	trueshotAura: true,
 });
 
@@ -211,7 +211,6 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	huntersMark: TristateEffect.TristateEffectImproved,
 	mangle: true,
-	stormstrike: true,
 	sunderArmor: true,
 });
 
