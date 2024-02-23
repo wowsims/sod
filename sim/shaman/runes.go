@@ -118,12 +118,12 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
 			shaman.MultiplyStat(stats.AttackPower, apMultiplier)
-			shaman.AddStat(stats.SpellHit, spellHitIncrease)
+			shaman.AddStatDynamic(sim, stats.SpellHit, spellHitIncrease)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
 			shaman.MultiplyStat(stats.AttackPower, 1/apMultiplier)
-			shaman.AddStat(stats.SpellHit, -1*spellHitIncrease)
+			shaman.AddStatDynamic(sim, stats.SpellHit, -1*spellHitIncrease)
 		},
 	})
 
