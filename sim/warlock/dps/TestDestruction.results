@@ -102,9 +102,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.32785
+  weights: 0.32121
   weights: 0
-  weights: 1.33322
+  weights: 1.32655
   weights: 0
   weights: 0
   weights: 0
@@ -151,17 +151,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.43622
+  weights: -0.44098
   weights: 0
-  weights: 0.39326
-  weights: 0
-  weights: 0
+  weights: 0.38412
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.64816
+  weights: 0
+  weights: 0
+  weights: 8.48293
   weights: 5.84849
   weights: 0
   weights: 0
@@ -197,63 +197,63 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 49.93742
+  dps: 47.2044
   tps: 36.39733
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 53.35985
+  dps: 50.43347
   tps: 42.17388
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 197.85013
+  dps: 193.85114
   tps: 164.72799
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 54.87145
+  dps: 51.90196
   tps: 42.57467
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 50.24671
+  dps: 47.50622
   tps: 41.16274
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 204.45378
+  dps: 200.63736
   tps: 173.49392
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 204.1392
+  dps: 200.32825
   tps: 379.17875
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 204.1392
+  dps: 200.32825
   tps: 173.06675
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 256.55206
+  dps: 251.19575
   tps: 198.98864
  }
 }
@@ -281,63 +281,63 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 204.1392
+  dps: 200.32825
   tps: 173.06675
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 73.51779
+  dps: 67.62067
   tps: 57.08708
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 77.57418
+  dps: 71.30831
   tps: 60.29473
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 78.70095
+  dps: 72.40087
   tps: 61.06301
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 83.23348
+  dps: 77.27341
   tps: 68.39536
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 727.92612
+  dps: 718.84567
   tps: 651.73889
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 723.5741
+  dps: 714.51468
   tps: 1040.21646
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 723.5741
+  dps: 714.51468
   tps: 647.32171
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 886.54821
+  dps: 872.636
   tps: 759.36918
  }
 }
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 723.5741
+  dps: 714.51468
   tps: 647.32171
  }
 }
