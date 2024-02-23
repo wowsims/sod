@@ -1,5 +1,5 @@
 import { Tooltip } from 'bootstrap';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 import { EventID, TypedEvent } from '../typed_event.js';
@@ -12,7 +12,7 @@ export interface ListPickerActionsConfig {
 	create?: {
 		// Whether or not to use an icon for the create action button
 		// defaults to FALSE
-		useIcon?: boolean	
+		useIcon?: boolean
 	}
 }
 

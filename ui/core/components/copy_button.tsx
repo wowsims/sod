@@ -1,6 +1,5 @@
 import { Tooltip } from 'bootstrap';
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { element, ref } from 'tsx-vanilla';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 import { Component } from "./component";
 
@@ -13,7 +12,7 @@ export interface CopyButtonConfig {
 
 export class CopyButton extends Component {
   private readonly config: CopyButtonConfig;
-	
+
   constructor(parent: HTMLElement, config: CopyButtonConfig) {
 		const btnRef = ref<HTMLButtonElement>();
 		const buttonElem = (

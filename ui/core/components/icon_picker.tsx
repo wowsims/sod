@@ -1,5 +1,4 @@
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { element, ref } from 'tsx-vanilla';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
@@ -8,7 +7,7 @@ import { isRightClick } from '../utils.js';
 import { Input, InputConfig } from './input.js';
 
 // Data for creating an icon-based input component.
-// 
+//
 // E.g. one of these for arcane brilliance, another for kings, etc.
 // ModObject is the object being modified (Sim, Player, or Target).
 // ValueType is either number or boolean.
@@ -158,7 +157,7 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 	// Returns the ActionId of the currently selected value, or null if none selected.
 	getActionId(): ActionId | null {
 
-		// Go directly to source because during event propogation 
+		// Go directly to source because during event propogation
 		//  the internal `this.currentValue` may not yet have been updated.
 		const v = Number(this.config.getValue(this.modObject));
 		if (v == 0) {

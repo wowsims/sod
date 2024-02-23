@@ -1,6 +1,5 @@
 import pako from 'pako';
-// eslint-disable-next-line unused-imports/no-unused-imports
-import { element, ref } from 'tsx-vanilla';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';

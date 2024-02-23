@@ -36,7 +36,7 @@ import {
 	RepFaction,
 	UIRune as Rune,
 } from '../proto/ui.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
@@ -187,7 +187,7 @@ export class ItemRenderer extends Component {
 				<img ref={runeIconElem} className="item-picker-rune-icon" />
 			</div>
 		);
-	
+
 		if (rune) {
 			ActionId.fromSpellId(rune.id).fill().then(filledId => runeIconElem.value!.src = filledId.iconUrl);
 		} else {
@@ -821,7 +821,7 @@ export class ItemList<T> {
 
 		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
 		makeShow2hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement, player.sim);
-		
+
 		if (!(label == 'Items' && (slot == ItemSlot.ItemSlotMainHand || (slot == ItemSlot.ItemSlotOffHand && player.getClass() == Class.ClassWarrior)))) {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
@@ -1159,7 +1159,7 @@ export class ItemList<T> {
 		};
 
 		let isFavorite = this.isItemFavorited(itemData);
-		
+
 		if (isFavorite) {
 			favoriteElem.value!.children[0].classList.add('fas');
 			listItemElem.dataset.fav = 'true';
