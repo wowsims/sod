@@ -7,6 +7,9 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// Crusader Strike is an ap-normalised instant attack that has a weapon damage % modifier with a 0.75 coefficient.
+// It also returns 5% of the paladin's maximum mana when cast, regardless of the ability being negated.
+
 func (paladin *Paladin) registerCrusaderStrikeSpell() {
 	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
@@ -29,13 +32,12 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 0.75,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.75*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
 		},

@@ -7,7 +7,14 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+// Seal of Command is a spell consisting of:
+// - A judgement that has a flat damage roll, and scales with spellpower.
+// - A 7ppm on-hit proc that deals 70% weapon damage and scales with spellpower.
+
 const socRanks = 5
+
+// Below is the base sp coefficient before it gets reduced by the 70% modifier
+// weapon damage % effect to 20% actual.
 const socProcSpellCoeff = 0.29
 const socJudgeSpellCoeff = 0.423
 
@@ -60,13 +67,13 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		ProcMask:         core.ProcMaskEmpty, // This needs figured out properly
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    level,
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 0.7,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (-1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())) * 0.7
-			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellPower()
+			baseDamage := -1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellPower() + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, fullDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})

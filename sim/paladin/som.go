@@ -5,6 +5,10 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// Seal of Martyrdom is a spell consisting of:
+// - A judgement that deals 70% weapon damage that is not normalised.
+// - A guaranteed on-hit proc that deals 40% weapon damage that is normalised.
+
 func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 
 	if !paladin.HasRune(proto.PaladinRune_RuneChestSealofMartyrdom) {
@@ -17,11 +21,11 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		ProcMask:    core.ProcMaskMeleeSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.7,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.7
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
@@ -32,12 +36,12 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		ProcMask:         core.ProcMaskEmpty, // This needs figured out properly
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    1,
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 0.4,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.4
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
