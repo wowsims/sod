@@ -36,7 +36,7 @@ func (shaman *Shaman) ApplyRunes() {
 	// Feet
 	shaman.applyAncestralAwakening()
 	// shaman.applyDecoyTotem()
-	// shaman.applySpiritOfTheAlpha()
+	shaman.applySpiritOfTheAlpha()
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {
@@ -103,6 +103,14 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	if !shaman.HasRune(proto.ShamanRune_RuneTwoHandedMastery) {
 		return
 	}
+
+	// Two-handed mastery gives +10% AP
+	shaman.MultiplyStat(stats.AttackPower, 1.1)
+
+	// Two-handed mastery gives +10% spell hit after hitting a target with a two-hander
+	// Since this will be applied almost immediately, just add the stats baseline instead of
+	// Managing an aura for now.
+	shaman.AddStat(stats.SpellHit, float64(core.SpellHitRatingPerHitChance*10))
 
 	procSpellId := int32(436365)
 	attackSpeedMultiplier := 1.3
@@ -220,13 +228,9 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	intMP5Rate := .15
-
-	shaman.AddStats(
-		stats.Stats{
-			stats.MP5: shaman.GetStat(stats.Intellect) * intMP5Rate,
-		},
-	)
+	// TODO: Figure out how this actually works becaue the 2024-02-27 tuning notes make it sound like
+	// this is not just a fully passive stat boost
+	shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{
@@ -280,4 +284,14 @@ func (shaman *Shaman) applyWayOfEarth() {
 			aura.Activate(sim)
 		},
 	})
+}
+
+func (shaman *Shaman) applySpiritOfTheAlpha() {
+	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) {
+		return
+	}
+
+	// Spirit of the Alpha currently gives +20% AP when used on another target.
+	// Assume this as a default
+	shaman.MultiplyStat(stats.AttackPower, 1.2)
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (shaman *Shaman) applyShamanisticRage() {
@@ -13,9 +12,6 @@ func (shaman *Shaman) applyShamanisticRage() {
 		return
 	}
 
-	apCoeff := .15
-	spCoeff := .10
-	hpCoeff := .06
 	damageTakenMultiplier := .8
 	duration := time.Second * 15
 	cooldown := time.Minute * 1
@@ -31,11 +27,7 @@ func (shaman *Shaman) applyShamanisticRage() {
 
 			// Sham rage mana gain is snapshotted on cast
 			// TODO: Raid mana regain
-			var manaPerTick = max(
-				shaman.GetStat(stats.AttackPower)*apCoeff,
-				shaman.GetStat(stats.SpellPower)*spCoeff,
-				shaman.GetStat(stats.Healing)*hpCoeff,
-			)
+			var manaPerTick = shaman.GetCharacter().MaxMana() * .05
 
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				NumTicks: 15,
