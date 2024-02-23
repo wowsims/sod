@@ -29,10 +29,13 @@ import * as PresetUtils from '../core/preset_utils.js';
 ///////////////////////////////////////////////////////////////////////////
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetGearJson from './gear_sets/p2ret.gear.json'
+import Phase2ShockadinJson from './gear_sets/p2shockadin.gear.json'
 
 // export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const Phase1RetGear = PresetUtils.makePresetGear('P1 Ret', Phase1RetGearJson);
 export const Phase2RetGear = PresetUtils.makePresetGear('P2 Ret', Phase2RetGearJson);
+export const Phase2Shockadin = PresetUtils.makePresetGear('P2 Shockadin', Phase2ShockadinJson)
+
 
 export const GearPresets = {
   [Phase.Phase1]: [
@@ -40,6 +43,7 @@ export const GearPresets = {
   ],
   [Phase.Phase2]: [
 	Phase2RetGear,
+	Phase2Shockadin,
   ]
 };
 
@@ -54,7 +58,7 @@ import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';
 
 export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
-export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret', APLP2RetJson);
+export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson);
 
 export const APLPresets = {
   [Phase.Phase1]: [

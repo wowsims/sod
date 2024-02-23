@@ -99,7 +99,7 @@ var FullRaidBuffsPhase2 = &proto.RaidBuffs{
 	StrengthOfEarthTotem:  proto.TristateEffect_TristateEffectImproved,
 	Thorns:                proto.TristateEffect_TristateEffectImproved,
 	TrueshotAura:          true,
-	SanctityAura:          true,
+	// SanctityAura:          true,
 }
 
 ///////////////////////////////////////////////////////////////////////////
