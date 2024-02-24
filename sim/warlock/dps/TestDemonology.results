@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 42
   final_stats: 2
-  final_stats: 26.62687
+  final_stats: 26.51588
   final_stats: 0
   final_stats: 0
   final_stats: 348.93
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.36804
+  weights: 0.34233
   weights: 0
-  weights: 0.86104
-  weights: 0
-  weights: 0
+  weights: 0.86093
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.08616
-  weights: 2.94105
+  weights: 0
+  weights: 0
+  weights: 5.14759
+  weights: 2.98327
   weights: 0
   weights: 0
   weights: 0
@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 225.59997
-  tps: 138.63058
+  dps: 225.54515
+  tps: 138.57576
  }
 }
 dps_results: {
@@ -113,43 +113,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 616.46639
-  tps: 527.76381
+  dps: 616.22913
+  tps: 527.52655
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 241.18849
-  tps: 150.37733
+  dps: 240.99167
+  tps: 150.18051
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 487.15508
-  tps: 413.86696
+  dps: 486.77223
+  tps: 413.4841
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 617.95326
-  tps: 528.1323
+  dps: 617.6702
+  tps: 527.84867
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 616.43208
-  tps: 844.94433
+  dps: 616.19482
+  tps: 844.70707
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 616.43208
-  tps: 527.76381
+  dps: 616.19482
+  tps: 527.52655
  }
 }
 dps_results: {
@@ -162,15 +162,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 357.51869
-  tps: 664.47582
+  dps: 357.45229
+  tps: 664.40942
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 357.51869
-  tps: 322.97383
+  dps: 357.45229
+  tps: 322.90744
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 616.43208
-  tps: 527.76381
+  dps: 616.19482
+  tps: 527.52655
  }
 }
