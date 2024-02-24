@@ -137,6 +137,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellScorchDebuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [
@@ -144,7 +145,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			HunterInputs.PetAttackSpeed,
+			HunterInputs.NewRaptorStrike,
+			HunterInputs.PetAttackSpeedInput,
 			HunterInputs.PetUptime,
 			HunterInputs.SniperTrainingUptime,
 			OtherInputs.DistanceFromTarget,
@@ -176,11 +178,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	},
 
 	autoRotation: (player) => {
-		const hasMeleeSpecialist = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist
-		if (hasMeleeSpecialist) {
+		const isMelee = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
+			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
+
+		if (isMelee) {
 			return Presets.DefaultAPLs[player.getLevel()][2].rotation.rotation!;
 		}else {
-			return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+			if (player.getTalentTree() == 1) {
+				return Presets.DefaultAPLs[player.getLevel()][1].rotation.rotation!;
+			} else {
+				return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+			}
 		}
 	},
 	
