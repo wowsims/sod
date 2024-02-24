@@ -36,7 +36,7 @@ import {
 	RepFaction,
 	UIRune as Rune,
 } from '../proto/ui.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
@@ -187,7 +187,7 @@ export class ItemRenderer extends Component {
 				<img ref={runeIconElem} className="item-picker-rune-icon" />
 			</div>
 		);
-	
+
 		if (rune) {
 			ActionId.fromSpellId(rune.id).fill().then(filledId => runeIconElem.value!.src = filledId.iconUrl);
 		} else {
@@ -299,7 +299,7 @@ export class IconItemSwapPicker extends Component {
 	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items, enchants, and runes that are eligible for this slot
+	// All items and enchants that are eligible for this slot
 	private _items: Array<Item> = [];
 	private _enchants: Array<Enchant> = [];
 	private _runes: Array<Rune> = [];
@@ -319,17 +319,16 @@ export class IconItemSwapPicker extends Component {
 		this.socketsContainerElem.classList.add('item-picker-sockets-container')
 		this.iconAnchor.appendChild(this.socketsContainerElem);
 
-		const loadItems = () => this._items = this.player.getItems(slot);
-
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(slot);
 			this._enchants = this.player.getEnchants(slot);
 			this._runes = this.player.getRunes(slot);
+
 			const gearData = {
-				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					this.player.equipItemSwapitem(eventID, this.slot, equippedItem);
+				equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
+					player.equipItemSwapitem(eventID, this.slot, newItem)
 				},
-				getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+				getEquippedItem: () => player.getItemSwapItem(this.slot),
 				changeEvent: player.itemSwapChangeEmitter,
 			}
 
@@ -345,14 +344,10 @@ export class IconItemSwapPicker extends Component {
 					gearData: gearData,
 				});
 			});
+		});
 
-			player.levelChangeEmitter.on(loadItems);
-			player.itemSwapChangeEmitter.on(loadItems);
-
-			this.addOnDisposeCallback(() => {
-				player.levelChangeEmitter.off(loadItems);
-				player.itemSwapChangeEmitter.on(loadItems);
-			});
+		player.itemSwapChangeEmitter.on(() => {
+			this.update(player.getItemSwapGear().getEquippedItem(slot));
 		});
 	}
 
@@ -364,13 +359,13 @@ export class IconItemSwapPicker extends Component {
 
 		if (newItem) {
 			this.iconAnchor.classList.add("active")
+
+			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
-			newItem.asActionId().fill().then(filledId => filledId.setBackgroundAndHref(this.iconAnchor));
 		} else {
 			this.iconAnchor.classList.remove("active")
 		}
 	}
-
 }
 
 export interface GearData {
@@ -826,7 +821,7 @@ export class ItemList<T> {
 
 		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
 		makeShow2hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement, player.sim);
-		
+
 		if (!(label == 'Items' && (slot == ItemSlot.ItemSlotMainHand || (slot == ItemSlot.ItemSlotOffHand && player.getClass() == Class.ClassWarrior)))) {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
@@ -1164,7 +1159,7 @@ export class ItemList<T> {
 		};
 
 		let isFavorite = this.isItemFavorited(itemData);
-		
+
 		if (isFavorite) {
 			favoriteElem.value!.children[0].classList.add('fas');
 			listItemElem.dataset.fav = 'true';

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
@@ -19,6 +20,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolNature,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
+		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,

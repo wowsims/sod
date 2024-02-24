@@ -11,18 +11,13 @@ import {
 import {
 	Class,
 	Cooldowns,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-  TristateEffect,
   WeaponImbue,
-	SaygesFortune
 } from '../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../core/proto/druid.js';
 import { Gear } from '../core/proto_utils/gear.js';
@@ -106,43 +101,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
-		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			aspectOfTheLion: true,
-			arcaneBrilliance: true,
-			giftOfTheWild: TristateEffect.TristateEffectRegular,
-			battleShout: TristateEffect.TristateEffectRegular,
-		}),
-
-		partyBuffs: PartyBuffs.create({}),
-
-		individualBuffs: IndividualBuffs.create({
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-			blessingOfWisdom: TristateEffect.TristateEffectRegular,
-			boonOfBlackfathom: true,
-			ashenvalePvpBuff: true,
-			saygesFortune: SaygesFortune.SaygesDamage,
-		}),
-
-		debuffs: Debuffs.create({
-			judgementOfWisdom: false,
-			giftOfArthas: false,
-			exposeArmor: TristateEffect.TristateEffectMissing,
-			faerieFire: false,
-			sunderArmor: true,
-			curseOfRecklessness: false,
-			homunculi: 0,
-			curseOfVulnerability: true,
-			ancientCorrosivePoison: 30,
-		}),
-
 		other: Presets.OtherDefaults,
+		// Default raid/party buffs settings.
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		DruidInputs.SelfInnervate,
 	],
+
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.FeralDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -185,7 +156,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.GearBlank,
 			...Presets.GearPresets[Phase.Phase1],
 			...Presets.GearPresets[CURRENT_PHASE],
 		],

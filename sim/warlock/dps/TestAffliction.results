@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.8006
+  weights: 0.79957
   weights: 0
-  weights: 1.17759
-  weights: 0
-  weights: 0
+  weights: 1.17319
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.97357
+  weights: 0
+  weights: 0
+  weights: 4.93352
   weights: 2.3693
   weights: 0
   weights: 0
@@ -99,63 +99,63 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 222.43768
+  dps: 218.8571
   tps: 194.62603
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 237.06329
+  dps: 233.30175
   tps: 208.87944
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 594.83675
+  dps: 590.60254
   tps: 559.55911
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 243.16205
+  dps: 239.35453
   tps: 214.25685
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 254.63399
+  dps: 251.02891
   tps: 227.98654
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 596.12796
+  dps: 592.03813
   tps: 561.85683
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 592.9314
+  dps: 588.85986
   tps: 1191.74457
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 592.9314
+  dps: 588.85986
   tps: 559.5859
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 612.95159
+  dps: 607.67569
   tps: 562.78373
  }
 }
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 592.9314
+  dps: 588.85986
   tps: 559.5859
  }
 }

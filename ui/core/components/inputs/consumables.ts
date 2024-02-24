@@ -18,13 +18,13 @@ import {
 	Stat,
 	StrengthBuff,
 	WeaponImbue, 
-	WeaponType
+	WeaponType,
 } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 import { EventID, TypedEvent } from "../../typed_event";
 
-import { IconEnumValueConfig } from "../icon_enum_picker";
-import { makeBooleanConsumeInput } from "../icon_inputs";
+import { IconEnumPickerDirection, IconEnumValueConfig } from "../icon_enum_picker";
+import { makeBooleanConsumeInput, makeEnumConsumeInput } from "../icon_inputs";
 
 import { ActionInputConfig, ItemStatOption } from "./stat_options";
 
@@ -192,7 +192,7 @@ export const Sapper = makeBooleanConsumeInput({
 	]),
 	fieldName: 'sapper',
 	showWhen: (player) => player.hasProfession(Profession.Engineering),
-})
+});
 
 export const makeSapperInput = makeConsumeInputFactory({
 	consumesFieldName: 'sapper',
@@ -426,8 +426,29 @@ export const BoglingRootBuff = makeBooleanConsumeInput({actionId: () => ActionId
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
 
-// export const PetScrollOfAgilityV = makeBooleanConsumeInput({actionId: () => ActionId.fromItemId(27498), fieldName: 'petScrollOfAgility', minLevel: 5});
-// export const PetScrollOfStrengthV = makeBooleanConsumeInput({actionId: () => ActionId.fromItemId(27503), fieldName: 'petScrollOfStrength', minLevel: 5});
+export const PetScrollOfAgility = makeEnumConsumeInput({
+	direction: IconEnumPickerDirection.Vertical,
+	values: [
+		{ value: 0, tooltip: 'None' },
+		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: (player) => player.getLevel() >= 10 },
+		{ actionId: () => ActionId.fromItemId(1477), value: 2, showWhen: (player) => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(4425), value: 3, showWhen: (player) => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(10309), value: 4, showWhen: (player) => player.getLevel() >= 55 },
+	],
+	fieldName: 'petScrollOfAgility',
+})
+
+export const PetScrollOfStrength = makeEnumConsumeInput({
+	direction: IconEnumPickerDirection.Vertical,
+	values: [
+		{ value: 0, tooltip: 'None' },
+		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: (player) => player.getLevel() >= 10 },
+		{ actionId: () => ActionId.fromItemId(2289), value: 2, showWhen: (player) => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: (player) => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(10310), value: 4, showWhen: (player) => player.getLevel() >= 55 },
+	],
+	fieldName: 'petScrollOfStrength',
+})
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 POTIONS
@@ -449,22 +470,22 @@ export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
 	]),
 	value: Potions.GreaterManaPotion,
 };
-export const MildlyIrradiatedRejuvPotion: ConsumableInputConfig<Potions> = {
-	actionId: (player) => player.getMatchingItemActionId([
-		{ id: 215162, minLevel: 35 },
-	]),
-	value: Potions.MildlyIrradiatedRejuvPotion,
-	showWhen: (player) => player.hasProfession(Profession.Alchemy),
-};
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
-	{ config: MildlyIrradiatedRejuvPotion, 	stats: [] },
 	{ config: GreaterManaPotion,						stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, 		 							stats: [Stat.StatIntellect] },
 	{ config: LesserManaPotion,							stats: [Stat.StatIntellect] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});
+
+export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 215162, minLevel: 35 },
+	]),
+	fieldName: 'mildlyIrradiatedRejuvPot',
+	showWhen: (player) => player.hasProfession(Profession.Alchemy),
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 SPELL DAMAGE CONSUMES
@@ -684,6 +705,20 @@ export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 	}
 };
 
+// Spell Oils
+export const ShadowOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3824, minLevel: 25 },
+	]),
+	value: WeaponImbue.ShadowOil,
+};
+export const FrostOil: ConsumableInputConfig<WeaponImbue> = {
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 3829, minLevel: 40 },
+	]),
+	value: WeaponImbue.FrostOil,
+};
+
 const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: RockbiterWeaponImbue,		stats: [] },
 	{ config: FlametongueWeaponImbue,	stats: [] },
@@ -709,6 +744,9 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 
 	{ config: SolidWeightstone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseWeightstone(slot), stats: [Stat.StatAttackPower] },
+
+	{ config: ShadowOil, stats: [Stat.StatAttackPower] },
+	{ config: FrostOil, stats: [Stat.StatAttackPower] },
 ]
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [

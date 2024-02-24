@@ -8,40 +8,64 @@ import (
 
 var TalentTreeSizes = [3]int{15, 16, 16}
 
+const (
+	SpellCode_PriestNone int32 = iota
+	SpellCode_PriestFlashHeal
+	SpellCode_PriestHeal
+	SpellCode_PriestGreaterHeal
+)
+
 type Priest struct {
 	core.Character
 	Talents *proto.PriestTalents
 
 	Latency float64
 
+	// Auras
 	InnerFocusAura     *core.Aura
 	ShadowWeavingAuras core.AuraArray
+	WeakenedSouls      core.AuraArray
 
-	BindingHeal       *core.Spell
-	CircleOfHealing   *core.Spell
-	DevouringPlague   *core.Spell
-	FlashHeal         *core.Spell
-	GreaterHeal       *core.Spell
-	HolyFire          *core.Spell
-	InnerFocus        *core.Spell
-	ShadowWordPain    *core.Spell
-	MindBlast         *core.Spell
-	MindFlay          *core.Spell
-	MindFlayModifier  float64
-	MindBlastModifier float64
-	MindSear          *core.Spell
-	Penance           *core.Spell
-	PenanceHeal       *core.Spell
-	PowerWordShield   *core.Spell
-	PrayerOfHealing   *core.Spell
-	PrayerOfMending   *core.Spell
-	Renew             *core.Spell
-	EmpoweredRenew    *core.Spell
-	ShadowWordDeath   *core.Spell
-	Smite             *core.Spell
-	VoidPlague        *core.Spell
+	// Base Damage Spells
+	DevouringPlague []*core.Spell
+	HolyFire        []*core.Spell
+	MindBlast       []*core.Spell
+	MindFlay        [][]*core.Spell
+	ShadowWordPain  []*core.Spell
+	Smite           []*core.Spell
 
-	WeakenedSouls core.AuraArray
+	// Base Healing Spells
+	FlashHeal       []*core.Spell
+	GreaterHeal     []*core.Spell
+	PowerWordShield []*core.Spell
+	PrayerOfHealing []*core.Spell
+	Renew           []*core.Spell
+
+	// Other Base Spells
+	InnerFocus *core.Spell
+
+	// Runes
+	CircleOfHealing             *core.Spell
+	Dispersion                  *core.Spell
+	DispersionAura              *core.Aura
+	EmpoweredRenew              *core.Spell
+	Homunculi                   *core.Spell
+	HomunculiAura               *core.Aura
+	HomunculiPets               []*Homunculus
+	MindFlayModifier            float64 // For Twisted Faith
+	MindBlastModifier           float64 // For Twisted Faith
+	MindBlastCritChanceModifier float64
+	MindSear                    []*core.Spell // 1 entry for each tick
+	MindSpike                   *core.Spell
+	MindSpikeAuras              core.AuraArray
+	Penance                     *core.Spell
+	PenanceHeal                 *core.Spell
+	PrayerOfMending             *core.Spell
+	Shadowfiend                 *core.Spell
+	ShadowfiendAura             *core.Aura
+	ShadowfiendPet              *Shadowfiend
+	ShadowWordDeath             *core.Spell
+	VoidPlague                  *core.Spell
 
 	ProcPrayerOfMending core.ApplySpellResults
 
@@ -55,17 +79,16 @@ func (priest *Priest) GetCharacter() *core.Character {
 func (priest *Priest) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ShadowProtection = true
 	raidBuffs.DivineSpirit = true
-
-	raidBuffs.PowerWordFortitude = max(raidBuffs.PowerWordFortitude, core.MakeTristateValue(
-		true,
-		priest.Talents.ImprovedPowerWordFortitude == 2))
+	raidBuffs.PowerWordFortitude = max(
+		raidBuffs.PowerWordFortitude,
+		core.MakeTristateValue(true, priest.Talents.ImprovedPowerWordFortitude == 2),
+	)
 }
 
 func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
-	priest.registerSetBonuses()
 	priest.registerMindBlast()
 	priest.registerMindFlay()
 	priest.registerShadowWordPainSpell()
@@ -77,26 +100,11 @@ func (priest *Priest) Initialize() {
 }
 
 func (priest *Priest) RegisterHealingSpells() {
-	priest.registerPenanceHealSpell()
-	priest.registerBindingHealSpell()
-	priest.registerCircleOfHealingSpell()
-	priest.registerFlashHealSpell()
-	priest.registerGreaterHealSpell()
-	priest.registerPowerWordShieldSpell()
-	priest.registerPrayerOfHealingSpell()
-	priest.registerPrayerOfMendingSpell()
-	priest.registerRenewSpell()
-}
-
-func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
-	if priest.ShadowWeavingAuras == nil {
-		return
-	}
-
-	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
-		priest.ShadowWeavingAuras.Get(target).Activate(sim)
-		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
-	}
+	// priest.registerFlashHealSpell()
+	// priest.registerGreaterHealSpell()
+	// priest.registerPowerWordShieldSpell()
+	// priest.registerPrayerOfHealingSpell()
+	// priest.registerRenewSpell()
 }
 
 func (priest *Priest) Reset(_ *core.Simulation) {
@@ -119,6 +127,12 @@ func New(char *core.Character, talents string) *Priest {
 	priest.SpiritManaRegenPerSecond = func() float64 {
 		return 6.25 + priest.GetStat(stats.Spirit)/8
 	}
+
+	priest.ShadowfiendPet = priest.NewShadowfiend()
+	priest.HomunculiPets = make([]*Homunculus, 3)
+	priest.HomunculiPets[0] = priest.NewHomunculus(1, 202390)
+	priest.HomunculiPets[1] = priest.NewHomunculus(2, 202392)
+	priest.HomunculiPets[2] = priest.NewHomunculus(3, 202391)
 
 	return priest
 }

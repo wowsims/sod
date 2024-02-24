@@ -210,11 +210,30 @@ message Hunter {
 			Turtle = 25;
 		}
 
+		enum PetAttackSpeed {
+			One = 0;
+			OneTwo = 1;
+			OneThree = 2;
+			OneFour = 3;
+			OneFive = 4;
+			OneSix = 5;
+			OneSeven = 6;
+			Two = 7;
+			TwoFour = 8;
+			TwoFive = 9;
+		}
+
 		PetType pet_type = 3;
 		HunterPetTalents pet_talents = 4;
 		double pet_uptime = 5;
 
 		double sniper_training_uptime = 6;
+
+		double pet_attack_speed_old = 7;
+
+		bool new_raptor_strike = 8;
+
+		PetAttackSpeed pet_attack_speed = 9;
 	}
 	Options options = 2;
 }

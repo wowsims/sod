@@ -298,6 +298,13 @@ export class ActionId {
 					name += ' (Not Self)'
 				}
 				break;
+			case 'Stormstrike':
+				if (this.tag == 1) {
+					name += ' (Main Hand)'
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)'
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lava Burst':
 			case 'Lightning Bolt':

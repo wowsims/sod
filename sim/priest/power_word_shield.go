@@ -1,66 +1,60 @@
 package priest
 
-import (
-	"time"
+// func (priest *Priest) registerPowerWordShieldSpell() {
+// 	coeff := 0.8057
 
-	"github.com/wowsims/sod/sim/core"
-)
+// 	wsDuration := time.Second * 15
 
-func (priest *Priest) registerPowerWordShieldSpell() {
-	coeff := 0.8057
+// 	cd := core.Cooldown{}
 
-	wsDuration := time.Second * 15
+// 	priest.PowerWordShield = priest.RegisterSpell(core.SpellConfig{
+// 		ActionID:    core.ActionID{SpellID: 48066},
+// 		SpellSchool: core.SpellSchoolHoly,
+// 		ProcMask:    core.ProcMaskSpellHealing,
+// 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
-	cd := core.Cooldown{}
+// 		ManaCost: core.ManaCostOptions{
+// 			BaseCost:   0.23,
+// 			Multiplier: 1,
+// 		},
+// 		Cast: core.CastConfig{
+// 			DefaultCast: core.Cast{
+// 				GCD: core.GCDDefault,
+// 			},
+// 			CD: cd,
+// 		},
+// 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+// 			return !priest.WeakenedSouls.Get(target).IsActive()
+// 		},
 
-	priest.PowerWordShield = priest.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48066},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+// 		DamageMultiplier: 1 *
+// 			(1 + .05*float64(priest.Talents.ImprovedPowerWordShield)) *
+// 			(1 + .02*float64(priest.Talents.SpiritualHealing)),
+// 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.23,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: cd,
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !priest.WeakenedSouls.Get(target).IsActive()
-		},
+// 		Shield: core.ShieldConfig{
+// 			Aura: core.Aura{
+// 				Label:    "Power Word Shield",
+// 				Duration: time.Second * 30,
+// 			},
+// 		},
 
-		DamageMultiplier: 1 *
-			(1 + .05*float64(priest.Talents.ImprovedPowerWordShield)) *
-			(1 + .02*float64(priest.Talents.SpiritualHealing)),
-		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
+// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+// 			shieldAmount := 2230.0 + coeff*spell.HealingPower(target)
+// 			shield := spell.Shield(target)
+// 			shield.Apply(sim, shieldAmount)
 
-		Shield: core.ShieldConfig{
-			Aura: core.Aura{
-				Label:    "Power Word Shield",
-				Duration: time.Second * 30,
-			},
-		},
+// 			weakenedSoul := priest.WeakenedSouls.Get(target)
+// 			weakenedSoul.Duration = wsDuration
+// 			weakenedSoul.Activate(sim)
+// 		},
+// 	})
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			shieldAmount := 2230.0 + coeff*spell.HealingPower(target)
-			shield := spell.Shield(target)
-			shield.Apply(sim, shieldAmount)
-
-			weakenedSoul := priest.WeakenedSouls.Get(target)
-			weakenedSoul.Duration = wsDuration
-			weakenedSoul.Activate(sim)
-		},
-	})
-
-	priest.WeakenedSouls = priest.NewRaidAuraArray(func(target *core.Unit) *core.Aura {
-		return target.GetOrRegisterAura(core.Aura{
-			Label:    "Weakened Soul",
-			ActionID: core.ActionID{SpellID: 6788},
-			Duration: time.Second * 15,
-		})
-	})
-}
+// 	priest.WeakenedSouls = priest.NewRaidAuraArray(func(target *core.Unit) *core.Aura {
+// 		return target.GetOrRegisterAura(core.Aura{
+// 			Label:    "Weakened Soul",
+// 			ActionID: core.ActionID{SpellID: 6788},
+// 			Duration: time.Second * 15,
+// 		})
+// 	})
+// }

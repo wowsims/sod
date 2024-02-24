@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const MindBlastRanks = 9
@@ -15,19 +16,22 @@ var MindBlastManaCost = [MindBlastRanks + 1]float64{0, 50, 80, 110, 150, 185, 22
 var MindBlastLevel = [MindBlastRanks + 1]int{0, 10, 16, 22, 28, 34, 40, 46, 52, 58}
 
 func (priest *Priest) registerMindBlast() {
+	priest.MindBlast = make([]*core.Spell, MindBlastRanks+1)
 	cdTimer := priest.NewTimer()
 
 	for rank := 1; rank <= MindBlastRanks; rank++ {
 		config := priest.getMindBlastBaseConfig(rank, cdTimer)
 
 		if config.RequiredLevel <= int(priest.Level) {
-			priest.MindBlast = priest.GetOrRegisterSpell(config)
+			priest.MindBlast[rank] = priest.GetOrRegisterSpell(config)
 		}
 	}
 }
 
 func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 	spellId := MindBlastSpellId[rank]
+	// 2024-02-22 In-game tooltip is ~10% higher than what wowhead shows
+	// Un-accounted for 10% mind blast buff?
 	baseDamageLow := MindBlastBaseDamage[rank][0]
 	baseDamageHigh := MindBlastBaseDamage[rank][1]
 	spellCoeff := MindBlastSpellCoef[rank]
@@ -36,16 +40,18 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 	level := MindBlastLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
-		Rank:          rank,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL,
+
 		RequiredLevel: level,
+		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -57,23 +63,30 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			},
 		},
 
-		BonusHitRating:   float64(priest.Talents.ShadowFocus) * 2 * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1,
+		BonusCritRating:  priest.forceOfWillCritRating(),
+		BonusHitRating:   priest.shadowHitModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
+		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamageCacl := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()
-			return spell.CalcDamage(sim, target, baseDamageCacl, spell.OutcomeExpectedMagicHitAndCrit)
+			damage := ((baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
+			return spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
-			baseDamage *= priest.MindBlastModifier
+			if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+				spell.BonusCritRating += float64(30 * priest.MindSpikeAuras.Get(target).GetStacks() * core.CritRatingPerCritChance)
+			}
 
+			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
+				if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+					priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				}
 			}
 
 			spell.DealDamage(sim, result)

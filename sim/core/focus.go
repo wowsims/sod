@@ -48,6 +48,10 @@ func (fb *focusBar) CurrentFocus() float64 {
 	return fb.currentFocus
 }
 
+func (fb *focusBar) CurrentFocusPerTick() float64 {
+	return fb.focusPerTick
+}
+
 func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to add negative focus!")

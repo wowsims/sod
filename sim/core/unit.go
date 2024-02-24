@@ -323,7 +323,9 @@ func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 	unit.updateCastSpeed()
 }
-
+func (unit *Unit) ApplyFlatCastSpeed(dur time.Duration) time.Duration {
+	return time.Duration(float64(dur) * unit.PseudoStats.FlatCastSpeedMultiplier)
+}
 func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed)
 }

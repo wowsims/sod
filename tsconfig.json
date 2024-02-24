@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "ES2021",
-        "module": "es2015",
+        "target": "ES2020",
+        "module": "esnext",
         "moduleResolution": "node",
         "strict": true,
         "lib": [
@@ -9,21 +9,16 @@
             "ES2021",
             "DOM.Iterable"
         ],
-        "types": [],
         "outDir": "dist/sod",
         "pretty": false,
         "allowJs": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "baseUrl": ".",
-        "jsx": "react",
+        "jsx": "preserve",
         "jsxFactory": "element",
         "jsxFragmentFactory": "fragment",
     },
-    "exclude": [
-        "dist/sod",
-        "assets",
-        "sim",
-        "proto"
-    ]
+	"include": ["."],
+ 	"exclude": ["node_modules", "dist", "binary_dist", ".history", "ui/core/index.ts", "ui/core/proto/*"]
 }

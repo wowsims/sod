@@ -21,7 +21,6 @@ func (shaman *Shaman) applyLavaBurst() {
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
 	level := float64(shaman.Level)
-	spellId := int32(proto.ShamanRune_RuneHandsLavaBurst)
 	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
 	baseDamageLow := baseCalc * 4.69
 	baseDamageHigh := baseCalc * 6.05
@@ -38,7 +37,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
+		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
 		SpellCode:   SpellCode_ShamanLavaBurst,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,

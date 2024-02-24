@@ -76,7 +76,6 @@ export class RaidSimUI extends SimUI {
 		TypedEvent.freezeAllAndDo(() => {
 			let loadedSettings = false;
 
-			// TODO: Swap reads to sod after 1 week on 2024-02-22
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
 			if (savedSettings != null) {
 				try {
@@ -95,8 +94,6 @@ export class RaidSimUI extends SimUI {
 			// This needs to go last so it doesn't re-store things as they are initialized.
 			this.changeEmitter.on(eventID => {
 				const jsonStr = RaidSimSettings.toJsonString(this.toProto());
-				// TODO: Deprecate wotlk writes reads after 2 weeks on 2024-02-29
-				window.localStorage.setItem(this.getSettingsStorageKey().replace('wotlk', 'sod'), jsonStr);
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
 		});

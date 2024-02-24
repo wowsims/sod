@@ -146,29 +146,6 @@
     }
   }
 
-  .default-gem-container {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid white;
-    padding-bottom: 5px;
-    
-    .gem-socket-container {
-      height: 40px;
-      width: 40px;
-      margin-right: 3px;
-    }
-
-    .gem-icon {
-      height: 100%;
-      width: 100%;
-    }
-
-    .sockets-container {
-      display: flex;
-      flex-direction: row;
-    }
-  }
-
   .results-sim {
     margin-right: map-get($spacers, 3);
   }

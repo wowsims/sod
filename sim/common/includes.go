@@ -5,4 +5,5 @@ import (
 	_ "github.com/wowsims/sod/sim/common/sod"
 	_ "github.com/wowsims/sod/sim/common/sod/crafted"
 	_ "github.com/wowsims/sod/sim/common/sod/item_effects"
+	_ "github.com/wowsims/sod/sim/common/sod/items_sets"
 )

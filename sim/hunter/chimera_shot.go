@@ -24,6 +24,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{

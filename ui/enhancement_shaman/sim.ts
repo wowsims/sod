@@ -6,7 +6,6 @@ import { APLRotation } from '../core/proto/apl.js';
 import {
 	Class,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	PseudoStat,
@@ -106,10 +105,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
 	},
 

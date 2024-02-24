@@ -1,17 +1,13 @@
 import { Phase } from '../core/constants/other.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	RangedWeaponType,
 	Spec,
 	Stat, PseudoStat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Player } from '../core/player.js';
 import { Stats } from '../core/proto_utils/stats.js';
@@ -19,10 +15,12 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
+import { HunterRune } from '../core/proto/hunter.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	cssClass: 'hunter-sim-ui',
@@ -51,6 +49,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatArcanePower,
 	],
 	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatRangedDps,
 	],
 	// Reference stat against which to calculate EP.
@@ -113,31 +113,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
-		// Default rotation settings.
-		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			aspectOfTheLion: true,
-			arcaneBrilliance: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			homunculi: 70, // 70% average uptime default
-			faerieFire: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -149,9 +134,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: HunterInputs.HunterRotationConfig,
 	petConsumeInputs: [
+		ConsumablesInputs.PetScrollOfAgility,
+		ConsumablesInputs.PetScrollOfStrength,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellScorchDebuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [
@@ -159,6 +147,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			HunterInputs.NewRaptorStrike,
+			HunterInputs.PetAttackSpeedInput,
 			HunterInputs.PetUptime,
 			HunterInputs.SniperTrainingUptime,
 			OtherInputs.DistanceFromTarget,
@@ -190,7 +180,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	},
 
 	autoRotation: (player) => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const isMelee = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
+			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
+
+		if (isMelee) {
+			return Presets.DefaultAPLs[player.getLevel()][2].rotation.rotation!;
+		}else {
+			if (player.getTalentTree() == 1) {
+				return Presets.DefaultAPLs[player.getLevel()][1].rotation.rotation!;
+			} else {
+				return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+			}
+		}
 	},
 	
 	raidSimPresets: [

@@ -3,7 +3,6 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	Race,
@@ -18,7 +17,6 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
-// import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
@@ -89,10 +87,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.

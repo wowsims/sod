@@ -479,7 +479,6 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 
 		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
 
-		// TODO: Classic warlock pet stat deps
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina] * core.Ternary(warlock.Options.Summon == proto.WarlockOptions_Imp, 0.66, 0.75),
 			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
