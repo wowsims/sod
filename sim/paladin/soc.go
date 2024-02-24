@@ -56,7 +56,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage) + socJudgeSpellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage) + socJudgeSpellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
@@ -64,7 +64,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: spellIDProc},
 		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskEmpty, // This needs figured out properly
+		ProcMask:         core.ProcMaskSuppressedExtraAttackAura, // This needs figured out properly
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    level,
 		DamageMultiplier: 0.7,

@@ -95,7 +95,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellPower()
+			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellDamage()
 			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 		},
@@ -115,7 +115,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
 			handednessModifierSP := core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0)
-			baseDamage := baseDamageNoSP + effectBonusCoefficient*spell.SpellPower()*handednessModifierSP
+			baseDamage := baseDamageNoSP + effectBonusCoefficient*spell.SpellDamage()*handednessModifierSP
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
