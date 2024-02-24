@@ -32,7 +32,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
+			if (!spell.ProcMask.Matches(core.ProcMaskMelee) && !spell.ProcMask.Matches(core.ProcMaskSuppressedExtraAttackAura)) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
 			paladin.HolyShockCooldown.Reset()
@@ -74,6 +74,7 @@ func (paladin *Paladin) registerSheathOfLight() {
 			if !spell.ProcMask.Matches(core.ProcMaskWhiteHit) {
 				return
 			}
+			sheathAura.Deactivate(sim)
 			sheathAura.Activate(sim)
 		},
 	})

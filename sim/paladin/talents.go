@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -26,7 +27,9 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.PseudoStats.BaseParry += 0.1 * float64(paladin.Talents.Deflection)
 
 	paladin.applyWeaponSpecialization()
-	paladin.applyVengeance()
+	if paladin.Talents.Vengeance > 0 {
+		paladin.applyVengeance()
+	}
 	// paladin.applyRighteousVengeance()
 	// paladin.applyRedoubt()
 	// paladin.applyReckoning()
@@ -174,32 +177,24 @@ func (paladin *Paladin) applyWeaponSpecialization() {
 	}
 }
 
-func (paladin *Paladin) maybeProcVengeance(sim *core.Simulation, result *core.SpellResult) {
-	if result.DidCrit() && paladin.Talents.Vengeance > 0 {
-		paladin.VengeanceAura.Activate(sim)
-		paladin.VengeanceAura.AddStack(sim)
-	}
-}
-
-// I don't know if the new stack of vengeance applies to the crit that triggered it or not
-// Need to check this
 func (paladin *Paladin) applyVengeance() {
 	if paladin.Talents.Vengeance == 0 {
 		return
 	}
 
-	bonusPerStack := 0.03 * float64(paladin.Talents.Vengeance)
+	vengeanceMultiplier := 1.0 + 0.03*float64(paladin.Talents.Vengeance)
+	fmt.Println(vengeanceMultiplier)
 	paladin.VengeanceAura = paladin.RegisterAura(core.Aura{
-		Label:     "Vengeance Proc",
-		ActionID:  core.ActionID{SpellID: 20059},
-		Duration:  time.Second * 8,
-		MaxStacks: 5,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1 + (bonusPerStack * float64(oldStacks))
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + (bonusPerStack * float64(oldStacks))
-
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 + (bonusPerStack * float64(newStacks))
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (bonusPerStack * float64(newStacks))
+		Label:    "Vengeance Proc",
+		ActionID: core.ActionID{SpellID: 20059},
+		Duration: time.Second * 8,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= vengeanceMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= vengeanceMultiplier
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= vengeanceMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= vengeanceMultiplier
 		},
 	})
 
@@ -210,8 +205,8 @@ func (paladin *Paladin) applyVengeance() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee) {
-				paladin.maybeProcVengeance(sim, result)
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
+				paladin.VengeanceAura.Activate(sim)
 			}
 		},
 	})
