@@ -393,189 +393,189 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 521.81854
-  tps: 167.95339
+  dps: 526.44828
+  tps: 173.33314
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 509.99162
-  tps: 164.9676
+  dps: 514.7929
+  tps: 170.6019
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 530.77924
-  tps: 173.37022
+  dps: 535.41011
+  tps: 178.7524
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 504.92571
-  tps: 187.32988
+  dps: 509.50566
+  tps: 192.45429
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 472.81582
-  tps: 172.30875
+  dps: 477.75803
+  tps: 177.9342
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 470.07927
-  tps: 169.25723
+  dps: 474.61091
+  tps: 174.59849
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 478.51344
-  tps: 174.51432
+  dps: 484.03387
+  tps: 180.17329
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 501.15521
-  tps: 183.11001
+  dps: 506.817
+  tps: 188.31743
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 476.83107
-  tps: 173.04798
+  dps: 482.35046
+  tps: 178.48988
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 478.92677
-  tps: 173.26097
+  dps: 484.00714
+  tps: 178.81097
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 784.13677
-  tps: 181.93813
+  dps: 788.73448
+  tps: 186.81531
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 672.01718
-  tps: 158.78586
+  dps: 677.11848
+  tps: 163.67407
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 506.56484
-  tps: 163.29919
+  dps: 511.34268
+  tps: 168.91006
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 791.04789
-  tps: 185.62254
+  dps: 795.82613
+  tps: 190.62968
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1313.25906
-  tps: 761.80643
+  dps: 1332.63746
+  tps: 785.48562
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 783.99284
-  tps: 185.15579
+  dps: 788.6327
+  tps: 190.02519
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 791.07354
-  tps: 196.79604
+  dps: 796.08309
+  tps: 202.45032
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 609.80416
-  tps: 483.82051
+  dps: 623.77376
+  tps: 497.79011
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 363.82137
-  tps: 101.29822
+  dps: 367.23837
+  tps: 104.71522
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 389.2858
-  tps: 105.00337
+  dps: 393.2643
+  tps: 108.98188
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1326.80012
-  tps: 758.65455
+  dps: 1345.95074
+  tps: 782.64997
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 794.29315
-  tps: 185.9682
+  dps: 798.89086
+  tps: 190.84538
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 802.13203
-  tps: 201.67524
+  dps: 807.04867
+  tps: 207.21577
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 608.23306
-  tps: 479.66078
+  dps: 621.74911
+  tps: 493.17682
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 368.66789
-  tps: 101.86904
+  dps: 372.10548
+  tps: 105.30663
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 395.42252
-  tps: 106.49216
+  dps: 399.38716
+  tps: 110.45681
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 756.42861
-  tps: 184.84768
+  dps: 760.74084
+  tps: 189.5188
  }
 }
