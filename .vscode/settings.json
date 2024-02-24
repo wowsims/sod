@@ -29,7 +29,7 @@
     "[json]": {
 		"editor.formatOnSave": true,
 	},
-	"json.format.enable": true,
+	"json.format.enable": false,
     "json.schemas": [
         {
             "fileMatch": [
