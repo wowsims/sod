@@ -111,19 +111,20 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	apMultiplier := 1.1
 	spellHitIncrease := float64(core.SpellHitRatingPerHitChance * 10)
 
+	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Proc",
 		ActionID: core.ActionID{SpellID: procSpellId},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
-			shaman.MultiplyStat(stats.AttackPower, apMultiplier)
 			shaman.AddStatDynamic(sim, stats.SpellHit, spellHitIncrease)
+			aura.Unit.EnableDynamicStatDep(sim, statDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
-			shaman.MultiplyStat(stats.AttackPower, 1/apMultiplier)
 			shaman.AddStatDynamic(sim, stats.SpellHit, -1*spellHitIncrease)
+			aura.Unit.DisableDynamicStatDep(sim, statDep)
 		},
 	})
 
