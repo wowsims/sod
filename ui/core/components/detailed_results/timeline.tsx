@@ -19,7 +19,7 @@ import {
 import { actionColors } from './color_settings.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 import tippy from 'tippy.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 declare var ApexCharts: any;
@@ -643,7 +643,7 @@ export class Timeline extends ResultComponent {
 
 	private makeRowElem(actionId: ActionId, duration: number): JSX.Element {
 		const rowElem = (
-			<div className='rotation-timeline-row rotation-row' 
+			<div className='rotation-timeline-row rotation-row'
 				 style={{
 					width: this.timeToPx(duration),
 				 }}>
@@ -710,7 +710,7 @@ export class Timeline extends ResultComponent {
 		this.rotationLabels.appendChild(labelElem);
 
 		const rowElem = (
-			<div className='rotation-timeline-row rotation-row' 
+			<div className='rotation-timeline-row rotation-row'
 				 style={{
 					width: this.timeToPx(duration),
 				 }}>
@@ -1010,15 +1010,15 @@ export class Timeline extends ResultComponent {
 				{includeAuras && this.tooltipAurasSectionElem(log)}
 			</div>
 		);
-	}	
-	
+	}
+
 	private resourceTooltip(log: ResourceChangedLogGroup, maxValue: number, includeAuras: boolean): string {
 		return this.resourceTooltipElem(log, maxValue, includeAuras).outerHTML;
 	}
 
 	private tooltipLogItem(log: SimLog, value: string): string {
 		return this.tooltipLogItemElem(log, value).outerHTML;
-	}	
+	}
 
 	private tooltipLogItemElem(log: SimLog, value: string): JSX.Element {
 		return (
