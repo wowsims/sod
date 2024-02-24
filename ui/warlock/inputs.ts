@@ -19,7 +19,12 @@ export const ArmorInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecWar
 	fieldName: 'armor',
 	values: [
 		{ value: Armor.NoArmor, tooltip: 'No Armor' },
-		{ actionId: () => ActionId.fromSpellId(11735), value: Armor.DemonArmor },
+		{ actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 706, minLevel: 20, maxLevel: 39 },
+			{ id: 11733, minLevel: 40, maxLevel: 49 },
+			{ id: 11734, minLevel: 50, maxLevel: 59 },
+			{ id: 11735, minLevel: 60 },
+		]), value: Armor.DemonArmor },
 	],
 });
 
@@ -27,11 +32,19 @@ export const WeaponImbueInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.S
 	fieldName: 'weaponImbue',
 	values: [
 		{ value: WeaponImbue.NoWeaponImbue, tooltip: 'No Weapon Stone' },
-		// TODO: Classic warlock weapon stone id based on level
-		{ actionId: () => ActionId.fromItemId(13701), value: WeaponImbue.Firestone },
-		{ actionId: () => ActionId.fromItemId(13603), value: WeaponImbue.Spellstone },
+		{ actionId: (player) => player.getMatchingItemActionId([
+			{ id: 1254, minLevel: 28, maxLevel: 35 },
+			{ id: 13699, minLevel: 36, maxLevel: 45 },
+			{ id: 13700, minLevel: 46, maxLevel: 55 },
+			{ id: 13701, minLevel: 56 },
+		]), value: WeaponImbue.Firestone },
+		{ actionId: (player) => player.getMatchingItemActionId([
+			{ id: 5522, minLevel: 36, maxLevel: 47 },
+			{ id: 13602, minLevel: 48, maxLevel: 59 },
+			{ id: 13603, minLevel: 60 },
+		]), value: WeaponImbue.Spellstone },
 	],
-	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotOffHand) == null,
+	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotOffHand) == null && player.getLevel() >= 28,
 	changeEmitter: (player: Player<Spec.SpecWarlock>) => player.changeEmitter,
 });
 

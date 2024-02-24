@@ -49,6 +49,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatArcanePower,
 	],
 	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatRangedDps,
 	],
 	// Reference stat against which to calculate EP.
@@ -95,18 +97,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatStamina]: 0.5,
-			[Stat.StatAgility]: 2.65,
-			[Stat.StatIntellect]: 1.1,
-			[Stat.StatAttackPower]: 1.0,
+			[Stat.StatStrength]: 0.30,
+			[Stat.StatAgility]: 0.64,
+			[Stat.StatStamina]: 0.0,
+			[Stat.StatIntellect]: 0.02,
+			[Stat.StatAttackPower]: 1,
 			[Stat.StatRangedAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 2,
-			[Stat.StatMeleeCrit]: 1.5,
-			[Stat.StatMeleeHaste]: 1.39,
+			[Stat.StatMeleeHit]: 3.29,
+			[Stat.StatMeleeCrit]: 4.45,
+			[Stat.StatMeleeHaste]: 1.08,
 			[Stat.StatArmorPenetration]: 1.32,
-			[Stat.StatSpellPower]: 0.1,
-			[Stat.StatNaturePower]: 0.1,
+			[Stat.StatSpellPower]: 0.03,
+			[Stat.StatNaturePower]: 0.01,
+			[Stat.StatArcanePower]: 0.01,
+			[Stat.StatMP5]: 0.05,
 		}, {
+			[PseudoStat.PseudoStatMainHandDps]: 2.11,
+			[PseudoStat.PseudoStatOffHandDps]: 1.39,
 			[PseudoStat.PseudoStatRangedDps]: 6.32,
 		}),
 		// Default consumes settings.
@@ -137,6 +144,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellScorchDebuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [
@@ -144,7 +152,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			HunterInputs.PetAttackSpeed,
+			HunterInputs.NewRaptorStrike,
+			HunterInputs.PetAttackSpeedInput,
 			HunterInputs.PetUptime,
 			HunterInputs.SniperTrainingUptime,
 			OtherInputs.DistanceFromTarget,
@@ -176,11 +185,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	},
 
 	autoRotation: (player) => {
-		const hasMeleeSpecialist = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist
-		if (hasMeleeSpecialist) {
+		const isMelee = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
+			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
+
+		if (isMelee) {
 			return Presets.DefaultAPLs[player.getLevel()][2].rotation.rotation!;
 		}else {
-			return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+			if (player.getTalentTree() == 1) {
+				return Presets.DefaultAPLs[player.getLevel()][1].rotation.rotation!;
+			} else {
+				return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+			}
 		}
 	},
 	

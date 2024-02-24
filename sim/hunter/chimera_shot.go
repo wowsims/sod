@@ -61,8 +61,8 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 				if result.Landed() {
 					if hunter.SerpentSting.Dot(target).IsActive() {
-						hunter.SerpentSting.Dot(target).Rollover(sim)
 						ssProcSpell.Cast(sim, target)
+						hunter.SerpentSting.Dot(target).Rollover(sim)
 					}
 
 					if hasCobraStrikes && result.DidCrit() {

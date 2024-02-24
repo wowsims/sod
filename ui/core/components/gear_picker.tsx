@@ -35,6 +35,7 @@ import {
 	UIItem as Item,
 	RepFaction,
 	UIRune as Rune,
+	UIItem_FactionRestriction,
 } from '../proto/ui.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
@@ -1218,7 +1219,20 @@ export class ItemList<T> {
 			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
 		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
+			return makeAnchor(
+				ActionId.makeQuestUrl(src.id),
+					<span>
+						Quest
+						{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+							<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+						)}
+						{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+							<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+						)}
+						<br />
+						{src.name}
+					</span>
+			);
 		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
 			const factionNames = item.sources.
 				filter(source => source.source.oneofKind == 'rep').
@@ -1226,7 +1240,18 @@ export class ItemList<T> {
 			const src = source.source.rep;
 			return makeAnchor(ActionId.makeItemUrl(item.id), (
 				<>
-					{factionNames.map(name => (<span>{name}<br /></span>))}
+					{factionNames.map(name => (
+						<span>
+							{name}
+							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+								<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+							)}
+							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+								<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+							)}
+							<br />
+						</span>
+					))}
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>
 			))

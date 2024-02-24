@@ -39,7 +39,30 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	baseMinDamage := 0.0
 	baseMaxDamage := 0.0
-	attackSpeed := hunter.Options.PetAttackSpeed
+	attackSpeed := 2.0
+
+	switch hunter.Options.PetAttackSpeed {
+	case proto.Hunter_Options_One:
+		attackSpeed = 1.0
+	case proto.Hunter_Options_OneTwo:
+		attackSpeed = 1.2
+	case proto.Hunter_Options_OneThree:
+		attackSpeed = 1.3
+	case proto.Hunter_Options_OneFour:
+		attackSpeed = 1.4
+	case proto.Hunter_Options_OneFive:
+		attackSpeed = 1.5
+	case proto.Hunter_Options_OneSix:
+		attackSpeed = 1.6
+	case proto.Hunter_Options_OneSeven:
+		attackSpeed = 1.7
+	case proto.Hunter_Options_Two:
+		attackSpeed = 2
+	case proto.Hunter_Options_TwoFour:
+		attackSpeed = 2.4
+	case proto.Hunter_Options_TwoFive:
+		attackSpeed = 2.5
+	}
 
 	switch hunter.Level {
 	case 25:
@@ -138,7 +161,10 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.MultiplyStat(stats.Health, hp.config.Health)
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/62.77)
+
+	// Warrior crit scaling
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.CritRatingPerCritChance)
+	hp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.SpellCritRatingPerCritChance)
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 

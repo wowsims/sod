@@ -409,5 +409,35 @@ func (druid *Druid) applyMoonkinForm() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// 2024-02-27 Tuning:
+			// While in Moonkin form, Moonfire/Sunfire cost reduced by 50%,
+			// periodic damage increase by 50%
+			core.Each(druid.Moonfire, func(spell *DruidSpell) {
+				if spell != nil {
+					spell.CostMultiplier *= .5
+				}
+			})
+
+			druid.MoonfireDotMultiplier *= 1.5
+
+			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
+				druid.Sunfire.CostMultiplier *= .5
+				druid.SunfireDotMultiplier *= 1.5
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(druid.Moonfire, func(spell *DruidSpell) {
+				if spell != nil {
+					spell.CostMultiplier /= .5
+				}
+			})
+			druid.MoonfireDotMultiplier /= 1.5
+
+			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
+				druid.Sunfire.CostMultiplier /= .5
+				druid.SunfireDotMultiplier /= 1.5
+			}
+		},
 	})
 }

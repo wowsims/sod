@@ -317,6 +317,15 @@ func (equipment *Equipment) Stats() stats.Stats {
 	return equipStats
 }
 
+func (equipment *Equipment) BaseStats() stats.Stats {
+	equipStats := stats.Stats{}
+	for _, item := range equipment {
+		equipStats = equipStats.Add(item.Stats)
+		equipStats = equipStats.Add(item.RandomSuffix.Stats)
+	}
+	return equipStats
+}
+
 func (equipment *Equipment) GetRuneIds() []int32 {
 	out := make([]int32, len(equipment))
 	for _, v := range equipment {

@@ -144,6 +144,25 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	warlock.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[warlock.Class][int(warlock.Level)]*core.SpellCritRatingPerCritChance)
 
+	if warlock.Options.Armor == proto.WarlockOptions_DemonArmor {
+		armor := map[int32]float64{
+			25: 210.0,
+			40: 390.0,
+			50: 480.0,
+			60: 570.0,
+		}[warlock.GetCharacter().Level]
+
+		shadowRes := map[int32]float64{
+			25: 3.0,
+			40: 9.0,
+			50: 12.0,
+			60: 15.0,
+		}[warlock.GetCharacter().Level]
+
+		warlock.AddStat(stats.Armor, armor)
+		warlock.AddStat(stats.ShadowResistance, shadowRes)
+	}
+
 	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
 		warlock.Pet = warlock.NewWarlockPet()
 	}
