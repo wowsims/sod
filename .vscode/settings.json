@@ -26,10 +26,6 @@
             "source.fixAll.eslint": "always"
         }
 	},
-    "[json]": {
-		"editor.formatOnSave": true,
-	},
-	"json.format.enable": false,
     "json.schemas": [
         {
             "fileMatch": [
