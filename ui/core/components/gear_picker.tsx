@@ -1240,7 +1240,18 @@ export class ItemList<T> {
 			const src = source.source.rep;
 			return makeAnchor(ActionId.makeItemUrl(item.id), (
 				<>
-					{factionNames.map(name => (<span>{name}<br /></span>))}
+					{factionNames.map(name => (
+						<span>
+							{name}
+							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+								<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+							)}
+							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+								<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+							)}
+							<br />
+						</span>
+					))}
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>
 			))
