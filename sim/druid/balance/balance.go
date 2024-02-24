@@ -67,3 +67,12 @@ func (moonkin *BalanceDruid) Initialize() {
 	moonkin.RegisterBalanceSpells()
 	// moonkin.RegisterFeralCatSpells()
 }
+
+func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
+	moonkin.Druid.Reset(sim)
+
+	if moonkin.Talents.MoonkinForm {
+		moonkin.Druid.ClearForm(sim)
+		moonkin.MoonkinFormAura.Activate(sim)
+	}
+}
