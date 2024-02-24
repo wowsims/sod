@@ -49,6 +49,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatArcanePower,
 	],
 	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatRangedDps,
 	],
 	// Reference stat against which to calculate EP.
