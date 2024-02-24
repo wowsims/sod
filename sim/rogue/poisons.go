@@ -179,6 +179,7 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 // Apply Deadly Brew Deadly Poison procs
 func (rogue *Rogue) applyDeadlyBrewDeadly() {
 	// TODO: Check if Deadly Brew Deadly Proc triggers on Deadly Poison not from Deadly Brew
+	// TODO: Clean up this ID check for other poisons. Attemping the line below yields null and does not work
 	// poisonIDs := []int32{rogue.InstantPoison[0].SpellID, rogue.InstantPoison[1].SpellID, rogue.InstantPoison[2].SpellID, rogue.WoundPoison[0].SpellID, rogue.WoundPoison[1].SpellID}
 	rogue.RegisterAura(core.Aura{
 		Label:    "Deadly Brew (Deadly)",

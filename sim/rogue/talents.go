@@ -49,7 +49,7 @@ func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, 
 				rogue.AddComboPoints(sim, 1, ruthlessnessMetrics)
 			}
 		}
-		if t := rogue.Talents.RelentlessStrikes; t == true {
+		if t := rogue.Talents.RelentlessStrikes; t {
 			if sim.RandomFloat("RelentlessStrikes") < 0.2 {
 				rogue.AddEnergy(sim, 25, relentlessStrikesMetrics)
 			}
@@ -226,6 +226,7 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace); mask != core.ProcMaskUnknown {
 			// Add weapon skill here
 			// Stun too?
+			rogue.PseudoStats.MacesSkill = float64(maceSpec)
 		}
 	}
 }

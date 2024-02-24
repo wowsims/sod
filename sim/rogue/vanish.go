@@ -36,35 +36,3 @@ func (rogue *Rogue) registerVanishSpell() {
 		Priority: core.CooldownPriorityDrums,
 	})
 }
-
-const garroteMinDuration = time.Second * 9 // heuristically, 3 Garrote ticks are better DPE than regular builders
-
-func checkGarrote(sim *core.Simulation, rogue *Rogue) (bool, int32) {
-	initiative := core.Ternary[int32](rogue.Talents.Initiative == 0, 0, 1)
-	// Garrote cannot be cast in front of the target
-	if rogue.PseudoStats.InFrontOfTarget {
-		return false, 0
-	}
-
-	if !rogue.GCD.IsReady(sim) || rogue.CurrentEnergy() < rogue.Garrote.DefaultCast.Cost {
-		return false, 0
-	}
-
-	// Garrote Clip logic
-	if rogue.GCD.IsReady(sim) && rogue.Garrote.CurDot().IsActive() && sim.GetRemainingDuration() <= garroteMinDuration {
-		return true, 1 + initiative
-	}
-
-	return true, 1 + initiative
-}
-
-func checkPremediation(sim *core.Simulation, rogue *Rogue) (bool, int32) {
-	if rogue.Premeditation == nil {
-		return false, 0
-	}
-
-	if !rogue.Premeditation.IsReady(sim) {
-		return false, 0
-	}
-	return true, 2
-}
