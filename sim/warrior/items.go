@@ -16,7 +16,7 @@ func init() {
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionId,
 			SpellSchool: core.SpellSchoolShadow,
-			ProcMask:    core.ProcMaskEmpty,
+			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
@@ -49,10 +49,11 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := 65 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+				// The spell is also affected by phys school mods because it's shadow + physical school.
+				damage := 65 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical]
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					// Has no DefenseType, also haven't seen a miss in logs.
-					// TODO: can it crit? Haven't seen one in logs.
 					result := spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeAlwaysHit)
 					if result.Landed() {
 						spell.Dot(aoeTarget).Apply(sim)

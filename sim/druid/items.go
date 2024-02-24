@@ -41,7 +41,9 @@ func init() {
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					// The spell is affected by phys school mods because it's nature + physical school.
-					dmgWithPhysMods := 5 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+					dmgWithPhysMods := 5 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *
+						curTarget.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical]
+
 					spell.CalcAndDealDamage(sim, curTarget, dmgWithPhysMods, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}

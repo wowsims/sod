@@ -40,7 +40,9 @@ func init() {
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := 150 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow]
+				// The spell is also affected by shadow school mods because it's shadow + nature school.
+				damage := 150 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow]
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				}

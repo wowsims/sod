@@ -52,7 +52,9 @@ func init() {
 			CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := 150 * warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire]
+				// The spell is also affected by fire school mods because it's shadow + fire school.
+				damage := 150 * warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire]
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				}
