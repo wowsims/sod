@@ -125,6 +125,7 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		druid.AddStats(core.BuffSpellByLevel[core.MarkOfTheWild][druid.Level].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
 
+	// TODO: These should really be aura attached to the actual forms
 	if druid.InForm(Moonkin) {
 		raidBuffs.MoonkinAura = true
 	}
