@@ -32,7 +32,7 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: shaman.ConcussionMultiplier(),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 	}
