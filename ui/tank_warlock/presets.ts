@@ -30,47 +30,58 @@ import * as PresetUtils from '../core/preset_utils.js';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import AfflictionTankGear from './gear_sets/affi.tank.gear.json';
-import DestroTankGear from './gear_sets/destro.tank.gear.json';
+import AfflictionGearPhase1 from './gear_sets/p1.affi.tank.gear.json';
+import DestructionGearPhase1 from './gear_sets/p1.destro.tank.gear.json';
 
-export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('Affliction Tank', AfflictionTankGear);
-export const GearDemologyTankPhase1 = PresetUtils.makePresetGear('Demonology Tank', AfflictionTankGear);
-export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('Destruction Tank', DestroTankGear);
+import DemonologyGearPhase2 from './gear_sets/p2.demo.tank.gear.json';
+import DestructionGearPhase2 from './gear_sets/p2.destro.tank.gear.json';
+
+export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Affliction', AfflictionGearPhase1);
+export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destruction', DestructionGearPhase1);
+
+export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demonology', DemonologyGearPhase2);
+export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destruction', DestructionGearPhase2);
 
 export const GearPresets = {
-  [Phase.Phase1]: [
-    GearAfflictionTankPhase1,
-		GearDemologyTankPhase1,
+  	[Phase.Phase1]: [
+    	GearAfflictionTankPhase1,
 		GearDestructionTankPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+  	],
+	[Phase.Phase2]: [
+		GearDemonologyTankPhase2,
+		GearDestructionTankPhase2,
+  	]
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase1][0];
+export const DefaultGear = GearDemonologyTankPhase2;
 
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import AfflictionTankAPL from './apls/affi.tank.apl.json';
-import DestroTankAPL from './apls/destro.tank.apl.json';
-import P2TankAPL from './apls/destro.tank.apl.json';
+import Phase1AfflictionAPL from './apls/p1.affi.tank.apl.json';
+import Phase1DestroTankAPL from './apls/p1.destro.tank.apl.json';
 
-export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('Affliction Tank', AfflictionTankAPL);
-export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('Destruction Tank', DestroTankAPL);
-export const APLTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Tank', P2TankAPL);
+import Phase2DemonologyAPL from './apls/p2.demo.tank.apl.json';
+import Phase2DestroTankAPL from './apls/p2.destro.tank.apl.json';
+
+export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Affliction', Phase1AfflictionAPL);
+export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Destruction', Phase1DestroTankAPL);
+
+export const APLDemonologyTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', Phase2DemonologyAPL);
+export const APLDestructionTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Destruction', Phase2DestroTankAPL);
 
 
 export const APLPresets = {
   	[Phase.Phase1]: [
     	APLAfflictionTankPhase1,
-			APLDestructionTankPhase1,
+		APLDestructionTankPhase1,
   	],
   	[Phase.Phase2]: [
-			APLTankPhase2
+		APLDemonologyTankPhase2,
+		APLDestructionTankPhase2
   	]
 };
 
@@ -78,10 +89,11 @@ export const APLPresets = {
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
   	25: {
 		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][2],
+		1: APLPresets[Phase.Phase1][1],
 	},
   	40: {
 		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
 	}
 };
 
@@ -93,42 +105,46 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
 export const TalentsAfflictionTankPhase1 = {
-	name: 'Affliction Tank',
+	name: 'P1 Affliction',
 	data: SavedTalents.create({
 		talentsString: '050025001-003',
 	}),
 };
 
 export const TalentsDestructionTankPhase1 = {
-	name: 'Destruction',
+	name: 'P1 Destruction',
 	data: SavedTalents.create({
 		talentsString: '-03-0550201',
 	}),
 };
 
-export const TalentsTankPhase2 = {
-	name: 'Phase 2',
+export const TalentsDemonologyTankPhase2 = {
+	name: 'P2 Demonology',
 	data: SavedTalents.create({
-		talentsString: '-03-0550201',
+		talentsString: '-2050033112501251',
+	}),
+};
+
+export const TalentsDestructionTankPhase2 = {
+	name: 'P2 Destruction',
+	data: SavedTalents.create({
+		talentsString: '-035-05500050025001',
 	}),
 };
 
 export const TalentPresets = {
   	[Phase.Phase1]: [
     	TalentsAfflictionTankPhase1,
-			TalentsDestructionTankPhase1,
+		TalentsDestructionTankPhase1,
   	],
   	[Phase.Phase2]: [
-			TalentsTankPhase2
+		TalentsDemonologyTankPhase2,
+		TalentsDestructionTankPhase2
   	]
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultTalentsAffliction 	= TalentPresets[Phase.Phase1][0]
-// export const DefaultTalentsDemonology 	= TalentPresets[Phase.Phase1][1];
-export const DefaultTalentsDestruction 	= TalentPresets[Phase.Phase1][1];
 
-export const DefaultTalents = DefaultTalentsAffliction;
+export const DefaultTalents = TalentsDemonologyTankPhase2;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
