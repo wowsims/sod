@@ -1,6 +1,8 @@
+import * as Tooltips from '../../constants/tooltips';
 import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from "../../individual_sim_ui";
 import { simLaunchStatuses } from '../../launched_sims';
+import { Player } from "../../player";
 import {
 	Consumes,
 	Debuffs,
@@ -12,31 +14,26 @@ import {
 	RaidBuffs,
 	Spec,
 } from "../../proto/common";
+import { SavedEncounter, SavedSettings } from "../../proto/ui";
 import { professionNames, raceNames } from "../../proto_utils/names";
 import { specToEligibleRaces } from "../../proto_utils/utils";
-import { Player } from "../../player";
-import { SavedEncounter, SavedSettings } from "../../proto/ui";
 import { EventID, TypedEvent } from "../../typed_event";
 import { getEnumValues } from "../../utils";
-
 import { BooleanPicker } from "../boolean_picker";
 import { ContentBlock } from "../content_block";
 import { EncounterPicker } from '../encounter_picker';
 import { EnumPicker } from "../enum_picker";
 import { IconEnumPicker } from "../icon_enum_picker";
+import * as IconInputs from '../icon_inputs';
 import { Input } from "../input";
+import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 import { relevantStatOptions } from "../inputs/stat_options";
 import { ItemSwapPicker } from "../item_swap_picker";
 import { MultiIconPicker, MultiIconPickerItemConfig } from "../multi_icon_picker";
 import { NumberPicker } from "../number_picker";
 import { SavedDataManager } from "../saved_data_manager";
 import { SimTab } from "../sim_tab";
-
 import { ConsumesPicker } from "./consumes_picker";
-
-import * as Tooltips from '../../constants/tooltips';
-import * as IconInputs from '../icon_inputs';
-import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 
 export class SettingsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -145,13 +142,13 @@ export class SettingsTab extends SimTab {
 			changedEvent: player => player.raceChangeEmitter,
 			getValue: player => player.getRace(),
 			setValue: (eventID, player, newValue) => player.setRace(eventID, newValue),
-		});		
+		});
 
 		if (this.simUI.individualConfig.playerInputs?.inputs.length) {
 			this.configureInputSection(contentBlock.bodyElement, this.simUI.individualConfig.playerInputs);
 		}
 
-		let professionGroup = Input.newGroupContainer();
+		const professionGroup = Input.newGroupContainer();
 		contentBlock.bodyElement.appendChild(professionGroup);
 
 		const professions = getEnumValues(Profession) as Array<Profession>;
@@ -184,7 +181,7 @@ export class SettingsTab extends SimTab {
 
 	private buildCustomSettingsSections() {
 		(this.simUI.individualConfig.customSections || []).forEach(customSection => {
-			let section = customSection(this.column2, this.simUI);
+			const section = customSection(this.column2, this.simUI);
 			section.rootElem.classList.add('custom-section');
 		});
 	}
@@ -254,7 +251,7 @@ export class SettingsTab extends SimTab {
 
 	private buildDebuffsSettings() {
 		const debuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_CONFIG, this.simUI);
-		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI) 
+		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI)
 
 		if (!debuffOptions.length && !miscDebuffOptions.length) return
 
@@ -273,6 +270,9 @@ export class SettingsTab extends SimTab {
 				label: 'Misc Debuffs',
 			}, this.simUI);
 		}
+
+		// In case no debuffs are active, this will fire a change event to update the pickers
+		this.simUI.player.getRaid()?.debuffsChangeEmitter.emit(TypedEvent.nextEventID())
 	}
 
 	private buildSavedDataPickers() {
