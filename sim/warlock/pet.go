@@ -362,16 +362,14 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
 
-	// TODO: This is the LK lvl 80 value!
-	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritRatingPerCritChance/166.66667)
-
-	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	wp.AddStat(stats.AttackPower, -20)
+	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+
+	// Warrior crit scaling
+	wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.CritRatingPerCritChance)
+	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 
 	if warlock.Options.Summon == proto.WarlockOptions_Imp {
-		// imp has a slightly different agi crit scaling coef for some reason
-		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/51.0204)
-
 		// Imp gets 1mp/5 non casting regen per spirit
 		wp.PseudoStats.SpiritRegenMultiplier = 1
 		wp.PseudoStats.SpiritRegenRateCasting = 0
@@ -379,8 +377,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			// 1mp5 per spirit
 			return wp.GetStat(stats.Spirit) / 5
 		}
-	} else {
-		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	}
 
 	wp.AutoAttacks.MHConfig().DamageMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
@@ -389,7 +385,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
 	}
 
-	// core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
+	core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
 
 	warlock.AddPet(wp)
 

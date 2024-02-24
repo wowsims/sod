@@ -85,7 +85,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			baseDamage *= bounceCoeff
-			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= overloadChance {
 				shaman.ChainLightningOverload[rank].Cast(sim, curTarget)

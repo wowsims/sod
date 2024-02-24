@@ -207,5 +207,49 @@ func init() {
 		}
 	})
 
+	// Mekkatorque's Arcano-Shredder
+	core.NewItemEffect(213409, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(213409)
+		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
+
+		procAuras := character.NewEnemyAuraArray(core.MekkatorqueFistDebuffAura)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 434841},
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskSpellDamage,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				procAuras.Get(target).Activate(sim)
+			},
+		})
+
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Mekkatorque Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if ppmm.Proc(sim, spell.ProcMask, "Mekkatorque Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterOnSwapItemForEffect(36, aura)
+	})
+
 	core.AddEffectsToTest = true
 }

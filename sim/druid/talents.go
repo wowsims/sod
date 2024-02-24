@@ -32,7 +32,7 @@ func (druid *Druid) ApplyTalents() {
 	}
 
 	druid.setupNaturesGrace()
-	druid.applyMoonkinForm()
+	druid.registerMoonkinFormSpell()
 	druid.applyOmenOfClarity()
 	druid.applyBloodFrenzy()
 }

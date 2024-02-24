@@ -196,9 +196,9 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 }
 
 func (character *Character) applyEquipScaling(stat stats.Stat, multiplier float64) float64 {
-	var oldValue = character.EquipStats()[stat]
+	var oldValue = character.BaseEquipStats()[stat]
 	character.itemStatMultipliers[stat] *= multiplier
-	var newValue = character.EquipStats()[stat]
+	var newValue = character.BaseEquipStats()[stat]
 	return newValue - oldValue
 }
 
@@ -234,6 +234,12 @@ func (character *Character) RemoveDynamicEquipScaling(sim *Simulation, stat stat
 
 func (character *Character) EquipStats() stats.Stats {
 	var baseEquipStats = character.Equipment.Stats()
+	var bonusEquipStats = baseEquipStats.Add(character.bonusStats)
+	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
+}
+
+func (character *Character) BaseEquipStats() stats.Stats {
+	var baseEquipStats = character.Equipment.BaseStats()
 	var bonusEquipStats = baseEquipStats.Add(character.bonusStats)
 	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
 }

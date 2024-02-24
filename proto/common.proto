@@ -588,7 +588,7 @@ message Consumes {
 	int32 pet_scroll_of_strength = 23;
 }
 
-// NextIndex: 29
+// NextIndex: 30
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -633,6 +633,8 @@ message Debuffs {
 
 	// Bleed
 	bool mangle = 25;
+
+	bool mekkatorque_fist_debuff = 29;
 
 }
 

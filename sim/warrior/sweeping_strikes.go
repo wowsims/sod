@@ -77,7 +77,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return warrior.StanceMatches(BattleStance) },
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			ssAura.Activate(sim)
 		},
 	})
@@ -85,5 +85,8 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 	warrior.AddMajorCooldown(core.MajorCooldown{
 		Spell: SweepingStrikes,
 		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return sim.GetNumTargets() >= 2
+		},
 	})
 }

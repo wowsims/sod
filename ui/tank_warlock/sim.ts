@@ -132,6 +132,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		...ConsumablesInputs.FROST_POWER_CONFIG,
 	],
 	petConsumeInputs: [
+		ConsumablesInputs.PetScrollOfAgility,
+		ConsumablesInputs.PetScrollOfStrength,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -158,18 +160,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
+			...Presets.TalentPresets[Phase.Phase2],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
+			...Presets.APLPresets[Phase.Phase2],
 		],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
+			...Presets.GearPresets[Phase.Phase2],
 		],
 	},
 
@@ -177,22 +179,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
 		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
 
-		if (player.getLevel() == 25) {
-			// Affliction vs Destruction
-			const specNumber = hasMasterChanneler ? 0 : 1
-			return Presets.DefaultAPLs[25][specNumber].rotation.rotation!;
-		}
-		return Presets.DefaultAPLs[40][0].rotation.rotation!;
+		// MC vs LoF
+		const specNumber = hasMasterChanneler ? 0 : 1
+		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecTankWarlock,
-			tooltip: 'Affliction Tank',
-			defaultName: 'Affliction',
+			tooltip: 'Demonology Tank',
+			defaultName: 'Demonology',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 0),
 
-			talents: Presets.DefaultTalents.data,
+			talents: Presets.TalentsDemonologyTankPhase2.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -203,10 +202,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					1: Presets.GearDemonologyTankPhase2.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					1: Presets.GearDemonologyTankPhase2.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -217,7 +216,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			defaultName: 'Destruction',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 2),
 
-			talents: Presets.DefaultTalents.data,
+			talents: Presets.TalentsDestructionTankPhase2.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -228,10 +227,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
+					1: Presets.GearDestructionTankPhase2.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
+					1: Presets.GearDestructionTankPhase2.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

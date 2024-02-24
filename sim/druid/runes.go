@@ -160,14 +160,20 @@ func (druid *Druid) applySunfire() {
 		return
 	}
 
+	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
+	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
+
 	level := float64(druid.GetCharacter().Level)
 	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 1.3
-	baseHighDamage := baseCalc * 1.52
+	baseLowDamage := baseCalc * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
+	baseHighDamage := baseCalc * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
+	baseDotDamage := (baseCalc * 0.65) * moonfuryMultiplier * impMoonfireMultiplier
 	spellCoeff := .15
 	spellDotCoeff := .13
-	baseDotDamage := baseCalc * 0.65
+
 	ticks := int32(4)
+
+	druid.SunfireDotMultiplier = 1
 
 	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414684},
@@ -193,8 +199,9 @@ func (druid *Druid) applySunfire() {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = 1
+				dot.SnapshotBaseDamage = (baseDotDamage + spellDotCoeff*dot.Spell.SpellDamage()) *
+					druid.SunfireDotMultiplier
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -207,7 +214,7 @@ func (druid *Druid) applySunfire() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier()*druid.ImprovedMoonfireDamageMultiplier() + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
