@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 38
   final_stats: 2
-  final_stats: 14.62687
+  final_stats: 14.51588
   final_stats: 0
   final_stats: 0
   final_stats: 352.23
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.09339
+  weights: -0.14714
   weights: 0
-  weights: 0.63174
-  weights: 0
-  weights: 0
+  weights: 0.62512
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.58382
-  weights: 2.3451
+  weights: 0
+  weights: 0
+  weights: 6.57263
+  weights: 2.25758
   weights: 0
   weights: 0
   weights: 0
@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 525.62886
-  tps: 1041.71502
+  dps: 525.33726
+  tps: 1040.98705
  }
 }
 dps_results: {
@@ -134,43 +134,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 528.85041
-  tps: 1050.42978
+  dps: 528.57031
+  tps: 1049.6937
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 525.97013
-  tps: 1558.02197
+  dps: 525.88535
+  tps: 1557.76763
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 525.97013
-  tps: 1046.12909
+  dps: 525.88535
+  tps: 1045.87475
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 559.00228
-  tps: 1104.76045
+  dps: 558.70642
+  tps: 1103.87287
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 303.69254
-  tps: 1212.35233
+  dps: 303.627
+  tps: 1212.15572
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 303.69254
-  tps: 648.80204
+  dps: 303.627
+  tps: 648.60543
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 525.97013
-  tps: 1046.12909
+  dps: 525.88535
+  tps: 1045.87475
  }
 }
