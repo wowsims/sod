@@ -20,6 +20,8 @@ var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52,
 func (druid *Druid) registerMoonfireSpell() {
 	druid.Moonfire = make([]*DruidSpell, MoonfireRanks+1)
 
+	druid.MoonfireDotMultiplier = 1
+
 	for rank := 1; rank <= MoonfireRanks; rank++ {
 		config := druid.getMoonfireBaseConfig(rank)
 
@@ -67,7 +69,8 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage/float64(ticks))*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage = ((baseDotDamage/float64(ticks))*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()) *
+					druid.MoonfireDotMultiplier
 				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

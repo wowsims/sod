@@ -169,6 +169,8 @@ func (druid *Druid) applySunfire() {
 	baseDotDamage := baseCalc * 0.65
 	ticks := int32(4)
 
+	druid.SunfireDotMultiplier = 1
+
 	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414684},
 		SpellSchool: core.SpellSchoolNature,
@@ -193,7 +195,8 @@ func (druid *Druid) applySunfire() {
 			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage = (baseDotDamage*druid.MoonfuryDamageMultiplier() + spellDotCoeff*dot.Spell.SpellDamage()) *
+					druid.SunfireDotMultiplier
 				dot.SnapshotAttackerMultiplier = 1
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
