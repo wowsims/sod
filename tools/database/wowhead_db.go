@@ -155,6 +155,7 @@ type WowheadItem struct {
 	Ilvl          int32 `json:"itemLevel"`
 	Phase         int32 `json:"contentPhase"`
 	RequiresLevel int32 `json:"requiredLevel"`
+	RaceMask      int32 `json:"raceMask"`
 
 	Stats               WowheadItemStats `json:"stats"`
 	RandomSuffixOptions []int32          `json:"randomEnchants"`
@@ -218,7 +219,18 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 		Ilvl:                wi.Ilvl,
 		Phase:               wi.Phase,
 		RequiresLevel:       wi.RequiresLevel,
+		FactionRestriction:  wi.getFactionRstriction(),
 		Sources:             sources,
 		RandomSuffixOptions: wi.RandomSuffixOptions,
+	}
+}
+
+func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
+	if wi.RaceMask == 77 {
+		return proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
+	} else if wi.RaceMask == 178 {
+		return proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
+	} else {
+		return proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED
 	}
 }
