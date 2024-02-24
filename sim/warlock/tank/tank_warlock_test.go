@@ -36,25 +36,25 @@ func TestAffliction(t *testing.T) {
 	}))
 }
 
-// func TestDemonology(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-// 		{
-// 			Class: proto.Class_ClassWarlock,
-// 			Level: 25,
-// 			Race:  proto.Race_RaceOrc,
+func TestDemonology(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 25,
+			Race:  proto.Race_RaceOrc,
 
-// 			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "destro.tank"),
-// 			Talents:     Phase1DemonologyTalents,
-// 			Buffs:       core.FullBuffsPhase1,
-// 			Consumes:    Phase1Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
+			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "destro.tank"),
+			Talents:     Phase1DemonologyTalents,
+			Buffs:       core.FullBuffsPhase1,
+			Consumes:    Phase1Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
 
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatSpellPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 	}))
-// }
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
 
 func TestDestruction(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{

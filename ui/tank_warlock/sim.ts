@@ -132,6 +132,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		...ConsumablesInputs.FROST_POWER_CONFIG,
 	],
 	petConsumeInputs: [
+		ConsumablesInputs.PetScrollOfAgility,
+		ConsumablesInputs.PetScrollOfStrength,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
