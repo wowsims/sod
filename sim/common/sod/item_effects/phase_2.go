@@ -209,5 +209,64 @@ func init() {
 		})
 	})
 
+	// Toxic Revenger II
+	core.NewItemEffect(213291, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(213291)
+		ppmm := character.AutoAttacks.NewPPMManager(3.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 435169},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Toxic Revenger II Poison Cloud",
+				},
+				TickLength:    5 * time.Second,
+				NumberOfTicks: 3,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.SnapshotBaseDamage = 30
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotCritChance = 0
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				},
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					result := spell.CalcOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
+					if result.Landed() {
+						spell.Dot(aoeTarget).Apply(sim)
+					}
+				}
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Toxic Revenger II Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Toxic Revenger II Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
