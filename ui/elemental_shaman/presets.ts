@@ -1,4 +1,5 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
   Consumes,
   Debuffs,
@@ -14,8 +15,6 @@ import {
   TristateEffect,
   WeaponImbue,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
   AirTotem,
   EarthTotem,
@@ -25,17 +24,13 @@ import {
   ShamanTotems,
   WaterTotem,
 } from '../core/proto/shaman.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+import { SavedTalents } from '../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
-
 import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
@@ -62,12 +57,10 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase1AGAPL from './apls/phase_1_ag.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
-import Phase2APLWithSwap from './apls/phase_2_swap.apl.json';
 
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 export const APLPhase1AG = PresetUtils.makePresetAPLRotation('Phase 1 (AG)', Phase1AGAPL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
-export const APLPhase2Swap = PresetUtils.makePresetAPLRotation('Phase 2 (Swap)', Phase2APLWithSwap);
 
 export const APLPresets = {
   [Phase.Phase1]: [
@@ -76,7 +69,6 @@ export const APLPresets = {
   ],
   [Phase.Phase2]: [
     APLPhase2,
-    APLPhase2Swap,
   ]
 };
 
