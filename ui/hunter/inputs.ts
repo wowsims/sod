@@ -70,7 +70,7 @@ export const NewRaptorStrike = InputHelpers.makeSpecOptionsBooleanInput<Spec.Spe
 	fieldName: 'newRaptorStrike',
 	label: 'New Raptor Strike',
 	labelTooltip: 'New Raptor Strike with removed same weapon type 30% damage bonus.',
-	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
+	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
 });
 
 export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecHunter>({
