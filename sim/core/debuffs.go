@@ -349,9 +349,9 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	dmgMod := 1.06
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Elements",
+		Label:    "Mekkatorque Debuff",
 		ActionID: ActionID{SpellID: int32(spellID)},
-		Duration: time.Minute * 5,
+		Duration: time.Second * 20,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
 				stats.FireResistance:   -resistance,
@@ -371,6 +371,8 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 			})
 		},
 	})
+
+	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
