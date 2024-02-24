@@ -236,5 +236,41 @@ func init() {
 		})
 	})
 
+	// Supercharged Headchopper
+	core.NewItemEffect(213296, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(213296)
+		ppmm := character.AutoAttacks.NewPPMManager(1.5, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 434842},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskSpellDamage,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(80, 100) + 0.1*spell.SpellDamage()
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Supercharged Headchopper Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Supercharged Headchopper Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
