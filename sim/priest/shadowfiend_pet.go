@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -26,8 +27,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	case 40:
 		// 40 stats
 		// TODO: All of the stats and stat inheritance needs to be verified
-		baseDamageMin = 44
-		baseDamageMax = 56
+		baseDamageMin = 132
+		baseDamageMax = 168
 		shadowfiendBaseStats = stats.Stats{
 			stats.Strength:  74,
 			stats.Agility:   58,
@@ -59,9 +60,18 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		},
 	}))
 
+	shadowfiend.EnableManaBarWithModifier(.77)
+
 	shadowfiend.registerShadowCrawlSpell()
 
 	shadowfiend.PseudoStats.DamageTakenMultiplier *= 0.1
+
+	shadowfiend.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	shadowfiend.AddStat(stats.AttackPower, -20)
+
+	// Warrior crit scaling
+	shadowfiend.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(shadowfiend.Level)]*core.CritRatingPerCritChance)
+	shadowfiend.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(shadowfiend.Level)]*core.SpellCritRatingPerCritChance)
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
@@ -73,9 +83,6 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		AutoSwingMelee: true,
 	})
 
-	shadowfiend.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	shadowfiend.AddStat(stats.AttackPower, -20)
-
 	// core.ApplyPetConsumeEffects(&shadowfiend.Character, priest.Consumes)
 
 	priest.AddPet(shadowfiend)
@@ -86,7 +93,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
+		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.HolyPower], ownerStats[stats.ShadowPower])
 
 		// TODO: Needs more verification
 		return stats.Stats{
