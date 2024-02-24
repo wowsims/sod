@@ -71,6 +71,7 @@ export const NewRaptorStrike = InputHelpers.makeSpecOptionsBooleanInput<Spec.Spe
 	label: 'New Raptor Strike',
 	labelTooltip: 'New Raptor Strike with removed same weapon type 30% damage bonus.',
 	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
+	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
 export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecHunter>({
