@@ -33,7 +33,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 import Phase2DWGear from './gear_sets/phase_2_dw.gear.json';
-import Phase22HGear from './gear_sets/phase_2_2H.json';
+import Phase22HGear from './gear_sets/phase_2_2h.gear.json';
 
 export const GearArmsPhase1 = PresetUtils.makePresetGear('P1 Arms 2H', Phase1Gear, { talentTree: 0 });
 export const GearArmsDWPhase1 = PresetUtils.makePresetGear('P1 Arms DW', Phase1DWGear, { talentTree: 0 });
