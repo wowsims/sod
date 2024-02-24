@@ -37,11 +37,12 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
-		SpellCode:   SpellCode_ShamanLavaBurst,
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		ActionID:     core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
+		SpellCode:    SpellCode_ShamanLavaBurst,
+		SpellSchool:  core.SpellSchoolFire,
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        flags,
+		MissileSpeed: 20,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -72,7 +73,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				shaman.LavaBurstOverload.Cast(sim, target)
 			}
 
-			spell.DealDamage(sim, result)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	}
 
