@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -183,7 +182,6 @@ func (paladin *Paladin) applyVengeance() {
 	}
 
 	vengeanceMultiplier := 1.0 + 0.03*float64(paladin.Talents.Vengeance)
-	fmt.Println(vengeanceMultiplier)
 	paladin.VengeanceAura = paladin.RegisterAura(core.Aura{
 		Label:    "Vengeance Proc",
 		ActionID: core.ActionID{SpellID: 20059},
