@@ -75,7 +75,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				if stacks := dot.GetStacks(); stacks > 0 {
-					dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.09*dot.Spell.MeleeAttackPower(), 0)) * float64(stacks)
+					dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.035*dot.Spell.MeleeAttackPower(), 0)) * float64(stacks)
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
@@ -106,24 +106,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				dot.TakeSnapshot(sim, false)
 				return
 			}
-
-			/** Old wrath behavior for Deadly Poison proccing other poisons
-			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeMH) {
-				switch rogue.Options.OhImbue {
-				case proto.Rogue_Options_InstantPoison:
-					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
-				case proto.Rogue_Options_WoundPoison:
-					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
-				}
-			}
-			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeOH) {
-				switch rogue.Options.MhImbue {
-				case proto.Rogue_Options_InstantPoison:
-					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
-				case proto.Rogue_Options_WoundPoison:
-					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
-				}
-			}*/
 			dot.Refresh(sim)
 			dot.TakeSnapshot(sim, false)
 		},
@@ -131,7 +113,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 }
 
 func (rogue *Rogue) procDeadlyPoison(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	rogue.lastDeadlyPoisonProcMask = spell.ProcMask
 	rogue.DeadlyPoison.Cast(sim, result.Target)
 }
 
@@ -165,6 +146,54 @@ func (rogue *Rogue) applyDeadlyPoison() {
 				return
 			}
 			if sim.RandomFloat("Deadly Poison") < rogue.GetDeadlyPoisonProcChance() {
+				rogue.procDeadlyPoison(sim, spell, result)
+			}
+		},
+	})
+}
+
+// Apply Deadly Brew Instant Poison procs
+func (rogue *Rogue) applyDeadlyBrewInstant() {
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_NoPoison)
+	if procMask == core.ProcMaskUnknown {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label:    "Deadly Brew (Instant)",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+				return
+			}
+			if sim.RandomFloat("Instant Poison (Deadly Brew)") < rogue.GetInstantPoisonProcChance() {
+				rogue.InstantPoison[2].Cast(sim, result.Target)
+			}
+		},
+	})
+}
+
+// Apply Deadly Brew Deadly Poison procs
+func (rogue *Rogue) applyDeadlyBrewDeadly() {
+	// TODO: Check if Deadly Brew Deadly Proc triggers on Deadly Poison not from Deadly Brew
+	// poisonIDs := []int32{rogue.InstantPoison[0].SpellID, rogue.InstantPoison[1].SpellID, rogue.InstantPoison[2].SpellID, rogue.WoundPoison[0].SpellID, rogue.WoundPoison[1].SpellID}
+	rogue.RegisterAura(core.Aura{
+		Label:    "Deadly Brew (Deadly)",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// Only proc Deadly Brew for Deadly Poison if another "rogue" poison landed
+			if !result.Landed() || rogue.InstantPoison[0].SpellID == spell.SpellID ||
+				rogue.InstantPoison[1].SpellID == spell.SpellID || rogue.InstantPoison[2].SpellID == spell.SpellID ||
+				rogue.WoundPoison[0].SpellID == spell.SpellID || rogue.WoundPoison[1].SpellID == spell.SpellID {
+				return
+			}
+			if sim.RandomFloat("Deadly Poison (Deadly Brew)") < rogue.GetDeadlyPoisonProcChance() {
 				rogue.procDeadlyPoison(sim, spell, result)
 			}
 		},
@@ -228,6 +257,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	}[rogue.Level]
 
 	isShivProc := procSource == ShivProc
+	isDeadlyBrewProc := procSource == ShivProc
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
@@ -239,9 +269,12 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.09*spell.MeleeAttackPower(), 0)
+			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.03*spell.MeleeAttackPower(), 0)
 			if isShivProc {
+				// 100% application (except for the 1%? It can resist very rarely)
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			} else if isDeadlyBrewProc {
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			} else {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -306,8 +339,8 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 func (rogue *Rogue) registerInstantPoisonSpell() {
 	rogue.InstantPoison = [3]*core.Spell{
 		rogue.makeInstantPoison(NormalProc),
-		rogue.makeInstantPoison(DeadlyBrewProc),
 		rogue.makeInstantPoison(ShivProc),
+		rogue.makeInstantPoison(DeadlyBrewProc),
 	}
 }
 

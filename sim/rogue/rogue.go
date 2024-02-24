@@ -57,8 +57,6 @@ type Rogue struct {
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
 
-	lastDeadlyPoisonProcMask core.ProcMask
-
 	instantPoisonProcChanceBonus float64
 
 	AdrenalineRushAura   *core.Aura
