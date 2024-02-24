@@ -771,6 +771,12 @@ export const JudgementOfWisdom = withLabel(
 );
 
 // Misc Debuffs
+export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 213409, minLevel: 40 },
+	]),
+	fieldName: 'mekkatorqueFistDebuff',
+});
 export const JudgementOfLight = makeBooleanDebuffInput({
 	actionId: (player) => player.getMatchingSpellActionId([
 		{ id: 20185, minLevel: 30, maxLevel: 39 },
@@ -1121,6 +1127,11 @@ export const DEBUFFS_MISC_CONFIG = [
 		config: JudgementOfLight,
 		picker: IconPicker,
 		stats: [Stat.StatStamina]
+	},
+	{
+		config: MekkatorqueFistDebuff,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower],
 	},
 	{
 		config: CurseOfVulnerability,
