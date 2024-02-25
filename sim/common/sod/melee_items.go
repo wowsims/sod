@@ -13,6 +13,64 @@ func init() {
 
 	// Proc effects. Keep these in order by item ID.
 
+	// Fiery War Axe
+	core.NewItemEffect(870, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(870)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18796},
+			SpellSchool: core.SpellSchoolFire,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Fiery War Axe Fireball",
+				},
+				TickLength:    2 * time.Second,
+				NumberOfTicks: 3,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.SnapshotBaseDamage = 8
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotCritChance = 0
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				},
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(155, 197)
+				result := spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Fiery War Axe Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Fiery War Axe Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
 	// Nightblade
 	core.NewItemEffect(1982, func(agent core.Agent) {
 		character := agent.GetCharacter()
