@@ -26,6 +26,8 @@ type Priest struct {
 	ShadowWeavingAuras core.AuraArray
 	WeakenedSouls      core.AuraArray
 
+	ShadowWeavingProc *core.Spell
+
 	// Base Damage Spells
 	DevouringPlague []*core.Spell
 	HolyFire        []*core.Spell

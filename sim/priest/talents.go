@@ -107,17 +107,36 @@ func (priest *Priest) applyShadowWeaving() {
 	priest.ShadowWeavingAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ShadowWeavingAura(unit, int(priest.Talents.ShadowWeaving))
 	})
+
+	procChance := 0.2 * float64(priest.Talents.ShadowWeaving)
+
+	priest.ShadowWeavingProc = priest.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 15258},
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagNoMetrics,
+		SpellSchool: core.SpellSchoolShadow,
+
+		BonusHitRating: priest.shadowHitModifier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			if !result.Landed() {
+				return
+			}
+
+			if procChance == 1.0 || sim.RollWithLabel(0, 1, "ShadowWeaving") < procChance {
+				priest.ShadowWeavingAuras.Get(target).Activate(sim)
+				priest.ShadowWeavingAuras.Get(target).AddStack(sim)
+			}
+		},
+	})
 }
 
 func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.Unit) {
-	if priest.ShadowWeavingAuras == nil {
+	if priest.ShadowWeavingProc == nil {
 		return
 	}
 
-	if sim.RollWithLabel(0, 1, "ShadowWeaving") < (0.2 * float64(priest.Talents.ShadowWeaving)) {
-		priest.ShadowWeavingAuras.Get(target).Activate(sim)
-		priest.ShadowWeavingAuras.Get(target).AddStack(sim)
-	}
+	priest.ShadowWeavingProc.Cast(sim, target)
 }
 
 func (priest *Priest) registerInnerFocus() {
