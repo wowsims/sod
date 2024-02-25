@@ -1,6 +1,8 @@
 package warlock
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -24,14 +26,45 @@ func init() {
 	// 	})
 	// })
 
+	// Infernal Pact Essence
 	core.NewItemEffect(216509, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
 
-		if warlock.Pet == nil {
-			return
+		if warlock.Pet != nil {
+			warlock.Pet.AddStat(stats.Stamina, 20)
+			warlock.Pet.AddStat(stats.Intellect, 80)
 		}
 
-		warlock.Pet.AddStat(stats.Stamina, 20)
-		warlock.Pet.AddStat(stats.Intellect, 80)
+		spell := warlock.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 436479},
+			SpellSchool: core.SpellSchoolShadow,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagAPL,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    warlock.NewTimer(),
+					Duration: time.Minute * 5,
+				},
+			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// The spell is also affected by fire school mods because it's shadow + fire school.
+				damage := 150 * warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *
+					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire]
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		warlock.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
 	})
 }
