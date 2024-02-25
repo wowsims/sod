@@ -42,7 +42,7 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 
 		BonusHitRating:   priest.shadowHitModifier(),
 		BonusCritRating:  priest.forceOfWillCritRating(),
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 

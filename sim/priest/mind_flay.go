@@ -52,7 +52,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 		flags |= core.SpellFlagAPL
 	}
 	tickLength := time.Second
-	mindFlayTickSpell := priest.newMindFlagTickSpell(rank, tickIdx)
+	mindFlayTickSpell := priest.newMindFlayTickSpell(rank, tickIdx)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -108,9 +108,9 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	}
 }
 
-func (priest *Priest) newMindFlagTickSpell(rank int, numTicks int32) *core.Spell {
+func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell {
 	spellId := MindFlayTickSpellId[rank]
-	baseDamage := MindFlayBaseDamage[rank]
+	baseDamage := MindFlayBaseDamage[rank] / MindFlayTicks
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.GetOrRegisterSpell(core.SpellConfig{
@@ -121,12 +121,12 @@ func (priest *Priest) newMindFlagTickSpell(rank int, numTicks int32) *core.Spell
 
 		BonusHitRating:   1, // Not an independent hit once initial lands
 		BonusCritRating:  0,
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		CritMultiplier:   1.0,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := (baseDamage/MindFlayTicks + (spellCoeff * spell.SpellDamage())) * priest.MindFlayModifier
+			damage := (baseDamage + (spellCoeff * spell.SpellDamage())) * priest.MindFlayModifier
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			if result.Landed() {
