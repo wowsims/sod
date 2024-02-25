@@ -25,7 +25,7 @@ func TestRetribution(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p1ret"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Seal of Command Ret", SpecOptions: PlayerOptionsSealofCommand},
+			SpecOptions: core.SpecOptionsCombo{Label: "P1 Seal of Command Ret", SpecOptions: PlayerOptionsSealofCommand},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -38,33 +38,38 @@ func TestRetribution(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
 			Talents:     Phase2RetTalents,
-			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2ret"),
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2retsoc"),
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Seal of Command Ret", SpecOptions: PlayerOptionsSealofCommand},
+			SpecOptions: core.SpecOptionsCombo{Label: "P2 Seal of Command Ret", SpecOptions: PlayerOptionsSealofCommand},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		// {
-		// 	Class:      proto.Class_ClassPaladin,
-		// 	Level:      40,
-		// 	Race:       proto.Race_RaceHuman,
-		// 	OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+	}))
+}
 
-		// 	Talents:     Phase2ShockadinTalents,
-		// 	GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2shockadin"),
-		// 	Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret"),
-		// 	Buffs:       core.FullBuffsPhase2,
-		// 	Consumes:    Phase2Consumes,
-		// 	SpecOptions: core.SpecOptionsCombo{Label: "Seal of Martyrdom Shockadin", SpecOptions: PlayerOptionsSealofMartyrdom},
+func TestShockadin(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassPaladin,
+			Level:      40,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		// 	ItemFilter:      ItemFilters,
-		// 	EPReferenceStat: proto.Stat_StatAttackPower,
-		// 	StatsToWeigh:    Stats,
-		// },
+			Talents:     Phase2ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2retsom"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P2 Seal of Martyrdom Shockadin", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
