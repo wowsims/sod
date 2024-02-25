@@ -14,6 +14,8 @@ const (
 )
 
 func init() {
+	core.AddEffectsToTest = false
+
 	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.MP5, 2)
@@ -55,4 +57,6 @@ func init() {
 			Type:     core.CooldownTypeDPS,
 		})
 	})
+
+	core.AddEffectsToTest = true
 }

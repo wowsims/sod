@@ -8,6 +8,8 @@ import (
 )
 
 func init() {
+	core.AddEffectsToTest = false
+
 	// Exsanguinar
 	core.NewItemEffect(216497, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -68,4 +70,6 @@ func init() {
 			Type:     core.CooldownTypeDPS,
 		})
 	})
+
+	core.AddEffectsToTest = true
 }
