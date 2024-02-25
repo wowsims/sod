@@ -191,7 +191,7 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			// Only proc Deadly Brew for Deadly Poison if another "rogue" poison landed
 			if !result.Landed() || rogue.InstantPoison[0].SpellID == spell.SpellID ||
 				rogue.InstantPoison[1].SpellID == spell.SpellID || rogue.InstantPoison[2].SpellID == spell.SpellID ||
-				rogue.WoundPoison[0].SpellID == spell.SpellID || rogue.WoundPoison[1].SpellID == spell.SpellID {
+				rogue.WoundPoison.SpellID == spell.SpellID {
 				return
 			}
 			if sim.RandomFloat("Deadly Poison (Deadly Brew)") < rogue.GetDeadlyPoisonProcChance() {
@@ -215,12 +215,12 @@ func (rogue *Rogue) applyWoundPoison() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
+			if !result.Landed() || spell.ProcMask != procMask {
 				return
 			}
 
 			if sim.RandomFloat("Wound Poison") < rogue.GetWoundPoisonProcChance() {
-				rogue.WoundPoison[NormalProc].Cast(sim, result.Target)
+				rogue.WoundPoison.Cast(sim, result.Target)
 			}
 		},
 	})
@@ -331,10 +331,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return target.RegisterAura(woundPoisonDebuffAura)
 	})
-	rogue.WoundPoison = [2]*core.Spell{
-		rogue.makeWoundPoison(NormalProc),
-		rogue.makeWoundPoison(ShivProc),
-	}
+	rogue.WoundPoison = rogue.makeWoundPoison(NormalProc)
 }
 
 func (rogue *Rogue) registerInstantPoisonSpell() {
@@ -376,7 +373,7 @@ func (rogue *Rogue) applyInstantPoison() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
+			if !result.Landed() || spell.ProcMask != procMask {
 				return
 			}
 

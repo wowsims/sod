@@ -47,13 +47,14 @@ func (rogue *Rogue) registerShivSpell() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 
+				// 100% application (except for 1%? It can resist extremely rarely)
 				switch rogue.Options.OhImbue {
 				case proto.RogueOptions_DeadlyPoison:
 					rogue.DeadlyPoison.Cast(sim, target)
 				case proto.RogueOptions_InstantPoison:
 					rogue.InstantPoison[ShivProc].Cast(sim, target)
 				case proto.RogueOptions_WoundPoison:
-					rogue.WoundPoison[ShivProc].Cast(sim, target)
+					rogue.WoundPoison.Cast(sim, target)
 				}
 			}
 		},

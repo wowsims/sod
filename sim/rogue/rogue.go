@@ -36,7 +36,7 @@ type Rogue struct {
 	GhostlyStrike  *core.Spell
 	HungerForBlood *core.Spell
 	InstantPoison  [3]*core.Spell
-	WoundPoison    [2]*core.Spell
+	WoundPoison    *core.Spell
 	Mutilate       *core.Spell
 	MutilateMH     *core.Spell
 	MutilateOH     *core.Spell
