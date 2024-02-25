@@ -313,7 +313,7 @@ func init() {
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 434841},
 			SpellSchool: core.SpellSchoolArcane,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
