@@ -155,7 +155,8 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 25+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				dmg := sim.Roll(25, 35) + 0.05*spell.SpellDamage()
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
