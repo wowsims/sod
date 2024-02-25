@@ -5,9 +5,17 @@ import {
 	Food,
 	Potions,
 	AgilityElixir,
+	RaidBuffs,
+	EnchantedSigil,
+	IndividualBuffs,
+	Debuffs,
 	StrengthBuff,
 	WeaponImbue,
+	TristateEffect,
+	SaygesFortune,
 	Profession,
+	SpellPowerBuff,
+	Explosive,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -28,13 +36,13 @@ import * as PresetUtils from '../core/preset_utils.js';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
-import Phase2RetGearJson from './gear_sets/p2ret.gear.json'
-import Phase2ShockadinJson from './gear_sets/p2shockadin.gear.json'
+import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json'
+import Phase2RetSoMGearJson from './gear_sets/p2retsom.gear.json'
 
 // export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
-export const Phase1RetGear = PresetUtils.makePresetGear('P1 Ret', Phase1RetGearJson);
-export const Phase2RetGear = PresetUtils.makePresetGear('P2 Ret', Phase2RetGearJson);
-export const Phase2Shockadin = PresetUtils.makePresetGear('P2 Shockadin', Phase2ShockadinJson)
+export const Phase1RetGear = PresetUtils.makePresetGear('P1', Phase1RetGearJson);
+export const Phase2RetSoCGear = PresetUtils.makePresetGear('P2 SoC/DS', Phase2RetSoCGearJson);
+export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSoMGearJson)
 
 
 export const GearPresets = {
@@ -42,8 +50,8 @@ export const GearPresets = {
     Phase1RetGear,
   ],
   [Phase.Phase2]: [
-	Phase2RetGear,
-	Phase2Shockadin,
+	Phase2RetSoCGear,
+	Phase2RetSoMGear,
   ]
 };
 
@@ -121,21 +129,51 @@ export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	aura: PaladinAura.RetributionAura,
-	primarySeal: PaladinSeal.Righteousness,
+	primarySeal: PaladinSeal.Command,
 });
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,
-	food: Food.FoodSmokedSagefish,
+	food: Food.FoodDragonbreathChili,
 	defaultPotion: Potions.GreaterManaPotion,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	agilityElixir: AgilityElixir.ElixirOfLesserAgility,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	fillerExplosive: Explosive.ExplosiveEzThroRadiationBomb,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
 	boglingRoot: false,
 });
 
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfMight: TristateEffect.TristateEffectImproved,
+	blessingOfKings: true,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	sparkOfInspiration: true,
+	saygesFortune: SaygesFortune.SaygesDamage
+  });
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectRegular,
+	battleShout: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
+	trueshotAura: true,
+	sanctityAura: true,
+})
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	faerieFire: true,
+	homunculi: 70, // 70% average uptime default
+	sunderArmor: true,
+	judgementOfWisdom: true
+})
+
 export const OtherDefaults = {
-	profession1: Profession.Engineering,
-	profession2: Profession.Blacksmithing,
+	profession1: Profession.Blacksmithing,
+	profession2: Profession.Enchanting,
   };
   

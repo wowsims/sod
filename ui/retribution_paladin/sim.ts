@@ -107,36 +107,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			manaSpringTotem: TristateEffect.TristateEffectRegular,
-			battleShout: TristateEffect.TristateEffectImproved,
-			trueshotAura: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
 		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
-			judgementOfLight: true,
-			curseOfElements: true,
-			exposeArmor: TristateEffect.TristateEffectImproved,
-			sunderArmor: true,
-			faerieFire: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-		}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
+		race: Race.RaceHuman,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		RetributionPaladinInputs.PrimarySealSelection,
-		// RetributionPaladinInputs.AuraSelection,
-		// RetributionPaladinInputs.StartingSealSelection,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
@@ -197,10 +178,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-					2: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
+				[Faction.Horde]: {},
 			},
 		},
 	],
