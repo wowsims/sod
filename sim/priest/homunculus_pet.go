@@ -1,7 +1,6 @@
 package priest
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -43,7 +42,7 @@ func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 
 	homunculus := &Homunculus{
 		npcID:  npcID,
-		Pet:    core.NewPet(fmt.Sprintf("Homunculi (%d)", idx), &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, false),
+		Pet:    core.NewPet("Homunculi", &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, true),
 		Priest: priest,
 	}
 

@@ -27,8 +27,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	case 40:
 		// 40 stats
 		// TODO: All of the stats and stat inheritance needs to be verified
-		baseDamageMin = 132
-		baseDamageMax = 168
+		baseDamageMin = -38.3
+		baseDamageMax = -26.3
 		shadowfiendBaseStats = stats.Stats{
 			stats.Strength:  74,
 			stats.Agility:   58,
@@ -47,12 +47,12 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	}
 
 	shadowfiend := &Shadowfiend{
-		Pet:    core.NewPet("Shadowfiend", &priest.Character, shadowfiendBaseStats, priest.shadowfiendStatInheritance(), false, false),
+		Pet:    core.NewPet("Shadowfiend", &priest.Character, shadowfiendBaseStats, priest.shadowfiendStatInheritance(), false, true),
 		Priest: priest,
 	}
 
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 34433})
-	_ = core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
+	core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
 		Label: "Autoattack mana regen",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			restoreMana := priest.MaxMana() * 0.05
@@ -75,10 +75,12 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  baseDamageMin,
-			BaseDamageMax:  baseDamageMax,
-			SwingSpeed:     1.5,
-			CritMultiplier: priest.DefaultMeleeCritMultiplier(),
+			BaseDamageMin:     baseDamageMin,
+			BaseDamageMax:     baseDamageMax,
+			SwingSpeed:        1.5,
+			CritMultiplier:    priest.DefaultMeleeCritMultiplier(),
+			AttackPowerPerDPS: 14.0 / 6.0, // Observed 6 times stronger AP scaling then expected
+			SpellSchool:       core.SpellSchoolShadow,
 		},
 		AutoSwingMelee: true,
 	})
@@ -104,7 +106,6 @@ func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 			stats.MP5:              ownerStats[stats.MP5] * 0.3,
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
 			stats.SpellDamage:      ownerStats[stats.SpellDamage] * 0.15,
-			stats.FirePower:        ownerStats[stats.FirePower] * 0.15,
 			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
 			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
@@ -117,7 +118,7 @@ func (shadowfiend *Shadowfiend) Initialize() {
 }
 
 func (shadowfiend *Shadowfiend) ExecuteCustomRotation(sim *core.Simulation) {
-	shadowfiend.Shadowcrawl.Cast(sim, nil)
+	shadowfiend.Shadowcrawl.Cast(sim, shadowfiend.CurrentTarget)
 }
 
 func (shadowfiend *Shadowfiend) Reset(sim *core.Simulation) {
@@ -149,9 +150,8 @@ func (shadowfiend *Shadowfiend) registerShadowCrawlSpell() {
 
 	shadowfiend.Shadowcrawl = shadowfiend.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolMagic,
+		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoLogs,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
