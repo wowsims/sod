@@ -35,8 +35,9 @@ import {
 	UIItem as Item,
 	RepFaction,
 	UIRune as Rune,
+	UIItem_FactionRestriction,
 } from '../proto/ui.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
@@ -187,7 +188,7 @@ export class ItemRenderer extends Component {
 				<img ref={runeIconElem} className="item-picker-rune-icon" />
 			</div>
 		);
-	
+
 		if (rune) {
 			ActionId.fromSpellId(rune.id).fill().then(filledId => runeIconElem.value!.src = filledId.iconUrl);
 		} else {
@@ -821,7 +822,7 @@ export class ItemList<T> {
 
 		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
 		makeShow2hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement, player.sim);
-		
+
 		if (!(label == 'Items' && (slot == ItemSlot.ItemSlotMainHand || (slot == ItemSlot.ItemSlotOffHand && player.getClass() == Class.ClassWarrior)))) {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
@@ -1159,7 +1160,7 @@ export class ItemList<T> {
 		};
 
 		let isFavorite = this.isItemFavorited(itemData);
-		
+
 		if (isFavorite) {
 			favoriteElem.value!.children[0].classList.add('fas');
 			listItemElem.dataset.fav = 'true';
@@ -1218,7 +1219,20 @@ export class ItemList<T> {
 			return makeAnchor( ActionId.makeZoneUrl(zone.id), zone.name);
 		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), <span>Quest<br />{src.name}</span>);
+			return makeAnchor(
+				ActionId.makeQuestUrl(src.id),
+					<span>
+						Quest
+						{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+							<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+						)}
+						{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+							<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+						)}
+						<br />
+						{src.name}
+					</span>
+			);
 		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
 			const factionNames = item.sources.
 				filter(source => source.source.oneofKind == 'rep').
@@ -1226,7 +1240,18 @@ export class ItemList<T> {
 			const src = source.source.rep;
 			return makeAnchor(ActionId.makeItemUrl(item.id), (
 				<>
-					{factionNames.map(name => (<span>{name}<br /></span>))}
+					{factionNames.map(name => (
+						<span>
+							{name}
+							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+								<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+							)}
+							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+								<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+							)}
+							<br />
+						</span>
+					))}
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>
 			))

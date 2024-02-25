@@ -205,3 +205,12 @@ export function makeEnumIndividualBuffInput<SpecType extends Spec>(config: EnumI
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
 	}, config.fieldName, config.values, config.numColumns, config.direction || IconEnumPickerDirection.Vertical)
 };
+
+export function makeEnumConsumeInput<SpecType extends Spec>(config: EnumInputConfig<Player<SpecType>, Consumes, number>): InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, number> {
+	return InputHelpers.makeEnumIconInput<any, Consumes, Player<SpecType>, number>({
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: (player: Player<SpecType>) => player.getConsumes(),
+		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
+		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter]),
+	}, config.fieldName, config.values, config.numColumns, config.direction || IconEnumPickerDirection.Vertical)
+};

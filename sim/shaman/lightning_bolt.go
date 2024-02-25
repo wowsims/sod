@@ -62,17 +62,20 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		isOverload,
 	)
 	spell.SpellCode = SpellCode_ShamanLightningBolt
+	spell.MissileSpeed = 20
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
-		result := spell.CalcDamage(sim, target, baseDamage*shaman.ConcussionMultiplier(), spell.OutcomeMagicHitAndCrit)
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if canOverload && result.Landed() && sim.RandomFloat("LB Overload") < ShamanOverloadChance {
 			shaman.LightningBoltOverload[rank].Cast(sim, target)
 		}
 
-		spell.DealDamage(sim, result)
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			spell.DealDamage(sim, result)
+		})
 	}
 
 	if isOverload {

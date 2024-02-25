@@ -38,8 +38,10 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 }
 
 func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
+	var ticks int32 = 8
+
 	spellId := DevouringPlagueSpellId[rank]
-	baseDamage := DevouringPlagueBaseDamage[rank]
+	baseDotDamage := (DevouringPlagueBaseDamage[rank] / float64(ticks)) * priest.darknessDamageModifier()
 	manaCost := DevouringPlagueManaCost[rank]
 	level := DevouringPlagueLevel[rank]
 
@@ -77,15 +79,15 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 				Label: fmt.Sprintf("Devouring Plague (Rank %d)", rank),
 			},
 
-			NumberOfTicks: 8,
+			NumberOfTicks: ticks,
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/8 + (spellCoeff * dot.Spell.SpellDamage())
+				dot.SnapshotBaseDamage = baseDotDamage + (spellCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 			},
 		},
 
@@ -104,7 +106,7 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage/8 + (spellCoeff * spell.SpellDamage())
+				baseDamage := baseDotDamage + (spellCoeff * spell.SpellDamage())
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

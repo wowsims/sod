@@ -1,4 +1,5 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
@@ -13,22 +14,16 @@ import {
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	ShadowPriest_Options as Options,
 } from '../core/proto/priest.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+import { SavedTalents } from '../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
-
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 
@@ -36,12 +31,12 @@ export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 
 export const GearPresets = {
-  [Phase.Phase1]: [
+  	[Phase.Phase1]: [
 		GearPhase1,
-  ],
-  [Phase.Phase2]: [
+  	],
+  	[Phase.Phase2]: [
 		GearPhase2,
-  ],
+  	],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -58,18 +53,18 @@ export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL)
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
 
 export const APLPresets = {
-  [Phase.Phase1]: [
+  	[Phase.Phase1]: [
 		APLPhase1,
-  ],
-  [Phase.Phase2]: [
+  	],
+  	[Phase.Phase2]: [
 		APLPhase2,
-  ],
+  	],
 };
 
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
-  25: APLPresets[Phase.Phase1][0],
-  40: APLPresets[CURRENT_PHASE][0],
+  	25: APLPresets[Phase.Phase1][0],
+  	40: APLPresets[CURRENT_PHASE][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -120,6 +115,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
+	aspectOfTheLion: true,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,

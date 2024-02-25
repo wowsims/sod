@@ -80,7 +80,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 64
+// NextIndex: 65
 message APLValue {
     oneof value {
         // Operators
@@ -116,6 +116,7 @@ message APLValue {
 
         // Autoattack values
         APLValueAutoTimeToNext auto_time_to_next = 40;
+        APLValueAutoSwingTime auto_swing_time = 64;
 
         // Spell values
         APLValueSpellCanCast spell_can_cast = 19;
@@ -156,7 +157,7 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
-        APLValueCurrentSealRemainingTime current_seal_remaining_time = 64;
+        APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
     }
 }
 
@@ -364,7 +365,8 @@ message APLValueGCDIsReady {}
 message APLValueGCDTimeToReady {}
 
 message APLValueAutoTimeToNext {
-    enum AutoType {
+    enum AttackType
+    {
         Unknown = 0;
         Any = 1;
         Melee = 2;
@@ -372,7 +374,18 @@ message APLValueAutoTimeToNext {
         OffHand = 4;
         Ranged = 5;
     }
-    AutoType auto_type = 1;
+    AttackType auto_type = 1;
+}
+
+message APLValueAutoSwingTime {
+    enum SwingType
+    {
+        Unknown = 0;
+        MainHand = 3;
+        OffHand = 4;
+        Ranged = 5;
+    }
+    SwingType auto_type = 1;
 }
 
 message APLValueSpellCanCast {

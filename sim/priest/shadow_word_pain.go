@@ -29,11 +29,15 @@ func (priest *Priest) registerShadowWordPainSpell() {
 }
 
 func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
+	var ticks int32 = 6
+
 	spellId := ShadowWordPainSpellId[rank]
-	baseDamage := ShadowWordPainBaseDamage[rank]
+	baseDotDamage := ShadowWordPainBaseDamage[rank] / float64(ticks)
 	spellCoeff := ShadowWordPainSpellCoef[rank]
 	manaCost := ShadowWordPainManaCost[rank]
 	level := ShadowWordPainLevel[rank]
+
+	numHits := core.TernaryInt32(priest.HasRune(proto.PriestRune_RuneLegsSharedPain), 3, 1)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -55,7 +59,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 
 		BonusHitRating:   priest.shadowHitModifier(),
 		BonusCritRating:  0,
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
@@ -74,25 +78,24 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 				},
 			},
 
-			NumberOfTicks: 6 + (priest.Talents.ImprovedShadowWordPain),
+			NumberOfTicks: ticks + (priest.Talents.ImprovedShadowWordPain),
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/6 + (spellCoeff * dot.Spell.SpellDamage())
+				dot.SnapshotBaseDamage = baseDotDamage + (spellCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			numHits := core.TernaryInt32(priest.HasRune(proto.PriestRune_RuneLegsSharedPain), 3, 1)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.SpellMetrics[curTarget.UnitIndex].Hits--
 					priest.AddShadowWeavingStack(sim, curTarget)
 					spell.Dot(curTarget).Apply(sim)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
@@ -106,7 +109,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage/6 + (spellCoeff * spell.SpellDamage())
+				baseDamage := baseDotDamage + (spellCoeff * spell.SpellDamage())
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

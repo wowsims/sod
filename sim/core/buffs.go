@@ -764,6 +764,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.WarchiefsBlessing = false
 	individualBuffs.SpiritOfZandalar = false
+	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }

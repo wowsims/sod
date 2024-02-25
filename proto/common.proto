@@ -562,7 +562,7 @@ message IndividualBuffs {
 	bool spark_of_inspiration = 17;
 }
 
-// NextIndex: 22
+// NextIndex: 24
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -585,9 +585,11 @@ message Consumes {
 	bool bogling_root = 19;
 	EnchantedSigil enchanted_sigil = 20;
 	bool mildly_irradiated_rejuv_pot = 21;
+	int32 pet_scroll_of_agility = 22;
+	int32 pet_scroll_of_strength = 23;
 }
 
-// NextIndex: 29
+// NextIndex: 30
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -632,6 +634,8 @@ message Debuffs {
 
 	// Bleed
 	bool mangle = 25;
+
+	bool mekkatorque_fist_debuff = 29;
 
 }
 

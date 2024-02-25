@@ -70,8 +70,9 @@ type Druid struct {
 	Typhoon              *DruidSpell
 	Wrath                []*DruidSpell
 
-	CatForm  *DruidSpell
-	BearForm *DruidSpell
+	BearForm    *DruidSpell
+	CatForm     *DruidSpell
+	MoonkinForm *DruidSpell
 
 	BarkskinAura             *core.Aura
 	BearFormAura             *core.Aura
@@ -85,7 +86,7 @@ type Druid struct {
 	FrenziedRegenerationAura *core.Aura
 	FuryOfStormrageAura      *core.Aura
 	MaulQueueAura            *core.Aura
-	MoonkinT84PCAura         *core.Aura
+	MoonkinFormAura          *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
 	SurvivalInstinctsAura    *core.Aura
@@ -102,7 +103,8 @@ type Druid struct {
 
 	ProcOoc func(sim *core.Simulation)
 
-	ExtendingMoonfireStacks int
+	MoonfireDotMultiplier float64
+	SunfireDotMultiplier  float64
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -123,7 +125,8 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		druid.AddStats(core.BuffSpellByLevel[core.MarkOfTheWild][druid.Level].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
 
-	if druid.InForm(Moonkin) && druid.Talents.MoonkinForm {
+	// TODO: These should really be aura attached to the actual forms
+	if druid.InForm(Moonkin) {
 		raidBuffs.MoonkinAura = true
 	}
 

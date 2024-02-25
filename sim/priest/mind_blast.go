@@ -30,14 +30,14 @@ func (priest *Priest) registerMindBlast() {
 
 func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 	spellId := MindBlastSpellId[rank]
-	// 2024-02-22 In-game tooltip is ~10% higher than what wowhead shows
-	// Un-accounted for 10% mind blast buff?
-	baseDamageLow := MindBlastBaseDamage[rank][0]
-	baseDamageHigh := MindBlastBaseDamage[rank][1]
+	baseDamageLow := MindBlastBaseDamage[rank][0] * priest.darknessDamageModifier()
+	baseDamageHigh := MindBlastBaseDamage[rank][1] * priest.darknessDamageModifier()
 	spellCoeff := MindBlastSpellCoef[rank]
 	castTime := time.Millisecond * 1500
 	manaCost := MindBlastManaCost[rank]
 	level := MindBlastLevel[rank]
+
+	hasMindSpike := priest.HasRune(proto.PriestRune_RuneWaistMindSpike)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -80,11 +80,19 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			}
 
 			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
+
+			bonusCrit := 0.0
+			if hasMindSpike && priest.MindSpikeAuras.Get(target).IsActive() {
+				bonusCrit = float64(priest.MindSpikeAuras.Get(target).GetStacks()) * 30 * core.SpellCritRatingPerCritChance
+			}
+
+			spell.BonusCritRating += bonusCrit
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.BonusCritRating -= bonusCrit
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
-				if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+				if hasMindSpike {
 					priest.MindSpikeAuras.Get(target).Deactivate(sim)
 				}
 			}

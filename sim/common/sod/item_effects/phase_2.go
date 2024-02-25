@@ -17,11 +17,12 @@ func init() {
 	//                                 Leather
 	///////////////////////////////////////////////////////////////////////////
 
-	// Glowing Gneuro-Linked Cowl
+	// Machinist's Gloves
 	core.NewItemEffect(213319, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeMechanical {
 			character.AddStat(stats.AttackPower, 30)
+			character.AddStat(stats.RangedAttackPower, 30)
 		}
 	})
 

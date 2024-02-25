@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
@@ -19,6 +20,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolNature,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
+		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,
@@ -50,11 +52,14 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				} else {
+					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera
+					dot.SnapshotBaseDamage += spellCoeff * dot.Spell.SpellPower()
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -77,7 +82,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 }
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
-	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
 	spellCoeff := 0.4
 
 	return hunter.RegisterSpell(core.SpellConfig{
@@ -92,7 +96,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage*0.4 + spellCoeff*spell.SpellPower()
+			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*5)*0.4 + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 		},
 	})

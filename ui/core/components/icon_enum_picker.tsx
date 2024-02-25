@@ -4,7 +4,7 @@ import { TypedEvent } from '../typed_event.js';
 
 import { Input, InputConfig } from './input.js';
 
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 export enum IconEnumPickerDirection {
@@ -105,7 +105,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 		if (this.config.numColumns)
 			dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
-		
+
 		if (this.config.direction == IconEnumPickerDirection.Horizontal)
 			dropdownMenu.style.gridAutoFlow = 'column';
 

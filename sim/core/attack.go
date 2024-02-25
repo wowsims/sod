@@ -574,6 +574,11 @@ func (aa *AutoAttacks) OffhandSwingSpeed() time.Duration {
 	return aa.oh.curSwingDuration
 }
 
+// The amount of time between two Ranged swings.
+func (aa *AutoAttacks) RangedSwingSpeed() time.Duration {
+	return aa.ranged.curSwingDuration - aa.RangedAuto().CastTime()
+}
+
 // Optionally replaces the given swing spell with an Agent-specified MH Swing replacer.
 // This is for effects like Heroic Strike or Raptor Strike.
 func (aa *AutoAttacks) MaybeReplaceMHSwing(sim *Simulation, mhSwingSpell *Spell) *Spell {

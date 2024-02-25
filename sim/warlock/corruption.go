@@ -10,10 +10,10 @@ import (
 
 func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	dotTickCoeff := [8]float64{0, .08, .155, .167, .167, .167, .167, .167}[rank] // per tick
-	baseDamage := [8]float64{0, 40, 90, 222, 324, 486, 666, 822}[rank]
+	ticks := [8]int32{0, 4, 5, 6, 6, 6, 6, 6}[rank]
+	baseDamage := [8]float64{0, 40, 90, 222, 324, 486, 666, 822}[rank] / float64(ticks)
 	spellId := [8]int32{0, 172, 6222, 6223, 7648, 11671, 11672, 25311}[rank]
 	manaCost := [8]float64{0, 35, 55, 100, 160, 225, 290, 340}[rank]
-	ticks := [8]int32{0, 4, 5, 6, 6, 6, 6, 6}[rank]
 	level := [8]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
 
 	castTime := time.Millisecond * (2000 - (400 * time.Duration(warlock.Talents.ImprovedCorruption)))
@@ -37,13 +37,12 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:  float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-		BonusCritRating: 0,
-		DamageMultiplierAdditive: 1 +
-			0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier: 1,
-		CritMultiplier:   1,
-		ThreatMultiplier: 1,
+		BonusHitRating:           float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
+		BonusCritRating:          0,
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
+		DamageMultiplier:         1,
+		CritMultiplier:           1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -54,7 +53,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage/float64(ticks) + (dotTickCoeff * dot.Spell.SpellDamage())
+				dot.SnapshotBaseDamage = baseDamage + (dotTickCoeff * dot.Spell.SpellDamage())
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
