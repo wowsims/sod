@@ -25,6 +25,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
+		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount 
+		for a dps gain that will be slightly inflated given JotC does not benefit from source damage modifiers.`,
+		`Be aware that not all item and weapon enchants are currently implemented in the sim, which make some notable Retribution 
+		weapons like Pendulum of Doom and The Jackhammer undervalued.`,
 	],
 	warnings: [
 		(simUI: IndividualSimUI<Spec.SpecRetributionPaladin>) => {
