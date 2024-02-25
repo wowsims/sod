@@ -5,12 +5,26 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (rogue *Rogue) registerMainGaucheSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
 		return
 	}
+	
+	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
+	rogue.MainGaucheAura = rogue.RegisterAura(core.Aura{
+		Label:     "Main Gauche Buff",
+		ActionID:  core.ActionID{SpellID: 424919},
+		Duration:  time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
+		},
+	})
 
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
@@ -18,10 +32,10 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL | SpellFlagColdBlooded,
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier([]float64{35, 32, 30}[rogue.Talents.ImprovedSinisterStrike]),
+			Cost:   rogue.costModifier([]float64{15, 12, 10}[rogue.Talents.ImprovedSinisterStrike]),
 			Refund: 0.8,
 		},
-
+	
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -37,17 +51,17 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
-		// TODO: Add Parry aura for tanking
+		
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			// Insert Parry aura activation here
+			rogue.MainGaucheAura.Activate(sim)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 3, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}
