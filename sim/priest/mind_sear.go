@@ -91,8 +91,8 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 	level := float64(priest.Level)
 	spellId := int32(proto.PriestRune_RuneHandsMindSear)
 	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
-	baseDamageLow := baseDamage * .7
-	baseDamageHigh := baseDamage * .78
+	baseDamageLow := baseDamage * .7 * priest.darknessDamageModifier()
+	baseDamageHigh := baseDamage * .78 * priest.darknessDamageModifier()
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.GetOrRegisterSpell(core.SpellConfig{

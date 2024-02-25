@@ -47,7 +47,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 		},
 
 		BonusHitRating:   priest.shadowHitModifier(),
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		BonusCritRating:  priest.forceOfWillCritRating(),
 		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
@@ -78,13 +78,5 @@ func (priest *Priest) newMindSpikeAura(unit *core.Unit) *core.Aura {
 		ActionID:  core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			core.Each(priest.MindBlast, func(spell *core.Spell) {
-				if spell != nil {
-					spell.BonusCritRating -= .3 * float64(oldStacks)
-					spell.BonusCritRating += .3 * float64(newStacks)
-				}
-			})
-		},
 	})
 }

@@ -24,9 +24,6 @@ func (priest *Priest) ApplyTalents() {
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 - .02*float64(priest.Talents.SpellWarding)
 
-	// Darkness
-	priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1 + .02*float64(priest.Talents.Darkness)
-
 	if priest.Talents.Shadowform {
 		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
 	}
@@ -50,6 +47,10 @@ func (priest *Priest) ApplyTalents() {
 
 func (priest *Priest) forceOfWillDamageModifier() float64 {
 	return 1 + .01*float64(priest.Talents.ForceOfWill)
+}
+
+func (priest *Priest) darknessDamageModifier() float64 {
+	return 1 + .02*float64(priest.Talents.Darkness)
 }
 
 func (priest *Priest) forceOfWillCritRating() float64 {

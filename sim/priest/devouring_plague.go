@@ -41,7 +41,7 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 	var ticks int32 = 8
 
 	spellId := DevouringPlagueSpellId[rank]
-	baseDotDamage := DevouringPlagueBaseDamage[rank] / float64(ticks)
+	baseDotDamage := (DevouringPlagueBaseDamage[rank] / float64(ticks)) * priest.darknessDamageModifier()
 	manaCost := DevouringPlagueManaCost[rank]
 	level := DevouringPlagueLevel[rank]
 
