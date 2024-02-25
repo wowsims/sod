@@ -95,7 +95,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + ownerStats[stats.ShadowPower]
+		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.HolyPower], ownerStats[stats.ShadowPower])
 
 		// TODO: Needs more verification
 		return stats.Stats{
