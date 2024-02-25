@@ -9,7 +9,7 @@ import (
 
 // Seal of Command is a spell consisting of:
 // - A judgement that has a flat damage roll, and scales with spellpower.
-// - A 7ppm on-hit proc that deals 70% weapon damage and scales with spellpower.
+// - A 7ppm on-hit proc with a 1s ICD that deals 70% weapon damage and scales with spellpower.
 
 const socRanks = 5
 
@@ -64,7 +64,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: spellIDProc},
 		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskSuppressedExtraAttackAura, // This needs figured out properly
+		ProcMask:         core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura, // This needs figured out properly
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    level,
 		DamageMultiplier: 0.7,

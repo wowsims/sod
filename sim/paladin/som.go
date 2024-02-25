@@ -33,7 +33,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 407799},
 		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:         core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
 		Flags:            core.SpellFlagMeleeMetrics,
 		RequiredLevel:    1,
 		DamageMultiplier: 0.4,
@@ -45,16 +45,6 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
-
-	// TODO: SoM also procs on a variety of weapon proc effects like Talwar's shadow bolt.
-	// There is a brief icd preventing SoM and weapon procs chaining back and forth, they
-	// can proc each other exactly once.
-	// We need the proc rates figured out to see if they differ between weapons and what variables
-	// the proc rates may be a function of.
-	// icd := core.Cooldown{
-	// 	Timer:    paladin.NewTimer(),
-	// 	Duration: time.Millisecond * 5,
-	// }
 
 	auraActionID := core.ActionID{SpellID: 407798}
 	paladin.SealOfMartyrdomAura = paladin.RegisterAura(core.Aura{
@@ -71,9 +61,6 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 				onSwingProc.Cast(sim, result.Target)
 			}
 			if spell.ProcMask.Matches(core.ProcMaskProc) {
-				// if icd.IsReady(sim) {
-				// 	icd.Use(sim)
-				// }
 				onSwingProc.Cast(sim, result.Target)
 			}
 			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
