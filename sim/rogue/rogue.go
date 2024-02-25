@@ -14,7 +14,7 @@ const (
 	SpellFlagColdBlooded = core.SpellFlagAgentReserved4
 )
 
-var TalentTreeSizes = [3]int{27, 28, 28}
+var TalentTreeSizes = [3]int{15, 19, 17}
 
 const RogueBleedTag = "RogueBleed"
 
@@ -64,6 +64,7 @@ type Rogue struct {
 	EnvenomAura          *core.Aura
 	ExposeArmorAuras     core.AuraArray
 	SliceAndDiceAura     *core.Aura
+	MainGaucheAura 		 *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura
