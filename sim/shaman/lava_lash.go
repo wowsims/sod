@@ -38,7 +38,7 @@ func (shaman *Shaman) applyLavaLash() {
 			},
 		},
 
-		DamageMultiplier: 1.5 * imbueMultiplier,
+		DamageMultiplier: 1.5 * imbueMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 
