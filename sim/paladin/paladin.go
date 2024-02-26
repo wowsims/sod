@@ -173,3 +173,12 @@ func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
 	}
 	return returnSpell
 }
+
+func (paladin *Paladin) ApplySeal(aura *core.Aura, sim *core.Simulation) {
+	if paladin.CurrentSeal != nil {
+		paladin.CurrentSeal.Deactivate(sim)
+	}
+	paladin.CurrentSeal = aura
+	paladin.CurrentSeal.Activate(sim)
+	paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
+}

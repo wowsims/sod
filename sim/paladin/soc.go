@@ -134,12 +134,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if paladin.CurrentSeal != nil {
-				paladin.CurrentSeal.Deactivate(sim)
-			}
-			paladin.CurrentSeal = aura
-			paladin.CurrentSeal.Activate(sim)
-			paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
+			paladin.ApplySeal(aura, sim)
 		},
 	})
 }
