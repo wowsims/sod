@@ -63,34 +63,34 @@ message PriestTalents {
 enum PriestRune {
 	PriestRuneNone = 0;
 
-	RuneChestSerendipity		 		= 413248;
-	RuneChestStrengthOfSoul			= 415739;
-	RuneChestTwistedFaith    		= 425198;
-	RuneChestVoidPlague					= 425204;
+	RuneChestSerendipity	 	= 413248;
+	RuneChestStrengthOfSoul		= 415739;
+	RuneChestTwistedFaith    	= 425198;
+	RuneChestVoidPlague			= 425204;
 
-	RuneHandsCircleOfHealing		= 401946;
-	RuneHandsMindSear						= 413259;
-	RuneHandsPenance						= 402174;
-	RuneHandsShadowWordDeath 		= 401955;
+	RuneHandsCircleOfHealing	= 401946;
+	RuneHandsMindSear			= 413259;
+	RuneHandsPenance			= 402174;
+	RuneHandsShadowWordDeath 	= 401955;
 
-	RuneWaistEmpoweredRenew			= 425266;
-	RuneWaistMindSpike					= 431655;
-	RuneWaistRenewedHope 				= 425280;
+	RuneWaistEmpoweredRenew		= 425266;
+	RuneWaistMindSpike			= 431655;
+	RuneWaistRenewedHope 		= 425280;
 
-	RuneLegsHomunculi						= 402799;
-	RuneLegsPowerWordBarrier		= 425207;
-	RuneLegsPrayerOfMending			= 401859;
-	RuneLegsSharedPain					= 401969;
+	RuneLegsHomunculi			= 402799;
+	RuneLegsPowerWordBarrier	= 425207;
+	RuneLegsPrayerOfMending		= 401859;
+	RuneLegsSharedPain			= 401969;
 
-	RuneFeetDispersion					= 425294;
-	RuneFeetPainSuppression			= 402004;
+	RuneFeetDispersion			= 425294;
+	RuneFeetPainSuppression		= 402004;
 	RuneFeetSpiritOfTheRedeemer	= 425284;
 }
 
 message ShadowPriest {
 	message Rotation {
 	}
-	
+
 	message Options {
 		enum Armor {
 			NoArmor = 0;
@@ -110,7 +110,7 @@ message ShadowPriest {
 message HealingPriest {
 	message Rotation {
 	}
-	
+
 	message Options {
 		bool use_inner_fire = 3;
 		bool use_shadowfiend = 1;
