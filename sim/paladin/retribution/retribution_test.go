@@ -3,7 +3,6 @@ package retribution
 import (
 	"testing"
 
-	_ "github.com/wowsims/sod/sim/common" // imported to get item effects included.
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
