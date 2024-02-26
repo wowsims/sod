@@ -246,7 +246,7 @@ func init() {
 		character.AddStat(stats.FrostPower, bonus)
 	})
 
-	// Globes - Threat
+	// Gloves - Threat
 	// core.NewEnchantEffect(2613, func(agent core.Agent) {
 	// 	character := agent.GetCharacter()
 	// 	character.PseudoStats.ThreatMultiplier *= 1.02

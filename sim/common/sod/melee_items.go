@@ -325,7 +325,7 @@ func init() {
 			},
 		})
 
-		aura := character.GetOrRegisterAura(core.Aura{
+		character.GetOrRegisterAura(core.Aura{
 			Label:    "Mekkatorque Proc Aura",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -341,8 +341,6 @@ func init() {
 				}
 			},
 		})
-
-		character.ItemSwap.RegisterOnSwapItemForEffect(36, aura)
 	})
 
 	core.AddEffectsToTest = true
