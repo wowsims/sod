@@ -141,7 +141,7 @@ export const TalentsBeastMasteryPhase2 = {
 export const TalentsMarksmanPhase2 = {
 	name: 'P2 Marksmanship',
 	data: SavedTalents.create({
-		talentsString: '5-0555100150301',
+		talentsString: '-05551001503051',
 	}),
 };
 
