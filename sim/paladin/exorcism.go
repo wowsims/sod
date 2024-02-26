@@ -32,6 +32,10 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 	baseDamageMax := baseDamageMin + dieSides
 
 	spellCoeff := 0.429
+	bonusCrit := core.TernaryFloat64(
+		guaranteed_crit,
+		100*core.CritRatingPerCritChance,
+		0)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -64,11 +68,6 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellDamage()
-
-			bonusCrit := core.TernaryFloat64(
-				guaranteed_crit,
-				100*core.CritRatingPerCritChance,
-				0)
 
 			spell.BonusCritRating += bonusCrit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
