@@ -17,20 +17,17 @@ import {
 	SpellPowerBuff,
 	Stat,
 	StrengthBuff,
-	WeaponImbue, 
+	WeaponImbue,
 	WeaponType,
 } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
+import { isBluntWeaponType, isSharpWeaponType } from "../../proto_utils/utils";
 import { EventID, TypedEvent } from "../../typed_event";
-
 import { IconEnumPickerDirection, IconEnumValueConfig } from "../icon_enum_picker";
 import { makeBooleanConsumeInput, makeEnumConsumeInput } from "../icon_inputs";
-
-import { ActionInputConfig, ItemStatOption } from "./stat_options";
-
 import * as InputHelpers from '../input_helpers';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from "./shaman_imbues";
-import { isBluntWeaponType, isSharpWeaponType } from "../../proto_utils/utils";
+import { ActionInputConfig, ItemStatOption } from "./stat_options";
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T,
@@ -63,7 +60,7 @@ function makeConsumeInputFactory<T extends number>(args: ConsumeInputFactoryArgs
 				} as IconEnumValueConfig<Player<any>, T>;
 			})),
 			equals: (a: T, b: T) => a == b,
-			zeroValue: 0 as T,	
+			zeroValue: 0 as T,
 			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.gearChangeEmitter, player.professionChangeEmitter]),
 			showWhen: (player: Player<any>) => !args.showWhen || args.showWhen(player),
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
@@ -96,7 +93,7 @@ export const ConjuredMinorRecombobulator: ConsumableInputConfig<Conjured> = {
 	value: Conjured.ConjuredMinorRecombobulator,
 	showWhen: (player: Player<any>) => player.getGear().hasTrinket(4381)
 };
-export const ConjuredDemonicRune: ConsumableInputConfig<Conjured> = { 
+export const ConjuredDemonicRune: ConsumableInputConfig<Conjured> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 12662, minLevel: 40 },
 	]),
@@ -127,7 +124,7 @@ export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({
 	consumesFieldName: 'enchantedSigil',
-	showWhen: (player) => player.hasProfession(Profession.Enchanting),
+	showWhen: player => player.hasProfession(Profession.Enchanting),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -138,7 +135,7 @@ export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 10507, minLevel: 40 },
 	]),
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	showWhen: player => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveSolidDynamite,
 };
 
@@ -146,7 +143,7 @@ export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 18641, minLevel: 50 },
 	]),
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	showWhen: player => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveDenseDynamite,
 };
 
@@ -154,7 +151,7 @@ export const ExplosiveThoriumGrenade: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 15993, minLevel: 50 },
 	]),
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	showWhen: player => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveThoriumGrenade,
 };
 
@@ -169,7 +166,7 @@ export const ExplosiveHighYieldRadiationBomb: ConsumableInputConfig<Explosive> =
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 215127, minLevel: 40 },
 	]),
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	showWhen: player => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveHighYieldRadiationBomb,
 };
 
@@ -191,12 +188,7 @@ export const Sapper = makeBooleanConsumeInput({
 		{ id: 10646, minLevel: 50 },
 	]),
 	fieldName: 'sapper',
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
-});
-
-export const makeSapperInput = makeConsumeInputFactory({
-	consumesFieldName: 'sapper',
-	showWhen: (player) => player.hasProfession(Profession.Engineering),
+	showWhen: player => player.hasProfession(Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -362,7 +354,7 @@ export const ElixirOfLesserAgility: ConsumableInputConfig<AgilityElixir> = {
 	value: AgilityElixir.ElixirOfLesserAgility,
 };
 export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 3012, 	minLevel: 10, maxLevel: 24 	},
 		{ id: 1477, 	minLevel: 25, maxLevel: 39 	},
 		{ id: 4425, 	minLevel: 40, maxLevel: 54 	},
@@ -383,25 +375,25 @@ export const makeAgilityConsumeInput = makeConsumeInputFactory({consumesFieldNam
 
 // Strength
 export const JujuPower: ConsumableInputConfig<StrengthBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 12451, minLevel: 46 },
 	]),
 	value: StrengthBuff.JujuPower,
 };
 export const ElixirOfGiants: ConsumableInputConfig<StrengthBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 9206, minLevel: 46 },
 	]),
 	value: StrengthBuff.ElixirOfGiants,
 };
 export const ElixirOfOgresStrength: ConsumableInputConfig<StrengthBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 3391, minLevel: 20 },
 	]),
 	value: StrengthBuff.ElixirOfOgresStrength,
 };
 export const ScrollOfStrength: ConsumableInputConfig<StrengthBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 954, 	minLevel: 10, maxLevel: 24 	},
 		{ id: 2289, 	minLevel: 25, maxLevel: 39 	},
 		{ id: 4426, 	minLevel: 40, maxLevel: 54 	},
@@ -430,10 +422,10 @@ export const PetScrollOfAgility = makeEnumConsumeInput({
 	direction: IconEnumPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
-		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: (player) => player.getLevel() >= 10 },
-		{ actionId: () => ActionId.fromItemId(1477), value: 2, showWhen: (player) => player.getLevel() >= 25 },
-		{ actionId: () => ActionId.fromItemId(4425), value: 3, showWhen: (player) => player.getLevel() >= 40 },
-		{ actionId: () => ActionId.fromItemId(10309), value: 4, showWhen: (player) => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: player => player.getLevel() >= 10 },
+		{ actionId: () => ActionId.fromItemId(1477), value: 2, showWhen: player => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(4425), value: 3, showWhen: player => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(10309), value: 4, showWhen: player => player.getLevel() >= 55 },
 	],
 	fieldName: 'petScrollOfAgility',
 })
@@ -442,10 +434,10 @@ export const PetScrollOfStrength = makeEnumConsumeInput({
 	direction: IconEnumPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
-		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: (player) => player.getLevel() >= 10 },
-		{ actionId: () => ActionId.fromItemId(2289), value: 2, showWhen: (player) => player.getLevel() >= 25 },
-		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: (player) => player.getLevel() >= 40 },
-		{ actionId: () => ActionId.fromItemId(10310), value: 4, showWhen: (player) => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: player => player.getLevel() >= 10 },
+		{ actionId: () => ActionId.fromItemId(2289), value: 2, showWhen: player => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: player => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(10310), value: 4, showWhen: player => player.getLevel() >= 55 },
 	],
 	fieldName: 'petScrollOfStrength',
 })
@@ -459,13 +451,13 @@ export const LesserManaPotion: ConsumableInputConfig<Potions> = {
 	value: Potions.LesserManaPotion,
 };
 export const ManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 3827, minLevel: 22 },
 	]),
 	value: Potions.ManaPotion,
 };
 export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 6149, minLevel: 31 },
 	]),
 	value: Potions.GreaterManaPotion,
@@ -480,11 +472,11 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 export const makePotionsInput = makeConsumeInputFactory({consumesFieldName: 'defaultPotion'});
 
 export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 215162, minLevel: 35 },
 	]),
 	fieldName: 'mildlyIrradiatedRejuvPot',
-	showWhen: (player) => player.hasProfession(Profession.Alchemy),
+	showWhen: player => player.hasProfession(Profession.Alchemy),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -493,20 +485,20 @@ export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
 
 // Arcane
 export const GreaterArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 13454, minLevel: 46 },
 	]),
 	value: SpellPowerBuff.GreaterArcaneElixir,
 };
 export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		// Requires skill 235
 		{ id: 9155, minLevel: 41 },
 	]),
 	value: SpellPowerBuff.ArcaneElixir,
 };
 export const LesserArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 217398, minLevel: 28 },
 	]),
 	value: SpellPowerBuff.LesserArcaneElixir,
@@ -522,14 +514,14 @@ export const makeSpellPowerConsumeInput = makeConsumeInputFactory({consumesField
 
 // Fire
 export const ElixirOfGreaterFirepower: ConsumableInputConfig<FirePowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		// Requires skill 250
 		{ id: 21546, minLevel: 41 },
 	]),
 	value: FirePowerBuff.ElixirOfGreaterFirepower,
 };
 export const ElixirOfFirepower: ConsumableInputConfig<FirePowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 6373, minLevel: 18 },
 	]),
 	value: FirePowerBuff.ElixirOfFirepower,
@@ -544,7 +536,7 @@ export const makeFirePowerConsumeInput = makeConsumeInputFactory({consumesFieldN
 
 // Frost
 export const ElixirOfFrostPower: ConsumableInputConfig<FrostPowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 17708, minLevel: 40 },
 	]),
 	value: FrostPowerBuff.ElixirOfFrostPower,
@@ -558,7 +550,7 @@ export const makeFrostPowerConsumeInput = makeConsumeInputFactory({consumesField
 
 // Shadow
 export const ElixirOfShadowPower: ConsumableInputConfig<ShadowPowerBuff> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		// SoD Phase 3?
 		{ id: 9264, minLevel: 41 },
 	]),
@@ -577,7 +569,7 @@ export const makeshadowPowerConsumeInput = makeConsumeInputFactory({consumesFiel
 
 // Windfury (Buff)
 export const Windfury: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingSpellActionId([
+	actionId: player => player.getMatchingSpellActionId([
 		{ id: 8516, 	minLevel: 32, maxLevel: 41	},
 		{ id: 10608, 	minLevel: 42, maxLevel: 51	},
 		{ id: 10610, 	minLevel: 52								},
@@ -595,26 +587,26 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 
 // Wizard Oils
 export const MinorWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 20744, minLevel: 5 },
 	]),
 	value: WeaponImbue.MinorWizardOil,
 };
 export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 20746, minLevel: 30},
 	]),
 	value: WeaponImbue.LesserWizardOil,
 };
 export const WizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		// SoD Phase 3?
 		{ id: 20750, minLevel: 41 },
 	]),
 	value: WeaponImbue.WizardOil,
 };
 export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 20749, minLevel: 45 },
 	]),
 	value: WeaponImbue.BrillianWizardOil,
@@ -622,26 +614,26 @@ export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 
 // Mana Oils
 export const MinorManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 20745, minLevel: 20 },
 	]),
 	value: WeaponImbue.MinorManaOil,
 };
 export const LesserManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		// SoD phase 3?
 		{ id: 20747, minLevel: 41 },
 	]),
 	value: WeaponImbue.LesserManaOil,
 };
 export const BrilliantManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 20748, minLevel: 45 },
 	]),
 	value: WeaponImbue.BrilliantManaOil,
 };
 export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 211848, minLevel: 25 },
 	]),
 	value: WeaponImbue.BlackfathomManaOil,
@@ -650,70 +642,70 @@ export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 // Sharpening Stones
 export const SolidSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 7964, minLevel: 35 },
 		]),
 		value: WeaponImbue.SolidSharpeningStone,
-		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			// SoD Phase 3?
 			{ id: 12404, minLevel: 41 },
 		]),
 		value: WeaponImbue.DenseSharpeningStone,
-		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 18262, minLevel: 50 },
 		]),
 		value: WeaponImbue.ElementalSharpeningStone,
-		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 export const BlackfathomSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: () => ActionId.fromItemId(211845),
 		value: WeaponImbue.BlackfathomSharpeningStone,
-		showWhen: (player) => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 
 // Weightstones
 export const SolidWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 7965, minLevel: 35 },
 		]),
 		value: WeaponImbue.SolidWeightstone,
-		showWhen: (player) => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			// SoD Phase 3?
 			{ id: 12643, minLevel: 41 },
 		]),
 		value: WeaponImbue.DenseWeightstone,
-		showWhen: (player) => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
 	}
 };
 
 // Spell Oils
 export const ShadowOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 3824, minLevel: 25 },
 	]),
 	value: WeaponImbue.ShadowOil,
 };
 export const FrostOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 3829, minLevel: 40 },
 	]),
 	value: WeaponImbue.FrostOil,
@@ -763,11 +755,11 @@ export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 
 export const makeMainHandImbuesInput = makeConsumeInputFactory({
 	consumesFieldName: 'mainHandImbue',
-	showWhen: (player) => !!player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand),
+	showWhen: player => !!player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand),
 });
 export const makeOffHandImbuesInput = makeConsumeInputFactory({
 	consumesFieldName: 'offHandImbue',
-	showWhen: (player) => {
+	showWhen: player => {
 		return ![WeaponType.WeaponTypeUnknown, WeaponType.WeaponTypeOffHand, WeaponType.WeaponTypeShield].includes(
 			player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType ?? WeaponType.WeaponTypeUnknown
 		)
