@@ -1506,6 +1506,13 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		}
 	}
 
+	manaPerTick := map[int32]float64{
+		25: 0,
+		40: 170, // Rank 1
+		50: 230, // Rank 2
+		60: 290, // Rank 3
+	}[character.Level]
+
 	return character.GetOrRegisterAura(Aura{
 		Label:    "ManaTideTotem-" + actionID.String(),
 		Tag:      ManaTideTotemAuraTag,
@@ -1519,7 +1526,7 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 					for i, player := range character.Party.Players {
 						if metrics[i] != nil {
 							char := player.GetCharacter()
-							char.AddMana(sim, 0.06*char.MaxMana(), metrics[i])
+							char.AddMana(sim, manaPerTick, metrics[i])
 						}
 					}
 				},
