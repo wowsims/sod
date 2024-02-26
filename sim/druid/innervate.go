@@ -18,7 +18,7 @@ func (druid *Druid) registerInnervateCD() {
 
 	innervateCD := core.InnervateCD
 
-	var innervateAura *core.Aura
+	innervateAura := core.InnervateAura(innervateTargetChar, actionID.Tag)
 	var innervateManaThreshold float64
 
 	druid.RegisterResetEffect(func(sim *core.Simulation) {
@@ -34,7 +34,6 @@ func (druid *Druid) registerInnervateCD() {
 		} else {
 			innervateManaThreshold = core.InnervateManaThreshold(innervateTargetChar)
 		}
-		innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag)
 	})
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
