@@ -1405,13 +1405,12 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 		return
 	}
 
-	innervateThreshold := 0.0
-	var innervateAura *Aura
-
 	character := agent.GetCharacter()
+	innervateThreshold := 0.0
+	innervateAura := InnervateAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		innervateThreshold = InnervateManaThreshold(character)
-		innervateAura = InnervateAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(
@@ -1467,14 +1466,13 @@ func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 		return
 	}
 
-	initialDelay := time.Duration(0)
-	var mttAura *Aura
-
 	character := agent.GetCharacter()
+	initialDelay := time.Duration(0)
+	mttAura := ManaTideTotemAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		// Use first MTT at 60s, or halfway through the fight, whichever comes first.
 		initialDelay = min(character.Env.BaseDuration/2, time.Second*60)
-		mttAura = ManaTideTotemAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(
