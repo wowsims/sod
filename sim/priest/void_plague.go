@@ -25,7 +25,7 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: 425204},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagPureDot,
+		Flags:       core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
