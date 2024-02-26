@@ -73,7 +73,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := -1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellPower() + spell.BonusWeaponDamage()
+			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellDamage() + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, fullDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
