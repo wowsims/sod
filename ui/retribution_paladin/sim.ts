@@ -1,15 +1,11 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat, PseudoStat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';

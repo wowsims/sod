@@ -81,7 +81,8 @@ func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
 }
 
 func (action *APLActionCastPaladinPrimarySeal) IsReady(sim *core.Simulation) bool {
-	return sim.CurrentTime > action.lastAction
+	paladin := action.paladin
+	return sim.CurrentTime > action.lastAction && paladin.PrimarySealSpell.CanCast(sim, paladin.CurrentTarget)
 }
 
 func (action *APLActionCastPaladinPrimarySeal) Reset(*core.Simulation) {
