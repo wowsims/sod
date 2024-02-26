@@ -217,7 +217,7 @@ var Phase1MMTalents = "-050515"
 var Phase1SVTalents = "--33502001101"
 
 var Phase2BMTalents = "5300021150501251"
-var Phase2MMTalents = "5-0555100150301"
+var Phase2MMTalents = "-05551001503051"
 var Phase2SVTalents = "--335020051030315"
 
 var Phase1Consumes = core.ConsumesCombo{
