@@ -142,7 +142,10 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.EnableManaBar()
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	warlock.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+
 	warlock.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[warlock.Class][int(warlock.Level)]*core.SpellCritRatingPerCritChance)
+	warlock.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[warlock.Class][int(warlock.Level)]*core.CritRatingPerCritChance)
 
 	if warlock.Options.Armor == proto.WarlockOptions_DemonArmor {
 		armor := map[int32]float64{

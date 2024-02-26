@@ -91,6 +91,10 @@ func init() {
 			Spell:    regChannel,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeMana,
+			ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
+				// Only castable with manual APL Action
+				return false
+			},
 		})
 	})
 
