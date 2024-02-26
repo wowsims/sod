@@ -139,7 +139,7 @@ var CritPerAgiAtLevel = map[proto.Class]map[int]float64{
 // Spell crit int scaling
 // TODO P3: Level 50 values are still wotlk values
 var CritPerIntAtLevel = map[proto.Class]map[int]float64{
-	proto.Class_ClassUnknown: {25: 0.0, 45: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassUnknown: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassWarrior: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassPaladin: {25: 0.0357, 40: 0.0246, 50: 0.0203, 60: 0.0167},
 	proto.Class_ClassHunter:  {25: 0.0350, 40: 0.0241, 50: 0.0200, 60: 0.0165},

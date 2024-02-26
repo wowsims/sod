@@ -6,6 +6,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
@@ -59,7 +60,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				} else {
 					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera
-					dot.SnapshotBaseDamage += spellCoeff * dot.Spell.SpellPower()
+					dot.SnapshotBaseDamage += spellCoeff * (dot.Spell.SpellDamage() - dot.Spell.Unit.GetStat(stats.NaturePower))
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -96,7 +97,8 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*5)*0.4 + spellCoeff*spell.SpellDamage()
+			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*5)*0.4 +
+				spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 		},
 	})

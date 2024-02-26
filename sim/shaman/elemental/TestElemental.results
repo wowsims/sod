@@ -398,13 +398,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-Lvl40-AllItems-CarvedDriftwoodIcon-209575"
- value: {
-  dps: 625.55259
-  tps: 533.40809
- }
-}
-dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 278.94895
