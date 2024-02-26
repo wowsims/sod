@@ -97,7 +97,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*hunter.SerpentSting.Dot(target).SnapshotAttackerMultiplier*5)*0.4 +
+			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*5)*0.4 +
 				spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 		},
