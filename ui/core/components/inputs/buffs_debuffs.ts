@@ -404,7 +404,6 @@ export const SanctityAura= withLabel(
 			{ id: 20218, minLevel: 30 },
 		]),
 		fieldName: 'sanctityAura',
-		showWhen: (player) => ((player.getFaction() == Faction.Alliance) && ((player.getClass() == Class.ClassPaladin) || (player.getClass() == Class.ClassPriest))),
 	}),
 	'Sanctity Aura',
 );
@@ -950,7 +949,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: SanctityAura,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatHolyPower],
 		faction: Faction.Alliance,
 	},
 	{
