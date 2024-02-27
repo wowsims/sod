@@ -7,7 +7,6 @@ import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	PaladinAura,
-	PaladinJudgement,
 	HolyPaladin_Options as HolyPaladinOptions,
 } from '../core/proto/paladin.js';
 
@@ -33,7 +32,6 @@ export const StandardTalents = {
 
 export const DefaultOptions = HolyPaladinOptions.create({
 	aura: PaladinAura.DevotionAura,
-	judgement: PaladinJudgement.NoJudgement,
 });
 
 export const DefaultConsumes = Consumes.create({

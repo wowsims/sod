@@ -31,6 +31,7 @@ import {
 	APLActionCustomRotation,
 
 	APLValue,
+	APLActionCastPaladinPrimarySeal,
 } from '../../proto/apl.js';
 
 import { isHealingSpec } from '../../proto_utils/utils.js';
@@ -621,6 +622,15 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 			AplHelpers.booleanFieldConfig('useShredTrick', 'Use Shred Trick', {
 				labelTooltip: 'If checked, enable the "Shred trick" micro-optimization. This should only be used on short fight lengths with full powershifting uptime.',
 			}),
+		],
+	}),
+	['castPaladinPrimarySeal']: inputBuilder({
+		label: 'Cast Primary Seal',
+		submenu: ['Paladin'],
+		shortDescription: 'Casts the Paladin\'s designated primary seal spell.',
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecRetributionPaladin,
+		newValue: () => APLActionCastPaladinPrimarySeal.create({}),
+		fields: [
 		],
 	}),
 };
