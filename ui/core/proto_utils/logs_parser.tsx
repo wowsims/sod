@@ -117,7 +117,7 @@ export class SimLog {
 		let str = this.raw;
 		// Base logs already have the timestamp appended by default
 		if (!includeTimestamp) {
-			const regexp = /(\[[0-9.-]+\]) (\[[0-9a-zA-Z ()#]+\])?(.*)/;
+			const regexp = /(\[[0-9.-]+\]) (\[[0-9a-zA-Z\s\-()#]+\])?(.*)/;
 			if (this.raw.match(regexp)) {
 				// TypeScript doesn't handle regex capture typing well
 				const captureArr = regexp.exec(this.raw);
