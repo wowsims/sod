@@ -136,18 +136,18 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
-	// Paladins get 0.0167 dodge per agi. ~1% per 59.88
-	paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
-
 	// Paladins get 1 block value per 20 str
 	paladin.AddStatDependency(stats.Strength, stats.BlockValue, .05)
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	// No diminishing returns in Vanilla.
-	paladin.PseudoStats.BaseDodge += 0.034943
-	paladin.PseudoStats.BaseParry += 0.05
+	// Dodge per agi at a given level behaves identically in classic to Crit per agi at a given level.
+	// paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.DodgeRatingPerDodgeChance)
+
+	// The below requires some verification for the prot paladin sim when it is implemented.
+	// paladin.PseudoStats.BaseDodge += 0.034943
+	// paladin.PseudoStats.BaseParry += 0.05
 
 	return paladin
 }
