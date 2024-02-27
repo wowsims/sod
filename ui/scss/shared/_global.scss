@@ -101,6 +101,22 @@ kbd {
   display: none !important;
 }
 
+.icon-sm {
+	display: inline-block;
+	min-width: $icon-size-sm;
+	width: $icon-size-sm;
+	height: $icon-size-sm;
+	background-size: cover;
+}
+
+.icon-md {
+	display: inline-block;
+	min-width: $icon-size-md;
+	width: $icon-size-md;
+	height: $icon-size-md;
+	background-size: cover;
+}
+
 @each $label, $value in $item-qualities {
   .item-quality-#{$label} {
     color: $value !important;
