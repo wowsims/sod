@@ -12,6 +12,7 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.applyMurder()
 	rogue.applySealFate()
 	rogue.applyWeaponSpecializations()
+	rogue.applyWeaponExpertise()
 	rogue.applyInitiative()
 
 	rogue.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(rogue.Talents.LightningReflexes))
@@ -228,6 +229,15 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 			// Stun too?
 			rogue.PseudoStats.MacesSkill = float64(maceSpec)
 		}
+	}
+}
+
+func (rogue *Rogue) applyWeaponExpertise() {
+	if wepExpertise := rogue.Talents.WeaponExpertise; wepExpertise > 0 {
+		wepBonus := []float64{0, 3, 5}
+		rogue.PseudoStats.SwordsSkill += wepBonus[wepExpertise]
+		rogue.PseudoStats.DaggersSkill += wepBonus[wepExpertise]
+		rogue.PseudoStats.UnarmedSkill += wepBonus[wepExpertise]
 	}
 }
 
