@@ -763,7 +763,7 @@ export class CastBeganLog extends SimLog {
 	}
 
 	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Casting ${this.newActionIdLink()} (Cast time = ${this.castTime.toFixed(2)}s, Cost = ${this.manaCost.toFixed(1)}).`;
+		return `${this.toStringPrefix(includeTimestamp)} Casting ${this.newActionIdLink()} (Cast time: ${this.castTime.toFixed(2)}s, Cost: ${this.manaCost.toFixed(1)} Mana).`;
 	}
 
 	static parse(params: SimLogParams): Promise<CastBeganLog> | null {
