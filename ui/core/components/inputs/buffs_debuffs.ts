@@ -1,4 +1,4 @@
-import { Faction, SaygesFortune, Stat } from "../../proto/common";
+import { Faction, SaygesFortune, Stat, Class } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 
 import { IconEnumPickerDirection } from "../icon_enum_picker";
@@ -397,6 +397,15 @@ export const RetributionAura = withLabel(
 		showWhen: (player) => player.getFaction() == Faction.Alliance,
 	}),
 	'Retribution Aura',
+);
+export const SanctityAura= withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 20218, minLevel: 30 },
+		]),
+		fieldName: 'sanctityAura',
+	}),
+	'Sanctity Aura',
 );
 export const Thorns = withLabel(
 	makeTristateRaidBuffInput({
@@ -935,6 +944,12 @@ export const RAID_BUFFS_CONFIG = [
 		config: RetributionAura,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
+		faction: Faction.Alliance,
+	},
+	{
+		config: SanctityAura,
+		picker: IconPicker,
+		stats: [Stat.StatHolyPower],
 		faction: Faction.Alliance,
 	},
 	{

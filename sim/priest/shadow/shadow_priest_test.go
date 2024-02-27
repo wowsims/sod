@@ -38,8 +38,8 @@ func TestShadow(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase2Talents,
-			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_1"),
-			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_1"),
+			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_2"),
+			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_2"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
