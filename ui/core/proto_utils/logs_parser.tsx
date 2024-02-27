@@ -335,7 +335,7 @@ export class DamageDealtLog extends SimLog {
 
 		result += ' ' + this.target?.toHTMLString();
 		if (!this.miss && !this.dodge && !this.parry) {
-			result += ` for ${this.amount.toFixed(2)}`;
+			result += ` for <strong class="text-danger">${this.amount.toFixed(2)} damage</strong>`;
 			if (this.partialResist1_4) {
 				result += ' (25% Resist)';
 			} else if (this.partialResist2_4) {
@@ -350,7 +350,7 @@ export class DamageDealtLog extends SimLog {
 
 	toString(includeTimestamp = true): string {
 		const threatPostfix = this.source?.isTarget ? '' : ` (${this.threat.toFixed(2)} Threat)`;
-		return `${this.toStringPrefix(includeTimestamp)} ${this.actionId!.name} ${this.resultString()}${threatPostfix}`;
+		return `${this.toStringPrefix(includeTimestamp)} ${this.newActionIdLink()} ${this.resultString()}${threatPostfix}`;
 	}
 
 	static parse(params: SimLogParams): Promise<DamageDealtLog> | null {
@@ -518,7 +518,7 @@ export class AuraStacksChangeLog extends SimLog {
 	}
 
 	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} ${this.actionId!.name} stacks: ${this.oldStacks} &rarr; ${this.newStacks}.`;
+		return `${this.toStringPrefix(includeTimestamp)} ${this.newActionIdLink()} stacks: ${this.oldStacks} &rarr; ${this.newStacks}.`;
 	}
 
 	static parse(params: SimLogParams): Promise<AuraStacksChangeLog> | null {
@@ -652,8 +652,10 @@ export class ResourceChangedLog extends SimLog {
 
 		const isHealth = this.resourceType == ResourceType.ResourceTypeHealth;
 		const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : (this.isSpend ? 'Spent' : 'Gained');
+		const resourceName = resourceNames.get(this.resourceType)!
+		const resourceKlass = `resource-${resourceName.replace(/\s/g, "-").toLowerCase()}`;
 
-		return `${this.toStringPrefix(includeTimestamp)} ${verb} ${signedDiff.toFixed(1)} ${resourceNames.get(this.resourceType)} from ${this.newActionIdLink()}. (${this.valueBefore.toFixed(1)} &rarr; ${this.valueAfter.toFixed(1)})`;
+		return `${this.toStringPrefix(includeTimestamp)} ${verb} <strong class="${resourceKlass}">${signedDiff.toFixed(1)} ${resourceName}</strong> from ${this.newActionIdLink()}. (${this.valueBefore.toFixed(1)} &rarr; ${this.valueAfter.toFixed(1)})`;
 	}
 
 	resultString(): string {
@@ -732,7 +734,7 @@ export class MajorCooldownUsedLog extends SimLog {
 	}
 
 	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Major cooldown used: ${this.actionId!.name}.`;
+		return `${this.toStringPrefix(includeTimestamp)} Major cooldown used: ${this.newActionIdLink()}.`;
 	}
 
 	static parse(params: SimLogParams): Promise<MajorCooldownUsedLog> | null {

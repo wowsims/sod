@@ -123,6 +123,12 @@ kbd {
   }
 }
 
+@each $label, $value in $resource-colors {
+	.resource-#{$label} {
+	  color: $value !important;
+	}
+  }
+
 [contenteditable="true"]:active,
 [contenteditable="true"]:focus {
   border:none;
