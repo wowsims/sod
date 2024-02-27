@@ -141,13 +141,11 @@ func (paladin *Paladin) getBonusCritChanceFromHolyPower() float64 {
 // 	})
 // }
 
-// Prior to WOTLK, behavior was to double dip.
+// Below are placeholders in case of any subsequent phase runes giving paladins crit damage.
 func (paladin *Paladin) MeleeCritMultiplier() float64 {
-	// return paladin.Character.MeleeCritMultiplier(paladin.crusadeMultiplier(), 0)
 	return paladin.DefaultMeleeCritMultiplier()
 }
 func (paladin *Paladin) SpellCritMultiplier() float64 {
-	// return paladin.Character.SpellCritMultiplier(paladin.crusadeMultiplier(), 0)
 	return paladin.DefaultSpellCritMultiplier()
 }
 
