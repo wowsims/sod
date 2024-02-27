@@ -59,7 +59,7 @@ export class LogRunner extends ResultComponent {
 			forEach(log => {
 				const lineElem = document.createElement('span');
 				lineElem.textContent = log.toString();
-				if (this.showDebug || !log.raw.match(/.*\[DEBUG\].*/)) {
+				if (log.raw.length > 0 && (this.showDebug || !log.raw.match(/.*\[DEBUG\].*/))) {
 					this.logsContainer.appendChild(
 						<tr>
 							<td className="log-timestamp">{log.formattedTimestamp()}</td>
