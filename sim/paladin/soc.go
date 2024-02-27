@@ -45,12 +45,12 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	judgeMaxDamage := judgeMinDamage + judgeDieSides
 
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellIDJudge}, // Judgement of Righteousness.
+		ActionID:    core.ActionID{SpellID: spellIDJudge},
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeSpecial,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
 		CritMultiplier:   paladin.SpellCritMultiplier(),
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
@@ -62,12 +62,13 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	})
 
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: spellIDProc},
-		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura, // This needs figured out properly
-		Flags:            core.SpellFlagMeleeMetrics,
-		RequiredLevel:    level,
-		DamageMultiplier: 0.7,
+		ActionID:      core.ActionID{SpellID: spellIDProc},
+		SpellSchool:   core.SpellSchoolHoly,
+		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		Flags:         core.SpellFlagMeleeMetrics,
+		RequiredLevel: level,
+
+		DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 
@@ -85,7 +86,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	}
 
 	auraActionID := core.ActionID{SpellID: spellIDAura}
-	paladin.SealOfCommandAura[rank] = paladin.RegisterAura(core.Aura{
+	aura := paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Command" + paladin.Label + strconv.Itoa(rank),
 		Tag:      "Seal",
 		ActionID: auraActionID,
@@ -114,10 +115,12 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		},
 	})
+	paladin.SealOfCommandAura[rank] = aura
+
 	if paladin.Ranged().ID == LibramOfBenediction {
 		manaCost -= 10
 	}
-	aura := paladin.SealOfCommandAura[rank]
+
 	paladin.SealOfCommand[rank] = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    auraActionID,
 		SpellSchool: core.SpellSchoolHoly,

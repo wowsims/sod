@@ -9,6 +9,7 @@ import (
 
 // Crusader Strike is an ap-normalised instant attack that has a weapon damage % modifier with a 0.75 coefficient.
 // It also returns 5% of the paladin's maximum mana when cast, regardless of the ability being negated.
+// As of 27/02/24 it deals holy school damage, but otherwise behaves like a melee attack.
 
 func (paladin *Paladin) registerCrusaderStrikeSpell() {
 	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
@@ -32,7 +33,8 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		DamageMultiplier: 0.75,
+		// We expect this spell to still target melee defense, and therefore benefit from physical dmg modifiers.
+		DamageMultiplier: 0.75 * paladin.getWeaponSpecializationModifier(),
 		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 

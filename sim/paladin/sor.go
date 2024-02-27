@@ -65,11 +65,8 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	/*
 	 * Seal of Righteousness is an Spell/Aura that when active makes the paladin capable of procing
 	 * 2 different SpellIDs depending on a paladin's casted spell or melee swing.
-	 * NOTE:
-	 *   Seal of Righteousness is unique in that it is the only seal that can proc off its own judgements.
 	 *
 	 * (Judgement of Righteousness):
-	 *   - Procs off of the dummy Judgement spell.
 	 *   - Cannot miss or be dodged/parried/blocked.
 	 *   - Deals a flat damage that is affected by Improved SoR talent, and
 	 *     has a spellpower scaling that is unaffacted by that talent.
@@ -77,14 +74,14 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	 *
 	 * (Seal of Righteousness):
 	 *   - Procs off of white hits.
-	 *   - Cannot miss or be dodged/parried if the underlying white hit lands.
+	 *   - Cannot miss or be dodged/parried/blocked if the underlying white hit lands.
 	 *   - Deals damage that is a function of weapon speed, and spellpower.
 	 *   - Has 0.85 scale factor on base damage if using 1h, 1.2 if using 2h.
 	 *   - CANNOT CRIT.
 	 */
 
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: jorSpellID}, // Judgement of Righteousness.
+		ActionID:    core.ActionID{SpellID: jorSpellID},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
@@ -103,7 +100,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 
-		ActionID:      core.ActionID{SpellID: spellIdProc}, // Seal of Righteousness damage bonus.
+		ActionID:      core.ActionID{SpellID: spellIdProc},
 		SpellSchool:   core.SpellSchoolHoly,
 		ProcMask:      core.ProcMaskEmpty,
 		Flags:         core.SpellFlagMeleeMetrics,
@@ -130,7 +127,6 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Duration: SealDuration,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Don't proc on misses or our own procs.
 			if !result.Landed() || spell.SpellID == onSwingProc.SpellID {
 				return
 			}
@@ -148,7 +144,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	}
 	aura := paladin.SealOfRighteousnessAura[rank]
 	paladin.SealOfRighteousness[rank] = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    auraActionID, // Seal of Righteousness self buff.
+		ActionID:    auraActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 

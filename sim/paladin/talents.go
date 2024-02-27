@@ -151,28 +151,36 @@ func (paladin *Paladin) SpellCritMultiplier() float64 {
 	return paladin.DefaultSpellCritMultiplier()
 }
 
+func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
+	mhWeapon := paladin.GetMHWeapon()
+	if mhWeapon == nil {
+		return 1.0
+	}
+
+	switch mhWeapon.HandType {
+	case proto.HandType_HandTypeOneHand:
+		return 1.0 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
+	case proto.HandType_HandTypeTwoHand:
+		return 1.0 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+	}
+	return 1.0
+}
+
 // Affects all physical damage or spells that can be rolled as physical
-// It affects white, Windfury, Crusader Strike, Seals, and Judgement of Command / Blood
+// It affects white, Windfury, Crusader Strike, Seals, DS, and Judgement of Command / Blood
 func (paladin *Paladin) applyWeaponSpecialization() {
-	// This impacts Crusader Strike, Melee Attacks, WF attacks
+	// This impacts Crusader Strike, Melee Attacks, WF attacks, DS.
 	// Seals + Judgements need to be implemented separately
 	mhWeapon := paladin.GetMHWeapon()
-
 	if mhWeapon == nil {
 		return
 	}
 
 	switch mhWeapon.HandType {
+	case proto.HandType_HandTypeOneHand:
+		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.00 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
 	case proto.HandType_HandTypeTwoHand:
-		// Apparently in classic, 1h and 2h spec apply to *all* damage dealt, regardless of it rolling physical
-		// paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
-		if paladin.Talents.TwoHandedWeaponSpecialization > 0 {
-			paladin.PseudoStats.DamageDealtMultiplier *= 1.00 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
-		}
-	case proto.HandType_HandTypeOneHand, proto.HandType_HandTypeMainHand:
-		if paladin.Talents.OneHandedWeaponSpecialization > 0 {
-			paladin.PseudoStats.DamageDealtMultiplier *= 1.00 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
-		}
+		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.00 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
 	}
 }
 
