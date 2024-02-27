@@ -189,9 +189,8 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Only proc Deadly Brew for Deadly Poison if another "rogue" poison landed
-			if !result.Landed() || rogue.InstantPoison[0].SpellID == spell.SpellID ||
-				rogue.InstantPoison[1].SpellID == spell.SpellID || rogue.InstantPoison[2].SpellID == spell.SpellID ||
-				rogue.WoundPoison.SpellID == spell.SpellID {
+			if !result.Landed() ||
+				!(rogue.InstantPoison[0].SpellID == spell.SpellID || rogue.WoundPoison.SpellID == spell.SpellID) {
 				return
 			}
 			if sim.RandomFloat("Deadly Poison (Deadly Brew)") < rogue.GetDeadlyPoisonProcChance() {
@@ -215,7 +214,7 @@ func (rogue *Rogue) applyWoundPoison() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || spell.ProcMask != procMask {
+			if !result.Landed() || spell.ProcMask.Matches(procMask) {
 				return
 			}
 
@@ -373,7 +372,7 @@ func (rogue *Rogue) applyInstantPoison() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || spell.ProcMask != procMask {
+			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
 				return
 			}
 
