@@ -83,8 +83,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 }
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
-	spellCoeff := 0.4
-
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
@@ -97,8 +95,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage*5)*0.4 +
-				spellCoeff*spell.SpellDamage()
+			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage * 5) * 0.4
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 		},
 	})

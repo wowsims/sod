@@ -11,7 +11,7 @@ func addGnomereganMechanical(bossPrefix string) {
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
 			Id:        218537, // TODO:
-			Name:      "Level 40 Mechanical",
+			Name:      "Gnomeregan Mechanical Boss",
 			Level:     42,
 			MobType:   proto.MobType_MobTypeMechanical,
 			TankIndex: 0,
@@ -34,8 +34,8 @@ func addGnomereganMechanical(bossPrefix string) {
 		},
 		AI: NewGnomereganMechanicalAI(),
 	})
-	core.AddPresetEncounter("Level 40 Mechanical", []string{
-		bossPrefix + "/Level 40 Mechanical",
+	core.AddPresetEncounter("Gnomeregan Mechanical Boss", []string{
+		bossPrefix + "/Gnomeregan Mechanical Boss",
 	})
 }
 

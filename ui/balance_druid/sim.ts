@@ -15,6 +15,7 @@ import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Presets from './presets.js';
+import * as DruidInputs from './inputs.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	cssClass: 'balance-druid-sim-ui',
@@ -83,6 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
+		DruidInputs.SelfInnervate,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
