@@ -65,7 +65,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.SpellCritMultiplier(),
+		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
