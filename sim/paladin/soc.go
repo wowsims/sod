@@ -11,6 +11,18 @@ import (
 // - A judgement that has a flat damage roll, and scales with spellpower.
 // - A 7ppm on-hit proc with a 1s ICD that deals 70% weapon damage and scales with spellpower.
 
+// Judgement of Command has some unusual behaviour in classic:
+// - The judgement operates via a dummy spell, that likely figures out wether or not to apply
+//   half damage if the target is not stunned (counter to the tooltip, the base damage only is
+//   multiplied by 2 if the target is stunned). These dummy spells are implemented as targetting
+//   magic defense type, and have no flags to prevent misses, meaning they roll on spell hit table
+//   and can miss. If it succeeds, it calls the "actual" Judgement of Command spell.
+// - The actual Judgement of Command has flags to not miss and to avoid block/parry/dodge, but
+//   it targets the melee defense type and so crits for double damage.
+// - This is accomplished via the use of the SpellFlagPrimaryJudgement spell flag that is used exclusively by
+//   the base judgement spell. The Seal of Command aura watches for this spell, and casts the actual
+//   Judgement of Command when it successfully is cast.
+
 const socRanks = 5
 
 // Below is the base sp coefficient before it gets reduced by the 70% modifier
@@ -49,6 +61,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		SpellCode:   SpellCode_PaladinJudgementOfCommand,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
@@ -137,7 +150,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			paladin.ApplySeal(aura, sim)
+			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})
 }

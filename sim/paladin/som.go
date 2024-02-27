@@ -6,8 +6,8 @@ import (
 )
 
 // Seal of Martyrdom is a spell consisting of:
-// - A judgement that deals 70% weapon damage that is not normalised.
-// - A guaranteed on-hit proc that deals 40% weapon damage that is normalised.
+// - A judgement that deals 70% weapon damage that is not normalised. Cannot miss or be dodged/blocked/parried.
+// - An on-hit 100% chance proc that deals 40% *normalised* weapon damage.
 // Both the on-hit and judgement are subject to weapon specialization talent modifiers as
 // they both target melee defense.
 
@@ -68,9 +68,6 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 			if spell.ProcMask.Matches(core.ProcMaskProc) {
 				onSwingProc.Cast(sim, result.Target)
 			}
-			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
-				onJudgementProc.Cast(sim, result.Target)
-			}
 		},
 	})
 	// Necessary because of the mix of % base mana cost and flat reduction on the libram
@@ -95,7 +92,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			paladin.ApplySeal(aura, sim)
+			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})
 }

@@ -67,13 +67,12 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	 * 2 different SpellIDs depending on a paladin's casted spell or melee swing.
 	 *
 	 * (Judgement of Righteousness):
-	 *   - Cannot miss or be dodged/parried/blocked.
 	 *   - Deals a flat damage that is affected by Improved SoR talent, and
 	 *     has a spellpower scaling that is unaffacted by that talent.
-	 *   - Crits off of a spell modifier.
+	 *   - Targets magic defense and rolls to hit and crit.
 	 *
 	 * (Seal of Righteousness):
-	 *   - Procs off of white hits.
+	 *   - Procs from white hits.
 	 *   - Cannot miss or be dodged/parried/blocked if the underlying white hit lands.
 	 *   - Deals damage that is a function of weapon speed, and spellpower.
 	 *   - Has 0.85 scale factor on base damage if using 1h, 1.2 if using 2h.
@@ -93,8 +92,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellDamage()
-			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 
@@ -133,10 +131,6 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				onSwingProc.Cast(sim, result.Target)
 			}
-			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
-				onJudgementProc.Cast(sim, result.Target)
-			}
-
 		},
 	})
 	if paladin.Ranged().ID == LibramOfBenediction {
@@ -159,7 +153,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			paladin.ApplySeal(aura, sim)
+			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})
 }

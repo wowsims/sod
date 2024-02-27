@@ -37,9 +37,16 @@ func (paladin *Paladin) registerJudgementSpell() {
 		},
 		ExtraCastCondition: paladin.canJudgement,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// The judgement dummy spell only rolls spell hit in classic.
-			// Subsequent judgement effects from seals have their own outcomes.
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			// Seal of Command requires this spell to act as its intermediary dummy,
+			// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
+			// melee special attack crit/hit table, necessitating two discrete spells.
+			// All other judgements are cast directly.
+			if paladin.CurrentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
+				spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			} else {
+				paladin.CurrentJudgement.Cast(sim, paladin.CurrentTarget)
+			}
+
 			paladin.CurrentSealExpiration = sim.CurrentTime
 			paladin.CurrentSeal.Deactivate(sim)
 		},

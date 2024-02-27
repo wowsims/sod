@@ -19,6 +19,7 @@ var TalentTreeSizes = [3]int{14, 15, 15}
 const (
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
+	SpellCode_PaladinJudgementOfCommand
 )
 
 type Paladin struct {
@@ -27,6 +28,7 @@ type Paladin struct {
 
 	PaladinAura proto.PaladinAura
 
+	CurrentJudgement      *core.Spell
 	CurrentSeal           *core.Aura
 	CurrentSealExpiration time.Duration
 	PrimarySealSpell      *core.Spell
@@ -174,11 +176,12 @@ func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
 	return returnSpell
 }
 
-func (paladin *Paladin) ApplySeal(aura *core.Aura, sim *core.Simulation) {
+func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	if paladin.CurrentSeal != nil {
 		paladin.CurrentSeal.Deactivate(sim)
 	}
 	paladin.CurrentSeal = aura
+	paladin.CurrentJudgement = judgement
 	paladin.CurrentSeal.Activate(sim)
 	paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
 }
