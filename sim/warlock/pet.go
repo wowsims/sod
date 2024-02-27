@@ -367,7 +367,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	// Warrior crit scaling
 	wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.CritRatingPerCritChance)
-	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 
 	if warlock.Options.Summon == proto.WarlockOptions_Imp {
 		// Imp gets 1mp/5 non casting regen per spirit
@@ -377,6 +376,12 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			// 1mp5 per spirit
 			return wp.GetStat(stats.Spirit) / 5
 		}
+
+		// Mage spell crit scaling for imp
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassMage][int(wp.Level)]*core.SpellCritRatingPerCritChance)
+	} else {
+		// Warrior spell crit scaling
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 	}
 
 	wp.AutoAttacks.MHConfig().DamageMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
