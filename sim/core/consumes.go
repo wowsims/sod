@@ -97,9 +97,11 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 10,
 			})
-		case proto.Food_FoodDragonbreathChili:
-			MakePermanent(DragonBreathChiliAura(&character.Unit))
 		}
+	}
+
+	if consumes.DragonBreathChili {
+		MakePermanent(DragonBreathChiliAura(&character.Unit))
 	}
 
 	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {

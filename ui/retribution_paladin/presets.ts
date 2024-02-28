@@ -1,37 +1,31 @@
 import { Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
-	Consumes,
-	Flask,
-	Food,
-	Potions,
 	AgilityElixir,
-	RaidBuffs,
-	EnchantedSigil,
-	IndividualBuffs,
+	Consumes,
 	Debuffs,
-	StrengthBuff,
-	WeaponImbue,
-	TristateEffect,
-	SaygesFortune,
-	Profession,
-	SpellPowerBuff,
+	EnchantedSigil,
 	Explosive,
+	Food,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	PaladinAura,
 	PaladinSeal,
 	RetributionPaladin_Options as RetributionPaladinOptions,
 } from '../core/proto/paladin.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
-
+import { SavedTalents } from '../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
@@ -133,16 +127,16 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodDragonbreathChili,
-	defaultPotion: Potions.GreaterManaPotion,
-	mainHandImbue: WeaponImbue.WildStrikes,
 	agilityElixir: AgilityElixir.ElixirOfLesserAgility,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
-	fillerExplosive: Explosive.ExplosiveEzThroRadiationBomb,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
 	boglingRoot: false,
+	defaultPotion: Potions.GreaterManaPotion,
+	dragonBreathChili: true,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	fillerExplosive: Explosive.ExplosiveEzThroRadiationBomb,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
@@ -155,12 +149,10 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
+	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
-	battleShout: TristateEffect.TristateEffectImproved,
-	leaderOfThePack: true,
-	trueshotAura: true,
 	sanctityAura: true,
 })
 
@@ -176,4 +168,3 @@ export const OtherDefaults = {
 	profession1: Profession.Blacksmithing,
 	profession2: Profession.Enchanting,
   };
-  

@@ -1,23 +1,22 @@
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Debuffs,
 	Faction,
 	IndividualBuffs,
 	PartyBuffs,
+	PseudoStat,
 	Race,
 	RaidBuffs,
 	Spec,
 	Stat,
-	PseudoStat,
 	TristateEffect
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as ProtectionWarriorInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -116,7 +115,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 			strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-			leaderOfThePack: true,
 			devotionAura: TristateEffect.TristateEffectImproved,
 			stoneskinTotem: TristateEffect.TristateEffectImproved,
 			retributionAura: TristateEffect.TristateEffectImproved,
@@ -185,7 +183,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 

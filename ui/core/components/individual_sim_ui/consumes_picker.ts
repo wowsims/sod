@@ -101,8 +101,9 @@ export class ConsumesPicker extends Component {
 		);
 		const ohPicker = buildIconInput(imbuesElem, this.simUI.player, ohImbueOptions);
 
-		TypedEvent.onAny([this.simUI.player.gearChangeEmitter]).on(() => this.updateRow(row, [mhPicker, ohPicker]));
-		this.updateRow(row, [mhPicker, ohPicker]);
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.gearChangeEmitter]).on(() => {
+			this.updateRow(row, [mhPicker, ohPicker])
+		});
 	}
 
 	private buildFoodPicker() {
@@ -122,8 +123,11 @@ export class ConsumesPicker extends Component {
 		);
 		const foodPicker = buildIconInput(foodsElem, this.simUI.player, foodOptions);
 
-		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, [foodPicker]));
-		this.updateRow(row, [foodPicker]);
+		const dragonBreathChiliPicker = buildIconInput(foodsElem, this.simUI.player, ConsumablesInputs.DragonBreathChili);
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => {
+			this.updateRow(row, [foodPicker, dragonBreathChiliPicker])
+		});
 	}
 
 	private buildPhysicalBuffPicker() {

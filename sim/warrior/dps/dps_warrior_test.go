@@ -103,11 +103,12 @@ var Phase1Consumes = core.ConsumesCombo{
 var Phase2Consumes = core.ConsumesCombo{
 	Label: "Phase 2 Consumes",
 	Consumes: &proto.Consumes{
-		AgilityElixir: proto.AgilityElixir_ElixirOfAgility,
-		Food:          proto.Food_FoodDragonbreathChili,
-		MainHandImbue: proto.WeaponImbue_WildStrikes,
-		OffHandImbue:  proto.WeaponImbue_SolidSharpeningStone,
-		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodSagefishDelight,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
 	},
 }
 

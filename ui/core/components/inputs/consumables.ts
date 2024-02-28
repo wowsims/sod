@@ -282,12 +282,6 @@ export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	]),
 	value: Food.FoodTenderWolfSteak
 };
-export const DragonBreathChili: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
-		{ id: 12217, minLevel: 35 },
-	]),
-	value: Food.FoodDragonbreathChili
-};
 export const HotWolfRibs: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
 		{ id: 13851, minLevel: 25 },
@@ -308,20 +302,26 @@ export const SagefishDelight: ConsumableInputConfig<Food> = {
 };
 
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
-	{ config: BlessSunfruit, 						stats: [Stat.StatStrength] },
-	{ config: BlessedSunfruitJuice, 		stats: [Stat.StatSpirit] },
-	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
-	{ config: DragonBreathChili, 				stats: [] },
-	{ config: GrilledSquid, 						stats: [Stat.StatAgility] },
-	{ config: HotWolfRibs, 							stats: [Stat.StatSpirit] },
-	{ config: RunnTumTuberSurprise, 		stats: [Stat.StatIntellect] },
-	{ config: SagefishDelight, 					stats: [Stat.StatMP5] },
-	{ config: SmokedDesertDumpling, 		stats: [Stat.StatStrength] },
-	{ config: SmokedSagefish, 					stats: [Stat.StatMP5] },
-	{ config: TenderWolfSteak, 					stats: [Stat.StatStamina, Stat.StatSpirit] },
+	{ config: BlessSunfruit,			stats: [Stat.StatStrength] },
+	{ config: BlessedSunfruitJuice,		stats: [Stat.StatSpirit] },
+	{ config: DirgesKickChimaerokChops,	stats: [Stat.StatStamina] },
+	{ config: GrilledSquid,				stats: [Stat.StatAgility] },
+	{ config: HotWolfRibs,				stats: [Stat.StatSpirit] },
+	{ config: RunnTumTuberSurprise,		stats: [Stat.StatIntellect] },
+	{ config: SagefishDelight,			stats: [Stat.StatMP5] },
+	{ config: SmokedDesertDumpling,		stats: [Stat.StatStrength] },
+	{ config: SmokedSagefish,			stats: [Stat.StatMP5] },
+	{ config: TenderWolfSteak,			stats: [Stat.StatStamina, Stat.StatSpirit] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({consumesFieldName: 'food'});
+
+export const DragonBreathChili = makeBooleanConsumeInput({
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 12217, minLevel: 35 },
+	]),
+	fieldName: 'dragonBreathChili',
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PHYSICAL DAMAGE CONSUMES

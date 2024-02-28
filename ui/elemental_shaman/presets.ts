@@ -63,18 +63,18 @@ export const APLPhase1AG = PresetUtils.makePresetAPLRotation('Phase 1 (AG)', Pha
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
 
 export const APLPresets = {
-  [Phase.Phase1]: [
-    APLPhase1,
-    APLPhase1AG,
-  ],
-  [Phase.Phase2]: [
-    APLPhase2,
-  ]
+	[Phase.Phase1]: [
+		APLPhase1,
+		APLPhase1AG,
+	],
+	[Phase.Phase2]: [
+		APLPhase2,
+	]
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
-  25: APLPresets[Phase.Phase1][0],
-  40: APLPresets[Phase.Phase2][0],
+	25: APLPresets[Phase.Phase1][0],
+	40: APLPresets[Phase.Phase2][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -85,26 +85,26 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
 export const TalentsPhase1 = {
-  name: 'Phase 1',
-  data: SavedTalents.create({
-    talentsString: '25003105',
-  }),
+	name: 'Phase 1',
+	data: SavedTalents.create({
+		talentsString: '25003105',
+	}),
 };
 
 export const TalentsPhase2 = {
-  name: 'Phase 2',
-  data: SavedTalents.create({
-    talentsString: '550031550000151',
-  }),
+	name: 'Phase 2',
+	data: SavedTalents.create({
+		talentsString: '550031550000151',
+	}),
 };
 
 export const TalentPresets = {
-  [Phase.Phase1]: [
-    TalentsPhase1,
-  ],
-  [Phase.Phase2]: [
-    TalentsPhase2,
-  ]
+	[Phase.Phase1]: [
+		TalentsPhase1,
+	],
+	[Phase.Phase2]: [
+		TalentsPhase2,
+	]
 };
 
 export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
@@ -114,50 +114,49 @@ export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = ElementalShamanOptions.create({
-  shield: ShamanShield.LightningShield,
-  totems: ShamanTotems.create({
-    earth: EarthTotem.StrengthOfEarthTotem,
-    fire: FireTotem.SearingTotem,
-    water: WaterTotem.HealingStreamTotem,
-    air: AirTotem.WindfuryTotem,
-  }),
+	shield: ShamanShield.LightningShield,
+	totems: ShamanTotems.create({
+		earth: EarthTotem.StrengthOfEarthTotem,
+		fire: FireTotem.SearingTotem,
+		water: WaterTotem.HealingStreamTotem,
+		air: AirTotem.WindfuryTotem,
+	}),
 });
 
 export const DefaultConsumes = Consumes.create({
-  defaultPotion: Potions.GreaterManaPotion,
-  enchantedSigil: EnchantedSigil.InnovationSigil,
-  firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	food: Food.FoodSagefishDelight,
-  mainHandImbue: WeaponImbue.LesserWizardOil,
-  offHandImbue: WeaponImbue.LesserWizardOil,
-  spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
+	offHandImbue: WeaponImbue.LesserWizardOil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-  arcaneBrilliance: true,
+	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-  battleShout: TristateEffect.TristateEffectImproved,
-  divineSpirit: true,
+	battleShout: TristateEffect.TristateEffectImproved,
+	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	leaderOfThePack: true,
-  manaSpringTotem: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
-  strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-  sparkOfInspiration: true,
-  saygesFortune: SaygesFortune.SaygesDamage
+  	sparkOfInspiration: true,
+  	saygesFortune: SaygesFortune.SaygesDamage
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
-  dreamstate: true,
-  improvedScorch: true,
+	dreamstate: true,
+	improvedScorch: true,
 });
 
 export const OtherDefaults = {
-  distanceFromTarget: 20,
-  profession1: Profession.Enchanting,
-  profession2: Profession.Leatherworking,
+  	distanceFromTarget: 20,
+  	profession1: Profession.Enchanting,
+  	profession2: Profession.Leatherworking,
 }

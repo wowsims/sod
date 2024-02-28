@@ -1,4 +1,5 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
 	Consumes,
@@ -15,29 +16,28 @@ import {
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	Hunter_Options as HunterOptions,
 	Hunter_Options_Ammo as Ammo,
 	Hunter_Options_PetType as PetType,
 	Hunter_Options_QuiverBonus,
 } from '../core/proto/hunter.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
+import { SavedTalents } from '../core/proto/ui.js';
+import MeleeWeaveP1 from './apls/p1_weave.apl.json';
+import MeleeP2 from './apls/p2_melee.apl.json';
+import RangedBmP2 from './apls/p2_ranged_bm.apl.json';
+import RangedMmP2 from './apls/p2_ranged_mm.apl.json';
+import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
+import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
+import Phase2GearRangedMm from './gear_sets/p2_ranged_mm.gear.json';
+import Phase1Gear from './gear_sets/phase1.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
-
-import Phase1Gear from './gear_sets/phase1.gear.json';
-import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
-import Phase2GearRangedMm from './gear_sets/p2_ranged_mm.gear.json';
-import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
 
 export const GearBeastMasteryPhase1 = PresetUtils.makePresetGear('P1 Beast Mastery', Phase1Gear, { talentTree: 0 })
 export const GearMarksmanPhase1 = PresetUtils.makePresetGear('P1 Marksmanship', Phase1Gear, { talentTree: 1 })
@@ -66,11 +66,6 @@ export const DefaultGear = GearMeleePhase2;
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
-
-import MeleeWeaveP1 from './apls/p1_weave.apl.json';
-import MeleeP2 from './apls/p2_melee.apl.json';
-import RangedBmP2 from './apls/p2_ranged_bm.apl.json';
-import RangedMmP2 from './apls/p2_ranged_mm.apl.json';
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('P1 Melee Weave', MeleeWeaveP1);
 
@@ -197,6 +192,7 @@ export const BMDefaultOptions = HunterOptions.create({
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfAgility,
 	defaultPotion: Potions.GreaterManaPotion,
+	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.InnovationSigil,
 	food: Food.FoodSagefishDelight,
 	mainHandImbue: WeaponImbue.WildStrikes,
@@ -211,7 +207,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectRegular,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	leaderOfThePack: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 });
 

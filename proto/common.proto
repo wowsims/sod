@@ -394,7 +394,7 @@ enum FrostPowerBuff {
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
-	
+
 	// Oils
 	MinorWizardOil = 13;
 	LesserWizardOil = 14;
@@ -445,7 +445,6 @@ enum Food {
 	FoodTenderWolfSteak = 9;
 	FoodSmokedSagefish = 10;
 	FoodSagefishDelight = 11;
-	FoodDragonbreathChili = 12;
 }
 
 enum SaygesFortune {
@@ -474,14 +473,14 @@ message RaidBuffs {
 
 	// +Agi
 	TristateEffect grace_of_air_totem = 5; // none, normal, 15% improved
-	
+
 	// +Intell and/or Spi
 	bool arcane_brilliance = 6;
 	bool divine_spirit = 7;
 
 	// +AP
 	TristateEffect battle_shout = 8; // none, normal, 25% improved
-	
+
 	// AP+
 	bool trueshot_aura = 9;
 	bool furious_howl = 11;
@@ -502,7 +501,7 @@ message RaidBuffs {
 	bool frost_resistance_totem = 20;
 	bool fire_resistance_totem = 21;
 	bool fire_resistance_aura = 35;
-	
+
 	// Miscellaneous
 	TristateEffect thorns = 22;
 	TristateEffect devotion_aura = 23;
@@ -529,7 +528,7 @@ message PartyBuffs {
 	// Item Buffs
 	int32 atiesh_mage = 1;
 	int32 atiesh_warlock = 2;
-	
+
 	// Group buffs
 	int32 mana_tide_totems = 3;
 }
@@ -562,7 +561,7 @@ message IndividualBuffs {
 	bool spark_of_inspiration = 17;
 }
 
-// NextIndex: 24
+// NextIndex: 25
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -587,6 +586,7 @@ message Consumes {
 	bool mildly_irradiated_rejuv_pot = 21;
 	int32 pet_scroll_of_agility = 22;
 	int32 pet_scroll_of_strength = 23;
+	bool dragon_breath_chili = 24;
 }
 
 // NextIndex: 30
@@ -660,7 +660,7 @@ message TargetInput {
 	InputType input_type = 1;
 	string label = 2;
 	string tooltip = 5;
-	
+
 	bool bool_value = 3;
 	double number_value = 4;
 }

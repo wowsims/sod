@@ -1,4 +1,6 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
@@ -15,9 +17,6 @@ import {
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -45,6 +44,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
+		Stat.StatMP5,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -69,6 +69,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatMP5,
 	],
 
 	defaults: {
@@ -86,6 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			[Stat.StatSpellHit]: 0.03, //default EP assumes cap
 			[Stat.StatSpellCrit]: 1.94,
 			[Stat.StatSpellHaste]: 2.97,
+			[Stat.StatMP5]: .01,
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 9.62,
 			[Stat.StatMeleeCrit]: 14.80,
