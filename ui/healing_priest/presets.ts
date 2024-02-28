@@ -1,25 +1,21 @@
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
-	IndividualBuffs,
 	Flask,
 	Food,
+	IndividualBuffs,
 	RaidBuffs,
 	TristateEffect,
 	UnitReference,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	HealingPriest_Options as Options,
 } from '../core/proto/priest.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
-import BlankGear from './gear_sets/blank.gear.json';
-
+import { SavedTalents } from '../core/proto/ui.js';
 import DiscApl from './apls/disc.apl.json';
 import HolyApl from './apls/holy.apl.json';
+import BlankGear from './gear_sets/blank.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -65,8 +61,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
 	arcaneBrilliance: true,
 	divineSpirit: true,
-	trueshotAura: true,
-	leaderOfThePack: true,
 	moonkinAura: true,
 });
 

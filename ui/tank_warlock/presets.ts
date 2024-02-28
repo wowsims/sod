@@ -1,4 +1,5 @@
 import { Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
 	Consumes,
@@ -18,21 +19,16 @@ import {
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import {
+	WarlockOptions as WarlockOptions,
 	WarlockOptions_Armor as Armor,
 	WarlockOptions_Summon as Summon,
-	WarlockOptions as WarlockOptions,
 	WarlockOptions_WeaponImbue as WarlockWeaponImbue,
 } from '../core/proto/warlock.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
-
 import AfflictionGearPhase1 from './gear_sets/p1.affi.tank.gear.json';
 import DestructionGearPhase1 from './gear_sets/p1.destro.tank.gear.json';
-
 import DemonologyGearPhase2 from './gear_sets/p2.demo.tank.gear.json';
 import DestructionGearPhase2 from './gear_sets/p2.destro.tank.gear.json';
 
@@ -63,7 +59,6 @@ export const DefaultGear = GearDemonologyTankPhase2;
 
 import Phase1AfflictionAPL from './apls/p1.affi.tank.apl.json';
 import Phase1DestroTankAPL from './apls/p1.destro.tank.apl.json';
-
 import Phase2DemonologyAPL from './apls/p2.demo.tank.apl.json';
 import Phase2DestroTankAPL from './apls/p2.destro.tank.apl.json';
 
@@ -175,10 +170,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	devotionAura: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	leaderOfThePack: true,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	trueshotAura: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
