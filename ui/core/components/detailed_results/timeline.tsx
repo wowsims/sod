@@ -361,7 +361,7 @@ export class Timeline extends ResultComponent {
 
 	// Returns a function for drawing the tooltip, or null if no series was added.
 	private addManaSeries(unit: UnitMetrics, options: any): TooltipHandler | null {
-		const manaLogs = unit.groupedResourceLogs[ResourceType.ResourceTypeMana];
+		const manaLogs = unit.groupedResourceLogs[ResourceType.ResourceTypeMana].filter(log => log.timestamp >= 0);
 		if (manaLogs.length == 0) {
 			return null;
 		}
@@ -421,7 +421,7 @@ export class Timeline extends ResultComponent {
 		options.series.push({
 			name: 'Threat',
 			type: 'line',
-			data: unit.threatLogs.map(log => {
+			data: unit.threatLogs.filter(log => log.timestamp >= 0).map(log => {
 				return {
 					x: log.timestamp,
 					y: log.threatAfter,
