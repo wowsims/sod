@@ -40,6 +40,7 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					// TODO: Does this scale with SP? Can it crit/resist?
+					// Level 40 damage values
 					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
