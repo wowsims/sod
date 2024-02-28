@@ -1,26 +1,25 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
+import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
 	ItemSlot,
 	PartyBuffs,
+	PseudoStat,
 	Race,
 	RangedWeaponType,
 	Spec,
-	Stat, PseudoStat,
-} from '../core/proto/common.js';
-import { Player } from '../core/player.js';
+	Stat, } from '../core/proto/common.js';
+import { HunterRune } from '../core/proto/hunter.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
-import { HunterRune } from '../core/proto/hunter.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	cssClass: 'hunter-sim-ui',
@@ -152,7 +151,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			HunterInputs.NewRaptorStrike,
+			//HunterInputs.NewRaptorStrike,
 			HunterInputs.PetAttackSpeedInput,
 			HunterInputs.PetUptime,
 			HunterInputs.SniperTrainingUptime,
@@ -184,7 +183,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		const isMelee = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
 			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization
 
@@ -198,7 +197,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			}
 		}
 	},
-	
+
 	raidSimPresets: [
 		{
 			spec: Spec.SpecHunter,

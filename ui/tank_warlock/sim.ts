@@ -1,4 +1,9 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
@@ -10,13 +15,7 @@ import {
 } from '../core/proto/common.js';
 import { WarlockRune } from '../core/proto/warlock.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -25,7 +24,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		"Everything P2 should now be functional."
 	],
 
 	// All stats for which EP should be calculated.
@@ -175,7 +173,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
 		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
 
