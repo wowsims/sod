@@ -30,26 +30,12 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 11826}
 
-		damageSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			// TODO: Wowhead shows physical but this seems odd. No logs as of 2024-02-27 to verify
-			SpellSchool: core.SpellSchoolPhysical,
-			// TODO: Verify if this can be resisted
-			Flags: core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreResists,
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					// TODO: Does this scale with SP? Can it crit/resist?
-					// Level 40 damage values
-					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				}
-			},
-		})
-
 		channelSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled | core.SpellFlagAPL,
+			// TODO: Wowhead shows physical but this seems odd. No logs as of 2024-02-27 to verify
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -58,27 +44,17 @@ func init() {
 				},
 			},
 
-			Dot: core.DotConfig{
-				Aura: core.Aura{
-					Label: "Miniaturized Combustion Chamber",
-					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						character.AutoAttacks.CancelAutoSwing(sim)
-					},
-					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							damageSpell.Cast(sim, aoeTarget)
-						}
-
-						character.AutoAttacks.EnableAutoSwing(sim)
-					},
-				},
-				SelfOnly:      true,
-				NumberOfTicks: 3,
-				TickLength:    time.Second,
-			},
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				spell.SelfHot().Apply(sim)
+				character.WaitUntil(sim, sim.CurrentTime+time.Second*3)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					// TODO: Does this scale with SP? Can it crit/resist?
+					// Level 40 damage values
+					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				}
 			},
 		})
 
