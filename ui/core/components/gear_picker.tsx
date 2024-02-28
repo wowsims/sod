@@ -1,27 +1,10 @@
-import { REP_FACTION_NAMES, REP_LEVEL_NAMES, professionNames, slotNames } from '../proto_utils/names.js';
-import { BaseModal } from './base_modal';
-import { Component } from './component';
-import { FiltersMenu } from './filters_menu';
-import {
-	makeShow1hWeaponsSelector,
-	makeShow2hWeaponsSelector,
-	makeShowEPValuesSelector,
-} from './other_inputs';
+import { Tooltip } from 'bootstrap';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../css_utils';
-import { Player } from '../player';
-import { Sim } from '../sim.js';
-import { SimUI } from '../sim_ui';
-import { EventID, TypedEvent } from '../typed_event';
-import { formatDeltaTextElem } from '../utils';
-
-import { ActionId } from '../proto_utils/action_id';
-import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
-import { EquippedItem } from '../proto_utils/equipped_item';
-import { Stats } from '../proto_utils/stats';
-
-import { Tooltip } from 'bootstrap';
 import { IndividualSimUI } from '../individual_sim_ui.js';
+import { Player } from '../player';
 import {
 	Class,
 	ItemQuality,
@@ -31,16 +14,30 @@ import {
 } from '../proto/common';
 import {
 	DatabaseFilters,
+	RepFaction,
 	UIEnchant as Enchant,
 	UIItem as Item,
-	RepFaction,
-	UIRune as Rune,
 	UIItem_FactionRestriction,
+	UIRune as Rune,
 } from '../proto/ui.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
-
+import { ActionId } from '../proto_utils/action_id';
+import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
+import { EquippedItem } from '../proto_utils/equipped_item';
+import { professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, slotNames } from '../proto_utils/names.js';
+import { Stats } from '../proto_utils/stats';
 import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
+import { Sim } from '../sim.js';
+import { SimUI } from '../sim_ui';
+import { EventID, TypedEvent } from '../typed_event';
+import { formatDeltaTextElem } from '../utils';
+import { BaseModal } from './base_modal';
+import { Component } from './component';
+import { FiltersMenu } from './filters_menu';
+import {
+	makeShow1hWeaponsSelector,
+	makeShow2hWeaponsSelector,
+	makeShowEPValuesSelector,
+} from './other_inputs';
 import { Clusterize } from './virtual_scroll/clusterize.js';
 
 const EP_TOOLTIP = `
@@ -102,10 +99,10 @@ export class ItemRenderer extends Component {
 		super(parent, 'item-picker-root');
 		this.player = player;
 
-		let iconElem = ref<HTMLAnchorElement>();
-		let nameElem = ref<HTMLAnchorElement>();
-		let enchantElem = ref<HTMLAnchorElement>();
-		let runeElem = ref<HTMLAnchorElement>();
+		const iconElem = ref<HTMLAnchorElement>();
+		const nameElem = ref<HTMLAnchorElement>();
+		const enchantElem = ref<HTMLAnchorElement>();
+		const runeElem = ref<HTMLAnchorElement>();
 		this.rootElem.appendChild(
 			<>
 				<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{role:"button"}}></a>
@@ -183,7 +180,7 @@ export class ItemRenderer extends Component {
 
 	private createRuneContainer = (rune : Rune|null) => {
 		const runeIconElem = ref<HTMLImageElement>();
-		let runeContainer = (
+		const runeContainer = (
 			<div className="item-picker-rune-container">
 				<img ref={runeIconElem} className="item-picker-rune-icon" />
 			</div>
@@ -543,8 +540,8 @@ export class SelectorModal extends BaseModal {
 
 	protected override onShow(e: Event) {
 		// Only refresh opened tab
-		let t = e.target! as HTMLElement;
-		let tab = t.querySelector<HTMLElement>('.active')!.dataset.contentId!;
+		const t = e.target! as HTMLElement;
+		const tab = t.querySelector<HTMLElement>('.active')!.dataset.contentId!;
 		if (tab.includes('Item')) {
 			this.ilists[0].sizeRefresh();
 		}
@@ -638,7 +635,7 @@ export class SelectorModal extends BaseModal {
 			tabAnchor.value!.textContent = label;
 		}
 
-		let ilist = new ItemList<T>(
+		const ilist = new ItemList<T>(
 			this.contentElem,
 			this.simUI,
 			this.config,
@@ -660,9 +657,9 @@ export class SelectorModal extends BaseModal {
 			},
 		)
 
-		let invokeUpdate = () => { ilist.updateSelected() }
-		let applyFilter = () => { ilist.applyFilters() }
-		let hideOrShowEPValues = () => { ilist.hideOrShowEPValues() }
+		const invokeUpdate = () => { ilist.updateSelected() }
+		const applyFilter = () => { ilist.applyFilters() }
+		const hideOrShowEPValues = () => { ilist.hideOrShowEPValues() }
 		// Add event handlers
 		gearData.changeEvent.on(invokeUpdate);
 
@@ -678,7 +675,7 @@ export class SelectorModal extends BaseModal {
 			ilist.dispose();
 		});
 
-		tabAnchor.value!.addEventListener('shown.bs.tab', (_) => {
+		tabAnchor.value!.addEventListener('shown.bs.tab', _ => {
 			ilist.sizeRefresh()
 		});
 
@@ -844,7 +841,7 @@ export class ItemList<T> {
 		this.scroller = new Clusterize({
 			getNumberOfRows: () => { return this.itemsToDisplay.length },
 			generateRows: (startIdx, endIdx) => {
-				let items = [];
+				const items = [];
 				for (let i = startIdx; i < endIdx; ++i) {
 					if (i >= this.itemsToDisplay.length)
 						break;
@@ -884,9 +881,9 @@ export class ItemList<T> {
 			player.sim.showExperimentalChangeEmitter.on(() => {
 				simAllButton.hidden = !player.sim.getShowExperimental();
 			});
-			simAllButton.addEventListener('click', (_) => {
+			simAllButton.addEventListener('click', _ => {
 				if (simUI instanceof IndividualSimUI) {
-					let itemSpecs = Array<ItemSpec>();
+					const itemSpecs = Array<ItemSpec>();
 					const isRangedOrTrinket = this.slot == ItemSlot.ItemSlotRanged ||
 						this.slot == ItemSlot.ItemSlotTrinket1 ||
 						this.slot == ItemSlot.ItemSlotTrinket2
@@ -897,7 +894,7 @@ export class ItemList<T> {
 						curEP = this.computeEP(curItem);
 					}
 
-					for(let i of this.itemsToDisplay) {
+					for(const i of this.itemsToDisplay) {
 						const idata = this.itemData[i];
 						if (!isRangedOrTrinket && curEP > 0 && idata.baseEP < (curEP / 2)) {
 							continue; // If we have EPs on current item, dont sim items with less than half the EP.
@@ -935,8 +932,8 @@ export class ItemList<T> {
 		const newItemId = newItem ? (this.label == 'Enchants' ? (newItem as unknown as Enchant).effectId : (newItem as unknown as Item | Rune).id) : 0;
 		const newEP = newItem ? this.computeEP(newItem) : 0;
 
-		this.scroller.elementUpdate((item) => {
-			let idx = (item as HTMLElement).dataset.idx!;
+		this.scroller.elementUpdate(item => {
+			const idx = (item as HTMLElement).dataset.idx!;
 			const itemData = this.itemData[parseFloat(idx)];
 			if (itemData.id == newItemId)
 				item.classList.add('active');
@@ -990,7 +987,7 @@ export class ItemList<T> {
 				const searchQuery = this.searchInput.value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '').split(" ");
 				const name = listItemData.name.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
 
-				var include = true;
+				let include = true;
 				searchQuery.forEach(v => {
 					if (!name.includes(v))
 						include = false;
@@ -1043,11 +1040,11 @@ export class ItemList<T> {
 		const show = this.player.sim.getShowEPValues();
 		const display = show ? "" : "none"
 
-		for (let label of labels) {
+		for (const label of labels) {
 			(label as HTMLElement).style.display = display;
 		}
 
-		for (let c of container) {
+		for (const c of container) {
 			if (show)
 				c.classList.remove("hide-ep");
 			else
@@ -1096,13 +1093,13 @@ export class ItemList<T> {
 					</span>
 					<span
 						className='selector-modal-list-item-ep-delta'
-						ref={(e) => itemData.item && equippedItemEP != itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
+						ref={e => itemData.item && equippedItemEP != itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
 					></span>
 				</div>
 			);
 		}
 
-		let favoriteElem = ref<HTMLButtonElement>();
+		const favoriteElem = ref<HTMLButtonElement>();
 		listItemElem.appendChild(
 			<div>
 				<button className="selector-modal-list-item-favorite btn btn-link p-0"
@@ -1159,7 +1156,7 @@ export class ItemList<T> {
 			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
 		};
 
-		let isFavorite = this.isItemFavorited(itemData);
+		const isFavorite = this.isItemFavorited(itemData);
 
 		if (isFavorite) {
 			favoriteElem.value!.children[0].classList.add('fas');
