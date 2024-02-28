@@ -112,7 +112,6 @@ export class Timeline extends ResultComponent {
 				title: {
 					text: 'Time (s)',
 				},
-				type: 'datetime',
 			},
 			noData: {
 				text: 'Waiting for data...',
@@ -170,20 +169,17 @@ export class Timeline extends ResultComponent {
 		}
 
 		const duration = this.resultData!.result.result.firstIterationDuration || 1;
+
 		const options: any = {
 			series: [],
 			colors: [],
 			xaxis: {
-				min: this.toDatetime(0).getTime(),
-				max: this.toDatetime(duration).getTime(),
-				type: 'datetime',
+				min: 0,
+				max: duration,
 				tickAmount: 10,
 				decimalsInFloat: 1,
 				labels: {
 					show: true,
-					formatter: (defaultValue: string, timestamp: number) => {
-						return (timestamp / 1000).toFixed(1);
-					},
 				},
 				title: {
 					text: 'Time (s)',
@@ -195,11 +191,14 @@ export class Timeline extends ResultComponent {
 					beforeResetZoom: () => {
 						return {
 							xaxis: {
-								min: this.toDatetime(0),
-								max: this.toDatetime(duration),
+								min: 0,
+								max: duration,
 							},
 						};
 					},
+				},
+				toolbar: {
+					show: false,
 				},
 			},
 		};
@@ -337,7 +336,7 @@ export class Timeline extends ResultComponent {
 
 	// Returns a function for drawing the tooltip, or null if no series was added.
 	private addDpsSeries(unit: UnitMetrics, options: any, colorOverride: string): { maxDps: number, tooltipHandler: TooltipHandler } {
-		const dpsLogs = unit.dpsLogs;
+		const dpsLogs = unit.dpsLogs.filter(log => log.timestamp >= 0);
 
 		options.colors.push(colorOverride || dpsColor);
 		options.series.push({
@@ -345,7 +344,7 @@ export class Timeline extends ResultComponent {
 			type: 'line',
 			data: dpsLogs.map(log => {
 				return {
-					x: this.toDatetime(log.timestamp),
+					x: log.timestamp,
 					y: log.dps,
 				};
 			}),
@@ -374,7 +373,7 @@ export class Timeline extends ResultComponent {
 			type: 'line',
 			data: manaLogs.map(log => {
 				return {
-					x: this.toDatetime(log.timestamp),
+					x: log.timestamp,
 					y: log.valueAfter,
 				};
 			}),
@@ -424,7 +423,7 @@ export class Timeline extends ResultComponent {
 			type: 'line',
 			data: unit.threatLogs.map(log => {
 				return {
-					x: this.toDatetime(log.timestamp),
+					x: log.timestamp,
 					y: log.threatAfter,
 				};
 			}),
@@ -454,14 +453,14 @@ export class Timeline extends ResultComponent {
 			position: 'back',
 			xaxis: mcdAuraLogs.map((log, i) => {
 				return {
-					x: this.toDatetime(log.gainedAt).getTime(),
-					x2: this.toDatetime(log.fadedAt).getTime(),
+					x: log.gainedAt,
+					x2: log.fadedAt,
 					fillColor: mcdAuraColors[i],
 				};
 			}),
 			points: mcdLogs.map((log, i) => {
 				return {
-					x: this.toDatetime(log.timestamp).getTime(),
+					x: log.timestamp,
 					y: 0,
 					image: {
 						path: log.actionId!.iconUrl,
@@ -1040,7 +1039,7 @@ export class Timeline extends ResultComponent {
 			<li>
 				{log.actionId && log.actionId.iconUrl && <img className="timeline-tooltip-icon" src={log.actionId.iconUrl}></img>}
 				{log.actionId && <span>{log.actionId.name}</span>}
-				<span className="series-color">{value}</span>
+				<span className="series-color">{htmlDecode(value)}</span>
 			</li>
 		);
 	}
@@ -1082,10 +1081,6 @@ export class Timeline extends ResultComponent {
 			this.rendered = true;
 			this.updatePlot();
 		}, 300);
-	}
-
-	private toDatetime(timestamp: number): Date {
-		return new Date(timestamp * 1000);
 	}
 }
 

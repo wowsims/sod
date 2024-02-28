@@ -118,16 +118,16 @@ kbd {
 }
 
 @each $label, $value in $item-qualities {
-  .item-quality-#{$label} {
-    color: $value !important;
-  }
+  	.item-quality-#{$label} {
+    	color: $value !important;
+  	}
 }
 
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
 	  color: $value !important;
 	}
-  }
+}
 
 [contenteditable="true"]:active,
 [contenteditable="true"]:focus {
