@@ -364,7 +364,7 @@ export class SettingsTab extends SimTab {
 			if (inputConfig.type == 'number') {
 				new NumberPicker(sectionElem, this.simUI.player, inputConfig);
 			} else if (inputConfig.type == 'boolean') {
-				new BooleanPicker(sectionElem, this.simUI.player, { ...inputConfig, ...{ cssScheme: this.simUI.cssScheme } });
+				new BooleanPicker(sectionElem, this.simUI.player, { ...inputConfig });
 			} else if (inputConfig.type == 'enum') {
 				new EnumPicker(sectionElem, this.simUI.player, inputConfig);
 			}
