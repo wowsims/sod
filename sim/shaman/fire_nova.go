@@ -71,10 +71,12 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+				result := spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			spell.DealDamage(sim, result)
+				spell.DealDamage(sim, result)
+			}
 		},
 	}
 

@@ -8,6 +8,16 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const (
+	AutomaticCrowdPummeler              = 210741
+	ElectromagneticHyperfluxReactivator = 213281
+	ElectrocutionersNeedle              = 213286
+	ToxicRevengerTwo                    = 213291
+	SuperchargedHeadchopper             = 213296
+	MachinistsGloves                    = 213319
+	MiniaturizedCombustionChamber       = 213347
+)
+
 func init() {
 	core.AddEffectsToTest = false
 
@@ -15,12 +25,56 @@ func init() {
 	//                                 Cloth
 	///////////////////////////////////////////////////////////////////////////
 
+	// Electromagnetic Hyperflux Reactivator
+	core.NewItemEffect(ElectromagneticHyperfluxReactivator, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 11826}
+
+		channelSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			// TODO: Wowhead shows physical but this seems odd. No logs as of 2024-02-27 to verify
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 30,
+				},
+			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   1,
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				character.WaitUntil(sim, sim.CurrentTime+time.Second*3)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					// TODO: Does this scale with SP? Can it crit/resist?
+					// Level 40 damage values
+					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    channelSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+			ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
+				// Only castable with manual APL Action
+				return false
+			},
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Leather
 	///////////////////////////////////////////////////////////////////////////
 
 	// Machinist's Gloves
-	core.NewItemEffect(213319, func(agent core.Agent) {
+	core.NewItemEffect(MachinistsGloves, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeMechanical {
 			character.AddStat(stats.AttackPower, 30)
@@ -41,7 +95,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	// Miniaturized Combustion Chamber
-	core.NewItemEffect(213347, func(agent core.Agent) {
+	core.NewItemEffect(MiniaturizedCombustionChamber, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 435167}
 		manaMetrics := character.NewManaMetrics(actionID)
@@ -103,7 +157,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	// Automatic Crowd Pummeler
-	core.NewItemEffect(210741, func(agent core.Agent) {
+	core.NewItemEffect(AutomaticCrowdPummeler, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 13494}
 
@@ -143,10 +197,10 @@ func init() {
 	})
 
 	// Electrocutioner's Needle
-	core.NewItemEffect(213286, func(agent core.Agent) {
+	core.NewItemEffect(ElectrocutionersNeedle, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(213286)
+		procMask := character.GetProcMaskForItem(ElectrocutionersNeedle)
 		ppmm := character.AutoAttacks.NewPPMManager(6.5, procMask)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
@@ -179,7 +233,7 @@ func init() {
 	})
 
 	// Supercharged Headchopper
-	core.NewItemEffect(213296, func(agent core.Agent) {
+	core.NewItemEffect(SuperchargedHeadchopper, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procMask := character.GetProcMaskForItem(213296)
@@ -215,10 +269,10 @@ func init() {
 	})
 
 	// Toxic Revenger II
-	core.NewItemEffect(213291, func(agent core.Agent) {
+	core.NewItemEffect(ToxicRevengerTwo, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(213291)
+		procMask := character.GetProcMaskForItem(ToxicRevengerTwo)
 		ppmm := character.AutoAttacks.NewPPMManager(3.0, procMask)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
