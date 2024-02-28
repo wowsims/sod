@@ -64,7 +64,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 			},
 		},
 
@@ -72,11 +72,12 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.DealOutcome(sim, result)
+
 				if result.Landed() {
 					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
-				spell.DealOutcome(sim, result)
 			})
 		},
 	}

@@ -1,4 +1,9 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
@@ -9,13 +14,7 @@ import {
 	Stat,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -64,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// due to pet scaling and player getting some dynamic buffs which we cant get here
 	// modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
 	// 	let stats = new Stats();
-		
+
 	// 	// Demonic Knowledge rune
 	// 	if (player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == WarlockRune.RuneBootsDemonicKnowledge) {
 	// 		let petIntStaMap = new Map<number, Map<WarlockOptions_Summon, number>>([
@@ -98,7 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// 		// Player scaled stats
 	// 		let playerStats = Stats.fromProto(player.getCurrentStats().finalStats)
 	// 		currentTotal = currentTotal + playerStats.getStat(Stat.StatIntellect) * 0.3 + playerStats.getStat(Stat.StatStamina) * (player.getSpecOptions().summon == WarlockOptions_Summon.Imp ? 0.66 : 0.75)
-			
+
 	// 		stats = stats.addStat(Stat.StatSpellPower, currentTotal * 0.1);
 	// 	}
 
@@ -210,7 +209,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 

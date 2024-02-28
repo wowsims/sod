@@ -33,9 +33,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	dwSpecMulti := 1.0
 	var ohSpell *core.Spell
 	if hasOHSpell {
-		if !hunter.Options.NewRaptorStrike && hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
-			dwSpecMulti = 1.3
-		}
+		// Uncomment if this ever gets added back
+		// if hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
+		// 	dwSpecMulti = 1.3
+		// }
 
 		ohSpell = hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId}.WithTag(2),
