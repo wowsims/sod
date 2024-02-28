@@ -87,7 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			[Stat.StatSpellHit]: 0.03, //default EP assumes cap
 			[Stat.StatSpellCrit]: 1.94,
 			[Stat.StatSpellHaste]: 2.97,
-			[Stat.StatMP5]: 1,
+			[Stat.StatMP5]: .01,
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 9.62,
 			[Stat.StatMeleeCrit]: 14.80,
