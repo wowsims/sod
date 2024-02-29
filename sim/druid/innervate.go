@@ -38,7 +38,6 @@ func (druid *Druid) registerInnervateCD() {
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
 		ActionID: actionID,
-		Flags:    SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.05,

@@ -8,10 +8,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-const (
-	SpellFlagOmenTrigger = core.SpellFlagAgentReserved1
-)
-
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
@@ -41,8 +37,8 @@ type Druid struct {
 	FerociousBite        *DruidSpell
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
-	Hurricane            *DruidSpell
-	HurricaneTickSpell   *DruidSpell
+	Hurricane            []*DruidSpell
+	HurricaneTickSpell   []*DruidSpell
 	InsectSwarm          *DruidSpell
 	GiftOfTheWild        *DruidSpell
 	Lacerate             *DruidSpell
@@ -187,7 +183,7 @@ func (druid *Druid) Initialize() {
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
-	// druid.registerHurricaneSpell()
+	druid.registerHurricaneSpell()
 	// druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
