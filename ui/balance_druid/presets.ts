@@ -3,12 +3,14 @@ import {
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
-	Flask,
 	Food,
 	IndividualBuffs,
 	PartyBuffs,
+	Potions,
 	Profession,
 	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
 	TristateEffect,
 	UnitReference,
 	WeaponImbue
@@ -116,10 +118,11 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
-	mainHandImbue: WeaponImbue.BlackfathomManaOil,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
+	defaultPotion: Potions.GreaterManaPotion,
+  enchantedSigil: EnchantedSigil.InnovationSigil,
+	food: Food.FoodSagefishDelight,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -127,13 +130,14 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	sparkOfInspiration: true,
+	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({
@@ -141,7 +145,6 @@ export const DefaultPartyBuffs = PartyBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
-	judgementOfWisdom: true,
 });
 
 export const OtherDefaults = {

@@ -2,12 +2,10 @@ import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
 	Faction,
-	IndividualBuffs,
 	PartyBuffs,
 	Race,
 	Spec,
 	Stat, PseudoStat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';
@@ -91,12 +89,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
 	},
 
@@ -152,7 +146,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Arms',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 0),
 
-			talents: Presets.DefaultTalentsArms.data,
+			talents: Presets.DefaultTalentsPhase2Arms.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -178,7 +172,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Fury',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 1),
 
-			talents: Presets.DefaultTalentsFury.data,
+			talents: Presets.DefaultTalentsPhase2Fury.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -190,11 +184,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][1].gear,
-					2: Presets.GearPresets[Phase.Phase2][0].gear,
+					2: Presets.GearPresets[Phase.Phase2][1].gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][1].gear,
-					2: Presets.GearPresets[Phase.Phase2][0].gear,
+					2: Presets.GearPresets[Phase.Phase2][1].gear,
 					
 				},
 			},

@@ -28,6 +28,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		SpellSchool:   core.SpellSchoolPhysical,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,
@@ -91,17 +92,15 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 						serpentStingAura := hunter.SerpentSting.Dot(curTarget)
 						serpentStingTicks := serpentStingAura.NumberOfTicks
 						if serpentStingAura.IsActive() {
-							// If less then 2 ticks are left then we refresh with a 2 tick duration
-							if serpentStingTicks-serpentStingAura.TickCount < 2 {
-								serpentStingAura.NumberOfTicks = 2
-								serpentStingAura.Rollover(sim)
-								serpentStingAura.NumberOfTicks = serpentStingTicks
-							}
+							// If less then 2 ticks are left then we rollover with a 2 tick duration
+							serpentStingAura.NumberOfTicks = max(2, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
+							serpentStingAura.Rollover(sim)
 						} else {
+							// Else we apply with a 2 tick duration
 							serpentStingAura.NumberOfTicks = 2
 							serpentStingAura.Apply(sim)
-							serpentStingAura.NumberOfTicks = serpentStingTicks
 						}
+						serpentStingAura.NumberOfTicks = serpentStingTicks
 					}
 
 					curTarget = sim.Environment.NextTargetUnit(curTarget)

@@ -33,9 +33,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	dwSpecMulti := 1.0
 	var ohSpell *core.Spell
 	if hasOHSpell {
-		if hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
-			dwSpecMulti = 1.3
-		}
+		// Uncomment if this ever gets added back
+		// if hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
+		// 	dwSpecMulti = 1.3
+		// }
 
 		ohSpell = hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId}.WithTag(2),
@@ -76,8 +77,15 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			weaponDamage := 0.0
+			if hasMeleeSpecialist {
+				weaponDamage = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			} else {
+				weaponDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			}
+
 			mhBaseDamage := baseDamage +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
+				weaponDamage +
 				spell.BonusWeaponDamage()
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
@@ -93,9 +101,16 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			if ohSpell != nil {
 				ohSpell.Cast(sim, target)
 
+				ohWeaponDamage := 0.0
+				if hasMeleeSpecialist {
+					ohWeaponDamage = spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				} else {
+					ohWeaponDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+				}
+
 				ohBaseDamage := baseDamage*0.5 +
-					spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()*0.5
+					ohWeaponDamage +
+					spell.BonusWeaponDamage()
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
 					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))

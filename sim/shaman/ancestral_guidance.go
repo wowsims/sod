@@ -14,7 +14,7 @@ func (shaman *Shaman) applyAncestralGuidance() {
 
 	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsAncestralGuidance)}
 	duration := time.Second * 10
-	cooldown := time.Minute * 2
+	cooldown := time.Minute * 1
 
 	damageConversion := .25  // 25%
 	healingConversion := 1.0 // 100%

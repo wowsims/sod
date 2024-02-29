@@ -52,18 +52,25 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 			}
 		})
 
+	aspectOfTheHawkAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+
 	return core.SpellConfig{
 		ActionID:      actionID,
 		Flags:         core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
 
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !aspectOfTheHawkAura.IsActive()
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if aspectOfTheHawkAura.IsActive() {
-				aspectOfTheHawkAura.Deactivate(sim)
-			} else {
-				aspectOfTheHawkAura.Activate(sim)
-			}
+			aspectOfTheHawkAura.Activate(sim)
 		},
 	}
 }
@@ -75,7 +82,70 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 		config := hunter.getAspectOfTheHawkSpellConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.AspectOfTheHawk = hunter.GetOrRegisterSpell(config)
+			hunter.GetOrRegisterSpell(config)
 		}
 	}
+}
+
+func (hunter *Hunter) registerAspectOfTheViperSpell() {
+	actionID := core.ActionID{SpellID: 415423}
+	manaMetrics := hunter.NewManaMetrics(actionID)
+
+	var manaPA *core.PendingAction
+
+	baseManaRegenMultiplier := 0.02
+
+	aspectOfTheViperAura := hunter.GetOrRegisterAura(core.Aura{
+		Label:    "Aspect of the Viper",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier *= 0.9
+
+			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 3,
+				OnAction: func(s *core.Simulation) {
+					hunter.AddMana(sim, hunter.MaxMana()*0.1, manaMetrics)
+				},
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier /= 0.9
+			manaPA.Cancel(sim)
+		},
+
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.AutoAttacks.RangedAuto() {
+				manaPerRangedHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.Ranged().SwingSpeed
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerRangedHitMultiplier, manaMetrics)
+			} else if spell == hunter.AutoAttacks.MHAuto() {
+				manaPerMHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.MH().SwingSpeed
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerMHHitMultiplier, manaMetrics)
+			} else if spell == hunter.AutoAttacks.OHAuto() {
+				manaPerOHHitMultiplier := baseManaRegenMultiplier * hunter.AutoAttacks.OH().SwingSpeed
+				hunter.AddMana(sim, hunter.MaxMana()*manaPerOHHitMultiplier, manaMetrics)
+			}
+		},
+	})
+
+	aspectOfTheViperAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+
+	hunter.GetOrRegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !aspectOfTheViperAura.IsActive()
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			aspectOfTheViperAura.Activate(sim)
+		},
+	})
 }

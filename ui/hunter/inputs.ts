@@ -1,7 +1,7 @@
 import { ItemSlot, Spec } from '../core/proto/common.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { Player } from '../core/player.js';
-import { TypedEvent } from '../core/typed_event.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
 import { makePetTypeInputConfig } from '../core/talents/hunter_pet.js';
 
 import * as InputHelpers from '../core/components/input_helpers.js';
@@ -11,7 +11,10 @@ import {
 	Hunter_Rotation_StingType as StingType,
 	Hunter_Options_Ammo as Ammo,
 	Hunter_Options_QuiverBonus as QuiverBonus,
+	Hunter_Options_PetType,
+	Hunter_Options_PetAttackSpeed as PetAttackSpeed,
 	HunterRune,
+	Hunter,
 } from '../core/proto/hunter.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
@@ -63,6 +66,14 @@ export const PetUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecHunter
 	percent: true,
 });
 
+export const NewRaptorStrike = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecHunter>({
+	fieldName: 'newRaptorStrike',
+	label: 'New Raptor Strike',
+	labelTooltip: 'New Raptor Strike with removed same weapon type 30% damage bonus.',
+	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization,
+	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
+});
+
 export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecHunter>({
 	fieldName: 'sniperTrainingUptime',
 	label: 'Sniper Training Uptime (%)',
@@ -70,6 +81,26 @@ export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec
 	percent: true,
 	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == HunterRune.RuneLegsSniperTraining,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
+});
+
+export const PetAttackSpeedInput = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecHunter>({
+	fieldName: 'petAttackSpeed',
+	label: 'Pet Attack Speed',
+	labelTooltip: 'The pets auto attacks speed.',
+	values: [
+		{ name: '1.0', value: PetAttackSpeed.One },
+		{ name: '1.2', value: PetAttackSpeed.OneTwo },
+		{ name: '1.3', value: PetAttackSpeed.OneThree },
+		{ name: '1.4', value: PetAttackSpeed.OneFour },
+		{ name: '1.5', value: PetAttackSpeed.OneFive },
+		{ name: '1.6', value: PetAttackSpeed.OneSix },
+		{ name: '1.7', value: PetAttackSpeed.OneSeven },
+		{ name: '2.0', value: PetAttackSpeed.Two },
+		{ name: '2.4', value: PetAttackSpeed.TwoFour },
+		{ name: '2.5', value: PetAttackSpeed.TwoFive },
+	],
+	showWhen: (player) => player.getSpecOptions().petType != Hunter_Options_PetType.PetNone,
+	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.specOptionsChangeEmitter]),
 });
 
 export const HunterRotationConfig = {

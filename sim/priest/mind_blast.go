@@ -4,30 +4,58 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const MindBlastRanks = 9
+
+var MindBlastSpellId = [MindBlastRanks + 1]int32{0, 8092, 8102, 8103, 8104, 8105, 8106, 10945, 10946, 10947}
+var MindBlastBaseDamage = [MindBlastRanks + 1][]float64{{0}, {42, 46}, {76, 83}, {115, 124}, {174, 184}, {225, 239}, {279, 297}, {354, 375}, {437, 461}, {508, 537}}
+var MindBlastSpellCoef = [MindBlastRanks + 1]float64{0, .268, .364, .429, .429, .429, .429, .429, .429, .429}
+var MindBlastManaCost = [MindBlastRanks + 1]float64{0, 50, 80, 110, 150, 185, 225, 265, 310, 350}
+var MindBlastLevel = [MindBlastRanks + 1]int{0, 10, 16, 22, 28, 34, 40, 46, 52, 58}
+
+func (priest *Priest) registerMindBlast() {
+	priest.MindBlast = make([]*core.Spell, MindBlastRanks+1)
+	cdTimer := priest.NewTimer()
+
+	for rank := 1; rank <= MindBlastRanks; rank++ {
+		config := priest.getMindBlastBaseConfig(rank, cdTimer)
+
+		if config.RequiredLevel <= int(priest.Level) {
+			priest.MindBlast[rank] = priest.GetOrRegisterSpell(config)
+		}
+	}
+}
+
 func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
-	spellCoeff := 0.429 // 1.5 cast over 3.5 reference
-	baseDamage := [10][]float64{{0}, {42, 46}, {76, 83}, {117, 126}, {174, 184}, {225, 239}, {288, 307}, {356, 377}, {437, 461}, {508, 537}}[rank]
-	spellId := [10]int32{0, 8092, 8102, 8103, 8104, 8105, 8106, 10945, 10946, 10947}[rank]
-	manaCost := [10]float64{0, 50, 80, 110, 150, 185, 225, 264, 310, 350}[rank]
-	level := [10]int{0, 10, 16, 22, 28, 32, 40, 46, 52, 58}[rank]
+	spellId := MindBlastSpellId[rank]
+	baseDamageLow := MindBlastBaseDamage[rank][0] * priest.darknessDamageModifier()
+	baseDamageHigh := MindBlastBaseDamage[rank][1] * priest.darknessDamageModifier()
+	spellCoeff := MindBlastSpellCoef[rank]
+	castTime := time.Millisecond * 1500
+	manaCost := MindBlastManaCost[rank]
+	level := MindBlastLevel[rank]
+
+	hasMindSpike := priest.HasRune(proto.PriestRune_RuneWaistMindSpike)
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
-		Rank:          rank,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL,
+
 		RequiredLevel: level,
+		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				CastTime: castTime,
 			},
 			CD: core.Cooldown{
 				Timer:    cdTimer,
@@ -35,38 +63,41 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			},
 		},
 
-		BonusHitRating:   float64(priest.Talents.ShadowFocus) * 2 * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  0,
-		DamageMultiplier: 1,
+		BonusCritRating:  priest.forceOfWillCritRating(),
+		BonusHitRating:   priest.shadowHitModifier(),
+		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
-		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamageCacl := (baseDamage[0]+baseDamage[1])/2 + spellCoeff*spell.SpellDamage()
-			return spell.CalcDamage(sim, target, baseDamageCacl, spell.OutcomeExpectedMagicHitAndCrit)
-		},
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
-			baseDamage *= priest.MindBlastModifier
+		ThreatMultiplier: priest.shadowThreatModifier(),
 
+		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			damage := ((baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
+			return spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+				spell.BonusCritRating += float64(30 * priest.MindSpikeAuras.Get(target).GetStacks() * core.CritRatingPerCritChance)
+			}
+
+			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
+
+			bonusCrit := 0.0
+			if hasMindSpike && priest.MindSpikeAuras.Get(target).IsActive() {
+				bonusCrit = float64(priest.MindSpikeAuras.Get(target).GetStacks()) * 30 * core.SpellCritRatingPerCritChance
+			}
+
+			spell.BonusCritRating += bonusCrit
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.BonusCritRating -= bonusCrit
+
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
+				if hasMindSpike {
+					priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				}
 			}
 
 			spell.DealDamage(sim, result)
 		},
-	}
-}
-
-func (priest *Priest) registerMindBlast() {
-	maxRank := 9
-	cdTimer := priest.NewTimer()
-
-	for i := 1; i <= maxRank; i++ {
-		config := priest.getMindBlastBaseConfig(i, cdTimer)
-
-		if config.RequiredLevel <= int(priest.Level) {
-			priest.MindBlast = priest.GetOrRegisterSpell(config)
-		}
 	}
 }

@@ -8,7 +8,7 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPicker } from './boolean_picker.js';
 import { Tooltip } from 'bootstrap';
 
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 export interface ItemSwapConfig {

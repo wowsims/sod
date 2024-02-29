@@ -22,7 +22,7 @@ func TestFury(t *testing.T) {
 
 			Talents:     P2FuryTalents,
 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_dw"),
-			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2_fury"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
@@ -34,44 +34,27 @@ func TestFury(t *testing.T) {
 	}))
 }
 
-// func TestArms(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-// 		{
-// 			Class:      proto.Class_ClassWarrior,
-// 			Level:      25,
-// 			Race:       proto.Race_RaceOrc,
-// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+func TestArms(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassWarrior,
+			Level:      40,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-// 			Talents:     P1ArmsTalents,
-// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1"),
-// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
-// 			Buffs:       core.FullBuffsPhase1,
-// 			Consumes:    Phase1Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+			Talents:     P2ArmsTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_2h"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2_arms"),
+			Buffs:       core.FullBuffsPhase1,
+			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatAttackPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 		{
-// 			Class:      proto.Class_ClassWarrior,
-// 			Level:      25,
-// 			Race:       proto.Race_RaceOrc,
-// 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
-
-// 			Talents:     P1ArmsTalents,
-// 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_1_dw"),
-// 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_1"),
-// 			Buffs:       core.FullBuffsPhase1,
-// 			Consumes:    Phase1Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
-
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatAttackPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 	}))
-// }
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
 
 func BenchmarkSimulate(b *testing.B) {
 	core.Each([]*proto.RaidSimRequest{
@@ -81,8 +64,8 @@ func BenchmarkSimulate(b *testing.B) {
 					Race:          proto.Race_RaceOrc,
 					Class:         proto.Class_ClassWarrior,
 					Level:         40,
-					Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/warrior/apls", "phase_2").Rotation,
+					Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_2h").GearSet,
+					Rotation:      core.GetAplRotation("../../../ui/warrior/apls", "phase_2_arms").Rotation,
 					Consumes:      Phase2Consumes.Consumes,
 					Spec:          PlayerOptionsFury,
 					TalentsString: P2FuryTalents,
@@ -103,7 +86,7 @@ func BenchmarkSimulate(b *testing.B) {
 	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
 }
 
-var P1ArmsTalents = "303220203-01"
+var P2ArmsTalents = "303050213525100001"
 
 var P2FuryTalents = "-05050005405010051"
 
@@ -120,11 +103,12 @@ var Phase1Consumes = core.ConsumesCombo{
 var Phase2Consumes = core.ConsumesCombo{
 	Label: "Phase 2 Consumes",
 	Consumes: &proto.Consumes{
-		AgilityElixir: proto.AgilityElixir_ElixirOfAgility,
-		Food:          proto.Food_FoodDragonbreathChili,
-		MainHandImbue: proto.WeaponImbue_WildStrikes,
-		OffHandImbue:  proto.WeaponImbue_SolidSharpeningStone,
-		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodSagefishDelight,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
 	},
 }
 

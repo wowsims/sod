@@ -1,3 +1,5 @@
+import { Player } from '../player';
+import { Spec } from '../proto/common';
 import {
 	Consumes,
 	Debuffs,
@@ -6,15 +8,10 @@ import {
 	RaidBuffs,
 } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
-
-import { Player } from '../player';
-import { Spec } from '../proto/common';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';
-
 import { IconEnumPicker, IconEnumPickerDirection, IconEnumValueConfig } from './icon_enum_picker';
 import { IconPicker } from './icon_picker';
-
 import * as InputHelpers from './input_helpers';
 
 // Component Functions
@@ -78,7 +75,7 @@ export function makeBooleanConsumeInput<SpecType extends Spec>(config: BooleanIn
 		showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		getValue: (player: Player<SpecType>) => player.getConsumes(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
-		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter])
+		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.professionChangeEmitter])
 	}, config.actionId, config.fieldName, config.value);
 }
 export function makeBooleanDebuffInput<SpecType extends Spec>(config: BooleanInputConfig<Debuffs>): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
@@ -203,5 +200,14 @@ export function makeEnumIndividualBuffInput<SpecType extends Spec>(config: EnumI
 		getValue: (player: Player<SpecType>) => player.getBuffs(),
 		setValue: (eventID: EventID, player: Player<SpecType>, newVal: IndividualBuffs) => player.setBuffs(eventID, newVal),
 		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),
+	}, config.fieldName, config.values, config.numColumns, config.direction || IconEnumPickerDirection.Vertical)
+};
+
+export function makeEnumConsumeInput<SpecType extends Spec>(config: EnumInputConfig<Player<SpecType>, Consumes, number>): InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, number> {
+	return InputHelpers.makeEnumIconInput<any, Consumes, Player<SpecType>, number>({
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: (player: Player<SpecType>) => player.getConsumes(),
+		setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
+		changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter]),
 	}, config.fieldName, config.values, config.numColumns, config.direction || IconEnumPickerDirection.Vertical)
 };

@@ -4,6 +4,7 @@ import (
 	_ "github.com/wowsims/sod/sim/common"
 	"github.com/wowsims/sod/sim/druid/balance"
 	dpsrogue "github.com/wowsims/sod/sim/rogue/dps_rogue"
+	"github.com/wowsims/sod/sim/paladin/retribution"
 	"github.com/wowsims/sod/sim/shaman/elemental"
 	"github.com/wowsims/sod/sim/shaman/enhancement"
 
@@ -51,7 +52,7 @@ func RegisterAll() {
 	// protectionWarrior.RegisterProtectionWarrior()
 	// holyPaladin.RegisterHolyPaladin()
 	// protectionPaladin.RegisterProtectionPaladin()
-	// retribution.RegisterRetributionPaladin()
+	retribution.RegisterRetributionPaladin()
 	dpsWarlock.RegisterDpsWarlock()
 	tankWarlock.RegisterTankWarlock()
 }

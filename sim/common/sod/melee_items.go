@@ -13,6 +13,100 @@ func init() {
 
 	// Proc effects. Keep these in order by item ID.
 
+	// Fiery War Axe
+	core.NewItemEffect(870, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(870)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18796},
+			SpellSchool: core.SpellSchoolFire,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Fiery War Axe Fireball",
+				},
+				TickLength:    2 * time.Second,
+				NumberOfTicks: 3,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.SnapshotBaseDamage = 8
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotCritChance = 0
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				},
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(155, 197)
+				result := spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Fiery War Axe Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Fiery War Axe Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
+	// Nightblade
+	core.NewItemEffect(1982, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(1982)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18211},
+			SpellSchool: core.SpellSchoolShadow,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(125, 275)
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Nightblade Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Nightblade Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
 	// Ravager
 	core.NewItemEffect(7717, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -198,46 +292,6 @@ func init() {
 		})
 	})
 
-	// Automatic Crowd Pummeler
-	core.NewItemEffect(210741, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 13494}
-
-		hasteAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Haste",
-			ActionID: actionID,
-			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.5)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.5)
-			},
-		})
-
-		hasteSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				hasteAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    hasteSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
-
 	// Mark of the Champion
 	core.NewItemEffect(23206, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -245,6 +299,48 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 			character.AddStat(stats.AttackPower, 150)
 		}
+	})
+
+	// Mekkatorque's Arcano-Shredder
+	core.NewItemEffect(213409, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(213409)
+		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
+
+		procAuras := character.NewEnemyAuraArray(core.MekkatorqueFistDebuffAura)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 434841},
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				procAuras.Get(target).Activate(sim)
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Mekkatorque Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if ppmm.Proc(sim, spell.ProcMask, "Mekkatorque Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
 	})
 
 	core.AddEffectsToTest = true

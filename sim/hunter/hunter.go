@@ -44,9 +44,6 @@ type Hunter struct {
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
 
-	AspectOfTheHawk  *core.Spell
-	AspectOfTheViper *core.Spell
-
 	AimedShot      *core.Spell
 	ArcaneShot     *core.Spell
 	ChimeraShot    *core.Spell
@@ -107,7 +104,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(true, hunter.CurrentTarget)
 
 	hunter.registerAspectOfTheHawkSpell()
-	//hunter.registerAspectOfTheViperSpell()
+	hunter.registerAspectOfTheViperSpell()
 
 	multiShotTimer := hunter.NewTimer()
 	arcaneShotTimer := hunter.NewTimer()

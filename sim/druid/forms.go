@@ -35,7 +35,7 @@ func (druid *Druid) ClearForm(sim *core.Simulation) {
 	} else if druid.InForm(Bear) {
 		druid.BearFormAura.Deactivate(sim)
 	} else if druid.InForm(Moonkin) {
-		panic("cant clear moonkin form")
+		druid.MoonkinFormAura.Deactivate(sim)
 	}
 	druid.form = Humanoid
 	druid.SetCurrentPowerBar(core.ManaBar)
@@ -398,16 +398,73 @@ func (druid *Druid) manageCooldownsEnabled() {
 	}
 }
 
-func (druid *Druid) applyMoonkinForm() {
-	if !druid.InForm(Moonkin) || !druid.Talents.MoonkinForm {
+func (druid *Druid) registerMoonkinFormSpell() {
+	if !druid.Talents.MoonkinForm {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	actionID := core.ActionID{SpellID: 24858}
+
+	druid.MoonkinFormAura = druid.RegisterAura(core.Aura{
 		Label:    "Moonkin Form",
+		ActionID: actionID,
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if !druid.Env.MeasuringStats && druid.form != Humanoid {
+				druid.ClearForm(sim)
+			}
+			druid.form = Moonkin
+
+			// 2024-02-27 Tuning:
+			// While in Moonkin form, Moonfire/Sunfire cost reduced by 50%,
+			// periodic damage increase by 50%
+			core.Each(druid.Moonfire, func(spell *DruidSpell) {
+				if spell != nil {
+					spell.Spell.CostMultiplier *= .5
+				}
+			})
+
+			druid.MoonfireDotMultiplier *= 1.5
+
+			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
+				druid.Sunfire.CostMultiplier *= .5
+				druid.SunfireDotMultiplier *= 1.5
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.form = Humanoid
+
+			core.Each(druid.Moonfire, func(spell *DruidSpell) {
+				if spell != nil {
+					spell.Spell.CostMultiplier /= .5
+				}
+			})
+			druid.MoonfireDotMultiplier /= 1.5
+
+			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
+				druid.Sunfire.CostMultiplier /= .5
+				druid.SunfireDotMultiplier /= 1.5
+			}
+		},
+	})
+
+	druid.MoonkinForm = druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost:   0.35,
+			Multiplier: 1.0 - 0.1*float64(druid.Talents.NaturalShapeshifter),
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			druid.MoonkinFormAura.Activate(sim)
 		},
 	})
 }

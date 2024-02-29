@@ -90,10 +90,12 @@ func (warlock *Warlock) applySoulLink() {
 		Duration: core.NeverExpires,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.3
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.03
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.03
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.3
 		},
 	}
 
@@ -218,6 +220,10 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 }
 
 func (warlock *Warlock) applyWeaponImbue() {
+	if warlock.GetCharacter().Equipment.OffHand().Type != proto.ItemType_ItemTypeUnknown {
+		return
+	}
+
 	level := warlock.GetCharacter().Level
 	if warlock.Options.WeaponImbue == proto.WarlockOptions_Firestone {
 		warlock.applyFirestone()
@@ -242,36 +248,38 @@ func (warlock *Warlock) applyFirestone() {
 	// TODO: Test PPM
 	ppm := warlock.AutoAttacks.NewPPMManager(8, core.ProcMaskMelee)
 
+	firestoneMulti := 1.0 + float64(warlock.Talents.ImprovedFirestone)*0.15
+
 	if level >= 56 {
-		warlock.AddStat(stats.FirePower, 21)
+		warlock.AddStat(stats.FirePower, 21*firestoneMulti)
 		damageMin = 80.0
 		damageMax = 120.0
 		spellId = 17949
 	} else if level >= 46 {
-		warlock.AddStat(stats.FirePower, 17)
+		warlock.AddStat(stats.FirePower, 17*firestoneMulti)
 		damageMin = 60.0
 		damageMax = 90.0
 		spellId = 17947
 	} else if level >= 36 {
-		warlock.AddStat(stats.FirePower, 14)
+		warlock.AddStat(stats.FirePower, 14*firestoneMulti)
 		damageMin = 40.0
 		damageMax = 60.0
 		spellId = 17945
 	} else if level >= 28 {
-		warlock.AddStat(stats.FirePower, 10)
+		warlock.AddStat(stats.FirePower, 10*firestoneMulti)
 		damageMin = 25.0
 		damageMax = 35.0
 		spellId = 758
 	}
 
-	if level >= 28 {
+	if level >= 28 && warlock.Consumes.MainHandImbue == proto.WeaponImbue_WeaponImbueUnknown {
 		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: core.SpellSchoolFire,
 			ProcMask:    core.ProcMaskEmpty,
 
 			CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-			DamageMultiplier:         1,
+			DamageMultiplier:         firestoneMulti,
 			ThreatMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 

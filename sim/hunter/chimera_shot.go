@@ -24,6 +24,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
@@ -60,8 +61,8 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 				if result.Landed() {
 					if hunter.SerpentSting.Dot(target).IsActive() {
-						hunter.SerpentSting.Dot(target).Rollover(sim)
 						ssProcSpell.Cast(sim, target)
+						hunter.SerpentSting.Dot(target).Rollover(sim)
 					}
 
 					if hasCobraStrikes && result.DidCrit() {

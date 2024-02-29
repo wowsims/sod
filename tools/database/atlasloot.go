@@ -217,6 +217,11 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 							Rep: repSource,
 						},
 					})
+					if faction == "ALLIANCE" {
+						item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
+					} else if faction == "HORDE" {
+						item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
+					}
 
 					db.MergeItem(item)
 				}

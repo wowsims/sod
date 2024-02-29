@@ -1,56 +1,56 @@
 character_stats_results: {
- key: "TestArms-Lvl25-CharacterStats-Default"
+ key: "TestArms-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 207.24
-  final_stats: 115.94
-  final_stats: 155.21
-  final_stats: 46.64
-  final_stats: 45.54
-  final_stats: 29
+  final_stats: 311.52
+  final_stats: 193.38
+  final_stats: 291.94
+  final_stats: 61.38
+  final_stats: 54.78
+  final_stats: 25
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 18
-  final_stats: 4
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 652.13
-  final_stats: 3
-  final_stats: 15.88093
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 2512.38
-  final_stats: 38
-  final_stats: 8
-  final_stats: 0
-  final_stats: 102.47
-  final_stats: 18.87962
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1646.1
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 10
   final_stats: 30
+  final_stats: 6
+  final_stats: 2
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1027.01
+  final_stats: 3
+  final_stats: 23.6582
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3057.76
+  final_stats: 94
+  final_stats: 0
+  final_stats: 0
+  final_stats: 153.69
+  final_stats: 31.48991
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3388.4
+  final_stats: 18.5
+  final_stats: 13.5
+  final_stats: 23.5
+  final_stats: 18.5
+  final_stats: 23.5
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
  }
 }
 stat_weights_results: {
- key: "TestArms-Lvl25-StatWeights-Default"
+ key: "TestArms-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.00332
+  weights: 0.06078
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00133
-  weights: -0.0519
-  weights: 0.02973
+  weights: 0.02512
+  weights: 0.09813
+  weights: 0.48266
   weights: 0
   weights: 0
   weights: 0
@@ -97,271 +97,191 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-BlackfathomAvenger'sMail"
+ key: "TestArms-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  tps: 0.36667
+  dps: 38.42466
+  tps: 38.82889
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-BlackfathomElementalist'sHide"
+ key: "TestArms-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  tps: 0.36667
+  dps: 36.33377
+  tps: 37.17127
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-BlackfathomSlayer'sLeather"
+ key: "TestArms-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  tps: 0.36667
+  dps: 38.0565
+  tps: 38.54212
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-ElectromanticDevastator'sMail"
+ key: "TestArms-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 2.60586
-  tps: 3.44783
+  dps: 38.48316
+  tps: 38.87907
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-ElectromanticStormbringer'sChain"
+ key: "TestArms-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 2.4794
-  tps: 3.31974
+  dps: 36.40164
+  tps: 37.22938
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-H.A.Z.A.R.D.Suit"
+ key: "TestArms-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 2.53718
-  tps: 3.4131
+  dps: 38.93639
+  tps: 39.22069
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-HyperconductiveMender'sMeditation"
+ key: "TestArms-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 2.4794
-  tps: 3.31974
+  dps: 36.21504
+  tps: 37.0801
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-HyperconductiveWizard'sAttire"
+ key: "TestArms-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 2.50196
-  tps: 3.35508
+  dps: 36.17609
+  tps: 37.04858
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-InsulatedLeathers"
+ key: "TestArms-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 2.66602
-  tps: 3.50023
+  dps: 39.38248
+  tps: 39.59636
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-InsulatedSorceror'sLeathers"
+ key: "TestArms-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 2.50196
-  tps: 3.35508
+  dps: 36.15288
+  tps: 37.03001
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-IrradiatedGarments"
+ key: "TestArms-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 2.49876
-  tps: 3.3529
+  dps: 36.58418
+  tps: 37.37733
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-StormshroudArmor"
+ key: "TestArms-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 2.40291
-  tps: 3.25291
+  dps: 39.07082
+  tps: 39.34275
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-AllItems-TwilightInvoker'sVestments"
+ key: "TestArms-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  tps: 0.36667
+  dps: 36.02937
+  tps: 36.92775
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Average-Default"
+ key: "TestArms-Lvl40-Average-Default"
  value: {
-  dps: 1.47587
-  tps: 1.52217
+  dps: 48.80593
+  tps: 46.80709
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1.89575
-  tps: 9.19804
+  dps: 62.73699
+  tps: 128.12675
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 1.89575
-  tps: 1.88304
+  dps: 48.12309
+  tps: 46.51776
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 9.0005
-  tps: 8.82245
+  dps: 70.2271
+  tps: 65.47516
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 0.95062
-  tps: 8.46652
+  dps: 32.5682
+  tps: 102.29406
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 0.95062
-  tps: 1.15152
+  dps: 24.80331
+  tps: 28.03951
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 4.50078
-  tps: 5.3456
+  dps: 35.52379
+  tps: 38.05345
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1.27465
-  tps: 8.3399
+  dps: 65.57894
+  tps: 130.84462
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 1.27465
-  tps: 1.37323
+  dps: 49.48819
+  tps: 47.62445
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 6.37325
-  tps: 6.86615
+  dps: 72.41143
+  tps: 67.4289
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 0.6169
-  tps: 7.81983
+  dps: 33.86508
+  tps: 103.5294
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 0.6169
-  tps: 0.85317
+  dps: 25.27833
+  tps: 28.39489
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Human-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 3.08451
-  tps: 4.26583
+  dps: 36.14967
+  tps: 38.59386
  }
 }
 dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestArms-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2.05619
-  tps: 9.29982
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
- value: {
-  dps: 2.05619
-  tps: 1.98482
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
- value: {
-  dps: 9.79935
-  tps: 9.32865
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
- value: {
-  dps: 1.07422
-  tps: 8.55176
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
- value: {
-  dps: 1.07422
-  tps: 1.23676
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1-Arms-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
- value: {
-  dps: 5.11666
-  tps: 5.77009
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
- value: {
-  dps: 1.49398
-  tps: 8.85847
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
- value: {
-  dps: 1.49398
-  tps: 1.54347
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
- value: {
-  dps: 6.85131
-  tps: 7.18496
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
- value: {
-  dps: 0.7571
-  tps: 8.2864
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
- value: {
-  dps: 0.7571
-  tps: 0.9714
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-Settings-Orc-phase_1_dw-Arms-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
- value: {
-  dps: 3.45964
-  tps: 4.55883
- }
-}
-dps_results: {
- key: "TestArms-Lvl25-SwitchInFrontOfTarget-Default"
- value: {
-  dps: 1.44077
-  tps: 1.5009
+  dps: 48.70731
+  tps: 46.89116
  }
 }

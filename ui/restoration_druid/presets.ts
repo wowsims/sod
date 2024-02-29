@@ -1,3 +1,4 @@
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
@@ -6,17 +7,12 @@ import {
 	IndividualBuffs,
 	PartyBuffs,
 	RaidBuffs,
-	UnitReference,
-	TristateEffect
-} from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
+	TristateEffect,
+	UnitReference} from '../core/proto/common.js';
 import {
 	RestorationDruid_Options as RestorationDruidOptions,
 } from '../core/proto/druid.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+import { SavedTalents } from '../core/proto/ui.js';
 import BlankGear from './gear_sets/blank.gear.json';
 
 // Preset options for this spec.
@@ -54,10 +50,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
-	leaderOfThePack: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-	trueshotAura: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

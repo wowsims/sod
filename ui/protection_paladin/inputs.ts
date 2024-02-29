@@ -2,7 +2,6 @@ import { Spec } from '../core/proto/common.js';
 
 import {
 	PaladinAura,
-	PaladinJudgement,
 	PaladinSeal,
 } from '../core/proto/paladin.js';
 
@@ -21,27 +20,17 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProt
 	],
 });
 
-export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProtectionPaladin>({
-	fieldName: 'seal',
-	label: 'Seal',
-	labelTooltip: 'The seal active before encounter',
-	values: [
-		{ name: 'Vengeance', value: PaladinSeal.Vengeance },
-		{ name: 'Command', value: PaladinSeal.Command },
-	],
-});
+// export const StartingSealSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProtectionPaladin>({
+// 	fieldName: 'seal',
+// 	label: 'Seal',
+// 	labelTooltip: 'The seal active before encounter',
+// 	values: [
+// 		{ name: 'Righteousness', value: PaladinSeal.Righteousness },
+// 		{ name: 'Command', value: PaladinSeal.Command },
+// 	],
+// });
 
-export const JudgementSelection = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecProtectionPaladin>({
-	fieldName: 'judgement',
-	label: 'Judgement',
-	labelTooltip: 'Judgement debuff you will use on the target during the encounter.',
-	values: [
-		{ name: 'Wisdom', value: PaladinJudgement.JudgementOfWisdom },
-		{ name: 'Light', value: PaladinJudgement.JudgementOfLight },
-	],
-});
-
-export const UseAvengingWrath = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecProtectionPaladin>({
-	fieldName: 'useAvengingWrath',
-	label: 'Use Avenging Wrath',
-});
+// export const UseAvengingWrath = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecProtectionPaladin>({
+// 	fieldName: 'useAvengingWrath',
+// 	label: 'Use Avenging Wrath',
+// });

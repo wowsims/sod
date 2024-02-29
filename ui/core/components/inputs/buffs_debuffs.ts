@@ -1,4 +1,4 @@
-import { Faction, SaygesFortune, Stat } from "../../proto/common";
+import { Faction, SaygesFortune, Stat, Class } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
 
 import { IconEnumPickerDirection } from "../icon_enum_picker";
@@ -398,6 +398,15 @@ export const RetributionAura = withLabel(
 	}),
 	'Retribution Aura',
 );
+export const SanctityAura= withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: (player) => player.getMatchingSpellActionId([
+			{ id: 20218, minLevel: 30 },
+		]),
+		fieldName: 'sanctityAura',
+	}),
+	'Sanctity Aura',
+);
 export const Thorns = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: (player) => player.getMatchingSpellActionId([
@@ -771,6 +780,12 @@ export const JudgementOfWisdom = withLabel(
 );
 
 // Misc Debuffs
+export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
+	actionId: (player) => player.getMatchingItemActionId([
+		{ id: 213409, minLevel: 40 },
+	]),
+	fieldName: 'mekkatorqueFistDebuff',
+});
 export const JudgementOfLight = makeBooleanDebuffInput({
 	actionId: (player) => player.getMatchingSpellActionId([
 		{ id: 20185, minLevel: 30, maxLevel: 39 },
@@ -929,6 +944,12 @@ export const RAID_BUFFS_CONFIG = [
 		config: RetributionAura,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
+		faction: Faction.Alliance,
+	},
+	{
+		config: SanctityAura,
+		picker: IconPicker,
+		stats: [Stat.StatHolyPower],
 		faction: Faction.Alliance,
 	},
 	{
@@ -1121,6 +1142,11 @@ export const DEBUFFS_MISC_CONFIG = [
 		config: JudgementOfLight,
 		picker: IconPicker,
 		stats: [Stat.StatStamina]
+	},
+	{
+		config: MekkatorqueFistDebuff,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower],
 	},
 	{
 		config: CurseOfVulnerability,

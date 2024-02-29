@@ -29,6 +29,7 @@ const (
 	TrueshotAura
 	HornOfLordaeron
 	Windfury
+	SanctityAura
 
 	// Resistance
 	AspectOfTheWild
@@ -550,6 +551,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.MultiplyStat(stats.Spirit, kingsAgiIntSpiAmount)
 	}
 
+	if raidBuffs.SanctityAura {
+		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+	}
 	// TODO: Classic
 	if individualBuffs.BlessingOfSanctuary {
 		character.PseudoStats.DamageTakenMultiplier *= 0.97
@@ -760,6 +764,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.WarchiefsBlessing = false
 	individualBuffs.SpiritOfZandalar = false
+	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }
@@ -1086,10 +1091,22 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.2
+			//character.PseudoStats.DamageDealtMultiplier *= 1.2
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.2
+			//character.PseudoStats.DamageDealtMultiplier /= 1.2
 		},
 	})
 	return aura
@@ -1392,13 +1409,12 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 		return
 	}
 
-	innervateThreshold := 0.0
-	var innervateAura *Aura
-
 	character := agent.GetCharacter()
+	innervateThreshold := 0.0
+	innervateAura := InnervateAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		innervateThreshold = InnervateManaThreshold(character)
-		innervateAura = InnervateAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(
@@ -1454,14 +1470,13 @@ func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 		return
 	}
 
-	initialDelay := time.Duration(0)
-	var mttAura *Aura
-
 	character := agent.GetCharacter()
+	initialDelay := time.Duration(0)
+	mttAura := ManaTideTotemAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		// Use first MTT at 60s, or halfway through the fight, whichever comes first.
 		initialDelay = min(character.Env.BaseDuration/2, time.Second*60)
-		mttAura = ManaTideTotemAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(
@@ -1495,6 +1510,13 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		}
 	}
 
+	manaPerTick := map[int32]float64{
+		25: 0,
+		40: 170, // Rank 1
+		50: 230, // Rank 2
+		60: 290, // Rank 3
+	}[character.Level]
+
 	return character.GetOrRegisterAura(Aura{
 		Label:    "ManaTideTotem-" + actionID.String(),
 		Tag:      ManaTideTotemAuraTag,
@@ -1508,7 +1530,7 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 					for i, player := range character.Party.Players {
 						if metrics[i] != nil {
 							char := player.GetCharacter()
-							char.AddMana(sim, 0.06*char.MaxMana(), metrics[i])
+							char.AddMana(sim, manaPerTick, metrics[i])
 						}
 					}
 				},

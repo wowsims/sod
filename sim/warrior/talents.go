@@ -260,14 +260,16 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
 
-	warrior.DeathWish = warrior.RegisterSpell(core.SpellConfig{
+	DeathWish := warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
 		RageCost: core.RageCostOptions{
 			Cost: 10,
 		},
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Minute * 3,
@@ -276,8 +278,12 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			deathWishAura.Activate(sim)
-			warrior.WaitUntil(sim, sim.CurrentTime+core.GCDDefault)
 		},
+	})
+
+	warrior.AddMajorCooldown(core.MajorCooldown{
+		Spell: DeathWish,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 

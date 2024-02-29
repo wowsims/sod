@@ -323,7 +323,9 @@ func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 	unit.updateCastSpeed()
 }
-
+func (unit *Unit) ApplyFlatCastSpeed(dur time.Duration) time.Duration {
+	return time.Duration(float64(dur) * unit.PseudoStats.FlatCastSpeedMultiplier)
+}
 func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed)
 }
@@ -434,6 +436,10 @@ func (unit *Unit) initMovement() {
 }
 
 func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
+	if moveRange == unit.DistanceFromTarget {
+		return
+	}
+
 	tickPeriod := 0.5
 
 	moveDistance := moveRange - unit.DistanceFromTarget

@@ -24,6 +24,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
@@ -33,7 +34,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				CastTime: time.Millisecond * 2000,
 			},
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()

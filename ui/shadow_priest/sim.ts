@@ -13,7 +13,6 @@ import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import * as ShadowPriestInputs from './inputs.js';
@@ -51,7 +50,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatShadowPower,
-		Stat.StatHolyPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellPenetration,
@@ -59,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 
 		return {
 			talents: stats,
@@ -74,6 +72,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			[Stat.StatIntellect]: 0.11,
 			[Stat.StatSpirit]: 0.47,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatShadowPower]: 1,
 			[Stat.StatSpellHit]: 0.87,
 			[Stat.StatSpellCrit]: 0.74,
 			[Stat.StatSpellHaste]: 1.65,
@@ -82,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.StandardTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -108,12 +107,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellScorchDebuff,
-		BuffDebuffInputs.SpellWintersChillDebuff,
-		...ConsumablesInputs.AGILITY_CONSUMES_CONFIG,
-		...ConsumablesInputs.STRENGTH_CONSUMES_CONFIG,
-		...ConsumablesInputs.FIRE_POWER_CONFIG,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -155,7 +148,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			defaultName: 'Shadow',
 			iconUrl: getSpecIcon(Class.ClassPriest, 2),
 
-			talents: Presets.StandardTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

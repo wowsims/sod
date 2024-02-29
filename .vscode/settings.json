@@ -1,10 +1,49 @@
 {
+	"eslint.validate": ["javascript", "typescript"],
+	"eslint.nodePath": "./node_modules",
+	"eslint.workingDirectories": ["."],
+	"[javascript]": {
+		"editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "always"
+		}
+	},
+	"[javascriptreact]": {
+		"editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "always"
+		}
+	},
+	"[typescript]": {
+		"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always"
+		}
+	},
+	"[typescriptreact]": {
+		"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always"
+		}
+	},
+	"[scss]": {
+		"editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "always"
+		}
+	},
+	"[html]": {
+		"editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "always"
+        }
+	},
     "json.schemas": [
         {
             "fileMatch": [
                 "*.apl.json"
             ],
-            "url": "./jsonschema/APLRotation.json"
+            "url": "./schemas/apl_rotation.schema.json"
+        },
+        {
+            "fileMatch": [
+                "*.gear.json"
+            ],
+            "url": "./schemas/gear.schema.json"
         }
     ],
     "Lua.diagnostics.globals": [
@@ -83,5 +122,10 @@
         "strbyte",
         "tinsert",
         "UIParent"
-    ]
+    ],
+    "[javascript][scss][typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        }
+    }
 }

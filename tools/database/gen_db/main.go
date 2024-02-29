@@ -317,12 +317,6 @@ func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 
 }
 
-func CreateTempAgent(r *proto.Raid) core.Agent {
-	encounter := core.MakeSingleTargetEncounter(0.0)
-	env, _, _ := core.NewEnvironment(r, encounter, false)
-	return env.Raid.Parties[0].Players[0]
-}
-
 type RotContainer struct {
 	Name string
 	Raid *proto.Raid

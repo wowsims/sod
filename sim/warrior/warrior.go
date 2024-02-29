@@ -57,9 +57,6 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	Bloodrage            *core.Spell
-	DeathWish            *core.Spell
-	Recklessness         *core.Spell
-	SweepingStrikes      *core.Spell
 	BerserkerRage        *core.Spell
 	Bloodthirst          *core.Spell
 	DemoralizingShout    *core.Spell

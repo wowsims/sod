@@ -178,47 +178,180 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 	case proto.WarlockOptions_Voidwalker:
 		cfg.Name = "Voidwalker"
 		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  50,
-			stats.Agility:   40,
-			stats.Stamina:   87,
-			stats.Intellect: 35,
-			stats.Spirit:    61,
-			stats.Mana:      60,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
-		}
-		cfg.AutoAttacks = core.AutoAttackOptions{
-			MainHand: core.Weapon{
-				BaseDamageMin:  2,
-				BaseDamageMax:  7,
-				SwingSpeed:     2,
-				CritMultiplier: 2,
-			},
-			AutoSwingMelee: true,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  50,
+				stats.Agility:   40,
+				stats.Stamina:   87,
+				stats.Intellect: 35,
+				stats.Spirit:    61,
+				stats.Mana:      60,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  2,
+					BaseDamageMax:  7,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      637,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  5,
+					BaseDamageMax:  15,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
 		}
 	case proto.WarlockOptions_Felhunter:
 		cfg.Name = "Felhunter"
 		cfg.PowerModifier = 0.77 // GetUnitPowerModifier("pet")
-		cfg.Stats = stats.Stats{
-			stats.Strength:  314,
-			stats.Agility:   90,
-			stats.Stamina:   328,
-			stats.Intellect: 150,
-			stats.Spirit:    209,
-			stats.Mana:      1559,
-			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
-		}
-		cfg.AutoAttacks = core.AutoAttackOptions{
-			MainHand: core.Weapon{
-				BaseDamageMin:  88.8,
-				BaseDamageMax:  133.3,
-				SwingSpeed:     2,
-				CritMultiplier: 2,
-			},
-			AutoSwingMelee: true,
+		switch warlock.Level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  50,
+				stats.Agility:   40,
+				stats.Stamina:   87,
+				stats.Intellect: 35,
+				stats.Spirit:    61,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  74,
+				stats.Agility:   58,
+				stats.Stamina:   148,
+				stats.Intellect: 49,
+				stats.Spirit:    97,
+				stats.Mana:      653,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+			}
+			cfg.AutoAttacks = core.AutoAttackOptions{
+				MainHand: core.Weapon{
+					BaseDamageMin:  24,
+					BaseDamageMax:  40,
+					SwingSpeed:     2,
+					CritMultiplier: 2,
+				},
+				AutoSwingMelee: true,
+			}
 		}
 	}
 
@@ -229,16 +362,13 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
 
-	// TODO: This is the LK lvl 80 value!
-	wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritRatingPerCritChance/166.66667)
-
-	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	wp.AddStat(stats.AttackPower, -20)
+	wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+
+	// Warrior crit scaling
+	wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.CritRatingPerCritChance)
 
 	if warlock.Options.Summon == proto.WarlockOptions_Imp {
-		// imp has a slightly different agi crit scaling coef for some reason
-		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/51.0204)
-
 		// Imp gets 1mp/5 non casting regen per spirit
 		wp.PseudoStats.SpiritRegenMultiplier = 1
 		wp.PseudoStats.SpiritRegenRateCasting = 0
@@ -246,8 +376,12 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			// 1mp5 per spirit
 			return wp.GetStat(stats.Spirit) / 5
 		}
+
+		// Mage spell crit scaling for imp
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassMage][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 	} else {
-		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+		// Warrior spell crit scaling
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 	}
 
 	wp.AutoAttacks.MHConfig().DamageMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
@@ -256,7 +390,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
 	}
 
-	// core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
+	core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
 
 	warlock.AddPet(wp)
 
@@ -346,7 +480,6 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 
 		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
 
-		// TODO: Classic warlock pet stat deps
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina] * core.Ternary(warlock.Options.Summon == proto.WarlockOptions_Imp, 0.66, 0.75),
 			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,

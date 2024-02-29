@@ -1,5 +1,5 @@
 import pako from 'pako';
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui';
@@ -437,16 +437,16 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatSpirit]: 'Spirit',
 		[Stat.StatSpellPower]: 'SpellDamage',
 		[Stat.StatSpellDamage]: 'SpellDamage',
-		[Stat.StatArcanePower]: 'ArcaneDamage',
-		[Stat.StatFirePower]: 'FireDamage',
-		[Stat.StatFrostPower]: 'FrostDamage',
-		[Stat.StatHolyPower]: 'HolyDamage',
-		[Stat.StatNaturePower]: 'NatureDamage',
-		[Stat.StatShadowPower]: 'ShadowDamage',
+		[Stat.StatArcanePower]: 'ArcaneSpellDamage',
+		[Stat.StatFirePower]: 'FireSpellDamage',
+		[Stat.StatFrostPower]: 'FrostSpellDamage',
+		[Stat.StatHolyPower]: 'HolySpellDamage',
+		[Stat.StatNaturePower]: 'NatureSpellDamage',
+		[Stat.StatShadowPower]: 'ShadowSpellDamage',
 		[Stat.StatMP5]: 'Mp5',
-		[Stat.StatSpellHit]: 'HitRating',
-		[Stat.StatSpellCrit]: 'CritRating',
-		[Stat.StatSpellHaste]: 'HasteRating',
+		[Stat.StatSpellHit]: 'SpellHitRating',
+		[Stat.StatSpellCrit]: 'SpellCritRating',
+		[Stat.StatSpellHaste]: 'SpellHasteRating',
 		[Stat.StatSpellPenetration]: 'SpellPen',
 		[Stat.StatAttackPower]: 'Ap',
 		[Stat.StatMeleeHit]: 'HitRating',

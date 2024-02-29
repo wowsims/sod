@@ -88,7 +88,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spell.MeleeAttackPower()/14 + spell.BonusWeaponDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 1.5 / 14) + spell.BonusWeaponDamage()
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -118,8 +118,6 @@ func (hp *HunterPet) newBite() *core.Spell {
 		60: 17261,
 	}[hp.Owner.Level]
 
-	focusScalar := 35.0 / 25.0
-
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -145,7 +143,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower()/14)*focusScalar + spell.BonusWeaponDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 2.15 / 14) + spell.BonusWeaponDamage()
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -156,14 +154,14 @@ func (hp *HunterPet) newBite() *core.Spell {
 func (hp *HunterPet) newLightningBreath() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 36,
-		40: 51,
+		40: 36,
 		50: 78,
 		60: 99,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 41,
-		40: 60,
+		40: 41,
 		50: 91,
 		60: 113,
 	}[hp.Owner.Level]
@@ -174,8 +172,6 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		50: 25011,
 		60: 25012,
 	}[hp.Owner.Level]
-
-	focusScalar := 50.0 / 25.0
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -197,9 +193,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Figure out how LB scales as it doesnt seem to be from SP even tho the spell is listed
-			// with a sp mod
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower()/14)*focusScalar
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 3.65 / 14)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},

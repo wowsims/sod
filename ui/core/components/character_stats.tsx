@@ -11,7 +11,7 @@ import { Component } from './component.js';
 
 import { Popover, Tooltip } from 'bootstrap';
 
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 export type StatMods = { talents: Stats };
@@ -260,12 +260,12 @@ export class CharacterStats extends Component {
 			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
 			displayStr = (baseSp + spDmg) + ` (+${spDmg})`;
 		} else if (
-			stat == Stat.StatArcanePower || 
-			stat == Stat.StatFirePower || 
-			stat == Stat.StatFrostPower || 
-			stat == Stat.StatHolyPower || 
-			stat == Stat.StatNaturePower || 
-			stat == Stat.StatShadowPower 
+			stat == Stat.StatArcanePower ||
+			stat == Stat.StatFirePower ||
+			stat == Stat.StatFrostPower ||
+			stat == Stat.StatHolyPower ||
+			stat == Stat.StatNaturePower ||
+			stat == Stat.StatShadowPower
 		) {
 			const spDmg = Math.round(rawValue);
 			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower)+deltaStats.getStat(Stat.StatSpellDamage));

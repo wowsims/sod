@@ -1,15 +1,11 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat, PseudoStat,
-	TristateEffect,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { Player } from '../core/player.js';
@@ -25,8 +21,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
+		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount 
+		for a dps gain that will be slightly inflated given JotC does not benefit from source damage modifiers.`,
+		`Be aware that not all item and weapon enchants are currently implemented in the sim, which make some notable Retribution 
+		weapons like Pendulum of Doom and The Jackhammer undervalued.`,
 	],
-
+	warnings: [
+		(simUI: IndividualSimUI<Spec.SpecRetributionPaladin>) => {
+			return {
+				updateOn: simUI.player.changeEmitter,
+				getContent: () => {
+					if (simUI.player.getSpecOptions().primarySeal == 0) {
+							return `Your previously selected seal is no longer available because of a talent or rune change. 
+							No seal will be cast with this configuration. Please select an available seal in the Settings>Player menu.`;
+					} else {
+						return '';
+					}
+				},
+			};
+		},
+	],
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStrength,
@@ -37,9 +51,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
+		Stat.StatHolyPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
@@ -59,8 +72,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
@@ -86,8 +97,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			[Stat.StatMeleeHit]: 1.96,
 			[Stat.StatMeleeCrit]: 1.16,
 			[Stat.StatMeleeHaste]: 1.44,
-			[Stat.StatArmorPenetration]: 0.76,
-			[Stat.StatExpertise]: 1.80,
 		}, {
 			[PseudoStat.PseudoStatMainHandDps]: 7.33,
 		}),
@@ -97,37 +106,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			manaSpringTotem: TristateEffect.TristateEffectRegular,
-			battleShout: TristateEffect.TristateEffectImproved,
-			trueshotAura: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({
 		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
-			judgementOfLight: true,
-			curseOfElements: true,
-			exposeArmor: TristateEffect.TristateEffectImproved,
-			sunderArmor: true,
-			faerieFire: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-		}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
+		race: Race.RaceHuman,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		RetributionPaladinInputs.AuraSelection,
-		RetributionPaladinInputs.JudgementSelection,
-		RetributionPaladinInputs.StartingSealSelection,
+		RetributionPaladinInputs.PrimarySealSelection,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
@@ -178,18 +169,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Horde]: Race.RaceUnknown,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase1][0].gear,
 				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
+				[Faction.Horde]: {},
 			},
 		},
 	],

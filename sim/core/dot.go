@@ -318,6 +318,10 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		auraConfig.ActionID = dot.Spell.ActionID
 	}
 
+	if auraConfig.Label == "" {
+		panic("DoT aura label (Dot.Aura.Label) is empty for spell " + config.Spell.ActionID.String())
+	}
+
 	caster := dot.Spell.Unit
 	if config.IsAOE || config.SelfOnly {
 		dot.Aura = caster.GetOrRegisterAura(auraConfig)

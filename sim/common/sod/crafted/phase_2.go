@@ -113,6 +113,9 @@ func init() {
 	// Glowing Gneuro-Linked Cowl
 	core.NewItemEffect(215166, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		character.PseudoStats.BonusDamage += 3
+
 		actionId := core.ActionID{SpellID: 437349}
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
@@ -268,9 +271,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// TODO: Verify if this can crit
 				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeMagicCrit)
-				if sim.Log != nil {
-					character.Log(sim, "Took %.1f damage from Hyperconductive Shock.", result.Damage)
-				}
 				character.RemoveHealth(sim, result.Damage)
 				buffAura.Activate(sim)
 			},

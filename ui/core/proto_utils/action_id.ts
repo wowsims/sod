@@ -298,6 +298,13 @@ export class ActionId {
 					name += ' (Not Self)'
 				}
 				break;
+			case 'Stormstrike':
+				if (this.tag == 1) {
+					name += ' (Main Hand)'
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)'
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lava Burst':
 			case 'Lightning Bolt':
@@ -580,7 +587,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Water Elemental': ActionId.fromSpellId(31687),
 	"Greater Fire Elemental": ActionId.fromSpellId(2894),
-	'Shadowfiend': ActionId.fromSpellId(34433),
+	'Shadowfiend': ActionId.fromSpellId(401977),
+	'Homunculi': ActionId.fromSpellId(402799),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	'Rune Weapon': ActionId.fromSpellId(49028),
