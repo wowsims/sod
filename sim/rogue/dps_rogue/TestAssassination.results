@@ -1,0 +1,350 @@
+character_stats_results: {
+ key: "TestAssassination-Lvl25-CharacterStats-Default"
+ value: {
+  final_stats: 110.44
+  final_stats: 167.64
+  final_stats: 143.11
+  final_stats: 45.54
+  final_stats: 58.2362
+  final_stats: 25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 511.03
+  final_stats: 2
+  final_stats: 22.95933
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1989.78
+  final_stats: 68
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1569.1
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestAssassination-Lvl40-CharacterStats-Default"
+ value: {
+  final_stats: 153.12
+  final_stats: 210.98
+  final_stats: 211.64
+  final_stats: 64.68
+  final_stats: 72.2854
+  final_stats: 25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 24
+  final_stats: 3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 706.21
+  final_stats: 0
+  final_stats: 18.73049
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2197.96
+  final_stats: 68
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2639.4
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 23.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestAssassination-Lvl25-StatWeights-Default"
+ value: {
+  weights: 0.04605
+  weights: 0.06942
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.04187
+  weights: 0.10182
+  weights: 0.24313
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestAssassination-Lvl40-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Average-Default"
+ value: {
+  dps: 47.31233
+  tps: 33.59176
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 45.79866
+  tps: 32.51705
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 45.79866
+  tps: 32.51705
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 51.65562
+  tps: 36.67549
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 23.58931
+  tps: 16.74841
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 23.58931
+  tps: 16.74841
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 26.90699
+  tps: 19.10396
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 45.69287
+  tps: 32.44194
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 45.69287
+  tps: 32.44194
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 51.45553
+  tps: 36.53343
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 23.53532
+  tps: 16.71008
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 23.53532
+  tps: 16.71008
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 26.90699
+  tps: 19.10396
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl25-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 44.87501
+  tps: 31.86126
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Average-Default"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {}
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {}
+}
