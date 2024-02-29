@@ -87,13 +87,20 @@ export const CombatDagger25Talents = {
 		talentsString: '-023305002001',
 	}),
 };
+export const ColdBloodMutilate40Talents = {
+	name: 'CB Mutilate',
+	data: SavedTalents.create({
+		talentsString: '005303103551--05'
+	})
+};
 
 export const TalentPresets = {
-  [Phase.Phase1]: [
+	[Phase.Phase1]: [
 		CombatDagger25Talents,
-  ],
-  [Phase.Phase2]: [
-  ]
+	],
+	[Phase.Phase2]: [
+		ColdBloodMutilate40Talents,
+	]
 };
 
 // TODO: Add Phase 2 preset and pull from map
