@@ -268,6 +268,7 @@ func (character *Character) applyWeaponSkills() {
 		character.PseudoStats.SwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillSwords)]
 		character.PseudoStats.DaggersSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillDaggers)]
 		character.PseudoStats.UnarmedSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillUnarmed)]
+		character.PseudoStats.MacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillMaces)]
 		character.PseudoStats.TwoHandedAxesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedAxes)]
 		character.PseudoStats.TwoHandedSwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedSwords)]
 		character.PseudoStats.TwoHandedMacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedMaces)]
