@@ -8,4 +8,13 @@ func (rogue *Rogue) ApplyRunes() {
 		rogue.applyDeadlyBrewInstant()
 		rogue.applyDeadlyBrewDeadly()
 	}
+
+	rogue.registerWaylayAura()
+	rogue.registerMasterOfSubtlety()
+	rogue.registerMainGaucheSpell()
+	rogue.registerSaberSlashSpell()
+	rogue.registerShivSpell()
+	rogue.registerShadowstrikeSpell()
+	rogue.registerMutilateSpell()
+	rogue.registerEnvenom()
 }

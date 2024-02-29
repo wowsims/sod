@@ -12,12 +12,12 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
 		return
 	}
-	
+
 	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
 	rogue.MainGaucheAura = rogue.RegisterAura(core.Aura{
-		Label:     "Main Gauche Buff",
-		ActionID:  core.ActionID{SpellID: 424919},
-		Duration:  time.Second * 10,
+		Label:    "Main Gauche Buff",
+		ActionID: core.ActionID{SpellID: 424919},
+		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
 		},
@@ -32,10 +32,10 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL | SpellFlagColdBlooded,
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier([]float64{15, 12, 10}[rogue.Talents.ImprovedSinisterStrike]),
+			Cost:   []float64{15, 12, 10}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,
 		},
-	
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -51,7 +51,6 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
-		
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())

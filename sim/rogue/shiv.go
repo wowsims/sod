@@ -14,7 +14,7 @@ func (rogue *Rogue) registerShivSpell() {
 
 	baseCost := 20.0
 	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
-		baseCost = rogue.costModifier(baseCost + 10*ohWeapon.SwingSpeed)
+		baseCost = baseCost + 10*ohWeapon.SwingSpeed
 	}
 
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
