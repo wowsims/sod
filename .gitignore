@@ -37,3 +37,4 @@ tmp/
 wowsimsod*.so
 wowsimsod*.dll
 wowsimsod*.h
+.vscode/launch.json

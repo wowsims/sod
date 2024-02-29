@@ -75,6 +75,7 @@ const (
 	WeaponSkillUnknown WeaponSkill = iota
 	WeaponSkillAxes
 	WeaponSkillSwords
+	WeaponSkillMaces
 	WeaponSkillDaggers
 	WeaponSkillUnarmed
 	WeaponSkillTwoHandedAxes
