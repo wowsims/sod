@@ -21,6 +21,7 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
 	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
 	// Serrated Blades armor pen here
+	// TODO: Test the Armor reduction amount (Per level bracket)
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
 
 	if rogue.Talents.Deadliness > 0 {
@@ -194,14 +195,15 @@ func (rogue *Rogue) applyInitiative() {
 }
 
 // Rogue weapon specialization talents. Bonus is shown if the main hand is specialized, but not if off hand only
-// TODO: Fix effects for all specializations
 func (rogue *Rogue) applyWeaponSpecializations() {
+	// Sword specialization. Impelemented in 'sword_specialization.go'
 	if swordSpec := rogue.Talents.SwordSpecialization; swordSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeSword); mask != core.ProcMaskUnknown {
 			rogue.registerSwordSpecialization(mask)
 		}
 	}
 
+	// Dagger Specialization
 	if daggerSpec := rogue.Talents.DaggerSpecialization; daggerSpec > 0 {
 		switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeDagger) {
 		case core.ProcMaskMelee:
@@ -223,10 +225,31 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 		}
 	}
 
+	// Fist Weapon Specialization. Same as above but for fists
+	if fistSpec := rogue.Talents.FistWeaponSpecialization; fistSpec > 0 {
+		switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeFist) {
+		case core.ProcMaskMelee:
+			rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(fistSpec))
+		case core.ProcMaskMeleeMH:
+			// the default character pane displays critical strike chance for main hand only
+			rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(fistSpec))
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating -= core.CritRatingPerCritChance * float64(fistSpec)
+				}
+			})
+		case core.ProcMaskMeleeOH:
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating += core.CritRatingPerCritChance * float64(fistSpec)
+				}
+			})
+		}
+	}
+
+	// Mace Specialization. Offers weapon skill for Maces and RNG stun (not implemented for being useless on boss)
 	if maceSpec := rogue.Talents.MaceSpecialization; maceSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace); mask != core.ProcMaskUnknown {
-			// Add weapon skill here
-			// Stun too?
 			rogue.PseudoStats.MacesSkill = float64(maceSpec)
 		}
 	}
