@@ -28,7 +28,7 @@ type Rogue struct {
 
 	Backstab       *core.Spell
 	BladeFlurry    *core.Spell
-	DeadlyPoison   *core.Spell
+	DeadlyPoison   [3]*core.Spell
 	Feint          *core.Spell
 	Garrote        *core.Spell
 	Ambush         *core.Spell
@@ -36,7 +36,7 @@ type Rogue struct {
 	GhostlyStrike  *core.Spell
 	HungerForBlood *core.Spell
 	InstantPoison  [3]*core.Spell
-	WoundPoison    *core.Spell
+	WoundPoison    [2]*core.Spell
 	Mutilate       *core.Spell
 	MutilateMH     *core.Spell
 	MutilateOH     *core.Spell
@@ -64,7 +64,7 @@ type Rogue struct {
 	EnvenomAura          *core.Aura
 	ExposeArmorAuras     core.AuraArray
 	SliceAndDiceAura     *core.Aura
-	MainGaucheAura 		 *core.Aura
+	MainGaucheAura       *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura

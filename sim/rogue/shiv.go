@@ -41,7 +41,8 @@ func (rogue *Rogue) registerShivSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			// TODO: cannot Miss
+
+			// TODO: Cannot be Parry/Dodge based on testing, can miss
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -50,11 +51,11 @@ func (rogue *Rogue) registerShivSpell() {
 				// 100% application (except for 1%? It can resist extremely rarely)
 				switch rogue.Options.OhImbue {
 				case proto.RogueOptions_DeadlyPoison:
-					rogue.DeadlyPoison.Cast(sim, target)
+					rogue.DeadlyPoison[ShivProc].Cast(sim, target)
 				case proto.RogueOptions_InstantPoison:
 					rogue.InstantPoison[ShivProc].Cast(sim, target)
 				case proto.RogueOptions_WoundPoison:
-					rogue.WoundPoison.Cast(sim, target)
+					rogue.WoundPoison[ShivProc].Cast(sim, target)
 				}
 			}
 		},
