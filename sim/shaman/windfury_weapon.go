@@ -10,7 +10,7 @@ const WindfuryWeaponRanks = 4
 
 var WindfuryWeaponSpellId = [WindfuryWeaponRanks + 1]int32{0, 8232, 8235, 10486, 16362}
 var WindfuryWeaponEnchantId = [WindfuryWeaponRanks + 1]int32{0, 283, 284, 525, 1669}
-var WindfuryWeaponBonusAP = [WindfuryWeaponRanks + 1]float64{0, 104, 222, 316, 333}
+var WindfuryWeaponBonusAP = [WindfuryWeaponRanks + 1]float64{0, 104, 119, 249, 333}
 var WindfuryWeaponLevel = [WindfuryWeaponRanks + 1]int32{0, 30, 40, 50, 60}
 
 var WindfuryWeaponRankByLevel = map[int32]int32{
@@ -23,26 +23,26 @@ var WindfuryWeaponRankByLevel = map[int32]int32{
 func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	level := shaman.GetCharacter().Level
 	rank := WindfuryWeaponRankByLevel[level]
-	SpellId := WindfuryWeaponSpellId[rank]
-	bonusAP := WindfuryWeaponBonusAP[rank] * (1 + (40.0/3/100)*float64(shaman.Talents.ElementalWeapons))
+	bonusAP := WindfuryWeaponBonusAP[rank] * []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
 
-	tag := 1
+	actionID := core.ActionID{SpellID: 439440}
 	procMask := core.ProcMaskMeleeMHSpecial
 	weaponDamageFunc := shaman.MHWeaponDamage
+	damageMultiplier := shaman.AutoAttacks.MHConfig().DamageMultiplier
 	if !isMH {
-		tag = 2
+		actionID = core.ActionID{SpellID: 439441}
 		procMask = core.ProcMaskMeleeOHSpecial
 		weaponDamageFunc = shaman.OHWeaponDamage
-		bonusAP *= 2 // applied after 50% offhand penalty
+		damageMultiplier = shaman.AutoAttacks.OHConfig().DamageMultiplier
 	}
 
 	spellConfig := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: SpellId, Tag: int32(tag)},
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    procMask | core.ProcMaskWeaponProc,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: damageMultiplier,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -52,8 +52,8 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 
 			baseDamage1 := constBaseDamage + weaponDamageFunc(sim, mAP)
 			baseDamage2 := constBaseDamage + weaponDamageFunc(sim, mAP)
-			result1 := spell.CalcDamage(sim, target, baseDamage1, spell.OutcomeMeleeSpecialHitAndCrit)
-			result2 := spell.CalcDamage(sim, target, baseDamage2, spell.OutcomeMeleeSpecialHitAndCrit)
+			result1 := spell.CalcDamage(sim, target, baseDamage1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result2 := spell.CalcDamage(sim, target, baseDamage2, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			spell.DealDamage(sim, result1)
 			spell.DealDamage(sim, result2)
 		},
