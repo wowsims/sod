@@ -838,7 +838,6 @@ export class CastLog extends SimLog {
 
 		if (this.castCompletedLog && this.castBeganLog) {
 			this.castTime = this.castCompletedLog.timestamp - this.castBeganLog.timestamp
-			this.effectiveTime = this.castCompletedLog.timestamp - this.castBeganLog.timestamp
 		}
 
 		if (this.castCompletedLog && this.damageDealtLogs.length == 1 &&
