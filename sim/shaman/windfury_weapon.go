@@ -23,7 +23,9 @@ var WindfuryWeaponRankByLevel = map[int32]int32{
 func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	level := shaman.GetCharacter().Level
 	rank := WindfuryWeaponRankByLevel[level]
-	bonusAP := WindfuryWeaponBonusAP[rank] * []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
+
+	ewMultiplier := []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
+	bonusAP := WindfuryWeaponBonusAP[rank] * ewMultiplier * ewMultiplier // currently double-dipping
 
 	actionID := core.ActionID{SpellID: 439440}
 	procMask := core.ProcMaskMeleeMHSpecial
