@@ -1,8 +1,6 @@
 package shaman
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -33,7 +31,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1 + .05*float64(shaman.Talents.ElementalWeapons),
+		DamageMultiplier: []float64{1, 1.05, 1.1, 1.15}[shaman.Talents.ElementalWeapons],
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 
@@ -77,11 +75,6 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 	rank := FlametongueWeaponRankByLevel[level]
 	enchantId := FlametongueWeaponEnchantId[rank]
 
-	icd := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: time.Millisecond,
-	}
-
 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
 
@@ -95,12 +88,6 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
 				return
 			}
-
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			icd.Use(sim)
 
 			if spell.IsMH() {
 				mhSpell.Cast(sim, result.Target)
