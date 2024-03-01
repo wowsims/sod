@@ -1,16 +1,12 @@
-import {
-	WarlockOptions_Armor as Armor,
-	WarlockOptions_Summon as Summon,
-	WarlockOptions_WeaponImbue as WeaponImbue,
-	WarlockOptions_MaxFireboltRank as MaxFireboltRank
-} from '../core/proto/warlock.js';
-
+import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { ItemSlot, Spec } from '../core/proto/common.js';
+import {
+	WarlockOptions_Armor as Armor,
+	WarlockOptions_MaxFireboltRank as MaxFireboltRank,
+	WarlockOptions_Summon as Summon,
+	WarlockOptions_WeaponImbue as WeaponImbue} from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
-
-import * as InputHelpers from '../core/components/input_helpers.js';
-import { TypedEvent } from '../core/typed_event.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
@@ -19,7 +15,7 @@ export const ArmorInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecWar
 	fieldName: 'armor',
 	values: [
 		{ value: Armor.NoArmor, tooltip: 'No Armor' },
-		{ actionId: (player) => player.getMatchingSpellActionId([
+		{ actionId: player => player.getMatchingSpellActionId([
 			{ id: 706, minLevel: 20, maxLevel: 39 },
 			{ id: 11733, minLevel: 40, maxLevel: 49 },
 			{ id: 11734, minLevel: 50, maxLevel: 59 },
@@ -32,19 +28,19 @@ export const WeaponImbueInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.S
 	fieldName: 'weaponImbue',
 	values: [
 		{ value: WeaponImbue.NoWeaponImbue, tooltip: 'No Weapon Stone' },
-		{ actionId: (player) => player.getMatchingItemActionId([
+		{ actionId: player => player.getMatchingItemActionId([
 			{ id: 1254, minLevel: 28, maxLevel: 35 },
 			{ id: 13699, minLevel: 36, maxLevel: 45 },
 			{ id: 13700, minLevel: 46, maxLevel: 55 },
 			{ id: 13701, minLevel: 56 },
 		]), value: WeaponImbue.Firestone },
-		{ actionId: (player) => player.getMatchingItemActionId([
+		{ actionId: player => player.getMatchingItemActionId([
 			{ id: 5522, minLevel: 36, maxLevel: 47 },
 			{ id: 13602, minLevel: 48, maxLevel: 59 },
 			{ id: 13603, minLevel: 60 },
 		]), value: WeaponImbue.Spellstone },
 	],
-	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotOffHand) == null && player.getLevel() >= 28,
+	showWhen: player => player.getEquippedItem(ItemSlot.ItemSlotOffHand) == null && player.getLevel() >= 28,
 	changeEmitter: (player: Player<Spec.SpecWarlock>) => player.changeEmitter,
 });
 
@@ -62,7 +58,7 @@ export const PetInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecWarlo
 
 export const ImpFireboltRank = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecWarlock, MaxFireboltRank>({
 	fieldName: 'maxFireboltRank',
-	showWhen: (player) => player.getSpecOptions().summon == Summon.Imp,
+	showWhen: player => player.getSpecOptions().summon == Summon.Imp,
 	values: [
 		{ value: MaxFireboltRank.NoMaximum, tooltip: 'Max' },
 		{ actionId: () => ActionId.fromSpellId(3110), value: MaxFireboltRank.Rank1 },
@@ -73,5 +69,12 @@ export const ImpFireboltRank = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Sp
 		{ actionId: () => ActionId.fromSpellId(11762), value: MaxFireboltRank.Rank6 },
 		{ actionId: () => ActionId.fromSpellId(11763), value: MaxFireboltRank.Rank7 },
 	],
+	changeEmitter: (player: Player<Spec.SpecWarlock>) => player.changeEmitter,
+});
+
+export const PetPoolManaInput = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecWarlock>({
+	fieldName: 'petPoolMana',
+	label: "No Pet Management",
+	labelTooltip: 'Should Pet keep trying to cast on every mana regen instead of waiting for mana',
 	changeEmitter: (player: Player<Spec.SpecWarlock>) => player.changeEmitter,
 });
