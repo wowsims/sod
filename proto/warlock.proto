@@ -72,7 +72,7 @@ enum WarlockRune {
 	RuneHandsHaunt	          	  = 403501;
 	RuneHandsMetamorphosis    	  = 403789;
 	RuneHandsShadowBoltVolley 	  = 403628;
-	
+
 	RuneLegsDemonicGrace      	  = 425463;
 	RuneLegsDemonicPact       	  = 425464;
 	RuneLegsEverlastingAffliction = 412689;
@@ -126,6 +126,7 @@ message WarlockOptions {
 	Summon summon = 2;
 	WeaponImbue weapon_imbue = 3;
 	MaxFireboltRank max_firebolt_rank = 4;
+	bool pet_pool_mana = 5;
 }
 
 message Warlock {
