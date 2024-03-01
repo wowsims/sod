@@ -42,7 +42,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 }
 
 type Stats [46]float64
-type WeaponSkills [14]float64
+type WeaponSkills [15]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -289,16 +289,17 @@ func (item WowheadItemResponse) GetStats() Stats {
 
 func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
 	return WeaponSkills{
+		0,
 		float64(item.GetIntValue(axesSkill)),
 		float64(item.GetIntValue(swordsSkill)),
+		float64(item.GetIntValue(macesSkill)),
 		float64(item.GetIntValue(daggersSkill)),
 		float64(item.GetIntValue(unarmedSkill)),
-		float64(item.GetIntValue(macesSkill)),
 		float64(item.GetIntValue(twoHandedAxesSkill)),
 		float64(item.GetIntValue(twoHandedSwordsSkill)),
 		float64(item.GetIntValue(twoHandedMacesSkill)),
-		float64(item.GetIntValue(stavesSkill)),
 		float64(item.GetIntValue(polearmsSkill)),
+		float64(item.GetIntValue(stavesSkill)),
 		float64(item.GetIntValue(thrownSkill)),
 		float64(item.GetIntValue(bowsSkill)),
 		float64(item.GetIntValue(crossbowsSkill)),
