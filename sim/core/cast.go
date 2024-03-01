@@ -159,9 +159,9 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			}
 		}
 
-		// Era's only GCD haste reduction is on flat attack/cast speed increases like berserking for mana users
-		spell.CurCast.GCD = spell.Unit.ApplyFlatCastSpeed(spell.CurCast.GCD)
 		if !config.IgnoreHaste {
+			// Vanilla has no natural GCD reduction besides abilities with 1s GCDs
+			// spell.CurCast.GCD = spell.Unit.ApplyFlatCastSpeed(spell.CurCast.GCD)
 			spell.CurCast.CastTime = config.CastTime(spell)
 		}
 

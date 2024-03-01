@@ -1,15 +1,14 @@
-import { OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
-import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { Player, UnitMetadata } from '../../player.js';
+import { ActionID,OtherAction, UnitReference, UnitReference_Type as UnitType  } from '../../proto/common.js';
+import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
+import { BooleanPicker } from '../boolean_picker.js';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
+import { Input, InputConfig } from '../input.js';
 import { AdaptiveStringPicker } from '../inputs/string_picker.js';
 import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
 import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
-import { Input, InputConfig } from '../input.js';
-import { ActionID } from '../../proto/common.js';
-import { BooleanPicker } from '../boolean_picker.js';
 //import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 //import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 
@@ -21,7 +20,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 }> = {
 	'auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().map(actionId => {
 				const hasRanks = metadata.getAuras().filter(mainSpell => mainSpell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
 				return {
@@ -33,43 +32,46 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'stackable_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.maxStacks > 0).map(actionId => {
-				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
 	},
 	'icd_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.hasIcd).map(actionId => {
-				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
 	},
 	'exclusive_effect_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.hasExclusiveEffect).map(actionId => {
-				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getAuras().filter(aura => aura.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
 	},
 	'castable_spells': {
 		defaultLabel: 'Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			const castableSpells = metadata.getSpells().filter(spell => spell.data.isCastable);
 
 			// Split up non-cooldowns and cooldowns into separate sections for easier browsing.
@@ -86,10 +88,11 @@ const actionIdSets: Record<ACTION_ID_SET, {
 					submenu: ['Spells'],
 				}],
 				(spells || []).map(actionId => {
-					const hasRanks = spells.filter(spell => spell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+					const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+					const hasRanks = spells.filter(spell => spell.id.name.startsWith(baseActionName)).length > 1
 					return {
 						value: actionId.id,
-						submenu: hasRanks ? ['Spells', actionId.id.name.replace(/ \(Rank \d+\)/g, '')] : ['Spells'],
+						submenu: hasRanks ? ['Spells', baseActionName] : ['Spells'],
 						extraCssClasses: (actionId.data.prepullOnly
 							? ['apl-prepull-actions-only']
 							: (actionId.data.encounterOnly
@@ -103,10 +106,12 @@ const actionIdSets: Record<ACTION_ID_SET, {
 					submenu: ['Cooldowns'],
 				}],
 				(cooldowns || []).map(actionId => {
-					const hasRanks = cooldowns.filter(spell => spell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+					// This regex also captures the percentages used in the custom Berserking cooldowns
+					const baseActionName = actionId.id.name.replace(/ \([\w\s%]+\)/g,'')
+					const hasRanks = cooldowns.filter(spell => spell.id.name.startsWith(baseActionName)).length > 1
 					return {
 						value: actionId.id,
-						submenu: hasRanks ? ['Cooldowns', actionId.id.name.replace(/ \(Rank \d+\)/g, '')] : ['Cooldowns'],
+						submenu: hasRanks ? ['Cooldowns', baseActionName] : ['Cooldowns'],
 						extraCssClasses: (actionId.data.prepullOnly
 							? ['apl-prepull-actions-only']
 							: (actionId.data.encounterOnly
@@ -131,36 +136,39 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'channel_spells': {
 		defaultLabel: 'Channeled Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.isCastable && spell.data.isChanneled).map(actionId => {
-				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
 	},
 	'dot_spells': {
 		defaultLabel: 'DoT Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.hasDot).map(actionId => {
-				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
 	},
 	'shield_spells': {
 		defaultLabel: 'Shield Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.hasShield).map(actionId => {
-				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(actionId.id.name.replace(/ \(Rank \d+\)/g,''))).length > 1
+				const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g,'')
+				const hasRanks = metadata.getSpells().filter(spell => spell.id.name.startsWith(baseActionName)).length > 1
 				return {
 					value: actionId.id,
-					submenu: hasRanks ? [actionId.id.name.replace(/ \(Rank \d+\)/g,'')] : [],
+					submenu: hasRanks ? [baseActionName] : [],
 				};
 			});
 		},
@@ -231,7 +239,7 @@ const unitSets: Record<UNIT_SET, {
 	getUnits: (player: Player<any>) => Array<UnitReference|undefined>,
 }> = {
 	'aura_sources': {
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.getPetMetadatas().asList().map((petMetadata, i) => UnitReference.create({type: UnitType.Pet, index: i, owner: UnitReference.create({type: UnitType.Self})})),
@@ -242,7 +250,7 @@ const unitSets: Record<UNIT_SET, {
 	},
 	'aura_sources_targets_first': {
 		targetUI: true,
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({type: UnitType.Target, index: i})),
@@ -253,7 +261,7 @@ const unitSets: Record<UNIT_SET, {
 	},
 	'targets': {
 		targetUI: true,
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({type: UnitType.Target, index: i})),
