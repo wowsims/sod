@@ -168,6 +168,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.SwordsSkill += ps[proto.PseudoStat_PseudoStatSwordsSkill]
 			character.PseudoStats.DaggersSkill += ps[proto.PseudoStat_PseudoStatDaggersSkill]
 			character.PseudoStats.UnarmedSkill += ps[proto.PseudoStat_PseudoStatUnarmedSkill]
+			character.PseudoStats.MacesSkill += ps[proto.PseudoStat_PseudoStatMacesSkill]
 			character.PseudoStats.TwoHandedAxesSkill += ps[proto.PseudoStat_PseudoStatTwoHandedAxesSkill]
 			character.PseudoStats.TwoHandedSwordsSkill += ps[proto.PseudoStat_PseudoStatTwoHandedSwordsSkill]
 			character.PseudoStats.TwoHandedMacesSkill += ps[proto.PseudoStat_PseudoStatTwoHandedMacesSkill]
@@ -266,14 +267,14 @@ func (character *Character) applyWeaponSkills() {
 	for _, item := range character.Equipment {
 		character.PseudoStats.AxesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillAxes)]
 		character.PseudoStats.SwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillSwords)]
+		character.PseudoStats.MacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillMaces)]
 		character.PseudoStats.DaggersSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillDaggers)]
 		character.PseudoStats.UnarmedSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillUnarmed)]
-		character.PseudoStats.MacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillMaces)]
 		character.PseudoStats.TwoHandedAxesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedAxes)]
 		character.PseudoStats.TwoHandedSwordsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedSwords)]
 		character.PseudoStats.TwoHandedMacesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillTwoHandedMaces)]
-		character.PseudoStats.StavesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillStaves)]
 		character.PseudoStats.PolearmsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillPolearms)]
+		character.PseudoStats.StavesSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillStaves)]
 		character.PseudoStats.ThrownSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillThrown)]
 		character.PseudoStats.BowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillBows)]
 		character.PseudoStats.CrossbowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillCrossbows)]
@@ -618,6 +619,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatParry:                character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
 		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),
 		proto.PseudoStat_PseudoStatSwordsSkill:          float64(character.PseudoStats.SwordsSkill),
+		proto.PseudoStat_PseudoStatMacesSkill:           float64(character.PseudoStats.MacesSkill),
 		proto.PseudoStat_PseudoStatDaggersSkill:         float64(character.PseudoStats.DaggersSkill),
 		proto.PseudoStat_PseudoStatUnarmedSkill:         float64(character.PseudoStats.UnarmedSkill),
 		proto.PseudoStat_PseudoStatTwoHandedAxesSkill:   float64(character.PseudoStats.TwoHandedAxesSkill),
