@@ -25,7 +25,7 @@ func (hunter *Hunter) registerCarveSpell() {
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1),
+			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1) * 0.65,
 			CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		})
 	}
@@ -53,14 +53,14 @@ func (hunter *Hunter) registerCarveSpell() {
 			return hunter.DistanceFromTarget <= 5
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.65,
 		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := 0.5*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
+				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 					spell.BonusWeaponDamage()
 
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -79,8 +79,8 @@ func (hunter *Hunter) registerCarveSpell() {
 
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					baseDamage := 0.5*spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-						spell.BonusWeaponDamage()*0.5
+					baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
+						spell.BonusWeaponDamage()
 
 					results[hitIndex] = hunter.CarveOh.CalcDamage(sim, curTarget, baseDamage, hunter.CarveOh.OutcomeMeleeWeaponSpecialHitAndCrit)
 
