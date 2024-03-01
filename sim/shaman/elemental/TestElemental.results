@@ -379,22 +379,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 416.47817
-  tps: 414.17338
+  dps: 416.09739
+  tps: 413.82673
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 467.17047
-  tps: 465.87488
+  dps: 465.67212
+  tps: 464.41873
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 416.47817
-  tps: 414.17338
+  dps: 416.09739
+  tps: 413.82673
  }
 }
 dps_results: {
@@ -456,8 +456,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 453.24947
-  tps: 451.47467
+  dps: 452.39484
+  tps: 450.71219
  }
 }
 dps_results: {
