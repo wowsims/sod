@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.14714
+  weights: -0.33107
   weights: 0
-  weights: 0.62512
-  weights: 0
-  weights: 0
+  weights: 0.52887
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.57263
-  weights: 2.25758
+  weights: 0
+  weights: 0
+  weights: 6.26048
+  weights: 1.3605
   weights: 0
   weights: 0
   weights: 0
@@ -99,91 +99,91 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 193.61724
-  tps: 156.51199
+  dps: 202.67414
+  tps: 170.09734
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 204.51271
-  tps: 168.57613
+  dps: 214.15294
+  tps: 183.03648
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 524.14283
-  tps: 1035.50944
+  dps: 546.49607
+  tps: 1069.93423
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 207.89016
-  tps: 172.36435
+  dps: 217.75394
+  tps: 187.16001
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 198.9019
-  tps: 164.21664
+  dps: 208.17947
+  tps: 178.133
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 528.57031
-  tps: 1049.6937
+  dps: 551.41959
+  tps: 1085.74983
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 525.88535
-  tps: 1557.76763
+  dps: 552.15114
+  tps: 1601.79538
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 525.88535
-  tps: 1045.87475
+  dps: 552.15114
+  tps: 1089.9025
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 558.70642
-  tps: 1103.87287
+  dps: 583.15892
+  tps: 1140.96263
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 303.627
-  tps: 1212.15572
+  dps: 324.66401
+  tps: 1254.20745
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 303.627
-  tps: 648.60543
+  dps: 324.66401
+  tps: 690.65717
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 329.72
-  tps: 693.17174
+  dps: 348.6312
+  tps: 728.08737
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 525.88535
-  tps: 1045.87475
+  dps: 552.15114
+  tps: 1089.9025
  }
 }
