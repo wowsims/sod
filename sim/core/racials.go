@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -127,78 +128,103 @@ func applyRaceEffects(agent Agent) {
 		}
 
 		// Berserking
-		actionID := ActionID{SpellID: 26297}
-
-		var berserkingAura *Aura
-		var berserkingPct float64
-		if character.HasManaBar() {
-			// Mana-using classes gain a flat % reduction in attack and cast speed
-			berserkingAura = character.RegisterAura(Aura{
-				Label:    "Berserking (Troll)",
-				ActionID: actionID,
-				Duration: time.Second * 10,
-				OnGain: func(aura *Aura, sim *Simulation) {
-					healthPctMissing := 1 - character.CurrentHealthPercent()
-					// 10% base + 1/3 of missing health percentage up to a max of 30%
-					berserkingPct = math.Min(.1+(healthPctMissing/3), .3)
-
-					character.FlatIncreaseCastSpeed(berserkingPct)
-					character.FlatIncreaseAttackSpeed(sim, berserkingPct)
-
-					if sim.Log != nil {
-						character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
-					}
-				},
-				OnExpire: func(aura *Aura, sim *Simulation) {
-					character.FlatIncreaseCastSpeed(-1 * berserkingPct)
-					character.FlatIncreaseAttackSpeed(sim, -1*berserkingPct)
-				},
-			})
-		} else {
-			// Non-mana bar classes gain a flat % reduction in attack and cast speed
-			berserkingAura = character.RegisterAura(Aura{
-				Label:    "Berserking (Troll)",
-				ActionID: actionID,
-				Duration: time.Second * 10,
-				OnGain: func(aura *Aura, sim *Simulation) {
-					healthPctMissing := 1 - character.CurrentHealthPercent()
-					// 10% base + 1/3 of missing health percentage up to a max of 30%
-					berserkingPct := math.Min(.1+(healthPctMissing/3), .3)
-
-					character.MultiplyCastSpeed(1 + berserkingPct)
-					character.MultiplyAttackSpeed(sim, 1+berserkingPct)
-
-					if sim.Log != nil {
-						character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
-					}
-				},
-				OnExpire: func(aura *Aura, sim *Simulation) {
-					character.MultiplyCastSpeed(1 / (1 + berserkingPct))
-					character.MultiplyAttackSpeed(sim, 1/(1+berserkingPct))
-				},
-			})
-		}
-
-		berserkingSpell := character.RegisterSpell(SpellConfig{
-			ActionID: actionID,
-
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
-				},
-			},
-
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				berserkingAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell: berserkingSpell,
-			Type:  CooldownTypeDPS,
-		})
+		berserkingTimer := character.NewTimer()
+		// Baseline cooldown
+		makeBerserkingCooldown(character, 0, berserkingTimer)
+		// Hard-coded percentage cooldown options
+		makeBerserkingCooldown(character, .1, berserkingTimer)
+		makeBerserkingCooldown(character, .15, berserkingTimer)
+		makeBerserkingCooldown(character, .2, berserkingTimer)
+		makeBerserkingCooldown(character, .25, berserkingTimer)
+		makeBerserkingCooldown(character, .3, berserkingTimer)
 	case proto.Race_RaceUndead:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
 	}
+}
+
+// If customPercentage is 0, use the baseline Berserking calculations from health missing
+// otherwise create a cooldown hard-coded to the custom percentage.
+func makeBerserkingCooldown(character *Character, customPercentage float64, timer *Timer) {
+	actionID := ActionID{SpellID: 26297, Tag: int32(customPercentage * 20)}
+
+	label := "Berserking"
+	if customPercentage != 0 {
+		label = fmt.Sprintf("%s (%d)", label, int(customPercentage*100))
+	}
+
+	calcBerserkingPct := func() float64 {
+		if customPercentage == 0 {
+			healthPctMissing := 1 - character.CurrentHealthPercent()
+			// 10% base + 1/3 of missing health percentage up to a max of 30%
+			return math.Min(.1+(healthPctMissing/3), .3)
+		} else {
+			return customPercentage
+		}
+	}
+
+	var berserkingAura *Aura
+	var berserkingPct float64
+	if character.HasManaBar() {
+		// Mana-using classes gain a flat % reduction in attack and cast speed
+		berserkingAura = character.RegisterAura(Aura{
+			Label:    label,
+			ActionID: actionID,
+			Duration: time.Second * 10,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				berserkingPct = calcBerserkingPct()
+
+				character.FlatIncreaseCastSpeed(berserkingPct)
+				character.FlatIncreaseAttackSpeed(sim, berserkingPct)
+
+				if sim.Log != nil {
+					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+				}
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.FlatIncreaseCastSpeed(-1 * berserkingPct)
+				character.FlatIncreaseAttackSpeed(sim, -1*berserkingPct)
+			},
+		})
+	} else {
+		// Non-mana bar classes gain a flat % reduction in attack and cast speed
+		berserkingAura = character.RegisterAura(Aura{
+			Label:    label,
+			ActionID: actionID,
+			Duration: time.Second * 10,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				berserkingPct = calcBerserkingPct()
+
+				character.MultiplyCastSpeed(1 + berserkingPct)
+				character.MultiplyAttackSpeed(sim, 1+berserkingPct)
+
+				if sim.Log != nil {
+					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+				}
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.MultiplyCastSpeed(1 / (1 + berserkingPct))
+				character.MultiplyAttackSpeed(sim, 1/(1+berserkingPct))
+			},
+		})
+	}
+
+	berserkingSpell := character.RegisterSpell(SpellConfig{
+		ActionID: actionID,
+
+		Cast: CastConfig{
+			CD: Cooldown{
+				Timer:    timer,
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+			berserkingAura.Activate(sim)
+		},
+	})
+
+	character.AddMajorCooldown(MajorCooldown{
+		Spell: berserkingSpell,
+		Type:  CooldownTypeDPS,
+	})
 }
