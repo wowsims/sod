@@ -37,6 +37,7 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_MageScorch,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | SpellFlagMage,

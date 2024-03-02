@@ -37,6 +37,7 @@ func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.Spe
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_MageFireBlast,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,

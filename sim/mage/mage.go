@@ -33,6 +33,10 @@ func RegisterMage() {
 const (
 	SpellCode_MageNone int32 = iota
 	SpellCode_MageArcaneMissiles
+	SpellCode_MageFireball
+	SpellCode_MageFireBlast
+	SpellCode_MageLivingBomb
+	SpellCode_MageScorch
 )
 
 type Mage struct {
@@ -64,10 +68,10 @@ type Mage struct {
 	ArcanePotencyAura  *core.Aura
 	ArcanePowerAura    *core.Aura
 	ClearcastingAura   *core.Aura
-	ScorchAuras        core.AuraArray
 	CombustionAura     *core.Aura
+	HotStreakAura      *core.Aura
+	ScorchAuras        core.AuraArray
 	FingersOfFrostAura *core.Aura
-	EnlightenmentAura  *core.Aura
 
 	CritDebuffCategories core.ExclusiveCategoryArray
 }
@@ -91,8 +95,7 @@ func (mage *Mage) Initialize() {
 	mage.registerFireballSpell()
 	mage.registerFireBlastSpell()
 	mage.registerFrostboltSpell()
-	// mage.registerManaGemsCD()
-	// mage.registerPyroblastSpell()
+	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
 
 	// TODO: Classic mage aoe spells

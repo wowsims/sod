@@ -21,7 +21,7 @@ func (mage *Mage) registerFireballSpell() {
 	mage.Fireball = make([]*core.Spell, FireballRanks+1)
 
 	for rank := 1; rank <= FireballRanks; rank++ {
-		config := mage.getFireballBaseConfig(rank)
+		config := mage.newFireballSpellConfig(rank)
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.Fireball[rank] = mage.GetOrRegisterSpell(config)
@@ -29,7 +29,7 @@ func (mage *Mage) registerFireballSpell() {
 	}
 }
 
-func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
+func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 	spellId := FireballSpellId[rank]
 	baseDamageLow := FireballBaseDamage[rank][0]
 	baseDamageHigh := FireballBaseDamage[rank][1]
@@ -40,9 +40,11 @@ func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
 	level := FireballLevel[rank]
 
 	numTicks := int32(4)
+	tickLength := time.Second * 2
 
 	return core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId},
+		SpellCode:    SpellCode_MageFireball,
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        core.SpellFlagAPL,
@@ -66,7 +68,7 @@ func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
 				Label: fmt.Sprintf("Fireball (Rank %d)", rank),
 			},
 			NumberOfTicks: numTicks,
-			TickLength:    time.Second * 2,
+			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDotDamage / float64(numTicks)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])

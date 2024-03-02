@@ -24,14 +24,14 @@ func (mage *Mage) registerLivingBombSpell() {
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 400614},
+		SpellCode:   SpellCode_MageLivingBomb,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage,
 
-		BonusCritRating:          0,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := baseExplosionDamage + 0.4*spell.SpellDamage()
@@ -57,7 +57,6 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 		},
 
-		BonusCritRating:  0,
 		BonusHitRating:   float64(mage.Talents.ElementalPrecision) * 2 * core.SpellHitRatingPerHitChance,
 		ThreatMultiplier: 1,
 

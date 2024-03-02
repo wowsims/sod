@@ -219,18 +219,7 @@ export class ActionId {
 				}
 				break;
 			case 'Hot Streak':
-				if (this.tag) name += ' (Crits)';
-				break;
-			case 'Fireball':
-			case 'Flamestrike':
-				if (this.tag == 8) {
-					name += ' (Rank 8)';
-				} else if (this.tag == 9) {
-					name += ' (Rank 9)';
-				}
-				break;
-			case 'Pyroblast':
-				if (this.tag) name += ' (DoT)';
+				if (this.tag) name = 'Heating Up'
 				break;
 			case 'Living Bomb':
 				if (this.spellId == 55362) name += ' (Explosion)';

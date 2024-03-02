@@ -28,10 +28,8 @@ func (mage *Mage) registerBlastWaveSpell() {
 				Duration: time.Second * 30,
 			},
 		},
-		BonusCritRating: float64(mage.Talents.CriticalMass+mage.Talents.WorldInFlames) * 2 * core.CritRatingPerCritChance,
-		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.SpellImpact) +
-			.02*float64(mage.Talents.FirePower),
+		BonusCritRating:  0,
+		DamageMultiplier: 1,
 		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

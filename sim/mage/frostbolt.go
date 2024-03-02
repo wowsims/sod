@@ -19,7 +19,7 @@ func (mage *Mage) registerFrostboltSpell() {
 	mage.Frostbolt = make([]*core.Spell, FrostboltRanks+1)
 
 	for rank := 1; rank <= FrostboltRanks; rank++ {
-		config := mage.getFrostboltBaseConfig(rank)
+		config := mage.getFrostboltConfig(rank)
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.Frostbolt[rank] = mage.GetOrRegisterSpell(config)
@@ -27,7 +27,7 @@ func (mage *Mage) registerFrostboltSpell() {
 	}
 }
 
-func (mage *Mage) getFrostboltBaseConfig(rank int) core.SpellConfig {
+func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 	spellId := FrostboltSpellId[rank]
 	baseDamageLow := FrostboltBaseDamage[rank][0]
 	baseDamageHigh := FrostboltBaseDamage[rank][1]
