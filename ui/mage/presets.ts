@@ -1,22 +1,28 @@
-import { Phase } from '../core/constants/other.js';
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
-	Flask,
+	Debuffs,
+	EnchantedSigil,
+	FirePowerBuff,
 	Food,
-	Profession
+	FrostPowerBuff,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
+	TristateEffect,
+	WeaponImbue
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
-	Mage_Options_ArmorType as ArmorType,
-	Mage_Options as MageOptions
+	Mage_Options as MageOptions,
+	Mage_Options_ArmorType as ArmorType
 } from '../core/proto/mage.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
-import DefaultBlankGear from './gear_sets/blank.gear.json';
-
+import { SavedTalents } from '../core/proto/ui.js';
 import APLDefault from './apls/default.apl.json';
+import DefaultBlankGear from './gear_sets/blank.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
@@ -27,13 +33,13 @@ export const GearFirePhase1 = PresetUtils.makePresetGear('Default', DefaultBlank
 export const GearFrostPhase1 = PresetUtils.makePresetGear('Default', DefaultBlankGear, { talentTree: 2 });
 
 export const GearPresets = {
-  [Phase.Phase1]: [
-    GearArcanePhase1,
+	[Phase.Phase1]: [
+		GearArcanePhase1,
 		GearFirePhase1,
 		GearFrostPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+	],
+	[Phase.Phase2]: [
+	],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -48,27 +54,27 @@ export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('Default', APLDef
 export const APLFrostPhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 2 });
 
 export const APLPresets = {
-  [Phase.Phase1]: [
-    APLArcanePhase1,
+	[Phase.Phase1]: [
+		APLArcanePhase1,
 		APLFirePhase1,
 		APLFrostPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+	],
+	[Phase.Phase2]: [
+	],
 };
 
 // TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
-  25: {
+	25: {
 		0: APLPresets[Phase.Phase1][0],
 		1: APLPresets[Phase.Phase1][1],
 		2: APLPresets[Phase.Phase1][2],
 	},
-  40: {
+	40: {
 		0: APLPresets[Phase.Phase1][0],
 		1: APLPresets[Phase.Phase1][1],
 		2: APLPresets[Phase.Phase1][2],
-	}
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -99,20 +105,43 @@ export const TalentsFrostPhase1 = {
 	}),
 };
 
-export const TalentPresets = {
-  [Phase.Phase1]: [
-    TalentsArcanePhase1,
-		TalentsFirePhase1,
-		TalentsFrostPhase1,
-  ],
-  [Phase.Phase2]: [
-  ]
+export const TalentsArcanePhase2 = {
+	name: 'P2 Arcane',
+	data: SavedTalents.create({
+		talentsString: '2302250310031531',
+	})
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultTalentsArcane = TalentPresets[Phase.Phase1][0];
-export const DefaultTalentsFire 	= TalentPresets[Phase.Phase1][1];
-export const DefaultTalentsFrost 	= TalentPresets[Phase.Phase1][2];
+export const TalentsFirePhase2 = {
+	name: 'P2 Fire',
+	data: SavedTalents.create({
+		talentsString: '-5050020123033151',
+	})
+};
+
+export const TalentsFrostPhase2 = {
+	name: 'P2 Frost',
+	data: SavedTalents.create({
+		talentsString: '--0535020300035005',
+	})
+};
+
+export const TalentPresets = {
+	[Phase.Phase1]: [
+    	TalentsArcanePhase1,
+		TalentsFirePhase1,
+		TalentsFrostPhase1,
+	],
+	[Phase.Phase2]: [
+		TalentsArcanePhase2,
+		TalentsFirePhase2,
+		TalentsFrostPhase2,
+	],
+};
+
+export const DefaultTalentsArcane 	= TalentPresets[CURRENT_PHASE][0];
+export const DefaultTalentsFire 	= TalentPresets[CURRENT_PHASE][1];
+export const DefaultTalentsFrost 	= TalentPresets[CURRENT_PHASE][2];
 
 export const DefaultTalents = DefaultTalentsArcane;
 
@@ -125,12 +154,37 @@ export const DefaultOptions = MageOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.InnovationSigil,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	food: Food.FoodSagefishDelight,
+	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
+	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+});
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	aspectOfTheLion: true,
+	divineSpirit: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectImproved,
+	moonkinAura: true,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+  	sparkOfInspiration: true,
+  	saygesFortune: SaygesFortune.SaygesDamage
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfElements: true,
+	dreamstate: true,
+	improvedScorch: true,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 20,
-	profession1: Profession.Engineering,
-	profession2: Profession.Tailoring,
+  	distanceFromTarget: 20,
+  	profession1: Profession.Enchanting,
+  	profession2: Profession.Leatherworking,
 };

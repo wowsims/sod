@@ -136,12 +136,10 @@ export const DefaultConsumes = Consumes.create({
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
-	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

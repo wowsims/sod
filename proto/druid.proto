@@ -77,7 +77,7 @@ enum DruidRune {
 
 	// Belt
 	RuneBeltBerserk					= 417141;
-	RuneBeltEclips					= 408248;
+	RuneBeltEclipse					= 408248;
 	RuneBeltNourish					= 408247;
 
 	// Legs

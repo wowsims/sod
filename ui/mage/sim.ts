@@ -1,24 +1,17 @@
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import {IndividualSimUI, registerSpecConfig} from '../core/individual_sim_ui.js';
+import {Player} from '../core/player.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect
 } from '../core/proto/common.js';
 import {Stats} from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import {Player} from '../core/player.js';
-import {IndividualSimUI, registerSpecConfig} from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as MageInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -34,6 +27,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatArcanePower,
+		Stat.StatFirePower,
+		Stat.StatFrostPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -62,6 +58,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			[Stat.StatIntellect]: 0.48,
 			[Stat.StatSpirit]: 0.42,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatArcanePower]: 1,
+			[Stat.StatFirePower]: 1,
+			[Stat.StatFrostPower]: 1,
 			[Stat.StatSpellHit]: 0.38,
 			[Stat.StatSpellCrit]: 0.58,
 			[Stat.StatSpellHaste]: 0.94,
@@ -75,25 +74,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			manaSpringTotem: TristateEffect.TristateEffectImproved,
-			divineSpirit: true,
-			moonkinAura: true,
-			arcaneBrilliance: true,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			innervates: 0,
-		}),
-		debuffs: Debuffs.create({
-			wintersChill: true,
-			improvedScorch: true,
-			judgementOfWisdom: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -104,18 +88,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	rotationInputs: MageInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.BlessingOfWisdom,
-		BuffDebuffInputs.ManaSpringTotem,
-		BuffDebuffInputs.StaminaBuff,
-		BuffDebuffInputs.JudgementOfWisdom,
-		...ConsumablesInputs.FIRE_POWER_CONFIG,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
 	],
 	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellISBDebuff,
-		...ConsumablesInputs.AGILITY_CONSUMES_CONFIG,
-		...ConsumablesInputs.STRENGTH_CONSUMES_CONFIG,
-		...ConsumablesInputs.SHADOW_POWER_CONFIG,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -147,7 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
