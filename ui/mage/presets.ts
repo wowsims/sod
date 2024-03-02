@@ -186,5 +186,5 @@ export const DefaultDebuffs = Debuffs.create({
 export const OtherDefaults = {
   	distanceFromTarget: 20,
   	profession1: Profession.Enchanting,
-  	profession2: Profession.Leatherworking,
+  	profession2: Profession.Tailoring,
 };

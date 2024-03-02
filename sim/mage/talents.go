@@ -158,9 +158,9 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		} else if mage.Pyroblast != nil {
 			spellToUse = mage.Pyroblast
 		} else if mage.PrimaryTalentTree == 1 {
-			spellToUse = mage.Fireball
+			// spellToUse = mage.Fireball
 		} else {
-			spellToUse = mage.Frostbolt
+			// spellToUse = mage.Frostbolt
 		}
 	})
 

@@ -45,10 +45,10 @@ type Mage struct {
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
-	Fireball                *core.Spell
-	FireBlast               *core.Spell
+	Fireball                []*core.Spell
+	FireBlast               []*core.Spell
 	Flamestrike             *core.Spell
-	Frostbolt               *core.Spell
+	Frostbolt               []*core.Spell
 	IceLance                *core.Spell
 	Pyroblast               *core.Spell
 	Scorch                  *core.Spell
