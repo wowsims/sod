@@ -96,6 +96,9 @@ var UnitStatsLen = int(Len) + PseudoStatsLen
 
 type SchoolIndex byte
 
+// If you add a new multi-school you also need to update
+// core/spell_school.go acordingly!
+
 const (
 	SchoolIndexNone     SchoolIndex = 0
 	SchoolIndexPhysical SchoolIndex = iota
@@ -106,12 +109,22 @@ const (
 	SchoolIndexNature
 	SchoolIndexShadow
 
+	SchoolIndexMultiSchoolStart
+	SchoolIndexArcaneFire SchoolIndex = iota - 1
+	SchoolIndexArcaneFrost
+	SchoolIndexFireFrost
+	SchoolIndexFireShadow
+	SchoolIndexFrostShadow
+	SchoolIndexPhysicalNature
+	SchoolIndexNatureShadow
+	SchoolIndexPhysicalShadow
+
 	SchoolLen
 )
 
 func NewSchoolFloatArray() [SchoolLen]float64 {
 	return [SchoolLen]float64{
-		1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	}
 }
 

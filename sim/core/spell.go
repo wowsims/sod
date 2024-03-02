@@ -212,6 +212,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		SpellCode:    config.SpellCode,
 		Unit:         unit,
 		SpellSchool:  config.SpellSchool,
+		SchoolIndex:  config.SpellSchool.GetSchoolIndex(),
 		ProcMask:     config.ProcMask,
 		Flags:        config.Flags,
 		CastType:     config.CastType,
@@ -249,23 +250,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	spell.CdSpell = spell
-
-	switch {
-	case spell.SpellSchool.Matches(SpellSchoolPhysical):
-		spell.SchoolIndex = stats.SchoolIndexPhysical
-	case spell.SpellSchool.Matches(SpellSchoolArcane):
-		spell.SchoolIndex = stats.SchoolIndexArcane
-	case spell.SpellSchool.Matches(SpellSchoolFire):
-		spell.SchoolIndex = stats.SchoolIndexFire
-	case spell.SpellSchool.Matches(SpellSchoolFrost):
-		spell.SchoolIndex = stats.SchoolIndexFrost
-	case spell.SpellSchool.Matches(SpellSchoolHoly):
-		spell.SchoolIndex = stats.SchoolIndexHoly
-	case spell.SpellSchool.Matches(SpellSchoolNature):
-		spell.SchoolIndex = stats.SchoolIndexNature
-	case spell.SpellSchool.Matches(SpellSchoolShadow):
-		spell.SchoolIndex = stats.SchoolIndexShadow
-	}
 
 	// newXXXCost() all update spell.DefaultCast.Cost
 	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
