@@ -67,7 +67,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.ImprovedScorch && targetIdx == 0 {
-		MakePermanent(ImprovedScorchAura(target))
+		aura := ImprovedScorchAura(target, 5)
+		MakePermanent(aura)
 	}
 
 	if debuffs.WintersChill && targetIdx == 0 {
@@ -518,21 +519,26 @@ func bleedDamageAura(target *Unit, config Aura, multiplier float64) *Aura {
 
 const SpellFirePowerEffectCategory = "spellFirePowerdebuff"
 
-func ImprovedScorchAura(target *Unit) *Aura {
+func ImprovedScorchAura(target *Unit, startingStacks int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Improved Scorch",
-		ActionID: ActionID{SpellID: 12873},
-		Duration: time.Second * 30,
+		Label:     "Improved Scorch",
+		ActionID:  ActionID{SpellID: 12873},
+		Duration:  time.Second * 30,
+		MaxStacks: 5,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, startingStacks)
+		},
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .03*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .03*float64(newStacks)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexFrost] /= 1 + .03*float64(aura.stacks)
+		},
 	})
 
 	aura.NewExclusiveEffect(SpellFirePowerEffectCategory, true, ExclusiveEffect{
-		Priority: 0.15,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1.15
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1.15
-		},
+		Priority: .15,
 	})
 
 	return aura

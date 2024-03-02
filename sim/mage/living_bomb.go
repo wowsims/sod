@@ -31,7 +31,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1 - 0.1*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := baseExplosionDamage + 0.4*spell.SpellDamage()
@@ -59,7 +59,7 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		BonusCritRating:  0,
 		BonusHitRating:   float64(mage.Talents.ElementalPrecision) * 2 * core.SpellHitRatingPerHitChance,
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

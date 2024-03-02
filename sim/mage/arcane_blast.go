@@ -49,7 +49,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 
 		CritMultiplier:   mage.DefaultHealingCritMultiplier(),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + .714*spell.SpellDamage()

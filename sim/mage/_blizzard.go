@@ -27,13 +27,15 @@ func (mage *Mage) registerBlizzardSpell() {
 	}
 
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 42938},
-		SpellSchool:      core.SpellSchoolFrost,
-		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            SpellFlagMage,
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage+float64(mage.Talents.IceShards)/3),
+		ActionID:    core.ActionID{SpellID: 42938},
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagMage,
+
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - (0.1/3)*float64(mage.Talents.FrostChanneling),
+		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 426 + (4.0/3.5/8)*spell.SpellDamage()
 			damage *= sim.Encounter.AOECapMultiplier()

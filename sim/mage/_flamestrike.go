@@ -45,7 +45,7 @@ func (mage *Mage) registerFlamestrikeSpell(rank8 bool) *core.Spell {
 			.02*float64(mage.Talents.SpellImpact) +
 			.02*float64(mage.Talents.FirePower),
 		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.05*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,

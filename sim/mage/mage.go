@@ -30,6 +30,11 @@ func RegisterMage() {
 	)
 }
 
+const (
+	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneMissiles
+)
+
 type Mage struct {
 	core.Character
 
@@ -37,11 +42,11 @@ type Mage struct {
 	Options *proto.Mage_Options
 
 	ArcaneBlast             *core.Spell
-	ArcaneExplosion         *core.Spell
-	ArcaneMissiles          *core.Spell
-	ArcaneMissilesTickSpell *core.Spell
-	BlastWave               *core.Spell
-	Blizzard                *core.Spell
+	ArcaneExplosion         []*core.Spell
+	ArcaneMissiles          []*core.Spell
+	ArcaneMissilesTickSpell []*core.Spell
+	BlastWave               []*core.Spell
+	Blizzard                []*core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
@@ -50,8 +55,8 @@ type Mage struct {
 	Flamestrike             *core.Spell
 	Frostbolt               []*core.Spell
 	IceLance                *core.Spell
-	Pyroblast               *core.Spell
-	Scorch                  *core.Spell
+	Pyroblast               []*core.Spell
+	Scorch                  []*core.Spell
 
 	IcyVeins *core.Spell
 

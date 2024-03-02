@@ -47,7 +47,7 @@ func (mage *Mage) applyIgnite() {
 		Flags:       SpellFlagMage | core.SpellFlagIgnoreModifiers,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

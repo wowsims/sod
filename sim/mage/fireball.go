@@ -39,16 +39,17 @@ func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
 	manaCost := FireballManaCost[rank]
 	level := FireballLevel[rank]
 
-	ticks := int32(4)
+	numTicks := int32(4)
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolFire,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: spellId},
+		SpellSchool:  core.SpellSchoolFire,
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        core.SpellFlagAPL,
+		MissileSpeed: 24,
+
 		RequiredLevel: level,
 		Rank:          rank,
-		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -59,14 +60,15 @@ func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
 				CastTime: time.Millisecond*time.Duration(castTime) - time.Millisecond*100*time.Duration(mage.Talents.ImprovedFireball),
 			},
 		},
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Fireball (Rank %d)", rank),
 			},
-			NumberOfTicks: ticks,
+			NumberOfTicks: numTicks,
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage / float64(ticks)
+				dot.SnapshotBaseDamage = baseDotDamage / float64(numTicks)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -76,7 +78,7 @@ func (mage *Mage) getFireballBaseConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - (0.15 * float64(mage.Talents.BurningSoul)),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()

@@ -25,7 +25,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		BonusCritRating:  float64(mage.Talents.SpellImpact) * 2 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.2*float64(mage.Talents.ArcaneSubtlety),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dmgFromSP := (1.5 / 3.5 / 2) * spell.SpellDamage()

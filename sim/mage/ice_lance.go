@@ -27,9 +27,9 @@ func (mage *Mage) registerIceLanceSpell() {
 			},
 		},
 
-		CritMultiplier:   mage.SpellCritMultiplier(1, 0.2*float64(mage.Talents.IceShards)),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.FrostChanneling),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(55, 66) + 0.143*spell.SpellDamage() // https://www.wowhead.com/classic/spell=400640/ice-lance

@@ -8,27 +8,27 @@ import (
 )
 
 func (mage *Mage) ApplyTalents() {
-	mage.applyIgnite()
+	mage.applyArcaneTalents()
+	mage.applyFireTalents()
+	mage.applyFrostTalents()
+}
+
+func (mage *Mage) applyArcaneTalents() {
 	mage.applyArcaneConcentration()
-	mage.applyMasterOfElements()
-	mage.applyWintersChill()
-
-	mage.registerArcanePowerCD()
 	mage.registerPresenceOfMindCD()
-	mage.registerCombustionCD()
-	mage.registerColdSnapCD()
+	mage.registerArcanePowerCD()
 
-	mage.PseudoStats.SpiritRegenRateCasting += 0.05 * float64(mage.Talents.ArcaneMeditation)
-
-	if mage.Talents.ElementalPrecision > 0 {
-		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
+	// Arcane Subtlety
+	if mage.Talents.ArcaneSubtlety > 0 {
+		threatMultiplier := .20 * float64(mage.Talents.ArcaneSubtlety)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) {
-				spell.BonusHitRating += bonusHit
+			if spell.SpellSchool.Matches(core.SpellSchoolArcane) {
+				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
 	}
 
+	// Arcane Focus
 	if mage.Talents.ArcaneFocus > 0 {
 		bonusHit := 2 * float64(mage.Talents.ArcaneFocus) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
@@ -38,14 +38,45 @@ func (mage *Mage) ApplyTalents() {
 		})
 	}
 
-	if mage.Talents.PiercingIce > 0 {
-		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.02*float64(mage.Talents.PiercingIce)
+	// Magic Absorption
+	if mage.Talents.MagicAbsorption > 0 {
+		magicAbsorptionBonus := 2 * float64(mage.Talents.MagicAbsorption)
+		mage.AddStat(stats.ArcaneResistance, magicAbsorptionBonus)
+		mage.AddStat(stats.FireResistance, magicAbsorptionBonus)
+		mage.AddStat(stats.FrostResistance, magicAbsorptionBonus)
+		mage.AddStat(stats.NatureResistance, magicAbsorptionBonus)
+		mage.AddStat(stats.ShadowResistance, magicAbsorptionBonus)
 	}
 
-	if mage.Talents.FirePower > 0 {
-		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.02*float64(mage.Talents.FirePower)
+	// Arcane Meditation
+	mage.PseudoStats.SpiritRegenRateCasting += 0.05 * float64(mage.Talents.ArcaneMeditation)
+
+	if mage.Talents.ArcaneMind > 0 {
+		mage.MultiplyStat(stats.Mana, 1.0+0.02*float64(mage.Talents.ArcaneMind))
 	}
 
+	// Arcane Instability
+	mage.AddStat(stats.SpellCrit, float64(mage.Talents.ArcaneInstability)*1*core.SpellCritRatingPerCritChance)
+	mage.PseudoStats.DamageDealtMultiplier *= 1 + .01*float64(mage.Talents.ArcaneInstability)
+}
+
+func (mage *Mage) applyFireTalents() {
+	mage.applyIgnite()
+	mage.applyMasterOfElements()
+
+	mage.registerCombustionCD()
+
+	// Burning Soul
+	if mage.Talents.BurningSoul > 0 {
+		threatMultiplier := 1 - .15*float64(mage.Talents.BurningSoul)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+				spell.ThreatMultiplier *= threatMultiplier
+			}
+		})
+	}
+
+	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
 		bonusCrit := 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
@@ -55,20 +86,53 @@ func (mage *Mage) ApplyTalents() {
 		})
 	}
 
-	if mage.Talents.ArcaneMind > 0 {
-		mage.MultiplyStat(stats.Mana, 1.0+0.02*float64(mage.Talents.ArcaneMind))
+	// Fire Power
+	if mage.Talents.FirePower > 0 {
+		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.02*float64(mage.Talents.FirePower)
+	}
+}
+
+func (mage *Mage) applyFrostTalents() {
+	mage.applyWintersChill()
+
+	mage.registerColdSnapCD()
+
+	// Elemental Precision
+	if mage.Talents.ElementalPrecision > 0 {
+		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+				spell.BonusHitRating += bonusHit
+			}
+		})
 	}
 
-	mage.AddStat(stats.SpellCrit, float64(mage.Talents.ArcaneInstability)*1*core.SpellCritRatingPerCritChance)
-	mage.PseudoStats.DamageDealtMultiplier *= 1 + .01*float64(mage.Talents.ArcaneInstability)
-	mage.PseudoStats.CostMultiplier *= 1 - .05*float64(mage.Talents.FrostChanneling)
+	// Ice Shards
+	if mage.Talents.IceShards > 0 {
+		critDamageMultiplier := 1 + .20*float64(mage.Talents.IceShards)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+				spell.CritMultiplier *= critDamageMultiplier
+			}
+		})
+	}
 
-	magicAbsorptionBonus := 2 * float64(mage.Talents.MagicAbsorption)
-	mage.AddStat(stats.ArcaneResistance, magicAbsorptionBonus)
-	mage.AddStat(stats.FireResistance, magicAbsorptionBonus)
-	mage.AddStat(stats.FrostResistance, magicAbsorptionBonus)
-	mage.AddStat(stats.NatureResistance, magicAbsorptionBonus)
-	mage.AddStat(stats.ShadowResistance, magicAbsorptionBonus)
+	// Piercing Ice
+	if mage.Talents.PiercingIce > 0 {
+		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.02*float64(mage.Talents.PiercingIce)
+	}
+
+	// Frost Channeling
+	if mage.Talents.FrostChanneling > 0 {
+		manaCostMultiplier := 1 - .05*float64(mage.Talents.FrostChanneling)
+		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+				spell.DefaultCast.Cost *= manaCostMultiplier
+				spell.ThreatMultiplier *= threatMultiplier
+			}
+		})
+	}
 }
 
 func (mage *Mage) applyArcaneConcentration() {
@@ -111,7 +175,7 @@ func (mage *Mage) applyArcaneConcentration() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagMage) || spell == mage.ArcaneMissiles {
+			if !spell.Flags.Matches(SpellFlagMage) || spell.SpellCode == SpellCode_MageArcaneMissiles {
 				return
 			}
 
@@ -123,9 +187,9 @@ func (mage *Mage) applyArcaneConcentration() {
 
 			// TODO: Classic verify arcane missle proc chance
 			// Arcane Missile ticks can proc CC, just at a low rate of about 1.5% with 5/5 Arcane Concentration
-			if spell == mage.ArcaneMissilesTickSpell {
-				procChance *= 0.15
-			}
+			// if spell == mage.ArcaneMissilesTickSpell {
+			// 	procChance *= 0.15
+			// }
 
 			if sim.RandomFloat("Arcane Concentration") > procChance {
 				return
@@ -156,7 +220,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		if mage.ArcaneBlast != nil {
 			spellToUse = mage.ArcaneBlast
 		} else if mage.Pyroblast != nil {
-			spellToUse = mage.Pyroblast
+			// spellToUse = mage.Pyroblast
 		} else if mage.PrimaryTalentTree == 1 {
 			// spellToUse = mage.Fireball
 		} else {

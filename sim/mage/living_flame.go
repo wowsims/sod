@@ -40,7 +40,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 
 		BonusCritRating:  0,
 		BonusHitRating:   float64(mage.Talents.ElementalPrecision) * 2 * core.SpellHitRatingPerHitChance,
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -66,5 +66,10 @@ func (mage *Mage) registerLivingFlameSpell() {
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeExpectedMagicAlwaysHit)
 			spell.Dot(target).Apply(sim)
 		},
+	})
+
+	mage.AddMajorCooldown(core.MajorCooldown{
+		Spell: mage.LivingFlame,
+		Type:  core.CooldownTypeDPS,
 	})
 }

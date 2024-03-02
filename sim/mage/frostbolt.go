@@ -47,7 +47,7 @@ func (mage *Mage) getFrostboltBaseConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * (1 - 0.05*float64(mage.Talents.FrostChanneling)),
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -57,8 +57,8 @@ func (mage *Mage) getFrostboltBaseConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.SpellCritMultiplier(1, 0.2*float64(mage.Talents.IceShards)),
-		ThreatMultiplier: 1 - (0.1 * float64(mage.Talents.FrostChanneling)),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()

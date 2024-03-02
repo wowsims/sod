@@ -36,10 +36,11 @@ func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.Spe
 	level := FireBlastLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolFire,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         SpellFlagMage | core.SpellFlagAPL,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
+
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -57,9 +58,11 @@ func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.Spe
 			},
 		},
 
+		BonusCritRating:  2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		ThreatMultiplier: 1,
+
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			baseDamageCacl := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()
 			return spell.CalcDamage(sim, target, baseDamageCacl, spell.OutcomeExpectedMagicHitAndCrit)
