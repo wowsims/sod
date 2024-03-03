@@ -227,7 +227,7 @@ export class ActionId {
 			case 'Evocation':
 			case 'Mind Flay':
 			case 'Mind Sear':
-				if (this.tag) name = `${name} (${this.tag} Tick)`;
+				if (this.tag > 0) name = `${name} (${this.tag} Tick)`;
 				break;
 			case 'Shattering Throw':
 				if (this.tag === playerIndex) {
