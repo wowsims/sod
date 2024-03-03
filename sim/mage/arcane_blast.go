@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ArcaneBlastArcaneDamageModifier = .15
+
 // TODO: Classic verify Arcane Blast rune numbers
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044
 // https://www.wowhead.com/classic/spell=400574/arcane-blast
@@ -19,6 +21,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
 	baseLowDamage := baseCalc * 4.53
 	baseHighDamage := baseCalc * 5.27
+	spellCoeff := .714
+	castTime := time.Millisecond * 2500
+	manaCost := .07
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Blast Aura",
@@ -38,21 +43,21 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: castTime,
 			},
 		},
 
-		CritMultiplier:   mage.DefaultHealingCritMultiplier(),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + .714*spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

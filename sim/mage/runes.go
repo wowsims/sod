@@ -27,8 +27,8 @@ func (mage *Mage) ApplyRunes() {
 	// TODO: Spellfrost Bolt
 
 	// Legs
-	// TODO: Arcane Surge
-	mage.registerIcyVeinsCD()
+	mage.registerArcaneSurgeSpell()
+	mage.registerIcyVeinsSpell()
 	mage.registerLivingFlameSpell()
 
 	// Feet

@@ -18,15 +18,22 @@ func (mage *Mage) registerLivingFlameSpell() {
 	level := float64(mage.GetCharacter().Level)
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
 	baseDamage := baseCalc * 1
+	spellCoeff := .143
+	manaCost := .11
+	cooldown := time.Minute * 1
+
+	ticks := int32(20)
+	tickLength := time.Second * 1
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 401556},
+		ActionID: core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		// TODO: Also arcane
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.11,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -34,25 +41,23 @@ func (mage *Mage) registerLivingFlameSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * 120,
+				Duration: cooldown,
 			},
 		},
 
-		BonusCritRating:  0,
-		BonusHitRating:   float64(mage.Talents.ElementalPrecision) * 2 * core.SpellHitRatingPerHitChance,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "LivingFlame",
+				Label: "Living Flame",
 			},
 
-			NumberOfTicks: 20,
-			TickLength:    time.Second * 1,
+			NumberOfTicks: ticks,
+			TickLength:    tickLength,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + 0.143*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = 1
+				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
+				dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {

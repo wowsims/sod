@@ -49,6 +49,7 @@ type Mage struct {
 	ArcaneExplosion         []*core.Spell
 	ArcaneMissiles          []*core.Spell
 	ArcaneMissilesTickSpell []*core.Spell
+	ArcaneSurge             *core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
 	Ignite                  *core.Spell
@@ -99,7 +100,7 @@ func (mage *Mage) Initialize() {
 	mage.registerScorchSpell()
 
 	// TODO: Classic mage aoe spells
-	// mage.registerArcaneExplosionSpell()
+	mage.registerArcaneExplosionSpell()
 	// mage.registerBlizzardSpell()
 	// mage.registerFlamestrikeSpells()
 	// mage.registerBlastWaveSpell()

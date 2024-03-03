@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const ArcaneMissilesRanks = 8
@@ -101,6 +102,8 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 	baseTickDamage := ArcaneMissilesBaseTickDamage[rank]
 	spellCoeff := ArcaneMissilesSpellCoeff[rank]
 
+	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
+
 	return mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId},
 		SpellSchool:  core.SpellSchoolArcane,
@@ -119,9 +122,8 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
 
-			// TODO: Classic review Arcane missiles snap shot mechanics for Arcane Blast rune
-			if mage.ArcaneBlastAura != nil && mage.ArcaneBlastAura.IsActive() {
-				damage *= 0.15 * float64(mage.ArcaneBlastAura.GetStacks())
+			if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
+				damage *= ArcaneBlastArcaneDamageModifier * float64(mage.ArcaneBlastAura.GetStacks())
 			}
 
 			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeExpectedTick)

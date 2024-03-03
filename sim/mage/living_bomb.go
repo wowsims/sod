@@ -18,9 +18,14 @@ func (mage *Mage) registerLivingBombSpell() {
 
 	level := float64(mage.GetCharacter().Level)
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
-	ticks := int32(4)
-	baseDotDamage := baseCalc * 3.4
+	baseDotDamage := baseCalc * .85
 	baseExplosionDamage := baseCalc * 1.71
+	dotCoeff := .20
+	explosionCoeff := .40
+	manaCost := .22
+
+	ticks := int32(4)
+	tickLength := time.Second * 3
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 400614},
@@ -34,7 +39,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseExplosionDamage + 0.4*spell.SpellDamage()
+			baseDamage := baseExplosionDamage + explosionCoeff*spell.SpellDamage()
 			// baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeExpectedMagicCrit)
@@ -43,13 +48,13 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 400613},
+		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.22,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -57,7 +62,6 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 		},
 
-		BonusHitRating:   float64(mage.Talents.ElementalPrecision) * 2 * core.SpellHitRatingPerHitChance,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -69,11 +73,11 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 
 			NumberOfTicks: ticks,
-			TickLength:    time.Second * 3,
+			TickLength:    tickLength,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage / float64(ticks)) + 0.2*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = 1 // dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
+				dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -11,15 +11,24 @@ func (mage *Mage) registerIceLanceSpell() {
 		return
 	}
 
+	level := float64(mage.GetCharacter().Level)
+	baseCalc := (13.828124 + 0.018012*level) + (0.044141 * level * level)
+	baseDamageLow := baseCalc * .55
+	baseDamageHigh := baseCalc * .65
+	spellCoeff := .143
+	manaCost := .08
+
+	hasFingersOfFrostRune := mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
+
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 400640},
+		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneHandsIceLance)},
 		SpellSchool:  core.SpellSchoolFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL,
 		MissileSpeed: 38,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.08,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -27,13 +36,15 @@ func (mage *Mage) registerIceLanceSpell() {
 			},
 		},
 
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(55, 66) + 0.143*spell.SpellDamage() // https://www.wowhead.com/classic/spell=400640/ice-lance
-			baseDamage *= core.TernaryFloat64(mage.FingersOfFrostAura.IsActive(), 3, 1)
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			if hasFingersOfFrostRune && mage.FingersOfFrostAura.IsActive() {
+				baseDamage *= 3
+			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

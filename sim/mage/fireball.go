@@ -47,7 +47,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		SpellCode:    SpellCode_MageFireball,
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL,
+		Flags:        core.SpellFlagAPL | SpellFlagMage,
 		MissileSpeed: 24,
 
 		RequiredLevel: level,

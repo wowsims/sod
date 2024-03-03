@@ -7,22 +7,26 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (mage *Mage) registerIcyVeinsCD() {
+func (mage *Mage) registerIcyVeinsSpell() {
 	if !mage.HasRune(proto.MageRune_RuneLegsIceVeins) {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 425121}
+	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneLegsIceVeins)}
+	castSpeedMultiplier := 1.2
+	manaCost := .03
+	duration := time.Second * 20
+	cooldown := time.Minute * 3
 
 	icyVeinsAura := mage.RegisterAura(core.Aura{
 		Label:    "Icy Veins",
 		ActionID: actionID,
-		Duration: time.Second * 20,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(1.2)
+			aura.Unit.MultiplyCastSpeed(castSpeedMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / 1.2)
+			aura.Unit.MultiplyCastSpeed(1 / castSpeedMultiplier)
 		},
 	})
 
@@ -31,12 +35,12 @@ func (mage *Mage) registerIcyVeinsCD() {
 		Flags:    core.SpellFlagNoOnCastComplete,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * 180,
+				Duration: cooldown,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
