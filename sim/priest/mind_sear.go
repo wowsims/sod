@@ -18,8 +18,8 @@ func (priest *Priest) registerMindSearSpell() {
 	priest.MindSear = make([]*core.Spell, MindSearTicks)
 
 	var tick int32
-	for tick = 1; tick < MindSearTicks; tick++ {
-		priest.MindSear[tick] = priest.GetOrRegisterSpell(priest.newMindSearSpellConfig(tick))
+	for tick = 0; tick < MindSearTicks; tick++ {
+		priest.MindSear[tick] = priest.RegisterSpell(priest.newMindSearSpellConfig(tick))
 	}
 }
 
@@ -38,7 +38,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	mindSearTickSpell := priest.newMindSearTickSpell(tickIdx)
 
 	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
+		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       flags,
@@ -59,12 +59,12 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 		CritMultiplier:   1,
 
 		Dot: core.DotConfig{
+			IsAOE: true,
 			Aura: core.Aura{
 				Label: fmt.Sprintf("MindSear-%d", tickIdx),
 			},
-			NumberOfTicks:       numTicks,
-			TickLength:          tickLength,
-			AffectedByCastSpeed: false,
+			NumberOfTicks: numTicks,
+			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if aoeTarget != target {
@@ -80,7 +80,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
 
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				spell.AOEDot().Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},
@@ -89,14 +89,13 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 
 func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 	level := float64(priest.Level)
-	spellId := int32(proto.PriestRune_RuneHandsMindSear)
 	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
 	baseDamageLow := baseDamage * .7 * priest.darknessDamageModifier()
 	baseDamageHigh := baseDamage * .78 * priest.darknessDamageModifier()
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId}.WithTag(numTicks),
+		ActionID:    core.ActionID{SpellID: 413260}.WithTag(numTicks),
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 
@@ -108,7 +107,7 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh) + (spellCoeff * spell.SpellDamage())
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
