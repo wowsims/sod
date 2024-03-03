@@ -19,7 +19,7 @@ func (mage *Mage) registerFireBlastSpell() {
 	cdTimer := mage.NewTimer()
 
 	for rank := 1; rank <= FireBlastRanks; rank++ {
-		config := mage.getFireBlastBaseConfig(rank, cdTimer)
+		config := mage.newFireBlastSpellConfig(rank, cdTimer)
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.FireBlast[rank] = mage.GetOrRegisterSpell(config)
@@ -27,7 +27,7 @@ func (mage *Mage) registerFireBlastSpell() {
 	}
 }
 
-func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
+func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 	spellId := FireBlastSpellId[rank]
 	baseDamageLow := FireBlastBaseDamage[rank][0]
 	baseDamageHigh := FireBlastBaseDamage[rank][1]

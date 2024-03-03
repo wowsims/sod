@@ -225,35 +225,9 @@ export class ActionId {
 				if (this.spellId == 55362) name += ' (Explosion)';
 				break;
 			case 'Evocation':
-				if (this.tag == 1) {
-					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
-					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
-					name += ' (3 Tick)';
-				} else if (this.tag == 4) {
-					name += ' (4 Tick)';
-				} else if (this.tag == 5) {
-					name += ' (5 Tick)';
-				}
-				break;
-			// case 'Mind Flay':
-			// 	if (this.tag == 1) {
-			// 		name += ' (1 Tick)';
-			// 	} else if (this.tag == 2) {
-			// 		name += ' (2 Tick)';
-			// 	} else if (this.tag == 3) {
-			// 		name += ' (3 Tick)';
-			// 	}
-			// 	break;
+			case 'Mind Flay':
 			case 'Mind Sear':
-				if (this.tag == 1) {
-					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
-					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
-					name += ' (3 Tick)';
-				}
+				if (this.tag) name = `${name} (${this.tag} Tick)`;
 				break;
 			case 'Shattering Throw':
 				if (this.tag === playerIndex) {

@@ -57,7 +57,7 @@ type Mage struct {
 	LivingFlame             *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
-	Flamestrike             *core.Spell
+	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
 	IceLance                *core.Spell
 	Pyroblast               []*core.Spell
@@ -99,11 +99,10 @@ func (mage *Mage) Initialize() {
 	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
 
-	// TODO: Classic mage aoe spells
 	mage.registerArcaneExplosionSpell()
-	// mage.registerBlizzardSpell()
-	// mage.registerFlamestrikeSpells()
-	// mage.registerBlastWaveSpell()
+	mage.registerBlastWaveSpell()
+	mage.registerBlizzardSpell()
+	mage.registerFlamestrikeSpell()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {

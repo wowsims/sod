@@ -53,6 +53,7 @@ func (mage *Mage) newArcaneExplosionSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
+		BonusCritRating:  float64(3 * mage.Talents.ImprovedArcaneExplosion * core.CritRatingPerCritChance),
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
