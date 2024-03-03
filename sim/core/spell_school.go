@@ -79,6 +79,11 @@ var multiSchoolIndexToIndicies = func() [stats.SchoolLen][]stats.SchoolIndex {
 	return arr
 }()
 
+// Get base school indicies a multi school is comprised of.
+func GetMultiSchoolBaseIndices(schoolIndex stats.SchoolIndex) []stats.SchoolIndex {
+	return multiSchoolIndexToIndicies[schoolIndex]
+}
+
 // Check if school index is a multi-school.
 func IsMultiSchoolIndex(schoolIndex stats.SchoolIndex) bool {
 	return schoolIndex >= stats.SchoolIndexMultiSchoolStart
@@ -166,9 +171,10 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 // to then update the affected multi schools as needed.
 // Doing that would add overhead to all school modifier updates, which doesn't seem worth
 // it in the context of SoD as of writing this.
-//
-// TODO MS: test this
-func RecalculateMultiSchoolModifiers(schoolIndex stats.SchoolIndex, unit *Unit, target *Unit) {
+func (spell *Spell) RecalculateMultiSchoolModifiers(target *Unit) {
+	schoolIndex := spell.SchoolIndex
+	unit := spell.Unit
+
 	if !IsMultiSchoolIndex(schoolIndex) {
 		return
 	}
@@ -177,7 +183,7 @@ func RecalculateMultiSchoolModifiers(schoolIndex stats.SchoolIndex, unit *Unit, 
 	maxTaken := 0.0
 	maxTakenCrit := 0.0
 
-	for _, baseSchoolIndex := range multiSchoolIndexToIndicies[schoolIndex] {
+	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
 		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
 		if dealtMult > maxDealt {
 			maxDealt = dealtMult

@@ -120,22 +120,33 @@ func (spell *Spell) SpellDamage() float64 {
 }
 
 func (spell *Spell) SpellPowerSchool() float64 {
-	// TODO MS: actually implement handling here lol
-	switch spell.SpellSchool {
-	case SpellSchoolArcane:
+	switch spell.SchoolIndex {
+	case stats.SchoolIndexArcane:
 		return spell.Unit.GetStat(stats.ArcanePower)
-	case SpellSchoolFire:
+	case stats.SchoolIndexFire:
 		return spell.Unit.GetStat(stats.FirePower)
-	case SpellSchoolFrost:
+	case stats.SchoolIndexFrost:
 		return spell.Unit.GetStat(stats.FrostPower)
-	case SpellSchoolHoly:
+	case stats.SchoolIndexHoly:
 		return spell.Unit.GetStat(stats.HolyPower)
-	case SpellSchoolNature:
+	case stats.SchoolIndexNature:
 		return spell.Unit.GetStat(stats.NaturePower)
-	case SpellSchoolShadow:
+	case stats.SchoolIndexShadow:
 		return spell.Unit.GetStat(stats.ShadowPower)
+	case stats.SchoolIndexPhysical:
+		return 0 // This should be "weapon bonus damage" in a proper implementation of the stat.
 	default:
-		return 0
+		// Get max power for multi school.
+		// This should theoretically also include "weapon bonus damage" aka physical spell power, but it's probably never needed.
+		max := 0.0
+		for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(spell.SchoolIndex) {
+			// School and stat indicies are ordered the same way.
+			power := spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
+			if power > max {
+				max = power
+			}
+		}
+		return max
 	}
 }
 
