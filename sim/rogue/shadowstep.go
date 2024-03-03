@@ -1,47 +1,19 @@
 package rogue
 
-/**
-func (rogue *Rogue) registerShadowstepCD() {
-	if !rogue.Talents.Shadowstep {
+import (
+	"time"
+
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+)
+
+func (rogue *Rogue) registerShadowstep() {
+	if !rogue.HasRune(proto.RogueRune_RuneShadowstep) {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 36554}
-	baseCost := 10 - 5*float64(rogue.Talents.FilthyTricks)
-	var affectedSpells []*core.Spell
-
-	rogue.ShadowstepAura = rogue.RegisterAura(core.Aura{
-		Label:    "Shadowstep",
-		ActionID: actionID,
-		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagBuilder|SpellFlagFinisher) && spell.DamageMultiplier > 0 {
-					affectedSpells = append(affectedSpells, spell)
-				}
-			}
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// Damage of your next ability is increased by 20% and the threat caused is reduced by 50%.
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1.2
-				spell.ThreatMultiplier *= 0.5
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1 / 1.2
-				spell.ThreatMultiplier *= 1 / 0.5
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			for _, affectedSpell := range affectedSpells {
-				if spell == affectedSpell {
-					aura.Deactivate(sim)
-				}
-			}
-		},
-	})
+	actionID := core.ActionID{SpellID: 400029}
+	baseCost := 0.0
 
 	rogue.Shadowstep = rogue.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -54,16 +26,14 @@ func (rogue *Rogue) registerShadowstepCD() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				Cost: baseCost,
-				GCD:  0,
+				GCD:  time.Second * 1,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * time.Duration(30-5*rogue.Talents.FilthyTricks),
+				Duration: time.Second * 30,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.ShadowstepAura.Activate(sim)
-		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {},
 	})
-}*/
+}

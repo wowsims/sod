@@ -1140,7 +1140,7 @@ export const specToLocalStorageKey: Record<Spec, string> = {
 	[Spec.SpecRetributionPaladin]: '__sod_retribution_paladin',
 	[Spec.SpecRogue]: '__sod_rogue',
 	[Spec.SpecTankRogue]: '__sod_tank_rogue',
-  [Spec.SpecHealingPriest]: '__sod_healing_priest',
+	[Spec.SpecHealingPriest]: '__sod_healing_priest',
 	[Spec.SpecShadowPriest]: '__sod_shadow_priest',
 	[Spec.SpecWarlock]: '__sod_warlock',
 	[Spec.SpecTankWarlock]: '__sod_tank_warlock',

@@ -17,4 +17,5 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerShadowstrikeSpell()
 	rogue.registerMutilateSpell()
 	rogue.registerEnvenom()
+	rogue.registerShadowstep()
 }

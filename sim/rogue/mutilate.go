@@ -88,9 +88,11 @@ func (rogue *Rogue) registerMutilateSpell() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
 
+				/** Disable until it works on bosses
+				// cache rune check like Ambush/Backstab at that time
 				if rogue.HasRune(proto.RogueRune_RuneWaylay) {
 					rogue.WaylayAuras.Get(target).Activate(sim)
-				}
+				} */
 				rogue.MutilateMH.Cast(sim, target)
 				rogue.MutilateOH.Cast(sim, target)
 			} else {

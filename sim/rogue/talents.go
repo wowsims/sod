@@ -244,7 +244,7 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 	// Mace Specialization. Offers weapon skill for Maces and RNG stun (not implemented for being useless on boss)
 	if maceSpec := rogue.Talents.MaceSpecialization; maceSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace); mask != core.ProcMaskUnknown {
-			rogue.PseudoStats.MacesSkill = float64(maceSpec)
+			rogue.PseudoStats.MacesSkill += float64(maceSpec)
 		}
 	}
 }
