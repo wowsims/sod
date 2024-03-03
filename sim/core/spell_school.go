@@ -85,24 +85,36 @@ func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
 	return idx
 }
 
-func (ss SpellSchool) ResistanceStat() stats.Stat {
-	switch ss {
-	case SpellSchoolArcane:
-		return stats.ArcaneResistance
-	case SpellSchoolFire:
-		return stats.FireResistance
-	case SpellSchoolFrost:
-		return stats.FrostResistance
-	case SpellSchoolHoly:
-		return 0 // Holy resistance doesn't exist.
-	case SpellSchoolNature:
-		return stats.NatureResistance
-	case SpellSchoolShadow:
-		return stats.ShadowResistance
-	default:
-		return 0 // This applies to spell school combinations, which supposedly use the "path of the least resistance", so 0 is a good fit.
-		// TODO Multischool: choose lowest resistance
+// LUT for resistance stat indices used by each multischool.
+var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
+	resistances := map[SpellSchool]stats.Stat{
+		SpellSchoolArcane: stats.ArcaneResistance,
+		SpellSchoolFire:   stats.FireResistance,
+		SpellSchoolFrost:  stats.FrostResistance,
+		SpellSchoolNature: stats.NatureResistance,
+		SpellSchoolShadow: stats.ShadowResistance,
 	}
+
+	arr := [stats.SchoolLen][]stats.Stat{}
+
+	for schoolIndex := stats.SchoolIndexMultiSchoolStart; schoolIndex < stats.SchoolLen; schoolIndex++ {
+		msMask := SpellSchoolFromIndex(schoolIndex)
+		resiArr := []stats.Stat{}
+		for resiSchool, resiStat := range resistances {
+			if msMask.Matches(resiSchool) {
+				resiArr = append(resiArr, resiStat)
+			}
+		}
+		arr[schoolIndex] = resiArr
+	}
+
+	return arr
+}()
+
+// Get array of resistance stat indicies for a multi-school.
+// Do not use with normal school indicies! See stats.SchoolIndexMultiSchoolStart
+func GetMultiSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
+	return schoolIndexToResistanceStats[schoolIndex]
 }
 
 func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {

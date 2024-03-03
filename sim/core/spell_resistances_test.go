@@ -35,7 +35,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 	for resist := 0; resist < 5_000; resist += 1 {
 		defender.stats[stats.FireResistance] = float64(resist)
 
-		threshold00, threshold25, threshold50 := attackTable.Defender.partialResistRollThresholds(SpellSchoolFire, attackTable.Attacker, false)
+		threshold00, threshold25, threshold50 := attackTable.Defender.partialResistRollThresholds(stats.SchoolIndexFire, attackTable.Attacker, false)
 		thresholds := [4]float64{threshold00, threshold25, threshold50, 0.0}
 
 		var cumulativeChance float64
@@ -49,7 +49,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 			}
 		}
 
-		resistanceScore := attackTable.Defender.resistCoeff(SpellSchoolFire, attackTable.Attacker, false, false)
+		resistanceScore := attackTable.Defender.resistCoeff(stats.SchoolIndexFire, attackTable.Attacker, false, false)
 		expectedAr := 0.75*resistanceScore - 3.0/16.0*max(0.0, resistanceScore-2.0/3.0)
 
 		if math.Abs(resultingAr-expectedAr) > 1e-2 {
