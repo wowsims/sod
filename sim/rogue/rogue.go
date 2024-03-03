@@ -222,3 +222,14 @@ func (rogue *Rogue) RuneAbilityBaseDamage() float64 {
 func (rogue *Rogue) RuneAbilityDamagePerCombo() float64 {
 	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level)*float64(rogue.Level)
 }
+
+func (rogue *Rogue) getImbueProcMask(imbue proto.WeaponImbue) core.ProcMask {
+	var mask core.ProcMask
+	if rogue.HasMHWeapon() && rogue.Consumes.MainHandImbue == imbue {
+		mask |= core.ProcMaskMeleeMH
+	}
+	if rogue.HasOHWeapon() && rogue.Consumes.OffHandImbue == imbue {
+		mask |= core.ProcMaskMeleeOH
+	}
+	return mask
+}

@@ -87,16 +87,7 @@ enum RogueRune {
 }
 
 message RogueOptions {
-	enum PoisonImbue {
-		NoPoison = 0;
-		InstantPoison = 1;
-		DeadlyPoison = 2;
-		WoundPoison = 3;
-	}
-
-	PoisonImbue mh_imbue = 1;
-	PoisonImbue oh_imbue = 2;
-	bool apply_poisons_manually = 3;
+	
 }
 
 message Rogue {

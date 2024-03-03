@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.04605
-  weights: 0.06942
+  weights: 0.20305
+  weights: 0.24932
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04187
-  weights: 0.10182
-  weights: 0.24313
+  weights: 0.18459
+  weights: 0.66284
+  weights: 0.74182
   weights: 0
   weights: 0
   weights: 0
@@ -148,6 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl40-StatWeights-Default"
  value: {
+  weights: 0.28525
+  weights: 0.42805
   weights: 0
   weights: 0
   weights: 0
@@ -163,11 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.25932
+  weights: 0.73122
+  weights: 1.71304
   weights: 0
   weights: 0
   weights: 0
@@ -197,154 +197,196 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-Average-Default"
  value: {
-  dps: 47.31233
-  tps: 33.59176
+  dps: 208.19095
+  tps: 147.81557
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 45.79866
-  tps: 32.51705
+  dps: 208.39216
+  tps: 147.95843
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 45.79866
-  tps: 32.51705
+  dps: 208.39216
+  tps: 147.95843
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 51.65562
-  tps: 36.67549
+  dps: 198.42189
+  tps: 140.87954
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 23.58931
-  tps: 16.74841
+  dps: 114.45825
+  tps: 81.26536
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 23.58931
-  tps: 16.74841
+  dps: 114.45825
+  tps: 81.26536
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 26.90699
-  tps: 19.10396
+  dps: 105.12606
+  tps: 74.6395
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 45.69287
-  tps: 32.44194
+  dps: 208.18853
+  tps: 147.81386
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 45.69287
-  tps: 32.44194
+  dps: 208.18853
+  tps: 147.81386
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 51.45553
-  tps: 36.53343
+  dps: 198.05777
+  tps: 140.62102
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 23.53532
-  tps: 16.71008
+  dps: 114.25749
+  tps: 81.12282
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 23.53532
-  tps: 16.71008
+  dps: 114.25749
+  tps: 81.12282
  }
 }
 dps_results: {
- key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestAssassination-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 26.90699
-  tps: 19.10396
+  dps: 105.04766
+  tps: 74.58384
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 44.87501
-  tps: 31.86126
+  dps: 205.62219
+  tps: 145.99175
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl40-Average-Default"
- value: {}
+ value: {
+  dps: 425.12838
+  tps: 301.84115
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongMultiTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 423.1858
+  tps: 300.46192
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 423.1858
+  tps: 300.46192
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 437.62756
+  tps: 310.71557
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongMultiTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 232.48837
+  tps: 165.06674
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 232.48837
+  tps: 165.06674
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Human-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 240.13922
+  tps: 170.49884
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongMultiTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 422.8843
+  tps: 300.24785
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-LongSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 422.8843
+  tps: 300.24785
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 437.08962
+  tps: 310.33363
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongMultiTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 232.26612
+  tps: 164.90895
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-LongSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 232.26612
+  tps: 164.90895
+ }
 }
 dps_results: {
- key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
- value: {}
+ key: "TestAssassination-Lvl40-Settings-Orc-p1_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 239.93956
+  tps: 170.35709
+ }
 }
 dps_results: {
  key: "TestAssassination-Lvl40-SwitchInFrontOfTarget-Default"
- value: {}
+ value: {
+  dps: 411.57962
+  tps: 292.22153
+ }
 }

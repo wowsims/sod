@@ -19,12 +19,8 @@ import {
 	TristateEffect,
 	WeaponType
 } from '../core/proto/common.js';
-import {
-	RogueOptions_PoisonImbue as PoisonImbue,
-} from '../core/proto/rogue.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as RogueInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
@@ -62,27 +58,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 					} else {
 						return '';
 					}
-				},
-			};
-		},
-		(simUI: IndividualSimUI<Spec.SpecRogue>) => {
-			return {
-				updateOn: simUI.player.changeEmitter,
-				getContent: () => {
-					const mhWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-					const ohWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-					const mhImbue = simUI.player.getSpecOptions().mhImbue;
-					const ohImbue = simUI.player.getSpecOptions().ohImbue;
-					if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined' || !simUI.player.getSpecOptions().applyPoisonsManually) {
-						return '';
-					}
-					if (mhWeaponSpeed < ohWeaponSpeed && ohImbue == PoisonImbue.DeadlyPoison) {
-						return 'Deadly poison applied to slower (off hand) weapon.';
-					}
-					if (ohWeaponSpeed < mhWeaponSpeed && mhImbue == PoisonImbue.DeadlyPoison) {
-						return 'Deadly poison applied to slower (main hand) weapon.';
-					}
-					return '';
 				},
 			};
 		},
@@ -143,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.CombatDagger25Talents.data,
+		talents: Presets.ColdBloodMutilate40Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -165,15 +140,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	},
 
 	playerInputs: {
-		inputs: [
-			RogueInputs.ApplyPoisonsManually
-		]
+		inputs: []
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		RogueInputs.MainHandImbue,
-		RogueInputs.OffHandImbue,
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
@@ -270,53 +240,5 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 export class RogueSimUI extends IndividualSimUI<Spec.SpecRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
-		this.player.changeEmitter.on(c => {
-			const options = this.player.getSpecOptions()
-			const encounter = this.sim.encounter
-			if (!options.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return
-				}
-				if (encounter.targets.length > 3) {
-					options.mhImbue = PoisonImbue.InstantPoison
-					options.ohImbue = PoisonImbue.InstantPoison
-				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = PoisonImbue.DeadlyPoison
-						options.ohImbue = PoisonImbue.InstantPoison
-					} else {
-						options.mhImbue = PoisonImbue.InstantPoison
-						options.ohImbue = PoisonImbue.DeadlyPoison
-					}
-				}
-			}
-			this.player.setSpecOptions(c, options)
-		});
-		this.sim.encounter.changeEmitter.on(c => {
-			const options = this.player.getSpecOptions()
-			const encounter = this.sim.encounter
-			if (!options.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return
-				}
-				if (encounter.targets.length > 3) {
-					options.mhImbue = PoisonImbue.InstantPoison
-					options.ohImbue = PoisonImbue.InstantPoison
-				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = PoisonImbue.DeadlyPoison
-						options.ohImbue = PoisonImbue.InstantPoison
-					} else {
-						options.mhImbue = PoisonImbue.InstantPoison
-						options.ohImbue = PoisonImbue.DeadlyPoison
-					}
-				}
-			}
-			this.player.setSpecOptions(c, options)
-		});
 	}
 }

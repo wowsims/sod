@@ -7,7 +7,6 @@ import {
 import { SavedTalents } from '../core/proto/ui.js';
 
 import {
-	RogueOptions_PoisonImbue as Poison,
 	RogueOptions,
 } from '../core/proto/rogue.js';
 
@@ -114,11 +113,7 @@ export const DefaultTalents = DefaultTalentsAssassin;
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
-export const DefaultOptions = RogueOptions.create({
-	mhImbue: Poison.NoPoison,
-	ohImbue: Poison.NoPoison,
-	applyPoisonsManually: true,
-});
+export const DefaultOptions = RogueOptions.create({});
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskUnknown,

@@ -20,7 +20,7 @@ func TestCombat(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     CombatDagger25Talents,
-			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
+			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_combat"),
 			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
@@ -60,7 +60,7 @@ func TestAssassination(t *testing.T) {
 
 			Talents:     Assassination25Talents,
 			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
-			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "mutilate"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultAssassinationRogue},
@@ -77,7 +77,7 @@ func TestAssassination(t *testing.T) {
 
 			Talents:     Assassination40Talents,
 			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
-			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "mutilate"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultAssassinationRogue},
@@ -184,10 +184,7 @@ var DefaultCombatRogue = &proto.Player_Rogue{
 	},
 }
 
-var DefaultDeadlyBrewOptions = &proto.RogueOptions{
-	MhImbue: proto.RogueOptions_NoPoison,
-	OhImbue: proto.RogueOptions_NoPoison,
-}
+var DefaultDeadlyBrewOptions = &proto.RogueOptions{}
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
