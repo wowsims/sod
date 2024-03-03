@@ -172,37 +172,8 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 // Doing that would add overhead to all school modifier updates, which doesn't seem worth
 // it in the context of SoD as of writing this.
 func (spell *Spell) MultiSchoolUpdateModifiers(target *Unit) {
-	schoolIndex := spell.SchoolIndex
-	unit := spell.Unit
-
-	if !IsMultiSchoolIndex(schoolIndex) {
-		return
-	}
-
-	maxDealt := 0.0
-	maxTaken := 0.0
-	maxTakenCrit := 0.0
-
-	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
-		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
-		if dealtMult > maxDealt {
-			maxDealt = dealtMult
-		}
-
-		takenMult := target.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
-		if takenMult > maxTaken {
-			maxTaken = takenMult
-		}
-
-		takenCritMult := target.PseudoStats.SchoolCritTakenMultiplier[baseSchoolIndex]
-		if takenCritMult > maxTakenCrit {
-			maxTakenCrit = takenCritMult
-		}
-	}
-
-	unit.PseudoStats.SchoolDamageDealtMultiplier[schoolIndex] = maxDealt
-	target.PseudoStats.SchoolDamageTakenMultiplier[schoolIndex] = maxTaken
-	target.PseudoStats.SchoolCritTakenMultiplier[schoolIndex] = maxTakenCrit
+	spell.MultiSchoolUpdateDamageDealtMod()
+	target.MultiSchoolUpdateDamageTakenMod(spell.SchoolIndex)
 }
 
 // Recalculate damage done modifier for multi-school.
