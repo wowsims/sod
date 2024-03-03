@@ -17,7 +17,8 @@ import P1Daggers from './gear_sets/p1_daggers.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 
 import MutilateApl from './apls/mutilate.apl.json';
-import SinisterApl from './apls/basic_strike.apl.json';
+import SinisterApl25 from './apls/basic_strike_25.apl.json';
+import SinisterApl40 from './apls/basic_strike_40.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -48,14 +49,17 @@ export const DefaultGear = GearPresets[Phase.Phase1][0];
 ///////////////////////////////////////////////////////////////////////////
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { talentTree: 0 });
-export const ROTATION_PRESET_SINISTER = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl, { talentTree: 1 });
+export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl25, { talentTree: 1 });
+export const ROTATION_PRESET_SINISTER_40 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl40, { talentTree: 1 });
 
 export const APLPresets = {
   [Phase.Phase1]: [
     ROTATION_PRESET_MUTILATE,
-	ROTATION_PRESET_SINISTER,
+	ROTATION_PRESET_SINISTER_25,
   ],
   [Phase.Phase2]: [
+	ROTATION_PRESET_SINISTER_40,
+	ROTATION_PRESET_MUTILATE
   ]
 };
 
@@ -67,9 +71,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase1][1],
 	},
   40: {
-		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][0],
-		2: APLPresets[Phase.Phase1][0],
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][0],
+		2: APLPresets[Phase.Phase2][0],
 	}
 };
 
