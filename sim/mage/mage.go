@@ -32,11 +32,15 @@ func RegisterMage() {
 
 const (
 	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneBlast
 	SpellCode_MageArcaneMissiles
 	SpellCode_MageFireball
 	SpellCode_MageFireBlast
+	SpellCode_MageFrostbolt
+	SpellCode_MageFrostfireBolt
 	SpellCode_MageLivingBomb
 	SpellCode_MageScorch
+	SpellCode_MageSpellfrostBolt
 )
 
 type Mage struct {
@@ -59,9 +63,11 @@ type Mage struct {
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
+	FrostfireBolt           *core.Spell
 	IceLance                *core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
+	SpellfrostBolt          *core.Spell
 
 	IcyVeins *core.Spell
 
@@ -70,11 +76,17 @@ type Mage struct {
 	ArcanePowerAura    *core.Aura
 	ClearcastingAura   *core.Aura
 	CombustionAura     *core.Aura
-	HotStreakAura      *core.Aura
-	ScorchAuras        core.AuraArray
 	FingersOfFrostAura *core.Aura
+	HotStreakAura      *core.Aura
+	MissileBarrageAura *core.Aura
+	ScorchAuras        core.AuraArray
 
 	CritDebuffCategories core.ExclusiveCategoryArray
+}
+
+// Agent is a generic way to access underlying mage on any of the agents.
+type MageAgent interface {
+	GetMage() *Mage
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -103,6 +115,8 @@ func (mage *Mage) Initialize() {
 	mage.registerBlastWaveSpell()
 	mage.registerBlizzardSpell()
 	mage.registerFlamestrikeSpell()
+
+	mage.registerEvocationSpell()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -138,7 +152,7 @@ func (mage *Mage) HasRune(rune proto.MageRune) bool {
 	return mage.HasRuneById(int32(rune))
 }
 
-// Agent is a generic way to access underlying mage on any of the agents.
-type MageAgent interface {
-	GetMage() *Mage
+func (mage *Mage) MageCritMultiplier(secondary float64) float64 {
+	critBonus := core.TernaryFloat64(mage.HasRune(proto.MageRune_RuneFeetSpellPower), .5, 0) + secondary
+	return mage.SpellCritMultiplier(1, critBonus)
 }

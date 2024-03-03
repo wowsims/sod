@@ -201,11 +201,13 @@ export class ActionId {
 					name += ` (${this.tag - 1} Stacks)`;
 				}
 				break;
+			case 'Arcane Missiles':
+				break;
 			case 'Berserking':
-				if (this.tag != 0) {
-					name = `${name} (${this.tag * 5}%)`
-				}
-				break
+				if (this.tag != 0) name = `${name} (${this.tag * 5}%)`;
+				break;
+			case 'Blizzard':
+				break;
 			case 'Explosive Shot':
 				if (this.spellId == 60053) {
 					name += ' (R4)';

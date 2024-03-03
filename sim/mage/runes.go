@@ -21,10 +21,10 @@ func (mage *Mage) ApplyRunes() {
 	mage.registerLivingBombSpell()
 
 	// Waist
-	// TODO: Frostfire Bolt
+	mage.registerFrostfireBoltSpell()
 	mage.applyHotStreak()
-	// TODO: Missile Barrage
-	// TODO: Spellfrost Bolt
+	mage.applyMissileBarrage()
+	mage.registerSpellfrostBolt()
 
 	// Legs
 	mage.registerArcaneSurgeSpell()
@@ -32,8 +32,8 @@ func (mage *Mage) ApplyRunes() {
 	mage.registerLivingFlameSpell()
 
 	// Feet
-	// TODO: Brain Freeze
-	// TODO: Spell Power
+	mage.applyBrainFreeze()
+	// Spell Power Nothing to do
 }
 
 func (mage *Mage) applyBurnout() {
@@ -46,7 +46,6 @@ func (mage *Mage) applyBurnout() {
 
 	mage.RegisterAura(core.Aura{
 		Label:    "Burnout",
-		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -93,10 +92,12 @@ func (mage *Mage) applyEnlightenment() {
 		ActionID: core.ActionID{SpellID: 412325},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenMultiplier *= 0.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting *= 1.1
+			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenMultiplier /= 0.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting /= 1.1
+			mage.UpdateManaRegenRates()
 		},
 	})
 
@@ -176,8 +177,8 @@ func (mage *Mage) applyHotStreak() {
 
 	actionID := core.ActionID{SpellID: 48108}
 
-	affectedSpells := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBomb}
 	pyroblastSpells := []*core.Spell{}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBomb}
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
@@ -208,7 +209,7 @@ func (mage *Mage) applyHotStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpells, spell.SpellCode) {
+			if !slices.Contains(triggerSpellCodes, spell.SpellCode) {
 				return
 			}
 
@@ -226,5 +227,123 @@ func (mage *Mage) applyHotStreak() {
 			}
 		},
 	})
+}
 
+func (mage *Mage) applyMissileBarrage() {
+	if !mage.HasRune(proto.MageRune_RuneBeltMissileBarrage) {
+		return
+	}
+
+	procChanceArcaneBlast := .40
+	procChanceFireballFrostbolt := .20
+	buffDuration := time.Second * 15
+
+	arcaneMissilesSpells := []*core.Spell{}
+	affectedSpellCodes := []int32{SpellCode_MageArcaneBlast, SpellCode_MageFireball, SpellCode_MageFrostbolt}
+
+	mage.MissileBarrageAura = mage.RegisterAura(core.Aura{
+		Label:    "Missile Barrage",
+		ActionID: core.ActionID{SpellID: 400589},
+		Duration: buffDuration,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			arcaneMissilesSpells = core.FilterSlice(mage.ArcaneMissiles, func(spell *core.Spell) bool { return spell != nil })
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
+				spell.CostMultiplier -= 100
+				spell.CastTimeMultiplier /= 2
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
+				spell.CostMultiplier += 100
+				spell.CastTimeMultiplier *= 2
+			})
+		},
+	})
+
+	mage.RegisterAura(core.Aura{
+		Label:    "Missile Barrage Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				return
+			}
+
+			procChance := procChanceFireballFrostbolt
+			if spell.SpellCode == SpellCode_MageArcaneBlast {
+				procChance = procChanceArcaneBlast
+			}
+
+			if sim.RandomFloat("Missile Barrage") < procChance {
+				mage.MissileBarrageAura.Activate(sim)
+			}
+		},
+	})
+}
+
+func (mage *Mage) applyBrainFreeze() {
+	if !mage.HasRune(proto.MageRune_RuneFeetBrainFreeze) {
+		return
+	}
+
+	procChance := .15
+	buffDuration := time.Second * 15
+
+	affectedSpells := []*core.Spell{}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFrostfireBolt, SpellCode_MageSpellfrostBolt}
+
+	procAura := mage.RegisterAura(core.Aura{
+		Label:    "Brain Freeze",
+		ActionID: core.ActionID{SpellID: 400730},
+		Duration: buffDuration,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					mage.Fireball,
+					{mage.FrostfireBolt},
+					{mage.SpellfrostBolt},
+				}),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier -= 1
+				spell.CostMultiplier -= 1
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier += 1
+				spell.CostMultiplier += 1
+			})
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !slices.Contains(triggerSpellCodes, spell.SpellCode) {
+				return
+			}
+			aura.Deactivate(sim)
+		},
+	})
+
+	mage.RegisterAura(core.Aura{
+		Label:    "Brain Freeze Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.Flags.Matches(SpellFlagChillSpell) {
+				return
+			}
+
+			if sim.RandomFloat("Brain Freeze") < procChance {
+				procAura.Activate(sim)
+			}
+		},
+	})
 }

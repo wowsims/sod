@@ -41,6 +41,9 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 	tickLength := time.Second
 	tickSpell := mage.getArcaneMissilesTickSpell(rank)
 
+	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
+	hasMissileBarrageRune := mage.HasRune(proto.MageRune_RuneBeltMissileBarrage)
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_MageArcaneMissiles,
@@ -65,10 +68,14 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ArcaneMissles-" + strconv.Itoa(int(rank)) + "-" + strconv.Itoa(int(numTicks)),
+				Label: "ArcaneMissiles-" + strconv.Itoa(int(rank)) + "-" + strconv.Itoa(int(numTicks)),
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if mage.ArcaneBlastAura != nil {
+					if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
 						mage.ArcaneBlastAura.Deactivate(sim)
+					}
+
+					if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
+						mage.MissileBarrageAura.Deactivate(sim)
 					}
 				},
 			},
@@ -88,6 +95,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}
+
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
@@ -104,14 +112,12 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 
 	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
 
-	return mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: spellId},
+	return mage.RegisterSpell(core.SpellConfig{
+		ActionID:     core.ActionID{SpellID: spellId}.WithTag(1),
 		SpellSchool:  core.SpellSchoolArcane,
-		ProcMask:     core.ProcMaskProc | core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		ProcMask:     core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 		Flags:        SpellFlagMage,
 		MissileSpeed: 20,
-
-		Rank: rank,
 
 		BonusHitRating:   100 * core.SpellHitRatingPerHitChance, // Not an independent hit once initial lands
 		BonusCritRating:  0,
@@ -123,10 +129,10 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
 
 			if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
-				damage *= ArcaneBlastArcaneDamageModifier * float64(mage.ArcaneBlastAura.GetStacks())
+				damage *= mage.getArcaneBlastDamageMultiplier()
 			}
 
-			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeExpectedTick)
+			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

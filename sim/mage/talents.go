@@ -160,6 +160,9 @@ func (mage *Mage) applyArcaneConcentration() {
 			if spell.DefaultCast.Cost == 0 {
 				return
 			}
+			if spell.SpellCode == SpellCode_MageArcaneMissiles && mage.MissileBarrageAura.IsActive() {
+				return
+			}
 			if proccedAt == sim.CurrentTime && proccedSpell == spell {
 				// Means this is another hit from the same cast that procced CC.
 				return
@@ -211,9 +214,8 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		return
 	}
 
-	cooldown := 180.0
-
 	actionID := core.ActionID{SpellID: 12043}
+	cooldown := 180.0
 
 	var spellToUse *core.Spell
 	mage.Env.RegisterPostFinalizeEffect(func() {

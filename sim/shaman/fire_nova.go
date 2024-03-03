@@ -66,6 +66,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
+		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),

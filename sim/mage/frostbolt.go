@@ -38,6 +38,7 @@ func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId},
+		SpellCode:    SpellCode_MageFrostbolt,
 		SpellSchool:  core.SpellSchoolFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        core.SpellFlagAPL | SpellFlagMage | SpellFlagChillSpell,
@@ -57,7 +58,7 @@ func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -30,17 +30,17 @@ func (mage *Mage) registerFireballSpell() {
 }
 
 func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
+	numTicks := int32(4)
+	tickLength := time.Second * 2
+
 	spellId := FireballSpellId[rank]
 	baseDamageLow := FireballBaseDamage[rank][0]
 	baseDamageHigh := FireballBaseDamage[rank][1]
-	baseDotDamage := FireballDotDamage[rank]
+	baseDotDamage := FireballDotDamage[rank] / float64(numTicks)
 	spellCoeff := FireballSpellCoeff[rank]
 	castTime := FireballCastTime[rank]
 	manaCost := FireballManaCost[rank]
 	level := FireballLevel[rank]
-
-	numTicks := int32(4)
-	tickLength := time.Second * 2
 
 	return core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId},
@@ -70,7 +70,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage / float64(numTicks)
+				dot.SnapshotBaseDamage = baseDotDamage
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -79,7 +79,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

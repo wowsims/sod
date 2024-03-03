@@ -67,7 +67,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

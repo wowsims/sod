@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const ArcaneBlastArcaneDamageModifier = .15
-
 // TODO: Classic verify Arcane Blast rune numbers
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044
 // https://www.wowhead.com/classic/spell=400574/arcane-blast
@@ -38,6 +36,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 
 	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 400574},
+		SpellCode:   SpellCode_MageArcaneBlast,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
@@ -52,8 +51,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			},
 		},
 
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -71,4 +70,12 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			}
 		},
 	})
+}
+
+func (mage *Mage) getArcaneBlastDamageMultiplier() float64 {
+	if !mage.HasRune(proto.MageRune_RuneHandsArcaneBlast) {
+		return 1.0
+	}
+
+	return 1 + .15*float64(mage.ArcaneBlastAura.GetStacks())
 }

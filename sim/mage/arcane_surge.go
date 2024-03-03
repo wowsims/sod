@@ -28,12 +28,14 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		ActionID: actionID,
 		Duration: auraDuration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting += 1
 			aura.Unit.PseudoStats.SpiritRegenMultiplier *= 3
+			mage.PseudoStats.ForceFullSpiritRegen = true
+			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting -= 1
 			aura.Unit.PseudoStats.SpiritRegenMultiplier /= 3
+			mage.PseudoStats.ForceFullSpiritRegen = false
+			mage.UpdateManaRegenRates()
 		},
 	})
 
@@ -57,7 +59,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

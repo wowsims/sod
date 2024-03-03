@@ -63,9 +63,10 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
+		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
 		BonusCritRating:  float64(5 * mage.Talents.ImprovedFlamestrike * core.CritRatingPerCritChance),
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -53,22 +53,30 @@ func (mage *Mage) newArcaneExplosionSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
+		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
 		BonusCritRating:  float64(3 * mage.Talents.ImprovedArcaneExplosion * core.CritRatingPerCritChance),
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			arcaneBlastBuffActive := hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive()
+			arcaneBlastDamageMultiplier := mage.getArcaneBlastDamageMultiplier()
+
 			dmgFromSP := spellCoeff * spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				damage := sim.Roll(baseDamageLow, baseDamageHigh) + dmgFromSP
 				// baseDamage *= sim.Encounter.AOECapMultiplier()
 
-				if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
-					damage *= ArcaneBlastArcaneDamageModifier * float64(mage.ArcaneBlastAura.GetStacks())
+				if arcaneBlastBuffActive {
+					damage *= arcaneBlastDamageMultiplier
 				}
 
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+			}
+
+			if arcaneBlastBuffActive {
+				mage.ArcaneBlastAura.Deactivate(sim)
 			}
 		},
 	}

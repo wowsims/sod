@@ -50,7 +50,7 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 		improvedBlizzardProcApplication = mage.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: impId},
 			ProcMask: core.ProcMaskProc,
-			Flags:    SpellFlagMage | core.SpellFlagNoLogs,
+			Flags:    SpellFlagMage | core.SpellFlagNoLogs | SpellFlagChillSpell,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				auras.Get(target).Activate(sim)
 			},
@@ -63,7 +63,8 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage,
 
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusHitRating:   1 * core.SpellHitRatingPerHitChance,
+		CritMultiplier:   1, // Blizzard can't crit
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
@@ -72,7 +73,7 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				damage := baseDamage + bonusDamage
 				// damage *= sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHit)
 
 				if improvedBlizzardProcApplication != nil {
 					improvedBlizzardProcApplication.Cast(sim, aoeTarget)
