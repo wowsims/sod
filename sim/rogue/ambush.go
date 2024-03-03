@@ -22,7 +22,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		60: 11269,
 	}[rogue.Level]
 
-	waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -62,9 +62,10 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
-				}
+				} */
 			} else {
 				spell.IssueRefund(sim)
 			}
