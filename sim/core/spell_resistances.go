@@ -20,6 +20,7 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 		return 1, OutcomeEmpty
 	}
 
+	// TODO MS: Only use armor if armor DR is < expected resist. Use fast approximation?
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		// All physical dots (Bleeds) ignore armor.
 		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {

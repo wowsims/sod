@@ -120,6 +120,7 @@ func (spell *Spell) SpellDamage() float64 {
 }
 
 func (spell *Spell) SpellPowerSchool() float64 {
+	// TODO MS: actually implement handling here lol
 	switch spell.SpellSchool {
 	case SpellSchoolArcane:
 		return spell.Unit.GetStat(stats.ArcanePower)
@@ -459,6 +460,7 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 		return
 	}
 
+	// TODO MS: how does this interact with multi-school spells (test with Bloodbark Crusher?)
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
 		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}
@@ -478,6 +480,7 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 		multiplier *= attackTable.Defender.PseudoStats.DiseaseDamageTakenMultiplier
 	}
 
+	// TODO: Move to affected spells instead? This does not need to be checked for every single thing here.
 	if spell.Flags.Matches(SpellFlagHauntSE) {
 		multiplier *= attackTable.HauntSEDamageTakenMultiplier
 	}

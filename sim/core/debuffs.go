@@ -217,6 +217,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= damageMulti
 		},
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			// TODO MS: Do multi school spells remove this by default too?
 			if spell.SpellSchool != SpellSchoolShadow {
 				return
 			}
