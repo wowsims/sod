@@ -59,12 +59,6 @@ func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, 
 	}
 }
 
-func (rogue *Rogue) makeCostModifier() func(baseCost float64) float64 {
-	return func(baseCost float64) float64 {
-		return baseCost
-	}
-}
-
 // Murder talent
 // TODO: Limit application by Mob type
 func (rogue *Rogue) applyMurder() {

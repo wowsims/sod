@@ -31,8 +31,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: rogue.costModifier(60 -
-				core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0)),
+			Cost:   60.0 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

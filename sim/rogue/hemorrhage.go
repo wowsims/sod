@@ -46,7 +46,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier(35),
+			Cost:   35.0,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

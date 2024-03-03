@@ -73,7 +73,6 @@ type Rogue struct {
 
 	woundPoisonDebuffAuras core.AuraArray
 
-	costModifier               func(float64) float64
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
 
@@ -104,8 +103,6 @@ func (rogue *Rogue) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
 	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-
-	rogue.costModifier = rogue.makeCostModifier()
 
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
