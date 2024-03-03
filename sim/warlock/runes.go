@@ -129,7 +129,7 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 	}
 
 	actionID := core.ActionID{SpellID: 426303}
-	dmgMod := 1.05
+	dmgMod := 1.25
 	procChance := 0.05
 
 	procAuraConfig := core.Aura{

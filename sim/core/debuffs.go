@@ -75,7 +75,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.Stormstrike {
-		MakePermanent(StormstrikeAura(target, level))
+		MakePermanent(StormstrikeAura(target))
 	} else if debuffs.Dreamstate {
 		MakePermanent(DreamstateAura(target))
 	}
@@ -175,38 +175,32 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 }
 
-func StormstrikeAura(unit *Unit, rank int32) *Aura {
-	damageMulti := 1.2
-	duration := time.Second * 12
-
-	return unit.GetOrRegisterAura(Aura{
-		Label:    "Stormstrike",
-		ActionID: ActionID{SpellID: 17364},
-		Duration: duration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= damageMulti
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= damageMulti
-		},
-	})
+func StormstrikeAura(unit *Unit) *Aura {
+	return exclusiveNatureDamageTakenAura(unit, "Stormstrike", ActionID{SpellID: 17364})
 }
 
 func DreamstateAura(unit *Unit) *Aura {
-	damageMulti := 1.2
-	duration := time.Second * 12
+	return exclusiveNatureDamageTakenAura(unit, "Dreamstate", ActionID{SpellID: 408258})
+}
 
-	return unit.GetOrRegisterAura(Aura{
-		Label:    "Dreamstate",
-		ActionID: ActionID{SpellID: 408258},
-		Duration: duration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= damageMulti
+func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID) *Aura {
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:    label,
+		ActionID: actionID,
+		Duration: time.Second * 12,
+	})
+
+	aura.NewExclusiveEffect("NatureDamageTaken", true, ExclusiveEffect{
+		Priority: 20,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1.2
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= damageMulti
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 1.2
 		},
 	})
+
+	return aura
 }
 
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {

@@ -448,7 +448,7 @@ func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 
 	if wp.Unit.CurrentMana() >= wp.primaryAbility.CurCast.Cost {
 		wp.primaryAbility.Cast(sim, wp.CurrentTarget)
-	} else {
+	} else if !wp.owner.Options.PetPoolMana {
 		wp.manaPooling = true
 	}
 }
