@@ -71,15 +71,15 @@ type Mage struct {
 
 	IcyVeins *core.Spell
 
-	ArcaneBlastAura    *core.Aura
-	ArcanePotencyAura  *core.Aura
-	ArcanePowerAura    *core.Aura
-	ClearcastingAura   *core.Aura
-	CombustionAura     *core.Aura
-	FingersOfFrostAura *core.Aura
-	HotStreakAura      *core.Aura
-	MissileBarrageAura *core.Aura
-	ScorchAuras        core.AuraArray
+	ArcaneBlastAura     *core.Aura
+	ArcanePotencyAura   *core.Aura
+	ArcanePowerAura     *core.Aura
+	ClearcastingAura    *core.Aura
+	CombustionAura      *core.Aura
+	FingersOfFrostAura  *core.Aura
+	HotStreakAura       *core.Aura
+	ImprovedScorchAuras core.AuraArray
+	MissileBarrageAura  *core.Aura
 
 	CritDebuffCategories core.ExclusiveCategoryArray
 }

@@ -62,6 +62,7 @@ func (mage *Mage) applyArcaneTalents() {
 
 func (mage *Mage) applyFireTalents() {
 	mage.applyIgnite()
+	mage.applyImprovedScorch()
 	mage.applyMasterOfElements()
 
 	mage.registerCombustionCD()
@@ -296,6 +297,12 @@ func (mage *Mage) registerArcanePowerCD() {
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (mage *Mage) applyImprovedScorch() {
+	mage.ImprovedScorchAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.ImprovedScorchAura(unit, 0)
 	})
 }
 
