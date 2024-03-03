@@ -60,6 +60,25 @@ var schoolMaskToIndex = func() map[SpellSchool]stats.SchoolIndex {
 	return mti
 }()
 
+// LUT for normal school indices a multischool is comprised of.
+var multiSchoolIndexToIndicies = func() [stats.SchoolLen][]stats.SchoolIndex {
+	arr := [stats.SchoolLen][]stats.SchoolIndex{}
+
+	for multiIndex := stats.SchoolIndexMultiSchoolStart; multiIndex < stats.SchoolLen; multiIndex++ {
+		multiMask := SpellSchoolFromIndex(multiIndex)
+		indexArr := []stats.SchoolIndex{}
+		for schoolIndex := stats.SchoolIndexNone; schoolIndex < stats.SchoolIndexMultiSchoolStart; schoolIndex++ {
+			schoolFlag := SpellSchoolFromIndex(schoolIndex)
+			if multiMask.Matches(schoolFlag) {
+				indexArr = append(indexArr, schoolIndex)
+			}
+		}
+		arr[multiIndex] = indexArr
+	}
+
+	return arr
+}()
+
 // Check if school index is a multi-school.
 func IsMultiSchoolIndex(schoolIndex stats.SchoolIndex) bool {
 	return schoolIndex >= stats.SchoolIndexMultiSchoolStart
@@ -136,4 +155,46 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	default:
 		return SpellSchoolPhysical
 	}
+}
+
+// Recalculate multipliers used for given multi school for unit and target.
+// This needs to happen each time before a multi school spell enters its hit and damage calculations.
+//
+// Note: This is an overall highly unoptimized approach and should probably change if multi-school
+// spells ever become a major part of all spells used. In that case recalculation should be
+// hooked to change of the base school modifiers by e.g. implementing unit.ModifySchoolXxxxModifier() functions,
+// to then update the affected multi schools as needed.
+// Doing that would add overhead to all school modifier updates, which doesn't seem worth
+// it in the context of SoD as of writing this.
+//
+// TODO MS: test this
+func RecalculateMultiSchoolModifiers(schoolIndex stats.SchoolIndex, unit *Unit, target *Unit) {
+	if !IsMultiSchoolIndex(schoolIndex) {
+		return
+	}
+
+	maxDealt := 0.0
+	maxTaken := 0.0
+	maxTakenCrit := 0.0
+
+	for _, baseSchoolIndex := range multiSchoolIndexToIndicies[schoolIndex] {
+		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
+		if dealtMult > maxDealt {
+			maxDealt = dealtMult
+		}
+
+		takenMult := target.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
+		if takenMult > maxTaken {
+			maxTaken = takenMult
+		}
+
+		takenCritMult := target.PseudoStats.SchoolCritTakenMultiplier[baseSchoolIndex]
+		if takenCritMult > maxTakenCrit {
+			maxTakenCrit = takenCritMult
+		}
+	}
+
+	unit.PseudoStats.SchoolDamageDealtMultiplier[schoolIndex] = maxDealt
+	target.PseudoStats.SchoolDamageTakenMultiplier[schoolIndex] = maxTaken
+	target.PseudoStats.SchoolCritTakenMultiplier[schoolIndex] = maxTakenCrit
 }
