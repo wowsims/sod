@@ -62,11 +62,12 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 		},
 
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "LivingBomb",
+				Label: "Living Bomb",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					livingBombExplosionSpell.Cast(sim, aura.Unit)
 				},
@@ -77,7 +78,7 @@ func (mage *Mage) registerLivingBombSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
-				dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

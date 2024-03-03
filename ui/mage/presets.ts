@@ -108,7 +108,7 @@ export const TalentsFrostPhase1 = {
 export const TalentsArcanePhase2 = {
 	name: 'P2 Arcane',
 	data: SavedTalents.create({
-		talentsString: '2302250310031531',
+		talentsString: '2250050310031531',
 	})
 };
 
@@ -122,7 +122,7 @@ export const TalentsFirePhase2 = {
 export const TalentsFrostPhase2 = {
 	name: 'P2 Frost',
 	data: SavedTalents.create({
-		talentsString: '--0535020300035005',
+		talentsString: '--0535020310025005',
 	})
 };
 

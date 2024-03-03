@@ -16,7 +16,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 	}
 
 	level := float64(mage.GetCharacter().Level)
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
+	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
 	baseDamage := baseCalc * 1
 	spellCoeff := .143
 	manaCost := .11
@@ -28,7 +28,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
 		// TODO: Also arcane
-		SpellSchool: core.SpellSchoolFire,
+		SpellSchool: core.SpellSchoolFire, // | core.SpellSchoolArcane
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -45,6 +45,9 @@ func (mage *Mage) registerLivingFlameSpell() {
 			},
 		},
 
+		// Not affected by hit
+		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -57,7 +60,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -68,7 +71,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeExpectedMagicAlwaysHit)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			spell.Dot(target).Apply(sim)
 		},
 	})
