@@ -104,7 +104,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

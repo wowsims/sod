@@ -178,6 +178,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			WarlockInputs.PetPoolManaInput,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.ChannelClipDelay,
 		],

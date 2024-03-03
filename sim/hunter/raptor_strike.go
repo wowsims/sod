@@ -103,14 +103,14 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 				ohWeaponDamage := 0.0
 				if hasMeleeSpecialist {
-					ohWeaponDamage = spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+					ohWeaponDamage = ohSpell.Unit.OHNormalizedWeaponDamage(sim, ohSpell.MeleeAttackPower())
 				} else {
-					ohWeaponDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+					ohWeaponDamage = ohSpell.Unit.OHWeaponDamage(sim, ohSpell.MeleeAttackPower())
 				}
 
 				ohBaseDamage := baseDamage*0.5 +
 					ohWeaponDamage +
-					spell.BonusWeaponDamage()
+					ohSpell.BonusWeaponDamage()
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
 					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))

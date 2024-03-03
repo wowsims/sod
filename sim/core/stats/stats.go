@@ -75,6 +75,7 @@ const (
 	WeaponSkillUnknown WeaponSkill = iota
 	WeaponSkillAxes
 	WeaponSkillSwords
+	WeaponSkillMaces
 	WeaponSkillDaggers
 	WeaponSkillUnarmed
 	WeaponSkillTwoHandedAxes
@@ -335,11 +336,6 @@ type PseudoStats struct {
 	CostMultiplier float64 // Multiplies spell cost.
 	CostReduction  float64 // Reduces spell cost.
 
-	// Flat attack speed increases independent of haste e.g. Berserking
-	FlatCastSpeedMultiplier   float64
-	FlatMeleeSpeedMultiplier  float64
-	FlatRangedSpeedMultiplier float64
-
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
@@ -454,10 +450,6 @@ type PseudoStats struct {
 func NewPseudoStats() PseudoStats {
 	return PseudoStats{
 		CostMultiplier: 1,
-
-		FlatCastSpeedMultiplier:   1,
-		FlatMeleeSpeedMultiplier:  1,
-		FlatRangedSpeedMultiplier: 1,
 
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,
