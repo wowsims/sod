@@ -12,6 +12,8 @@ func (rogue *Rogue) registerEnvenom() {
 		return
 	}
 
+	baseAbilityDamage := rogue.RuneAbilityBaseDamage()
+
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
@@ -66,7 +68,7 @@ func (rogue *Rogue) registerEnvenom() {
 			// - base damage is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := rogue.RuneAbilityBaseDamage()*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
+			baseDamage := baseAbilityDamage*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

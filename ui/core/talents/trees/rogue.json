@@ -610,7 +610,8 @@
         },
         "spellIds": [
           14076,
-          14094
+          14094,
+          14095
         ],
         "maxPoints": 3
       },
@@ -625,11 +626,7 @@
           14172,
           14173
         ],
-        "maxPoints": 3,
-        "prereqLocation": {
-          "rowIdx": 3,
-          "colIdx": 2
-        }
+        "maxPoints": 3
       },
       {
         "fieldName": "heightenedSenses",
@@ -675,7 +672,11 @@
         "spellIds": [
           16511
         ],
-        "maxPoints": 1
+        "maxPoints": 1,
+        "prereqLocation": {
+          "rowIdx": 3,
+          "colIdx": 2
+        }
       },
       {
         "fieldName": "deadliness",

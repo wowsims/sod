@@ -22,6 +22,8 @@ func (rogue *Rogue) registerBackstabSpell() {
 		60: 11281,
 	}[rogue.Level]
 
+	waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -60,7 +62,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-				if rogue.HasRune(proto.RogueRune_RuneWaylay) {
+				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
 				}
 			} else {

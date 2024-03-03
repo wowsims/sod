@@ -277,7 +277,6 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	}[rogue.Level]
 
 	isShivProc := procSource == ShivProc
-	isDeadlyBrewProc := procSource == ShivProc
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
@@ -296,8 +295,6 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 			if isShivProc {
 				// 100% application (except for the 1%? It can resist very rarely)
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-			} else if isDeadlyBrewProc {
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			} else {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -364,19 +361,11 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			dot := spell.Dot(target)
 			if !dot.IsActive() {
 				dot.Apply(sim)
-				dot.SetStacks(sim, 1)
-				dot.TakeSnapshot(sim, false)
 				return
 			}
 
-			if dot.GetStacks() < 5 {
-				dot.Refresh(sim)
-				dot.AddStack(sim)
-				dot.TakeSnapshot(sim, false)
-				return
-			}
-			dot.Refresh(sim)
-			dot.TakeSnapshot(sim, false)
+			dot.ApplyOrRefresh(sim)
+			dot.AddStack(sim)
 		},
 	})
 }

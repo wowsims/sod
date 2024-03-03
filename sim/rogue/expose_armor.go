@@ -43,7 +43,6 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				debuffAura := rogue.ExposeArmorAuras.Get(target)
-				debuffAura.Duration = time.Second * 30
 				debuffAura.Activate(sim)
 				rogue.ApplyFinisher(sim, spell)
 			} else {

@@ -16,12 +16,6 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 		return
 	}
 
-	debuffBonusDamage := map[int32]float64{
-		40: 3,
-		50: 5,
-		60: 7,
-	}[rogue.Level]
-
 	spellID := map[int32]int32{
 		40: 16511,
 		50: 17347,
@@ -41,28 +35,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 
 	if numPlayers >= 2 {
 		hemoAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-			return target.GetOrRegisterAura(core.Aura{
-				Label:     "Hemorrhage",
-				ActionID:  actionID,
-				Duration:  time.Second * 15,
-				MaxStacks: 30,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.BonusPhysicalDamageTaken += debuffBonusDamage
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.BonusPhysicalDamageTaken -= debuffBonusDamage
-				},
-				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellSchool != core.SpellSchoolPhysical {
-						return
-					}
-					if !result.Landed() || result.Damage == 0 {
-						return
-					}
-
-					aura.RemoveStack(sim)
-				},
-			})
+			return core.HemorrhageAura(target, rogue.Level)
 		})
 	}
 
@@ -83,6 +56,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 			IgnoreHaste: true,
 		},
 
+		DamageMultiplier: 1,
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 

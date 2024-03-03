@@ -73,8 +73,7 @@ func (rogue *Rogue) registerEviscerate() {
 			// tooltip implies 3..7% AP scaling, but testing shows it's fixed at 7% (3.4.0.46158)
 			apRatio := 0.07 * float64(comboPoints)
 
-			baseDamage := flatBaseDamage +
-				damageVariance*sim.RandomFloat("Eviscerate") +
+			baseDamage := sim.Roll(flatBaseDamage, flatBaseDamage+damageVariance) +
 				apRatio*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 
