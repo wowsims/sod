@@ -15,9 +15,9 @@ import (
 func ReadAtlasLootData() *WowDatabase {
 	db := NewWowDatabase()
 
-	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_Data/source.lua")
-	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_DungeonsAndRaids/data.lua")
-	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/wowsims/AtlasLootClassic_SoD/main/AtlasLootClassic_PvP/data.lua")
+	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Data/source.lua")
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
+	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_PvP/data.lua")
 
 	readZoneData(db)
 
@@ -32,7 +32,8 @@ func readAtlasLootSourceData(db *WowDatabase, expansion proto.Expansion, srcUrl 
 
 	itemPattern := regexp.MustCompile(`^\[([0-9]+)\] = {(.*)},$`)
 	typePattern := regexp.MustCompile(`\[3\] = (\d+),.*\[4\] = (\d+)`)
-	lines := strings.Split(srcTxt, "\r\n")
+	lines := strings.Split(srcTxt, "\n")
+
 	for _, line := range lines {
 		match := itemPattern.FindStringSubmatch(line)
 		if match != nil {
@@ -81,6 +82,7 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
 	itemParamPattern := regexp.MustCompile(`AL\["(.*?)"\]`)
+
 	for _, dungeonMatch := range dungeonPattern.FindAllStringSubmatch(srcTxt, -1) {
 		fmt.Printf("Zone: %s\n", dungeonMatch[1])
 		zoneID, _ := strconv.Atoi(dungeonMatch[2])
