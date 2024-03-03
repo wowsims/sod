@@ -1,15 +1,11 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
-import { ActionID as ActionIdProto } from '../proto/common.js';
+import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { OtherAction } from '../proto/common.js';
-import { ItemRandomSuffix } from '../proto/common.js';
-import { IconData } from '../proto/ui.js';
-import {
+import { ActionID as ActionIdProto , ItemRandomSuffix,OtherAction  } from '../proto/common.js';
+import { IconData ,
 	UIItem as Item,
 } from '../proto/ui.js';
-
 import { Database } from './database.js';
-import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 
 // Used to filter action IDs by level
 export interface ActionIdConfig {
@@ -196,6 +192,20 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 		switch (baseName) {
+			case 'Arcane Blast':
+				if (this.tag == 1) {
+					name += ' (No Stacks)';
+				} else if (this.tag == 2) {
+					name += ` (1 Stack)`;
+				} else if (this.tag > 2) {
+					name += ` (${this.tag - 1} Stacks)`;
+				}
+				break;
+			case 'Berserking':
+				if (this.tag != 0) {
+					name = `${name} (${this.tag * 5}%)`
+				}
+				break
 			case 'Explosive Shot':
 				if (this.spellId == 60053) {
 					name += ' (R4)';
@@ -206,15 +216,6 @@ export class ActionId {
 			case 'Explosive Trap':
 				if (this.tag == 1) {
 					name += ' (Weaving)';
-				}
-				break;
-			case 'Arcane Blast':
-				if (this.tag == 1) {
-					name += ' (No Stacks)';
-				} else if (this.tag == 2) {
-					name += ` (1 Stack)`;
-				} else if (this.tag > 2) {
-					name += ` (${this.tag - 1} Stacks)`;
 				}
 				break;
 			case 'Hot Streak':
@@ -235,35 +236,9 @@ export class ActionId {
 				if (this.spellId == 55362) name += ' (Explosion)';
 				break;
 			case 'Evocation':
-				if (this.tag == 1) {
-					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
-					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
-					name += ' (3 Tick)';
-				} else if (this.tag == 4) {
-					name += ' (4 Tick)';
-				} else if (this.tag == 5) {
-					name += ' (5 Tick)';
-				}
-				break;
-			// case 'Mind Flay':
-			// 	if (this.tag == 1) {
-			// 		name += ' (1 Tick)';
-			// 	} else if (this.tag == 2) {
-			// 		name += ' (2 Tick)';
-			// 	} else if (this.tag == 3) {
-			// 		name += ' (3 Tick)';
-			// 	}
-			// 	break;
+			case 'Mind Flay':
 			case 'Mind Sear':
-				if (this.tag == 1) {
-					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
-					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
-					name += ' (3 Tick)';
-				}
+				if (this.tag > 0) name = `${name} (${this.tag} Tick)`;
 				break;
 			case 'Shattering Throw':
 				if (this.tag === playerIndex) {

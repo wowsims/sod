@@ -45,7 +45,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.2,
 		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 

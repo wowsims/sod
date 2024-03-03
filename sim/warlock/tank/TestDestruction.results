@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.6567
+  weights: -0.13404
   weights: 0
-  weights: 0.27311
-  weights: 0
-  weights: 0
+  weights: 0.06366
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.72218
-  weights: 3.99626
+  weights: 0
+  weights: 0
+  weights: 5.06431
+  weights: 3.41866
   weights: 0
   weights: 0
   weights: 0
@@ -288,84 +288,84 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 86.69913
-  tps: 105.74084
+  dps: 88.98019
+  tps: 109.2216
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 92.08528
-  tps: 112.08566
+  dps: 94.57079
+  tps: 115.96422
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 91.15836
-  tps: 107.54785
+  dps: 93.65003
+  tps: 111.43093
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 88.94777
-  tps: 111.41753
+  dps: 91.27998
+  tps: 115.08828
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 537.20416
-  tps: 1288.59814
+  dps: 537.10442
+  tps: 1270.29187
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 557.36629
-  tps: 1732.29587
+  dps: 556.93307
+  tps: 1714.9075
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 537.26167
-  tps: 1288.83929
+  dps: 538.91827
+  tps: 1272.94354
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 597.80788
-  tps: 1381.26071
+  dps: 608.17508
+  tps: 1386.90624
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 339.76289
-  tps: 1307.79484
+  dps: 339.06005
+  tps: 1295.43025
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 324.5633
-  tps: 798.17589
+  dps: 324.37729
+  tps: 786.70593
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 377.05472
-  tps: 858.4317
+  dps: 386.09124
+  tps: 867.85403
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 537.26167
-  tps: 1288.83929
+  dps: 538.91827
+  tps: 1272.94354
  }
 }

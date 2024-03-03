@@ -1,4 +1,9 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
@@ -8,14 +13,8 @@ import {
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
-import { Player } from '../core/player.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Presets from './presets.js';
 import * as DruidInputs from './inputs.js';
+import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	cssClass: 'balance-druid-sim-ui',
@@ -59,14 +58,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 	0.43,
-			[Stat.StatSpirit]: 			0.34,
+			[Stat.StatIntellect]:	0.17,
+			[Stat.StatSpirit]: 		0.00,
 			[Stat.StatSpellPower]: 	1,
-			[Stat.StatArcanePower]: 0.49,
-			[Stat.StatNaturePower]: 0.51,
-			[Stat.StatSpellCrit]: 	0.82,
-			[Stat.StatSpellHaste]: 	0.80,
-			[Stat.StatMP5]: 				0.00,
+			[Stat.StatArcanePower]: 0.67,
+			[Stat.StatNaturePower]: 0.33,
+			[Stat.StatSpellHit]: 	8.24,
+			[Stat.StatSpellCrit]: 	5.86,
+			[Stat.StatSpellHaste]: 	0.8,
+			[Stat.StatMP5]: 		0.00,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -129,7 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 

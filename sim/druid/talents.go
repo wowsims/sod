@@ -230,7 +230,8 @@ func (druid *Druid) applyOmenOfClarity() {
 		ActionID: core.ActionID{SpellID: 16870},
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*DruidSpell{
+			feralSpells := core.FilterSlice([]*DruidSpell{
+				// Feral Spells
 				druid.DemoralizingRoar,
 				druid.FerociousBite,
 				druid.Lacerate,
@@ -244,6 +245,22 @@ func (druid *Druid) applyOmenOfClarity() {
 				druid.SwipeCat,
 				druid.SavageRoar,
 			}, func(spell *DruidSpell) bool { return spell != nil })
+
+			balanceSpells := core.FilterSlice(
+				core.Flatten([][]*DruidSpell{
+					druid.Wrath,
+					druid.Starfire,
+					druid.Moonfire,
+					druid.Hurricane,
+					{druid.Sunfire},
+					{druid.Starsurge},
+				}),
+				func(spell *DruidSpell) bool { return spell != nil })
+
+			affectedSpells = core.Flatten([][]*DruidSpell{
+				feralSpells,
+				balanceSpells,
+			})
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {

@@ -136,6 +136,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			WarlockInputs.PetPoolManaInput,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
