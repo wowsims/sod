@@ -18,8 +18,10 @@ func (druid *Druid) registerHurricaneSpell() {
 	druid.Hurricane = make([]*DruidSpell, HurricaneRanks+1)
 	druid.HurricaneTickSpell = make([]*DruidSpell, HurricaneRanks+1)
 
+	cooldownTimer := druid.NewTimer()
+
 	for rank := 1; rank <= HurricaneRanks; rank++ {
-		config := druid.newHurricaneSpellConfig(rank)
+		config := druid.newHurricaneSpellConfig(rank, cooldownTimer)
 
 		if config.RequiredLevel <= int(druid.Level) {
 			druid.Hurricane[rank] = druid.RegisterSpell(Humanoid|Moonkin, config)
@@ -28,10 +30,12 @@ func (druid *Druid) registerHurricaneSpell() {
 	}
 }
 
-func (druid *Druid) newHurricaneSpellConfig(rank int) core.SpellConfig {
+func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer) core.SpellConfig {
 	spellId := HurricaneSpellId[rank]
 	manaCost := HurricaneManaCost[rank]
 	level := HurricaneLevel[rank]
+
+	cooldown := time.Second * 60
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -49,6 +53,10 @@ func (druid *Druid) newHurricaneSpellConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    cooldownTimer,
+				Duration: cooldown,
 			},
 		},
 		Dot: core.DotConfig{
