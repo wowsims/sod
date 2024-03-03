@@ -21,7 +21,7 @@ func TestCombat(t *testing.T) {
 
 			Talents:     CombatDagger25Talents,
 			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_combat"),
-			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike_25"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultCombatRogue},
@@ -38,7 +38,7 @@ func TestCombat(t *testing.T) {
 
 			Talents:     CombatDagger40Talents,
 			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
-			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike_40"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultCombatRogue},
