@@ -29,7 +29,7 @@ func init() {
 
 		triggeredDmgSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436481},
-			SpellSchool: core.SpellSchoolNature,
+			SpellSchool: core.SpellSchoolPhysicalNature,
 			ProcMask:    core.ProcMaskEmpty,
 
 			// TODO: "Causes additional threat" in Tooltip, no clue what the multiplier is.
@@ -38,13 +38,11 @@ func init() {
 			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.MultiSchoolUpdateDamageDealtMod()
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					// The spell is affected by phys school mods because it's nature + physical school.
-					dmgWithPhysMods := 5 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *
-						curTarget.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical]
-
-					spell.CalcAndDealDamage(sim, curTarget, dmgWithPhysMods, spell.OutcomeMagicHitAndCrit)
+					curTarget.MultiSchoolUpdateDamageTakenMod(spell.SchoolIndex)
+					spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			},

@@ -171,7 +171,7 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 // to then update the affected multi schools as needed.
 // Doing that would add overhead to all school modifier updates, which doesn't seem worth
 // it in the context of SoD as of writing this.
-func (spell *Spell) RecalculateMultiSchoolModifiers(target *Unit) {
+func (spell *Spell) MultiSchoolUpdateModifiers(target *Unit) {
 	schoolIndex := spell.SchoolIndex
 	unit := spell.Unit
 
@@ -203,4 +203,52 @@ func (spell *Spell) RecalculateMultiSchoolModifiers(target *Unit) {
 	unit.PseudoStats.SchoolDamageDealtMultiplier[schoolIndex] = maxDealt
 	target.PseudoStats.SchoolDamageTakenMultiplier[schoolIndex] = maxTaken
 	target.PseudoStats.SchoolCritTakenMultiplier[schoolIndex] = maxTakenCrit
+}
+
+// Recalculate damage done modifier for multi-school.
+// Also see spell.RecalculateMultiSchoolModifiers()
+func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
+	schoolIndex := spell.SchoolIndex
+	unit := spell.Unit
+
+	if !IsMultiSchoolIndex(schoolIndex) {
+		return
+	}
+
+	maxDealt := 0.0
+
+	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
+		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
+		if dealtMult > maxDealt {
+			maxDealt = dealtMult
+		}
+	}
+
+	unit.PseudoStats.SchoolDamageDealtMultiplier[schoolIndex] = maxDealt
+}
+
+// Recalculate damage taken modifier for multi-school.
+// Also see spell.RecalculateMultiSchoolModifiers()
+func (unit *Unit) MultiSchoolUpdateDamageTakenMod(schoolIndex stats.SchoolIndex) {
+	if !IsMultiSchoolIndex(schoolIndex) {
+		return
+	}
+
+	maxTaken := 0.0
+	maxTakenCrit := 0.0
+
+	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
+		takenMult := unit.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
+		if takenMult > maxTaken {
+			maxTaken = takenMult
+		}
+
+		takenCritMult := unit.PseudoStats.SchoolCritTakenMultiplier[baseSchoolIndex]
+		if takenCritMult > maxTakenCrit {
+			maxTakenCrit = takenCritMult
+		}
+	}
+
+	unit.PseudoStats.SchoolDamageTakenMultiplier[schoolIndex] = maxTaken
+	unit.PseudoStats.SchoolCritTakenMultiplier[schoolIndex] = maxTakenCrit
 }
