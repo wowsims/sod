@@ -455,10 +455,6 @@ func (mage *Mage) registerColdSnapCD() {
 	})
 }
 
-// func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
-// 	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.ImprovedBlizzard > 0)
-// }
-
 func (mage *Mage) applyWintersChill() {
 	if mage.Talents.WintersChill == 0 {
 		return
