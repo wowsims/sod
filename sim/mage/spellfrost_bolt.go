@@ -13,10 +13,11 @@ func (mage *Mage) registerSpellfrostBolt() {
 	}
 
 	level := float64(mage.Level)
-	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
-	baseDamageLow := baseCalc * 2.03
-	baseDamageHigh := baseCalc * 2.37
-	spellCoeff := .714
+	// 2024-03-05 tuning SFB +50% base damage and same spell coeff as max rank Frostbolt
+	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
+	baseDamageLow := baseCalc * 3.04
+	baseDamageHigh := baseCalc * 3.55
+	spellCoeff := .814
 	castTime := time.Millisecond * 2500
 	manaCost := .12
 

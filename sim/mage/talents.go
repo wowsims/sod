@@ -217,19 +217,6 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	actionID := core.ActionID{SpellID: 12043}
 	cooldown := 180.0
 
-	var spellToUse *core.Spell
-	mage.Env.RegisterPostFinalizeEffect(func() {
-		if mage.ArcaneBlast != nil {
-			spellToUse = mage.ArcaneBlast
-		} else if mage.Pyroblast != nil {
-			// spellToUse = mage.Pyroblast
-		} else if mage.PrimaryTalentTree == 1 {
-			// spellToUse = mage.Fireball
-		} else {
-			// spellToUse = mage.Frostbolt
-		}
-	})
-
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
@@ -247,18 +234,10 @@ func (mage *Mage) registerPresenceOfMindCD() {
 				return false
 			}
 
-			manaCost := spellToUse.DefaultCast.Cost * mage.PseudoStats.CostMultiplier
-			if spellToUse == mage.ArcaneBlast {
-				manaCost *= float64(mage.ArcaneBlastAura.GetStacks()) * 1.75
-			}
-
-			return mage.CurrentMana() >= manaCost
+			return true
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			normalCastTime := spellToUse.DefaultCast.CastTime
-			spellToUse.DefaultCast.CastTime = 0
-			spellToUse.Cast(sim, mage.CurrentTarget)
-			spellToUse.DefaultCast.CastTime = normalCastTime
+			mage.PseudoStats.CastSpeedMultiplier *= 2
 		},
 	})
 
