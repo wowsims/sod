@@ -64,6 +64,7 @@ message Player {
 		HealingPriest healing_priest = 29;
 		ShadowPriest shadow_priest = 30;
 		Rogue rogue = 32;
+		TankRogue tank_rogue = 40;
 		ElementalShaman elemental_shaman = 33;
 		EnhancementShaman enhancement_shaman = 34;
 		RestorationShaman restoration_shaman = 35;

@@ -1,0 +1,5 @@
+package rogue
+
+func init() {
+
+}
