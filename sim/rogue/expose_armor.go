@@ -7,13 +7,20 @@ import (
 )
 
 func (rogue *Rogue) registerExposeArmorSpell() {
+	// TODO: Update aura array to dynamically update armor reduction based on combo points. Currently does not and locked at 5 combos.
 	rogue.ExposeArmorAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return core.ExposeArmorAura(target, rogue.Talents.ImprovedExposeArmor, rogue.Level)
 	})
 
+	spellID := map[int32]int32{
+		25: 8647,
+		40: 8650,
+		50: 11197,
+		60: 11198,
+	}[rogue.Level]
+
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
-		//TODO - update for each rank
-		ActionID:     core.ActionID{SpellID: 8650},
+		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | core.SpellFlagAPL,
@@ -33,7 +40,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0
+			return rogue.ComboPoints() > 0 && rogue.CanApplyExposeAura(target)
 		},
 
 		ThreatMultiplier: 1,
@@ -53,4 +60,8 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 
 		RelatedAuras: []core.AuraArray{rogue.ExposeArmorAuras},
 	})
+}
+
+func (rogue *Rogue) CanApplyExposeAura(target *core.Unit) bool {
+	return rogue.ExposeArmorAuras.Get(target).IsActive() || !rogue.ExposeArmorAuras.Get(target).ExclusiveEffects[0].Category.AnyActive()
 }
