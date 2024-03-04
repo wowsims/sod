@@ -19,6 +19,13 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		60: 11198,
 	}[rogue.Level]
 
+	arpenPerCombo := map[int32]float64{
+		25: 80,
+		40: 210,
+		50: 270,
+		60: 340,
+	}
+
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
@@ -50,7 +57,19 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				debuffAura := rogue.ExposeArmorAuras.Get(target)
+
+				if debuffAura.IsActive() {
+					// More powerful?
+					debuffAura.Deactivate(sim)
+				}
+				// recalculate and apply armor reduction value
+				arpen := arpenPerCombo[rogue.Level]
+				arpen *= float64(rogue.ComboPoints())
+				// Improved Expose Armor Multiplier
+				arpen *= 1 + 0.25*float64(rogue.Talents.ImprovedExposeArmor)
+				debuffAura.ExclusiveEffects[0].Priority = arpen
 				debuffAura.Activate(sim)
+
 				rogue.ApplyFinisher(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
