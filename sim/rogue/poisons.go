@@ -339,11 +339,9 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				if stacks := dot.GetStacks(); stacks > 0 {
-					dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.035*dot.Spell.MeleeAttackPower(), 0)) * float64(stacks)
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				}
+				dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.035*dot.Spell.MeleeAttackPower(), 0)) * float64(dot.GetStacks())
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -359,13 +357,13 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			}
 
 			dot := spell.Dot(target)
-			if !dot.IsActive() {
-				dot.Apply(sim)
-				return
-			}
 
 			dot.ApplyOrRefresh(sim)
-			dot.AddStack(sim)
+			if dot.IsActive() {
+				dot.AddStack(sim)
+				// update damage by number of stacks
+				dot.TakeSnapshot(sim, false)
+			}
 		},
 	})
 }

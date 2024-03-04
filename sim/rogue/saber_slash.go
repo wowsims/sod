@@ -45,12 +45,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				if stacks := dot.GetStacks(); stacks > 0 {
-					dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(stacks)
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotCritChance = 0
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				}
+				dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(dot.GetStacks())
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+				dot.SnapshotCritChance = 0
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
@@ -67,22 +65,13 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 
 				dot := spell.Dot(target)
-				if !dot.IsActive() {
-					dot.Apply(sim)
-					dot.SetStacks(sim, 1)
-					dot.TakeSnapshot(sim, false)
-					return
-				}
 
-				if dot.GetStacks() < 3 {
-					dot.Refresh(sim)
+				dot.ApplyOrRefresh(sim)
+				if dot.IsActive() {
 					dot.AddStack(sim)
+					// Update damage by number of stacks
 					dot.TakeSnapshot(sim, false)
-					return
 				}
-
-				dot.Refresh(sim)
-				dot.TakeSnapshot(sim, true)
 			} else {
 				spell.IssueRefund(sim)
 			}
