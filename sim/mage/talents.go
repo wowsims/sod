@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -216,7 +217,46 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 12043}
-	cooldown := 180.0
+	cooldown := time.Second * 180
+
+	affectedSpells := []*core.Spell{}
+	pomAura := mage.RegisterAura(core.Aura{
+		Label:    "Presence of Mind",
+		ActionID: actionID,
+		Duration: time.Second * 15,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					{mage.ArcaneBlast},
+					mage.Fireball,
+					mage.Flamestrike,
+					mage.Frostbolt,
+					{mage.FrostfireBolt},
+					mage.Pyroblast,
+					mage.Scorch,
+					{mage.SpellfrostBolt},
+				}),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier -= 1
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier += 1
+			})
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !slices.Contains(affectedSpells, spell) {
+				return
+			}
+
+			aura.Deactivate(sim)
+		},
+	})
 
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -224,7 +264,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Duration(cooldown) * time.Second,
+				Duration: cooldown,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -238,7 +278,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			return true
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.PseudoStats.CastSpeedMultiplier *= 2
+			pomAura.Activate(sim)
 		},
 	})
 

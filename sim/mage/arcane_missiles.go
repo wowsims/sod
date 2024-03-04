@@ -73,15 +73,10 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 					if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
 						mage.ArcaneBlastAura.Deactivate(sim)
 					}
-
-					if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
-						mage.MissileBarrageAura.Deactivate(sim)
-					}
 				},
 			},
-			NumberOfTicks:       numTicks,
-			TickLength:          tickLength,
-			AffectedByCastSpeed: true,
+			NumberOfTicks: numTicks,
+			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				tickSpell.Cast(sim, target)
 				tickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
@@ -93,7 +88,13 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			tickSpell.SpellMetrics[target.UnitIndex].Casts += 1
 
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				dot := spell.Dot(target)
+
+				dot.Apply(sim)
+
+				if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
+					mage.MissileBarrageAura.Deactivate(sim)
+				}
 			}
 
 			spell.DealOutcome(sim, result)
@@ -119,10 +120,8 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 		Flags:        SpellFlagMage,
 		MissileSpeed: 20,
 
-		BonusHitRating:   100 * core.SpellHitRatingPerHitChance, // Not an independent hit once initial lands
-		BonusCritRating:  0,
 		DamageMultiplier: 1,
-		CritMultiplier:   1, // No crit on channels
+		CritMultiplier:   mage.MageCritMultiplier(0), // No crit on channels
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -132,7 +131,7 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 				damage *= mage.getArcaneBlastDamageMultiplier()
 			}
 
-			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHit)
+			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

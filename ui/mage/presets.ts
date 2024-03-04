@@ -22,28 +22,32 @@ import {
 } from '../core/proto/mage.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import APLDefault from './apls/default.apl.json';
-import DefaultBlankGear from './gear_sets/blank.gear.json';
+import Phase2APLArcane from './apls/p2_arcane.apl.json';
+import Phase2APLFire from './apls/p2_fire.apl.json';
+import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
+import Phase2GearFire from './gear_sets/p2_fire.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearArcanePhase1 = PresetUtils.makePresetGear('Default', DefaultBlankGear, { talentTree: 0 });
-export const GearFirePhase1 = PresetUtils.makePresetGear('Default', DefaultBlankGear, { talentTree: 1 });
-export const GearFrostPhase1 = PresetUtils.makePresetGear('Default', DefaultBlankGear, { talentTree: 2 });
+export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, { talentTree: 0 })
+export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, { talentTree: 1 })
 
 export const GearPresets = {
 	[Phase.Phase1]: [
-		GearArcanePhase1,
-		GearFirePhase1,
-		GearFrostPhase1,
+		GearArcanePhase2,
+		GearArcanePhase2,
+		GearArcanePhase2,
 	],
 	[Phase.Phase2]: [
+		GearArcanePhase2,
+		GearFirePhase2,
 	],
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase1][0];
+export const DefaultGear = GearPresets[CURRENT_PHASE][1];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -53,6 +57,10 @@ export const APLArcanePhase1 = PresetUtils.makePresetAPLRotation('Default', APLD
 export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 1 });
 export const APLFrostPhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 2 });
 
+export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, { talentTree: 0 });
+export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, { talentTree: 1 });
+export const APLFrostPhase2 = PresetUtils.makePresetAPLRotation('P2 Frost', APLDefault, { talentTree: 2 });
+
 export const APLPresets = {
 	[Phase.Phase1]: [
 		APLArcanePhase1,
@@ -60,6 +68,9 @@ export const APLPresets = {
 		APLFrostPhase1,
 	],
 	[Phase.Phase2]: [
+		APLArcanePhase2,
+		APLFirePhase2,
+		APLFrostPhase2,
 	],
 };
 
@@ -71,9 +82,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase1][2],
 	},
 	40: {
-		0: APLPresets[Phase.Phase1][0],
-		1: APLPresets[Phase.Phase1][1],
-		2: APLPresets[Phase.Phase1][2],
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
+		2: APLPresets[Phase.Phase2][2],
 	},
 };
 

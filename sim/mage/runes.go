@@ -44,17 +44,13 @@ func (mage *Mage) applyBurnout() {
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneChestBurnout)}
 	metric := mage.NewManaMetrics(actionID)
 
+	mage.AddStat(stats.SpellCrit, 15*core.SpellCritRatingPerCritChance)
+
 	mage.RegisterAura(core.Aura{
 		Label:    "Burnout",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 15*core.SpellCritRatingPerCritChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -15*core.SpellCritRatingPerCritChance)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Flags.Matches(SpellFlagMage) && !result.DidCrit() {
@@ -251,13 +247,17 @@ func (mage *Mage) applyMissileBarrage() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
 				spell.CostMultiplier -= 100
-				spell.CastTimeMultiplier /= 2
+				for _, target := range sim.Encounter.TargetUnits {
+					spell.Dot(target).TickLength /= 2
+				}
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
 				spell.CostMultiplier += 100
-				spell.CastTimeMultiplier *= 2
+				for _, target := range sim.Encounter.TargetUnits {
+					spell.Dot(target).TickLength *= 2
+				}
 			})
 		},
 	})

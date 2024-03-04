@@ -109,18 +109,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	presets: {
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			...Presets.APLPresets[Phase.Phase1],
 			...Presets.APLPresets[CURRENT_PHASE],
+			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
-			...Presets.TalentPresets[Phase.Phase1],
 			...Presets.TalentPresets[CURRENT_PHASE],
+			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			...Presets.GearPresets[Phase.Phase1],
 			...Presets.GearPresets[CURRENT_PHASE],
+			...Presets.GearPresets[Phase.Phase1],
 		],
 	},
 
