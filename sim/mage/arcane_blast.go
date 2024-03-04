@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 // TODO: Classic verify Arcane Blast rune numbers
@@ -31,6 +32,15 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			aura.Refresh(sim)
 			mage.ArcaneBlast.CostMultiplier = 1.75 * float64(newStacks)
+			mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1 + .15*float64(oldStacks)
+			mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1 + .15*float64(newStacks)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !spell.SpellSchool.Matches(core.SpellSchoolArcane) || !spell.Flags.Matches(SpellFlagMage) || spell == mage.ArcaneBlast {
+				return
+			}
+
+			aura.Deactivate(sim)
 		},
 	})
 
@@ -70,12 +80,4 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			}
 		},
 	})
-}
-
-func (mage *Mage) getArcaneBlastDamageMultiplier() float64 {
-	if !mage.HasRune(proto.MageRune_RuneHandsArcaneBlast) {
-		return 1.0
-	}
-
-	return 1 + .15*float64(mage.ArcaneBlastAura.GetStacks())
 }

@@ -23,7 +23,7 @@ func (mage *Mage) applyArcaneTalents() {
 	if mage.Talents.ArcaneSubtlety > 0 {
 		threatMultiplier := .20 * float64(mage.Talents.ArcaneSubtlety)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolArcane) {
+			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -33,7 +33,7 @@ func (mage *Mage) applyArcaneTalents() {
 	if mage.Talents.ArcaneFocus > 0 {
 		bonusHit := 2 * float64(mage.Talents.ArcaneFocus) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolArcane) {
+			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
 				spell.BonusHitRating += bonusHit
 			}
 		})
@@ -72,7 +72,7 @@ func (mage *Mage) applyFireTalents() {
 	if mage.Talents.BurningSoul > 0 {
 		threatMultiplier := 1 - .15*float64(mage.Talents.BurningSoul)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -82,7 +82,7 @@ func (mage *Mage) applyFireTalents() {
 	if mage.Talents.CriticalMass > 0 {
 		bonusCrit := 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
 				spell.BonusCritRating += bonusCrit
 			}
 		})
@@ -103,7 +103,7 @@ func (mage *Mage) applyFrostTalents() {
 	if mage.Talents.ElementalPrecision > 0 {
 		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
 				spell.BonusHitRating += bonusHit
 			}
 		})
@@ -113,7 +113,7 @@ func (mage *Mage) applyFrostTalents() {
 	if mage.Talents.IceShards > 0 {
 		critDamageMultiplier := 1 + .20*float64(mage.Talents.IceShards)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
 				spell.CritMultiplier *= critDamageMultiplier
 			}
 		})
@@ -129,7 +129,7 @@ func (mage *Mage) applyFrostTalents() {
 		manaCostMultiplier := 1 - .05*float64(mage.Talents.FrostChanneling)
 		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
 				spell.DefaultCast.Cost *= manaCostMultiplier
 				spell.ThreatMultiplier *= threatMultiplier
 			}
@@ -388,7 +388,7 @@ func (mage *Mage) registerCombustionCD() {
 
 	var fireSpells []*core.Spell
 	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+		if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
 			fireSpells = append(fireSpells, spell)
 		}
 	})

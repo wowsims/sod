@@ -63,7 +63,6 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
 		BonusCritRating:  float64(5 * mage.Talents.ImprovedFlamestrike * core.CritRatingPerCritChance),
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.MageCritMultiplier(0),
@@ -93,7 +92,7 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + bonusDamage
 				// baseDamage *= sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 			spell.AOEDot().Apply(sim)
 		},

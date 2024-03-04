@@ -150,11 +150,11 @@ export const TalentPresets = {
 	],
 };
 
-export const DefaultTalentsArcane 	= TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsFire 	= TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsFrost 	= TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsArcane	= TalentPresets[CURRENT_PHASE][0];
+export const DefaultTalentsFire		= TalentPresets[CURRENT_PHASE][1];
+export const DefaultTalentsFrost	= TalentPresets[CURRENT_PHASE][2];
 
-export const DefaultTalents = DefaultTalentsArcane;
+export const DefaultTalents = DefaultTalentsFire;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

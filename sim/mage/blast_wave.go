@@ -62,7 +62,6 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 			},
 		},
 
-		BonusHitRating:   100 * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
@@ -72,7 +71,7 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + bonusDamage
 				// baseDamage *= sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 		},
 	}

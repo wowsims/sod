@@ -57,31 +57,6 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 		})
 	}
 
-	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage,
-
-		BonusHitRating:   1 * core.SpellHitRatingPerHitChance,
-		CritMultiplier:   1, // Blizzard can't crit
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			bonusDamage := spellCoeff * spell.SpellDamage()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				damage := baseDamage + bonusDamage
-				// damage *= sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHit)
-
-				if improvedBlizzardProcApplication != nil {
-					improvedBlizzardProcApplication.Cast(sim, aoeTarget)
-				}
-			}
-		},
-	})
-
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFrost,
@@ -107,8 +82,18 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				blizzardTickSpell.Cast(sim, target)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, dot.SnapshotBaseDamage, dot.OutcomeTick)
+
+					if improvedBlizzardProcApplication != nil {
+						improvedBlizzardProcApplication.Cast(sim, aoeTarget)
+					}
+				}
 			},
 		},
 

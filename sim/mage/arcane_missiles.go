@@ -1,7 +1,7 @@
 package mage
 
 import (
-	"strconv"
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -41,7 +41,6 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 	tickLength := time.Second
 	tickSpell := mage.getArcaneMissilesTickSpell(rank)
 
-	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
 	hasMissileBarrageRune := mage.HasRune(proto.MageRune_RuneBeltMissileBarrage)
 
 	return core.SpellConfig{
@@ -68,12 +67,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ArcaneMissiles-" + strconv.Itoa(int(rank)) + "-" + strconv.Itoa(int(numTicks)),
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
-						mage.ArcaneBlastAura.Deactivate(sim)
-					}
-				},
+				Label: fmt.Sprintf("ArcaneMissiles-%d-%d", +rank, numTicks),
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
@@ -111,8 +105,6 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 	baseTickDamage := ArcaneMissilesBaseTickDamage[rank]
 	spellCoeff := ArcaneMissilesSpellCoeff[rank]
 
-	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
-
 	return mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId}.WithTag(1),
 		SpellSchool:  core.SpellSchoolArcane,
@@ -126,10 +118,6 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-
-			if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
-				damage *= mage.getArcaneBlastDamageMultiplier()
-			}
 
 			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
