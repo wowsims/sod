@@ -1,0 +1,7 @@
+{
+    "type": "TypeAPL",
+    "priorityList": [
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"currentComboPoints":{}},"rhs":{"const":{"val":"0"}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":5171,"rank":1}}}}}]}},"castSpell":{"spellId":{"spellId":5171,"rank":1}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":1759,"rank":4}}}}
+    ]
+}

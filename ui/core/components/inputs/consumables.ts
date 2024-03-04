@@ -26,6 +26,7 @@ import { EventID, TypedEvent } from "../../typed_event";
 import { IconEnumPickerDirection, IconEnumValueConfig } from "../icon_enum_picker";
 import { makeBooleanConsumeInput, makeEnumConsumeInput } from "../icon_inputs";
 import * as InputHelpers from '../input_helpers';
+import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, WoundPoisonWeaponImbue } from "./rogue_imbues";
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from "./shaman_imbues";
 import { ActionInputConfig, ItemStatOption } from "./stat_options";
 
@@ -718,6 +719,12 @@ const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: WindfuryWeaponImbue,		stats: [] },
 ]
 
+const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
+	{ config: InstantPoisonWeaponImbue, stats: [] },
+	{ config: DeadlyPoisonWeaponImbue, stats: [] },
+	{ config: WoundPoisonWeaponImbue, stats: [] },
+]
+
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
 	{ config: MinorWizardOil, 		stats: [Stat.StatSpellPower] },
 	{ config: LesserWizardOil, 		stats: [Stat.StatSpellPower] },
@@ -742,11 +749,13 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 ]
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
+	...ROGUE_IMBUES,
 	...SHAMAN_IMBUES,
 	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotOffHand),
 ];
 
 export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
+	...ROGUE_IMBUES,
 	...SHAMAN_IMBUES,
 	{ config: Windfury, 		stats: [Stat.StatMeleeHit] },
 	{ config: WildStrikes, 	stats: [Stat.StatMeleeHit] },

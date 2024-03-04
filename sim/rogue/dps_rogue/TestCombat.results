@@ -1,0 +1,392 @@
+character_stats_results: {
+ key: "TestCombat-Lvl25-CharacterStats-Default"
+ value: {
+  final_stats: 110.44
+  final_stats: 167.64
+  final_stats: 143.11
+  final_stats: 45.54
+  final_stats: 58.2362
+  final_stats: 25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 18
+  final_stats: 8
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 511.03
+  final_stats: 7
+  final_stats: 17.95933
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1989.78
+  final_stats: 68
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 69.00001
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1569.1
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestCombat-Lvl40-CharacterStats-Default"
+ value: {
+  final_stats: 153.12
+  final_stats: 210.98
+  final_stats: 211.64
+  final_stats: 64.68
+  final_stats: 72.2854
+  final_stats: 25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 24
+  final_stats: 8
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 706.21
+  final_stats: 5
+  final_stats: 17.73049
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2197.96
+  final_stats: 68
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 41.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2639.4
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 13.5
+  final_stats: 23.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestCombat-Lvl25-StatWeights-Default"
+ value: {
+  weights: 0.06317
+  weights: 0.10561
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.05743
+  weights: 0
+  weights: 0.42563
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestCombat-Lvl40-StatWeights-Default"
+ value: {
+  weights: 0.05095
+  weights: 0.06787
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.04632
+  weights: 0.11827
+  weights: 0.4262
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Average-Default"
+ value: {
+  dps: 62.11422
+  tps: 44.1011
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 60.36591
+  tps: 42.85979
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 60.36591
+  tps: 42.85979
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 61.64636
+  tps: 43.76892
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 31.3406
+  tps: 22.25183
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 31.3406
+  tps: 22.25183
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 32.31151
+  tps: 22.94117
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 60.31012
+  tps: 42.82019
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 60.31012
+  tps: 42.82019
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 61.46699
+  tps: 43.64156
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 31.29449
+  tps: 22.21909
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 31.29449
+  tps: 22.21909
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 32.06455
+  tps: 22.76583
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 58.70902
+  tps: 41.68341
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Average-Default"
+ value: {
+  dps: 72.24447
+  tps: 51.29357
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 70.13236
+  tps: 49.79398
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 70.13236
+  tps: 49.79398
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 71.22111
+  tps: 50.56699
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 37.029
+  tps: 26.29059
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 37.029
+  tps: 26.29059
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 37.59295
+  tps: 26.69099
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 70.13236
+  tps: 49.79398
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 70.13236
+  tps: 49.79398
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 71.22111
+  tps: 50.56699
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ value: {
+  dps: 36.99928
+  tps: 26.26949
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ value: {
+  dps: 36.99928
+  tps: 26.26949
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ value: {
+  dps: 37.51677
+  tps: 26.63691
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 68.28277
+  tps: 48.48077
+ }
+}
