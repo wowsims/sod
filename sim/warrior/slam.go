@@ -13,15 +13,16 @@ func (warrior *Warrior) registerSlamSpell() {
 	}
 
 	var castTime time.Duration
-	var cooldown time.Duration
+	var cooldown core.Cooldown
 
 	if warrior.HasRune(proto.WarriorRune_RunePreciseTiming) {
 		castTime = 0
-		cooldown = 6 * time.Second
+		cooldown = core.Cooldown{
+			Timer:    warrior.NewTimer(),
+			Duration: 6 * time.Second,
+		}
 	} else {
 		castTime = time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam)
-		// To avoid panic on 0s CD duration
-		cooldown = 1 * time.Nanosecond
 	}
 
 	flatDamageBonus := map[int32]float64{
@@ -51,14 +52,11 @@ func (warrior *Warrior) registerSlamSpell() {
 				GCD:      core.GCDDefault,
 				CastTime: castTime,
 			},
-			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
-				Duration: cooldown,
-			},
+			CD:          cooldown,
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if cast.CastTime > 0 {
-					warrior.AutoAttacks.DelayMeleeBy(sim, cast.CastTime)
+					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
 				}
 			},
 		},

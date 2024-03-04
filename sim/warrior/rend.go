@@ -7,23 +7,19 @@ import (
 )
 
 func (warrior *Warrior) registerRendSpell() {
-	dotTicks := int32(5)
-	baseDamage := map[int32]float64{
-		25: 45,
-		40: 98,
-		50: 126,
-		60: 147,
-	}[warrior.Level]
-
-	spellID := map[int32]int32{
-		25: 6547,
-		40: 11572,
-		50: 11573,
-		60: 11574,
+	rend := map[int32]struct {
+		ticks   int32
+		damage  float64
+		spellID int32
+	}{
+		25: {spellID: 6547, damage: 9, ticks: 5},
+		40: {spellID: 11572, damage: 14, ticks: 7},
+		50: {spellID: 11573, damage: 18, ticks: 7},
+		60: {spellID: 11574, damage: 21, ticks: 7},
 	}[warrior.Level]
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
+		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlagBleed,
@@ -43,7 +39,7 @@ func (warrior *Warrior) registerRendSpell() {
 			return warrior.StanceMatches(BattleStance)
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(warrior.Talents.ImprovedRend),
+		DamageMultiplier: []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend],
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -51,10 +47,12 @@ func (warrior *Warrior) registerRendSpell() {
 				Label: "Rend",
 				Tag:   "Rend",
 			},
-			NumberOfTicks: dotTicks,
+			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage / 5
+				dot.SnapshotBaseDamage = rend.damage
+				attackTable := warrior.AttackTables[target.UnitIndex][dot.Spell.CastType]
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
