@@ -305,11 +305,11 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 
-	baseDamage := map[int32]float64{
-		25: 36,
-		40: 52,
-		50: 80,
-		60: 108,
+	baseDamageTick := map[int32]float64{
+		25: 9,
+		40: 13,
+		50: 20,
+		60: 27,
 	}[rogue.Level]
 	spellID := map[int32]int32{
 		25: 2823,
@@ -339,7 +339,8 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDamage + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.035*dot.Spell.MeleeAttackPower(), 0)) * float64(dot.GetStacks())
+				// Base * stacks + Ap scaling
+				dot.SnapshotBaseDamage = (baseDamageTick*float64(dot.GetStacks()) + core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneDeadlyBrew), 0.035*dot.Spell.MeleeAttackPower(), 0))
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
