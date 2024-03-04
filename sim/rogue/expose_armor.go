@@ -7,7 +7,6 @@ import (
 )
 
 func (rogue *Rogue) registerExposeArmorSpell() {
-	// TODO: Update aura array to dynamically update armor reduction based on combo points. Currently does not and locked at 5 combos.
 	rogue.ExposeArmorAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return core.ExposeArmorAura(target, rogue.Talents.ImprovedExposeArmor, rogue.Level)
 	})
