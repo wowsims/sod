@@ -115,20 +115,21 @@ func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
 // LUT for resistance stat indices used by each multischool.
 var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
 	resistances := map[SpellSchool]stats.Stat{
-		SpellSchoolArcane: stats.ArcaneResistance,
-		SpellSchoolFire:   stats.FireResistance,
-		SpellSchoolFrost:  stats.FrostResistance,
-		SpellSchoolNature: stats.NatureResistance,
-		SpellSchoolShadow: stats.ShadowResistance,
+		SpellSchoolPhysical: stats.Armor, // This is technically physical resistance
+		SpellSchoolArcane:   stats.ArcaneResistance,
+		SpellSchoolFire:     stats.FireResistance,
+		SpellSchoolFrost:    stats.FrostResistance,
+		SpellSchoolNature:   stats.NatureResistance,
+		SpellSchoolShadow:   stats.ShadowResistance,
 	}
 
 	arr := [stats.SchoolLen][]stats.Stat{}
 
-	for schoolIndex := stats.SchoolIndexMultiSchoolStart; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		msMask := SpellSchoolFromIndex(schoolIndex)
+	for schoolIndex := stats.SchoolIndexPhysical; schoolIndex < stats.SchoolLen; schoolIndex++ {
+		schoolMask := SpellSchoolFromIndex(schoolIndex)
 		resiArr := []stats.Stat{}
 		for resiSchool, resiStat := range resistances {
-			if msMask.Matches(resiSchool) {
+			if schoolMask.Matches(resiSchool) {
 				resiArr = append(resiArr, resiStat)
 			}
 		}
@@ -138,9 +139,9 @@ var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
 	return arr
 }()
 
-// Get array of resistance stat indices for a multi-school.
-// Do not use with normal school indices! See stats.SchoolIndexMultiSchoolStart
-func GetMultiSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
+// Get array of resistance stat indices for a (multi)school.
+// Physical school uses Armor as stat index!
+func GetSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
 	return schoolIndexToResistanceStats[schoolIndex]
 }
 

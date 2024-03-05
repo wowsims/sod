@@ -493,7 +493,9 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 		return
 	}
 
-	// TODO MS: how does this interact with multi-school spells (test with Bloodbark Crusher?)
+	// TODO MS: How does this interact with multi-school spells?
+	// Guess: They probably get the highest bonus dmg taken mod too.
+	// No spell available to test.
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
 		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}

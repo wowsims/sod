@@ -77,8 +77,10 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 
 	resistance := -attacker.stats[stats.SpellPenetration]
 
-	// TODO MS: test this for multi-school spells!
 	switch schoolIndex {
+	case stats.SchoolIndexNone:
+	case stats.SchoolIndexPhysical:
+		break
 	case stats.SchoolIndexArcane:
 		resistance += unit.GetStat(stats.ArcaneResistance)
 	case stats.SchoolIndexFire:
@@ -92,10 +94,9 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 	case stats.SchoolIndexShadow:
 		resistance += unit.GetStat(stats.ShadowResistance)
 	default:
-		// Multi school, choose lowest resistance available.
-		resisForMultiSchool := GetMultiSchoolResistanceStats(schoolIndex)
+		// Multi school: Choose lowest resistance available.
 		resistance = 1000.0
-		for _, resiStat := range resisForMultiSchool {
+		for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
 			resiVal := unit.GetStat(resiStat)
 			if resiVal < resistance {
 				resistance = resiVal
