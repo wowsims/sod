@@ -26,13 +26,9 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 			return 1, OutcomeEmpty
 		}
 
-		armorModifier := attackTable.GetArmorDamageModifier(spell)
-
-		// If multi school check if armor DR is lower than expected resistance DR.
-		if spell.SchoolIndex == stats.SchoolIndexPhysical ||
-			MultiSchoolShouldUseArmor(spell, attackTable.Attacker, attackTable.Defender, armorModifier) {
+		if spell.SchoolIndex == stats.SchoolIndexPhysical || MultiSchoolShouldUseArmor(spell.SchoolIndex, attackTable.Defender) {
 			// Physical resistance (armor).
-			return armorModifier, OutcomeEmpty
+			return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
 		}
 	}
 
@@ -60,10 +56,22 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 }
 
-func MultiSchoolShouldUseArmor(spell *Spell, caster *Unit, target *Unit, armorModifier float64) bool {
-	resistCoef := target.resistCoeff(spell.SchoolIndex, caster, false, spell.Flags.Matches(SpellFlagPureDot))
-	expectedResistMod := 1 - 0.75*resistCoef
-	return armorModifier > expectedResistMod
+// Decide whether to use armor for physical multi school spells
+//
+// TODO: This is most likely not accurate. A short test showed that it seems
+// to not simply use armor if it's lower, but the breakpoint appeared to be pretty
+// close to the resistance value.
+func MultiSchoolShouldUseArmor(schoolIndex stats.SchoolIndex, target *Unit) bool {
+	resistance := 100000.0
+	lowestStat := stats.Armor
+	for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
+		resiVal := target.GetStat(resiStat)
+		if resiVal < resistance {
+			resistance = resiVal
+			lowestStat = resiStat
+		}
+	}
+	return lowestStat == stats.Armor
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
