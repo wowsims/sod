@@ -5,18 +5,14 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import { Player } from '../core/player.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	PseudoStat,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
 	Target,
-	TristateEffect,
 	WeaponType
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
@@ -115,28 +111,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			[PseudoStat.PseudoStatMainHandDps]: 2.94,
 			[PseudoStat.PseudoStatOffHandDps]: 2.45,
 		}),
+		
+		
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
 		talents: Presets.ColdBloodMutilate40Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-			moonkinAura: true,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			sunderArmor: true,
-			faerieFire: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	playerInputs: {
@@ -147,7 +135,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
-		BuffDebuffInputs.SpellISBDebuff
+		BuffDebuffInputs.SpellShadowWeavingDebuff,
+		BuffDebuffInputs.NatureSpellDamageDebuff,
+		BuffDebuffInputs.MekkatorqueFistDebuff,
+		BuffDebuffInputs.SpellScorchDebuff,
+		BuffDebuffInputs.PowerInfusion
 	],
 	excludeBuffDebuffInputs: [
 	],
