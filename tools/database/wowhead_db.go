@@ -136,7 +136,7 @@ func (wrs WowheadRandomSuffix) ToProto() *proto.ItemRandomSuffix {
 		proto.Stat_StatFrostResistance:   float64(wrs.Stats.FrostResistance),
 		proto.Stat_StatNatureResistance:  float64(wrs.Stats.NatureResistance),
 		proto.Stat_StatShadowResistance:  float64(wrs.Stats.ShadowResistance),
-		proto.Stat_StatHealing:           float64(wrs.Stats.Healing),
+		proto.Stat_StatHealingPower:      float64(wrs.Stats.Healing),
 	}
 
 	return &proto.ItemRandomSuffix{
