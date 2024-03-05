@@ -66,7 +66,6 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				damage = result.PreOutcomeDamage
 			}
 
-			// generatedRage is capped for very low damage swings
 			generatedRage := damage * 7.5 / rageConversion
 
 			generatedRage *= options.RageMultiplier
