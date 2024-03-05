@@ -21,8 +21,6 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
 
-	manaMetrics := mage.NewManaMetrics(actionID)
-
 	manaAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Arcane Surge",
 		ActionID: actionID,
@@ -67,7 +65,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
 
 			if result.Landed() {
-				mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
+				mage.SpendMana(sim, mage.CurrentMana(), spell.ResourceMetrics)
 				manaAura.Activate(sim)
 			}
 		},
