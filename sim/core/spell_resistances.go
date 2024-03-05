@@ -20,15 +20,20 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 		return 1, OutcomeEmpty
 	}
 
-	// TODO MS: Only use armor if armor DR is < expected resist. Use fast approximation?
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		// All physical dots (Bleeds) ignore armor.
 		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
 			return 1, OutcomeEmpty
 		}
 
-		// Physical resistance (armor).
-		return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
+		armorModifier := attackTable.GetArmorDamageModifier(spell)
+
+		// If multi school check if armor DR is lower than expected resistance DR.
+		if spell.SchoolIndex == stats.SchoolIndexPhysical ||
+			MultiSchoolShouldUseArmor(spell, attackTable.Attacker, attackTable.Defender, armorModifier) {
+			// Physical resistance (armor).
+			return armorModifier, OutcomeEmpty
+		}
 	}
 
 	// Magical resistance.
@@ -53,6 +58,12 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	} else {
 		return 0.25, OutcomePartial3_4
 	}
+}
+
+func MultiSchoolShouldUseArmor(spell *Spell, caster *Unit, target *Unit, armorModifier float64) bool {
+	resistCoef := target.resistCoeff(spell.SchoolIndex, caster, false, spell.Flags.Matches(SpellFlagPureDot))
+	expectedResistMod := 1 - 0.75*resistCoef
+	return armorModifier > expectedResistMod
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
