@@ -579,10 +579,6 @@ func ImprovedScorchAura(target *Unit) *Aura {
 		},
 	})
 
-	aura.NewExclusiveEffect(SpellFirePowerEffectCategory, true, ExclusiveEffect{
-		Priority: .15,
-	})
-
 	return aura
 }
 
