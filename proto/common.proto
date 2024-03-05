@@ -70,6 +70,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
+// NextIndex: 45
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -112,7 +113,7 @@ enum Stat {
 	StatNatureResistance = 38;
 	StatShadowResistance = 39;
 	StatBonusArmor = 40;
-	StatHealing = 41;
+	StatHealingPower = 41;
 	StatSpellDamage = 42;
 	StatFeralAttackPower = 43;
 	// DO NOT add new stats here without discussing it first; new stats come with
