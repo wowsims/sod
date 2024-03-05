@@ -70,7 +70,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 45
+// NextIndex: 44
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
