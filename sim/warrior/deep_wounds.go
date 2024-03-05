@@ -57,6 +57,12 @@ func (warrior *Warrior) applyDeepWounds() {
 			if spell.ProcMask.Matches(core.ProcMaskEmpty) || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return
 			}
+
+			// Ravager doesn't proc Deep Wounds
+			if spell.ActionID.SpellID == 9633 {
+				return
+			}
+
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				warrior.procDeepWounds(sim, result.Target, spell.IsOH())
 			}
