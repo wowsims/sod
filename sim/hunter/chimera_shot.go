@@ -13,7 +13,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 	}
 
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
-	ssProcSpell := hunter.chimeraShotSerpentStingSpell(hunter.highestSerpentStingRank)
+	ssProcSpell := hunter.chimeraShotSerpentStingSpell()
 
 	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {

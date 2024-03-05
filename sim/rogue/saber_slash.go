@@ -47,11 +47,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(dot.GetStacks())
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotCritChance = 0
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -59,7 +58,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())

@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.05971
-  weights: 0.10215
+  weights: 0.05534
+  weights: 0.09778
   weights: 0
   weights: 0
   weights: 0
@@ -116,7 +116,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.05428
+  weights: 0.05031
   weights: 0
   weights: 0.42563
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.04756
-  weights: 0.06448
+  weights: 0.04314
+  weights: 0.06006
   weights: 0
   weights: 0
   weights: 0
@@ -165,8 +165,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04324
-  weights: 0.09826
+  weights: 0.03922
+  weights: 0.10591
   weights: 0.4262
   weights: 0
   weights: 0
@@ -197,196 +197,196 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 53.03835
-  tps: 37.65723
+  dps: 51.0136
+  tps: 36.21965
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 51.93653
-  tps: 36.87493
+  dps: 49.96152
+  tps: 35.47268
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 51.93653
-  tps: 36.87493
+  dps: 49.96152
+  tps: 35.47268
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 54.46279
-  tps: 38.66858
+  dps: 52.60767
+  tps: 37.35145
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 25.6989
-  tps: 18.24622
+  dps: 24.87074
+  tps: 17.65822
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 25.6989
-  tps: 18.24622
+  dps: 24.87074
+  tps: 17.65822
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 27.46878
-  tps: 19.50284
+  dps: 26.69089
+  tps: 18.95053
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 51.82527
-  tps: 36.79594
+  dps: 49.85688
+  tps: 35.39838
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 51.82527
-  tps: 36.79594
+  dps: 49.85688
+  tps: 35.39838
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 54.28342
-  tps: 38.54123
+  dps: 52.4283
+  tps: 37.22409
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 25.61963
-  tps: 18.18994
+  dps: 24.79424
+  tps: 17.60391
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 25.61963
-  tps: 18.18994
+  dps: 24.79424
+  tps: 17.60391
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 27.22181
-  tps: 19.32749
+  dps: 26.44392
+  tps: 18.77518
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 50.35868
-  tps: 35.75466
+  dps: 48.43028
+  tps: 34.3855
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 59.28906
-  tps: 42.09524
+  dps: 56.49543
+  tps: 40.11176
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 58.05334
-  tps: 41.21787
+  dps: 55.3183
+  tps: 39.276
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 58.05334
-  tps: 41.21787
+  dps: 55.3183
+  tps: 39.276
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 60.91522
-  tps: 43.24981
+  dps: 58.35156
+  tps: 41.42961
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 28.99104
-  tps: 20.58364
+  dps: 27.94041
+  tps: 19.83769
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 28.99104
-  tps: 20.58364
+  dps: 27.94041
+  tps: 19.83769
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 30.68214
-  tps: 21.78432
+  dps: 29.69733
+  tps: 21.08511
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 58.05334
-  tps: 41.21787
+  dps: 55.3183
+  tps: 39.276
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 58.05334
-  tps: 41.21787
+  dps: 55.3183
+  tps: 39.276
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 60.91522
-  tps: 43.24981
+  dps: 58.35156
+  tps: 41.42961
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 28.96132
-  tps: 20.56254
+  dps: 27.91069
+  tps: 19.81659
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 28.96132
-  tps: 20.56254
+  dps: 27.91069
+  tps: 19.81659
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p1_daggers-No Poisons-basic_strike_40-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 30.60596
-  tps: 21.73023
+  dps: 29.62115
+  tps: 21.03102
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 56.32753
-  tps: 39.99255
+  dps: 53.69066
+  tps: 38.12037
  }
 }

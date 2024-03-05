@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"github.com/wowsims/sod/sim/core/stats"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -12,6 +13,18 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: 14278}
+
+	ghostlyStrikeAura := rogue.RegisterAura(core.Aura{
+		Label:    "Ghostly Strike Buff",
+		ActionID: actionID,
+		Duration: time.Second * 7,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Dodge, 15*core.DodgeRatingPerDodgeChance)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Dodge, -15*core.DodgeRatingPerDodgeChance)
+		},
+	})
 
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -38,14 +51,13 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
-		// TODO: Add dodge aura for tanking
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			// Insert dodge aura activation here
+			ghostlyStrikeAura.Activate(sim)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())

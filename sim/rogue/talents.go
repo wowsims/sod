@@ -96,8 +96,8 @@ func (rogue *Rogue) registerColdBloodCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// for Fan of Knives and Mutilate, the offhand hit comes first and is ignored, so the aura doesn't fade too early
-			if spell.Flags.Matches(SpellFlagColdBlooded) && spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+			// deactivate after use, but for MutilateMH, so MutilateOH is cold-blooded as well
+			if spell.Flags.Matches(SpellFlagColdBlooded) && spell != rogue.MutilateMH {
 				aura.Deactivate(sim)
 			}
 		},
@@ -190,7 +190,7 @@ func (rogue *Rogue) applyInitiative() {
 
 // Rogue weapon specialization talents. Bonus is shown if the main hand is specialized, but not if off hand only
 func (rogue *Rogue) applyWeaponSpecializations() {
-	// Sword specialization. Impelemented in 'sword_specialization.go'
+	// Sword specialization. Implemented in 'sword_specialization.go'
 	if swordSpec := rogue.Talents.SwordSpecialization; swordSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeSword); mask != core.ProcMaskUnknown {
 			rogue.registerSwordSpecialization(mask)
@@ -324,12 +324,14 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		return
 	}
 
+	// TODO verify that this double dips from damage modifiers
+
 	var curDmg float64
 	bfHit := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    BladeFlurryHitID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -339,20 +341,15 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		},
 	})
 
-	const hasteBonus = 1.2
-	const inverseHasteBonus = 1 / 1.2
-
-	dur := time.Second * 15
-
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
 		ActionID: BladeFlurryActionID,
-		Duration: dur,
+		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, hasteBonus)
+			rogue.MultiplyMeleeSpeed(sim, 1.2)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, inverseHasteBonus)
+			rogue.MultiplyMeleeSpeed(sim, 1/1.2)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.GetNumTargets() < 2 {
@@ -400,15 +397,13 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-
-			if sim.GetRemainingDuration() > cooldownDur+dur {
+			if sim.GetRemainingDuration() > cooldownDur+time.Second*15 {
 				// We'll have enough time to cast another BF, so use it immediately to make sure we get the 2nd one.
 				return true
 			}
 
 			// Since this is our last BF, wait until we have SND / procs up.
 			sndTimeRemaining := rogue.SliceAndDiceAura.RemainingDuration(sim)
-			// TODO: Wait for dst/mongoose procs
 			return sndTimeRemaining >= time.Second
 		},
 	})
@@ -460,8 +455,7 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityBloodlust,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			thresh := 45.0
-			return rogue.CurrentEnergy() <= thresh
+			return rogue.CurrentEnergy() <= 45.0
 		},
 	})
 }
