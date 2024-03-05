@@ -3,8 +3,6 @@ package proto;
 
 option go_package = "./proto";
 
-import "common.proto";
-
 message RogueTalents {
 	// Assassination
 	int32 improved_eviscerate = 1;
@@ -87,7 +85,7 @@ enum RogueRune {
 }
 
 message RogueOptions {
-	
+
 }
 
 message Rogue {
