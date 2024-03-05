@@ -73,26 +73,25 @@ func (at *AttackTable) GetBinaryHitChance(si stats.SchoolIndex) float64 {
 // https://royalgiraffe.github.io/resist-guide
 
 func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, binary bool, pureDot bool) float64 {
-	resistanceCap := float64(unit.Level * 5)
-
-	resistance := -attacker.stats[stats.SpellPenetration]
+	var resistance float64
 
 	switch schoolIndex {
 	case stats.SchoolIndexNone:
+		return 0
 	case stats.SchoolIndexPhysical:
-		break
+		return 0
 	case stats.SchoolIndexArcane:
-		resistance += unit.GetStat(stats.ArcaneResistance)
+		resistance = unit.GetStat(stats.ArcaneResistance)
 	case stats.SchoolIndexFire:
-		resistance += unit.GetStat(stats.FireResistance)
+		resistance = unit.GetStat(stats.FireResistance)
 	case stats.SchoolIndexFrost:
-		resistance += unit.GetStat(stats.FrostResistance)
+		resistance = unit.GetStat(stats.FrostResistance)
 	case stats.SchoolIndexHoly:
-		break // Holy resistance doesn't exist.
+		resistance = 0 // Holy resistance doesn't exist.
 	case stats.SchoolIndexNature:
-		resistance += unit.GetStat(stats.NatureResistance)
+		resistance = unit.GetStat(stats.NatureResistance)
 	case stats.SchoolIndexShadow:
-		resistance += unit.GetStat(stats.ShadowResistance)
+		resistance = unit.GetStat(stats.ShadowResistance)
 	default:
 		// Multi school: Choose lowest resistance available.
 		resistance = 1000.0
@@ -104,20 +103,22 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 		}
 	}
 
-	resistance = max(0, resistance)
+	resistance = max(0, resistance-attacker.stats[stats.SpellPenetration])
 
-	levelBasedResist := 0.0
-	if !binary {
-		levelBasedResist = unit.levelBasedResist(attacker)
-	}
+	resistanceCap := float64(attacker.Level * 5)
+	resistanceCoef := resistance / resistanceCap
 
 	// Pre-TBC all dots that dont have an initial damage component
 	// use a 1/10 of the resistance score
 	if pureDot {
-		resistance /= 10
+		resistanceCoef /= 10
 	}
 
-	return min(resistanceCap, resistance)/resistanceCap + levelBasedResist
+	if !binary {
+		resistanceCoef += unit.levelBasedResist(attacker)
+	}
+
+	return min(1, resistanceCoef)
 }
 
 func (unit *Unit) levelBasedResist(attacker *Unit) float64 {
