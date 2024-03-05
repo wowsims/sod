@@ -375,7 +375,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'natureResistance',
 		[Stat.StatShadowResistance]: 'shadowResistance',
 		[Stat.StatBonusArmor]: 'armorBonus',
-		[Stat.StatHealing]: 'Healing',
+		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'feralAttackPower',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
@@ -472,7 +472,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'NatureResistance',
 		[Stat.StatShadowResistance]: 'ShadowResistance',
 		[Stat.StatBonusArmor]: 'Armor2',
-		[Stat.StatHealing]: 'Healing',
+		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'FeralAttackPower',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
