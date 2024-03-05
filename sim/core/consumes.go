@@ -254,8 +254,8 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			})
 		case proto.WeaponImbue_BrilliantManaOil:
 			character.AddStats(stats.Stats{
-				stats.MP5:     12,
-				stats.Healing: 25,
+				stats.MP5:          12,
+				stats.HealingPower: 25,
 			})
 		case proto.WeaponImbue_BlackfathomManaOil:
 			character.AddStats(stats.Stats{

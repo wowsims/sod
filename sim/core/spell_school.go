@@ -19,16 +19,45 @@ const (
 	SpellSchoolNature
 	SpellSchoolShadow
 
-	SpellSchoolMagic = SpellSchoolArcane | SpellSchoolFire | SpellSchoolFrost | SpellSchoolHoly | SpellSchoolNature | SpellSchoolShadow
+	// Physical x Other
+	SpellSchoolSpellstrike  = SpellSchoolPhysical | SpellSchoolArcane
+	SpellSchoolFlamestrike  = SpellSchoolPhysical | SpellSchoolFire
+	SpellSchoolFroststrike  = SpellSchoolPhysical | SpellSchoolFrost
+	SpellSchoolHolystrike   = SpellSchoolPhysical | SpellSchoolHoly
+	SpellSchoolStormstrike  = SpellSchoolPhysical | SpellSchoolNature
+	SpellSchoolShadowstrike = SpellSchoolPhysical | SpellSchoolShadow
 
-	SpellSchoolArcaneFire     = SpellSchoolArcane | SpellSchoolFire
-	SpellSchoolArcaneFrost    = SpellSchoolArcane | SpellSchoolFrost
-	SpellSchoolFireFrost      = SpellSchoolFire | SpellSchoolFrost
-	SpellSchoolFireShadow     = SpellSchoolFire | SpellSchoolShadow
-	SpellSchoolFrostShadow    = SpellSchoolFrost | SpellSchoolShadow
-	SpellSchoolPhysicalNature = SpellSchoolPhysical | SpellSchoolNature
-	SpellSchoolNatureShadow   = SpellSchoolNature | SpellSchoolShadow
-	SpellSchoolPhysicalShadow = SpellSchoolPhysical | SpellSchoolShadow
+	// Arcane x Other
+	SpellSchoolSpellfire   = SpellSchoolArcane | SpellSchoolFire
+	SpellSchoolSpellFrost  = SpellSchoolArcane | SpellSchoolFrost
+	SpellSchoolDivine      = SpellSchoolArcane | SpellSchoolHoly
+	SpellSchoolAstral      = SpellSchoolArcane | SpellSchoolNature
+	SpellSchoolSpellShadow = SpellSchoolArcane | SpellSchoolShadow
+
+	// Fire x Other
+	SpellSchoolFrostfire   = SpellSchoolFire | SpellSchoolFrost
+	SpellSchoolRadiant     = SpellSchoolFire | SpellSchoolHoly
+	SpellSchoolVolcanic    = SpellSchoolFire | SpellSchoolNature
+	SpellSchoolShadowflame = SpellSchoolFire | SpellSchoolShadow
+
+	// Frost x Other
+	SpellSchoolHolyfrost   = SpellSchoolFrost | SpellSchoolHoly
+	SpellSchoolFroststorm  = SpellSchoolFrost | SpellSchoolNature
+	SpellSchoolShadowfrost = SpellSchoolFrost | SpellSchoolShadow
+
+	// Holy x Other
+	SpellSchoolHolystorm = SpellSchoolHoly | SpellSchoolNature
+	SpellSchoolTwilight  = SpellSchoolHoly | SpellSchoolShadow
+
+	// Nature x Other
+	SpellSchoolPlague = SpellSchoolNature | SpellSchoolShadow
+
+	SpellSchoolElemental = SpellSchoolFire | SpellSchoolFrost | SpellSchoolNature
+
+	SpellSchoolAttack = SpellSchoolPhysical |
+		SpellSchoolSpellstrike | SpellSchoolFlamestrike | SpellSchoolFroststrike | SpellSchoolHolystrike | SpellSchoolStormstrike | SpellSchoolShadowstrike
+
+	SpellSchoolMagic = SpellSchoolArcane | SpellSchoolFire | SpellSchoolFrost | SpellSchoolHoly | SpellSchoolNature | SpellSchoolShadow
 )
 
 // Get associated school mask for a school index.
@@ -42,14 +71,41 @@ var schoolIndexToSchoolMask = [stats.SchoolLen]SpellSchool{
 	SpellSchoolHoly,
 	SpellSchoolNature,
 	SpellSchoolShadow,
-	SpellSchoolArcaneFire,
-	SpellSchoolArcaneFrost,
-	SpellSchoolFireFrost,
-	SpellSchoolFireShadow,
-	SpellSchoolFrostShadow,
-	SpellSchoolPhysicalNature,
-	SpellSchoolNatureShadow,
-	SpellSchoolPhysicalShadow,
+
+	// Physical x Other
+	SpellSchoolSpellstrike,
+	SpellSchoolFlamestrike,
+	SpellSchoolFroststrike,
+	SpellSchoolHolystrike,
+	SpellSchoolStormstrike,
+	SpellSchoolShadowstrike,
+
+	// Arcane x Other
+	SpellSchoolSpellfire,
+	SpellSchoolSpellFrost,
+	SpellSchoolDivine,
+	SpellSchoolAstral,
+	SpellSchoolSpellShadow,
+
+	// Fire x Other
+	SpellSchoolFrostfire,
+	SpellSchoolRadiant,
+	SpellSchoolVolcanic,
+	SpellSchoolShadowflame,
+
+	// Frost x Other
+	SpellSchoolHolyfrost,
+	SpellSchoolFroststorm,
+	SpellSchoolShadowfrost,
+
+	// Holy x Other
+	SpellSchoolHolystorm,
+	SpellSchoolTwilight,
+
+	// Nature x Other
+	SpellSchoolPlague,
+
+	SpellSchoolElemental,
 }
 
 var schoolMaskToIndex = func() map[SpellSchool]stats.SchoolIndex {
@@ -67,7 +123,7 @@ var schoolIndexToIndices = func() [stats.SchoolLen][]stats.SchoolIndex {
 	for schoolIndex := stats.SchoolIndexNone; schoolIndex < stats.SchoolLen; schoolIndex++ {
 		multiMask := SpellSchoolFromIndex(schoolIndex)
 		indexArr := []stats.SchoolIndex{}
-		for baseSchoolIndex := stats.SchoolIndexNone; baseSchoolIndex < stats.SchoolIndexMultiSchoolStart; baseSchoolIndex++ {
+		for baseSchoolIndex := stats.SchoolIndexNone; baseSchoolIndex < stats.PrimarySchoolLen; baseSchoolIndex++ {
 			schoolFlag := SpellSchoolFromIndex(baseSchoolIndex)
 			if multiMask.Matches(schoolFlag) {
 				indexArr = append(indexArr, baseSchoolIndex)
@@ -89,7 +145,7 @@ func (spell *Spell) GetSchoolBaseIndices() []stats.SchoolIndex {
 
 // Check if school index is a multi-school.
 func IsMultiSchoolIndex(schoolIndex stats.SchoolIndex) bool {
-	return schoolIndex >= stats.SchoolIndexMultiSchoolStart
+	return schoolIndex >= stats.PrimarySchoolLen
 }
 
 // Get spell school mask from school index.

@@ -58,9 +58,10 @@ const (
 	NatureResistance
 	ShadowResistance
 	BonusArmor
-	Healing
+	HealingPower
 	SpellDamage
 	FeralAttackPower
+
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
@@ -109,15 +110,42 @@ const (
 	SchoolIndexNature
 	SchoolIndexShadow
 
-	SchoolIndexMultiSchoolStart
-	SchoolIndexArcaneFire SchoolIndex = iota - 1
-	SchoolIndexArcaneFrost
-	SchoolIndexFireFrost
-	SchoolIndexFireShadow
-	SchoolIndexFrostShadow
-	SchoolIndexPhysicalNature
-	SchoolIndexNatureShadow
-	SchoolIndexPhysicalShadow
+	PrimarySchoolLen
+
+	// Physical x Other
+	SchoolIndexSpellstrike SchoolIndex = iota - 1
+	SchoolIndexFlamestrike
+	SchoolIndexFroststrike
+	SchoolIndexHolystrike
+	SchoolIndexStormstrike
+	SchoolIndexShadowstrike
+
+	// Arcane x Other
+	SchoolIndexSpellfire
+	SchoolIndexSpellFrost
+	SchoolIndexDivine
+	SchoolIndexAstral
+	SchoolIndexSpellShadow
+
+	// Fire x Other
+	SchoolIndexFrostfire
+	SchoolIndexRadiant
+	SchoolIndexVolcanic
+	SchoolIndexShadowflame
+
+	// Frost x Other
+	SchoolIndexHolyfrost
+	SchoolIndexFroststorm
+	SchoolIndexShadowfrost
+
+	// Holy x Other
+	SchoolIndexHolystorm
+	SchoolIndexTwilight
+
+	// Nature x Other
+	SchoolIndexPlague
+
+	SchoolIndexElemental
 
 	SchoolLen
 )
@@ -168,8 +196,8 @@ func (s Stat) StatName() string {
 		return "ShadowPower"
 	case SpellDamage:
 		return "SpellDamage"
-	case Healing:
-		return "Healing"
+	case HealingPower:
+		return "HealingPower"
 	case SpellHaste:
 		return "SpellHaste"
 	case MP5:

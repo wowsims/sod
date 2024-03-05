@@ -27,7 +27,7 @@ func init() {
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436413},
-			SpellSchool: core.SpellSchoolNatureShadow,
+			SpellSchool: core.SpellSchoolPlague,
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagAPL,
 
