@@ -44,7 +44,7 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.MultiSchoolUpdateDamageDealtMod()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					aoeTarget.MultiSchoolUpdateDamageTakenMod(spell.SchoolIndex)
+					aoeTarget.MultiSchoolUpdateDamageTakenMod(spell)
 					spell.CalcAndDealDamage(sim, aoeTarget, 150, spell.OutcomeMagicHitAndCrit)
 				}
 			},

@@ -108,6 +108,7 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
+// TODO: This should probably be merged with SpellDamage()? Doesn't make sense the way it is.
 func (spell *Spell) SpellPower() float64 {
 	return spell.Unit.GetStat(stats.SpellPower) +
 		spell.BonusSpellPower +
@@ -121,6 +122,11 @@ func (spell *Spell) SpellDamage() float64 {
 
 func (spell *Spell) SpellPowerSchool() float64 {
 	switch spell.SchoolIndex {
+	case stats.SchoolIndexNone:
+		return 0
+	case stats.SchoolIndexPhysical:
+		// Return correct value if ever used for a physical spell.
+		return spell.Unit.PseudoStats.BonusDamage
 	case stats.SchoolIndexArcane:
 		return spell.Unit.GetStat(stats.ArcanePower)
 	case stats.SchoolIndexFire:
@@ -133,15 +139,31 @@ func (spell *Spell) SpellPowerSchool() float64 {
 		return spell.Unit.GetStat(stats.NaturePower)
 	case stats.SchoolIndexShadow:
 		return spell.Unit.GetStat(stats.ShadowPower)
-	case stats.SchoolIndexPhysical:
-		return 0 // This should be "weapon bonus damage" in a proper implementation of the stat.
 	default:
-		// Get max power for multi school.
-		// This should theoretically also include "weapon bonus damage" aka physical spell power, but it's probably never needed.
+		// Multi school: Get best power choice available.
 		max := 0.0
-		for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(spell.SchoolIndex) {
-			// School and stat indicies are ordered the same way.
-			power := spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
+		for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
+			var power float64
+
+			// TODO MS: This really doesn't seem to be the best solution.
+			// Even if physical is never needed here, not having it with the other power stats
+			// prevents doing it right.
+			//
+			// 1. Ignoring this case would result in bad return values if physical multi schools
+			// with a coef > 0 are ever a thing.
+			//
+			// 2. Just having this loop or having the switch above is irellevant in terms of performance.
+			// The jump table above saves some instructions for normal spells but loop only seems to
+			// cause the function to be inlined, making the whole SpellPower() call inline.
+			//
+			// Anyway this whole construct simply hurts.
+			if baseSchoolIndex == stats.SchoolIndexPhysical {
+				power = spell.Unit.PseudoStats.BonusDamage
+			} else {
+				// School and stat indices are ordered the same way.
+				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
+			}
+
 			if power > max {
 				max = power
 			}

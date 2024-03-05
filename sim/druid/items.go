@@ -41,7 +41,7 @@ func init() {
 				spell.MultiSchoolUpdateDamageDealtMod()
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					curTarget.MultiSchoolUpdateDamageTakenMod(spell.SchoolIndex)
+					curTarget.MultiSchoolUpdateDamageTakenMod(spell)
 					spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}

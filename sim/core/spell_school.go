@@ -60,28 +60,31 @@ var schoolMaskToIndex = func() map[SpellSchool]stats.SchoolIndex {
 	return mti
 }()
 
-// LUT for normal school indices a multischool is comprised of.
-var multiSchoolIndexToIndicies = func() [stats.SchoolLen][]stats.SchoolIndex {
+// LUT for base school indices a (multi)school is made of.
+var schoolIndexToIndices = func() [stats.SchoolLen][]stats.SchoolIndex {
 	arr := [stats.SchoolLen][]stats.SchoolIndex{}
 
-	for multiIndex := stats.SchoolIndexMultiSchoolStart; multiIndex < stats.SchoolLen; multiIndex++ {
-		multiMask := SpellSchoolFromIndex(multiIndex)
+	for schoolIndex := stats.SchoolIndexNone; schoolIndex < stats.SchoolLen; schoolIndex++ {
+		multiMask := SpellSchoolFromIndex(schoolIndex)
 		indexArr := []stats.SchoolIndex{}
-		for schoolIndex := stats.SchoolIndexNone; schoolIndex < stats.SchoolIndexMultiSchoolStart; schoolIndex++ {
-			schoolFlag := SpellSchoolFromIndex(schoolIndex)
+		for baseSchoolIndex := stats.SchoolIndexNone; baseSchoolIndex < stats.SchoolIndexMultiSchoolStart; baseSchoolIndex++ {
+			schoolFlag := SpellSchoolFromIndex(baseSchoolIndex)
 			if multiMask.Matches(schoolFlag) {
-				indexArr = append(indexArr, schoolIndex)
+				indexArr = append(indexArr, baseSchoolIndex)
 			}
 		}
-		arr[multiIndex] = indexArr
+		arr[schoolIndex] = indexArr
 	}
 
 	return arr
 }()
 
-// Get base school indicies a multi school is comprised of.
-func GetMultiSchoolBaseIndices(schoolIndex stats.SchoolIndex) []stats.SchoolIndex {
-	return multiSchoolIndexToIndicies[schoolIndex]
+// Get base school indices of the spell.
+// If spell is a single school the array will just contain that school's index.
+// If spell is multi school it will include all school indices the multi school is made of.
+// TODO MS: Move onto spell?
+func (spell *Spell) GetSchoolBaseIndices() []stats.SchoolIndex {
+	return schoolIndexToIndices[spell.SchoolIndex]
 }
 
 // Check if school index is a multi-school.
@@ -135,8 +138,8 @@ var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
 	return arr
 }()
 
-// Get array of resistance stat indicies for a multi-school.
-// Do not use with normal school indicies! See stats.SchoolIndexMultiSchoolStart
+// Get array of resistance stat indices for a multi-school.
+// Do not use with normal school indices! See stats.SchoolIndexMultiSchoolStart
 func GetMultiSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
 	return schoolIndexToResistanceStats[schoolIndex]
 }
@@ -173,7 +176,7 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 // it in the context of SoD as of writing this.
 func (spell *Spell) MultiSchoolUpdateModifiers(target *Unit) {
 	spell.MultiSchoolUpdateDamageDealtMod()
-	target.MultiSchoolUpdateDamageTakenMod(spell.SchoolIndex)
+	target.MultiSchoolUpdateDamageTakenMod(spell)
 }
 
 // Recalculate damage done modifier for multi-school.
@@ -188,7 +191,7 @@ func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
 
 	maxDealt := 0.0
 
-	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
+	for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
 		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
 		if dealtMult > maxDealt {
 			maxDealt = dealtMult
@@ -200,15 +203,15 @@ func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
 
 // Recalculate damage taken modifier for multi-school.
 // Also see spell.RecalculateMultiSchoolModifiers()
-func (unit *Unit) MultiSchoolUpdateDamageTakenMod(schoolIndex stats.SchoolIndex) {
-	if !IsMultiSchoolIndex(schoolIndex) {
+func (unit *Unit) MultiSchoolUpdateDamageTakenMod(spell *Spell) {
+	if !IsMultiSchoolIndex(spell.SchoolIndex) {
 		return
 	}
 
 	maxTaken := 0.0
 	maxTakenCrit := 0.0
 
-	for _, baseSchoolIndex := range GetMultiSchoolBaseIndices(schoolIndex) {
+	for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
 		takenMult := unit.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
 		if takenMult > maxTaken {
 			maxTaken = takenMult
@@ -220,6 +223,6 @@ func (unit *Unit) MultiSchoolUpdateDamageTakenMod(schoolIndex stats.SchoolIndex)
 		}
 	}
 
-	unit.PseudoStats.SchoolDamageTakenMultiplier[schoolIndex] = maxTaken
-	unit.PseudoStats.SchoolCritTakenMultiplier[schoolIndex] = maxTakenCrit
+	unit.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex] = maxTaken
+	unit.PseudoStats.SchoolCritTakenMultiplier[spell.SchoolIndex] = maxTakenCrit
 }
