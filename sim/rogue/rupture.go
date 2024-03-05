@@ -38,8 +38,7 @@ func (rogue *Rogue) registerRupture() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplier: 1 +
-			0.1*float64(rogue.Talents.SerratedBlades),
+		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
@@ -54,11 +53,10 @@ func (rogue *Rogue) registerRupture() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = rogue.RuptureDamage(rogue.ComboPoints())
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -95,7 +93,7 @@ func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
 	}[rogue.Level]
 
 	return (baseTickDamage+comboTickDamage*float64(comboPoints))*(3+float64(comboPoints)) +
-		[]float64{0, 0.06 / 4, 0.12 / 5, 0.18 / 6, 0.24 / 7, 0.30 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
+		[]float64{0, 0.04 / 4, 0.10 / 5, 0.18 / 6, 0.21 / 7, 0.24 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
 }
 
 func (rogue *Rogue) RuptureTicks(comboPoints int32) int32 {

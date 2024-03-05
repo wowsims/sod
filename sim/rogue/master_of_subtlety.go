@@ -12,8 +12,6 @@ func (rogue *Rogue) registerMasterOfSubtlety() {
 		return
 	}
 
-	percent := 1.1
-
 	effectDuration := time.Second * 6
 	if rogue.StealthAura.IsActive() {
 		effectDuration = core.NeverExpires
@@ -24,10 +22,10 @@ func (rogue *Rogue) registerMasterOfSubtlety() {
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMasterOfSubtlety)},
 		Duration: effectDuration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageDealtMultiplier *= percent
+			rogue.PseudoStats.DamageDealtMultiplier *= 1.1
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageDealtMultiplier *= 1 / percent
+			rogue.PseudoStats.DamageDealtMultiplier *= 1 / 1.1
 		},
 	})
 }

@@ -38,19 +38,17 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
-		// TODO: Add dodge aura for tanking
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			// Insert dodge aura activation here
-
 			if result.Landed() {
+				// TODO: Add dodge aura for tanking
+				// Insert dodge aura activation here
+
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-			} else {
-				spell.IssueRefund(sim)
 			}
 		},
 	})

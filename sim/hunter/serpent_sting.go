@@ -83,7 +83,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	}
 }
 
-func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
+func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
@@ -105,12 +105,12 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 const SERPENT_STING_MAX_RANK = 9
 
 func (hunter *Hunter) registerSerpentStingSpell() {
-	for i := 1; i <= SERPENT_STING_MAX_RANK; i++ {
+	for i := SERPENT_STING_MAX_RANK; i >= 0; i-- {
 		config := hunter.getSerpentStingConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.highestSerpentStingRank = i
 			hunter.SerpentSting = hunter.GetOrRegisterSpell(config)
+			break
 		}
 	}
 }

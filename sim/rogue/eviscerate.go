@@ -59,7 +59,6 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		BonusCritRating: 0.0,
 		DamageMultiplier: 1 +
 			[]float64{0.0, 0.05, 0.1, 0.15}[rogue.Talents.ImprovedEviscerate] +
 			0.02*float64(rogue.Talents.Aggression),
@@ -68,13 +67,12 @@ func (rogue *Rogue) registerEviscerate() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
+
 			comboPoints := rogue.ComboPoints()
 			flatBaseDamage := flatDamage + comboDamageBonus*float64(comboPoints)
-			// tooltip implies 3..7% AP scaling, but testing shows it's fixed at 7% (3.4.0.46158)
-			apRatio := 0.07 * float64(comboPoints)
 
 			baseDamage := sim.Roll(flatBaseDamage, flatBaseDamage+damageVariance) +
-				apRatio*spell.MeleeAttackPower() +
+				0.03*float64(comboPoints)*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

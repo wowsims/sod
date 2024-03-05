@@ -31,7 +31,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60.0 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
+			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -45,9 +45,8 @@ func (rogue *Rogue) registerBackstabSpell() {
 		},
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
-		// All of these use "Apply Aura: Modifies Damage/Healing Done", and stack additively (up to 142%).
-		DamageMultiplier: 1.5 * (1 +
-			0.04*float64(rogue.Talents.Opportunity)),
+
+		DamageMultiplier: 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
