@@ -67,8 +67,19 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.ImprovedScorch && targetIdx == 0 {
-		aura := ImprovedScorchAura(target, 5)
-		MakePermanent(aura)
+		aura := ImprovedScorchAura(target)
+		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+			Period:          time.Millisecond * 1500,
+			NumTicks:        5,
+			TickImmediately: true,
+			Priority:        ActionPriorityDOT, // High prio so it comes before actual mage scorches
+			OnAction: func(sim *Simulation) {
+				aura.Activate(sim)
+				if aura.IsActive() {
+					aura.AddStack(sim)
+				}
+			},
+		}, raid)
 	}
 
 	if debuffs.WintersChill && targetIdx == 0 {
@@ -556,21 +567,15 @@ func bleedDamageAura(target *Unit, config Aura, multiplier float64) *Aura {
 
 const SpellFirePowerEffectCategory = "spellFirePowerdebuff"
 
-func ImprovedScorchAura(target *Unit, startingStacks int32) *Aura {
+func ImprovedScorchAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Improved Scorch",
 		ActionID:  ActionID{SpellID: 12873},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.SetStacks(sim, startingStacks)
-		},
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .03*float64(oldStacks)
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .03*float64(newStacks)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexFrost] /= 1 + .03*float64(aura.stacks)
 		},
 	})
 
@@ -610,26 +615,6 @@ func WintersChillAura(target *Unit, startingStacks int32) *Aura {
 	// 		ee.Aura.Unit.PseudoStats.BonusSpellCritRatingTaken -= ee.Priority * CritRatingPerCritChance
 	// 	},
 	// })
-	return aura
-}
-
-func majorSpellCritDebuffAura(target *Unit, label string, actionID ActionID, percent float64) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    label,
-		ActionID: actionID,
-		Duration: time.Second * 30,
-	})
-
-	bonusSpellCrit := percent * CritRatingPerCritChance
-	aura.NewExclusiveEffect(SpellCritEffectCategory, true, ExclusiveEffect{
-		Priority: percent,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusSpellCritRatingTaken += bonusSpellCrit
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusSpellCritRatingTaken -= bonusSpellCrit
-		},
-	})
 	return aura
 }
 
@@ -998,18 +983,6 @@ func increasedMissEffect(aura *Aura, increasedMissChance float64) *ExclusiveEffe
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.IncreasedMissChance -= increasedMissChance
-		},
-	})
-}
-
-func critBonusEffect(aura *Aura, critBonus float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("CritBonus", false, ExclusiveEffect{
-		Priority: critBonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusCritRatingTaken += critBonus
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusCritRatingTaken -= critBonus
 		},
 	})
 }

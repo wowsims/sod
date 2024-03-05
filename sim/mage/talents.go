@@ -342,7 +342,7 @@ func (mage *Mage) registerArcanePowerCD() {
 
 func (mage *Mage) applyImprovedScorch() {
 	mage.ImprovedScorchAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.ImprovedScorchAura(unit, 0)
+		return core.ImprovedScorchAura(unit)
 	})
 }
 
