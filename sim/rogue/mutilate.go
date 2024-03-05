@@ -17,6 +17,10 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
 
+	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+
+	flatDamageBonus := rogue.RuneAbilityBaseDamage()
+
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
@@ -25,8 +29,6 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 
-		DamageMultiplierAdditive: 1 +
-			0.04*float64(rogue.Talents.Opportunity),
 		DamageMultiplier: 1 *
 			core.TernaryFloat64(isMH, 1, rogue.dwsMultiplier()) *
 			[]float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
@@ -34,11 +36,12 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// TODO check whether Mutilate profits from "+Damage Done" or "+Damage Taken" auras (not the case in TBC)
 			var baseDamage float64
 			if isMH {
-				baseDamage = rogue.RuneAbilityBaseDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			} else {
-				baseDamage = rogue.RuneAbilityBaseDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 			// TODO: Add support for all poison effects (such as chipped bite proc)
 			if target.GetAuraByID(rogue.DeadlyPoison[0].ActionID).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
@@ -89,8 +92,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 				rogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
 
 				/** Disable until it works on bosses
-				// cache rune check like Ambush/Backstab at that time
-				if rogue.HasRune(proto.RogueRune_RuneWaylay) {
+				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
 				} */
 				rogue.MutilateMH.Cast(sim, target)

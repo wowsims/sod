@@ -84,7 +84,7 @@ func (unit *Unit) resistCoeff(school SpellSchool, attacker *Unit, binary bool, p
 		levelBasedResist = unit.levelBasedResist(attacker)
 	}
 
-	// Pre-TBC all dots that dont have an initial damage component
+	// Pre-TBC all dots that don't have an initial damage component
 	// use a 1/10 of the resistance score
 	if pureDot {
 		resistance /= 10

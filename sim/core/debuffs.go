@@ -508,7 +508,7 @@ func HemorrhageAura(target *Unit, casterLevel int32) *Aura {
 			if !result.Landed() || result.Damage == 0 {
 				return
 			}
-
+			// TODO find out which abilities are actually affected
 			aura.RemoveStack(sim)
 		},
 	})

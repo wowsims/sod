@@ -23,15 +23,15 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 	actionID := core.ActionID{SpellID: spellID}
 
-	durationMultiplier := 1.0 + 0.15*float64(rogue.Talents.ImprovedSliceAndDice)
-	durationBonus := time.Duration(0)
+	durationMultiplier := []float64{1, 1.15, 1.3, 1.45}[rogue.Talents.ImprovedSliceAndDice]
+
 	rogue.sliceAndDiceDurations = [6]time.Duration{
 		0,
-		time.Duration(float64(time.Second*9+durationBonus) * durationMultiplier),
-		time.Duration(float64(time.Second*12+durationBonus) * durationMultiplier),
-		time.Duration(float64(time.Second*15+durationBonus) * durationMultiplier),
-		time.Duration(float64(time.Second*18+durationBonus) * durationMultiplier),
-		time.Duration(float64(time.Second*21+durationBonus) * durationMultiplier),
+		time.Duration(float64(time.Second*9) * durationMultiplier),
+		time.Duration(float64(time.Second*12) * durationMultiplier),
+		time.Duration(float64(time.Second*15) * durationMultiplier),
+		time.Duration(float64(time.Second*18) * durationMultiplier),
+		time.Duration(float64(time.Second*21) * durationMultiplier),
 	}
 
 	hasteBonus := 1 + hasteBonusByRank

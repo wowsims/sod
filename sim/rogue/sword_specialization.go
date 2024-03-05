@@ -12,22 +12,15 @@ func (rogue *Rogue) registerSwordSpecialization(mask core.ProcMask) {
 		return
 	}
 
-	// https://wotlk.wowhead.com/spell=13964/sword-specialization, proc mask = 20.
-	var swordSpecSpell *core.Spell
 	icd := core.Cooldown{
 		Timer:    rogue.NewTimer(),
-		Duration: time.Millisecond * 500,
+		Duration: time.Millisecond * 200,
 	}
 	procChance := 0.01 * float64(rogue.Talents.SwordSpecialization)
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Sword Specialization",
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			config := *rogue.AutoAttacks.MHConfig()
-			config.ActionID = core.ActionID{SpellID: 13964}
-			swordSpecSpell = rogue.GetOrRegisterSpell(config)
-		},
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -43,7 +36,7 @@ func (rogue *Rogue) registerSwordSpecialization(mask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				swordSpecSpell.Cast(sim, result.Target)
+				rogue.AutoAttacks.ExtraMHAttack(sim)
 			}
 		},
 	})

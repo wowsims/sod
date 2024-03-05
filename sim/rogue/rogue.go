@@ -64,7 +64,6 @@ type Rogue struct {
 	EnvenomAura          *core.Aura
 	ExposeArmorAuras     core.AuraArray
 	SliceAndDiceAura     *core.Aura
-	MainGaucheAura       *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura
@@ -130,7 +129,7 @@ func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
 	rogue.EnergyTickMultiplier += multiplier
 }
 
-func (rogue *Rogue) Reset(sim *core.Simulation) {
+func (rogue *Rogue) Reset(_ *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
 	}
