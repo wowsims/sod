@@ -92,7 +92,7 @@ func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
 		60: 8,
 	}[rogue.Level]
 
-	return (baseTickDamage+comboTickDamage*float64(comboPoints))*(3+float64(comboPoints)) +
+	return baseTickDamage + comboTickDamage*float64(comboPoints) +
 		[]float64{0, 0.04 / 4, 0.10 / 5, 0.18 / 6, 0.21 / 7, 0.24 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
 }
 
