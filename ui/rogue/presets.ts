@@ -1,8 +1,13 @@
 import { Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
-	Flask,
-	Food,
+	Debuffs,
+	IndividualBuffs,
+	Profession,
+	RaidBuffs,
+	StrengthBuff,
+	TristateEffect,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -120,7 +125,38 @@ export const DefaultTalents = DefaultTalentsAssassin;
 
 export const DefaultOptions = RogueOptions.create({});
 
+
+///////////////////////////////////////////////////////////////////////////
+//                         Consumes/Buffs/Debuffs
+///////////////////////////////////////////////////////////////////////////
+
+
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	dragonBreathChili: false,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 });
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	aspectOfTheLion: true,
+	battleShout: TristateEffect.TristateEffectRegular,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfMight: TristateEffect.TristateEffectRegular,
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	dreamstate: true,
+	faerieFire: true,
+	sunderArmor: true,
+	mangle: true,
+});
+
+export const OtherDefaults = {
+  	profession1: Profession.Engineering,
+  	profession2: Profession.Leatherworking,
+}
