@@ -52,7 +52,7 @@ func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, 
 			}
 		}
 		if t := rogue.Talents.RelentlessStrikes; t {
-			if sim.RandomFloat("RelentlessStrikes") < 0.2 {
+			if sim.RandomFloat("RelentlessStrikes") < 0.2*float64(numPoints) {
 				rogue.AddEnergy(sim, 25, relentlessStrikesMetrics)
 			}
 		}
