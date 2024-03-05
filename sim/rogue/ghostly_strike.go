@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"github.com/wowsims/sod/sim/core/stats"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -12,6 +13,18 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: 14278}
+
+	ghostlyStrikeAura := rogue.RegisterAura(core.Aura{
+		Label:    "Ghostly Strike Buff",
+		ActionID: actionID,
+		Duration: time.Second * 7,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Dodge, 15*core.DodgeRatingPerDodgeChance)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Dodge, -15*core.DodgeRatingPerDodgeChance)
+		},
+	})
 
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -44,11 +57,12 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if result.Landed() {
-				// TODO: Add dodge aura for tanking
-				// Insert dodge aura activation here
+			ghostlyStrikeAura.Activate(sim)
 
+			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+			} else {
+				spell.IssueRefund(sim)
 			}
 		},
 	})

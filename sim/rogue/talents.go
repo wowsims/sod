@@ -96,8 +96,8 @@ func (rogue *Rogue) registerColdBloodCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// for Mutilate, the mainhand hit comes first and is ignored, so the aura doesn't fade too early
-			if spell.Flags.Matches(SpellFlagColdBlooded) && spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+			// deactivate after use, but for MutilateMH, so MutilateOH is cold-blooded as well
+			if spell.Flags.Matches(SpellFlagColdBlooded) && spell != rogue.MutilateMH {
 				aura.Deactivate(sim)
 			}
 		},
