@@ -380,7 +380,7 @@ func registerFrostOil(character *Character, isMh bool) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(33, 38) + spell.SpellPower()*0.269
+			damage := sim.Roll(33, 38) + spell.SpellDamage()*0.269
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
