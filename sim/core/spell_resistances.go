@@ -114,11 +114,15 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 	default:
 		// Multi school: Choose lowest resistance available.
 		resistance = 1000.0
-		for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
-			resiVal := unit.GetStat(resiStat)
-			if resiVal < resistance {
-				resistance = resiVal
+		if !SpellSchoolFromIndex(schoolIndex).Matches(SpellSchoolHoly) {
+			for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
+				resiVal := unit.GetStat(resiStat)
+				if resiVal < resistance {
+					resistance = resiVal
+				}
 			}
+		} else {
+			resistance = 0.0
 		}
 	}
 
@@ -133,18 +137,13 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 		resistanceCoef /= 10
 	}
 
-	if !binary {
-		resistanceCoef += unit.levelBasedResist(attacker)
+	if !binary && unit.Type == EnemyUnit && unit.Level > attacker.Level {
+		avgMitigationAdded := AverageMagicPartialResistPerLevelMultiplier * float64(unit.Level-attacker.Level)
+		// coef is scaled 0 to 1, not 0 to 0.75
+		resistanceCoef += avgMitigationAdded * 1 / 0.75
 	}
 
 	return min(1, resistanceCoef)
-}
-
-func (unit *Unit) levelBasedResist(attacker *Unit) float64 {
-	if unit.Type == EnemyUnit && unit.Level > attacker.Level {
-		return AverageMagicPartialResistPerLevelMultiplier * float64(unit.Level-attacker.Level)
-	}
-	return 0
 }
 
 func (unit *Unit) binaryHitChance(schoolIndex stats.SchoolIndex, attacker *Unit) float64 {

@@ -143,18 +143,14 @@ func (spell *Spell) SpellSchoolPower() float64 {
 		for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
 			var power float64
 
-			// TODO MS: This really doesn't seem to be the best solution.
-			// Even if physical is never needed here, not having it with the other power stats
-			// prevents doing it right.
-			//
-			// 1. Ignoring this case would result in bad return values if physical multi schools
-			// with a coef > 0 are ever a thing.
-			//
-			// 2. Just having this loop or having the switch above is irellevant in terms of performance.
+			// TODO / NOTE: Not a bug, just really not a nice solution imho.
+			// Not having physical power with the other power stats makes this if-else required.
+			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
+			// are ever a thing, due to SpellPower being before ArcanePower in stats.
+			// Also, just having this loop or having the switch above is irellevant in terms of performance.
 			// The jump table above saves some instructions for normal spells but loop only seems to
 			// cause the function to be inlined, making the whole SpellPower() call inline.
-			//
-			// Anyway this whole construct simply hurts.
+			// Overall just not nice the way it is.
 			if baseSchoolIndex == stats.SchoolIndexPhysical {
 				power = spell.Unit.PseudoStats.BonusDamage
 			} else {
@@ -491,9 +487,7 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 		return
 	}
 
-	// TODO MS: How does this interact with multi-school spells?
-	// Guess: They probably get the highest bonus dmg taken mod too.
-	// No spell available to test.
+	// TODO: Add other schools. Multischools should then chose highest.
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
 		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}
