@@ -40,17 +40,14 @@ const (
 
 var WoundPoisonActionID = core.ActionID{SpellID: 13219}
 
-// Get Instant Poison proc chance (between 0 and 1)
 func (rogue *Rogue) GetInstantPoisonProcChance() float64 {
-	return 0.2 + rogue.improvedPoisons() + rogue.instantPoisonProcChanceBonus
+	return (0.2 + rogue.improvedPoisons()) * (1 + rogue.instantPoisonProcChanceBonus)
 }
 
-// Get Deadly Poison proc chance (between 0 and 1)
 func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
 	return 0.3 + rogue.improvedPoisons()
 }
 
-// Get Wound Poison proc chance (between 0 and 1)
 func (rogue *Rogue) GetWoundPoisonProcChance() float64 {
 	return 0.3 + rogue.improvedPoisons()
 }
@@ -129,8 +126,6 @@ func (rogue *Rogue) applyInstantPoison() {
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
-
-	rogue.instantPoisonProcChanceBonus = 0
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Instant Poison",
