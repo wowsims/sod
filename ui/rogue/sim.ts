@@ -64,7 +64,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAgility,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
-		Stat.StatSpellDamage,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatSpellDamage,
