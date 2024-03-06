@@ -39,8 +39,6 @@ type Hunter struct {
 	AmmoDamageBonus           float64
 	NormalizedAmmoDamageBonus float64
 
-	highestSerpentStingRank int
-
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
 

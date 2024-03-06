@@ -22,7 +22,7 @@ func (warrior *Warrior) StanceMatches(other Stance) bool {
 }
 
 func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *core.Spell {
-	maxRetainedRage := 10.0 + 5*float64(warrior.Talents.TacticalMastery)
+	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
 	actionID := aura.ActionID
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
@@ -62,40 +62,33 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 }
 
 func (warrior *Warrior) registerBattleStanceAura() {
-	const threatMult = 0.8
-
-	actionID := core.ActionID{SpellID: 2457}
-
 	warrior.BattleStanceAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:    "Battle Stance",
-		ActionID: actionID,
+		ActionID: core.ActionID{SpellID: 2457},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult
+			aura.Unit.PseudoStats.ThreatMultiplier *= 0.8
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= threatMult
+			aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
 		},
 	})
 	warrior.BattleStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
 }
 
 func (warrior *Warrior) registerDefensiveStanceAura() {
-	const threatMult = 2.0735
-
-	actionID := core.ActionID{SpellID: 71}
-
 	warrior.DefensiveStanceAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:    "Defensive Stance",
-		ActionID: actionID,
+		ActionID: core.ActionID{SpellID: 71},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.90
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.90
-
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1.3
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.9
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.9
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.90
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1.3
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.9
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.9
 		},
 	})
@@ -103,20 +96,19 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 }
 
 func (warrior *Warrior) registerBerserkerStanceAura() {
-	threatMult := 0.8
-	critBonus := core.CritRatingPerCritChance * 3.0
-
 	warrior.BerserkerStanceAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:    "Berserker Stance",
 		ActionID: core.ActionID{SpellID: 2458},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult
-			aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, critBonus)
+			aura.Unit.PseudoStats.ThreatMultiplier *= 0.8
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
+			aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, core.CritRatingPerCritChance*3)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= threatMult
-			aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, -critBonus)
+			aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
+			aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, -core.CritRatingPerCritChance*3)
 		},
 	})
 	warrior.BerserkerStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})

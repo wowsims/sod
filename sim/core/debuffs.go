@@ -471,6 +471,43 @@ func GiftOfArthasAura(target *Unit) *Aura {
 	})
 }
 
+func HemorrhageAura(target *Unit, casterLevel int32) *Aura {
+	debuffBonusDamage := map[int32]float64{
+		40: 3,
+		50: 5,
+		60: 7,
+	}[casterLevel]
+
+	spellID := map[int32]int32{
+		40: 16511,
+		50: 17347,
+		60: 17348,
+	}[casterLevel]
+
+	return target.GetOrRegisterAura(Aura{
+		Label:     "Hemorrhage",
+		ActionID:  ActionID{SpellID: spellID},
+		Duration:  time.Second * 8,
+		MaxStacks: 30,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusPhysicalDamageTaken += debuffBonusDamage
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusPhysicalDamageTaken -= debuffBonusDamage
+		},
+		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if spell.SpellSchool != SpellSchoolPhysical {
+				return
+			}
+			if !result.Landed() || result.Damage == 0 {
+				return
+			}
+			// TODO find out which abilities are actually affected
+			aura.RemoveStack(sim)
+		},
+	})
+}
+
 func CurseOfVulnerabilityAura(target *Unit) *Aura {
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Vulnerability",
@@ -897,6 +934,16 @@ func ThunderClapAura(target *Unit, points int32, playerLevel int32) *Aura {
 		Duration: time.Second * 30,
 	})
 	AtkSpeedReductionEffect(aura, []float64{1.1, 1.14, 1.17, 1.2}[points])
+	return aura
+}
+
+func WaylayAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Waylay",
+		ActionID: ActionID{SpellID: 408699},
+		Duration: time.Second * 8,
+	})
+	AtkSpeedReductionEffect(aura, 1.1)
 	return aura
 }
 

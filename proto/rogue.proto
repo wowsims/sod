@@ -3,8 +3,6 @@ package proto;
 
 option go_package = "./proto";
 
-import "common.proto";
-
 message RogueTalents {
 	// Assassination
 	int32 improved_eviscerate = 1;
@@ -64,25 +62,42 @@ message RogueTalents {
 	bool premeditation = 51;
 }
 
+enum RogueRune {
+	RogueRuneNone = 0;
+	RuneDeadlyBrew = 399965;
+	RuneJustAFleshWound = 400014;
+	RuneQuickDraw = 398196;
+	RuneSlaughterFromTheShadows = 424925;
+	RuneBetweenTheEyes = 400009;
+	RuneBladeDance = 400012;
+	RuneEnvenom = 399963;
+	RuneMainGauche = 424919;
+	RuneMutilate = 399956;
+	RuneSaberSlash = 424785;
+	RuneShadowstrike = 399985;
+	RuneShiv = 424799;
+	RuneMasterOfSubtlety = 425096;
+	RuneWaylay = 408700;
+	RuneRollingWithThePunches = 400093;
+	RuneShadowstep = 400101;
+	RuneShurikenToss = 400096;
+	RunePoisonedKnife = 425102;
+}
+
+message RogueOptions {
+
+}
+
 message Rogue {
 	message Rotation {
 	}
-	
-	message Options {
-		UnitReference tricks_of_the_trade_target = 1;
-		enum PoisonImbue {
-			NoPoison = 0;
-			InstantPoison = 1;
-			DeadlyPoison = 2;
-			WoundPoison = 3;
-		}
-		PoisonImbue mh_imbue = 2;
-		PoisonImbue oh_imbue = 3;
-		int32 starting_overkill_duration = 4;
-		bool apply_poisons_manually = 5;
-		int32 honor_of_thieves_crit_rate = 6;
-		bool assume_bleed_active = 7;
-		float vanish_break_time = 8;
+
+	RogueOptions options = 2;
+}
+
+message TankRogue {
+	message Rotation {
 	}
-	Options options = 3;
+
+	RogueOptions options = 2;
 }

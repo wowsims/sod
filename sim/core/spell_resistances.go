@@ -127,7 +127,7 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 	resistanceCap := float64(attacker.Level * 5)
 	resistanceCoef := resistance / resistanceCap
 
-	// Pre-TBC all dots that dont have an initial damage component
+	// Pre-TBC all dots that don't have an initial damage component
 	// use a 1/10 of the resistance score
 	if pureDot {
 		resistanceCoef /= 10

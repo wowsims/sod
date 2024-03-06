@@ -31,7 +31,7 @@ func (priest *Priest) registerMindFlay() {
 			config := priest.newMindFlaySpellConfig(rank, tick)
 
 			if config.RequiredLevel <= int(priest.Level) {
-				priest.MindFlay[rank][tick] = priest.GetOrRegisterSpell(config)
+				priest.MindFlay[rank][tick] = priest.RegisterSpell(config)
 			}
 		}
 	}
@@ -55,7 +55,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	mindFlayTickSpell := priest.newMindFlayTickSpell(rank, tickIdx)
 
 	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
+		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       flags,
@@ -109,15 +109,15 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 }
 
 func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell {
-	spellId := MindFlayTickSpellId[rank]
 	baseDamage := MindFlayBaseDamage[rank] / MindFlayTicks
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
-	return priest.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId}.WithTag(numTicks),
-		Rank:        rank,
+	return priest.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 412526}.WithTag(numTicks),
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
+
+		Rank: rank,
 
 		BonusHitRating:   1, // Not an independent hit once initial lands
 		BonusCritRating:  0,
@@ -127,7 +127,7 @@ func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := (baseDamage + (spellCoeff * spell.SpellDamage())) * priest.MindFlayModifier
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicAlwaysHit)
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

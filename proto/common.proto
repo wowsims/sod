@@ -17,6 +17,7 @@ enum Spec {
 	SpecProtectionPaladin = 13;
 	SpecRetributionPaladin = 3;
 	SpecRogue = 7;
+	SpecTankRogue = 22;
 	SpecHealingPriest = 17;
 	SpecShadowPriest = 4;
 	SpecWarlock = 5;
@@ -311,6 +312,7 @@ enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
+	ConjuredRogueThistleTea = 3;
 }
 
 enum EnchantedSigil {
@@ -392,7 +394,7 @@ enum FrostPowerBuff {
 	ElixirOfFrostPower = 1;
 }
 
-// NextIndex: 21
+// NextIndex: 26
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -431,6 +433,11 @@ enum WeaponImbue {
 	// Spell Oils
 	ShadowOil = 21;
 	FrostOil = 22;
+
+	// Rogue imbues
+	InstantPoison = 23;
+	DeadlyPoison = 24;
+	WoundPoison = 25;
 }
 
 // NextIndex: 13

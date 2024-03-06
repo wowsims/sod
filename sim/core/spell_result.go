@@ -2,8 +2,6 @@ package core
 
 import (
 	"fmt"
-	"math"
-
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -190,7 +188,7 @@ func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	}
 
 	// Always a 1% chance to miss in classic
-	return math.Max(0.01, missChance)
+	return max(0.01, missChance)
 }
 func (spell *Spell) MagicHitCheck(sim *Simulation, attackTable *AttackTable) bool {
 	return sim.Proc(1.0-spell.SpellChanceToMiss(attackTable), "Magical Hit Roll")

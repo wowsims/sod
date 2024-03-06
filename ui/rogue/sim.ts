@@ -5,25 +5,18 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import { Player } from '../core/player.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	PseudoStat,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect,
+	Target,
 	WeaponType
 } from '../core/proto/common.js';
-import {
-	Rogue_Options_PoisonImbue,
-} from '../core/proto/rogue.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as RogueInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
@@ -38,13 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			return {
 				updateOn: simUI.sim.encounter.changeEmitter,
 				getContent: () => {
-					let hasNoArmor = false
-					for (const target of simUI.sim.encounter.targets) {
-						if (new Stats(target.stats).getStat(Stat.StatArmor) <= 0) {
-							hasNoArmor = true
-							break
-						}
-					}
+					const hasNoArmor = !!(simUI.sim.encounter.targets ?? []).find((target: Target) => new Stats(target.stats).getStat(Stat.StatArmor) <= 0)
 					if (hasNoArmor) {
 						return 'One or more targets have no armor. Check advanced encounter settings.';
 					} else {
@@ -70,27 +57,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 				},
 			};
 		},
-		(simUI: IndividualSimUI<Spec.SpecRogue>) => {
-			return {
-				updateOn: simUI.player.changeEmitter,
-				getContent: () => {
-					const mhWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-					const ohWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-					const mhImbue = simUI.player.getSpecOptions().mhImbue;
-					const ohImbue = simUI.player.getSpecOptions().ohImbue;
-					if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined' || !simUI.player.getSpecOptions().applyPoisonsManually) {
-						return '';
-					}
-					if (mhWeaponSpeed < ohWeaponSpeed && ohImbue == Rogue_Options_PoisonImbue.DeadlyPoison) {
-						return 'Deadly poison applied to slower (off hand) weapon.';
-					}
-					if (ohWeaponSpeed < mhWeaponSpeed && mhImbue == Rogue_Options_PoisonImbue.DeadlyPoison) {
-						return 'Deadly poison applied to slower (main hand) weapon.';
-					}
-					return '';
-				},
-			};
-		},
 	],
 
 	// All stats for which EP should be calculated.
@@ -104,7 +70,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -125,7 +90,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 	],
 
 	defaults: {
@@ -147,44 +111,35 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			[PseudoStat.PseudoStatMainHandDps]: 2.94,
 			[PseudoStat.PseudoStatOffHandDps]: 2.45,
 		}),
+		
+		
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AssassinationTalents137.data,
+		talents: Presets.ColdBloodMutilate40Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-			moonkinAura: true,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			sunderArmor: true,
-			faerieFire: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	playerInputs: {
-		inputs: [
-			RogueInputs.ApplyPoisonsManually
-		]
+		inputs: []
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		RogueInputs.MainHandImbue,
-		RogueInputs.OffHandImbue,
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
-		BuffDebuffInputs.SpellISBDebuff
+		BuffDebuffInputs.SpellShadowWeavingDebuff,
+		BuffDebuffInputs.NatureSpellDamageDebuff,
+		BuffDebuffInputs.MekkatorqueFistDebuff,
+		BuffDebuffInputs.SpellScorchDebuff,
+		BuffDebuffInputs.PowerInfusion
 	],
 	excludeBuffDebuffInputs: [
 	],
@@ -277,53 +232,5 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 export class RogueSimUI extends IndividualSimUI<Spec.SpecRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
-		this.player.changeEmitter.on(c => {
-			const options = this.player.getSpecOptions()
-			const encounter = this.sim.encounter
-			if (!options.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return
-				}
-				if (encounter.targets.length > 3) {
-					options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-					options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
-				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
-					} else {
-						options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-					}
-				}
-			}
-			this.player.setSpecOptions(c, options)
-		});
-		this.sim.encounter.changeEmitter.on(c => {
-			const options = this.player.getSpecOptions()
-			const encounter = this.sim.encounter
-			if (!options.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return
-				}
-				if (encounter.targets.length > 3) {
-					options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-					options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
-				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.mhImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.InstantPoison
-					} else {
-						options.mhImbue = Rogue_Options_PoisonImbue.InstantPoison
-						options.ohImbue = Rogue_Options_PoisonImbue.DeadlyPoison
-					}
-				}
-			}
-			this.player.setSpecOptions(c, options)
-		});
 	}
 }
