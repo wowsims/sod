@@ -1,10 +1,5 @@
 package core
 
-import (
-	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
-)
-
 type ProcMask uint32
 
 // Returns whether there is any overlap between the given masks.
@@ -208,66 +203,6 @@ const (
 
 	SpellFlagIgnoreModifiers = SpellFlagIgnoreAttackerModifiers | SpellFlagIgnoreTargetModifiers
 )
-
-type SpellSchool byte
-
-const (
-	SpellSchoolNone     SpellSchool = 0
-	SpellSchoolPhysical SpellSchool = 1 << iota
-	SpellSchoolArcane
-	SpellSchoolFire
-	SpellSchoolFrost
-	SpellSchoolHoly
-	SpellSchoolNature
-	SpellSchoolShadow
-
-	SpellSchoolMagic = SpellSchoolArcane | SpellSchoolFire | SpellSchoolFrost | SpellSchoolHoly | SpellSchoolNature | SpellSchoolShadow
-)
-
-// Returns whether there is any overlap between the given masks.
-func (ss SpellSchool) Matches(other SpellSchool) bool {
-	return (ss & other) != 0
-}
-
-func (ss SpellSchool) ResistanceStat() stats.Stat {
-	switch ss {
-	case SpellSchoolArcane:
-		return stats.ArcaneResistance
-	case SpellSchoolFire:
-		return stats.FireResistance
-	case SpellSchoolFrost:
-		return stats.FrostResistance
-	case SpellSchoolHoly:
-		return 0 // Holy resistance doesn't exist.
-	case SpellSchoolNature:
-		return stats.NatureResistance
-	case SpellSchoolShadow:
-		return stats.ShadowResistance
-	default:
-		return 0 // This applies to spell school combinations, which supposedly use the "path of the least resistance", so 0 is a good fit.
-	}
-}
-
-func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
-	switch p {
-	case proto.SpellSchool_SpellSchoolPhysical:
-		return SpellSchoolPhysical
-	case proto.SpellSchool_SpellSchoolArcane:
-		return SpellSchoolArcane
-	case proto.SpellSchool_SpellSchoolFire:
-		return SpellSchoolFire
-	case proto.SpellSchool_SpellSchoolFrost:
-		return SpellSchoolFrost
-	case proto.SpellSchool_SpellSchoolHoly:
-		return SpellSchoolHoly
-	case proto.SpellSchool_SpellSchoolNature:
-		return SpellSchoolNature
-	case proto.SpellSchool_SpellSchoolShadow:
-		return SpellSchoolShadow
-	default:
-		return SpellSchoolPhysical
-	}
-}
 
 /*
 outcome roll hit/miss/crit/glance (assigns Outcome mask) -> If Hit, Crit Roll -> damage (applies metrics) -> trigger proc

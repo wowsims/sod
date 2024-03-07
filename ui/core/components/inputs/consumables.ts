@@ -750,9 +750,9 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: WizardOil, 					stats: [Stat.StatSpellPower] },
 	{ config: BrillianWizardOil,	stats: [Stat.StatSpellPower] },
 
-	{ config: MinorManaOil, 			stats: [Stat.StatHealing, Stat.StatSpellPower] },
-	{ config: LesserManaOil, 			stats: [Stat.StatHealing, Stat.StatSpellPower] },
-	{ config: BrilliantManaOil, 	stats: [Stat.StatHealing, Stat.StatSpellPower] },
+	{ config: MinorManaOil, 			stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: LesserManaOil, 			stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: BrilliantManaOil, 	stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil, stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
 	{ config: SolidSharpeningStone(slot), 			stats: [Stat.StatAttackPower] },

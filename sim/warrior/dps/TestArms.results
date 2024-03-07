@@ -120,64 +120,64 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 37.80722
-  tps: 38.13243
+  dps: 37.80289
+  tps: 38.12896
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 35.50069
-  tps: 36.33298
+  dps: 35.49319
+  tps: 36.32698
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 38.06272
-  tps: 38.31916
+  dps: 38.05838
+  tps: 38.31569
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 35.31409
-  tps: 36.1837
+  dps: 35.30975
+  tps: 36.18023
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 35.48299
-  tps: 36.28895
+  dps: 35.47661
+  tps: 36.28384
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 38.732
-  tps: 38.86984
+  dps: 38.72767
+  tps: 38.86637
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 35.45978
-  tps: 36.27038
+  dps: 35.45366
+  tps: 36.26548
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 35.87515
-  tps: 36.60509
+  dps: 35.8677
+  tps: 36.59913
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 38.2074
-  tps: 38.47633
+  dps: 38.20307
+  tps: 38.47286
  }
 }
 dps_results: {
@@ -190,98 +190,98 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-Average-Default"
  value: {
-  dps: 47.58309
-  tps: 45.54877
+  dps: 47.58048
+  tps: 45.54669
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 60.38915
-  tps: 125.99356
+  dps: 60.38482
+  tps: 125.99009
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 47.03508
-  tps: 45.50254
+  dps: 47.03074
+  tps: 45.49907
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 68.6191
-  tps: 64.09898
+  dps: 68.59742
+  tps: 64.08164
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 31.26354
-  tps: 100.99328
+  dps: 31.26104
+  tps: 100.99128
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 23.6056
-  tps: 26.9864
+  dps: 23.6031
+  tps: 26.9844
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 34.0851
-  tps: 36.85493
+  dps: 34.0726
+  tps: 36.84493
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 62.31011
-  tps: 127.66731
+  dps: 62.30577
+  tps: 127.66384
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 48.78066
-  tps: 46.84981
+  dps: 48.77632
+  tps: 46.84634
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 71.65025
-  tps: 66.61068
+  dps: 71.62857
+  tps: 66.59334
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 31.70352
-  tps: 101.46468
+  dps: 31.70102
+  tps: 101.46268
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 24.22561
-  tps: 27.38644
+  dps: 24.22311
+  tps: 27.38444
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 35.16204
-  tps: 37.65009
+  dps: 35.14954
+  tps: 37.64009
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 48.1654
-  tps: 46.28926
+  dps: 48.16106
+  tps: 46.28579
  }
 }

@@ -117,8 +117,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.01993
-  weights: 2.362
-  weights: 2.10831
+  weights: 2.36114
+  weights: 2.10775
   weights: 0
   weights: 0
   weights: 0
@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.17413
-  weights: 7.67354
-  weights: 6.30825
+  weights: 7.67223
+  weights: 6.3097
   weights: 0
   weights: 0
   weights: 0
@@ -197,637 +197,637 @@ stat_weights_results: {
 dps_results: {
  key: "TestBM-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 219.16598
-  tps: 87.60045
+  dps: 219.02516
+  tps: 87.45867
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 225.58321
-  tps: 91.32813
+  dps: 225.42286
+  tps: 91.1666
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 225.88127
-  tps: 91.51434
+  dps: 225.74044
+  tps: 91.37256
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-BloodlashBow-216516"
  value: {
-  dps: 232.71845
-  tps: 105.51599
+  dps: 232.57322
+  tps: 105.36938
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 253.59272
-  tps: 112.78161
+  dps: 253.47174
+  tps: 112.65968
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 225.68075
-  tps: 97.10598
+  dps: 225.4664
+  tps: 96.89015
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 230.87487
-  tps: 97.6992
+  dps: 230.75592
+  tps: 97.5793
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 224.64986
-  tps: 96.50926
+  dps: 224.44307
+  tps: 96.30109
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 224.6711
-  tps: 93.91549
+  dps: 224.54417
+  tps: 93.78761
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 224.81272
-  tps: 95.54538
+  dps: 224.61098
+  tps: 95.34225
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 228.73925
-  tps: 98.7818
+  dps: 228.51704
+  tps: 98.55811
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 234.015
-  tps: 95.56207
+  dps: 233.8878
+  tps: 95.43391
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 185.24184
-  tps: 85.71872
+  dps: 185.099
+  tps: 85.57588
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 220.65718
-  tps: 89.01532
+  dps: 220.49665
+  tps: 88.85363
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Average-Default"
  value: {
-  dps: 236.62054
-  tps: 97.5685
+  dps: 236.48292
+  tps: 97.42954
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 244.98791
-  tps: 112.51172
+  dps: 244.78268
+  tps: 112.30483
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 233.58069
-  tps: 98.93627
+  dps: 233.4544
+  tps: 98.80902
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 281.69747
-  tps: 112.75804
+  dps: 281.59901
+  tps: 112.65481
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 120.31212
-  tps: 61.48674
+  dps: 120.21337
+  tps: 61.38705
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 115.32077
-  tps: 55.85027
+  dps: 115.25035
+  tps: 55.77932
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 136.72425
-  tps: 61.3038
+  dps: 136.67071
+  tps: 61.24759
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 247.14538
-  tps: 109.0738
+  dps: 246.94135
+  tps: 108.8681
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 234.9662
-  tps: 97.30628
+  dps: 234.83022
+  tps: 97.16935
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 284.56247
-  tps: 110.75035
+  dps: 284.464
+  tps: 110.64713
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 120.39622
-  tps: 60.41023
+  dps: 120.2948
+  tps: 60.30788
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 116.09713
-  tps: 54.77929
+  dps: 116.0275
+  tps: 54.70914
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 137.35637
-  tps: 61.46752
+  dps: 137.30282
+  tps: 61.41131
  }
 }
 dps_results: {
  key: "TestBM-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 233.40063
-  tps: 97.70397
+  dps: 233.26583
+  tps: 97.56823
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 603.5039
-  tps: 171.39186
+  dps: 603.42574
+  tps: 171.3137
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 592.19487
-  tps: 168.16998
+  dps: 592.10735
+  tps: 168.08247
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 612.20504
-  tps: 176.31879
+  dps: 612.12688
+  tps: 176.24062
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 592.78816
-  tps: 194.20597
+  dps: 592.69008
+  tps: 194.1079
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 558.35722
-  tps: 177.69825
+  dps: 558.23067
+  tps: 177.5717
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 555.3908
-  tps: 174.38519
+  dps: 555.29602
+  tps: 174.29041
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 565.32348
-  tps: 180.92192
+  dps: 565.2009
+  tps: 180.79934
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 585.12629
-  tps: 188.51191
+  dps: 585.03495
+  tps: 188.42056
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 563.0161
-  tps: 179.23706
+  dps: 562.90643
+  tps: 179.12739
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 566.29077
-  tps: 180.62344
+  dps: 566.15745
+  tps: 180.49013
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 747.60716
-  tps: 186.68728
+  dps: 747.49241
+  tps: 186.57253
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 648.39614
-  tps: 161.81236
+  dps: 648.29585
+  tps: 161.71207
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 588.74818
-  tps: 166.60259
+  dps: 588.6617
+  tps: 166.51612
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Average-Default"
  value: {
-  dps: 756.0191
-  tps: 192.64234
+  dps: 755.89569
+  tps: 192.51894
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1416.94926
-  tps: 856.54783
+  dps: 1416.51021
+  tps: 856.10878
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 744.1711
-  tps: 193.15491
+  dps: 744.06124
+  tps: 193.04505
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 776.53781
-  tps: 208.32464
+  dps: 776.36084
+  tps: 208.14766
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 653.46225
-  tps: 546.66975
+  dps: 653.20607
+  tps: 546.41357
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 338.39196
-  tps: 105.78451
+  dps: 338.32496
+  tps: 105.71751
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 371.0844
-  tps: 111.1599
+  dps: 370.97596
+  tps: 111.05145
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 528.87933
-  tps: 524.93653
+  dps: 528.48269
+  tps: 524.53989
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 470.78554
-  tps: 229.35242
+  dps: 470.42661
+  tps: 228.99349
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 523.92393
-  tps: 251.96704
+  dps: 523.52764
+  tps: 251.57075
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 256.42601
-  tps: 455.62766
+  dps: 256.18817
+  tps: 455.38982
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 219.05371
-  tps: 135.19833
+  dps: 218.81642
+  tps: 134.96105
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 252.44316
-  tps: 150.23278
+  dps: 252.18269
+  tps: 149.97231
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 462.47251
-  tps: 456.38371
+  dps: 462.42066
+  tps: 456.33056
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 462.47251
-  tps: 189.37306
+  dps: 462.42066
+  tps: 189.31992
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 515.05687
-  tps: 223.04978
+  dps: 515.02447
+  tps: 223.01089
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 221.57863
-  tps: 431.92158
+  dps: 221.55458
+  tps: 431.89691
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 221.57863
-  tps: 114.82458
+  dps: 221.55458
+  tps: 114.79992
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 253.32423
-  tps: 125.94734
+  dps: 253.30881
+  tps: 125.92884
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 740.754
-  tps: 828.44668
+  dps: 739.85619
+  tps: 827.54401
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 666.40236
-  tps: 417.75834
+  dps: 665.48324
+  tps: 416.8353
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 737.67779
-  tps: 466.10688
+  dps: 736.8658
+  tps: 465.27529
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 398.65331
-  tps: 661.89037
+  dps: 398.08287
+  tps: 661.31497
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 349.06902
-  tps: 256.28657
+  dps: 348.51605
+  tps: 255.72981
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 379.19366
-  tps: 280.14894
+  dps: 378.65832
+  tps: 279.59462
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1416.18693
-  tps: 849.64733
+  dps: 1415.76142
+  tps: 849.22182
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 754.77167
-  tps: 190.20101
+  dps: 754.65691
+  tps: 190.08625
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 796.089
-  tps: 205.93703
+  dps: 795.92796
+  tps: 205.77599
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 649.03162
-  tps: 539.24166
+  dps: 648.77559
+  tps: 538.98563
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 340.46462
-  tps: 104.76261
+  dps: 340.39378
+  tps: 104.69177
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 375.85961
-  tps: 111.73232
+  dps: 375.75117
+  tps: 111.62388
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 536.71966
-  tps: 520.39662
+  dps: 536.32462
+  tps: 520.00158
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 478.77757
-  tps: 226.12793
+  dps: 478.39769
+  tps: 225.74805
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 533.21399
-  tps: 248.84332
+  dps: 532.81769
+  tps: 248.44702
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 259.5263
-  tps: 447.99417
+  dps: 259.28475
+  tps: 447.75262
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 221.4396
-  tps: 133.75399
+  dps: 221.18956
+  tps: 133.50395
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 254.61557
-  tps: 148.3712
+  dps: 254.3551
+  tps: 148.11074
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 475.33176
-  tps: 452.86698
+  dps: 475.28639
+  tps: 452.82032
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 475.33176
-  tps: 189.85889
+  dps: 475.28639
+  tps: 189.81223
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 537.96045
-  tps: 229.10426
+  dps: 537.92804
+  tps: 229.06537
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 223.66883
-  tps: 430.57073
+  dps: 223.64755
+  tps: 430.54884
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 223.66883
-  tps: 113.08942
+  dps: 223.64755
+  tps: 113.06753
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 257.99898
-  tps: 130.10718
+  dps: 257.98356
+  tps: 130.08868
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 743.2667
-  tps: 826.24765
+  dps: 742.36565
+  tps: 825.34175
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 672.21667
-  tps: 412.07422
+  dps: 671.35109
+  tps: 411.20473
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 742.92768
-  tps: 460.07311
+  dps: 742.11568
+  tps: 459.24153
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 399.26927
-  tps: 653.40538
+  dps: 398.67469
+  tps: 652.80585
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 348.4123
-  tps: 250.86753
+  dps: 347.88149
+  tps: 250.33292
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_ranged_bm-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 378.46664
-  tps: 275.40382
+  dps: 377.92263
+  tps: 274.84084
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 731.03006
-  tps: 188.63466
+  dps: 730.89956
+  tps: 188.50417
  }
 }

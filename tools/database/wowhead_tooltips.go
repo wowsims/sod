@@ -282,7 +282,7 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatFrostResistance:   float64(item.GetIntValue(frostResistanceRegex)),
 		proto.Stat_StatNatureResistance:  float64(item.GetIntValue(natureResistanceRegex)),
 		proto.Stat_StatShadowResistance:  float64(item.GetIntValue(shadowResistanceRegex)),
-		proto.Stat_StatHealing:           float64(item.GetIntValue(spellHealingRegex)),
+		proto.Stat_StatHealingPower:      float64(item.GetIntValue(spellHealingRegex)),
 		proto.Stat_StatFeralAttackPower:  float64(item.GetIntValue(feralAttackPowerRegex)),
 	}
 }

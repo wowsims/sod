@@ -254,8 +254,8 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			})
 		case proto.WeaponImbue_BrilliantManaOil:
 			character.AddStats(stats.Stats{
-				stats.MP5:     12,
-				stats.Healing: 25,
+				stats.MP5:          12,
+				stats.HealingPower: 25,
 			})
 		case proto.WeaponImbue_BlackfathomManaOil:
 			character.AddStats(stats.Stats{
@@ -590,6 +590,8 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
+		// TODO: This should use another spell (443813) as the DoT
+		// Also doesn't apply to bosses or something.
 		Dot: DotConfig{
 			Aura: Aura{
 				Label: actionID.String(),
