@@ -49,8 +49,7 @@ func (rogue *Rogue) registerEnvenom() {
 			return rogue.ComboPoints() > 0 && target.GetAuraByID(rogue.DeadlyPoison[0].ActionID).IsActive()
 		},
 
-		DamageMultiplier: 1 +
-			[]float64{0.0, 0.04, 0.08, 0.12, 0.16, 0.2}[rogue.Talents.VilePoisons],
+		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -67,8 +66,9 @@ func (rogue *Rogue) registerEnvenom() {
 			dp := target.GetAura("DeadlyPoison")
 			// - base damage is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
+			// - Spell power is 1:1 at all ranks and cp
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := baseAbilityDamage*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
+			baseDamage := baseAbilityDamage*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower() + spell.SpellDamage()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

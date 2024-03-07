@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -153,17 +152,22 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 	}
 
 	calcBerserkingPct := func() float64 {
-		if customPercentage == 0 {
-			healthPctMissing := 1 - character.CurrentHealthPercent()
-			// 10% base + 1/3 of missing health percentage up to a max of 30%
-			return math.Min(.1+(healthPctMissing/3), .3)
-		} else {
+		if customPercentage != 0 {
 			return customPercentage
+		}
+		// from 10% at full health to 30% at 40% or less health
+		switch hp := character.CurrentHealthPercent(); {
+		case hp >= 1:
+			return 0.1
+		case hp <= 0.4:
+			return 0.3
+		default:
+			return 0.1 + (1-hp)/3
 		}
 	}
 
 	var berserkingAura *Aura
-	var berserkingPct float64
+	var berserkingHaste float64
 	if character.HasManaBar() {
 		// Mana-using classes gain a flat % reduction in attack and cast speed
 		berserkingAura = character.RegisterAura(Aura{
@@ -171,18 +175,18 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 			ActionID: actionID,
 			Duration: time.Second * 10,
 			OnGain: func(aura *Aura, sim *Simulation) {
-				berserkingPct = calcBerserkingPct()
+				berserkingHaste = 1 / (1 - calcBerserkingPct())
 
-				character.MultiplyCastSpeed(1 / (1 - berserkingPct))
-				character.MultiplyAttackSpeed(sim, 1/(1-berserkingPct))
+				character.MultiplyCastSpeed(berserkingHaste)
+				character.MultiplyAttackSpeed(sim, berserkingHaste)
 
 				if sim.Log != nil {
-					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+					character.Log(sim, "Berserking increased attack and casting speed by %.2f%% (%.2f%% hp)", berserkingHaste*100-100, character.CurrentHealthPercent()*100)
 				}
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed((1 - berserkingPct))
-				character.MultiplyAttackSpeed(sim, (1 - berserkingPct))
+				character.MultiplyCastSpeed(1 / berserkingHaste)
+				character.MultiplyAttackSpeed(sim, 1/berserkingHaste)
 			},
 		})
 	} else {
@@ -192,23 +196,21 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 			ActionID: actionID,
 			Duration: time.Second * 10,
 			OnGain: func(aura *Aura, sim *Simulation) {
-				berserkingPct = calcBerserkingPct()
+				berserkingHaste = 1 + calcBerserkingPct()
 
-				character.MultiplyCastSpeed(1 + berserkingPct)
-				character.MultiplyAttackSpeed(sim, 1+berserkingPct)
+				character.MultiplyAttackSpeed(sim, berserkingHaste)
 
 				if sim.Log != nil {
-					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingPct*100, character.CurrentHealthPercent()*100.0)
+					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingHaste*100-100, character.CurrentHealthPercent()*100)
 				}
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1 / (1 + berserkingPct))
-				character.MultiplyAttackSpeed(sim, 1/(1+berserkingPct))
+				character.MultiplyAttackSpeed(sim, 1/berserkingHaste)
 			},
 		})
 	}
 
-	berserkingSpell := character.RegisterSpell(SpellConfig{
+	config := SpellConfig{
 		ActionID: actionID,
 
 		Cast: CastConfig{
@@ -221,7 +223,18 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 		ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 			berserkingAura.Activate(sim)
 		},
-	})
+	}
+
+	switch {
+	case character.HasManaBar():
+		config.ManaCost = ManaCostOptions{BaseCost: 0.07}
+	case character.HasRageBar():
+		config.RageCost = RageCostOptions{Cost: 5}
+	case character.HasEnergyBar():
+		config.EnergyCost = EnergyCostOptions{Cost: 10}
+	}
+
+	berserkingSpell := character.RegisterSpell(config)
 
 	character.AddMajorCooldown(MajorCooldown{
 		Spell: berserkingSpell,

@@ -5,18 +5,14 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import { Player } from '../core/player.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	ItemSlot,
 	PartyBuffs,
 	PseudoStat,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
 	Target,
-	TristateEffect,
 	WeaponType
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
@@ -70,10 +66,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatSpellDamage,
+		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -88,12 +85,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAgility,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
+		Stat.StatSpellDamage,
 		Stat.StatMeleeHit,
 		Stat.StatSpellHit,
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 	],
 
 	defaults: {
@@ -101,42 +98,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatAgility]: 1.86,
-			[Stat.StatStrength]: 1.14,
+			[Stat.StatAgility]: 1.69,
+			[Stat.StatStrength]: 1.10,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellCrit]: 0.28,
-			[Stat.StatSpellHit]: 0.08,
-			[Stat.StatMeleeHit]: 1.39,
-			[Stat.StatMeleeCrit]: 1.32,
-			[Stat.StatMeleeHaste]: 1.48,
-			[Stat.StatArmorPenetration]: 0.84,
-			[Stat.StatExpertise]: 0.98,
+			[Stat.StatSpellDamage]: .68,
+			[Stat.StatSpellCrit]: 2.0,
+			[Stat.StatSpellHit]: 5.54,
+			[Stat.StatMeleeHit]: 14.2,
+			[Stat.StatMeleeCrit]: 8.64,
+			[Stat.StatMeleeHaste]: 6.51,
 		}, {
 			[PseudoStat.PseudoStatMainHandDps]: 2.94,
 			[PseudoStat.PseudoStatOffHandDps]: 2.45,
 		}),
+		
+		
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
 		talents: Presets.ColdBloodMutilate40Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			strengthOfEarthTotem: TristateEffect.TristateEffectRegular,
-			moonkinAura: true,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
-		debuffs: Debuffs.create({
-			sunderArmor: true,
-			faerieFire: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	playerInputs: {
@@ -147,7 +135,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
-		BuffDebuffInputs.SpellISBDebuff
+		BuffDebuffInputs.SpellShadowWeavingDebuff,
+		BuffDebuffInputs.NatureSpellDamageDebuff,
+		BuffDebuffInputs.MekkatorqueFistDebuff,
+		BuffDebuffInputs.SpellScorchDebuff,
+		BuffDebuffInputs.PowerInfusion
 	],
 	excludeBuffDebuffInputs: [
 	],

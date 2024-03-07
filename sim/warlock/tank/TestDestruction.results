@@ -288,29 +288,29 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 88.98019
-  tps: 109.2216
+  dps: 94.70291
+  tps: 109.4319
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 94.57079
-  tps: 115.96422
+  dps: 100.47065
+  tps: 115.56544
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 93.65003
-  tps: 111.43093
+  dps: 99.79797
+  tps: 111.32049
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 91.27998
-  tps: 115.08828
+  dps: 96.96695
+  tps: 115.31318
  }
 }
 dps_results: {

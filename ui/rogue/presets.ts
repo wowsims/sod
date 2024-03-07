@@ -1,8 +1,14 @@
-import { Phase } from '../core/constants/other.js';
+import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
 import {
+	AgilityElixir,
 	Consumes,
-	Flask,
-	Food,
+	Debuffs,
+	IndividualBuffs,
+	Profession,
+	RaidBuffs,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 
@@ -15,6 +21,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import BlankGear from './gear_sets/blank.gear.json';
 import P1Daggers from './gear_sets/p1_daggers.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
+import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 
 import MutilateApl from './apls/mutilate.apl.json';
 import SinisterApl25 from './apls/basic_strike_25.apl.json';
@@ -31,6 +38,7 @@ import SinisterApl40 from './apls/basic_strike_40.apl.json';
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1Daggers)
 export const GearCombatP1 = PresetUtils.makePresetGear("P1 Combat", P1CombatGear)
+export const GearDaggersP2 = PresetUtils.makePresetGear("P2 Daggers", P2DaggersGear)
 
 export const GearPresets = {
   [Phase.Phase1]: [
@@ -38,11 +46,11 @@ export const GearPresets = {
 	GearCombatP1,
   ],
   [Phase.Phase2]: [
+	GearDaggersP2,
   ]
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase1][0];
+export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -120,7 +128,40 @@ export const DefaultTalents = DefaultTalentsAssassin;
 
 export const DefaultOptions = RogueOptions.create({});
 
+
+///////////////////////////////////////////////////////////////////////////
+//                         Consumes/Buffs/Debuffs
+///////////////////////////////////////////////////////////////////////////
+
+
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
+	dragonBreathChili: false,
+	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.ShadowOil,
 });
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	aspectOfTheLion: true,
+	battleShout: TristateEffect.TristateEffectRegular,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+});
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfMight: TristateEffect.TristateEffectRegular,
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	dreamstate: true,
+	faerieFire: true,
+	sunderArmor: true,
+	mangle: true,
+});
+
+export const OtherDefaults = {
+  	profession1: Profession.Engineering,
+  	profession2: Profession.Leatherworking,
+}

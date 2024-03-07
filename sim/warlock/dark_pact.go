@@ -1,8 +1,6 @@
 package warlock
 
 import (
-	"math"
-
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -33,7 +31,7 @@ func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			maxDrain := manaRestore
-			actualDrain := math.Min(maxDrain, warlock.Pet.CurrentMana())
+			actualDrain := min(maxDrain, warlock.Pet.CurrentMana())
 
 			warlock.Pet.SpendMana(sim, actualDrain, petManaMetrics)
 			warlock.AddMana(sim, actualDrain, manaMetrics)

@@ -332,7 +332,7 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(52, 61) + spell.SpellPower()*0.56
+			damage := sim.Roll(52, 61) + spell.SpellDamage()*0.56
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -380,7 +380,7 @@ func registerFrostOil(character *Character, isMh bool) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(33, 38) + spell.SpellPower()*0.269
+			damage := sim.Roll(33, 38) + spell.SpellDamage()*0.269
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -416,6 +416,7 @@ var DenseDynamiteActionID = ActionID{ItemID: 18641}
 var ThoriumGrenadeActionID = ActionID{ItemID: 15993}
 var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
 var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
+var GoblinLandMineActionID = ActionID{ItemID: 4395}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
@@ -451,6 +452,8 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			filler = character.newEzThroRadiationBombSpell(sharedTimer)
 		case proto.Explosive_ExplosiveHighYieldRadiationBomb:
 			filler = character.newHighYieldRadiationBombSpell(sharedTimer)
+		case proto.Explosive_ExplosiveGoblinLandMine:
+			filler = character.newGoblinLandMineSpell(sharedTimer)
 		}
 
 		character.AddMajorCooldown(MajorCooldown{
@@ -498,9 +501,10 @@ func DragonBreathChiliAura(unit *Unit) *Aura {
 }
 
 // Creates a spell object for the common explosive case.
+// TODO: create 10s delay on Goblin Landmine cast to damage
 func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
 	isSapper := actionID.SameAction(SapperActionID)
-
+	
 	var defaultCast Cast
 	if !isSapper {
 		defaultCast = Cast{
@@ -555,6 +559,10 @@ func (character *Character) newDenseDynamiteSpell(sharedTimer *Timer) *Spell {
 func (character *Character) newThoriumGrenadeSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ThoriumGrenadeActionID, SpellSchoolFire, 300, 500, Cooldown{}, 0, 0))
 }
+func (character *Character) newGoblinLandMineSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, GoblinLandMineActionID, SpellSchoolFire, 394, 506, Cooldown{}, 0, 0))
+}
+
 
 // Creates a spell object for the common explosive case.
 func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, actionID ActionID, minDamage float64, maxDamage float64, dotDamage float64, cooldown Cooldown) SpellConfig {
