@@ -827,7 +827,7 @@ func RetributionAura(character *Character, sanctifiedRetribution bool) *Aura {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Landed() && spell.SpellSchool == SpellSchoolPhysical {
+			if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
 				procSpell.Cast(sim, spell.Unit)
 			}
 		},
@@ -871,7 +871,7 @@ func ThornsAura(character *Character, points int32) *Aura {
 		Label:    "Thorns",
 		ActionID: actionID,
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Landed() && spell.SpellSchool == SpellSchoolPhysical {
+			if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
 				procSpell.Cast(sim, spell.Unit)
 			}
 		},

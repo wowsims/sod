@@ -330,7 +330,7 @@ func init() {
 				character.MultiplyAttackSpeed(sim, 1/1.04)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellSchool != core.SpellSchoolPhysical {
+				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
 					return
 				}
 

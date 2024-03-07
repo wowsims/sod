@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) registerShadowflameSpell() {
@@ -24,8 +23,45 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	shadowMasteryMulti := 1 + 0.02*float64(warlock.Talents.ShadowMastery)
 	emberstormMulti := 1 + 0.02*float64(warlock.Talents.Emberstorm)
 
-	numHits := warlock.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
+	fireDot := warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 426325},
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskEmpty,
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Shadowflame" + warlock.Label,
+			},
+
+			NumberOfTicks: 4,
+			TickLength:    time.Second * 2,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage *= emberstormMulti
+
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+					result.Damage *= 1.4
+					result.Threat *= 1.4
+				}
+				dot.Spell.DealPeriodicDamage(sim, result)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.Dot(target).Apply(sim)
+		},
+	})
 
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426320},
@@ -53,72 +89,15 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         1,
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Shadowflame" + warlock.Label,
-			},
-
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 2,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				// Use fire school for dot modifiers
-				dot.Spell.SpellSchool = core.SpellSchoolFire
-				dot.Spell.SchoolIndex = stats.SchoolIndexFire
-
-				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotBaseDamage *= emberstormMulti
-
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-
-				// Revert to shadow school
-				dot.Spell.SpellSchool = core.SpellSchoolShadow
-				dot.Spell.SchoolIndex = stats.SchoolIndexShadow
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// Use fire school for dot modifiers
-				dot.Spell.SpellSchool = core.SpellSchoolFire
-				dot.Spell.SchoolIndex = stats.SchoolIndexFire
-
-				hasLof := false
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					hasLof = true
-					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1.4
-				}
-
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-
-				if hasLof {
-					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1.4
-				}
-
-				// Revert to shadow school
-				dot.Spell.SpellSchool = core.SpellSchoolShadow
-				dot.Spell.SchoolIndex = stats.SchoolIndexShadow
-			},
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage = baseDamage + baseSpellCoeff*spell.SpellDamage()
 			baseDamage *= shadowMasteryMulti
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
-			}
-
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-
-				if results[hitIndex].Landed() {
-					spell.Dot(curTarget).Apply(sim)
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					fireDot.Cast(sim, aoeTarget)
 				}
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 		},
 	})

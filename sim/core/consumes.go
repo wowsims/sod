@@ -582,6 +582,8 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
+		// TODO: This should use another spell (443813) as the DoT
+		// Also doesn't apply to bosses or something.
 		Dot: DotConfig{
 			Aura: Aura{
 				Label: actionID.String(),
