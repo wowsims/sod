@@ -23,7 +23,6 @@ func (mage *Mage) ApplyTalents() {
 	if mage.Talents.ElementalPrecision > 0 {
 		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			// TODO: This is not correct, it will affect non-class spells this way.
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) {
 				spell.BonusHitRating += bonusHit
 			}
@@ -33,7 +32,6 @@ func (mage *Mage) ApplyTalents() {
 	if mage.Talents.ArcaneFocus > 0 {
 		bonusHit := 2 * float64(mage.Talents.ArcaneFocus) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			// TODO: This is not correct, it will affect non-class spells this way.
 			if spell.SpellSchool.Matches(core.SpellSchoolArcane) {
 				spell.BonusHitRating += bonusHit
 			}
@@ -51,7 +49,6 @@ func (mage *Mage) ApplyTalents() {
 	if mage.Talents.CriticalMass > 0 {
 		bonusCrit := 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			// TODO: This is not correct, it will affect non-class spells this way.
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) {
 				spell.BonusCritRating += bonusCrit
 			}
@@ -299,7 +296,6 @@ func (mage *Mage) registerCombustionCD() {
 
 	var fireSpells []*core.Spell
 	mage.OnSpellRegistered(func(spell *core.Spell) {
-		// TODO: This is not correct, it will affect non-class spells this way.
 		if spell.SpellSchool.Matches(core.SpellSchoolFire) {
 			fireSpells = append(fireSpells, spell)
 		}
