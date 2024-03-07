@@ -479,7 +479,7 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 	}
 
 	return spell.Unit.PseudoStats.DamageDealtMultiplier *
-		spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[spell.SchoolIndex] *
+		spell.Unit.GetSchoolDamageDoneMultiplier(spell) *
 		attackTable.DamageDealtMultiplier
 }
 
@@ -501,14 +501,13 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 	}
 
 	multiplier := attackTable.Defender.PseudoStats.DamageTakenMultiplier *
-		attackTable.Defender.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex] *
+		attackTable.Defender.GetSchoolDamageTakenMultiplier(spell) *
 		attackTable.DamageTakenMultiplier
 
 	if spell.Flags.Matches(SpellFlagDisease) {
 		multiplier *= attackTable.Defender.PseudoStats.DiseaseDamageTakenMultiplier
 	}
 
-	// TODO: Move to affected spells instead? This does not need to be checked for every single thing here.
 	if spell.Flags.Matches(SpellFlagHauntSE) {
 		multiplier *= attackTable.HauntSEDamageTakenMultiplier
 	}

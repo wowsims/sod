@@ -214,66 +214,43 @@ func (spell *Spell) SetSchool(schoolIndex stats.SchoolIndex) {
 	spell.SchoolIndex = schoolIndex
 	spell.SpellSchool = SpellSchoolFromIndex(schoolIndex)
 	spell.SchoolBaseIndices = schoolIndexToIndices[schoolIndex]
+	spell.IsMultischool = schoolIndex.IsMultiSchool()
 }
 
-// Recalculate multipliers used for given multi school for unit and target.
-// This needs to happen each time before a multi school spell enters its hit and damage calculations.
-//
-// Note: This is an overall highly unoptimized approach and should probably change if multi-school
-// spells ever become a major part of all spells used. In that case recalculation should be
-// hooked to change of the base school modifiers by e.g. implementing unit.ModifySchoolXxxxModifier() functions,
-// to then update the affected multi schools as needed.
-// Doing that would add overhead to all school modifier updates, which doesn't seem worth
-// it in the context of SoD as of writing this.
-func (spell *Spell) MultiSchoolUpdateModifiers(target *Unit) {
-	spell.MultiSchoolUpdateDamageDealtMod()
-	target.MultiSchoolUpdateDamageTakenMod(spell)
+func selectMaxMultInSchoolArray(spell *Spell, array *[stats.PrimarySchoolLen]float64) float64 {
+	high := 0.0
+	for _, baseIndex := range spell.SchoolBaseIndices {
+		mult := array[baseIndex]
+		if mult > high {
+			high = mult
+		}
+	}
+	return high
 }
 
-// Recalculate damage done modifier for multi-school.
-// Also see spell.RecalculateMultiSchoolModifiers()
-func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
-	schoolIndex := spell.SchoolIndex
-	unit := spell.Unit
-
-	if !schoolIndex.IsMultiSchool() {
-		return
+// Get school damage done multiplier.
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetSchoolDamageDoneMultiplier(spell *Spell) float64 {
+	if !spell.IsMultischool {
+		return unit.PseudoStats.SchoolDamageDealtMultiplier[spell.SchoolIndex]
 	}
-
-	maxDealt := 0.0
-
-	for _, baseSchoolIndex := range spell.SchoolBaseIndices {
-		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
-		if dealtMult > maxDealt {
-			maxDealt = dealtMult
-		}
-	}
-
-	unit.PseudoStats.SchoolDamageDealtMultiplier[schoolIndex] = maxDealt
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolDamageDealtMultiplier)
 }
 
-// Recalculate damage taken modifier for multi-school.
-// Also see spell.RecalculateMultiSchoolModifiers()
-func (unit *Unit) MultiSchoolUpdateDamageTakenMod(spell *Spell) {
-	if !spell.SchoolIndex.IsMultiSchool() {
-		return
+// Get school damage taken multiplier.
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetSchoolDamageTakenMultiplier(spell *Spell) float64 {
+	if !spell.IsMultischool {
+		return unit.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex]
 	}
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolDamageTakenMultiplier)
+}
 
-	maxTaken := 0.0
-	maxTakenCrit := 0.0
-
-	for _, baseSchoolIndex := range spell.SchoolBaseIndices {
-		takenMult := unit.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
-		if takenMult > maxTaken {
-			maxTaken = takenMult
-		}
-
-		takenCritMult := unit.PseudoStats.SchoolCritTakenMultiplier[baseSchoolIndex]
-		if takenCritMult > maxTakenCrit {
-			maxTakenCrit = takenCritMult
-		}
+// Get school crit taken multiplier.
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetCritTakenMultiplier(spell *Spell) float64 {
+	if !spell.IsMultischool {
+		return unit.PseudoStats.SchoolCritTakenMultiplier[spell.SchoolIndex]
 	}
-
-	unit.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex] = maxTaken
-	unit.PseudoStats.SchoolCritTakenMultiplier[spell.SchoolIndex] = maxTakenCrit
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenMultiplier)
 }

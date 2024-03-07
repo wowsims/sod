@@ -73,9 +73,10 @@ type Spell struct {
 	// The unit who will perform this spell.
 	Unit *Unit
 
-	SpellSchool       SpellSchool         // Schoolmask of all schools this spell uses. Use spell.SetSpellSchool() to change this!
-	SchoolIndex       stats.SchoolIndex   // Use spell.SetSpellSchool() to change this!
-	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Use spell.SetSpellSchool() to change this!
+	SpellSchool       SpellSchool         // Schoolmask of all schools this spell uses. Use Spell.SetSchool() to change this!
+	SchoolIndex       stats.SchoolIndex   // Use Spell.SetSchool() to change this!
+	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Use Spell.SetSchool() to change this!
+	IsMultischool     bool                // True if school is composed of multiple base schools. Use Spell.SetSchool() to change this!
 
 	// Controls which effects can proc from this spell.
 	ProcMask ProcMask

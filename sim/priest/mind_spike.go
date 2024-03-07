@@ -53,13 +53,11 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			spell.MultiSchoolUpdateModifiers(target)
 			damage := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()*priest.MindBlastModifier
 			return spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.MultiSchoolUpdateModifiers(target)
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 

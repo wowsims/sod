@@ -38,10 +38,8 @@ func init() {
 			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.MultiSchoolUpdateDamageDealtMod()
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					curTarget.MultiSchoolUpdateDamageTakenMod(spell)
 					spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}

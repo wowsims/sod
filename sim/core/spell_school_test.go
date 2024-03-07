@@ -234,7 +234,7 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 
 const highestMult float64 = 5.0
 
-func SchoolMultiplierArrayHelper(t *testing.T, caster *Unit, target *Unit, multArray *[stats.SchoolLen]float64,
+func SchoolMultiplierArrayHelper(t *testing.T, caster *Unit, target *Unit, multArray *[stats.PrimarySchoolLen]float64,
 	testFunc func(spell *Spell, schoolIndex stats.SchoolIndex) (bool, string)) {
 
 	spell := &Spell{
@@ -279,7 +279,6 @@ func Test_MultiSchoolModifiers(t *testing.T) {
 	t.Run("DamageDealt", func(t *testing.T) {
 		SchoolMultiplierArrayHelper(t, caster, target, &caster.PseudoStats.SchoolDamageDealtMultiplier,
 			func(spell *Spell, schoolIndex stats.SchoolIndex) (bool, string) {
-				spell.MultiSchoolUpdateModifiers(target)
 				mult := spell.AttackerDamageMultiplier(attackTable)
 				if mult != highestMult {
 					return false, fmt.Sprintf("Damage dealt multiplier for school %d returned %f, expected %f!", schoolIndex, mult, highestMult)
@@ -291,7 +290,6 @@ func Test_MultiSchoolModifiers(t *testing.T) {
 	t.Run("DamageTaken", func(t *testing.T) {
 		SchoolMultiplierArrayHelper(t, caster, target, &target.PseudoStats.SchoolDamageTakenMultiplier,
 			func(spell *Spell, schoolIndex stats.SchoolIndex) (bool, string) {
-				spell.MultiSchoolUpdateModifiers(target)
 				mult := spell.TargetDamageMultiplier(attackTable, false)
 				if mult != highestMult {
 					return false, fmt.Sprintf("Damage taken multiplier for school %d returned %f, expected %f!", schoolIndex, mult, highestMult)
