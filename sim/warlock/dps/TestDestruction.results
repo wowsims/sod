@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.80079
+  weights: -0.89981
   weights: 0
-  weights: 0.59298
-  weights: 0
-  weights: 0
+  weights: 0.55676
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.12789
-  weights: 4.86076
+  weights: 0
+  weights: 0
+  weights: 5.89538
+  weights: 4.89074
   weights: 0
   weights: 0
   weights: 0
@@ -316,56 +316,56 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 738.55172
-  tps: 663.39577
+  dps: 741.14358
+  tps: 662.88968
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 737.67029
-  tps: 1055.81027
+  dps: 739.51115
+  tps: 1054.63762
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 737.67029
-  tps: 662.91553
+  dps: 739.51115
+  tps: 661.74288
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 922.29274
-  tps: 797.33274
+  dps: 926.76366
+  tps: 797.38146
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 415.25725
-  tps: 823.30304
+  dps: 419.21222
+  tps: 825.43888
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 415.25725
-  tps: 392.66861
+  dps: 419.21222
+  tps: 394.80445
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 501.80393
-  tps: 439.55776
+  dps: 502.06166
+  tps: 437.42393
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 737.67029
-  tps: 662.91553
+  dps: 739.51115
+  tps: 661.74288
  }
 }

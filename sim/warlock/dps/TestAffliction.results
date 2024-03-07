@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.55504
+  weights: 1.09384
   weights: 0
-  weights: 1.10636
-  weights: 0
-  weights: 0
+  weights: 1.45698
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.01353
-  weights: 1.32653
+  weights: 0
+  weights: 0
+  weights: 4.77852
+  weights: 1.32515
   weights: 0
   weights: 0
   weights: 0
@@ -99,91 +99,91 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 228.78984
-  tps: 203.33947
+  dps: 230.07604
+  tps: 200.25639
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 243.61183
-  tps: 217.83125
+  dps: 245.96905
+  tps: 215.87923
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 600.58604
-  tps: 565.42801
+  dps: 607.03461
+  tps: 565.72619
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 248.44063
-  tps: 221.77925
+  dps: 251.87771
+  tps: 221.35029
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 260.32458
-  tps: 235.87015
+  dps: 264.33577
+  tps: 235.79329
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 598.82395
-  tps: 565.41053
+  dps: 604.96253
+  tps: 565.71361
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 600.38734
-  tps: 1199.58213
+  dps: 602.71941
+  tps: 1195.85579
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 600.38734
-  tps: 567.42346
+  dps: 602.71941
+  tps: 563.69713
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 628.72223
-  tps: 578.86264
+  dps: 632.17861
+  tps: 576.08495
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 335.94625
-  tps: 973.40549
+  dps: 341.22635
+  tps: 975.89097
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 335.94625
-  tps: 333.10016
+  dps: 341.22635
+  tps: 335.58563
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 358.34381
-  tps: 334.10489
+  dps: 367.12548
+  tps: 340.09618
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 600.38734
-  tps: 567.42346
+  dps: 602.71941
+  tps: 563.69713
  }
 }
