@@ -155,11 +155,11 @@ func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
 }
 
 func (paladin *Paladin) Has1hEquipped() bool {
-	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand
+	return paladin.HasMHWeapon() && paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand
 }
 
 func (paladin *Paladin) Has2hEquipped() bool {
-	return paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
+	return paladin.HasMHWeapon() && paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
 }
 
 func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {

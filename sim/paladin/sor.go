@@ -53,7 +53,10 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	if paladin.Has2hEquipped() {
 		handednessModifier = sor2hModifier
 	}
-	weaponSpeed := paladin.GetMHWeapon().SwingSpeed
+	weaponSpeed := 0.0
+	if paladin.HasMHWeapon() {
+		weaponSpeed = paladin.GetMHWeapon().SwingSpeed
+	}
 	impSoRModifier := core.TernaryFloat64(
 		paladin.Talents.ImprovedSealOfRighteousness >= 1,
 		1+0.03*float64(paladin.Talents.ImprovedSealOfRighteousness),
