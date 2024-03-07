@@ -127,7 +127,7 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfLesserAgility,
+	agilityElixir: AgilityElixir.ElixirOfAgility,
 	boglingRoot: false,
 	defaultPotion: Potions.GreaterManaPotion,
 	dragonBreathChili: true,
@@ -136,7 +136,7 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSagefishDelight,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	strengthBuff: StrengthBuff.ScrollOfStrength,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

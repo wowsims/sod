@@ -332,7 +332,7 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(52, 61) + spell.SpellPower()*0.56
+			damage := sim.Roll(52, 61) + spell.SpellDamage()*0.56
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -380,7 +380,7 @@ func registerFrostOil(character *Character, isMh bool) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(33, 38) + spell.SpellPower()*0.269
+			damage := sim.Roll(33, 38) + spell.SpellDamage()*0.269
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

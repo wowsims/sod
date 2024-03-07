@@ -147,9 +147,8 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 	warlockProcAura := warlock.GetOrRegisterAura(procAuraConfig)
 	petProcAura := warlock.Pet.GetOrRegisterAura(procAuraConfig)
 
-	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-		Label: "Grimoire of Synergy",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	handlerFunc := func(procAura *core.Aura) func(*core.Aura, *core.Simulation, *core.Spell, *core.SpellResult) {
+		return func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
 				return
 			}
@@ -158,23 +157,20 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 				return
 			}
 
-			petProcAura.Activate(sim)
-		},
+			procAura.Activate(sim)
+		}
+	}
+
+	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+		Label:                 "Grimoire of Synergy",
+		OnSpellHitDealt:       handlerFunc(petProcAura),
+		OnPeriodicDamageDealt: handlerFunc(petProcAura),
 	}))
 
 	core.MakePermanent(warlock.Pet.GetOrRegisterAura(core.Aura{
-		Label: "Grimoire of Synergy",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
-				return
-			}
-
-			if sim.RandomFloat("Grimoire of Synergy") > procChance {
-				return
-			}
-
-			warlockProcAura.Activate(sim)
-		},
+		Label:                 "Grimoire of Synergy",
+		OnSpellHitDealt:       handlerFunc(warlockProcAura),
+		OnPeriodicDamageDealt: handlerFunc(warlockProcAura),
 	}))
 }
 

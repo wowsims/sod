@@ -1,18 +1,17 @@
+import * as OtherInputs from '../core/components/other_inputs.js';
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
 	PartyBuffs,
+PseudoStat,
 	Race,
 	Spec,
-	Stat, PseudoStat,
-} from '../core/proto/common.js';
+	Stat, } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as RetributionPaladinInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -21,9 +20,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount 
+		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount
 		for a dps gain that will be slightly inflated given JotC does not benefit from source damage modifiers.`,
-		`Be aware that not all item and weapon enchants are currently implemented in the sim, which make some notable Retribution 
+		`Be aware that not all item and weapon enchants are currently implemented in the sim, which make some notable Retribution
 		weapons like Pendulum of Doom and The Jackhammer undervalued.`,
 	],
 	warnings: [
@@ -32,7 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				updateOn: simUI.player.changeEmitter,
 				getContent: () => {
 					if (simUI.player.getSpecOptions().primarySeal == 0) {
-							return `Your previously selected seal is no longer available because of a talent or rune change. 
+							return `Your previously selected seal is no longer available because of a talent or rune change.
 							No seal will be cast with this configuration. Please select an available seal in the Settings>Player menu.`;
 					} else {
 						return '';
@@ -154,7 +153,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
