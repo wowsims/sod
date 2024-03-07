@@ -1,6 +1,7 @@
 import { Player } from "../../player";
 import {
 	AgilityElixir,
+	Class,
 	Conjured,
 	Consumes,
 	EnchantedSigil,
@@ -100,10 +101,19 @@ export const ConjuredDemonicRune: ConsumableInputConfig<Conjured> = {
 	]),
 	value: Conjured.ConjuredDemonicRune
 }
+export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 7676, minLevel: 25 },
+	]),
+	value: Conjured.ConjuredRogueThistleTea,
+	showWhen: (player) => player.getClass() == Class.ClassRogue
+}
+
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredMinorRecombobulator, 			stats: [Stat.StatIntellect] },
 	{ config: ConjuredDemonicRune, 					stats: [Stat.StatIntellect] },
+	{ config: ConjuredRogueThistleTea,				stats: [Stat.StatAgility]	},
 ]
 
 export const makeConjuredInput = makeConsumeInputFactory({consumesFieldName: 'defaultConjured'});
@@ -138,6 +148,14 @@ export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	]),
 	showWhen: player => player.hasProfession(Profession.Engineering),
 	value: Explosive.ExplosiveSolidDynamite,
+};
+
+export const ExplosiveGoblinLandMine: ConsumableInputConfig<Explosive> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([
+		{ id: 4395, minLevel: 40 },
+	]),
+	showWhen: player => player.hasProfession(Profession.Engineering),
+	value: Explosive.ExplosiveGoblinLandMine,
 };
 
 export const ExplosiveDenseDynamite: ConsumableInputConfig<Explosive> = {
@@ -177,6 +195,7 @@ export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
 	{ config: ExplosiveSolidDynamite, 					stats: [] },
 	{ config: ExplosiveDenseDynamite,		 				stats: [] },
 	{ config: ExplosiveThoriumGrenade, 					stats: [] },
+	{ config: ExplosiveGoblinLandMine, 					stats: [] },
 ];
 
 export const makeExplosivesInput = makeConsumeInputFactory({
