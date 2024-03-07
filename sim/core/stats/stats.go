@@ -150,6 +150,11 @@ const (
 	SchoolLen
 )
 
+// Check if school index is a multi-school.
+func (schoolIndex SchoolIndex) IsMultiSchool() bool {
+	return schoolIndex >= PrimarySchoolLen
+}
+
 func NewSchoolFloatArray() [SchoolLen]float64 {
 	return [SchoolLen]float64{
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

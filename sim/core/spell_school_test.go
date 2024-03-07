@@ -9,6 +9,16 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+func Test_MultiSchoolIndexMapping(t *testing.T) {
+	for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
+		school := SpellSchoolFromIndex(si)
+		if school == 0 {
+			t.Errorf("No spell school for school index %d defined!", si)
+			return
+		}
+	}
+}
+
 func Test_MultiSchoolResistance(t *testing.T) {
 	attacker := &Unit{
 		Type:  PlayerUnit,
@@ -25,12 +35,8 @@ func Test_MultiSchoolResistance(t *testing.T) {
 	attackTable := NewAttackTable(attacker, defender, nil)
 
 	for schoolIndex := stats.SchoolIndexArcane; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		spellSchool := SpellSchoolFromIndex(schoolIndex)
-
-		spell := &Spell{
-			SpellSchool: spellSchool,
-			SchoolIndex: spellSchool.GetSchoolIndex(),
-		}
+		spell := &Spell{}
+		spell.SetSchool(schoolIndex)
 
 		resistanceStats := GetSchoolResistanceStats(spell.SchoolIndex)
 		const lowestValue float64 = 50.0
@@ -105,10 +111,8 @@ func Test_MultiSchoolResistance(t *testing.T) {
 }
 
 func Test_MultiSchoolResistanceArmor(t *testing.T) {
-	spell := &Spell{
-		SpellSchool: SpellSchoolFlamestrike,
-		SchoolIndex: SpellSchoolFlamestrike.GetSchoolIndex(),
-	}
+	spell := &Spell{}
+	spell.SetSchool(stats.SchoolIndexFlamestrike)
 
 	attacker := &Unit{
 		Type:  PlayerUnit,
@@ -160,18 +164,13 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 	}
 
 	spell := &Spell{
-		SpellSchool: SpellSchoolNone,
-		SchoolIndex: SpellSchoolNone.GetSchoolIndex(),
-		Unit:        caster,
+		Unit: caster,
 	}
 
 	for schoolIndex := stats.SchoolIndexArcane; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		spellSchool := SpellSchoolFromIndex(schoolIndex)
+		spell.SetSchool(schoolIndex)
 
-		spell.SchoolIndex = schoolIndex
-		spell.SchoolIndex = spellSchool.GetSchoolIndex()
-
-		baseIndeces := spell.GetSchoolBaseIndices()
+		baseIndices := spell.SchoolBaseIndices
 		const highestValue float64 = 555.0
 		var highestStat stats.Stat
 
@@ -179,11 +178,11 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 
 		for rev := 0; rev < 2; rev++ {
 			if rev != 0 {
-				indexLen := len(baseIndeces)
-				highestStat = stats.ArcanePower + stats.Stat(baseIndeces[indexLen-1]) - 2
+				indexLen := len(baseIndices)
+				highestStat = stats.ArcanePower + stats.Stat(baseIndices[indexLen-1]) - 2
 
 				for i := indexLen - 1; i >= 0; i-- {
-					powerStat := stats.ArcanePower + stats.Stat(baseIndeces[i]) - 2
+					powerStat := stats.ArcanePower + stats.Stat(baseIndices[i]) - 2
 					if powerStat == stats.SpellPower {
 						caster.PseudoStats.BonusDamage = highestValue - 25.0*float64(indexLen-1-i)
 					} else {
@@ -191,8 +190,8 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 					}
 				}
 			} else {
-				highestStat = stats.ArcanePower + stats.Stat(baseIndeces[0]) - 2
-				for i, baseIndex := range baseIndeces {
+				highestStat = stats.ArcanePower + stats.Stat(baseIndices[0]) - 2
+				for i, baseIndex := range baseIndices {
 					powerStat := stats.ArcanePower + stats.Stat(baseIndex) - 2
 					if powerStat == stats.SpellPower {
 						caster.PseudoStats.BonusDamage = highestValue - 25.0*float64(i)
@@ -205,7 +204,7 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 			// Make sure setup is right
 			var highestFound stats.Stat
 			highestValFound := 0.0
-			for _, baseIndex := range baseIndeces {
+			for _, baseIndex := range baseIndices {
 				powerStat := stats.ArcanePower + stats.Stat(baseIndex) - 2
 				if powerStat == stats.SpellPower {
 					if caster.PseudoStats.BonusDamage > highestValFound {
@@ -239,22 +238,15 @@ func SchoolMultiplierArrayHelper(t *testing.T, caster *Unit, target *Unit, multA
 	testFunc func(spell *Spell, schoolIndex stats.SchoolIndex) (bool, string)) {
 
 	spell := &Spell{
-		SpellSchool:              SpellSchoolNone,
-		SchoolIndex:              SpellSchoolNone.GetSchoolIndex(),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		Unit:                     caster,
 	}
 
 	for schoolIndex := stats.SchoolIndexSpellstrike; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		spellSchool := SpellSchoolFromIndex(schoolIndex)
+		spell.SetSchool(schoolIndex)
 
-		spell.SchoolIndex = schoolIndex
-		spell.SchoolIndex = spellSchool.GetSchoolIndex()
-
-		baseIndeces := spell.GetSchoolBaseIndices()
-
-		for i, baseIndex := range baseIndeces {
+		for i, baseIndex := range spell.SchoolBaseIndices {
 			multArray[baseIndex] = highestMult - float64(i)*0.5
 		}
 

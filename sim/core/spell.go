@@ -73,9 +73,9 @@ type Spell struct {
 	// The unit who will perform this spell.
 	Unit *Unit
 
-	// Fire, Frost, Shadow, etc.
-	SpellSchool SpellSchool
-	SchoolIndex stats.SchoolIndex
+	SpellSchool       SpellSchool         // Schoolmask of all schools this spell uses. Use spell.SetSpellSchool() to change this!
+	SchoolIndex       stats.SchoolIndex   // Use spell.SetSpellSchool() to change this!
+	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Use spell.SetSpellSchool() to change this!
 
 	// Controls which effects can proc from this spell.
 	ProcMask ProcMask
@@ -211,8 +211,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		ActionID:     config.ActionID,
 		SpellCode:    config.SpellCode,
 		Unit:         unit,
-		SpellSchool:  config.SpellSchool,
-		SchoolIndex:  config.SpellSchool.GetSchoolIndex(),
 		ProcMask:     config.ProcMask,
 		Flags:        config.Flags,
 		CastType:     config.CastType,
@@ -248,6 +246,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras: config.RelatedAuras,
 	}
+
+	spell.SetSchool(config.SpellSchool.GetSchoolIndex())
 
 	spell.CdSpell = spell
 

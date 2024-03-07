@@ -106,10 +106,8 @@ func ResistanceCheck(t *testing.T, isDoT bool) {
 
 	attackTable := NewAttackTable(attacker, defender, nil)
 
-	spell := &Spell{
-		SpellSchool: SpellSchoolNature,
-		SchoolIndex: stats.SchoolIndexNature,
-	}
+	spell := &Spell{}
+	spell.SetSchool(stats.SchoolIndexNature)
 
 	if isDoT {
 		spell.Flags |= SpellFlagPureDot
@@ -199,10 +197,9 @@ func Test_ResistBinary(t *testing.T) {
 	attackTable := NewAttackTable(attacker, defender, nil)
 
 	spell := &Spell{
-		SpellSchool: SpellSchoolNature,
-		SchoolIndex: stats.SchoolIndexNature,
-		Flags:       SpellFlagBinary,
+		Flags: SpellFlagBinary,
 	}
+	spell.SetSchool(stats.SchoolIndexNature)
 
 	// Check if coef is 0.0 at 0 resistance, binary spells do not get level based resistance!
 	defender.stats[stats.NatureResistance] = 0

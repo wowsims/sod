@@ -135,39 +135,6 @@ var schoolIndexToIndices = func() [stats.SchoolLen][]stats.SchoolIndex {
 	return arr
 }()
 
-// Get base school indices of the spell.
-// If spell is a single school the array will just contain that school's index.
-// If spell is multi school it will include all school indices the multi school is made of.
-// TODO MS: Move onto spell?
-func (spell *Spell) GetSchoolBaseIndices() []stats.SchoolIndex {
-	return schoolIndexToIndices[spell.SchoolIndex]
-}
-
-// Check if school index is a multi-school.
-func IsMultiSchoolIndex(schoolIndex stats.SchoolIndex) bool {
-	return schoolIndex >= stats.PrimarySchoolLen
-}
-
-// Get spell school mask from school index.
-func SpellSchoolFromIndex(schoolIndex stats.SchoolIndex) SpellSchool {
-	return schoolIndexToSchoolMask[schoolIndex]
-}
-
-// Returns whether there is any overlap between the given masks.
-func (ss SpellSchool) Matches(other SpellSchool) bool {
-	return (ss & other) != 0
-}
-
-// Get school index from school mask. Will error if mask is for an undefined multi-school.
-// This involves a map lookup. Do not use in hot path code.
-func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
-	idx, ok := schoolMaskToIndex[ss]
-	if !ok {
-		panic(fmt.Sprintf("No school index defined for schoolmask %d! You may need to define a new multi-school.", ss))
-	}
-	return idx
-}
-
 // LUT for resistance stat indices used by each multischool.
 var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
 	resistances := map[SpellSchool]stats.Stat{
@@ -195,10 +162,9 @@ var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
 	return arr
 }()
 
-// Get array of resistance stat indices for a (multi)school.
-// Physical school uses Armor as stat index!
-func GetSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
-	return schoolIndexToResistanceStats[schoolIndex]
+// Get spell school mask from school index.
+func SpellSchoolFromIndex(schoolIndex stats.SchoolIndex) SpellSchool {
+	return schoolIndexToSchoolMask[schoolIndex]
 }
 
 func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
@@ -222,6 +188,34 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	}
 }
 
+// Get array of resistance stat indices for a (multi)school.
+// Physical school uses Armor as stat index!
+func GetSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
+	return schoolIndexToResistanceStats[schoolIndex]
+}
+
+// Returns whether there is any overlap between the given masks.
+func (ss SpellSchool) Matches(other SpellSchool) bool {
+	return (ss & other) != 0
+}
+
+// Get school index from school mask. Will error if mask is for an undefined multi-school.
+// This involves a map lookup. Do not use in hot path code.
+func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
+	idx, ok := schoolMaskToIndex[ss]
+	if !ok {
+		panic(fmt.Sprintf("No school index defined for schoolmask %d! You may need to define a new multi-school.", ss))
+	}
+	return idx
+}
+
+// Sets school index, mask and base indices.
+func (spell *Spell) SetSchool(schoolIndex stats.SchoolIndex) {
+	spell.SchoolIndex = schoolIndex
+	spell.SpellSchool = SpellSchoolFromIndex(schoolIndex)
+	spell.SchoolBaseIndices = schoolIndexToIndices[schoolIndex]
+}
+
 // Recalculate multipliers used for given multi school for unit and target.
 // This needs to happen each time before a multi school spell enters its hit and damage calculations.
 //
@@ -242,13 +236,13 @@ func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
 	schoolIndex := spell.SchoolIndex
 	unit := spell.Unit
 
-	if !IsMultiSchoolIndex(schoolIndex) {
+	if !schoolIndex.IsMultiSchool() {
 		return
 	}
 
 	maxDealt := 0.0
 
-	for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
+	for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 		dealtMult := unit.PseudoStats.SchoolDamageDealtMultiplier[baseSchoolIndex]
 		if dealtMult > maxDealt {
 			maxDealt = dealtMult
@@ -261,14 +255,14 @@ func (spell *Spell) MultiSchoolUpdateDamageDealtMod() {
 // Recalculate damage taken modifier for multi-school.
 // Also see spell.RecalculateMultiSchoolModifiers()
 func (unit *Unit) MultiSchoolUpdateDamageTakenMod(spell *Spell) {
-	if !IsMultiSchoolIndex(spell.SchoolIndex) {
+	if !spell.SchoolIndex.IsMultiSchool() {
 		return
 	}
 
 	maxTaken := 0.0
 	maxTakenCrit := 0.0
 
-	for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
+	for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 		takenMult := unit.PseudoStats.SchoolDamageTakenMultiplier[baseSchoolIndex]
 		if takenMult > maxTaken {
 			maxTaken = takenMult

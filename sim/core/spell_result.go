@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -140,7 +141,7 @@ func (spell *Spell) SpellSchoolPower() float64 {
 	default:
 		// Multi school: Get best power choice available.
 		max := 0.0
-		for _, baseSchoolIndex := range spell.GetSchoolBaseIndices() {
+		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 			var power float64
 
 			// TODO / NOTE: Not a bug, just really not a nice solution imho.
