@@ -21,28 +21,38 @@ import {
 	Mage_Options_ArmorType as ArmorType
 } from '../core/proto/mage.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import APLDefault from './apls/default.apl.json';
+import Phase1APLArcane from './apls/p1_arcane.apl.json';
+import Phase1APLFire from './apls/p1_fire.apl.json';
 import Phase2APLArcane from './apls/p2_arcane.apl.json';
 import Phase2APLFire from './apls/p2_fire.apl.json';
+import Phase1GearFire from './gear_sets/p1_fire.gear.json';
+import Phase1Gear from './gear_sets/p1_generic.gear.json';
 import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
 import Phase2GearFire from './gear_sets/p2_fire.gear.json';
+import Phase2GearFrost from './gear_sets/p2_frost.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
+export const GearArcanePhase1 = PresetUtils.makePresetGear('P1 Arcane', Phase1Gear, { talentTree: 0 })
+export const GearFirePhase1 = PresetUtils.makePresetGear('P1 Fire', Phase1GearFire, { talentTree: 1 })
+export const GearFrostPhase1 = PresetUtils.makePresetGear('P1 Frost', Phase1Gear, { talentTree: 2 })
+
 export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, { talentTree: 0 })
 export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, { talentTree: 1 })
+export const GearFrosthase2 = PresetUtils.makePresetGear('P2 Frost', Phase2GearFrost, { talentTree: 2 })
 
 export const GearPresets = {
 	[Phase.Phase1]: [
-		GearArcanePhase2,
-		GearArcanePhase2,
-		GearArcanePhase2,
+		GearArcanePhase1,
+		GearFirePhase1,
+		GearFrostPhase1,
 	],
 	[Phase.Phase2]: [
 		GearArcanePhase2,
 		GearFirePhase2,
+		GearFrosthase2,
 	],
 };
 
@@ -53,19 +63,18 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][1];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLArcanePhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 0 });
-export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 1 });
-export const APLFrostPhase1 = PresetUtils.makePresetAPLRotation('Default', APLDefault, { talentTree: 2 });
+export const APLArcanePhase1 = PresetUtils.makePresetAPLRotation('P1 Arcane', Phase1APLArcane, { talentTree: 0 });
+export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('P1 Fire', Phase1APLFire, { talentTree: 1 });
 
 export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, { talentTree: 0 });
 export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, { talentTree: 1 });
-export const APLFrostPhase2 = PresetUtils.makePresetAPLRotation('P2 Frost', APLDefault, { talentTree: 2 });
+export const APLFrostPhase2 = PresetUtils.makePresetAPLRotation('P2 Frost', Phase2APLFire, { talentTree: 2 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [
 		APLArcanePhase1,
 		APLFirePhase1,
-		APLFrostPhase1,
+		APLFirePhase1,
 	],
 	[Phase.Phase2]: [
 		APLArcanePhase2,
@@ -96,23 +105,16 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
 export const TalentsArcanePhase1 = {
-	name: 'Phase 1',
+	name: 'P1 Arcane',
 	data: SavedTalents.create({
-		talentsString: '50005003021',
+		talentsString: '22500502',
 	}),
 };
 
 export const TalentsFirePhase1 = {
-	name: 'Phase 1',
+	name: 'P1 Fire',
 	data: SavedTalents.create({
-		talentsString: '50005003021',
-	}),
-};
-
-export const TalentsFrostPhase1 = {
-	name: 'Phase 1',
-	data: SavedTalents.create({
-		talentsString: '50005003021',
+		talentsString: '-5050020121',
 	}),
 };
 
@@ -141,7 +143,7 @@ export const TalentPresets = {
 	[Phase.Phase1]: [
     	TalentsArcanePhase1,
 		TalentsFirePhase1,
-		TalentsFrostPhase1,
+		TalentsFirePhase1,
 	],
 	[Phase.Phase2]: [
 		TalentsArcanePhase2,
@@ -150,9 +152,9 @@ export const TalentPresets = {
 	],
 };
 
-export const DefaultTalentsArcane	= TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsFire		= TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsFrost	= TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsArcane = TalentPresets[CURRENT_PHASE][0];
+export const DefaultTalentsFire	= TalentPresets[CURRENT_PHASE][1];
+export const DefaultTalentsFrost = TalentPresets[CURRENT_PHASE][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 

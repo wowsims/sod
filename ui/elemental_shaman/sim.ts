@@ -46,6 +46,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatNaturePower,
+		Stat.StatFirePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
