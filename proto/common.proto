@@ -297,6 +297,7 @@ enum Explosive {
 	ExplosiveThoriumGrenade = 3;
 	ExplosiveEzThroRadiationBomb = 4;
 	ExplosiveHighYieldRadiationBomb = 5;
+	ExplosiveGoblinLandMine = 6;
 }
 
 // NextIndex: 5
