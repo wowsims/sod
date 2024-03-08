@@ -29,7 +29,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -44,7 +44,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
+				if !applyStack {
+					return
+				}
 				dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(dot.GetStacks())
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
@@ -66,10 +69,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				dot := spell.Dot(target)
 
 				dot.ApplyOrRefresh(sim)
-				if dot.IsActive() {
+				if dot.GetStacks() < dot.MaxStacks {
 					dot.AddStack(sim)
-					// Update damage by number of stacks
-					dot.TakeSnapshot(sim, false)
+					// snapshotting only takes place when adding a stack
+					dot.TakeSnapshot(sim, true)
 				}
 			} else {
 				spell.IssueRefund(sim)

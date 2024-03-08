@@ -49,7 +49,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
