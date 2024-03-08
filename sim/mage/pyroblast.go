@@ -33,10 +33,13 @@ func (mage *Mage) registerPyroblastSpell() {
 }
 
 func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
+	numTicks := int32(4)
+	tickLength := time.Second * 3
+
 	spellId := PyroblastSpellId[rank]
 	baseDamageLow := PyroblastBaseDamage[rank][0]
 	baseDamageHigh := PyroblastBaseDamage[rank][1]
-	baseDotDamage := PyroblastDotDamage[rank]
+	baseDotDamage := PyroblastDotDamage[rank] / float64(numTicks)
 	manaCost := PyroblastManaCost[rank]
 	level := PyroblastLevel[rank]
 
@@ -77,8 +80,8 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 				Label:    fmt.Sprintf("Pyroblast (Rank %d)", rank),
 				ActionID: actionID.WithTag(1),
 			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 3,
+			NumberOfTicks: numTicks,
+			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])

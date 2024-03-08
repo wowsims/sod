@@ -111,10 +111,10 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Ice Shards
 	if mage.Talents.IceShards > 0 {
-		critDamageMultiplier := 1 + .20*float64(mage.Talents.IceShards)
+		critBonus := .20 * float64(mage.Talents.IceShards)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.CritMultiplier *= critDamageMultiplier
+				spell.CritMultiplier = mage.MageCritMultiplier(critBonus)
 			}
 		})
 	}

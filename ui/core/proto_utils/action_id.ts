@@ -227,6 +227,7 @@ export class ActionId {
 			case 'Frostfire Bolt':
 			case 'Pyroblast':
 				if (this.tag == 1) name = `${name} (DoT)`;
+				break;
 			// Channeled Tick Spells
 			case 'Evocation':
 			case 'Mind Flay':

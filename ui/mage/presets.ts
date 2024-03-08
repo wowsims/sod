@@ -120,7 +120,7 @@ export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedT
 	customCondition: player => player.getLevel() == 40,
 });
 
-export const TalentsFrostPhase2 = PresetUtils.makePresetTalents('P2 Frostfire', SavedTalents.create({talentsString: '-055002012002-203500031'}), {
+export const TalentsFrostPhase2 = PresetUtils.makePresetTalents('P2 Frostfire', SavedTalents.create({talentsString: '-0550020122-203500031'}), {
 	customCondition: player => player.getLevel() == 40,
 });
 

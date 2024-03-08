@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.70144
+  weights: 0.68374
   weights: 0
-  weights: 0.97768
+  weights: 0.75997
   weights: 0
-  weights: 0.00772
-  weights: 0.96997
-  weights: 0
-  weights: 0
+  weights: 0.14136
+  weights: 0.61861
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.07258
+  weights: 0
+  weights: 0
+  weights: 6.58022
   weights: 0
   weights: 0
   weights: 0
@@ -99,126 +99,126 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 405.92578
-  tps: 290.0231
+  dps: 383.69378
+  tps: 276.2501
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 431.94154
-  tps: 308.87522
+  dps: 408.82296
+  tps: 293.42303
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 458.38981
-  tps: 327.28499
+  dps: 426.08305
+  tps: 305.73556
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 419.379
-  tps: 300.69844
+  dps: 386.39809
+  tps: 277.36172
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Average-Default"
  value: {
-  dps: 700.52746
-  tps: 498.14521
+  dps: 540.28815
+  tps: 385.19186
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 696.93724
-  tps: 635.15289
+  dps: 1075.2741
+  tps: 901.62392
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 696.93724
-  tps: 495.22091
+  dps: 539.13522
+  tps: 384.38353
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 749.90925
-  tps: 536.18817
+  dps: 591.04002
+  tps: 424.80694
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 403.89482
-  tps: 376.63506
+  dps: 636.51578
+  tps: 525.72701
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 403.89482
-  tps: 287.42181
+  dps: 323.99554
+  tps: 230.80518
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 472.47656
-  tps: 338.47645
+  dps: 404.17709
+  tps: 289.63147
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 693.1664
-  tps: 639.23853
+  dps: 1046.92691
+  tps: 881.5998
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 693.1664
-  tps: 492.91759
+  dps: 534.03406
+  tps: 380.82804
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 760.75041
-  tps: 543.77064
+  dps: 604.81351
+  tps: 434.51698
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 399.42341
-  tps: 376.50561
+  dps: 624.11248
+  tps: 517.0447
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 399.42341
-  tps: 284.44185
+  dps: 327.60472
+  tps: 233.3316
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 476.84686
-  tps: 341.52572
+  dps: 411.39236
+  tps: 294.68215
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 693.1664
-  tps: 492.91759
+  dps: 534.03406
+  tps: 380.82804
  }
 }

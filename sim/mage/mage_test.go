@@ -135,7 +135,7 @@ var Phase1TalentsFire = "-5050020121"
 
 var Phase2TalentsArcane = "2250050310031531"
 var Phase2TalentsFire = "-5050020123033151"
-var Phase2TalentsFrostfire = "-055002012002-203500031"
+var Phase2TalentsFrostfire = "-0550020122-203500031"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
