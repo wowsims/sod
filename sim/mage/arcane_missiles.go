@@ -52,7 +52,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 		SpellCode:   SpellCode_MageArcaneMissiles,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagNoMetrics | core.SpellFlagChanneled,
+		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagNoMetrics,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -87,28 +87,19 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				tickSpell.Cast(sim, target)
-				tickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
-			tickSpell.SpellMetrics[target.UnitIndex].Casts += 1
+			spell.Dot(target).Apply(sim)
 
-			if result.Landed() {
-				dot := spell.Dot(target)
-				dot.Apply(sim)
-
-				if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
-					mage.MissileBarrageAura.Deactivate(sim)
-				}
+			if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
+				mage.MissileBarrageAura.Deactivate(sim)
 			}
-
-			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			baseDamage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-			return tickSpell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
+			return tickSpell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	}
 }
@@ -131,16 +122,11 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
 		},
 	})
-}
-
-// TODO: Is this needed?
-func (mage *Mage) ArcaneMisslesTickDuration() time.Duration {
-	return mage.ApplyCastSpeed(time.Second)
 }

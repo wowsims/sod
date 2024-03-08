@@ -24,7 +24,7 @@ func (mage *Mage) registerEvocationSpell() {
 			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.SpiritRegenRateCasting -= 1
+			mage.PseudoStats.SpiritRegenMultiplier -= 15
 			mage.PseudoStats.ForceFullSpiritRegen = false
 			mage.UpdateManaRegenRates()
 		},

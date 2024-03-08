@@ -95,17 +95,10 @@ func (mage *Mage) registerArcaneBlastSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				if !mage.ArcaneBlastAura.IsActive() {
-					mage.ArcaneBlastAura.Activate(sim)
-				}
-				if mage.ArcaneBlastAura.GetStacks() == mage.ArcaneBlastAura.MaxStacks {
-					mage.ArcaneBlastAura.Refresh(sim)
-				}
-				mage.ArcaneBlastAura.AddStack(sim)
-			}
+			mage.ArcaneBlastAura.Activate(sim)
+			mage.ArcaneBlastAura.AddStack(sim)
 		},
 	})
 }

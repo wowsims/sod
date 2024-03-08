@@ -201,12 +201,11 @@ export class ActionId {
 					name += ` (${this.tag - 1} Stacks)`;
 				}
 				break;
+			// Arcane Missiles hits are a separate spell and have to use a tag to differentiate from the cast
 			case 'Arcane Missiles':
 				break;
 			case 'Berserking':
 				if (this.tag != 0) name = `${name} (${this.tag * 5}%)`;
-				break;
-			case 'Blizzard':
 				break;
 			case 'Explosive Trap':
 				if (this.tag == 1) {
