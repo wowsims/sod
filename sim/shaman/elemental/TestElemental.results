@@ -153,16 +153,16 @@ stat_weights_results: {
   weights: 0
   weights: 2.72464
   weights: 0
-  weights: 0.8495
+  weights: 0.84897
   weights: 0
-  weights: 0.2791
+  weights: 0.27858
   weights: 0
   weights: 0
   weights: 0.57039
   weights: 0
   weights: 0
-  weights: 9.26867
-  weights: 3.93441
+  weights: 9.24892
+  weights: 3.93291
   weights: 0
   weights: 0
   weights: 0
@@ -379,113 +379,113 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 409.20771
-  tps: 407.07946
+  dps: 408.69087
+  tps: 406.50767
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 457.63991
-  tps: 456.67166
+  dps: 457.10739
+  tps: 456.08325
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 409.20771
-  tps: 407.07946
+  dps: 408.69087
+  tps: 406.50767
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 267.50257
-  tps: 246.21943
+  dps: 267.03499
+  tps: 245.79165
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 277.07357
-  tps: 252.62527
+  dps: 276.57739
+  tps: 252.17117
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 278.91608
-  tps: 257.97337
+  dps: 278.45021
+  tps: 257.54559
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 286.89529
-  tps: 262.80183
+  dps: 286.40605
+  tps: 262.35389
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 249.97162
-  tps: 228.05767
+  dps: 249.50576
+  tps: 227.62989
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 282.75771
-  tps: 259.35789
+  dps: 282.27473
+  tps: 258.91525
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 304.03063
-  tps: 279.22056
+  dps: 303.52748
+  tps: 278.76133
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 198.93402
-  tps: 174.26842
+  dps: 198.75778
+  tps: 174.13012
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 449.67932
-  tps: 448.39003
+  dps: 449.14844
+  tps: 447.80335
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
-  dps: 615.58419
-  tps: 524.39673
+  dps: 615.05157
+  tps: 523.97181
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 755.25636
-  tps: 1184.82002
+  dps: 754.66426
+  tps: 1184.36262
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 603.83966
-  tps: 514.23612
+  dps: 603.24794
+  tps: 513.77872
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 671.74825
-  tps: 583.49612
+  dps: 668.78965
+  tps: 581.20911
  }
 }
 dps_results: {
@@ -512,22 +512,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 752.31029
-  tps: 1187.14612
+  dps: 751.71819
+  tps: 1186.68872
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 616.87543
-  tps: 527.31205
+  dps: 616.28372
+  tps: 526.85465
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 715.74836
-  tps: 623.72529
+  dps: 712.78976
+  tps: 621.43829
  }
 }
 dps_results: {
@@ -554,7 +554,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 616.87543
-  tps: 527.31205
+  dps: 616.28372
+  tps: 526.85465
  }
 }
