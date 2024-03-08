@@ -43,7 +43,7 @@ func (mage *Mage) registerLivingBombSpell() {
 			baseDamage := baseExplosionDamage + explosionCoeff*spell.SpellDamage()
 			// baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeExpectedMagicCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 		},
 	})
@@ -52,7 +52,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

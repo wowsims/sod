@@ -29,7 +29,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
 		SpellSchool: core.SpellSchoolSpellfire,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

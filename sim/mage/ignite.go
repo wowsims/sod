@@ -57,6 +57,7 @@ func (mage *Mage) applyIgnite() {
 			TickLength:    time.Second * 2,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.Spell.SpellMetrics[target.UnitIndex].Hits += 1
 			},
 		},
 
