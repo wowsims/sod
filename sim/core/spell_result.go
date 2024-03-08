@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -106,10 +107,11 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
+// TODO: This should probably be merged with SpellDamage()? Doesn't make sense the way it is.
 func (spell *Spell) SpellPower() float64 {
 	return spell.Unit.GetStat(stats.SpellPower) +
 		spell.BonusSpellPower +
-		spell.SpellPowerSchool() +
+		spell.SpellSchoolPower() +
 		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
@@ -117,22 +119,51 @@ func (spell *Spell) SpellDamage() float64 {
 	return spell.SpellPower() + spell.Unit.GetStat(stats.SpellDamage)
 }
 
-func (spell *Spell) SpellPowerSchool() float64 {
-	switch spell.SpellSchool {
-	case SpellSchoolArcane:
+func (spell *Spell) SpellSchoolPower() float64 {
+	switch spell.SchoolIndex {
+	case stats.SchoolIndexNone:
+		return 0
+	case stats.SchoolIndexPhysical:
+		// Return correct value if ever used for a physical spell.
+		return spell.Unit.PseudoStats.BonusDamage
+	case stats.SchoolIndexArcane:
 		return spell.Unit.GetStat(stats.ArcanePower)
-	case SpellSchoolFire:
+	case stats.SchoolIndexFire:
 		return spell.Unit.GetStat(stats.FirePower)
-	case SpellSchoolFrost:
+	case stats.SchoolIndexFrost:
 		return spell.Unit.GetStat(stats.FrostPower)
-	case SpellSchoolHoly:
+	case stats.SchoolIndexHoly:
 		return spell.Unit.GetStat(stats.HolyPower)
-	case SpellSchoolNature:
+	case stats.SchoolIndexNature:
 		return spell.Unit.GetStat(stats.NaturePower)
-	case SpellSchoolShadow:
+	case stats.SchoolIndexShadow:
 		return spell.Unit.GetStat(stats.ShadowPower)
 	default:
-		return 0
+		// Multi school: Get best power choice available.
+		max := 0.0
+		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
+			var power float64
+
+			// TODO / NOTE: Not a bug, just really not a nice solution imho.
+			// Not having physical power with the other power stats makes this if-else required.
+			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
+			// are ever a thing, due to SpellPower being before ArcanePower in stats.
+			// Also, just having this loop or having the switch above is irellevant in terms of performance.
+			// The jump table above saves some instructions for normal spells but loop only seems to
+			// cause the function to be inlined, making the whole SpellPower() call inline.
+			// Overall just not nice the way it is.
+			if baseSchoolIndex == stats.SchoolIndexPhysical {
+				power = spell.Unit.PseudoStats.BonusDamage
+			} else {
+				// School and stat indices are ordered the same way.
+				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
+			}
+
+			if power > max {
+				max = power
+			}
+		}
+		return max
 	}
 }
 
@@ -147,7 +178,7 @@ func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	missChance := 0.01
 
 	if spell.Flags.Matches(SpellFlagBinary) {
-		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell.SpellSchool)
+		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell.SchoolIndex)
 		missChance = 1 - baseHitChance - spell.SpellHitChance(attackTable.Defender)
 	} else {
 		missChance = attackTable.BaseSpellMissChance - spell.SpellHitChance(attackTable.Defender)
@@ -176,7 +207,7 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) HealingPower(target *Unit) float64 {
-	return spell.SpellPower() + spell.Unit.GetStat(stats.Healing) + target.PseudoStats.BonusHealingTaken
+	return spell.SpellPower() + spell.Unit.GetStat(stats.HealingPower) + target.PseudoStats.BonusHealingTaken
 }
 func (spell *Spell) healingCritRating() float64 {
 	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
@@ -448,7 +479,7 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 	}
 
 	return spell.Unit.PseudoStats.DamageDealtMultiplier *
-		spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[spell.SchoolIndex] *
+		spell.Unit.GetSchoolDamageDoneMultiplier(spell) *
 		attackTable.DamageDealtMultiplier
 }
 
@@ -457,6 +488,7 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 		return
 	}
 
+	// TODO: Add other schools. Multischools should then chose highest.
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
 		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}
@@ -469,7 +501,7 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 	}
 
 	multiplier := attackTable.Defender.PseudoStats.DamageTakenMultiplier *
-		attackTable.Defender.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex] *
+		attackTable.Defender.GetSchoolDamageTakenMultiplier(spell) *
 		attackTable.DamageTakenMultiplier
 
 	if spell.Flags.Matches(SpellFlagDisease) {

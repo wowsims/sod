@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/wowsims/sod/sim"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	_ "github.com/wowsims/sod/sim/encounters" // Needed for preset encounters.
@@ -317,78 +318,123 @@ func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 
 }
 
+func CreateTempAgent(r *proto.Raid) core.Agent {
+	encounter := core.MakeSingleTargetEncounter(60, 0.0)
+	env, _, _ := core.NewEnvironment(r, encounter, false)
+	return env.Raid.Parties[0].Players[0]
+}
+
 type RotContainer struct {
 	Name string
 	Raid *proto.Raid
 }
 
 func GetAllRotationSpellIds() map[string][]int32 {
-	return map[string][]int32{
-		"druid":  {},
-		"hunter": {},
-		"mage":   {},
-		"paladin": {
-			// Buffs
-			25290,
-		},
-		"priest": {
-			// Buffs
-			10060, // PI
-			// Mind Blast
-			8092,
-			8102,
-			8103,
-			8104,
-			8105,
-			8106,
-			10945,
-			10946,
-			10947,
-			// SWP
-			589,
-			594,
-			970,
-			992,
-			2767,
-			10892,
-			10893,
-			10894,
-			// MF
-			15407,
-			17311,
-			17312,
-			17313,
-			17314,
-			18807,
-			// Smite
-			585,
-			591,
-			598,
-			984,
-			1004,
-			6060,
-			10933,
-			10934,
-			// Holy Fire
-			14914,
-			15262,
-			15263,
-			15264,
-			15265,
-			15266,
-			15267,
-			15261,
-			// Devouring Plague
-			2944,
-			19276,
-			19277,
-			19278,
-			19279,
-			19280,
-		},
-		"rogue":   {},
-		"shaman":  {},
-		"warlock": {},
-		"warrior": {},
+	sim.RegisterAll()
+
+	rotMapping := []RotContainer{
+		{Name: "feral", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassDruid,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_FeralDruid{FeralDruid: &proto.FeralDruid{Options: &proto.FeralDruid_Options{}, Rotation: &proto.FeralDruid_Rotation{}}}), nil, nil, nil)},
+		{Name: "balance", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassDruid,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_BalanceDruid{BalanceDruid: &proto.BalanceDruid{Options: &proto.BalanceDruid_Options{}}}), nil, nil, nil)},
+		// TODO: Druid Tank Sim
+		// {Name: "druid tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:     proto.Class_ClassDruid,
+		// 	Level:     60,
+		// 	Equipment: &proto.EquipmentSpec{},
+		// }, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}), nil, nil, nil)},
+		{Name: "elemental", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassShaman,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_ElementalShaman{ElementalShaman: &proto.ElementalShaman{Options: &proto.ElementalShaman_Options{}}}), nil, nil, nil)},
+		{Name: "enhance", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassShaman,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_EnhancementShaman{EnhancementShaman: &proto.EnhancementShaman{Options: &proto.EnhancementShaman_Options{}}}), nil, nil, nil)},
+		{Name: "hunter", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassHunter,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_Hunter{Hunter: &proto.Hunter{Options: &proto.Hunter_Options{}}}), nil, nil, nil)},
+		{Name: "mage", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassMage,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_Mage{Mage: &proto.Mage{Options: &proto.Mage_Options{}}}), nil, nil, nil)},
+		{Name: "shadow", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassPriest,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_ShadowPriest{ShadowPriest: &proto.ShadowPriest{Options: &proto.ShadowPriest_Options{}}}), nil, nil, nil)},
+		{Name: "rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassRogue,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+			Rotation:  &proto.APLRotation{},
+		}, &proto.Player_Rogue{Rogue: &proto.Rogue{}}), nil, nil, nil)},
+		// TODO: Rogue Tank Sim
+		// {Name: "tank rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:     proto.Class_ClassRogue,
+		// 	Level:     60,
+		// 	Equipment: &proto.EquipmentSpec{},
+		// 	Rotation:  &proto.APLRotation{},
+		// }, &proto.Player_TankRogue{TankRogue: &proto.TankRogue{}}), nil, nil, nil)},
+		{Name: "warrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassWarrior,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_Warrior{Warrior: &proto.Warrior{Options: &proto.Warrior_Options{}}}), nil, nil, nil)},
+		// TODO: Warrior Tank Sim
+		// {Name: "warrior tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:     proto.Class_ClassWarrior,
+		// 	Level:     60,
+		// 	Equipment: &proto.EquipmentSpec{},
+		// }, &proto.Player_ProtectionWarrior{ProtectionWarrior: &proto.ProtectionWarrior{Options: &proto.ProtectionWarrior_Options{}}}), nil, nil, nil)},
+		{Name: "ret", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassPaladin,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_RetributionPaladin{RetributionPaladin: &proto.RetributionPaladin{Options: &proto.RetributionPaladin_Options{}}}), nil, nil, nil)},
+		{Name: "warlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassWarlock,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_Warlock{Warlock: &proto.Warlock{Options: &proto.WarlockOptions{}}}), nil, nil, nil)},
+		{Name: "tank warlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassWarlock,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_TankWarlock{TankWarlock: &proto.TankWarlock{Options: &proto.WarlockOptions{}}}), nil, nil, nil)},
 	}
+
+	ret_db := make(map[string][]int32, 0)
+
+	for _, r := range rotMapping {
+		f := CreateTempAgent(r.Raid).GetCharacter()
+
+		spells := make([]int32, 0, len(f.Spellbook))
+
+		for _, s := range f.Spellbook {
+			if s.SpellID != 0 {
+				spells = append(spells, s.SpellID)
+			}
+		}
+
+		for _, s := range f.GetAuras() {
+			if s.ActionID.SpellID != 0 {
+				spells = append(spells, s.ActionID.SpellID)
+			}
+		}
+
+		ret_db[r.Name] = spells
+	}
+	return ret_db
 }

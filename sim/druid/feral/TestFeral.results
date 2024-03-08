@@ -246,8 +246,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 92.59859
-  tps: 68.66159
+  dps: 92.59498
+  tps: 68.65902
  }
 }
 dps_results: {
@@ -575,8 +575,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 176.75689
-  tps: 131.55861
+  dps: 176.75095
+  tps: 131.5544
  }
 }
 dps_results: {

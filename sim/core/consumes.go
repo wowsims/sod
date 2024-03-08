@@ -254,8 +254,8 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			})
 		case proto.WeaponImbue_BrilliantManaOil:
 			character.AddStats(stats.Stats{
-				stats.MP5:     12,
-				stats.Healing: 25,
+				stats.MP5:          12,
+				stats.HealingPower: 25,
 			})
 		case proto.WeaponImbue_BlackfathomManaOil:
 			character.AddStats(stats.Stats{
@@ -504,7 +504,7 @@ func DragonBreathChiliAura(unit *Unit) *Aura {
 // TODO: create 10s delay on Goblin Landmine cast to damage
 func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
 	isSapper := actionID.SameAction(SapperActionID)
-	
+
 	var defaultCast Cast
 	if !isSapper {
 		defaultCast = Cast{
@@ -563,7 +563,6 @@ func (character *Character) newGoblinLandMineSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, GoblinLandMineActionID, SpellSchoolFire, 394, 506, Cooldown{}, 0, 0))
 }
 
-
 // Creates a spell object for the common explosive case.
 func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, actionID ActionID, minDamage float64, maxDamage float64, dotDamage float64, cooldown Cooldown) SpellConfig {
 	return SpellConfig{
@@ -590,6 +589,8 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
+		// TODO: This should use another spell (443813) as the DoT
+		// Also doesn't apply to bosses or something.
 		Dot: DotConfig{
 			Aura: Aura{
 				Label: actionID.String(),

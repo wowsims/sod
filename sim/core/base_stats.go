@@ -28,8 +28,8 @@ var BaseStats = map[BaseStatsKey]stats.Stats{}
 // `octbasempbyclass.txt`, `combatratings.txt`, `chancetospellcritbase.txt`, etc.
 
 var RaceOffsets = map[proto.Race]stats.Stats{
-	proto.Race_RaceUnknown: stats.Stats{},
-	proto.Race_RaceHuman:   stats.Stats{},
+	proto.Race_RaceUnknown: {},
+	proto.Race_RaceHuman:   {},
 	proto.Race_RaceOrc: {
 		stats.Agility:   -3,
 		stats.Strength:  3,

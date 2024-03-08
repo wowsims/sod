@@ -27,7 +27,7 @@ func init() {
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436413},
-			SpellSchool: core.SpellSchoolNature,
+			SpellSchool: core.SpellSchoolPlague,
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagAPL,
 
@@ -42,11 +42,8 @@ func init() {
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// The spell is also affected by shadow school mods because it's shadow + nature school.
-				damage := 150 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *
-					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow]
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, 150, spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})

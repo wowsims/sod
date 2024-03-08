@@ -73,9 +73,10 @@ type Spell struct {
 	// The unit who will perform this spell.
 	Unit *Unit
 
-	// Fire, Frost, Shadow, etc.
-	SpellSchool SpellSchool
-	SchoolIndex stats.SchoolIndex
+	SpellSchool       SpellSchool         // Schoolmask of all schools this spell uses. Use Spell.SetSchool() to change this!
+	SchoolIndex       stats.SchoolIndex   // Use Spell.SetSchool() to change this!
+	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Use Spell.SetSchool() to change this!
+	IsMultischool     bool                // True if school is composed of multiple base schools. Use Spell.SetSchool() to change this!
 
 	// Controls which effects can proc from this spell.
 	ProcMask ProcMask
@@ -211,7 +212,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		ActionID:     config.ActionID,
 		SpellCode:    config.SpellCode,
 		Unit:         unit,
-		SpellSchool:  config.SpellSchool,
 		ProcMask:     config.ProcMask,
 		Flags:        config.Flags,
 		CastType:     config.CastType,
@@ -248,24 +248,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		RelatedAuras: config.RelatedAuras,
 	}
 
-	spell.CdSpell = spell
+	spell.SetSchool(config.SpellSchool.GetSchoolIndex())
 
-	switch {
-	case spell.SpellSchool.Matches(SpellSchoolPhysical):
-		spell.SchoolIndex = stats.SchoolIndexPhysical
-	case spell.SpellSchool.Matches(SpellSchoolArcane):
-		spell.SchoolIndex = stats.SchoolIndexArcane
-	case spell.SpellSchool.Matches(SpellSchoolFire):
-		spell.SchoolIndex = stats.SchoolIndexFire
-	case spell.SpellSchool.Matches(SpellSchoolFrost):
-		spell.SchoolIndex = stats.SchoolIndexFrost
-	case spell.SpellSchool.Matches(SpellSchoolHoly):
-		spell.SchoolIndex = stats.SchoolIndexHoly
-	case spell.SpellSchool.Matches(SpellSchoolNature):
-		spell.SchoolIndex = stats.SchoolIndexNature
-	case spell.SpellSchool.Matches(SpellSchoolShadow):
-		spell.SchoolIndex = stats.SchoolIndexShadow
-	}
+	spell.CdSpell = spell
 
 	// newXXXCost() all update spell.DefaultCast.Cost
 	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
