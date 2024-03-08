@@ -18,30 +18,31 @@ import {
 } from '../core/proto/common.js';
 import {
 	Mage_Options as MageOptions,
-	Mage_Options_ArmorType as ArmorType
+	Mage_Options_ArmorType as ArmorType,
 } from '../core/proto/mage.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APLArcane from './apls/p1_arcane.apl.json';
 import Phase1APLFire from './apls/p1_fire.apl.json';
 import Phase2APLArcane from './apls/p2_arcane.apl.json';
 import Phase2APLFire from './apls/p2_fire.apl.json';
+import Phase2APLFrostfire from './apls/p2_frostfire.apl.json';
 import Phase1GearFire from './gear_sets/p1_fire.gear.json';
 import Phase1Gear from './gear_sets/p1_generic.gear.json';
 import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
 import Phase2GearFire from './gear_sets/p2_fire.gear.json';
-import Phase2GearFrost from './gear_sets/p2_frost.gear.json';
+import Phase2GearFrostfire from './gear_sets/p2_frostfire.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearArcanePhase1 = PresetUtils.makePresetGear('P1 Arcane', Phase1Gear, { talentTree: 0 })
-export const GearFirePhase1 = PresetUtils.makePresetGear('P1 Fire', Phase1GearFire, { talentTree: 1 })
-export const GearFrostPhase1 = PresetUtils.makePresetGear('P1 Frost', Phase1Gear, { talentTree: 2 })
+export const GearArcanePhase1 = PresetUtils.makePresetGear('P1 Arcane', Phase1Gear, { customCondition: player => player.getLevel() == 25 });
+export const GearFirePhase1 = PresetUtils.makePresetGear('P1 Fire', Phase1GearFire, { customCondition: player => player.getLevel() == 25 });
+export const GearFrostPhase1 = PresetUtils.makePresetGear('P1 Frost', Phase1Gear, { customCondition: player => player.getLevel() == 25 });
 
-export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, { talentTree: 0 })
-export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, { talentTree: 1 })
-export const GearFrosthase2 = PresetUtils.makePresetGear('P2 Frost', Phase2GearFrost, { talentTree: 2 })
+export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, { customCondition: player => player.getLevel() == 40 });
+export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, { customCondition: player => player.getLevel() == 40 });
+export const GearFrosthase2 = PresetUtils.makePresetGear('P2 Frostfire', Phase2GearFrostfire, { customCondition: player => player.getLevel() == 40 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [
@@ -63,12 +64,12 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][1];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLArcanePhase1 = PresetUtils.makePresetAPLRotation('P1 Arcane', Phase1APLArcane, { talentTree: 0 });
-export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('P1 Fire', Phase1APLFire, { talentTree: 1 });
+export const APLArcanePhase1 = PresetUtils.makePresetAPLRotation('P1 Arcane', Phase1APLArcane, { customCondition: player => player.getLevel() == 25 });
+export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('P1 Fire', Phase1APLFire, { customCondition: player => player.getLevel() == 25 });
 
-export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, { talentTree: 0 });
-export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, { talentTree: 1 });
-export const APLFrostPhase2 = PresetUtils.makePresetAPLRotation('P2 Frost', Phase2APLFire, { talentTree: 2 });
+export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, { customCondition: player => player.getLevel() == 40 });
+export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, { customCondition: player => player.getLevel() == 40 });
+export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() == 40 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [
@@ -79,11 +80,10 @@ export const APLPresets = {
 	[Phase.Phase2]: [
 		APLArcanePhase2,
 		APLFirePhase2,
-		APLFrostPhase2,
+		APLFrostfirePhase2,
 	],
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
 	25: {
 		0: APLPresets[Phase.Phase1][0],
@@ -104,40 +104,25 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const TalentsArcanePhase1 = {
-	name: 'P1 Arcane',
-	data: SavedTalents.create({
-		talentsString: '22500502',
-	}),
-};
+export const TalentsArcanePhase1 = PresetUtils.makePresetTalents('P1 Arcane', SavedTalents.create({talentsString: '22500502'}), {
+	customCondition: player => player.getLevel() == 25,
+});
 
-export const TalentsFirePhase1 = {
-	name: 'P1 Fire',
-	data: SavedTalents.create({
-		talentsString: '-5050020121',
-	}),
-};
+export const TalentsFirePhase1 = PresetUtils.makePresetTalents('P1 Fire', SavedTalents.create({talentsString: '-5050020121'}), {
+	customCondition: player => player.getLevel() == 25,
+});
 
-export const TalentsArcanePhase2 = {
-	name: 'P2 Arcane',
-	data: SavedTalents.create({
-		talentsString: '2250050310031531',
-	})
-};
+export const TalentsArcanePhase2 = PresetUtils.makePresetTalents('P2 Arcane', SavedTalents.create({talentsString: '2250050310031531'}), {
+	customCondition: player => player.getLevel() == 40,
+});
 
-export const TalentsFirePhase2 = {
-	name: 'P2 Fire',
-	data: SavedTalents.create({
-		talentsString: '-5050020123033151',
-	})
-};
+export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedTalents.create({talentsString: '-5050020123033151'}), {
+	customCondition: player => player.getLevel() == 40,
+});
 
-export const TalentsFrostPhase2 = {
-	name: 'P2 Frost',
-	data: SavedTalents.create({
-		talentsString: '--0535020310025005',
-	})
-};
+export const TalentsFrostPhase2 = PresetUtils.makePresetTalents('P2 Frostfire', SavedTalents.create({talentsString: '-055002012002-203500031'}), {
+	customCondition: player => player.getLevel() == 40,
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [

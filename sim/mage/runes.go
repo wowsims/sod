@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"slices"
 	"time"
 
@@ -130,6 +131,7 @@ func (mage *Mage) applyFingersOfFrost() {
 	procChance := 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
+	fmt.Println(mage.Talents.Shatter)
 	var proccedAt time.Duration
 
 	procAura := mage.RegisterAura(core.Aura{

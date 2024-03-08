@@ -42,8 +42,10 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 	manaCost := FireballManaCost[rank]
 	level := FireballLevel[rank]
 
+	actionID := core.ActionID{SpellID: spellId}
+
 	return core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: spellId},
+		ActionID:     actionID,
 		SpellCode:    SpellCode_MageFireball,
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
@@ -65,7 +67,8 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: fmt.Sprintf("Fireball (Rank %d)", rank),
+				Label:    fmt.Sprintf("Fireball (Rank %d)", rank),
+				ActionID: actionID.WithTag(1),
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
@@ -86,8 +89,9 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+
 				if result.Landed() {
-					spell.DealDamage(sim, result)
 					spell.Dot(target).Apply(sim)
 				}
 			})

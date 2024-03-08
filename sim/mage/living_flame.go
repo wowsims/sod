@@ -26,9 +26,8 @@ func (mage *Mage) registerLivingFlameSpell() {
 	tickLength := time.Second * 1
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
-		// TODO: Multi-school spells
-		SpellSchool: core.SpellSchoolFire | core.SpellSchoolArcane,
+		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		SpellSchool: core.SpellSchoolSpellfire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -63,8 +62,8 @@ func (mage *Mage) registerLivingFlameSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					// TODO: Classic verify hit check, assuming dot damage with no hit check for now
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+					dot.Spell.SpellMetrics[target.UnitIndex].Hits += 1
 				}
 			},
 		},
@@ -72,6 +71,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			spell.Dot(target).Apply(sim)
+			spell.SpellMetrics[target.UnitIndex].Hits -= 1
 		},
 	})
 

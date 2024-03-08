@@ -22,10 +22,9 @@ func (mage *Mage) registerSpellfrostBolt() {
 	manaCost := .12
 
 	mage.SpellfrostBolt = mage.RegisterSpell(core.SpellConfig{
-		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneBeltSpellfrostBolt)},
-		SpellCode: SpellCode_MageSpellfrostBolt,
-		// TODO: Multi-school spells
-		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFrost,
+		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneBeltSpellfrostBolt)},
+		SpellCode:    SpellCode_MageSpellfrostBolt,
+		SpellSchool:  core.SpellSchoolSpellFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
 		MissileSpeed: 28,

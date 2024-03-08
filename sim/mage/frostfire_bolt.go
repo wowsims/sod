@@ -12,6 +12,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneBeltFrostfireBolt)}
 	level := float64(mage.Level)
 	// 2024-03-05 tuning SFB +50% base damage and same spell coeff as max rank Fireball
 	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
@@ -26,10 +27,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 	tickLength := time.Second * 3
 
 	mage.FrostfireBolt = mage.RegisterSpell(core.SpellConfig{
-		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneBeltFrostfireBolt)},
-		SpellCode: SpellCode_MageFrostfireBolt,
-		// TODO: Multi-school spells
-		SpellSchool:  core.SpellSchoolFrost | core.SpellSchoolFire,
+		ActionID:     actionID,
+		SpellCode:    SpellCode_MageFrostfireBolt,
+		SpellSchool:  core.SpellSchoolFrostfire,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
 		MissileSpeed: 28,
@@ -47,7 +47,8 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Frostfire Bolt",
+				Label:    "Frostfire Bolt",
+				ActionID: actionID.WithTag(1),
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
@@ -70,6 +71,10 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
 			})
 		},
 	})

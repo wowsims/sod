@@ -46,8 +46,10 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 
 	hasHotStreakRune := mage.HasRune(proto.MageRune_RuneBeltHotStreak)
 
+	actionID := core.ActionID{SpellID: spellId}
+
 	spellConfig := core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: spellId},
+		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL,
@@ -72,7 +74,8 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: fmt.Sprintf("Pyroblast (Rank %d)", rank),
+				Label:    fmt.Sprintf("Pyroblast (Rank %d)", rank),
+				ActionID: actionID.WithTag(1),
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -94,8 +97,9 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+
 				if result.Landed() {
-					spell.DealDamage(sim, result)
 					spell.Dot(target).Apply(sim)
 				}
 			})

@@ -16,6 +16,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)}
 	level := float64(mage.GetCharacter().Level)
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
 	baseDotDamage := baseCalc * .85
@@ -28,7 +29,7 @@ func (mage *Mage) registerLivingBombSpell() {
 	tickLength := time.Second * 3
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 400614},
+		ActionID:    actionID.WithTag(1),
 		SpellCode:   SpellCode_MageLivingBomb,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -48,7 +49,7 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)},
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
@@ -67,7 +68,7 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Living Bomb",
+				Label: "Living Bomb (DoT)",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					livingBombExplosionSpell.Cast(sim, aura.Unit)
 				},
@@ -82,15 +83,16 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.Spell.SpellMetrics[target.UnitIndex].Hits += 1
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}
-			spell.DealOutcome(sim, result)
+			spell.SpellMetrics[target.UnitIndex].Hits -= 1
 		},
 	})
 }
