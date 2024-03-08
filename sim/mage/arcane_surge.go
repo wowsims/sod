@@ -39,6 +39,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 
 	mage.ArcaneSurge = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
+		SpellCode:   SpellCode_MageArcaneSurge,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,

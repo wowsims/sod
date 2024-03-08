@@ -1,11 +1,11 @@
 package mage
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 // TODO: Classic verify Arcane Blast rune numbers
@@ -24,23 +24,51 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	castTime := time.Millisecond * 2500
 	manaCost := .07
 
+	hasLivingFlameRune := mage.HasRune(proto.MageRune_RuneLegsLivingFlame)
+
+	additiveDamageAffectedSpells := []*core.Spell{}
+	// Purposefully excluded arcane missiles ticks because we manually disable the arcane blast aura after the final tick
+	affectedSpellCodes := []int32{
+		SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageLivingFlame, SpellCode_MageSpellfrostBolt,
+	}
+
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Blast Aura",
 		ActionID:  core.ActionID{SpellID: 400573},
 		Duration:  time.Second * 6,
 		MaxStacks: 4,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			additiveDamageAffectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					mage.ArcaneExplosion,
+					mage.ArcaneMissilesTickSpell,
+					{mage.ArcaneSurge},
+					{mage.SpellfrostBolt},
+				}),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			aura.Refresh(sim)
 			mage.ArcaneBlast.CostMultiplier = 1.75 * float64(newStacks)
-			mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1 + .15*float64(oldStacks)
-			mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1 + .15*float64(newStacks)
+
+			oldMultiplier := .15 * float64(oldStacks)
+			newMultiplier := .15 * float64(newStacks)
+			core.Each(additiveDamageAffectedSpells, func(spell *core.Spell) {
+				spell.DamageMultiplierAdditive -= oldMultiplier
+				spell.DamageMultiplierAdditive += newMultiplier
+			})
+
+			if hasLivingFlameRune {
+				// Living Flame is the only spell buffed multiplicatively for whatever reason
+				mage.LivingFlame.DamageMultiplier /= 1 + oldMultiplier
+				mage.LivingFlame.DamageMultiplier *= 1 + newMultiplier
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.SpellSchool.Matches(core.SpellSchoolArcane) || !spell.Flags.Matches(SpellFlagMage) || spell == mage.ArcaneBlast {
-				return
+			if spell.Flags.Matches(SpellFlagMage) && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				aura.Deactivate(sim)
 			}
-
-			aura.Deactivate(sim)
 		},
 	})
 

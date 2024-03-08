@@ -34,6 +34,7 @@ func (mage *Mage) newArcaneExplosionSpellConfig(rank int) core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_MageArcaneExplosion,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,

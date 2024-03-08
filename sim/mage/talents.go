@@ -57,8 +57,17 @@ func (mage *Mage) applyArcaneTalents() {
 	}
 
 	// Arcane Instability
-	mage.AddStat(stats.SpellCrit, float64(mage.Talents.ArcaneInstability)*1*core.SpellCritRatingPerCritChance)
-	mage.PseudoStats.DamageDealtMultiplier *= 1 + .01*float64(mage.Talents.ArcaneInstability)
+	if mage.Talents.ArcaneInstability > 0 {
+		bonusDamageMultiplierAdditive := .01 * float64(mage.Talents.ArcaneInstability)
+		bonusCritRating := 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance
+
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) {
+				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+				spell.BonusCritRating += bonusCritRating
+			}
+		})
+	}
 }
 
 func (mage *Mage) applyFireTalents() {
@@ -90,7 +99,12 @@ func (mage *Mage) applyFireTalents() {
 
 	// Fire Power
 	if mage.Talents.FirePower > 0 {
-		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.02*float64(mage.Talents.FirePower)
+		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
+				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+			}
+		})
 	}
 }
 
@@ -121,7 +135,12 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
-		mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.02*float64(mage.Talents.PiercingIce)
+		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.PiercingIce)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+			}
+		})
 	}
 
 	// Frost Channeling

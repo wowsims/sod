@@ -27,6 +27,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		SpellCode:   SpellCode_MageLivingFlame,
 		SpellSchool: core.SpellSchoolSpellfire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,

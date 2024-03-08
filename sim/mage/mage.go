@@ -33,12 +33,15 @@ func RegisterMage() {
 const (
 	SpellCode_MageNone int32 = iota
 	SpellCode_MageArcaneBlast
+	SpellCode_MageArcaneExplosion
 	SpellCode_MageArcaneMissiles
+	SpellCode_MageArcaneSurge
 	SpellCode_MageFireball
 	SpellCode_MageFireBlast
 	SpellCode_MageFrostbolt
 	SpellCode_MageFrostfireBolt
 	SpellCode_MageLivingBomb
+	SpellCode_MageLivingFlame
 	SpellCode_MageScorch
 	SpellCode_MageSpellfrostBolt
 )

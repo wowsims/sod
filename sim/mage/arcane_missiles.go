@@ -19,6 +19,7 @@ var ArcaneMissilesLevel = [ArcaneMissilesRanks + 1]int{0, 8, 16, 24, 32, 40, 48,
 
 func (mage *Mage) registerArcaneMissilesSpell() {
 	mage.ArcaneMissiles = make([]*core.Spell, ArcaneMissilesRanks+1)
+	mage.ArcaneMissilesTickSpell = make([]*core.Spell, ArcaneMissilesRanks+1)
 
 	for rank := 1; rank < ArcaneMissilesRanks; rank++ {
 		config := mage.getArcaneMissilesSpellConfig(rank)
@@ -39,9 +40,12 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 	numTicks := castTime
 	tickLength := time.Second
-	tickSpell := mage.getArcaneMissilesTickSpell(rank)
 
+	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
 	hasMissileBarrageRune := mage.HasRune(proto.MageRune_RuneBeltMissileBarrage)
+
+	tickSpell := mage.getArcaneMissilesTickSpell(rank)
+	mage.ArcaneMissilesTickSpell[rank] = tickSpell
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -62,12 +66,22 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		DamageMultiplier: 1,
-		CritMultiplier:   1,
-
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("ArcaneMissiles-%d-%d", +rank, numTicks),
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					// TODO: This check is necessary to ensure the final tick occurs before
+					// Arcane Blast stacks are dropped. To fix this, ticks need to reliably
+					// occur before aura expirations.
+					dot := mage.ArcaneMissiles[rank].Dot(aura.Unit)
+					if dot.TickCount < dot.NumberOfTicks {
+						dot.TickCount++
+						dot.TickOnce(sim)
+					}
+					if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
+						mage.ArcaneBlastAura.Deactivate(sim)
+					}
+				},
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
@@ -83,7 +97,6 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-
 				dot.Apply(sim)
 
 				if hasMissileBarrageRune && mage.MissileBarrageAura.IsActive() {
@@ -94,8 +107,8 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := (baseTickDamage + (spellCoeff * spell.SpellDamage()))
-			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedTick)
+			baseDamage := baseTickDamage + (spellCoeff * spell.SpellDamage())
+			return tickSpell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	}
 }
@@ -113,12 +126,11 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 		MissileSpeed: 20,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0), // No crit on channels
+		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-
 			result := spell.CalcPeriodicDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
