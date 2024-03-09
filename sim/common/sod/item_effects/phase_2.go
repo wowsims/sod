@@ -31,12 +31,54 @@ func init() {
 	// Electromagnetic Hyperflux Reactivator
 	core.NewItemEffect(ElectromagneticHyperfluxReactivator, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 11826}
 
-		channelSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			// TODO: Wowhead shows physical but this seems odd. No logs as of 2024-02-27 to verify
+		forkedLightning := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 11828},
 			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					baseDamage := sim.Roll(153, 173)
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		dmgShieldActionID := core.ActionID{SpellID: 11841}
+
+		dmgShieldProc := character.RegisterSpell(core.SpellConfig{
+			ActionID:    dmgShieldActionID,
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 5, spell.OutcomeMagicHit)
+			},
+		})
+
+		dmgShieldAura := character.RegisterAura(core.Aura{
+			Label:    "Static Barrier",
+			ActionID: dmgShieldActionID,
+			Duration: time.Minute * 10,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					dmgShieldProc.Cast(sim, spell.Unit)
+				}
+			},
+		})
+
+		hiddenTimerAura := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 11826},
+			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
@@ -47,22 +89,19 @@ func init() {
 				},
 			},
 
-			DamageMultiplier: 1,
-			CritMultiplier:   1,
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				character.WaitUntil(sim, sim.CurrentTime+time.Second*3)
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					// TODO: Does this scale with SP? Can it crit/resist?
-					// Level 40 damage values
-					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				}
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmgShieldAura.Activate(sim)
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + 3*time.Second,
+					OnAction: func(s *core.Simulation) {
+						forkedLightning.Cast(sim, target)
+					},
+				})
 			},
 		})
 
 		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    channelSpell,
+			Spell:    hiddenTimerAura,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
 			ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
