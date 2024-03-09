@@ -92,7 +92,7 @@ ui/core/proto/api.ts: proto/*.proto node_modules
 
 ui/%/index.html: ui/index_template.html
 	$(eval title := $(shell echo $(shell basename $(@D)) | sed -r 's/(^|_)([a-z])/\U \2/g' | cut -c 2-))
-	cat ui/index_template.html | sed -e 's/@@TITLE@@/Classic $(title) Simulator/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
+	cat ui/index_template.html | sed -e 's/@@TITLE@@/Season of Discovery $(title) Simulator/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
 package-lock.json:
 	npm install
@@ -124,7 +124,7 @@ $(OUT_DIR)/lib.wasm: sim/wasm/* sim/core/proto/api.pb.go $(filter-out sim/core/i
 		printf "\033[1;31mWASM COMPILE FAILED\033[0m\n"; \
 		exit 1; \
 	fi
-	
+
 $(OUT_DIR)/assets/%: assets/%
 	mkdir -p $(@D)
 	cp $< $@
