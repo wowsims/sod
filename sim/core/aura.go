@@ -77,7 +77,7 @@ type Aura struct {
 	onRageChangeIndex          int32 // Position of this aura's index in the onRageChangeAuras array.
 
 	// The number of stacks, or charges, of this aura. If this aura doesn't care
-	// about charges, is just 0.
+	// about charges, it's just 0.
 	stacks    int32
 	MaxStacks int32
 
