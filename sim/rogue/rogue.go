@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	SpellFlagBuilder     = core.SpellFlagAgentReserved2
-	SpellFlagFinisher    = core.SpellFlagAgentReserved3
+	SpellFlagBuilder     = core.SpellFlagAgentReserved1
+	SpellFlagFinisher    = core.SpellFlagAgentReserved2
+	SpellFlagPoison      = core.SpellFlagAgentReserved3
 	SpellFlagColdBlooded = core.SpellFlagAgentReserved4
 )
 
