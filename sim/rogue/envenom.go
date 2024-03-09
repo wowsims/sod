@@ -29,7 +29,7 @@ func (rogue *Rogue) registerEnvenom() {
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
-		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL | core.SpellFlagPoison,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
