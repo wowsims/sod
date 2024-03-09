@@ -25,7 +25,6 @@ import {
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
-import BlankGear from './gear_sets/blank.gear.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 
@@ -36,7 +35,6 @@ import Phase2Gear from './gear_sets/phase_2.gear.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 

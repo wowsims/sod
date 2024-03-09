@@ -40,7 +40,6 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		},
 
 		BonusCritRating:          float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-		BonusHitRating:           100 * core.SpellCritRatingPerCritChance, // Assuming 100% hit for all target levels, numbers could be updated for level comparison later
 		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
@@ -53,6 +52,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 				baseDamage *= 1.4
 			}
 
+			// Assuming 100% hit for all target levels, numbers could be updated for level comparison later
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 		},
 	})

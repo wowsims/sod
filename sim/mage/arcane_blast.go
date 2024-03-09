@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -19,51 +20,85 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
 	baseLowDamage := baseCalc * 4.53
 	baseHighDamage := baseCalc * 5.27
+	spellCoeff := .714
+	castTime := time.Millisecond * 2500
+	manaCost := .07
+
+	hasLivingFlameRune := mage.HasRune(proto.MageRune_RuneLegsLivingFlame)
+
+	additiveDamageAffectedSpells := []*core.Spell{}
+	// Purposefully excluded arcane missiles ticks because we manually disable the arcane blast aura after the final tick
+	affectedSpellCodes := []int32{
+		SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageLivingFlame, SpellCode_MageSpellfrostBolt,
+	}
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Blast Aura",
 		ActionID:  core.ActionID{SpellID: 400573},
 		Duration:  time.Second * 6,
 		MaxStacks: 4,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			additiveDamageAffectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					mage.ArcaneExplosion,
+					mage.ArcaneMissilesTickSpell,
+					{mage.ArcaneSurge},
+					{mage.SpellfrostBolt},
+				}),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			aura.Refresh(sim)
 			mage.ArcaneBlast.CostMultiplier = 1.75 * float64(newStacks)
+
+			oldMultiplier := .15 * float64(oldStacks)
+			newMultiplier := .15 * float64(newStacks)
+			core.Each(additiveDamageAffectedSpells, func(spell *core.Spell) {
+				spell.DamageMultiplierAdditive -= oldMultiplier
+				spell.DamageMultiplierAdditive += newMultiplier
+			})
+
+			if hasLivingFlameRune {
+				// Living Flame is the only spell buffed multiplicatively for whatever reason
+				mage.LivingFlame.DamageMultiplier /= 1 + oldMultiplier
+				mage.LivingFlame.DamageMultiplier *= 1 + newMultiplier
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				aura.Deactivate(sim)
+			}
 		},
 	})
 
 	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 400574},
+		SpellCode:   SpellCode_MageArcaneBlast,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: castTime,
 			},
 		},
 
-		CritMultiplier:   mage.DefaultHealingCritMultiplier(),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		CritMultiplier:   mage.MageCritMultiplier(0),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + .714*spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				if !mage.ArcaneBlastAura.IsActive() {
-					mage.ArcaneBlastAura.Activate(sim)
-				}
-				if mage.ArcaneBlastAura.GetStacks() == mage.ArcaneBlastAura.MaxStacks {
-					mage.ArcaneBlastAura.Refresh(sim)
-				}
-				mage.ArcaneBlastAura.AddStack(sim)
-			}
+			mage.ArcaneBlastAura.Activate(sim)
+			mage.ArcaneBlastAura.AddStack(sim)
 		},
 	})
 }

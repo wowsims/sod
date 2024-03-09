@@ -201,17 +201,11 @@ export class ActionId {
 					name += ` (${this.tag - 1} Stacks)`;
 				}
 				break;
+			// Arcane Missiles hits are a separate spell and have to use a tag to differentiate from the cast
+			case 'Arcane Missiles':
+				break;
 			case 'Berserking':
-				if (this.tag != 0) {
-					name = `${name} (${this.tag * 5}%)`
-				}
-				break
-			case 'Explosive Shot':
-				if (this.spellId == 60053) {
-					name += ' (R4)';
-				} else if (this.spellId == 60052) {
-					name += ' (R3)';
-				}
+				if (this.tag != 0) name = `${name} (${this.tag * 5}%)`;
 				break;
 			case 'Explosive Trap':
 				if (this.tag == 1) {
@@ -219,22 +213,21 @@ export class ActionId {
 				}
 				break;
 			case 'Hot Streak':
-				if (this.tag) name += ' (Crits)';
+				if (this.tag) name = 'Heating Up'
 				break;
-			case 'Fireball':
-			case 'Flamestrike':
-				if (this.tag == 8) {
-					name += ' (Rank 8)';
-				} else if (this.tag == 9) {
-					name += ' (Rank 9)';
-				}
-				break;
-			case 'Pyroblast':
-				if (this.tag) name += ' (DoT)';
-				break;
+			// DoT then Explode Spells
 			case 'Living Bomb':
-				if (this.spellId == 55362) name += ' (Explosion)';
+			case 'Seed of Corruption':
+				if (this.tag == 0) name = `${name} (DoT)`;
+				else if (this.tag == 1) name = `${name} (Explosion)`;
 				break;
+			// Burn Spells
+			case 'Fireball':
+			case 'Frostfire Bolt':
+			case 'Pyroblast':
+				if (this.tag == 1) name = `${name} (DoT)`;
+				break;
+			// Channeled Tick Spells
 			case 'Evocation':
 			case 'Mind Flay':
 			case 'Mind Sear':
@@ -245,6 +238,7 @@ export class ActionId {
 					name += ` (self)`;
 				}
 				break;
+			// Combo Point Spenders
 			case 'Envenom':
 			case 'Eviscerate':
 			case 'Expose Armor':
@@ -260,33 +254,23 @@ export class ActionId {
 					name += ' (Shiv)'
 				}
 				break;
-			case 'Fan of Knives':
-			case 'Killing Spree':
-				if (this.tag == 1) {
-					name += ' (Main Hand)'
-				} else if (this.tag == 2) {
-					name += ' (Off Hand)'
-				}
-				break;
-			case 'Tricks of the Trade':
-				if (this.tag == 1) {
-					name += ' (Not Self)'
-				}
-				break;
+			// Dual-hit MH/OH spells
+			case 'Mutilate':
 			case 'Stormstrike':
 				if (this.tag == 1) {
-					name += ' (Main Hand)'
+					name = `${name} (Main Hand)`
 				} else if (this.tag == 2) {
-					name += ' (Off Hand)'
+					name = `${name} (Off Hand)`
 				}
 				break;
+			// Shaman Overload + Maelstrom Weapon
 			case 'Chain Lightning':
 			case 'Lava Burst':
 			case 'Lightning Bolt':
 				if (this.tag == 6) {
-					name += ' (Overload)';
+					name = `${name} (Overload)`;
 				} else if (this.tag) {
-					name += ` (${this.tag} MW)`;
+					name = `${name} (${this.tag} MW)`;
 				}
 				break;
 			case 'Holy Shield':
@@ -366,13 +350,6 @@ export class ActionId {
 			case 'Whirlwind':
 				if (this.tag == 1) {
 					name += ' (OH)';
-				}
-				break;
-			case 'Seed of Corruption':
-				if (this.tag == 0) {
-					name += ' (DoT)';
-				} else if (this.tag == 1) {
-					name += ' (Explosion)';
 				}
 				break;
 			case 'Thunderfury':
