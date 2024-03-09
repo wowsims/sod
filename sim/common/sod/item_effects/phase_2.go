@@ -3,6 +3,7 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -196,86 +197,12 @@ func init() {
 		})
 	})
 
-	// Electrocutioner's Needle
-	core.NewItemEffect(ElectrocutionersNeedle, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	itemhelpers.CreateWeaponProcDamage(ElectrocutionersNeedle, "Electrocutioner's Needle", 6.5, 434839, core.SpellSchoolNature, 25, 10, 0.05, core.DefenseTypeMagic)
 
-		procMask := character.GetProcMaskForItem(ElectrocutionersNeedle)
-		ppmm := character.AutoAttacks.NewPPMManager(6.5, procMask)
+	itemhelpers.CreateWeaponProcDamage(SuperchargedHeadchopper, "Supercharged Headchopper", 1.5, 434842, core.SpellSchoolNature, 80, 20, 0.1, core.DefenseTypeMagic)
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 434839},
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(25, 35) + 0.05*spell.SpellDamage()
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Electrocutioner's Needle Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Electrocutioner's Needle Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
-
-	// Supercharged Headchopper
-	core.NewItemEffect(SuperchargedHeadchopper, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(213296)
-		ppmm := character.AutoAttacks.NewPPMManager(1.5, procMask)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 434842},
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(80, 100) + 0.1*spell.SpellDamage()
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Supercharged Headchopper Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Supercharged Headchopper Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
-
-	// Toxic Revenger II
-	core.NewItemEffect(ToxicRevengerTwo, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(ToxicRevengerTwo)
-		ppmm := character.AutoAttacks.NewPPMManager(3.0, procMask)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
+	itemhelpers.CreateWeaponProcSpell(ToxicRevengerTwo, "Toxic Revenger II", 3.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 435169},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskEmpty,
@@ -309,19 +236,6 @@ func init() {
 					if result.Landed() {
 						spell.Dot(aoeTarget).Apply(sim)
 					}
-				}
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Toxic Revenger II Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Toxic Revenger II Proc") {
-					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
