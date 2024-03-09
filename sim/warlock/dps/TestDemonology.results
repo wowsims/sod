@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.00015
+  weights: -0.00018
   weights: 0
-  weights: 0.84333
-  weights: 0
-  weights: 0
+  weights: 0.84236
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.87553
-  weights: 2.16416
+  weights: 0
+  weights: 0
+  weights: 5.87661
+  weights: 2.16059
   weights: 0
   weights: 0
   weights: 0
@@ -99,64 +99,64 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 245.20101
-  tps: 148.86364
+  dps: 244.87267
+  tps: 148.5353
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 256.56862
-  tps: 156.55788
+  dps: 256.22658
+  tps: 156.21583
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 640.49231
-  tps: 536.67502
+  dps: 639.62267
+  tps: 535.80539
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 261.41821
-  tps: 160.57131
+  dps: 261.06843
+  tps: 160.22153
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 519.26186
-  tps: 433.10177
+  dps: 518.56239
+  tps: 432.4023
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 641.77245
-  tps: 537.23794
+  dps: 640.92146
+  tps: 536.38696
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 640.49231
-  tps: 853.85554
+  dps: 639.62267
+  tps: 852.98591
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 640.49231
-  tps: 536.67502
+  dps: 639.62267
+  tps: 535.80539
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 687.32845
-  tps: 579.51495
+  dps: 682.98028
+  tps: 575.16677
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 640.49231
-  tps: 536.67502
+  dps: 639.62267
+  tps: 535.80539
  }
 }

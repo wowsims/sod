@@ -61,19 +61,31 @@ message MageTalents {
 }
 
 enum MageRune {
-	MageRuneNone = 0;
-	RuneChestBurnout         = 412286;
-	RuneChestEnlightenment   = 412324;
-	RuneChestFingersOfFrost  = 400647;
-	RuneChestRegeneration    = 401417;
-	RuneHandsArcaneBlast     = 400574;
-	RuneHandsIceLance        = 400640;
-	RuneHandsLivingBomb      = 400613;
-	RuneHandsRewindTime      = 401462;
-	RuneLegsArcaneSurge      = 425124;
-	RuneLegsIceVeins         = 425121;
-	RuneLegsLivingFlame      = 401556;
-	RuneLegsMassRegeneration = 412510;
+	MageRuneNone				= 0;
+
+	RuneChestBurnout			= 412286;
+	RuneChestEnlightenment		= 412324;
+	RuneChestFingersOfFrost		= 400647;
+	RuneChestRegeneration		= 401417;
+
+	RuneHandsArcaneBlast		= 400574;
+	RuneHandsIceLance			= 400640;
+	RuneHandsLivingBomb			= 400613;
+	RuneHandsRewindTime			= 401462;
+
+	RuneBeltFrostfireBolt		= 401502;
+	RuneBeltHotStreak			= 400624;
+	RuneBeltMissileBarrage		= 400588;
+	RuneBeltSpellfrostBolt		= 412532;
+
+	RuneLegsArcaneSurge			= 425124;
+	RuneLegsIceVeins			= 425121;
+	RuneLegsLivingFlame			= 401556;
+	RuneLegsMassRegeneration	= 412510;
+
+	RuneFeetBrainFreeze			= 400731;
+	RuneFeetChronoPreservation	= 436516;
+	RuneFeetSpellPower			= 412322;
 }
 
 message Mage {
