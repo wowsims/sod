@@ -108,7 +108,7 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.Flags.Matches(SpellFlagPoison) {
+			if !result.Landed() || !spell.Flags.Matches(core.SpellFlagPoison) {
 				return
 			}
 			if spell == rogue.DeadlyPoison[DeadlyBrewProc] {
@@ -270,7 +270,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagPoison,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
@@ -305,7 +305,7 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagPoison,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -361,7 +361,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagPoison,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		CritMultiplier:   rogue.SpellCritMultiplier(),

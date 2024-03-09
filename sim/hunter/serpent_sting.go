@@ -20,7 +20,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
 		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot,
+		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
