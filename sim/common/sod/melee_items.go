@@ -219,6 +219,34 @@ func init() {
 		}))
 	})
 
+	// The Jackhammer
+	core.NewItemEffect(9423, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		procMask := character.GetProcMaskForItem(9423)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		hasteAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "The Jackhammer Haste Aura",
+			ActionID: core.ActionID{SpellID: 13533},
+			Duration: time.Second * 9,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.3)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.3)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "The Jackhammer Proc Aura",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "The Jackhammer Proc") {
+					hasteAura.Activate(sim)
+				}
+			},
+		}))
+	})
+
 	// Pendulum of Doom
 	core.NewItemEffect(9425, func(agent core.Agent) {
 		character := agent.GetCharacter()
