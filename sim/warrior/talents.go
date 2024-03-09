@@ -143,9 +143,9 @@ func (warrior *Warrior) applyUnbridledWrath() {
 		return
 	}
 
-	ppmm := warrior.AutoAttacks.NewPPMManager(3*float64(warrior.Talents.UnbridledWrath), core.ProcMaskMeleeWhiteHit)
+	procChance := 0.08 * float64(warrior.Talents.UnbridledWrath)
 
-	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 13002})
+	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12964})
 
 	warrior.RegisterAura(core.Aura{
 		Label:    "Unbridled Wrath",
@@ -154,11 +154,11 @@ func (warrior *Warrior) applyUnbridledWrath() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Damage == 0 {
+			if !result.Landed() {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Unbrided Wrath") {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.RandomFloat("Unbrided Wrath") < procChance {
 				warrior.AddRage(sim, 1, rageMetrics)
 			}
 		},
@@ -170,8 +170,7 @@ func (warrior *Warrior) applyFlurry() {
 		return
 	}
 
-	bonus := 1 + 0.05*float64(warrior.Talents.Flurry)
-	inverseBonus := 1 / bonus
+	haste := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[warrior.Talents.Flurry]
 
 	procAura := warrior.RegisterAura(core.Aura{
 		Label:     "Flurry Proc",
@@ -179,10 +178,10 @@ func (warrior *Warrior) applyFlurry() {
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, bonus)
+			warrior.MultiplyMeleeSpeed(sim, haste)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, inverseBonus)
+			warrior.MultiplyMeleeSpeed(sim, 1/haste)
 		},
 	})
 

@@ -69,7 +69,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: ripRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{

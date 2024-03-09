@@ -74,7 +74,7 @@ func (druid *Druid) applyMangleCat() {
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409828},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{

@@ -1743,7 +1743,8 @@ func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
 
 func ApplyWildStrikes(character *Character) *Aura {
 	buffActionID := ActionID{SpellID: 407975}
-	statDep := character.NewDynamicMultiplyStat(stats.AttackPower, 1.2)
+
+	var bonusAP float64
 
 	wsBuffAura := character.GetOrRegisterAura(Aura{
 		Label:     "Wild Strikes Buff",
@@ -1751,10 +1752,11 @@ func ApplyWildStrikes(character *Character) *Aura {
 		Duration:  time.Millisecond * 1500,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, statDep)
+			bonusAP = 0.2 * aura.Unit.GetStat(stats.AttackPower)
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, statDep)
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
 		},
 	})
 
@@ -1771,26 +1773,23 @@ func ApplyWildStrikes(character *Character) *Aura {
 			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
 				return
 			}
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
-				return
-			}
 
+			// charges are removed by every auto or next melee, whether it lands or not
 			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
 				wsBuffAura.RemoveStack(sim)
 			}
 
-			if !icd.IsReady(sim) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
 				return
 			}
 
-			if sim.RandomFloat("Wild Strikes") > 0.2 {
-				return
+			if icd.IsReady(sim) && sim.RandomFloat("Wild Strikes") < 0.2 {
+				icd.Use(sim)
+				wsBuffAura.Activate(sim)
+				// aura is up _after_ the triggering swing lands, so the aura always stays up after the extra attack
+				wsBuffAura.SetStacks(sim, 2)
+				aura.Unit.AutoAttacks.ExtraMHAttack(sim)
 			}
-
-			wsBuffAura.Activate(sim)
-			wsBuffAura.SetStacks(sim, 2)
-			icd.Use(sim)
-			aura.Unit.AutoAttacks.ExtraMHAttack(sim)
 		},
 	}))
 
@@ -1816,12 +1815,10 @@ func ApplyWindfury(character *Character) *Aura {
 	spellId := WindfuryBuffSpellId[rank]
 	bonusAP := WindfuryBuffBonusAP[rank]
 
-	icdDuration := time.Millisecond * 1500
-
 	windfuryBuffAura := character.GetOrRegisterAura(Aura{
 		Label:     "Windfury Buff",
 		ActionID:  ActionID{SpellID: spellId},
-		Duration:  icdDuration,
+		Duration:  time.Millisecond * 1500,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
@@ -1833,7 +1830,7 @@ func ApplyWindfury(character *Character) *Aura {
 
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
-		Duration: icdDuration,
+		Duration: time.Millisecond * 1500,
 	}
 
 	windfuryBuffAura.Icd = &icd
@@ -1844,26 +1841,29 @@ func ApplyWindfury(character *Character) *Aura {
 			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
 				return
 			}
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
-				return
-			}
 
+			// charges are removed by every auto or next melee, whether it lands or not
+			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
+			//  but can be seen in both "vanilla" and "sod" era logs
 			if windfuryBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !icd.IsReady(sim) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
 				return
 			}
 
-			if sim.RandomFloat("Windfury") > 0.2 {
-				return
+			if icd.IsReady(sim) && sim.RandomFloat("Windfury") < 0.2 {
+				icd.Use(sim)
+				windfuryBuffAura.Activate(sim)
+				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
+				if spell.ProcMask == ProcMaskMeleeMHAuto {
+					windfuryBuffAura.SetStacks(sim, 1)
+				} else {
+					windfuryBuffAura.SetStacks(sim, 2)
+				}
+				aura.Unit.AutoAttacks.ExtraMHAttack(sim)
 			}
-
-			windfuryBuffAura.Activate(sim)
-			windfuryBuffAura.SetStacks(sim, 2)
-			icd.Use(sim)
-			aura.Unit.AutoAttacks.ExtraMHAttack(sim)
 		},
 	}))
 

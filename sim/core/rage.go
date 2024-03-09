@@ -56,7 +56,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if result.Outcome.Matches(OutcomeMiss) {
 				return
 			}
-			if !spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+			if spell.ProcMask != ProcMaskMeleeMHAuto && spell.ProcMask != ProcMaskMeleeOHAuto {
 				return
 			}
 
