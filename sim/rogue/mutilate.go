@@ -22,7 +22,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 	flatDamageBonus := rogue.RuneAbilityBaseDamage()
 
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | SpellFlagColdBlooded,

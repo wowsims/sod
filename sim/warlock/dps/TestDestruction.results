@@ -151,17 +151,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.89981
+  weights: -0.89984
   weights: 0
-  weights: 0.55676
-  weights: 0
-  weights: 0
+  weights: 0.55586
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.89538
+  weights: 0
+  weights: 0
+  weights: 5.88604
   weights: 4.89074
   weights: 0
   weights: 0
@@ -288,57 +288,57 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 69.87566
+  dps: 69.75502
   tps: 57.87889
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 73.74962
+  dps: 73.6223
   tps: 61.22012
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 74.96941
+  dps: 74.84062
   tps: 62.29743
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 79.81634
-  tps: 69.31391
+  dps: 79.46334
+  tps: 69.08079
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 741.14358
-  tps: 662.88968
+  dps: 740.3309
+  tps: 662.26729
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 739.51115
-  tps: 1054.63762
+  dps: 738.67377
+  tps: 1053.99602
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 739.51115
-  tps: 661.74288
+  dps: 738.67377
+  tps: 661.10128
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 926.76366
-  tps: 797.38146
+  dps: 922.57677
+  tps: 794.17346
  }
 }
 dps_results: {
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 739.51115
-  tps: 661.74288
+  dps: 738.67377
+  tps: 661.10128
  }
 }

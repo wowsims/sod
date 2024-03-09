@@ -6,18 +6,42 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
-	spellCoeff := [8]float64{0, .204, .332, .429, .429, .429, .429, .429}[rank]
-	baseDamage := [8][]float64{{0}, {27, 35}, {62, 76}, {110, 134}, {177, 211}, {253, 301}, {345, 407}, {446, 524}}[rank]
-	spellId := [8]int32{0, 2136, 2137, 2138, 8412, 8413, 10197, 10199}[rank]
-	manaCost := [8]float64{0, 40, 75, 115, 165, 220, 280, 340}[rank]
-	level := [8]int{0, 6, 14, 22, 30, 38, 46, 54}[rank]
+const FireBlastRanks = 7
+
+var FireBlastSpellId = [FireBlastRanks + 1]int32{0, 2136, 2137, 2138, 8412, 8413, 10197, 10199}
+var FireBlastBaseDamage = [FireBlastRanks + 1][]float64{{0}, {27, 35}, {62, 76}, {107, 132}, {177, 211}, {246, 295}, {342, 405}, {446, 524}}
+var FireBlastSpellCoeff = [FireBlastRanks + 1]float64{0, .204, .332, .429, .429, .429, .429, .429}
+var FireBlastManaCost = [FireBlastRanks + 1]float64{0, 40, 75, 115, 165, 220, 280, 340}
+var FireBlastLevel = [FireBlastRanks + 1]int{0, 6, 14, 22, 30, 38, 46, 54}
+
+func (mage *Mage) registerFireBlastSpell() {
+	mage.FireBlast = make([]*core.Spell, FireBlastRanks+1)
+	cdTimer := mage.NewTimer()
+
+	for rank := 1; rank <= FireBlastRanks; rank++ {
+		config := mage.newFireBlastSpellConfig(rank, cdTimer)
+
+		if config.RequiredLevel <= int(mage.Level) {
+			mage.FireBlast[rank] = mage.GetOrRegisterSpell(config)
+		}
+	}
+}
+
+func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
+	spellId := FireBlastSpellId[rank]
+	baseDamageLow := FireBlastBaseDamage[rank][0]
+	baseDamageHigh := FireBlastBaseDamage[rank][1]
+	spellCoeff := FireBlastSpellCoeff[rank]
+	manaCost := FireBlastManaCost[rank]
+	level := FireBlastLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolFire,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         SpellFlagMage | core.SpellFlagAPL,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_MageFireBlast,
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
+
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -35,30 +59,18 @@ func (mage *Mage) getFireBlastBaseConfig(rank int, cdTimer *core.Timer) core.Spe
 			},
 		},
 
+		BonusCritRating:  2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.15*float64(mage.Talents.BurningSoul),
+		CritMultiplier:   mage.MageCritMultiplier(0),
+		ThreatMultiplier: 1,
+
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamageCacl := (baseDamage[0]+baseDamage[1])/2 + spellCoeff*spell.SpellDamage()
+			baseDamageCacl := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()
 			return spell.CalcDamage(sim, target, baseDamageCacl, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
-
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
-	}
-}
-
-func (mage *Mage) registerFireBlastSpell() {
-	maxRank := 7
-	cdTimer := mage.NewTimer()
-
-	for i := 1; i <= maxRank; i++ {
-		config := mage.getFireBlastBaseConfig(i, cdTimer)
-
-		if config.RequiredLevel <= int(mage.Level) {
-			mage.FireBlast = mage.GetOrRegisterSpell(config)
-		}
 	}
 }
