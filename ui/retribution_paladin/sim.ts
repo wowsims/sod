@@ -1,5 +1,5 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import {
@@ -138,18 +138,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		rotations: [
+			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 

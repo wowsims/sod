@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 93.02164
-  tps: 99.26261
+  dps: 92.84969
+  tps: 99.09065
  }
 }
 dps_results: {
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 199.08041
-  tps: 211.07849
+  dps: 198.77643
+  tps: 210.78705
  }
 }
