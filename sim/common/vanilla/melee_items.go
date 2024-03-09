@@ -3,6 +3,7 @@ package sod
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -14,13 +15,8 @@ func init() {
 	// Proc effects. Keep these in order by item ID.
 
 	// Fiery War Axe
-	core.NewItemEffect(870, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(870)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
+	itemhelpers.CreateWeaponProcSpell(870, "Fiery War Axe", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 18796},
 			SpellSchool: core.SpellSchoolFire,
 			ProcMask:    core.ProcMaskEmpty,
@@ -56,63 +52,13 @@ func init() {
 				}
 			},
 		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Fiery War Axe Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Fiery War Axe Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
 	})
 
-	// Nightblade
-	core.NewItemEffect(1982, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	itemhelpers.CreateWeaponProcDamage(1982, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
-		procMask := character.GetProcMaskForItem(1982)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+	itemhelpers.CreateWeaponProcDamage(2164, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 18211},
-			SpellSchool: core.SpellSchoolShadow,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(125, 275)
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Nightblade Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Nightblade Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
-
-	// Ravager
-	core.NewItemEffect(7717, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		procMask := character.GetProcMaskForItem(7717)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
-
+	itemhelpers.CreateWeaponProcAura(7717, "Ravager", 1.0, func(character *core.Character) *core.Aura {
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}
 		auraActionID := core.ActionID{SpellID: 433801}
@@ -153,7 +99,7 @@ func init() {
 			},
 		})
 
-		ravagerBladestormAura := character.GetOrRegisterAura(core.Aura{
+		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Ravager Bladestorm",
 			ActionID: auraActionID,
 			Duration: time.Second * 9,
@@ -168,28 +114,23 @@ func init() {
 				dotSpell.AOEDot().Cancel(sim)
 			},
 		})
+	})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Ravager",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-
-				if ppmm.Proc(sim, spell.ProcMask, "Ravager") {
-					ravagerBladestormAura.Activate(sim)
-				}
+	itemhelpers.CreateWeaponProcAura(9423, "The Jackhammer", 1.0, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label:    "The Jackhammer Haste Aura",
+			ActionID: core.ActionID{SpellID: 13533},
+			Duration: time.Second * 9,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.3)
 			},
-		}))
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.3)
+			},
+		})
 	})
 
-	// MCP
-	core.NewItemEffect(9449, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		// Assumes that the user will swap pummelers to have the buff for the whole fight.
-		character.AddStat(stats.MeleeHaste, 500)
-	})
+	itemhelpers.CreateWeaponProcDamage(9425, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
 
 	// Pip's Skinner
 	core.NewItemEffect(12709, func(agent core.Agent) {
@@ -299,108 +240,6 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 			character.AddStat(stats.AttackPower, 150)
 		}
-	})
-
-	// Shawarmageddon
-	core.NewItemEffect(213105, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		actionID := core.ActionID{SpellID: 434488}
-
-		fireStrike := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 434488},
-			SpellSchool:      core.SpellSchoolFire,
-			ProcMask:         core.ProcMaskSpellDamage,
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 7.0, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		spicyAura := character.RegisterAura(core.Aura{
-			Label:    "Spicy!",
-			ActionID: actionID,
-			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.04)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1/1.04)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-					return
-				}
-
-				if result.Landed() {
-					fireStrike.Cast(sim, spell.Unit.CurrentTarget)
-				}
-			},
-		})
-
-		spicy := character.RegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Cast: core.CastConfig{
-				IgnoreHaste: true,
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				spicyAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell: spicy,
-			Type:  core.CooldownTypeDPS,
-		})
-	})
-
-	// Mekkatorque's Arcano-Shredder
-	core.NewItemEffect(213409, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(213409)
-		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
-
-		procAuras := character.NewEnemyAuraArray(core.MekkatorqueFistDebuffAura)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 434841},
-			SpellSchool: core.SpellSchoolArcane,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
-				procAuras.Get(target).Activate(sim)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Mekkatorque Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-
-				if ppmm.Proc(sim, spell.ProcMask, "Mekkatorque Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
 	})
 
 	core.AddEffectsToTest = true
