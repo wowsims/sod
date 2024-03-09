@@ -53,7 +53,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	spellConfig := core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
-		ProcMask:      core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeMHSpecial,
+		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 		Rank:          rank,
 		RequiredLevel: level,

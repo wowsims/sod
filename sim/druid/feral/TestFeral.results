@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.26887
-  weights: 0.21059
+  weights: 0.27437
+  weights: 0.21681
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12222
-  weights: 0.6395
-  weights: 0.84202
+  weights: 0.12471
+  weights: 0.60843
+  weights: 0.86221
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.2969
-  weights: 0.28279
+  weights: 0.30215
+  weights: 0.287
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13495
-  weights: 1.4303
-  weights: 1.59971
+  weights: 0.13734
+  weights: 1.44233
+  weights: 1.62556
   weights: 0
   weights: 0
   weights: 0
@@ -197,658 +197,658 @@ stat_weights_results: {
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 120.85068
-  tps: 89.44917
+  dps: 121.70049
+  tps: 90.06287
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 129.96654
-  tps: 96.0249
+  dps: 130.9863
+  tps: 96.76034
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 111.66796
-  tps: 82.65683
+  dps: 112.40631
+  tps: 83.18744
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 109.54277
-  tps: 81.23568
+  dps: 110.36066
+  tps: 81.82432
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 126.25877
-  tps: 93.26208
+  dps: 127.15566
+  tps: 93.90856
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 110.50257
-  tps: 81.91259
+  dps: 111.35383
+  tps: 82.52493
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 109.18418
-  tps: 80.97132
+  dps: 109.93596
+  tps: 81.51274
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 92.59498
-  tps: 68.65902
+  dps: 92.70424
+  tps: 68.7366
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 119.90379
-  tps: 88.80129
+  dps: 120.79422
+  tps: 89.44375
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Average-Default"
  value: {
-  dps: 128.12481
-  tps: 94.68335
+  dps: 129.78184
+  tps: 95.87011
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 129.43632
-  tps: 151.08085
+  dps: 131.57154
+  tps: 152.60823
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 129.43632
-  tps: 95.66571
+  dps: 131.57154
+  tps: 97.1931
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.49485
-  tps: 125.64275
+  dps: 164.25161
+  tps: 126.94693
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 63.34008
-  tps: 103.73244
+  dps: 64.22972
+  tps: 103.46242
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 63.34008
-  tps: 48.31731
+  dps: 64.22972
+  tps: 48.90868
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 80.79076
-  tps: 65.53248
+  dps: 81.4146
+  tps: 66.00072
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 129.43632
-  tps: 151.08085
+  dps: 131.57154
+  tps: 152.60823
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 129.43632
-  tps: 95.66571
+  dps: 131.57154
+  tps: 97.1931
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.49485
-  tps: 125.64275
+  dps: 164.25161
+  tps: 126.94693
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 63.34008
-  tps: 103.73244
+  dps: 64.22972
+  tps: 103.46242
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 63.34008
-  tps: 48.31731
+  dps: 64.22972
+  tps: 48.90868
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Default-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 80.79076
-  tps: 65.53248
+  dps: 81.4146
+  tps: 66.00072
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 129.43632
-  tps: 151.08085
+  dps: 131.57154
+  tps: 152.60823
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 129.43632
-  tps: 95.66571
+  dps: 131.57154
+  tps: 97.1931
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.49485
-  tps: 125.64275
+  dps: 164.25161
+  tps: 126.94693
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 63.34008
-  tps: 103.73244
+  dps: 64.22972
+  tps: 103.46242
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 63.34008
-  tps: 48.31731
+  dps: 64.22972
+  tps: 48.90868
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-NightElf-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 80.79076
-  tps: 65.53248
+  dps: 81.4146
+  tps: 66.00072
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 127.18082
-  tps: 148.69337
+  dps: 128.99566
+  tps: 149.08666
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 127.18082
-  tps: 94.01204
+  dps: 128.99566
+  tps: 95.26673
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.18224
-  tps: 125.35256
+  dps: 164.02061
+  tps: 126.71523
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 62.6408
-  tps: 100.66456
+  dps: 63.44882
+  tps: 101.16252
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 62.6408
-  tps: 47.68631
+  dps: 63.44882
+  tps: 48.2611
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 78.31906
-  tps: 63.74631
+  dps: 79.08021
+  tps: 64.31238
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 127.18082
-  tps: 148.69337
+  dps: 128.99566
+  tps: 149.08666
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 127.18082
-  tps: 94.01204
+  dps: 128.99566
+  tps: 95.26673
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.18224
-  tps: 125.35256
+  dps: 164.02061
+  tps: 126.71523
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 62.6408
-  tps: 100.66456
+  dps: 63.44882
+  tps: 101.16252
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 62.6408
-  tps: 47.68631
+  dps: 63.44882
+  tps: 48.2611
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Default-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 78.31906
-  tps: 63.74631
+  dps: 79.08021
+  tps: 64.31238
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 127.18082
-  tps: 148.69337
+  dps: 128.99566
+  tps: 149.08666
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 127.18082
-  tps: 94.01204
+  dps: 128.99566
+  tps: 95.26673
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.18224
-  tps: 125.35256
+  dps: 164.02061
+  tps: 126.71523
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 62.6408
-  tps: 100.66456
+  dps: 63.44882
+  tps: 101.16252
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 62.6408
-  tps: 47.68631
+  dps: 63.44882
+  tps: 48.2611
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-Settings-Tauren-p1-Flower-Aoe-default-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 78.31906
-  tps: 63.74631
+  dps: 79.08021
+  tps: 64.31238
  }
 }
 dps_results: {
  key: "TestFeral-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 92.9709
-  tps: 68.82605
+  dps: 92.71456
+  tps: 68.70264
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 225.25273
-  tps: 168.74444
+  dps: 226.93902
+  tps: 169.9863
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 232.1531
-  tps: 173.92567
+  dps: 233.81048
+  tps: 175.14971
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 211.35961
-  tps: 158.84269
+  dps: 213.09028
+  tps: 160.10488
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 207.46078
-  tps: 155.95808
+  dps: 209.03962
+  tps: 157.11247
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 226.75245
-  tps: 169.76753
+  dps: 228.52514
+  tps: 171.06397
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 208.64094
-  tps: 156.83841
+  dps: 210.24108
+  tps: 158.00792
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 209.17733
-  tps: 157.27876
+  dps: 210.80578
+  tps: 158.46766
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 176.75095
-  tps: 131.5544
+  dps: 177.14456
+  tps: 131.83386
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 225.04864
-  tps: 168.69932
+  dps: 226.82245
+  tps: 170.00308
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Average-Default"
  value: {
-  dps: 247.08832
-  tps: 184.41263
+  dps: 250.39763
+  tps: 186.83301
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 250.1033
-  tps: 311.2737
+  dps: 253.20849
+  tps: 313.41769
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 250.1033
-  tps: 186.82108
+  dps: 253.20849
+  tps: 189.06958
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 360.88812
-  tps: 279.32731
+  dps: 364.57673
+  tps: 282.19279
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 125.81926
-  tps: 161.34285
+  dps: 127.58238
+  tps: 162.79965
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 125.81926
-  tps: 94.28072
+  dps: 127.58238
+  tps: 95.56424
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.91015
-  tps: 148.64104
+  dps: 191.578
+  tps: 149.93809
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 250.1033
-  tps: 311.2737
+  dps: 253.20849
+  tps: 313.41769
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 250.1033
-  tps: 186.82108
+  dps: 253.20849
+  tps: 189.06958
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 360.88812
-  tps: 279.32731
+  dps: 364.57673
+  tps: 282.19279
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 125.81926
-  tps: 161.34285
+  dps: 127.58238
+  tps: 162.79965
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 125.81926
-  tps: 94.28072
+  dps: 127.58238
+  tps: 95.56424
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Default-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.91015
-  tps: 148.64104
+  dps: 191.578
+  tps: 149.93809
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 250.1033
-  tps: 311.2737
+  dps: 253.20849
+  tps: 313.41769
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 250.1033
-  tps: 186.82108
+  dps: 253.20849
+  tps: 189.06958
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 360.88812
-  tps: 279.32731
+  dps: 364.57673
+  tps: 282.19279
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 125.81926
-  tps: 161.34285
+  dps: 127.58238
+  tps: 162.79965
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 125.81926
-  tps: 94.28072
+  dps: 127.58238
+  tps: 95.56424
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-NightElf-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.91015
-  tps: 148.64104
+  dps: 191.578
+  tps: 149.93809
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 248.41971
-  tps: 306.12494
+  dps: 250.27318
+  tps: 307.56104
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 248.41971
-  tps: 185.42693
+  dps: 250.27318
+  tps: 186.79601
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 356.28194
-  tps: 276.05098
+  dps: 359.99129
+  tps: 278.93256
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 124.60079
-  tps: 154.14801
+  dps: 125.63361
+  tps: 157.44038
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 124.60079
-  tps: 93.09894
+  dps: 125.63361
+  tps: 93.98181
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-NoBleed-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.05071
-  tps: 148.02986
+  dps: 190.67733
+  tps: 149.29853
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 248.41971
-  tps: 306.12494
+  dps: 250.27318
+  tps: 307.56104
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 248.41971
-  tps: 185.42693
+  dps: 250.27318
+  tps: 186.79601
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 356.28194
-  tps: 276.05098
+  dps: 359.99129
+  tps: 278.93256
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 124.60079
-  tps: 154.14801
+  dps: 125.63361
+  tps: 157.44038
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 124.60079
-  tps: 93.09894
+  dps: 125.63361
+  tps: 93.98181
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Default-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.05071
-  tps: 148.02986
+  dps: 190.67733
+  tps: 149.29853
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 248.41971
-  tps: 306.12494
+  dps: 250.27318
+  tps: 307.56104
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 248.41971
-  tps: 185.42693
+  dps: 250.27318
+  tps: 186.79601
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 356.28194
-  tps: 276.05098
+  dps: 359.99129
+  tps: 278.93256
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 124.60079
-  tps: 154.14801
+  dps: 125.63361
+  tps: 157.44038
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 124.60079
-  tps: 93.09894
+  dps: 125.63361
+  tps: 93.98181
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-Settings-Tauren-p2-Flower-Aoe-default-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 189.05071
-  tps: 148.02986
+  dps: 190.67733
+  tps: 149.29853
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 180.32419
-  tps: 134.52989
+  dps: 183.79143
+  tps: 137.10098
  }
 }

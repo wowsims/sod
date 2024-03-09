@@ -141,7 +141,7 @@ func (warrior *Warrior) applyConsumedByRage() {
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) {
 				warrior.ConsumedByRageAura.RemoveStack(sim)
 			}
 		},
