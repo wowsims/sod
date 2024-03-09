@@ -48,9 +48,16 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				if !applyStack {
 					return
 				}
-				dot.SnapshotBaseDamage = 0.05 * dot.Spell.MeleeAttackPower() * float64(dot.GetStacks())
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+
+				// only the first stack snapshots the multiplier
+				if dot.GetStacks() == 1 {
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotBaseDamage = 0
+				}
+
+				// each stack snapshots the AP it was applied with
+				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
