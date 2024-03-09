@@ -107,6 +107,42 @@ func init() {
 		})
 	})
 
+	// Gut Ripper
+	core.NewItemEffect(2164, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(2164)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18107},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(95, 121)
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialHitAndCrit)
+			},
+		})
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Gut Ripper Proc Aura",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Gut Ripper Proc") {
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		})
+	})
+
 	// Ravager
 	core.NewItemEffect(7717, func(agent core.Agent) {
 		character := agent.GetCharacter()
