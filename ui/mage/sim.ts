@@ -25,7 +25,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
@@ -43,7 +42,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
@@ -58,15 +56,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
+			[Stat.StatIntellect]: 0.20,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatArcanePower]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatFrostPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
+			// Aggregated across 3 builds
+			[Stat.StatSpellHit]: 5.00,
+			[Stat.StatSpellCrit]: 6.17,
+			[Stat.StatSpellHaste]: 3.00,
 			[Stat.StatMP5]: 0.09,
 		}),
 		// Default consumes settings.
