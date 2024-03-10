@@ -68,6 +68,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellDamage,
 		Stat.StatSpellPower,
+		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
@@ -102,6 +103,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			[Stat.StatStrength]: 1.10,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatSpellDamage]: .68,
+			[Stat.StatNaturePower]: .68,
 			[Stat.StatSpellCrit]: 2.0,
 			[Stat.StatSpellHit]: 5.54,
 			[Stat.StatMeleeHit]: 14.2,
@@ -159,17 +161,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
+			...Presets.TalentPresets[Phase.Phase2],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
+			...Presets.APLPresets[Phase.Phase2],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
+			...Presets.GearPresets[Phase.Phase2],
 		],
 	},
 
