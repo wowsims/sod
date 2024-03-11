@@ -24,16 +24,22 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	if hunter.Talents.MonsterSlaying+hunter.Talents.HumanoidSlaying > 0 {
-		target := hunter.CurrentTarget
-		slayingModifier := 1.0
-		monsterMultiplier := 1.0 + 0.01*float64(hunter.Talents.MonsterSlaying)
-		humanoidMultiplier := 1.0 + 0.01*float64(hunter.Talents.HumanoidSlaying)
-		if target.MobType == proto.MobType_MobTypeBeast || target.MobType == proto.MobType_MobTypeGiant || target.MobType == proto.MobType_MobTypeDragonkin {
-			slayingModifier *= monsterMultiplier
-		} else if target.MobType == proto.MobType_MobTypeHumanoid {
-			slayingModifier *= humanoidMultiplier
-		}
-		hunter.PseudoStats.DamageDealtMultiplier *= slayingModifier
+		hunter.Env.RegisterPostFinalizeEffect(func() {
+			for _, t := range hunter.Env.Encounter.Targets {
+				switch t.MobType {
+				case proto.MobType_MobTypeHumanoid:
+					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
+					for _, at := range hunter.AttackTables[t.UnitIndex] {
+						at.DamageDealtMultiplier *= multiplier
+					}
+				case proto.MobType_MobTypeBeast, proto.MobType_MobTypeGiant, proto.MobType_MobTypeDragonkin:
+					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
+					for _, at := range hunter.AttackTables[t.UnitIndex] {
+						at.DamageDealtMultiplier *= multiplier
+					}
+				}
+			}
+		})
 	}
 
 	hunter.AddStat(stats.MeleeHit, float64(hunter.Talents.Surefooted)*1*core.MeleeHitRatingPerHitChance)

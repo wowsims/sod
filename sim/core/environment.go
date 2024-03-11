@@ -177,18 +177,18 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 		}
 	}
 
+	env.setupAttackTables()
+
 	for _, finalizeEffect := range env.postFinalizeEffects {
 		finalizeEffect()
 	}
 	env.postFinalizeEffects = nil
 
+	env.State = Finalized
+
 	slices.SortStableFunc(env.prepullActions, func(a1, a2 PrepullAction) int {
 		return int(a1.DoAt - a2.DoAt)
 	})
-
-	env.setupAttackTables()
-
-	env.State = Finalized
 
 	if runFakePrepull {
 		// Runs prepull only, for a single iteration. This lets us detect misconfigured

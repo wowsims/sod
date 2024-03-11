@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 151.74839
-  tps: 166.0759
+  dps: 149.8716
+  tps: 164.15429
  }
 }
