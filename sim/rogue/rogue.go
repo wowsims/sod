@@ -52,6 +52,8 @@ type Rogue struct {
 	Shadowstrike   *core.Spell
 	QuickDraw      *core.Spell
 	ShurikenToss   *core.Spell
+	BetweenTheEyes *core.Spell
+	PoisonedKnife  *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell

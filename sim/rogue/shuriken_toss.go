@@ -19,7 +19,6 @@ func (rogue *Rogue) makeShurikenTossHitSpell() *core.Spell {
 		DamageMultiplier: 1,
 		CritMultiplier:   rogue.RangedCritMultiplier(true),
 		ThreatMultiplier: 1,
-		CastType:         proto.CastType_CastTypeRanged,
 	})
 }
 
@@ -47,7 +46,6 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			},
 			IgnoreHaste: true,
 		},
-		CastType: proto.CastType_CastTypeRanged,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   rogue.RangedCritMultiplier(true),

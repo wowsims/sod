@@ -38,7 +38,6 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 			return rogue.Ranged().RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeThrown ||
 				rogue.Ranged().RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown
 		},
-		CastType: proto.CastType_CastTypeRanged,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   rogue.RangedCritMultiplier(true),
@@ -46,7 +45,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) + spell.BonusWeaponDamage()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
