@@ -50,6 +50,8 @@ type Rogue struct {
 	ColdBlood      *core.Spell
 	Vanish         *core.Spell
 	Shadowstrike   *core.Spell
+	QuickDraw      *core.Spell
+	ShurikenToss   *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -143,6 +145,16 @@ func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
 	}
 	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
 }
+
+func (rogue *Rogue) RangedCritMultiplier(applyLethality bool) float64 {
+	primaryModifier := 1.0
+	var secondaryModifier float64
+	if applyLethality {
+		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
+	}
+	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
+}
+
 func (rogue *Rogue) SpellCritMultiplier() float64 {
 	primaryModifier := 1.0
 	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
@@ -169,12 +181,14 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
 		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
 		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
+		Ranged:         rogue.WeaponFromRanged(0),   // Set crit multiplier later when we have targets.
 		AutoSwingMelee: true,
 	})
 	rogue.applyPoisons()
 
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
+	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
 
 	return rogue

@@ -18,4 +18,6 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerMutilateSpell()
 	rogue.registerEnvenom()
 	rogue.registerShadowstep()
+	rogue.registerShurikenTossSpell()
+	rogue.registerQuickDrawSpell()
 }
