@@ -8,6 +8,9 @@ import (
 )
 
 func (rogue *Rogue) registerBetweenTheEyes() {
+	if !rogue.HasRune(proto.RogueRune_RuneBetweenTheEyes) {
+		return
+	}
 	flatDamage := rogue.RuneAbilityBaseDamage()
 	comboDamageBonus := rogue.RuneAbilityDamagePerCombo()
 	// TODO: Update damage variance
@@ -32,6 +35,10 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
+			},
+			CD: core.Cooldown{
+				Timer:    rogue.NewTimer(),
+				Duration: time.Second * 20,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {

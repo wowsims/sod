@@ -30,7 +30,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * 10,
 			},
 			IgnoreHaste: true,
 		},
@@ -39,7 +39,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 				rogue.Ranged().RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 0.02*float64(rogue.Talents.Aggression),
 		CritMultiplier:   rogue.RangedCritMultiplier(true),
 		ThreatMultiplier: 1,
 
