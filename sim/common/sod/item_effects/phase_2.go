@@ -3,6 +3,7 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -16,6 +17,8 @@ const (
 	SuperchargedHeadchopper             = 213296
 	MachinistsGloves                    = 213319
 	MiniaturizedCombustionChamber       = 213347
+	Shawarmageddon                      = 213105
+	MekkatorquesArcanoShredder          = 213409
 )
 
 func init() {
@@ -28,12 +31,54 @@ func init() {
 	// Electromagnetic Hyperflux Reactivator
 	core.NewItemEffect(ElectromagneticHyperfluxReactivator, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 11826}
 
-		channelSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			// TODO: Wowhead shows physical but this seems odd. No logs as of 2024-02-27 to verify
+		forkedLightning := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 11828},
 			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					baseDamage := sim.Roll(153, 173)
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		dmgShieldActionID := core.ActionID{SpellID: 11841}
+
+		dmgShieldProc := character.RegisterSpell(core.SpellConfig{
+			ActionID:    dmgShieldActionID,
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 5, spell.OutcomeMagicHit)
+			},
+		})
+
+		dmgShieldAura := character.RegisterAura(core.Aura{
+			Label:    "Static Barrier",
+			ActionID: dmgShieldActionID,
+			Duration: time.Minute * 10,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					dmgShieldProc.Cast(sim, spell.Unit)
+				}
+			},
+		})
+
+		hiddenTimerAura := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 11826},
+			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
@@ -44,22 +89,19 @@ func init() {
 				},
 			},
 
-			DamageMultiplier: 1,
-			CritMultiplier:   1,
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				character.WaitUntil(sim, sim.CurrentTime+time.Second*3)
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					// TODO: Does this scale with SP? Can it crit/resist?
-					// Level 40 damage values
-					baseDamage := sim.Roll(152, 172) // + spellCoeff*spell.SpellDamage()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				}
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmgShieldAura.Activate(sim)
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + 3*time.Second,
+					OnAction: func(s *core.Simulation) {
+						forkedLightning.Cast(sim, target)
+					},
+				})
 			},
 		})
 
 		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    channelSpell,
+			Spell:    hiddenTimerAura,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
 			ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
@@ -196,86 +238,12 @@ func init() {
 		})
 	})
 
-	// Electrocutioner's Needle
-	core.NewItemEffect(ElectrocutionersNeedle, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	itemhelpers.CreateWeaponProcDamage(ElectrocutionersNeedle, "Electrocutioner's Needle", 6.5, 434839, core.SpellSchoolNature, 25, 10, 0.05, core.DefenseTypeMagic)
 
-		procMask := character.GetProcMaskForItem(ElectrocutionersNeedle)
-		ppmm := character.AutoAttacks.NewPPMManager(6.5, procMask)
+	itemhelpers.CreateWeaponProcDamage(SuperchargedHeadchopper, "Supercharged Headchopper", 1.5, 434842, core.SpellSchoolNature, 80, 20, 0.1, core.DefenseTypeMagic)
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 434839},
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(25, 35) + 0.05*spell.SpellDamage()
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Electrocutioner's Needle Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Electrocutioner's Needle Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
-
-	// Supercharged Headchopper
-	core.NewItemEffect(SuperchargedHeadchopper, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(213296)
-		ppmm := character.AutoAttacks.NewPPMManager(1.5, procMask)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 434842},
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(80, 100) + 0.1*spell.SpellDamage()
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Supercharged Headchopper Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Supercharged Headchopper Proc") {
-					procSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
-
-	// Toxic Revenger II
-	core.NewItemEffect(ToxicRevengerTwo, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(ToxicRevengerTwo)
-		ppmm := character.AutoAttacks.NewPPMManager(3.0, procMask)
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
+	itemhelpers.CreateWeaponProcSpell(ToxicRevengerTwo, "Toxic Revenger II", 3.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 435169},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskEmpty,
@@ -312,17 +280,83 @@ func init() {
 				}
 			},
 		})
+	})
 
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Toxic Revenger II Proc Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
+	core.NewItemEffect(Shawarmageddon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{SpellID: 434488}
+
+		fireStrike := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 434488},
+			SpellSchool:      core.SpellSchoolFire,
+			ProcMask:         core.ProcMaskSpellDamage,
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 7.0, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		spicyAura := character.RegisterAura(core.Aura{
+			Label:    "Spicy!",
+			ActionID: actionID,
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.04)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.04)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Toxic Revenger II Proc") {
-					procSpell.Cast(sim, result.Target)
+				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
 				}
+
+				if result.Landed() {
+					fireStrike.Cast(sim, spell.Unit.CurrentTarget)
+				}
+			},
+		})
+
+		spicy := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Cast: core.CastConfig{
+				IgnoreHaste: true,
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				spicyAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spicy,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
+	// Mekkatorque's Arcano-Shredder
+	itemhelpers.CreateWeaponProcSpell(MekkatorquesArcanoShredder, "Mekkatorque", 5.0, func(character *core.Character) *core.Spell {
+		procAuras := character.NewEnemyAuraArray(core.MekkatorqueFistDebuffAura)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 434841},
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				procAuras.Get(target).Activate(sim)
 			},
 		})
 	})

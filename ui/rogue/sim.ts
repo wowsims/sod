@@ -1,6 +1,6 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import {
@@ -113,8 +113,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			[PseudoStat.PseudoStatMainHandDps]: 2.94,
 			[PseudoStat.PseudoStatOffHandDps]: 2.45,
 		}),
-		
-		
+
+
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.

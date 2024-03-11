@@ -1,6 +1,5 @@
-import { Faction, SaygesFortune, Stat, Class } from "../../proto/common";
+import { Faction, SaygesFortune, Stat } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
-
 import { IconEnumPickerDirection } from "../icon_enum_picker";
 import {
   makeBooleanDebuffInput,
@@ -8,19 +7,17 @@ import {
   makeBooleanRaidBuffInput,
   makeEnumIndividualBuffInput,
   makeMultistateIndividualBuffInput,
-  makeMultistateRaidBuffInput,
 	makeMultistateMultiplierDebuffInput,
+  makeMultistateRaidBuffInput,
   makeTristateDebuffInput,
   makeTristateIndividualBuffInput,
   makeTristateRaidBuffInput,
   withLabel
 } from "../icon_inputs";
 import { IconPicker } from "../icon_picker";
-import { MultiIconPicker } from "../multi_icon_picker";
-
-import { ItemStatOption, PickerStatOptions } from "./stat_options";
-
 import * as InputHelpers from '../input_helpers';
+import { MultiIconPicker } from "../multi_icon_picker";
+import { ItemStatOption, PickerStatOptions } from "./stat_options";
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 RAID BUFFS
@@ -28,7 +25,7 @@ import * as InputHelpers from '../input_helpers';
 
 export const AllStatsBuff = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1126, 							maxLevel: 9  	},
 			{ id: 5232, minLevel: 10, maxLevel: 19 	},
 			{ id: 6756, minLevel: 20, maxLevel: 29 	},
@@ -48,7 +45,7 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(20217),
 		fieldName: 'blessingOfKings',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(409580),
@@ -58,7 +55,7 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput([
 
 export const ArmorBuff = InputHelpers.makeMultiIconInput([
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 465, 									maxLevel: 9 	},
 			{ id: 10290, 	minLevel: 10, maxLevel: 19 	},
 			{ id: 643, 		minLevel: 20, maxLevel: 29 	},
@@ -71,7 +68,7 @@ export const ArmorBuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'devotionAura'
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 3013, 								maxLevel: 14 	},
 			{ id: 1478, 	minLevel: 15, maxLevel: 29 	},
 			{ id: 4421, 	minLevel: 30, maxLevel: 44 	},
@@ -83,7 +80,7 @@ export const ArmorBuff = InputHelpers.makeMultiIconInput([
 
 export const StaminaBuff = InputHelpers.makeMultiIconInput([
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1243, 								maxLevel: 11 },
 			{ id: 1244, 	minLevel: 12, maxLevel: 23 },
 			{ id: 1245, 	minLevel: 24, maxLevel: 35 },
@@ -95,7 +92,7 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'powerWordFortitude'
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 1180, 	minLevel: 5, 	maxLevel: 19 	},
 			{ id: 1711, 	minLevel: 20, maxLevel: 34 	},
 			{ id: 4422, 	minLevel: 35, maxLevel: 49 	},
@@ -107,7 +104,7 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput([
 
 export const BloodPactBuff = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 6307, 	minLevel: 4, 	maxLevel: 13 	},
 			{ id: 7804, 	minLevel: 14, maxLevel: 25 	},
 			{ id: 7805, 	minLevel: 26, maxLevel: 37 	},
@@ -123,7 +120,7 @@ export const BloodPactBuff = withLabel(
 // Separate Strength buffs allow us to use boolean pickers for each
 export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput([
 	makeTristateIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 19740, minLevel: 4,		maxLevel: 11 	},
 			{ id: 19834, minLevel: 12, 	maxLevel: 21 	},
 			{ id: 19835, minLevel: 22, 	maxLevel: 31 	},
@@ -134,18 +131,18 @@ export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput([
 		]),
 		impId: ActionId.fromSpellId(20048),
 		fieldName: 'blessingOfMight',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 	makeBooleanRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(425600),
 		fieldName: 'hornOfLordaeron',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 ], 'Paladin Physical');
 
 export const StrengthBuffHorde = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 8075, 	minLevel: 10, maxLevel: 23 	},
 			{ id: 8160, 	minLevel: 24, maxLevel: 37 	},
 			{ id: 8161, 	minLevel: 38, maxLevel: 51 	},
@@ -154,28 +151,28 @@ export const StrengthBuffHorde = withLabel(
 		]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'strengthOfEarthTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde,
+		showWhen: player => player.getFaction() == Faction.Horde,
 	}),
 	'Strength',
 );;
 
 export const GraceOfAir = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 8835, 	minLevel: 42, maxLevel: 55 	},
 			{ id: 10627, 	minLevel: 56, maxLevel: 59 	},
 			{ id: 25359, 	minLevel: 60 								},
 		]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde,
+		showWhen: player => player.getFaction() == Faction.Horde,
 	}),
 	'Agility',
 );
 
 export const IntellectBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1459, 								maxLevel: 13 	},
 			{ id: 1460, 	minLevel: 14, maxLevel: 27 	},
 			{ id: 1461, 	minLevel: 28, maxLevel: 41 	},
@@ -185,7 +182,7 @@ export const IntellectBuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'arcaneBrilliance'
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 955, 		minLevel: 5, 	maxLevel: 19 	},
 			{ id: 2290, 	minLevel: 20, maxLevel: 34 	},
 			{ id: 4419, 	minLevel: 35, maxLevel: 49 	},
@@ -197,7 +194,7 @@ export const IntellectBuff = InputHelpers.makeMultiIconInput([
 
 export const SpiritBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 14752, minLevel: 30, maxLevel: 39 },
 			{ id: 14818, minLevel: 40, maxLevel: 49 },
 			{ id: 14819, minLevel: 50, maxLevel: 59 },
@@ -206,7 +203,7 @@ export const SpiritBuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'divineSpirit',
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingItemActionId([
+		actionId: player => player.getMatchingItemActionId([
 			{ id: 1181, 				maxLevel: 14 	},
 			{ id: 1712, 	minLevel: 15, maxLevel: 29 	},
 			{ id: 4424, 	minLevel: 30, maxLevel: 44 	},
@@ -218,7 +215,7 @@ export const SpiritBuff = InputHelpers.makeMultiIconInput([
 
 export const BattleShoutBuff = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 6673, 								maxLevel: 11 	},
 			{ id: 5242, 	minLevel: 12, maxLevel: 21 	},
 			{ id: 6192, 	minLevel: 22, maxLevel: 31 	},
@@ -235,7 +232,7 @@ export const BattleShoutBuff = withLabel(
 
 export const TrueshotAuraBuff = withLabel(
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 19506, minLevel: 40 },
 		]),
 		fieldName: 'trueshotAura'
@@ -248,7 +245,7 @@ export const TrueshotAuraBuff = withLabel(
 
 export const DamageReductionPercentBuff = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 20911, minLevel: 30, maxLevel: 39 },
 			{ id: 20912, minLevel: 40, maxLevel: 49 },
 			{ id: 20913, minLevel: 50, maxLevel: 59 },
@@ -262,7 +259,7 @@ export const DamageReductionPercentBuff = withLabel(
 export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 	// Shadow
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 976, 		minLevel: 30, maxLevel: 41 	},
 			{ id: 10957, 	minLevel: 42, maxLevel: 55 	},
 			{ id: 10958, 	minLevel: 56 								},
@@ -271,16 +268,16 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 	}),
 	// Nature
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 10595, minLevel: 30, maxLevel: 43 },
 			{ id: 10600, minLevel: 44, maxLevel: 59 },
 			{ id: 10601, minLevel: 60 							},
 		]),
 		fieldName: 'natureResistanceTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde
+		showWhen: player => player.getFaction() == Faction.Horde
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 20043, minLevel: 46, maxLevel: 55 },
 			{ id: 20190, minLevel: 56 							},
 		]),
@@ -288,47 +285,47 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput([
 	}),
 	// Fire
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 19891, minLevel: 36, maxLevel: 47 },
 			{ id: 19899, minLevel: 48, maxLevel: 59 },
 			{ id: 19900, minLevel: 60 							},
 		]),
 		fieldName: 'fireResistanceAura',
-		showWhen: (player) => player.getFaction() == Faction.Alliance
+		showWhen: player => player.getFaction() == Faction.Alliance
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 8184, 	minLevel: 28, maxLevel: 41 	},
 			{ id: 10537, 	minLevel: 42, maxLevel: 57 	},
 			{ id: 10538, 	minLevel: 58 								},
 		]),
 		fieldName: 'fireResistanceTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde
+		showWhen: player => player.getFaction() == Faction.Horde
 	}),
 	// Frost
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 19888, minLevel: 32, maxLevel: 43 },
 			{ id: 19897, minLevel: 44, maxLevel: 55 },
 			{ id: 19898, minLevel: 56 							},
 		]),
 		fieldName: 'frostResistanceAura',
-		showWhen: (player) => player.getFaction() == Faction.Alliance
+		showWhen: player => player.getFaction() == Faction.Alliance
 	}),
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 8181, 	minLevel: 24, maxLevel: 37 	},
 			{ id: 10478, 	minLevel: 38, maxLevel: 53 	},
 			{ id: 10479, 	minLevel: 54 								},
 		]),
 		fieldName: 'frostResistanceTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde
+		showWhen: player => player.getFaction() == Faction.Horde
 	}),
 ], 'Resistances');
 
 export const BlessingOfWisdom = withLabel(
 	makeTristateIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 19742, minLevel: 14, maxLevel: 23 },
 			{ id: 19850, minLevel: 24, maxLevel: 33 },
 			{ id: 19852, minLevel: 34, maxLevel: 43 },
@@ -338,14 +335,14 @@ export const BlessingOfWisdom = withLabel(
 		]),
 		impId: ActionId.fromSpellId(20245),
 		fieldName: 'blessingOfWisdom',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 	'Blessing of Wisdom',
 );
 
 export const ManaSpringTotem = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 5675, 	minLevel: 26, maxLevel: 35 	},
 			{ id: 10495, 	minLevel: 36, maxLevel: 45 	},
 			{ id: 10496, 	minLevel: 46, maxLevel: 55 	},
@@ -353,13 +350,13 @@ export const ManaSpringTotem = withLabel(
 		]),
 		impId: ActionId.fromSpellId(16208),
 		fieldName: 'manaSpringTotem',
-		showWhen: (player) => player.getFaction() == Faction.Horde,
+		showWhen: player => player.getFaction() == Faction.Horde,
 	}),
 	'Mana Spring Totem',
 );
 
 export const MeleeCritBuff = withLabel(
-	makeBooleanRaidBuffInput({actionId: (player) => player.getMatchingSpellActionId([
+	makeBooleanRaidBuffInput({actionId: player => player.getMatchingSpellActionId([
 		{ id: 17007, minLevel: 40 },
 	]),
 	fieldName: 'leaderOfThePack'}),
@@ -367,7 +364,7 @@ export const MeleeCritBuff = withLabel(
 );
 
 export const SpellCritBuff = withLabel(
-	makeBooleanRaidBuffInput({actionId: (player) => player.getMatchingSpellActionId([
+	makeBooleanRaidBuffInput({actionId: player => player.getMatchingSpellActionId([
 		{ id: 24907, minLevel: 40 },
 	]),
 	fieldName: 'moonkinAura'}),
@@ -385,7 +382,7 @@ export const SpellIncreaseBuff = withLabel(
 // Misc Buffs
 export const RetributionAura = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 7294, 	minLevel: 16, maxLevel: 25 	},
 			{ id: 10298, 	minLevel: 26, maxLevel: 35 	},
 			{ id: 10299, 	minLevel: 36, maxLevel: 45 	},
@@ -394,13 +391,13 @@ export const RetributionAura = withLabel(
 		]),
 		impId: ActionId.fromSpellId(20092),
 		fieldName: 'retributionAura',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 	'Retribution Aura',
 );
 export const SanctityAura= withLabel(
 	makeBooleanRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 20218, minLevel: 30 },
 		]),
 		fieldName: 'sanctityAura',
@@ -409,7 +406,7 @@ export const SanctityAura= withLabel(
 );
 export const Thorns = withLabel(
 	makeTristateRaidBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 467, 	minLevel: 6, 	maxLevel: 13 	},
 			{ id: 782, 	minLevel: 14, maxLevel: 23 	},
 			{ id: 1075, minLevel: 24, maxLevel: 33 	},
@@ -424,7 +421,7 @@ export const Thorns = withLabel(
 );
 export const Innervate = withLabel(
 	makeMultistateIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 29166, minLevel: 40 },
 		]),
 		numStates: 11,
@@ -434,7 +431,7 @@ export const Innervate = withLabel(
 );
 export const PowerInfusion = withLabel(
 	makeMultistateIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 10060, minLevel: 40 },
 		]),
 		numStates: 11,
@@ -449,7 +446,7 @@ export const PowerInfusion = withLabel(
 
 export const RallyingCryOfTheDragonslayer = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 22888, minLevel: 51 },
 		]),
 		fieldName: 'rallyingCryOfTheDragonslayer',
@@ -458,7 +455,7 @@ export const RallyingCryOfTheDragonslayer = withLabel(
 );
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 24425, minLevel: 51 },
 		]),
 		fieldName: 'spiritOfZandalar',
@@ -467,7 +464,7 @@ export const SpiritOfZandalar = withLabel(
 );
 export const SongflowerSerenade = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 15366, minLevel: 50 },
 		]),
 		fieldName: 'songflowerSerenade',
@@ -476,7 +473,7 @@ export const SongflowerSerenade = withLabel(
 );
 export const WarchiefsBlessing = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 16609, minLevel: 51 },
 		]),
 		fieldName: 'warchiefsBlessing',
@@ -502,7 +499,7 @@ export const SaygesStamina = { actionId: () => ActionId.fromSpellId(23737), valu
 // Dire Maul Buffs
 export const FengusFerocity = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 22817, minLevel: 51 },
 		]),
 		fieldName: 'fengusFerocity',
@@ -511,7 +508,7 @@ export const FengusFerocity = withLabel(
 );
 export const MoldarsMoxie = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 22818, minLevel: 51 },
 		]),
 		fieldName: 'moldarsMoxie',
@@ -520,7 +517,7 @@ export const MoldarsMoxie = withLabel(
 );
 export const SlipKiksSavvy = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 22820, minLevel: 51 },
 		]),
 		fieldName: 'slipkiksSavvy',
@@ -531,7 +528,7 @@ export const SlipKiksSavvy = withLabel(
 // SoD World Buffs
 export const BoonOfBlackfathom = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 430947, maxLevel: 39 },
 		]),
 		fieldName: 'boonOfBlackfathom',
@@ -541,7 +538,7 @@ export const BoonOfBlackfathom = withLabel(
 
 export const AshenvalePvpBuff = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 430352, maxLevel: 39 },
 		]),
 		fieldName: 'ashenvalePvpBuff',
@@ -563,7 +560,7 @@ export const SparkOfInspiration = withLabel(
 
 export const MajorArmorDebuff = InputHelpers.makeMultiIconInput([
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 7386, 	minLevel: 10, maxLevel: 21 	},
 			{ id: 7405, 	minLevel: 22, maxLevel: 33 	},
 			{ id: 8380, 	minLevel: 34, maxLevel: 45 	},
@@ -573,7 +570,7 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'sunderArmor',
 	}),
 	makeTristateDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 8647, 	minLevel: 14, maxLevel: 25 	},
 			{ id: 8649, 	minLevel: 26, maxLevel: 35 	},
 			{ id: 8650, 	minLevel: 36, maxLevel: 45 	},
@@ -593,7 +590,7 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput([
 
 export const CurseOfRecklessness = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 704, 		minLevel: 14, maxLevel: 27 	},
 			{ id: 7658, 	minLevel: 28, maxLevel: 41 	},
 			{ id: 7659, 	minLevel: 42, maxLevel: 55 	},
@@ -606,7 +603,7 @@ export const CurseOfRecklessness = withLabel(
 
 export const FaerieFire = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 770, 	minLevel: 18, maxLevel: 29 	},
 			{ id: 778, 	minLevel: 30, maxLevel: 41 	},
 			{ id: 9749, minLevel: 42, maxLevel: 53 	},
@@ -625,7 +622,7 @@ export const FaerieFire = withLabel(
 
 export const AttackPowerDebuff = InputHelpers.makeMultiIconInput([
 	makeTristateDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1160, 	minLevel: 14, maxLevel: 23 	},
 			{ id: 6190, 	minLevel: 24, maxLevel: 33 	},
 			{ id: 11554, 	minLevel: 34, maxLevel: 43 	},
@@ -636,7 +633,7 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput([
 		fieldName: 'demoralizingShout'
 	}),
 	makeTristateDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 99, 	minLevel: 10, maxLevel: 19 	},
 			{ id: 1735, minLevel: 20, maxLevel: 31 	},
 			{ id: 9490, minLevel: 32, maxLevel: 41 	},
@@ -665,7 +662,7 @@ export const MeleeAttackSpeedDebuff = withLabel(
 
 export const MeleeHitDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 5570, 	minLevel: 20, maxLevel: 29 	},
 			{ id: 24974, 	minLevel: 30, maxLevel: 39 	},
 			{ id: 24975, 	minLevel: 40, maxLevel: 49 	},
@@ -680,7 +677,7 @@ export const MeleeHitDebuff = withLabel(
 // TODO: Classic
 export const SpellISBDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 17803, minLevel: 10 },
 		]),
 		fieldName: 'improvedShadowBolt',
@@ -690,7 +687,7 @@ export const SpellISBDebuff = withLabel(
 
 export const SpellScorchDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 12873, minLevel: 40 },
 		]),
 		fieldName: 'improvedScorch',
@@ -700,8 +697,8 @@ export const SpellScorchDebuff = withLabel(
 
 export const SpellWintersChillDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
-			{ id: 28595, minLevel: 40 },
+		actionId: player => player.getMatchingSpellActionId([
+			{ id: 12579, minLevel: 40 },
 		]),
 		fieldName: 'wintersChill',
 	}),
@@ -710,7 +707,7 @@ export const SpellWintersChillDebuff = withLabel(
 
 export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput([
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 17364, minLevel: 40 },
 		]),
 		fieldName: 'stormstrike',
@@ -723,7 +720,7 @@ export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput([
 
 export const SpellShadowWeavingDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 15334, minLevel: 40 },
 		]),
 		fieldName: 'shadowWeaving',
@@ -733,7 +730,7 @@ export const SpellShadowWeavingDebuff = withLabel(
 
 export const CurseOfElements = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1490, 	minLevel: 32, maxLevel: 45 	},
 			{ id: 11721, 	minLevel: 46, maxLevel: 59 	},
 			{ id: 11722, 	minLevel: 60 								},
@@ -745,7 +742,7 @@ export const CurseOfElements = withLabel(
 
 export const CurseOfShadow = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 17862, 	minLevel: 44, maxLevel: 59 	},
 			{ id: 17937, 	minLevel: 60 								},
 		]),
@@ -756,7 +753,7 @@ export const CurseOfShadow = withLabel(
 
 export const HuntersMark = withLabel(
 	makeTristateDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 1130, 	minLevel: 6, 	maxLevel: 21 	},
 			{ id: 14323, 	minLevel: 22, maxLevel: 39 	},
 			{ id: 14324, 	minLevel: 40, maxLevel: 57 	},
@@ -769,48 +766,48 @@ export const HuntersMark = withLabel(
 );
 export const JudgementOfWisdom = withLabel(
 	makeBooleanDebuffInput({
-		actionId: (player) => player.getMatchingSpellActionId([
+		actionId: player => player.getMatchingSpellActionId([
 			{ id: 20186, minLevel: 38, maxLevel: 57 },
 			{ id: 20355, minLevel: 58 							},
 		]),
 		fieldName: 'judgementOfWisdom',
-		showWhen: (player) => player.getFaction() == Faction.Alliance,
+		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),
 	'Judgement of Wisdom',
 );
 
 // Misc Debuffs
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
-	actionId: (player) => player.getMatchingItemActionId([
+	actionId: player => player.getMatchingItemActionId([
 		{ id: 213409, minLevel: 40 },
 	]),
 	fieldName: 'mekkatorqueFistDebuff',
 });
 export const JudgementOfLight = makeBooleanDebuffInput({
-	actionId: (player) => player.getMatchingSpellActionId([
+	actionId: player => player.getMatchingSpellActionId([
 		{ id: 20185, minLevel: 30, maxLevel: 39 },
 		{ id: 20344, minLevel: 40, maxLevel: 49 },
 		{ id: 20345, minLevel: 50, maxLevel: 59 },
 		{ id: 20346, minLevel: 60 							},
 	]),
 	fieldName: 'judgementOfLight',
-	showWhen: (player) => player.getFaction() == Faction.Alliance,
+	showWhen: player => player.getFaction() == Faction.Alliance,
 });
 export const CurseOfVulnerability = makeBooleanDebuffInput({
-	actionId: (player) => player.getMatchingSpellActionId([
+	actionId: player => player.getMatchingSpellActionId([
 		{ id: 427143, minLevel: 25 },
 	]),
 	fieldName: 'curseOfVulnerability',
 });
 export const GiftOfArthas = makeBooleanDebuffInput({
-	actionId: (player) => player.getMatchingSpellActionId([
+	actionId: player => player.getMatchingSpellActionId([
 		// SoD Phase 3?
 		{ id: 11374, minLevel: 41 },
 	]),
 	fieldName: 'giftOfArthas',
 });
 export const CrystalYield = makeBooleanDebuffInput({
-	actionId: (player) => player.getMatchingSpellActionId([
+	actionId: player => player.getMatchingSpellActionId([
 		{ id: 15235, minLevel: 47 },
 	]),
 	fieldName: 'crystalYield',
@@ -1047,42 +1044,42 @@ export const SAYGES_CONFIG = [
 
 export const DEBUFFS_CONFIG = [
 	// // Standard Debuffs
-	{ 
+	{
 		config: MajorArmorDebuff,
 		stats: [Stat.StatAttackPower],
 		picker: MultiIconPicker,
 	},
-	{ 
+	{
 		config: CurseOfRecklessness,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower]
 	},
-	{ 
+	{
 		config: FaerieFire,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower]
 	},
-	// // { 
+	// // {
 	// // 	config: MinorArmorDebuff,
 	// // 	picker: MultiIconPicker,
 	// // 	stats: [Stat.StatAttackPower]
 	// // },
-	{ 
+	{
 		config: BleedDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower]
 	},
-	{ 
+	{
 		config: SpellISBDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatShadowPower]
 	},
-	{ 
+	{
 		config: SpellScorchDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatFirePower]
 	},
-	{ 
+	{
 		config: SpellWintersChillDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatFrostPower]
@@ -1107,17 +1104,17 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
 	},
-	{ 
+	{
 		config: AttackPowerDebuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatArmor]
 	},
-	{ 
+	{
 		config: MeleeAttackSpeedDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatArmor]
 	},
-	{ 
+	{
 		config: MeleeHitDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatDodge]

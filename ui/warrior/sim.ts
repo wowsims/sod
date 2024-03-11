@@ -1,18 +1,17 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
+import { Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
 	PartyBuffs,
+PseudoStat,
 	Race,
 	Spec,
-	Stat, PseudoStat,
-} from '../core/proto/common.js';
+	Stat, } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as WarriorInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -55,7 +54,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatArmor,
 	],
 	modifyDisplayStats: (_: Player<Spec.SpecWarrior>) => {
-		let stats = new Stats();
+		const stats = new Stats();
 
 		return {
 			talents: stats,
@@ -120,22 +119,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
@@ -189,7 +188,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][1].gear,
 					2: Presets.GearPresets[Phase.Phase2][1].gear,
-					
+
 				},
 			},
 		},

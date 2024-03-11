@@ -177,6 +177,7 @@ const (
 	SpellFlagBinary                                         // Does not do partial resists and could need a different hit roll.
 	SpellFlagChanneled                                      // Spell is channeled
 	SpellFlagDisease                                        // Spell is categorized as disease
+	SpellFlagPoison                                         // Spell is categorized as poison
 	SpellFlagHauntSE                                        // Spell benefits from haunt/SE effects
 	SpellFlagHelpful                                        // For healing spells / buffs.
 	SpellFlagMeleeMetrics                                   // Marks a spell as a melee ability for metrics.

@@ -504,7 +504,7 @@ func DragonBreathChiliAura(unit *Unit) *Aura {
 // TODO: create 10s delay on Goblin Landmine cast to damage
 func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
 	isSapper := actionID.SameAction(SapperActionID)
-	
+
 	var defaultCast Cast
 	if !isSapper {
 		defaultCast = Cast{
@@ -562,7 +562,6 @@ func (character *Character) newThoriumGrenadeSpell(sharedTimer *Timer) *Spell {
 func (character *Character) newGoblinLandMineSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, GoblinLandMineActionID, SpellSchoolFire, 394, 506, Cooldown{}, 0, 0))
 }
-
 
 // Creates a spell object for the common explosive case.
 func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, actionID ActionID, minDamage float64, maxDamage float64, dotDamage float64, cooldown Cooldown) SpellConfig {

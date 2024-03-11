@@ -60,13 +60,26 @@ func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, 
 }
 
 // Murder talent
-// TODO: Limit application by Mob type
 func (rogue *Rogue) applyMurder() {
-	rogue.PseudoStats.DamageDealtMultiplier *= rogue.murderMultiplier()
-}
+	if rogue.Talents.Murder == 0 {
+		return
+	}
 
-func (rogue *Rogue) murderMultiplier() float64 {
-	return 1.0 + 0.02*float64(rogue.Talents.Murder)
+	multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
+
+	// TODO Murder, Monster Slaying, Humanoid Slaying, and Beast Slaying (Troll) all affect critical strike damage as well
+
+	// post finalize, since attack tables need to be setup
+	rogue.Env.RegisterPostFinalizeEffect(func() {
+		for _, t := range rogue.Env.Encounter.Targets {
+			switch t.MobType {
+			case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
+				for _, at := range rogue.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= multiplier
+				}
+			}
+		}
+	})
 }
 
 // Cold Blood talent

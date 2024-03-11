@@ -104,7 +104,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1271
+  weights: 0.12621
   weights: 0
   weights: 0
   weights: 0
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.45287
+  weights: 0.45265
   weights: 0.21352
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28116
+  weights: 0.27777
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.20585
+  weights: 0.20575
   weights: 0
-  weights: 2.64929
+  weights: 2.64776
   weights: 0
   weights: 0
   weights: 0
@@ -197,532 +197,532 @@ stat_weights_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 59.62099
-  tps: 58.60038
+  dps: 59.48517
+  tps: 58.46457
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 60.82813
-  tps: 59.3214
+  dps: 60.62379
+  tps: 59.11706
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 59.01902
-  tps: 57.99841
+  dps: 58.8832
+  tps: 57.86259
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 49.61786
-  tps: 42.60709
+  dps: 49.48608
+  tps: 42.47531
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 52.88526
-  tps: 42.89167
+  dps: 52.68293
+  tps: 42.68934
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 49.33958
-  tps: 41.71104
+  dps: 49.19569
+  tps: 41.56714
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 50.35679
-  tps: 40.72637
+  dps: 50.19807
+  tps: 40.56765
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 47.16515
-  tps: 39.67492
+  dps: 47.07375
+  tps: 39.58352
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 47.4609
-  tps: 39.06676
+  dps: 47.34509
+  tps: 38.95096
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 51.22146
-  tps: 41.25111
+  dps: 51.03111
+  tps: 41.06076
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 22.58908
-  tps: 14.97639
+  dps: 22.47822
+  tps: 14.86554
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 60.28318
-  tps: 58.72818
+  dps: 60.09636
+  tps: 58.54135
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Average-Default"
  value: {
-  dps: 77.27997
-  tps: 76.37137
+  dps: 77.14101
+  tps: 76.23242
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 77.03308
-  tps: 208.49378
+  dps: 76.89286
+  tps: 208.35356
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 77.03308
-  tps: 76.15168
+  dps: 76.89286
+  tps: 76.01146
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 80.2266
-  tps: 76.71654
+  dps: 80.13299
+  tps: 76.62294
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 49.10005
-  tps: 153.14504
+  dps: 49.02839
+  tps: 153.07339
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 49.10005
-  tps: 48.88729
+  dps: 49.02839
+  tps: 48.81564
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 57.56681
-  tps: 55.48454
+  dps: 57.50755
+  tps: 55.42528
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 77.03308
-  tps: 205.43589
+  dps: 76.89286
+  tps: 205.29567
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 77.03308
-  tps: 75.99879
+  dps: 76.89286
+  tps: 75.85857
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 80.2266
-  tps: 76.64004
+  dps: 80.13299
+  tps: 76.54644
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 49.73554
-  tps: 153.59401
+  dps: 49.65903
+  tps: 153.51751
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 49.73554
-  tps: 49.52626
+  dps: 49.65903
+  tps: 49.44976
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 57.56681
-  tps: 55.43454
+  dps: 57.50755
+  tps: 55.37528
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 76.59109
-  tps: 206.93205
+  dps: 76.45233
+  tps: 206.7933
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 76.59109
-  tps: 75.65527
+  dps: 76.45233
+  tps: 75.51652
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 79.50836
-  tps: 75.9983
+  dps: 79.41475
+  tps: 75.9047
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 48.94457
-  tps: 151.20997
+  dps: 48.87372
+  tps: 151.13912
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 48.94457
-  tps: 48.44847
+  dps: 48.87372
+  tps: 48.37762
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 57.02049
-  tps: 54.93822
+  dps: 56.96122
+  tps: 54.87895
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 76.59109
-  tps: 205.3511
+  dps: 76.45233
+  tps: 205.21235
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 76.59109
-  tps: 75.57622
+  dps: 76.45233
+  tps: 75.43747
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 79.50836
-  tps: 75.9218
+  dps: 79.41475
+  tps: 75.8282
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 49.1493
-  tps: 151.33212
+  dps: 49.07306
+  tps: 151.25589
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 49.1493
-  tps: 48.79862
+  dps: 49.07306
+  tps: 48.72239
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 57.02049
-  tps: 54.87822
+  dps: 56.96122
+  tps: 54.81895
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 73.6176
-  tps: 72.68178
+  dps: 73.47885
+  tps: 72.54303
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 296.55185
-  tps: 334.40092
+  dps: 295.01101
+  tps: 332.85453
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 293.02025
-  tps: 332.40278
+  dps: 291.34456
+  tps: 330.72308
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 293.22319
-  tps: 331.05863
+  dps: 291.6851
+  tps: 329.51554
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 245.24087
-  tps: 250.37018
+  dps: 244.52204
+  tps: 249.64373
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 239.10806
-  tps: 241.19624
+  dps: 238.41888
+  tps: 240.5039
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 232.08234
-  tps: 234.89038
+  dps: 231.38587
+  tps: 234.18969
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 237.79815
-  tps: 239.37267
+  dps: 237.12327
+  tps: 238.69416
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 238.78364
-  tps: 240.31317
+  dps: 238.26382
+  tps: 239.78672
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 233.63291
-  tps: 236.79866
+  dps: 233.01502
+  tps: 236.1766
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 242.77902
-  tps: 243.66988
+  dps: 242.0304
+  tps: 242.91728
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 148.73462
-  tps: 145.33737
+  dps: 148.27998
+  tps: 144.91343
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 291.74033
-  tps: 331.07555
+  dps: 290.08942
+  tps: 329.42053
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 429.2456
-  tps: 469.38256
+  dps: 427.53425
+  tps: 467.65864
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 402.87663
-  tps: 457.53602
+  dps: 400.12111
+  tps: 454.60416
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 394.58315
-  tps: 446.80237
+  dps: 392.03575
+  tps: 444.1226
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 424.64429
-  tps: 478.76517
+  dps: 422.32407
+  tps: 476.36261
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 256.67757
-  tps: 299.59254
+  dps: 256.31636
+  tps: 299.21608
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 247.04026
-  tps: 288.14303
+  dps: 246.65916
+  tps: 287.74668
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 255.9643
-  tps: 297.56165
+  dps: 255.59273
+  tps: 297.17484
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 402.87663
-  tps: 456.5971
+  dps: 400.12111
+  tps: 453.66525
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 394.58315
-  tps: 446.31305
+  dps: 392.03575
+  tps: 443.63328
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 424.64429
-  tps: 477.44543
+  dps: 422.32407
+  tps: 475.04287
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 256.67757
-  tps: 299.50228
+  dps: 256.31636
+  tps: 299.12583
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 247.04026
-  tps: 287.92214
+  dps: 246.65916
+  tps: 287.5258
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Orc-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 255.9643
-  tps: 297.33975
+  dps: 255.59273
+  tps: 296.95293
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 416.90638
-  tps: 470.18776
+  dps: 414.21325
+  tps: 467.33227
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 408.65747
-  tps: 461.61766
+  dps: 406.1496
+  tps: 458.98376
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-FullBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 436.01255
-  tps: 490.38805
+  dps: 433.73969
+  tps: 488.03893
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 263.84234
-  tps: 305.7096
+  dps: 263.48113
+  tps: 305.33314
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 254.417
-  tps: 294.97769
+  dps: 254.0408
+  tps: 294.58625
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Auto-phase_2-NoBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 261.30312
-  tps: 301.65186
+  dps: 260.93182
+  tps: 301.26532
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 416.90638
-  tps: 470.17967
+  dps: 414.21325
+  tps: 467.32418
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 408.65747
-  tps: 461.54821
+  dps: 406.1496
+  tps: 458.91431
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-FullBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 436.01255
-  tps: 490.02705
+  dps: 433.73969
+  tps: 487.67794
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes RB/RB-ShortSingleTarget"
  value: {
-  dps: 263.84234
-  tps: 305.67778
+  dps: 263.48113
+  tps: 305.30132
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes WF/RB-ShortSingleTarget"
  value: {
-  dps: 254.417
-  tps: 294.84434
+  dps: 254.0408
+  tps: 294.4529
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Settings-Troll-phase_2-Sync Delay OH-phase_2-NoBuffs-Phase 2 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 261.30312
-  tps: 301.69178
+  dps: 260.93182
+  tps: 301.30524
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 396.80479
-  tps: 437.81464
+  dps: 395.12035
+  tps: 436.11573
  }
 }

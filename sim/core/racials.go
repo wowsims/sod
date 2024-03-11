@@ -122,9 +122,15 @@ func applyRaceEffects(agent Agent) {
 		}
 
 		// Beast Slaying (+5% damage to beasts)
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.DamageDealtMultiplier *= 1.05
-		}
+		character.Env.RegisterPostFinalizeEffect(func() {
+			for _, t := range character.Env.Encounter.Targets {
+				if t.MobType == proto.MobType_MobTypeBeast {
+					for _, at := range character.AttackTables[t.UnitIndex] {
+						at.DamageDealtMultiplier *= 1.05
+					}
+				}
+			}
+		})
 
 		// Berserking
 		berserkingTimer := character.NewTimer()

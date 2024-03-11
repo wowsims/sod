@@ -1,24 +1,17 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as OtherInputs from '../core/components/other_inputs.js';
+import { Phase } from '../core/constants/other.js';
+import {IndividualSimUI, registerSpecConfig} from '../core/individual_sim_ui.js';
+import {Player} from '../core/player.js';
 import {
 	Class,
-	Debuffs,
 	Faction,
-	IndividualBuffs,
 	PartyBuffs,
 	Race,
-	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect
 } from '../core/proto/common.js';
 import {Stats} from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import {Player} from '../core/player.js';
-import {IndividualSimUI, registerSpecConfig} from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as MageInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -32,8 +25,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatArcanePower,
+		Stat.StatFirePower,
+		Stat.StatFrostPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -47,8 +42,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
+		Stat.StatArcanePower,
+		Stat.StatFirePower,
+		Stat.StatFrostPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -59,12 +56,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
+			[Stat.StatIntellect]: 0.20,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
+			[Stat.StatArcanePower]: 1,
+			[Stat.StatFirePower]: 1,
+			[Stat.StatFrostPower]: 1,
+			// Aggregated across 3 builds
+			[Stat.StatSpellHit]: 5.00,
+			[Stat.StatSpellCrit]: 6.17,
+			[Stat.StatSpellHaste]: 3.00,
 			[Stat.StatMP5]: 0.09,
 		}),
 		// Default consumes settings.
@@ -75,25 +75,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			manaSpringTotem: TristateEffect.TristateEffectImproved,
-			divineSpirit: true,
-			moonkinAura: true,
-			arcaneBrilliance: true,
-		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			innervates: 0,
-		}),
-		debuffs: Debuffs.create({
-			wintersChill: true,
-			improvedScorch: true,
-			judgementOfWisdom: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: Presets.DefaultIndividualBuffs,
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -104,18 +89,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	rotationInputs: MageInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.BlessingOfWisdom,
-		BuffDebuffInputs.ManaSpringTotem,
-		BuffDebuffInputs.StaminaBuff,
-		BuffDebuffInputs.JudgementOfWisdom,
-		...ConsumablesInputs.FIRE_POWER_CONFIG,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
 	],
 	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellISBDebuff,
-		...ConsumablesInputs.AGILITY_CONSUMES_CONFIG,
-		...ConsumablesInputs.STRENGTH_CONSUMES_CONFIG,
-		...ConsumablesInputs.SHADOW_POWER_CONFIG,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -132,22 +107,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	presets: {
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
