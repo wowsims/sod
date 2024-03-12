@@ -25,7 +25,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBetweenTheEyes)},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
