@@ -13,7 +13,7 @@ func addLevel25(bossPrefix string) {
 			Id:        213334, // Aku'mai
 			Name:      "Level 25",
 			Level:     27,
-			MobType:   proto.MobType_MobTypeUndead,
+			MobType:   proto.MobType_MobTypeUnknown,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
@@ -44,7 +44,7 @@ func addLevel40(bossPrefix string) {
 			Id:        218537, // TODO:
 			Name:      "Level 40",
 			Level:     42,
-			MobType:   proto.MobType_MobTypeMechanical,
+			MobType:   proto.MobType_MobTypeUnknown,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
@@ -75,7 +75,7 @@ func addLevel50(bossPrefix string) {
 			Id:        213334, // TODO:
 			Name:      "Level 50",
 			Level:     52,
-			MobType:   proto.MobType_MobTypeUndead,
+			MobType:   proto.MobType_MobTypeUnknown,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
@@ -106,7 +106,7 @@ func addLevel60(bossPrefix string) {
 			Id:        213334, // TODO:
 			Name:      "Level 60",
 			Level:     63,
-			MobType:   proto.MobType_MobTypeUndead,
+			MobType:   proto.MobType_MobTypeUnknown,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
