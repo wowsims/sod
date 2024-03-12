@@ -63,6 +63,8 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			// Damage increased based on remaining mana up to 300%
+			damage *= 1 + mage.CurrentManaPercent()*3
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
 
 			if result.Landed() {
