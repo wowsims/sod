@@ -33,7 +33,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.HasOHWeapon()
+			return rogue.HasOHWeapon() && rogue.DistanceFromTarget >= 8
 		},
 		CastType: proto.CastType_CastTypeRanged,
 
