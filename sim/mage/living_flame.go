@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -26,11 +27,12 @@ func (mage *Mage) registerLivingFlameSpell() {
 	tickLength := time.Second * 1
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
-		SpellCode:   SpellCode_MageLivingFlame,
-		SpellSchool: core.SpellSchoolSpellfire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		SpellCode:    SpellCode_MageLivingFlame,
+		SpellSchool:  core.SpellSchoolSpellfire,
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
+		MissileSpeed: 10,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -70,9 +72,12 @@ func (mage *Mage) registerLivingFlameSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-			spell.Dot(target).Apply(sim)
-			spell.SpellMetrics[target.UnitIndex].Hits -= 1
+			dot := spell.Dot(target)
+			// Ticks lost to travel time
+			dot.NumberOfTicks = ticks - int32(math.Ceil(spell.TravelTime().Seconds()))
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				dot.Apply(sim)
+			})
 		},
 	})
 
