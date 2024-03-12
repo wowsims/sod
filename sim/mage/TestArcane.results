@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33495
+  weights: 0.2764
   weights: 0
-  weights: 0.33173
-  weights: 0.25138
-  weights: 0.08035
-  weights: 0
-  weights: 0
+  weights: 0.3358
+  weights: 0.26064
+  weights: 0.07516
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47278
+  weights: 0
+  weights: 0
+  weights: 0.48507
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.15193
+  weights: -0.09579
   weights: 0
-  weights: 0.59232
-  weights: 0.59232
-  weights: 0
-  weights: 0
+  weights: 0.55653
+  weights: 0.55653
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.29483
+  weights: 0
+  weights: 0
+  weights: 2.25698
   weights: 0
   weights: 0
   weights: 0
@@ -218,106 +218,106 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 136.72161
-  tps: 57.29404
+  dps: 138.30061
+  tps: 57.92564
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Average-Default"
  value: {
-  dps: 144.80341
-  tps: 60.52478
+  dps: 146.63685
+  tps: 61.25815
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 836.91201
-  tps: 386.87268
+  dps: 789.34972
+  tps: 367.84776
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 146.84516
-  tps: 61.34346
+  dps: 149.18985
+  tps: 62.28133
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 180.805
-  tps: 76.68187
+  dps: 182.29785
+  tps: 77.27902
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 678.41666
-  tps: 323.47454
+  dps: 637.85507
+  tps: 307.2499
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 115.54802
-  tps: 48.8246
+  dps: 114.9886
+  tps: 48.60083
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Gnome-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 139.16072
-  tps: 60.02416
+  dps: 144.17033
+  tps: 62.02801
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 836.199
-  tps: 386.58748
+  dps: 783.25708
+  tps: 365.41071
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 146.78896
-  tps: 61.32098
+  dps: 146.89402
+  tps: 61.363
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 175.34086
-  tps: 74.49622
+  dps: 184.7877
+  tps: 78.27496
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 673.57859
-  tps: 321.53931
+  dps: 630.62487
+  tps: 304.35782
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 114.58544
-  tps: 48.43957
+  dps: 113.4902
+  tps: 48.00147
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Settings-Troll-p1_generic-Arcane-p1_arcane-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 141.90165
-  tps: 61.12054
+  dps: 141.05472
+  tps: 60.78177
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 146.78896
-  tps: 61.32098
+  dps: 146.89402
+  tps: 61.363
  }
 }
 dps_results: {
@@ -344,105 +344,105 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 448.13502
-  tps: 184.17062
+  dps: 419.42553
+  tps: 173.26909
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 523.17557
-  tps: 214.61075
+  dps: 490.41454
+  tps: 201.70571
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 2115.98996
-  tps: 957.22108
+  dps: 1787.00148
+  tps: 831.04081
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 519.95965
-  tps: 213.52511
+  dps: 488.41142
+  tps: 201.17658
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 580.46172
-  tps: 237.406
+  dps: 542.11431
+  tps: 223.22815
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1646.3802
-  tps: 730.57696
+  dps: 1413.64202
+  tps: 640.32342
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 404.20521
-  tps: 165.28333
+  dps: 380.27249
+  tps: 155.85233
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 464.63499
-  tps: 191.24978
+  dps: 435.77479
+  tps: 180.68839
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 2168.89258
-  tps: 978.88908
+  dps: 1811.50487
+  tps: 842.71056
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 527.35639
-  tps: 216.50916
+  dps: 493.54024
+  tps: 203.32153
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 587.01135
-  tps: 240.72434
+  dps: 544.95543
+  tps: 224.36711
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1696.46173
-  tps: 750.73002
+  dps: 1431.54063
+  tps: 647.5028
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 409.53398
-  tps: 167.42086
+  dps: 383.42504
+  tps: 157.11434
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 470.81569
-  tps: 194.06858
+  dps: 438.54912
+  tps: 182.12715
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 527.35639
-  tps: 216.50916
+  dps: 493.54024
+  tps: 203.32153
  }
 }
