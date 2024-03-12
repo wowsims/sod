@@ -1,3 +1,8 @@
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
+import {
+	APLRotation,
+} from '../core/proto/apl.js';
 import {
 	Class,
 	Faction,
@@ -7,13 +12,7 @@ import {
 	Stat,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
-
 import * as HealingPriestInputs from './inputs.js';
 import * as Presets from './presets.js';
 

@@ -12,6 +12,8 @@ func (rogue *Rogue) registerShivSpell() {
 		return
 	}
 
+	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
+
 	baseCost := 20.0
 	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
 		baseCost = baseCost + 10*ohWeapon.SwingSpeed
@@ -34,7 +36,7 @@ func (rogue *Rogue) registerShivSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 * rogue.dwsMultiplier(),
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -47,15 +49,17 @@ func (rogue *Rogue) registerShivSpell() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 
-				// 100% application (except for 1%? It can resist extremely rarely)
-				if rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison).Matches(core.ProcMaskMeleeOH) {
+				switch rogue.Consumes.OffHandImbue {
+				case proto.WeaponImbue_InstantPoison:
 					rogue.InstantPoison[ShivProc].Cast(sim, target)
-					return
-				} else if rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison).Matches(core.ProcMaskMeleeOH) {
+				case proto.WeaponImbue_DeadlyPoison:
 					rogue.DeadlyPoison[ShivProc].Cast(sim, target)
-					return
-				} else if rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison).Matches(core.ProcMaskMeleeOH) {
+				case proto.WeaponImbue_WoundPoison:
 					rogue.WoundPoison[ShivProc].Cast(sim, target)
+				default:
+					if hasDeadlyBrew {
+						rogue.InstantPoison[ShivProc].Cast(sim, target)
+					}
 				}
 			}
 		},

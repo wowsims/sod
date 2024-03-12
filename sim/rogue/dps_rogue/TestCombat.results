@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 48.36156
-  tps: 34.33671
+  dps: 48.3092
+  tps: 34.29953
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 53.58257
-  tps: 38.04362
+  dps: 53.57328
+  tps: 38.03703
  }
 }

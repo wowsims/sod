@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.18103
+  weights: -0.18106
   weights: 0
-  weights: 0.00659
-  weights: 0
-  weights: 0
+  weights: 0.00592
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.03896
-  weights: 3.36791
+  weights: 0
+  weights: 0
+  weights: 5.03509
+  weights: 3.36039
   weights: 0
   weights: 0
   weights: 0
@@ -288,57 +288,57 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 93.78643
-  tps: 108.6782
+  dps: 93.67464
+  tps: 108.66654
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 99.55855
-  tps: 114.94812
+  dps: 99.44365
+  tps: 114.93579
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 98.90143
-  tps: 110.68146
+  dps: 98.78533
+  tps: 110.66892
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 96.09131
-  tps: 114.80295
+  dps: 95.70414
+  tps: 114.40027
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 532.24507
-  tps: 1258.42354
+  dps: 531.72583
+  tps: 1257.73728
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 552.39209
-  tps: 1703.94083
+  dps: 550.77685
+  tps: 1703.25654
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 534.94989
-  tps: 1263.71462
+  dps: 534.41827
+  tps: 1263.00792
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 603.23991
-  tps: 1375.55901
+  dps: 600.58182
+  tps: 1372.0255
  }
 }
 dps_results: {
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 534.94989
-  tps: 1263.71462
+  dps: 534.41827
+  tps: 1263.00792
  }
 }

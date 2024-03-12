@@ -1,3 +1,9 @@
+import * as OtherInputs from '../core/components/other_inputs.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
+import {
+	APLRotation,
+} from '../core/proto/apl.js';
 import {
 	Class,
 	Debuffs,
@@ -10,15 +16,8 @@ import {
 	Stat,
 	TristateEffect,
 } from '../core/proto/common.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as OtherInputs from '../core/components/other_inputs.js';
 import * as HolyPaladinInputs from './inputs.js';
 import * as Presets from './presets.js';
 

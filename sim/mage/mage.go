@@ -30,6 +30,22 @@ func RegisterMage() {
 	)
 }
 
+const (
+	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneBlast
+	SpellCode_MageArcaneExplosion
+	SpellCode_MageArcaneMissiles
+	SpellCode_MageArcaneSurge
+	SpellCode_MageFireball
+	SpellCode_MageFireBlast
+	SpellCode_MageFrostbolt
+	SpellCode_MageFrostfireBolt
+	SpellCode_MageLivingBomb
+	SpellCode_MageLivingFlame
+	SpellCode_MageScorch
+	SpellCode_MageSpellfrostBolt
+)
+
 type Mage struct {
 	core.Character
 
@@ -37,34 +53,43 @@ type Mage struct {
 	Options *proto.Mage_Options
 
 	ArcaneBlast             *core.Spell
-	ArcaneExplosion         *core.Spell
-	ArcaneMissiles          *core.Spell
-	ArcaneMissilesTickSpell *core.Spell
-	BlastWave               *core.Spell
-	Blizzard                *core.Spell
+	ArcaneExplosion         []*core.Spell
+	ArcaneMissiles          []*core.Spell
+	ArcaneMissilesTickSpell []*core.Spell
+	ArcaneSurge             *core.Spell
+	BlastWave               []*core.Spell
+	Blizzard                []*core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
-	Fireball                *core.Spell
-	FireBlast               *core.Spell
-	Flamestrike             *core.Spell
-	Frostbolt               *core.Spell
+	Fireball                []*core.Spell
+	FireBlast               []*core.Spell
+	Flamestrike             []*core.Spell
+	Frostbolt               []*core.Spell
+	FrostfireBolt           *core.Spell
 	IceLance                *core.Spell
-	Pyroblast               *core.Spell
-	Scorch                  *core.Spell
+	Pyroblast               []*core.Spell
+	Scorch                  []*core.Spell
+	SpellfrostBolt          *core.Spell
 
 	IcyVeins *core.Spell
 
-	ArcaneBlastAura    *core.Aura
-	ArcanePotencyAura  *core.Aura
-	ArcanePowerAura    *core.Aura
-	ClearcastingAura   *core.Aura
-	ScorchAuras        core.AuraArray
-	CombustionAura     *core.Aura
-	FingersOfFrostAura *core.Aura
-	EnlightenmentAura  *core.Aura
+	ArcaneBlastAura     *core.Aura
+	ArcanePotencyAura   *core.Aura
+	ArcanePowerAura     *core.Aura
+	ClearcastingAura    *core.Aura
+	CombustionAura      *core.Aura
+	FingersOfFrostAura  *core.Aura
+	HotStreakAura       *core.Aura
+	ImprovedScorchAuras core.AuraArray
+	MissileBarrageAura  *core.Aura
 
 	CritDebuffCategories core.ExclusiveCategoryArray
+}
+
+// Agent is a generic way to access underlying mage on any of the agents.
+type MageAgent interface {
+	GetMage() *Mage
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -86,15 +111,15 @@ func (mage *Mage) Initialize() {
 	mage.registerFireballSpell()
 	mage.registerFireBlastSpell()
 	mage.registerFrostboltSpell()
-	// mage.registerManaGemsCD()
-	// mage.registerPyroblastSpell()
+	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
 
-	// TODO: Classic mage aoe spells
-	// mage.registerArcaneExplosionSpell()
-	// mage.registerBlizzardSpell()
-	// mage.registerFlamestrikeSpells()
-	// mage.registerBlastWaveSpell()
+	mage.registerArcaneExplosionSpell()
+	mage.registerBlastWaveSpell()
+	mage.registerBlizzardSpell()
+	mage.registerFlamestrikeSpell()
+
+	mage.registerEvocationSpell()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -130,7 +155,7 @@ func (mage *Mage) HasRune(rune proto.MageRune) bool {
 	return mage.HasRuneById(int32(rune))
 }
 
-// Agent is a generic way to access underlying mage on any of the agents.
-type MageAgent interface {
-	GetMage() *Mage
+func (mage *Mage) MageCritMultiplier(secondary float64) float64 {
+	critBonus := core.TernaryFloat64(mage.HasRune(proto.MageRune_RuneFeetSpellPower), .5, 0) + secondary
+	return mage.SpellCritMultiplier(1, critBonus)
 }

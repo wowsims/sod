@@ -72,7 +72,7 @@ func (rogue *Rogue) applyPoisons() {
 
 // Apply Deadly Brew Instant Poison procs
 func (rogue *Rogue) applyDeadlyBrewInstant() {
-	// apply IP from all weapons w/o DP or WP applied
+	// apply IP from all weapons w/o IP, DP, or WP applied
 	procMask := core.ProcMaskMelee
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison)
@@ -101,7 +101,6 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 
 // Apply Deadly Brew Deadly Poison procs
 func (rogue *Rogue) applyDeadlyBrewDeadly() {
-	// TODO: Check if Deadly Brew Deadly Proc triggers on Deadly Poison not from Deadly Brew
 	rogue.RegisterAura(core.Aura{
 		Label:    "Deadly Brew (Deadly)",
 		Duration: core.NeverExpires,
@@ -109,9 +108,10 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Only proc Deadly Brew for Deadly Poison if another "rogue" poison landed
-			if !result.Landed() ||
-				!(rogue.InstantPoison[NormalProc].SpellID == spell.SpellID || rogue.WoundPoison[NormalProc].SpellID == spell.SpellID) {
+			if !result.Landed() || !spell.Flags.Matches(core.SpellFlagPoison) {
+				return
+			}
+			if spell == rogue.DeadlyPoison[DeadlyBrewProc] {
 				return
 			}
 
@@ -264,37 +264,28 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		60: 11340,
 	}[rogue.Level]
 
-	isShivProc := procSource == ShivProc
-
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		// Shiv gives 100% hit to always hit (except for 1% miss of magic table)
-		BonusHitRating: core.TernaryFloat64(isShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(hasDeadlyBrew, 0.03*spell.MeleeAttackPower(), 0)
-			if isShivProc {
-				// 100% application (except for the 1%? It can resist very rarely)
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-			} else {
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
 
 func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
-	isShivProc := procSource == ShivProc
-
 	baseDamageTick := map[int32]float64{
 		25: 9,
 		40: 13,
@@ -314,12 +305,12 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
 
-		// Shiv gives 100% hit to always hit (except for 1% miss of magic table)
-		BonusHitRating: core.TernaryFloat64(isShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -330,11 +321,21 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
 
-			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
+				if !applyStack {
+					return
+				}
+
+				// only the first stack snapshots the multiplier
+				if dot.GetStacks() == 1 {
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotBaseDamage = 0
+				}
+
+				// each stack snapshots the AP it was applied with
 				// 3.6% per stack for all ticks, or 0.9% per stack and tick
-				dot.SnapshotBaseDamage = (baseDamageTick + core.TernaryFloat64(hasDeadlyBrew, 0.009*dot.Spell.MeleeAttackPower(), 0)) * float64(dot.GetStacks())
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				dot.SnapshotBaseDamage += baseDamageTick + core.TernaryFloat64(hasDeadlyBrew, 0.009*dot.Spell.MeleeAttackPower(), 0)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -352,10 +353,10 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 			dot := spell.Dot(target)
 
 			dot.ApplyOrRefresh(sim)
-			if dot.IsActive() {
+			if dot.GetStacks() < dot.MaxStacks {
 				dot.AddStack(sim)
-				// update damage by number of stacks
-				dot.TakeSnapshot(sim, false)
+				// snapshotting only takes place when adding a stack
+				dot.TakeSnapshot(sim, true)
 			}
 		},
 	})
@@ -363,19 +364,17 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 
 // Make a source based variant of Wound Poison
 func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
-	isShivProc := procSource == ShivProc
-
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
+		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		// Shiv gives 100% hit to always hit (except for 1% miss of magic table)
-		BonusHitRating: core.TernaryFloat64(isShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)

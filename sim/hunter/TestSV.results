@@ -393,126 +393,126 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 533.37953
-  tps: 176.96968
+  dps: 533.37615
+  tps: 176.9663
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 521.39267
-  tps: 174.01111
+  dps: 521.3885
+  tps: 174.00694
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 542.40828
-  tps: 182.43572
+  dps: 542.4049
+  tps: 182.43234
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 522.86632
-  tps: 200.19534
+  dps: 522.8621
+  tps: 200.19112
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 490.04315
-  tps: 184.805
+  dps: 490.03667
+  tps: 184.79852
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 486.93443
-  tps: 181.48272
+  dps: 486.9302
+  tps: 181.47849
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 496.52368
-  tps: 187.11656
+  dps: 496.51729
+  tps: 187.11018
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 520.06444
-  tps: 195.89141
+  dps: 520.06022
+  tps: 195.88719
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 494.75358
-  tps: 185.64621
+  dps: 494.74807
+  tps: 185.64071
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 496.67608
-  tps: 185.93929
+  dps: 496.66963
+  tps: 185.93284
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 707.77678
-  tps: 193.42169
+  dps: 707.77137
+  tps: 193.41628
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 598.77426
-  tps: 165.15589
+  dps: 598.76818
+  tps: 165.14981
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 517.89921
-  tps: 172.29304
+  dps: 517.89513
+  tps: 172.28896
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 714.28085
-  tps: 197.13874
+  dps: 714.27444
+  tps: 197.13233
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1409.63987
-  tps: 863.41775
+  dps: 1409.57572
+  tps: 863.41234
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 707.16208
-  tps: 196.66377
+  dps: 707.15667
+  tps: 196.65836
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 717.70973
-  tps: 209.14135
+  dps: 717.68268
+  tps: 209.1143
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 657.66645
+  dps: 657.60292
   tps: 529.85149
  }
 }
@@ -533,28 +533,28 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1421.86301
-  tps: 859.58743
+  dps: 1421.80112
+  tps: 859.58202
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 716.8855
-  tps: 197.52688
+  dps: 716.88009
+  tps: 197.52147
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 728.98815
-  tps: 214.20101
+  dps: 728.9611
+  tps: 214.17396
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 660.97497
+  dps: 660.89922
   tps: 531.14062
  }
 }
@@ -575,7 +575,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 686.06834
-  tps: 195.72073
+  dps: 685.31483
+  tps: 195.49744
  }
 }

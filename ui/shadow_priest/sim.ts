@@ -1,4 +1,9 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../core/components/other_inputs.js';
+import * as Mechanics from '../core/constants/mechanics.js';
+import { Phase } from '../core/constants/other.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
 import {
 	Class,
 	Faction,
@@ -8,13 +13,7 @@ import {
 	Stat,
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { Player } from '../core/player.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
 import * as ShadowPriestInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -123,21 +122,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
-			...Presets.TalentPresets[CURRENT_PHASE],
 		],
 		rotations: [
+			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
-			...Presets.APLPresets[CURRENT_PHASE],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
-			...Presets.GearPresets[CURRENT_PHASE],
 		],
 	},
 
-	autoRotation: (player) => {
+	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 

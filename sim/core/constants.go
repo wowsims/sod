@@ -39,3 +39,12 @@ type Hand bool
 
 const MainHand Hand = true
 const OffHand Hand = false
+
+type DefenseType byte
+
+const (
+	DefenseTypeNone DefenseType = iota
+	DefenseTypeMagic
+	DefenseTypeMelee
+	DefenseTypeRanged
+)
