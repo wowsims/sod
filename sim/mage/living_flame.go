@@ -20,9 +20,9 @@ func (mage *Mage) registerLivingFlameSpell() {
 	baseDamage := baseCalc * 1
 	spellCoeff := .143
 	manaCost := .11
-	cooldown := time.Minute * 1
+	cooldown := time.Second * 30
 
-	ticks := int32(20)
+	ticks := int32(10)
 	tickLength := time.Second * 1
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
