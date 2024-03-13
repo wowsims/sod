@@ -26,6 +26,8 @@ func (mage *Mage) registerLivingFlameSpell() {
 	ticks := int32(10)
 	tickLength := time.Second * 1
 
+	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
+
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
 		SpellCode:    SpellCode_MageLivingFlame,
@@ -62,6 +64,11 @@ func (mage *Mage) registerLivingFlameSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+
+				// We have to deactivate AB here because otherwise the stacks are removed before the snapshot is calculated
+				if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
+					mage.ArcaneBlastAura.Deactivate(sim)
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
