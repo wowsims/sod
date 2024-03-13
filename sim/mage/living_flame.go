@@ -34,7 +34,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		SpellSchool:  core.SpellSchoolSpellfire,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
-		MissileSpeed: 10,
+		MissileSpeed: 6.02,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -81,7 +81,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := spell.Dot(target)
 			// Ticks lost to travel time
-			dot.NumberOfTicks = ticks - int32(math.Ceil(spell.TravelTime().Seconds()))
+			dot.NumberOfTicks = ticks - int32(math.Floor(spell.TravelTime().Seconds()))
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				dot.Apply(sim)
 			})

@@ -65,12 +65,10 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			// Damage increased based on remaining mana up to 300%
 			damage *= 1 + mage.CurrentManaPercent()*3
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-
-			if result.Landed() {
-				mage.SpendMana(sim, mage.CurrentMana(), spell.ResourceMetrics)
-				manaAura.Activate(sim)
-			}
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			// Because of the 0 base mana cost we have to create resource metrics
+			mage.SpendMana(sim, mage.CurrentMana(), mage.NewManaMetrics(actionID))
+			manaAura.Activate(sim)
 		},
 	})
 
