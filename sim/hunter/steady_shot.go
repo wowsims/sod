@@ -50,7 +50,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         0.6,
+		DamageMultiplier:         0.75,
 		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier:         1,
 
