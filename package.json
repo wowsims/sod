@@ -26,8 +26,10 @@
         "tsx-vanilla": "^1.0.0"
     },
     "devDependencies": {
-        "@protobuf-ts/plugin": "^2.0.4",
-        "@protobuf-ts/runtime": "^2.0.4",
+        "@protobuf-ts/plugin": "2.9.1",
+        "@protobuf-ts/plugin-framework": "2.9.1",
+        "@protobuf-ts/protoc": "2.9.1",
+        "@protobuf-ts/runtime": "2.9.1",
         "@types/bootstrap": "^5.2.0",
         "@types/node": "^18.6.1",
         "@types/pako": "^1.0.7",
