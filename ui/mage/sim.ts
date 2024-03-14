@@ -101,9 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	autoRotation: player => {
 		const specNumber = player.getTalentTree();
-		const frostfireBoltEquipped =
-			player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id ==
-			MageRune.RuneBeltFrostfireBolt;
+		const frostfireBoltEquipped = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == MageRune.RuneBeltFrostfireBolt;
 
 		if (specNumber == 0 || (specNumber == 1 && !frostfireBoltEquipped)) {
 			// Prio standard arcane, standard fire only if not using FFB
