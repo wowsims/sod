@@ -21,6 +21,8 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
 
+	manaMetrics := mage.NewManaMetrics(actionID)
+
 	manaAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Arcane Surge",
 		ActionID: actionID,
@@ -67,7 +69,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 			damage *= 1 + mage.CurrentManaPercent()*3
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			// Because of the 0 base mana cost we have to create resource metrics
-			mage.SpendMana(sim, mage.CurrentMana(), mage.NewManaMetrics(actionID))
+			mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
 			manaAura.Activate(sim)
 		},
 	})
