@@ -12,6 +12,8 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		return
 	}
 
+	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
+
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RunePoisonedKnife)},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -54,14 +56,17 @@ func (rogue *Rogue) registerPoisonedKnife() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				// 100% application of OH poison (except for 1%? It can resist extremely rarely)
-				if rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison).Matches(core.ProcMaskMeleeOH) {
+				switch rogue.Consumes.OffHandImbue {
+				case proto.WeaponImbue_InstantPoison:
 					rogue.InstantPoison[ShivProc].Cast(sim, target)
-					return
-				} else if rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison).Matches(core.ProcMaskMeleeOH) {
+				case proto.WeaponImbue_DeadlyPoison:
 					rogue.DeadlyPoison[ShivProc].Cast(sim, target)
-					return
-				} else if rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison).Matches(core.ProcMaskMeleeOH) {
+				case proto.WeaponImbue_WoundPoison:
 					rogue.WoundPoison[ShivProc].Cast(sim, target)
+				default:
+					if hasDeadlyBrew {
+						rogue.InstantPoison[NormalProc].Cast(sim, target)
+					}
 				}
 			} else {
 				spell.IssueRefund(sim)

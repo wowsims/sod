@@ -58,7 +58,7 @@ func (rogue *Rogue) registerShivSpell() {
 					rogue.WoundPoison[ShivProc].Cast(sim, target)
 				default:
 					if hasDeadlyBrew {
-						rogue.InstantPoison[ShivProc].Cast(sim, target)
+						rogue.InstantPoison[NormalProc].Cast(sim, target)
 					}
 				}
 			}
