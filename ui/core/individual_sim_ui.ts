@@ -1,26 +1,27 @@
-import { simLaunchStatuses } from './launched_sims';
-import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { SimSettingCategories } from './sim';
-import { SimUI, SimWarning } from './sim_ui';
-import { EventID, TypedEvent } from './typed_event';
-
 import { CharacterStats, StatMods } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
+import * as Exporters from './components/exporters';
+import * as IconInputs from './components/icon_inputs';
+import * as Importers from './components/importers';
+import { BulkTab } from './components/individual_sim_ui/bulk_tab';
+import { GearTab } from './components/individual_sim_ui/gear_tab';
+import { RotationTab } from './components/individual_sim_ui/rotation_tab';
+import { SettingsTab } from './components/individual_sim_ui/settings_tab';
+import { TalentsTab } from './components/individual_sim_ui/talents_tab';
+import * as InputHelpers from './components/input_helpers';
 import { ItemSwapConfig } from './components/item_swap_picker';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
-
-import { BulkTab } from './components/individual_sim_ui/bulk_tab';
-import { GearTab } from './components/individual_sim_ui/gear_tab';
-import { SettingsTab } from './components/individual_sim_ui/settings_tab';
-import { RotationTab } from './components/individual_sim_ui/rotation_tab';
-import { TalentsTab } from './components/individual_sim_ui/talents_tab';
-
 import { LEVEL_THRESHOLDS } from './constants/other';
-
+import * as Tooltips from './constants/tooltips';
+import { simLaunchStatuses } from './launched_sims';
+import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
+import { PresetGear, PresetRotation } from './preset_utils';
+import { StatWeightsResult } from './proto/api';
+import { APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Consumes,
 	Debuffs,
@@ -38,129 +39,112 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
-import { StatWeightsResult } from './proto/api';
-import { APLRotation_Type as APLRotationType } from './proto/apl';
 import { ItemSwapGear } from './proto_utils/gear';
 import { professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
-import {
-	getTalentPoints,
-	isHealingSpec,
-	isTankSpec,
-	SpecOptions,
-	SpecRotation,
-	specToEligibleRaces,
-	specToLocalStorageKey,
-} from './proto_utils/utils';
-
-import {PresetGear, PresetRotation} from './preset_utils';
-
-import * as Exporters from './components/exporters';
-import * as Importers from './components/importers';
-import * as IconInputs from './components/icon_inputs';
-import * as InputHelpers from './components/input_helpers';
-import * as Tooltips from './constants/tooltips';
+import { getTalentPoints, isHealingSpec, isTankSpec, SpecOptions, SpecRotation, specToEligibleRaces, specToLocalStorageKey } from './proto_utils/utils';
+import { SimSettingCategories } from './sim';
+import { SimUI, SimWarning } from './sim_ui';
+import { EventID, TypedEvent } from './typed_event';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
 
-export type InputConfig<ModObject> = (
-	InputHelpers.TypedBooleanPickerConfig<ModObject> |
-	InputHelpers.TypedNumberPickerConfig<ModObject> |
-	InputHelpers.TypedEnumPickerConfig<ModObject>
-);
+export type InputConfig<ModObject> =
+	| InputHelpers.TypedBooleanPickerConfig<ModObject>
+	| InputHelpers.TypedNumberPickerConfig<ModObject>
+	| InputHelpers.TypedEnumPickerConfig<ModObject>;
 
 export interface InputSection {
-	tooltip?: string,
-	inputs: Array<InputConfig<Player<any>>>,
+	tooltip?: string;
+	inputs: Array<InputConfig<Player<any>>>;
 }
 
 export interface OtherDefaults {
-	profession1?: Profession,
-	profession2?: Profession,
-	distanceFromTarget?: number,
-	channelClipDelay?: number,
+	profession1?: Profession;
+	profession2?: Profession;
+	distanceFromTarget?: number;
+	channelClipDelay?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
-	spec: Spec,
-	talents: SavedTalents,
-	specOptions: SpecOptions<SpecType>,
-	consumes: Consumes,
+	spec: Spec;
+	talents: SavedTalents;
+	specOptions: SpecOptions<SpecType>;
+	consumes: Consumes;
 
-	defaultName: string,
-	defaultFactionRaces: Record<Faction, Race>,
-	defaultGear: Record<Faction, Record<number, EquipmentSpec>>,
-	otherDefaults?: OtherDefaults,
+	defaultName: string;
+	defaultFactionRaces: Record<Faction, Race>;
+	defaultGear: Record<Faction, Record<number, EquipmentSpec>>;
+	otherDefaults?: OtherDefaults;
 
-	tooltip: string,
-	iconUrl: string,
+	tooltip: string;
+	iconUrl: string;
 }
 
 export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConfig<SpecType> {
 	// Additional css class to add to the root element.
-	cssClass: string,
+	cssClass: string;
 	// Used to generate schemed components. E.g. 'shaman', 'druid', 'raid'
-	cssScheme: string,
+	cssScheme: string;
 
 	knownIssues?: Array<string>;
-	warnings?: Array<(simUI: IndividualSimUI<SpecType>) => SimWarning>,
+	warnings?: Array<(simUI: IndividualSimUI<SpecType>) => SimWarning>;
 
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
 	displayStats: Array<Stat>;
-	modifyDisplayStats?: (player: Player<SpecType>) => StatMods,
+	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
 
 	defaults: {
-		race?: Race
-		gear: EquipmentSpec,
-		epWeights: Stats,
-		consumes: Consumes,
+		race?: Race;
+		gear: EquipmentSpec;
+		epWeights: Stats;
+		consumes: Consumes;
 
-		rotationType?: APLRotationType,
-		simpleRotation?: SpecRotation<SpecType>,
+		rotationType?: APLRotationType;
+		simpleRotation?: SpecRotation<SpecType>;
 
-		talents: SavedTalents,
-		specOptions: SpecOptions<SpecType>,
+		talents: SavedTalents;
+		specOptions: SpecOptions<SpecType>;
 
-		raidBuffs: RaidBuffs,
-		partyBuffs: PartyBuffs,
-		individualBuffs: IndividualBuffs,
+		raidBuffs: RaidBuffs;
+		partyBuffs: PartyBuffs;
+		individualBuffs: IndividualBuffs;
 
-		debuffs: Debuffs,
+		debuffs: Debuffs;
 
-		other?: OtherDefaults,
-	},
+		other?: OtherDefaults;
+	};
 
-	playerInputs?: InputSection,
-	playerIconInputs: Array<IconInputs.IconInputConfig<Player<SpecType>, any>>,
-	petConsumeInputs?: Array<IconInputs.IconInputConfig<Player<SpecType>, any>>,
+	playerInputs?: InputSection;
+	playerIconInputs: Array<IconInputs.IconInputConfig<Player<SpecType>, any>>;
+	petConsumeInputs?: Array<IconInputs.IconInputConfig<Player<SpecType>, any>>;
 	rotationInputs?: InputSection;
 	rotationIconInputs?: Array<IconInputs.IconInputConfig<Player<any>, any>>;
-	includeBuffDebuffInputs: Array<any>,
-	excludeBuffDebuffInputs: Array<any>,
+	includeBuffDebuffInputs: Array<any>;
+	excludeBuffDebuffInputs: Array<any>;
 	otherInputs: InputSection;
 	// Currently, many classes don't support item swapping, and only in certain slots.
 	// So enable it only where it is supported.
-	itemSwapConfig?: ItemSwapConfig,
+	itemSwapConfig?: ItemSwapConfig;
 
 	// For when extra sections are needed (e.g. Shaman totems)
-	customSections?: Array<(parentElem: HTMLElement, simUI: IndividualSimUI<SpecType>) => ContentBlock>,
+	customSections?: Array<(parentElem: HTMLElement, simUI: IndividualSimUI<SpecType>) => ContentBlock>;
 
-	encounterPicker: EncounterPickerConfig,
+	encounterPicker: EncounterPickerConfig;
 
 	presets: {
-		gear: Array<PresetGear>,
-		talents: Array<SavedDataConfig<Player<any>, SavedTalents>>,
-		rotations: Array<PresetRotation>,
-	},
+		gear: Array<PresetGear>;
+		talents: Array<SavedDataConfig<Player<any>, SavedTalents>>;
+		rotations: Array<PresetRotation>;
+	};
 
-	raidSimPresets: Array<RaidSimPreset<SpecType>>,
+	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
 
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
@@ -168,14 +152,14 @@ export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config
 	return config;
 }
 
-export let itemSwapEnabledSpecs: Array<Spec> = [];
+export const itemSwapEnabledSpecs: Array<Spec> = [];
 
 export interface Settings {
-	raidBuffs: RaidBuffs,
-	partyBuffs: PartyBuffs,
-	individualBuffs: IndividualBuffs,
-	consumes: Consumes,
-	race: Race,
+	raidBuffs: RaidBuffs;
+	partyBuffs: PartyBuffs;
+	individualBuffs: IndividualBuffs;
+	consumes: Consumes;
+	race: Race;
 	professions?: Array<Profession>;
 }
 
@@ -202,7 +186,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.spec,
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
-			noticeText: 'Disclaimer: Phase 2 support is still in early development. Item and spell effects may not be implemented.',
+			noticeText: '',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
@@ -246,11 +230,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.addWarning({
 			updateOn: TypedEvent.onAny([this.player.gearChangeEmitter, this.player.talentsChangeEmitter]),
 			getContent: () => {
-				if (!this.player.canDualWield2H() &&
-					(this.player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType == HandType.HandTypeTwoHand &&
-						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null ||
-						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.handType == HandType.HandTypeTwoHand)) {
-					return "Dual wielding two-handed weapon(s) without Titan's Grip spec."
+				if (
+					!this.player.canDualWield2H() &&
+					((this.player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType == HandType.HandTypeTwoHand &&
+						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null) ||
+						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.handType == HandType.HandTypeTwoHand)
+				) {
+					return "Dual wielding two-handed weapon(s) without Titan's Grip spec.";
 				} else {
 					return '';
 				}
@@ -326,20 +312,21 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
 
 		new CharacterStats(
-			this.rootElem.getElementsByClassName('sim-sidebar-footer')[0] as HTMLElement,
+			this.rootElem.getElementsByClassName('sim-sidebar-stats')[0] as HTMLElement,
 			this.player,
 			this.individualConfig.displayStats,
-			this.individualConfig.modifyDisplayStats);
+			this.individualConfig.modifyDisplayStats,
+		);
 	}
 
 	private addGearTab() {
-		let gearTab = new GearTab(this.simTabContentsContainer, this);
+		const gearTab = new GearTab(this.simTabContentsContainer, this);
 		gearTab.rootElem.classList.add('active', 'show');
 	}
 
 	private addBulkTab(): BulkTab {
-		let bulkTab = new BulkTab(this.simTabContentsContainer, this);
-		bulkTab.navLink.hidden = !this.sim.getShowExperimental()
+		const bulkTab = new BulkTab(this.simTabContentsContainer, this);
+		bulkTab.navLink.hidden = !this.sim.getShowExperimental();
 		this.sim.showExperimentalChangeEmitter.on(() => {
 			bulkTab.navLink.hidden = !this.sim.getShowExperimental();
 		});
@@ -359,10 +346,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab('Results', 'detailed-results-tab', `
+		this.addTab(
+			'Results',
+			'detailed-results-tab',
+			`
 			<div class="detailed-results">
 			</div>
-		`);
+		`,
+		);
 
 		new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
 	}
@@ -400,7 +391,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.getParty()!.setBuffs(eventID, this.individualConfig.defaults.partyBuffs);
 			this.player.getRaid()!.setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
-			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec)
+			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.ProfessionUnknown);
@@ -448,11 +439,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	toProto(exportCategories?: Array<SimSettingCategories>): IndividualSimSettings {
-		const exportCategory = (cat: SimSettingCategories) =>
-				!exportCategories
-				|| exportCategories.length == 0
-				|| exportCategories.includes(cat);
-		
+		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length == 0 || exportCategories.includes(cat);
+
 		const proto = IndividualSimSettings.create({
 			player: this.player.toProto(true, false, exportCategories),
 		});
@@ -494,10 +482,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	fromProto(eventID: EventID, settings: IndividualSimSettings, includeCategories?: Array<SimSettingCategories>) {
-		const loadCategory = (cat: SimSettingCategories) =>
-				!includeCategories
-				|| includeCategories.length == 0
-				|| includeCategories.includes(cat);
+		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 
 		const tankSpec = isTankSpec(this.player.spec);
 		const healingSpec = isHealingSpec(this.player.spec);

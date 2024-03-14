@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -20,17 +21,20 @@ func (mage *Mage) registerLivingFlameSpell() {
 	baseDamage := baseCalc * 1
 	spellCoeff := .143
 	manaCost := .11
-	cooldown := time.Minute * 1
+	cooldown := time.Second * 30
 
-	ticks := int32(20)
+	ticks := int32(10)
 	tickLength := time.Second * 1
 
+	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
+
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
-		SpellCode:   SpellCode_MageLivingFlame,
-		SpellSchool: core.SpellSchoolSpellfire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		SpellCode:    SpellCode_MageLivingFlame,
+		SpellSchool:  core.SpellSchoolSpellfire,
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
+		MissileSpeed: 6.02,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -60,6 +64,11 @@ func (mage *Mage) registerLivingFlameSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+
+				// We have to deactivate AB here because otherwise the stacks are removed before the snapshot is calculated
+				if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {
+					mage.ArcaneBlastAura.Deactivate(sim)
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -70,9 +79,12 @@ func (mage *Mage) registerLivingFlameSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-			spell.Dot(target).Apply(sim)
-			spell.SpellMetrics[target.UnitIndex].Hits -= 1
+			dot := spell.Dot(target)
+			// Ticks lost to travel time
+			dot.NumberOfTicks = ticks - int32(math.Floor(spell.TravelTime().Seconds()))
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				dot.Apply(sim)
+			})
 		},
 	})
 

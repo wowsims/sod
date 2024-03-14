@@ -4,12 +4,19 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warrior *Warrior) registerThunderClapSpell() {
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, Level int32) *core.Aura {
 		return core.ThunderClapAura(target, warrior.Talents.ImprovedThunderClap, warrior.Level)
 	})
+
+	damageMultiplier := 1.0
+
+	if warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
+		damageMultiplier = 2.0
+	}
 
 	baseDamage := map[int32]float64{
 		25: 23,
@@ -48,12 +55,15 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
+				return true
+			}
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
 		// Cruelty doesn't apply to Thunder Clap
 		BonusCritRating:  (0 - float64(warrior.Talents.Cruelty)*1),
-		DamageMultiplier: 1,
+		DamageMultiplier: damageMultiplier,
 		CritMultiplier:   warrior.critMultiplier(none),
 		ThreatMultiplier: 1.85,
 

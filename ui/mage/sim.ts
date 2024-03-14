@@ -1,16 +1,10 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
-import {IndividualSimUI, registerSpecConfig} from '../core/individual_sim_ui.js';
-import {Player} from '../core/player.js';
-import {
-	Class,
-	Faction,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
-import {Stats} from '../core/proto_utils/stats.js';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
+import { Player } from '../core/player.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { MageRune } from '../core/proto/mage.js';
+import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -19,8 +13,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	cssClass: 'mage-sim-ui',
 	cssScheme: 'mage',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -56,15 +49,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.20,
+			[Stat.StatIntellect]: 0.2,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatArcanePower]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatFrostPower]: 1,
 			// Aggregated across 3 builds
-			[Stat.StatSpellHit]: 5.00,
+			[Stat.StatSpellHit]: 5.0,
 			[Stat.StatSpellCrit]: 6.17,
-			[Stat.StatSpellHaste]: 3.00,
+			[Stat.StatSpellHaste]: 3.0,
 			[Stat.StatMP5]: 0.09,
 		}),
 		// Default consumes settings.
@@ -82,22 +75,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		MageInputs.Armor,
-	],
+	playerIconInputs: [MageInputs.Armor],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: MageInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-		],
+		inputs: [OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -106,24 +92,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const specNumber = player.getTalentTree();
+		const frostfireBoltEquipped = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == MageRune.RuneBeltFrostfireBolt;
+
+		if (specNumber == 0 || (specNumber == 1 && !frostfireBoltEquipped)) {
+			// Prio standard arcane, standard fire only if not using FFB
+			return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		} else if (frostfireBoltEquipped) {
+			// Prio FFB over Frost when FFB rune is equipped
+			return Presets.DefaultAPLs[player.getLevel()][3].rotation.rotation!;
+		} else {
+			// Frost
+			return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		}
 	},
 
 	raidSimPresets: [

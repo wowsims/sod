@@ -21,6 +21,8 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
 
+	manaMetrics := mage.NewManaMetrics(actionID)
+
 	manaAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Arcane Surge",
 		ActionID: actionID,
@@ -63,12 +65,12 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-
-			if result.Landed() {
-				mage.SpendMana(sim, mage.CurrentMana(), spell.ResourceMetrics)
-				manaAura.Activate(sim)
-			}
+			// Damage increased based on remaining mana up to 300%
+			damage *= 1 + mage.CurrentManaPercent()*3
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			// Because of the 0 base mana cost we have to create resource metrics
+			mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
+			manaAura.Activate(sim)
 		},
 	})
 

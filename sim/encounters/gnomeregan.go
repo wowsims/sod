@@ -18,7 +18,7 @@ func addGnomereganMechanical(bossPrefix string) {
 
 			Stats: stats.Stats{
 				stats.Health:      279_345, // Electrocutioner 6000 health
-				stats.Armor:       4000,    // Approx average armor of Gnomeregan bosses
+				stats.Armor:       3700,    // Approx average armor of Gnomeregan bosses
 				stats.AttackPower: 574,     // TODO:
 				// TODO: Resistances
 			}.ToFloatArray(),
