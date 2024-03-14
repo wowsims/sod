@@ -19,7 +19,7 @@ google-chrome*
 
 # temporary files
 *.results.tmp
-.dockerignore
+#.dockerignore
 /sod/
 *.code-workspace
 wowsimsod
