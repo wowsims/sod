@@ -4,7 +4,7 @@
 	"eslint.workingDirectories": ["."],
 	"[javascript][javascriptreact][typescript][typescriptreact][html][scss]": {
 		"editor.codeActionsOnSave": {
-			// "source.fixAll.eslint": "explicit"
+			"source.fixAll.eslint": "always"
 		}
 	},
 	"json.schemas": [
