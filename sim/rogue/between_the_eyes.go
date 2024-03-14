@@ -13,13 +13,6 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 	}
 	flatDamage := rogue.RuneAbilityBaseDamage()
 	comboDamageBonus := rogue.RuneAbilityDamagePerCombo()
-	// TODO: Update damage variance
-	damageVariance := map[int32]float64{
-		25: 20,
-		40: 44,
-		50: 68,
-		60: 108,
-	}[rogue.Level]
 
 	rogue.BetweenTheEyes = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBetweenTheEyes)},
@@ -58,9 +51,10 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 
 			comboPoints := rogue.ComboPoints()
 			flatBaseDamage := flatDamage + comboDamageBonus*float64(comboPoints)
+			variableDamage := sim.Roll(flatBaseDamage*0.53, flatBaseDamage*0.81)
 
-			// TODO: test combo point AP scaling
-			baseDamage := sim.Roll(flatBaseDamage, flatBaseDamage+damageVariance) +
+			// TODO: test combo point AP scaling. Also, does BTE use Melee or Ranged Attack Power?
+			baseDamage := flatBaseDamage + variableDamage +
 				0.03*float64(comboPoints)*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 
