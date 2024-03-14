@@ -39,8 +39,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		},
 		CastType: proto.CastType_CastTypeRanged,
 
-		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.Aggression)*rogue.dwsMultiplier(),
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 		// Cannot Miss

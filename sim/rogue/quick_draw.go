@@ -13,20 +13,30 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 		return
 	}
 
+	ammoBonusDamage := map[int32]float64{
+		25: 7.5,
+		40: 13,
+		50: 15,
+		60: 20,
+	}[rogue.Level]
+	normalizedAmmoBonusDamage := ammoBonusDamage / 2.8
+
 	// Quick Draw applies a 50% slow, but bosses are immune
 
 	rogue.QuickDraw = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 398196},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       SpellFlagBuilder | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 398196},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        SpellFlagBuilder | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed: 40,
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:      time.Second,
+				CastTime: time.Millisecond * 500,
 			},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
@@ -39,21 +49,26 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 				rogue.Ranged().RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(rogue.Talents.Aggression),
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		CritMultiplier:   rogue.RangedCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) + spell.BonusWeaponDamage()
+			baseDamage := rogue.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+				normalizedAmmoBonusDamage + spell.BonusWeaponDamage()
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
-			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-			} else {
-				spell.IssueRefund(sim)
-			}
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.DealDamage(sim, result)
+
+				if result.Landed() {
+					rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				} else {
+					spell.IssueRefund(sim)
+				}
+			})
 		},
 	})
 }
