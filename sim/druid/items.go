@@ -29,7 +29,7 @@ func init() {
 
 		triggeredDmgSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436481},
-			SpellSchool: core.SpellSchoolStormstrike,
+			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskEmpty,
 
 			// TODO: "Causes additional threat" in Tooltip, no clue what the multiplier is.

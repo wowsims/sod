@@ -95,14 +95,11 @@ const (
 var PseudoStatsLen = len(proto.PseudoStat_name)
 var UnitStatsLen = int(Len) + PseudoStatsLen
 
-type SchoolIndex byte
-
-// If you add a new multi-school you also need to update
-// core/spell_school.go acordingly!
+type SchoolIndex int8
 
 const (
-	SchoolIndexNone     SchoolIndex = 0
-	SchoolIndexPhysical SchoolIndex = iota
+	SchoolIndexNone SchoolIndex = iota
+	SchoolIndexPhysical
 	SchoolIndexArcane
 	SchoolIndexFire
 	SchoolIndexFrost
@@ -110,53 +107,13 @@ const (
 	SchoolIndexNature
 	SchoolIndexShadow
 
-	PrimarySchoolLen
-
-	// Physical x Other
-	SchoolIndexSpellstrike SchoolIndex = iota - 1
-	SchoolIndexFlamestrike
-	SchoolIndexFroststrike
-	SchoolIndexHolystrike
-	SchoolIndexStormstrike
-	SchoolIndexShadowstrike
-
-	// Arcane x Other
-	SchoolIndexSpellfire
-	SchoolIndexSpellFrost
-	SchoolIndexDivine
-	SchoolIndexAstral
-	SchoolIndexSpellShadow
-
-	// Fire x Other
-	SchoolIndexFrostfire
-	SchoolIndexRadiant
-	SchoolIndexVolcanic
-	SchoolIndexShadowflame
-
-	// Frost x Other
-	SchoolIndexHolyfrost
-	SchoolIndexFroststorm
-	SchoolIndexShadowfrost
-
-	// Holy x Other
-	SchoolIndexHolystorm
-	SchoolIndexTwilight
-
-	// Nature x Other
-	SchoolIndexPlague
-
-	SchoolIndexElemental
-
 	SchoolLen
+
+	SchoolIndexMultiSchool SchoolIndex = -1
 )
 
-// Check if school index is a multi-school.
-func (schoolIndex SchoolIndex) IsMultiSchool() bool {
-	return schoolIndex >= PrimarySchoolLen
-}
-
-func NewSchoolFloatArray() [PrimarySchoolLen]float64 {
-	return [PrimarySchoolLen]float64{
+func NewSchoolFloatArray() [SchoolLen]float64 {
+	return [SchoolLen]float64{
 		1, 1, 1, 1, 1, 1, 1, 1,
 	}
 }
@@ -413,8 +370,8 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64                   // All damage
-	SchoolDamageDealtMultiplier [PrimarySchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageDealtMultiplier       float64            // All damage
+	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
 	// Treat melee haste as a pseudostat so that shamans, paladins, and druids can get the correct scaling
 	MeleeHasteRatingPerHastePercent float64
@@ -472,9 +429,8 @@ type PseudoStats struct {
 	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
 	BonusHealingTaken        float64 // Talisman of Troll Divinity
 
-	DamageTakenMultiplier       float64                   // All damage
-	SchoolDamageTakenMultiplier [PrimarySchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
-	SchoolCritTakenMultiplier   [PrimarySchoolLen]float64 // For spell school crit. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageTakenMultiplier       float64            // All damage
+	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools.
 
 	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
 	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
@@ -516,7 +472,6 @@ func NewPseudoStats() PseudoStats {
 		// Target effects.
 		DamageTakenMultiplier:       1,
 		SchoolDamageTakenMultiplier: NewSchoolFloatArray(),
-		SchoolCritTakenMultiplier:   NewSchoolFloatArray(),
 
 		BleedDamageTakenMultiplier:            1,
 		DiseaseDamageTakenMultiplier:          1,

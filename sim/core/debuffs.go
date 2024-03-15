@@ -578,6 +578,7 @@ func ImprovedScorchAura(target *Unit) *Aura {
 
 const SpellCritEffectCategory = "spellcritdebuff"
 
+// TODO actually implement this
 func WintersChillAura(target *Unit, startingStacks int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Winter's Chill",
@@ -588,11 +589,11 @@ func WintersChillAura(target *Unit, startingStacks int32) *Aura {
 			aura.SetStacks(sim, startingStacks)
 		},
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexFrost] /= 1 + 0.2*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexFrost] *= 1 + 0.2*float64(newStacks)
+			// this requires a frost-only variant of "aura.Unit.PseudoStats.BonusSpellCritRatingTaken"
+			//aura.Unit.PseudoStats.BonusFrostSpellCritRatingTaken += 0.02 * float64(newStacks-oldStacks)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolCritTakenMultiplier[stats.SchoolIndexFrost] /= 1 + 0.2*float64(aura.stacks)
+			//aura.Unit.PseudoStats.BonusFrostSpellCritRatingTaken -= 0.02 * float64(aura.stacks)
 		},
 	})
 

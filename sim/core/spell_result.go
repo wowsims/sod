@@ -120,51 +120,53 @@ func (spell *Spell) SpellDamage() float64 {
 }
 
 func (spell *Spell) SpellSchoolPower() float64 {
-	switch spell.SchoolIndex {
-	case stats.SchoolIndexNone:
+	switch spell.SpellSchool {
+	case SpellSchoolNone:
 		return 0
-	case stats.SchoolIndexPhysical:
+	case SpellSchoolPhysical:
 		// Return correct value if ever used for a physical spell.
 		return spell.Unit.PseudoStats.BonusDamage
-	case stats.SchoolIndexArcane:
+	case SpellSchoolArcane:
 		return spell.Unit.GetStat(stats.ArcanePower)
-	case stats.SchoolIndexFire:
+	case SpellSchoolFire:
 		return spell.Unit.GetStat(stats.FirePower)
-	case stats.SchoolIndexFrost:
+	case SpellSchoolFrost:
 		return spell.Unit.GetStat(stats.FrostPower)
-	case stats.SchoolIndexHoly:
+	case SpellSchoolHoly:
 		return spell.Unit.GetStat(stats.HolyPower)
-	case stats.SchoolIndexNature:
+	case SpellSchoolNature:
 		return spell.Unit.GetStat(stats.NaturePower)
-	case stats.SchoolIndexShadow:
+	case SpellSchoolShadow:
 		return spell.Unit.GetStat(stats.ShadowPower)
 	default:
-		// Multi school: Get best power choice available.
-		max := 0.0
-		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
-			var power float64
-
-			// TODO / NOTE: Not a bug, just really not a nice solution imho.
-			// Not having physical power with the other power stats makes this if-else required.
-			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
-			// are ever a thing, due to SpellPower being before ArcanePower in stats.
-			// Also, just having this loop or having the switch above is irellevant in terms of performance.
-			// The jump table above saves some instructions for normal spells but loop only seems to
-			// cause the function to be inlined, making the whole SpellPower() call inline.
-			// Overall just not nice the way it is.
-			if baseSchoolIndex == stats.SchoolIndexPhysical {
-				power = spell.Unit.PseudoStats.BonusDamage
-			} else {
-				// School and stat indices are ordered the same way.
-				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
-			}
-
-			if power > max {
-				max = power
-			}
-		}
-		return max
+		return spell.multiSpellSchoolPower()
 	}
+}
+
+func (spell *Spell) multiSpellSchoolPower() float64 {
+	var power float64
+	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
+		power = max(power, spell.Unit.PseudoStats.BonusDamage)
+	}
+	if spell.SpellSchool.Matches(SpellSchoolArcane) {
+		power = max(power, spell.Unit.GetStat(stats.ArcanePower))
+	}
+	if spell.SpellSchool.Matches(SpellSchoolFire) {
+		power = max(power, spell.Unit.GetStat(stats.FirePower))
+	}
+	if spell.SpellSchool.Matches(SpellSchoolFrost) {
+		power = max(power, spell.Unit.GetStat(stats.FrostPower))
+	}
+	if spell.SpellSchool.Matches(SpellSchoolHoly) {
+		power = max(power, spell.Unit.GetStat(stats.HolyPower))
+	}
+	if spell.SpellSchool.Matches(SpellSchoolNature) {
+		power = max(power, spell.Unit.GetStat(stats.NaturePower))
+	}
+	if spell.SpellSchool.Matches(SpellSchoolShadow) {
+		power = max(power, spell.Unit.GetStat(stats.ShadowPower))
+	}
+	return power
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
@@ -178,7 +180,7 @@ func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	missChance := 0.01
 
 	if spell.Flags.Matches(SpellFlagBinary) {
-		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell.SchoolIndex)
+		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell.SpellSchool)
 		missChance = 1 - baseHitChance - spell.SpellHitChance(attackTable.Defender)
 	} else {
 		missChance = attackTable.BaseSpellMissChance - spell.SpellHitChance(attackTable.Defender)

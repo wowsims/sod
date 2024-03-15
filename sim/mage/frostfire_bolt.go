@@ -29,7 +29,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 	mage.FrostfireBolt = mage.RegisterSpell(core.SpellConfig{
 		ActionID:     actionID,
 		SpellCode:    SpellCode_MageFrostfireBolt,
-		SpellSchool:  core.SpellSchoolFrostfire,
+		SpellSchool:  core.SpellSchoolFire | core.SpellSchoolFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
 		MissileSpeed: 28,
