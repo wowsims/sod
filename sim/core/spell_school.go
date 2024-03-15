@@ -62,11 +62,22 @@ func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
 	return stats.SchoolIndex(slices.Index(spellSchoolsOrdered[:], ss))
 }
 
-func (spell *Spell) getSchoolMultiplier(multipliers [stats.SchoolLen]float64) float64 {
+// Get school damage done multiplier.
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetSchoolDamageDoneMultiplier(spell *Spell) float64 {
 	if spell.SchoolIndex != stats.SchoolIndexMultiSchool {
-		return multipliers[spell.SchoolIndex]
+		return unit.PseudoStats.SchoolDamageDealtMultiplier[spell.SchoolIndex]
 	}
-	return spell.getMultiSchoolMultiplier(multipliers)
+	return spell.getMultiSchoolMultiplier(unit.PseudoStats.SchoolDamageDealtMultiplier)
+}
+
+// Get school damage taken multiplier.
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetSchoolDamageTakenMultiplier(spell *Spell) float64 {
+	if spell.SchoolIndex != stats.SchoolIndexMultiSchool {
+		return unit.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex]
+	}
+	return spell.getMultiSchoolMultiplier(unit.PseudoStats.SchoolDamageTakenMultiplier)
 }
 
 func (spell *Spell) getMultiSchoolMultiplier(multipliers [stats.SchoolLen]float64) float64 {
@@ -77,16 +88,4 @@ func (spell *Spell) getMultiSchoolMultiplier(multipliers [stats.SchoolLen]float6
 		}
 	}
 	return multiplier
-}
-
-// Get school damage done multiplier.
-// Returns highest multiplier if spell is multi school.
-func (unit *Unit) GetSchoolDamageDoneMultiplier(spell *Spell) float64 {
-	return spell.getSchoolMultiplier(unit.PseudoStats.SchoolDamageDealtMultiplier)
-}
-
-// Get school damage taken multiplier.
-// Returns highest multiplier if spell is multi school.
-func (unit *Unit) GetSchoolDamageTakenMultiplier(spell *Spell) float64 {
-	return spell.getSchoolMultiplier(unit.PseudoStats.SchoolDamageTakenMultiplier)
 }
