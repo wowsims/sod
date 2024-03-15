@@ -1,16 +1,6 @@
-import {
-	ArmorType,
-	Class,
-	ItemSlot,
-	Profession,
-	PseudoStat,
-	Race,
-	RangedWeaponType,
-	Stat,
-	WeaponType,
-} from '../proto/common.js';
-import { RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 import { ResourceType } from '../proto/api.js';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Stat, WeaponType } from '../proto/common.js';
+import { RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -108,7 +98,7 @@ export function nameToProfession(name: string): Profession {
 	const lower = name.toLowerCase();
 	for (const [key, value] of professionNames) {
 		if (value.toLowerCase() == lower) {
-			return key
+			return key;
 		}
 	}
 	return Profession.ProfessionUnknown;
@@ -167,13 +157,13 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatIntellect, 'Intellect'],
 	[Stat.StatSpirit, 'Spirit'],
 	[Stat.StatSpellPower, 'Spell Power'],
-	[Stat.StatSpellDamage, 'Spell Dmg'],
-	[Stat.StatArcanePower, 'Arcane Dmg'],
-	[Stat.StatFirePower, 'Fire Dmg'],
-	[Stat.StatFrostPower, 'Frost Dmg'],
-	[Stat.StatHolyPower, 'Holy Dmg'],
-	[Stat.StatNaturePower, 'Nature Dmg'],
-	[Stat.StatShadowPower, 'Shadow Dmg'],
+	[Stat.StatSpellDamage, 'Spell Damage'],
+	[Stat.StatArcanePower, 'Arcane Damage'],
+	[Stat.StatFirePower, 'Fire Damage'],
+	[Stat.StatFrostPower, 'Frost Damage'],
+	[Stat.StatHolyPower, 'Holy Damage'],
+	[Stat.StatNaturePower, 'Nature Damage'],
+	[Stat.StatShadowPower, 'Shadow Damage'],
 	[Stat.StatMP5, 'MP5'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],
@@ -223,8 +213,7 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 
 export function getClassStatName(stat: Stat, playerClass: Class): string {
 	const statName = statNames.get(stat);
-	if (!statName)
-		return 'UnknownStat';
+	if (!statName) return 'UnknownStat';
 	if (playerClass == Class.ClassHunter) {
 		return statName.replace('Melee', 'Physical');
 	} else {
@@ -307,23 +296,23 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 // ]);
 
 export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
-	[RepLevel.RepLevelUnknown]:			'Unknown',
-	[RepLevel.RepLevelHated]: 			'Hated',
-	[RepLevel.RepLevelHostile]: 		'Hostile',
-	[RepLevel.RepLevelUnfriendly]: 	'Unfriendly',
-	[RepLevel.RepLevelNeutral]: 		'Neutral',
-	[RepLevel.RepLevelFriendly]: 		'Friendly',
-	[RepLevel.RepLevelHonored]: 		'Honored',
-	[RepLevel.RepLevelRevered]: 		'Revered',
-	[RepLevel.RepLevelExalted]: 		'Exalted',
+	[RepLevel.RepLevelUnknown]: 'Unknown',
+	[RepLevel.RepLevelHated]: 'Hated',
+	[RepLevel.RepLevelHostile]: 'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 'Neutral',
+	[RepLevel.RepLevelFriendly]: 'Friendly',
+	[RepLevel.RepLevelHonored]: 'Honored',
+	[RepLevel.RepLevelRevered]: 'Revered',
+	[RepLevel.RepLevelExalted]: 'Exalted',
 };
 
 export const REP_FACTION_NAMES: Record<RepFaction, string> = {
-	[RepFaction.RepFactionUnknown]: 						'Unknown',
+	[RepFaction.RepFactionUnknown]: 'Unknown',
 	[RepFaction.RepFactionSilverwingSentinels]: 'Silverwing Sentinels',
-	[RepFaction.RepFactionWarsongOutriders]: 		'Warsong Outriders',
-	[RepFaction.RepFactionLeagueOfArathor]: 		'The League of Arathor',
-	[RepFaction.RepFactionDefilers]: 						'The Defilers',
-	[RepFaction.RepFactionStormpikeGuard]: 			'Stormpike Guard',
-	[RepFaction.RepFactionFrostwolfClan]: 			'Frostwolf Clan',
+	[RepFaction.RepFactionWarsongOutriders]: 'Warsong Outriders',
+	[RepFaction.RepFactionLeagueOfArathor]: 'The League of Arathor',
+	[RepFaction.RepFactionDefilers]: 'The Defilers',
+	[RepFaction.RepFactionStormpikeGuard]: 'Stormpike Guard',
+	[RepFaction.RepFactionFrostwolfClan]: 'Frostwolf Clan',
 };
