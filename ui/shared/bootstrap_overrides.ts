@@ -40,19 +40,13 @@ body.addEventListener(
 	event => {
 		const e = event as MouseEvent;
 		const target = event.target as HTMLElement;
-		const toggle = target.closest(
-			'[data-bs-toggle=dropdown]:not([data-bs-trigger=click])',
-		) as HTMLElement | null;
+		const toggle = target.closest('[data-bs-toggle=dropdown]:not([data-bs-trigger=click])') as HTMLElement | null;
 		// Hide dropdowns when hovering off of the toggle, so long as the new target is not part of the dropdown as well
 		if (toggle) {
 			const dropdown = Dropdown.getOrCreateInstance(toggle);
 			const dropdownMenu = toggle.nextElementSibling as HTMLElement;
 			const relatedTarget = e.relatedTarget as HTMLElement;
-			if (
-				relatedTarget == null ||
-				(!isDescendant(relatedTarget, dropdownMenu) && !isDescendant(relatedTarget, toggle))
-			)
-				dropdown.hide();
+			if (relatedTarget == null || (!isDescendant(relatedTarget, dropdownMenu) && !isDescendant(relatedTarget, toggle))) dropdown.hide();
 		}
 
 		const dropdownMenu = target.closest('.dropdown-menu') as HTMLElement;
@@ -61,11 +55,7 @@ body.addEventListener(
 			const toggle = dropdownMenu.previousElementSibling as HTMLElement;
 			const dropdown = Dropdown.getOrCreateInstance(toggle);
 			const relatedTarget = e.relatedTarget as HTMLElement;
-			if (
-				relatedTarget == null ||
-				(!isDescendant(relatedTarget, dropdownMenu) && e.relatedTarget != toggle)
-			)
-				dropdown.hide();
+			if (relatedTarget == null || (!isDescendant(relatedTarget, dropdownMenu) && e.relatedTarget != toggle)) dropdown.hide();
 		}
 	},
 	true,

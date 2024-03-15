@@ -1,30 +1,21 @@
-import { Component } from '../core/components/component.js';
-import { EnumPicker } from '../core/components/enum_picker.js';
-import { Raid } from '../core/raid.js';
-import { MAX_PARTY_SIZE } from '../core/party.js';
-import { Party } from '../core/party.js';
-import { Player } from '../core/player.js';
-import { Player as PlayerProto } from '../core/proto/api.js';
-import { Class } from '../core/proto/common.js';
-import { Profession } from '../core/proto/common.js';
-import { Spec } from '../core/proto/common.js';
-import { Faction } from '../core/proto/common.js';
-import { cssClassForClass, playerToSpec } from '../core/proto_utils/utils.js';
-import { isTankSpec } from '../core/proto_utils/utils.js';
-import { specToClass } from '../core/proto_utils/utils.js';
-import { newUnitReference } from '../core/proto_utils/utils.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { formatDeltaTextElem } from '../core/utils.js';
-import { getEnumValues } from '../core/utils.js';
-
-import { RaidSimUI } from './raid_sim_ui.js';
-import { playerPresets, specSimFactories } from './presets.js';
-
-import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
-import { BaseModal } from '../core/components/base_modal.js';
 import { Tooltip } from 'bootstrap';
 
-const NEW_PLAYER: number = -1;
+import { BaseModal } from '../core/components/base_modal.js';
+import { Component } from '../core/components/component.js';
+import { EnumPicker } from '../core/components/enum_picker.js';
+import { MAX_PARTY_SIZE, Party } from '../core/party.js';
+import { Player } from '../core/player.js';
+import { Player as PlayerProto } from '../core/proto/api.js';
+import { Class, Faction, Profession, Spec } from '../core/proto/common.js';
+import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
+import { cssClassForClass, isTankSpec, newUnitReference, playerToSpec, specToClass } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
+import { formatDeltaTextElem, getEnumValues } from '../core/utils.js';
+import { playerPresets, specSimFactories } from './presets.js';
+import { RaidSimUI } from './raid_sim_ui.js';
+
+const NEW_PLAYER = -1;
 
 enum DragType {
 	None,
@@ -89,7 +80,9 @@ export class RaidPicker extends Component {
 			},
 		});
 
-		const latestPhaseWithAllPresets = Math.min(...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))));
+		const latestPhaseWithAllPresets = Math.min(
+			...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))),
+		);
 		new EnumPicker<NewPlayerPicker>(raidControls, this.newPlayerPicker, {
 			label: 'Default Gear',
 			labelTooltip: 'Newly-created players will start with approximate BIS gear from this phase.',
@@ -338,8 +331,7 @@ export class PlayerPicker extends Component {
 
 		this.partyPicker.party.compChangeEmitter.on(eventID => {
 			const newPlayer = this.partyPicker.party.getPlayer(this.index);
-			if (newPlayer != this.player)
-				this.setPlayer(eventID, newPlayer, DragType.None);
+			if (newPlayer != this.player) this.setPlayer(eventID, newPlayer, DragType.None);
 		});
 
 		this.raidPicker.raidSimUI.referenceChangeEmitter.on(() => {
@@ -353,8 +345,7 @@ export class PlayerPicker extends Component {
 				this.resultsElem?.classList.remove('hide');
 				(this.dpsResultElem as HTMLElement).textContent = `${playerDps.toFixed(1)} DPS`;
 
-				if (referenceData)
-					formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1);
+				if (referenceData) formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1);
 			}
 		});
 
@@ -382,7 +373,7 @@ export class PlayerPicker extends Component {
 			if (this.raidPicker.currentDragParty) {
 				return;
 			}
-			var dropData = event.dataTransfer!.getData("text/plain");
+			const dropData = event.dataTransfer!.getData('text/plain');
 
 			event.preventDefault();
 			dragEnterCounter = 0;
@@ -417,7 +408,7 @@ export class PlayerPicker extends Component {
 					}
 					const playerProto = PlayerProto.fromBinary(bytes);
 
-					var localPlayer = new Player(playerToSpec(playerProto), this.raidPicker.raidSimUI.sim);
+					const localPlayer = new Player(playerToSpec(playerProto), this.raidPicker.raidSimUI.sim);
 					localPlayer.fromProto(eventID, playerProto);
 					this.raidPicker.currentDragPlayer = localPlayer;
 				}
@@ -538,12 +529,12 @@ export class PlayerPicker extends Component {
 		});
 
 		this.nameElem?.addEventListener('mousedown', _event => {
-			this.partyPicker.rootElem.setAttribute('draggable', 'false')
-		})
+			this.partyPicker.rootElem.setAttribute('draggable', 'false');
+		});
 
 		this.nameElem?.addEventListener('mouseup', _event => {
-			this.partyPicker.rootElem.setAttribute('draggable', 'true')
-		})
+			this.partyPicker.rootElem.setAttribute('draggable', 'true');
+		});
 
 		const emptyName = 'Unnamed';
 		this.nameElem?.addEventListener('focusout', _event => {
@@ -563,8 +554,8 @@ export class PlayerPicker extends Component {
 			event.dataTransfer!.effectAllowed = 'all';
 
 			if (this.player) {
-				var playerDataProto = this.player.toProto(true);
-				event.dataTransfer!.setData("text/plain", btoa(String.fromCharCode(...PlayerProto.toBinary(playerDataProto))));
+				const playerDataProto = this.player.toProto(true);
+				event.dataTransfer!.setData('text/plain', btoa(String.fromCharCode(...PlayerProto.toBinary(playerDataProto))));
 			}
 
 			this.raidPicker.setDragPlayer(this.player, this.raidIndex, type);
@@ -580,33 +571,35 @@ export class PlayerPicker extends Component {
 
 		(this.iconElem as HTMLElement).ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
-			dragStart(event, DragType.Swap)
-		}
+			dragStart(event, DragType.Swap);
+		};
 		editElem.onclick = _event => {
 			new PlayerEditorModal(this.player as Player<any>);
 		};
 		copyElem.ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
-		}
+		};
 		deleteElem.onclick = _event => {
 			deleteTooltip.hide();
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
-		}
+		};
 	}
 }
 
 class PlayerEditorModal extends BaseModal {
 	constructor(player: Player<any>) {
 		super(document.body, 'player-editor-modal', {
-			closeButton: { fixed: true },
-			header: false
+			header: false,
 		});
 
 		this.rootElem.id = 'playerEditorModal';
-		this.body.insertAdjacentHTML('beforeend', `
+		this.body.insertAdjacentHTML(
+			'beforeend',
+			`
 			<div class="player-editor within-raid-sim"></div>
-		`);
+		`,
+		);
 
 		const editorRoot = this.rootElem.getElementsByClassName('player-editor')[0] as HTMLElement;
 		specSimFactories[player.spec]!(editorRoot, player);
@@ -647,7 +640,7 @@ class NewPlayerPicker extends Component {
 					>
 						<img class="preset-picker-icon player-icon" src="${matchingPreset.iconUrl}"/>
 					</a>
-				`
+				`;
 				const presetElem = presetElemFragment.children[0] as HTMLElement;
 				classPresetsContainer.appendChild(presetElem);
 
@@ -659,7 +652,7 @@ class NewPlayerPicker extends Component {
 						const dragImage = new Image();
 						dragImage.src = matchingPreset.iconUrl;
 						event.dataTransfer!.setDragImage(dragImage, 30, 30);
-						event.dataTransfer!.setData("text/plain", "");
+						event.dataTransfer!.setData('text/plain', '');
 						event.dataTransfer!.dropEffect = 'copy';
 
 						const newPlayer = new Player(matchingPreset.spec, this.raidPicker.raid.sim);
@@ -678,7 +671,9 @@ class NewPlayerPicker extends Component {
 							newPlayer.setGear(
 								eventID,
 								this.raidPicker.raid.sim.db.lookupEquipmentSpec(
-									matchingPreset.defaultGear[this.raidPicker.getCurrentFaction()][this.raidPicker.getCurrentPhase()]));
+									matchingPreset.defaultGear[this.raidPicker.getCurrentFaction()][this.raidPicker.getCurrentPhase()],
+								),
+							);
 						});
 
 						this.raidPicker.setDragPlayer(newPlayer, NEW_PLAYER, DragType.New);

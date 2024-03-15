@@ -21,21 +21,14 @@ export class CharacterStats extends Component {
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
 
-	constructor(
-		parent: HTMLElement,
-		player: Player<any>,
-		stats: Array<Stat>,
-		modifyDisplayStats?: (player: Player<any>) => StatMods,
-	) {
+	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods) {
 		super(parent, 'character-stats-root');
 		this.stats = statOrder.filter(stat => stats.includes(stat));
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
 
 		const playerLevelRef = ref<HTMLSpanElement>();
-		this.player.levelChangeEmitter.on(
-			() => (playerLevelRef.value!.textContent = `Level ${player.getLevel()}`),
-		);
+		this.player.levelChangeEmitter.on(() => (playerLevelRef.value!.textContent = `Level ${player.getLevel()}`));
 
 		this.rootElem.appendChild(
 			<label className="character-stats-label">
@@ -61,9 +54,7 @@ export class CharacterStats extends Component {
 			);
 			table.appendChild(row);
 
-			const valueElem = row.getElementsByClassName(
-				'character-stats-table-value',
-			)[0] as HTMLTableCellElement;
+			const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
 			this.valueElems.push(valueElem);
 		});
 
@@ -76,19 +67,13 @@ export class CharacterStats extends Component {
 			);
 
 			table.appendChild(row);
-			this.meleeCritCapValueElem = row.getElementsByClassName(
-				'character-stats-table-value',
-			)[0] as HTMLTableCellElement;
+			this.meleeCritCapValueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
 		} else {
 			this.meleeCritCapValueElem = undefined;
 		}
 
 		this.updateStats(player);
-		TypedEvent.onAny([
-			player.currentStatsEmitter,
-			player.sim.changeEmitter,
-			player.talentsChangeEmitter,
-		]).on(() => {
+		TypedEvent.onAny([player.currentStatsEmitter, player.sim.changeEmitter, player.talentsChangeEmitter]).on(() => {
 			this.updateStats(player);
 		});
 	}
@@ -116,16 +101,11 @@ export class CharacterStats extends Component {
 		const buffsDelta = buffsStats.subtract(talentsStats);
 		const consumesDelta = consumesStats.subtract(buffsStats);
 
-		const finalStats = Stats.fromProto(playerStats.finalStats)
-			.add(statMods.talents)
-			.add(debuffStats);
+		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
 
 		this.stats.forEach((stat, idx) => {
 			const valueElem = (
-				<a
-					href="javascript:void(0)"
-					className="stat-value-link"
-					attributes={{ role: 'button' }}>
+				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
 					{this.statDisplayString(finalStats, finalStats, stat)}
 				</a>
 			);
@@ -193,10 +173,7 @@ export class CharacterStats extends Component {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();
 
 			const valueElem = (
-				<a
-					href="javascript:void(0)"
-					className="stat-value-link"
-					attributes={{ role: 'button' }}>
+				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
 					{`${this.meleeCritCapDisplayString(player, finalStats)} `}
 				</a>
 			);
@@ -286,18 +263,12 @@ export class CharacterStats extends Component {
 			stat == Stat.StatShadowPower
 		) {
 			const spDmg = Math.round(rawValue);
-			const baseSp = Math.round(
-				deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage),
-			);
+			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
 			displayStr = baseSp + spDmg + ` (+${spDmg})`;
 		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
 			displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
 		} else if (stat == Stat.StatMeleeHaste) {
-			if (
-				[Class.ClassDruid, Class.ClassShaman, Class.ClassPaladin].includes(
-					this.player.getClass(),
-				)
-			) {
+			if ([Class.ClassDruid, Class.ClassShaman, Class.ClassPaladin].includes(this.player.getClass())) {
 				displayStr += ` (${(rawValue / Mechanics.SPECIAL_MELEE_HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
 			} else {
 				displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
@@ -346,14 +317,12 @@ export class CharacterStats extends Component {
 		const statName = getClassStatName(stat, this.player.getClass());
 
 		const link = (
-			<a
-				href="javascript:void(0)"
-				className="add-bonus-stats text-white ms-2"
-				dataset={{ bsToggle: 'popover' }}
-				attributes={{ role: 'button' }}>
+			<a href="javascript:void(0)" className="add-bonus-stats ms-2" dataset={{ bsToggle: 'popover' }} attributes={{ role: 'button' }}>
 				<i className="fas fa-plus-minus"></i>
 			</a>
 		);
+
+		Tooltip.getOrCreateInstance(link.children[0], { title: `Bonus ${statName}` });
 
 		let popover: Popover | null = null;
 
@@ -369,7 +338,7 @@ export class CharacterStats extends Component {
 			},
 		});
 
-		popover = new Popover(link, {
+		popover = Popover.getOrCreateInstance(link, {
 			customClass: 'bonus-stats-popover',
 			placement: 'right',
 			fallbackPlacements: ['left'],
@@ -382,12 +351,7 @@ export class CharacterStats extends Component {
 	}
 
 	private shouldShowMeleeCritCap(player: Player<any>): boolean {
-		return [
-			Spec.SpecEnhancementShaman,
-			Spec.SpecRetributionPaladin,
-			Spec.SpecRogue,
-			Spec.SpecWarrior,
-		].includes(player.spec);
+		return [Spec.SpecEnhancementShaman, Spec.SpecRetributionPaladin, Spec.SpecRogue, Spec.SpecWarrior].includes(player.spec);
 	}
 
 	private meleeCritCapDisplayString(player: Player<any>, _: Stats): string {
