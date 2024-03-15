@@ -1,14 +1,12 @@
-import { IndividualSimUI } from "../../individual_sim_ui";
-import { Player } from "../../player";
-import { EventID, TypedEvent } from "../../typed_event";
-
-import { EquipmentSpec, Spec, UnitStats } from "../../proto/common";
-import { SavedGearSet } from "../../proto/ui";
-import { Stats } from "../../proto_utils/stats";
-
-import { GearPicker } from "../gear_picker";
-import { SavedDataManager } from "../saved_data_manager";
-import { SimTab } from "../sim_tab";
+import { IndividualSimUI } from '../../individual_sim_ui';
+import { Player } from '../../player';
+import { EquipmentSpec, Spec, UnitStats } from '../../proto/common';
+import { SavedGearSet } from '../../proto/ui';
+import { Stats } from '../../proto_utils/stats';
+import { EventID, TypedEvent } from '../../typed_event';
+import { GearPicker } from '../gear_picker';
+import { SavedDataManager } from '../saved_data_manager';
+import { SimTab } from '../sim_tab';
 
 export class GearTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -44,7 +42,7 @@ export class GearTab extends SimTab {
 
 	private buildSavedGearsetPicker() {
 		const savedGearManager = new SavedDataManager<Player<any>, SavedGearSet>(this.rightPanel, this.simUI.player, {
-			header: { title: "Gear Sets" },
+			header: { title: 'Gear Sets' },
 			label: 'Gear Set',
 			storageKey: this.simUI.getSavedGearStorageKey(),
 			getData: (player: Player<any>) => {

@@ -1,5 +1,6 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
-import * as PresetUtils from '../core/preset_utils.js';
+import { CURRENT_LEVEL_CAP } from '../core/constants/mechanics';
+import { CURRENT_PHASE, Phase } from '../core/constants/other';
+import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
@@ -15,12 +16,9 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
-} from '../core/proto/common.js';
-import {
-	Mage_Options as MageOptions,
-	Mage_Options_ArmorType as ArmorType,
-} from '../core/proto/mage.js';
-import { SavedTalents } from '../core/proto/ui.js';
+} from '../core/proto/common';
+import { Mage_Options as MageOptions, Mage_Options_ArmorType as ArmorType } from '../core/proto/mage';
+import { SavedTalents } from '../core/proto/ui';
 import Phase1APLArcane from './apls/p1_arcane.apl.json';
 import Phase1APLFire from './apls/p1_fire.apl.json';
 import Phase2APLArcane from './apls/p2_arcane.apl.json';
@@ -52,17 +50,20 @@ export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2Ge
 export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const GearFrosthase2 = PresetUtils.makePresetGear('P2 Frostfire', Phase2GearFrostfire, {
+export const GearFrostfirePhase2 = PresetUtils.makePresetGear('P2 Frostfire', Phase2GearFrostfire, {
 	customCondition: player => player.getLevel() == 40,
 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
-	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrosthase2],
+	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostfirePhase2],
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[CURRENT_PHASE][1];
+export const DefaultGearArcane = GearPresets[CURRENT_PHASE][0];
+export const DefaultGearFire = GearPresets[CURRENT_PHASE][1];
+export const DefaultGearFrostfire = GearPresets[CURRENT_PHASE][2];
+
+export const DefaultGear = DefaultGearFire;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -81,11 +82,7 @@ export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Ph
 export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation(
-	'P2 Frostfire',
-	Phase2APLFrostfire,
-	{ customCondition: player => player.getLevel() == 40 },
-);
+export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() == 40 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
@@ -101,6 +98,7 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	40: {
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][1],
+		// Normally frost but frost is unfortunately just too bad to warrant including for now
 		2: APLPresets[Phase.Phase2][2],
 		// Frostfire
 		3: APLFrostfirePhase2,
@@ -114,37 +112,21 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const TalentsArcanePhase1 = PresetUtils.makePresetTalents(
-	'P1 Arcane',
-	SavedTalents.create({ talentsString: '22500502' }),
-	{
-		customCondition: player => player.getLevel() == 25,
-	},
-);
+export const TalentsArcanePhase1 = PresetUtils.makePresetTalents('P1 Arcane', SavedTalents.create({ talentsString: '22500502' }), {
+	customCondition: player => player.getLevel() == 25,
+});
 
-export const TalentsFirePhase1 = PresetUtils.makePresetTalents(
-	'P1 Fire',
-	SavedTalents.create({ talentsString: '-5050020121' }),
-	{
-		customCondition: player => player.getLevel() == 25,
-	},
-);
+export const TalentsFirePhase1 = PresetUtils.makePresetTalents('P1 Fire', SavedTalents.create({ talentsString: '-5050020121' }), {
+	customCondition: player => player.getLevel() == 25,
+});
 
-export const TalentsArcanePhase2 = PresetUtils.makePresetTalents(
-	'P2 Arcane',
-	SavedTalents.create({ talentsString: '2250050310031531' }),
-	{
-		customCondition: player => player.getLevel() == 40,
-	},
-);
+export const TalentsArcanePhase2 = PresetUtils.makePresetTalents('P2 Arcane', SavedTalents.create({ talentsString: '2250050310031531' }), {
+	customCondition: player => player.getLevel() == 40,
+});
 
-export const TalentsFirePhase2 = PresetUtils.makePresetTalents(
-	'P2 Fire',
-	SavedTalents.create({ talentsString: '-5050020123033151' }),
-	{
-		customCondition: player => player.getLevel() == 40,
-	},
-);
+export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedTalents.create({ talentsString: '-5050020123033151' }), {
+	customCondition: player => player.getLevel() == 40,
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsArcanePhase1, TalentsFirePhase1, TalentsFirePhase1],
@@ -153,9 +135,13 @@ export const TalentPresets = {
 
 export const DefaultTalentsArcane = TalentPresets[CURRENT_PHASE][0];
 export const DefaultTalentsFire = TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsFrost = TalentPresets[CURRENT_PHASE][1];
+export const DefaultTalentsFrostfire = TalentPresets[CURRENT_PHASE][2];
 
 export const DefaultTalents = DefaultTalentsFire;
+
+export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', DefaultGearArcane, DefaultTalentsArcane, DefaultAPLs[CURRENT_LEVEL_CAP][0]);
+export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', DefaultGearFire, DefaultTalentsFire, DefaultAPLs[CURRENT_LEVEL_CAP][1]);
+export const PresetBuildFrostfire = PresetUtils.makePresetBuild('Frostfire', DefaultGearFrostfire, DefaultTalentsFrostfire, DefaultAPLs[CURRENT_LEVEL_CAP][3]);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
