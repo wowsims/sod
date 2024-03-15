@@ -11,6 +11,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 	if !rogue.HasRune(proto.RogueRune_RuneBetweenTheEyes) {
 		return
 	}
+	
 	flatDamage := rogue.RuneAbilityBaseDamage()
 	comboDamageBonus := rogue.RuneAbilityDamagePerCombo()
 
@@ -54,7 +55,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 			variableDamage := sim.Roll(flatBaseDamage*0.53, flatBaseDamage*0.81)
 
 			// TODO: test combo point AP scaling. Also, does BTE use Melee or Ranged Attack Power?
-			baseDamage := flatBaseDamage + variableDamage +
+			baseDamage := variableDamage +
 				0.03*float64(comboPoints)*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 
