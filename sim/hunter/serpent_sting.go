@@ -41,7 +41,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -56,7 +55,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				} else {
 					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera

@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.26638
+  weights: 0.26672
   weights: 0
-  weights: 0.56221
+  weights: 0.56067
   weights: 0
-  weights: 0.56221
-  weights: 0
-  weights: 0
+  weights: 0.56067
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.25935
-  weights: 3.43544
+  weights: 0
+  weights: 0
+  weights: 6.25159
+  weights: 3.44709
   weights: 0
   weights: 0
   weights: 0
@@ -323,126 +323,126 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 302.82504
-  tps: 222.31586
+  dps: 301.99691
+  tps: 221.73618
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 315.54012
-  tps: 230.89092
+  dps: 314.64155
+  tps: 230.26193
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 329.89361
-  tps: 241.18994
+  dps: 328.98299
+  tps: 240.55251
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 299.01572
-  tps: 218.6013
+  dps: 298.18244
+  tps: 218.01801
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
-  dps: 405.02482
-  tps: 294.12799
+  dps: 403.98488
+  tps: 293.40003
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1372.12277
-  tps: 1153.80533
+  dps: 1371.31039
+  tps: 1153.23667
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 412.9835
-  tps: 299.85446
+  dps: 411.9412
+  tps: 299.12485
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 617.25168
-  tps: 448.76118
+  dps: 613.70259
+  tps: 446.27681
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 911.30026
-  tps: 748.19614
+  dps: 910.76981
+  tps: 747.82483
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 233.40546
-  tps: 169.18562
+  dps: 232.54887
+  tps: 168.58601
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 456.84242
-  tps: 330.17969
+  dps: 453.98711
+  tps: 328.18098
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1341.37245
-  tps: 1131.00168
+  dps: 1340.55907
+  tps: 1130.43231
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 403.99011
-  tps: 293.41737
+  dps: 402.93554
+  tps: 292.67918
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 619.40019
-  tps: 450.17388
+  dps: 615.80151
+  tps: 447.65481
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 891.99373
-  tps: 733.79157
+  dps: 891.43345
+  tps: 733.39938
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 227.98416
-  tps: 165.30071
+  dps: 227.1366
+  tps: 164.70742
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 439.14533
-  tps: 317.56923
+  dps: 436.33346
+  tps: 315.60093
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 403.99011
-  tps: 293.41737
+  dps: 402.93554
+  tps: 292.67918
  }
 }

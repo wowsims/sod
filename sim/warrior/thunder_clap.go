@@ -8,36 +8,29 @@ import (
 )
 
 func (warrior *Warrior) registerThunderClapSpell() {
+	hasFuriousThunder := warrior.HasRune(proto.WarriorRune_RuneFuriousThunder)
+
+	info := map[int32]struct {
+		spellID    int32
+		baseDamage float64
+		duration   time.Duration
+	}{
+		25: {spellID: 8198, baseDamage: 23, duration: time.Second * 14},
+		40: {spellID: 8205, baseDamage: 55, duration: time.Second * 22},
+		50: {spellID: 11580, baseDamage: 82, duration: time.Second * 26},
+		60: {spellID: 11581, baseDamage: 103, duration: time.Second * 30},
+	}[warrior.Level]
+
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, Level int32) *core.Aura {
-		return core.ThunderClapAura(target, warrior.Talents.ImprovedThunderClap, warrior.Level)
+		return core.ThunderClapAura(target, info.spellID, info.duration, core.TernaryInt32(hasFuriousThunder, 16, 10))
 	})
-
-	damageMultiplier := 1.0
-
-	if warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
-		damageMultiplier = 2.0
-	}
-
-	baseDamage := map[int32]float64{
-		25: 23,
-		40: 55,
-		50: 82,
-		60: 103,
-	}[warrior.Level]
-
-	spellID := map[int32]int32{
-		25: 8198,
-		40: 8205,
-		50: 11580,
-		60: 11581,
-	}[warrior.Level]
 
 	numHits := min(4, warrior.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolNature,
+		ActionID:    core.ActionID{SpellID: info.spellID},
+		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -55,23 +48,17 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			if warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
-				return true
-			}
-			return warrior.StanceMatches(BattleStance | DefensiveStance)
+			return hasFuriousThunder || warrior.StanceMatches(BattleStance)
 		},
 
-		// Cruelty doesn't apply to Thunder Clap
-		BonusCritRating:  (0 - float64(warrior.Talents.Cruelty)*1),
-		DamageMultiplier: damageMultiplier,
-		CritMultiplier:   warrior.critMultiplier(none),
-		ThreatMultiplier: 1.85,
+		DamageMultiplier: core.TernaryFloat64(hasFuriousThunder, 2, 1),
+		CritMultiplier:   warrior.SpellCritMultiplier(1, 0),
+		ThreatMultiplier: core.TernaryFloat64(hasFuriousThunder, 2.5*1.5, 2.5),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				results[hitIndex] = spell.CalcDamage(sim, curTarget, info.baseDamage, spell.OutcomeMagicHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 

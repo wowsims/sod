@@ -54,7 +54,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 		BonusCritRating:  5 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1.3,
 		FlatThreatBonus:  770,
 

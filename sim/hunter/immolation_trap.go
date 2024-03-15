@@ -38,7 +38,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		},
 
 		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.CleverTraps),
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
+		CritMultiplier:           hunter.critMultiplier(false, hunter.CurrentTarget),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{

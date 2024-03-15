@@ -13,12 +13,8 @@ func applyRaceEffects(agent Agent) {
 
 	switch character.Race {
 	case proto.Race_RaceDwarf:
-		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
-
-		// Gun specialization (+1% ranged crit when using a gun).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun {
-			character.AddBonusRangedCritRating(1 * CritRatingPerCritChance)
-		}
+		character.AddStat(stats.FrostResistance, 10)
+		character.PseudoStats.GunsSkill += 5
 
 		actionID := ActionID{SpellID: 20594}
 
@@ -38,7 +34,7 @@ func applyRaceEffects(agent Agent) {
 			Cast: CastConfig{
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
+					Duration: time.Minute * 3,
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
@@ -51,17 +47,17 @@ func applyRaceEffects(agent Agent) {
 			Type:  CooldownTypeSurvival,
 		})
 	case proto.Race_RaceGnome:
-		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
+		character.AddStat(stats.ArcaneResistance, 10)
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
-		character.MultiplyStat(stats.Spirit, 1.03)
+		character.MultiplyStat(stats.Spirit, 1.05)
 		character.PseudoStats.MacesSkill += 5
 		character.PseudoStats.TwoHandedMacesSkill += 5
 		character.PseudoStats.SwordsSkill += 5
 		character.PseudoStats.TwoHandedSwordsSkill += 5
 	case proto.Race_RaceNightElf:
-		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
-		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
+		character.AddStat(stats.NatureResistance, 10)
+		character.AddStat(stats.Dodge, DodgeRatingPerDodgeChance*1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
 		// Command (Pet damage +5%)
@@ -113,13 +109,11 @@ func applyRaceEffects(agent Agent) {
 		character.PseudoStats.AxesSkill += 5
 		character.PseudoStats.TwoHandedAxesSkill += 5
 	case proto.Race_RaceTauren:
-		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
-		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
+		character.AddStat(stats.NatureResistance, 10)
+		character.MultiplyStat(stats.Health, 1.05)
 	case proto.Race_RaceTroll:
-		// Bow specialization (+1% ranged crit when using a bow).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow {
-			character.AddBonusRangedCritRating(1 * CritRatingPerCritChance)
-		}
+		character.PseudoStats.BowsSkill += 5
+		character.PseudoStats.ThrownSkill += 5
 
 		// Beast Slaying (+5% damage to beasts)
 		character.Env.RegisterPostFinalizeEffect(func() {
@@ -143,7 +137,7 @@ func applyRaceEffects(agent Agent) {
 		makeBerserkingCooldown(character, .25, berserkingTimer)
 		makeBerserkingCooldown(character, .3, berserkingTimer)
 	case proto.Race_RaceUndead:
-		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+		character.AddStat(stats.ShadowResistance, 10)
 	}
 }
 

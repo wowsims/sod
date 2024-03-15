@@ -88,14 +88,13 @@ func (druid *Druid) newHurricaneTickSpellConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskProc,
 
-		CritMultiplier:   1,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := baseDamage + spellCoef*spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHit)
 				// TODO: Apply attack speed reduction
 			}
 		},

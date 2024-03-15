@@ -63,7 +63,7 @@ func (warrior *Warrior) registerSlamSpell() {
 
 		BonusCritRating:  0,
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
 

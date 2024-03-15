@@ -403,8 +403,6 @@ func (mage *Mage) registerCombustionCD() {
 		Duration: time.Minute * 3,
 	}
 
-	fireCombCritMult := mage.SpellCritMultiplier(1, 0.1) / mage.SpellCritMultiplier(1, 0)
-
 	var fireSpells []*core.Spell
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
@@ -422,16 +420,10 @@ func (mage *Mage) registerCombustionCD() {
 		MaxStacks: 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			numCrits = 0
-			for _, spell := range fireSpells {
-				spell.CritMultiplier *= fireCombCritMult
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			cd.Use(sim)
 			mage.UpdateMajorCooldowns()
-			for _, spell := range fireSpells {
-				spell.CritMultiplier /= fireCombCritMult
-			}
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			bonusCrit := critPerStack * float64(newStacks-oldStacks)

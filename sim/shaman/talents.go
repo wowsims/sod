@@ -293,9 +293,7 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
-	bonus := 1.0 + 0.06*float64(shaman.Talents.Flurry)
-
-	inverseBonus := 1 / bonus
+	bonus := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[shaman.Talents.Flurry]
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:     "Flurry Proc",
@@ -306,7 +304,7 @@ func (shaman *Shaman) applyFlurry() {
 			shaman.MultiplyMeleeSpeed(sim, bonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, inverseBonus)
+			shaman.MultiplyMeleeSpeed(sim, 1/bonus)
 		},
 	})
 

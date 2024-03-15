@@ -26,7 +26,7 @@ func (hunter *Hunter) registerCarveSpell() {
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1) * 0.65,
-			CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
+			CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		})
 	}
 
@@ -54,7 +54,7 @@ func (hunter *Hunter) registerCarveSpell() {
 		},
 
 		DamageMultiplier: 0.65,
-		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
+		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
