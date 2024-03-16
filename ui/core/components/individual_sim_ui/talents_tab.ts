@@ -1,15 +1,12 @@
-import { IndividualSimUI } from "../../individual_sim_ui";
-import { Player } from "../../player";
-import { EventID, TypedEvent } from "../../typed_event";
-
-import { Spec } from "../../proto/common";
-import { SavedTalents } from "../../proto/ui";
-
-import { classTalentsConfig } from "../../talents/factory";
-import { TalentsPicker } from "../../talents/talents_picker";
-
-import { SavedDataManager } from "../saved_data_manager";
-import { SimTab } from "../sim_tab";
+import { IndividualSimUI } from '../../individual_sim_ui';
+import { Player } from '../../player';
+import { Spec } from '../../proto/common';
+import { SavedTalents } from '../../proto/ui';
+import { classTalentsConfig } from '../../talents/factory';
+import { TalentsPicker } from '../../talents/talents_picker';
+import { EventID, TypedEvent } from '../../typed_event';
+import { SavedDataManager } from '../saved_data_manager';
+import { SimTab } from '../sim_tab';
 
 export class TalentsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -33,31 +30,32 @@ export class TalentsTab extends SimTab {
 	}
 
 	protected buildTabContent() {
-    this.buildTalentsPicker(this.leftPanel);
-    this.buildSavedTalentsPicker();
+		this.buildTalentsPicker(this.leftPanel);
+		this.buildSavedTalentsPicker();
 	}
 
-  private buildTalentsPicker(parentElem: HTMLElement) {
-    new TalentsPicker(parentElem, this.simUI.player, {
-      klass: this.simUI.player.getClass(),
-      trees: classTalentsConfig[this.simUI.player.getClass()],
-      changedEvent: (player: Player<any>) => player.talentsChangeEmitter,
-      getValue: (player: Player<any>) => player.getTalentsString(),
-      setValue: (eventID: EventID, player: Player<any>, newValue: string) => {
-        player.setTalentsString(eventID, newValue);
-      },
-      pointsPerRow: 5,
-    });
-  }
+	private buildTalentsPicker(parentElem: HTMLElement) {
+		new TalentsPicker(parentElem, this.simUI.player, {
+			klass: this.simUI.player.getClass(),
+			trees: classTalentsConfig[this.simUI.player.getClass()],
+			changedEvent: (player: Player<any>) => player.talentsChangeEmitter,
+			getValue: (player: Player<any>) => player.getTalentsString(),
+			setValue: (eventID: EventID, player: Player<any>, newValue: string) => {
+				player.setTalentsString(eventID, newValue);
+			},
+			pointsPerRow: 5,
+		});
+	}
 
-  private buildSavedTalentsPicker() {
-    const savedTalentsManager = new SavedDataManager<Player<any>, SavedTalents>(this.rightPanel, this.simUI.player, {
+	private buildSavedTalentsPicker() {
+		const savedTalentsManager = new SavedDataManager<Player<any>, SavedTalents>(this.rightPanel, this.simUI.player, {
 			label: 'Talents',
 			header: { title: 'Saved Talents' },
 			storageKey: this.simUI.getSavedTalentsStorageKey(),
-			getData: (player: Player<any>) => SavedTalents.create({
-				talentsString: player.getTalentsString(),
-			}),
+			getData: (player: Player<any>) =>
+				SavedTalents.create({
+					talentsString: player.getTalentsString(),
+				}),
 			setData: (eventID: EventID, player: Player<any>, newTalents: SavedTalents) => {
 				TypedEvent.freezeAllAndDo(() => {
 					player.setTalentsString(eventID, newTalents.talentsString);
@@ -69,7 +67,7 @@ export class TalentsTab extends SimTab {
 			fromJson: (obj: any) => SavedTalents.fromJson(obj),
 		});
 
-    this.simUI.sim.waitForInit().then(() => {
+		this.simUI.sim.waitForInit().then(() => {
 			savedTalentsManager.loadUserData();
 			this.simUI.individualConfig.presets.talents.forEach(config => {
 				config.isPreset = true;
@@ -81,5 +79,5 @@ export class TalentsTab extends SimTab {
 				});
 			});
 		});
-  } 
+	}
 }

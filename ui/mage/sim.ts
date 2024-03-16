@@ -97,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
 		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrostfire],
 	},
 
 	autoRotation: player => {
@@ -172,7 +173,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Frost',
 			iconUrl: getSpecIcon(Class.ClassMage, 2),
 
-			talents: Presets.DefaultTalentsFrost.data,
+			talents: Presets.DefaultTalentsFrostfire.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,

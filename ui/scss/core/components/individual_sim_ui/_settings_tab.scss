@@ -1,110 +1,111 @@
-@use "sass:map";
+@use 'sass:map';
 
-@import "./consumes_picker";
-@import "./cooldowns_picker";
+@import './preset_builds_picker';
+@import './consumes_picker';
+@import './cooldowns_picker';
 
 .settings-tab {
-  .tab-pane-content-container {
-    .tab-panel-left {
-      .tab-panel-col {
-        flex: 2;
+	.tab-pane-content-container {
+		.tab-panel-left {
+			.tab-panel-col {
+				flex: 2;
 
-        &:last-child {
-          flex: 3;
-        }
-      }
-    }
-  }
+				&:last-child {
+					flex: 3;
+				}
+			}
+		}
+	}
 
-  .content-block {
-    .content-block-body {
-      &> .input-root:last-child {
-        margin-bottom: 0;
-      }
+	.content-block {
+		.content-block-body {
+			& > .input-root:last-child {
+				margin-bottom: 0;
+			}
 
-      &> .picker-group:last-child {
-        &> .input-root {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
+			& > .picker-group:last-child {
+				& > .input-root {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
 
-  .rotation-settings,
-  .other-settings {
-    .input-root {
-      label {
-        width: 60%;
-        padding-right: .5rem;
-      }
+	.rotation-settings,
+	.other-settings {
+		.input-root {
+			label {
+				width: 60%;
+				padding-right: 0.5rem;
+			}
 
-      input:not(.form-check-input),
-      select,
-      .picker-group {
-        min-width: 40%;
-      }
-    }
-  }
+			input:not(.form-check-input),
+			select,
+			.picker-group {
+				min-width: 40%;
+			}
+		}
+	}
 
-  .cooldown-settings {
-    .cooldown-timings-picker {
-      min-width: 40%;
-      width: 40%;
-    }
-  }
+	.cooldown-settings {
+		.cooldown-timings-picker {
+			min-width: 40%;
+			width: 40%;
+		}
+	}
 
-  .buffs-settings,
-  .world-buffs-settings,
-  .debuffs-settings {
-    .content-block-body {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      grid-gap: $block-spacer;
+	.buffs-settings,
+	.world-buffs-settings,
+	.debuffs-settings {
+		.content-block-body {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-gap: $block-spacer;
 
-      &> .icon-picker {
-        margin-bottom: 0;
+			& > .icon-picker {
+				margin-bottom: 0;
 
-        .form-label {
-          white-space: normal;
-        }
-      }
-    }
-  }
+				.form-label {
+					white-space: normal;
+				}
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(xxl) {
-  .settings-tab {
-    .tab-pane-content-container {
-      flex-direction: column;
+	.settings-tab {
+		.tab-pane-content-container {
+			flex-direction: column;
 
-      .tab-panel-left {
-        margin-right: 0 !important;
-      }
-    }
-  }
+			.tab-panel-left {
+				margin-right: 0 !important;
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(xl) {
-  .settings-tab {
-    .tab-pane-content-container {
-      .tab-panel-left {
-        flex-wrap: wrap;
+	.settings-tab {
+		.tab-pane-content-container {
+			.tab-panel-left {
+				flex-wrap: wrap;
 
-        .tab-panel-col {
-          flex-basis: 100%;
-          margin-right: 0 !important;
-        }
-      }
-    }
+				.tab-panel-col {
+					flex-basis: 100%;
+					margin-right: 0 !important;
+				}
+			}
+		}
 
-    .content-block {
-      .content-block-body {
-        &> .picker-group {
-          &> .input-root:not(:last-child) {
-            margin-bottom: $block-spacer;
-          }
-        }
-      }
-    }
-  }
+		.content-block {
+			.content-block-body {
+				& > .picker-group {
+					& > .input-root:not(:last-child) {
+						margin-bottom: $block-spacer;
+					}
+				}
+			}
+		}
+	}
 }

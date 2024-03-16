@@ -80,8 +80,8 @@ enum RogueRune {
 	RuneWaylay = 408700;
 	RuneRollingWithThePunches = 400093;
 	RuneShadowstep = 400101;
-	RuneShurikenToss = 400096;
-	RunePoisonedKnife = 425102;
+	RuneShurikenToss = 399986;
+	RunePoisonedKnife = 425012;
 }
 
 message RogueOptions {

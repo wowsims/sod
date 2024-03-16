@@ -118,6 +118,7 @@ $sidebar-z-index: 200;
 $theme-colors: map-merge($theme-colors, $class-colors);
 $theme-colors: map-merge($theme-colors, $custom-colors);
 $grid-breakpoints: map-merge($grid-breakpoints, $custom-breakpoints);
+// $utilities-text-colors: map-merge($utilities-text-colors, $text-colors);
 
 $body-bg: #15171e;
 $body-color: white;
@@ -171,6 +172,7 @@ $form-select-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
 $form-select-font-size: $content-font-size;
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
 
+$form-text-color: dimgrey;
 $form-text-font-size: $content-font-size;
 
 $input-bg: lighten($body-bg, 12);
@@ -182,6 +184,7 @@ $input-focus-border-color: lighten($body-bg, 20);
 $input-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
 $input-focus-color: white;
 $input-font-size: $content-font-size;
+$input-placeholder-color: dimgrey;
 
 $modal-content-bg: $body-bg;
 $modal-content-border-color: $link-color;
