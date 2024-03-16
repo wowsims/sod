@@ -7,48 +7,54 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (rogue *Rogue) registerShivSpell() {
-	if !rogue.HasRune(proto.RogueRune_RuneShiv) {
+func (rogue *Rogue) registerPoisonedKnife() {
+	if !rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
 		return
 	}
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
-	baseCost := 20.0
-	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
-		baseCost = baseCost + 10*ohWeapon.SwingSpeed
-	}
-
-	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 424799},
+	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RunePoisonedKnife)},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   baseCost - []float64{0, 3, 5}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},
+			CD: core.Cooldown{
+				Timer:    rogue.NewTimer(),
+				Duration: time.Second * 6,
+			},
 			IgnoreHaste: true,
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return rogue.HasOHWeapon() && rogue.DistanceFromTarget >= 8
+		},
+		CastType: proto.CastType_CastTypeRanged,
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
+		// Cannot Miss
+		BonusHitRating: 100 * core.MeleeHitRatingPerHitChance,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 
+			// Cannot Miss, Dodge, or Parry as per spell flags
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-
+				// 100% application of OH poison (except for 1%? It can resist extremely rarely)
 				switch rogue.Consumes.OffHandImbue {
 				case proto.WeaponImbue_InstantPoison:
 					rogue.InstantPoison[ShivProc].Cast(sim, target)
@@ -61,6 +67,8 @@ func (rogue *Rogue) registerShivSpell() {
 						rogue.InstantPoison[NormalProc].Cast(sim, target)
 					}
 				}
+			} else {
+				spell.IssueRefund(sim)
 			}
 		},
 	})
