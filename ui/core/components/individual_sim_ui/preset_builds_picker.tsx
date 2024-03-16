@@ -1,3 +1,4 @@
+import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
@@ -24,12 +25,20 @@ export class PresetBuildsPicker extends Component {
 		}
 
 		const buildsContainerRef = ref<HTMLDivElement>();
+		const infoElemRef = ref<HTMLAnchorElement>();
 		this.rootElem.appendChild(
 			<>
-				<label className="form-label">Preset Builds</label>
+				<label className="form-label">
+					Preset Builds
+					<a href="javascript:void(0)" className="ms-1" ref={infoElemRef}>
+						<i className="fa-regular fa-circle-question" />
+					</a>
+				</label>
 				<div className="presets-container" ref={buildsContainerRef}></div>
 			</>,
 		);
+
+		Tooltip.getOrCreateInstance(infoElemRef.value!, { title: 'Preset builds apply an optimal combination of gear, talents, and rotation.' });
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.builds.forEach(build => {
@@ -68,7 +77,6 @@ export class PresetBuildsPicker extends Component {
 	}
 
 	private isBuildActive(build: PresetBuild): boolean {
-		build.rotation.rotation.rotation;
 		return (
 			EquipmentSpec.equals(build.gear.gear, this.simUI.player.getGear().asSpec()) &&
 			build.talents.data.talentsString == this.simUI.player.getTalentsString() &&
