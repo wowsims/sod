@@ -46,7 +46,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 			BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 			DamageMultiplier: 1.5 * dwSpecMulti,
-			CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
+			CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		})
 	}
 

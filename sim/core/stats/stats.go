@@ -483,13 +483,6 @@ type PseudoStats struct {
 
 	ArmorMultiplier float64 // Major/minor/special multiplicative armor modifiers
 
-	ReducedPhysicalHitTakenChance float64
-	ReducedArcaneHitTakenChance   float64
-	ReducedFireHitTakenChance     float64
-	ReducedFrostHitTakenChance    float64
-	ReducedNatureHitTakenChance   float64
-	ReducedShadowHitTakenChance   float64
-
 	HealingTakenMultiplier float64
 }
 

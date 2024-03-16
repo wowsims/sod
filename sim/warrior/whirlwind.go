@@ -39,7 +39,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -33,7 +33,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

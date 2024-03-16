@@ -68,7 +68,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {

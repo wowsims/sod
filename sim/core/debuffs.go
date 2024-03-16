@@ -175,7 +175,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Atk spd reduction
 	if debuffs.ThunderClap != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(ThunderClapAura(target, GetTristateValueInt32(debuffs.ThunderClap, 0, 3), level))
+		MakePermanent(ThunderClapAura(target, 8205, time.Second*22, GetTristateValueInt32(debuffs.ThunderClap, 10, 16)))
 	}
 
 	// Miss
@@ -913,14 +913,13 @@ func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
 	})
 }
 
-// TODO: Classic
-func ThunderClapAura(target *Unit, points int32, playerLevel int32) *Aura {
+func ThunderClapAura(target *Unit, spellID int32, duration time.Duration, atkSpeedReductionPercent int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "ThunderClap-" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 47502},
-		Duration: time.Second * 30,
+		Label:    "ThunderClap-" + strconv.Itoa(int(atkSpeedReductionPercent)),
+		ActionID: ActionID{SpellID: spellID},
+		Duration: duration,
 	})
-	AtkSpeedReductionEffect(aura, []float64{1.1, 1.14, 1.17, 1.2}[points])
+	AtkSpeedReductionEffect(aura, 1+0.01*float64(atkSpeedReductionPercent))
 	return aura
 }
 

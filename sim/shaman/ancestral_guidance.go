@@ -28,7 +28,7 @@ func (shaman *Shaman) applyAncestralGuidance() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
-		ThreatMultiplier: shaman.ShamanThreatMultiplier(1),
+		ThreatMultiplier: 1,
 	})
 
 	agHealSpell := shaman.RegisterSpell(core.SpellConfig{

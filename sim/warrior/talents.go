@@ -69,7 +69,7 @@ func (warrior *Warrior) applyOneHandedWeaponSpecialization() {
 		return
 	}
 
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.01*float64(warrior.Talents.OneHandedWeaponSpecialization)
+	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
 }
 
 func (warrior *Warrior) applyWeaponSpecializations() {

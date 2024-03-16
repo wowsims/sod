@@ -55,9 +55,6 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating: 0,
-		DamageMultiplierAdditive: 1 +
-			.05*float64(hunter.Talents.Barrage),
 		DamageMultiplier: 1,
 		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier: 1,

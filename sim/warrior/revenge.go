@@ -69,7 +69,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
 

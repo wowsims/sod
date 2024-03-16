@@ -49,7 +49,7 @@ func (shaman *Shaman) newEarthShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
-	spell.ThreatMultiplier = shaman.ShamanThreatMultiplier(2)
+	spell.ThreatMultiplier = 2
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()

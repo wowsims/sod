@@ -277,6 +277,10 @@ func (shaman *Shaman) applyWayOfEarth() {
 		return
 	}
 
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_RockbiterWeapon {
+		shaman.PseudoStats.ThreatMultiplier *= 1.5
+	}
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Way of Earth",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},

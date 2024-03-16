@@ -27,9 +27,8 @@ func (warrior *Warrior) registerQuickStrike() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
+		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  259,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(0.10*spell.MeleeAttackPower(), 0.20*spell.MeleeAttackPower())
