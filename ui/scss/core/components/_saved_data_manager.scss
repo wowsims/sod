@@ -1,82 +1,85 @@
-@use "sass:map";
+@use 'sass:map';
 
 .saved-data-manager-root {
-  margin-bottom: $block-spacer * 2;
+	margin-bottom: $block-spacer * 2;
 
-  .saved-data-container {
-    display: flex;
-    flex-direction: column;
+	.saved-data-container {
+		display: flex;
+		flex-direction: column;
 
-    .saved-data-presets,
-    .saved-data-custom {
-      display: flex;
-      flex-wrap: wrap;
-    }
-  }
+		.saved-data-presets,
+		.saved-data-custom {
+			display: flex;
+			flex-wrap: wrap;
+		}
+	}
 
-  .saved-data-create-container {
-    display: flex;
-    flex-direction: column;
+	.saved-data-create-container {
+		display: flex;
+		flex-direction: column;
 
-    .saved-data-save-input, .saved-data-save-button {
-      width: 10rem;
-    }
+		.saved-data-save-input,
+		.saved-data-save-button {
+			width: 10rem;
+		}
 
-    .saved-data-save-input {
-      margin-bottom: $block-spacer;
-    }
-  }
+		.saved-data-save-input {
+			margin-bottom: $block-spacer;
+		}
+	}
 }
 
 .saved-data-set-chip {
-  padding: 0;
-  margin-bottom: $block-spacer;
-  margin-right: $block-spacer;
-  border: 1px solid var(--bs-primary);
-  display: flex;
-  font-size: $content-font-size;
-  font-weight: normal;
-  transition: $btn-transition;
+	@extend .btn;
 
-  &.active {
-    background-color: var(--bs-primary);
+	padding: 0;
+	margin-bottom: $block-spacer;
+	margin-right: $block-spacer;
+	border: 1px solid var(--bs-primary) !important;
+	display: flex;
+	font-size: $content-font-size;
+	font-weight: normal;
+	transition: $btn-transition;
 
-    .saved-data-set-name,
-    .saved-data-set-delete {
-      color: var(--theme-component-text-color);
-    }
-  }
+	&.active {
+		background-color: var(--bs-primary);
 
-  &:hover:not(.active) {
-    background: var(--bs-primary-dampened);
-  }
+		.saved-data-set-name,
+		.saved-data-set-delete {
+			color: var(--theme-component-text-color);
+		}
+	}
 
-  &.disabled {
-    display: none;
-  }
+	&:hover:not(.active) {
+		background: var(--bs-primary-dampened);
+	}
 
-  .saved-data-set-name {
-    padding: map.get($spacers, 2);
-    color: $body-color;
-  }
+	&.disabled {
+		display: none;
+	}
 
-  .saved-data-set-delete {
-    padding: map.get($spacers, 2) 0;
-    margin-right: map.get($spacers, 2);
-    color: $body-color;
-  }
+	.saved-data-set-name {
+		padding: map.get($spacers, 2);
+		color: $body-color;
+	}
+
+	.saved-data-set-delete {
+		padding: map.get($spacers, 2) 0;
+		margin-right: map.get($spacers, 2);
+		color: $body-color;
+	}
 }
 
 @include media-breakpoint-down(xxl) {
-  .saved-data-manager-root {
-    .saved-data-create-container {
-      .saved-data-save-input {
-        width: 100%;
-      }
+	.saved-data-manager-root {
+		.saved-data-create-container {
+			.saved-data-save-input {
+				width: 100%;
+			}
 
-      .saved-data-save-button {
-        width: 100%;
-      }
-    }
-  }
+			.saved-data-save-button {
+				width: 100%;
+			}
+		}
+	}
 }

@@ -1,30 +1,23 @@
+import { IndividualSimUI } from '../../individual_sim_ui';
+import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics } from '../../proto/api';
+import { EquipmentSpec, ItemSpec, SimDatabase, SimEnchant, SimItem, Spec } from '../../proto/common';
+import { UIEnchant, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
 import { Database } from '../../proto_utils/database';
-import { ContentBlock } from "../content_block";
-import { Importer } from "../importers";
-
-import { IndividualSimUI } from "../../individual_sim_ui";
-import { TypedEvent } from "../../typed_event";
-
+import { EquippedItem } from '../../proto_utils/equipped_item';
+import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
+import { TypedEvent } from '../../typed_event';
 import { EventID } from '../../typed_event.js';
-
-import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics } from "../../proto/api";
-import { EquipmentSpec, ItemSpec, SimDatabase, SimEnchant, SimItem, Spec } from "../../proto/common";
-
-import { ItemRenderer, SelectorModal, SelectorModalTabs } from "../gear_picker";
-import { SimTab } from "../sim_tab";
-
-import { UIEnchant, UIItem } from "../../proto/ui";
-import { EquippedItem } from "../../proto_utils/equipped_item";
-import { Component } from "../component";
-import { ResultsViewer } from "../results_viewer";
-
-import { UIItem_FactionRestriction } from '../../proto/ui';
-import { canEquipItem, getEligibleItemSlots } from "../../proto_utils/utils";
-import { BooleanPicker } from "../boolean_picker";
+import { BooleanPicker } from '../boolean_picker';
+import { Component } from '../component';
+import { ContentBlock } from '../content_block';
+import { ItemRenderer, SelectorModal, SelectorModalTabs } from '../gear_picker';
+import { Importer } from '../importers';
+import { ResultsViewer } from '../results_viewer';
+import { SimTab } from '../sim_tab';
 
 export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
 	private readonly simUI: IndividualSimUI<SpecType>;
-	private readonly bulkUI: BulkTab
+	private readonly bulkUI: BulkTab;
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>, bulkUI: BulkTab) {
 		super(parent, simUI, 'Bag Item Import', true);
 		this.simUI = simUI;
@@ -40,7 +33,7 @@ export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
 			const equipment = EquipmentSpec.fromJsonString(data, { ignoreUnknownFields: true });
 			if (equipment?.items?.length > 0) {
 				const db = await Database.loadLeftoversIfNecessary(equipment);
-				const items = equipment.items.filter((spec) => spec.id > 0 && db.lookupItemSpec(spec));
+				const items = equipment.items.filter(spec => spec.id > 0 && db.lookupItemSpec(spec));
 				if (items.length > 0) {
 					this.bulkUI.addItems(items);
 				}
@@ -53,7 +46,6 @@ export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
 }
 
 class BulkSimResultRenderer {
-
 	constructor(parent: ContentBlock, simUI: IndividualSimUI<Spec>, result: BulkComboResult, baseResult: BulkComboResult) {
 		const dpsDivParent = document.createElement('div');
 		dpsDivParent.classList.add('results-sim');
@@ -83,7 +75,7 @@ class BulkSimResultRenderer {
 			equipBtn.textContent = 'Equip';
 			equipBtn.classList.add('btn', 'btn-primary', 'bulk-equipit');
 			equipBtn.onclick = () => {
-				result.itemsAdded.forEach((itemAdded) => {
+				result.itemsAdded.forEach(itemAdded => {
 					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
 					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
 					simUI.simHeader.activateTab('gear-tab');
@@ -93,7 +85,7 @@ class BulkSimResultRenderer {
 			parent.bodyElement.appendChild(equipBtn);
 
 			for (const is of result.itemsAdded) {
-				const item = simUI.sim.db.lookupItemSpec(is.item!)
+				const item = simUI.sim.db.lookupItemSpec(is.item!);
 				const renderer = new ItemRenderer(itemsContainer, simUI.player);
 				renderer.update(item!);
 
@@ -115,11 +107,11 @@ class BulkSimResultRenderer {
 	}
 
 	private formatDpsDelta(delta: number): string {
-		return ((delta >= 0) ? "+" : "") + this.formatDps(delta);
+		return (delta >= 0 ? '+' : '') + this.formatDps(delta);
 	}
 
 	private itemSlotName(is: ItemSpecWithSlot): string {
-		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))['slot'].replace('ItemSlot', '')
+		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))['slot'].replace('ItemSlot', '');
 	}
 }
 
@@ -165,18 +157,22 @@ export class BulkItemPicker extends Component {
 						},
 						getEquippedItem: () => this.item,
 						changeEvent: changeEvent,
-					}
+					},
 				});
 
 				if (eligibleEnchants.length > 0) {
-					modal.openTabName("Enchants");
+					modal.openTabName('Enchants');
 				}
 
 				const destroyItemButton = document.createElement('button');
 				destroyItemButton.textContent = 'Remove from Batch';
 				destroyItemButton.classList.add('btn', 'btn-danger');
 				destroyItemButton.onclick = () => {
-					bulkUI.setItems(bulkUI.getItems().filter((item, idx) => { return idx != this.index }));
+					bulkUI.setItems(
+						bulkUI.getItems().filter((item, idx) => {
+							return idx != this.index;
+						}),
+					);
 					modal.close();
 				};
 				const closeX = modal.header?.querySelector('.close-button');
@@ -238,7 +234,7 @@ export class BulkTab extends SimTab {
 		this.rightPanel.classList.add('bulk-tab-right', 'tab-panel-right');
 
 		this.pendingDiv = document.createElement('div');
-		this.pendingDiv.classList.add("results-pending-overlay");
+		this.pendingDiv.classList.add('results-pending-overlay');
 		this.pendingResults = new ResultsViewer(this.pendingDiv);
 		this.pendingResults.hideAll();
 
@@ -258,13 +254,13 @@ export class BulkTab extends SimTab {
 	}
 
 	private getSettingsKey(): string {
-		return this.simUI.getStorageKey("bulk-settings.v1");
+		return this.simUI.getStorageKey('bulk-settings.v1');
 	}
 
 	private loadSettings() {
 		const storedSettings = window.localStorage.getItem(this.getSettingsKey());
 		if (storedSettings != null) {
-			let settings = BulkSettings.fromJsonString(storedSettings, { ignoreUnknownFields: true })
+			const settings = BulkSettings.fromJsonString(storedSettings, { ignoreUnknownFields: true });
 
 			this.doCombos = settings.combinations;
 			this.fastMode = settings.fastMode;
@@ -274,14 +270,12 @@ export class BulkTab extends SimTab {
 
 	private storeSettings() {
 		const settings = this.createBulkSettings();
-		const setStr = BulkSettings.toJsonString(settings, { enumAsInteger: true })
+		const setStr = BulkSettings.toJsonString(settings, { enumAsInteger: true });
 
 		window.localStorage.setItem(this.getSettingsKey(), setStr);
 	}
 
-
 	protected createBulkSettings(): BulkSettings {
-
 		return BulkSettings.create({
 			items: this.items,
 			// TODO(Riotdog-GehennasEU): Make all of these configurable.
@@ -296,11 +290,11 @@ export class BulkTab extends SimTab {
 	protected createBulkItemsDatabase(): SimDatabase {
 		const itemsDb = SimDatabase.create();
 		for (const is of this.items) {
-			const item = this.simUI.sim.db.lookupItemSpec(is)
+			const item = this.simUI.sim.db.lookupItemSpec(is);
 			if (!item) {
 				throw new Error(`item with ID ${is.id} not found in database`);
 			}
-			itemsDb.items.push(SimItem.fromJson(UIItem.toJson(item.item), { ignoreUnknownFields: true }))
+			itemsDb.items.push(SimItem.fromJson(UIItem.toJson(item.item), { ignoreUnknownFields: true }));
 			if (item.enchant) {
 				itemsDb.enchants.push(SimEnchant.fromJson(UIEnchant.toJson(item.enchant), { ignoreUnknownFields: true }));
 			}
@@ -330,7 +324,9 @@ export class BulkTab extends SimTab {
 
 	getItems(): Array<ItemSpec> {
 		const result = new Array<ItemSpec>();
-		this.items.forEach((spec) => { result.push(ItemSpec.clone(spec)); });
+		this.items.forEach(spec => {
+			result.push(ItemSpec.clone(spec));
+		});
 		return result;
 	}
 
@@ -344,7 +340,7 @@ export class BulkTab extends SimTab {
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	protected async runBulkSim(onProgress: Function) {
+	protected async runBulkSim(onProgress: (_?: any) => void) {
 		this.pendingResults.setPending();
 
 		try {
@@ -356,7 +352,7 @@ export class BulkTab extends SimTab {
 
 	protected buildTabContent() {
 		const itemsBlock = new ContentBlock(this.column1, 'bulk-items', {
-			header: { title: 'Items' }
+			header: { title: 'Items' },
 		});
 
 		itemsBlock.bodyElement.classList.add('gear-picker-root');
@@ -364,7 +360,8 @@ export class BulkTab extends SimTab {
 		const noticeWorkInProgress = document.createElement('div');
 		noticeWorkInProgress.classList.add('bulk-items-text-line');
 		itemsBlock.bodyElement.appendChild(noticeWorkInProgress);
-		noticeWorkInProgress.innerHTML = '<i>Notice: This is under very early but active development and experimental. You may also need to update your WoW AddOn if you want to import your bags.</i>'
+		noticeWorkInProgress.innerHTML =
+			'<i>Notice: This is under very early but active development and experimental. You may also need to update your WoW AddOn if you want to import your bags.</i>';
 
 		const itemTextIntro = document.createElement('div');
 		itemTextIntro.classList.add('bulk-items-text-line');
@@ -389,7 +386,7 @@ export class BulkTab extends SimTab {
 
 		this.clearItems();
 
-		let resultsBlock = new ContentBlock(this.column1, 'bulk-results', {
+		const resultsBlock = new ContentBlock(this.column1, 'bulk-results', {
 			header: {
 				title: 'Results',
 				extraCssClasses: ['bulk-results-header'],
@@ -414,23 +411,21 @@ export class BulkTab extends SimTab {
 		});
 
 		const settingsBlock = new ContentBlock(this.rightPanel, 'bulk-settings', {
-			header: { title: 'Setup' }
+			header: { title: 'Setup' },
 		});
 
 		const bulkSimButton = document.createElement('button');
 		bulkSimButton.classList.add('btn', 'btn-primary', 'w-100', 'bulk-settings-button');
 		bulkSimButton.textContent = 'Simulate Batch';
 		bulkSimButton.addEventListener('click', () => {
-
-			this.pendingDiv.style.display = "flex";
-			this.leftPanel.classList.add("blurred");
-			this.rightPanel.classList.add("blurred");
+			this.pendingDiv.style.display = 'flex';
+			this.leftPanel.classList.add('blurred');
+			this.rightPanel.classList.add('blurred');
 
 			const previousContents = bulkSimButton.innerHTML;
 			bulkSimButton.disabled = true;
-			bulkSimButton.classList.add(".disabled");
+			bulkSimButton.classList.add('.disabled');
 			bulkSimButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
-
 
 			let simStart = new Date().getTime();
 			let lastTotal = 0;
@@ -463,13 +458,13 @@ export class BulkTab extends SimTab {
 
 				if (progressMetrics.finalBulkResult != null) {
 					// reset state
-					this.pendingDiv.style.display = "none";
-					this.leftPanel.classList.remove("blurred");
-					this.rightPanel.classList.remove("blurred");
+					this.pendingDiv.style.display = 'none';
+					this.leftPanel.classList.remove('blurred');
+					this.rightPanel.classList.remove('blurred');
 
 					this.pendingResults.hideAll();
 					bulkSimButton.disabled = false;
-					bulkSimButton.classList.remove(".disabled");
+					bulkSimButton.classList.remove('.disabled');
 					bulkSimButton.innerHTML = previousContents;
 				}
 			});
@@ -488,7 +483,7 @@ export class BulkTab extends SimTab {
 		importFavsButton.innerHTML = '<i class="fa fa-download"></i> Import Favorites';
 		importFavsButton.addEventListener('click', () => {
 			const filters = this.simUI.player.sim.getFilters();
-			const items = filters.favoriteItems.map((itemID) => {
+			const items = filters.favoriteItems.map(itemID => {
 				return ItemSpec.create({ id: itemID });
 			});
 			this.addItems(items);
@@ -496,20 +491,20 @@ export class BulkTab extends SimTab {
 		settingsBlock.bodyElement.appendChild(importFavsButton);
 
 		const searchButton = document.createElement('button');
-		let searchText = document.createElement('input');
-		searchText.type = "text";
-		searchText.placeholder = "search...";
-		searchText.style.display = "none";
+		const searchText = document.createElement('input');
+		searchText.type = 'text';
+		searchText.placeholder = 'search...';
+		searchText.style.display = 'none';
 
 		const searchResults = document.createElement('ul');
-		searchResults.classList.add("batch-search-results");
+		searchResults.classList.add('batch-search-results');
 
 		let allItems = Array<UIItem>();
 
-		searchText.addEventListener("keyup", ev => {
-			if (ev.key == "Enter") {
-				let toAdd = Array<ItemSpec>();
-				searchResults.childNodes.forEach((node) => {
+		searchText.addEventListener('keyup', ev => {
+			if (ev.key == 'Enter') {
+				const toAdd = Array<ItemSpec>();
+				searchResults.childNodes.forEach(node => {
 					const strID = (node as HTMLElement).getAttribute('data-item-id');
 					if (strID != null) {
 						toAdd.push(ItemSpec.create({ id: Number.parseInt(strID) }));
@@ -519,52 +514,52 @@ export class BulkTab extends SimTab {
 			}
 		});
 
-		searchText.addEventListener("input", () => {
+		searchText.addEventListener('input', () => {
 			const searchString = searchText.value;
-			searchResults.innerHTML = "";
+			searchResults.innerHTML = '';
 			if (searchString.length == 0) {
 				return;
 			}
-			var pieces = searchString.split(' ');
+			const pieces = searchString.split(' ');
 
 			let displayCount = 0;
-			allItems.every((item) => {
+			allItems.every(item => {
 				let matched = true;
 				const lcName = item.name.toLowerCase();
 				const lcSetName = item.setName.toLowerCase();
 
-				pieces.forEach((piece) => {
-					var lcPiece = piece.toLowerCase();
+				pieces.forEach(piece => {
+					const lcPiece = piece.toLowerCase();
 					if (!lcName.includes(lcPiece) && !lcSetName.includes(lcPiece)) {
 						matched = false;
 						return false;
 					}
 					return true;
-				})
+				});
 
 				if (matched) {
-					let itemElement = document.createElement('li');
+					const itemElement = document.createElement('li');
 					itemElement.innerHTML = `<span>${item.name}</span>`;
-					itemElement.setAttribute("data-item-id", item.id.toString());
-					itemElement.addEventListener("click", () => {
+					itemElement.setAttribute('data-item-id', item.id.toString());
+					itemElement.addEventListener('click', () => {
 						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
-					})
+					});
 					if (item.heroic) {
-						let htxt = document.createElement("span");
-						htxt.style.color = "green";
-						htxt.innerText = "[H]";
+						const htxt = document.createElement('span');
+						htxt.style.color = 'green';
+						htxt.innerText = '[H]';
 						itemElement.appendChild(htxt);
 					}
 					if (item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY) {
-						let ftxt = document.createElement("span");
-						ftxt.style.color = "red";
-						ftxt.innerText = "(H)";
+						const ftxt = document.createElement('span');
+						ftxt.style.color = 'red';
+						ftxt.innerText = '(H)';
 						itemElement.appendChild(ftxt);
 					}
 					if (item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY) {
-						let ftxt = document.createElement("span");
-						ftxt.style.color = "blue";
-						ftxt.innerText = "(A)";
+						const ftxt = document.createElement('span');
+						ftxt.style.color = 'blue';
+						ftxt.innerText = '(A)';
 						itemElement.appendChild(ftxt);
 					}
 					searchResults.append(itemElement);
@@ -579,17 +574,17 @@ export class BulkTab extends SimTab {
 		const baseSearchHTML = '<i class="fa fa-search"></i> Add Item';
 		searchButton.innerHTML = baseSearchHTML;
 		searchButton.addEventListener('click', () => {
-			if (searchText.style.display == "none") {
+			if (searchText.style.display == 'none') {
 				searchButton.innerHTML = 'Close Search Results';
-				allItems = this.simUI.sim.db.getAllItems().filter((item) => {
+				allItems = this.simUI.sim.db.getAllItems().filter(item => {
 					return canEquipItem(this.simUI.player, item, undefined);
-				})
-				searchText.style.display = "block";
+				});
+				searchText.style.display = 'block';
 				searchText.focus();
 			} else {
 				searchButton.innerHTML = baseSearchHTML;
-				searchText.style.display = "none";
-				searchResults.innerHTML = "";
+				searchText.style.display = 'none';
+				searchResults.innerHTML = '';
 			}
 		});
 		settingsBlock.bodyElement.appendChild(searchButton);
@@ -607,34 +602,39 @@ export class BulkTab extends SimTab {
 		settingsBlock.bodyElement.appendChild(clearButton);
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
-			label: "Fast Mode",
-			labelTooltip: "Fast mode reduces accuracy but will run faster.",
+			label: 'Fast Mode',
+			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: (_obj) => this.fastMode,
-			setValue: (id: EventID, obj: BulkTab, value: boolean) => { obj.fastMode = value }
-		});
-		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
-			label: "Combinations",
-			labelTooltip: "When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.",
-			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: (_obj) => this.doCombos,
-			setValue: (id: EventID, obj: BulkTab, value: boolean) => { obj.doCombos = value }
-		});
-		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
-			label: "Auto Enchant",
-			labelTooltip: "When checked bulk simulator apply the current enchant for a slot to each replacement item it can.",
-			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: (_obj) => this.autoEnchant,
+			getValue: _obj => this.fastMode,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
-				obj.autoEnchant = value
-			}
+				obj.fastMode = value;
+			},
+		});
+		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			label: 'Combinations',
+			labelTooltip:
+				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.doCombos,
+			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
+				obj.doCombos = value;
+			},
+		});
+		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			label: 'Auto Enchant',
+			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.autoEnchant,
+			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
+				obj.autoEnchant = value;
+			},
 		});
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {
 		const secondsRemain = ((progress.totalIterations - progress.completedIterations) / iterPerSecond).toFixed();
 
-		let roundsText = "";
+		let roundsText = '';
 		if (rounds > 0) {
 			roundsText = `${currentRound} / ${rounds} refining rounds`;
 		}

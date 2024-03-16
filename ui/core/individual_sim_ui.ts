@@ -19,7 +19,7 @@ import { LEVEL_THRESHOLDS } from './constants/other';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { PresetGear, PresetRotation } from './preset_utils';
+import { PresetBuild, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -142,6 +142,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		gear: Array<PresetGear>;
 		talents: Array<SavedDataConfig<Player<any>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
+		builds?: Array<PresetBuild>;
 	};
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
