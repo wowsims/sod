@@ -37,9 +37,9 @@ func TestCombat(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     CombatDagger40Talents,
-			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
-			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "basic_strike_40"),
-			Buffs:       core.FullBuffsPhase1,
+			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p2_daggers"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "mutilate"),
+			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultCombatRogue},
 
@@ -76,9 +76,9 @@ func TestAssassination(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     Assassination40Talents,
-			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_daggers"),
+			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p2_daggers"),
 			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "mutilate"),
-			Buffs:       core.FullBuffsPhase1,
+			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultAssassinationRogue},
 
@@ -145,7 +145,7 @@ func BenchmarkSimulate(b *testing.B) {
 }
 
 var CombatDagger25Talents = "-025305000001"
-var CombatDagger40Talents = "-02330500204501001-05"
+var CombatDagger40Talents = "-0053052020550100201"
 var Assassination25Talents = "0053021--05"
 var Assassination40Talents = "005303103551--05"
 
