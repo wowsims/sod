@@ -1420,7 +1420,6 @@ export const classToEligibleWeaponTypes: Record<Class, Array<EligibleWeaponType>
 		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
 	],
 	[Class.ClassRogue]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: false },
 		{ weaponType: WeaponType.WeaponTypeDagger },
 		{ weaponType: WeaponType.WeaponTypeFist },
 		{ weaponType: WeaponType.WeaponTypeMace },
