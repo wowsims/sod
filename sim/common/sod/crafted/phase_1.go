@@ -69,12 +69,10 @@ func init() {
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.1)
-				character.MultiplyRangedSpeed(sim, 1.1)
 				character.PseudoStats.ThreatMultiplier *= 1.2
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.0/1.1)
-				character.MultiplyRangedSpeed(sim, 1.0/1.1)
 				character.PseudoStats.ThreatMultiplier /= 1.2
 			},
 		})
