@@ -183,8 +183,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 				spell.CostMultiplier += 1
 			})
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) || spell.ActionID.Tag == CastTagOverload {
 				return
 			}
 			// Remove the buff and put skill on CD
