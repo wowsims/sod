@@ -178,7 +178,7 @@ func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	missChance := 0.01
 
 	if spell.Flags.Matches(SpellFlagBinary) {
-		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell.SchoolIndex)
+		baseHitChance := (1 - attackTable.BaseSpellMissChance) * attackTable.GetBinaryHitChance(spell)
 		missChance = 1 - baseHitChance - spell.SpellHitChance(attackTable.Defender)
 	} else {
 		missChance = attackTable.BaseSpellMissChance - spell.SpellHitChance(attackTable.Defender)

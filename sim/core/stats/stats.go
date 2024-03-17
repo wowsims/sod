@@ -110,53 +110,19 @@ const (
 	SchoolIndexNature
 	SchoolIndexShadow
 
-	PrimarySchoolLen
-
-	// Physical x Other
-	SchoolIndexSpellstrike SchoolIndex = iota - 1
-	SchoolIndexFlamestrike
-	SchoolIndexFroststrike
-	SchoolIndexHolystrike
-	SchoolIndexStormstrike
-	SchoolIndexShadowstrike
-
-	// Arcane x Other
-	SchoolIndexSpellfire
-	SchoolIndexSpellFrost
-	SchoolIndexDivine
-	SchoolIndexAstral
-	SchoolIndexSpellShadow
-
-	// Fire x Other
-	SchoolIndexFrostfire
-	SchoolIndexRadiant
-	SchoolIndexVolcanic
-	SchoolIndexShadowflame
-
-	// Frost x Other
-	SchoolIndexHolyfrost
-	SchoolIndexFroststorm
-	SchoolIndexShadowfrost
-
-	// Holy x Other
-	SchoolIndexHolystorm
-	SchoolIndexTwilight
-
-	// Nature x Other
-	SchoolIndexPlague
-
-	SchoolIndexElemental
-
 	SchoolLen
+
+	// School is composed of multiple base schools.
+	SchoolIndexMultischool SchoolIndex = iota - 1 // This is deliberately set this way to be a continuous sequence.
 )
 
 // Check if school index is a multi-school.
 func (schoolIndex SchoolIndex) IsMultiSchool() bool {
-	return schoolIndex >= PrimarySchoolLen
+	return schoolIndex == SchoolIndexMultischool
 }
 
-func NewSchoolFloatArray() [PrimarySchoolLen]float64 {
-	return [PrimarySchoolLen]float64{
+func NewSchoolFloatArray() [SchoolLen]float64 {
+	return [SchoolLen]float64{
 		1, 1, 1, 1, 1, 1, 1, 1,
 	}
 }
@@ -413,8 +379,8 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64                   // All damage
-	SchoolDamageDealtMultiplier [PrimarySchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageDealtMultiplier       float64            // All damage
+	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
 	// Treat melee haste as a pseudostat so that shamans, paladins, and druids can get the correct scaling
 	MeleeHasteRatingPerHastePercent float64
@@ -472,9 +438,9 @@ type PseudoStats struct {
 	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
 	BonusHealingTaken        float64 // Talisman of Troll Divinity
 
-	DamageTakenMultiplier       float64                   // All damage
-	SchoolDamageTakenMultiplier [PrimarySchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
-	SchoolCritTakenMultiplier   [PrimarySchoolLen]float64 // For spell school crit. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageTakenMultiplier       float64            // All damage
+	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
+	SchoolCritTakenMultiplier   [SchoolLen]float64 // For spell school crit. DO NOT use with multi school idices! See helper functions on Unit!
 
 	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
 	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
