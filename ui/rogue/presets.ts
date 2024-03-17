@@ -24,8 +24,8 @@ import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 
 import MutilateApl from './apls/mutilate.apl.json';
+import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
 import SinisterApl25 from './apls/basic_strike_25.apl.json';
-import SinisterApl40 from './apls/basic_strike_40.apl.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -36,9 +36,9 @@ import SinisterApl40 from './apls/basic_strike_40.apl.json';
 ///////////////////////////////////////////////////////////////////////////
 
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
-export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1Daggers)
-export const GearCombatP1 = PresetUtils.makePresetGear("P1 Combat", P1CombatGear)
-export const GearDaggersP2 = PresetUtils.makePresetGear("P2 Daggers", P2DaggersGear)
+export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1Daggers, { customCondition: player => player.getLevel() == 25 });
+export const GearCombatP1 = PresetUtils.makePresetGear("P1 Combat", P1CombatGear, { customCondition: player => player.getLevel() == 25 });
+export const GearDaggersP2 = PresetUtils.makePresetGear("P2 Daggers", P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
 
 export const GearPresets = {
   [Phase.Phase1]: [
@@ -56,9 +56,9 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { talentTree: 0 });
-export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl25, { talentTree: 1 });
-export const ROTATION_PRESET_SINISTER_40 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl40, { talentTree: 1 });
+export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { customCondition: player => player.getLevel() == 40 });
+export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, { customCondition: player => player.getLevel() == 40 });
+export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl25, { customCondition: player => player.getLevel() == 25 });
 
 export const APLPresets = {
   [Phase.Phase1]: [
@@ -67,8 +67,7 @@ export const APLPresets = {
   ],
   [Phase.Phase2]: [
 	ROTATION_PRESET_MUTILATE,
-	ROTATION_PRESET_SINISTER_40,
-	
+	ROTATION_PRESET_MUTILATE_IEA,
   ]
 };
 
@@ -77,7 +76,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
   25: {
 		0: APLPresets[Phase.Phase1][0],
 		1: APLPresets[Phase.Phase1][1],
-		2: APLPresets[Phase.Phase1][1],
 	},
   40: {
 		0: APLPresets[Phase.Phase2][0],
@@ -93,18 +91,22 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const CombatDagger25Talents = {
-	name: 'Combat Dagger',
-	data: SavedTalents.create({
-		talentsString: '-023305002001',
-	}),
-};
-export const ColdBloodMutilate40Talents = {
-	name: 'CB Mutilate',
-	data: SavedTalents.create({
-		talentsString: '005303103551--05'
-	})
-};
+
+export const CombatDagger25Talents = PresetUtils.makePresetTalents('P1 Combat Dagger', SavedTalents.create({ talentsString: '-023305002001' }), {
+	customCondition: player => player.getLevel() == 25,
+});
+
+export const ColdBloodMutilate40Talents = PresetUtils.makePresetTalents('P2 CB Mutilate', SavedTalents.create({ talentsString: '005303103551--05' }), {
+	customCondition: player => player.getLevel() == 40,
+});
+
+export const IEAMutilate40Talents = PresetUtils.makePresetTalents('P2 CB/IEA Mutilate', SavedTalents.create({ talentsString: '005303121551--05' }), {
+	customCondition: player => player.getLevel() == 40,
+});
+
+export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF Mutilate', SavedTalents.create({ talentsString: '-0053052020550100201' }), {
+	customCondition: player => player.getLevel() == 40,
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [
@@ -112,12 +114,14 @@ export const TalentPresets = {
 	],
 	[Phase.Phase2]: [
 		ColdBloodMutilate40Talents,
+		IEAMutilate40Talents,
+		CombatMutilate40Talents,
 	]
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultTalentsAssassin = TalentPresets[Phase.Phase1][0];
-export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase1][0];
+export const DefaultTalentsAssassin = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase2][2];
 export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][0];
 
 export const DefaultTalents = DefaultTalentsAssassin;
