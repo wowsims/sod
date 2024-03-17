@@ -135,22 +135,36 @@ func Test_MultiSchoolResistanceArmor(t *testing.T) {
 		Raid:       &proto.Raid{},
 	})
 
+	// Armor 100, resistances 0 => should use resistance
 	defender.AddStat(stats.Armor, 100)
-	defender.AddStat(stats.FireResistance, 200)
 
 	mult, outcome := spell.ResistanceMultiplier(sim, false, attackTable)
-
-	if outcome != OutcomeEmpty || mult == 1 {
-		t.Errorf("Expected empty outcome with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
+	if outcome == OutcomeEmpty && mult < 1 {
+		t.Errorf("Expected partial or full hit with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
 		return
 	}
 
-	defender.AddStat(stats.Armor, 200)
+	// Armor 100, resistances 300 => should use armor
+	defender.AddStat(stats.FireResistance, 300)
+
 	mult, outcome = spell.ResistanceMultiplier(sim, false, attackTable)
-	isPartial := (outcome & OutcomePartial) != OutcomePartial
-	isFullHit := outcome == OutcomeEmpty && mult == 1
-	if !isFullHit && !isPartial {
-		t.Errorf("Expected empty outcome with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
+	if outcome != OutcomeEmpty || mult == 1 {
+		t.Errorf("Expected empty outcome and mult < 1 with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
+		return
+	}
+
+	// Armor 400, resistances 300 => should use resistance (no non-partial hits)
+	defender.AddStat(stats.Armor, 300)
+
+	_, outcome = spell.ResistanceMultiplier(sim, false, attackTable)
+	if (outcome & OutcomePartial) == 0 {
+		t.Errorf("Expected partial hit with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
+		return
+	}
+
+	_, outcome = spell.ResistanceMultiplier(sim, true, attackTable)
+	if (outcome & OutcomePartial) == 0 {
+		t.Errorf("Expected partial hit for periodic with armor %f and resistance %f", defender.GetStat(stats.Armor), defender.GetStat(stats.FireResistance))
 		return
 	}
 }

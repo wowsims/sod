@@ -21,12 +21,12 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
-		// All physical dots (Bleeds) ignore armor.
-		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
-			return 1, OutcomeEmpty
-		}
-
 		if spell.SchoolIndex == stats.SchoolIndexPhysical || MultiSchoolShouldUseArmor(spell.SchoolIndex, attackTable.Defender) {
+			// All physical dots (Bleeds) ignore armor.
+			if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
+				return 1, OutcomeEmpty
+			}
+
 			// Physical resistance (armor).
 			return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
 		}
@@ -56,11 +56,18 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 }
 
-// Decide whether to use armor for physical multi school spells
+// Decide whether to use armor for physical multi school spells.
 //
-// TODO: This is most likely not accurate. A short test showed that it seems
-// to not simply use armor if it's lower, but the breakpoint appeared to be pretty
-// close to the resistance value.
+// TODO: This is most likely not accurate for the case: armor near resistance but not 0
+//
+// A short test showed that the game uses armor if it's far enough below resistance,
+// but not simply if it's lower.
+// 49 (and above) armor vs 57 res => used resistance
+// 7 (and below) armor vs 57 res => used armor/no partials anymore
+// If level based resist is used in this decission process is also not known as it was tested PvP.
+//
+// For most purposes this should work fine for now, but should be properly tested and fixed if
+// spells using it become important and boss armor can actually go below (level based) resistance values.
 func MultiSchoolShouldUseArmor(schoolIndex stats.SchoolIndex, target *Unit) bool {
 	resistance := 100000.0
 	lowestStat := stats.Armor
