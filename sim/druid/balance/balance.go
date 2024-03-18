@@ -40,7 +40,7 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 
 	// Enable Auto Attacks for this spec
 	moonkin.EnableAutoAttacks(moonkin, core.AutoAttackOptions{
-		MainHand:       moonkin.WeaponFromMainHand(moonkin.DefaultMeleeCritMultiplier()),
+		MainHand:       moonkin.WeaponFromMainHand(),
 		AutoSwingMelee: true,
 	})
 

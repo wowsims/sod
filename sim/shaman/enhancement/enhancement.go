@@ -43,8 +43,8 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 
 	// Enable Auto Attacks for this spec
 	enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
-		MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
-		OffHand:        enh.WeaponFromOffHand(enh.DefaultMeleeCritMultiplier()),
+		MainHand:       enh.WeaponFromMainHand(),
+		OffHand:        enh.WeaponFromOffHand(),
 		AutoSwingMelee: true,
 	})
 

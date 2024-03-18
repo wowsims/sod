@@ -104,10 +104,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  23,
-					BaseDamageMax:  38,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 23,
+					BaseDamageMax: 38,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -125,10 +124,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  41,
-					BaseDamageMax:  61,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 41,
+					BaseDamageMax: 61,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -146,10 +144,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  41,
-					BaseDamageMax:  61,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 41,
+					BaseDamageMax: 61,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -167,10 +164,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  41,
-					BaseDamageMax:  61,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 41,
+					BaseDamageMax: 61,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -193,10 +189,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  2,
-					BaseDamageMax:  7,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 2,
+					BaseDamageMax: 7,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -214,10 +209,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  5,
-					BaseDamageMax:  15,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 5,
+					BaseDamageMax: 15,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -235,10 +229,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  5,
-					BaseDamageMax:  15,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 5,
+					BaseDamageMax: 15,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -256,10 +249,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  5,
-					BaseDamageMax:  15,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 5,
+					BaseDamageMax: 15,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -282,10 +274,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  24,
-					BaseDamageMax:  40,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 24,
+					BaseDamageMax: 40,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -303,10 +294,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  24,
-					BaseDamageMax:  40,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 24,
+					BaseDamageMax: 40,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -324,10 +314,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  24,
-					BaseDamageMax:  40,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 24,
+					BaseDamageMax: 40,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}
@@ -345,10 +334,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin:  24,
-					BaseDamageMax:  40,
-					SwingSpeed:     2,
-					CritMultiplier: 2,
+					BaseDamageMin: 24,
+					BaseDamageMax: 40,
+					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
 			}

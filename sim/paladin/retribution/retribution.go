@@ -34,7 +34,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	}
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
-		MainHand:       ret.WeaponFromMainHand(ret.DefaultMeleeCritMultiplier()), // Set crit multiplier later when we have targets.
+		MainHand:       ret.WeaponFromMainHand(), // Set crit multiplier later when we have targets.
 		AutoSwingMelee: true,
 	})
 

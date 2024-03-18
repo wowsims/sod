@@ -229,11 +229,11 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
 		if character.AutoAttacks.AutoSwingMelee {
-			character.AutoAttacks.SetMH(character.WeaponFromMainHand(swap.mhCritMultiplier))
+			character.AutoAttacks.SetMH(character.WeaponFromMainHand())
 		}
 	case proto.ItemSlot_ItemSlotOffHand:
 		if character.AutoAttacks.AutoSwingMelee {
-			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
+			weapon := character.WeaponFromOffHand()
 			character.AutoAttacks.SetOH(weapon)
 
 			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
@@ -241,7 +241,7 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 		}
 	case proto.ItemSlot_ItemSlotRanged:
 		if character.AutoAttacks.AutoSwingRanged {
-			character.AutoAttacks.SetRanged(character.WeaponFromRanged(swap.rangedCritMultiplier))
+			character.AutoAttacks.SetRanged(character.WeaponFromRanged())
 		}
 	}
 }
