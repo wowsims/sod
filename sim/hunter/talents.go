@@ -169,3 +169,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Type:  core.CooldownTypeDPS,
 	})
 }
+
+func (hunter *Hunter) mortalShots() float64 {
+	return 0.06 * float64(hunter.Talents.MortalShots)
+}

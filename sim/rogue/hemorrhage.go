@@ -7,11 +7,6 @@ import (
 )
 
 func (rogue *Rogue) registerHemorrhageSpell() {
-	// Minimum level of 30 to talent Hemorrhage
-	if rogue.Level < 30 {
-		return
-	}
-
 	if !rogue.Talents.Hemorrhage {
 		return
 	}
@@ -56,8 +51,9 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: rogue.lethality(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

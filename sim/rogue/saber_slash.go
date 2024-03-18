@@ -15,6 +15,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 		EnergyCost: core.EnergyCostOptions{
@@ -29,8 +30,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: rogue.lethality(),
+
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		// TODO: Fix bleed so it works properly

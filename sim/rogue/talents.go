@@ -473,6 +473,10 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 }
 
+func (rogue *Rogue) lethality() float64 {
+	return 0.06 * float64(rogue.Talents.Lethality)
+}
+
 /** Honor Among Thieves (Possible P2 rune)
 func (rogue *Rogue) registerHonorAmongThieves() {
 	// When anyone in your group critically hits with a damage or healing spell or ability,

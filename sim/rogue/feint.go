@@ -10,7 +10,8 @@ func (rogue *Rogue) registerFeintSpell() {
 	rogue.Feint = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1966},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeMH,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
@@ -27,7 +28,6 @@ func (rogue *Rogue) registerFeintSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 0,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -15,6 +15,7 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 	rogue.Shadowstrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneShadowstrike)},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 		EnergyCost: core.EnergyCostOptions{
@@ -33,7 +34,6 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 		},
 
 		DamageMultiplier: 1.5,
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

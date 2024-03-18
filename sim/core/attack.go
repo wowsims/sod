@@ -363,12 +363,14 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.mh.config = SpellConfig{
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
 		SpellSchool: options.MainHand.GetSpellSchool(),
+		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
 
+		CritMultiplier: options.MainHand.CritMultiplier,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   options.MainHand.CritMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -382,12 +384,14 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.oh.config = SpellConfig{
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
 		SpellSchool: options.OffHand.GetSpellSchool(),
+		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeOHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeOffHand,
 
+		CritMultiplier: options.OffHand.CritMultiplier,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   options.OffHand.CritMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -401,13 +405,15 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.ranged.config = SpellConfig{
 		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
 		SpellSchool:  options.Ranged.GetSpellSchool(),
+		DefenseType:  DefenseTypeRanged,
 		ProcMask:     ProcMaskRangedAuto,
 		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
+		CritMultiplier: options.Ranged.CritMultiplier,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   options.Ranged.CritMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -441,7 +447,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 func (aa *AutoAttacks) finalize() {
 	if aa.AutoSwingMelee {
 		aa.mh.spell = aa.mh.unit.GetOrRegisterSpell(aa.mh.config)
-		// Will keep keep the OH spell registered for Item swapping
+		// Will keep the OH spell registered for Item swapping
 		aa.oh.spell = aa.oh.unit.GetOrRegisterSpell(aa.oh.config)
 	}
 	if aa.AutoSwingRanged {

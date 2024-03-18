@@ -29,6 +29,7 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 		EnergyCost: core.EnergyCostOptions{
@@ -47,8 +48,9 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: rogue.lethality(),
+
 		DamageMultiplier: 1.25,
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

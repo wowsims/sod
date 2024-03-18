@@ -103,10 +103,6 @@ func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 }
 
 func (rogue *Rogue) Initialize() {
-	// Update auto crit multipliers now that we have the targets.
-	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
 	rogue.registerEviscerate()
@@ -139,31 +135,7 @@ func (rogue *Rogue) Reset(_ *core.Simulation) {
 	}
 }
 
-func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
-	primaryModifier := 1.0
-	var secondaryModifier float64
-	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-	}
-	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (rogue *Rogue) RangedCritMultiplier(applyLethality bool) float64 {
-	primaryModifier := 1.0
-	var secondaryModifier float64
-	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-	}
-	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (rogue *Rogue) SpellCritMultiplier() float64 {
-	primaryModifier := 1.0
-	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
-}
-
 func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {
-
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},

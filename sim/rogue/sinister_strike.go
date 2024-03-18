@@ -24,6 +24,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
@@ -38,9 +39,9 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.Aggression),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
+		CritDamageBonus: rogue.lethality(),
+
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

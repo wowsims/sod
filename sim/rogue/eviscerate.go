@@ -38,6 +38,7 @@ func (rogue *Rogue) registerEviscerate() {
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
+		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
 		MetricSplits: 6,
@@ -60,9 +61,8 @@ func (rogue *Rogue) registerEviscerate() {
 		},
 
 		DamageMultiplier: 1 +
-			[]float64{0.0, 0.05, 0.1, 0.15}[rogue.Talents.ImprovedEviscerate] +
-			0.02*float64(rogue.Talents.Aggression),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+			[]float64{0, 0.05, 0.10, 0.15}[rogue.Talents.ImprovedEviscerate] +
+			[]float64{0, 0.02, 0.04, 0.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
