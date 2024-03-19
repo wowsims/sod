@@ -58,6 +58,23 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(2164, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
 
+	itemhelpers.CreateWeaponProcSpell(2825, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 29638},
+			SpellSchool: core.SpellSchoolFire,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(18, 26)
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedCritOnly)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcAura(7717, "Ravager", 1.0, func(character *core.Character) *core.Aura {
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}

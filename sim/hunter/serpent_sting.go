@@ -86,9 +86,10 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics,
 
+		BonusCritRating:          1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
 		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		DamageMultiplier:         1,
 		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
@@ -101,10 +102,8 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	})
 }
 
-const SERPENT_STING_MAX_RANK = 9
-
 func (hunter *Hunter) registerSerpentStingSpell() {
-	for i := SERPENT_STING_MAX_RANK; i >= 0; i-- {
+	for i := 9; i >= 0; i-- {
 		config := hunter.getSerpentStingConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
