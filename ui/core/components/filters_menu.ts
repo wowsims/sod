@@ -47,7 +47,6 @@ export class FiltersMenu extends BaseModal {
 			new BooleanPicker<Sim>(section, player.sim, {
 				label: sourceNames.get(source),
 				inline: true,
-				reverse: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 				getValue: (sim: Sim) => sim.getFilters().sources.includes(source),
 				setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
@@ -96,7 +95,6 @@ export class FiltersMenu extends BaseModal {
 					new BooleanPicker<Sim>(section, player.sim, {
 						label: armorTypeNames.get(armorType),
 						inline: true,
-						reverse: true,
 						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 						getValue: (sim: Sim) => sim.getFilters().armorTypes.includes(armorType),
 						setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
