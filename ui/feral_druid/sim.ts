@@ -3,24 +3,8 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	APLAction,
-	APLListItem,
-	APLPrepullAction,
-	APLRotation,
-	APLRotation_Type as APLRotationType,
-} from '../core/proto/apl.js';
-import {
-	Class,
-	Cooldowns,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-  WeaponImbue,
-} from '../core/proto/common.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType } from '../core/proto/apl.js';
+import { Class, Cooldowns, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../core/proto/druid.js';
 import * as AplUtils from '../core/proto_utils/apl_utils.js';
 import { Gear } from '../core/proto_utils/gear.js';
@@ -34,10 +18,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
 	cssScheme: 'druid',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
-	warnings: [
-	],
+	knownIssues: [],
+	warnings: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -53,8 +35,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatSpirit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-	],
+	epPseudoStats: [],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -77,20 +58,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatStrength]: 2.20,
-			[Stat.StatAgility]: 2.02,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatFeralAttackPower]: 1,
-			[Stat.StatMeleeHit]: 8.21,
-			[Stat.StatMeleeCrit]: 8.19,
-			[Stat.StatMeleeHaste]: 4.17,
-			[Stat.StatMana]: 0.04,
-			[Stat.StatIntellect]: 0.67,
-			[Stat.StatSpirit]: 0.08,
-			[Stat.StatMP5]: 0.46,
-		}, {
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatStrength]: 2.2,
+				[Stat.StatAgility]: 2.02,
+				[Stat.StatAttackPower]: 1,
+				[Stat.StatFeralAttackPower]: 1,
+				[Stat.StatMeleeHit]: 8.21,
+				[Stat.StatMeleeCrit]: 8.19,
+				[Stat.StatMeleeHaste]: 4.17,
+				[Stat.StatMana]: 0.04,
+				[Stat.StatIntellect]: 0.67,
+				[Stat.StatSpirit]: 0.08,
+				[Stat.StatMP5]: 0.46,
+			},
+			{},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -109,9 +92,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		DruidInputs.SelfInnervate,
-	],
+	playerIconInputs: [DruidInputs.SelfInnervate],
 
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.FeralDruidRotationConfig,
@@ -122,12 +103,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		BuffDebuffInputs.ManaSpringTotem,
 		BuffDebuffInputs.JudgementOfWisdom,
 	],
-  excludeBuffDebuffInputs: [
-		WeaponImbue.ElementalSharpeningStone,
-		WeaponImbue.DenseSharpeningStone,
-		WeaponImbue.WildStrikes,
-		BuffDebuffInputs.BleedDebuff,
-	],
+	excludeBuffDebuffInputs: [WeaponImbue.ElementalSharpeningStone, WeaponImbue.DenseSharpeningStone, WeaponImbue.WildStrikes, BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -137,6 +113,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
+	// itemSwapConfig: {
+	// 	itemSlots: [ItemSlot.ItemSlotMainHand],
+	// },
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -144,20 +123,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
-		rotations: [
-			Presets.SIMPLE_ROTATION_DEFAULT,
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
@@ -168,24 +137,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const preroarDuration = Math.min(simple.preroarDuration, 33.0);
-		const preRoar = APLPrepullAction.fromJsonString(`{"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-${(34.0 - preroarDuration).toFixed(2)}s"}}}`);
+		const preRoar = APLPrepullAction.fromJsonString(
+			`{"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-${(34.0 - preroarDuration).toFixed(2)}s"}}}`,
+		);
 		const preTF = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":5217,"rank":1}}},"doAtValue":{"const":{"val":"-3s"}}}`);
-		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"maxWaitTime":${simple.maxWaitTime.toFixed(2)},"minCombosForRip":${simple.minCombosForRip.toFixed(0)},"maintainFaerieFire":${simple.maintainFaerieFire},"useShredTrick":${simple.useShredTrick}}}`);
+		const doRotation = APLAction.fromJsonString(
+			`{"catOptimalRotationAction":{"maxWaitTime":${simple.maxWaitTime.toFixed(2)},"minCombosForRip":${simple.minCombosForRip.toFixed(0)},"maintainFaerieFire":${simple.maintainFaerieFire},"useShredTrick":${simple.useShredTrick}}}`,
+		);
 
-		prepullActions.push(...[
-			preroarDuration > 0 ? preRoar: null,
-			simple.precastTigersFury ? preTF: null,
-		].filter(a => a) as Array<APLPrepullAction>)
+		prepullActions.push(...([preroarDuration > 0 ? preRoar : null, simple.precastTigersFury ? preTF : null].filter(a => a) as Array<APLPrepullAction>));
 
-		actions.push(...[
-			doRotation,
-		].filter(a => a) as Array<APLAction>)
+		actions.push(...([doRotation].filter(a => a) as Array<APLAction>));
 
 		return APLRotation.create({
 			prepullActions: prepullActions,
-			priorityList: actions.map(action => APLListItem.create({
-				action: action,
-			}))
+			priorityList: actions.map(action =>
+				APLListItem.create({
+					action: action,
+				}),
+			),
 		});
 	},
 
@@ -215,7 +185,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			},
 		},
 	],
-})
+});
 
 export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
@@ -235,7 +205,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 		// Then check for Executioner enchant
 		const weapon = gear.getEquippedItem(ItemSlot.ItemSlotMainHand);
 
-		if ((weapon != null) && (weapon!.enchant != null) && (weapon!.enchant!.effectId == 3225)) {
+		if (weapon != null && weapon!.enchant != null && weapon!.enchant!.effectId == 3225) {
 			arpTarget -= 120;
 		}
 
@@ -251,7 +221,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 		}
 
 		if (gear.hasRelic(50456)) {
-			agiProcs += 44*5;
+			agiProcs += 44 * 5;
 		}
 
 		if (gear.hasTrinket(47131) || gear.hasTrinket(47464)) {
@@ -266,7 +236,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 			agiProcs += 300;
 		}
 
-		return new Stats().withStat(Stat.StatMeleeCrit, (baseCritCapPercentage - agiProcs*1.1*1.06*1.02/83.33) * 45.91);
+		return new Stats().withStat(Stat.StatMeleeCrit, (baseCritCapPercentage - (agiProcs * 1.1 * 1.06 * 1.02) / 83.33) * 45.91);
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -277,6 +247,6 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 
 	detectArpStackConfiguration(arpTarget: number): boolean {
 		const currentArp = Stats.fromProto(this.player.getCurrentStats().finalStats).getStat(Stat.StatArmorPenetration);
-		return (arpTarget > 1000) && (currentArp > 648) && (currentArp + 20 < arpTarget + 11);
+		return arpTarget > 1000 && currentArp > 648 && currentArp + 20 < arpTarget + 11;
 	}
 }

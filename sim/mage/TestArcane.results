@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18381
+  weights: 0.23107
   weights: 0
-  weights: 0.28966
-  weights: 0.24677
-  weights: 0.04289
-  weights: 0
-  weights: 0
+  weights: 0.33611
+  weights: 0.26141
+  weights: 0.0747
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.46741
+  weights: 0
+  weights: 0
+  weights: 0.48351
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03833
+  weights: 0.06263
   weights: 0
-  weights: 0.50833
-  weights: 0.50833
-  weights: 0
-  weights: 0
+  weights: 0.5109
+  weights: 0.5109
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.6916
+  weights: 0
+  weights: 0
+  weights: 2.6961
   weights: 0
   weights: 0
   weights: 0
@@ -218,15 +218,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 118.734
-  tps: 50.099
+  dps: 137.98485
+  tps: 57.79934
  }
 }
 dps_results: {
  key: "TestArcane-Lvl25-Average-Default"
  value: {
-  dps: 126.02002
-  tps: 53.01142
+  dps: 146.49406
+  tps: 61.20104
  }
 }
 dps_results: {
@@ -316,43 +316,43 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 126.71487
-  tps: 53.29134
+  dps: 147.34482
+  tps: 61.54332
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 357.39242
-  tps: 148.42003
+  dps: 357.9591
+  tps: 148.6467
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 372.72357
-  tps: 154.67577
+  dps: 373.71012
+  tps: 155.07437
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 385.08117
-  tps: 159.57232
+  dps: 385.6496
+  tps: 159.79419
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 373.38008
-  tps: 155.7187
+  dps: 374.01515
+  tps: 155.97264
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 439.46993
-  tps: 182.12368
+  dps: 442.01733
+  tps: 183.11131
  }
 }
 dps_results: {
@@ -442,7 +442,7 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 447.42664
-  tps: 185.36403
+  dps: 448.93133
+  tps: 185.93401
  }
 }

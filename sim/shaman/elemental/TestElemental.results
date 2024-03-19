@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.01486
+  weights: 0.01163
   weights: 0
-  weights: 0.51906
+  weights: 0.51977
   weights: 0
-  weights: 0.21035
-  weights: 0
-  weights: 0
-  weights: 0.30871
+  weights: 0.21038
   weights: 0
   weights: 0
+  weights: 0.30938
   weights: 0
-  weights: 0.50852
+  weights: 0
+  weights: 0
+  weights: 0.51279
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.67166
+  weights: 1.50453
   weights: 0
-  weights: 0.84299
+  weights: 0.84792
   weights: 0
-  weights: 0.27053
-  weights: 0
-  weights: 0
-  weights: 0.57246
+  weights: 0.27063
   weights: 0
   weights: 0
-  weights: 8.57118
-  weights: 3.72495
+  weights: 0.57729
+  weights: 0
+  weights: 0
+  weights: 8.89256
+  weights: 3.53148
   weights: 0
   weights: 0
   weights: 0
@@ -197,92 +197,92 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 136.95127
-  tps: 132.43123
+  dps: 137.00181
+  tps: 132.54298
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 149.1303
-  tps: 143.71502
+  dps: 149.18646
+  tps: 143.89157
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 136.95127
-  tps: 132.43123
+  dps: 137.00181
+  tps: 132.54298
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 108.81975
-  tps: 96.69951
+  dps: 108.21385
+  tps: 96.0556
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 129.31814
-  tps: 114.08321
+  dps: 128.42971
+  tps: 113.16321
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 116.92289
-  tps: 103.98238
+  dps: 116.70072
+  tps: 103.80809
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 121.20389
-  tps: 106.37393
+  dps: 121.81639
+  tps: 106.90166
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 98.32655
-  tps: 85.46066
+  dps: 97.95319
+  tps: 85.10113
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 118.43716
-  tps: 104.04074
+  dps: 118.47353
+  tps: 104.24058
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 127.96019
-  tps: 112.33516
+  dps: 128.86561
+  tps: 113.42781
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 71.35095
-  tps: 58.35573
+  dps: 71.8588
+  tps: 58.90805
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 147.69134
-  tps: 142.37129
+  dps: 147.74687
+  tps: 142.5528
  }
 }
 dps_results: {
  key: "TestElemental-Lvl25-Average-Default"
  value: {
-  dps: 180.27666
-  tps: 145.03053
+  dps: 181.1338
+  tps: 145.72379
  }
 }
 dps_results: {
@@ -372,99 +372,99 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 180.47556
-  tps: 145.01696
+  dps: 181.08814
+  tps: 145.53555
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 406.18908
-  tps: 404.01494
+  dps: 408.7925
+  tps: 406.76602
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 454.17356
-  tps: 453.13925
+  dps: 458.76854
+  tps: 457.93589
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 406.18908
-  tps: 404.01494
+  dps: 408.7925
+  tps: 406.76602
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 266.75407
-  tps: 245.47679
+  dps: 274.46491
+  tps: 253.65805
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 276.86248
-  tps: 252.42194
+  dps: 277.48255
+  tps: 252.9502
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 278.22384
-  tps: 257.21708
+  dps: 283.24736
+  tps: 262.03245
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 286.03555
-  tps: 261.95038
+  dps: 292.78356
+  tps: 268.78278
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 249.65217
-  tps: 227.74574
+  dps: 254.03447
+  tps: 232.44234
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 282.01585
-  tps: 258.60438
+  dps: 286.38191
+  tps: 263.12635
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 303.10026
-  tps: 278.29699
+  dps: 303.59499
+  tps: 278.54349
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 199.89345
-  tps: 175.07364
+  dps: 200.84337
+  tps: 175.86624
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 445.78789
-  tps: 444.45498
+  dps: 445.93549
+  tps: 444.76684
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
-  dps: 612.8066
-  tps: 522.35631
+  dps: 615.2976
+  tps: 523.99737
  }
 }
 dps_results: {
@@ -554,7 +554,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 607.99426
-  tps: 520.03419
+  dps: 609.80612
+  tps: 518.44949
  }
 }

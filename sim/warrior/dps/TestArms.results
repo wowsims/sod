@@ -50,7 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.06067
+  weights: 1.30786
+  weights: 1.12389
   weights: 0
   weights: 0
   weights: 0
@@ -66,10 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0.02506
-  weights: 0.26739
-  weights: 0.52037
+  weights: 0.44653
+  weights: 10.23228
+  weights: 9.66026
   weights: 0
   weights: 0
   weights: 0
@@ -99,99 +99,99 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 37.71823
-  tps: 38.05752
+  dps: 682.56671
+  tps: 595.61172
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 35.67168
-  tps: 36.43623
+  dps: 648.28945
+  tps: 565.26556
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 37.41205
-  tps: 37.82081
+  dps: 677.22539
+  tps: 590.44818
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 37.80289
-  tps: 38.12896
+  dps: 616.2211
+  tps: 534.62359
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 35.49319
-  tps: 36.32698
+  dps: 572.64962
+  tps: 496.41776
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 38.05838
-  tps: 38.31569
+  dps: 626.94812
+  tps: 542.85274
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 35.30975
-  tps: 36.18023
+  dps: 569.94229
+  tps: 494.25189
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 35.47661
-  tps: 36.28384
+  dps: 577.71095
+  tps: 501.35325
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 38.72767
-  tps: 38.86637
+  dps: 632.20601
+  tps: 548.04097
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 35.45366
-  tps: 36.26548
+  dps: 576.76518
+  tps: 500.59663
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 35.8677
-  tps: 36.59913
+  dps: 580.51719
+  tps: 503.38583
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 38.20307
-  tps: 38.47286
+  dps: 583.18472
+  tps: 501.92081
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 35.35256
-  tps: 36.18093
+  dps: 647.53464
+  tps: 564.29162
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Average-Default"
  value: {
-  dps: 47.58048
-  tps: 45.54669
+  dps: 832.05272
+  tps: 721.47343
  }
 }
 dps_results: {
@@ -281,7 +281,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 48.16553
-  tps: 46.26131
+  dps: 776.96331
+  tps: 675.2021
  }
 }

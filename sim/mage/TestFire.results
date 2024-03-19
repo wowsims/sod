@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35376
+  weights: 0.38081
   weights: 0
-  weights: 0.38855
+  weights: 0.39964
   weights: 0
-  weights: 0.38855
-  weights: 0
-  weights: 0
+  weights: 0.39964
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.7133
+  weights: 0
+  weights: 0
+  weights: 0.76363
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.26672
+  weights: 0.43817
   weights: 0
-  weights: 0.56067
+  weights: 0.58646
   weights: 0
-  weights: 0.56067
-  weights: 0
-  weights: 0
+  weights: 0.58646
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.25159
-  weights: 3.44709
+  weights: 0
+  weights: 0
+  weights: 6.80633
+  weights: 4.0938
   weights: 0
   weights: 0
   weights: 0
@@ -197,36 +197,36 @@ stat_weights_results: {
 dps_results: {
  key: "TestFire-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 125.56386
-  tps: 90.5001
+  dps: 126.13424
+  tps: 90.89936
  }
 }
 dps_results: {
  key: "TestFire-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 135.26297
-  tps: 97.28947
+  dps: 135.41649
+  tps: 97.39694
  }
 }
 dps_results: {
  key: "TestFire-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 143.71142
-  tps: 103.20339
+  dps: 143.89993
+  tps: 103.33535
  }
 }
 dps_results: {
  key: "TestFire-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 123.57558
-  tps: 89.1083
+  dps: 128.9998
+  tps: 92.90525
  }
 }
 dps_results: {
  key: "TestFire-Lvl25-Average-Default"
  value: {
-  dps: 135.64558
-  tps: 97.55359
+  dps: 141.13536
+  tps: 101.39644
  }
 }
 dps_results: {
@@ -316,43 +316,43 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 134.45742
-  tps: 96.72559
+  dps: 140.19516
+  tps: 100.742
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 301.99691
-  tps: 221.73618
+  dps: 302.30594
+  tps: 221.95525
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 314.64155
-  tps: 230.26193
+  dps: 315.55846
+  tps: 230.92204
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 328.98299
-  tps: 240.55251
+  dps: 329.64078
+  tps: 241.02751
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 298.18244
-  tps: 218.01801
+  dps: 321.67914
+  tps: 234.4632
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
-  dps: 403.98488
-  tps: 293.40003
+  dps: 428.70422
+  tps: 310.70336
  }
 }
 dps_results: {
@@ -442,7 +442,7 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 402.93554
-  tps: 292.67918
+  dps: 426.38278
+  tps: 309.08975
  }
 }

@@ -102,21 +102,21 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04023
+  weights: 0.04809
   weights: 0
-  weights: 0.4866
-  weights: 0
-  weights: 0
+  weights: 0.48765
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.74506
   weights: 0
   weights: 0
+  weights: 0.74994
   weights: 0
+  weights: 0
+  weights: 0.00039
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.29664
+  weights: 0.36641
   weights: 0
-  weights: 0.75316
-  weights: 0
-  weights: 0
+  weights: 0.76341
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.87295
-  weights: 3.76551
+  weights: 0
+  weights: 0
+  weights: 7.052
+  weights: 3.09018
   weights: 0
   weights: 0
   weights: 0
@@ -197,71 +197,71 @@ stat_weights_results: {
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 100.03769
-  tps: 102.64308
+  dps: 120.38364
+  tps: 122.98904
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 88.05658
-  tps: 90.66197
+  dps: 111.80441
+  tps: 114.40981
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 76.60307
-  tps: 79.20846
+  dps: 100.31363
+  tps: 102.91902
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 84.77944
-  tps: 87.38483
+  dps: 109.9742
+  tps: 112.57959
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 68.63112
-  tps: 71.23651
+  dps: 101.56636
+  tps: 104.17176
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 83.98911
-  tps: 86.5945
+  dps: 109.58206
+  tps: 112.18745
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 88.76764
-  tps: 91.37303
+  dps: 113.81949
+  tps: 116.42488
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 56.08027
-  tps: 58.68566
+  dps: 85.51675
+  tps: 88.12214
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 98.63278
-  tps: 101.23818
+  dps: 118.37057
+  tps: 120.97597
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-Average-Default"
  value: {
-  dps: 170.39342
-  tps: 172.99683
+  dps: 171.31599
+  tps: 173.9194
  }
 }
 dps_results: {
@@ -351,78 +351,78 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 169.84571
-  tps: 172.45111
+  dps: 170.34373
+  tps: 172.94913
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 307.45781
-  tps: 314.75236
+  dps: 398.34543
+  tps: 410.66972
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 285.09333
-  tps: 292.28063
+  dps: 379.43492
+  tps: 391.79221
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 166.65295
-  tps: 172.64675
+  dps: 220.63449
+  tps: 230.27754
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 176.16137
-  tps: 182.08366
+  dps: 231.01157
+  tps: 240.78936
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 161.91347
-  tps: 167.79452
+  dps: 225.55787
+  tps: 235.65742
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 177.42553
-  tps: 183.34232
+  dps: 235.7711
+  tps: 245.63689
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 181.14165
-  tps: 187.08045
+  dps: 237.94271
+  tps: 247.67375
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 126.92815
-  tps: 132.6772
+  dps: 182.81434
+  tps: 192.50414
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 302.65263
-  tps: 309.91967
+  dps: 395.54807
+  tps: 407.87236
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
-  dps: 513.72786
-  tps: 523.03099
+  dps: 546.4361
+  tps: 558.16952
  }
 }
 dps_results: {
@@ -512,7 +512,7 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 513.90745
-  tps: 523.23281
+  dps: 543.99669
+  tps: 555.70224
  }
 }

@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.09383
+  weights: -0.26397
   weights: 0
-  weights: 1.45694
-  weights: 0
-  weights: 0
+  weights: 0.74847
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.77831
-  weights: 1.32515
+  weights: 0
+  weights: 0
+  weights: 3.98887
+  weights: 1.33033
   weights: 0
   weights: 0
   weights: 0
@@ -99,43 +99,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 230.03163
-  tps: 200.25639
+  dps: 236.95001
+  tps: 207.77093
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 245.9219
-  tps: 215.87923
+  dps: 254.76261
+  tps: 224.47856
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 606.98142
-  tps: 565.72619
+  dps: 617.3505
+  tps: 574.89195
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 251.83011
-  tps: 221.35029
+  dps: 258.81319
+  tps: 227.88139
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 264.29088
-  tps: 235.79329
+  dps: 271.27593
+  tps: 242.86314
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 604.91348
-  tps: 565.71361
+  dps: 612.48251
+  tps: 572.61669
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 602.66623
-  tps: 563.69713
+  dps: 616.88259
+  tps: 577.21385
  }
 }
