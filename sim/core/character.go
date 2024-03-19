@@ -595,6 +595,9 @@ func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMas
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
+	if pred(character.Ranged()) {
+		mask |= ProcMaskRanged
+	}
 	return mask
 }
 
