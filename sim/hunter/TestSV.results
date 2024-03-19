@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestSV-Lvl25-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.3956
+  weights: 0.39288
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.02074
-  weights: 1.86685
-  weights: 2.08431
+  weights: 0.02418
+  weights: 1.82002
+  weights: 1.86201
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12075
+  weights: 0.12254
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.84705
+  weights: 1.09032
   weights: 0
   weights: 0
   weights: 0
@@ -165,17 +165,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.21191
-  weights: 0
-  weights: 4.42774
-  weights: 0
-  weights: 0
+  weights: 0.38811
+  weights: 10.13446
+  weights: 6.34394
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13596
+  weights: 0
+  weights: 0
+  weights: 0.03687
   weights: 0
   weights: 0
   weights: 0
@@ -197,106 +197,106 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 196.48772
-  tps: 84.87328
+  dps: 200.83488
+  tps: 87.91288
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 204.44565
-  tps: 89.69581
+  dps: 208.63634
+  tps: 93.2456
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 202.76979
-  tps: 88.73484
+  dps: 207.10452
+  tps: 91.70401
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-BloodlashBow-216516"
  value: {
-  dps: 203.02907
-  tps: 98.90344
+  dps: 205.03796
+  tps: 98.45562
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 233.88224
-  tps: 111.44284
+  dps: 236.6494
+  tps: 114.78101
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 205.43794
-  tps: 95.32909
+  dps: 208.07463
+  tps: 97.38106
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 217.76791
-  tps: 97.3662
+  dps: 214.40625
+  tps: 99.14609
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 205.09522
-  tps: 95.83352
+  dps: 207.66859
+  tps: 96.78466
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-InsulatedLeathers"
  value: {
-  dps: 203.28069
-  tps: 92.0041
+  dps: 205.69296
+  tps: 94.24966
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 203.30034
-  tps: 93.24632
+  dps: 208.55645
+  tps: 98.20185
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 210.69978
-  tps: 99.34288
+  dps: 209.38901
+  tps: 98.74848
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 211.05749
-  tps: 93.20138
+  dps: 215.54446
+  tps: 97.31771
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-StormshroudArmor"
  value: {
-  dps: 168.62992
-  tps: 83.43155
+  dps: 173.53388
+  tps: 88.2629
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 199.82502
-  tps: 87.5405
+  dps: 204.27522
+  tps: 90.98946
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Average-Default"
  value: {
-  dps: 212.983
-  tps: 95.15854
+  dps: 218.18403
+  tps: 99.73071
  }
 }
 dps_results: {
@@ -386,106 +386,106 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 210.85609
-  tps: 94.49052
+  dps: 216.25886
+  tps: 99.1259
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 533.37615
-  tps: 176.9663
+  dps: 625.78401
+  tps: 248.51153
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 521.3885
-  tps: 174.00694
+  dps: 607.78065
+  tps: 240.75438
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 542.4049
-  tps: 182.43234
+  dps: 631.29734
+  tps: 250.21178
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 520.68269
-  tps: 198.18893
+  dps: 604.62395
+  tps: 264.18205
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 489.4971
-  tps: 182.55406
+  dps: 571.4137
+  tps: 247.89339
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 486.42309
-  tps: 179.31321
+  dps: 565.5056
+  tps: 241.55279
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 494.72743
-  tps: 185.35582
+  dps: 575.20408
+  tps: 250.04918
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 518.14002
-  tps: 194.06652
+  dps: 605.63317
+  tps: 263.01182
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 492.68605
-  tps: 183.72114
+  dps: 573.2054
+  tps: 248.0505
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 494.60325
-  tps: 184.10913
+  dps: 578.12991
+  tps: 251.12099
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 709.69566
-  tps: 190.46295
+  dps: 833.09856
+  tps: 285.19578
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 598.67256
-  tps: 163.95485
+  dps: 716.2494
+  tps: 254.24164
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 517.89513
-  tps: 172.28896
+  dps: 604.41163
+  tps: 239.20712
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 713.16614
-  tps: 195.84697
+  dps: 847.67382
+  tps: 296.24195
  }
 }
 dps_results: {
@@ -575,7 +575,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 688.6243
-  tps: 193.09138
+  dps: 797.59203
+  tps: 273.92751
  }
 }

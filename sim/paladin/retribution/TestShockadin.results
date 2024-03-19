@@ -50,26 +50,26 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.12148
+  weights: 0.68782
+  weights: -1.00718
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.28052
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.15017
   weights: 0
   weights: 0
   weights: 0
+  weights: 2.24909
+  weights: 0.28394
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 1.53631
-  weights: 0.11876
-  weights: 0
-  weights: 0
-  weights: 0.0502
-  weights: 0.54326
-  weights: 1.10238
+  weights: 0.28422
+  weights: -3.67905
+  weights: 6.86752
   weights: 0
   weights: 0
   weights: 0
@@ -99,15 +99,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
  value: {
-  dps: 154.36041
-  tps: 168.72467
+  dps: 536.88455
+  tps: 555.30437
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
-  dps: 156.68733
-  tps: 171.10783
+  dps: 527.94542
+  tps: 545.97829
  }
 }
 dps_results: {
@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 149.75939
-  tps: 164.03623
+  dps: 511.70011
+  tps: 529.99131
  }
 }

@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.16035
-  weights: 0.21538
+  weights: 0.33599
+  weights: 0.53083
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.14578
-  weights: 0.18528
-  weights: 0.71121
+  weights: 0.30544
+  weights: 2.13016
+  weights: 2.24311
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.2026
-  weights: 0.33564
+  weights: 0.41292
+  weights: 0.71252
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18418
-  weights: 1.10021
-  weights: 1.36177
+  weights: 0.37538
+  weights: 5.46134
+  weights: 3.83426
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-Average-Default"
  value: {
-  dps: 141.08679
-  tps: 100.17162
+  dps: 279.28085
+  tps: 198.2894
  }
 }
 dps_results: {
@@ -288,15 +288,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 136.56897
-  tps: 96.96397
+  dps: 265.65621
+  tps: 188.61591
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl40-Average-Default"
  value: {
-  dps: 300.13421
-  tps: 213.09529
+  dps: 579.90492
+  tps: 411.73249
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 292.36232
-  tps: 207.57724
+  dps: 550.44755
+  tps: 390.81776
  }
 }

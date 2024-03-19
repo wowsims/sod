@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.36105
+  weights: 0.49838
   weights: 0
-  weights: 0.7661
+  weights: 0.77264
   weights: 0
-  weights: 0.7661
-  weights: 0
-  weights: 0
+  weights: 0.77264
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.29062
-  weights: 4.85128
+  weights: 0
+  weights: 0
+  weights: 3.57007
+  weights: 5.73901
   weights: 0
   weights: 0
   weights: 0
@@ -99,36 +99,36 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 393.20372
-  tps: 283.7236
+  dps: 393.23197
+  tps: 283.74243
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 430.42241
-  tps: 309.78924
+  dps: 430.1656
+  tps: 309.6183
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 442.19045
-  tps: 318.21911
+  dps: 443.85706
+  tps: 319.41429
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 412.31919
-  tps: 297.08598
+  dps: 414.18718
+  tps: 298.39907
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Average-Default"
  value: {
-  dps: 540.9194
-  tps: 387.89015
+  dps: 542.1377
+  tps: 388.75366
  }
 }
 dps_results: {
@@ -218,7 +218,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 535.96402
-  tps: 384.50597
+  dps: 539.19493
+  tps: 386.77355
  }
 }

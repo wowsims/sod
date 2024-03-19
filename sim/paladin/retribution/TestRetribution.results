@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.13623
-  weights: 0.09565
+  weights: 0.43423
+  weights: 0.24158
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.10318
+  weights: 0.13144
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.24976
+  weights: 0.46016
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.06192
-  weights: 0.34307
-  weights: 0.71725
+  weights: 0.19738
+  weights: 1.38194
+  weights: 1.97099
   weights: 0
   weights: 0
   weights: 0
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.1625
-  weights: 0.2686
+  weights: 0.66558
+  weights: 0.56808
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.15887
+  weights: 0.26795
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.7025
+  weights: 2.11562
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.07386
-  weights: 1.55307
-  weights: 2.37106
+  weights: 0.30253
+  weights: 6.57178
+  weights: 7.20033
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-Average-Default"
  value: {
-  dps: 97.72132
-  tps: 103.99131
+  dps: 240.87571
+  tps: 247.1457
  }
 }
 dps_results: {
@@ -288,22 +288,22 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 92.84969
-  tps: 99.09009
+  dps: 224.76948
+  tps: 231.00988
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
  value: {
-  dps: 210.1424
-  tps: 222.774
+  dps: 580.83051
+  tps: 595.33979
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
-  dps: 208.90381
-  tps: 221.04756
+  dps: 579.18954
+  tps: 593.34705
  }
 }
 dps_results: {
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 198.77643
-  tps: 210.78886
+  dps: 547.24928
+  tps: 561.29634
  }
 }

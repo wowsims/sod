@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.00018
+  weights: -0.12075
   weights: 0
-  weights: 0.84236
-  weights: 0
-  weights: 0
+  weights: 0.73022
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.87661
-  weights: 2.16059
+  weights: 0
+  weights: 0
+  weights: 5.18509
+  weights: 2.19251
   weights: 0
   weights: 0
   weights: 0
@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 639.62267
-  tps: 535.80539
+  dps: 641.5084
+  tps: 537.67893
  }
 }
 dps_results: {
@@ -127,15 +127,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 518.56239
-  tps: 432.4023
+  dps: 518.62655
+  tps: 432.2946
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 640.92146
-  tps: 536.38696
+  dps: 640.9786
+  tps: 536.37251
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 639.62267
-  tps: 535.80539
+  dps: 641.5084
+  tps: 537.67893
  }
 }

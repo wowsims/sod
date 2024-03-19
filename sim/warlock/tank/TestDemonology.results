@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.18807
+  weights: 0.6154
   weights: 0
-  weights: 0.24331
-  weights: 0
-  weights: 0
+  weights: 0.91852
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.59101
-  weights: 1.35132
+  weights: 0
+  weights: 0
+  weights: 6.57736
+  weights: 1.42006
   weights: 0
   weights: 0
   weights: 0
@@ -99,43 +99,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 213.29861
-  tps: 169.76801
+  dps: 253.22882
+  tps: 219.04403
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 225.22049
-  tps: 181.34069
+  dps: 265.20348
+  tps: 232.15742
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 555.26481
-  tps: 1070.66437
+  dps: 592.22669
+  tps: 1128.2857
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 228.87956
-  tps: 185.32211
+  dps: 269.61214
+  tps: 237.14335
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 218.68349
-  tps: 175.40123
+  dps: 259.69908
+  tps: 228.22011
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 555.1795
-  tps: 1075.17551
+  dps: 586.73075
+  tps: 1125.84105
  }
 }
 dps_results: {
@@ -183,7 +183,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 552.31032
-  tps: 1068.50709
+  dps: 585.04786
+  tps: 1120.3667
  }
 }
