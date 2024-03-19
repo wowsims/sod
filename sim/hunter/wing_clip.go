@@ -13,6 +13,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
+		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		Rank:          rank,
@@ -32,9 +33,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget <= 5
 		},
 
-		BonusCritRating:  0,
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)

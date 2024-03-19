@@ -22,17 +22,18 @@ func (hunter *Hunter) registerCarveSpell() {
 		hunter.CarveOh = hunter.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID.WithTag(1),
 			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1) * 0.65,
-			CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		})
 	}
 
 	hunter.CarveMh = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 425711},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -54,7 +55,6 @@ func (hunter *Hunter) registerCarveSpell() {
 		},
 
 		DamageMultiplier: 0.65,
-		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

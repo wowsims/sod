@@ -35,8 +35,6 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			IgnoreHaste: true,
 		},
 
-		CritMultiplier: rogue.RangedCritMultiplier(false),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

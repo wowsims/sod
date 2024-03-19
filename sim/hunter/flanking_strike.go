@@ -23,12 +23,11 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		hunter.pet.FlankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 415320},
 			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
-			BonusCritRating:  0,
 			DamageMultiplier: 0.45,
-			CritMultiplier:   hunter.pet.MeleeCritMultiplier(1, 0),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
@@ -42,6 +41,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 415320},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -62,9 +62,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			return hunter.DistanceFromTarget <= 5
 		},
 
-		BonusCritRating:  0,
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +

@@ -17,6 +17,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagAPL,
 		Rank:          rank,
@@ -37,9 +38,8 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
 
-		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.CleverTraps),
-		CritMultiplier:           hunter.critMultiplier(false, hunter.CurrentTarget),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.CleverTraps),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

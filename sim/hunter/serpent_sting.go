@@ -19,6 +19,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
+		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison,
 		CastType:      proto.CastType_CastTypeRanged,
@@ -40,8 +41,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -86,13 +87,16 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics,
 
+
 		BonusCritRating:          1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		DamageMultiplier:         1,
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
+
+		CritDamageBonus: hunter.mortalShots(),
+
+		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

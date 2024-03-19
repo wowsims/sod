@@ -13,18 +13,16 @@ func (hunter *Hunter) registerRapidFire() {
 
 	actionID := core.ActionID{SpellID: 3045}
 
-	hasteMultiplier := 1.4
-
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
+			aura.Unit.MultiplyRangedSpeed(sim, 1.4)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, 1/hasteMultiplier)
+			aura.Unit.MultiplyRangedSpeed(sim, 1/1.4)
 		},
 	})
 
