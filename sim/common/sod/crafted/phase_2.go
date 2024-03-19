@@ -122,13 +122,9 @@ func init() {
 			Label:    "Gneuro-Logical Shock",
 			ActionID: actionId,
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.2)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.2)
-			},
 		})
+
+		ee := NewSodCraftedAttackSpeedEffect(buffAura, 1.2)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionId,
@@ -155,6 +151,10 @@ func init() {
 				}
 				character.RemoveHealth(sim, result.Damage)
 				buffAura.Activate(sim)
+			},
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return !ee.Category.AnyActive()
 			},
 		})
 
