@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 21
+// NextIndex: 22
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -80,7 +80,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 65
+// NextIndex: 67
 message APLValue {
     oneof value {
         // Operators
@@ -109,6 +109,7 @@ message APLValue {
         APLValueCurrentRage current_rage = 14;
         APLValueCurrentEnergy current_energy = 15;
         APLValueCurrentComboPoints current_combo_points = 16;
+        APLValueTimeToEnergyTick time_to_energy_tick = 66;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -358,6 +359,7 @@ message APLValueCurrentManaPercent {
 message APLValueCurrentRage {}
 message APLValueCurrentEnergy {}
 message APLValueCurrentComboPoints {}
+message APLValueTimeToEnergyTick {}
 
 message APLValueGCDIsReady {}
 message APLValueGCDTimeToReady {}
