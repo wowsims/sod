@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.68782
-  weights: -1.00718
+  weights: 0.69096
+  weights: -0.99341
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28052
+  weights: 0.28484
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.24909
-  weights: 0.28394
+  weights: 2.43834
+  weights: 0.33555
   weights: 0
   weights: 0
-  weights: 0.28422
-  weights: -3.67905
-  weights: 6.86752
+  weights: 0.28552
+  weights: -3.71002
+  weights: 6.80558
   weights: 0
   weights: 0
   weights: 0
@@ -99,105 +99,105 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
  value: {
-  dps: 536.88455
-  tps: 555.30437
+  dps: 538.66294
+  tps: 557.08275
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
-  dps: 527.94542
-  tps: 545.97829
+  dps: 530.16691
+  tps: 548.19979
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 558.10261
-  tps: 844.87892
+  dps: 558.21172
+  tps: 844.98803
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 155.14618
-  tps: 169.52531
+  dps: 155.29754
+  tps: 169.67666
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 169.40072
-  tps: 185.09554
+  dps: 169.61192
+  tps: 185.30673
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 284.04702
-  tps: 468.70529
+  dps: 284.06102
+  tps: 468.71929
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 85.77947
-  tps: 95.01239
+  dps: 85.81447
+  tps: 95.04739
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 110.15917
-  tps: 120.88285
+  dps: 110.22917
+  tps: 120.95285
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 565.89431
-  tps: 855.49041
+  dps: 565.99286
+  tps: 855.58896
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 154.72386
-  tps: 169.15345
+  dps: 154.86465
+  tps: 169.29424
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 170.36924
-  tps: 186.09033
+  dps: 170.58043
+  tps: 186.30152
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 282.51149
-  tps: 468.53794
+  dps: 282.53949
+  tps: 468.56594
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 87.38778
-  tps: 96.6891
+  dps: 87.40878
+  tps: 96.7101
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 111.76669
-  tps: 122.5588
+  dps: 111.83669
+  tps: 122.6288
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 511.70011
-  tps: 529.99131
+  dps: 513.73312
+  tps: 532.02432
  }
 }

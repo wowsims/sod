@@ -628,6 +628,7 @@ func (aura *Aura) Activate(sim *Simulation) {
 		aura.onPeriodicHealTakenIndex = int32(len(aura.Unit.onPeriodicHealTakenAuras))
 		aura.Unit.onPeriodicHealTakenAuras = append(aura.Unit.onPeriodicHealTakenAuras, aura)
 	}
+
 	if aura.OnRageChange != nil {
 		aura.onRageChangeIndex = int32(len(aura.Unit.onRageChangeAuras))
 		aura.Unit.onRageChangeAuras = append(aura.Unit.onRageChangeAuras, aura)
