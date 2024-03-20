@@ -49,8 +49,9 @@ func (rogue *Rogue) registerEnvenom() {
 			return rogue.ComboPoints() > 0 && target.GetAuraByID(rogue.DeadlyPoison[0].ActionID).IsActive()
 		},
 
+		CritMultiplier: rogue.MeleeCritMultiplier(false),
+
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

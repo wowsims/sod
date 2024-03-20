@@ -141,11 +141,9 @@ func init() {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// TODO: Verify if this can crit
-				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(343, 757), spell.OutcomeMagicCrit)
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(343, 757), spell.OutcomeAlwaysHit)
 				if sim.Log != nil {
 					character.Log(sim, "Took %.1f damage from Gneuro-Logical Shock.", result.Damage)
 				}
@@ -264,11 +262,9 @@ func init() {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// TODO: Verify if this can crit
-				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeMagicCrit)
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeAlwaysHit)
 				character.RemoveHealth(sim, result.Damage)
 				buffAura.Activate(sim)
 			},

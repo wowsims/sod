@@ -73,10 +73,9 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  0,
+		BonusHitRating: priest.shadowHitModifier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -119,10 +118,9 @@ func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell
 
 		Rank: rank,
 
-		BonusHitRating:   1, // Not an independent hit once initial lands
-		BonusCritRating:  0,
+		BonusHitRating: 1, // Not an independent hit once initial lands
+
 		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		CritMultiplier:   1.0,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

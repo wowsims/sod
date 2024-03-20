@@ -58,9 +58,8 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		},
 
 		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  0,
 		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		CritMultiplier:   1,
+
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		Dot: core.DotConfig{
