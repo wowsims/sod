@@ -57,6 +57,7 @@ import {
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
+	APLValueTimeToEnergyTick,
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
@@ -602,6 +603,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Mana.',
 		newValue: APLValueCurrentMana.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() != Class.ClassRogue && player.getClass() != Class.ClassWarrior,
 	}),
 	currentManaPercent: inputBuilder({
 		label: 'Mana (%)',
@@ -609,6 +611,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Mana, as a percentage.',
 		newValue: APLValueCurrentManaPercent.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() != Class.ClassRogue && player.getClass() != Class.ClassWarrior,
 	}),
 	currentRage: inputBuilder({
 		label: 'Rage',
@@ -616,6 +619,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarrior || player.getClass() == Class.ClassDruid,
 	}),
 	currentEnergy: inputBuilder({
 		label: 'Energy',
@@ -623,6 +627,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Energy.',
 		newValue: APLValueCurrentEnergy.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+	}),
+	timeToEnergyTick: inputBuilder({
+		label: 'Time to Next Energy Tick',
+		submenu: ['Resources'],
+		shortDescription: 'Time until the next energy regen tick will happen',
+		newValue: APLValueTimeToEnergyTick.create,
+		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
 	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',
@@ -630,6 +643,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Combo Points.',
 		newValue: APLValueCurrentComboPoints.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
 	}),
 
 	// GCD
