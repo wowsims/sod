@@ -40,10 +40,12 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  priest.forceOfWillCritRating(),
+		BonusHitRating:  priest.shadowHitModifier(),
+		BonusCritRating: priest.forceOfWillCritRating(),
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
+
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -134,10 +134,8 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell
 	})
 
 	queueSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    srcSpell.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID: srcSpell.WithTag(1),
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.curQueueAura != queueAura &&

@@ -9,8 +9,14 @@ import (
 // Create a simple weapon proc that deals damage.
 func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
+
 	core.NewItemEffect(itemId, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		critMultiplier := character.DefaultSpellCritMultiplier()
+		if defType == core.DefenseTypeMelee || defType == core.DefenseTypeRanged {
+			critMultiplier = character.DefaultMeleeCritMultiplier()
+		}
 
 		sc := core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
@@ -18,7 +24,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   critMultiplier,
 			ThreatMultiplier: 1,
 		}
 
