@@ -13,21 +13,18 @@ func init() {
 	core.NewEnchantEffect(7210, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procChance := 0.10
-		baseDamageLow := 60.0
-		baseDamageHigh := 90.0
-
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 439164},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskSpellDamage,
 
+			CritMultiplier: character.DefaultSpellCritMultiplier(),
+
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(baseDamageLow, baseDamageHigh), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(60, 90), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
@@ -74,7 +71,7 @@ func init() {
 				}
 
 				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-					if sim.RandomFloat("Dismantle") < procChance {
+					if sim.RandomFloat("Dismantle") < 0.10 {
 						// Spells proc both Main-Hand and Off-Hand if both are enchanted
 						if character.GetMHWeapon() != nil && character.GetMHWeapon().Enchant.EffectID == 7210 {
 							procSpell.Cast(sim, result.Target)
@@ -83,7 +80,7 @@ func init() {
 							procSpell.Cast(sim, result.Target)
 						}
 					}
-				} else if sim.RandomFloat("Dismantle") < procChance {
+				} else if sim.RandomFloat("Dismantle") < 0.10 {
 					// Physical hits only proc on the hand that was hit with
 					procSpell.Cast(sim, result.Target)
 				}

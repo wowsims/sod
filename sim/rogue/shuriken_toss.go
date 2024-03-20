@@ -34,8 +34,9 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			IgnoreHaste: true,
 		},
 
+		CritMultiplier: rogue.RangedCritMultiplier(false),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   rogue.RangedCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

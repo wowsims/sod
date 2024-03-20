@@ -101,7 +101,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	}
 
 	if consumes.DragonBreathChili {
-		MakePermanent(DragonBreathChiliAura(&character.Unit))
+		MakePermanent(DragonBreathChiliAura(character))
 	}
 
 	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
@@ -464,18 +464,19 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
-func DragonBreathChiliAura(unit *Unit) *Aura {
+func DragonBreathChiliAura(character *Character) *Aura {
 	baseDamage := 60.0
 	procChance := .05
 
-	procSpell := unit.RegisterSpell(SpellConfig{
+	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagNone,
 
+		CritMultiplier: character.DefaultSpellCritMultiplier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -483,7 +484,7 @@ func DragonBreathChiliAura(unit *Unit) *Aura {
 		},
 	})
 
-	aura := unit.GetOrRegisterAura(Aura{
+	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Dragonbreath Chili",
 		ActionID: ActionID{SpellID: 15852},
 		Duration: NeverExpires,
@@ -529,9 +530,11 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		},
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
-		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		BonusHitRating: 100 * SpellHitRatingPerHitChance,
+
+		CritMultiplier: character.DefaultSpellCritMultiplier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -584,9 +587,11 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		},
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
-		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		BonusHitRating: 100 * SpellHitRatingPerHitChance,
+
+		CritMultiplier: character.DefaultSpellCritMultiplier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		// TODO: This should use another spell (443813) as the DoT

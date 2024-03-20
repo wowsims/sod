@@ -26,8 +26,9 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagIgnoreResists,
 
+		CritMultiplier: 1,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 	})
 

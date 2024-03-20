@@ -68,7 +68,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Reports of Bow of Searing Arrows proccing from SS applications means it has a hit event
-			result := spell.CalcDamage(sim, target, 0, spell.OutcomeRangedHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealOutcome(sim, result)

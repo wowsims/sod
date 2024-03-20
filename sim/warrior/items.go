@@ -29,7 +29,6 @@ func init() {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 
 			Dot: core.DotConfig{
 				Aura: core.Aura{
@@ -41,7 +40,6 @@ func init() {
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 					dot.SnapshotBaseDamage = 5 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotCritChance = 0
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				},
 
