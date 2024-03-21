@@ -30,12 +30,12 @@ func init() {
 		triggeredDmgSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436481},
 			SpellSchool: core.SpellSchoolStormstrike,
+			DefenseType: core.DefenseTypeMelee, // actually has DefenseTypeNone, but is likely using the greatest CritMultiplier available
 			ProcMask:    core.ProcMaskEmpty,
 
 			// TODO: "Causes additional threat" in Tooltip, no clue what the multiplier is.
 			ThreatMultiplier: 1,
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				curTarget := target

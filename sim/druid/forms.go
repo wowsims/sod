@@ -66,7 +66,6 @@ func (druid *Druid) GetCatWeapon(level int32) core.Weapon {
 // 		BaseDamageMax:        165,
 // 		SwingSpeed:           2.5,
 // 		NormalizedSwingSpeed: 2.5,
-// 		CritMultiplier:       druid.MeleeCritMultiplier(Bear),
 // 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 // 	}
 // }
@@ -310,7 +309,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 // 			druid.form = Humanoid
-// 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.MeleeCritMultiplier(Humanoid)))
+// 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 // 			druid.PseudoStats.ThreatMultiplier /= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
