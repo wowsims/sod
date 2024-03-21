@@ -50,8 +50,8 @@ func NewGnomereganMechanicalAI() core.AIFactory {
 }
 
 func (ai *GnomereganMechanicalAI) Initialize(target *core.Target, _ *proto.Target) {
-	target.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier = .8
-	target.Unit.PseudoStats.PoisonDamageTakenMultiplier = .8
+	target.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier *= .8
+	target.Unit.PseudoStats.PoisonDamageTakenMultiplier *= .8
 
 	ai.Target = target
 }

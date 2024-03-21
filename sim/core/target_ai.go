@@ -58,6 +58,12 @@ func (target *Target) ApplyRunes()                       {}
 func (target *Target) GetCharacter() *Character          { return nil }
 func (target *Target) Initialize()                       {}
 
+func (target *Target) ExecuteCustomRotation(sim *Simulation) {
+	if target.AI != nil {
+		target.AI.ExecuteCustomRotation(sim)
+	}
+}
+
 type AIFactory func() TargetAI
 
 type PresetTarget struct {

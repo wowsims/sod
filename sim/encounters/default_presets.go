@@ -41,7 +41,7 @@ func addLevel40(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        218537, // TODO:
+			Id:        7361, // TODO:
 			Name:      "Level 40",
 			Level:     42,
 			MobType:   proto.MobType_MobTypeUnknown,
@@ -72,7 +72,7 @@ func addLevel50(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        213334, // TODO:
+			Id:        213335, // TODO:
 			Name:      "Level 50",
 			Level:     52,
 			MobType:   proto.MobType_MobTypeUnknown,
@@ -103,7 +103,7 @@ func addLevel60(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        213334, // TODO:
+			Id:        213336, // TODO:
 			Name:      "Level 60",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeUnknown,
