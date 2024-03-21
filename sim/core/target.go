@@ -179,6 +179,15 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
+func (character *Character) IsTanking() bool {
+	for _, target := range character.Env.Encounter.TargetUnits {
+		if target.CurrentTarget == &character.Unit {
+			return true
+		}
+	}
+	return false
+}
+
 func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 	if weapon == nil {
 		return 0

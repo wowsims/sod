@@ -25,9 +25,11 @@ func init() {
 			Duration: time.Second * 6,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier *= .7
+				character.PseudoStats.DamageTakenMultiplier *= .7
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier /= .7
+				character.PseudoStats.DamageTakenMultiplier /= .7
 			},
 		})
 
@@ -51,6 +53,9 @@ func init() {
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeSurvival,
+			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+				return character.IsTanking()
+			},
 		})
 	})
 
