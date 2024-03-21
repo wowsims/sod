@@ -16,6 +16,9 @@ import { SavedTalents } from '../core/proto/ui.js';
 import MutilateApl from './apls/mutilate.apl.json';
 import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
+import P1CombatGear from './gear_sets/p1_combat.gear.json';
+import P1DaggersGear from './gear_sets/p1_daggers.gear.json';
+import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -26,14 +29,18 @@ import BlankGear from './gear_sets/blank.gear.json';
 ///////////////////////////////////////////////////////////////////////////
 
 // TODO: Add gear sets
-export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear)
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1DaggersGear, { customCondition: player => player.getLevel() == 25 });
+export const GearDaggersP2 = PresetUtils.makePresetGear('P2 Daggers', P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
+export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
 
 export const GearPresets = {
     [Phase.Phase1]: [
-        GearBlank,
+        GearDaggersP1,
+		GearCombatP1,
     ],
     [Phase.Phase2]: [
-        GearBlank,
+        GearDaggersP2,
     ]
 };
 
