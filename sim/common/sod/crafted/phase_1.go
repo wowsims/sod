@@ -54,13 +54,7 @@ func init() {
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeSurvival,
 			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				// only activate automatically if we're actually tanking a target
-				for _, target := range character.Env.Encounter.TargetUnits {
-					if target.CurrentTarget == &character.Unit {
-						return true
-					}
-				}
-				return false
+				return character.IsTanking()
 			},
 		})
 	})
