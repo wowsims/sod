@@ -25,9 +25,11 @@ func init() {
 			Duration: time.Second * 6,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier *= .7
+				character.PseudoStats.DamageTakenMultiplier *= .7
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier /= .7
+				character.PseudoStats.DamageTakenMultiplier /= .7
 			},
 		})
 
@@ -51,6 +53,15 @@ func init() {
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeSurvival,
+			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+				// only activate automatically if we're actually tanking a target
+				for _, target := range character.Env.Encounter.TargetUnits {
+					if target.CurrentTarget == &character.Unit {
+						return true
+					}
+				}
+				return false
+			},
 		})
 	})
 
