@@ -55,7 +55,6 @@ package shaman
 // 			BaseDamageMin:  246,
 // 			BaseDamageMax:  372,
 // 			SwingSpeed:     1.5,
-// 			CritMultiplier: 2,
 // 		},
 // 		AutoSwingMelee: true,
 // 	})

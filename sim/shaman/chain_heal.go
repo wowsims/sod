@@ -61,6 +61,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_ShamanChainHeal,
+		DefenseType: core.DefenseTypeMagic,
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       flags,
@@ -81,9 +82,9 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			},
 		},
 
-		BonusCritRating:  float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+
 		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

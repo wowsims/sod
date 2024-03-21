@@ -17,11 +17,11 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		ohSpell = shaman.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 410156},
 			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: shaman.AutoAttacks.OHConfig().DamageMultiplier,
-			CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -34,6 +34,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	shaman.Stormstrike = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 17364},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -52,7 +53,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

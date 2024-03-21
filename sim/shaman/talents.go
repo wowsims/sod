@@ -340,6 +340,10 @@ func (shaman *Shaman) applyFlurry() {
 	})
 }
 
+func (shaman *Shaman) elementalFury() float64 {
+	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
+}
+
 // func (shaman *Shaman) registerManaTideTotemCD() {
 // 	if !shaman.Talents.ManaTideTotem {
 // 		return

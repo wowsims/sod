@@ -15,10 +15,9 @@ func (shaman *Shaman) applyAncestralAwakening() {
 	shaman.AncestralAwakening = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetAncestralAwakening)},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
-
-		CritMultiplier: 1,
 
 		DamageMultiplier: 1 * (1 + .02*float64(shaman.Talents.Purification)),
 		ThreatMultiplier: 1,

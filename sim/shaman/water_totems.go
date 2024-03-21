@@ -49,8 +49,6 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
-		CritMultiplier: 1,
-
 		DamageMultiplier: 1 + (.02 * float64(shaman.Talents.Purification)) + 0.05*float64(shaman.Talents.RestorativeTotems),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
