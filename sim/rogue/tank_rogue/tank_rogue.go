@@ -8,13 +8,13 @@ import (
 
 func RegisterTankRogue() {
 	core.RegisterAgentFactory(
-		proto.Player_Rogue{},
+		proto.Player_TankRogue{},
 		proto.Spec_SpecTankRogue,
 		func(character *core.Character, options *proto.Player) core.Agent {
 			return NewTankRogue(character, options)
 		},
 		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Rogue)
+			playerSpec, ok := spec.(*proto.Player_TankRogue)
 			if !ok {
 				panic("Invalid spec value for Rogue!")
 			}
@@ -29,7 +29,7 @@ type TankRogue struct {
 
 func NewTankRogue(character *core.Character, options *proto.Player) *TankRogue {
 	tank := &TankRogue{
-		Rogue: rogue.NewRogue(character, options, options.GetRogue().Options),
+		Rogue: rogue.NewRogue(character, options, options.GetTankRogue().Options),
 	}
 
 	return tank
