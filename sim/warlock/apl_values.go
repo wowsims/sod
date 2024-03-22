@@ -116,11 +116,11 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 
 	// check if reapplying corruption is worthwhile
 	snapshotCrit := dot.SnapshotCritChance
-	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(warlock.Corruption.CritMultiplier-1) + 1)
+	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(warlock.Corruption.CritMultiplier()-1) + 1)
 
 	attackTable := warlock.AttackTables[target.UnitIndex][dot.Spell.CastType]
 	curCrit := warlock.Corruption.SpellCritChance(target)
-	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(warlock.Corruption.CritMultiplier-1) + 1)
+	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(warlock.Corruption.CritMultiplier()-1) + 1)
 
 	relDmgInc := curDmg / snapshotMult
 

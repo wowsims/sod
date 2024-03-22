@@ -13,18 +13,12 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 	core.NewItemEffect(itemId, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		critMultiplier := character.DefaultSpellCritMultiplier()
-		if defType == core.DefenseTypeMelee || defType == core.DefenseTypeRanged {
-			critMultiplier = character.DefaultMeleeCritMultiplier()
-		}
-
 		sc := core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: school,
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   critMultiplier,
 			ThreatMultiplier: 1,
 		}
 
