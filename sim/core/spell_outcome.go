@@ -617,6 +617,9 @@ func (dot *Dot) OutcomeExpectedMagicSnapshotCrit(_ *Simulation, result *SpellRes
 	result.Damage *= averageMultiplier
 }
 
+// CritMultiplier() returns the damage multiplier for critical strikes, based on CritDamageBonus and DefenseType.
+// https://web.archive.org/web/20081014064638/http://elitistjerks.com/f31/t12595-relentless_earthstorm_diamond_-_melee_only/p4/
+// https://github.com/TheGroxEmpire/TBC_DPS_Warrior_Sim/issues/30
 func (spell *Spell) CritMultiplier() float64 {
 	switch spell.DefenseType {
 	case DefenseTypeNone:

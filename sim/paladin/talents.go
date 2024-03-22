@@ -141,14 +141,6 @@ func (paladin *Paladin) getBonusCritChanceFromHolyPower() float64 {
 // 	})
 // }
 
-// Below are placeholders in case of any subsequent phase runes giving paladins crit damage.
-func (paladin *Paladin) MeleeCritMultiplier() float64 {
-	return paladin.DefaultMeleeCritMultiplier()
-}
-func (paladin *Paladin) SpellCritMultiplier() float64 {
-	return paladin.DefaultSpellCritMultiplier()
-}
-
 func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
 	mhWeapon := paladin.GetMHWeapon()
 	if mhWeapon == nil {

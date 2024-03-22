@@ -70,25 +70,6 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 }
 
-func (hunter *Hunter) critMultiplier(isRanged bool, target *core.Unit) float64 {
-	primaryModifier := 1.0
-	secondaryModifier := 0.0
-
-	monsterMultiplier := 1.0 + 0.01*float64(hunter.Talents.MonsterSlaying)
-	humanoidMultiplier := 1.0 + 0.01*float64(hunter.Talents.HumanoidSlaying)
-	if target.MobType == proto.MobType_MobTypeBeast || target.MobType == proto.MobType_MobTypeGiant || target.MobType == proto.MobType_MobTypeDragonkin {
-		primaryModifier *= monsterMultiplier
-	} else if target.MobType == proto.MobType_MobTypeHumanoid {
-		primaryModifier *= humanoidMultiplier
-	}
-
-	if isRanged {
-		secondaryModifier += 0.06 * float64(hunter.Talents.MortalShots)
-	}
-
-	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
 func (hunter *Hunter) applyFrenzy() {
 	if hunter.Talents.Frenzy == 0 {
 		return
