@@ -66,6 +66,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426320},
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
@@ -83,10 +84,12 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			},
 		},
 
-		BonusCritRating:          float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+
+		CritDamageBonus: warlock.ruin(),
+
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

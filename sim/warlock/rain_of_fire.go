@@ -23,7 +23,6 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 		Rank:          rank,
 
-		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

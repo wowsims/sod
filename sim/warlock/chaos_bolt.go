@@ -21,6 +21,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 403629},
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
@@ -39,10 +40,12 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 			},
 		},
 
-		BonusCritRating:          float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+
+		CritDamageBonus: warlock.ruin(),
+
 		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

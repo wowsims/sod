@@ -21,6 +21,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 		Rank:          rank,
@@ -37,10 +38,11 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   0,
-		BonusCritRating:  float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+
+		CritDamageBonus: warlock.ruin(),
+
 		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -106,6 +108,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 // 	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
 // 		ActionID:    core.ActionID{SpellID: 47811},
 // 		SpellSchool: core.SpellSchoolFire,
+//      DefenseType: core.DefenseTypeMagic,
 // 		ProcMask:    core.ProcMaskSpellDamage,
 // 		Flags:       core.SpellFlagAPL,
 
