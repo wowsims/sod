@@ -65,17 +65,15 @@ func (rogue *Rogue) applyMurder() {
 		return
 	}
 
-	multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
-
-	// TODO Murder, Monster Slaying, Humanoid Slaying, and Beast Slaying (Troll) all affect critical strike damage as well
-
 	// post finalize, since attack tables need to be setup
 	rogue.Env.RegisterPostFinalizeEffect(func() {
 		for _, t := range rogue.Env.Encounter.Targets {
 			switch t.MobType {
 			case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
+				multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
 				for _, at := range rogue.AttackTables[t.UnitIndex] {
 					at.DamageDealtMultiplier *= multiplier
+					at.CritMultiplier *= multiplier
 				}
 			}
 		}

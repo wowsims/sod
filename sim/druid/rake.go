@@ -122,7 +122,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier() - 1))
+			critMod := critChance * (spell.CritMultiplier(attackTable) - 1)
 			initial.Damage *= 1 + critMod
 			return initial
 		},
