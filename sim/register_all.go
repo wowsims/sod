@@ -3,8 +3,9 @@ package sim
 import (
 	_ "github.com/wowsims/sod/sim/common"
 	"github.com/wowsims/sod/sim/druid/balance"
-	dpsrogue "github.com/wowsims/sod/sim/rogue/dps_rogue"
 	"github.com/wowsims/sod/sim/paladin/retribution"
+	dpsrogue "github.com/wowsims/sod/sim/rogue/dps_rogue"
+	tankrogue "github.com/wowsims/sod/sim/rogue/tank_rogue"
 	"github.com/wowsims/sod/sim/shaman/elemental"
 	"github.com/wowsims/sod/sim/shaman/enhancement"
 
@@ -48,6 +49,7 @@ func RegisterAll() {
 	// healingPriest.RegisterHealingPriest()
 	shadow.RegisterShadowPriest()
 	dpsrogue.RegisterDpsRogue()
+	tankrogue.RegisterTankRogue()
 	dpsWarrior.RegisterDpsWarrior()
 	// protectionWarrior.RegisterProtectionWarrior()
 	// holyPaladin.RegisterHolyPaladin()

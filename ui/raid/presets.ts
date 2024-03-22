@@ -1,33 +1,27 @@
-import { IndividualSimUI, IndividualSimUIConfig, RaidSimPreset } from '../core/individual_sim_ui.js';
-
-import {
-	Spec
-} from '../core/proto/common.js';
-import {
-	naturalSpecOrder,
-} from '../core/proto_utils/utils.js';
-
-import { Player, getSpecConfig } from '../core/player.js';
-
 import { BalanceDruidSimUI } from '../balance_druid/sim.js';
-import { FeralDruidSimUI } from '../feral_druid/sim.js';
-import { FeralTankDruidSimUI } from '../feral_tank_druid/sim.js';
-import { RestorationDruidSimUI } from '../restoration_druid/sim.js';
+import { IndividualSimUI, IndividualSimUIConfig, RaidSimPreset } from '../core/individual_sim_ui.js';
+import { getSpecConfig,Player } from '../core/player.js';
+import { Spec } from '../core/proto/common.js';
+import { naturalSpecOrder } from '../core/proto_utils/utils.js';
 import { ElementalShamanSimUI } from '../elemental_shaman/sim.js';
 import { EnhancementShamanSimUI } from '../enhancement_shaman/sim.js';
-import { RestorationShamanSimUI } from '../restoration_shaman/sim.js';
+import { FeralDruidSimUI } from '../feral_druid/sim.js';
+import { FeralTankDruidSimUI } from '../feral_tank_druid/sim.js';
+import { HealingPriestSimUI } from '../healing_priest/sim.js';
+import { HolyPaladinSimUI } from '../holy_paladin/sim.js';
 import { HunterSimUI } from '../hunter/sim.js';
 import { MageSimUI } from '../mage/sim.js';
-import { RogueSimUI } from '../rogue/sim.js';
-import { HolyPaladinSimUI } from '../holy_paladin/sim.js';
 import { ProtectionPaladinSimUI } from '../protection_paladin/sim.js';
-import { RetributionPaladinSimUI } from '../retribution_paladin/sim.js';
-import { HealingPriestSimUI } from '../healing_priest/sim.js';
-import { ShadowPriestSimUI } from '../shadow_priest/sim.js';
-import { WarriorSimUI } from '../warrior/sim.js';
 import { ProtectionWarriorSimUI } from '../protection_warrior/sim.js';
-import { WarlockSimUI } from '../warlock/sim.js';
+import { RestorationDruidSimUI } from '../restoration_druid/sim.js';
+import { RestorationShamanSimUI } from '../restoration_shaman/sim.js';
+import { RetributionPaladinSimUI } from '../retribution_paladin/sim.js';
+import { RogueSimUI } from '../rogue/sim.js';
+import { ShadowPriestSimUI } from '../shadow_priest/sim.js';
+import { TankRogueSimUI } from '../tank_rogue/sim.js';
 import { TankWarlockSimUI } from '../tank_warlock/sim.js';
+import { WarlockSimUI } from '../warlock/sim.js';
+import { WarriorSimUI } from '../warrior/sim.js';
 
 export const specSimFactories: Record<Spec, (parentElem: HTMLElement, player: Player<any>) => IndividualSimUI<any>> = {
 	[Spec.SpecBalanceDruid]: (parentElem: HTMLElement, player: Player<any>) => new BalanceDruidSimUI(parentElem, player),
@@ -40,7 +34,7 @@ export const specSimFactories: Record<Spec, (parentElem: HTMLElement, player: Pl
 	[Spec.SpecHunter]: (parentElem: HTMLElement, player: Player<any>) => new HunterSimUI(parentElem, player),
 	[Spec.SpecMage]: (parentElem: HTMLElement, player: Player<any>) => new MageSimUI(parentElem, player),
 	[Spec.SpecRogue]: (parentElem: HTMLElement, player: Player<any>) => new RogueSimUI(parentElem, player),
-	[Spec.SpecTankRogue]: (parentElem: HTMLElement, player: Player<any>) => new RogueSimUI(parentElem, player),
+	[Spec.SpecTankRogue]: (parentElem: HTMLElement, player: Player<any>) => new TankRogueSimUI(parentElem, player),
 	[Spec.SpecHolyPaladin]: (parentElem: HTMLElement, player: Player<any>) => new HolyPaladinSimUI(parentElem, player),
 	[Spec.SpecProtectionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionPaladinSimUI(parentElem, player),
 	[Spec.SpecRetributionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new RetributionPaladinSimUI(parentElem, player),
