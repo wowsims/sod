@@ -173,6 +173,7 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
 	rogue.PseudoStats.ThreatMultiplier *= 0.71
+	// TODO: Be able to Parry based on results
 	rogue.PseudoStats.CanParry = true
 	maxEnergy := 100.0
 	if rogue.Talents.Vigor {

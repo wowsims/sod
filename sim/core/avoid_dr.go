@@ -20,6 +20,7 @@ const Diminish_kCm_Nondruid = (Diminish_k_Nondruid * Diminish_Cm)
 
 // Diminishing Returns for tank avoidance
 // Non-diminishing sources are added separately in spell outcome funcs
+// TODO: Fully refactor these functions and the Parry/Dodge stats
 
 func (unit *Unit) GetDiminishedDodgeChance() float64 {
 

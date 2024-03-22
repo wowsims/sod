@@ -151,6 +151,21 @@ var CritPerIntAtLevel = map[proto.Class]map[int]float64{
 	proto.Class_ClassDruid:   {25: 0.0427, 40: 0.0260, 50: 0.0208, 60: 0.0167},
 }
 
+// Dodge agility scaling
+// TODO: Scaling for all classes and for past level 50
+var DodgePerAgiAtLevel = map[proto.Class]map[int32]float64{
+	proto.Class_ClassUnknown: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassWarrior: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassPaladin: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassHunter:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassRogue:   {25: float64(1 / 5.429), 40: 0.111, 50: 0.0, 60: 0},
+	proto.Class_ClassPriest:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassShaman:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassMage:    {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassWarlock: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+	proto.Class_ClassDruid:   {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
+}
+
 var ClassBaseStats = map[proto.Class]map[int]stats.Stats{
 	proto.Class_ClassUnknown: {},
 	proto.Class_ClassWarrior: {

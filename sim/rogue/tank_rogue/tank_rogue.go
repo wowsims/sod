@@ -3,6 +3,7 @@ package tankrogue
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/rogue"
 )
 
@@ -31,6 +32,11 @@ func NewTankRogue(character *core.Character, options *proto.Player) *TankRogue {
 	tank := &TankRogue{
 		Rogue: rogue.NewRogue(character, options, options.GetTankRogue().Options),
 	}
+
+	tank.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int32(tank.Level)])
+	tank.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+
+	tank.PseudoStats.InFrontOfTarget = true
 
 	return tank
 }
