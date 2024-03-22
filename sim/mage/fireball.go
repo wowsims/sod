@@ -48,6 +48,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		ActionID:     actionID,
 		SpellCode:    SpellCode_MageFireball,
 		SpellSchool:  core.SpellSchoolFire,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        core.SpellFlagAPL | SpellFlagMage,
 		MissileSpeed: 24,
@@ -82,7 +83,6 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

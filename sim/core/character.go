@@ -190,7 +190,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap)
 	}
 
 	return character

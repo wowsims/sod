@@ -96,12 +96,11 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 	return priest.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 413260}.WithTag(numTicks),
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 
 		BonusHitRating:  1, // Not an independent hit once initial lands
 		BonusCritRating: priest.forceOfWillCritRating(),
-
-		CritMultiplier: priest.DefaultSpellCritMultiplier(),
 
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),

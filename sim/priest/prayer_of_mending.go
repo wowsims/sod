@@ -48,6 +48,7 @@ package priest
 // 	priest.PrayerOfMending = priest.RegisterSpell(core.SpellConfig{
 // 		ActionID:    actionID,
 // 		SpellSchool: core.SpellSchoolHoly,
+//      DefenseType: core.DefenseTypeMagic,
 // 		ProcMask:    core.ProcMaskSpellHealing,
 // 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
@@ -66,8 +67,8 @@ package priest
 // 		},
 
 // 		BonusCritRating:  float64(priest.Talents.HolySpecialization) * 1 * core.CritRatingPerCritChance,
+
 // 		DamageMultiplier: 1 + .02*float64(priest.Talents.SpiritualHealing),
-// 		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
 // 		ThreatMultiplier: 1,
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -39,6 +39,7 @@ func (priest *Priest) getSmiteBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
@@ -55,9 +56,9 @@ func (priest *Priest) getSmiteBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating:  priest.holySpecCritRating() + priest.forceOfWillCritRating(),
+		BonusCritRating: priest.holySpecCritRating() + priest.forceOfWillCritRating(),
+
 		DamageMultiplier: priest.searingLightDamageModifier() * priest.forceOfWillDamageModifier(),
-		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -23,6 +23,7 @@ func (mage *Mage) registerIceLanceSpell() {
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneHandsIceLance)},
 		SpellSchool:  core.SpellSchoolFrost,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL,
 		MissileSpeed: 38,
@@ -37,7 +38,6 @@ func (mage *Mage) registerIceLanceSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

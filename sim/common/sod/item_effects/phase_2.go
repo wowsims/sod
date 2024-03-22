@@ -35,11 +35,11 @@ func init() {
 		forkedLightning := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 11828},
 			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

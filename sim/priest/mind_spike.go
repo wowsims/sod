@@ -17,7 +17,7 @@ func (priest *Priest) registerMindSpikeSpell() {
 
 func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	level := float64(priest.GetCharacter().Level)
-	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
+	baseDamage := 9.456667 + 0.635108*level + 0.039063*level*level
 	// 2024-02-22 tuning 10% buff
 	baseDamageLow := baseDamage * 1.11 * 1.1
 	baseDamageHigh := baseDamage * 1.29 * 1.1
@@ -32,6 +32,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
 		SpellSchool: core.SpellSchoolShadowfrost,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
@@ -46,10 +47,10 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
+		BonusHitRating:  priest.shadowHitModifier(),
+		BonusCritRating: priest.forceOfWillCritRating(),
+
 		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		BonusCritRating:  priest.forceOfWillCritRating(),
-		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {

@@ -200,12 +200,11 @@ func (rogue *Rogue) HasRune(rune proto.RogueRune) bool {
 }
 
 func (rogue *Rogue) RuneAbilityBaseDamage() float64 {
-	level := rogue.Level
-	return 5.741530 - 0.255683*float64(level) + 0.032656*float64(level*level)
+	return 5.741530 - 0.255683*float64(rogue.Level) + 0.032656*float64(rogue.Level*rogue.Level)
 }
 
 func (rogue *Rogue) RuneAbilityDamagePerCombo() float64 {
-	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level)*float64(rogue.Level)
+	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level*rogue.Level)
 }
 
 func (rogue *Rogue) getImbueProcMask(imbue proto.WeaponImbue) core.ProcMask {

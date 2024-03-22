@@ -47,6 +47,7 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -63,9 +64,9 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating:  float64(5 * mage.Talents.ImprovedFlamestrike * core.CritRatingPerCritChance),
+		BonusCritRating: float64(5 * mage.Talents.ImprovedFlamestrike * core.CritRatingPerCritChance),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

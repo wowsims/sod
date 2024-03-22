@@ -83,8 +83,6 @@ type Mage struct {
 	HotStreakAura       *core.Aura
 	ImprovedScorchAuras core.AuraArray
 	MissileBarrageAura  *core.Aura
-
-	CritDebuffCategories core.ExclusiveCategoryArray
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -153,9 +151,4 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 func (mage *Mage) HasRune(rune proto.MageRune) bool {
 	return mage.HasRuneById(int32(rune))
-}
-
-func (mage *Mage) MageCritMultiplier(secondary float64) float64 {
-	critBonus := core.TernaryFloat64(mage.HasRune(proto.MageRune_RuneFeetSpellPower), .5, 0) + secondary
-	return mage.SpellCritMultiplier(1, critBonus)
 }
