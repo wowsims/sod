@@ -68,10 +68,9 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  0,
+		BonusHitRating: priest.shadowHitModifier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		Dot: core.DotConfig{

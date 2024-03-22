@@ -176,8 +176,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 516.72086
-  tps: 488.44254
+  dps: 516.71834
+  tps: 488.44052
  }
 }
 dps_results: {

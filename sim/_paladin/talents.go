@@ -225,12 +225,15 @@ func (paladin *Paladin) applyArdentDefender() {
 
 	// Spell to heal you when AD has procced; fire this before fatal damage so that a Death is not detected
 	procHeal := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 66233},
-		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskSpellHealing,
-		CritMultiplier:   1, // Assuming this can't really crit?
+		ActionID:    core.ActionID{SpellID: 66233},
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskSpellHealing,
+
+		CritMultiplier: 1, // Assuming this can't really crit?
+
 		ThreatMultiplier: 0.25,
 		DamageMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealHealing(sim, &paladin.Unit, ardentHealAmount*paladin.MaxHealth(), spell.OutcomeHealingCrit)
 		},
