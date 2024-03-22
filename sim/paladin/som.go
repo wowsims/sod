@@ -20,11 +20,11 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803}, // Judgement of Righteousness.
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
 		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier(),
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -36,13 +36,13 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: 407799},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: 1,
 
 		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := multiplier*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()

@@ -85,13 +85,14 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: jorSpellID},
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
+		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellDamage()
@@ -100,9 +101,9 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	})
 
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
-
 		ActionID:      core.ActionID{SpellID: spellIdProc},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskEmpty,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,

@@ -21,6 +21,7 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 	paladin.CrusaderStrike = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		Cast: core.CastConfig{
@@ -33,9 +34,8 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		// We expect this spell to still target melee defense, and therefore benefit from physical dmg modifiers.
+
 		DamageMultiplier: 0.75 * paladin.getWeaponSpecializationModifier(),
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -40,6 +40,7 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		RequiredLevel: level,
@@ -61,10 +62,10 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 			CD: *paladin.ExorcismCooldown,
 		},
 
+		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.SpellCritMultiplier(),
-		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellDamage()

@@ -59,14 +59,15 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellIDJudge},
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 		SpellCode:   SpellCode_PaladinJudgementOfCommand,
 
+		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
-		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage) + socJudgeSpellCoeff*spell.SpellDamage()
@@ -77,13 +78,13 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellIDProc},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,
 
 		DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := -1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
