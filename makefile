@@ -148,7 +148,7 @@ binary_dist: $(OUT_DIR)/.dirstamp
 proto: sim/core/proto/api.pb.go ui/core/proto/api.ts
 
 # Builds the web server with the compiled client.
-.PHONY: wowsimclassic
+.PHONY: wowsimsod
 wowsimsod: binary_dist devserver
 
 .PHONY: devserver
