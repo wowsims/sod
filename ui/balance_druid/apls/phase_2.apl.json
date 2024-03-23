@@ -4,6 +4,8 @@
     {"action":{"castSpell":{"spellId":{"spellId":8950,"rank":3}}},"doAtValue":{"const":{"val":"-3.09s"}}}
   ],
   "priorityList": [
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":24858}}}}},"castSpell":{"spellId":{"spellId":24858}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"40%"}}}},"castSpell":{"spellId":{"spellId":29166}}}},
     {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"spellCanCast":{"spellId":{"spellId":417157}}},"castSpell":{"spellId":{"spellId":417157}}}},
     {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":417157}}},"castSpell":{"spellId":{"spellId":8950,"rank":3}}}},
