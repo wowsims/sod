@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.67798
+  weights: -0.41786
   weights: 0
-  weights: 0.77698
+  weights: 0.82591
   weights: 0
-  weights: 0.77698
-  weights: 0
-  weights: 0
+  weights: 0.82591
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.22562
-  weights: 6.08707
+  weights: 0
+  weights: 0
+  weights: 4.27657
+  weights: 1.54641
   weights: 0
   weights: 0
   weights: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 394.89206
-  tps: 285.65145
+  dps: 421.88494
+  tps: 305.42857
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 430.64958
-  tps: 311.51058
+  dps: 461.815
+  tps: 333.67134
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 442.98076
-  tps: 320.21088
+  dps: 472.82642
+  tps: 340.99936
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 412.70793
-  tps: 299.26404
+  dps: 438.01562
+  tps: 317.22767
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Average-Default"
  value: {
-  dps: 543.03976
-  tps: 391.28136
+  dps: 581.09147
+  tps: 418.29913
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1206.60284
-  tps: 1064.78322
+  dps: 1263.05695
+  tps: 1114.55904
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 534.40353
-  tps: 384.96152
+  dps: 571.15388
+  tps: 411.25649
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Gnome-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 575.82491
-  tps: 416.1578
+  dps: 614.12017
+  tps: 443.47201
  }
 }
 dps_results: {
@@ -176,22 +176,22 @@ dps_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1175.99959
-  tps: 1040.88191
+  dps: 1221.9566
+  tps: 1083.73056
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 537.15263
-  tps: 387.18277
+  dps: 575.12627
+  tps: 414.07501
  }
 }
 dps_results: {
  key: "TestFrostFire-Lvl40-Settings-Troll-p2_frostfire-Frostfire-p2_frostfire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 580.47787
-  tps: 419.38501
+  dps: 616.22633
+  tps: 444.90372
  }
 }
 dps_results: {
@@ -218,7 +218,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 539.40248
-  tps: 388.76615
+  dps: 575.54722
+  tps: 414.38491
  }
 }
