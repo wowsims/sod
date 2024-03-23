@@ -17,6 +17,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: school,
 			ProcMask:    core.ProcMaskEmpty,
+			DefenseType: defType,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
