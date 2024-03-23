@@ -35,7 +35,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	}
 
 	cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if feralOptions.Options.InnervateTarget.Type == proto.UnitReference_Unknown {
+	if feralOptions.Options.InnervateTarget == nil || feralOptions.Options.InnervateTarget.Type == proto.UnitReference_Unknown {
 		cat.SelfBuffs.InnervateTarget = &proto.UnitReference{
 			Type: proto.UnitReference_Self,
 		}

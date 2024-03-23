@@ -34,7 +34,7 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	}
 
 	moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if balanceOptions.Options.InnervateTarget.Type == proto.UnitReference_Unknown {
+	if balanceOptions.Options.InnervateTarget == nil || balanceOptions.Options.InnervateTarget.Type == proto.UnitReference_Unknown {
 		moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{
 			Type: proto.UnitReference_Self,
 		}
