@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.0553
-  weights: 0.09774
+  weights: 0.24453
+  weights: 0.45828
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.05027
-  weights: 0
-  weights: 0.42563
+  weights: 0.2223
+  weights: 1.50013
+  weights: 1.75981
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.13824
-  weights: 0.20662
+  weights: 0.3884
+  weights: 0.61949
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12568
-  weights: 0
-  weights: 1.0765
+  weights: 0.35309
+  weights: 4.07901
+  weights: 3.72544
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 50.9531
-  tps: 36.1767
+  dps: 208.06652
+  tps: 147.72723
  }
 }
 dps_results: {
@@ -288,15 +288,15 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 48.3092
-  tps: 34.29953
+  dps: 195.72937
+  tps: 138.96785
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 220.2399
-  tps: 156.37033
+  dps: 540.62851
+  tps: 383.84624
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 212.64105
-  tps: 150.97514
+  dps: 519.15295
+  tps: 368.59859
  }
 }

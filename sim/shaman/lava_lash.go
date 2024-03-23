@@ -20,6 +20,7 @@ func (shaman *Shaman) applyLavaLash() {
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
 
@@ -39,7 +40,6 @@ func (shaman *Shaman) applyLavaLash() {
 		},
 
 		DamageMultiplier: 1.5 * imbueMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
-		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

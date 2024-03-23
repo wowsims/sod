@@ -96,11 +96,6 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
-	// Update auto crit multipliers now that we have the targets.
-	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, hunter.CurrentTarget)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.critMultiplier(false, hunter.CurrentTarget)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(true, hunter.CurrentTarget)
-
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
 
@@ -146,7 +141,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 
 	hunter.PseudoStats.CanParry = true
 
-	rangedWeapon := hunter.WeaponFromRanged(0)
+	rangedWeapon := hunter.WeaponFromRanged()
 
 	if hunter.HasRangedWeapon() {
 		// Ammo
@@ -199,8 +194,8 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
 		// We don't know crit multiplier until later when we see the target so just
 		// use 0 for now.
-		MainHand:        hunter.WeaponFromMainHand(0),
-		OffHand:         hunter.WeaponFromOffHand(0),
+		MainHand:        hunter.WeaponFromMainHand(),
+		OffHand:         hunter.WeaponFromOffHand(),
 		Ranged:          rangedWeapon,
 		ReplaceMHSwing:  hunter.TryRaptorStrike,
 		AutoSwingRanged: true,
@@ -223,6 +218,8 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
+
+	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +

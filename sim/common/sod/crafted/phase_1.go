@@ -25,9 +25,11 @@ func init() {
 			Duration: time.Second * 6,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier *= .7
+				character.PseudoStats.DamageTakenMultiplier *= .7
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageDealtMultiplier /= .7
+				character.PseudoStats.DamageTakenMultiplier /= .7
 			},
 		})
 
@@ -51,6 +53,9 @@ func init() {
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeSurvival,
+			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+				return character.IsTanking()
+			},
 		})
 	})
 
@@ -68,14 +73,14 @@ func init() {
 			ActionID: actionID,
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.1)
 				character.PseudoStats.ThreatMultiplier *= 1.2
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.1)
 				character.PseudoStats.ThreatMultiplier /= 1.2
 			},
 		})
+
+		ee := NewSodCraftedAttackSpeedEffect(buffAura, 1.1)
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
@@ -90,6 +95,10 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				buffAura.Activate(sim)
+			},
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return !ee.Category.AnyActive()
 			},
 		})
 
@@ -160,4 +169,16 @@ func init() {
 	// })
 
 	core.AddEffectsToTest = true
+}
+
+func NewSodCraftedAttackSpeedEffect(aura *core.Aura, attackSpeedBonus float64) *core.ExclusiveEffect {
+	return aura.NewExclusiveEffect("SoD Crafted Attack Speed", false, core.ExclusiveEffect{
+		Priority: attackSpeedBonus,
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			ee.Aura.Unit.MultiplyAttackSpeed(sim, ee.Priority)
+		},
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			ee.Aura.Unit.MultiplyAttackSpeed(sim, 1/ee.Priority)
+		},
+	})
 }

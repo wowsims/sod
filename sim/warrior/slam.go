@@ -40,6 +40,7 @@ func (warrior *Warrior) registerSlamSpell() {
 	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -61,9 +62,9 @@ func (warrior *Warrior) registerSlamSpell() {
 			},
 		},
 
-		BonusCritRating:  0,
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
 

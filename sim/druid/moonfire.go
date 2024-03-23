@@ -49,6 +49,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
@@ -81,9 +82,11 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		BonusCritRating: druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+
+		CritDamageBonus: druid.vengeance(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.VengeanceCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

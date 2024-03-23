@@ -15,10 +15,6 @@ type ItemSwap struct {
 	character       *Character
 	onSwapCallbacks []OnSwapItem
 
-	mhCritMultiplier     float64
-	ohCritMultiplier     float64
-	rangedCritMultiplier float64
-
 	// Which slots to actually swap.
 	slots []proto.ItemSlot
 
@@ -27,12 +23,10 @@ type ItemSwap struct {
 	swapped         bool
 }
 
-/*
-TODO All the extra parameters here and the code in multiple places for handling the Weapon struct is really messy,
+// TODO All the extra parameters here and the code in multiple places for handling the Weapon struct is really messy,
+//  we'll need to figure out something cleaner as this will be quite error-prone
 
-	we'll need to figure out something cleaner as this will be quite error-prone
-*/
-func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMultiplier float64, ohCritMultiplier float64, rangedCritMultiplier float64) {
+func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap) {
 	var slots []proto.ItemSlot
 	hasMhSwap := itemSwap.MhItem != nil && itemSwap.MhItem.Id != 0
 	hasOhSwap := itemSwap.OhItem != nil && itemSwap.OhItem.Id != 0
@@ -69,13 +63,10 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	}
 
 	character.ItemSwap = ItemSwap{
-		character:            character,
-		mhCritMultiplier:     mhCritMultiplier,
-		ohCritMultiplier:     ohCritMultiplier,
-		rangedCritMultiplier: rangedCritMultiplier,
-		slots:                slots,
-		unEquippedItems:      swapItems,
-		swapped:              false,
+		character:       character,
+		slots:           slots,
+		unEquippedItems: swapItems,
+		swapped:         false,
 	}
 }
 
@@ -229,11 +220,11 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
 		if character.AutoAttacks.AutoSwingMelee {
-			character.AutoAttacks.SetMH(character.WeaponFromMainHand(swap.mhCritMultiplier))
+			character.AutoAttacks.SetMH(character.WeaponFromMainHand())
 		}
 	case proto.ItemSlot_ItemSlotOffHand:
 		if character.AutoAttacks.AutoSwingMelee {
-			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
+			weapon := character.WeaponFromOffHand()
 			character.AutoAttacks.SetOH(weapon)
 
 			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
@@ -241,7 +232,7 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 		}
 	case proto.ItemSlot_ItemSlotRanged:
 		if character.AutoAttacks.AutoSwingRanged {
-			character.AutoAttacks.SetRanged(character.WeaponFromRanged(swap.rangedCritMultiplier))
+			character.AutoAttacks.SetRanged(character.WeaponFromRanged())
 		}
 	}
 }

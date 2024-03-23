@@ -190,7 +190,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap)
 	}
 
 	return character
@@ -388,37 +388,9 @@ func (character *Character) GetBaseStats() stats.Stats {
 	return character.baseStats
 }
 
-// Returns the crit multiplier for a spell.
-// https://web.archive.org/web/20081014064638/http://elitistjerks.com/f31/t12595-relentless_earthstorm_diamond_-_melee_only/p4/
-// https://github.com/TheGroxEmpire/TBC_DPS_Warrior_Sim/issues/30
-// TODO "primaryModifiers" could be modelled as a PseudoStat, since they're unit-specific. "secondaryModifiers" apply to a specific set of spells.
-func (character *Character) calculateCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
-}
-func (character *Character) calculateHealingCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
-}
-func (character *Character) SpellCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) MeleeCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateHealingCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) DefaultSpellCritMultiplier() float64 {
-	return character.SpellCritMultiplier(1, 0)
-}
-func (character *Character) DefaultMeleeCritMultiplier() float64 {
-	return character.MeleeCritMultiplier(1, 0)
-}
-func (character *Character) DefaultHealingCritMultiplier() float64 {
-	return character.HealingCritMultiplier(1, 0)
-}
-
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
+
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 
 	switch character.MainHand().ID {
@@ -595,6 +567,9 @@ func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMas
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
+	if pred(character.Ranged()) {
+		mask |= ProcMaskRanged
+	}
 	return mask
 }
 
@@ -615,6 +590,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
 		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
+		// TODO: Fix Dodge and Parry
 		proto.PseudoStat_PseudoStatDodge:                character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
 		proto.PseudoStat_PseudoStatParry:                character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
 		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),

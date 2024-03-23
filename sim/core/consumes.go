@@ -101,7 +101,7 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	}
 
 	if consumes.DragonBreathChili {
-		MakePermanent(DragonBreathChiliAura(&character.Unit))
+		MakePermanent(DragonBreathChiliAura(character))
 	}
 
 	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
@@ -325,10 +325,10 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 	procSpell := character.GetOrRegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 1382},
 		SpellSchool: SpellSchoolShadow,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskSpellDamage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   character.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -373,10 +373,10 @@ func registerFrostOil(character *Character, isMh bool) {
 	procSpell := character.GetOrRegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 1191},
 		SpellSchool: SpellSchoolFrost,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskSpellDamage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   character.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -464,18 +464,18 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
-func DragonBreathChiliAura(unit *Unit) *Aura {
+func DragonBreathChiliAura(character *Character) *Aura {
 	baseDamage := 60.0
 	procChance := .05
 
-	procSpell := unit.RegisterSpell(SpellConfig{
+	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagNone,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -483,7 +483,7 @@ func DragonBreathChiliAura(unit *Unit) *Aura {
 		},
 	})
 
-	aura := unit.GetOrRegisterAura(Aura{
+	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Dragonbreath Chili",
 		ActionID: ActionID{SpellID: 15852},
 		Duration: NeverExpires,
@@ -515,6 +515,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 	return SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: school,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagCastTimeNoGCD,
 
@@ -529,9 +530,9 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		},
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
-		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		BonusHitRating: 100 * SpellHitRatingPerHitChance,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -568,6 +569,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 	return SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolFire,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagCastTimeNoGCD,
 
@@ -584,9 +586,9 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		},
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
-		BonusHitRating:   100 * SpellHitRatingPerHitChance,
+		BonusHitRating: 100 * SpellHitRatingPerHitChance,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		// TODO: This should use another spell (443813) as the DoT

@@ -15,6 +15,7 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 	return core.SpellConfig{
 		ActionID:    actionId,
 		SpellSchool: spellSchool,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagShock | core.SpellFlagAPL,
 
@@ -32,8 +33,9 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 			},
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: shaman.ConcussionMultiplier(),
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 	}
 }

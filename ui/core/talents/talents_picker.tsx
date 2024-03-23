@@ -2,8 +2,8 @@ import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
-import { CopyButton } from '../components/copy_button.js';
 import { Component } from '../components/component.js';
+import { CopyButton } from '../components/copy_button.js';
 import { Input, InputConfig } from '../components/input.js';
 import { Player } from '../player.js';
 import { Class, Spec } from '../proto/common.js';
@@ -13,9 +13,9 @@ import { TypedEvent } from '../typed_event.js';
 import { isRightClick, sum } from '../utils.js';
 
 export interface TalentsPickerConfig<TalentsProto> extends InputConfig<Player<Spec>, string> {
-	klass: Class,
-	trees: TalentsConfig<TalentsProto>,
-	pointsPerRow: number,
+	klass: Class;
+	trees: TalentsConfig<TalentsProto>;
+	pointsPerRow: number;
 }
 
 export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
@@ -35,55 +35,58 @@ export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
 		this.numRows = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.rowIdx).flat()).flat()) + 1;
 		this.numCols = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.colIdx).flat()).flat()) + 1;
 
-		const pointsRemainingElemRef = ref<HTMLSpanElement>();
-		const getPointsRemaining = () => this.maxPoints - player.getTalentTreePoints().reduce((sum, points) => sum + points, 0);
 		const getMaxPoints = () => player.getLevel() - 9;
-
 		this.maxPoints = getMaxPoints();
 
-		const PointsRemainingElem = () => {
-			const pointsRemaining = getPointsRemaining();
-			return <span className="talent-tree-points" ref={pointsRemainingElemRef}>{pointsRemaining}</span>
-		}
+		const getPointsRemaining = (): number => this.maxPoints - player.getTalentTreePoints().reduce((sum, points) => sum + points, 0);
 
-		TypedEvent.onAny([player.levelChangeEmitter, player.talentsChangeEmitter]).on(() => {
-			this.setMaxPoints(getMaxPoints());
-			pointsRemainingElemRef.value!.replaceWith(PointsRemainingElem())
-		});
-
+		const pointsRemainingElemRef = ref<HTMLSpanElement>();
 		const actionsContainerRef = ref<HTMLDivElement>();
+
+		const carouselContainerRef = ref<HTMLDivElement>();
+		const carouselPrevBtnRef = ref<HTMLButtonElement>();
+		const carouselNextBtnRef = ref<HTMLButtonElement>();
+
 		this.rootElem.appendChild(
-			<div id="talents-carousel" className="carousel slide">
+			<div className="talents-picker-inner">
 				<div className="talents-picker-header">
 					<div>
 						<label>Points Remaining:</label>
-						{PointsRemainingElem()}
+						<span className="talent-tree-points" ref={pointsRemainingElemRef}>
+							{getPointsRemaining()}
+						</span>
 					</div>
 					<div className="talents-picker-actions" ref={actionsContainerRef}></div>
 				</div>
-				<div className="carousel-inner">
+				<div id="talents-carousel" className="carousel slide">
+					<div className="carousel-inner" ref={carouselContainerRef}></div>
+					<button className="carousel-control-prev" type="button" ref={carouselPrevBtnRef}>
+						<span className="carousel-control-prev-icon" attributes={{ 'aria-hidden': true }}></span>
+						<span className="visually-hidden">Previous</span>
+					</button>
+					<button className="carousel-control-next" type="button" ref={carouselNextBtnRef}>
+						<span className="carousel-control-next-icon" attributes={{ 'aria-hidden': true }}></span>
+						<span className="visually-hidden">Next</span>
+					</button>
 				</div>
-				<button className="carousel-control-prev" type="button">
-					<span className="carousel-control-prev-icon" attributes={{'aria-hidden':true}}></span>
-					<span className="visually-hidden">Previous</span>
-				</button>
-				<button className="carousel-control-next" type="button">
-					<span className="carousel-control-next-icon" attributes={{'aria-hidden':true}}></span>
-					<span className="visually-hidden">Next</span>
-				</button>
-			</div>
+			</div>,
 		);
+
+		const carouselContainer = carouselContainerRef.value!;
+		const carouselPrevBtn = carouselPrevBtnRef.value!;
+		const carouselNextBtn = carouselNextBtnRef.value!;
+
+		TypedEvent.onAny([player.levelChangeEmitter, player.talentsChangeEmitter]).on(() => {
+			this.setMaxPoints(getMaxPoints());
+			pointsRemainingElemRef.value!.textContent = `${getPointsRemaining()}`;
+		});
 
 		new CopyButton(actionsContainerRef.value!, {
 			extraCssClasses: ['btn-sm', 'btn-outline-primary', 'copy-talents'],
 			getContent: () => player.getTalentsString(),
-			text: "Copy",
-			tooltip: "Copy talent string",
+			text: 'Copy',
+			tooltip: 'Copy talent string',
 		});
-
-		const carouselContainer = this.rootElem.querySelector('.carousel-inner') as HTMLElement;
-		const carouselPrevBtn = this.rootElem.querySelector('.carousel-control-prev') as HTMLButtonElement;
-		const carouselNextBtn = this.rootElem.querySelector('.carousel-control-next') as HTMLButtonElement;
 
 		this.trees = config.trees.map((treeConfig, i) => {
 			const carouselItem = document.createElement('div');
@@ -103,15 +106,15 @@ export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
 			carouselitemIdx += 1;
 			carouselContainer.style.transform = `translateX(${33.3 * carouselitemIdx}%)`;
 			carouselContainer.children[Math.abs(carouselitemIdx - 2) % 3]!.classList.remove('active');
-			carouselContainer.children[Math.abs(carouselitemIdx - 1) % 3]!.classList.add('active')
-		}
+			carouselContainer.children[Math.abs(carouselitemIdx - 1) % 3]!.classList.add('active');
+		};
 		const slideNext = () => {
 			if (carouselitemIdx <= -1) return;
 			carouselitemIdx -= 1;
 			carouselContainer.style.transform = `translateX(${33.3 * carouselitemIdx}%)`;
 			carouselContainer.children[Math.abs(carouselitemIdx) % 3]!.classList.remove('active');
-			carouselContainer.children[Math.abs(carouselitemIdx) + 1 % 3]!.classList.add('active');
-		}
+			carouselContainer.children[Math.abs(carouselitemIdx) + (1 % 3)]!.classList.add('active');
+		};
 
 		carouselPrevBtn.addEventListener('click', slidePrev);
 		carouselNextBtn.addEventListener('click', slideNext);
@@ -124,7 +127,10 @@ export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
 	}
 
 	getInputValue(): string {
-		return this.trees.map(tree => tree.getTalentsString()).join('-').replace(/-+$/g, '');
+		return this.trees
+			.map(tree => tree.getTalentsString())
+			.join('-')
+			.replace(/-+$/g, '');
 	}
 
 	setInputValue(newValue: string) {
@@ -187,7 +193,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 				</div>
 				<div className="talent-tree-background"></div>
 				<div className="talent-tree-main"></div>
-			</>
+			</>,
 		);
 
 		this.title = this.rootElem.getElementsByClassName('talent-tree-title')[0] as HTMLElement;
@@ -201,10 +207,10 @@ class TalentTreePicker<TalentsProto> extends Component {
 		// Add 2 for spacing on the sides
 		main.style.gridTemplateColumns = `repeat(${this.picker.numCols}, 1fr)`;
 
-		const iconSize = '3.5rem'
-		main.style.height = `calc(${iconSize} * ${this.picker.numRows})`
-		main.style.maxWidth = `calc(${iconSize} * ${this.picker.numCols})`
-		this.rootElem.style.maxWidth = `calc(${iconSize} * ${this.picker.numCols + 2})`
+		const iconSize = '3.5rem';
+		main.style.height = `calc(${iconSize} * ${this.picker.numRows})`;
+		main.style.maxWidth = `calc(${iconSize} * ${this.picker.numCols})`;
+		this.rootElem.style.maxWidth = `calc(${iconSize} * ${this.picker.numCols + 2})`;
 
 		this.talents = config.talents.map(talent => new TalentPicker(main, talent, this));
 		// Process parent<->child mapping
@@ -221,15 +227,13 @@ class TalentTreePicker<TalentsProto> extends Component {
 			for (const cl of t.config.childLocations!) {
 				const c = this.getTalent(cl);
 				c.parentReq = t.getChildReqArrow(cl);
-				recurseCalcIdx(c, z-2);
+				recurseCalcIdx(c, z - 2);
 			}
-		}
+		};
 		// Start at top of each heirachy chain and recurse down
 		for (const t of this.talents) {
-			if (t.config.childLocations!.length == 0)
-				continue;
-			if (t.config.prereqLocation !== undefined)
-				continue;
+			if (t.config.childLocations!.length == 0) continue;
+			if (t.config.prereqLocation !== undefined) continue;
 			recurseCalcIdx(t, 20);
 		}
 		const resetBtn = this.rootElem.querySelector('.talent-tree-reset') as HTMLElement;
@@ -243,20 +247,22 @@ class TalentTreePicker<TalentsProto> extends Component {
 	}
 
 	update() {
-		this.title.innerHTML = this.config.name
-		this.pointsElem.textContent = `${this.numPoints} / ${this.getMaxSpendablePoints()}`
+		this.title.innerHTML = this.config.name;
+		this.pointsElem.textContent = `${this.numPoints} / ${this.getMaxSpendablePoints()}`;
 		this.talents.forEach(talent => talent.update());
 	}
 
 	getTalent(location: TalentLocation): TalentPicker<TalentsProto> {
 		const talent = this.talents.find(talent => talent.getRow() == location.rowIdx && talent.getCol() == location.colIdx);
-		if (!talent)
-			throw new Error('No talent found with location: ' + location);
+		if (!talent) throw new Error('No talent found with location: ' + location);
 		return talent;
 	}
 
 	getTalentsString(): string {
-		return this.talents.map(talent => String(talent.getPoints())).join('').replace(/0+$/g, '');
+		return this.talents
+			.map(talent => String(talent.getPoints()))
+			.join('')
+			.replace(/0+$/g, '');
 	}
 
 	setTalentsString(str: string) {
@@ -267,7 +273,6 @@ class TalentTreePicker<TalentsProto> extends Component {
 		return this.picker.maxPoints;
 	}
 }
-
 
 type ReqDir = 'down' | 'right' | 'left' | 'rightdown' | 'leftdown';
 class TalentReqArrow extends Component {
@@ -292,20 +297,19 @@ class TalentReqArrow extends Component {
 		if (parentLoc.rowIdx == childLoc.rowIdx) {
 			this.dir = parentLoc.colIdx < childLoc.colIdx ? 'right' : 'left';
 			this.rootElem.dataset.reqArrowColSize = String(Math.abs(parentLoc.colIdx - childLoc.colIdx));
-			colEnd = this.dir == 'left' ? colEnd+1 : colEnd-1;
+			colEnd = this.dir == 'left' ? colEnd + 1 : colEnd - 1;
 		} else {
 			if (parentLoc.colIdx == childLoc.colIdx) {
 				this.dir = 'down';
 				this.rootElem.dataset.reqArrowRowSize = String(Math.abs(parentLoc.rowIdx - childLoc.rowIdx));
 				rowEnd += 1;
-			}
-			else {
+			} else {
 				this.dir = parentLoc.colIdx < childLoc.colIdx ? 'rightdown' : 'leftdown';
 				this.rootElem.dataset.reqArrowColSize = String(Math.abs(parentLoc.colIdx - childLoc.colIdx));
 				this.rootElem.dataset.reqArrowRowSize = String(Math.abs(parentLoc.rowIdx - childLoc.rowIdx));
 				rowEnd += 1;
-				colEnd = this.dir == 'rightdown' ? colEnd+1 : colEnd-1;
-				this.rootElem.appendChild(<div></div>)
+				colEnd = this.dir == 'rightdown' ? colEnd + 1 : colEnd - 1;
+				this.rootElem.appendChild(<div></div>);
 			}
 		}
 
@@ -324,10 +328,8 @@ class TalentReqArrow extends Component {
 	}
 
 	setReqFufilled(isFufilled: boolean) {
-		if (isFufilled)
-			this.rootElem.dataset.reqActive = 'true';
-		else
-			delete this.rootElem.dataset.reqActive;
+		if (isFufilled) this.rootElem.dataset.reqActive = 'true';
+		else delete this.rootElem.dataset.reqActive;
 	}
 }
 
@@ -387,7 +389,7 @@ class TalentPicker<TalentsProto> extends Component {
 			} else {
 				return;
 			}
-			var newPoints = this.getPoints() + 1;
+			let newPoints = this.getPoints() + 1;
 			if (this.config.maxPoints < newPoints) {
 				newPoints = 0;
 			}
@@ -406,8 +408,7 @@ class TalentPicker<TalentsProto> extends Component {
 	}
 
 	initChildReqs(): void {
-		if (this.config.childLocations!.length == 0)
-			return;
+		if (this.config.childLocations!.length == 0) return;
 
 		for (const c of this.config.childLocations!) {
 			this.childReqs.push(new TalentReqArrow(this.rootElem.parentElement!, this.config.location, c));
@@ -415,12 +416,12 @@ class TalentPicker<TalentsProto> extends Component {
 	}
 
 	getChildReqArrow(loc: TalentLocation): TalentReqArrow {
-		for (let c of this.childReqs) {
+		for (const c of this.childReqs) {
 			if (c.childLoc === loc) {
 				return c;
 			}
 		}
-		throw Error("missing child prereq?");
+		throw Error('missing child prereq?');
 	}
 
 	get zIndex() {
@@ -432,7 +433,7 @@ class TalentPicker<TalentsProto> extends Component {
 		this.rootElem.style.zIndex = String(this.zIdx);
 
 		for (const c of this.childReqs) {
-			c.zIndex = this.zIdx-1;
+			c.zIndex = this.zIdx - 1;
 		}
 	}
 
@@ -469,8 +470,7 @@ class TalentPicker<TalentsProto> extends Component {
 			}
 
 			if (this.config.prereqLocation) {
-				if (!this.tree.getTalent(this.config.prereqLocation).isFull())
-					return false;
+				if (!this.tree.getTalent(this.config.prereqLocation).isFull()) return false;
 			}
 		} else {
 			const removedPoints = oldPoints - newPoints;
@@ -484,16 +484,19 @@ class TalentPicker<TalentsProto> extends Component {
 
 			const cumulativeTotalsByRow = pointTotalsByRow.map((_, rowIdx) => sum(pointTotalsByRow.slice(0, rowIdx + 1)));
 
-			if (!this.tree.talents.every(talent =>
-				talent.getPoints() == 0
-				|| talent.getRow() == 0
-				|| cumulativeTotalsByRow[talent.getRow() - 1] >= talent.getRow() * this.tree.picker.pointsPerRow)) {
+			if (
+				!this.tree.talents.every(
+					talent =>
+						talent.getPoints() == 0 ||
+						talent.getRow() == 0 ||
+						cumulativeTotalsByRow[talent.getRow() - 1] >= talent.getRow() * this.tree.picker.pointsPerRow,
+				)
+			) {
 				return false;
 			}
 
 			for (const c of this.config.childLocations!) {
-				if (this.tree.getTalent(c).getPoints() > 0)
-					return false;
+				if (this.tree.getTalent(c).getPoints() > 0) return false;
 			}
 		}
 		return true;
@@ -504,8 +507,7 @@ class TalentPicker<TalentsProto> extends Component {
 		newPoints = Math.max(0, newPoints);
 		newPoints = Math.min(this.config.maxPoints, newPoints);
 
-		if (checkValidity && !this.canSetPoints(newPoints))
-			return;
+		if (checkValidity && !this.canSetPoints(newPoints)) return;
 
 		this.tree.numPoints += newPoints - oldPoints;
 		this.rootElem.dataset.points = String(newPoints);
@@ -519,10 +521,12 @@ class TalentPicker<TalentsProto> extends Component {
 		}
 
 		const spellId = this.getSpellIdForPoints(newPoints);
-		ActionId.fromSpellId(spellId).fill().then(actionId => {
-			actionId.setWowheadHref(this.rootElem as HTMLAnchorElement);
-			this.rootElem.style.backgroundImage = `url('${actionId.iconUrl}')`;
-		});
+		ActionId.fromSpellId(spellId)
+			.fill()
+			.then(actionId => {
+				actionId.setWowheadHref(this.rootElem as HTMLAnchorElement);
+				this.rootElem.style.backgroundImage = `url('${actionId.iconUrl}')`;
+			});
 	}
 
 	getSpellIdForPoints(numPoints: number): number {
@@ -537,7 +541,7 @@ class TalentPicker<TalentsProto> extends Component {
 	}
 
 	update() {
-		let canSetPoints = this.canSetPoints(this.getPoints() + 1);
+		const canSetPoints = this.canSetPoints(this.getPoints() + 1);
 		if (canSetPoints) {
 			this.rootElem.classList.add('talent-picker-can-add');
 		} else {
@@ -590,7 +594,10 @@ export function newTalentsConfig<TalentsProto>(talents: TalentsConfig<TalentsPro
 			// Validate that talents are given in the correct order (left-to-right top-to-bottom).
 			if (i != 0) {
 				const prevTalent = tree.talents[i - 1];
-				if (talent.location.rowIdx < prevTalent.location.rowIdx || (talent.location.rowIdx == prevTalent.location.rowIdx && talent.location.colIdx <= prevTalent.location.colIdx)) {
+				if (
+					talent.location.rowIdx < prevTalent.location.rowIdx ||
+					(talent.location.rowIdx == prevTalent.location.rowIdx && talent.location.colIdx <= prevTalent.location.colIdx)
+				) {
 					throw new Error(`Out-of-order talent: ${String(talent.fieldName)}`);
 				}
 			}

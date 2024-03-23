@@ -23,11 +23,11 @@ func (shaman *Shaman) applyAncestralGuidance() {
 	agDamageSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409337}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagIgnoreResists,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 	})
 

@@ -179,6 +179,15 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
+func (character *Character) IsTanking() bool {
+	for _, target := range character.Env.Encounter.TargetUnits {
+		if target.CurrentTarget == &character.Unit {
+			return true
+		}
+	}
+	return false
+}
+
 func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 	if weapon == nil {
 		return 0
@@ -251,6 +260,10 @@ type AttackTable struct {
 	MeleeCritSuppression float64
 	SpellCritSuppression float64
 
+	// All "Apply Aura: Mod All Damage Done Against Creature" effects in Vanilla and TBC also increase the CritMultiplier.
+	//  Explicitly for hunters' "Monster Slaying" and "Humanoid Slaying", but likewise for rogues' "Murder", or trolls' "Beastslaying".
+	CritMultiplier float64
+
 	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
 	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
 	NatureDamageTakenMultiplier  float64
@@ -264,6 +277,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		Attacker: attacker,
 		Defender: defender,
 		Weapon:   weapon,
+
+		CritMultiplier: 1,
 
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,

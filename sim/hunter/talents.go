@@ -31,11 +31,13 @@ func (hunter *Hunter) ApplyTalents() {
 					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
 					for _, at := range hunter.AttackTables[t.UnitIndex] {
 						at.DamageDealtMultiplier *= multiplier
+						at.CritMultiplier *= multiplier
 					}
 				case proto.MobType_MobTypeBeast, proto.MobType_MobTypeGiant, proto.MobType_MobTypeDragonkin:
 					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
 					for _, at := range hunter.AttackTables[t.UnitIndex] {
 						at.DamageDealtMultiplier *= multiplier
+						at.CritMultiplier *= multiplier
 					}
 				}
 			}
@@ -68,25 +70,6 @@ func (hunter *Hunter) ApplyTalents() {
 		agiBonus := 0.03 * float64(hunter.Talents.LightningReflexes)
 		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
 	}
-}
-
-func (hunter *Hunter) critMultiplier(isRanged bool, target *core.Unit) float64 {
-	primaryModifier := 1.0
-	secondaryModifier := 0.0
-
-	monsterMultiplier := 1.0 + 0.01*float64(hunter.Talents.MonsterSlaying)
-	humanoidMultiplier := 1.0 + 0.01*float64(hunter.Talents.HumanoidSlaying)
-	if target.MobType == proto.MobType_MobTypeBeast || target.MobType == proto.MobType_MobTypeGiant || target.MobType == proto.MobType_MobTypeDragonkin {
-		primaryModifier *= monsterMultiplier
-	} else if target.MobType == proto.MobType_MobTypeHumanoid {
-		primaryModifier *= humanoidMultiplier
-	}
-
-	if isRanged {
-		secondaryModifier += 0.06 * float64(hunter.Talents.MortalShots)
-	}
-
-	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
 }
 
 func (hunter *Hunter) applyFrenzy() {
@@ -168,4 +151,8 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Spell: bwSpell,
 		Type:  core.CooldownTypeDPS,
 	})
+}
+
+func (hunter *Hunter) mortalShots() float64 {
+	return 0.06 * float64(hunter.Talents.MortalShots)
 }

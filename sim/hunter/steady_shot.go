@@ -22,6 +22,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 437123},
 		SpellSchool:  core.SpellSchoolPhysical,
+		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		CastType:     proto.CastType_CastTypeRanged,
@@ -48,11 +49,10 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating:          0,
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         0.75,
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
-		ThreatMultiplier:         1,
+		CritDamageBonus: hunter.mortalShots(),
+
+		DamageMultiplier: 0.75,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) +

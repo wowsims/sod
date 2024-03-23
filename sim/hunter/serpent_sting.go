@@ -19,6 +19,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
+		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison,
 		CastType:      proto.CastType_CastTypeRanged,
@@ -40,8 +41,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -67,6 +68,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// Reports of Bow of Searing Arrows proccing from SS applications means it has a hit event
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
@@ -85,12 +87,16 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
+		DefenseType: core.DefenseTypeRanged,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics,
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		DamageMultiplier:         1,
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
+
+		BonusCritRating:          1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
+
+		CritDamageBonus: hunter.mortalShots(),
+
+		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -100,10 +106,8 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 	})
 }
 
-const SERPENT_STING_MAX_RANK = 9
-
 func (hunter *Hunter) registerSerpentStingSpell() {
-	for i := SERPENT_STING_MAX_RANK; i >= 0; i-- {
+	for i := 9; i >= 0; i-- {
 		config := hunter.getSerpentStingConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {

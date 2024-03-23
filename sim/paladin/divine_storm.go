@@ -25,6 +25,7 @@ func (paladin *Paladin) registerDivineStormSpell() {
 	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -43,8 +44,8 @@ func (paladin *Paladin) registerDivineStormSpell() {
 		},
 
 		DamageMultiplier: 1.1,
-		CritMultiplier:   paladin.MeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			totalDamageDealt := 0.0

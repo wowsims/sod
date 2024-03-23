@@ -332,3 +332,7 @@ func (warrior *Warrior) registerLastStandCD() {
 		Type:  core.CooldownTypeSurvival,
 	})
 }
+
+func (warrior *Warrior) impale() float64 {
+	return 0.1 * float64(warrior.Talents.Impale)
+}

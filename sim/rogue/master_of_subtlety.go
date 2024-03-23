@@ -25,7 +25,7 @@ func (rogue *Rogue) registerMasterOfSubtlety() {
 			rogue.PseudoStats.DamageDealtMultiplier *= 1.1
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageDealtMultiplier *= 1 / 1.1
+			rogue.PseudoStats.DamageDealtMultiplier /= 1.1
 		},
 	})
 }

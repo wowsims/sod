@@ -183,8 +183,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 				spell.CostMultiplier += 1
 			})
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) || spell.ActionID.Tag == CastTagOverload {
 				return
 			}
 			// Remove the buff and put skill on CD
@@ -338,6 +338,10 @@ func (shaman *Shaman) applyFlurry() {
 			}
 		},
 	})
+}
+
+func (shaman *Shaman) elementalFury() float64 {
+	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
 }
 
 // func (shaman *Shaman) registerManaTideTotemCD() {

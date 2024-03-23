@@ -14,6 +14,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 	warrior.Bloodthirst = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 23894},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | SpellFlagBloodSurge,
 
@@ -32,8 +33,9 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 			},
 		},
 
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

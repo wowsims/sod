@@ -40,6 +40,7 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		RequiredLevel: level,
@@ -57,10 +58,11 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 			CD: *paladin.HolyShockCooldown,
 		},
 
+		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.SpellCritMultiplier(),
-		BonusCritRating:  paladin.getBonusCritChanceFromHolyPower(),
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

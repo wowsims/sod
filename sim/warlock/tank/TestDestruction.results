@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.18106
+  weights: -1.14823
   weights: 0
-  weights: 0.00592
-  weights: 0
-  weights: 0
+  weights: 0.06471
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.03509
-  weights: 3.36039
+  weights: 0
+  weights: 0
+  weights: 7.07707
+  weights: 3.18812
   weights: 0
   weights: 0
   weights: 0
@@ -197,43 +197,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 67.56867
-  tps: 99.02966
+  dps: 78.77358
+  tps: 115.60076
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 65.20902
-  tps: 77.70903
+  dps: 79.77802
+  tps: 99.05169
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 160.34599
-  tps: 320.75226
+  dps: 160.4229
+  tps: 320.86762
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-IrradiatedGarments"
  value: {
-  dps: 66.09709
-  tps: 72.94999
+  dps: 84.97515
+  tps: 102.4869
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 75.86337
-  tps: 101.61068
+  dps: 88.67705
+  tps: 120.8312
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 163.96062
-  tps: 335.08301
+  dps: 164.06768
+  tps: 335.24361
  }
 }
 dps_results: {
@@ -281,43 +281,43 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 163.52913
-  tps: 334.31316
+  dps: 163.60604
+  tps: 334.42853
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 93.67464
-  tps: 108.66654
+  dps: 112.79519
+  tps: 134.22598
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 99.44365
-  tps: 114.93579
+  dps: 119.9896
+  tps: 143.73121
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 98.78533
-  tps: 110.66892
+  dps: 121.5031
+  tps: 145.90716
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 95.70414
-  tps: 114.40027
+  dps: 116.59103
+  tps: 143.50563
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 531.72583
-  tps: 1257.73728
+  dps: 563.28936
+  tps: 1309.59776
  }
 }
 dps_results: {
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 534.41827
-  tps: 1263.00792
+  dps: 556.48578
+  tps: 1298.97997
  }
 }

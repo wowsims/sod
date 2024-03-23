@@ -31,6 +31,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL | SpellFlagColdBlooded,
 		EnergyCost: core.EnergyCostOptions{
@@ -49,8 +50,9 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: rogue.lethality(),
+
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

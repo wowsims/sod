@@ -37,6 +37,7 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 	return priest.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: 402284},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      procMask,
 		Flags:         flags,
 		RequiredLevel: 1,
@@ -54,13 +55,9 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			},
 		},
 
-		BonusCritRating:  priest.holySpecCritRating() + priest.forceOfWillCritRating(),
+		BonusCritRating: priest.holySpecCritRating() + priest.forceOfWillCritRating(),
+
 		DamageMultiplier: 1,
-		CritMultiplier: core.TernaryFloat64(
-			isHeal,
-			priest.DefaultHealingCritMultiplier(),
-			priest.DefaultSpellCritMultiplier(),
-		),
 		ThreatMultiplier: 0,
 
 		Dot: core.Ternary(!isHeal, core.DotConfig{

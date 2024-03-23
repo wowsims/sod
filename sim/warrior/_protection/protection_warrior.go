@@ -50,8 +50,8 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 
 	war.EnableRageBar(rbo)
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-		OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
+		MainHand:       war.WeaponFromMainHand(),
+		OffHand:        war.WeaponFromOffHand(),
 		AutoSwingMelee: true,
 		ReplaceMHSwing: war.TryHSOrCleave,
 	})

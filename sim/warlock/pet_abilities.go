@@ -29,6 +29,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -43,8 +44,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 			},
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(wp.owner.Talents.ImprovedImp)),
-		CritMultiplier:   wp.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1 + 0.1*float64(wp.owner.Talents.ImprovedImp),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -77,6 +77,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		RequiredLevel: level,
 		Rank:          rank,
@@ -96,7 +97,6 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   wp.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -112,6 +112,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 // 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 // 		ActionID:    core.ActionID{SpellID: 47994},
 // 		SpellSchool: core.SpellSchoolPhysical,
+//      DefenseType: core.DefenseTypeMelee,
 // 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 // 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -130,7 +131,6 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 // 		},
 
 // 		DamageMultiplier: 1,
-// 		CritMultiplier:   2,
 // 		ThreatMultiplier: 1,
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -163,6 +163,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 // 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 // 		ActionID:    actionID,
 // 		SpellSchool: core.SpellSchoolShadow,
+//      DefenseType: core.DefenseTypeMagic,
 // 		ProcMask:    core.ProcMaskSpellDamage,
 
 // 		ManaCost: core.ManaCostOptions{
@@ -180,8 +181,9 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 // 			},
 // 		},
 
+//      BonusCritDamage: wp.owner.ruin(),
+
 // 		DamageMultiplier: 1 + 0.03*float64(wp.owner.Talents.ShadowMastery),
-// 		CritMultiplier:   1.5 + 0.1*float64(wp.owner.Talents.Ruin),
 // 		ThreatMultiplier: 1,
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

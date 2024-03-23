@@ -122,13 +122,9 @@ func init() {
 			Label:    "Gneuro-Logical Shock",
 			ActionID: actionId,
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.2)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.2)
-			},
 		})
+
+		ee := NewSodCraftedAttackSpeedEffect(buffAura, 1.2)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionId,
@@ -145,16 +141,18 @@ func init() {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// TODO: Verify if this can crit
-				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(343, 757), spell.OutcomeMagicCrit)
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(343, 757), spell.OutcomeAlwaysHit)
 				if sim.Log != nil {
 					character.Log(sim, "Took %.1f damage from Gneuro-Logical Shock.", result.Damage)
 				}
 				character.RemoveHealth(sim, result.Damage)
 				buffAura.Activate(sim)
+			},
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return !ee.Category.AnyActive()
 			},
 		})
 
@@ -264,11 +262,9 @@ func init() {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// TODO: Verify if this can crit
-				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeMagicCrit)
+				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeAlwaysHit)
 				character.RemoveHealth(sim, result.Damage)
 				buffAura.Activate(sim)
 			},

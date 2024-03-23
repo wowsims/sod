@@ -17,6 +17,7 @@ HTML_INDECIES := ui/balance_druid/index.html \
 				 ui/hunter/index.html \
 				 ui/mage/index.html \
 				 ui/rogue/index.html \
+				 ui/tank_rogue/index.html \
 				 ui/holy_paladin/index.html \
 				 ui/protection_paladin/index.html \
 				 ui/retribution_paladin/index.html \
@@ -148,7 +149,7 @@ binary_dist: $(OUT_DIR)/.dirstamp
 proto: sim/core/proto/api.pb.go ui/core/proto/api.ts
 
 # Builds the web server with the compiled client.
-.PHONY: wowsimwclassic
+.PHONY: wowsimsod
 wowsimsod: binary_dist devserver
 
 .PHONY: devserver

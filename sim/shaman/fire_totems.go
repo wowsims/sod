@@ -44,6 +44,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_SearingTotem,
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
@@ -62,8 +63,9 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -133,6 +135,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_MagmaTotem,
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
@@ -151,8 +154,9 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -227,6 +231,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		SpellCode:   SpellCode_FireNovaTotem,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
@@ -250,8 +255,9 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 
 		Dot: core.DotConfig{
 			IsAOE: true,

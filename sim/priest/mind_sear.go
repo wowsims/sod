@@ -53,10 +53,9 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
-		BonusCritRating:  0,
+		BonusHitRating: priest.shadowHitModifier(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -89,7 +88,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 
 func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 	level := float64(priest.Level)
-	baseDamage := (9.456667 + 0.635108*level + 0.039063*level*level)
+	baseDamage := 9.456667 + 0.635108*level + 0.039063*level*level
 	baseDamageLow := baseDamage * .7 * priest.darknessDamageModifier()
 	baseDamageHigh := baseDamage * .78 * priest.darknessDamageModifier()
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
@@ -97,17 +96,18 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 	return priest.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 413260}.WithTag(numTicks),
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 
-		BonusHitRating:   1, // Not an independent hit once initial lands
-		BonusCritRating:  priest.forceOfWillCritRating(),
+		BonusHitRating:  1, // Not an independent hit once initial lands
+		BonusCritRating: priest.forceOfWillCritRating(),
+
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		CritMultiplier:   1,
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh) + (spellCoeff * spell.SpellDamage())
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

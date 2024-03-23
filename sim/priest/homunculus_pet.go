@@ -58,10 +58,9 @@ func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 	homunculus.EnableAutoAttacks(homunculus, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			// TODO: Check stats
-			BaseDamageMin:  baseDamageMin,
-			BaseDamageMax:  baseDamageMax,
-			SwingSpeed:     2,
-			CritMultiplier: priest.DefaultMeleeCritMultiplier(),
+			BaseDamageMin: baseDamageMin,
+			BaseDamageMax: baseDamageMax,
+			SwingSpeed:    2,
 		},
 		AutoSwingMelee: true,
 	})

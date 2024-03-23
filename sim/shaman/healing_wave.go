@@ -58,6 +58,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_ShamanHealingWave,
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       flags,
 
@@ -80,9 +81,10 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .02*float64(shaman.Talents.Purification)),
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+
+		CritDamageBonus: shaman.elementalFury(),
+
+		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

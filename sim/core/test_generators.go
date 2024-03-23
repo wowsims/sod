@@ -442,10 +442,9 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 				TalentsString: config.Talents,
 				Profession1:   proto.Profession_Engineering,
 				Rotation:      config.Rotation.Rotation,
-				Cooldowns:     config.Cooldowns,
 
 				InFrontOfTarget:    config.InFrontOfTarget,
-				DistanceFromTarget: 30,
+				DistanceFromTarget: 5,
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			},

@@ -23,7 +23,7 @@ type APLValueWarlockShouldRecastDrainSoul struct {
 	warlock *Warlock
 }
 
-func (warlock *Warlock) newValueWarlockShouldRecastDrainSoul(rot *core.APLRotation, config *proto.APLValueWarlockShouldRecastDrainSoul) core.APLValue {
+func (warlock *Warlock) newValueWarlockShouldRecastDrainSoul(_ *core.APLRotation, _ *proto.APLValueWarlockShouldRecastDrainSoul) core.APLValue {
 	return &APLValueWarlockShouldRecastDrainSoul{
 		warlock: warlock,
 	}
@@ -114,19 +114,20 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 		return true
 	}
 
+	attackTable := warlock.AttackTables[target.UnitIndex][dot.Spell.CastType]
+
 	// check if reapplying corruption is worthwhile
 	snapshotCrit := dot.SnapshotCritChance
-	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(warlock.Corruption.CritMultiplier-1) + 1)
+	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(warlock.Corruption.CritMultiplier(attackTable)-1) + 1)
 
-	attackTable := warlock.AttackTables[target.UnitIndex][dot.Spell.CastType]
 	curCrit := warlock.Corruption.SpellCritChance(target)
-	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(warlock.Corruption.CritMultiplier-1) + 1)
+	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(warlock.Corruption.CritMultiplier(attackTable)-1) + 1)
 
 	relDmgInc := curDmg / snapshotMult
 
 	snapshotDmg := warlock.Corruption.ExpectedTickDamageFromCurrentSnapshot(sim, target)
 	snapshotDmg *= float64(sim.GetRemainingDuration()) / float64(dot.TickPeriod())
-	snapshotDmg *= (relDmgInc - 1)
+	snapshotDmg *= relDmgInc - 1
 	snapshotDmg -= warlock.Corruption.ExpectedTickDamageFromCurrentSnapshot(sim, target)
 
 	//if sim.Log != nil {

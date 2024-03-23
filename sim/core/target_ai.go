@@ -21,10 +21,9 @@ func (target *Target) initialize(config *proto.Target) {
 		if config.SwingSpeed > 0 {
 			aaOptions := AutoAttackOptions{
 				MainHand: Weapon{
-					BaseDamageMin:  config.MinBaseDamage,
-					SwingSpeed:     config.SwingSpeed,
-					CritMultiplier: 2,
-					SpellSchool:    SpellSchoolFromProto(config.SpellSchool),
+					BaseDamageMin: config.MinBaseDamage,
+					SwingSpeed:    config.SwingSpeed,
+					SpellSchool:   SpellSchoolFromProto(config.SpellSchool),
 				},
 				AutoSwingMelee: true,
 			}
@@ -57,6 +56,12 @@ func (target *Target) ApplyTalents()                     {}
 func (target *Target) ApplyRunes()                       {}
 func (target *Target) GetCharacter() *Character          { return nil }
 func (target *Target) Initialize()                       {}
+
+func (target *Target) ExecuteCustomRotation(sim *Simulation) {
+	if target.AI != nil {
+		target.AI.ExecuteCustomRotation(sim)
+	}
+}
 
 type AIFactory func() TargetAI
 

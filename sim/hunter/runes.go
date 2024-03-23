@@ -125,12 +125,20 @@ func (hunter *Hunter) applySniperTraining() {
 				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
 					spell.BonusCritRating += 10 * core.CritRatingPerCritChance
 				}
+				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just add 20 here
+				if spell.ActionID.SpellID == 409493 {
+					spell.BonusCritRating += 20 * core.CritRatingPerCritChance
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range aura.Unit.Spellbook {
 				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
 					spell.BonusCritRating -= 10 * core.CritRatingPerCritChance
+				}
+				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just remove 20 here
+				if spell.ActionID.SpellID == 409493 {
+					spell.BonusCritRating -= 20 * core.CritRatingPerCritChance
 				}
 			}
 		},

@@ -28,6 +28,7 @@ func (rogue *Rogue) registerEnvenom() {
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		SpellSchool:  core.SpellSchoolNature,
+		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL | core.SpellFlagPoison,
 		MetricSplits: 6,
@@ -50,7 +51,6 @@ func (rogue *Rogue) registerEnvenom() {
 		},
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

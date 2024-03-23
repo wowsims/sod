@@ -19,10 +19,10 @@ func init() {
 		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 18796},
 			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			Dot: core.DotConfig{
@@ -58,17 +58,35 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(2164, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
 
+	itemhelpers.CreateWeaponProcSpell(2825, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 29638},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeRanged,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dmg := sim.Roll(18, 26)
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedCritOnly)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcAura(7717, "Ravager", 1.0, func(character *core.Character) *core.Aura {
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}
 		auraActionID := core.ActionID{SpellID: 433801}
 
 		ravegerBladestormTickSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         tickActionID,
-			SpellSchool:      core.SpellSchoolPhysical,
-			ProcMask:         core.ProcMaskMeleeMHSpecial,
+			ActionID:    tickActionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := 5.0 +
@@ -162,10 +180,10 @@ func init() {
 		singleTargetSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    procActionID.WithTag(1),
 			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 0.5,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

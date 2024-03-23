@@ -128,7 +128,7 @@ func (mage *Mage) applyFrostTalents() {
 		critBonus := .20 * float64(mage.Talents.IceShards)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.CritMultiplier = mage.MageCritMultiplier(critBonus)
+				spell.CritDamageBonus += critBonus
 			}
 		})
 	}
@@ -209,7 +209,7 @@ func (mage *Mage) applyArcaneConcentration() {
 
 			procChance := 0.02 * float64(mage.Talents.ArcaneConcentration)
 
-			// TODO: Classic verify arcane missle proc chance
+			// TODO: Classic verify arcane missile proc chance
 			// Arcane Missile ticks can proc CC, just at a low rate of about 1.5% with 5/5 Arcane Concentration
 			// if spell == mage.ArcaneMissilesTickSpell {
 			// 	procChance *= 0.15

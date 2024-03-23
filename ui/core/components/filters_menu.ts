@@ -1,32 +1,15 @@
-import {
-	ArmorType,
-	ItemSlot,
-} from '../proto/common.js';
-import {
-	SourceFilterOption,
-	UIItem_FactionRestriction,
-} from '../proto/ui.js';
-import {
-	armorTypeNames,
-	rangedWeaponTypeNames,
-	sourceNames,
-	weaponTypeNames,
-} from '../proto_utils/names.js';
-import {
-	classToEligibleRangedWeaponTypes,
-	classToEligibleWeaponTypes,
-	classToMaxArmorType,
-	canDualWield,
-} from '../proto_utils/utils.js';
 import { Player } from '../player.js';
+import { ArmorType, ItemSlot } from '../proto/common.js';
+import { SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
+import { armorTypeNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
+import { canDualWield, classToEligibleRangedWeaponTypes, classToEligibleWeaponTypes, classToMaxArmorType } from '../proto_utils/utils.js';
 import { Sim } from '../sim.js';
 import { EventID } from '../typed_event.js';
 import { getEnumValues } from '../utils.js';
-
-import { BooleanPicker } from './boolean_picker.js';
-import { NumberPicker } from './number_picker.js';
 import { BaseModal } from './base_modal.js';
+import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
+import { NumberPicker } from './number_picker.js';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',
@@ -42,11 +25,7 @@ export class FiltersMenu extends BaseModal {
 
 		new EnumPicker(section, player.sim, {
 			extraCssClasses: ['w-50'],
-			values: [
-				UIItem_FactionRestriction.UNSPECIFIED,
-				UIItem_FactionRestriction.ALLIANCE_ONLY,
-				UIItem_FactionRestriction.HORDE_ONLY
-			].map((restriction) => {
+			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
 					name: factionRestrictionsToLabels[restriction],
 					value: restriction,

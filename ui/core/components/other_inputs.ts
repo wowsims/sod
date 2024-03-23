@@ -1,13 +1,12 @@
-import {BooleanPicker} from '../components/boolean_picker.js';
-import { CURRENT_PHASE } from '../constants/other.js';
-import {UnitReference} from '../proto/common.js';
-import {Player} from '../player.js';
-import {Sim} from '../sim.js';
-import {EventID} from '../typed_event.js';
-import {emptyUnitReference} from '../proto_utils/utils.js';
-
-import { EnumPicker } from './enum_picker.js';
+import { BooleanPicker } from '../components/boolean_picker.js';
 import { CURRENT_LEVEL_CAP } from '../constants/mechanics.js';
+import { CURRENT_PHASE } from '../constants/other.js';
+import { Player } from '../player.js';
+import { UnitReference } from '../proto/common.js';
+import { emptyUnitReference } from '../proto_utils/utils.js';
+import { Sim } from '../sim.js';
+import { EventID } from '../typed_event.js';
+import { EnumPicker } from './enum_picker.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
@@ -73,7 +72,7 @@ export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim
 export const ReactionTime = {
 	type: 'number' as const,
 	label: 'Reaction Time',
-	labelTooltip: 'Reaction time of the player, in milliseconds. Used with certain APL values (such as \'Aura Is Active With Reaction Time\').',
+	labelTooltip: "Reaction time of the player, in milliseconds. Used with certain APL values (such as 'Aura Is Active With Reaction Time').",
 	changedEvent: (player: Player<any>) => player.miscOptionsChangeEmitter,
 	getValue: (player: Player<any>) => player.getReactionTime(),
 	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -84,7 +83,8 @@ export const ReactionTime = {
 export const ChannelClipDelay = {
 	type: 'number' as const,
 	label: 'Channel Clip Delay',
-	labelTooltip: 'Clip delay following channeled spells, in milliseconds. This delay occurs following any full or partial channel ending after the GCD becomes available, due to the player not being able to queue the next spell.',
+	labelTooltip:
+		'Clip delay following channeled spells, in milliseconds. This delay occurs following any full or partial channel ending after the GCD becomes available, due to the player not being able to queue the next spell.',
 	changedEvent: (player: Player<any>) => player.miscOptionsChangeEmitter,
 	getValue: (player: Player<any>) => player.getChannelClipDelay(),
 	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -116,13 +116,10 @@ export const DistanceFromTarget = {
 
 export const TankAssignment = {
 	type: 'enum' as const,
-	extraCssClasses: [
-		'tank-selector',
-		'threat-metrics',
-		'within-raid-sim-hide',
-	],
+	extraCssClasses: ['tank-selector', 'threat-metrics', 'within-raid-sim-hide'],
 	label: 'Tank Assignment',
-	labelTooltip: 'Determines which mobs will be tanked. Most mobs default to targeting the Main Tank, but in preset multi-target encounters this is not always true.',
+	labelTooltip:
+		'Determines which mobs will be tanked. Most mobs default to targeting the Main Tank, but in preset multi-target encounters this is not always true.',
 	values: [
 		{ name: 'None', value: -1 },
 		{ name: 'Main Tank', value: 0 },

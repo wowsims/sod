@@ -54,6 +54,7 @@ func (druid *Druid) applyStarsurge() {
 		ActionID:    actionID,
 		SpellCode:   SpellCode_DruidStarsurge,
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
@@ -73,9 +74,9 @@ func (druid *Druid) applyStarsurge() {
 			},
 		},
 
+		CritDamageBonus: druid.vengeance(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.VengeanceCritMultiplier(),
-		BonusCritRating:  0,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

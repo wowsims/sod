@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -191,4 +192,29 @@ func (value *APLValueCurrentComboPoints) GetInt(sim *Simulation) int32 {
 }
 func (value *APLValueCurrentComboPoints) String() string {
 	return "Current Combo Points"
+}
+
+type APLValueTimeToEnergyTick struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueTimeToEnergyTick(config *proto.APLValueTimeToEnergyTick) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		return nil
+	}
+	return &APLValueTimeToEnergyTick{
+		unit: unit,
+	}
+}
+func (value *APLValueTimeToEnergyTick) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueTimeToEnergyTick) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.NextEnergyTickAt() - sim.CurrentTime
+}
+func (value *APLValueTimeToEnergyTick) String() string {
+	return "Time to Next Energy Tick"
 }

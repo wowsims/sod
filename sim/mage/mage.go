@@ -59,15 +59,16 @@ type Mage struct {
 	ArcaneSurge             *core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
-	Ignite                  *core.Spell
-	LivingBomb              *core.Spell
-	LivingFlame             *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
 	IceLance                *core.Spell
+	Ignite                  *core.Spell
+	LivingBomb              *core.Spell
+	LivingFlame             *core.Spell
+	ManaGem                 []*core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
 	SpellfrostBolt          *core.Spell
@@ -83,8 +84,6 @@ type Mage struct {
 	HotStreakAura       *core.Aura
 	ImprovedScorchAuras core.AuraArray
 	MissileBarrageAura  *core.Aura
-
-	CritDebuffCategories core.ExclusiveCategoryArray
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -119,7 +118,8 @@ func (mage *Mage) Initialize() {
 	mage.registerBlizzardSpell()
 	mage.registerFlamestrikeSpell()
 
-	mage.registerEvocationSpell()
+	mage.registerEvocationCD()
+	mage.registerManaGemCD()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -153,9 +153,4 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 func (mage *Mage) HasRune(rune proto.MageRune) bool {
 	return mage.HasRuneById(int32(rune))
-}
-
-func (mage *Mage) MageCritMultiplier(secondary float64) float64 {
-	critBonus := core.TernaryFloat64(mage.HasRune(proto.MageRune_RuneFeetSpellPower), .5, 0) + secondary
-	return mage.SpellCritMultiplier(1, critBonus)
 }

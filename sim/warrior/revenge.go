@@ -47,6 +47,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	warrior.Revenge = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -68,8 +69,9 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 			return warrior.StanceMatches(DefensiveStance) && warrior.revengeProcAura.IsActive()
 		},
 
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
 
