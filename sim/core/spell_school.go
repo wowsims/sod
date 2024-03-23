@@ -166,11 +166,10 @@ func (unit *Unit) GetSchoolDamageTakenMultiplier(spell *Spell) float64 {
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolDamageTakenMultiplier)
 }
 
-// Get school crit taken multiplier.
-// Returns highest multiplier if spell is multi school.
-func (unit *Unit) GetCritTakenMultiplier(spell *Spell) float64 {
+// Returns highest if spell is multi school.
+func (unit *Unit) GetSchoolCritTakenChance(spell *Spell) float64 {
 	if !spell.SchoolIndex.IsMultiSchool() {
-		return unit.PseudoStats.SchoolCritTakenMultiplier[spell.SchoolIndex]
+		return unit.PseudoStats.SchoolCritTakenChance[spell.SchoolIndex]
 	}
-	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenMultiplier)
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenChance)
 }

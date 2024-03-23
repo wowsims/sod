@@ -121,9 +121,10 @@ func (schoolIndex SchoolIndex) IsMultiSchool() bool {
 	return schoolIndex == SchoolIndexMultischool
 }
 
-func NewSchoolFloatArray() [SchoolLen]float64 {
+func NewSchoolFloatArray(defaultVal float64) [SchoolLen]float64 {
+	d := defaultVal
 	return [SchoolLen]float64{
-		1, 1, 1, 1, 1, 1, 1, 1,
+		d, d, d, d, d, d, d, d,
 	}
 }
 
@@ -430,8 +431,6 @@ type PseudoStats struct {
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
 	BonusRangedAttackPowerTaken float64 // Hunters mark
-	BonusSpellCritRatingTaken   float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-	BonusCritRatingTaken        float64 // Totem of Wrath / Master Poisoner / Heart of the Crusader
 	BonusMeleeHitRatingTaken    float64 // Formerly Imp FF and SW Radiance;
 	BonusSpellHitRatingTaken    float64 // Imp FF
 
@@ -439,8 +438,8 @@ type PseudoStats struct {
 	BonusHealingTaken        float64 // Talisman of Troll Divinity
 
 	DamageTakenMultiplier       float64            // All damage
-	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
-	SchoolCritTakenMultiplier   [SchoolLen]float64 // For spell school crit. DO NOT use with multi school idices! See helper functions on Unit!
+	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 
 	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
 	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
@@ -464,7 +463,7 @@ func NewPseudoStats() PseudoStats {
 		ThreatMultiplier: 1,
 
 		DamageDealtMultiplier:       1,
-		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
+		SchoolDamageDealtMultiplier: NewSchoolFloatArray(1),
 
 		MeleeHasteRatingPerHastePercent: 1,
 
@@ -474,8 +473,8 @@ func NewPseudoStats() PseudoStats {
 
 		// Target effects.
 		DamageTakenMultiplier:       1,
-		SchoolDamageTakenMultiplier: NewSchoolFloatArray(),
-		SchoolCritTakenMultiplier:   NewSchoolFloatArray(),
+		SchoolDamageTakenMultiplier: NewSchoolFloatArray(1),
+		SchoolCritTakenChance:       NewSchoolFloatArray(0),
 
 		BleedDamageTakenMultiplier:            1,
 		DiseaseDamageTakenMultiplier:          1,
