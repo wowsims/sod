@@ -35,6 +35,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.registerMoonkinFormSpell()
 	druid.applyOmenOfClarity()
 	druid.applyBloodFrenzy()
+	druid.applyFuror()
 }
 
 func (druid *Druid) setupNaturesGrace() {
@@ -217,9 +218,25 @@ func (druid *Druid) applyBloodFrenzy() {
 	})
 }
 
-// TODO: Class druid omen
-func (druid *Druid) applyOmenOfClarity() {
+// We're using an aura so that the APL can know if the Druid has furor for powershifting logic
+func (druid *Druid) applyFuror() {
+	if druid.Talents.Furor == 0 {
+		return
+	}
 
+	spellID := []int32{0, 17056, 17058, 17059, 17060, 17061}[druid.Talents.Furor]
+
+	druid.FurorAura = druid.RegisterAura(core.Aura{
+		Label:    "Furor",
+		ActionID: core.ActionID{SpellID: spellID},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func (druid *Druid) applyOmenOfClarity() {
 	if !druid.Talents.OmenOfClarity {
 		return
 	}

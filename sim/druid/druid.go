@@ -80,6 +80,7 @@ type Druid struct {
 	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
+	FurorAura                *core.Aura
 	FuryOfStormrageAura      *core.Aura
 	MaulQueueAura            *core.Aura
 	MoonkinFormAura          *core.Aura

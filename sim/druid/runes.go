@@ -175,7 +175,7 @@ func (druid *Druid) applySunfire() {
 
 	druid.SunfireDotMultiplier = 1
 
-	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	druid.Sunfire = druid.RegisterSpell(Humanoid|Bear|Cat|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414684},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,

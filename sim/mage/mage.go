@@ -59,15 +59,16 @@ type Mage struct {
 	ArcaneSurge             *core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
-	Ignite                  *core.Spell
-	LivingBomb              *core.Spell
-	LivingFlame             *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
 	IceLance                *core.Spell
+	Ignite                  *core.Spell
+	LivingBomb              *core.Spell
+	LivingFlame             *core.Spell
+	ManaGem                 []*core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
 	SpellfrostBolt          *core.Spell
@@ -117,7 +118,8 @@ func (mage *Mage) Initialize() {
 	mage.registerBlizzardSpell()
 	mage.registerFlamestrikeSpell()
 
-	mage.registerEvocationSpell()
+	mage.registerEvocationCD()
+	mage.registerManaGemCD()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
