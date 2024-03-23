@@ -373,17 +373,14 @@ func Test_MultiSchoolModifiers(t *testing.T) {
 			})
 	})
 
-	// TODO: Test for crit taken, it's currently not used anywhere.
-
-	// t.Run("CritTaken", func(t *testing.T) {
-	// 	SchoolMultiplierArrayHelper(t, caster, target, &target.PseudoStats.SchoolCritTakenMultiplier,
-	// 		func(spell *Spell, schoolIndex stats.SchoolIndex) (bool, string) {
-	// 			spell.MultiSchoolUpdateModifiers(target)
-	// 			mult := spell.TargetDamageMultiplier(attackTable, false)
-	// 			if mult != highestMult {
-	// 				return false, fmt.Sprintf("Damage taken multiplier for school %d returned %f, expected %f!", schoolIndex, mult, highestMult)
-	// 			}
-	// 			return true, ""
-	// 		})
-	// })
+	t.Run("CritChanceTaken", func(t *testing.T) {
+		SchoolMultiplierArrayHelper(t, caster, target, &target.PseudoStats.SchoolCritTakenChance,
+			func(spell *Spell, schoolMask SpellSchool) (bool, string) {
+				critChance := spell.SpellCritChance(target)
+				if critChance != highestMult {
+					return false, fmt.Sprintf("Crit chance taken for school %d returned %f, expected %f!", schoolMask, critChance, highestMult)
+				}
+				return true, ""
+			})
+	})
 }
