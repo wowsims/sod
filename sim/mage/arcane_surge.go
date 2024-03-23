@@ -43,6 +43,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		ActionID:    actionID,
 		SpellCode:   SpellCode_MageArcaneSurge,
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -60,7 +61,6 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

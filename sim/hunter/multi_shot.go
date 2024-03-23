@@ -26,6 +26,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
+		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		CastType:      proto.CastType_CastTypeRanged,
@@ -58,11 +59,10 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating:          0,
-		DamageMultiplierAdditive: 1 + .05*float64(hunter.Talents.Barrage),
-		DamageMultiplier:         1,
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
-		ThreatMultiplier:         1,
+		CritDamageBonus: hunter.mortalShots(),
+
+		DamageMultiplier: 1 + .05*float64(hunter.Talents.Barrage),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target

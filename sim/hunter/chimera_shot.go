@@ -22,6 +22,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 409433},
 		SpellSchool:  core.SpellSchoolNature,
+		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
 		CastType:     proto.CastType_CastTypeRanged,
@@ -45,8 +46,9 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			return hunter.DistanceFromTarget >= 8
 		},
 
+		CritDamageBonus: hunter.mortalShots(),
+
 		DamageMultiplier: 1.2,
-		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

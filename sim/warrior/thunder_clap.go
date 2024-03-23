@@ -31,6 +31,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -51,8 +52,9 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			return hasFuriousThunder || warrior.StanceMatches(BattleStance)
 		},
 
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: core.TernaryFloat64(hasFuriousThunder, 2, 1),
-		CritMultiplier:   warrior.SpellCritMultiplier(1, 0),
 		ThreatMultiplier: core.TernaryFloat64(hasFuriousThunder, 2.5*1.5, 2.5),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

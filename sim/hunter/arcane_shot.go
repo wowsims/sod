@@ -23,6 +23,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolArcane,
+		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		CastType:      proto.CastType_CastTypeRanged,
@@ -48,9 +49,9 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating:  0,
+		CritDamageBonus: hunter.mortalShots(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.critMultiplier(true, hunter.CurrentTarget),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -40,6 +40,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ActionID:     core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
 		SpellCode:    SpellCode_ShamanLavaBurst,
 		SpellSchool:  core.SpellSchoolFire,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        flags,
 		MissileSpeed: 20,
@@ -62,8 +63,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			},
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

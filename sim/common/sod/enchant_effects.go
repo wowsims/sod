@@ -16,9 +16,8 @@ func init() {
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 439164},
 			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-
-			CritMultiplier: character.DefaultSpellCritMultiplier(),
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,

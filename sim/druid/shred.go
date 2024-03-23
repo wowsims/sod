@@ -24,6 +24,7 @@ func (druid *Druid) registerShredSpell() {
 			60: 9830,
 		}[druid.Level]},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -42,7 +43,6 @@ func (druid *Druid) registerShredSpell() {
 		},
 
 		DamageMultiplier: shredDamageMultiplier,
-		CritMultiplier:   druid.MeleeCritMultiplier(1, 0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -91,7 +91,7 @@ func (druid *Druid) registerShredSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.CritMultiplier(attackTable) - 1))
 
 			baseres.Damage *= (1 + critMod)
 

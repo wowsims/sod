@@ -21,10 +21,9 @@ func (target *Target) initialize(config *proto.Target) {
 		if config.SwingSpeed > 0 {
 			aaOptions := AutoAttackOptions{
 				MainHand: Weapon{
-					BaseDamageMin:  config.MinBaseDamage,
-					SwingSpeed:     config.SwingSpeed,
-					CritMultiplier: 2,
-					SpellSchool:    SpellSchoolFromProto(config.SpellSchool),
+					BaseDamageMin: config.MinBaseDamage,
+					SwingSpeed:    config.SwingSpeed,
+					SpellSchool:   SpellSchoolFromProto(config.SpellSchool),
 				},
 				AutoSwingMelee: true,
 			}

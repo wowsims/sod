@@ -17,6 +17,7 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 		RequiredLevel: level,
@@ -43,9 +44,10 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 			float64(warlock.Talents.Devastation)*core.CritRatingPerCritChance +
 			2.0*float64(warlock.Talents.ImprovedSearingPain)*core.CritRatingPerCritChance,
 
+		CritDamageBonus: warlock.ruin(),
+
 		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

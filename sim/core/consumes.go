@@ -325,10 +325,10 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 	procSpell := character.GetOrRegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 1382},
 		SpellSchool: SpellSchoolShadow,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskSpellDamage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   character.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -373,10 +373,10 @@ func registerFrostOil(character *Character, isMh bool) {
 	procSpell := character.GetOrRegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 1191},
 		SpellSchool: SpellSchoolFrost,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskSpellDamage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   character.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -471,10 +471,9 @@ func DragonBreathChiliAura(character *Character) *Aura {
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagNone,
-
-		CritMultiplier: character.DefaultSpellCritMultiplier(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -516,6 +515,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 	return SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: school,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagCastTimeNoGCD,
 
@@ -531,8 +531,6 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
 		BonusHitRating: 100 * SpellHitRatingPerHitChance,
-
-		CritMultiplier: character.DefaultSpellCritMultiplier(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -571,6 +569,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 	return SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolFire,
+		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
 		Flags:       SpellFlagCastTimeNoGCD,
 
@@ -588,8 +587,6 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 
 		// Explosives always have 1% resist chance, so just give them hit cap.
 		BonusHitRating: 100 * SpellHitRatingPerHitChance,
-
-		CritMultiplier: character.DefaultSpellCritMultiplier(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

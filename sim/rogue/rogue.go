@@ -103,10 +103,6 @@ func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 }
 
 func (rogue *Rogue) Initialize() {
-	// Update auto crit multipliers now that we have the targets.
-	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
 	rogue.registerEviscerate()
@@ -139,31 +135,7 @@ func (rogue *Rogue) Reset(_ *core.Simulation) {
 	}
 }
 
-func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
-	primaryModifier := 1.0
-	var secondaryModifier float64
-	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-	}
-	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (rogue *Rogue) RangedCritMultiplier(applyLethality bool) float64 {
-	primaryModifier := 1.0
-	var secondaryModifier float64
-	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-	}
-	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (rogue *Rogue) SpellCritMultiplier() float64 {
-	primaryModifier := 1.0
-	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
-}
-
 func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {
-
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},
@@ -182,9 +154,9 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.EnableEnergyBar(maxEnergy)
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
-		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
-		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
-		Ranged:         rogue.WeaponFromRanged(0),   // Set crit multiplier later when we have targets.
+		MainHand:       rogue.WeaponFromMainHand(), // Set crit multiplier later when we have targets.
+		OffHand:        rogue.WeaponFromOffHand(),  // Set crit multiplier later when we have targets.
+		Ranged:         rogue.WeaponFromRanged(),   // Set crit multiplier later when we have targets.
 		AutoSwingMelee: true,
 	})
 	rogue.applyPoisons()
@@ -228,12 +200,11 @@ func (rogue *Rogue) HasRune(rune proto.RogueRune) bool {
 }
 
 func (rogue *Rogue) RuneAbilityBaseDamage() float64 {
-	level := rogue.Level
-	return 5.741530 - 0.255683*float64(level) + 0.032656*float64(level*level)
+	return 5.741530 - 0.255683*float64(rogue.Level) + 0.032656*float64(rogue.Level*rogue.Level)
 }
 
 func (rogue *Rogue) RuneAbilityDamagePerCombo() float64 {
-	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level)*float64(rogue.Level)
+	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level*rogue.Level)
 }
 
 func (rogue *Rogue) getImbueProcMask(imbue proto.WeaponImbue) core.ProcMask {

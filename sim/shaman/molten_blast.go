@@ -27,6 +27,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
 		SpellCode:   SpellCode_ShamanMoltenBlast,
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
@@ -45,8 +46,9 @@ func (shaman *Shaman) applyMoltenBlast() {
 			},
 		},
 
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

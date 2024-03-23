@@ -70,6 +70,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -84,7 +85,6 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -121,6 +121,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -139,7 +140,6 @@ func (hp *HunterPet) newBite() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -176,6 +176,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		FocusCost: core.FocusCostOptions{
@@ -189,7 +190,6 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hp.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -273,6 +273,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 55728},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskEmpty,
 
 		FocusCost: core.FocusCostOptions{
@@ -300,100 +301,6 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-			}
-		},
-	})
-}
-
-func (hp *HunterPet) newSporeCloud() *core.Spell {
-	//debuffs := hp.NewEnemyAuraArray(core.SporeCloudAura)
-	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 53598},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-
-		FocusCost: core.FocusCostOptions{
-			Cost: 20,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: PetGCD,
-			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    hp.NewTimer(),
-				Duration: time.Second * 10,
-			},
-		},
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label: "SporeCloud",
-			},
-			NumberOfTicks: 3,
-			TickLength:    time.Second * 3,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = sim.Roll(22, 28) + (0.049/3)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
-				}
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			spell.AOEDot().Apply(sim)
-			//for _, target := range spell.Unit.Env.Encounter.TargetUnits {
-			//debuffs.Get(target).Activate(sim)
-			//}
-		},
-	})
-}
-
-func (hp *HunterPet) newVenomWebSpray() *core.Spell {
-	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 55509},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
-
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    hp.NewTimer(),
-				Duration: time.Second * 40,
-			},
-		},
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "VenomWebSpray",
-			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 1,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 46 + 0.07*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},

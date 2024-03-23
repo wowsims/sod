@@ -106,9 +106,6 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier()
-	warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier()
-
 	primaryTimer := warrior.NewTimer()
 	overpowerRevengeTimer := warrior.NewTimer()
 
@@ -129,7 +126,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerSlamSpell()
 	warrior.registerThunderClapSpell()
 	warrior.registerWhirlwindSpell()
-	warrior.registerConcussionBlowSpell()
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
 
@@ -165,14 +161,6 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.PseudoStats.BaseParry += 0.05
 
 	return warrior
-}
-
-func (warrior *Warrior) autoCritMultiplier() float64 {
-	return warrior.MeleeCritMultiplier(1, 0)
-}
-
-func (warrior *Warrior) critMultiplier() float64 {
-	return warrior.MeleeCritMultiplier(1, 0.1*float64(warrior.Talents.Impale))
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.

@@ -47,6 +47,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 	warrior.Overpower = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -68,9 +69,11 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			return warrior.OverpowerAura.IsActive() && warrior.StanceMatches(BattleStance)
 		},
 
-		BonusCritRating:  25 * core.CritRatingPerCritChance * float64(warrior.Talents.ImprovedOverpower),
+		BonusCritRating: 25 * core.CritRatingPerCritChance * float64(warrior.Talents.ImprovedOverpower),
+
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 0.75,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

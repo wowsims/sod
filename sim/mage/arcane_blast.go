@@ -17,7 +17,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	}
 
 	level := float64(mage.GetCharacter().Level)
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
+	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
 	baseLowDamage := baseCalc * 4.53
 	baseHighDamage := baseCalc * 5.27
 	spellCoeff := .714
@@ -76,6 +76,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ActionID:    core.ActionID{SpellID: 400574},
 		SpellCode:   SpellCode_MageArcaneBlast,
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -90,7 +91,6 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

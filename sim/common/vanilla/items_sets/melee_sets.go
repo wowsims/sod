@@ -15,10 +15,10 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 			proc := char.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 18980},
 				SpellSchool: core.SpellSchoolNature,
+				DefenseType: core.DefenseTypeMagic,
 				ProcMask:    core.ProcMaskEmpty,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   char.DefaultSpellCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

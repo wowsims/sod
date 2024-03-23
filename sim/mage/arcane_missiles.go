@@ -51,6 +51,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_MageArcaneMissiles,
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagNoMetrics,
 
@@ -112,12 +113,12 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 	return mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellId}.WithTag(1),
 		SpellSchool:  core.SpellSchoolArcane,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskProc | core.ProcMaskNotInSpellbook,
 		Flags:        SpellFlagMage,
 		MissileSpeed: 20,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

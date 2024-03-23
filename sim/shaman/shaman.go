@@ -243,11 +243,6 @@ func (shaman *Shaman) HasRune(rune proto.ShamanRune) bool {
 func (shaman *Shaman) Reset(sim *core.Simulation) {
 }
 
-func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {
-	critBonus := core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0) + secondary
-	return shaman.SpellCritMultiplier(1, critBonus)
-}
-
 func (shaman *Shaman) ConcussionMultiplier() float64 {
 	return 1 + 0.01*float64(shaman.Talents.Concussion)
 }

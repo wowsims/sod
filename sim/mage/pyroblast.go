@@ -54,6 +54,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 	spellConfig := core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL,
 		MissileSpeed: 24,
@@ -72,7 +73,6 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

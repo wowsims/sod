@@ -17,7 +17,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 	numHits := hunter.Env.GetNumTargets()
 
 	level := float64(hunter.GetCharacter().Level)
-	baseCalc := (2.976264 + 0.641066*level + 0.022519*level*level)
+	baseCalc := 2.976264 + 0.641066*level + 0.022519*level*level
 	baseLowDamage := baseCalc * 0.36 * 1.15 // Buff from 1/3/2024 - verify with new build and update numbers
 	baseHighDamage := baseCalc * 0.54 * 1.15
 
@@ -28,6 +28,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 	hunter.ExplosiveShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
+		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists | core.SpellFlagBinary,
 		CastType:     proto.CastType_CastTypeRanged,
@@ -51,11 +52,10 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 			return hunter.DistanceFromTarget >= 8
 		},
 
-		BonusCritRating:          0,
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		CritMultiplier:           hunter.critMultiplier(true, hunter.CurrentTarget),
-		ThreatMultiplier:         1,
+		CritDamageBonus: hunter.mortalShots(),
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

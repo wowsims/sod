@@ -36,8 +36,8 @@ func NewTankWarlock(character *core.Character, options *proto.Player) *TankWarlo
 	warlock.PseudoStats.CanBlock = false
 
 	warlock.EnableAutoAttacks(warlock, core.AutoAttackOptions{
-		MainHand:       warlock.WeaponFromMainHand(warlock.DefaultMeleeCritMultiplier()),
-		OffHand:        warlock.WeaponFromOffHand(warlock.DefaultMeleeCritMultiplier()),
+		MainHand:       warlock.WeaponFromMainHand(),
+		OffHand:        warlock.WeaponFromOffHand(),
 		AutoSwingMelee: true,
 	})
 

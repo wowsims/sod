@@ -21,6 +21,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48562},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -35,7 +36,6 @@ func (druid *Druid) registerSwipeBearSpell() {
 		},
 
 		DamageMultiplier: lbdm * thdm * fidm,
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -55,6 +55,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 	druid.SwipeCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 62078},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -69,7 +70,6 @@ func (druid *Druid) registerSwipeCatSpell() {
 		},
 
 		DamageMultiplier: fidm * weaponMulti,
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

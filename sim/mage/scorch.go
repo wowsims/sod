@@ -39,6 +39,7 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_MageScorch,
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | SpellFlagMage,
 
@@ -55,9 +56,9 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating:  2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: 2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
+
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

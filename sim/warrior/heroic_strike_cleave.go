@@ -22,6 +22,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | SpellFlagBloodSurge,
 
@@ -30,8 +31,9 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 			Refund: 0.8,
 		},
 
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  259,
 
@@ -77,6 +79,7 @@ func (warrior *Warrior) registerCleaveSpell() {
 	warrior.Cleave = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
@@ -84,8 +87,9 @@ func (warrior *Warrior) registerCleaveSpell() {
 			Cost: 20 - warrior.FocusedRageDiscount,
 		},
 
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  225,
 

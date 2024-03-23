@@ -33,6 +33,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 	spell := core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolNature,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        flags,
 		MetricSplits: 6,
@@ -55,8 +56,10 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		BonusCritRating: 0 +
 			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
 			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
+
+		CritDamageBonus: shaman.elementalFury(),
+
 		DamageMultiplier: shaman.ConcussionMultiplier(),
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: 1,
 	}
 

@@ -121,6 +121,7 @@ func applyRaceEffects(agent Agent) {
 				if t.MobType == proto.MobType_MobTypeBeast {
 					for _, at := range character.AttackTables[t.UnitIndex] {
 						at.DamageDealtMultiplier *= 1.05
+						at.CritMultiplier *= 1.05
 					}
 				}
 			}

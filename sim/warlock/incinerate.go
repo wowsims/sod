@@ -34,6 +34,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 412758},
 		SpellSchool:  core.SpellSchoolFire,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
 		MissileSpeed: 24,
@@ -49,10 +50,12 @@ func (warlock *Warlock) registerIncinerateSpell() {
 			},
 		},
 
-		BonusCritRating:          float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+
+		CritDamageBonus: warlock.ruin(),
+
 		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

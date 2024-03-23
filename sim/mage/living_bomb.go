@@ -18,7 +18,7 @@ func (mage *Mage) registerLivingBombSpell() {
 
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)}
 	level := float64(mage.GetCharacter().Level)
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
+	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
 	baseDotDamage := baseCalc * .85
 	baseExplosionDamage := baseCalc * 1.71
 	dotCoeff := .20
@@ -32,11 +32,11 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:    actionID.WithTag(1),
 		SpellCode:   SpellCode_MageLivingBomb,
 		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

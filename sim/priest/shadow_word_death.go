@@ -24,6 +24,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 	priest.ShadowWordDeath = priest.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 401955},
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
@@ -42,8 +43,6 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 
 		BonusHitRating:  priest.shadowHitModifier(),
 		BonusCritRating: priest.forceOfWillCritRating(),
-
-		CritMultiplier: priest.DefaultSpellCritMultiplier(),
 
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),

@@ -30,6 +30,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		ActionID:     actionID,
 		SpellCode:    SpellCode_MageFrostfireBolt,
 		SpellSchool:  core.SpellSchoolFrostfire,
+		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
 		MissileSpeed: 28,
@@ -62,7 +63,6 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.MageCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

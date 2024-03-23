@@ -276,9 +276,9 @@ func (warlock *Warlock) applyFirestone() {
 		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 
-			CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 			DamageMultiplier:         firestoneMulti,
 			ThreatMultiplier:         1,
 			DamageMultiplierAdditive: 1,
@@ -350,6 +350,10 @@ func (warlock *Warlock) applyNightfall() {
 			}
 		},
 	})
+}
+
+func (warlock *Warlock) ruin() float64 {
+	return core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)
 }
 
 // func (warlock *Warlock) setupPyroclasm() {

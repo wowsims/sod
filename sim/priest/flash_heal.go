@@ -6,6 +6,7 @@ package priest
 // 	priest.FlashHeal = priest.RegisterSpell(core.SpellConfig{
 // 		ActionID:    core.ActionID{SpellID: 10917},
 // 		SpellSchool: core.SpellSchoolHoly,
+//      DefenseType: core.DefenseTypeMagic,
 // 		ProcMask:    core.ProcMaskSpellHealing,
 // 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
@@ -20,8 +21,8 @@ package priest
 // 		},
 
 // 		BonusCritRating:  float64(priest.Talents.HolySpecialization) * 1 * core.CritRatingPerCritChance,
+
 // 		DamageMultiplier: 1 + .02*float64(priest.Talents.SpiritualHealing),
-// 		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
 // 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

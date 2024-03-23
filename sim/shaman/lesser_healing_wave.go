@@ -41,6 +41,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_ShamanLesserHealingWave,
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
@@ -61,9 +62,8 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .02*float64(shaman.Talents.Purification)),
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+
+		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

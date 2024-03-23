@@ -26,6 +26,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 	rogue.QuickDraw = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 398196},
 		SpellSchool:  core.SpellSchoolPhysical,
+		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
 		Flags:        SpellFlagBuilder | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed: 40,
@@ -49,8 +50,9 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 				rogue.Ranged().RangedWeaponType != proto.RangedWeaponType_RangedWeaponTypeUnknown
 		},
 
+		CritDamageBonus: rogue.lethality(),
+
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		CritMultiplier:   rogue.RangedCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

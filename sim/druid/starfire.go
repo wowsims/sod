@@ -39,6 +39,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_DruidStarfire,
 		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
@@ -56,9 +57,11 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 			CastTime: druid.NaturesGraceCastTime(),
 		},
 
+		BonusCritRating: core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
+
+		CritDamageBonus: druid.vengeance(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.VengeanceCritMultiplier(),
-		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

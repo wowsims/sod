@@ -33,26 +33,23 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	dwSpecMulti := 1.0
 	var ohSpell *core.Spell
 	if hasOHSpell {
-		// Uncomment if this ever gets added back
-		// if hunter.GetMHWeapon().WeaponType == hunter.GetOHWeapon().WeaponType {
-		// 	dwSpecMulti = 1.3
-		// }
-
 		ohSpell = hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId}.WithTag(2),
 			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-			BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+			BonusCritRating: float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+
 			DamageMultiplier: 1.5 * dwSpecMulti,
-			CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 		})
 	}
 
 	spellConfig := core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
+		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 		Rank:          rank,
@@ -74,7 +71,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1 * dwSpecMulti,
-		CritMultiplier:   hunter.critMultiplier(false, hunter.CurrentTarget),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			weaponDamage := 0.0

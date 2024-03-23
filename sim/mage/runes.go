@@ -34,7 +34,7 @@ func (mage *Mage) ApplyRunes() {
 
 	// Feet
 	mage.applyBrainFreeze()
-	// Spell Power Nothing to do
+	mage.applySpellPower()
 }
 
 func (mage *Mage) applyBurnout() {
@@ -347,5 +347,17 @@ func (mage *Mage) applyBrainFreeze() {
 				procAura.Activate(sim)
 			}
 		},
+	})
+}
+
+func (mage *Mage) applySpellPower() {
+	if !mage.HasRune(proto.MageRune_RuneFeetSpellPower) {
+		return
+	}
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMage) {
+			spell.CritDamageBonus += 0.5
+		}
 	})
 }

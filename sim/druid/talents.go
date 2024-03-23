@@ -349,6 +349,6 @@ func (druid *Druid) MoonfuryDamageMultiplier() float64 {
 	return 1 + 0.02*float64(druid.Talents.Moonfury)
 }
 
-func (druid *Druid) VengeanceCritMultiplier() float64 {
-	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
+func (druid *Druid) vengeance() float64 {
+	return 0.2 * float64(druid.Talents.Vengeance)
 }

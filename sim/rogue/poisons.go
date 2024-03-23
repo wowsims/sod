@@ -269,11 +269,11 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
 		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
-		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
@@ -304,6 +304,7 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
 		Flags:       core.SpellFlagPoison,
 
@@ -367,11 +368,11 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
 		Flags:       core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
-		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),

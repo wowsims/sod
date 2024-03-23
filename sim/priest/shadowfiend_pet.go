@@ -78,7 +78,6 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 			BaseDamageMin:     baseDamageMin,
 			BaseDamageMax:     baseDamageMax,
 			SwingSpeed:        1.5,
-			CritMultiplier:    priest.DefaultMeleeCritMultiplier(),
 			AttackPowerPerDPS: 14.0 / 6.0, // Observed 6 times stronger AP scaling then expected
 			SpellSchool:       core.SpellSchoolShadow,
 		},

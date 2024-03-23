@@ -31,6 +31,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 	warrior.ShieldSlam = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
@@ -52,9 +53,11 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 			return warrior.PseudoStats.CanBlock
 		},
 
-		BonusCritRating:  5 * core.CritRatingPerCritChance,
+		BonusCritRating: 5 * core.CritRatingPerCritChance,
+
+		CritDamageBonus: warrior.impale(),
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(),
 		ThreatMultiplier: 1.3,
 		FlatThreatBonus:  770,
 

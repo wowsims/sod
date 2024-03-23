@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const ShurikenTossSpellID int32 = int32(proto.RogueRune_RuneShurikenToss)
+const ShurikenTossSpellID = int32(proto.RogueRune_RuneShurikenToss)
 
 func (rogue *Rogue) registerShurikenTossSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneShurikenToss) {
@@ -20,6 +20,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 	rogue.ShurikenToss = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: ShurikenTossSpellID},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL,
 
@@ -34,8 +35,6 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			IgnoreHaste: true,
 		},
 
-		CritMultiplier: rogue.RangedCritMultiplier(false),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
@@ -44,7 +43,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			baseDamage := spell.MeleeAttackPower() * 0.15
 
 			curTarget := target
-			for hitIndex := int32(0); hitIndex < int32(numHits); hitIndex++ {
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				results[hitIndex] = spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
