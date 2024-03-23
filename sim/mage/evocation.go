@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (mage *Mage) registerEvocationSpell() {
+func (mage *Mage) registerEvocationCD() {
 	actionID := core.ActionID{SpellID: 12051}
 	channelTime := time.Second * 8
 	cooldown := time.Minute * 8
