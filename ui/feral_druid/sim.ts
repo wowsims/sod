@@ -92,7 +92,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [DruidInputs.SelfInnervate],
+	playerIconInputs: [],
 
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.FeralDruidRotationConfig,

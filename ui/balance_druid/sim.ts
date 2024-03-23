@@ -4,24 +4,17 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
-import * as DruidInputs from './inputs.js';
+// import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	cssClass: 'balance-druid-sim-ui',
 	cssScheme: 'druid',
 	// List any known bugs / issues here, and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -58,15 +51,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]:	0.17,
-			[Stat.StatSpirit]: 		0.00,
-			[Stat.StatSpellPower]: 	1,
+			[Stat.StatIntellect]: 0.17,
+			[Stat.StatSpirit]: 0.0,
+			[Stat.StatSpellPower]: 1,
 			[Stat.StatArcanePower]: 0.67,
 			[Stat.StatNaturePower]: 0.33,
-			[Stat.StatSpellHit]: 	8.24,
-			[Stat.StatSpellCrit]: 	5.86,
-			[Stat.StatSpellHaste]: 	0.8,
-			[Stat.StatMP5]: 		0.00,
+			[Stat.StatSpellHit]: 8.24,
+			[Stat.StatSpellCrit]: 5.86,
+			[Stat.StatSpellHaste]: 0.8,
+			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -83,12 +76,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		DruidInputs.SelfInnervate,
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellISBDebuff,
 		BuffDebuffInputs.SpellScorchDebuff,
@@ -101,10 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.ReactionTime,
-			OtherInputs.DistanceFromTarget,
-		],
+		inputs: [OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -113,20 +100,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.GearBlank,
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [Presets.GearBlank, ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
@@ -160,7 +137,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			},
 		},
 	],
-})
+});
 
 // noinspection TypeScriptValidateTypes
 export class BalanceDruidSimUI extends IndividualSimUI<Spec.SpecBalanceDruid> {
