@@ -99,6 +99,28 @@ func (warrior *Warrior) applyWeaponSpecializations() {
 			})
 		}
 	}
+
+	if ps := warrior.Talents.PolearmSpecialization; ps > 0 {
+		// the default character panel displays critical strike chance for main hand only
+		switch warrior.GetProcMaskForTypes(proto.WeaponType_WeaponTypePolearm) {
+		case core.ProcMaskMelee:
+			warrior.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance*float64(ps))
+		case core.ProcMaskMeleeMH:
+			warrior.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance*float64(ps))
+			warrior.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating -= 1 * core.CritRatingPerCritChance * float64(ps)
+				}
+			})
+		case core.ProcMaskMeleeOH:
+			warrior.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating += 1 * core.CritRatingPerCritChance * float64(ps)
+				}
+			})
+		}
+	}
+
 }
 
 func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
