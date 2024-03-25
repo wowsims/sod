@@ -74,6 +74,8 @@ type Rogue struct {
 	StealthAura          *core.Aura
 	WaylayAuras          core.AuraArray
 
+	HonorAmongThieves *core.Aura
+
 	woundPoisonDebuffAuras core.AuraArray
 
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
