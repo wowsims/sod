@@ -10,6 +10,9 @@ import (
 )
 
 func (shaman *Shaman) ApplyRunes() {
+	// Helm
+	shaman.applyMentalDexterity()
+
 	// Chest
 	shaman.applyDualWieldSpec()
 	// shaman.applyHealingRain()
@@ -37,6 +40,48 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyAncestralAwakening()
 	// shaman.applyDecoyTotem()
 	shaman.applySpiritOfTheAlpha()
+}
+
+func (shaman *Shaman) applyMentalDexterity() {
+	// TODO: Add rune to proto and update IDs
+	if !shaman.HasRune(proto.ShamanRune_RuneNone) {
+		return
+	}
+
+	procSpellId := int32(0)
+
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .30)
+
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:    "Mental Dexterity Proc",
+		ActionID: core.ActionID{SpellID: procSpellId},
+		Duration: time.Second * 60,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.EnableDynamicStatDep(sim, intToApStatDep)
+			aura.Unit.EnableDynamicStatDep(sim, apToSpStatDep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.DisableDynamicStatDep(sim, intToApStatDep)
+			aura.Unit.DisableDynamicStatDep(sim, apToSpStatDep)
+		},
+	})
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "MentalDexterity",
+		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneNone)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			procAura.Activate(sim)
+		},
+	})
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {
