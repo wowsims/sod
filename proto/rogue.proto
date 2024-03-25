@@ -82,10 +82,14 @@ enum RogueRune {
 	RuneShadowstep = 400101;
 	RuneShurikenToss = 399986;
 	RunePoisonedKnife = 425012;
+	RuneCutToTheChase = 1;
+	RuneHonorAmongThieves = 2;
+	RuneCombatPotency = 3;
+	RuneFocusedAttacks = 4;
 }
 
 message RogueOptions {
-
+	int32 HonorAmongThievesCritRate = 1;
 }
 
 message Rogue {

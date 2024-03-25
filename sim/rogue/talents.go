@@ -269,14 +269,13 @@ func (rogue *Rogue) applyWeaponExpertise() {
 	}
 }
 
-/** Wrath Energy gain talents
 func (rogue *Rogue) applyCombatPotency() {
-	if rogue.Talents.CombatPotency == 0 {
+	if !rogue.HasRune(proto.RogueRune_RuneCombatPotency) {
 		return
 	}
 
 	const procChance = 0.2
-	energyBonus := 3.0 * float64(rogue.Talents.CombatPotency)
+	energyBonus := 15.0
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 35553})
 
 	rogue.RegisterAura(core.Aura{
@@ -299,11 +298,10 @@ func (rogue *Rogue) applyCombatPotency() {
 }
 
 func (rogue *Rogue) applyFocusedAttacks() {
-	if rogue.Talents.FocusedAttacks == 0 {
+	if !rogue.HasRune(proto.RogueRune_RuneFocusedAttacks) {
 		return
 	}
 
-	procChance := []float64{0, 0.33, 0.66, 1}[rogue.Talents.FocusedAttacks]
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 51637})
 
 	rogue.RegisterAura(core.Aura{
@@ -316,16 +314,14 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.DidCrit() {
 				return
 			}
-			// Fan of Knives OH hits do not trigger focused attacks
-			if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.IsSpellAction(FanOfKnivesSpellID) {
+			// Fan of Knives OH hits do not trigger focused attacks. Check other SoD spells
+			/**if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.IsSpellAction(FanOfKnivesSpellID) {
 				return
-			}
-			if sim.Proc(procChance, "Focused Attacks") {
-				rogue.AddEnergy(sim, 2, energyMetrics)
-			}
+			}*/
+			rogue.AddEnergy(sim, 2, energyMetrics)
 		},
 	})
-}*/
+}
 
 var BladeFlurryActionID = core.ActionID{SpellID: 13877}
 var BladeFlurryHitID = core.ActionID{SpellID: 22482}
@@ -475,16 +471,14 @@ func (rogue *Rogue) lethality() float64 {
 	return 0.06 * float64(rogue.Talents.Lethality)
 }
 
-/** Honor Among Thieves (Possible P2 rune)
 func (rogue *Rogue) registerHonorAmongThieves() {
 	// When anyone in your group critically hits with a damage or healing spell or ability,
 	// you have a [33%/66%/100%] chance to gain a combo point on your current target.
 	// This effect cannot occur more than once per second.
-	if rogue.Talents.HonorAmongThieves == 0 {
+	if !rogue.HasRune(proto.RogueRune_RuneHonorAmongThieves) {
 		return
 	}
 
-	procChance := []float64{0, 0.33, 0.66, 1}[rogue.Talents.HonorAmongThieves]
 	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51701})
 	honorAmongThievesID := core.ActionID{SpellID: 51701}
 
@@ -494,7 +488,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 	}
 
 	maybeProc := func(sim *core.Simulation) {
-		if icd.IsReady(sim) && sim.Proc(procChance, "honor of thieves") {
+		if icd.IsReady(sim) {
 			rogue.AddComboPoints(sim, 1, comboMetrics)
 			icd.Use(sim)
 		}
@@ -510,15 +504,15 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			// In an ideal party, you'd probably get up to 6 ability crits/s (Rate = 600).
 			//  Survival Hunters, Enhancement Shamans, and Assassination Rogues are particularly good.
-			if rogue.Options.HonorOfThievesCritRate <= 0 {
+			if rogue.Options.HonorAmongThievesCritRate <= 0 {
 				return
 			}
 
-			if rogue.Options.HonorOfThievesCritRate > 2000 {
-				rogue.Options.HonorOfThievesCritRate = 2000 // limited, so performance doesn't suffer
+			if rogue.Options.HonorAmongThievesCritRate > 2000 {
+				rogue.Options.HonorAmongThievesCritRate = 2000 // limited, so performance doesn't suffer
 			}
 
-			rateToDuration := float64(time.Second) * 100 / float64(rogue.Options.HonorOfThievesCritRate)
+			rateToDuration := float64(time.Second) * 100 / float64(rogue.Options.HonorAmongThievesCritRate)
 
 			pa := &core.PendingAction{}
 			pa.OnAction = func(sim *core.Simulation) {
@@ -540,4 +534,13 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 			}
 		},
 	})
-}*/
+}
+
+// Apply the effects of the Cut to the Chase talent
+func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
+	// Rune check is done in envenom.go and eviscerate.go
+	if rogue.SliceAndDiceAura.IsActive() {
+		rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
+		rogue.SliceAndDiceAura.Activate(sim)
+	}
+}

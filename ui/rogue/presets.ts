@@ -1,4 +1,5 @@
 import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
 	Consumes,
@@ -10,22 +11,17 @@ import {
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	RogueOptions,
 } from '../core/proto/rogue.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
-import BlankGear from './gear_sets/blank.gear.json';
-import P1Daggers from './gear_sets/p1_daggers.gear.json';
-import P1CombatGear from './gear_sets/p1_combat.gear.json';
-import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
-
+import { SavedTalents } from '../core/proto/ui.js';
+import SinisterApl25 from './apls/basic_strike_25.apl.json';
 import MutilateApl from './apls/mutilate.apl.json';
 import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
-import SinisterApl25 from './apls/basic_strike_25.apl.json';
+import BlankGear from './gear_sets/blank.gear.json';
+import P1CombatGear from './gear_sets/p1_combat.gear.json';
+import P1Daggers from './gear_sets/p1_daggers.gear.json';
+import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -130,7 +126,9 @@ export const DefaultTalents = DefaultTalentsAssassin;
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
-export const DefaultOptions = RogueOptions.create({});
+export const DefaultOptions = RogueOptions.create({
+	honorAmongThievesCritRate: 200,
+});
 
 
 ///////////////////////////////////////////////////////////////////////////
