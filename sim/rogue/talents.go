@@ -15,8 +15,8 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.applyWeaponExpertise()
 	rogue.applyInitiative()
 
-	rogue.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(rogue.Talents.LightningReflexes))
-	rogue.AddStat(stats.Parry, core.ParryRatingPerParryChance*1*float64(rogue.Talents.Deflection))
+	rogue.AddStat(stats.Dodge, 0.01*float64(rogue.Talents.LightningReflexes))
+	rogue.AddStat(stats.Parry, 0.01*float64(rogue.Talents.Deflection))
 	rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(rogue.Talents.Malice))
 	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
 	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
