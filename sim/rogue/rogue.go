@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	SpellFlagBuilder     = core.SpellFlagAgentReserved1
-	SpellFlagFinisher    = core.SpellFlagAgentReserved2
-	SpellFlagColdBlooded = core.SpellFlagAgentReserved3
+	SpellFlagBuilder      = core.SpellFlagAgentReserved1
+	SpellFlagFinisher     = core.SpellFlagAgentReserved2
+	SpellFlagColdBlooded  = core.SpellFlagAgentReserved3
+	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved4
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
