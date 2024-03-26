@@ -7,13 +7,12 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (mage *Mage) registerSpellfrostBolt() {
+func (mage *Mage) registerSpellfrostBoltSpell() {
 	if !mage.HasRune(proto.MageRune_RuneBeltSpellfrostBolt) {
 		return
 	}
 
 	level := float64(mage.Level)
-	// 2024-03-05 tuning SFB +50% base damage and same spell coeff as max rank Frostbolt
 	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
 	baseDamageLow := baseCalc * 3.04
 	baseDamageHigh := baseCalc * 3.55
