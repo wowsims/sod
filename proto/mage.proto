@@ -63,10 +63,18 @@ message MageTalents {
 enum MageRune {
 	MageRuneNone				= 0;
 
+	RuneHelmAdvancedWarding		= 428738;
+	RuneHelmDeepFreeze			= 428739;
+	RuneHelmTemporalAnomaly		= 429305;
+
 	RuneChestBurnout			= 412286;
 	RuneChestEnlightenment		= 412324;
 	RuneChestFingersOfFrost		= 400647;
 	RuneChestRegeneration		= 401417;
+
+	RuneBracersMoltenArmor 		= 428741;
+	RuneBracersDisplacement		= 428863;
+	RuneBracersBalefireBolt 	= 428878;
 
 	RuneHandsArcaneBlast		= 400574;
 	RuneHandsIceLance			= 400640;

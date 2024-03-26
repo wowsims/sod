@@ -6,6 +6,7 @@ import {
 	Debuffs,
 	EnchantedSigil,
 	FirePowerBuff,
+	Flask,
 	Food,
 	FrostPowerBuff,
 	IndividualBuffs,
@@ -45,13 +46,13 @@ export const GearFrostPhase1 = PresetUtils.makePresetGear('P1 Frost', Phase1Gear
 });
 
 export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 export const GearFrostfirePhase2 = PresetUtils.makePresetGear('P2 Frostfire', Phase2GearFrostfire, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const GearPresets = {
@@ -77,12 +78,12 @@ export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('P1 Fire', Phase1
 });
 
 export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
-export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() == 40 });
+export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() >= 40 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
@@ -101,7 +102,14 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		// Normally frost but frost is unfortunately just too bad to warrant including for now
 		2: APLPresets[Phase.Phase2][2],
 		// Frostfire
-		3: APLFrostfirePhase2,
+		3: APLPresets[Phase.Phase2][2],
+	},
+	50: {
+		// TODO: Phase 3 APLs
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
+		2: APLPresets[Phase.Phase2][2],
+		3: APLPresets[Phase.Phase2][2],
 	},
 };
 
@@ -121,11 +129,11 @@ export const TalentsFirePhase1 = PresetUtils.makePresetTalents('P1 Fire', SavedT
 });
 
 export const TalentsArcanePhase2 = PresetUtils.makePresetTalents('P2 Arcane', SavedTalents.create({ talentsString: '2250050310031531' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedTalents.create({ talentsString: '-5050020123033151' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentPresets = {
@@ -154,11 +162,12 @@ export const DefaultOptions = MageOptions.create({
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.InnovationSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -172,7 +181,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	sparkOfInspiration: true,
-	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
 export const DefaultDebuffs = Debuffs.create({

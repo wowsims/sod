@@ -28,6 +28,7 @@ import (
 // Note: This does not make network requests, only regenerates core db binary and json files from existing inputs
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
+var exactId = flag.Int("id", 0, "ID to scan for")
 var minId = flag.Int("minid", 1, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 31000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
@@ -35,6 +36,12 @@ var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db',
 
 func main() {
 	flag.Parse()
+
+	if *exactId != 0 {
+		minId = exactId
+		maxId = exactId
+	}
+
 	if *outDir == "" {
 		panic("outDir flag is required!")
 	}

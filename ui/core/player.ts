@@ -300,6 +300,7 @@ export class Player<SpecType extends Spec> {
 		if (!specConfig) {
 			throw new Error('Could not find spec config for spec: ' + this.spec);
 		}
+
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
 			this.simpleRotationGenerator = specConfig.simpleRotation;

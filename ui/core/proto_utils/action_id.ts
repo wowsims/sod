@@ -1,17 +1,15 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto , ItemRandomSuffix,OtherAction  } from '../proto/common.js';
-import { IconData ,
-	UIItem as Item,
-} from '../proto/ui.js';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
+import { IconData, UIItem as Item } from '../proto/ui.js';
 import { Database } from './database.js';
 
 // Used to filter action IDs by level
 export interface ActionIdConfig {
-	id: number,
-	minLevel?: number,
-	maxLevel?: number,
+	id: number;
+	minLevel?: number;
+	maxLevel?: number;
 }
 
 // Uniquely identifies a specific item / spell / thing in WoW. This object is immutable.
@@ -27,13 +25,22 @@ export class ActionId {
 	readonly name: string;
 	readonly iconUrl: string;
 
-	private constructor(itemId: number, spellId: number, otherId: OtherAction, tag: number, baseName: string, name: string, iconUrl: string, rank: number, randomSuffixId?: number) {
+	private constructor(
+		itemId: number,
+		spellId: number,
+		otherId: OtherAction,
+		tag: number,
+		baseName: string,
+		name: string,
+		iconUrl: string,
+		rank: number,
+		randomSuffixId?: number,
+	) {
 		this.itemId = itemId;
 		this.randomSuffixId = randomSuffixId || 0;
 		this.spellId = spellId;
 		this.otherId = otherId;
-		this.rank = rank,
-		this.tag = tag;
+		(this.rank = rank), (this.tag = tag);
 
 		switch (otherId) {
 			case OtherAction.OtherActionNone:
@@ -118,11 +125,7 @@ export class ActionId {
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return (
-			this.itemId == other.itemId
-			&& this.randomSuffixId == other.randomSuffixId
-			&& this.spellId == other.spellId
-			&& this.otherId == other.otherId);
+		return this.itemId == other.itemId && this.randomSuffixId == other.randomSuffixId && this.spellId == other.spellId && this.otherId == other.otherId;
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -203,6 +206,8 @@ export class ActionId {
 				break;
 			// Arcane Missiles hits are a separate spell and have to use a tag to differentiate from the cast
 			case 'Arcane Missiles':
+			// Balefire Bolt's aura uses the same spell ID as the cast
+			case 'Balefire Bolt':
 				break;
 			case 'Berserking':
 				if (this.tag != 0) name = `${name} (${this.tag * 5}%)`;
@@ -213,7 +218,7 @@ export class ActionId {
 				}
 				break;
 			case 'Hot Streak':
-				if (this.tag) name = 'Heating Up'
+				if (this.tag) name = 'Heating Up';
 				break;
 			// DoT then Explode Spells
 			case 'Living Bomb':
@@ -249,18 +254,18 @@ export class ActionId {
 			case 'Instant Poison IX':
 			case 'Wound Poison VII':
 				if (this.tag == 1) {
-					name += ' (Deadly)'
+					name += ' (Deadly)';
 				} else if (this.tag == 2) {
-					name += ' (Shiv)'
+					name += ' (Shiv)';
 				}
 				break;
 			// Dual-hit MH/OH spells
 			case 'Mutilate':
 			case 'Stormstrike':
 				if (this.tag == 1) {
-					name = `${name} (Main Hand)`
+					name = `${name} (Main Hand)`;
 				} else if (this.tag == 2) {
-					name = `${name} (Off Hand)`
+					name = `${name} (Off Hand)`;
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
@@ -280,16 +285,16 @@ export class ActionId {
 				break;
 			case 'Righteous Vengeance':
 				if (this.tag == 1) {
-					name += ' (Application)'
+					name += ' (Application)';
 				} else if (this.tag == 2) {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Holy Vengeance':
 				if (this.tag == 1) {
-					name += ' (Application)'
+					name += ' (Application)';
 				} else if (this.tag == 2) {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
@@ -306,7 +311,7 @@ export class ActionId {
 						name += ` (from #${this.tag + 1})`;
 					}
 				} else {
-					name += " (raid)"
+					name += ' (raid)';
 				}
 				break;
 			case 'Darkmoon Card: Crusade':
@@ -379,7 +384,7 @@ export class ActionId {
 	}
 
 	toString(): string {
-		return this.toStringIgnoringTag() + (this.tag ? ('-' + this.tag) : '');
+		return this.toStringIgnoringTag() + (this.tag ? '-' + this.tag : '');
 	}
 
 	toStringIgnoringTag(): string {
@@ -478,7 +483,11 @@ export class ActionId {
 			idType == 'SpellID' ? id : 0,
 			idType == 'OtherID' ? id : 0,
 			match[7] ? parseInt(match[7]) : 0,
-			'', '', '', 0);
+			'',
+			'',
+			'',
+			0,
+		);
 	}
 	static fromLogString(str: string): ActionId {
 		const match = str.match(ActionId.logRegex);
@@ -493,15 +502,17 @@ export class ActionId {
 	static async replaceAllInString(str: string): Promise<string> {
 		const matches = [...str.matchAll(ActionId.logRegexGlobal)];
 
-		const replaceData = await Promise.all(matches.map(async match => {
-			const actionId = ActionId.fromMatch(match);
-			const filledId = await actionId.fill();
-			return {
-				firstIndex: match.index || 0,
-				len: match[0].length,
-				actionId: filledId,
-			};
-		}));
+		const replaceData = await Promise.all(
+			matches.map(async match => {
+				const actionId = ActionId.fromMatch(match);
+				const filledId = await actionId.fill();
+				return {
+					firstIndex: match.index || 0,
+					len: match[0].length,
+					actionId: filledId,
+				};
+			}),
+		);
 
 		// Loop in reverse order so we can greedily apply the string replacements.
 		for (let i = replaceData.length - 1; i >= 0; i--) {
@@ -538,63 +549,63 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Water Elemental': ActionId.fromSpellId(31687),
-	"Greater Fire Elemental": ActionId.fromSpellId(2894),
-	'Shadowfiend': ActionId.fromSpellId(401977),
-	'Homunculi': ActionId.fromSpellId(402799),
+	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	Shadowfiend: ActionId.fromSpellId(401977),
+	Homunculi: ActionId.fromSpellId(402799),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	'Rune Weapon': ActionId.fromSpellId(49028),
-	'Bloodworm': ActionId.fromSpellId(50452),
-	'Gargoyle': ActionId.fromSpellId(49206),
-	'Ghoul': ActionId.fromSpellId(46584),
+	Bloodworm: ActionId.fromSpellId(50452),
+	Gargoyle: ActionId.fromSpellId(49206),
+	Ghoul: ActionId.fromSpellId(46584),
 	'Army of the Dead': ActionId.fromSpellId(42650),
-	'Valkyr': ActionId.fromSpellId(71844),
+	Valkyr: ActionId.fromSpellId(71844),
 };
 
 // https://wowhead.com/classic/hunter-pets
 const petNameToIcon: Record<string, string> = {
-	'Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bat.jpg',
-	'Bear': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
+	Bat: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bat.jpg',
+	Bear: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
 	'Bird of Prey': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',
-	'Boar': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_boar.jpg',
+	Boar: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_boar.jpg',
 	'Carrion Bird': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_vulture.jpg',
-	'Cat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_cat.jpg',
-	'Chimaera': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_chimera.jpg',
+	Cat: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_cat.jpg',
+	Chimaera: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_chimera.jpg',
 	'Core Hound': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_corehound.jpg',
-	'Crab': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crab.jpg',
-	'Crocolisk': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crocolisk.jpg',
-	'Devilsaur': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
-	'Dragonhawk': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
-	'Felguard': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
-	'Felhunter': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
-	'Infernal': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
-	'Gorilla': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
-	'Hyena': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
-	'Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
+	Crab: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crab.jpg',
+	Crocolisk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crocolisk.jpg',
+	Devilsaur: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
+	Dragonhawk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
+	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
+	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
+	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
+	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
+	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
+	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
 	'Mirror Image': 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg',
-	'Moth': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_moth.jpg',
+	Moth: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_moth.jpg',
 	'Nether Ray': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_netherray.jpg',
-	'Owl': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',
-	'Raptor': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_raptor.jpg',
-	'Ravager': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_ravager.jpg',
-	'Rhino': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_rhino.jpg',
-	'Scorpid': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_scorpid.jpg',
-	'Serpent': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_guardianward.jpg',
-	'Silithid': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_silithid.jpg',
-	'Spider': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_spider.jpg',
+	Owl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',
+	Raptor: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_raptor.jpg',
+	Ravager: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_ravager.jpg',
+	Rhino: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_rhino.jpg',
+	Scorpid: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_scorpid.jpg',
+	Serpent: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_guardianward.jpg',
+	Silithid: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_silithid.jpg',
+	Spider: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_spider.jpg',
 	'Spirit Beast': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_primalprecision.jpg',
 	'Spore Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_sporebat.jpg',
-	'Succubus': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
-	'Tallstrider': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_tallstrider.jpg',
-	'Turtle': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_turtle.jpg',
+	Succubus: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
+	Tallstrider: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_tallstrider.jpg',
+	Turtle: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_turtle.jpg',
 	'Warp Stalker': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_warpstalker.jpg',
-	'Wasp': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wasp.jpg',
+	Wasp: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wasp.jpg',
 	'Wind Serpent': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_windserpent.jpg',
-	'Wolf': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wolf.jpg',
-	'Worm': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_worm.jpg',
+	Wolf: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wolf.jpg',
+	Worm: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_worm.jpg',
 };
 
-export function getPetIconFromName(name: string): string|ActionId|undefined {
+export function getPetIconFromName(name: string): string | ActionId | undefined {
 	return petNameToActionId[name] || petNameToIcon[name];
 }
 
