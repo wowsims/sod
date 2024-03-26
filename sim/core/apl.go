@@ -199,10 +199,6 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		return
 	}
 
-	if apl.unit.currentHealth <= 0 {
-		return
-	}
-
 	if apl.inLoop {
 		return
 	}

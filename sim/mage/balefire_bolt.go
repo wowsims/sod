@@ -50,6 +50,8 @@ func (mage *Mage) registerBalefireBoltSpell() {
 				if sim.Log != nil {
 					mage.Log(sim, "YOU DIED")
 				}
+
+				sim.Cleanup()
 			}
 		},
 	})
