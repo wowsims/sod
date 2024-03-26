@@ -491,7 +491,7 @@ func (result *SpellResult) applyAttackTableHit(spell *Spell) {
 }
 
 func (result *SpellResult) applyEnemyAttackTableMiss(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
-	missChance := attackTable.BaseMissChance + spell.Unit.PseudoStats.IncreasedMissChance + result.Target.GetMissChance()
+	missChance := attackTable.BaseMissChance + spell.Unit.PseudoStats.IncreasedMissChance
 	if spell.Unit.AutoAttacks.IsDualWielding && !spell.Unit.PseudoStats.DisableDWMissPenalty {
 		missChance += 0.19
 	}
@@ -531,7 +531,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 	}
 
 	dodgeChance := attackTable.BaseDodgeChance +
-		result.Target.GetDodgeChance() -
+		result.Target.GetStat(stats.Dodge) -
 		spell.Unit.PseudoStats.DodgeReduction
 	*chance += max(0, dodgeChance)
 
@@ -550,7 +550,7 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 	}
 
 	parryChance := attackTable.BaseParryChance +
-		result.Target.GetParryChance()
+		result.Target.GetStat(stats.Parry)
 	*chance += max(0, parryChance)
 
 	if roll < *chance {
