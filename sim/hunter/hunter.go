@@ -192,8 +192,6 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	}
 
 	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
-		// We don't know crit multiplier until later when we see the target so just
-		// use 0 for now.
 		MainHand:        hunter.WeaponFromMainHand(),
 		OffHand:         hunter.WeaponFromOffHand(),
 		Ranged:          rangedWeapon,
