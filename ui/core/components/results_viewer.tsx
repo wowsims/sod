@@ -1,23 +1,24 @@
 import { Tooltip } from 'bootstrap';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element, fragment } from 'tsx-vanilla';
+
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';
 
-import { element, fragment } from 'tsx-vanilla';
-
 // Config for displaying a warning to the user whenever a condition is met.
 interface SimWarning {
-	updateOn: TypedEvent<any>,
-	getContent: () => string | Array<string>,
+	updateOn: TypedEvent<any>;
+	getContent: () => string | Array<string>;
 }
 
 interface WarningLinkArgs {
-	parent: HTMLElement,
-	href?: string,
-	text?: string,
-	icon?: string,
-	tooltip?: string,
-	classes?: string,
-	onclick?: Function
+	parent: HTMLElement;
+	href?: string;
+	text?: string;
+	icon?: string;
+	tooltip?: string;
+	classes?: string;
+	onclick?: (_?: any) => void;
 }
 
 export class ResultsViewer extends Component {
@@ -33,18 +34,15 @@ export class ResultsViewer extends Component {
 		this.rootElem.appendChild(
 			<>
 				<div className="results-pending">
-				<div className="loader"></div>
+					<div className="loader"></div>
 				</div>
-				<div className="results-content">
-				</div>
-				<div className="warning-zone" style="text-align: center">
-				</div>
-			</>
+				<div className="results-content"></div>
+				<div className="warning-zone" style="text-align: center"></div>
+			</>,
 		);
 		this.pendingElem = this.rootElem.getElementsByClassName('results-pending')[0] as HTMLElement;
 		this.contentElem = this.rootElem.getElementsByClassName('results-content')[0] as HTMLElement;
 		this.warningElem = this.rootElem.getElementsByClassName('warning-zone')[0] as HTMLElement;
-
 
 		this.warningsLink = this.addWarningsLink();
 		this.updateWarnings();
@@ -53,25 +51,20 @@ export class ResultsViewer extends Component {
 	}
 
 	private addWarningLink(args: WarningLinkArgs): HTMLElement {
-		let item = (
+		const item = (
 			<div className="sim-toolbar-item">
-				<a
-					href={args.href ? args.href : 'javascript:void(0)'}
-					target={args.href ? '_blank' : '_self'}
-					className={args.classes}
-				>
+				<a href={args.href ? args.href : 'javascript:void(0)'} target={args.href ? '_blank' : '_self'} className={args.classes}>
 					{args.icon && <i className={args.icon}></i>}
 					{args.text ? args.text : ''}
 				</a>
 			</div>
 		);
 
-		let link = item.children[0] as HTMLElement;
+		const link = item.children[0] as HTMLElement;
 
 		if (args.onclick) {
 			link.addEventListener('click', () => {
-				if (args.onclick)
-					args.onclick();
+				if (args.onclick) args.onclick();
 			});
 		}
 
@@ -95,7 +88,7 @@ export class ResultsViewer extends Component {
 			parent: this.warningElem,
 			icon: 'fas fa-exclamation-triangle fa-3x',
 			tooltip: "<ul class='text-start ps-3 mb-0'></ul>",
-			classes: 'warning link-warning'
+			classes: 'warning link-warning',
 		}).children[0] as HTMLElement;
 	}
 
@@ -106,17 +99,20 @@ export class ResultsViewer extends Component {
 	}
 
 	private updateWarnings() {
-		const activeWarnings = this.warnings.map(warning => warning.getContent()).flat().filter(content => content != '');
-		let tooltipFragment = document.createElement('fragment');
+		const activeWarnings = this.warnings
+			.map(warning => warning.getContent())
+			.flat()
+			.filter(content => content != '');
+		const tooltipFragment = document.createElement('fragment');
 		tooltipFragment.innerHTML = this.warningsLink.getAttribute('data-bs-title') as string;
-		let list = tooltipFragment.children[0] as HTMLElement;
+		const list = tooltipFragment.children[0] as HTMLElement;
 		list.innerHTML = '';
 		if (activeWarnings.length == 0) {
 			this.warningsLink.parentElement?.classList?.add('hide');
 		} else {
 			this.warningsLink.parentElement?.classList?.remove('hide');
 			activeWarnings.forEach(warning => {
-				let listItem = document.createElement('li');
+				const listItem = document.createElement('li');
 				listItem.innerHTML = warning;
 				list.appendChild(listItem);
 			});

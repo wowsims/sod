@@ -221,7 +221,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultName: 'Destruction',
 			iconUrl: getSpecIcon(Class.ClassWarlock, 2),
 
-			talents: Presets.DestroMgiTalents.data,
+			talents: Presets.DestroMgiTalentsPhase2.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -232,10 +232,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.FireImpGearPreset.gear,
+					1: Presets.FireImpGearPhase2.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.FireImpGearPreset.gear,
+					1: Presets.FireImpGearPhase2.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
