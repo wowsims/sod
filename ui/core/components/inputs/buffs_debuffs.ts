@@ -564,7 +564,7 @@ export const AshenvalePvpBuff = withLabel(
 
 export const SparkOfInspiration = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: () => ActionId.fromSpellId(438536),
+		actionId: player => player.getMatchingSpellActionId([{ id: 438536, maxLevel: 49 }]),
 		fieldName: 'sparkOfInspiration',
 	}),
 	'Spark of Inspiration',
