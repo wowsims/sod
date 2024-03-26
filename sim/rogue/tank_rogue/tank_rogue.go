@@ -33,7 +33,7 @@ func NewTankRogue(character *core.Character, options *proto.Player) *TankRogue {
 		Rogue: rogue.NewRogue(character, options, options.GetTankRogue().Options),
 	}
 
-	tank.AddStatDependency(stats.Agility, stats.Dodge, 0.01*core.DodgePerAgiAtLevel[character.Class][int32(tank.Level)])
+	tank.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int32(tank.Level)])
 	tank.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	tank.PseudoStats.InFrontOfTarget = true

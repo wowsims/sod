@@ -25,19 +25,18 @@ func (unit *Unit) GetDodgeChance() float64 {
 
 	// undiminished Dodge % = D
 
-	return unit.stats[stats.Dodge]/100 +
-		unit.stats[stats.Defense]*DefenseRatingToChanceReduction
+	return unit.stats[stats.Dodge]
 }
 
 func (unit *Unit) GetParryChance() float64 {
 
 	// undiminished Parry % = P
 
-	return unit.stats[stats.Parry]/100 +
-		unit.stats[stats.Defense]*DefenseRatingToChanceReduction
+	return unit.stats[stats.Parry]
 
 }
 
+// TODO: Unused?
 func (unit *Unit) GetMissChance() float64 {
 
 	// undiminished Miss % = M
