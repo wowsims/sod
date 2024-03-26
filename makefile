@@ -138,7 +138,7 @@ binary_dist/dist.go: sim/web/dist.go.tmpl
 binary_dist: $(OUT_DIR)/.dirstamp
 	rm -rf binary_dist
 	mkdir -p binary_dist
-	cp -r dist/ binary_dist/
+	cp -r $(OUT_DIR)/ binary_dist/
 	rm -f binary_dist/$(BASE_DIR)/lib.wasm
 	rm -rf binary_dist/$(BASE_DIR)/assets/db_inputs
 	rm -f binary_dist/$(BASE_DIR)/assets/database/db.bin

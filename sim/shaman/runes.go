@@ -109,7 +109,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.3
 	apMultiplier := 1.1
-	spellHitIncrease := float64(core.SpellHitRatingPerHitChance * 10)
+	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
 	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)
 	procAura := shaman.RegisterAura(core.Aura{
