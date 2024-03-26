@@ -253,7 +253,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Base dodge is unaffected by Diminishing Returns
+	// Switch to using AddStat as PseudoStat is being removed
 	// druid.PseudoStats.BaseDodge += 0.056097
 
 	return druid

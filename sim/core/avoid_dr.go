@@ -18,49 +18,29 @@ const Diminish_kCp = (Diminish_k_Nondruid * Diminish_Cp)
 const Diminish_kCm_Druid = (Diminish_k_Druid * Diminish_Cm)
 const Diminish_kCm_Nondruid = (Diminish_k_Nondruid * Diminish_Cm)
 
-// Diminishing Returns for tank avoidance
 // Non-diminishing sources are added separately in spell outcome funcs
-// TODO: Fully refactor these functions and the Parry/Dodge stats
+// TODO: Move these functions somewhere better
 
-func (unit *Unit) GetDiminishedDodgeChance() float64 {
+func (unit *Unit) GetDodgeChance() float64 {
 
 	// undiminished Dodge % = D
-	// diminished Dodge % = (D * Cd)/((k*Cd) + D)
 
-	dodgeChance :=
-		unit.stats[stats.Dodge]/DodgeRatingPerDodgeChance/100 +
-			unit.stats[stats.Defense]*DefenseRatingToChanceReduction
-
-	if unit.PseudoStats.CanParry {
-		return (dodgeChance * Diminish_Cd_Nondruid) / (Diminish_kCd_Nondruid + dodgeChance)
-	} else {
-		return (dodgeChance * Diminish_Cd_Druid) / (Diminish_kCd_Druid + dodgeChance)
-	}
+	return unit.stats[stats.Dodge]/DodgeRatingPerDodgeChance/100 +
+		unit.stats[stats.Defense]*DefenseRatingToChanceReduction
 }
 
-func (unit *Unit) GetDiminishedParryChance() float64 {
+func (unit *Unit) GetParryChance() float64 {
 
 	// undiminished Parry % = P
-	// diminished Parry % = (P * Cp)/((k*Cp) + P)
 
-	parryChance :=
-		unit.stats[stats.Parry]/ParryRatingPerParryChance/100 +
-			unit.stats[stats.Defense]*DefenseRatingToChanceReduction
-
-	return (parryChance * Diminish_Cp) / (Diminish_kCp + parryChance)
+	return unit.stats[stats.Parry]/ParryRatingPerParryChance/100 +
+		unit.stats[stats.Defense]*DefenseRatingToChanceReduction
 
 }
 
-func (unit *Unit) GetDiminishedMissChance() float64 {
+func (unit *Unit) GetMissChance() float64 {
 
 	// undiminished Miss % = M
-	// diminished Miss % = (M * Cm)/((k*Cm) + M)
 
-	missChance := unit.stats[stats.Defense] * DefenseRatingToChanceReduction
-
-	if unit.PseudoStats.CanParry {
-		return (missChance * Diminish_Cm) / (Diminish_kCm_Nondruid + missChance)
-	} else {
-		return (missChance * Diminish_Cm) / (Diminish_kCm_Druid + missChance)
-	}
+	return unit.stats[stats.Defense] * DefenseRatingToChanceReduction
 }
