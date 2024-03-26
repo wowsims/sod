@@ -142,7 +142,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
-			druid.AddStat(stats.Dodge, 0.02*float64(druid.Talents.FelineSwiftness))
+			druid.AddStatDynamic(sim, stats.Dodge, 0.02*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = true
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -176,7 +176,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
-			druid.AddStat(stats.Dodge, -0.02*float64(druid.Talents.FelineSwiftness))
+			druid.AddStatDynamic(sim, stats.Dodge, -0.02*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = false
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
