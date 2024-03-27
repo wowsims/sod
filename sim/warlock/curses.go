@@ -105,6 +105,13 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 		60: 11717,
 	}[playerLevel]
 
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 4,
+	}[playerLevel]
+
 	manaCost := map[int32]float64{
 		25: 35.0,
 		40: 60.0,
@@ -117,6 +124,7 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
+		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -156,6 +164,12 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		60: 11722,
 	}[playerLevel]
 
+	rank := map[int32]int{
+		40: 1,
+		50: 2,
+		60: 3,
+	}[playerLevel]
+
 	manaCost := map[int32]float64{
 		40: 100.0,
 		50: 150.0,
@@ -167,6 +181,7 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
+		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -205,6 +220,11 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		60: 17937,
 	}[playerLevel]
 
+	rank := map[int32]int{
+		50: 1,
+		60: 2,
+	}[playerLevel]
+
 	manaCost := map[int32]float64{
 		50: 150.0,
 		60: 200.0,
@@ -215,6 +235,7 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
+		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
