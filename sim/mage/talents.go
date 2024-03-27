@@ -244,19 +244,11 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					{mage.ArcaneBlast},
-					mage.Fireball,
-					mage.Flamestrike,
-					mage.Frostbolt,
-					{mage.FrostfireBolt},
-					mage.Pyroblast,
-					mage.Scorch,
-					{mage.SpellfrostBolt},
-				}),
-				func(spell *core.Spell) bool { return spell != nil },
-			)
+			for spellIdx := range mage.Spellbook {
+				if spell := mage.Spellbook[spellIdx]; spell.DefaultCast.CastTime > 0 {
+					affectedSpells = append(affectedSpells, spell)
+				}
+			}
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
