@@ -296,7 +296,7 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		return
 	}
 
-	// Spirit of the Alpha currently gives +20% AP when used on another target.
+	// Spirit of the Alpha currently gives +5% physical damage when used on another target.
 	// Assume this as a default
-	shaman.MultiplyStat(stats.AttackPower, 1.2)
+	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 }
