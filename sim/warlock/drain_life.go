@@ -24,6 +24,8 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		manaCost *= 2
 	}
 
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery) + 0.02*float64(warlock.Talents.ImprovedDrainLife)
+
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 
@@ -46,14 +48,14 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		},
 
 		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-		DamageMultiplierAdditive: 1 +
-			0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.ImprovedDrainLife),
-		ThreatMultiplier: 1,
+
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Drain Life-" + warlock.Label + strconv.Itoa(rank),
+				Label: "DrainLife-" + warlock.Label + strconv.Itoa(rank),
 			},
 			NumberOfTicks:       ticks,
 			TickLength:          1 * time.Second,

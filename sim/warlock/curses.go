@@ -14,11 +14,16 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	baseDamage := [7]float64{0, 7, 15, 27, 42, 65, 87}[rank]
 	manaCost := [7]float64{0, 25, 50, 90, 130, 170, 215}[rank]
 	level := [7]int{0, 8, 18, 28, 38, 48, 58}[rank]
+
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
+	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness) + 0.02*float64(warlock.Talents.ShadowMastery)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
+		DefenseType:   core.DefenseTypeMagic,
 		Flags:         core.SpellFlagAPL | core.SpellFlagHauntSE | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
 		ProcMask:      core.ProcMaskSpellDamage,
 		RequiredLevel: level,
@@ -33,12 +38,11 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 *
-			(1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness)) *
-			(1 + 0.02*float64(warlock.Talents.ShadowMastery)),
-		ThreatMultiplier: 1,
-		FlatThreatBonus:  0,
+		BonusHitRating:           2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
+		FlatThreatBonus:          0,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -49,16 +53,23 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
-				if warlock.AmplifyCurseAura.IsActive() {
-					dot.SnapshotAttackerMultiplier *= 1.5
-					warlock.AmplifyCurseAura.Deactivate(sim)
+				if !isRollover {
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+
+					if warlock.AmplifyCurseAura.IsActive() {
+						dot.SnapshotAttackerMultiplier *= 1.5
+						warlock.AmplifyCurseAura.Deactivate(sim)
+					}
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				if hasPandemicRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 				if dot.TickCount%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
 				}

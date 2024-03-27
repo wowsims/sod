@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
@@ -17,9 +18,14 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery)
+
+	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
 	return core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
 		RequiredLevel: level,
@@ -35,9 +41,10 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 		},
 
 		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-		DamageMultiplierAdditive: 1 +
-			0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier: 1,
+
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -51,15 +58,25 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 				baseDmg := baseDamage + spellCoeff*dot.Spell.SpellDamage()
 
 				dot.SnapshotBaseDamage = baseDmg
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
-				// Siphon Life heals so it snapshots target modifiers
-				dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)
+				if !isRollover {
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+					// Siphon Life heals so it snapshots target modifiers
+					dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Remove target modifiers for the tick only
 				dot.Spell.Flags |= core.SpellFlagIgnoreTargetModifiers
-				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+
+				var result *core.SpellResult
+				if hasPandemicRune {
+					result = dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					result = dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
+
 				// revert flag changes
 				dot.Spell.Flags ^= core.SpellFlagIgnoreTargetModifiers
 

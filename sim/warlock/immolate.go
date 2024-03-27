@@ -16,7 +16,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	spellId := [9]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
 	manaCost := [9]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [9]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
+
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
+	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -42,8 +44,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus: warlock.ruin(),
 
-		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -55,11 +58,19 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+
+				if !isRollover {
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				var result *core.SpellResult
+				if hasPandemicRune {
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				} else {
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				}
 				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
 					result.Damage *= 1.4
 					result.Threat *= 1.4

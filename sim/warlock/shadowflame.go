@@ -20,16 +20,13 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	baseDamage := baseCalc * 0.64
 	dotDamage := baseCalc * 0.24
 
-	shadowMasteryMulti := 1 + 0.02*float64(warlock.Talents.ShadowMastery)
-	emberstormMulti := 1 + 0.02*float64(warlock.Talents.Emberstorm)
-
 	fireDot := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -42,7 +39,6 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotBaseDamage *= emberstormMulti
 
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
@@ -88,13 +84,12 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 		CritDamageBonus: warlock.ruin(),
 
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage = baseDamage + baseSpellCoeff*spell.SpellDamage()
-			baseDamage *= shadowMasteryMulti
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
