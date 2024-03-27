@@ -29,21 +29,19 @@ type Rogue struct {
 
 	Backstab       *core.Spell
 	BladeFlurry    *core.Spell
-	DeadlyPoison   [3]*core.Spell
 	Feint          *core.Spell
 	Garrote        *core.Spell
 	Ambush         *core.Spell
 	Hemorrhage     *core.Spell
 	GhostlyStrike  *core.Spell
 	HungerForBlood *core.Spell
-	InstantPoison  [3]*core.Spell
-	WoundPoison    [2]*core.Spell
 	Mutilate       *core.Spell
 	MutilateMH     *core.Spell
 	MutilateOH     *core.Spell
 	Shiv           *core.Spell
 	SinisterStrike *core.Spell
 	SaberSlash     *core.Spell
+	saberSlashTick *core.Spell
 	MainGauche     *core.Spell
 	Shadowstep     *core.Spell
 	Preparation    *core.Spell
@@ -62,6 +60,11 @@ type Rogue struct {
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
 
+	DeadlyPoison     [3]*core.Spell
+	deadlyPoisonTick *core.Spell
+	InstantPoison    [3]*core.Spell
+	WoundPoison      [2]*core.Spell
+
 	instantPoisonProcChanceBonus float64
 
 	AdrenalineRushAura   *core.Aura
@@ -75,7 +78,6 @@ type Rogue struct {
 	StealthAura          *core.Aura
 	WaylayAuras          core.AuraArray
 
-	deadlyPoisonTick       *core.Spell
 	woundPoisonDebuffAuras core.AuraArray
 
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)

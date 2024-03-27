@@ -208,16 +208,16 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		60: 27,
 	}[rogue.Level]
 	spellID := map[int32]int32{
-		25: 434312,
-		40: 434313,
-		50: 434314,
-		60: 434315,
+		25: 2823,
+		40: 2824,
+		50: 11355,
+		60: 11356,
 	}[rogue.Level]
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
+		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
@@ -337,15 +337,8 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 }
 
 func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
-	spellID := map[int32]int32{
-		25: 2823,
-		40: 2824,
-		50: 11355,
-		60: 11356,
-	}[rogue.Level]
-
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: spellID, Tag: int32(procSource)},
+		ActionID: core.ActionID{SpellID: rogue.deadlyPoisonTick.SpellID, Tag: int32(procSource)},
 		Flags:    core.Ternary(procSource == DeadlyBrewProc, core.SpellFlagNone, SpellFlagDeadlyBrewed),
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),

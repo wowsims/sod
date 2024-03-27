@@ -25,40 +25,51 @@ func BenchmarkMultiSchoolMultipliers(b *testing.B) {
 
 	indexes := []stats.SchoolIndex{stats.SchoolIndexFrost, stats.SchoolIndexShadow}
 
+	mymax := func(a, b float64) float64 {
+		if a < b {
+			return b
+		}
+		return a
+	}
+
 	var dontOptimizeAway float64
 
 	b.Run("index", func(b *testing.B) {
-		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			m := 1.0
+			var m float64
 			for _, index := range indexes {
-				m = max(m, multipliers[index])
+				m = mymax(m, multipliers[index])
 			}
 			dontOptimizeAway += m
 		}
 	})
 
 	b.Run("school", func(b *testing.B) {
-		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			m := 1.0
-			switch {
-			case school.Matches(SpellSchoolNone):
-				m = max(m, multipliers[stats.SchoolIndexNone])
-			case school.Matches(SpellSchoolPhysical):
-				m = max(m, multipliers[stats.SchoolIndexPhysical])
-			case school.Matches(SpellSchoolArcane):
-				m = max(m, multipliers[stats.SchoolIndexArcane])
-			case school.Matches(SpellSchoolFire):
-				m = max(m, multipliers[stats.SchoolIndexFire])
-			case school.Matches(SpellSchoolFrost):
-				m = max(m, multipliers[stats.SchoolIndexFrost])
-			case school.Matches(SpellSchoolHoly):
-				m = max(m, multipliers[stats.SchoolIndexHoly])
-			case school.Matches(SpellSchoolNature):
-				m = max(m, multipliers[stats.SchoolIndexNature])
-			case school.Matches(SpellSchoolShadow):
-				m = max(m, multipliers[stats.SchoolIndexShadow])
+			var m float64
+			if school.Matches(SpellSchoolNone) {
+				m = mymax(m, multipliers[stats.SchoolIndexNone])
+			}
+			if school.Matches(SpellSchoolPhysical) {
+				m = mymax(m, multipliers[stats.SchoolIndexPhysical])
+			}
+			if school.Matches(SpellSchoolArcane) {
+				m = mymax(m, multipliers[stats.SchoolIndexArcane])
+			}
+			if school.Matches(SpellSchoolFire) {
+				m = mymax(m, multipliers[stats.SchoolIndexFire])
+			}
+			if school.Matches(SpellSchoolFrost) {
+				m = mymax(m, multipliers[stats.SchoolIndexFrost])
+			}
+			if school.Matches(SpellSchoolHoly) {
+				m = mymax(m, multipliers[stats.SchoolIndexHoly])
+			}
+			if school.Matches(SpellSchoolNature) {
+				m = mymax(m, multipliers[stats.SchoolIndexNature])
+			}
+			if school.Matches(SpellSchoolShadow) {
+				m = mymax(m, multipliers[stats.SchoolIndexShadow])
 			}
 			dontOptimizeAway += m
 		}
