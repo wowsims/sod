@@ -89,6 +89,10 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 }
 
 func (warlock *Warlock) registerSiphonLifeSpell() {
+	if !warlock.Talents.SiphonLife {
+		return
+	}
+
 	maxRank := 4
 
 	for i := 1; i <= maxRank; i++ {

@@ -28,10 +28,10 @@ import {
 // apls
 // P1
 import DestroP1APL from './apls/p1/destruction.apl.json';
+// P2
 import AfflictionAPL from './apls/p2/affliction.apl.json';
 import DemonologyAPL from './apls/p2/demonology.apl.json';
 import DestroConflagAPL from './apls/p2/fire.conflag.apl.json';
-// P2
 import DestroMgiAPL from './apls/p2/fire.imp.apl.json';
 // gear
 // P1
@@ -65,15 +65,9 @@ export const DefaultGear = FireImpGearPhase2;
 export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroP1APL, { customCondition: player => player.getLevel() == 25 });
 
 export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAPL, { customCondition: player => player.getLevel() >= 40 });
-export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, {
-	customCondition: player => player.getLevel() >= 40,
-});
-export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAPL, {
-	customCondition: player => player.getLevel() >= 40,
-});
-export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAPL, {
-	customCondition: player => player.getLevel() >= 40,
-});
+export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, { customCondition: player => player.getLevel() >= 40, });
+export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAPL, { customCondition: player => player.getLevel() >= 40, });
+export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAPL, { customCondition: player => player.getLevel() >= 40, });
 
 export const APLPresets = {
 	[Phase.Phase1]: [RotationDestructionPhase1],
