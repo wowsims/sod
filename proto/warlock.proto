@@ -86,13 +86,13 @@ enum WarlockRune {
 	RuneBootsDanceOfTheWicked	  = 412798;
 	RuneBootsShadowflame		  = 426320;
 
-	RuneHelmVengeance			  = 426469;
-	RuneHelmPandemic			  = 429283;
-	RuneHelmBackdraft			  = 431742;
+	RuneHelmVengeance			  = 426195;
+	RuneHelmPandemic			  = 427712;
+	RuneHelmBackdraft			  = 427713;
 
-	RuneBracerUnstableAffliction  = 431748;
-	RuneBracerSummonFelguard	  = 431754;
-	RuneBracerImmolationAura	  = 431757;
+	RuneBracerUnstableAffliction  = 427717;
+	RuneBracerImmolationAura	  = 427726;
+	RuneBracerSummonFelguard	  = 427733;
 }
 
 message WarlockRotation {

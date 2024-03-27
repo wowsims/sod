@@ -54,6 +54,7 @@ func (dot *Dot) OutcomeTickSnapshotCritCounted(sim *Simulation, result *SpellRes
 	if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
 		result.Outcome = OutcomeCrit
 		result.Damage *= dot.Spell.CritMultiplier(attackTable)
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
 	} else {
 		result.Outcome = OutcomeHit
 	}

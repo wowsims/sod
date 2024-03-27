@@ -24,6 +24,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
 		ProcMask:      core.ProcMaskSpellDamage,
+		DefenseType:   core.DefenseTypeMagic,
 		Flags:         core.SpellFlagAPL | core.SpellFlagHauntSE | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
 		Rank:          rank,
 		RequiredLevel: level,

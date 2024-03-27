@@ -16,6 +16,7 @@ func (warlock *Warlock) ApplyRunes() {
 	warlock.applyShadowAndFlame()
 	warlock.applyDemonicKnowledge()
 	warlock.applyDanceOfTheWicked()
+	warlock.applyVengeance()
 }
 
 func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
@@ -35,6 +36,60 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 	if warlock.Corruption.Dot(target).IsActive() {
 		warlock.Corruption.Dot(target).Rollover(sim)
 	}
+}
+
+func (warlock *Warlock) applyVengeance() {
+	if !warlock.HasRune(proto.WarlockRune_RuneHelmVengeance) {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: int32(proto.WarlockRune_RuneHelmVengeance)}
+	healthMetrics := warlock.NewHealthMetrics(actionID)
+	var bonusHealth float64
+
+	aura := warlock.RegisterAura(core.Aura{
+		Label:    "Vengeance",
+		ActionID: actionID,
+		Duration: time.Second * 20,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			bonusHealth = warlock.MaxHealth() * 0.30
+			warlock.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
+			warlock.GainHealth(sim, bonusHealth, healthMetrics)
+
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+			healthDiff := warlock.CurrentHealth() - warlock.MaxHealth()
+			if healthDiff > 0 {
+				warlock.RemoveHealth(sim, healthDiff)
+			}
+		},
+	})
+
+	spell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagNoOnCastComplete,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    warlock.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			aura.Activate(sim)
+		},
+	})
+
+	warlock.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return character.CurrentHealthPercent() < 0.5
+		},
+	})
 }
 
 func (warlock *Warlock) applyDanceOfTheWicked() {
@@ -110,7 +165,7 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 
 	warlock.DemonicKnowledgeAura = warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Demonic Knowledge",
-		ActionID: core.ActionID{SpellID: 412732},
+		ActionID: core.ActionID{SpellID: int32(proto.WarlockRune_RuneBootsDemonicKnowledge)},
 		Duration: core.NeverExpires,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
