@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -13,6 +14,7 @@ const (
 	BattleStance Stance = 1 << iota
 	DefensiveStance
 	BerserkerStance
+	GladiatorStance
 )
 
 const stanceEffectCategory = "Stance"
@@ -37,7 +39,7 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.Stance != stance
+			return warrior.Stance != stance || warrior.Stance == GladiatorStance
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -114,12 +116,46 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 	warrior.BerserkerStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
 }
 
+func (warrior *Warrior) registerGladiatorStance() {
+	if !warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
+		return
+	}
+
+	if warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypeShield {
+		return
+	}
+
+	warrior.GladiatorStanceAura = warrior.GetOrRegisterAura(core.Aura{
+		Label:    "Gladiator Stance",
+		ActionID: core.ActionID{SpellID: 413476},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+
+			aura.Unit.PseudoStats.ArmorMultiplier *= 0.7
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
+			aura.Unit.PseudoStats.BlockValueMultiplier *= 1.1
+			aura.Unit.PseudoStats.ThreatMultiplier *= 0.9
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.ArmorMultiplier /= 0.7
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
+			aura.Unit.PseudoStats.BlockValueMultiplier /= 1.1
+			aura.Unit.PseudoStats.ThreatMultiplier /= 0.9
+		},
+	})
+	warrior.GladiatorStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
+}
+
 func (warrior *Warrior) registerStances() {
 	stanceCD := warrior.NewTimer()
 	warrior.registerBattleStanceAura()
 	warrior.registerDefensiveStanceAura()
 	warrior.registerBerserkerStanceAura()
+	warrior.registerGladiatorStance()
 	warrior.BattleStance = warrior.makeStanceSpell(BattleStance, warrior.BattleStanceAura, stanceCD)
 	warrior.DefensiveStance = warrior.makeStanceSpell(DefensiveStance, warrior.DefensiveStanceAura, stanceCD)
 	warrior.BerserkerStance = warrior.makeStanceSpell(BerserkerStance, warrior.BerserkerStanceAura, stanceCD)
+	if warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) && warrior.GetOHWeapon().WeaponType == proto.WeaponType_WeaponTypeShield {
+		warrior.GladiatorStance = warrior.makeStanceSpell(GladiatorStance, warrior.GladiatorStanceAura, stanceCD)
+	}
 }
