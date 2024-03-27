@@ -57,6 +57,8 @@ export const APLPresets = {
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
+	// TODO: Phase 3
+	50: APLPresets[Phase.Phase2][0],
 };
 
 export const DefaultRotation = FeralDruidRotation.create({

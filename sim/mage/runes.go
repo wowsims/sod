@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"slices"
 	"time"
 
@@ -11,10 +10,17 @@ import (
 )
 
 func (mage *Mage) ApplyRunes() {
+	// Helm
+	mage.registerDeepFreezeSpell()
+
 	// Chest
 	mage.applyBurnout()
 	mage.applyEnlightenment()
 	mage.applyFingersOfFrost()
+
+	// Bracers
+	mage.applyMoltenArmor()
+	mage.registerBalefireBoltSpell()
 
 	// Hands
 	mage.registerArcaneBlastSpell()
@@ -25,7 +31,7 @@ func (mage *Mage) ApplyRunes() {
 	mage.registerFrostfireBoltSpell()
 	mage.applyHotStreak()
 	mage.applyMissileBarrage()
-	mage.registerSpellfrostBolt()
+	mage.registerSpellfrostBoltSpell()
 
 	// Legs
 	mage.registerArcaneSurgeSpell()
@@ -131,7 +137,6 @@ func (mage *Mage) applyFingersOfFrost() {
 	procChance := 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
-	fmt.Println(mage.Talents.Shatter)
 	var proccedAt time.Duration
 
 	procAura := mage.RegisterAura(core.Aura{
@@ -152,7 +157,7 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
+	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:    "Fingers of Frost Rune",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -166,6 +171,14 @@ func (mage *Mage) applyFingersOfFrost() {
 			}
 		},
 	})
+}
+
+func (mage *Mage) applyMoltenArmor() {
+	if !mage.HasRune(proto.MageRune_RuneBracersMoltenArmor) {
+		return
+	}
+
+	mage.AddStat(stats.SpellCrit, 5*core.CritRatingPerCritChance)
 }
 
 func (mage *Mage) applyHotStreak() {

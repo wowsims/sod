@@ -14,10 +14,7 @@ import {
 	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import {
-	Warrior_Options as WarriorOptions,
-	WarriorShout,
-} from '../core/proto/warrior.js';
+import { Warrior_Options as WarriorOptions, WarriorShout } from '../core/proto/warrior.js';
 import Phase1APLArms from './apls/phase_1_arms.apl.json';
 import Phase2APLArms from './apls/phase_2_arms.apl.json';
 import Phase2APLFury from './apls/phase_2_fury.apl.json';
@@ -40,15 +37,8 @@ export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 Fury', Phase1Gear, 
 export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 Fury', Phase2DWGear, { talentTree: 1 });
 
 export const GearPresets = {
-  [Phase.Phase1]: [
-		GearArmsPhase1,
-		GearFuryPhase1,
-		GearArmsDWPhase1,
-  ],
-  [Phase.Phase2]: [
-		GearArmsPhase2,
-		GearFuryPhase2,
-  ]
+	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
+	[Phase.Phase2]: [GearArmsPhase2, GearFuryPhase2],
 };
 
 export const DefaultGear = GearPresets[Phase.Phase2][0];
@@ -62,13 +52,8 @@ export const APLPhase2Arms = PresetUtils.makePresetAPLRotation('P2 Preset Arms',
 export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Preset Fury', Phase2APLFury);
 
 export const APLPresets = {
-	[Phase.Phase1]: [
-		APLPhase1Arms,
-	],
-	[Phase.Phase2]: [
-		APLPhase2Arms,
-		APLPhase2Fury,
-	]
+	[Phase.Phase1]: [APLPhase1Arms],
+	[Phase.Phase2]: [APLPhase2Arms, APLPhase2Fury],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -82,7 +67,13 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][1],
 		2: APLPresets[Phase.Phase2][0],
-	}
+	},
+	// TODO: Phase 3
+	50: {
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
+		2: APLPresets[Phase.Phase2][0],
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -93,35 +84,29 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
 export const TalentsPhase1 = {
-	name: 'Level 25',
+	name: 'P1',
 	data: SavedTalents.create({
 		talentsString: '303220203-01',
 	}),
 };
 
 export const TalentsPhase2Fury = {
-	name: 'Level 40 Fury',
+	name: 'P2 Fury',
 	data: SavedTalents.create({
 		talentsString: '-05050005405010051',
 	}),
 };
 
 export const TalentsPhase2Arms = {
-	name: 'Level 40 Arms',
+	name: 'P2 Arms',
 	data: SavedTalents.create({
 		talentsString: '303050213525100001',
 	}),
 };
 
-
 export const TalentPresets = {
-	[Phase.Phase1]: [
-		TalentsPhase1,
-	],
-	[Phase.Phase2]: [
-		TalentsPhase2Arms,
-		TalentsPhase2Fury,
-	]
+	[Phase.Phase1]: [TalentsPhase1],
+	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
 };
 
 export const DefaultTalentsPhase1Arms = TalentPresets[Phase.Phase1][0];
@@ -154,14 +139,14 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	devotionAura: TristateEffect.TristateEffectImproved,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	stoneskinTotem: TristateEffect.TristateEffectImproved,
-})
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectRegular,
 	sparkOfInspiration: true,
-	saygesFortune: SaygesFortune.SaygesDamage
+	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
 export const DefaultDebuffs = Debuffs.create({
@@ -170,9 +155,9 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	mangle: true,
 	sunderArmor: true,
-})
+});
 
 export const OtherDefaults = {
-  	profession1: Profession.Enchanting,
-  	profession2: Profession.Leatherworking,
-}
+	profession1: Profession.Enchanting,
+	profession2: Profession.Leatherworking,
+};
