@@ -66,7 +66,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.OverpowerAura.IsActive() && warrior.StanceMatches(BattleStance)
+			return warrior.OverpowerAura.IsActive() && (warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance))
 		},
 
 		BonusCritRating: 25 * core.CritRatingPerCritChance * float64(warrior.Talents.ImprovedOverpower),

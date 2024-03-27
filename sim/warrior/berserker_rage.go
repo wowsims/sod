@@ -35,7 +35,9 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			warrior.BerserkerRageAura.Activate(sim)
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return warrior.StanceMatches(BerserkerStance) },
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
+		},
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{

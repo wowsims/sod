@@ -75,7 +75,9 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				Duration: time.Second * 30,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return warrior.StanceMatches(BattleStance) },
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
+		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			ssAura.Activate(sim)
