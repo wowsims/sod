@@ -75,11 +75,10 @@ type Spell struct {
 	// The unit who will perform this spell.
 	Unit *Unit
 
-	SpellSchool       SpellSchool // Schoolmask of all schools this spell uses. Use Spell.SetSchool() to change this!
+	SpellSchool       SpellSchool         // Schoolmask of all schools this spell uses. Do not change this! Whatever you try to do is a hack and probably wrong.
+	SchoolIndex       stats.SchoolIndex   // Do not change this! Whatever you try to do is a hack and probably wrong.
+	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Do not change this! Whatever you try to do is a hack and probably wrong.
 	DefenseType       DefenseType
-	SchoolIndex       stats.SchoolIndex   // Use Spell.SetSchool() to change this!
-	SchoolBaseIndices []stats.SchoolIndex // Base school indices for multi schools. Use Spell.SetSchool() to change this!
-	IsMultischool     bool                // True if school is composed of multiple base schools. Use Spell.SetSchool() to change this!
 
 	// Controls which effects can proc from this spell.
 	ProcMask ProcMask
@@ -222,6 +221,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		CastType:     config.CastType,
 		MissileSpeed: config.MissileSpeed,
 
+		SpellSchool:       config.SpellSchool,
+		SchoolIndex:       config.SpellSchool.GetSchoolIndex(),
+		SchoolBaseIndices: config.SpellSchool.GetBaseIndices(),
+
 		DefaultCast:        config.Cast.DefaultCast,
 		CD:                 config.Cast.CD,
 		SharedCD:           config.Cast.SharedCD,
@@ -254,8 +257,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras: config.RelatedAuras,
 	}
-
-	spell.SetSchool(config.SpellSchool.GetSchoolIndex())
 
 	spell.CdSpell = spell
 

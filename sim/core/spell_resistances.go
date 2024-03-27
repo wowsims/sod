@@ -21,12 +21,12 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
-		// All physical dots (Bleeds) ignore armor.
-		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
-			return 1, OutcomeEmpty
-		}
+		if spell.SchoolIndex == stats.SchoolIndexPhysical || MultiSchoolShouldUseArmor(spell, attackTable.Defender) {
+			// All physical dots (Bleeds) ignore armor.
+			if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
+				return 1, OutcomeEmpty
+			}
 
-		if spell.SchoolIndex == stats.SchoolIndexPhysical || MultiSchoolShouldUseArmor(spell.SchoolIndex, attackTable.Defender) {
 			// Physical resistance (armor).
 			return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
 		}
@@ -39,7 +39,7 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 
 	resistanceRoll := sim.RandomFloat("Partial Resist")
 
-	threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell.SchoolIndex, spell.Flags.Matches(SpellFlagPureDot))
+	threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell, spell.Flags.Matches(SpellFlagPureDot))
 	//if sim.Log != nil {
 	//	sim.Log("Resist thresholds: %0.04f, %0.04f, %0.04f", threshold00, threshold25, threshold50)
 	//}
@@ -56,22 +56,29 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 }
 
-// Decide whether to use armor for physical multi school spells
+// Decide whether to use armor for physical multi school spells.
 //
-// TODO: This is most likely not accurate. A short test showed that it seems
-// to not simply use armor if it's lower, but the breakpoint appeared to be pretty
-// close to the resistance value.
-func MultiSchoolShouldUseArmor(schoolIndex stats.SchoolIndex, target *Unit) bool {
+// TODO: This is most likely not accurate for the case: armor near resistance but not 0
+//
+// A short test showed that the game uses armor if it's far enough below resistance,
+// but not simply if it's lower.
+// 49 (and above) armor vs 57 res => used resistance
+// 7 (and below) armor vs 57 res => used armor/no partials anymore
+// If level based resist is used in this decission process is also not known as it was tested PvP.
+//
+// For most purposes this should work fine for now, but should be properly tested and fixed if
+// spells using it become important and boss armor can actually go below (level based) resistance values.
+func MultiSchoolShouldUseArmor(spell *Spell, target *Unit) bool {
 	resistance := 100000.0
-	lowestStat := stats.Armor
-	for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
-		resiVal := target.GetStat(resiStat)
+	lowestIsArmor := true
+	for _, baseSchoolIndex := range spell.SchoolBaseIndices {
+		resiVal := target.GetResistanceForSchool(baseSchoolIndex)
 		if resiVal < resistance {
 			resistance = resiVal
-			lowestStat = resiStat
+			lowestIsArmor = baseSchoolIndex == stats.SchoolIndexPhysical
 		}
 	}
-	return lowestStat == stats.Armor
+	return lowestIsArmor
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
@@ -80,50 +87,59 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
 	return 1 - defenderArmor/(defenderArmor+400+85*float64(at.Attacker.Level))
 }
 
-func (at *AttackTable) GetPartialResistThresholds(si stats.SchoolIndex, pureDot bool) (float64, float64, float64) {
-	return at.Defender.partialResistRollThresholds(si, at.Attacker, pureDot)
+func (at *AttackTable) GetPartialResistThresholds(spell *Spell, pureDot bool) (float64, float64, float64) {
+	return at.Defender.partialResistRollThresholds(spell, at.Attacker, pureDot)
 }
 
-func (at *AttackTable) GetBinaryHitChance(si stats.SchoolIndex) float64 {
-	return at.Defender.binaryHitChance(si, at.Attacker)
+func (at *AttackTable) GetBinaryHitChance(spell *Spell) float64 {
+	return at.Defender.binaryHitChance(spell, at.Attacker)
+}
+
+// Only for base schools!
+func (unit *Unit) GetResistanceForSchool(schoolIndex stats.SchoolIndex) float64 {
+	switch schoolIndex {
+	case stats.SchoolIndexNone:
+		return 0
+	case stats.SchoolIndexPhysical:
+		return unit.GetStat(stats.Armor)
+	case stats.SchoolIndexArcane:
+		return unit.GetStat(stats.ArcaneResistance)
+	case stats.SchoolIndexFire:
+		return unit.GetStat(stats.FireResistance)
+	case stats.SchoolIndexFrost:
+		return unit.GetStat(stats.FrostResistance)
+	case stats.SchoolIndexHoly:
+		return 0 // Holy resistance doesn't exist.
+	case stats.SchoolIndexNature:
+		return unit.GetStat(stats.NatureResistance)
+	case stats.SchoolIndexShadow:
+		return unit.GetStat(stats.ShadowResistance)
+	default:
+		return 0
+	}
 }
 
 // All of the following calculations are based on this guide:
 // https://royalgiraffe.github.io/resist-guide
 
-func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, binary bool, pureDot bool) float64 {
+func (unit *Unit) resistCoeff(spell *Spell, attacker *Unit, binary bool, pureDot bool) float64 {
+	if spell.SchoolIndex <= stats.SchoolIndexPhysical {
+		return 0
+	}
+
 	var resistance float64
 
-	switch schoolIndex {
-	case stats.SchoolIndexNone:
-		return 0
-	case stats.SchoolIndexPhysical:
-		return 0
-	case stats.SchoolIndexArcane:
-		resistance = unit.GetStat(stats.ArcaneResistance)
-	case stats.SchoolIndexFire:
-		resistance = unit.GetStat(stats.FireResistance)
-	case stats.SchoolIndexFrost:
-		resistance = unit.GetStat(stats.FrostResistance)
-	case stats.SchoolIndexHoly:
-		resistance = 0 // Holy resistance doesn't exist.
-	case stats.SchoolIndexNature:
-		resistance = unit.GetStat(stats.NatureResistance)
-	case stats.SchoolIndexShadow:
-		resistance = unit.GetStat(stats.ShadowResistance)
-	default:
+	if spell.SchoolIndex.IsMultiSchool() {
 		// Multi school: Choose the lowest resistance available.
 		resistance = 1000.0
-		if !SpellSchoolFromIndex(schoolIndex).Matches(SpellSchoolHoly) {
-			for _, resiStat := range GetSchoolResistanceStats(schoolIndex) {
-				resiVal := unit.GetStat(resiStat)
-				if resiVal < resistance {
-					resistance = resiVal
-				}
+		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
+			resiVal := unit.GetResistanceForSchool(baseSchoolIndex)
+			if resiVal < resistance {
+				resistance = resiVal
 			}
-		} else {
-			resistance = 0.0
 		}
+	} else {
+		resistance = unit.GetResistanceForSchool(spell.SchoolIndex)
 	}
 
 	resistance = max(0, resistance-attacker.stats[stats.SpellPenetration])
@@ -146,14 +162,14 @@ func (unit *Unit) resistCoeff(schoolIndex stats.SchoolIndex, attacker *Unit, bin
 	return min(1, resistanceCoef)
 }
 
-func (unit *Unit) binaryHitChance(schoolIndex stats.SchoolIndex, attacker *Unit) float64 {
-	resistCoeff := unit.resistCoeff(schoolIndex, attacker, true, false)
+func (unit *Unit) binaryHitChance(spell *Spell, attacker *Unit) float64 {
+	resistCoeff := unit.resistCoeff(spell, attacker, true, false)
 	return 1 - 0.75*resistCoeff
 }
 
 // Roll threshold for each type of partial resist.
-func (unit *Unit) partialResistRollThresholds(schoolIndex stats.SchoolIndex, attacker *Unit, pureDot bool) (float64, float64, float64) {
-	resistCoeff := unit.resistCoeff(schoolIndex, attacker, false, pureDot)
+func (unit *Unit) partialResistRollThresholds(spell *Spell, attacker *Unit, pureDot bool) (float64, float64, float64) {
+	resistCoeff := unit.resistCoeff(spell, attacker, false, pureDot)
 
 	// Based on the piecewise linear regression estimates at https://royalgiraffe.github.io/partial-resist-table.
 	if val := resistCoeff * 3; val <= 1 {
