@@ -15,7 +15,7 @@ func (shaman *Shaman) applyLavaLash() {
 	cooldown := time.Second * 6
 	manaCost := .01
 
-	imbueMultiplier := core.TernaryFloat64(shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon, 1.5, 1)
+	imbueMultiplier := core.TernaryFloat64(shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon, 2.25, 1)
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
@@ -39,7 +39,7 @@ func (shaman *Shaman) applyLavaLash() {
 			},
 		},
 
-		DamageMultiplier: 1.5 * imbueMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
+		DamageMultiplier: 1 * imbueMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
