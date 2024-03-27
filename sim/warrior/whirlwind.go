@@ -36,7 +36,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BerserkerStance)
+			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		CritDamageBonus: warrior.impale(),
