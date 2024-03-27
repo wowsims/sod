@@ -9,6 +9,63 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+func BenchmarkMultiSchoolMultipliers(b *testing.B) {
+	school := SpellSchoolFrost | SpellSchoolShadow
+
+	multipliers := [stats.PrimarySchoolLen]float64{
+		stats.SchoolIndexNone:     1,
+		stats.SchoolIndexPhysical: 1,
+		stats.SchoolIndexArcane:   1.1,
+		stats.SchoolIndexFire:     1.1 * 1.15,
+		stats.SchoolIndexFrost:    1.1 * 1.15,
+		stats.SchoolIndexHoly:     1,
+		stats.SchoolIndexNature:   1.2,
+		stats.SchoolIndexShadow:   1.1 * 1.2,
+	}
+
+	indexes := []stats.SchoolIndex{stats.SchoolIndexFrost, stats.SchoolIndexShadow}
+
+	var dontOptimizeAway float64
+
+	b.Run("index", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			m := 1.0
+			for _, index := range indexes {
+				m = max(m, multipliers[index])
+			}
+			dontOptimizeAway += m
+		}
+	})
+
+	b.Run("school", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			m := 1.0
+			switch {
+			case school.Matches(SpellSchoolNone):
+				m = max(m, multipliers[stats.SchoolIndexNone])
+			case school.Matches(SpellSchoolPhysical):
+				m = max(m, multipliers[stats.SchoolIndexPhysical])
+			case school.Matches(SpellSchoolArcane):
+				m = max(m, multipliers[stats.SchoolIndexArcane])
+			case school.Matches(SpellSchoolFire):
+				m = max(m, multipliers[stats.SchoolIndexFire])
+			case school.Matches(SpellSchoolFrost):
+				m = max(m, multipliers[stats.SchoolIndexFrost])
+			case school.Matches(SpellSchoolHoly):
+				m = max(m, multipliers[stats.SchoolIndexHoly])
+			case school.Matches(SpellSchoolNature):
+				m = max(m, multipliers[stats.SchoolIndexNature])
+			case school.Matches(SpellSchoolShadow):
+				m = max(m, multipliers[stats.SchoolIndexShadow])
+			}
+			dontOptimizeAway += m
+		}
+	})
+
+}
+
 func Test_MultiSchoolIndexMapping(t *testing.T) {
 	for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
 		school := SpellSchoolFromIndex(si)

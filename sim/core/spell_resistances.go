@@ -130,7 +130,7 @@ func (unit *Unit) resistCoeff(spell *Spell, attacker *Unit, binary bool, pureDot
 	var resistance float64
 
 	if spell.SchoolIndex.IsMultiSchool() {
-		// Multi school: Choose lowest resistance available.
+		// Multi school: Choose the lowest resistance available.
 		resistance = 1000.0
 		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 			resiVal := unit.GetResistanceForSchool(baseSchoolIndex)
@@ -172,27 +172,13 @@ func (unit *Unit) partialResistRollThresholds(spell *Spell, attacker *Unit, pure
 	resistCoeff := unit.resistCoeff(spell, attacker, false, pureDot)
 
 	// Based on the piecewise linear regression estimates at https://royalgiraffe.github.io/partial-resist-table.
-	//partialResistChance00 := piecewiseLinear3(resistCoeff, 1, 0.24, 0.00, 0.00)
-	partialResistChance25 := piecewiseLinear3(resistCoeff, 0, 0.55, 0.22, 0.04)
-	partialResistChance50 := piecewiseLinear3(resistCoeff, 0, 0.18, 0.56, 0.16)
-	partialResistChance75 := piecewiseLinear3(resistCoeff, 0, 0.03, 0.22, 0.80)
-
-	return partialResistChance25 + partialResistChance50 + partialResistChance75,
-		partialResistChance50 + partialResistChance75,
-		partialResistChance75
-}
-
-// Interpolation for a 3-part piecewise linear function (which all the partial resist equations use).
-func piecewiseLinear3(val float64, p0 float64, p1 float64, p2 float64, p3 float64) float64 {
-	if val < 1.0/3.0 {
-		return interpolate(val*3, p0, p1)
-	} else if val < 2.0/3.0 {
-		return interpolate((val-1.0/3.0)*3, p1, p2)
+	if val := resistCoeff * 3; val <= 1 {
+		return 0.76 * val, 0.21 * val, 0.03 * val
+	} else if val <= 2 {
+		val -= 1
+		return 0.76 + 0.24*val, 0.21 + 0.57*val, 0.03 + 0.19*val
 	} else {
-		return interpolate((val-2.0/3.0)*3, p2, p3)
+		val -= 2
+		return 1, 0.78 + 0.18*val, 0.22 + 0.58*val
 	}
-}
-
-func interpolate(val float64, p0 float64, p1 float64) float64 {
-	return p0*(1-val) + p1*val
 }

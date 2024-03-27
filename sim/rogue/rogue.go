@@ -74,6 +74,7 @@ type Rogue struct {
 	StealthAura          *core.Aura
 	WaylayAuras          core.AuraArray
 
+	deadlyPoisonTick       *core.Spell
 	woundPoisonDebuffAuras core.AuraArray
 
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
@@ -154,9 +155,9 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.EnableEnergyBar(maxEnergy)
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
-		MainHand:       rogue.WeaponFromMainHand(), // Set crit multiplier later when we have targets.
-		OffHand:        rogue.WeaponFromOffHand(),  // Set crit multiplier later when we have targets.
-		Ranged:         rogue.WeaponFromRanged(),   // Set crit multiplier later when we have targets.
+		MainHand:       rogue.WeaponFromMainHand(),
+		OffHand:        rogue.WeaponFromOffHand(),
+		Ranged:         rogue.WeaponFromRanged(),
 		AutoSwingMelee: true,
 	})
 	rogue.applyPoisons()

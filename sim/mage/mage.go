@@ -57,8 +57,10 @@ type Mage struct {
 	ArcaneMissiles          []*core.Spell
 	ArcaneMissilesTickSpell []*core.Spell
 	ArcaneSurge             *core.Spell
+	BalefireBolt            *core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
+	DeepFreeze              *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell

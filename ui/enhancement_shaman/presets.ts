@@ -15,13 +15,9 @@ import {
 	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
-	WeaponImbue
+	WeaponImbue,
 } from '../core/proto/common.js';
-import {
-	EnhancementShaman_Options as EnhancementShamanOptions,
-	ShamanShield,
-	ShamanSyncType,
-} from '../core/proto/shaman.js';
+import { EnhancementShaman_Options as EnhancementShamanOptions, ShamanShield, ShamanSyncType } from '../core/proto/shaman.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
@@ -39,12 +35,8 @@ export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 
 export const GearPresets = {
-	[Phase.Phase1]: [
-		GearPhase1,
-	],
-	[Phase.Phase2]: [
-		GearPhase2,
-	],
+	[Phase.Phase1]: [GearPhase1],
+	[Phase.Phase2]: [GearPhase2],
 };
 
 export const DefaultGear = GearPresets[CURRENT_PHASE][0];
@@ -57,17 +49,15 @@ export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL)
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
 
 export const APLPresets = {
-	[Phase.Phase1]: [
-		APLPhase1,
-	],
-	[Phase.Phase2]: [
-		APLPhase2,
-	],
+	[Phase.Phase1]: [APLPhase1],
+	[Phase.Phase2]: [APLPhase2],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
+	// TODO: Phase 3
+	50: APLPresets[Phase.Phase2][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -92,12 +82,8 @@ export const TalentsPhase2 = {
 };
 
 export const TalentPresets = {
-	[Phase.Phase1]: [
-		TalentsPhase1,
-	],
-	[Phase.Phase2]: [
-		TalentsPhase2,
-	],
+	[Phase.Phase1]: [TalentsPhase1],
+	[Phase.Phase2]: [TalentsPhase2],
 };
 
 export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
@@ -137,7 +123,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	sparkOfInspiration: true,
-	saygesFortune: SaygesFortune.SaygesDamage
+	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
 export const DefaultDebuffs = Debuffs.create({
