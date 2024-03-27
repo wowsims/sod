@@ -17,6 +17,8 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery)
+
 	return core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
@@ -35,9 +37,10 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 		},
 
 		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-		DamageMultiplierAdditive: 1 +
-			0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier: 1,
+
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

@@ -16,6 +16,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	level := [7]int{0, 8, 18, 28, 38, 48, 58}[rank]
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness) + 0.02*float64(warlock.Talents.ShadowMastery)
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
@@ -33,12 +35,11 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 *
-			(1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness)) *
-			(1 + 0.02*float64(warlock.Talents.ShadowMastery)),
-		ThreatMultiplier: 1,
-		FlatThreatBonus:  0,
+		BonusHitRating:           2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
+		FlatThreatBonus:          0,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

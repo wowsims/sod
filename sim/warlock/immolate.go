@@ -42,8 +42,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus: warlock.ruin(),
 
-		DamageMultiplier: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

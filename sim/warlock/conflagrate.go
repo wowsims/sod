@@ -46,6 +46,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		CritDamageBonus: warlock.ruin(),
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
