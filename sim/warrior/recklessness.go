@@ -46,10 +46,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if !warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance) {
-				warrior.BerserkerStance.Cast(sim, nil)
-			}
-
 			reckAura.Activate(sim)
 		},
 	})
