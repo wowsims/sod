@@ -353,6 +353,8 @@ type PseudoStats struct {
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
 
+	MeleeCritMultiplier float64
+
 	FiveSecondRuleRefreshTime time.Duration // last time a spell was cast
 	SpiritRegenRateCasting    float64       // percentage of spirit regen allowed during casting. Spell effect MOD_MANA_REGEN_INTERRUPT (134)
 
@@ -459,6 +461,8 @@ func NewPseudoStats() PseudoStats {
 		MeleeSpeedMultiplier:  1,
 		RangedSpeedMultiplier: 1,
 		SpiritRegenMultiplier: 1,
+
+		MeleeCritMultiplier: 1,
 
 		ThreatMultiplier: 1,
 

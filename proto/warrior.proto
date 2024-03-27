@@ -90,6 +90,7 @@ enum WarriorRune {
 	RuneShieldMastery = 426980;
 	RuneTasteForBlood = 426953;
 	RuneVigilance = 426972;
+	RuneGladiatorStance = 416002;
 }
 
 enum WarriorShout {
