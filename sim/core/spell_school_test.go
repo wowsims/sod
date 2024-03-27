@@ -12,7 +12,7 @@ import (
 func BenchmarkMultiSchoolMultipliers(b *testing.B) {
 	school := SpellSchoolFrost | SpellSchoolShadow
 
-	multipliers := [stats.PrimarySchoolLen]float64{
+	multipliers := [stats.SchoolLen]float64{
 		stats.SchoolIndexNone:     1,
 		stats.SchoolIndexPhysical: 1,
 		stats.SchoolIndexArcane:   1.1,
