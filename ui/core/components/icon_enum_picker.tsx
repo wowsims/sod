@@ -1,11 +1,10 @@
 import { Tooltip } from 'bootstrap';
-import { ActionId } from '../proto_utils/action_id.js';
-import { TypedEvent } from '../typed_event.js';
-
-import { Input, InputConfig } from './input.js';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
+
+import { ActionId } from '../proto_utils/action_id.js';
+import { TypedEvent } from '../typed_event.js';
+import { Input, InputConfig } from './input.js';
 
 export enum IconEnumPickerDirection {
 	Vertical = 'vertical',
@@ -13,35 +12,35 @@ export enum IconEnumPickerDirection {
 }
 
 export interface IconEnumValueConfig<ModObject, T> {
-	value: T,
+	value: T;
 	// One of these should be set.
 	// If actionId is set, shows the icon for that id.
 	// If color is set, shows that color.
 	// If iconUrl is set, shows that icon as grayscale
-	actionId?: (modObj: ModObject) => ActionId | null,
-	color?: string,
-	iconUrl?: string,
+	actionId?: (modObj: ModObject) => ActionId | null;
+	color?: string;
+	iconUrl?: string;
 	// Text to be displayed on the icon.
-	text?: string,
+	text?: string;
 	// Hover tooltip.
-	tooltip?: string,
+	tooltip?: string;
 
-	showWhen?: (obj: ModObject) => boolean,
+	showWhen?: (obj: ModObject) => boolean;
 }
 
 export interface IconEnumPickerConfig<ModObject, T> extends InputConfig<ModObject, T> {
-	numColumns?: number,
+	numColumns?: number;
 	values: Array<IconEnumValueConfig<ModObject, T>>;
 	// Value that will be considered inactive.
-	zeroValue: T,
+	zeroValue: T;
 	// Function for comparing two values.
 	// Tooltip that will be shown whne hovering over the icon-picker-button
-	tooltip?: string,
+	tooltip?: string;
 	// The direction the menu will open in relative to the root element
-	direction?: IconEnumPickerDirection,
-	equals: (a: T, b: T) => boolean,
-	backupIconUrl?: (value: T) => ActionId,
-	showWhen?: (obj: ModObject) => boolean,
+	direction?: IconEnumPickerDirection;
+	equals: (a: T, b: T) => boolean;
+	backupIconUrl?: (value: T) => ActionId;
+	showWhen?: (obj: ModObject) => boolean;
 }
 
 // Icon-based UI for picking enum values.
@@ -61,20 +60,10 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		this.config = config;
 		this.currentValue = this.config.zeroValue;
 
-		this.config.changedEvent(this.modObject).on(_ => {
-			if (this.showWhen()) {
-				this.restoreValue();
-				this.rootElem.classList.remove('hide');
-			} else {
-				this.storeValue();
-				this.rootElem.classList.add('hide');
-			}
-		});
-
 		if (config.tooltip) {
 			Tooltip.getOrCreateInstance(this.rootElem, {
 				html: true,
-				title: config.tooltip
+				title: config.tooltip,
 			});
 		}
 
@@ -84,39 +73,35 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 					href="javascript:void(0)"
 					className="icon-picker-button"
 					attributes={{
-						'aria-expanded':"false",
-						role: 'button'
+						'aria-expanded': 'false',
+						role: 'button',
 					}}
 					dataset={{
 						bsToggle: 'dropdown',
-						whtticon:"false",
-						disableWowheadTouchTooltip:'true'
-					}}
-				>
-				</a>
+						whtticon: 'false',
+						disableWowheadTouchTooltip: 'true',
+					}}></a>
 				<ul className="dropdown-menu"></ul>
-				<label className='form-label'></label>
-			</>
-		)
+				<label className="form-label"></label>
+			</>,
+		);
 
 		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
 		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
 		const dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
 
-		if (this.config.numColumns)
-			dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
+		if (this.config.numColumns) dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
 
-		if (this.config.direction == IconEnumPickerDirection.Horizontal)
-			dropdownMenu.style.gridAutoFlow = 'column';
+		if (this.config.direction == IconEnumPickerDirection.Horizontal) dropdownMenu.style.gridAutoFlow = 'column';
 
 		this.config.values.forEach((valueConfig, _) => {
 			const optionContainer = document.createElement('li');
-			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option')
+			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option');
 			dropdownMenu.appendChild(optionContainer);
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
-			option.dataset.disableWowheadTouchTooltip='true';
+			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
 
 			const updateOption = () => {
@@ -127,13 +112,13 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 					optionContainer.classList.add('hide');
 					// Zero out the picker if the selected option is hidden
 					if (this.currentValue == valueConfig.value) {
-						this.setInputValue(this.config.zeroValue)
-						this.inputChanged(TypedEvent.nextEventID())
+						this.setInputValue(this.config.zeroValue);
+						this.inputChanged(TypedEvent.nextEventID());
 					}
 				}
 			};
 
-			this.config.changedEvent(this.modObject).on(updateOption)
+			this.config.changedEvent(this.modObject).on(updateOption);
 			updateOption();
 
 			option.addEventListener('click', event => {
@@ -146,12 +131,25 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			if (valueConfig.tooltip) {
 				Tooltip.getOrCreateInstance(option, {
 					html: true,
-					title: valueConfig.tooltip
+					title: valueConfig.tooltip,
 				});
 			}
 		});
 
 		this.init();
+
+		// This must occur after this.init() else the state will not be handled correctly
+		const updateState = () => {
+			if (this.showWhen()) {
+				this.restoreValue();
+				this.rootElem.classList.remove('hide');
+			} else {
+				this.storeValue();
+				this.rootElem.classList.add('hide');
+			}
+		};
+		updateState();
+		this.config.changedEvent(this.modObject).on(updateState);
 	}
 
 	/**
@@ -183,21 +181,21 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 	}
 
 	private setImage(elem: HTMLAnchorElement, valueConfig: IconEnumValueConfig<ModObject, T>) {
-		if (valueConfig.showWhen && !valueConfig.showWhen(this.modObject)){
-			elem.removeAttribute('href')
+		if (valueConfig.showWhen && !valueConfig.showWhen(this.modObject)) {
+			elem.removeAttribute('href');
 			return;
 		}
 
-		const actionId = valueConfig.actionId?.(this.modObject)
+		const actionId = valueConfig.actionId?.(this.modObject);
 		if (actionId) {
 			this.setActionImage(elem, actionId);
-			elem.style.filter = ''
+			elem.style.filter = '';
 		} else if (valueConfig.iconUrl) {
-			elem.style.backgroundImage = `url(${valueConfig.iconUrl})`
-			elem.style.filter = 'grayscale(1)'
+			elem.style.backgroundImage = `url(${valueConfig.iconUrl})`;
+			elem.style.filter = 'grayscale(1)';
 		} else {
 			elem.style.backgroundImage = '';
-			elem.style.filter = ''
+			elem.style.filter = '';
 			elem.style.backgroundColor = valueConfig.color!;
 		}
 	}
@@ -217,17 +215,17 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 	setInputValue(newValue: T) {
 		this.currentValue = newValue;
-		this.setActive(this.enabled && !this.config.equals(this.currentValue, this.config.zeroValue))
+		this.setActive(this.enabled && !this.config.equals(this.currentValue, this.config.zeroValue));
 
-		this.buttonText.textContent = ''
-		this.buttonText.style.display = 'none'
+		this.buttonText.textContent = '';
+		this.buttonText.style.display = 'none';
 
 		const valueConfig = this.config.values.find(valueConfig => this.config.equals(valueConfig.value, this.currentValue))!;
 		if (valueConfig) {
 			this.setImage(this.buttonElem, valueConfig);
 			if (valueConfig.text != undefined) {
-				this.buttonText.style.display = 'block'
-				this.buttonText.textContent = valueConfig.text
+				this.buttonText.style.display = 'block';
+				this.buttonText.textContent = valueConfig.text;
 			}
 		} else if (this.config.backupIconUrl) {
 			const backupId = this.config.backupIconUrl(this.currentValue);
@@ -237,27 +235,21 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 	}
 
 	setActive(active: boolean) {
-		if (active)
-			this.buttonElem.classList.add('active');
-		else
-			this.buttonElem.classList.remove('active');
+		if (active) this.buttonElem.classList.add('active');
+		else this.buttonElem.classList.remove('active');
 	}
 
 	showWhen(): boolean {
 		return (
 			(!this.config.showWhen || this.config.showWhen(this.modObject)) &&
-			!!this.config.values.find(valueConfig =>
-				valueConfig.actionId &&
-				valueConfig.actionId(this.modObject) != null &&
-				(!valueConfig.showWhen || valueConfig.showWhen(this.modObject))
+			!!this.config.values.find(
+				valueConfig =>
+					valueConfig.actionId && valueConfig.actionId(this.modObject) != null && (!valueConfig.showWhen || valueConfig.showWhen(this.modObject)),
 			)
 		);
 	}
 
 	showValueWhen(valueConfig: IconEnumValueConfig<ModObject, T>): boolean {
-		return (
-			(!valueConfig.actionId || valueConfig.actionId?.(this.modObject) != null) &&
-			(!valueConfig.showWhen || valueConfig.showWhen(this.modObject))
-		);
+		return (!valueConfig.actionId || valueConfig.actionId?.(this.modObject) != null) && (!valueConfig.showWhen || valueConfig.showWhen(this.modObject));
 	}
 }
