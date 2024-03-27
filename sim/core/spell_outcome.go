@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -47,6 +48,16 @@ func (dot *Dot) OutcomeTickSnapshotCrit(sim *Simulation, result *SpellResult, at
 	} else {
 		result.Outcome = OutcomeHit
 	}
+}
+
+func (dot *Dot) OutcomeTickSnapshotCritCounted(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
+		result.Outcome = OutcomeCrit
+		result.Damage *= dot.Spell.CritMultiplier(attackTable)
+	} else {
+		result.Outcome = OutcomeHit
+	}
+	dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
 
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
