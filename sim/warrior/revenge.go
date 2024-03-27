@@ -66,7 +66,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance) && warrior.revengeProcAura.IsActive()
+			return (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance)) && warrior.revengeProcAura.IsActive()
 		},
 
 		CritDamageBonus: warrior.impale(),

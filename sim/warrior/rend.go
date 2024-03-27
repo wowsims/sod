@@ -36,7 +36,7 @@ func (warrior *Warrior) registerRendSpell() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance)
+			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		DamageMultiplier: []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend],

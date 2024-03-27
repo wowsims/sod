@@ -49,7 +49,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hasFuriousThunder || warrior.StanceMatches(BattleStance)
+			return hasFuriousThunder || warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		CritDamageBonus: warrior.impale(),

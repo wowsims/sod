@@ -42,11 +42,11 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BerserkerStance)
+			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if !warrior.StanceMatches(BerserkerStance) {
+			if !warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance) {
 				warrior.BerserkerStance.Cast(sim, nil)
 			}
 
