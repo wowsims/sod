@@ -26,8 +26,8 @@ var RuneOverrides = []*proto.UIRune{
 	{Id: 415713, Name: "Engrave Helm - Mental Dexterity", Icon: "spell_nature_mentalquickness", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
 	{Id: 432233, Name: "Engrave Helm - Tidal Waves", Icon: "spell_shaman_tidalwaves", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
 
-	{Id: 432240, Name: "Engrave Helm - Overcharged", Icon: "spell_fire_blueflamering", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 409954, Name: "Engrave Helm - Riptide", Icon: "spell_nature_riptide", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 432235, Name: "Engrave Helm - Rolling Thunder", Icon: "spell_nature_unrelentingstorm", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 432237, Name: "Engrave Helm - Static Shock", Icon: "spell_shaman_staticshock", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432240, Name: "Engrave Bracers - Overcharged", Icon: "spell_fire_blueflamering", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 409954, Name: "Engrave Bracers - Riptide", Icon: "spell_nature_riptide", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432235, Name: "Engrave Bracers - Rolling Thunder", Icon: "spell_nature_unrelentingstorm", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432237, Name: "Engrave Bracers - Static Shock", Icon: "spell_shaman_staticshock", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
 }
