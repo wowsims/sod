@@ -737,7 +737,8 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 }
 
 func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	if potionType == proto.Potions_LesserManaPotion || potionType == proto.Potions_ManaPotion || potionType == proto.Potions_GreaterManaPotion || potionType == proto.Potions_SuperiorManaPotion || potionType == proto.Potions_MajorManaPotion {
+	// All potions are mana
+	if potionType != proto.Potions_UnknownPotion {
 		itemId := map[proto.Potions]int32{
 			proto.Potions_LesserManaPotion:   3385,
 			proto.Potions_ManaPotion:         3827,
