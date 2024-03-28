@@ -69,7 +69,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus: shaman.elementalFury(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + .05*float64(shaman.Talents.CallOfFlame),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
