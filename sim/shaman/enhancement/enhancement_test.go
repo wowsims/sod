@@ -66,7 +66,7 @@ func TestEnhancement(t *testing.T) {
 
 			Talents:  Phase3Talents,
 			GearSet:  core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_2"),
-			Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_3"),
+			Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_2"),
 			Buffs:    core.FullBuffsPhase3,
 			Consumes: Phase3ConsumesWFWF,
 			OtherConsumes: []core.ConsumesCombo{
