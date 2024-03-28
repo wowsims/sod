@@ -270,6 +270,15 @@ export const TrueshotAuraBuff = withLabel(
 	'Trueshot Aura',
 );
 
+export const BattleSquawkBuff = withLabel(
+	makeMultistateRaidBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 23060, minLevel: 40 }]),
+		numStates: 6,
+		fieldName: 'battleSquawk',
+	}),
+	'Battle Squawk',
+);
+
 // export const AttackPowerPercentBuff = InputHelpers.makeMultiIconInput([
 // ], 'Attack Power %', 1, 40);
 
@@ -978,6 +987,11 @@ export const RAID_BUFFS_CONFIG = [
 		config: PowerInfusion,
 		picker: IconPicker,
 		stats: [Stat.StatMP5, Stat.StatSpellPower],
+	},
+	{
+		config: BattleSquawkBuff,
+		picker: IconPicker,
+		stats: [Stat.StatMeleeHaste],
 	},
 ] as PickerStatOptions[];
 

@@ -30,6 +30,7 @@ const (
 	HornOfLordaeron
 	Windfury
 	SanctityAura
+	BattleSquawk
 
 	// Resistance
 	AspectOfTheWild
@@ -554,6 +555,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.SanctityAura {
 		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
 	}
+	
 	// TODO: Classic
 	if individualBuffs.BlessingOfSanctuary {
 		character.PseudoStats.DamageTakenMultiplier *= 0.97
@@ -618,6 +620,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 			updateStats = updateStats.Multiply(1.25)
 		}
 		character.AddStats(updateStats)
+	}
+
+	if raidBuffs.BattleSquawk > 0 {
+		numBattleSquawks := raidBuffs.BattleSquawk
+		BattleSquawkAura(&character.Unit, numBattleSquawks)
 	}
 
 	// World Buffs
@@ -1724,6 +1731,30 @@ func CommandingShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePt
 	healthBonusEffect(aura, 2255*(1+0.05*float64(commandingPresencePts)))
 	return aura
 }
+
+func BattleSquawkAura(character *Unit, stackcount int32) *Aura {	
+		aura := character.GetOrRegisterAura(Aura{
+		Label:      "Battle Squawk",
+		ActionID:   ActionID{SpellID: 23060},
+		Duration:   time.Minute * 4,
+		MaxStacks: 5,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, stackcount)
+		},
+		OnStacksChange:	func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+			character.MultiplyMeleeSpeed(sim, math.Pow(1.05,float64(newStacks-oldStacks)))
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, 0)
+		},
+	})
+	return aura
+}
+
 
 func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{
