@@ -276,7 +276,7 @@ func (rogue *Rogue) applyCombatPotency() {
 
 	const procChance = 0.2
 	energyBonus := 15.0
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 35553})
+	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 432292})
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Combat Potency",
