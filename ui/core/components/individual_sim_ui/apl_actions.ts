@@ -3,6 +3,7 @@ import { Player } from '../../player.js';
 import {
 	APLAction,
 	APLActionActivateAura,
+	APLActionActivateAuraWithStacks,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
 	APLActionCastPaladinPrimarySeal,
@@ -540,6 +541,23 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionActivateAura.create(),
 		fields: [AplHelpers.actionIdFieldConfig('auraId', 'auras')],
+	}),
+	['activateAuraWithStacks']: inputBuilder({
+		label: 'Activate Aura With Stacks',
+		submenu: ['Misc'],
+		shortDescription: 'Activates an aura with the specified number of stacks',
+		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		newValue: () =>
+			APLActionActivateAuraWithStacks.create({
+				numStacks: '1',
+			}),
+		fields: [
+			AplHelpers.actionIdFieldConfig('auraId', 'stackable_auras'),
+			AplHelpers.stringFieldConfig('numStacks', {
+				label: 'stacks',
+				labelTooltip: 'Desired number of initial aura stacks.',
+			}),
+		],
 	}),
 	['cancelAura']: inputBuilder({
 		label: 'Cancel Aura',

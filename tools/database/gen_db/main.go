@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 
 	"github.com/wowsims/sod/sim"
@@ -99,7 +100,9 @@ func main() {
 	}
 
 	for id, rune := range runeTooltips {
-		db.AddRune(id, rune)
+		if !slices.Contains(database.UnimplementedRuneOverrides, id) {
+			db.AddRune(id, rune)
+		}
 	}
 
 	db.MergeItems(database.ItemOverrides)
