@@ -7,27 +7,48 @@ import (
 // Overrides for runes as needed
 // Regen db with "go run ./tools/database/gen_db -outDir=assets -gen=db"
 // And ensure db files are copied from assets/db into dist/sod/database
-var RuneOverrides = []*proto.UIRune{
-	// Mage
-	// {Id: 428738, Name: "Engrave Helm - Advanced Warding", Icon: "spell_arcane_arcaneresilience", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassMage, RequiresLevel: 1},
-	// {Id: 428739, Name: "Engrave Helm - Deep Freeze", Icon: "ability_mage_deepfreeze", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassMage, RequiresLevel: 1},
-	// {Id: 428885, Name: "Engrave Helm - Temporal Anomaly", Icon: "spell_fire_blueflamering", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassMage, RequiresLevel: 1},
+var RuneOverrides = []*proto.UIRune{}
 
-	// {Id: 428878, Name: "Engrave Bracers - Balefire Bolt", Icon: "spell_fire_firebolt", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassMage, RequiresLevel: 1},
-	// {Id: 428861, Name: "Engrave Bracers - Displacement", Icon: "ability_hunter_displacement", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassMage, RequiresLevel: 1},
-	// {Id: 428741, Name: "Engrave Bracers - Molten Armor", Icon: "ability_mage_moltenarmor", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassMage, RequiresLevel: 1},
+// Remove runes as you implement them.
+var UnimplementedRuneOverrides = []int32{
+	// Druid
+	417135, // Gale Winds
+	417145, // Gore
+	431388, // Improved Barkskin
+	417149, // Efflorescence
+	414719, // Elune's Fires
+	431389, // Improved Frenzied Regen
+
+	// Hunter
+	415428, // Catlike Reflexes
+	415413, // Lock and Load
+	415405, // Rapid Killing
+	428726, // Focus Fire
+	415358, // Raptor Fury
+	428717, // T.N.T.
+
+	// Paladin
+	429142, // Fanaticism
+	429133, // Improved Sanctuary
+	428909, // Light's Grace
+	429139, // Wrath
+	407632, // Hammer of the Righteous
+	429152, // Improved Hammer of Wrath
+	429144, // Purifying power
+
+	// Priest
+	431622, // Divine Aegis
+	402789, // Eye of the Void
+	413251, // Pain and Suffering
+	431670, // Despair
+	431664, // Surge of Light
+	431681, // Void Zone
 
 	// Rogue
-	{Id: 399985, Name: "Engrave Gloves - Shadowstrike", Icon: "ability_rogue_envelopingshadows", Type: proto.ItemType_ItemTypeHands, Class: proto.Class_ClassRogue, RequiresLevel: 1},
-	{Id: 400029, Name: "Engrave Belt - Shadowstep", Icon: "ability_rogue_shadowstep", Type: proto.ItemType_ItemTypeWaist, Class: proto.Class_ClassRogue, RequiresLevel: 30},
-
-	// Shaman
-	{Id: 415768, Name: "Engrave Helm - Burn", Icon: "spell_fire_moltenblood", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 415713, Name: "Engrave Helm - Mental Dexterity", Icon: "spell_nature_mentalquickness", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 432233, Name: "Engrave Helm - Tidal Waves", Icon: "spell_shaman_tidalwaves", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-
-	{Id: 432240, Name: "Engrave Bracers - Overcharged", Icon: "spell_fire_blueflamering", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 409954, Name: "Engrave Bracers - Riptide", Icon: "spell_nature_riptide", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 432235, Name: "Engrave Bracers - Rolling Thunder", Icon: "spell_nature_unrelentingstorm", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
-	{Id: 432237, Name: "Engrave Bracers - Static Shock", Icon: "spell_shaman_staticshock", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	432259, // Combat Potency
+	432256, // Focused Attacks
+	432264, // Honor Among Thieves
+	432276, // Carnage
+	432271, // Cut to the Chase
+	432273, // Unfair Advantage
 }
