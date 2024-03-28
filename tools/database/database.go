@@ -187,7 +187,7 @@ func (db *WowDatabase) AddItemIcon(id int32, tooltips map[int32]WowheadItemRespo
 			Icon:          tooltip.GetIcon(),
 			RequiresLevel: int32(tooltip.GetRequiresLevel()),
 		}
-	} else {
+	} else if id != 0 {
 		panic(fmt.Sprintf("No item tooltip with id %d", id))
 	}
 }
@@ -205,7 +205,7 @@ func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResp
 			Rank:          int32(tooltip.GetSpellRank()),
 			RequiresLevel: int32(tooltip.GetRequiresLevel()),
 		}
-	} else {
+	} else if id != 0 {
 		println(fmt.Sprintf("No spell tooltip with id %d", id))
 	}
 }

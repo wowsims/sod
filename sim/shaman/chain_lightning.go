@@ -59,6 +59,8 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	overloadChance := .1667
 
+	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
+
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
 		manaCost,
@@ -80,6 +82,10 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	numHits := min(ChainLightningTargetCount, shaman.Env.GetNumTargets())
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		if hasRollingThunderRune {
+			shaman.rollRollingThunderCharge(sim)
+		}
+
 		curTarget := target
 		bounceCoeff := 1.0
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

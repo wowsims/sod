@@ -839,6 +839,16 @@ export class Timeline extends ResultComponent {
 					tickElem.style.left = this.timeToPx(ddl.timestamp);
 					rowElem.appendChild(tickElem);
 
+					if (ddl.miss || ddl.dodge || ddl.parry) {
+						tickElem.classList.add('outcome-miss');
+					} else if (ddl.glance || ddl.block || ddl.partialResist1_4 || ddl.partialResist2_4 || ddl.partialResist3_4) {
+						tickElem.classList.add('outcome-partial');
+					} else if (ddl.crit) {
+						tickElem.classList.add('outcome-crit');
+					} else {
+						tickElem.classList.add('outcome-hit');
+					}
+
 					const tt = (
 						<div className="timeline-tooltip">
 							<span>

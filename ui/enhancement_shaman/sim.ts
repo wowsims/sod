@@ -1,20 +1,10 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import * as ShamanInputs from './inputs.js';
@@ -24,8 +14,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	cssClass: 'enhancement-shaman-sim-ui',
 	cssScheme: 'shaman',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -46,10 +35,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -78,27 +64,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: .02,
-			[Stat.StatAgility]: 1.12,
-			[Stat.StatStrength]: 2.29,
-			[Stat.StatSpellPower]: 1.15,
-			[Stat.StatFirePower]: 0.63,
-			[Stat.StatNaturePower]: 0.48,
-			[Stat.StatSpellHit]: 0.03, //default EP assumes cap
-			[Stat.StatSpellCrit]: 1.94,
-			[Stat.StatSpellHaste]: 2.97,
-			[Stat.StatMP5]: .01,
-			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 9.62,
-			[Stat.StatMeleeCrit]: 14.80,
-			[Stat.StatMeleeHaste]: 11.84, //haste is complicated
-			[Stat.StatArmorPenetration]: 0.35,
-			[Stat.StatExpertise]: 1.92, //default EP assumes cap
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 8.15,
-			[PseudoStat.PseudoStatOffHandDps]: 5.81,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 0.02,
+				[Stat.StatAgility]: 1.12,
+				[Stat.StatStrength]: 2.29,
+				[Stat.StatSpellPower]: 1.15,
+				[Stat.StatFirePower]: 0.63,
+				[Stat.StatNaturePower]: 0.48,
+				[Stat.StatSpellHit]: 0.03, //default EP assumes cap
+				[Stat.StatSpellCrit]: 1.94,
+				[Stat.StatSpellHaste]: 2.97,
+				[Stat.StatMP5]: 0.01,
+				[Stat.StatAttackPower]: 1.0,
+				[Stat.StatMeleeHit]: 9.62,
+				[Stat.StatMeleeCrit]: 14.8,
+				[Stat.StatMeleeHaste]: 11.84, //haste is complicated
+				[Stat.StatArmorPenetration]: 0.35,
+				[Stat.StatExpertise]: 1.92, //default EP assumes cap
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 8.15,
+				[PseudoStat.PseudoStatOffHandDps]: 5.81,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -114,29 +103,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShamanShieldInput<Spec.SpecEnhancementShaman>(),
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.BlessingOfWisdom,
-		BuffDebuffInputs.ManaSpringTotem,
-		BuffDebuffInputs.SpiritBuff,
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.BlessingOfWisdom, BuffDebuffInputs.ManaSpringTotem, BuffDebuffInputs.SpiritBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			ShamanInputs.SyncTypeInput,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [ShamanInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-		note: "Swap items are given the highest available rank of Rockbiter Weapon",
+		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
 	customSections: [
 		// TotemsSection,
@@ -148,20 +125,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: (player): APLRotation => {
@@ -195,7 +163,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			},
 		},
 	],
-})
+});
 
 export class EnhancementShamanSimUI extends IndividualSimUI<Spec.SpecEnhancementShaman> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecEnhancementShaman>) {
