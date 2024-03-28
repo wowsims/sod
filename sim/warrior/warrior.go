@@ -135,8 +135,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
 
-	warrior.SunderArmor = warrior.newSunderArmorSpell(false)
-	warrior.SunderArmorDevastate = warrior.newSunderArmorSpell(true)
+	warrior.SunderArmor = warrior.newSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
 }
