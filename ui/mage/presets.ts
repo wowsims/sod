@@ -25,6 +25,7 @@ import Phase1APLFire from './apls/p1_fire.apl.json';
 import Phase2APLArcane from './apls/p2_arcane.apl.json';
 import Phase2APLFire from './apls/p2_fire.apl.json';
 import Phase2APLFrostfire from './apls/p2_frostfire.apl.json';
+import Phase3APLArcane from './apls/p3_arcane.apl.json';
 import Phase1GearFire from './gear_sets/p1_fire.gear.json';
 import Phase1Gear from './gear_sets/p1_generic.gear.json';
 import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
@@ -78,16 +79,25 @@ export const APLFirePhase1 = PresetUtils.makePresetAPLRotation('P1 Fire', Phase1
 });
 
 export const APLArcanePhase2 = PresetUtils.makePresetAPLRotation('P2 Arcane', Phase2APLArcane, {
-	customCondition: player => player.getLevel() >= 40,
+	customCondition: player => player.getLevel() == 40,
 });
 export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2APLFire, {
-	customCondition: player => player.getLevel() >= 40,
+	customCondition: player => player.getLevel() == 40,
 });
-export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() >= 40 });
+export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() == 40 });
+
+export const APLArcanePhase3 = PresetUtils.makePresetAPLRotation('P3 Arcane', Phase3APLArcane, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const APLFirePhase3 = PresetUtils.makePresetAPLRotation('P3 Fire', Phase3APLFire, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const APLFrostfirePhase3 = PresetUtils.makePresetAPLRotation('P3 Frostfire', Phase3APLFrostfire, { customCondition: player => player.getLevel() >= 50 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
 	[Phase.Phase2]: [APLArcanePhase2, APLFirePhase2, APLFrostfirePhase2],
+	[Phase.Phase3]: [APLArcanePhase3, APLFirePhase3, APLFrostfirePhase3],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -106,10 +116,10 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	},
 	50: {
 		// TODO: Phase 3 APLs
-		0: APLPresets[Phase.Phase2][0],
-		1: APLPresets[Phase.Phase2][1],
-		2: APLPresets[Phase.Phase2][2],
-		3: APLPresets[Phase.Phase2][2],
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][1],
+		2: APLPresets[Phase.Phase3][2],
+		3: APLPresets[Phase.Phase3][2],
 	},
 };
 
