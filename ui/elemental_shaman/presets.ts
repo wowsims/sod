@@ -38,8 +38,11 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
 	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
@@ -54,6 +57,8 @@ export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
 	[Phase.Phase2]: [APLPhase2],
 	[Phase.Phase3]: [APLPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -86,7 +91,7 @@ export const TalentsPhase2 = {
 export const TalentsPhase3 = {
 	name: 'Phase 3',
 	data: SavedTalents.create({
-		talentsString: '550031450030151-500003',
+		talentsString: '550031550000151-500203',
 	}),
 };
 
@@ -94,6 +99,8 @@ export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
 	[Phase.Phase3]: [TalentsPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultTalents = TalentPresets[Phase.Phase3][0];
@@ -124,7 +131,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 });
 

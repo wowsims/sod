@@ -1,5 +1,5 @@
 import { CURRENT_LEVEL_CAP } from '../core/constants/mechanics.js';
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
@@ -51,6 +51,9 @@ export const GearMeleePhase2 = PresetUtils.makePresetGear('P2 Melee', Phase2Gear
 export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultGearBMRanged = GearPresets[Phase.Phase2][0];
@@ -72,6 +75,9 @@ export const APLRangedMmPhase2 = PresetUtils.makePresetAPLRotation('P2 Ranged MM
 export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -128,12 +134,15 @@ export const TalentsSurvivalPhase2 = PresetUtils.makePresetTalents('P2 Survival'
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsBeastMasteryPhase1, TalentsMarksmanPhase1, TalentsSurvivalPhase1],
 	[Phase.Phase2]: [TalentsBeastMasteryPhase2, TalentsMarksmanPhase2, TalentsSurvivalPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultTalentsBeastMastery = TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsMarksman = TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsSurvival = TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsBeastMastery = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsMarksman = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsSurvival = TalentPresets[Phase.Phase2][2];
 
 export const DefaultTalents = TalentsSurvivalPhase2;
 

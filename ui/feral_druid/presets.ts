@@ -1,4 +1,4 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
@@ -37,9 +37,12 @@ export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[CURRENT_PHASE][0];
+export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -51,6 +54,9 @@ export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL)
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
 	[Phase.Phase2]: [APLPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset an pull from map
@@ -96,9 +102,12 @@ export const TalentsPhase2 = {
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
+export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
