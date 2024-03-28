@@ -195,10 +195,8 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 			switch warlock.Options.Summon {
 			case proto.WarlockOptions_Imp:
 				warlock.demonicSacrificeAura = impAura
-				break
 			case proto.WarlockOptions_Succubus:
 				warlock.demonicSacrificeAura = succubusAura
-				break
 			case proto.WarlockOptions_Voidwalker:
 				break
 			case proto.WarlockOptions_Felhunter:

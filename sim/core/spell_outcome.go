@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -47,6 +48,17 @@ func (dot *Dot) OutcomeTickSnapshotCrit(sim *Simulation, result *SpellResult, at
 	} else {
 		result.Outcome = OutcomeHit
 	}
+}
+
+func (dot *Dot) OutcomeTickSnapshotCritCounted(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
+		result.Outcome = OutcomeCrit
+		result.Damage *= dot.Spell.CritMultiplier(attackTable)
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
+	} else {
+		result.Outcome = OutcomeHit
+	}
+	dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
 
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
@@ -627,6 +639,6 @@ func (spell *Spell) CritMultiplier(at *AttackTable) float64 {
 	case DefenseTypeMagic:
 		return 1 + (1.5*at.CritMultiplier-1)*spell.CritDamageBonus
 	default:
-		return 1 + (2.0*at.CritMultiplier-1)*spell.CritDamageBonus
+		return 1 + (2.0*at.CritMultiplier-1)*spell.CritDamageBonus*at.Attacker.PseudoStats.MeleeCritMultiplier
 	}
 }
