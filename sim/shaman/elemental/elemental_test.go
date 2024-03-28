@@ -151,7 +151,7 @@ func BenchmarkSimulate(b *testing.B) {
 
 var Phase1Talents = "25003105"
 var Phase2Talents = "550031550000151"
-var Phase3Talents = "550031450030151-500003"
+var Phase3Talents = "550031550000151-500203"
 
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
