@@ -54,8 +54,12 @@ export const ShadowGearPhase2 = PresetUtils.makePresetGear('P2 Shadow', ShadowGe
 export const GearPresets = {
 	[Phase.Phase1]: [GearDestructionPhase1],
 	[Phase.Phase2]: [FireImpGearPhase2, FireSuccubusGearPhase2, ShadowGearPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = FireImpGearPhase2;
 
 ///////////////////////////////////////////////////////////////////////////
@@ -65,13 +69,22 @@ export const DefaultGear = FireImpGearPhase2;
 export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroP1APL, { customCondition: player => player.getLevel() == 25 });
 
 export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAPL, { customCondition: player => player.getLevel() >= 40 });
-export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, { customCondition: player => player.getLevel() >= 40, });
-export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAPL, { customCondition: player => player.getLevel() >= 40, });
-export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAPL, { customCondition: player => player.getLevel() >= 40, });
+export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, {
+	customCondition: player => player.getLevel() >= 40,
+});
+export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAPL, {
+	customCondition: player => player.getLevel() >= 40,
+});
+export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAPL, {
+	customCondition: player => player.getLevel() >= 40,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [RotationDestructionPhase1],
 	[Phase.Phase2]: [DestroMgiRotationPhase2, DestroConflagRotationPhase2, DemonologyRotationPhase2, AfflictionRotationPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -130,8 +143,12 @@ export const AfflictionTalentsPhase2 = {
 export const TalentPresets = {
 	[Phase.Phase1]: [DestroP1Talents],
 	[Phase.Phase2]: [DestroMgiTalentsPhase2, DestroConflagTalentsPhase2, DemonologyTalentsPhase2, AfflictionTalentsPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultTalents = DestroMgiTalentsPhase2;
 
 ///////////////////////////////////////////////////////////////////////////

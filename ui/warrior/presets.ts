@@ -39,8 +39,12 @@ export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 Fury', Phase2DWGear
 export const GearPresets = {
 	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
 	[Phase.Phase2]: [GearArmsPhase2, GearFuryPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
@@ -54,9 +58,11 @@ export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Preset Fury',
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1Arms],
 	[Phase.Phase2]: [APLPhase2Arms, APLPhase2Fury],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
 	25: {
 		0: APLPresets[Phase.Phase1][0],
@@ -107,13 +113,16 @@ export const TalentsPhase2Arms = {
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultTalentsPhase1Arms = TalentPresets[Phase.Phase1][0];
-export const DefaultTalentsPhase2Fury = TalentPresets[Phase.Phase2][0];
-export const DefaultTalentsPhase2Arms = TalentPresets[Phase.Phase2][1];
+// TODO: Phase 3
+export const DefaultTalentsFury = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsArms = TalentPresets[Phase.Phase2][1];
 
-export const DefaultTalents = DefaultTalentsPhase2Arms;
+export const DefaultTalents = DefaultTalentsArms;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options Presets
