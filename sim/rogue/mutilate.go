@@ -46,7 +46,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 				baseDamage = flatDamageBonus + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 			// TODO: Add support for all poison effects (such as chipped bite proc)
-			if target.GetAuraByID(rogue.DeadlyPoison[0].ActionID).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
+			if rogue.deadlyPoisonTick.Dot(target).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
 				baseDamage *= 1.2
 			}
 

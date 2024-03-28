@@ -251,12 +251,29 @@ export class ActionId {
 			case 'Slice and Dice':
 				if (this.tag) name += ` (${this.tag} CP)`;
 				break;
-			case 'Instant Poison IX':
-			case 'Wound Poison VII':
+			case 'Deadly Poison':
+			case 'Deadly Poison II':
+			case 'Deadly Poison III':
+			case 'Deadly Poison IV':
+			case 'Deadly Poison V':
+			case 'Instant Poison':
+			case 'Instant Poison II':
+			case 'Instant Poison III':
+			case 'Instant Poison IV':
+			case 'Instant Poison V':
+			case 'Instant Poison VI':
+			case 'Wound Poison':
 				if (this.tag == 1) {
-					name += ' (Deadly)';
-				} else if (this.tag == 2) {
 					name += ' (Shiv)';
+				} else if (this.tag == 2) {
+					name += ' (Deadly Brew)';
+				} else if (this.tag == 100) {
+					name += ' (Tick)';
+				}
+				break;
+			case 'Saber Slash':
+				if (this.tag == 100) {
+					name += ' (Tick)';
 				}
 				break;
 			// Dual-hit MH/OH spells
