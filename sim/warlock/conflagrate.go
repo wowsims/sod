@@ -4,9 +4,10 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
+func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) core.SpellConfig {
 	spellId := [5]int32{0, 17962, 18930, 18931, 18932}[rank]
 	baseDamageMin := [5]float64{0, 249, 319, 395, 447}[rank]
 	baseDamageMax := [5]float64{0, 316, 400, 491, 557}[rank]
@@ -46,6 +47,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		CritDamageBonus: warlock.ruin(),
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -55,10 +57,11 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 				baseDamage *= 1.4
 			}
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if !result.Landed() {
-				return
+			if backdraft != nil {
+				backdraft.Activate(sim)
 			}
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if warlock.Shadowflame != nil {
 				immoDot := warlock.Immolate.Dot(target)
@@ -86,8 +89,24 @@ func (warlock *Warlock) registerConflagrateSpell() {
 
 	maxRank := 4
 
+	var backdraft *core.Aura
+	if warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft) {
+		backdraft = warlock.RegisterAura(core.Aura{
+			Label:    "Backdraft",
+			ActionID: core.ActionID{SpellID: 427714},
+			Duration: time.Second * 10,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.MultiplyCastSpeed(1.3)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.MultiplyCastSpeed(1 / 1.3)
+			},
+		})
+	}
+
 	for i := 1; i <= maxRank; i++ {
-		config := warlock.getConflagrateConfig(i)
+		config := warlock.getConflagrateConfig(i, backdraft)
 
 		if config.RequiredLevel <= int(warlock.Level) {
 			warlock.Conflagrate = warlock.GetOrRegisterSpell(config)

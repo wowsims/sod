@@ -35,6 +35,7 @@ type Warlock struct {
 	DrainLife    *core.Spell
 	RainOfFire   *core.Spell
 	SiphonLife   *core.Spell
+	DeathCoil    *core.Spell
 
 	CurseOfElements          *core.Spell
 	CurseOfElementsAuras     core.AuraArray
@@ -89,9 +90,9 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowBoltSpell()
 	warlock.registerShadowCleaveSpell()
 	warlock.registerLifeTapSpell()
-	// warlock.registerSeedSpell()
-	// warlock.registerSoulFireSpell()
+	warlock.registerSoulFireSpell()
 	// warlock.registerUnstableAfflictionSpell()
+	// warlock.registerSeedSpell()
 	// warlock.registerDrainSoulSpell()
 	warlock.registerConflagrateSpell()
 	warlock.registerHauntSpell()
@@ -106,6 +107,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerDrainLifeSpell()
 	warlock.registerRainOfFireSpell()
 	warlock.registerShadowflameSpell()
+	warlock.registerDeathCoilSpell()
 
 	warlock.registerCurseOfElementsSpell()
 	warlock.registerCurseOfShadowSpell()
@@ -113,6 +115,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
 	// warlock.registerCurseOfDoomSpell()
+	warlock.registerImmolationAuraSpell()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

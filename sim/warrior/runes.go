@@ -30,9 +30,13 @@ func (warrior *Warrior) ApplyRunes() {
 	warrior.registerQuickStrike()
 	warrior.registerRagingBlow()
 	warrior.applyBloodSurge()
+	warrior.registerRampage()
+	warrior.applyTasteForBlood()
+	warrior.applyWreckingCrew()
 
 	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
 	// Precise Timing is implemented on slam.go
+	// Gladiator implemented on stances.go
 
 }
 
@@ -98,9 +102,9 @@ func (warrior *Warrior) applyConsumedByRage() {
 	}
 
 	warrior.ConsumedByRageAura = warrior.RegisterAura(core.Aura{
-		Label:     "Consumed By Rage",
-		ActionID:  core.ActionID{SpellID: 425418},
-		Duration:  time.Second * 10,
+		Label:     "Enrage",
+		ActionID:  core.ActionID{SpellID: 427066},
+		Duration:  time.Second * 12,
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
@@ -196,6 +200,76 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 
 			warrior.BloodSurgeAura.Activate(sim)
+		},
+	})
+}
+
+func (warrior *Warrior) applyTasteForBlood() {
+	if !warrior.HasRune(proto.WarriorRune_RuneTasteForBlood) {
+		return
+	}
+
+	icd := core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: time.Millisecond * 580,
+	}
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Taste for Blood",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell != warrior.Rend {
+				return
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
+			warrior.OverpowerAura.Duration = time.Second * 9
+			warrior.OverpowerAura.Activate(sim)
+			warrior.OverpowerAura.Duration = time.Second * 5
+		},
+	})
+}
+
+func (warrior *Warrior) applyWreckingCrew() {
+	if !warrior.HasRune(proto.WarriorRune_RuneWreckingCrew) {
+		return
+	}
+
+	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
+		Label:    "Enrage",
+		ActionID: core.ActionID{SpellID: 427066},
+		Duration: time.Second * 6,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.MeleeCritMultiplier *= 1.1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.MeleeCritMultiplier /= 1.1
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Wrecking Crew",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if !result.Outcome.Matches(core.OutcomeCrit) {
+				return
+			}
+
+			warrior.WreckingCrewEnrageAura.Activate(sim)
 		},
 	})
 }

@@ -68,20 +68,19 @@ export class SettingsTab extends SimTab {
 			this.buildEncounterSettings();
 		}
 
-		this.buildPlayerSettings();
-		this.buildCustomSettingsSections();
-		this.buildConsumesSection();
-		this.buildOtherSettings();
+		this.simUI.sim.waitForInit().then(() => {
+			this.buildPlayerSettings();
+			this.buildCustomSettingsSections();
+			this.buildConsumesSection();
+			this.buildOtherSettings();
 
-		if (!this.simUI.isWithinRaidSim) {
-			this.buildBuffsSettings();
-			this.buildWorldBuffsSettings();
-			this.buildDebuffsSettings();
-			this.buildSavedDataPickers();
-		}
-
-		// Force an event so that the pickers update state
-		this.simUI.player.buffsChangeEmitter.emit(TypedEvent.nextEventID());
+			if (!this.simUI.isWithinRaidSim) {
+				this.buildBuffsSettings();
+				this.buildWorldBuffsSettings();
+				this.buildDebuffsSettings();
+				this.buildSavedDataPickers();
+			}
+		});
 	}
 
 	private buildEncounterSettings() {

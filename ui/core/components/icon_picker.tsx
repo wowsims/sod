@@ -91,7 +91,10 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true);
 		}
 
-		this.config.changedEvent(this.modObject).on(_ => {
+		this.init();
+
+		// This must occur after this.init() else the state will not be handled correctly
+		const updateState = () => {
 			this.config.actionId(this.modObject)?.fillAndSet(this.rootAnchor, true, true);
 
 			if (this.showWhen()) {
@@ -101,9 +104,9 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 				this.storeValue();
 				this.rootElem.classList.add('hide');
 			}
-		});
-
-		this.init();
+		};
+		updateState();
+		this.config.changedEvent(this.modObject).on(updateState);
 
 		const leftClickFn = config.reverse ? this.decrementValue : this.incrementValue;
 		const rightClickFn = config.reverse ? this.incrementValue : this.decrementValue;

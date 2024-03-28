@@ -35,7 +35,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 	for resist := 0; resist < 5_000; resist += 1 {
 		defender.stats[stats.FireResistance] = float64(resist)
 
-		threshold00, threshold25, threshold50 := attackTable.Defender.partialResistRollThresholds(stats.SchoolIndexFire, attackTable.Attacker, false)
+		threshold00, threshold25, threshold50 := attackTable.Defender.partialResistRollThresholds(spell, attackTable.Attacker, false)
 		thresholds := [4]float64{threshold00, threshold25, threshold50, 0.0}
 
 		var cumulativeChance float64
@@ -49,7 +49,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 			}
 		}
 
-		resistanceScore := attackTable.Defender.resistCoeff(stats.SchoolIndexFire, attackTable.Attacker, false, false)
+		resistanceScore := attackTable.Defender.resistCoeff(spell, attackTable.Attacker, false, false)
 		expectedAr := 0.75*resistanceScore - 3.0/16.0*max(0.0, resistanceScore-2.0/3.0)
 
 		if math.Abs(resultingAr-expectedAr) > 1e-2 {
@@ -106,8 +106,12 @@ func ResistanceCheck(t *testing.T, isDoT bool) {
 
 	attackTable := NewAttackTable(attacker, defender, nil)
 
-	spell := &Spell{}
-	spell.SetSchool(stats.SchoolIndexNature)
+	schoolMask := SpellSchoolFromIndex(stats.SchoolIndexNature)
+	spell := &Spell{
+		SpellSchool:       schoolMask,
+		SchoolIndex:       schoolMask.GetSchoolIndex(),
+		SchoolBaseIndices: schoolMask.GetBaseIndices(),
+	}
 
 	if isDoT {
 		spell.Flags |= SpellFlagPureDot
@@ -117,7 +121,7 @@ func ResistanceCheck(t *testing.T, isDoT bool) {
 
 	// Check if coef is 0.08 (from +3 level based resist) at 0 res
 	defender.stats[stats.NatureResistance] = 0
-	coef := defender.resistCoeff(spell.SchoolIndex, attacker, false, isDoT)
+	coef := defender.resistCoeff(spell, attacker, false, isDoT)
 	if coef != 0.08 {
 		t.Errorf("Resist coef is %.3f at 0 resistance, but should be 0.08!", coef)
 		return
@@ -131,7 +135,7 @@ func ResistanceCheck(t *testing.T, isDoT bool) {
 		expectedMitigation = 0.11
 		expectedChances = []float64{0.67, 0.24, 0.08, 0.01}
 	}
-	threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell.SchoolIndex, spell.Flags.Matches(SpellFlagPureDot))
+	threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell, spell.Flags.Matches(SpellFlagPureDot))
 	avgResist, chance0, chance25, chance50, chance75 := GetChancesAndMitFromThresholds(threshold00, threshold25, threshold50)
 	if !CloseEnough(avgResist, expectedMitigation, 0.01) {
 		t.Errorf("Avg mitigation %.3f at 200 resistance, but should be %.3f!", avgResist, expectedMitigation)
@@ -161,14 +165,14 @@ func ResistanceCheck(t *testing.T, isDoT bool) {
 		expectedAvgMitigation := expectedCoef*0.75 - 3.0/16.0*max(0, expectedCoef-2.0/3.0)
 
 		// Check if coef is correct to begin with
-		resistCoef := defender.resistCoeff(spell.SchoolIndex, attacker, false, isDoT)
+		resistCoef := defender.resistCoeff(spell, attacker, false, isDoT)
 		if math.Abs(resistCoef-expectedCoef) > 0.001 {
 			t.Errorf("Resist coef is %.3f but expected %.3f at resistance %f", resistCoef, expectedCoef, resistanceUsed)
 			return
 		}
 
 		// Check breakpoints
-		threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell.SchoolIndex, spell.Flags.Matches(SpellFlagPureDot))
+		threshold00, threshold25, threshold50 := attackTable.GetPartialResistThresholds(spell, spell.Flags.Matches(SpellFlagPureDot))
 		avgResist, _, _, _, _ := GetChancesAndMitFromThresholds(threshold00, threshold25, threshold50)
 		if math.Abs(avgResist-expectedAvgMitigation) > 0.005 {
 			t.Errorf("resist = %.2f, thresholds = %f, resultingAr = %.2f%%, expectedAr = %.2f%%", resistanceUsed, threshold00, avgResist, expectedAvgMitigation)
@@ -196,14 +200,17 @@ func Test_ResistBinary(t *testing.T) {
 
 	attackTable := NewAttackTable(attacker, defender, nil)
 
+	schoolMask := SpellSchoolFromIndex(stats.SchoolIndexNature)
 	spell := &Spell{
-		Flags: SpellFlagBinary,
+		Flags:             SpellFlagBinary,
+		SpellSchool:       schoolMask,
+		SchoolIndex:       schoolMask.GetSchoolIndex(),
+		SchoolBaseIndices: schoolMask.GetBaseIndices(),
 	}
-	spell.SetSchool(stats.SchoolIndexNature)
 
 	// Check if coef is 0.0 at 0 resistance, binary spells do not get level based resistance!
 	defender.stats[stats.NatureResistance] = 0
-	coef := defender.resistCoeff(spell.SchoolIndex, attacker, true, false)
+	coef := defender.resistCoeff(spell, attacker, true, false)
 	if coef != 0.0 {
 		t.Errorf("Resist coef is %.3f at 0 resistance for binary spell, but should be 0.0!", coef)
 		return
@@ -227,7 +234,7 @@ func Test_ResistBinary(t *testing.T) {
 		resistance := test[0]
 		defender.stats[stats.NatureResistance] = resistance
 		expectedResult := test[1]
-		result := attackTable.GetBinaryHitChance(spell.SchoolIndex)
+		result := attackTable.GetBinaryHitChance(spell)
 		if !CloseEnough(result, expectedResult, 0.000001) {
 			t.Errorf("Binary hit chance result at %.0f resistance was %.3f, expected %.3f!", resistance, result, expectedResult)
 			return
