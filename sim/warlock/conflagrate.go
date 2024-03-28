@@ -61,10 +61,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 				backdraft.Activate(sim)
 			}
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if !result.Landed() {
-				return
-			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if warlock.Shadowflame != nil {
 				immoDot := warlock.Immolate.Dot(target)

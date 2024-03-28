@@ -38,11 +38,13 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:           2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
+		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
+
+		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
+
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
-		FlatThreatBonus:          0,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
