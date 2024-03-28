@@ -467,7 +467,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 35
+// NextIndex: 38
 message RaidBuffs {
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
@@ -518,6 +518,7 @@ message RaidBuffs {
 	TristateEffect stoneskin_totem = 24;
 	TristateEffect retribution_aura = 25;
 	bool sanctity_aura = 36;
+	int32 battle_squawk = 37;
 
 	// Scroll
 	bool scroll_of_protection = 26;
