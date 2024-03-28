@@ -124,7 +124,15 @@ export const EnchantedSigilInnovation: ConsumableInputConfig<EnchantedSigil> = {
 	value: EnchantedSigil.InnovationSigil,
 };
 
-export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [{ config: EnchantedSigilInnovation, stats: [] }];
+export const EnchantedSigilLivingDreams: ConsumableInputConfig<EnchantedSigil> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 221028, minLevel: 50 }]),
+	value: EnchantedSigil.LivingDreamsSigil,
+};
+
+export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+	{ config: EnchantedSigilLivingDreams, stats: [] },
+	{ config: EnchantedSigilInnovation, stats: [] },
+];
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({
 	consumesFieldName: 'enchantedSigil',

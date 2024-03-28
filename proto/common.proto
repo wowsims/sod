@@ -321,6 +321,7 @@ enum Conjured {
 enum EnchantedSigil {
 	UnknownSigil = 0;
 	InnovationSigil = 1;
+	LivingDreamsSigil = 2;
 }
 
 enum Flask {
