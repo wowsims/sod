@@ -41,17 +41,6 @@ type APLActionCancelAura struct {
 	aura *Aura
 }
 
-type APLActionActivateAura struct {
-	defaultAPLActionImpl
-	aura *Aura
-}
-
-type APLActionActivateAuraWithStacks struct {
-	defaultAPLActionImpl
-	aura      *Aura
-	numStacks int32
-}
-
 func (rot *APLRotation) newActionCancelAura(config *proto.APLActionCancelAura) APLActionImpl {
 	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
 	if aura.Get() == nil {
@@ -62,6 +51,24 @@ func (rot *APLRotation) newActionCancelAura(config *proto.APLActionCancelAura) A
 	}
 }
 
+func (action *APLActionCancelAura) IsReady(sim *Simulation) bool {
+	return action.aura.IsActive()
+}
+func (action *APLActionCancelAura) Execute(sim *Simulation) {
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Cancelling aura %s", action.aura.ActionID)
+	}
+	action.aura.Deactivate(sim)
+}
+func (action *APLActionCancelAura) String() string {
+	return fmt.Sprintf("Cancel Aura(%s)", action.aura.ActionID)
+}
+
+type APLActionActivateAura struct {
+	defaultAPLActionImpl
+	aura *Aura
+}
+
 func (rot *APLRotation) newActionActivateAura(config *proto.APLActionActivateAura) APLActionImpl {
 	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
 	if aura.Get() == nil {
@@ -70,6 +77,27 @@ func (rot *APLRotation) newActionActivateAura(config *proto.APLActionActivateAur
 	return &APLActionActivateAura{
 		aura: aura.Get(),
 	}
+}
+
+func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
+	return true
+}
+
+func (action *APLActionActivateAura) Execute(sim *Simulation) {
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
+	}
+	action.aura.Activate(sim)
+}
+
+func (action *APLActionActivateAura) String() string {
+	return fmt.Sprintf("Activate Aura(%s)", action.aura.ActionID)
+}
+
+type APLActionActivateAuraWithStacks struct {
+	defaultAPLActionImpl
+	aura      *Aura
+	numStacks int32
 }
 
 func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionActivateAuraWithStacks) APLActionImpl {
@@ -91,34 +119,6 @@ func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionA
 		aura:      aura.Get(),
 		numStacks: int32(numStacks),
 	}
-}
-
-func (action *APLActionCancelAura) IsReady(sim *Simulation) bool {
-	return action.aura.IsActive()
-}
-func (action *APLActionCancelAura) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.aura.Unit.Log(sim, "Cancelling aura %s", action.aura.ActionID)
-	}
-	action.aura.Deactivate(sim)
-}
-func (action *APLActionCancelAura) String() string {
-	return fmt.Sprintf("Cancel Aura(%s)", action.aura.ActionID)
-}
-
-func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
-	return true
-}
-
-func (action *APLActionActivateAura) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
-	}
-	action.aura.Activate(sim)
-}
-
-func (action *APLActionActivateAura) String() string {
-	return fmt.Sprintf("Activate Aura(%s)", action.aura.ActionID)
 }
 
 func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
