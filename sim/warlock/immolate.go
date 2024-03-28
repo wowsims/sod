@@ -67,7 +67,10 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				var result *core.SpellResult
 				if hasPandemicRune {
+					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
+					dot.Spell.CritDamageBonus += 1
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					dot.Spell.CritDamageBonus -= 1
 				} else {
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
@@ -80,8 +83,13 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (baseDamage + directCoeff*spell.SpellDamage()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			damage := (baseDamage + directCoeff*spell.SpellDamage()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
+
+			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+				damage *= 1.4
+			}
+
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				if hasInvocationRune && spell.Dot(target).IsActive() {
@@ -113,80 +121,3 @@ func (warlock *Warlock) registerImmolateSpell() {
 		}
 	}
 }
-
-// func (warlock *Warlock) registerImmolateSpell() {
-
-// 	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
-// 		ActionID:    core.ActionID{SpellID: 47811},
-// 		SpellSchool: core.SpellSchoolFire,
-//      DefenseType: core.DefenseTypeMagic,
-// 		ProcMask:    core.ProcMaskSpellDamage,
-// 		Flags:       core.SpellFlagAPL,
-
-// 		ManaCost: core.ManaCostOptions{
-// 			BaseCost:   0.17,
-// 			Multiplier: 1 - []float64{0, .04, .07, .10}[warlock.Talents.Cataclysm],
-// 		},
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD:      core.GCDDefault,
-// 				CastTime: time.Millisecond * (2000 - 100*time.Duration(warlock.Talents.Bane)),
-// 			},
-// 		},
-
-// 		BonusCritRating: 0 +
-// 			core.TernaryFloat64(warlock.Talents.Devastation, 5*core.CritRatingPerCritChance, 0),
-
-// 		CritDamageBonus: warlock.ruin(),
-
-// 		DamageMultiplierAdditive: 1 +
-// 			warlock.GrandFirestoneBonus() +
-// 			0.03*float64(warlock.Talents.Emberstorm) +
-// 			0.1*float64(warlock.Talents.ImprovedImmolate) +
-// 			core.TernaryFloat64(warlock.HasSetBonus(ItemSetDeathbringerGarb, 2), 0.1, 0) +
-// 			core.TernaryFloat64(warlock.HasSetBonus(ItemSetGuldansRegalia, 4), 0.1, 0),
-// 		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.DestructiveReach),
-
-// 		Dot: core.DotConfig{
-// 			Aura: core.Aura{
-// 				Label: "Immolate",
-// 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 					if warlock.Talents.ChaosBolt {
-// 						warlock.ChaosBolt.DamageMultiplierAdditive += fireAndBrimstoneBonus
-// 					}
-// 					warlock.Incinerate.DamageMultiplierAdditive += fireAndBrimstoneBonus
-// 				},
-// 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 					if warlock.Talents.ChaosBolt {
-// 						warlock.ChaosBolt.DamageMultiplierAdditive -= fireAndBrimstoneBonus
-// 					}
-// 					warlock.Incinerate.DamageMultiplierAdditive -= fireAndBrimstoneBonus
-// 				},
-// 			},
-// 			NumberOfTicks: 5 + warlock.Talents.MoltenCore,
-// 			TickLength:    time.Second * 3,
-
-// 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-// 				dot.SnapshotBaseDamage = 157 + 0.2*dot.Spell.SpellDamage()
-// 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-// 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-
-// 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
-// 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-// 				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
-// 			},
-// 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-// 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-// 			},
-// 		},
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := 460 + 0.2*spell.SpellDamage()
-// 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-// 			if result.Landed() {
-// 				spell.Dot(target).Apply(sim)
-// 			}
-// 			spell.DealDamage(sim, result)
-// 		},
-// 	})
-// }

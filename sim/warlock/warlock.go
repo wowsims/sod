@@ -115,6 +115,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
 	// warlock.registerCurseOfDoomSpell()
+	warlock.registerImmolationAuraSpell()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
