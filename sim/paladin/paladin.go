@@ -144,6 +144,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.DodgeRatingPerDodgeChance)
 
 	// The below requires some verification for the prot paladin sim when it is implemented.
+	// Switch these to AddStat as the PsuedoStats are being removed
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
 

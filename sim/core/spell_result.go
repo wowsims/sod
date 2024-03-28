@@ -80,6 +80,7 @@ func (spell *Spell) BonusWeaponDamage() float64 {
 	return spell.Unit.PseudoStats.BonusDamage
 }
 
+// TODO: Remove Expertise from sim
 func (spell *Spell) ExpertisePercentage() float64 {
 	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
 	// percent intervals. Note that in-game character sheet tooltips will still

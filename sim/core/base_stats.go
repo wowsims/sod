@@ -95,6 +95,7 @@ var ClassBaseCrit = map[proto.Class]stats.Stats{
 		stats.SpellCrit: 3.6000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
 	},
+	// TODO: Check if there are missing base values for rogue
 	proto.Class_ClassRogue: {
 		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
@@ -158,7 +159,7 @@ var DodgePerAgiAtLevel = map[proto.Class]map[int32]float64{
 	proto.Class_ClassWarrior: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassPaladin: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassHunter:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
-	proto.Class_ClassRogue:   {25: float64(1 / 5.429), 40: 0.111, 50: 0.0, 60: 0},
+	proto.Class_ClassRogue:   {25: 0.001842, 40: 0.00111, 50: 0.0, 60: 0},
 	proto.Class_ClassPriest:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassShaman:  {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},
 	proto.Class_ClassMage:    {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},

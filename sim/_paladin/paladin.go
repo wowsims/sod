@@ -188,8 +188,8 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge is unaffected by Diminishing Returns
-	paladin.PseudoStats.BaseDodge += 0.034943
-	paladin.PseudoStats.BaseParry += 0.05
+	paladin.AddStat(stats.Dodge, 0.034943)
+	paladin.AddStat(stats.Parry, 0.05)
 
 	return paladin
 }
