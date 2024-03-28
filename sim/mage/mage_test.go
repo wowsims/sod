@@ -98,7 +98,7 @@ func TestFrostFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase2TalentsFire,
+			Talents:     Phase2TalentsFrostfire,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_frostfire"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_frostfire"),
 			Buffs:       core.FullBuffsPhase2,
@@ -135,6 +135,7 @@ var Phase1TalentsFire = "-5050020121"
 
 var Phase2TalentsArcane = "2250050310031531"
 var Phase2TalentsFire = "-5050020123033151"
+var Phase2TalentsFrostfire = Phase2TalentsFire
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{

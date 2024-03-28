@@ -17,7 +17,7 @@ import {
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
-import { EnhancementShaman_Options as EnhancementShamanOptions, ShamanShield, ShamanSyncType } from '../core/proto/shaman.js';
+import { EnhancementShaman_Options as EnhancementShamanOptions, ShamanSyncType } from '../core/proto/shaman.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
@@ -39,8 +39,11 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
 	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
@@ -55,6 +58,8 @@ export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
 	[Phase.Phase2]: [APLPhase2],
 	[Phase.Phase3]: [APLPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -95,6 +100,8 @@ export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
 	[Phase.Phase3]: [TalentsPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultTalents = TalentPresets[Phase.Phase3][0];
@@ -132,7 +139,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 });
 

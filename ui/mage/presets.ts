@@ -1,5 +1,5 @@
 import { CURRENT_LEVEL_CAP } from '../core/constants/mechanics';
-import { CURRENT_PHASE, Phase } from '../core/constants/other';
+import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
@@ -26,6 +26,8 @@ import Phase2APLArcane from './apls/p2_arcane.apl.json';
 import Phase2APLFire from './apls/p2_fire.apl.json';
 import Phase2APLFrostfire from './apls/p2_frostfire.apl.json';
 import Phase3APLArcane from './apls/p3_arcane.apl.json';
+import Phase3APLFire from './apls/p3_fire.apl.json';
+import Phase3APLFrostfire from './apls/p3_frostfire.apl.json';
 import Phase1GearFire from './gear_sets/p1_fire.gear.json';
 import Phase1Gear from './gear_sets/p1_generic.gear.json';
 import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
@@ -59,11 +61,12 @@ export const GearFrostfirePhase2 = PresetUtils.makePresetGear('P2 Frostfire', Ph
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostfirePhase2],
+	[Phase.Phase3]: [],
 };
 
-export const DefaultGearArcane = GearPresets[CURRENT_PHASE][0];
-export const DefaultGearFire = GearPresets[CURRENT_PHASE][1];
-export const DefaultGearFrostfire = GearPresets[CURRENT_PHASE][2];
+export const DefaultGearArcane = GearPresets[Phase.Phase2][0];
+export const DefaultGearFire = GearPresets[Phase.Phase2][1];
+export const DefaultGearFrostfire = GearPresets[Phase.Phase2][2];
 
 export const DefaultGear = DefaultGearFire;
 
@@ -149,11 +152,12 @@ export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedT
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsArcanePhase1, TalentsFirePhase1, TalentsFirePhase1],
 	[Phase.Phase2]: [TalentsArcanePhase2, TalentsFirePhase2, TalentsFirePhase2],
+	[Phase.Phase3]: [],
 };
 
-export const DefaultTalentsArcane = TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsFire = TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsFrostfire = TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsArcane = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsFire = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase2][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 
@@ -190,7 +194,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
+	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
 export const DefaultDebuffs = Debuffs.create({
