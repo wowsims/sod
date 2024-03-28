@@ -1,30 +1,20 @@
-import { ShamanShieldInput } from '../core/components/inputs/shaman_shields.js';
-import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
-import { Phase } from '../core/constants/other.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
-import { Stats } from '../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
-import * as Presets from './presets.js';
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../core/components/other_inputs';
+import * as Mechanics from '../core/constants/mechanics';
+import { Phase } from '../core/constants/other';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
+import { Player } from '../core/player';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common';
+import { Stats } from '../core/proto_utils/stats';
+import { getSpecIcon, specNames } from '../core/proto_utils/utils';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	cssClass: 'elemental-shaman-sim-ui',
 	cssScheme: 'shaman',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
-	warnings: [
-	],
+	knownIssues: [],
+	warnings: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -36,6 +26,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatAttackPower,
+		Stat.StatStrength,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -52,11 +44,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatAttackPower,
+		Stat.StatStrength,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellCrit,
-			player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 		return {
 			talents: stats,
 		};
@@ -68,14 +61,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.14,
+			[Stat.StatIntellect]: 0.65,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatFirePower]: 0.36,
-			[Stat.StatNaturePower]: 0.64,
-			[Stat.StatSpellHit]: 8.9,
-			[Stat.StatSpellCrit]: 3.94,
-			[Stat.StatSpellHaste]: 5.22,
-			[Stat.StatMP5]: 0.08,
+			[Stat.StatFirePower]: 0.3,
+			[Stat.StatNaturePower]: 0.7,
+			[Stat.StatSpellHit]: 16.61,
+			[Stat.StatSpellCrit]: 7.91,
+			[Stat.StatSpellHaste]: 7.28,
+			[Stat.StatMP5]: 0.02,
+			[Stat.StatAttackPower]: 0.31,
+			[Stat.StatStrength]: 0.68,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -91,23 +86,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		debuffs: Presets.DefaultDebuffs,
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShamanShieldInput<Spec.SpecElementalShaman>(),
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.TankAssignment,
-		],
+		inputs: [OtherInputs.DistanceFromTarget],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-		note: "Swap items are given the highest available rank of Rockbiter Weapon",
+		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
 	customSections: [
 		// TotemsSection,
@@ -119,20 +108,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
@@ -167,7 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			},
 		},
 	],
-})
+});
 
 export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalShaman> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecElementalShaman>) {

@@ -17,11 +17,10 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs) *Shaman {
+func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *Shaman {
 	shaman := &Shaman{
 		Character: *character,
 		Talents:   &proto.ShamanTalents{},
-		Totems:    totems,
 		SelfBuffs: selfBuffs,
 	}
 	shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)})
@@ -115,7 +114,7 @@ type Shaman struct {
 
 	Stormstrike *core.Spell
 
-	LightningShield     *core.Spell
+	LightningShield     []*core.Spell
 	LightningShieldAura *core.Aura
 
 	EarthShock     []*core.Spell
@@ -194,7 +193,7 @@ func (shaman *Shaman) Initialize() {
 	// Core abilities
 	shaman.registerChainLightningSpell()
 	shaman.registerLightningBoltSpell()
-	// shaman.registerLightningShieldSpell()
+	shaman.registerLightningShieldSpell()
 	shaman.registerShocks()
 	shaman.registerStormstrikeSpell()
 
@@ -221,8 +220,8 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerFireNovaTotemSpell()
 	shaman.registerHealingStreamTotemSpell()
 	shaman.registerManaSpringTotemSpell()
-	// shaman.registerWindfuryTotemSpell()
-	// shaman.registerGraceofAirTotem()
+	shaman.registerWindfuryTotemSpell()
+	shaman.registerGraceOfAirTotemSpell()
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()

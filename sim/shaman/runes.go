@@ -15,8 +15,6 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Chest
 	shaman.applyDualWieldSpec()
-	// shaman.applyHealingRain()
-	// shaman.applyOverload()
 	shaman.applyShieldMastery()
 	shaman.applyTwoHandedMastery()
 
@@ -32,30 +30,25 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Legs
 	shaman.applyAncestralGuidance()
-	// shaman.applyEarthShield()
 	shaman.applyShamanisticRage()
 	shaman.applyWayOfEarth()
 
 	// Feet
 	shaman.applyAncestralAwakening()
-	// shaman.applyDecoyTotem()
 	shaman.applySpiritOfTheAlpha()
 }
 
 func (shaman *Shaman) applyMentalDexterity() {
-	// TODO: Add rune to proto and update IDs
-	if !shaman.HasRune(proto.ShamanRune_RuneNone) {
+	if !shaman.HasRune(proto.ShamanRune_RuneHelmMentalDexterity) {
 		return
 	}
 
-	procSpellId := int32(0)
-
 	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
-	apToSpStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .30)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellPower, .30)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
-		ActionID: core.ActionID{SpellID: procSpellId},
+		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHelmMentalDexterity)},
 		Duration: time.Second * 60,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, intToApStatDep)
@@ -67,9 +60,9 @@ func (shaman *Shaman) applyMentalDexterity() {
 		},
 	})
 
+	// Hidden Aura
 	shaman.RegisterAura(core.Aura{
 		Label:    "MentalDexterity",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneNone)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -336,12 +329,12 @@ func (shaman *Shaman) applyWayOfEarth() {
 	})
 }
 
+// https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha
 func (shaman *Shaman) applySpiritOfTheAlpha() {
 	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) {
 		return
 	}
 
-	// Spirit of the Alpha currently gives +20% AP when used on another target.
-	// Assume this as a default
-	shaman.MultiplyStat(stats.AttackPower, 1.2)
+	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
+	shaman.PseudoStats.ThreatMultiplier *= .70
 }

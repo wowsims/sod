@@ -20,4 +20,14 @@ var RuneOverrides = []*proto.UIRune{
 	// Rogue
 	{Id: 399985, Name: "Engrave Gloves - Shadowstrike", Icon: "ability_rogue_envelopingshadows", Type: proto.ItemType_ItemTypeHands, Class: proto.Class_ClassRogue, RequiresLevel: 1},
 	{Id: 400029, Name: "Engrave Belt - Shadowstep", Icon: "ability_rogue_shadowstep", Type: proto.ItemType_ItemTypeWaist, Class: proto.Class_ClassRogue, RequiresLevel: 30},
+
+	// Shaman
+	{Id: 415768, Name: "Engrave Helm - Burn", Icon: "spell_fire_moltenblood", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 415713, Name: "Engrave Helm - Mental Dexterity", Icon: "spell_nature_mentalquickness", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432233, Name: "Engrave Helm - Tidal Waves", Icon: "spell_shaman_tidalwaves", Type: proto.ItemType_ItemTypeHead, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+
+	{Id: 432240, Name: "Engrave Helm - Overcharged", Icon: "spell_fire_blueflamering", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 409954, Name: "Engrave Helm - Riptide", Icon: "spell_nature_riptide", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432235, Name: "Engrave Helm - Rolling Thunder", Icon: "spell_nature_unrelentingstorm", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
+	{Id: 432237, Name: "Engrave Helm - Static Shock", Icon: "spell_shaman_staticshock", Type: proto.ItemType_ItemTypeWrist, Class: proto.Class_ClassShaman, RequiresLevel: 1},
 }

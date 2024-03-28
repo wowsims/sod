@@ -330,7 +330,7 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 };
 
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
-	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility] },
+	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility, Stat.StatMeleeCrit] },
 	{ config: ElixirOfGreaterAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, stats: [Stat.StatAgility] },
@@ -341,7 +341,7 @@ export const makeAgilityConsumeInput = makeConsumeInputFactory({ consumesFieldNa
 
 // Strength
 export const JujuPower: ConsumableInputConfig<StrengthBuff> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 12451, minLevel: 46 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 12451, minLevel: 55 }]),
 	value: StrengthBuff.JujuPower,
 };
 export const ElixirOfGiants: ConsumableInputConfig<StrengthBuff> = {

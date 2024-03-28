@@ -61,6 +61,10 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				Timer:    shaman.NewTimer(),
 				Duration: cooldown,
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
+				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+			},
 		},
 
 		CritDamageBonus: shaman.elementalFury(),
