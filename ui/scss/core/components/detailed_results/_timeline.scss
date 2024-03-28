@@ -186,6 +186,19 @@ $threat-color: #b56d07;
 	height: 20px;
 	top: 2px;
 	z-index: 2;
+	border: 1px solid grey;
+}
+.rotation-timeline-tick.outcome-miss {
+	border-color: red;
+}
+.rotation-timeline-tick.outcome-partial {
+	border-color: yellow;
+}
+.rotation-timeline-tick.outcome-hit {
+	border-color: green;
+}
+.rotation-timeline-tick.outcome-crit {
+	border-color: blue;
 }
 .rotation-timeline-aura {
 	position: absolute;

@@ -280,6 +280,10 @@ func (warlock *Warlock) applyDemonicTactics() {
 	}
 }
 
+func (warlock *Warlock) getHighestSP() float64 {
+	return warlock.GetStat(stats.SpellPower) + warlock.GetStat(stats.SpellDamage) + max(warlock.GetStat(stats.FirePower), warlock.GetStat(stats.ShadowPower))
+}
+
 func (warlock *Warlock) applyDemonicPact() {
 	if !warlock.HasRune(proto.WarlockRune_RuneLegsDemonicPact) {
 		return
@@ -294,7 +298,7 @@ func (warlock *Warlock) applyDemonicPact() {
 		Duration: 1 * time.Second,
 	}
 
-	spellPower := max(warlock.GetStat(stats.SpellPower)*0.1, float64(warlock.Level)/2.0)
+	spellPower := max(warlock.getHighestSP()*0.1, float64(warlock.Level)/2.0)
 	demonicPactAuras := warlock.NewRaidAuraArray(func(u *core.Unit) *core.Aura {
 		return core.DemonicPactAura(u, spellPower)
 	})
@@ -315,7 +319,13 @@ func (warlock *Warlock) applyDemonicPact() {
 
 			icd.Use(sim)
 
-			spBonus := max(math.Round(warlock.GetStat(stats.SpellPower)*0.1), math.Round(float64(warlock.Level)/2))
+			currentSP := warlock.getHighestSP()
+
+			// Remove DP bonus from SP bonus if active
+			if demonicPactAuras.Get(&warlock.Unit).IsActive() {
+				currentSP -= demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
+			}
+			spBonus := max(math.Round(currentSP*0.1), math.Round(float64(warlock.Level)/2))
 			for _, dpAura := range demonicPactAuras {
 				if dpAura != nil {
 					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
