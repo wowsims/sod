@@ -60,9 +60,9 @@ message ShamanTalents {
 enum ShamanRune {
 	RuneNone					= 0;
 
-	RuneHelmBurn				= 415768;
-	RuneHelmMentalDexterity		= 415713;
-	RuneHelmTidalWaves			= 432233;
+	RuneHelmBurn				= 415231;
+	RuneHelmMentalDexterity		= 415140;
+	RuneHelmTidalWaves			= 432042;
 
 	RuneChestDualWieldSpec		= 408496;
 	RuneHealingRain				= 415236;
@@ -70,10 +70,10 @@ enum ShamanRune {
 	RuneChestShieldMastery		= 408524;
 	RuneTwoHandedMastery		= 436364;
 	
-	RuneBracersOvercharged		= 432240;
-	RuneBracersRiptide			= 409954;
-	RuneBracersRollingThunder	= 432235;
-	RuneBracersStaticShock		= 432237;
+	RuneBracersOvercharged		= 432140;
+	RuneBracersRiptide			= 408521;
+	RuneBracersRollingThunder	= 432056;
+	RuneBracersStaticShock		= 432134;
 
 	RuneHandsLavaBurst			= 408490;
 	RuneHandsLavaLash			= 408507;
