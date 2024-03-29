@@ -4,14 +4,7 @@ import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import * as ShadowPriestInputs from './inputs.js';
@@ -21,9 +14,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: 'priest',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-		"The Homunculi Rune is not currently implemented until more data is available"
-	],
+	knownIssues: ['The Homunculi Rune is not currently implemented until more data is available'],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -75,7 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			[Stat.StatSpellHit]: 0.87,
 			[Stat.StatSpellCrit]: 0.74,
 			[Stat.StatSpellHaste]: 1.65,
-			[Stat.StatMP5]: 0.00,
+			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -96,23 +87,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShadowPriestInputs.ArmorInput,
-	],
+	playerIconInputs: [ShadowPriestInputs.ArmorInput],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.BlessingOfWisdom,
-		BuffDebuffInputs.ManaSpringTotem,
-		BuffDebuffInputs.StaminaBuff,
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.BlessingOfWisdom, BuffDebuffInputs.ManaSpringTotem, BuffDebuffInputs.StaminaBuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.TankAssignment,
-			OtherInputs.ChannelClipDelay,
-		],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -121,19 +102,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
