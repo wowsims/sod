@@ -579,6 +579,14 @@ export const SparkOfInspiration = withLabel(
 	'Spark of Inspiration',
 );
 
+export const FervorOfTheTempleExplorer = withLabel(
+	makeBooleanIndividualBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 446695, maxLevel: 59 }]),
+		fieldName: 'fervorOfTheTempleExplorer',
+	}),
+	'Fervor Of The Temple Explorer',
+);
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
 ///////////////////////////////////////////////////////////////////////////
@@ -996,6 +1004,11 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const WORLD_BUFFS_CONFIG = [
+	{
+		config: FervorOfTheTempleExplorer,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower, Stat.StatAttackPower],
+	},
 	{
 		config: SparkOfInspiration,
 		picker: IconPicker,

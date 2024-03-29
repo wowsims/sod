@@ -19,6 +19,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+	hasUnstableAffliction := warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -92,6 +93,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
+				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
+					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
+				}
 				if hasInvocationRune && spell.Dot(target).IsActive() {
 					warlock.InvocationRefresh(sim, spell.Dot(target))
 				}
@@ -110,14 +114,24 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	}
 }
 
+func (warlock *Warlock) getActiveImmolateSpell(target *core.Unit) *core.Spell {
+	for _, immolateSpell := range warlock.Immolate {
+		if immolateSpell.Dot(target).IsActive() {
+			return immolateSpell
+		}
+	}
+	return nil
+}
+
 func (warlock *Warlock) registerImmolateSpell() {
 	maxRank := 8
 
+	warlock.Immolate = make([]*core.Spell, 0)
 	for i := 1; i <= maxRank; i++ {
 		config := warlock.getImmolateConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.Immolate = warlock.GetOrRegisterSpell(config)
+			warlock.Immolate = append(warlock.Immolate, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }
