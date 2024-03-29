@@ -51,7 +51,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Siphon Life-" + warlock.Label + strconv.Itoa(rank),
+				Label: "SiphonLife-" + warlock.Label + strconv.Itoa(rank),
 			},
 			NumberOfTicks:       10,
 			TickLength:          3 * time.Second,

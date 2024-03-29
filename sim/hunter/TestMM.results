@@ -272,6 +272,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 214.57398
+  tps: 104.80731
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 201.74811
+  tps: 96.30611
+ }
+}
+dps_results: {
  key: "TestMM-Lvl25-AllItems-SignetofBeasts-209823"
  value: {
   dps: 215.17156
@@ -465,6 +479,20 @@ dps_results: {
  value: {
   dps: 303.60317
   tps: 162.02398
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 304.34606
+  tps: 162.39556
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 303.49743
+  tps: 161.54068
  }
 }
 dps_results: {

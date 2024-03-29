@@ -363,6 +363,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 150.21334
+  tps: 134.22337
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 134.71384
+  tps: 119.14011
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl25-AllItems-StormshroudArmor"
  value: {
   dps: 96.20799
@@ -545,6 +559,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 383.83671
+  tps: 363.5035
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 353.25349
+  tps: 333.7901
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl40-AllItems-StormshroudArmor"
  value: {
   dps: 280.14995
@@ -724,6 +752,20 @@ dps_results: {
  value: {
   dps: 562.95134
   tps: 535.92189
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 566.30339
+  tps: 539.40557
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 538.07465
+  tps: 511.66368
  }
 }
 dps_results: {

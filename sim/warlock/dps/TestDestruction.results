@@ -223,6 +223,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 54.81815
+  tps: 43.03571
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 50.20342
+  tps: 42.38829
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 48.56877
@@ -304,6 +318,20 @@ dps_results: {
  value: {
   dps: 74.79522
   tps: 60.82053
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 78.24744
+  tps: 62.49498
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 75.56378
+  tps: 60.26112
  }
 }
 dps_results: {

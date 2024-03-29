@@ -1007,7 +1007,7 @@ export const WORLD_BUFFS_CONFIG = [
 	{
 		config: FervorOfTheTempleExplorer,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatSpellPower, Stat.StatAttackPower],
 	},
 	{
 		config: SparkOfInspiration,
