@@ -169,6 +169,22 @@ func init() {
 		}
 	})
 
+	// Gloves - Minor Haste
+	core.NewEnchantEffect(931, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Enchant Gloves - Minor Haste",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.01)
+			},
+		})
+	})
+
 	// Weapon - Striking
 	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()
