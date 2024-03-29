@@ -244,6 +244,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 100.37391
+  tps: 90.99092
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 100.39682
+  tps: 90.14293
+ }
+}
+dps_results: {
  key: "TestFeral-Lvl25-AllItems-StormshroudArmor"
  value: {
   dps: 100.65094
@@ -570,6 +584,20 @@ dps_results: {
  value: {
   dps: 493.95097
   tps: 368.55343
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 499.02852
+  tps: 372.28103
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 496.66239
+  tps: 370.56496
  }
 }
 dps_results: {
