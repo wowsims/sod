@@ -221,7 +221,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		Flags:       SpellFlagCarnage | core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -322,7 +322,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
+		Flags:       SpellFlagDeadlyBrewed | SpellFlagCarnage | core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -369,7 +369,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
+		Flags:       SpellFlagDeadlyBrewed | core.SpellFlagPoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,

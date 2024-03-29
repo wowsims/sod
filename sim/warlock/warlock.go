@@ -10,6 +10,8 @@ import (
 
 var TalentTreeSizes = [3]int{17, 17, 16}
 
+const SpellFlagHaunt = core.SpellFlagAgentReserved1
+
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
@@ -181,7 +183,7 @@ func (warlock *Warlock) HasRune(rune proto.WarlockRune) bool {
 	return warlock.HasRuneById(int32(rune))
 }
 
-func (warlock *Warlock) OnGCDReady(sim *core.Simulation) {
+func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {
 }
 
 // Agent is a generic way to access underlying warlock on any of the agents.
