@@ -246,8 +246,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 100.37391
-  tps: 90.99092
+  dps: 101.55394
+  tps: 92.04383
  }
 }
 dps_results: {
@@ -589,8 +589,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 501.77435
-  tps: 374.18871
+  dps: 503.97089
+  tps: 375.75139
  }
 }
 dps_results: {

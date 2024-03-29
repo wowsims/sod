@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 276.09373
-  tps: 243.31486
+  dps: 276.7337
+  tps: 244.27481
  }
 }
 dps_results: {
