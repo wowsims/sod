@@ -264,16 +264,16 @@ func init() {
 	})
 
 	// Gloves - Threat
-	core.NewEnchantEffect(2613, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.PseudoStats.ThreatMultiplier *= 1.02
-	})
+	// core.NewEnchantEffect(2613, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	character.PseudoStats.ThreatMultiplier *= 1.02
+	// })
 
 	// Cloak - Subtlety
-	core.NewEnchantEffect(2621, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.PseudoStats.ThreatMultiplier *= 0.98
-	})
+	// core.NewEnchantEffect(2621, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	character.PseudoStats.ThreatMultiplier *= 0.98
+	// })
 
 	// Ranged Scopes
 	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
