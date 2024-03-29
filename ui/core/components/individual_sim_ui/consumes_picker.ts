@@ -48,8 +48,11 @@ export class ConsumesPicker extends Component {
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 		const irradiatedRejuvPicker = buildIconInput(potionsElem, this.simUI.player, ConsumablesInputs.MildlyIrradiatedRejuvPotion);
 
+		const atalAiOptions = ConsumablesInputs.makeAtalaiInput(relevantStatOptions(ConsumablesInputs.ATALAI_CONFIG, this.simUI));
+		const atalAiPicker = buildIconInput(potionsElem, this.simUI.player, atalAiOptions);
+
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(() => {
-			this.updateRow(row, [potionsPicker, conjuredPicker, irradiatedRejuvPicker]);
+			this.updateRow(row, [potionsPicker, conjuredPicker, irradiatedRejuvPicker, atalAiPicker]);
 		});
 	}
 
@@ -57,7 +60,7 @@ export class ConsumesPicker extends Component {
 		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
-				<label class="form-label">Elixirs</label>
+				<label class="form-label">Flasks</label>
 				<div class="consumes-row-inputs consumes-flasks"></div>
 			</div>
     	`;
@@ -68,7 +71,7 @@ export class ConsumesPicker extends Component {
 		const flasksOptions = ConsumablesInputs.makeFlasksInput(relevantStatOptions(ConsumablesInputs.FLASKS_CONFIG, this.simUI));
 		const flasksPicker = buildIconInput(flasksElem, this.simUI.player, flasksOptions);
 
-		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, [flasksPicker]));
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter, this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [flasksPicker]));
 		this.updateRow(row, [flasksPicker]);
 	}
 
