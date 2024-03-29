@@ -1,0 +1,20 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-8s"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":768}}}}},"castSpell":{"spellId":{"spellId":768}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"40%"}}}},{"cmp":{"op":"OpLe","lhs":{"currentEnergy":{}},"rhs":{"const":{"val":"14"}}}}]}},"castSpell":{"spellId":{"spellId":29166}}}},
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":407988}}}}},"castSpell":{"spellId":{"spellId":407988}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentEnergy":{}},"rhs":{"const":{"val":"20"}}}},"castSpell":{"spellId":{"spellId":417045}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":409828}}}}},"castSpell":{"spellId":{"spellId":409828}}}},
+    {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":16870}}}]}},"castSpell":{"spellId":{"spellId":9829}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"currentComboPoints":{}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpGe","lhs":{"auraRemainingTime":{"auraId":{"spellId":407988}}},"rhs":{"const":{"val":"7"}}}}]}},"castSpell":{"spellId":{"spellId":9752}}}},
+    {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":414684}}}}},"castSpell":{"spellId":{"spellId":414684}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":1824}}}}},"castSpell":{"spellId":{"spellId":1824}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":9829}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentEnergy":{}},"rhs":{"const":{"val":"14"}}}},{"cmp":{"op":"OpGe","lhs":{"currentMana":{}},"rhs":{"const":{"val":"500"}}}},{"auraIsActive":{"auraId":{"spellId":17061,"rank":5}}}]}},"castSpell":{"spellId":{"spellId":768}}}}
+  ]
+}
