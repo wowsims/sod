@@ -90,7 +90,7 @@ character_stats_results: {
   final_stats: 73.5
   final_stats: 18.5
   final_stats: 22.5
-  final_stats: 442
+  final_stats: 492
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -225,8 +225,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 82.21258
-  tps: 91.01232
+  dps: 82.54368
+  tps: 91.52703
  }
 }
 dps_results: {
@@ -323,8 +323,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 125.3806
-  tps: 143.61515
+  dps: 125.84133
+  tps: 144.38748
  }
 }
 dps_results: {

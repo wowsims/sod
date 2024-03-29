@@ -120,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 480.35778
-  tps: 346.7411
+  dps: 486.23423
+  tps: 350.9422
  }
 }
 dps_results: {

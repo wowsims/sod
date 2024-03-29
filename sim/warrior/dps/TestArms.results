@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.30786
-  weights: 1.12389
+  weights: 0.32364
+  weights: 0.4308
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44653
-  weights: 10.23228
-  weights: 9.66026
+  weights: -0.01684
+  weights: 10.49652
+  weights: 10.00181
   weights: 0
   weights: 0
   weights: 0
@@ -99,134 +99,134 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 682.58839
-  tps: 595.62906
+  dps: 681.97892
+  tps: 594.36246
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 648.31801
-  tps: 565.28841
+  dps: 650.03801
+  tps: 567.30432
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 677.24708
-  tps: 590.46553
+  dps: 675.38223
+  tps: 588.82879
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 616.27313
-  tps: 534.66522
+  dps: 616.11619
+  tps: 534.86752
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 572.67962
-  tps: 496.44176
+  dps: 573.32909
+  tps: 498.10119
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 626.96546
-  tps: 542.86662
+  dps: 628.04996
+  tps: 545.37886
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 569.95963
-  tps: 494.26577
+  dps: 570.59645
+  tps: 495.91508
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 577.58954
-  tps: 501.25612
+  dps: 577.73528
+  tps: 501.79163
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 632.25804
-  tps: 548.0826
+  dps: 628.25377
+  tps: 545.03241
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 576.78966
-  tps: 500.61622
+  dps: 576.90786
+  tps: 501.12969
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 580.63635
-  tps: 503.48116
+  dps: 579.30758
+  tps: 502.97199
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 587.61057
-  tps: 508.99665
+  dps: 594.70454
+  tps: 515.77622
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 586.99352
-  tps: 508.50301
+  dps: 585.50276
+  tps: 507.89674
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 583.21056
-  tps: 501.94148
+  dps: 594.60715
+  tps: 510.73156
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 647.56244
-  tps: 564.31386
+  dps: 647.02944
+  tps: 564.75953
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Average-Default"
  value: {
-  dps: 832.09902
-  tps: 721.51047
+  dps: 834.78516
+  tps: 723.7233
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 60.38482
-  tps: 125.99009
+  dps: 60.39073
+  tps: 125.99601
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 47.03074
-  tps: 45.49907
+  dps: 47.03803
+  tps: 45.5049
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 68.59742
-  tps: 64.08164
+  dps: 68.63386
+  tps: 64.11079
  }
 }
 dps_results: {
@@ -295,7 +295,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 777.00667
-  tps: 675.23679
+  dps: 781.77297
+  tps: 678.32976
  }
 }
