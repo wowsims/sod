@@ -176,15 +176,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 546.85048
-  tps: 515.77264
+  dps: 549.80389
+  tps: 519.12111
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 546.85048
-  tps: 515.77264
+  dps: 549.80389
+  tps: 519.12111
  }
 }
 dps_results: {

@@ -477,15 +477,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 627.86945
-  tps: 235.79714
+  dps: 628.21661
+  tps: 233.73154
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 625.6991
-  tps: 233.97217
+  dps: 626.1277
+  tps: 232.48377
  }
 }
 dps_results: {

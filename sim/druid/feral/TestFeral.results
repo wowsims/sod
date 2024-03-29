@@ -589,15 +589,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 499.02852
-  tps: 372.28103
+  dps: 501.77435
+  tps: 374.18871
  }
 }
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 496.66239
-  tps: 370.56496
+  dps: 498.79023
+  tps: 372.09203
  }
 }
 dps_results: {
