@@ -19,6 +19,7 @@ const (
 	MiniaturizedCombustionChamber       = 213347
 	Shawarmageddon                      = 213105
 	MekkatorquesArcanoShredder          = 213409
+	GyromaticExperiment420b				= 213348
 )
 
 func init() {
@@ -191,6 +192,56 @@ func init() {
 				// Only castable with manual APL Action
 				return false
 			},
+		})
+	})
+
+	core.NewItemEffect(GyromaticExperiment420b, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		
+		hasteAura  := character.GetOrRegisterAura(core.Aura{
+			Label:    "Gyromatic Experiment 420b",
+			ActionID: core.ActionID{SpellID: 435899},
+			Duration: time.Second * 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.05)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.0/1.05)
+			},
+		})
+
+		chickenAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Cluck Cluck??",
+			ActionID: core.ActionID{SpellID: 435896},
+			Duration: time.Second * 5,
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 435899},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 30,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				if sim.RandomFloat("Gyromatic Experiment 420b") > 0.95 {
+					chickenAura.Activate(sim)
+					character.WaitUntil(sim, chickenAura.ExpiresAt())
+					character.AutoAttacks.DelayMeleeBy(sim, time.Second*5)
+				} else {
+					hasteAura.Activate(sim)
+				}
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
 		})
 	})
 

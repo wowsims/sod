@@ -1,5 +1,5 @@
 import { CURRENT_LEVEL_CAP } from '../core/constants/mechanics.js';
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
@@ -44,13 +44,16 @@ export const GearBeastMasteryPhase1 = PresetUtils.makePresetGear('P1 Beast Maste
 export const GearMarksmanPhase1 = PresetUtils.makePresetGear('P1 Marksmanship', Phase1Gear, { customCondition: player => player.getLevel() == 25 });
 export const GearSurvivalPhase1 = PresetUtils.makePresetGear('P1 Survival', Phase1Gear, { customCondition: player => player.getLevel() == 25 });
 
-export const GearRangedBmPhase2 = PresetUtils.makePresetGear('P2 Ranged BM', Phase2GearRangedBm, { customCondition: player => player.getLevel() == 40 });
-export const GearRangedMmPhase2 = PresetUtils.makePresetGear('P2 Ranged MM', Phase2GearRangedMm, { customCondition: player => player.getLevel() == 40 });
-export const GearMeleePhase2 = PresetUtils.makePresetGear('P2 Melee', Phase2GearMelee, { customCondition: player => player.getLevel() == 40 });
+export const GearRangedBmPhase2 = PresetUtils.makePresetGear('P2 Ranged BM', Phase2GearRangedBm, { customCondition: player => player.getLevel() >= 40 });
+export const GearRangedMmPhase2 = PresetUtils.makePresetGear('P2 Ranged MM', Phase2GearRangedMm, { customCondition: player => player.getLevel() >= 40 });
+export const GearMeleePhase2 = PresetUtils.makePresetGear('P2 Melee', Phase2GearMelee, { customCondition: player => player.getLevel() >= 40 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultGearBMRanged = GearPresets[Phase.Phase2][0];
@@ -65,13 +68,16 @@ export const DefaultGear = DefaultGearMelee;
 
 export const APLMeleeWeavePhase1 = PresetUtils.makePresetAPLRotation('P1 Melee Weave', MeleeWeaveP1, { customCondition: player => player.getLevel() == 25 });
 
-export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('P2 Melee', MeleeP2, { customCondition: player => player.getLevel() == 40 });
-export const APLRangedBmPhase2 = PresetUtils.makePresetAPLRotation('P2 Ranged BM', RangedBmP2, { customCondition: player => player.getLevel() == 40 });
-export const APLRangedMmPhase2 = PresetUtils.makePresetAPLRotation('P2 Ranged MM', RangedMmP2, { customCondition: player => player.getLevel() == 40 });
+export const APLMeleePhase2 = PresetUtils.makePresetAPLRotation('P2 Melee', MeleeP2, { customCondition: player => player.getLevel() >= 40 });
+export const APLRangedBmPhase2 = PresetUtils.makePresetAPLRotation('P2 Ranged BM', RangedBmP2, { customCondition: player => player.getLevel() >= 40 });
+export const APLRangedMmPhase2 = PresetUtils.makePresetAPLRotation('P2 Ranged MM', RangedMmP2, { customCondition: player => player.getLevel() >= 40 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -82,6 +88,12 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase1][0],
 	},
 	40: {
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
+		2: APLPresets[Phase.Phase2][2],
+	},
+	// TODO: Phase 3
+	50: {
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][1],
 		2: APLPresets[Phase.Phase2][2],
@@ -108,26 +120,29 @@ export const TalentsSurvivalPhase1 = PresetUtils.makePresetTalents('P1 Survival'
 });
 
 export const TalentsBeastMasteryPhase2 = PresetUtils.makePresetTalents('P2 Beast Mastery', SavedTalents.create({ talentsString: '5300021150501251' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentsMarksmanPhase2 = PresetUtils.makePresetTalents('P2 Marksmanship', SavedTalents.create({ talentsString: '-05551001503051' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentsSurvivalPhase2 = PresetUtils.makePresetTalents('P2 Survival', SavedTalents.create({ talentsString: '--335020051030315' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsBeastMasteryPhase1, TalentsMarksmanPhase1, TalentsSurvivalPhase1],
 	[Phase.Phase2]: [TalentsBeastMasteryPhase2, TalentsMarksmanPhase2, TalentsSurvivalPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultTalentsBeastMastery = TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsMarksman = TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsSurvival = TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsBeastMastery = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsMarksman = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsSurvival = TalentPresets[Phase.Phase2][2];
 
 export const DefaultTalents = TalentsSurvivalPhase2;
 

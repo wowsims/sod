@@ -6,7 +6,6 @@ import { SimHeader } from './components/sim_header';
 import { SimTab } from './components/sim_tab.js';
 import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SocialLinks } from './components/social_links.jsx';
-import { CURRENT_PHASE } from './constants/other.js';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { Spec } from './proto/common.js';
 import { ActionId } from './proto_utils/action_id.js';
@@ -62,7 +61,7 @@ export abstract class SimUI extends Component {
 		this.rootElem.innerHTML = `
 			<div class="sim-root">
 				<div class="sim-bg"></div>
-				${config.noticeText ? `<div class="notices-banner alert border-bottom mb-0 text-center">${config.noticeText}</div>` : ''}
+				${config.noticeText ? `<div class="notices-banner alert border-bottom mb-0 text-center within-raid-sim-hide">${config.noticeText}</div>` : ''}
 				<div class="sim-container">
 					<aside class="sim-sidebar">
 						<div class="sim-title"></div>
@@ -213,8 +212,10 @@ export abstract class SimUI extends Component {
 		let statusStr = '';
 		if (config.simStatus.status == LaunchStatus.Unlaunched) {
 			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.simStatus.phase < CURRENT_PHASE) {
-			statusStr = `This sim is supported up to phase ${config.simStatus.phase}. Phase ${CURRENT_PHASE} items and abilities may not yet be functional.`;
+		} else if (config.simStatus.status == LaunchStatus.Alpha) {
+			statusStr = 'This sim is in ALPHA status. New runes and items may not yet be functional and further testing is needed.';
+		} else {
+			statusStr = `This sim is in BETA status. New runes and items should be mostly functional.`;
 		}
 		if (statusStr) {
 			config.knownIssues = [statusStr].concat(config.knownIssues || []);

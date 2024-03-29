@@ -46,8 +46,8 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus: warlock.ruin(),
 
-		DamageMultiplier:         1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplierAdditive: 1,
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1,
 		ThreatMultiplier:         2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

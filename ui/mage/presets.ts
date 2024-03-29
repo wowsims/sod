@@ -1,11 +1,12 @@
 import { CURRENT_LEVEL_CAP } from '../core/constants/mechanics';
-import { CURRENT_PHASE, Phase } from '../core/constants/other';
+import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
 	FirePowerBuff,
+	Flask,
 	Food,
 	FrostPowerBuff,
 	IndividualBuffs,
@@ -24,6 +25,9 @@ import Phase1APLFire from './apls/p1_fire.apl.json';
 import Phase2APLArcane from './apls/p2_arcane.apl.json';
 import Phase2APLFire from './apls/p2_fire.apl.json';
 import Phase2APLFrostfire from './apls/p2_frostfire.apl.json';
+import Phase3APLArcane from './apls/p3_arcane.apl.json';
+import Phase3APLFire from './apls/p3_fire.apl.json';
+import Phase3APLFrostfire from './apls/p3_frostfire.apl.json';
 import Phase1GearFire from './gear_sets/p1_fire.gear.json';
 import Phase1Gear from './gear_sets/p1_generic.gear.json';
 import Phase2GearArcane from './gear_sets/p2_arcane.gear.json';
@@ -45,23 +49,24 @@ export const GearFrostPhase1 = PresetUtils.makePresetGear('P1 Frost', Phase1Gear
 });
 
 export const GearArcanePhase2 = PresetUtils.makePresetGear('P2 Arcane', Phase2GearArcane, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 export const GearFirePhase2 = PresetUtils.makePresetGear('P2 Fire', Phase2GearFire, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 export const GearFrostfirePhase2 = PresetUtils.makePresetGear('P2 Frostfire', Phase2GearFrostfire, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostfirePhase2],
+	[Phase.Phase3]: [],
 };
 
-export const DefaultGearArcane = GearPresets[CURRENT_PHASE][0];
-export const DefaultGearFire = GearPresets[CURRENT_PHASE][1];
-export const DefaultGearFrostfire = GearPresets[CURRENT_PHASE][2];
+export const DefaultGearArcane = GearPresets[Phase.Phase2][0];
+export const DefaultGearFire = GearPresets[Phase.Phase2][1];
+export const DefaultGearFrostfire = GearPresets[Phase.Phase2][2];
 
 export const DefaultGear = DefaultGearFire;
 
@@ -84,9 +89,18 @@ export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2
 });
 export const APLFrostfirePhase2 = PresetUtils.makePresetAPLRotation('P2 Frostfire', Phase2APLFrostfire, { customCondition: player => player.getLevel() == 40 });
 
+export const APLArcanePhase3 = PresetUtils.makePresetAPLRotation('P3 Arcane', Phase3APLArcane, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const APLFirePhase3 = PresetUtils.makePresetAPLRotation('P3 Fire', Phase3APLFire, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const APLFrostfirePhase3 = PresetUtils.makePresetAPLRotation('P3 Frostfire', Phase3APLFrostfire, { customCondition: player => player.getLevel() >= 50 });
+
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
 	[Phase.Phase2]: [APLArcanePhase2, APLFirePhase2, APLFrostfirePhase2],
+	[Phase.Phase3]: [APLArcanePhase3, APLFirePhase3, APLFrostfirePhase3],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -101,7 +115,14 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		// Normally frost but frost is unfortunately just too bad to warrant including for now
 		2: APLPresets[Phase.Phase2][2],
 		// Frostfire
-		3: APLFrostfirePhase2,
+		3: APLPresets[Phase.Phase2][2],
+	},
+	50: {
+		// TODO: Phase 3 APLs
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][1],
+		2: APLPresets[Phase.Phase3][2],
+		3: APLPresets[Phase.Phase3][2],
 	},
 };
 
@@ -121,21 +142,22 @@ export const TalentsFirePhase1 = PresetUtils.makePresetTalents('P1 Fire', SavedT
 });
 
 export const TalentsArcanePhase2 = PresetUtils.makePresetTalents('P2 Arcane', SavedTalents.create({ talentsString: '2250050310031531' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentsFirePhase2 = PresetUtils.makePresetTalents('P2 Fire', SavedTalents.create({ talentsString: '-5050020123033151' }), {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() >= 40,
 });
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsArcanePhase1, TalentsFirePhase1, TalentsFirePhase1],
 	[Phase.Phase2]: [TalentsArcanePhase2, TalentsFirePhase2, TalentsFirePhase2],
+	[Phase.Phase3]: [],
 };
 
-export const DefaultTalentsArcane = TalentPresets[CURRENT_PHASE][0];
-export const DefaultTalentsFire = TalentPresets[CURRENT_PHASE][1];
-export const DefaultTalentsFrostfire = TalentPresets[CURRENT_PHASE][2];
+export const DefaultTalentsArcane = TalentPresets[Phase.Phase2][0];
+export const DefaultTalentsFire = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase2][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 
@@ -154,11 +176,12 @@ export const DefaultOptions = MageOptions.create({
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.InnovationSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -171,7 +194,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 });
 

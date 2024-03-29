@@ -1,8 +1,6 @@
 package core
 
 import (
-	"fmt"
-
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -71,96 +69,7 @@ var schoolIndexToSchoolMask = [stats.SchoolLen]SpellSchool{
 	SpellSchoolHoly,
 	SpellSchoolNature,
 	SpellSchoolShadow,
-
-	// Physical x Other
-	SpellSchoolSpellstrike,
-	SpellSchoolFlamestrike,
-	SpellSchoolFroststrike,
-	SpellSchoolHolystrike,
-	SpellSchoolStormstrike,
-	SpellSchoolShadowstrike,
-
-	// Arcane x Other
-	SpellSchoolSpellfire,
-	SpellSchoolSpellFrost,
-	SpellSchoolDivine,
-	SpellSchoolAstral,
-	SpellSchoolSpellShadow,
-
-	// Fire x Other
-	SpellSchoolFrostfire,
-	SpellSchoolRadiant,
-	SpellSchoolVolcanic,
-	SpellSchoolShadowflame,
-
-	// Frost x Other
-	SpellSchoolHolyfrost,
-	SpellSchoolFroststorm,
-	SpellSchoolShadowfrost,
-
-	// Holy x Other
-	SpellSchoolHolystorm,
-	SpellSchoolTwilight,
-
-	// Nature x Other
-	SpellSchoolPlague,
-
-	SpellSchoolElemental,
 }
-
-var schoolMaskToIndex = func() map[SpellSchool]stats.SchoolIndex {
-	mti := map[SpellSchool]stats.SchoolIndex{}
-	for i := stats.SchoolIndexNone; i < stats.SchoolLen; i++ {
-		mti[schoolIndexToSchoolMask[i]] = i
-	}
-	return mti
-}()
-
-// LUT for base school indices a (multi)school is made of.
-var schoolIndexToIndices = func() [stats.SchoolLen][]stats.SchoolIndex {
-	arr := [stats.SchoolLen][]stats.SchoolIndex{}
-
-	for schoolIndex := stats.SchoolIndexNone; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		multiMask := SpellSchoolFromIndex(schoolIndex)
-		indexArr := []stats.SchoolIndex{}
-		for baseSchoolIndex := stats.SchoolIndexNone; baseSchoolIndex < stats.PrimarySchoolLen; baseSchoolIndex++ {
-			schoolFlag := SpellSchoolFromIndex(baseSchoolIndex)
-			if multiMask.Matches(schoolFlag) {
-				indexArr = append(indexArr, baseSchoolIndex)
-			}
-		}
-		arr[schoolIndex] = indexArr
-	}
-
-	return arr
-}()
-
-// LUT for resistance stat indices used by each multischool.
-var schoolIndexToResistanceStats = func() [stats.SchoolLen][]stats.Stat {
-	resistances := map[SpellSchool]stats.Stat{
-		SpellSchoolPhysical: stats.Armor, // This is technically physical resistance
-		SpellSchoolArcane:   stats.ArcaneResistance,
-		SpellSchoolFire:     stats.FireResistance,
-		SpellSchoolFrost:    stats.FrostResistance,
-		SpellSchoolNature:   stats.NatureResistance,
-		SpellSchoolShadow:   stats.ShadowResistance,
-	}
-
-	arr := [stats.SchoolLen][]stats.Stat{}
-
-	for schoolIndex := stats.SchoolIndexPhysical; schoolIndex < stats.SchoolLen; schoolIndex++ {
-		schoolMask := SpellSchoolFromIndex(schoolIndex)
-		resiArr := []stats.Stat{}
-		for resiSchool, resiStat := range resistances {
-			if schoolMask.Matches(resiSchool) {
-				resiArr = append(resiArr, resiStat)
-			}
-		}
-		arr[schoolIndex] = resiArr
-	}
-
-	return arr
-}()
 
 // Get spell school mask from school index.
 func SpellSchoolFromIndex(schoolIndex stats.SchoolIndex) SpellSchool {
@@ -188,36 +97,47 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	}
 }
 
-// Get array of resistance stat indices for a (multi)school.
-// Physical school uses Armor as stat index!
-func GetSchoolResistanceStats(schoolIndex stats.SchoolIndex) []stats.Stat {
-	return schoolIndexToResistanceStats[schoolIndex]
-}
-
 // Returns whether there is any overlap between the given masks.
 func (ss SpellSchool) Matches(other SpellSchool) bool {
 	return (ss & other) != 0
 }
 
-// Get school index from school mask. Will error if mask is for an undefined multi-school.
-// This involves a map lookup. Do not use in hot path code.
+// Get school index from school mask.
 func (ss SpellSchool) GetSchoolIndex() stats.SchoolIndex {
-	idx, ok := schoolMaskToIndex[ss]
-	if !ok {
-		panic(fmt.Sprintf("No school index defined for schoolmask %d! You may need to define a new multi-school.", ss))
+	switch ss {
+	case SpellSchoolNone:
+		return stats.SchoolIndexNone
+	case SpellSchoolPhysical:
+		return stats.SchoolIndexPhysical
+	case SpellSchoolArcane:
+		return stats.SchoolIndexArcane
+	case SpellSchoolFire:
+		return stats.SchoolIndexFire
+	case SpellSchoolFrost:
+		return stats.SchoolIndexFrost
+	case SpellSchoolHoly:
+		return stats.SchoolIndexHoly
+	case SpellSchoolNature:
+		return stats.SchoolIndexNature
+	case SpellSchoolShadow:
+		return stats.SchoolIndexShadow
+	default:
+		return stats.SchoolIndexMultischool
 	}
-	return idx
 }
 
-// Sets school index, mask and base indices.
-func (spell *Spell) SetSchool(schoolIndex stats.SchoolIndex) {
-	spell.SchoolIndex = schoolIndex
-	spell.SpellSchool = SpellSchoolFromIndex(schoolIndex)
-	spell.SchoolBaseIndices = schoolIndexToIndices[schoolIndex]
-	spell.IsMultischool = schoolIndex.IsMultiSchool()
+func (schoolMask SpellSchool) GetBaseIndices() []stats.SchoolIndex {
+	indexArr := []stats.SchoolIndex{}
+	for baseSchoolIndex := stats.SchoolIndexNone; baseSchoolIndex < stats.SchoolLen; baseSchoolIndex++ {
+		schoolFlag := SpellSchoolFromIndex(baseSchoolIndex)
+		if schoolMask.Matches(schoolFlag) {
+			indexArr = append(indexArr, baseSchoolIndex)
+		}
+	}
+	return indexArr
 }
 
-func selectMaxMultInSchoolArray(spell *Spell, array *[stats.PrimarySchoolLen]float64) float64 {
+func selectMaxMultInSchoolArray(spell *Spell, array *[stats.SchoolLen]float64) float64 {
 	high := 0.0
 	for _, baseIndex := range spell.SchoolBaseIndices {
 		mult := array[baseIndex]
@@ -231,7 +151,7 @@ func selectMaxMultInSchoolArray(spell *Spell, array *[stats.PrimarySchoolLen]flo
 // Get school damage done multiplier.
 // Returns highest multiplier if spell is multi school.
 func (unit *Unit) GetSchoolDamageDoneMultiplier(spell *Spell) float64 {
-	if !spell.IsMultischool {
+	if !spell.SchoolIndex.IsMultiSchool() {
 		return unit.PseudoStats.SchoolDamageDealtMultiplier[spell.SchoolIndex]
 	}
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolDamageDealtMultiplier)
@@ -240,17 +160,16 @@ func (unit *Unit) GetSchoolDamageDoneMultiplier(spell *Spell) float64 {
 // Get school damage taken multiplier.
 // Returns highest multiplier if spell is multi school.
 func (unit *Unit) GetSchoolDamageTakenMultiplier(spell *Spell) float64 {
-	if !spell.IsMultischool {
+	if !spell.SchoolIndex.IsMultiSchool() {
 		return unit.PseudoStats.SchoolDamageTakenMultiplier[spell.SchoolIndex]
 	}
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolDamageTakenMultiplier)
 }
 
-// Get school crit taken multiplier.
-// Returns highest multiplier if spell is multi school.
-func (unit *Unit) GetCritTakenMultiplier(spell *Spell) float64 {
-	if !spell.IsMultischool {
-		return unit.PseudoStats.SchoolCritTakenMultiplier[spell.SchoolIndex]
+// Returns highest if spell is multi school.
+func (unit *Unit) GetSchoolCritTakenChance(spell *Spell) float64 {
+	if !spell.SchoolIndex.IsMultiSchool() {
+		return unit.PseudoStats.SchoolCritTakenChance[spell.SchoolIndex]
 	}
-	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenMultiplier)
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenChance)
 }

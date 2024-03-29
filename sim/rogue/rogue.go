@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	SpellFlagBuilder     = core.SpellFlagAgentReserved1
-	SpellFlagFinisher    = core.SpellFlagAgentReserved2
-	SpellFlagColdBlooded = core.SpellFlagAgentReserved3
+	SpellFlagBuilder      = core.SpellFlagAgentReserved1
+	SpellFlagFinisher     = core.SpellFlagAgentReserved2
+	SpellFlagColdBlooded  = core.SpellFlagAgentReserved3
+	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved4
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -28,21 +29,19 @@ type Rogue struct {
 
 	Backstab       *core.Spell
 	BladeFlurry    *core.Spell
-	DeadlyPoison   [3]*core.Spell
 	Feint          *core.Spell
 	Garrote        *core.Spell
 	Ambush         *core.Spell
 	Hemorrhage     *core.Spell
 	GhostlyStrike  *core.Spell
 	HungerForBlood *core.Spell
-	InstantPoison  [3]*core.Spell
-	WoundPoison    [2]*core.Spell
 	Mutilate       *core.Spell
 	MutilateMH     *core.Spell
 	MutilateOH     *core.Spell
 	Shiv           *core.Spell
 	SinisterStrike *core.Spell
 	SaberSlash     *core.Spell
+	saberSlashTick *core.Spell
 	MainGauche     *core.Spell
 	Shadowstep     *core.Spell
 	Preparation    *core.Spell
@@ -60,6 +59,11 @@ type Rogue struct {
 	ExposeArmor  *core.Spell
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
+
+	DeadlyPoison     [3]*core.Spell
+	deadlyPoisonTick *core.Spell
+	InstantPoison    [3]*core.Spell
+	WoundPoison      [2]*core.Spell
 
 	instantPoisonProcChanceBonus float64
 
@@ -156,9 +160,9 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.EnableEnergyBar(maxEnergy)
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
-		MainHand:       rogue.WeaponFromMainHand(), // Set crit multiplier later when we have targets.
-		OffHand:        rogue.WeaponFromOffHand(),  // Set crit multiplier later when we have targets.
-		Ranged:         rogue.WeaponFromRanged(),   // Set crit multiplier later when we have targets.
+		MainHand:       rogue.WeaponFromMainHand(),
+		OffHand:        rogue.WeaponFromOffHand(),
+		Ranged:         rogue.WeaponFromRanged(),
 		AutoSwingMelee: true,
 	})
 	rogue.applyPoisons()

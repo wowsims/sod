@@ -38,8 +38,6 @@ const (
 	DeadlyBrewProc
 )
 
-var WoundPoisonActionID = core.ActionID{SpellID: 13219}
-
 func (rogue *Rogue) GetInstantPoisonProcChance() float64 {
 	return (0.2 + rogue.improvedPoisons()) * (1 + rogue.instantPoisonProcChanceBonus)
 }
@@ -108,13 +106,9 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.Flags.Matches(core.SpellFlagPoison) {
+			if !result.Landed() || !spell.Flags.Matches(SpellFlagDeadlyBrewed) {
 				return
 			}
-			if spell == rogue.DeadlyPoison[DeadlyBrewProc] {
-				return
-			}
-
 			rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)
 		},
 	})
@@ -207,6 +201,63 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
+	baseDamageTick := map[int32]float64{
+		25: 9,
+		40: 13,
+		50: 20,
+		60: 27,
+	}[rogue.Level]
+	spellID := map[int32]int32{
+		25: 2823,
+		40: 2824,
+		50: 11355,
+		60: 11356,
+	}[rogue.Level]
+
+	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
+
+	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskWeaponProc,
+		Flags:       core.SpellFlagPoison,
+
+		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label:     "DeadlyPoison",
+				MaxStacks: 5,
+				Duration:  time.Second * 12,
+			},
+			NumberOfTicks: 4,
+			TickLength:    time.Second * 3,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
+				if !applyStack {
+					return
+				}
+
+				// only the first stack snapshots the multiplier
+				if dot.GetStacks() == 1 {
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotBaseDamage = 0
+				}
+
+				// each stack snapshots the AP it was applied with
+				// 3.6% per stack for all ticks, or 0.9% per stack and tick
+				dot.SnapshotBaseDamage += baseDamageTick + core.TernaryFloat64(hasDeadlyBrew, 0.009*dot.Spell.MeleeAttackPower(), 0)
+			},
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+			},
+		},
+	})
+
 	rogue.DeadlyPoison = [3]*core.Spell{
 		rogue.makeDeadlyPoison(NormalProc),
 		rogue.makeDeadlyPoison(ShivProc),
@@ -217,7 +268,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
 		Label:     "WoundPoison-" + strconv.Itoa(int(rogue.Index)),
-		ActionID:  WoundPoisonActionID,
+		ActionID:  core.ActionID{SpellID: 13219},
 		MaxStacks: 5,
 		Duration:  time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -271,12 +322,12 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(hasDeadlyBrew, 0.03*spell.MeleeAttackPower(), 0)
@@ -286,63 +337,11 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 }
 
 func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
-	baseDamageTick := map[int32]float64{
-		25: 9,
-		40: 13,
-		50: 20,
-		60: 27,
-	}[rogue.Level]
-	spellID := map[int32]int32{
-		25: 2823,
-		40: 2824,
-		50: 11355,
-		60: 11356,
-	}[rogue.Level]
-
-	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
-
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		ActionID: core.ActionID{SpellID: rogue.deadlyPoisonTick.SpellID, Tag: int32(procSource)},
+		Flags:    core.Ternary(procSource == DeadlyBrewProc, core.SpellFlagNone, SpellFlagDeadlyBrewed),
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
-		ThreatMultiplier: 1,
-
-		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label:     "DeadlyPoison",
-				MaxStacks: 5,
-				Duration:  time.Second * 12,
-			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 3,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
-				if !applyStack {
-					return
-				}
-
-				// only the first stack snapshots the multiplier
-				if dot.GetStacks() == 1 {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-					dot.SnapshotBaseDamage = 0
-				}
-
-				// each stack snapshots the AP it was applied with
-				// 3.6% per stack for all ticks, or 0.9% per stack and tick
-				dot.SnapshotBaseDamage += baseDamageTick + core.TernaryFloat64(hasDeadlyBrew, 0.009*dot.Spell.MeleeAttackPower(), 0)
-			},
-
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
@@ -351,7 +350,7 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 				return
 			}
 
-			dot := spell.Dot(target)
+			dot := rogue.deadlyPoisonTick.Dot(target)
 
 			dot.ApplyOrRefresh(sim)
 			if dot.GetStacks() < dot.MaxStacks {
@@ -370,12 +369,12 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusHitRating: core.Ternary[float64](procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
