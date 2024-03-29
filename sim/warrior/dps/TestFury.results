@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.52596
-  weights: 0.98341
+  weights: 0.79533
+  weights: 1.608
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1219
-  weights: 8.32962
-  weights: 11.23977
+  weights: 0.65464
+  weights: 11.27719
+  weights: 9.02999
   weights: 0
   weights: 0
   weights: 0
@@ -99,134 +99,134 @@ stat_weights_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 629.16409
-  tps: 591.15089
+  dps: 630.25657
+  tps: 591.59492
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 583.58991
-  tps: 549.53373
+  dps: 584.89321
+  tps: 549.62097
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 620.69524
-  tps: 583.50473
+  dps: 617.59973
+  tps: 581.17399
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 591.76278
-  tps: 557.37082
+  dps: 589.30751
+  tps: 556.01603
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 533.16081
-  tps: 502.53382
+  dps: 533.2078
+  tps: 502.31111
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-H.A.Z.A.R.D.Suit"
  value: {
-  dps: 600.86637
-  tps: 564.98337
+  dps: 601.1503
+  tps: 566.5566
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 533.16081
-  tps: 502.53382
+  dps: 533.2078
+  tps: 502.31111
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 544.68746
-  tps: 513.43703
+  dps: 543.31365
+  tps: 512.54089
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 605.89781
-  tps: 572.0144
+  dps: 607.66657
+  tps: 573.63601
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 544.68746
-  tps: 513.43703
+  dps: 543.31365
+  tps: 512.54089
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 545.55552
-  tps: 514.1016
+  dps: 543.15493
+  tps: 513.01895
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 546.85048
-  tps: 515.77264
+  dps: 549.80389
+  tps: 519.12111
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 546.85048
-  tps: 515.77264
+  dps: 549.80389
+  tps: 519.12111
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 516.71834
-  tps: 488.44052
+  dps: 516.89443
+  tps: 487.42181
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 577.24536
-  tps: 543.14079
+  dps: 576.41493
+  tps: 541.00353
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
-  dps: 783.92403
-  tps: 731.7205
+  dps: 784.35114
+  tps: 732.24219
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 19.76493
-  tps: 55.81822
+  dps: 19.76864
+  tps: 55.82193
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 16.32126
-  tps: 17.63888
+  dps: 16.30318
+  tps: 17.62692
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 31.37726
-  tps: 31.39363
+  dps: 31.34355
+  tps: 31.39056
  }
 }
 dps_results: {
@@ -239,15 +239,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 8.31317
-  tps: 11.06607
+  dps: 8.29304
+  tps: 11.04106
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 14.52016
-  tps: 17.87775
+  dps: 14.45948
+  tps: 17.79263
  }
 }
 dps_results: {
@@ -260,15 +260,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 17.61244
-  tps: 18.68333
+  dps: 17.58586
+  tps: 18.66718
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 36.3948
-  tps: 35.41528
+  dps: 36.33
+  tps: 35.40259
  }
 }
 dps_results: {
@@ -281,21 +281,21 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 8.89293
-  tps: 11.53743
+  dps: 8.8719
+  tps: 11.51303
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 16.67222
-  tps: 19.60356
+  dps: 16.615
+  tps: 19.52952
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 734.49855
-  tps: 687.62174
+  dps: 730.21157
+  tps: 684.63472
  }
 }
