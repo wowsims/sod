@@ -573,11 +573,13 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 	return false
 }
 
-func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, _ *AttackTable, roll float64, chance *float64) bool {
-	critRating := spell.Unit.stats[stats.MeleeCrit] + spell.BonusCritRating
-	critChance := critRating / (CritRatingPerCritChance * 100)
+func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTable, roll float64, chance *float64) bool {
+	// "Base Melee Crit" is applied at target initialization (5% vs same level)
+	// Convert MeleeCrit to %
+	critChance := (at.BaseCritChance*100 + spell.BonusCritRating) / 100
+	// Crit reduction from bonus Defense of target (Talent, Gear, etc)
 	critChance -= result.Target.stats[stats.Defense] * DefenseRatingToChanceReduction
-	critChance -= result.Target.stats[stats.Resilience] / ResilienceRatingPerCritReductionChance / 100
+	// Crit chance reduction (Rune: Just a Flesh Wound, etc)
 	critChance -= result.Target.PseudoStats.ReducedCritTakenChance
 	*chance += max(0, critChance)
 

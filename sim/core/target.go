@@ -136,10 +136,6 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 	if target.Level == 0 {
 		target.Level = defaultRaidBossLevel
 	}
-	if target.stats[stats.MeleeCrit] == 0 {
-		// Treat any % crit buff an enemy would gain as though it was scaled with level 80 ratings
-		target.stats[stats.MeleeCrit] = UnitLevelFloat64(target.Level, 5.0, 5.2, 5.4, 5.6) * CritRatingPerCritChance
-	}
 
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
@@ -254,6 +250,7 @@ type AttackTable struct {
 	BaseDodgeChance     float64
 	BaseParryChance     float64
 	BaseGlanceChance    float64
+	BaseCritChance      float64
 
 	GlanceMultiplierMin  float64
 	GlanceMultiplierMax  float64
@@ -348,6 +345,7 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		table.BaseMissChance = 0.05 + levelDelta
 		table.BaseDodgeChance = 0.05 + levelDelta
+		table.BaseCritChance = 0.05 + levelDelta
 	}
 
 	return table
