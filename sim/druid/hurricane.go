@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const HurricaneRanks = 3
@@ -36,6 +37,11 @@ func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer)
 	level := HurricaneLevel[rank]
 
 	cooldown := time.Second * 60
+
+	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		cooldown = core.GCDDefault
+		manaCost *= .80
+	}
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -83,12 +89,17 @@ func (druid *Druid) newHurricaneTickSpellConfig(rank int) core.SpellConfig {
 	baseDamage := HurricaneBaseDamage[rank]
 	spellCoef := HurricaneSpellCoef[rank]
 
+	damageMultiplier := 1.0
+	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		damageMultiplier += 1.0
+	}
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskProc,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

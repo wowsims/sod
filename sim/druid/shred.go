@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (druid *Druid) registerShredSpell() {
@@ -15,6 +16,9 @@ func (druid *Druid) registerShredSpell() {
 		50: 144.0,
 		60: 180.0,
 	}[druid.Level] / shredDamageMultiplier
+
+	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
+	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: map[int32]int32{
@@ -68,6 +72,14 @@ func (druid *Druid) registerShredSpell() {
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+
+				if hasGoreRune {
+					druid.rollGoreCatReset(sim)
+				}
+
+				if hasElunesFires {
+					druid.tryElunesFiresRipExtension(sim, target)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
