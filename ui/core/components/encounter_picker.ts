@@ -194,7 +194,7 @@ class AdvancedEncounterModal extends BaseModal {
 
 		new EnumPicker<Encounter>(this.header as HTMLElement, this.encounter, {
 			label: 'Encounter',
-			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2', 'order-first'],
+			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2'],
 			values: [{ name: 'Custom', value: -1 }].concat(
 				presetEncounters.map((pe, i) => {
 					return {
