@@ -285,8 +285,7 @@ func (rogue *Rogue) applyCombatPotency() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// from 3.0.3 patch notes: "Combat Potency: Now only works with auto attacks"
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOHAuto) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
 				return
 			}
 
@@ -311,7 +310,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.DidCrit() {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() {
 				return
 			}
 			// Fan of Knives OH hits do not trigger focused attacks. Check other SoD spells
@@ -472,9 +471,6 @@ func (rogue *Rogue) lethality() float64 {
 }
 
 func (rogue *Rogue) registerHonorAmongThieves() {
-	// When anyone in your group critically hits with a damage or healing spell or ability,
-	// you have a [33%/66%/100%] chance to gain a combo point on your current target.
-	// This effect cannot occur more than once per second.
 	if !rogue.HasRune(proto.RogueRune_RuneHonorAmongThieves) {
 		return
 	}
