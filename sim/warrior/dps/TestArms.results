@@ -176,8 +176,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 586.12552
-  tps: 508.39495
+  dps: 594.70454
+  tps: 515.77622
  }
 }
 dps_results: {

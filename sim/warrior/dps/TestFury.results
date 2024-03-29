@@ -176,8 +176,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 549.80389
-  tps: 519.12111
+  dps: 554.09252
+  tps: 522.91505
  }
 }
 dps_results: {

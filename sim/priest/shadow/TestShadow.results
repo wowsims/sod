@@ -218,8 +218,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 105.03957
-  tps: 107.54686
+  dps: 105.25996
+  tps: 107.76725
  }
 }
 dps_results: {
@@ -358,8 +358,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 374.40823
-  tps: 318.48367
+  dps: 375.33865
+  tps: 319.26522
  }
 }
 dps_results: {
