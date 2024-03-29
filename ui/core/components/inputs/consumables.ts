@@ -1,6 +1,7 @@
 import { Player } from '../../player';
 import {
 	AgilityElixir,
+	AtalAi,
 	Class,
 	Conjured,
 	Consumes,
@@ -116,6 +117,36 @@ export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
 
 ///////////////////////////////////////////////////////////////////////////
+//                        ATAL'AI POTIONS
+///////////////////////////////////////////////////////////////////////////
+
+export const AtalAiMojoOfWar: ConsumableInputConfig<AtalAi> = {
+	actionId: () => ActionId.fromItemId(221196),
+	value: AtalAi.AtalAiWar,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const AtalAiMojoOfForbiddenMagic: ConsumableInputConfig<AtalAi> = {
+	actionId: () => ActionId.fromItemId(221030),
+	value: AtalAi.AtalAiForbiddenMagic,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const AtalAiMojoOfLife: ConsumableInputConfig<AtalAi> = {
+	actionId: () => ActionId.fromItemId(221311),
+	value: AtalAi.AtalAiLife,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const ATALAI_CONFIG: ConsumableStatOption<AtalAi>[] = [
+	{ config: AtalAiMojoOfWar, stats: [Stat.StatAttackPower] },
+	{ config: AtalAiMojoOfForbiddenMagic, stats: [Stat.StatSpellPower] },
+	{ config: AtalAiMojoOfLife, stats: [Stat.StatHealingPower] },
+];
+
+export const makeAtalaiInput = makeConsumeInputFactory({ consumesFieldName: 'defaultAtalAi' });
+
+///////////////////////////////////////////////////////////////////////////
 //                             ENCHANTING SIGIL
 ///////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +160,7 @@ export const EnchantedSigilLivingDreams: ConsumableInputConfig<EnchantedSigil> =
 	value: EnchantedSigil.LivingDreamsSigil,
 };
 
-export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+export const ENCHANTED_SIGIL_CONFIG: ConsumableStatOption<EnchantedSigil>[] = [
 	{ config: EnchantedSigilLivingDreams, stats: [] },
 	{ config: EnchantedSigilInnovation, stats: [] },
 ];
@@ -203,20 +234,30 @@ export const Sapper = makeBooleanConsumeInput({
 ///////////////////////////////////////////////////////////////////////////
 
 export const FlaskOfTheTitans: ConsumableInputConfig<Flask> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13510, minLevel: 50 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13510, minLevel: 51 }]),
 	value: Flask.FlaskOfTheTitans,
 };
 export const FlaskOfDistilledWisdom: ConsumableInputConfig<Flask> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13511, minLevel: 50 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13511, minLevel: 51 }]),
 	value: Flask.FlaskOfDistilledWisdom,
 };
 export const FlaskOfSupremePower: ConsumableInputConfig<Flask> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13512, minLevel: 50 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13512, minLevel: 51 }]),
 	value: Flask.FlaskOfSupremePower,
 };
 export const FlaskOfChromaticResistance: ConsumableInputConfig<Flask> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13513, minLevel: 50 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13513, minLevel: 51 }]),
 	value: Flask.FlaskOfChromaticResistance,
+};
+export const FlaskOfRestlessDreams: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 222952, minLevel: 50, maxLevel: 59 }]),
+	value: Flask.FlaskOfRestlessDreams,
+	showWhen: player => player.hasProfession(Profession.Alchemy),
+};
+export const FlaskOfEverlastingNightmares: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 221024, minLevel: 50, maxLevel: 59 }]),
+	value: Flask.FlaskOfEverlastingNightmares,
+	showWhen: player => player.hasProfession(Profession.Alchemy),
 };
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
@@ -224,6 +265,8 @@ export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
+	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
+	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
 ];
 
 export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'flask' });

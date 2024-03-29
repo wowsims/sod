@@ -21,7 +21,7 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 		ActionID:    core.ActionID{SpellID: 427725},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskEmpty,
 
 		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
 
