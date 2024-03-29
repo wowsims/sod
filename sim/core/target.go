@@ -329,26 +329,25 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		table.SpellCritSuppression = UnitLevelFloat64(defender.Level-attacker.Level, 0, 0, 0.003, 0.021)
 	} else {
 
+		levelDelta := 0.0004 * 5 * float64(defender.Level-attacker.Level)
+
 		table.BaseSpellMissChance = 0.05
 
 		// Apply base Parry
 		if defender.PseudoStats.CanParry {
-			table.BaseParryChance = 0.05
+			table.BaseParryChance = 0.05 + levelDelta
 		} else {
 			table.BaseParryChance = 0
 		}
 		// Apply base Block
 		if defender.PseudoStats.CanBlock {
-			table.BaseBlockChance = 0.05
+			table.BaseBlockChance = 0.05 + levelDelta
 		} else {
 			table.BaseBlockChance = 0
 		}
 
-		// TODO: Use defender (player) defense * 5 instead of level
-		table.BaseMissChance = UnitLevelFloat64(attacker.Level-defender.Level, 0.05, 0.048, 0.046, 0.044)
-		table.BaseBlockChance = UnitLevelFloat64(attacker.Level-defender.Level, 0, -0.002, -0.004, -0.006)
-		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level-defender.Level, 0.05, 0.048, 0.046, 0.044)
-		table.BaseParryChance += UnitLevelFloat64(attacker.Level-defender.Level, 0, -0.002, -0.004, -0.006)
+		table.BaseMissChance = 0.05 + levelDelta
+		table.BaseDodgeChance = 0.05 + levelDelta
 	}
 
 	return table

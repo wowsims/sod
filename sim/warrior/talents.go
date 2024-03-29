@@ -15,7 +15,7 @@ func (warrior *Warrior) ToughnessArmorMultiplier() float64 {
 func (warrior *Warrior) ApplyTalents() {
 	warrior.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(warrior.Talents.Cruelty))
 	warrior.ApplyEquipScaling(stats.Armor, warrior.ToughnessArmorMultiplier())
-	warrior.AddStat(stats.Dodge, 0.01*float64(warrior.Talents.Anticipation))
+	warrior.AddStat(stats.Defense, 2*float64(warrior.Talents.Anticipation))
 	warrior.AddStat(stats.Parry, 0.01*float64(warrior.Talents.Deflection))
 	warrior.AutoAttacks.OHConfig().DamageMultiplier *= 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
 
