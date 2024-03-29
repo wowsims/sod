@@ -125,6 +125,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 276.09373
+  tps: 243.31486
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 267.83446
+  tps: 233.74895
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 259.69908
