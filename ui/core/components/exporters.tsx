@@ -2,13 +2,10 @@ import pako from 'pako';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, ref } from 'tsx-vanilla';
 
+import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
-import {
-	PseudoStat,
-	Spec,
-	Stat
-} from '../proto/common';
+import { PseudoStat, Spec, Stat } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
 import { classNames, raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
@@ -17,18 +14,15 @@ import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
-
 import { BaseModal } from './base_modal';
 import { BooleanPicker } from './boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
 
-import * as Mechanics from '../constants/mechanics';
-
 interface ExporterOptions {
-	title: string,
-	header?: boolean,
-	allowDownload?: boolean,
+	title: string;
+	header?: boolean;
+	allowDownload?: boolean;
 }
 
 export abstract class Exporter extends BaseModal {
@@ -36,7 +30,7 @@ export abstract class Exporter extends BaseModal {
 	protected readonly changedEvent: TypedEvent<void> = new TypedEvent();
 
 	constructor(parent: HTMLElement, simUI: SimUI, options: ExporterOptions) {
-		super(parent, 'exporter', { title: options.title, header: options.header, footer: true });
+		super(parent, 'exporter', { title: options.title, header: true, footer: true });
 
 		this.body.innerHTML = `
 			<textarea spellCheck="false" class="exporter-textarea form-control"></textarea>
@@ -51,12 +45,12 @@ export abstract class Exporter extends BaseModal {
 		});
 
 		if (options.allowDownload) {
-			const downloadBtnRef = ref<HTMLButtonElement>()
+			const downloadBtnRef = ref<HTMLButtonElement>();
 			this.footer!.appendChild(
 				<button className="exporter-button btn btn-primary download-button" ref={downloadBtnRef}>
 					<i className="fa fa-download me-1"></i>
 					Download
-				</button>
+				</button>,
 			);
 
 			const downloadButton = downloadBtnRef.value!;
@@ -81,9 +75,9 @@ export abstract class Exporter extends BaseModal {
 
 export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 	private static readonly exportPickerConfigs: Array<{
-		category: SimSettingCategories,
-		label: string,
-		labelTooltip: string,
+		category: SimSettingCategories;
+		label: string;
+		labelTooltip: string;
 	}> = [
 		{
 			category: SimSettingCategories.Gear,
@@ -129,16 +123,17 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 	private readonly exportCategories: Record<SimSettingCategories, boolean>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: 'Sharable Link', header: true});
+		super(parent, simUI, { title: 'Sharable Link' });
 		this.simUI = simUI;
 
 		const exportCategories: Partial<Record<SimSettingCategories, boolean>> = {};
-		(getEnumValues(SimSettingCategories) as Array<SimSettingCategories>)
-			.forEach(cat => exportCategories[cat] = IndividualLinkImporter.DEFAULT_CATEGORIES.includes(cat));
+		(getEnumValues(SimSettingCategories) as Array<SimSettingCategories>).forEach(
+			cat => (exportCategories[cat] = IndividualLinkImporter.DEFAULT_CATEGORIES.includes(cat)),
+		);
 		this.exportCategories = exportCategories as Record<SimSettingCategories, boolean>;
 
 		const pickersContainer = document.createElement('div');
-		pickersContainer.classList.add('link-exporter-pickers')
+		pickersContainer.classList.add('link-exporter-pickers');
 		this.body.prepend(pickersContainer);
 
 		IndividualLinkExporter.exportPickerConfigs.forEach(exportConfig => {
@@ -162,8 +157,8 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 	getData(): string {
 		return IndividualLinkExporter.createLink(
 			this.simUI,
-			(getEnumValues(SimSettingCategories) as Array<SimSettingCategories>)
-				.filter(c => this.exportCategories[c]));
+			(getEnumValues(SimSettingCategories) as Array<SimSettingCategories>).filter(c => this.exportCategories[c]),
+		);
 	}
 
 	static createLink(simUI: IndividualSimUI<any>, exportCategories?: Array<SimSettingCategories>): string {
@@ -193,7 +188,7 @@ export class IndividualJsonExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: 'JSON Export', allowDownload: true});
+		super(parent, simUI, { title: 'JSON Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
@@ -221,7 +216,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: 'Wowhead Export', allowDownload: true});
+		super(parent, simUI, { title: 'Wowhead Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
@@ -231,7 +226,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 
 		const classStr = classNames.get(player.getClass())!.replaceAll(' ', '-').toLowerCase();
 		const raceStr = raceNames.get(player.getRace())!.replaceAll(' ', '-').toLowerCase();
-		let url = `https://www.wowhead.com/classic/gear-planner/${classStr}/${raceStr}/`;
+		const url = `https://www.wowhead.com/classic/gear-planner/${classStr}/${raceStr}/`;
 
 		// See comments on the importer for how the binary formatting is structured.
 		let bytes: Array<number> = [];
@@ -250,10 +245,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 		}
 
 		const to2Bytes = (val: number): Array<number> => {
-			return [
-				(val & 0xff00) >> 8,
-				val & 0x00ff,
-			];
+			return [(val & 0xff00) >> 8, val & 0x00ff];
 		};
 
 		const gear = player.getGear();
@@ -292,7 +284,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: '80Upgrades EP Export', allowDownload: true});
+		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
@@ -303,25 +295,27 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		const allUnitStats = UnitStat.getAll();
 
 		const namesToWeights: Record<string, number> = {};
-		allUnitStats
-			.forEach(stat => {
-				const statName = Individual80UEPExporter.getName(stat);
-				const weight = epValues.getUnitStat(stat);
-				if (weight == 0 || statName == '') {
-					return;
-				}
+		allUnitStats.forEach(stat => {
+			const statName = Individual80UEPExporter.getName(stat);
+			const weight = epValues.getUnitStat(stat);
+			if (weight == 0 || statName == '') {
+				return;
+			}
 
-				// Need to add together stats with the same name (e.g. hit/crit/haste).
-				if (namesToWeights[statName]) {
-					namesToWeights[statName] += weight;
-				} else {
-					namesToWeights[statName] = weight;
-				}
-			});
+			// Need to add together stats with the same name (e.g. hit/crit/haste).
+			if (namesToWeights[statName]) {
+				namesToWeights[statName] += weight;
+			} else {
+				namesToWeights[statName] = weight;
+			}
+		});
 
-		return `https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
+		return (
+			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
-				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`).join('');
+				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
+				.join('')
+		);
 	}
 
 	static getName(stat: UnitStat): string {
@@ -377,18 +371,18 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatBonusArmor]: 'armorBonus',
 		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'feralAttackPower',
-	}
+	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'dps',
 		[PseudoStat.PseudoStatRangedDps]: 'rangedDps',
-	}
+	};
 }
 
 export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: 'Pawn EP Export', allowDownload: true});
+		super(parent, simUI, { title: 'Pawn EP Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
@@ -399,26 +393,28 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		const allUnitStats = UnitStat.getAll();
 
 		const namesToWeights: Record<string, number> = {};
-		allUnitStats
-			.forEach(stat => {
-				const statName = IndividualPawnEPExporter.getName(stat);
-				const weight = epValues.getUnitStat(stat);
-				if (weight == 0 || statName == '') {
-					return;
-				}
+		allUnitStats.forEach(stat => {
+			const statName = IndividualPawnEPExporter.getName(stat);
+			const weight = epValues.getUnitStat(stat);
+			if (weight == 0 || statName == '') {
+				return;
+			}
 
-				// Need to add together stats with the same name (e.g. hit/crit/haste).
-				if (namesToWeights[statName]) {
-					namesToWeights[statName] += weight;
-				} else {
-					namesToWeights[statName] = weight;
-				}
-			});
+			// Need to add together stats with the same name (e.g. hit/crit/haste).
+			if (namesToWeights[statName]) {
+				namesToWeights[statName] += weight;
+			} else {
+				namesToWeights[statName] = weight;
+			}
+		});
 
-		return `( Pawn: v1: "${specNames[player.spec]} WoWSims Weights": Class=${classNames.get(player.getClass())},` +
+		return (
+			`( Pawn: v1: "${specNames[player.spec]} WoWSims Weights": Class=${classNames.get(player.getClass())},` +
 			Object.keys(namesToWeights)
-				.map(statName => `${statName}=${namesToWeights[statName].toFixed(3)}`).join(',') +
-			' )';
+				.map(statName => `${statName}=${namesToWeights[statName].toFixed(3)}`)
+				.join(',') +
+			' )'
+		);
 	}
 
 	static getName(stat: UnitStat): string {
@@ -474,26 +470,24 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatBonusArmor]: 'Armor2',
 		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'FeralAttackPower',
-	}
+	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'MeleeDps',
 		[PseudoStat.PseudoStatRangedDps]: 'RangedDps',
-	}
+	};
 }
 
 export class IndividualCLIExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, {title: 'CLI Export', allowDownload: true});
+		super(parent, simUI, { title: 'CLI Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
 
 	getData(): string {
-		const raidSimJson: any = RaidSimRequest.toJson(
-			this.simUI.sim.makeRaidSimRequest(false)
-		);
+		const raidSimJson: any = RaidSimRequest.toJson(this.simUI.sim.makeRaidSimRequest(false));
 		delete raidSimJson.raid?.parties[0]?.players[0]?.database;
 		return JSON.stringify(raidSimJson, null, 2);
 	}
