@@ -574,9 +574,8 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 }
 
 func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTable, roll float64, chance *float64) bool {
-	// "Base Melee Crit" is applied at target initialization (5% vs same level)
-	// Convert MeleeCrit to %
-	critChance := (at.BaseCritChance*100 + spell.BonusCritRating) / 100
+	// "Base Melee Crit" is set as part of AttackTable
+	critChance := at.BaseCritChance + (spell.BonusCritRating)/100
 	// Crit reduction from bonus Defense of target (Talent, Gear, etc)
 	critChance -= result.Target.stats[stats.Defense] * DefenseRatingToChanceReduction
 	// Crit chance reduction (Rune: Just a Flesh Wound, etc)
@@ -586,8 +585,6 @@ func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTab
 	if roll < *chance {
 		result.Outcome = OutcomeCrit
 		spell.SpellMetrics[result.Target.UnitIndex].Crits++
-		// Assume PvE enemies do not use damage reduction multiplier component in WotLK
-		//resilCritMultiplier := 1 - result.Target.stats[stats.Resilience]/ResilienceRatingPerCritDamageReductionPercent/100
 		result.Damage *= 2
 		return true
 	}
