@@ -18,6 +18,7 @@ import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
+import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 
@@ -49,11 +50,12 @@ export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
+export const APLPhase3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3APL);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
 	[Phase.Phase2]: [APLPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [APLPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -62,8 +64,7 @@ export const APLPresets = {
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
-	// TODO: Phase 3
-	50: APLPresets[Phase.Phase2][0],
+	50: APLPresets[Phase.Phase3][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
