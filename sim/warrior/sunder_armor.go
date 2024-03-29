@@ -2,9 +2,10 @@ package warrior
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (warrior *Warrior) newSunderArmorSpell(isDevastateEffect bool) *core.Spell {
+func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 	warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
 	spellID := map[int32]int32{
 		25: 7405,
@@ -13,11 +14,14 @@ func (warrior *Warrior) newSunderArmorSpell(isDevastateEffect bool) *core.Spell 
 		60: 11597,
 	}[warrior.Level]
 
+	isDevastate := warrior.HasRune(proto.WarriorRune_RuneDevastate)
+
 	config := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics,
+		DefenseType: core.DefenseTypeMelee,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - warrior.FocusedRageDiscount,
@@ -33,6 +37,9 @@ func (warrior *Warrior) newSunderArmorSpell(isDevastateEffect bool) *core.Spell 
 			return warrior.CanApplySunderAura(target)
 		},
 
+		CritDamageBonus:  warrior.impale(),
+		DamageMultiplier: 1,
+
 		ThreatMultiplier: 1,
 		// TODO Warrior: set threat according to spell's level
 		FlatThreatBonus: 360,
@@ -40,35 +47,35 @@ func (warrior *Warrior) newSunderArmorSpell(isDevastateEffect bool) *core.Spell 
 		RelatedAuras: []core.AuraArray{warrior.SunderArmorAuras},
 	}
 
-	if isDevastateEffect {
-		config.RageCost = core.RageCostOptions{}
-		config.Cast.DefaultCast.GCD = 0
-		config.ExtraCastCondition = nil
-
-		// In wrath sunder from devastate generates no threat
-		config.ThreatMultiplier = 0
-		config.FlatThreatBonus = 0
-	} else {
-		config.Flags |= core.SpellFlagAPL
-	}
+	config.Flags |= core.SpellFlagAPL
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		var result *core.SpellResult
-		if isDevastateEffect {
-			result = spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-		} else {
-			result = spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			result.Threat = spell.ThreatFromDamage(result.Outcome, 0.05*spell.MeleeAttackPower())
+
+		overrided := false
+
+		if target.GetAura("Degrade (Homunculus)").IsActive() || target.GetAura("ExposeArmor").IsActive() {
+			overrided = true
 		}
 
-		if result.Landed() {
-			aura := warrior.SunderArmorAuras.Get(target)
-			aura.Activate(sim)
-			if aura.IsActive() {
-				aura.AddStack(sim)
-			}
+		aura := warrior.SunderArmorAuras.Get(target)
+		if isDevastate {
+			stacks := core.TernaryFloat64(overrided, 5.0, float64(aura.GetStacks()))
+			modifier := 1.5 + 0.1*float64(stacks)
+			damage := modifier * warrior.AutoAttacks.MH().AverageDamage() / warrior.SwingSpeed()
+			result = spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 		} else {
+			result = spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+		}
+
+		if !result.Landed() {
 			spell.IssueRefund(sim)
+			return
+		}
+
+		aura.Activate(sim)
+		if aura.IsActive() && !overrided {
+			aura.AddStack(sim)
 		}
 
 		spell.DealOutcome(sim, result)
