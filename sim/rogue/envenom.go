@@ -29,7 +29,7 @@ func (rogue *Rogue) registerEnvenom() {
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
+		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL | core.SpellFlagPoison,
 		MetricSplits: 6,
 
@@ -47,7 +47,7 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && target.GetAuraByID(rogue.DeadlyPoison[0].ActionID).IsActive()
+			return rogue.ComboPoints() > 0 && rogue.deadlyPoisonTick.Dot(target).IsActive()
 		},
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -63,7 +63,7 @@ func (rogue *Rogue) registerEnvenom() {
 			rogue.EnvenomAura.Duration = rogue.EnvenomDuration(rogue.ComboPoints())
 			rogue.EnvenomAura.Activate(sim)
 
-			dp := target.GetAura("DeadlyPoison")
+			dp := rogue.deadlyPoisonTick.Dot(target)
 			// - base damage is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
 			// - Spell power is 1:1 at all ranks and cp

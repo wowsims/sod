@@ -38,7 +38,39 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 				stats.NatureResistance: 25,
 				stats.ShadowResistance: 25,
 			})
+		case proto.Flask_FlaskOfRestlessDreams:
+			character.AddStats(stats.Stats{
+				// +30 Spell Damage, +45 Healing Power, +12 MP5
+				stats.SpellDamage:  30,
+				stats.HealingPower: 15,
+				stats.MP5:          12,
+			})
+		case proto.Flask_FlaskOfEverlastingNightmares:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       45,
+				stats.RangedAttackPower: 45,
+			})
 		}
+	}
+
+	if consumes.DefaultAtalAi != proto.AtalAi_AtalAiUnknown {
+		switch consumes.DefaultAtalAi {
+		case proto.AtalAi_AtalAiWar:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       48,
+				stats.RangedAttackPower: 48,
+			})
+		case proto.AtalAi_AtalAiForbiddenMagic:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 40,
+			})
+		case proto.AtalAi_AtalAiLife:
+			character.AddStats(stats.Stats{
+				stats.HealingPower: 45,
+				stats.MP5:          11,
+			})
+		}
+		ApplyAtalAiProc(character, consumes.DefaultAtalAi)
 	}
 
 	// There must be a nicer way to do this...
@@ -207,6 +239,12 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 				stats.RangedAttackPower: 20,
 				stats.SpellPower:        20,
 			})
+		case proto.EnchantedSigil_LivingDreamsSigil:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       30,
+				stats.RangedAttackPower: 30,
+				stats.SpellPower:        30,
+			})
 		}
 	}
 
@@ -214,6 +252,65 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	registerConjuredCD(agent, consumes)
 	registerMildlyIrradiatedRejuvCD(agent, consumes)
 	registerExplosivesCD(agent, consumes)
+}
+
+func ApplyAtalAiProc(character *Character, atalAi proto.AtalAi) {
+	icd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Second * 40,
+	}
+
+	switch atalAi {
+	case proto.AtalAi_AtalAiWar:
+		procAura := character.NewTemporaryStatsAura("Voodoo Frenzy Proc", ActionID{SpellID: 446335}, stats.Stats{stats.Strength: 35}, time.Second*10)
+		procAura.Icd = &icd
+
+		MakePermanent(character.RegisterAura(Aura{
+			Label: "Voodoo Frenzy",
+			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) || !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.Proc(0.15, "Voodoo Frenzy") {
+					icd.Use(sim)
+					procAura.Activate(sim)
+				}
+			},
+		}))
+	case proto.AtalAi_AtalAiForbiddenMagic:
+		procSpell := character.RegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 446258},
+			SpellSchool: SpellSchoolShadow,
+			ProcMask:    ProcMaskEmpty,
+			DefenseType: DefenseTypeMagic,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				dmg := sim.Roll(204, 236) + 0.56*spell.SpellDamage()
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
+			},
+		})
+
+		MakePermanent(character.RegisterAura(Aura{
+			Label: "Forbidden Magic",
+			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskSpellDamage) || !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.Proc(0.25, "Forbidden Magic") {
+					icd.Use(sim)
+					procSpell.Cast(sim, character.CurrentTarget)
+				}
+			},
+		}))
+	case proto.AtalAi_AtalAiLife:
+		// Your heals have a chance to restore 8 Energy, 1% Mana, or 4 Rage
+		// TODO: This needs to be handled as a Misc Buff instead of here.
+	}
 }
 
 func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
@@ -692,6 +789,8 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		6149:  700.0,
 		4381:  150.0,
 		12662: 900.0,
+		13443: 900.0,
+		13444: 1350.0,
 	}[itemId]
 
 	maxRoll := map[int32]float64{
@@ -700,15 +799,11 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		6149:  900.0,
 		4381:  250.0,
 		12662: 1500.0,
+		13443: 1500.0,
+		13444: 2250.0,
 	}[itemId]
 
-	cdDuration := map[int32]time.Duration{
-		3385:  time.Minute * 2,
-		3827:  time.Minute * 2,
-		6149:  time.Minute * 2,
-		4381:  time.Minute * 5,
-		12662: time.Minute * 2,
-	}[itemId]
+	cdDuration := time.Minute * 2
 
 	actionID := ActionID{ItemID: itemId}
 	manaMetrics := character.NewManaMetrics(actionID)
@@ -739,11 +834,14 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 }
 
 func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	if potionType == proto.Potions_LesserManaPotion || potionType == proto.Potions_ManaPotion || potionType == proto.Potions_GreaterManaPotion {
+	// All potions are mana
+	if potionType != proto.Potions_UnknownPotion {
 		itemId := map[proto.Potions]int32{
-			proto.Potions_LesserManaPotion:  3385,
-			proto.Potions_ManaPotion:        3827,
-			proto.Potions_GreaterManaPotion: 6149,
+			proto.Potions_LesserManaPotion:   3385,
+			proto.Potions_ManaPotion:         3827,
+			proto.Potions_GreaterManaPotion:  6149,
+			proto.Potions_SuperiorManaPotion: 13443,
+			proto.Potions_MajorManaPotion:    13444,
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)

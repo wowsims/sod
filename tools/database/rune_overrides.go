@@ -21,7 +21,6 @@ var UnimplementedRuneOverrides = []int32{
 
 	// Hunter
 	415428, // Catlike Reflexes
-	415413, // Lock and Load
 	415405, // Rapid Killing
 	428726, // Focus Fire
 	415358, // Raptor Fury

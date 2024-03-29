@@ -125,6 +125,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 256.64286
+  tps: 225.19091
+ }
+}
+dps_results: {
+ key: "TestAffliction-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 243.58481
+  tps: 213.42231
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 262.17572

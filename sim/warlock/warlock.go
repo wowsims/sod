@@ -17,25 +17,26 @@ type Warlock struct {
 
 	Pet *WarlockPet
 
-	ChaosBolt    *core.Spell
-	Conflagrate  *core.Spell
-	Corruption   *core.Spell
-	DarkPact     *core.Spell
-	DrainSoul    *core.Spell
-	Haunt        *core.Spell
-	Immolate     *core.Spell
-	Incinerate   *core.Spell
-	LifeTap      *core.Spell
-	SearingPain  *core.Spell
-	ShadowBolt   *core.Spell
-	ShadowCleave *core.Spell
-	Shadowburn   *core.Spell
-	SoulFire     *core.Spell
-	DemonicGrace *core.Spell
-	DrainLife    *core.Spell
-	RainOfFire   *core.Spell
-	SiphonLife   *core.Spell
-	DeathCoil    *core.Spell
+	ChaosBolt          *core.Spell
+	Conflagrate        *core.Spell
+	Corruption         *core.Spell
+	DarkPact           *core.Spell
+	DrainSoul          *core.Spell
+	Haunt              *core.Spell
+	Immolate           []*core.Spell
+	Incinerate         *core.Spell
+	LifeTap            *core.Spell
+	SearingPain        *core.Spell
+	ShadowBolt         *core.Spell
+	ShadowCleave       *core.Spell
+	Shadowburn         *core.Spell
+	SoulFire           *core.Spell
+	DemonicGrace       *core.Spell
+	DrainLife          *core.Spell
+	RainOfFire         *core.Spell
+	SiphonLife         *core.Spell
+	DeathCoil          *core.Spell
+	UnstableAffliction *core.Spell
 
 	CurseOfElements          *core.Spell
 	CurseOfElementsAuras     core.AuraArray
@@ -91,7 +92,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowCleaveSpell()
 	warlock.registerLifeTapSpell()
 	warlock.registerSoulFireSpell()
-	// warlock.registerUnstableAfflictionSpell()
+	warlock.registerUnstableAfflictionSpell()
 	// warlock.registerSeedSpell()
 	// warlock.registerDrainSoulSpell()
 	warlock.registerConflagrateSpell()

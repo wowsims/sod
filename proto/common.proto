@@ -307,6 +307,8 @@ enum Potions {
 	LesserManaPotion = 1;
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
+	SuperiorManaPotion = 4;
+	MajorManaPotion = 5;
 }
 
 enum Conjured {
@@ -316,9 +318,17 @@ enum Conjured {
 	ConjuredRogueThistleTea = 3;
 }
 
+enum AtalAi {
+	AtalAiUnknown = 0;
+	AtalAiWar = 1;
+	AtalAiForbiddenMagic = 2;
+	AtalAiLife = 3;
+}
+
 enum EnchantedSigil {
 	UnknownSigil = 0;
 	InnovationSigil = 1;
+	LivingDreamsSigil = 2;
 }
 
 enum Flask {
@@ -327,6 +337,8 @@ enum Flask {
 	FlaskOfDistilledWisdom = 2;
 	FlaskOfSupremePower = 3;
 	FlaskOfChromaticResistance = 4;
+	FlaskOfRestlessDreams = 5;
+	FlaskOfEverlastingNightmares = 6;
 }
 
 enum Zanza {
@@ -545,7 +557,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 18
+// NextIndex: 19
 message IndividualBuffs {
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
@@ -570,9 +582,10 @@ message IndividualBuffs {
 	bool boon_of_blackfathom = 15;
 	bool ashenvale_pvp_buff = 16;
 	bool spark_of_inspiration = 17;
+	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 25
+// NextIndex: 26
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -598,6 +611,7 @@ message Consumes {
 	int32 pet_scroll_of_agility = 22;
 	int32 pet_scroll_of_strength = 23;
 	bool dragon_breath_chili = 24;
+	AtalAi default_atal_ai = 25;
 }
 
 // NextIndex: 30

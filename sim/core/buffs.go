@@ -369,7 +369,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Strength: 36,
 		},
 		50: stats.Stats{
-			stats.Strength: 61,
+			stats.Strength: 36,
 		},
 		60: stats.Stats{
 			stats.Strength: 77,
@@ -695,6 +695,18 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// SoD World Buffs
+	if individualBuffs.FervorOfTheTempleExplorer {
+		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+		// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
+		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
+		character.AddStat(stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
+		character.MultiplyStat(stats.Strength, 1.08)
+		character.MultiplyStat(stats.Stamina, 1.08)
+		character.MultiplyStat(stats.Agility, 1.08)
+		character.MultiplyStat(stats.Intellect, 1.08)
+		character.MultiplyStat(stats.Spirit, 1.08)
+	}	
+	
 	if individualBuffs.SparkOfInspiration {
 		character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
 		character.AddStat(stats.SpellPower, 42)
@@ -1600,8 +1612,12 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 }
 
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
-	rank := LevelToBuffRank[BattleShout][unit.Level]
-	spellId := BattleShoutSpellId[rank]
+	spellId := map[int32]int32{
+		25: 8162,
+		40: 8163,
+		50: 8835,
+		60: 25362,
+	}[level]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
 
