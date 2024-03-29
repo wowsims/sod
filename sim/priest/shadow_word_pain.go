@@ -90,17 +90,17 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
-			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			curTarget := target
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+				result := spell.CalcAndDealOutcome(sim, curTarget, spell.OutcomeMagicHit)
+				if result.Landed() {
+					spell.SpellMetrics[target.UnitIndex].Hits--
 					priest.AddShadowWeavingStack(sim, curTarget)
 					spell.Dot(curTarget).Apply(sim)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+					spell.DealOutcome(sim, result)
 				}
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
-			spell.DealOutcome(sim, result)
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {

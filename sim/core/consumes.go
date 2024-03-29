@@ -207,6 +207,12 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 				stats.RangedAttackPower: 20,
 				stats.SpellPower:        20,
 			})
+		case proto.EnchantedSigil_LivingDreamsSigil:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       30,
+				stats.RangedAttackPower: 30,
+				stats.SpellPower:        30,
+			})
 		}
 	}
 
@@ -692,6 +698,8 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		6149:  700.0,
 		4381:  150.0,
 		12662: 900.0,
+		13443: 900.0,
+		13444: 1350.0,
 	}[itemId]
 
 	maxRoll := map[int32]float64{
@@ -700,15 +708,11 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		6149:  900.0,
 		4381:  250.0,
 		12662: 1500.0,
+		13443: 1500.0,
+		13444: 2250.0,
 	}[itemId]
 
-	cdDuration := map[int32]time.Duration{
-		3385:  time.Minute * 2,
-		3827:  time.Minute * 2,
-		6149:  time.Minute * 2,
-		4381:  time.Minute * 5,
-		12662: time.Minute * 2,
-	}[itemId]
+	cdDuration := time.Minute * 2
 
 	actionID := ActionID{ItemID: itemId}
 	manaMetrics := character.NewManaMetrics(actionID)
@@ -739,11 +743,14 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 }
 
 func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	if potionType == proto.Potions_LesserManaPotion || potionType == proto.Potions_ManaPotion || potionType == proto.Potions_GreaterManaPotion {
+	// All potions are mana
+	if potionType != proto.Potions_UnknownPotion {
 		itemId := map[proto.Potions]int32{
-			proto.Potions_LesserManaPotion:  3385,
-			proto.Potions_ManaPotion:        3827,
-			proto.Potions_GreaterManaPotion: 6149,
+			proto.Potions_LesserManaPotion:   3385,
+			proto.Potions_ManaPotion:         3827,
+			proto.Potions_GreaterManaPotion:  6149,
+			proto.Potions_SuperiorManaPotion: 13443,
+			proto.Potions_MajorManaPotion:    13444,
 		}[potionType]
 
 		return makeManaConsumableMCD(itemId, character, potionCD)

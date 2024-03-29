@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// https://www.wowhead.com/classic/spell=408507/lava-lash
 func (shaman *Shaman) applyLavaLash() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) || !shaman.AutoAttacks.IsDualWielding {
 		return
@@ -15,7 +16,11 @@ func (shaman *Shaman) applyLavaLash() {
 	cooldown := time.Second * 6
 	manaCost := .01
 
-	imbueMultiplier := core.TernaryFloat64(shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon, 1.5, 1)
+	damageMultiplier := 1.0
+	// When off-hand is imbued with flametongue weapon increases damage by 125%
+	if shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		damageMultiplier += 1.25
+	}
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
@@ -39,7 +44,7 @@ func (shaman *Shaman) applyLavaLash() {
 			},
 		},
 
-		DamageMultiplier: 1.5 * imbueMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
+		DamageMultiplier: damageMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

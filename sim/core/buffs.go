@@ -30,6 +30,7 @@ const (
 	HornOfLordaeron
 	Windfury
 	SanctityAura
+	BattleSquawk
 
 	// Resistance
 	AspectOfTheWild
@@ -368,7 +369,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Strength: 36,
 		},
 		50: stats.Stats{
-			stats.Strength: 61,
+			stats.Strength: 36,
 		},
 		60: stats.Stats{
 			stats.Strength: 77,
@@ -554,6 +555,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.SanctityAura {
 		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
 	}
+	
 	// TODO: Classic
 	if individualBuffs.BlessingOfSanctuary {
 		character.PseudoStats.DamageTakenMultiplier *= 0.97
@@ -618,6 +620,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 			updateStats = updateStats.Multiply(1.25)
 		}
 		character.AddStats(updateStats)
+	}
+
+	if raidBuffs.BattleSquawk > 0 {
+		numBattleSquawks := raidBuffs.BattleSquawk
+		BattleSquawkAura(&character.Unit, numBattleSquawks)
 	}
 
 	// World Buffs
@@ -688,6 +695,18 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// SoD World Buffs
+	if individualBuffs.FervorOfTheTempleExplorer {
+		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+		// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
+		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
+		character.AddStat(stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
+		character.MultiplyStat(stats.Strength, 1.08)
+		character.MultiplyStat(stats.Stamina, 1.08)
+		character.MultiplyStat(stats.Agility, 1.08)
+		character.MultiplyStat(stats.Intellect, 1.08)
+		character.MultiplyStat(stats.Spirit, 1.08)
+	}	
+	
 	if individualBuffs.SparkOfInspiration {
 		character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
 		character.AddStat(stats.SpellPower, 42)
@@ -1593,8 +1612,12 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 }
 
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
-	rank := LevelToBuffRank[BattleShout][unit.Level]
-	spellId := BattleShoutSpellId[rank]
+	spellId := map[int32]int32{
+		25: 8162,
+		40: 8163,
+		50: 8835,
+		60: 25362,
+	}[level]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
 
@@ -1724,6 +1747,30 @@ func CommandingShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePt
 	healthBonusEffect(aura, 2255*(1+0.05*float64(commandingPresencePts)))
 	return aura
 }
+
+func BattleSquawkAura(character *Unit, stackcount int32) *Aura {	
+		aura := character.GetOrRegisterAura(Aura{
+		Label:      "Battle Squawk",
+		ActionID:   ActionID{SpellID: 23060},
+		Duration:   time.Minute * 4,
+		MaxStacks: 5,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, stackcount)
+		},
+		OnStacksChange:	func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+			character.MultiplyMeleeSpeed(sim, math.Pow(1.05,float64(newStacks-oldStacks)))
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, 0)
+		},
+	})
+	return aura
+}
+
 
 func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{

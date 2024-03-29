@@ -60,6 +60,21 @@ var DefaultTargetProtoLvl40 = &proto.Target{
 	DamageSpread:  0.3333,
 }
 
+// TODO: Update
+var DefaultTargetProtoLvl50 = &proto.Target{
+	Level: 52,
+	Stats: stats.Stats{
+		stats.Armor:       1104,
+		stats.AttackPower: 320,
+	}.ToFloatArray(),
+	MobType: proto.MobType_MobTypeDemon,
+
+	SwingSpeed:    2,
+	MinBaseDamage: 4192.05,
+	ParryHaste:    true,
+	DamageSpread:  0.3333,
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Raid Buffs
 ///////////////////////////////////////////////////////////////////////////
@@ -102,6 +117,32 @@ var FullRaidBuffsPhase2 = &proto.RaidBuffs{
 	SanctityAura:          true,
 }
 
+var FullRaidBuffsPhase3 = &proto.RaidBuffs{
+	ArcaneBrilliance:      true,
+	AspectOfTheLion:       true,
+	BattleShout:           proto.TristateEffect_TristateEffectImproved,
+	BloodPact:             proto.TristateEffect_TristateEffectImproved,
+	DevotionAura:          proto.TristateEffect_TristateEffectImproved,
+	DivineSpirit:          true,
+	FireResistanceAura:    true,
+	FireResistanceTotem:   true,
+	FrostResistanceAura:   true,
+	FrostResistanceTotem:  true,
+	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
+	GraceOfAirTotem:       proto.TristateEffect_TristateEffectImproved,
+	LeaderOfThePack:       true,
+	ManaSpringTotem:       proto.TristateEffect_TristateEffectImproved,
+	MoonkinAura:           true,
+	NatureResistanceTotem: true,
+	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
+	RetributionAura:       proto.TristateEffect_TristateEffectImproved,
+	ShadowProtection:      true,
+	StrengthOfEarthTotem:  proto.TristateEffect_TristateEffectImproved,
+	Thorns:                proto.TristateEffect_TristateEffectImproved,
+	TrueshotAura:          true,
+	SanctityAura:          true,
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Party Buffs
 ///////////////////////////////////////////////////////////////////////////
@@ -128,6 +169,14 @@ var FullIndividualBuffsPhase2 = &proto.IndividualBuffs{
 	BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 	SaygesFortune:       proto.SaygesFortune_SaygesDamage,
 	SparkOfInspiration:  true,
+}
+
+var FullIndividualBuffsPhase3 = &proto.IndividualBuffs{
+	BlessingOfKings:     true,
+	BlessingOfMight:     proto.TristateEffect_TristateEffectImproved,
+	BlessingOfSanctuary: true,
+	BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
+	SaygesFortune:       proto.SaygesFortune_SaygesDamage,
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -174,6 +223,29 @@ var FullDebuffsPhase2 = &proto.Debuffs{
 	WintersChill:         true,
 }
 
+var FullDebuffsPhase3 = &proto.Debuffs{
+	CurseOfElements:      true,
+	CurseOfRecklessness:  true,
+	CurseOfVulnerability: true,
+	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
+	DemoralizingRoar:     proto.TristateEffect_TristateEffectImproved,
+	DemoralizingShout:    proto.TristateEffect_TristateEffectImproved,
+	Dreamstate:           true,
+	ExposeArmor:          proto.TristateEffect_TristateEffectImproved,
+	FaerieFire:           true,
+	InsectSwarm:          true,
+	ImprovedScorch:       true,
+	ImprovedShadowBolt:   true,
+	JudgementOfLight:     true,
+	JudgementOfWisdom:    true,
+	ScorpidSting:         true,
+	ShadowWeaving:        true,
+	Stormstrike:          true,
+	SunderArmor:          true,
+	ThunderClap:          proto.TristateEffect_TristateEffectImproved,
+	WintersChill:         true,
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Full Buffs
 ///////////////////////////////////////////////////////////////////////////
@@ -196,10 +268,21 @@ var FullBuffsPhase2 = BuffsCombo{
 	Raid:    FullRaidBuffsPhase2,
 }
 
+var FullBuffsPhase3 = BuffsCombo{
+	Label: "Phase 3 Buffs",
+
+	Debuffs: FullDebuffsPhase3,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase3,
+	Raid:    FullRaidBuffsPhase3,
+}
+
 func NewDefaultTarget(playerLevel int32) *proto.Target {
 	switch playerLevel {
 	case 40:
 		return DefaultTargetProtoLvl40
+	case 50:
+		return DefaultTargetProtoLvl50
 	default:
 		return DefaultTargetProtoLvl25
 	}

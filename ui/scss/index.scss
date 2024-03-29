@@ -1,6 +1,7 @@
 // Bootstrap functions & variables
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
 
 // Custom Bootstrap variable overrides
 @import 'shared/variables';
@@ -24,6 +25,7 @@
 @import 'bootstrap/scss/navbar';
 @import 'bootstrap/scss/badge';
 @import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/close';
 @import 'bootstrap/scss/modal';
 @import 'bootstrap/scss/tooltip';
 @import 'bootstrap/scss/popover';

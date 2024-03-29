@@ -28,10 +28,10 @@ import {
 // apls
 // P1
 import DestroP1APL from './apls/p1/destruction.apl.json';
+// P2
 import AfflictionAPL from './apls/p2/affliction.apl.json';
 import DemonologyAPL from './apls/p2/demonology.apl.json';
 import DestroConflagAPL from './apls/p2/fire.conflag.apl.json';
-// P2
 import DestroMgiAPL from './apls/p2/fire.imp.apl.json';
 // gear
 // P1
@@ -54,8 +54,12 @@ export const ShadowGearPhase2 = PresetUtils.makePresetGear('P2 Shadow', ShadowGe
 export const GearPresets = {
 	[Phase.Phase1]: [GearDestructionPhase1],
 	[Phase.Phase2]: [FireImpGearPhase2, FireSuccubusGearPhase2, ShadowGearPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = FireImpGearPhase2;
 
 ///////////////////////////////////////////////////////////////////////////
@@ -78,6 +82,9 @@ export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Af
 export const APLPresets = {
 	[Phase.Phase1]: [RotationDestructionPhase1],
 	[Phase.Phase2]: [DestroMgiRotationPhase2, DestroConflagRotationPhase2, DemonologyRotationPhase2, AfflictionRotationPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -136,8 +143,12 @@ export const AfflictionTalentsPhase2 = {
 export const TalentPresets = {
 	[Phase.Phase1]: [DestroP1Talents],
 	[Phase.Phase2]: [DestroMgiTalentsPhase2, DestroConflagTalentsPhase2, DemonologyTalentsPhase2, AfflictionTalentsPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultTalents = DestroMgiTalentsPhase2;
 
 ///////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -40,27 +41,12 @@ type APLActionCancelAura struct {
 	aura *Aura
 }
 
-type APLActionActivateAura struct {
-	defaultAPLActionImpl
-	aura *Aura
-}
-
 func (rot *APLRotation) newActionCancelAura(config *proto.APLActionCancelAura) APLActionImpl {
 	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
 	if aura.Get() == nil {
 		return nil
 	}
 	return &APLActionCancelAura{
-		aura: aura.Get(),
-	}
-}
-
-func (rot *APLRotation) newActionActivateAura(config *proto.APLActionActivateAura) APLActionImpl {
-	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
-	if aura.Get() == nil {
-		return nil
-	}
-	return &APLActionActivateAura{
 		aura: aura.Get(),
 	}
 }
@@ -78,6 +64,21 @@ func (action *APLActionCancelAura) String() string {
 	return fmt.Sprintf("Cancel Aura(%s)", action.aura.ActionID)
 }
 
+type APLActionActivateAura struct {
+	defaultAPLActionImpl
+	aura *Aura
+}
+
+func (rot *APLRotation) newActionActivateAura(config *proto.APLActionActivateAura) APLActionImpl {
+	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
+	if aura.Get() == nil {
+		return nil
+	}
+	return &APLActionActivateAura{
+		aura: aura.Get(),
+	}
+}
+
 func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
 	return true
 }
@@ -91,6 +92,49 @@ func (action *APLActionActivateAura) Execute(sim *Simulation) {
 
 func (action *APLActionActivateAura) String() string {
 	return fmt.Sprintf("Activate Aura(%s)", action.aura.ActionID)
+}
+
+type APLActionActivateAuraWithStacks struct {
+	defaultAPLActionImpl
+	aura      *Aura
+	numStacks int32
+}
+
+func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionActivateAuraWithStacks) APLActionImpl {
+	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
+	if aura.Get() == nil {
+		return nil
+	}
+	if aura.Get().MaxStacks == 0 {
+		rot.ValidationWarning("%s is not a stackable aura", ProtoToActionID(config.AuraId))
+		return nil
+	}
+
+	numStacks, err := strconv.Atoi(config.NumStacks)
+	if err != nil {
+		numStacks = 0
+	}
+
+	return &APLActionActivateAuraWithStacks{
+		aura:      aura.Get(),
+		numStacks: int32(numStacks),
+	}
+}
+
+func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
+	return true
+}
+
+func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
+	}
+	action.aura.Activate(sim)
+	action.aura.SetStacks(sim, action.numStacks)
+}
+
+func (action *APLActionActivateAuraWithStacks) String() string {
+	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
 }
 
 type APLActionTriggerICD struct {

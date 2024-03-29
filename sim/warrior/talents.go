@@ -341,7 +341,7 @@ func (warrior *Warrior) registerLastStandCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance)
+			return warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

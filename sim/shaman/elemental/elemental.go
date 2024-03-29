@@ -30,23 +30,16 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 		Shield: eleOptions.Options.Shield,
 	}
 
-	totems := &proto.ShamanTotems{}
-	if eleOptions.Options.Totems != nil {
-		totems = eleOptions.Options.Totems
-		totems.UseFireMcd = true // Control fire totems as MCD.
-	}
-
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs),
 	}
 
-	// if mh := ele.GetMHWeapon(); mh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(mh, false)
-	// }
-
-	// if oh := ele.GetOHWeapon(); oh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(oh, false)
-	// }
+	// Enable Auto Attacks for this spec
+	ele.EnableAutoAttacks(ele, core.AutoAttackOptions{
+		MainHand:       ele.WeaponFromMainHand(),
+		OffHand:        ele.WeaponFromOffHand(),
+		AutoSwingMelee: true,
+	})
 
 	return ele
 }

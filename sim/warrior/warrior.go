@@ -33,14 +33,17 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance               Stance
-	revengeProcAura      *core.Aura
-	OverpowerAura        *core.Aura
-	BerserkerRageAura    *core.Aura
-	BloodrageAura        *core.Aura
-	ConsumedByRageAura   *core.Aura
-	Above80RageCBRActive bool
-	BloodSurgeAura       *core.Aura
+	Stance                 Stance
+	revengeProcAura        *core.Aura
+	OverpowerAura          *core.Aura
+	BerserkerRageAura      *core.Aura
+	BloodrageAura          *core.Aura
+	ConsumedByRageAura     *core.Aura
+	Above80RageCBRActive   bool
+	BloodSurgeAura         *core.Aura
+	RampageAura            *core.Aura
+	rampageValidAura       *core.Aura
+	WreckingCrewEnrageAura *core.Aura
 
 	// Rune passive
 	FocusedRageDiscount float64
@@ -55,6 +58,7 @@ type Warrior struct {
 	BattleStance    *core.Spell
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
+	GladiatorStance *core.Spell
 
 	Bloodrage            *core.Spell
 	BerserkerRage        *core.Spell
@@ -77,6 +81,7 @@ type Warrior struct {
 	ConcussionBlow       *core.Spell
 	RagingBlow           *core.Spell
 	Hamstring            *core.Spell
+	Rampage              *core.Spell
 
 	HeroicStrike       *core.Spell
 	QuickStrike        *core.Spell
@@ -87,6 +92,7 @@ type Warrior struct {
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
+	GladiatorStanceAura *core.Aura
 
 	ShieldBlockAura *core.Aura
 

@@ -15,7 +15,7 @@ import {
 	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
-	WeaponImbue
+	WeaponImbue,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import {
@@ -24,13 +24,18 @@ import {
 	WarlockOptions_Summon as Summon,
 	WarlockOptions_WeaponImbue as WarlockWeaponImbue,
 } from '../core/proto/warlock.js';
-///////////////////////////////////////////////////////////////////////////
-//                                 Gear Presets
-///////////////////////////////////////////////////////////////////////////
+import Phase1AfflictionAPL from './apls/p1.affi.tank.apl.json';
+import Phase1DestroTankAPL from './apls/p1.destro.tank.apl.json';
+import Phase2DemonologyAPL from './apls/p2.demo.tank.apl.json';
+import Phase2DestroTankAPL from './apls/p2.destro.tank.apl.json';
 import AfflictionGearPhase1 from './gear_sets/p1.affi.tank.gear.json';
 import DestructionGearPhase1 from './gear_sets/p1.destro.tank.gear.json';
 import DemonologyGearPhase2 from './gear_sets/p2.demo.tank.gear.json';
 import DestructionGearPhase2 from './gear_sets/p2.destro.tank.gear.json';
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Gear Presets
+///////////////////////////////////////////////////////////////////////////
 
 export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Affliction', AfflictionGearPhase1);
 export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destruction', DestructionGearPhase1);
@@ -39,28 +44,19 @@ export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demonolog
 export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destruction', DestructionGearPhase2);
 
 export const GearPresets = {
-  	[Phase.Phase1]: [
-    	GearAfflictionTankPhase1,
-		GearDestructionTankPhase1,
-  	],
-	[Phase.Phase2]: [
-		GearDemonologyTankPhase2,
-		GearDestructionTankPhase2,
-  	]
+	[Phase.Phase1]: [GearAfflictionTankPhase1, GearDestructionTankPhase1],
+	[Phase.Phase2]: [GearDemonologyTankPhase2, GearDestructionTankPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
+// TODO: Phase 3
 export const DefaultGear = GearDemonologyTankPhase2;
-
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
-
-import Phase1AfflictionAPL from './apls/p1.affi.tank.apl.json';
-import Phase1DestroTankAPL from './apls/p1.destro.tank.apl.json';
-import Phase2DemonologyAPL from './apls/p2.demo.tank.apl.json';
-import Phase2DestroTankAPL from './apls/p2.destro.tank.apl.json';
 
 export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Affliction', Phase1AfflictionAPL);
 export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Destruction', Phase1DestroTankAPL);
@@ -68,28 +64,25 @@ export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 De
 export const APLDemonologyTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', Phase2DemonologyAPL);
 export const APLDestructionTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Destruction', Phase2DestroTankAPL);
 
-
 export const APLPresets = {
-  	[Phase.Phase1]: [
-    	APLAfflictionTankPhase1,
-		APLDestructionTankPhase1,
-  	],
-  	[Phase.Phase2]: [
-		APLDemonologyTankPhase2,
-		APLDestructionTankPhase2
-  	]
+	[Phase.Phase1]: [APLAfflictionTankPhase1, APLDestructionTankPhase1],
+	[Phase.Phase2]: [APLDemonologyTankPhase2, APLDestructionTankPhase2],
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
-  	25: {
+	25: {
 		0: APLPresets[Phase.Phase1][0],
 		1: APLPresets[Phase.Phase1][1],
 	},
-  	40: {
+	40: {
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][1],
-	}
+	},
+	// TODO: Phase 3
+	50: {
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][1],
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -128,17 +121,14 @@ export const TalentsDestructionTankPhase2 = {
 };
 
 export const TalentPresets = {
-  	[Phase.Phase1]: [
-    	TalentsAfflictionTankPhase1,
-		TalentsDestructionTankPhase1,
-  	],
-  	[Phase.Phase2]: [
-		TalentsDemonologyTankPhase2,
-		TalentsDestructionTankPhase2
-  	]
+	[Phase.Phase1]: [TalentsAfflictionTankPhase1, TalentsDestructionTankPhase1],
+	[Phase.Phase2]: [TalentsDemonologyTankPhase2, TalentsDestructionTankPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-
+// TODO: Phase 3
 export const DefaultTalents = TalentsDemonologyTankPhase2;
 
 ///////////////////////////////////////////////////////////////////////////

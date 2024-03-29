@@ -124,7 +124,15 @@ export const EnchantedSigilInnovation: ConsumableInputConfig<EnchantedSigil> = {
 	value: EnchantedSigil.InnovationSigil,
 };
 
-export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [{ config: EnchantedSigilInnovation, stats: [] }];
+export const EnchantedSigilLivingDreams: ConsumableInputConfig<EnchantedSigil> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 221028, minLevel: 50 }]),
+	value: EnchantedSigil.LivingDreamsSigil,
+};
+
+export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+	{ config: EnchantedSigilLivingDreams, stats: [] },
+	{ config: EnchantedSigilInnovation, stats: [] },
+];
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({
 	consumesFieldName: 'enchantedSigil',
@@ -330,7 +338,7 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 };
 
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
-	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility] },
+	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility, Stat.StatMeleeCrit] },
 	{ config: ElixirOfGreaterAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, stats: [Stat.StatAgility] },
@@ -341,7 +349,7 @@ export const makeAgilityConsumeInput = makeConsumeInputFactory({ consumesFieldNa
 
 // Strength
 export const JujuPower: ConsumableInputConfig<StrengthBuff> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 12451, minLevel: 46 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 12451, minLevel: 55 }]),
 	value: StrengthBuff.JujuPower,
 };
 export const ElixirOfGiants: ConsumableInputConfig<StrengthBuff> = {
@@ -419,8 +427,18 @@ export const GreaterManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 6149, minLevel: 31 }]),
 	value: Potions.GreaterManaPotion,
 };
+export const SuperiorManaPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 13443, minLevel: 41 }]),
+	value: Potions.SuperiorManaPotion,
+};
+export const MajorManaPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 13444, minLevel: 49 }]),
+	value: Potions.MajorManaPotion,
+};
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
+	{ config: MajorManaPotion, stats: [Stat.StatIntellect] },
+	{ config: SuperiorManaPotion, stats: [Stat.StatIntellect] },
 	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, stats: [Stat.StatIntellect] },
 	{ config: LesserManaPotion, stats: [Stat.StatIntellect] },

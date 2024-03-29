@@ -1,16 +1,6 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
-import {
-	AgilityElixir,
-	Consumes,
-	Debuffs,
-	IndividualBuffs,
-	Profession,
-	RaidBuffs,
-	StrengthBuff,
-	TristateEffect,
-	WeaponImbue,
-} from '../core/proto/common.js';
+import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuffs, StrengthBuff, TristateEffect, WeaponImbue } from '../core/proto/common.js';
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import MutilateApl from './apls/mutilate.apl.json';
@@ -35,16 +25,15 @@ export const GearDaggersP2 = PresetUtils.makePresetGear('P2 Daggers', P2DaggersG
 export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
 
 export const GearPresets = {
-    [Phase.Phase1]: [
-        GearDaggersP1,
-		GearCombatP1,
-    ],
-    [Phase.Phase2]: [
-        GearDaggersP2,
-    ]
+	[Phase.Phase1]: [GearDaggersP1, GearCombatP1],
+	[Phase.Phase2]: [GearDaggersP2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[CURRENT_PHASE][0]
+// TODO: Phase 3
+export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -54,26 +43,30 @@ export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutil
 export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, {});
 
 export const APLPresets = {
-    [Phase.Phase1]: [
-        ROTATION_PRESET_MUTILATE,
-    ],
-    [Phase.Phase2]: [
-        ROTATION_PRESET_MUTILATE,
-        ROTATION_PRESET_MUTILATE_IEA,
-    ]
+	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
+	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
-    25: {
+	25: {
 		0: APLPresets[Phase.Phase1][0],
 		1: APLPresets[Phase.Phase1][0],
-        2: APLPresets[Phase.Phase1][0],
-    },
-    40: {
+		2: APLPresets[Phase.Phase1][0],
+	},
+	40: {
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][0],
 		2: APLPresets[Phase.Phase2][0],
-	}
+	},
+	// TODO: Phase 3
+	50: {
+		0: APLPresets[Phase.Phase2][0],
+		1: APLPresets[Phase.Phase2][0],
+		2: APLPresets[Phase.Phase2][0],
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -102,19 +95,16 @@ export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF M
 });
 
 export const TalentPresets = {
-	[Phase.Phase1]: [
-		CombatDagger25Talents,
-	],
-	[Phase.Phase2]: [
-		ColdBloodMutilate40Talents,
-		IEAMutilate40Talents,
-		CombatMutilate40Talents,
-	]
+	[Phase.Phase1]: [CombatDagger25Talents],
+	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
+// TODO: Phase 3
 export const DefaultTalentsAssassin = TalentPresets[Phase.Phase2][0];
-export const DefaultTalentsCombat 	= TalentPresets[Phase.Phase2][2];
+export const DefaultTalentsCombat = TalentPresets[Phase.Phase2][2];
 export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][0];
 
 export const DefaultTalents = DefaultTalentsCombat;
@@ -128,7 +118,6 @@ export const DefaultOptions = RogueOptions.create({});
 ///////////////////////////////////////////////////////////////////////////
 //                         Consumes/Buffs/Debuffs
 ///////////////////////////////////////////////////////////////////////////
-
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfAgility,
@@ -158,6 +147,6 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-  	profession1: Profession.Engineering,
-  	profession2: Profession.Leatherworking,
-}
+	profession1: Profession.Engineering,
+	profession2: Profession.Leatherworking,
+};

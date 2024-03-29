@@ -38,7 +38,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.PseudoStats.CanBlock && warrior.StanceMatches(DefensiveStance)
+			return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

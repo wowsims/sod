@@ -40,8 +40,12 @@ export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSo
 export const GearPresets = {
 	[Phase.Phase1]: [Phase1RetGear],
 	[Phase.Phase2]: [Phase2RetSoCGear, Phase2RetSoMGear],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
@@ -54,9 +58,11 @@ export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', AP
 export const APLPresets = {
 	[Phase.Phase1]: [APLP1Ret],
 	[Phase.Phase2]: [APLP2Ret],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
@@ -95,8 +101,12 @@ export const P2ShockadinTalents = {
 export const TalentPresets = {
 	[Phase.Phase1]: [P1RetTalents],
 	[Phase.Phase2]: [P2RetTalents, P2ShockadinTalents],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
+// TODO: Phase 3
 export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////

@@ -270,6 +270,15 @@ export const TrueshotAuraBuff = withLabel(
 	'Trueshot Aura',
 );
 
+export const BattleSquawkBuff = withLabel(
+	makeMultistateRaidBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 23060, minLevel: 40 }]),
+		numStates: 6,
+		fieldName: 'battleSquawk',
+	}),
+	'Battle Squawk',
+);
+
 // export const AttackPowerPercentBuff = InputHelpers.makeMultiIconInput([
 // ], 'Attack Power %', 1, 40);
 
@@ -568,6 +577,14 @@ export const SparkOfInspiration = withLabel(
 		fieldName: 'sparkOfInspiration',
 	}),
 	'Spark of Inspiration',
+);
+
+export const FervorOfTheTempleExplorer = withLabel(
+	makeBooleanIndividualBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 446695, maxLevel: 59 }]),
+		fieldName: 'fervorOfTheTempleExplorer',
+	}),
+	'Fervor Of The Temple Explorer',
 );
 
 ///////////////////////////////////////////////////////////////////////////
@@ -979,9 +996,19 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatMP5, Stat.StatSpellPower],
 	},
+	{
+		config: BattleSquawkBuff,
+		picker: IconPicker,
+		stats: [Stat.StatMeleeHaste],
+	},
 ] as PickerStatOptions[];
 
 export const WORLD_BUFFS_CONFIG = [
+	{
+		config: FervorOfTheTempleExplorer,
+		picker: IconPicker,
+		stats: [Stat.StatSpellPower, Stat.StatAttackPower],
+	},
 	{
 		config: SparkOfInspiration,
 		picker: IconPicker,

@@ -42,6 +42,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	manaCost := FlameShockManaCost[rank]
 	level := FlameShockLevel[rank]
 
+	numHits := core.TernaryInt32(shaman.HasRune(proto.ShamanRune_RuneHelmBurn), 3, 1)
+
 	if shaman.Ranged().ID == TotemInvigoratingFlame {
 		manaCost -= 10
 	}
@@ -58,24 +60,6 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.Rank = rank
 
 	spell.Cast.IgnoreHaste = true
-
-	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := baseDamage + baseSpellCoeff*spell.SpellDamage()
-		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-		if result.Landed() {
-			spell.Dot(target).NumberOfTicks = int32(numTicks)
-			spell.Dot(target).Apply(sim)
-
-			if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
-				shaman.lastFlameShockTarget = target
-			}
-
-			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
-				shaman.PowerSurgeAura.Activate(sim)
-			}
-		}
-		spell.DealDamage(sim, result)
-	}
 
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
@@ -117,6 +101,26 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 				shaman.PowerSurgeAura.Activate(sim)
 			}
 		},
+	}
+
+	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		curTarget := target
+		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			baseDamage := baseDamage + baseSpellCoeff*spell.SpellDamage()
+			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				spell.Dot(curTarget).Apply(sim)
+
+				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
+					shaman.lastFlameShockTarget = target
+				}
+
+				if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+					shaman.PowerSurgeAura.Activate(sim)
+				}
+			}
+			curTarget = sim.Environment.NextTargetUnit(curTarget)
+		}
 	}
 
 	return spell

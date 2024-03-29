@@ -106,10 +106,7 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.Flags.Matches(core.SpellFlagPoison) {
-				return
-			}
-			if spell == rogue.DeadlyPoison[DeadlyBrewProc] {
+			if !result.Landed() || !spell.Flags.Matches(SpellFlagDeadlyBrewed) {
 				return
 			}
 			rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)
@@ -220,7 +217,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
+		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
@@ -325,7 +322,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -342,6 +339,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: rogue.deadlyPoisonTick.SpellID, Tag: int32(procSource)},
+		Flags:    core.Ternary(procSource == DeadlyBrewProc, core.SpellFlagNone, SpellFlagDeadlyBrewed),
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
@@ -371,7 +369,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       core.SpellFlagPoison,
+		Flags:       core.SpellFlagPoison | SpellFlagDeadlyBrewed,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
