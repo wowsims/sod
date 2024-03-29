@@ -12,9 +12,10 @@ func init() {
 	core.AddEffectsToTest = false
 
 	// Weapon - Fiery Blaze
-	// TODO: Handle on a per-weapon basis?
 	core.NewEnchantEffect(36, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForEnchant(36)
 		procChance := 0.15
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
@@ -42,7 +43,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
+				if !result.Landed() || !spell.ProcMask.Matches(procMask) {
 					return
 				}
 
@@ -98,7 +99,7 @@ func init() {
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 13898},
+			ActionID:    core.ActionID{SpellID: 13897},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
@@ -175,16 +176,8 @@ func init() {
 	core.NewEnchantEffect(931, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Enchant Gloves - Minor Haste",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.01)
-			},
-		})
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	// Weapon - Striking
@@ -246,25 +239,8 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
 	})
 
-	// Weapon - Winter's Might
-	core.NewEnchantEffect(2443, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		bonus := 0.0
-
-		if character.HasMHWeapon() && character.GetMHWeapon().Enchant.EffectID == 2443 {
-			bonus += 7.0
-		}
-
-		if character.HasOHWeapon() && character.GetOHWeapon().Enchant.EffectID == 2443 {
-			bonus += 7.0
-		}
-
-		character.AddStat(stats.FrostPower, bonus)
-	})
-
 	// Gloves - Threat
-	// core.NewEnchantEffect(2613, func(agent core.Agent) {
+	// core.NewEnchantEffect(931, func(agent core.Agent) {
 	// 	character := agent.GetCharacter()
 	// 	character.PseudoStats.ThreatMultiplier *= 1.02
 	// })
@@ -303,11 +279,11 @@ func init() {
 		w.BaseDamageMax += 7
 	})
 
-	// Sniper Scope
-	// core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
-	// character := agent.GetCharacter()
-	// TODO: Add ranged hit +3
-	// })
+	// Biznicks 247x128 Accurascope
+	core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
+		character := agent.GetCharacter()
+		character.AddBonusRangedHitRating(3)
+	})
 
 	core.AddEffectsToTest = true
 }
