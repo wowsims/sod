@@ -290,7 +290,7 @@ func ApplyAtalAiProc(character *Character, atalAi proto.AtalAi) {
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				dmg := sim.Roll(204, 236) + 0.56*spell.SpellDamage()
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
 			},
 		})
 
