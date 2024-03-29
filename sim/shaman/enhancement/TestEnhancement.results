@@ -267,8 +267,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 153.74143
-  tps: 142.90368
+  dps: 155.84839
+  tps: 144.94855
  }
 }
 dps_results: {
@@ -547,8 +547,13 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
+<<<<<<< Updated upstream
   dps: 609.55114
   tps: 636.33402
+=======
+  dps: 618.95718
+  tps: 646.16693
+>>>>>>> Stashed changes
  }
 }
 dps_results: {

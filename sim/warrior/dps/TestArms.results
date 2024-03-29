@@ -176,8 +176,13 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
+<<<<<<< Updated upstream
   dps: 586.12552
   tps: 508.39495
+=======
+  dps: 596.00152
+  tps: 516.62049
+>>>>>>> Stashed changes
  }
 }
 dps_results: {
