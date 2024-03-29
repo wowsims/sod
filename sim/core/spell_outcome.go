@@ -543,7 +543,8 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 	}
 
 	dodgeChance := attackTable.BaseDodgeChance +
-		result.Target.GetStat(stats.Dodge)
+		result.Target.GetStat(stats.Dodge)/100 +
+		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
 	*chance += max(0, dodgeChance)
 
 	if roll < *chance {
@@ -561,7 +562,8 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 	}
 
 	parryChance := attackTable.BaseParryChance +
-		result.Target.GetStat(stats.Parry)
+		result.Target.GetStat(stats.Parry)/100 +
+		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
 	*chance += max(0, parryChance)
 
 	if roll < *chance {
@@ -575,7 +577,7 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 
 func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTable, roll float64, chance *float64) bool {
 	// "Base Melee Crit" is set as part of AttackTable
-	critChance := at.BaseCritChance + (spell.BonusCritRating)/100
+	critChance := at.BaseCritChance + spell.BonusCritRating/100
 	// Crit reduction from bonus Defense of target (Talent, Gear, etc)
 	critChance -= result.Target.stats[stats.Defense] * DefenseRatingToChanceReduction
 	// Crit chance reduction (Rune: Just a Flesh Wound, etc)

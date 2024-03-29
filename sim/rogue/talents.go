@@ -15,11 +15,11 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.applyWeaponExpertise()
 	rogue.applyInitiative()
 
-	rogue.AddStat(stats.Dodge, 0.01*float64(rogue.Talents.LightningReflexes))
-	rogue.AddStat(stats.Parry, 0.01*float64(rogue.Talents.Deflection))
-	rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(rogue.Talents.Malice))
-	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
-	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
+	rogue.AddStat(stats.Dodge, 1*float64(rogue.Talents.LightningReflexes))
+	rogue.AddStat(stats.Parry, 1*float64(rogue.Talents.Deflection))
+	rogue.AddStat(stats.MeleeCrit, 1*float64(rogue.Talents.Malice))
+	rogue.AddStat(stats.MeleeHit, 1*float64(rogue.Talents.Precision))
+	rogue.AddStat(stats.SpellHit, 1*float64(rogue.Talents.Precision))
 	// TODO: Test the Armor reduction amount
 	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()

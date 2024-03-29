@@ -157,13 +157,10 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.PseudoStats.CanParry = true
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(warrior.Level)]*core.CritRatingPerCritChance)
-	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int32(warrior.Level)])
+	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(warrior.Level)])
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .05) // 20 str = 1 block
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
-	// warrior.AddStat(stats.Dodge, 0.03664)
-	// warrior.AddStat(stats.Parry, 0.05)
 
 	return warrior
 }

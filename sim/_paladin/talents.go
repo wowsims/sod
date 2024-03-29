@@ -21,8 +21,8 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
 	paladin.AddStat(stats.SpellCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
 
-	paladin.AddStat(stats.Parry, 0.01*float64(paladin.Talents.Deflection))
-	paladin.AddStat(stats.Dodge, 0.01*float64(paladin.Talents.Anticipation))
+	paladin.AddStat(stats.Parry, 1*float64(paladin.Talents.Deflection))
+	paladin.AddStat(stats.Dodge, 1*float64(paladin.Talents.Anticipation))
 
 	paladin.ApplyEquipScaling(stats.Armor, paladin.ToughnessArmorMultiplier())
 
