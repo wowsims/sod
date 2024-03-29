@@ -68,10 +68,8 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				for _, id := range FlameShockSpellId {
-					if id == spell.SpellID {
-						procAura.Activate(sim)
-					}
+				if spell.SpellCode == SpellCode_ShamanFlameShock {
+					procAura.Activate(sim)
 				}
 			},
 		})
