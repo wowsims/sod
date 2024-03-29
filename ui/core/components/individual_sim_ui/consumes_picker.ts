@@ -223,7 +223,7 @@ export class ConsumesPicker extends Component {
 		const enchConsumesElem = this.rootElem.querySelector('.consumes-ench') as HTMLElement;
 
 		const enchantedSigilOptions = ConsumablesInputs.makeEncanthedSigilInput(
-			relevantStatOptions(ConsumablesInputs.ENCHANTEDSIGILCONFIG, this.simUI),
+			relevantStatOptions(ConsumablesInputs.ENCHANTED_SIGIL_CONFIG, this.simUI),
 			'Enchanted Sigils',
 		);
 		const enchantedSigilpicker = buildIconInput(enchConsumesElem, this.simUI.player, enchantedSigilOptions);

@@ -330,6 +330,8 @@ enum Flask {
 	FlaskOfDistilledWisdom = 2;
 	FlaskOfSupremePower = 3;
 	FlaskOfChromaticResistance = 4;
+	FlaskOfRestlessDreams = 5;
+	FlaskOfEverlastingNightmares = 6;
 }
 
 enum Zanza {

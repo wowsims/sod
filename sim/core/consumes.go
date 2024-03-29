@@ -38,6 +38,18 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 				stats.NatureResistance: 25,
 				stats.ShadowResistance: 25,
 			})
+		case proto.Flask_FlaskOfRestlessDreams:
+			character.AddStats(stats.Stats{
+				// +30 Spell Damage, +45 Healing Power, +12 MP5
+				stats.SpellPower:   30,
+				stats.HealingPower: 15,
+				stats.MP5:          12,
+			})
+		case proto.Flask_FlaskOfEverlastingNightmares:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       45,
+				stats.RangedAttackPower: 45,
+			})
 		}
 	}
 

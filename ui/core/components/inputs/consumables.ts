@@ -129,7 +129,7 @@ export const EnchantedSigilLivingDreams: ConsumableInputConfig<EnchantedSigil> =
 	value: EnchantedSigil.LivingDreamsSigil,
 };
 
-export const ENCHANTEDSIGILCONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+export const ENCHANTED_SIGIL_CONFIG: ConsumableStatOption<EnchantedSigil>[] = [
 	{ config: EnchantedSigilLivingDreams, stats: [] },
 	{ config: EnchantedSigilInnovation, stats: [] },
 ];
@@ -218,12 +218,25 @@ export const FlaskOfChromaticResistance: ConsumableInputConfig<Flask> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13513, minLevel: 50 }]),
 	value: Flask.FlaskOfChromaticResistance,
 };
+export const FlaskOfRestlessDreams: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 222952, minLevel: 50 }]),
+	value: Flask.FlaskOfRestlessDreams,
+	showWhen: player => player.hasProfession(Profession.Alchemy),
+};
+export const FlaskOfEverlastingNightmares: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 221024, minLevel: 50 }]),
+	value: Flask.FlaskOfEverlastingNightmares,
+	showWhen: player => player.hasProfession(Profession.Alchemy),
+};
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
-	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
-	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
+	// Not obtainable until phase 4
+	// { config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
+	// { config: FlaskOfDistilledWisdom, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	// { config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	// { config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
+	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
+	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
 ];
 
 export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'flask' });
