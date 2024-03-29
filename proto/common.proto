@@ -318,6 +318,13 @@ enum Conjured {
 	ConjuredRogueThistleTea = 3;
 }
 
+enum AtalAi {
+	AtalAiUnknown = 0;
+	AtalAiWar = 1;
+	AtalAiForbiddenMagic = 2;
+	AtalAiLife = 3;
+}
+
 enum EnchantedSigil {
 	UnknownSigil = 0;
 	InnovationSigil = 1;
@@ -330,6 +337,8 @@ enum Flask {
 	FlaskOfDistilledWisdom = 2;
 	FlaskOfSupremePower = 3;
 	FlaskOfChromaticResistance = 4;
+	FlaskOfRestlessDreams = 5;
+	FlaskOfEverlastingNightmares = 6;
 }
 
 enum Zanza {
@@ -576,7 +585,7 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 25
+// NextIndex: 26
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -602,6 +611,7 @@ message Consumes {
 	int32 pet_scroll_of_agility = 22;
 	int32 pet_scroll_of_strength = 23;
 	bool dragon_breath_chili = 24;
+	AtalAi default_atal_ai = 25;
 }
 
 // NextIndex: 30
