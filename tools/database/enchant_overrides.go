@@ -43,6 +43,10 @@ var EnchantOverrides = []*proto.UIEnchant{
 	// {EffectId: 3795, ItemId: 44069, SpellId: 59777, Name: "Arcanum of Triumph", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50, stats.Resilience: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 
 	// Shoulder
+	// SoD Phase 3 Enchants
+	{EffectId: 7328, ItemId: 221321, SpellId: 446451, Name: "Atal'ai Signet of Might", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 7325, ItemId: 221322, SpellId: 446459, Name: "Atal'ai Signet of Mojo", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 9}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 7326, ItemId: 221323, SpellId: 446472, Name: "Atal'ai Signet of Serenity", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.HealingPower: 18}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	// Drop in ZG
 	// {EffectId: 2604, ItemId: 20078, SpellId: 24420, Name: "Zandalar Signet of Serenity", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.HealingPower: 33}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	// {EffectId: 2605, ItemId: 20076, SpellId: 24421, Name: "Zandalar Signet of Mojo", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 18, stats.HealingPower: 18}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
