@@ -16,10 +16,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		return
 	}
 
-	level := float64(mage.GetCharacter().Level)
-	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
-	baseLowDamage := baseCalc * 4.53
-	baseHighDamage := baseCalc * 5.27
+	baseLowDamage := mage.runeAbility() * 4.53
+	baseHighDamage := mage.runeAbility() * 5.27
 	spellCoeff := .714
 	castTime := time.Millisecond * 2500
 	manaCost := .07

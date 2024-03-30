@@ -52,7 +52,7 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 	rogue.SliceAndDice = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     actionID,
-		Flags:        SpellFlagFinisher | core.SpellFlagAPL,
+		Flags:        core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

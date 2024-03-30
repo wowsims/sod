@@ -12,11 +12,9 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		return
 	}
 
-	level := float64(mage.GetCharacter().Level)
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneLegsArcaneSurge)}
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
-	baseDamageLow := baseCalc * 2.26
-	baseDamageHigh := baseCalc * 2.64
+	baseDamageLow := mage.runeAbility() * 2.26
+	baseDamageHigh := mage.runeAbility() * 2.64
 	spellCoeff := .429
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8

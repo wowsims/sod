@@ -32,8 +32,7 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit, level int32) *core
 }
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
-	level := shaman.GetCharacter().Level
-	rank := FrostbrandWeaponRankByLevel[level]
+	rank := FrostbrandWeaponRankByLevel[shaman.Level]
 	spellId := FrostbrandWeaponSpellId[rank]
 	baseDamage := FrostbrandWeaponBaseDamage[rank]
 
@@ -60,8 +59,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := FrostbrandWeaponRankByLevel[level]
+	rank := FrostbrandWeaponRankByLevel[shaman.Level]
 	enchantId := FrostbrandWeaponEnchantId[rank]
 
 	if procMask.Matches(core.ProcMaskMeleeMH) {
@@ -118,8 +116,7 @@ func (shaman *Shaman) ApplyFrostbrandImbueToItem(item *core.Item) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := FrostbrandWeaponRankByLevel[level]
+	rank := FrostbrandWeaponRankByLevel[shaman.Level]
 	enchantId := FrostbrandWeaponEnchantId[rank]
 
 	item.TempEnchant = enchantId
