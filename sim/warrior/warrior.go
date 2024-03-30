@@ -60,28 +60,26 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 	GladiatorStance *core.Spell
 
-	Bloodrage            *core.Spell
-	BerserkerRage        *core.Spell
-	Bloodthirst          *core.Spell
-	DemoralizingShout    *core.Spell
-	Devastate            *core.Spell
-	Execute              *core.Spell
-	MortalStrike         *core.Spell
-	Overpower            *core.Spell
-	Rend                 *core.Spell
-	Revenge              *core.Spell
-	ShieldBlock          *core.Spell
-	ShieldSlam           *core.Spell
-	Slam                 *core.Spell
-	SunderArmor          *core.Spell
-	SunderArmorDevastate *core.Spell
-	ThunderClap          *core.Spell
-	Whirlwind            *core.Spell
-	DeepWounds           *core.Spell
-	ConcussionBlow       *core.Spell
-	RagingBlow           *core.Spell
-	Hamstring            *core.Spell
-	Rampage              *core.Spell
+	Bloodrage         *core.Spell
+	BerserkerRage     *core.Spell
+	Bloodthirst       *core.Spell
+	DemoralizingShout *core.Spell
+	Execute           *core.Spell
+	MortalStrike      *core.Spell
+	Overpower         *core.Spell
+	Rend              *core.Spell
+	Revenge           *core.Spell
+	ShieldBlock       *core.Spell
+	ShieldSlam        *core.Spell
+	Slam              *core.Spell
+	SunderArmor       *core.Spell
+	ThunderClap       *core.Spell
+	Whirlwind         *core.Spell
+	DeepWounds        *core.Spell
+	ConcussionBlow    *core.Spell
+	RagingBlow        *core.Spell
+	Hamstring         *core.Spell
+	Rampage           *core.Spell
 
 	HeroicStrike       *core.Spell
 	QuickStrike        *core.Spell
@@ -135,8 +133,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
 
-	warrior.SunderArmor = warrior.newSunderArmorSpell(false)
-	warrior.SunderArmorDevastate = warrior.newSunderArmorSpell(true)
+	warrior.SunderArmor = warrior.newSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
 }
