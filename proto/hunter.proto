@@ -128,6 +128,8 @@ enum HunterRune {
 	RuneBootsInvigoration				= 437997;
 
 	RuneHelmLockAndLoad					= 415413;
+
+	RuneBracersFocusFire				= 428726;
 }
 
 message Hunter {
