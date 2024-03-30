@@ -427,7 +427,6 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 
 func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
 	*chance += max(0, attackTable.BaseDodgeChance)
-	*chance += max(0, attackTable.BaseDodgeChance)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
