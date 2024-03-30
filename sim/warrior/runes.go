@@ -103,7 +103,7 @@ func (warrior *Warrior) applyConsumedByRage() {
 
 	warrior.ConsumedByRageAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:     "Enrage 10%",
-		ActionID:  core.ActionID{SpellID: 427066},
+		ActionID:  core.ActionID{SpellID: 425415},
 		Duration:  time.Second * 12,
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {

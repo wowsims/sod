@@ -24,7 +24,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		DefenseType: core.DefenseTypeMelee,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.FocusedRageDiscount,
+			Cost:   15 - warrior.FocusedRageDiscount - float64(warrior.Talents.ImprovedSunderArmor),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
