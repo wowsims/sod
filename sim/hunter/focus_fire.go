@@ -56,7 +56,6 @@ func (hunter *Hunter) registerFocusFireSpell() {
 
 	hunter.pet.RegisterAura(core.Aura{
 		Label:    "Focus Fire Pet",
-		ActionID: focusFireActionId,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
