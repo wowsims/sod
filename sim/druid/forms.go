@@ -45,16 +45,27 @@ func (druid *Druid) ClearForm(sim *core.Simulation) {
 func (druid *Druid) GetCatWeapon(level int32) core.Weapon {
 	// Level 25 values
 	claws := core.Weapon{
-		BaseDamageMin:        16.3866,
-		BaseDamageMax:        24.5799,
+		BaseDamageMin:        0,
+		BaseDamageMax:        0,
 		SwingSpeed:           1.0,
 		NormalizedSwingSpeed: 1.0,
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 	}
 
-	if level == 40 {
+	switch level {
+	case 60:
+		// TODO: Level 60 values
+	case 50:
+		// TODO: Not entirely verified. Value from Balor (Feral mod)
+		// Avg: 46.6
+		claws.BaseDamageMin = 37.28
+		claws.BaseDamageMax = 55.92
+	case 40:
 		claws.BaseDamageMin = 27.80305996
 		claws.BaseDamageMax = 41.70460054
+	default: // 25
+		claws.BaseDamageMin = 16.3866
+		claws.BaseDamageMax = 24.5799
 	}
 
 	return claws

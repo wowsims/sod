@@ -12,7 +12,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	cssClass: 'warrior-sim-ui',
 	cssScheme: 'warrior',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Rage conversion is a bit off for non 60s', 'Prot oriented Runes (Devastate and Sword and Board) are not yet implemented'],
+	knownIssues: ['Auto rotation is disabled until we can get optimized APL rotation',
+				'Wrecking crew assumed as lowest priority of enrage. Overwritten by regular enrage'],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatMeleeHaste, Stat.StatArmor],
@@ -98,7 +99,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	},
 
 	autoRotation: player => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		throw new Error("Auto rotation is disabled until we can get optimized APL rotation, click the 'Auto' dropdown' to choose APL rotation");
+		// return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -93,6 +93,7 @@ func (cat *FeralDruid) MissChance() float64 {
 
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
+	cat.RegisterBalanceSpells()
 	cat.RegisterFeralCatSpells()
 }
 

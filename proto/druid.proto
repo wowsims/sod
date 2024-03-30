@@ -63,30 +63,33 @@ message DruidTalents {
 enum DruidRune {
 	DruidRuneNone = 0;
 
-	// Chest
+	RuneHelmGaleWinds				= 417135;
+	RuneHelmGore					= 417145;
+	RuneHelmImprovedBarkskin		= 431388;
+
 	RuneChestFuryOfStormrage		= 414799;
 	RuneChestLivingSeed				= 414677;
 	RuneChestSurvivalOfTheFittest	= 411115;
 	RuneChestWildStrikes			= 407977;
 
-	// Hands
+	RuneBracersEfflorescence		= 417149;
+	RuneBracersElunesFires			= 414719;
+	RuneBracersImpFrenziedRegen		= 431389;
+
 	RuneHandsLacerate				= 414644;
 	RuneHandsMangle					= 407995;
 	RuneHandsSunfire				= 414684;
 	RuneHandsWildGrowth				= 408120;
 
-	// Belt
 	RuneBeltBerserk					= 417141;
 	RuneBeltEclipse					= 408248;
 	RuneBeltNourish					= 408247;
 
-	// Legs
 	RuneLegsStarsurge				= 417157;
 	RuneLegsSavageRoar				= 407988;
 	RuneLegsLifebloom				= 409824;
 	RuneLegsSkullBash				= 410176;
 
-	// Feet
 	RuneFeetDreamstate				= 408258;
 	RuneFeetKingOfTheJungle			= 417046;
 	RuneFeetSurvivalInstincts		= 408024;
