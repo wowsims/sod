@@ -26,7 +26,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],

@@ -33,7 +33,8 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL | SpellFlagColdBlooded,
+		Flags:       rogue.builderFlags(),
+
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{15, 12, 10}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,

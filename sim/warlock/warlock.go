@@ -10,6 +10,8 @@ import (
 
 var TalentTreeSizes = [3]int{17, 17, 16}
 
+const SpellFlagHaunt = core.SpellFlagAgentReserved1
+
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
@@ -157,7 +159,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 			40: 390.0,
 			50: 480.0,
 			60: 570.0,
-		}[warlock.Level]
+		}[warlock.GetCharacter().Level]
 
 		shadowRes := map[int32]float64{
 			25: 3.0,

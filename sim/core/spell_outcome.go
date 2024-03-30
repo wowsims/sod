@@ -426,10 +426,6 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
-	if spell.Flags.Matches(SpellFlagCannotBeDodged) {
-		return false
-	}
-
 	*chance += max(0, attackTable.BaseDodgeChance-spell.ExpertisePercentage()-spell.Unit.PseudoStats.DodgeReduction)
 
 	if roll < *chance {

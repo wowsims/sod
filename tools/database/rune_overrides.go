@@ -39,7 +39,6 @@ var UnimplementedRuneOverrides = []int32{
 	432259, // Combat Potency
 	432256, // Focused Attacks
 	432264, // Honor Among Thieves
-	432276, // Carnage
 	432271, // Cut to the Chase
 	432273, // Unfair Advantage
 }

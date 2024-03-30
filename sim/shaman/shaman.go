@@ -33,8 +33,6 @@ func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	// Set proper Melee Haste scaling
-	shaman.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
 	if selfBuffs.Shield == proto.ShamanShield_WaterShield {
 		shaman.AddStat(stats.MP5, shaman.MaxMana()*.01)
@@ -48,7 +46,7 @@ func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *
 	return shaman
 }
 
-func (shaman *Shaman) getImbueProcMask(character *core.Character, imbue proto.WeaponImbue) core.ProcMask {
+func (shaman *Shaman) getImbueProcMask(_ *core.Character, imbue proto.WeaponImbue) core.ProcMask {
 	var mask core.ProcMask
 	if shaman.HasMHWeapon() && shaman.Consumes.MainHandImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
@@ -183,7 +181,7 @@ func (shaman *Shaman) GetCharacter() *core.Character {
 	return &shaman.Character
 }
 
-func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+func (shaman *Shaman) AddRaidBuffs(_ *proto.RaidBuffs) {
 	// Buffs are handled explicitly through APLs now
 }
 
