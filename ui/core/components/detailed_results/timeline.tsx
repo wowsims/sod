@@ -866,6 +866,11 @@ export class Timeline extends ResultComponent {
 				});
 		});
 
+		// If there are any auras that correspond to this cast, visualize them in the same row.
+		aurasById
+			.filter(auraUptimeLogs => auraUptimeLogs[0].actionId!.equalsIgnoringTag(actionId))
+			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
+
 		this.rotationTimeline.appendChild(rowElem);
 	}
 

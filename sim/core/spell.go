@@ -93,6 +93,9 @@ type Spell struct {
 	// Example: https://wow.tools/dbc/?dbc=spellmisc&build=3.4.0.44996
 	MissileSpeed float64
 
+	Rank          int
+	RequiredLevel int
+
 	ResourceMetrics *ResourceMetrics
 	healthMetrics   []*ResourceMetrics
 
@@ -257,6 +260,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras: config.RelatedAuras,
 	}
+
+	spell.Rank = config.Rank
+	spell.RequiredLevel = config.RequiredLevel
 
 	spell.CdSpell = spell
 

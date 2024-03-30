@@ -23,6 +23,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		50: 2,
 		60: 4,
 	}[warrior.Level]
+
 	actionID := core.ActionID{SpellID: ShieldSlamSpellId[rank]}
 	basedamageLow := ShieldSlamBaseDamage[rank][0]
 	basedamageHigh := ShieldSlamBaseDamage[rank][1]
@@ -32,7 +33,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
@@ -53,8 +54,6 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 			return warrior.PseudoStats.CanBlock
 		},
 
-		BonusCritRating: 5 * core.CritRatingPerCritChance,
-
 		CritDamageBonus: warrior.impale(),
 
 		DamageMultiplier: 1,
@@ -62,12 +61,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		FlatThreatBonus:  770,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Verify that this bypass behavior and DR curve are correct
-			sbvMod := warrior.PseudoStats.BlockValueMultiplier
-			sbvMod /= 1
-
-			sbv := warrior.BlockValue() / sbvMod
-			sbv = sbvMod * (core.TernaryFloat64(sbv <= 1960.0, sbv, 0.0) + core.TernaryFloat64(sbv > 1960.0 && sbv <= 3160.0, 0.09333333333*sbv+1777.06666667, 0.0) + core.TernaryFloat64(sbv > 3160.0, 2072.0, 0.0))
+			sbv := warrior.BlockValue() * warrior.PseudoStats.BlockValueMultiplier
 
 			baseDamage := sim.Roll(basedamageLow, basedamageHigh) + sbv
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

@@ -282,9 +282,6 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			if !mage.GCD.IsReady(sim) {
 				return false
 			}
-			if mage.ArcanePowerAura.IsActive() {
-				return false
-			}
 
 			return true
 		},
