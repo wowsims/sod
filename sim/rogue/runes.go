@@ -30,6 +30,7 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerHonorAmongThieves()
 	rogue.applyCombatPotency()
 	rogue.applyFocusedAttacks()
+  rogue.registerCarnage()
 }
 
 func (rogue *Rogue) applyCombatPotency() {

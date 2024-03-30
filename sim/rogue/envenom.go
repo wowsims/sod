@@ -12,7 +12,7 @@ func (rogue *Rogue) registerEnvenom() {
 		return
 	}
 
-	baseAbilityDamage := rogue.RuneAbilityBaseDamage()
+	baseAbilityDamage := rogue.baseRuneAbilityDamage()
 
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
@@ -32,7 +32,7 @@ func (rogue *Rogue) registerEnvenom() {
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL | core.SpellFlagPoison,
+		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagPoison,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

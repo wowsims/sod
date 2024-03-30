@@ -36,6 +36,5 @@ var UnimplementedRuneOverrides = []int32{
 	431681, // Void Zone
 
 	// Rogue
-	432276, // Carnage
 	432273, // Unfair Advantage
 }

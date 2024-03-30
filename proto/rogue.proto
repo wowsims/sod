@@ -86,6 +86,7 @@ enum RogueRune {
 	RuneHonorAmongThieves = 432264;
 	RuneCombatPotency = 432259;
 	RuneFocusedAttacks = 432256;
+	RuneCarnage = 432276;
 }
 
 message RogueOptions {

@@ -50,7 +50,7 @@ func NewGnomereganMechanicalAI() core.AIFactory {
 }
 
 func (ai *GnomereganMechanicalAI) Initialize(target *core.Target, _ *proto.Target) {
-	target.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier *= .8
+	target.Unit.PseudoStats.BleedDamageTakenMultiplier *= .8
 	target.Unit.PseudoStats.PoisonDamageTakenMultiplier *= .8
 
 	ai.Target = target
@@ -59,5 +59,5 @@ func (ai *GnomereganMechanicalAI) Initialize(target *core.Target, _ *proto.Targe
 func (ai *GnomereganMechanicalAI) Reset(*core.Simulation) {
 }
 
-func (ai *GnomereganMechanicalAI) ExecuteCustomRotation(sim *core.Simulation) {
+func (ai *GnomereganMechanicalAI) ExecuteCustomRotation(_ *core.Simulation) {
 }

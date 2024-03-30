@@ -250,7 +250,7 @@ func ShadowWeavingAura(unit *Unit, rank int) *Aura {
 	})
 }
 
-func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, raid *proto.Raid) {
+func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, _ *proto.Raid) {
 	aura.OnReset = func(aura *Aura, sim *Simulation) {
 		aura.Duration = NeverExpires
 		StartPeriodicAction(sim, options)
@@ -534,7 +534,7 @@ func CurseOfVulnerabilityAura(target *Unit) *Aura {
 	})
 }
 
-func MangleAura(target *Unit, playerLevel int32) *Aura {
+func MangleAura(target *Unit, _ int32) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Mangle",
 		ActionID: ActionID{SpellID: 409828},
@@ -550,10 +550,10 @@ func bleedDamageAura(target *Unit, config Aura, multiplier float64) *Aura {
 	aura.NewExclusiveEffect(BleedEffectCategory, true, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier *= multiplier
+			ee.Aura.Unit.PseudoStats.BleedDamageTakenMultiplier *= multiplier
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.PeriodicPhysicalDamageTakenMultiplier /= multiplier
+			ee.Aura.Unit.PseudoStats.BleedDamageTakenMultiplier /= multiplier
 		},
 	})
 	return aura
@@ -685,7 +685,7 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	return aura
 }
 
-func HomunculiAttackSpeedAura(target *Unit, playerLevel int32) *Aura {
+func HomunculiAttackSpeedAura(target *Unit, _ int32) *Aura {
 	multiplier := 1.1
 
 	aura := target.GetOrRegisterAura(Aura{
@@ -810,7 +810,7 @@ func FaerieFireAura(target *Unit, playerLevel int32) *Aura {
 }
 
 // TODO: Classic
-func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
+func CurseOfWeaknessAura(target *Unit, points int32, _ int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Weakness" + strconv.Itoa(int(points)),
 		ActionID: ActionID{SpellID: 50511},
@@ -859,7 +859,7 @@ func HuntersMarkAura(target *Unit, points int32, playerLevel int32) *Aura {
 }
 
 // TODO: Classic
-func DemoralizingRoarAura(target *Unit, points int32, playerLevel int32) *Aura {
+func DemoralizingRoarAura(target *Unit, points int32, _ int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "DemoralizingRoar-" + strconv.Itoa(int(points)),
 		ActionID: ActionID{SpellID: 9898},
@@ -875,7 +875,7 @@ var DemoralizingShoutSpellId = [DemoralizingShoutRanks + 1]int32{0, 1160, 6190, 
 var DemoralizingShoutBaseAP = [DemoralizingShoutRanks + 1]float64{0, 45, 56, 76, 111, 146}
 var DemoralizingShoutLevel = [DemoralizingShoutRanks + 1]int{0, 14, 24, 34, 44, 54}
 
-func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32, playerLevel int32) *Aura {
+func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32, _ int32) *Aura {
 	rank := LevelToDebuffRank[DemoralizingShout][target.Level]
 	spellId := DemoralizingShoutSpellId[rank]
 	baseAPReduction := DemoralizingShoutBaseAP[rank]
@@ -890,7 +890,7 @@ func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts 
 }
 
 // TODO: Classic
-func VindicationAura(target *Unit, points int32, playerLevel int32) *Aura {
+func VindicationAura(target *Unit, points int32, _ int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Vindication",
 		ActionID: ActionID{SpellID: 26016},

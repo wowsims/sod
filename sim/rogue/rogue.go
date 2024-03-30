@@ -10,9 +10,9 @@ import (
 
 const (
 	SpellFlagBuilder      = core.SpellFlagAgentReserved1
-	SpellFlagFinisher     = core.SpellFlagAgentReserved2
-	SpellFlagColdBlooded  = core.SpellFlagAgentReserved3
-	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved4
+	SpellFlagColdBlooded  = core.SpellFlagAgentReserved2
+	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved3
+	SpellFlagCarnage      = core.SpellFlagAgentReserved4 // for Carnage
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -97,8 +97,11 @@ func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
 func (rogue *Rogue) finisherFlags() core.SpellFlag {
-	flags := SpellFlagFinisher
-	return flags
+	return SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL
+}
+
+func (rogue *Rogue) builderFlags() core.SpellFlag {
+	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL
 }
 
 // Apply the effect of successfully casting a finisher to combo points
@@ -205,11 +208,11 @@ func (rogue *Rogue) HasRune(rune proto.RogueRune) bool {
 	return rogue.HasRuneById(int32(rune))
 }
 
-func (rogue *Rogue) RuneAbilityBaseDamage() float64 {
+func (rogue *Rogue) baseRuneAbilityDamage() float64 {
 	return 5.741530 - 0.255683*float64(rogue.Level) + 0.032656*float64(rogue.Level*rogue.Level)
 }
 
-func (rogue *Rogue) RuneAbilityDamagePerCombo() float64 {
+func (rogue *Rogue) baseRuneAbilityDamageCombo() float64 {
 	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level*rogue.Level)
 }
 
