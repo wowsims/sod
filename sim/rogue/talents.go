@@ -19,7 +19,6 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.AddStat(stats.Parry, 1*float64(rogue.Talents.Deflection))
 	rogue.AddStat(stats.MeleeCrit, 1*float64(rogue.Talents.Malice))
 	rogue.AddStat(stats.MeleeHit, 1*float64(rogue.Talents.Precision))
-	rogue.AddStat(stats.SpellHit, 1*float64(rogue.Talents.Precision))
 	// TODO: Test the Armor reduction amount
 	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()

@@ -345,7 +345,7 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		table.BaseMissChance = 0.05 + levelDelta
 		table.BaseDodgeChance = 0.05 + levelDelta
-		table.BaseCritChance = 0.05 + levelDelta
+		table.BaseCritChance = 0.05 - levelDelta
 	}
 
 	return table
