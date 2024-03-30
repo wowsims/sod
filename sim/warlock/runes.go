@@ -328,10 +328,10 @@ func (warlock *Warlock) applyDemonicPact() {
 			spBonus := max(math.Round(currentSP*0.1), math.Round(float64(warlock.Level)/2))
 			for _, dpAura := range demonicPactAuras {
 				if dpAura != nil {
-					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
-
 					// Force expire/gain because of new sp bonus
 					dpAura.Deactivate(sim)
+
+					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
 					dpAura.Activate(sim)
 				}
 			}
