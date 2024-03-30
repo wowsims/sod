@@ -1,4 +1,5 @@
 {
+	"editor.tabSize": 4,
 	"eslint.validate": ["javascript", "typescript"],
 	"eslint.nodePath": "./node_modules",
 	"eslint.workingDirectories": ["."],

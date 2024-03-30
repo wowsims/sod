@@ -11,14 +11,6 @@ var RuneOverrides = []*proto.UIRune{}
 
 // Remove runes as you implement them.
 var UnimplementedRuneOverrides = []int32{
-	// Druid
-	417135, // Gale Winds
-	417145, // Gore
-	431388, // Improved Barkskin
-	417149, // Efflorescence
-	414719, // Elune's Fires
-	431389, // Improved Frenzied Regen
-
 	// Hunter
 	415428, // Catlike Reflexes
 	415405, // Rapid Killing

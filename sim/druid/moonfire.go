@@ -14,6 +14,7 @@ var MoonfiresSpellCoeff = [MoonfireRanks + 1]float64{0, .06, .094, .128, .15, .1
 var MoonfiresSellDotCoeff = [MoonfireRanks + 1]float64{0, .052, .081, .111, .13, .13, .13, .13, .13, .13, .13}
 var MoonfireBaseDamage = [MoonfireRanks + 1][]float64{{0}, {9, 12}, {17, 21}, {30, 37}, {44, 53}, {70, 82}, {91, 108}, {117, 137}, {143, 168}, {172, 200}, {195, 228}}
 var MoonfireBaseDotDamage = [MoonfireRanks + 1]float64{0, 12, 32, 52, 80, 124, 164, 212, 264, 320, 384}
+var MoonfireDotTicks = [MoonfireRanks + 1]int32{0, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4}
 var MoonfireManaCost = [MoonfireRanks + 1]float64{0, 25, 50, 75, 105, 150, 190, 235, 280, 325, 375}
 var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52, 58}
 
@@ -35,7 +36,8 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
 	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
 
-	ticks := core.TernaryInt32(rank < 2, 3, 4)
+	ticks := MoonfireDotTicks[rank]
+	tickLength := time.Second * 3
 
 	spellId := MoonfireSpellId[rank]
 	spellCoeff := MoonfiresSpellCoeff[rank]
@@ -48,6 +50,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_DruidMoonfire,
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -71,7 +74,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 				ActionID: core.ActionID{SpellID: spellId},
 			},
 			NumberOfTicks: ticks,
-			TickLength:    time.Second * 3,
+			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = (baseDotDamage + spellDotCoeff*dot.Spell.SpellDamage()) *
 					druid.MoonfireDotMultiplier
@@ -94,7 +97,10 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				dot := spell.Dot(target)
+				dot.NumberOfTicks = ticks
+				dot.RecomputeAuraDuration()
+				dot.Apply(sim)
 			}
 		},
 	}
