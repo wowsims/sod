@@ -426,10 +426,6 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
-	if spell.Flags.Matches(SpellFlagCannotBeDodged) {
-		return false
-	}
-
 	*chance += max(0, attackTable.BaseDodgeChance-spell.ExpertisePercentage()-spell.Unit.PseudoStats.DodgeReduction)
 
 	if roll < *chance {
@@ -639,6 +635,6 @@ func (spell *Spell) CritMultiplier(at *AttackTable) float64 {
 	case DefenseTypeMagic:
 		return 1 + (1.5*at.CritMultiplier-1)*spell.CritDamageBonus
 	default:
-		return 1 + (2.0*at.CritMultiplier-1)*spell.CritDamageBonus*at.Attacker.PseudoStats.MeleeCritMultiplier
+		return 1 + (2.0*at.CritMultiplier*at.Attacker.PseudoStats.MeleeCritMultiplier-1)*spell.CritDamageBonus
 	}
 }

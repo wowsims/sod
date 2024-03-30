@@ -19,7 +19,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],

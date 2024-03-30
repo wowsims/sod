@@ -61,7 +61,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 
 		CritDamageBonus: shaman.elementalFury(),
 
-		DamageMultiplier: shaman.ConcussionMultiplier(),
+		DamageMultiplier: shaman.concussionMultiplier(),
 		ThreatMultiplier: 1,
 	}
 

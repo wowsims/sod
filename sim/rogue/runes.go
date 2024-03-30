@@ -22,4 +22,6 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerQuickDrawSpell()
 	rogue.registerBetweenTheEyes()
 	rogue.registerPoisonedKnife()
+
+	rogue.registerCarnage()
 }

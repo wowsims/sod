@@ -9,33 +9,80 @@ import (
 )
 
 func (druid *Druid) ApplyRunes() {
+	// Helm
+	druid.applyGaleWinds()
+	druid.applyGore()
+
 	// Chest
 	druid.applyFuryOfStormRage()
-	// druid.applyLivingSeed()
-	// druid.applySurvivalOfTheFittest()
 	druid.applyWildStrikes()
 
+	// Bracers
+	druid.applyElunesFires()
+
 	// Hands
-	// druid.applyLacerate()
 	druid.applyMangle()
-	druid.applySunfire()
-	// druid.applyWildGrowth()
+	druid.registerSunfireSpell()
 
 	// Belt
 	druid.applyBerserk()
 	druid.applyEclipse()
-	// druid.applyNourish()
 
 	// Legs
 	druid.applyStarsurge()
 	druid.applySavageRoar()
-	// druid.applyLifebloom()
-	// druid.applySkullBash()
 
 	// Feet
 	druid.applyDreamstate()
 	druid.applyKingOfTheJungle()
-	// druid.applySurvivalInstincts()
+}
+
+func (druid *Druid) applyGaleWinds() {
+	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		return
+	}
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Gale Winds",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGaleWinds)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func (druid *Druid) applyGore() {
+	if !druid.HasRune(proto.DruidRune_RuneHelmGore) {
+		return
+	}
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Gore",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGore)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+const (
+	Gore_BearResetProcChance = .15
+	Gore_CatResetProcChance  = .05
+)
+
+// TODO: Bear spells not implemented: MangleBear, Swipe, Maul
+func (druid *Druid) rollGoreBearReset(sim *core.Simulation) {
+	if sim.RandomFloat("Gore (Bear)") < Gore_BearResetProcChance {
+		druid.MangleBear.CD.Reset()
+	}
+}
+
+func (druid *Druid) rollGoreCatReset(sim *core.Simulation) {
+	if sim.RandomFloat("Gore (Cat)") < Gore_CatResetProcChance {
+		druid.TigersFury.CD.Reset()
+	}
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -154,82 +201,70 @@ func (druid *Druid) applyEclipse() {
 
 }
 
-// https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044
-func (druid *Druid) applySunfire() {
-	if !druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
+func (druid *Druid) applyElunesFires() {
+	if !druid.HasRune(proto.DruidRune_RuneBracersElunesFires) {
 		return
 	}
 
-	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
-	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
-
-	level := float64(druid.GetCharacter().Level)
-	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
-	baseHighDamage := baseCalc * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := (baseCalc * 0.65) * moonfuryMultiplier * impMoonfireMultiplier
-	spellCoeff := .15
-	spellDotCoeff := .13
-
-	ticks := int32(4)
-
-	druid.SunfireDotMultiplier = 1
-
-	druid.Sunfire = druid.RegisterSpell(Humanoid|Bear|Cat|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 414684},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.21,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: 0,
-			},
-		},
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label:    "Sunfire",
-				ActionID: core.ActionID{SpellID: 414684},
-			},
-			NumberOfTicks: ticks,
-			TickLength:    time.Second * 3,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage + spellDotCoeff*dot.Spell.SpellDamage()) *
-					druid.SunfireDotMultiplier
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
-		BonusCritRating: druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: druid.vengeance(),
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-			}
+	druid.RegisterAura(core.Aura{
+		Label:    "Elune's Fires",
+		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneBracersElunesFires)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
 		},
 	})
 }
 
+const (
+	ElunesFires_MaxExtensions = 3
+
+	ElunesFires_BonusMoonfireTicks = int32(2)
+	ElunesFires_BonusSunfireTicks  = int32(1)
+	ElunesFires_BonusRipTicks      = int32(1)
+
+	ElunesFires_MaxBonusMoonfireTicks = ElunesFires_BonusMoonfireTicks * ElunesFires_MaxExtensions
+	ElunesFires_MaxSunfireTicks       = SunfireTicks + ElunesFires_BonusSunfireTicks*ElunesFires_MaxExtensions
+	ElunesFires_MaxRipTicks           = RipTicks + ElunesFires_BonusRipTicks*ElunesFires_MaxExtensions
+)
+
+func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
+	for _, moonfire := range druid.Moonfire {
+		if moonfire != nil {
+			if dot := moonfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < MoonfireDotTicks[moonfire.Rank]+ElunesFires_MaxBonusMoonfireTicks {
+				dot.NumberOfTicks += ElunesFires_BonusMoonfireTicks
+				dot.RecomputeAuraDuration()
+				dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickPeriod())
+			}
+		}
+	}
+
+	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
+		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
+		dot.RecomputeAuraDuration()
+		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickPeriod())
+	}
+}
+
+func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *core.Unit) {
+	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
+		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
+		dot.RecomputeAuraDuration()
+		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickPeriod())
+	}
+}
+
+func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.Unit) {
+	if dot := druid.Rip.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxRipTicks {
+		dot.NumberOfTicks += ElunesFires_BonusRipTicks
+		dot.RecomputeAuraDuration()
+		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusRipTicks)*dot.TickPeriod())
+	}
+}
+
 func (druid *Druid) applyMangle() {
-	druid.applyMangleCat()
-	//druid.applyMangleBear()
+	//druid.registerMangleBearSpell()
+	druid.registerMangleCatSpell()
 }
 
 func (druid *Druid) applyWildStrikes() {
@@ -265,9 +300,9 @@ func (druid *Druid) applyDreamstate() {
 		},
 	})
 
+	// Hidden aura
 	druid.RegisterAura(core.Aura{
 		Label:    "Dreamstate Trigger",
-		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)

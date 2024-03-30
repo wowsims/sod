@@ -156,3 +156,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 func (mage *Mage) HasRune(rune proto.MageRune) bool {
 	return mage.HasRuneById(int32(rune))
 }
+
+func (mage *Mage) runeAbility() float64 {
+	return 13.828124 + 0.018012*float64(mage.Level) + 0.044141*float64(mage.Level*mage.Level)
+}

@@ -19,14 +19,14 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 
-	flatDamageBonus := rogue.RuneAbilityBaseDamage()
+	flatDamageBonus := rogue.runeAbility()
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | SpellFlagColdBlooded,
+		Flags:       SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics,
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 

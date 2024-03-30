@@ -6,7 +6,7 @@ import (
 )
 
 func (warrior *Warrior) registerQuickStrike() {
-	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) || warrior.GetMHWeapon().HandType != proto.HandType_HandTypeTwoHand {
+	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 		return
 	}
 

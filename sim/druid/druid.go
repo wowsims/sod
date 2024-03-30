@@ -12,9 +12,10 @@ var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
 	SpellCode_DruidNone int32 = iota
-	SpellCode_DruidWrath
+	SpellCode_DruidMoonfire
 	SpellCode_DruidStarfire
 	SpellCode_DruidStarsurge
+	SpellCode_DruidWrath
 )
 
 type Druid struct {
@@ -287,6 +288,10 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 
 func (druid *Druid) HasRune(rune proto.DruidRune) bool {
 	return druid.HasRuneById(int32(rune))
+}
+
+func (druid *Druid) runeAbility() float64 {
+	return 9.183105 + 0.616405*float64(druid.Level) + 0.028608*float64(druid.Level*druid.Level)
 }
 
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)

@@ -76,7 +76,7 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[AirTotem] = spell
 
-		core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, 1+.075*float64(shaman.Talents.EnhancingTotems)).Activate(sim)
+		core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, []float64{1, 1.08, 1.15}[shaman.Talents.EnhancingTotems]).Activate(sim)
 	}
 	return spell
 }
