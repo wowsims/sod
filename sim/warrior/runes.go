@@ -279,11 +279,9 @@ func (warrior *Warrior) applyWreckingCrew() {
 }
 
 func (warrior *Warrior) applySwordAndBoard() {
-	if !warrior.HasRune(proto.WarriorRune_RuneSwordAndBoard) {
+	if !warrior.HasRune(proto.WarriorRune_RuneSwordAndBoard) || !warrior.Talents.ShieldSlam {
 		return
 	}
-
-	devastateActive := core.Ternary(warrior.HasRune(proto.WarriorRune_RuneDevastate), true, false)
 
 	sabAura := warrior.GetOrRegisterAura(core.Aura{
 		Label:    "Sword And Board",
@@ -309,7 +307,7 @@ func (warrior *Warrior) applySwordAndBoard() {
 				return
 			}
 
-			if !(spell == warrior.Revenge || (spell == warrior.SunderArmor && devastateActive)) {
+			if spell != warrior.Revenge && spell != warrior.Devastate {
 				return
 			}
 

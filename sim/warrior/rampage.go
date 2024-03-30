@@ -12,20 +12,35 @@ func (warrior *Warrior) registerRampage() {
 	if !warrior.HasRune(proto.WarriorRune_RuneRampage) {
 		return
 	}
+
 	actionID := core.ActionID{SpellID: 426940}
 	auraActionID := core.ActionID{SpellID: 426942}
+
+	multiplyStatDeps := []*stats.StatDependency{
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.00),
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.02),
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.04),
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.06),
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.08),
+		warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.10),
+	}
 
 	warrior.RampageAura = warrior.RegisterAura(core.Aura{
 		Label:     "Rampage",
 		ActionID:  auraActionID,
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
+
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.EnableDynamicStatDep(sim, multiplyStatDeps[0])
+		},
+
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			bonusPerStack := warrior.ApplyStatDependencies(stats.Stats{stats.AttackPower: aura.Unit.GetStat(stats.AttackPower) * 0.02})
-			warrior.AddStatsDynamic(sim, bonusPerStack.Multiply(float64(newStacks-oldStacks)))
+			warrior.DisableDynamicStatDep(sim, multiplyStatDeps[oldStacks])
+			warrior.EnableDynamicStatDep(sim, multiplyStatDeps[newStacks])
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && sim.RandomFloat("Rampage") < 0.8 {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Rampage") < 0.8 {
 				warrior.RampageAura.AddStack(sim)
 			}
 		},
@@ -43,7 +58,7 @@ func (warrior *Warrior) registerRampage() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeCrit) {
+			if result.Outcome.Matches(core.OutcomeCrit) && spell.ProcMask.Matches(core.ProcMaskMelee) {
 				warrior.rampageValidAura.Activate(sim)
 			}
 		},
