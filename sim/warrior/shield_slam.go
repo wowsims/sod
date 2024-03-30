@@ -61,12 +61,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		FlatThreatBonus:  770,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Verify that this bypass behavior and DR curve are correct
-			sbvMod := warrior.PseudoStats.BlockValueMultiplier
-			sbvMod /= 1
-
-			sbv := warrior.BlockValue() / sbvMod
-			sbv = sbvMod * (core.TernaryFloat64(sbv <= 1960.0, sbv, 0.0) + core.TernaryFloat64(sbv > 1960.0 && sbv <= 3160.0, 0.09333333333*sbv+1777.06666667, 0.0) + core.TernaryFloat64(sbv > 3160.0, 2072.0, 0.0))
+			sbv := warrior.BlockValue() * warrior.PseudoStats.BlockValueMultiplier
 
 			baseDamage := sim.Roll(basedamageLow, basedamageHigh) + sbv
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
