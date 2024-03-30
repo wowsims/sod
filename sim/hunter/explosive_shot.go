@@ -16,10 +16,8 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 	actionID := core.ActionID{SpellID: 409552}
 	numHits := hunter.Env.GetNumTargets()
 
-	level := float64(hunter.GetCharacter().Level)
-	baseCalc := 2.976264 + 0.641066*level + 0.022519*level*level
-	baseLowDamage := baseCalc * 0.36 * 1.15 // Buff from 1/3/2024 - verify with new build and update numbers
-	baseHighDamage := baseCalc * 0.54 * 1.15
+	baseLowDamage := hunter.runeAbility() * 0.36 * 1.15 // Buff from 1/3/2024 - verify with new build and update numbers
+	baseHighDamage := hunter.runeAbility() * 0.54 * 1.15
 
 	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {

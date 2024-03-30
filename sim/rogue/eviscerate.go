@@ -40,7 +40,7 @@ func (rogue *Rogue) registerEviscerate() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIncludeTargetBonusDamage,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

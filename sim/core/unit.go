@@ -327,7 +327,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (unit.PseudoStats.MeleeHasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / 100))
 }
 
 func (unit *Unit) Armor() float64 {
@@ -609,6 +609,6 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 	return metadata
 }
 
-func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
+func (unit *Unit) ExecuteCustomRotation(_ *Simulation) {
 	panic("Unimplemented ExecuteCustomRotation")
 }

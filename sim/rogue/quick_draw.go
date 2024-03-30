@@ -24,12 +24,14 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 	// Quick Draw applies a 50% slow, but bosses are immune
 
 	rogue.QuickDraw = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 398196},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        SpellFlagBuilder | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:    core.ActionID{SpellID: 398196},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeRanged,
+		ProcMask:    core.ProcMaskRangedSpecial,
+		Flags:       rogue.builderFlags(),
+
 		MissileSpeed: 40,
+
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,

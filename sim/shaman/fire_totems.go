@@ -53,7 +53,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
-			Multiplier: shaman.TotemManaMultiplier(),
+			Multiplier: shaman.totemManaMultiplier(),
 		},
 
 		Cast: core.CastConfig{
@@ -144,7 +144,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
-			Multiplier: shaman.TotemManaMultiplier(),
+			Multiplier: shaman.totemManaMultiplier(),
 		},
 
 		Cast: core.CastConfig{
@@ -241,7 +241,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
-			Multiplier: shaman.TotemManaMultiplier(),
+			Multiplier: shaman.totemManaMultiplier(),
 		},
 
 		Cast: core.CastConfig{
