@@ -19,10 +19,8 @@ func (warlock *Warlock) registerHauntSpell() {
 	actionID := core.ActionID{SpellID: 403501}
 
 	spellCoeff := 0.714
-	level := float64(warlock.GetCharacter().Level)
-	baseCalc := 6.568597 + 0.672028*level + 0.031721*level*level
-	baseLowDamage := baseCalc * 2.51
-	baseHighDamage := baseCalc * 2.95
+	baseLowDamage := warlock.runeAbility() * 2.51
+	baseHighDamage := warlock.runeAbility() * 2.95
 
 	warlock.HauntDebuffAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{

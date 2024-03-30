@@ -222,7 +222,7 @@ func (warlock *Warlock) applyWeaponImbue() {
 		return
 	}
 
-	level := warlock.GetCharacter().Level
+	level := warlock.Level
 	if warlock.Options.WeaponImbue == proto.WarlockOptions_Firestone {
 		warlock.applyFirestone()
 	}
@@ -234,7 +234,7 @@ func (warlock *Warlock) applyWeaponImbue() {
 }
 
 func (warlock *Warlock) applyFirestone() {
-	level := warlock.GetCharacter().Level
+	level := warlock.Level
 
 	damageMin := 0.0
 	damageMax := 0.0

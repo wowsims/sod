@@ -166,7 +166,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 			40: 9.0,
 			50: 12.0,
 			60: 15.0,
-		}[warlock.GetCharacter().Level]
+		}[warlock.Level]
 
 		warlock.AddStat(stats.Armor, armor)
 		warlock.AddStat(stats.ShadowResistance, shadowRes)
@@ -181,6 +181,10 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 
 func (warlock *Warlock) HasRune(rune proto.WarlockRune) bool {
 	return warlock.HasRuneById(int32(rune))
+}
+
+func (warlock *Warlock) runeAbility() float64 {
+	return 6.568597 + 0.672028*float64(warlock.Level) + 0.031721*float64(warlock.Level*warlock.Level)
 }
 
 func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {

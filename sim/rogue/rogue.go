@@ -206,11 +206,11 @@ func (rogue *Rogue) HasRune(rune proto.RogueRune) bool {
 	return rogue.HasRuneById(int32(rune))
 }
 
-func (rogue *Rogue) RuneAbilityBaseDamage() float64 {
+func (rogue *Rogue) runeAbility() float64 {
 	return 5.741530 - 0.255683*float64(rogue.Level) + 0.032656*float64(rogue.Level*rogue.Level)
 }
 
-func (rogue *Rogue) RuneAbilityDamagePerCombo() float64 {
+func (rogue *Rogue) runeAbilityCombo() float64 {
 	return 8.740728 - 0.415787*float64(rogue.Level) + 0.051973*float64(rogue.Level*rogue.Level)
 }
 

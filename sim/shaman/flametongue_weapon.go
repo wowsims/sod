@@ -18,8 +18,7 @@ var FlametongueWeaponRankByLevel = map[int32]int32{
 }
 
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
-	level := shaman.GetCharacter().Level
-	rank := FlametongueWeaponRankByLevel[level]
+	rank := FlametongueWeaponRankByLevel[shaman.Level]
 	spellID := FlametongueWeaponSpellId[rank]
 	maxDamage := FlametongueWeaponMaxDamage[rank]
 
@@ -51,8 +50,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := FlametongueWeaponRankByLevel[level]
+	rank := FlametongueWeaponRankByLevel[shaman.Level]
 	enchantId := FlametongueWeaponEnchantId[rank]
 
 	item.TempEnchant = enchantId
@@ -73,8 +71,7 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := FlametongueWeaponRankByLevel[level]
+	rank := FlametongueWeaponRankByLevel[shaman.Level]
 	enchantId := FlametongueWeaponEnchantId[rank]
 
 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
