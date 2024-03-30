@@ -231,7 +231,7 @@ const (
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
 	for _, moonfire := range druid.Moonfire {
 		if moonfire != nil {
-			if dot := moonfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < MoonfireDotTicks[moonfire.Rank]+ElunesFires_BonusMoonfireTicks {
+			if dot := moonfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < MoonfireDotTicks[moonfire.Rank]+ElunesFires_MaxBonusMoonfireTicks {
 				dot.NumberOfTicks += ElunesFires_BonusMoonfireTicks
 				dot.RecomputeAuraDuration()
 				dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickPeriod())
@@ -300,9 +300,9 @@ func (druid *Druid) applyDreamstate() {
 		},
 	})
 
+	// Hidden aura
 	druid.RegisterAura(core.Aura{
 		Label:    "Dreamstate Trigger",
-		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
