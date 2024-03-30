@@ -113,7 +113,9 @@ export const DefaultTalents = DefaultTalentsCombat;
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
-export const DefaultOptions = RogueOptions.create({});
+export const DefaultOptions = RogueOptions.create({
+	honorAmongThievesCritRate: 200,
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                         Consumes/Buffs/Debuffs

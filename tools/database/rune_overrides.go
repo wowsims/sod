@@ -36,9 +36,5 @@ var UnimplementedRuneOverrides = []int32{
 	431681, // Void Zone
 
 	// Rogue
-	432259, // Combat Potency
-	432256, // Focused Attacks
-	432264, // Honor Among Thieves
-	432271, // Cut to the Chase
 	432273, // Unfair Advantage
 }
