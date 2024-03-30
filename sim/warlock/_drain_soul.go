@@ -38,7 +38,7 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 		ActionID:    core.ActionID{SpellID: 47855},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagChanneled | core.SpellFlagHauntSE | core.SpellFlagAPL,
+		Flags:       core.SpellFlagChanneled | SpellFlagHaunt | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,

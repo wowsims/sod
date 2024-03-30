@@ -82,6 +82,7 @@ enum RogueRune {
 	RuneShadowstep = 400101;
 	RuneShurikenToss = 399986;
 	RunePoisonedKnife = 425012;
+	RuneCarnage = 432276;
 }
 
 message RogueOptions {

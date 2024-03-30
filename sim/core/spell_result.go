@@ -139,7 +139,7 @@ func (spell *Spell) SpellSchoolPower() float64 {
 		return spell.Unit.GetStat(stats.ShadowPower)
 	default:
 		// Multi school: Get best power choice available.
-		max := 0.0
+		maxPower := 0.0
 		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 			var power float64
 
@@ -147,7 +147,7 @@ func (spell *Spell) SpellSchoolPower() float64 {
 			// Not having physical power with the other power stats makes this if-else required.
 			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
 			// are ever a thing, due to SpellPower being before ArcanePower in stats.
-			// Also, just having this loop or having the switch above is irellevant in terms of performance.
+			// Also, just having this loop or having the switch above is irrelevant in terms of performance.
 			// The jump table above saves some instructions for normal spells but loop only seems to
 			// cause the function to be inlined, making the whole SpellPower() call inline.
 			// Overall just not nice the way it is.
@@ -158,11 +158,11 @@ func (spell *Spell) SpellSchoolPower() float64 {
 				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
 			}
 
-			if power > max {
-				max = power
+			if power > maxPower {
+				maxPower = power
 			}
 		}
-		return max
+		return maxPower
 	}
 }
 
@@ -190,7 +190,7 @@ func (spell *Spell) MagicHitCheck(sim *Simulation, attackTable *AttackTable) boo
 	return sim.Proc(1.0-spell.SpellChanceToMiss(attackTable), "Magical Hit Roll")
 }
 
-func (spell *Spell) spellCritRating(target *Unit) float64 {
+func (spell *Spell) spellCritRating(_ *Unit) float64 {
 	return spell.Unit.stats[stats.SpellCrit] +
 		spell.BonusCritRating
 }
@@ -503,22 +503,16 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 		attackTable.Defender.GetSchoolDamageTakenMultiplier(spell) *
 		attackTable.DamageTakenMultiplier
 
-	if spell.Flags.Matches(SpellFlagDisease) {
-		multiplier *= attackTable.Defender.PseudoStats.DiseaseDamageTakenMultiplier
-	}
-
 	if spell.Flags.Matches(SpellFlagPoison) {
 		multiplier *= attackTable.Defender.PseudoStats.PoisonDamageTakenMultiplier
 	}
 
-	if spell.Flags.Matches(SpellFlagHauntSE) {
-		multiplier *= attackTable.HauntSEDamageTakenMultiplier
+	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
+		multiplier *= attackTable.Defender.PseudoStats.BleedDamageTakenMultiplier
 	}
 
-	if spell.SpellSchool.Matches(SpellSchoolNature) {
-		multiplier *= attackTable.NatureDamageTakenMultiplier
-	} else if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
-		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	if attackTable.DamageDoneByCasterMultiplier != nil {
+		multiplier *= attackTable.DamageDoneByCasterMultiplier(spell, attackTable)
 	}
 
 	return multiplier
@@ -537,6 +531,5 @@ func (spell *Spell) applyTargetHealingModifiers(damage float64, attackTable *Att
 	}
 
 	return damage *
-		attackTable.Defender.PseudoStats.HealingTakenMultiplier *
-		attackTable.HealingDealtMultiplier
+		attackTable.Defender.PseudoStats.HealingTakenMultiplier
 }
