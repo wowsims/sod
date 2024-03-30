@@ -14,6 +14,8 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 	manaCost := [6]float64{0, 50, 90, 135, 190, 245}[rank]
 	level := [6]int{0, 16, 26, 36, 46, 56}[rank]
 
+	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
@@ -65,6 +67,10 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 				if result.Landed() {
 					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
+				}
+
+				if hasLockAndLoad {
+					hunter.LockAndLoadAura.Activate(sim)
 				}
 			})
 		},

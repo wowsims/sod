@@ -23,6 +23,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		50: 2,
 		60: 4,
 	}[warrior.Level]
+
 	actionID := core.ActionID{SpellID: ShieldSlamSpellId[rank]}
 	basedamageLow := ShieldSlamBaseDamage[rank][0]
 	basedamageHigh := ShieldSlamBaseDamage[rank][1]
@@ -32,7 +33,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
@@ -52,8 +53,6 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.PseudoStats.CanBlock
 		},
-
-		BonusCritRating: 5 * core.CritRatingPerCritChance,
 
 		CritDamageBonus: warrior.impale(),
 
