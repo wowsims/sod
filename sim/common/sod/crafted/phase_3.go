@@ -36,7 +36,7 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("Echoes of the Depraved") < 0.3 {
+				if sim.RandomFloat("Echoes of Insanity") < 0.3 {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
@@ -222,7 +222,7 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("Echoes of the Depraved") < 0.3 {
+				if sim.RandomFloat("Echoes of Insanity") < 0.3 {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
@@ -328,7 +328,7 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("Echoes of the Depraved") < 0.3 {
+				if sim.RandomFloat("Echoes of Insanity") < 0.3 {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
@@ -404,7 +404,7 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("Echoes of the Depraved") < 0.3 {
+				if sim.RandomFloat("Echoes of Insanity") < 0.3 {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
