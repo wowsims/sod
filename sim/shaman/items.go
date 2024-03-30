@@ -11,6 +11,7 @@ import (
 const (
 	TotemCarvedDriftwoodIcon = 209575
 	TotemInvigoratingFlame   = 215436
+	TotemTormentedAncestry   = 220607
 )
 
 func init() {
@@ -52,6 +53,25 @@ func init() {
 			Spell:    spell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	// Totem of Tormented Ancestry
+	core.NewItemEffect(TotemTormentedAncestry, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		procAura := shaman.NewTemporaryStatsAura("Totem of Tormented Ancestry Proc", core.ActionID{SpellID: 446219}, stats.Stats{stats.AttackPower: 15, stats.SpellDamage: 15, stats.HealingPower: 15}, 12*time.Second)
+
+		shaman.RegisterAura(core.Aura{
+			Label:    "Totem of Tormented Ancestry",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_ShamanFlameShock {
+					procAura.Activate(sim)
+				}
+			},
 		})
 	})
 
