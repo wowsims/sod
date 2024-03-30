@@ -261,11 +261,12 @@ type AttackTable struct {
 	//  Explicitly for hunters' "Monster Slaying" and "Humanoid Slaying", but likewise for rogues' "Murder", or trolls' "Beastslaying".
 	CritMultiplier float64
 
-	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
-	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
-	NatureDamageTakenMultiplier  float64
-	HauntSEDamageTakenMultiplier float64
-	HealingDealtMultiplier       float64
+	DamageDealtMultiplier float64 // attacker buff, applied in applyAttackerModifiers()
+	DamageTakenMultiplier float64 // defender debuff, applied in applyTargetModifiers()
+
+	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
+	// If set, the damage taken multiplier is multiplied by the callbacks result.
+	DamageDoneByCasterMultiplier func(spell *Spell, attackTable *AttackTable) float64
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
@@ -277,11 +278,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		CritMultiplier: 1,
 
-		DamageDealtMultiplier:        1,
-		DamageTakenMultiplier:        1,
-		NatureDamageTakenMultiplier:  1,
-		HauntSEDamageTakenMultiplier: 1,
-		HealingDealtMultiplier:       1,
+		DamageDealtMultiplier: 1,
+		DamageTakenMultiplier: 1,
 	}
 
 	if defender.Type == EnemyUnit {

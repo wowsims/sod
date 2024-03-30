@@ -290,6 +290,10 @@ func (druid *Druid) HasRune(rune proto.DruidRune) bool {
 	return druid.HasRuneById(int32(rune))
 }
 
+func (druid *Druid) baseRuneAbilityDamage() float64 {
+	return 9.183105 + 0.616405*float64(druid.Level) + 0.028608*float64(druid.Level*druid.Level)
+}
+
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)
 type DruidAgent interface {
 	GetDruid() *Druid

@@ -9,26 +9,16 @@ import (
 )
 
 func (warrior *Warrior) ApplyRunes() {
-	mhWeapon := warrior.GetMHWeapon()
-	ohWeapon := warrior.GetOHWeapon()
-
-	if mhWeapon != nil && ohWeapon != nil { // This check is to stop memory dereference error if unarmed
-		if mhWeapon.HandType == proto.HandType_HandTypeMainHand || mhWeapon.HandType == proto.HandType_HandTypeOneHand &&
-			ohWeapon.HandType == proto.HandType_HandTypeOffHand || ohWeapon.HandType == proto.HandType_HandTypeOneHand {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury), 1.1, 1)
-		}
+	if warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) && warrior.HasMHWeapon() && warrior.HasOHWeapon() {
+		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 	}
 
-	if mhWeapon != nil { // This check is to stop memory dereference error if unarmed
-		if mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
-			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.2, 1)
-		}
+	if warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault) && warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		warrior.PseudoStats.MeleeSpeedMultiplier *= 1.2
 	}
 
-	if ohWeapon != nil {
-		if ohWeapon.WeaponType == proto.WeaponType_WeaponTypeShield {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneShieldMastery), 1.1, 1)
-		}
+	if warrior.HasRune(proto.WarriorRune_RuneShieldMastery) && warrior.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
+		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 	}
 
 	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
@@ -113,7 +103,7 @@ func (warrior *Warrior) applyConsumedByRage() {
 
 	warrior.ConsumedByRageAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:     "Enrage 10%",
-		ActionID:  core.ActionID{SpellID: 427066},
+		ActionID:  core.ActionID{SpellID: 425415},
 		Duration:  time.Second * 12,
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {

@@ -11,7 +11,7 @@ func (shaman *Shaman) newTotemSpellConfig(flatCost float64, spellID int32) core.
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   flatCost,
-			Multiplier: shaman.TotemManaMultiplier(),
+			Multiplier: shaman.totemManaMultiplier(),
 		},
 
 		Cast: core.CastConfig{

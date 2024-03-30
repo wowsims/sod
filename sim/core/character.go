@@ -182,11 +182,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		}
 	}
 
-	if weapon := character.OffHand(); weapon.ID != 0 {
-		if weapon.WeaponType == proto.WeaponType_WeaponTypeShield {
-			character.PseudoStats.CanBlock = true
-		}
-	}
+	character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
