@@ -1593,7 +1593,7 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
-		BuildPhase: CharacterBuildPhaseBuffs,
+		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)
 	return aura
