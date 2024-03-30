@@ -143,11 +143,11 @@ func (priest *Priest) HasRune(rune proto.PriestRune) bool {
 	return priest.HasRuneById(int32(rune))
 }
 
-func (priest *Priest) runeAbility() float64 {
+func (priest *Priest) baseRuneAbilityDamage() float64 {
 	return 9.456667 + 0.635108*float64(priest.Level) + 0.039063*float64(priest.Level*priest.Level)
 }
 
-func (priest *Priest) runeAbilityHealing() float64 {
+func (priest *Priest) baseRuneAbilityDamageHealing() float64 {
 	return 38.258376 + 0.904195*float64(priest.Level) + 0.161311*float64(priest.Level*priest.Level)
 }
 

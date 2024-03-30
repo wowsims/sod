@@ -18,8 +18,8 @@ func (priest *Priest) RegisterPenanceSpell() {
 // https://www.wowhead.com/classic/spell=402284/penance
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044
 func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
-	baseDamage := priest.runeAbility() * 1.28
-	baseHealing := priest.runeAbilityHealing() * .85
+	baseDamage := priest.baseRuneAbilityDamage() * 1.28
+	baseHealing := priest.baseRuneAbilityDamageHealing() * .85
 	spellCoeff := 0.285
 	manaCost := .16
 	cooldown := time.Second * 12

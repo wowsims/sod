@@ -13,8 +13,8 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		return
 	}
 	spellCoeff := 0.714
-	baseLowDamage := warlock.runeAbility() * 2.22
-	baseHighDamage := warlock.runeAbility() * 2.58
+	baseLowDamage := warlock.baseRuneAbilityDamage() * 2.22
+	baseHighDamage := warlock.baseRuneAbilityDamage() * 2.58
 
 	warlock.IncinerateAura = warlock.RegisterAura(core.Aura{
 		Label:    "Incinerate Aura",

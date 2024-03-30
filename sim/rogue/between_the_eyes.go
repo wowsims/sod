@@ -12,8 +12,8 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		return
 	}
 
-	flatDamage := rogue.runeAbility()
-	comboDamageBonus := rogue.runeAbilityCombo()
+	flatDamage := rogue.baseRuneAbilityDamage()
+	comboDamageBonus := rogue.baseRuneAbilityDamageCombo()
 
 	rogue.BetweenTheEyes = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBetweenTheEyes)},

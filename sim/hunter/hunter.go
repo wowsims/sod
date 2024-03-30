@@ -249,7 +249,7 @@ func (hunter *Hunter) HasRune(rune proto.HunterRune) bool {
 	return hunter.HasRuneById(int32(rune))
 }
 
-func (hunter *Hunter) runeAbility() float64 {
+func (hunter *Hunter) baseRuneAbilityDamage() float64 {
 	return 2.976264 + 0.641066*float64(hunter.Level) + 0.022519*float64(hunter.Level*hunter.Level)
 }
 

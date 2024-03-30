@@ -237,7 +237,7 @@ func (shaman *Shaman) HasRune(rune proto.ShamanRune) bool {
 	return shaman.HasRuneById(int32(rune))
 }
 
-func (shaman *Shaman) runeAbility() float64 {
+func (shaman *Shaman) baseRuneAbilityDamage() float64 {
 	return 7.583798 + 0.471881*float64(shaman.Level) + 0.036599*float64(shaman.Level*shaman.Level)
 }
 
