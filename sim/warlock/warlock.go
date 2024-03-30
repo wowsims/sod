@@ -183,7 +183,7 @@ func (warlock *Warlock) HasRune(rune proto.WarlockRune) bool {
 	return warlock.HasRuneById(int32(rune))
 }
 
-func (warlock *Warlock) runeAbility() float64 {
+func (warlock *Warlock) baseRuneAbilityDamage() float64 {
 	return 6.568597 + 0.672028*float64(warlock.Level) + 0.031721*float64(warlock.Level*warlock.Level)
 }
 

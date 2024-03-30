@@ -14,8 +14,8 @@ func (druid *Druid) applyStarsurge() {
 
 	actionID := core.ActionID{SpellID: 417157}
 
-	baseLowDamage := druid.runeAbility() * 2.48
-	baseHighDamage := druid.runeAbility() * 3.04
+	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48
+	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
 	spellCoeff := .429
 
 	starfireAuraMultiplier := 1 + .80

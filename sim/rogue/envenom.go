@@ -12,7 +12,7 @@ func (rogue *Rogue) registerEnvenom() {
 		return
 	}
 
-	baseAbilityDamage := rogue.runeAbility()
+	baseAbilityDamage := rogue.baseRuneAbilityDamage()
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",

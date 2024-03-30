@@ -17,7 +17,7 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 	cooldown := time.Second * 6
 
 	// 2024-02-22 tuning 10% buff
-	baseTickDamage := priest.runeAbility() * 1.17 * 1.1
+	baseTickDamage := priest.baseRuneAbilityDamage() * 1.17 * 1.1
 	spellCoeff := .166
 
 	return core.SpellConfig{

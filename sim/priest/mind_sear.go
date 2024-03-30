@@ -87,8 +87,8 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 }
 
 func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
-	baseDamageLow := priest.runeAbility() * .7 * priest.darknessDamageModifier()
-	baseDamageHigh := priest.runeAbility() * .78 * priest.darknessDamageModifier()
+	baseDamageLow := priest.baseRuneAbilityDamage() * .7 * priest.darknessDamageModifier()
+	baseDamageHigh := priest.baseRuneAbilityDamage() * .78 * priest.darknessDamageModifier()
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.GetOrRegisterSpell(core.SpellConfig{

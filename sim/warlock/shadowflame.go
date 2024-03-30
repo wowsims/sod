@@ -14,8 +14,8 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 	baseSpellCoeff := 0.0715
 	dotSpellCoeff := 0.022
-	baseDamage := warlock.runeAbility() * 0.64
-	dotDamage := warlock.runeAbility() * 0.24
+	baseDamage := warlock.baseRuneAbilityDamage() * 0.64
+	dotDamage := warlock.baseRuneAbilityDamage() * 0.24
 
 	fireDot := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},

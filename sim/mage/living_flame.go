@@ -16,7 +16,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		return
 	}
 
-	baseDamage := mage.runeAbility() * 1
+	baseDamage := mage.baseRuneAbilityDamage() * 1
 	spellCoeff := .143
 	manaCost := .11
 	cooldown := time.Second * 30

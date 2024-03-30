@@ -14,8 +14,8 @@ func (shaman *Shaman) applyMoltenBlast() {
 		return
 	}
 
-	baseDamageLow := shaman.runeAbility() * .72
-	baseDamageHigh := shaman.runeAbility() * 1.08
+	baseDamageLow := shaman.baseRuneAbilityDamage() * .72
+	baseDamageHigh := shaman.baseRuneAbilityDamage() * 1.08
 	apCoef := .05
 	cooldown := time.Second * 6
 	manaCost := .18
