@@ -157,14 +157,14 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 			40: 390.0,
 			50: 480.0,
 			60: 570.0,
-		}[warlock.GetCharacter().Level]
+		}[warlock.Level]
 
 		shadowRes := map[int32]float64{
 			25: 3.0,
 			40: 9.0,
 			50: 12.0,
 			60: 15.0,
-		}[warlock.GetCharacter().Level]
+		}[warlock.Level]
 
 		warlock.AddStat(stats.Armor, armor)
 		warlock.AddStat(stats.ShadowResistance, shadowRes)
@@ -181,7 +181,11 @@ func (warlock *Warlock) HasRune(rune proto.WarlockRune) bool {
 	return warlock.HasRuneById(int32(rune))
 }
 
-func (warlock *Warlock) OnGCDReady(sim *core.Simulation) {
+func (warlock *Warlock) runeAbility() float64 {
+	return 6.568597 + 0.672028*float64(warlock.Level) + 0.031721*float64(warlock.Level*warlock.Level)
+}
+
+func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {
 }
 
 // Agent is a generic way to access underlying warlock on any of the agents.

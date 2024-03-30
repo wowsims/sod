@@ -639,6 +639,6 @@ func (spell *Spell) CritMultiplier(at *AttackTable) float64 {
 	case DefenseTypeMagic:
 		return 1 + (1.5*at.CritMultiplier-1)*spell.CritDamageBonus
 	default:
-		return 1 + (2.0*at.CritMultiplier-1)*spell.CritDamageBonus*at.Attacker.PseudoStats.MeleeCritMultiplier
+		return 1 + (2.0*at.CritMultiplier*at.Attacker.PseudoStats.MeleeCritMultiplier-1)*spell.CritDamageBonus
 	}
 }

@@ -151,7 +151,6 @@ func (druid *Druid) applyEclipse() {
 			}
 		},
 	})
-
 }
 
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044
@@ -163,11 +162,9 @@ func (druid *Druid) applySunfire() {
 	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
 	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
 
-	level := float64(druid.GetCharacter().Level)
-	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
-	baseHighDamage := baseCalc * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := (baseCalc * 0.65) * moonfuryMultiplier * impMoonfireMultiplier
+	baseLowDamage := druid.runeAbility() * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
+	baseHighDamage := druid.runeAbility() * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
+	baseDotDamage := druid.runeAbility() * 0.65 * moonfuryMultiplier * impMoonfireMultiplier
 	spellCoeff := .15
 	spellDotCoeff := .13
 

@@ -239,13 +239,9 @@ func (shaman *Shaman) HasRune(rune proto.ShamanRune) bool {
 	return shaman.HasRuneById(int32(rune))
 }
 
-func (shaman *Shaman) Reset(sim *core.Simulation) {
+func (shaman *Shaman) runeAbility() float64 {
+	return 7.583798 + 0.471881*float64(shaman.Level) + 0.036599*float64(shaman.Level*shaman.Level)
 }
 
-func (shaman *Shaman) ConcussionMultiplier() float64 {
-	return 1 + 0.01*float64(shaman.Talents.Concussion)
-}
-
-func (shaman *Shaman) TotemManaMultiplier() float64 {
-	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+func (shaman *Shaman) Reset(_ *core.Simulation) {
 }

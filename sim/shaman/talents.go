@@ -344,6 +344,14 @@ func (shaman *Shaman) elementalFury() float64 {
 	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
 }
 
+func (shaman *Shaman) concussionMultiplier() float64 {
+	return 1 + 0.01*float64(shaman.Talents.Concussion)
+}
+
+func (shaman *Shaman) totemManaMultiplier() float64 {
+	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+}
+
 // func (shaman *Shaman) registerManaTideTotemCD() {
 // 	if !shaman.Talents.ManaTideTotem {
 // 		return

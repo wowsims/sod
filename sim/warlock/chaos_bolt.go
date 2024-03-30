@@ -12,11 +12,10 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt) {
 		return
 	}
+
 	spellCoeff := 0.714
-	level := float64(warlock.GetCharacter().Level)
-	baseCalc := 6.568597 + 0.672028*level + 0.031721*level*level
-	baseLowDamage := baseCalc * 5.22
-	baseHighDamage := baseCalc * 6.62
+	baseLowDamage := warlock.runeAbility() * 5.22
+	baseHighDamage := warlock.runeAbility() * 6.62
 
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 403629},

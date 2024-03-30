@@ -12,10 +12,8 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		return
 	}
 
-	level := float64(mage.Level)
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
-	baseDamageLow := baseCalc * 4.62
-	baseDamageHigh := baseCalc * 5.38
+	baseDamageLow := mage.runeAbility() * 4.62
+	baseDamageHigh := mage.runeAbility() * 5.38
 	spellCoeff := 2.5
 	cooldown := time.Second * 30
 	manaCost := .12

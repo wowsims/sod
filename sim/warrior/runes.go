@@ -9,17 +9,16 @@ import (
 )
 
 func (warrior *Warrior) ApplyRunes() {
-	if warrior.GetMHWeapon() != nil && warrior.GetOHWeapon() != nil { // This check is to stop memory dereference error if unarmed
-		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeMainHand || warrior.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand &&
-			warrior.GetOHWeapon().HandType == proto.HandType_HandTypeOffHand || warrior.GetOHWeapon().HandType == proto.HandType_HandTypeOneHand {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury), 1.1, 1)
-		}
+	if warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) && warrior.HasMHWeapon() && warrior.HasOHWeapon() {
+		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 	}
 
-	if warrior.GetMHWeapon() != nil { // This check is to stop memory dereference error if unarmed
-		if warrior.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand {
-			warrior.PseudoStats.MeleeSpeedMultiplier *= core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault), 1.2, 1)
-		}
+	if warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault) && warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		warrior.PseudoStats.MeleeSpeedMultiplier *= 1.2
+	}
+
+	if warrior.HasRune(proto.WarriorRune_RuneShieldMastery) && warrior.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
+		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 	}
 
 	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)

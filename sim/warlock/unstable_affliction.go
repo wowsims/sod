@@ -11,11 +11,9 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction) {
 		return
 	}
-	spellCoeff := 0.2
 
-	level := float64(warlock.GetCharacter().Level)
-	baseCalc := (6.568597 + 0.672028*level + 0.031721*level*level)
-	baseDamage := baseCalc * 0.6
+	spellCoeff := 0.2
+	baseDamage := warlock.runeAbility() * 0.6
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
