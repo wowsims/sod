@@ -300,7 +300,7 @@ func (warlock *Warlock) applyDemonicPact() {
 
 	spellPower := max(warlock.getHighestSP()*0.1, float64(warlock.Level)/2.0)
 	demonicPactAuras := warlock.NewRaidAuraArray(func(u *core.Unit) *core.Aura {
-		return core.DemonicPactAura(u, spellPower)
+		return core.DemonicPactAura(u, spellPower, core.CharacterBuildPhaseNone)
 	})
 
 	warlock.Pet.RegisterAura(core.Aura{
