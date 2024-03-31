@@ -338,9 +338,6 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 	} else if testIdx < len(generator.items)+len(generator.sets) {
 		testSet := generator.sets[testIdx-len(generator.items)]
 		for _, setItem := range testSet.Items() {
-			if setItem.ID == 220589 {
-				fmt.Println(setItem)
-			}
 			equipment.EquipItem(setItem)
 		}
 		label = strings.ReplaceAll(testSet.Name, " ", "")
