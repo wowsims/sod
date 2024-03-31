@@ -40,6 +40,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyExposeWeakness()
 	hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
+	hunter.applyRaptorFury()
 }
 
 func (hunter *Hunter) applyInvigoration() {
@@ -196,6 +197,39 @@ func (hunter *Hunter) applyLockAndLoad() {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.DefaultCast.Cost, lockAndLoadMetrics)
 				spell.CD.Reset()
+			}
+		},
+	})
+}
+
+func (hunter *Hunter) applyRaptorFury() {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury){
+		return
+	}
+
+	raptorStrikeIdSet := map[int32]bool{2973: true, 14260: true, 14261: true, 14262: true, 
+										14263: true, 14264: true, 14265: true, 14266: true, 
+										415335: true, 415336: true, 415337: true, 415338: true, 
+										415340: true, 415341: true, 415342: true, 415343: true}
+
+	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
+		Label:     "Raptor Fury Buff",
+		ActionID:  core.ActionID{SpellID: 415358},
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
+	})
+
+	hunter.GetOrRegisterAura(core.Aura{
+		Label:     "Raptor Fury Rune",
+		Duration:  core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+			hunter.RaptorFuryAura.SetStacks(sim, 0)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if raptorStrikeIdSet[spell.ActionID.SpellID] {
+				if !hunter.RaptorFuryAura.IsActive() { hunter.RaptorFuryAura.Activate(sim) }
+				hunter.RaptorFuryAura.AddStack(sim)
 			}
 		},
 	})

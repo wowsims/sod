@@ -21,6 +21,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	manaCost := [9]float64{0, 15, 25, 35, 45, 55, 70, 80, 100}[rank]
 	level := [9]int{0, 1, 8, 16, 24, 32, 40, 48, 56}[rank]
 	hasFlankingStrike := hunter.HasRune(proto.HunterRune_RuneLegsFlankingStrike)
+	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
@@ -92,6 +93,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 			}
 
+			if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
+				mhBaseDamage *= 1.0 + (0.15 * float64(hunter.RaptorFuryAura.GetStacks()))
+			}
+
 			spell.CalcAndDealDamage(sim, target, mhBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if ohSpell != nil {
@@ -110,6 +115,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
 					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+				}
+
+				if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
+					ohBaseDamage *= 1.0 + (0.15 * float64(hunter.RaptorFuryAura.GetStacks()))
 				}
 
 				ohSpell.CalcAndDealDamage(sim, target, ohBaseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
