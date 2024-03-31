@@ -9,6 +9,7 @@ import (
 
 const (
 	AtalaiBloodRitualCharm = 220634
+	CobraFangClaw          = 220588
 )
 
 func init() {
@@ -89,6 +90,32 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(CobraFangClaw)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		character.RegisterAura(core.Aura{
+			Label:    "Cobra Fang Claw Thrash",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+				if !spell.ProcMask.Matches(procMask) {
+					return
+				}
+
+				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
+					character.AutoAttacks.ExtraMHAttack(sim)
+				}
+			},
+		})
+	})
 
 	core.AddEffectsToTest = true
 }
