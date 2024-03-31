@@ -39,7 +39,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 436479},
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
