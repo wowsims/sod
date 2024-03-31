@@ -80,7 +80,7 @@ func addLevel50(bossPrefix string) {
 
 			Stats: stats.Stats{
 				stats.Health:      127_393, // TODO:
-				stats.Armor:       2053,    // TODO:
+				stats.Armor:       3137,    // TODO: Verify this value
 				stats.AttackPower: 574,     // TODO:
 			}.ToFloatArray(),
 
