@@ -151,7 +151,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 930, SpellId: 13947, Name: "Enchant Gloves - Riding Skill", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 1887, SpellId: 20012, Name: "Enchant Gloves - Greater Agility", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	// Drop in BRS
-	{EffectId: 927, SpellId: 20013, Name: "Enchant Gloves - Greater Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
+	// {EffectId: 927, SpellId: 20013, Name: "Enchant Gloves - Greater Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	// All drops in AQ
 	// {EffectId: 2616, SpellId: 25078, Name: "Enchant Gloves - Fire Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.FirePower: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	// {EffectId: 2615, SpellId: 25074, Name: "Enchant Gloves - Frost Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.FrostPower: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
