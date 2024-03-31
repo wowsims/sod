@@ -209,7 +209,7 @@ func (hunter *Hunter) applyRaptorFury() {
 
 	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Raptor Fury Buff",
-		ActionID:  core.ActionID{SpellID: 415358},
+		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
 	})

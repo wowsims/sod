@@ -26,7 +26,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
 	flankingStrikeDmgMult 	:= 0.1
-	raptorFuryDmgMult		:= 0.15
+	raptorFuryDmgMult		:= 0.1
 
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
@@ -77,6 +77,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		DamageMultiplier: 1 * dwSpecMulti,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			flankingStrikeStacks := float64(hunter.FlankingStrikeAura.GetStacks())
+			raptorFuryStacks := float64(hunter.RaptorFuryAura.GetStacks())
+
 			weaponDamage := 0.0
 			if hasMeleeSpecialist {
 				weaponDamage = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
@@ -89,7 +92,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				spell.BonusWeaponDamage()
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-				mhBaseDamage *= 1.0 + (flankingStrikeDmgMult * float64(hunter.FlankingStrikeAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)
 			}
 
 			if hasFlankingStrike && sim.RandomFloat("Flanking Strike Refresh") < 0.2 {
@@ -97,7 +100,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
-				mhBaseDamage *= 1.0 + (raptorFuryDmgMult * float64(hunter.RaptorFuryAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (raptorFuryDmgMult * raptorFuryStacks)
 			}
 
 			spell.CalcAndDealDamage(sim, target, mhBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -117,11 +120,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 					ohSpell.BonusWeaponDamage()
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-					ohBaseDamage *= 1.0 + (flankingStrikeDmgMult * float64(hunter.FlankingStrikeAura.GetStacks()))
+					ohBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)
 				}
 
 				if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
-					ohBaseDamage *= 1.0 + (raptorFuryDmgMult * float64(hunter.RaptorFuryAura.GetStacks()))
+					ohBaseDamage *= 1.0 + (raptorFuryDmgMult * raptorFuryStacks)
 				}
 
 				ohSpell.CalcAndDealDamage(sim, target, ohBaseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -136,7 +139,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRaptorFury {
-				if !hunter.RaptorFuryAura.IsActive() { hunter.RaptorFuryAura.Activate(sim) }
+				if !hunter.RaptorFuryAura.IsActive() { 
+					hunter.RaptorFuryAura.Activate(sim) 
+				}
 				hunter.RaptorFuryAura.AddStack(sim)
 			}
 		},
