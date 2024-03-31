@@ -65,10 +65,13 @@ func (rogue *Rogue) applyFocusedAttacks() {
 		return
 	}
 
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 51637})
+	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneFocusedAttacks)}
+
+	energyMetrics := rogue.NewEnergyMetrics(actionID)
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Focused Attacks",
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -91,8 +94,9 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		return
 	}
 
-	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)})
+	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)}
 
+	comboMetrics := rogue.NewComboPointMetrics(actionID)
 	icd := core.Cooldown{
 		Timer:    rogue.NewTimer(),
 		Duration: time.Second,
@@ -100,7 +104,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 
 	rogue.HonorAmongThieves = rogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
-		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)},
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
