@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -220,6 +221,13 @@ func (druid *Druid) registerCatFormSpell() {
 
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 
+	furorProcChance := 0.2 * float64(druid.Talents.Furor)
+
+	hasWolfheadBonus := false
+	if head := druid.Equipment.Head(); head != nil && (head.ID == WolfsheadHelm || head.Enchant.EffectID == sod.WolfsheadTrophy) {
+		hasWolfheadBonus = true
+	}
+
 	druid.CatForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
@@ -236,7 +244,8 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < 0.2*float64(druid.Talents.Furor), 40, 0)
+			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
+			maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
 			if energyDelta > 0 {

@@ -47,7 +47,7 @@ var ItemSetHyperconductiveWizardsAttire = core.NewItemSet(core.ItemSet{
 				ActionID:   core.ActionID{ItemID: 435977},
 				Name:       "Energized Hyperconductor",
 				Callback:   core.CallbackOnCastComplete,
-				ProcMask:   core.ProcMaskDirect,
+				ProcMask:   core.ProcMaskSpellDamage,
 				ProcChance: 0.10,
 				Handler:    handler,
 			})

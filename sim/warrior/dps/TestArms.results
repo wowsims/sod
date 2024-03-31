@@ -97,6 +97,20 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestArms-Lvl40-AllItems-BanishedMartyr'sFullPlate"
+ value: {
+  dps: 598.09136
+  tps: 519.14248
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 570.59645
+  tps: 495.91508
+ }
+}
+dps_results: {
  key: "TestArms-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 681.97892
@@ -118,6 +132,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 626.92133
+  tps: 543.59664
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 610.64525
+  tps: 529.77254
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 577.21825
+  tps: 501.58463
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 628.38572
+  tps: 544.65486
+ }
+}
+dps_results: {
  key: "TestArms-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 616.11619
@@ -129,6 +171,13 @@ dps_results: {
  value: {
   dps: 573.32909
   tps: 498.10119
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 570.59645
+  tps: 495.91508
  }
 }
 dps_results: {
@@ -148,8 +197,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 577.73528
-  tps: 501.79163
+  dps: 577.12926
+  tps: 501.3068
  }
 }
 dps_results: {
@@ -174,6 +223,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 583.2051
+  tps: 506.45673
+ }
+}
+dps_results: {
  key: "TestArms-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 594.70454
@@ -188,6 +244,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-Lvl40-AllItems-ObsessedProphet'sPlate"
+ value: {
+  dps: 589.83518
+  tps: 511.50985
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 650.2422
+  tps: 562.83264
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 596.17038
+  tps: 517.6882
+ }
+}
+dps_results: {
  key: "TestArms-Lvl40-AllItems-StormshroudArmor"
  value: {
   dps: 594.60715
@@ -199,6 +276,13 @@ dps_results: {
  value: {
   dps: 647.02944
   tps: 564.75953
+ }
+}
+dps_results: {
+ key: "TestArms-Lvl40-AllItems-WailingBerserker'sPlateArmor"
+ value: {
+  dps: 647.57955
+  tps: 561.10732
  }
 }
 dps_results: {
