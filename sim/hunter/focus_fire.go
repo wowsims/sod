@@ -12,7 +12,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		return
 	}
 
-	focusFireMetrics := hunter.pet.Metrics.NewResourceMetrics(core.ActionID{SpellID: 428726}, proto.ResourceType_ResourceTypeEnergy)
+	focusFireMetrics := hunter.pet.Metrics.NewResourceMetrics(core.ActionID{SpellID: 428726}, proto.ResourceType_ResourceTypeFocus)
 	focusFireActionId := core.ActionID{SpellID: 428726}
 	focusFireFrenzyActionId := core.ActionID{SpellID: 428728}
 
@@ -44,13 +44,10 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		Label:    "Focus Fire",
 		ActionID: focusFireActionId,
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			frenzyStacks := hunterPetFrenzyAura.GetStacks()
-			aura.Unit.MultiplyRangedSpeed(sim, 1+(0.03*float64(frenzyStacks)))
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			frenzyStacks := hunterPetFrenzyAura.GetStacks()
-			aura.Unit.MultiplyRangedSpeed(sim, 1/(1+(0.03*float64(frenzyStacks))))
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/(1+(0.06*float64(oldStacks))))
+			aura.Unit.MultiplyMeleeSpeed(sim, 1+(0.06*float64(newStacks)))
 		},
 	})
 
@@ -94,7 +91,9 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			frenzyStacks := hunterPetFrenzyAura.GetStacks()
 			hunter.pet.AddFocus(sim, float64(4 * frenzyStacks), focusFireMetrics)
-			hunterFocusFireAura.Activate(sim)
+
+			if !hunterFocusFireAura.IsActive() { hunterFocusFireAura.Activate(sim) }
+			hunterFocusFireAura.SetStacks(sim, frenzyStacks)
 			hunterPetFrenzyAura.SetStacks(sim, 0)
 		},
 	})

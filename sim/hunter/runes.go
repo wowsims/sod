@@ -194,7 +194,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
-				hunter.AddMana(sim, spell.DefaultCast.Cost, lockAndLoadMetrics)
+				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 				spell.CD.Reset()
 			}
 		},
