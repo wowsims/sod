@@ -16,6 +16,7 @@ const (
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
+	RitualistsHammer          = 221446
 )
 
 func init() {
@@ -27,63 +28,13 @@ func init() {
 	})
 
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		auraActionID := core.ActionID{SpellID: 436482}
-		numHits := min(3, character.Env.GetNumTargets())
+		druid := agent.(DruidAgent).GetDruid()
+		druid.newBloodbarkCleaveItem(BloodBarkCrusher)
+	})
 
-		triggeredDmgSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 436481},
-			SpellSchool: core.SpellSchoolStormstrike,
-			DefenseType: core.DefenseTypeMelee, // actually has DefenseTypeNone, but is likely using the greatest CritMultiplier available
-			ProcMask:    core.ProcMaskEmpty,
-
-			// TODO: "Causes additional threat" in Tooltip, no clue what the multiplier is.
-			ThreatMultiplier: 1,
-			DamageMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-			},
-		})
-
-		mainAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Bloodbark Cleave",
-			ActionID: auraActionID,
-			Duration: 20 * time.Second,
-
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask&core.ProcMaskMelee != 0 {
-					triggeredDmgSpell.Cast(sim, result.Target)
-					return
-				}
-			},
-		})
-
-		mainSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: auraActionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				mainAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    mainSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
+	core.NewItemEffect(RitualistsHammer, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.newBloodbarkCleaveItem(RitualistsHammer)
 	})
 
 	core.AddEffectsToTest = true
@@ -95,4 +46,63 @@ func (druid *Druid) registerCatnipCD() {
 		return
 	}
 	sod.RegisterFiftyPercentHasteBuffCD(&druid.Character, core.ActionID{ItemID: Catnip})
+}
+
+func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
+	auraActionID := core.ActionID{SpellID: 436482}
+	numHits := min(3, druid.Env.GetNumTargets())
+
+	damageSpell := druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 436481},
+		SpellSchool: core.SpellSchoolStormstrike,
+		DefenseType: core.DefenseTypeMelee, // actually has DefenseTypeNone, but is likely using the greatest CritMultiplier available
+		ProcMask:    core.ProcMaskEmpty,
+
+		// TODO: "Causes additional threat" in Tooltip, no clue what the multiplier is.
+		ThreatMultiplier: 1,
+		DamageMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			curTarget := target
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+				spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
+		},
+	})
+
+	buffAura := druid.GetOrRegisterAura(core.Aura{
+		Label:    "Bloodbark Cleave",
+		ActionID: auraActionID,
+		Duration: 20 * time.Second,
+
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask&core.ProcMaskMelee != 0 {
+				damageSpell.Cast(sim, result.Target)
+				return
+			}
+		},
+	})
+
+	mainSpell := druid.GetOrRegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{ItemID: itemID},
+		Flags:    core.SpellFlagNoOnCastComplete,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    druid.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			buffAura.Activate(sim)
+		},
+	})
+
+	druid.AddMajorCooldown(core.MajorCooldown{
+		Spell:    mainSpell,
+		Priority: core.CooldownPriorityDefault,
+		Type:     core.CooldownTypeDPS,
+	})
 }

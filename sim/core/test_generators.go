@@ -205,6 +205,8 @@ type ItemFilter struct {
 	// If set to ClassUnknown, any class is fine.
 	Class proto.Class
 
+	Level int32
+
 	ArmorType proto.ArmorType
 
 	// Empty lists allows any value. Otherwise, item must match a value from the list.
@@ -221,7 +223,9 @@ type ItemFilter struct {
 // If equipChecksOnly is true, will only check conditions related to whether
 // the item is equippable.
 func (filter *ItemFilter) Matches(item Item, equipChecksOnly bool) bool {
-	if item.Type == proto.ItemType_ItemTypeWeapon {
+	if item.RequiresLevel >= filter.Level {
+		return false
+	} else if item.Type == proto.ItemType_ItemTypeWeapon {
 		if len(filter.WeaponTypes) > 0 && !slices.Contains(filter.WeaponTypes, item.WeaponType) {
 			return false
 		}
@@ -334,6 +338,9 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 	} else if testIdx < len(generator.items)+len(generator.sets) {
 		testSet := generator.sets[testIdx-len(generator.items)]
 		for _, setItem := range testSet.Items() {
+			if setItem.ID == 220589 {
+				fmt.Println(setItem)
+			}
 			equipment.EquipItem(setItem)
 		}
 		label = strings.ReplaceAll(testSet.Name, " ", "")
@@ -457,6 +464,10 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 		if config.IsHealer {
 			defaultRaid.TargetDummies = 1
 		}
+
+		// Ensure we don't generate tests where the agent equips items above its level
+		// This previously caused bugs with effects with a specified minimum level above the agent's level
+		config.ItemFilter.Level = config.Level
 
 		generator := &CombinedTestGenerator{
 			subgenerators: []SubGenerator{
