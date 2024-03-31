@@ -7,90 +7,90 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+func echoesOfInsanityEffect(agent core.Agent) {
+	character := agent.GetCharacter()
+
+	procAura := character.NewTemporaryStatsAura("Echoes of Insanity Proc", core.ActionID{SpellID: 446541}, stats.Stats{stats.HealingPower: 50}, time.Second*10)
+
+	handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+		procAura.Activate(sim)
+	}
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		ActionID:   core.ActionID{SpellID: 446545},
+		Name:       "Echoes of Insanity",
+		Callback:   core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellHealing,
+		ProcChance: 0.3,
+		ICD:        time.Second * 40,
+		Handler:    handler,
+	})
+}
+
+func echoesOfMadnessEffect(agent core.Agent) {
+	character := agent.GetCharacter()
+
+	procAura := character.GetOrRegisterAura(core.Aura{
+		Label:    "Echoes of Madness Proc",
+		ActionID: core.ActionID{SpellID: 446528},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyCastSpeed(1.1)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyCastSpeed(1 / 1.1)
+		},
+	})
+
+	handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+		procAura.Activate(sim)
+	}
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		ActionID:   core.ActionID{SpellID: 446518},
+		Name:       "Echoes of Madness",
+		Callback:   core.CallbackOnCastComplete,
+		ProcMask:   core.ProcMaskSpellDamage,
+		ProcChance: 0.3,
+		ICD:        time.Second * 40,
+		Handler:    handler,
+	})
+}
+
+func echoesOfDreadEffect(agent core.Agent) {
+	character := agent.GetCharacter()
+
+	procAura := character.GetOrRegisterAura(core.Aura{
+		Label:    "Echoes of Dread Proc",
+		ActionID: core.ActionID{SpellID: 446577},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyAttackSpeed(sim, 1.05)
+			character.AddStatDynamic(sim, stats.AttackPower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyAttackSpeed(sim, 1/1.05)
+			character.AddStatDynamic(sim, stats.AttackPower, -50)
+		},
+	})
+
+	handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+		procAura.Activate(sim)
+	}
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		ActionID:   core.ActionID{SpellID: 446579},
+		Name:       "Echoes of Dread",
+		Callback:   core.CallbackOnCastComplete,
+		ProcMask:   core.ProcMaskMelee,
+		ProcChance: 0.3,
+		ICD:        time.Second * 40,
+		Handler:    handler,
+	})
+}
+
 func init() {
 	core.AddEffectsToTest = false
-
-	echoesOfInsanityEffect := func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procAura := character.NewTemporaryStatsAura("Echoes of Insanity Proc", core.ActionID{SpellID: 446541}, stats.Stats{stats.HealingPower: 50}, time.Second*10)
-
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procAura.Activate(sim)
-		}
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446545},
-			Name:       "Echoes of Insanity",
-			Callback:   core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellHealing,
-			ProcChance: 0.3,
-			ICD:        time.Second * 40,
-			Handler:    handler,
-		})
-	}
-
-	echoesOfMadnessEffect := func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Echoes of Madness Proc",
-			ActionID: core.ActionID{SpellID: 446528},
-			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(1.1)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(1 / 1.1)
-			},
-		})
-
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procAura.Activate(sim)
-		}
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446518},
-			Name:       "Echoes of Madness",
-			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 0.3,
-			ICD:        time.Second * 40,
-			Handler:    handler,
-		})
-	}
-
-	echoesOfDreadEffect := func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Echoes of Dread Proc",
-			ActionID: core.ActionID{SpellID: 446577},
-			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.05)
-				character.AddStatDynamic(sim, stats.AttackPower, 50)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1/1.05)
-				character.AddStatDynamic(sim, stats.AttackPower, -50)
-			},
-		})
-
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procAura.Activate(sim)
-		}
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446579},
-			Name:       "Echoes of Dread",
-			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskMelee,
-			ProcChance: 0.3,
-			ICD:        time.Second * 40,
-			Handler:    handler,
-		})
-	}
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Cloth
