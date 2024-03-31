@@ -25,6 +25,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
+	flankingStrikeDmgMult 	:= 0.1
+	raptorFuryDmgMult		:= 0.15
+
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
 	}
@@ -86,7 +89,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				spell.BonusWeaponDamage()
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-				mhBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (flankingStrikeDmgMult * float64(hunter.FlankingStrikeAura.GetStacks()))
 			}
 
 			if hasFlankingStrike && sim.RandomFloat("Flanking Strike Refresh") < 0.2 {
@@ -94,7 +97,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
-				mhBaseDamage *= 1.0 + (0.15 * float64(hunter.RaptorFuryAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (raptorFuryDmgMult * float64(hunter.RaptorFuryAura.GetStacks()))
 			}
 
 			spell.CalcAndDealDamage(sim, target, mhBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -114,11 +117,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 					ohSpell.BonusWeaponDamage()
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+					ohBaseDamage *= 1.0 + (flankingStrikeDmgMult * float64(hunter.FlankingStrikeAura.GetStacks()))
 				}
 
 				if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
-					ohBaseDamage *= 1.0 + (0.15 * float64(hunter.RaptorFuryAura.GetStacks()))
+					ohBaseDamage *= 1.0 + (raptorFuryDmgMult * float64(hunter.RaptorFuryAura.GetStacks()))
 				}
 
 				ohSpell.CalcAndDealDamage(sim, target, ohBaseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
