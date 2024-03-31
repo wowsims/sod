@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 228.32755
+  tps: 199.54995
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 228.85325

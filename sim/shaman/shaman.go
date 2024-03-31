@@ -11,10 +11,9 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagShock     = core.SpellFlagAgentReserved1
-	SpellFlagElectric  = core.SpellFlagAgentReserved2
-	SpellFlagTotem     = core.SpellFlagAgentReserved3
-	SpellFlagFocusable = core.SpellFlagAgentReserved4
+	SpellFlagElectric  = core.SpellFlagAgentReserved1
+	SpellFlagTotem     = core.SpellFlagAgentReserved2
+	SpellFlagFocusable = core.SpellFlagAgentReserved3
 )
 
 func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *Shaman {
@@ -151,13 +150,12 @@ type Shaman struct {
 	waterShieldManaMetrics *core.ResourceMetrics
 
 	// Runes
+	EarthShield       *core.Spell
+	FireNova          *core.Spell
 	LavaBurst         *core.Spell
 	LavaBurstOverload *core.Spell
-	MoltenBlast       *core.Spell
 	LavaLash          *core.Spell
-	EarthShield       *core.Spell
-
-	FireNova []*core.Spell
+	MoltenBlast       *core.Spell
 
 	MaelstromWeaponAura *core.Aura
 	PowerSurgeAura      *core.Aura
