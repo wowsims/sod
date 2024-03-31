@@ -148,16 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.9812
-  weights: 0.75374
+  weights: 1.04398
+  weights: 0.57551
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.42076
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.43105
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.446
-  weights: 4.04791
-  weights: 8.51476
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.47454
+  weights: 2.66789
+  weights: 8.15374
   weights: 0
   weights: 0
   weights: 0
@@ -540,169 +540,169 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BenevolentProphet'sVestments"
  value: {
-  dps: 571.43341
-  tps: 599.8097
+  dps: 599.45823
+  tps: 631.40755
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 603.64764
-  tps: 646.03381
+  dps: 640.81681
+  tps: 682.99454
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 585.86138
-  tps: 629.11808
+  dps: 619.58191
+  tps: 662.18231
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 602.18418
-  tps: 644.99023
+  dps: 635.2421
+  tps: 678.96734
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 619.04784
-  tps: 644.7928
+  dps: 654.47256
+  tps: 681.78452
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 603.66755
-  tps: 629.08528
+  dps: 635.89294
+  tps: 663.3888
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
  value: {
-  dps: 575.14371
-  tps: 605.66799
+  dps: 606.21475
+  tps: 638.29871
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-DreadHunter'sChain"
  value: {
-  dps: 614.80238
-  tps: 641.06281
+  dps: 642.70229
+  tps: 671.52667
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 617.52693
-  tps: 654.8208
+  dps: 646.84692
+  tps: 686.27463
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 590.56003
-  tps: 618.00827
+  dps: 623.62363
+  tps: 653.90295
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 567.30236
-  tps: 594.79835
+  dps: 599.56918
+  tps: 631.14636
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 570.87298
-  tps: 599.7564
+  dps: 597.37537
+  tps: 629.74146
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 586.73499
-  tps: 612.5599
+  dps: 624.45025
+  tps: 654.06336
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 613.24682
-  tps: 638.60358
+  dps: 647.34292
+  tps: 674.50251
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 585.16527
-  tps: 610.58473
+  dps: 620.90865
+  tps: 650.4796
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 604.17593
-  tps: 631.04921
+  dps: 634.23144
+  tps: 664.67628
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 609.41735
-  tps: 635.43764
+  dps: 640.66503
+  tps: 669.47841
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 618.68076
-  tps: 645.56247
+  dps: 655.27489
+  tps: 686.10822
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 591.52178
-  tps: 614.6793
+  dps: 632.71851
+  tps: 659.67643
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
  value: {
-  dps: 638.24422
-  tps: 665.4566
+  dps: 668.56043
+  tps: 697.59141
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 629.05825
-  tps: 655.40644
+  dps: 655.99616
+  tps: 684.46612
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 539.46322
-  tps: 555.43964
+  dps: 564.60696
+  tps: 582.64474
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 584.22332
-  tps: 627.6972
+  dps: 614.86704
+  tps: 656.91477
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 819.12646
-  tps: 868.12657
+  dps: 857.67328
+  tps: 907.93898
  }
 }
 dps_results: {
@@ -876,7 +876,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 757.74618
-  tps: 804.28879
+  dps: 795.24106
+  tps: 842.55751
  }
 }
