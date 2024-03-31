@@ -237,43 +237,20 @@ var ItemSetSerpentsAscension = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			procAura := character.NewTemporaryStatsAura("Serpent's Ascension Proc", core.ActionID{SpellID: 446231}, stats.Stats{stats.AttackPower: 150}, time.Second*12)
 
-			icd := core.Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: time.Minute * 2,
+			handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				procAura.Activate(sim)
 			}
 
-			buffAura := character.RegisterAura(core.Aura{
-				Label:    "Serpent's Ascension",
-				ActionID: core.ActionID{SpellID: 446231},
-				Duration: time.Second * 12,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.AddStatsDynamic(sim, stats.Stats{
-						stats.AttackPower:       150,
-						stats.RangedAttackPower: 150,
-					})
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.AddStatsDynamic(sim, stats.Stats{
-						stats.AttackPower:       -150,
-						stats.RangedAttackPower: -150,
-					})
-				},
-			})
-
-			// Hidden proc aura
-			character.RegisterAura(core.Aura{
-				Label:    "Serpent's Ascension Trigger",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && icd.IsReady(sim) && sim.RandomFloat("Serpent's Ascension Proc") < .03 {
-						icd.Use(sim)
-						buffAura.Activate(sim)
-					}
-				},
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:   core.ActionID{SpellID: 446233},
+				Name:       "Serpent's Ascension",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrRanged,
+				ProcChance: 0.3,
+				ICD:        time.Second * 120,
+				Handler:    handler,
 			})
 		},
 	},
