@@ -195,62 +195,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 75.22671
-  tps: 95.90355
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 75.75539
-  tps: 90.97528
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 80.09065
-  tps: 93.71519
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-InfernalPactEssence-216509"
- value: {
-  dps: 161.55074
-  tps: 321.6887
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 82.83448
-  tps: 95.2617
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 82.54368
-  tps: 91.52703
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 79.32065
-  tps: 94.04646
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 75.94106
-  tps: 89.91758
- }
-}
-dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
   dps: 165.24571
@@ -304,48 +248,6 @@ dps_results: {
  value: {
   dps: 165.71895
   tps: 337.38015
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 113.56821
-  tps: 134.37683
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 114.1629
-  tps: 135.42498
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 120.43344
-  tps: 141.49063
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 120.64146
-  tps: 139.82711
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 125.67726
-  tps: 144.58345
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 123.39016
-  tps: 144.06188
  }
 }
 dps_results: {

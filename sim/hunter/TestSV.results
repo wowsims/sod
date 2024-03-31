@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.38562
-  weights: 3.17149
-  weights: 6.75636
+  weights: 3.08273
+  weights: 6.76524
   weights: 0
   weights: 0
   weights: 0
@@ -192,181 +192,6 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 214.78904
-  tps: 99.3492
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 200.83488
-  tps: 87.91288
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 208.63634
-  tps: 93.2456
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 207.10452
-  tps: 91.70401
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BloodCorruptedLeathers"
- value: {
-  dps: 214.602
-  tps: 99.86195
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-BloodlashBow-216516"
- value: {
-  dps: 205.03796
-  tps: 98.45562
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
- value: {
-  dps: 208.59425
-  tps: 96.3445
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-CorruptedSpiritweaver'sMail"
- value: {
-  dps: 221.92326
-  tps: 102.43396
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-DreadHunter'sChain"
- value: {
-  dps: 231.63773
-  tps: 111.2301
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-ElectromanticDevastator'sMail"
- value: {
-  dps: 236.6494
-  tps: 114.78101
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-ElectromanticStormbringer'sChain"
- value: {
-  dps: 208.07463
-  tps: 97.38106
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-ExiledProphet'sRaiment"
- value: {
-  dps: 219.19154
-  tps: 102.7474
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 214.40625
-  tps: 99.14609
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 205.48795
-  tps: 94.58934
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-InsulatedLeathers"
- value: {
-  dps: 205.69296
-  tps: 94.24966
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 208.55645
-  tps: 98.20185
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 209.38901
-  tps: 98.74848
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-LostWorshipper'sArmor"
- value: {
-  dps: 212.77119
-  tps: 102.7542
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 213.59445
-  tps: 100.96362
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 198.32754
-  tps: 91.18143
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-OstracizedBerserk'sBattlemail"
- value: {
-  dps: 215.01846
-  tps: 100.68616
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-ShunnedDevotee'sChainmail"
- value: {
-  dps: 212.9165
-  tps: 101.43131
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-SignetofBeasts-209823"
- value: {
-  dps: 215.54446
-  tps: 97.31771
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-StormshroudArmor"
- value: {
-  dps: 173.53388
-  tps: 88.2629
- }
-}
-dps_results: {
- key: "TestSV-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 204.27522
-  tps: 90.98946
  }
 }
 dps_results: {
@@ -468,268 +293,135 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSV-Lvl40-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 564.25586
-  tps: 245.02338
- }
-}
-dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 624.73631
-  tps: 248.95179
+  dps: 626.9766
+  tps: 250.22342
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 606.51436
-  tps: 241.09927
+  dps: 608.73769
+  tps: 242.36397
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 629.7986
-  tps: 250.34438
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-BloodCorruptedLeathers"
- value: {
-  dps: 619.88031
-  tps: 270.67572
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
- value: {
-  dps: 605.7086
-  tps: 263.68451
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
- value: {
-  dps: 569.38131
-  tps: 247.21094
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-DreadHunter'sChain"
- value: {
-  dps: 630.01747
-  tps: 274.05989
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-ElectromanticDevastator'sMail"
- value: {
-  dps: 607.61149
-  tps: 266.81994
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-ElectromanticStormbringer'sChain"
- value: {
-  dps: 570.5428
-  tps: 251.35868
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-ExiledProphet'sRaiment"
- value: {
-  dps: 564.24619
-  tps: 245.01371
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 564.2141
-  tps: 244.4679
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 577.11116
-  tps: 251.66119
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-InsulatedLeathers"
- value: {
-  dps: 608.56426
-  tps: 265.7812
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 576.80365
-  tps: 251.35369
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 580.91407
-  tps: 253.96273
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-LostWorshipper'sArmor"
- value: {
-  dps: 586.07947
-  tps: 257.81817
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 585.51602
-  tps: 259.3181
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 578.31613
-  tps: 255.07928
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
- value: {
-  dps: 615.25579
-  tps: 272.70636
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-ShunnedDevotee'sChainmail"
- value: {
-  dps: 596.98093
-  tps: 263.2972
+  dps: 632.05703
+  tps: 251.62472
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 839.71614
-  tps: 290.45405
- }
-}
-dps_results: {
- key: "TestSV-Lvl40-AllItems-StormshroudArmor"
- value: {
-  dps: 719.89136
-  tps: 258.61722
+  dps: 841.94236
+  tps: 291.42914
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 603.2443
-  tps: 239.48275
+  dps: 605.46275
+  tps: 240.74275
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 848.79862
-  tps: 297.42838
+  dps: 850.75715
+  tps: 298.30892
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1411.36418
-  tps: 865.88481
+  dps: 1412.7954
+  tps: 866.60099
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 707.04957
-  tps: 195.4128
+  dps: 708.62133
+  tps: 195.50943
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 718.37246
-  tps: 206.17577
+  dps: 718.87776
+  tps: 206.20947
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 656.79858
-  tps: 528.85635
+  dps: 657.85947
+  tps: 529.35973
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 330.06944
-  tps: 107.22466
+  dps: 330.83752
+  tps: 107.25114
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 351.98997
-  tps: 110.38007
+  dps: 352.17501
+  tps: 110.41245
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1422.08361
-  tps: 861.95265
+  dps: 1423.39728
+  tps: 862.59438
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 715.95012
-  tps: 196.84779
+  dps: 717.55311
+  tps: 196.95734
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 728.19061
-  tps: 209.67963
+  dps: 729.1341
+  tps: 209.78075
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 662.57215
-  tps: 532.13402
+  dps: 663.61513
+  tps: 532.61056
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 333.62241
-  tps: 107.61069
+  dps: 334.46979
+  tps: 107.66671
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 356.94886
-  tps: 110.0147
+  dps: 357.2144
+  tps: 110.05068
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 799.97019
-  tps: 274.48388
+  dps: 802.45294
+  tps: 275.66951
  }
 }
