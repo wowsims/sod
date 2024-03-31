@@ -134,6 +134,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			if hasMeleeSpecialist && sim.RandomFloat("Raptor Strike Reset") < 0.3 {
 				spell.CD.Reset()
 			}
+
+			if hasRaptorFury {
+				if !hunter.RaptorFuryAura.IsActive() { hunter.RaptorFuryAura.Activate(sim) }
+				hunter.RaptorFuryAura.AddStack(sim)
+			}
 		},
 	}
 
