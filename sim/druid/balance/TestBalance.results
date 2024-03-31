@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 113.53138
+  tps: 116.13677
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 134.56272
@@ -206,6 +213,27 @@ dps_results: {
  value: {
   dps: 122.4109
   tps: 125.01629
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 110.10635
+  tps: 112.71175
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 108.57239
+  tps: 111.17778
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 116.01398
+  tps: 118.61937
  }
 }
 dps_results: {
@@ -241,6 +269,13 @@ dps_results: {
  value: {
   dps: 130.00892
   tps: 132.61431
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 134.45208
+  tps: 137.05748
  }
 }
 dps_results: {
@@ -370,6 +405,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 304.02033
+  tps: 315.34638
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 435.71158
@@ -381,6 +423,27 @@ dps_results: {
  value: {
   dps: 412.07801
   tps: 424.25106
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 297.16437
+  tps: 308.55367
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 293.72001
+  tps: 305.0983
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 303.5934
+  tps: 314.8947
  }
 }
 dps_results: {
@@ -416,6 +479,13 @@ dps_results: {
  value: {
   dps: 329.45151
   tps: 340.82981
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 333.00286
+  tps: 344.37566
  }
 }
 dps_results: {

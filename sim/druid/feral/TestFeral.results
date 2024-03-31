@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 125.15972
+  tps: 104.59455
+ }
+}
+dps_results: {
  key: "TestFeral-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 135.89403
@@ -206,6 +213,27 @@ dps_results: {
  value: {
   dps: 123.7532
   tps: 107.75065
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl25-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 109.81795
+  tps: 100.20677
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 107.15375
+  tps: 97.70319
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl25-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 109.10982
+  tps: 95.12286
  }
 }
 dps_results: {
@@ -241,6 +269,13 @@ dps_results: {
  value: {
   dps: 108.62241
   tps: 94.85895
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl25-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 96.48022
+  tps: 88.39216
  }
 }
 dps_results: {
@@ -538,6 +573,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 478.76522
+  tps: 357.44124
+ }
+}
+dps_results: {
  key: "TestFeral-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 590.4259
@@ -549,6 +591,27 @@ dps_results: {
  value: {
   dps: 616.03317
   tps: 457.33833
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 521.36509
+  tps: 387.98814
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 515.67304
+  tps: 383.927
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 480.00863
+  tps: 358.32518
  }
 }
 dps_results: {
@@ -584,6 +647,13 @@ dps_results: {
  value: {
   dps: 480.90436
   tps: 358.89222
+ }
+}
+dps_results: {
+ key: "TestFeral-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 483.15606
+  tps: 360.56539
  }
 }
 dps_results: {
