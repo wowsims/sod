@@ -46,8 +46,8 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		Duration: time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.MultiplyMeleeSpeed(sim, 1/(1+(0.06*float64(oldStacks))))
-			aura.Unit.MultiplyMeleeSpeed(sim, 1+(0.06*float64(newStacks)))
+			aura.Unit.MultiplyRangedSpeed(sim, 1/(1+(0.03*float64(oldStacks))))
+			aura.Unit.MultiplyRangedSpeed(sim, 1+(0.03*float64(newStacks)))
 		},
 	})
 
