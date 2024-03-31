@@ -12,10 +12,8 @@ func (mage *Mage) registerSpellfrostBoltSpell() {
 		return
 	}
 
-	level := float64(mage.Level)
-	baseCalc := (13.828124 + 0.018012*level + 0.044141*level*level)
-	baseDamageLow := baseCalc * 3.04
-	baseDamageHigh := baseCalc * 3.55
+	baseDamageLow := mage.baseRuneAbilityDamage() * 3.04
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 3.55
 	spellCoeff := .814
 	castTime := time.Millisecond * 2500
 	manaCost := .12

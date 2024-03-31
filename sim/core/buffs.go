@@ -555,7 +555,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.SanctityAura {
 		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
 	}
-	
+
 	// TODO: Classic
 	if individualBuffs.BlessingOfSanctuary {
 		character.PseudoStats.DamageTakenMultiplier *= 0.97
@@ -593,7 +593,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 
 	if raidBuffs.DemonicPact > 0 {
 		power := float64(raidBuffs.DemonicPact)
-		dpAura := DemonicPactAura(&character.Unit, power)
+		dpAura := DemonicPactAura(&character.Unit, power, CharacterBuildPhaseBuffs)
 		dpAura.ExclusiveEffects[0].Priority = float64(power)
 		MakePermanent(dpAura)
 	}
@@ -705,8 +705,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.MultiplyStat(stats.Agility, 1.08)
 		character.MultiplyStat(stats.Intellect, 1.08)
 		character.MultiplyStat(stats.Spirit, 1.08)
-	}	
-	
+	}
+
 	if individualBuffs.SparkOfInspiration {
 		character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
 		character.AddStat(stats.SpellPower, 42)
@@ -779,10 +779,15 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	// Pets no longer get world buffs
 	individualBuffs.BoonOfBlackfathom = false
 	individualBuffs.SparkOfInspiration = false
+	individualBuffs.FervorOfTheTempleExplorer = false
 	individualBuffs.AshenvalePvpBuff = false
+	individualBuffs.SongflowerSerenade = false
 	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.WarchiefsBlessing = false
 	individualBuffs.SpiritOfZandalar = false
+	individualBuffs.FengusFerocity = false
+	individualBuffs.MoldarsMoxie = false
+	individualBuffs.SlipkiksSavvy = false
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
@@ -1583,13 +1588,12 @@ func replenishmentAura(unit *Unit, _ ActionID) *Aura {
 	return unit.ReplenishmentAura
 }
 
-// TODO: Classic Runes
-func DemonicPactAura(unit *Unit, spellpower float64) *Aura {
+func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPhase) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
-		BuildPhase: CharacterBuildPhaseBuffs,
+		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)
 	return aura
@@ -1748,12 +1752,12 @@ func CommandingShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePt
 	return aura
 }
 
-func BattleSquawkAura(character *Unit, stackcount int32) *Aura {	
-		aura := character.GetOrRegisterAura(Aura{
+func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Battle Squawk",
 		ActionID:   ActionID{SpellID: 23060},
 		Duration:   time.Minute * 4,
-		MaxStacks: 5,
+		MaxStacks:  5,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
@@ -1761,8 +1765,8 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.SetStacks(sim, stackcount)
 		},
-		OnStacksChange:	func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			character.MultiplyMeleeSpeed(sim, math.Pow(1.05,float64(newStacks-oldStacks)))
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+			character.MultiplyMeleeSpeed(sim, math.Pow(1.05, float64(newStacks-oldStacks)))
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.SetStacks(sim, 0)
@@ -1770,7 +1774,6 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 	})
 	return aura
 }
-
 
 func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{

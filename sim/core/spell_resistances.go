@@ -23,7 +23,7 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		if spell.SchoolIndex == stats.SchoolIndexPhysical || MultiSchoolShouldUseArmor(spell, attackTable.Defender) {
 			// All physical dots (Bleeds) ignore armor.
-			if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
+			if isPeriodic {
 				return 1, OutcomeEmpty
 			}
 

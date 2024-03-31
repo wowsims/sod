@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (rogue *Rogue) registerEviscerate() {
@@ -35,12 +36,14 @@ func (rogue *Rogue) registerEviscerate() {
 		60: 31016,
 	}[rogue.Level]
 
+	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
+
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIncludeTargetBonusDamage,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
@@ -79,6 +82,9 @@ func (rogue *Rogue) registerEviscerate() {
 
 			if result.Landed() {
 				rogue.ApplyFinisher(sim, spell)
+				if cutToTheChase {
+					rogue.ApplyCutToTheChase(sim)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

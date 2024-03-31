@@ -19,7 +19,7 @@ import (
 func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
-	shaman.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(shaman.Talents.Anticipation))
+	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
 	if shaman.Talents.AncestralKnowledge > 0 {
@@ -342,6 +342,14 @@ func (shaman *Shaman) applyFlurry() {
 
 func (shaman *Shaman) elementalFury() float64 {
 	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
+}
+
+func (shaman *Shaman) concussionMultiplier() float64 {
+	return 1 + 0.01*float64(shaman.Talents.Concussion)
+}
+
+func (shaman *Shaman) totemManaMultiplier() float64 {
+	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
 }
 
 // func (shaman *Shaman) registerManaTideTotemCD() {

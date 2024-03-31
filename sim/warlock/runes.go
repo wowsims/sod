@@ -300,7 +300,7 @@ func (warlock *Warlock) applyDemonicPact() {
 
 	spellPower := max(warlock.getHighestSP()*0.1, float64(warlock.Level)/2.0)
 	demonicPactAuras := warlock.NewRaidAuraArray(func(u *core.Unit) *core.Aura {
-		return core.DemonicPactAura(u, spellPower)
+		return core.DemonicPactAura(u, spellPower, core.CharacterBuildPhaseNone)
 	})
 
 	warlock.Pet.RegisterAura(core.Aura{
@@ -328,10 +328,10 @@ func (warlock *Warlock) applyDemonicPact() {
 			spBonus := max(math.Round(currentSP*0.1), math.Round(float64(warlock.Level)/2))
 			for _, dpAura := range demonicPactAuras {
 				if dpAura != nil {
-					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
-
 					// Force expire/gain because of new sp bonus
 					dpAura.Deactivate(sim)
+
+					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
 					dpAura.Activate(sim)
 				}
 			}

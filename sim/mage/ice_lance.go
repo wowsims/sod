@@ -11,10 +11,8 @@ func (mage *Mage) registerIceLanceSpell() {
 		return
 	}
 
-	level := float64(mage.GetCharacter().Level)
-	baseCalc := (13.828124 + 0.018012*level) + (0.044141 * level * level)
-	baseDamageLow := baseCalc * .55
-	baseDamageHigh := baseCalc * .65
+	baseDamageLow := mage.baseRuneAbilityDamage() * .55
+	baseDamageHigh := mage.baseRuneAbilityDamage() * .65
 	spellCoeff := .143
 	manaCost := .08
 

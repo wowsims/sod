@@ -154,7 +154,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FelineSwiftness)
+			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = true
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -188,7 +188,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FelineSwiftness)
+			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = false
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
@@ -301,6 +301,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 			druid.PseudoStats.ThreatMultiplier *= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier *= potpdtm
+//			Switch to using AddStat as PseudoStat is being removed
 // 			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
 // 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -334,6 +335,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 			druid.PseudoStats.ThreatMultiplier /= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier /= potpdtm
+//			Switch to using AddStat as PseudoStat is being removed
 // 			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
 // 			druid.AddStatsDynamic(sim, predBonus.Invert())
