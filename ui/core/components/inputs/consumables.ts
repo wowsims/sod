@@ -107,11 +107,17 @@ export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
 	value: Conjured.ConjuredRogueThistleTea,
 	showWhen: player => player.getClass() == Class.ClassRogue,
 };
+export const ConjuredDruidCatnip: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
+	value: Conjured.ConjuredDruidCatnip,
+	showWhen: player => player.getClass() == Class.ClassDruid,
+};
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
 	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect] },
-	{ config: ConjuredRogueThistleTea, stats: [Stat.StatAgility] },
+	{ config: ConjuredRogueThistleTea, stats: [] },
+	{ config: ConjuredDruidCatnip, stats: [] },
 ];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });

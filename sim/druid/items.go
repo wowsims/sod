@@ -3,14 +3,19 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 // Totem Item IDs
 const (
+	WolfsheadHelm             = 8345
 	IdolMindExpandingMushroom = 209576
+	Catnip                    = 213407
 	IdolOfWrath               = 216490
+	BloodBarkCrusher          = 216499
 )
 
 func init() {
@@ -21,8 +26,7 @@ func init() {
 		character.AddStat(stats.Spirit, 5)
 	})
 
-	// Bloodbark Crusher
-	core.NewItemEffect(216499, func(agent core.Agent) {
+	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		auraActionID := core.ActionID{SpellID: 436482}
 		numHits := min(3, character.Env.GetNumTargets())
@@ -83,4 +87,12 @@ func init() {
 	})
 
 	core.AddEffectsToTest = true
+}
+
+// https://www.wowhead.com/classic/item=213407/catnip
+func (druid *Druid) registerCatnipCD() {
+	if druid.Consumes.DefaultConjured != proto.Conjured_ConjuredDruidCatnip {
+		return
+	}
+	sod.RegisterFiftyPercentHasteBuffCD(&druid.Character, core.ActionID{ItemID: Catnip})
 }

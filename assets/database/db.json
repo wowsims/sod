@@ -9713,6 +9713,7 @@
 {"effectId":2567,"spellId":23803,"name":"Enchant Weapon - Mighty Spirit","type":13,"stats":[0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2568,"spellId":23804,"name":"Enchant Weapon - Mighty Intellect","type":13,"stats":[0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2646,"spellId":27837,"name":"Enchant 2H Weapon - Agility","type":13,"enchantType":1,"stats":[0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":7124,"itemId":212568,"spellId":432190,"name":"Wolfshead Trophy","type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3,"classAllowlist":[1]},
 {"effectId":7210,"spellId":435481,"name":"Enchant Weapon - Dismantle","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7223,"spellId":435903,"name":"Enchant Chest - Retricutioner","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7325,"itemId":221322,"spellId":446459,"name":"Atal'ai Signet of Mojo","type":3,"stats":[0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
@@ -10337,6 +10338,7 @@
 {"id":21023,"name":"Dirge's Kickin' Chimaerok Chops","icon":"inv_misc_food_65","requiresLevel":55},
 {"id":21151,"name":"Rumsey Rum Black Label","icon":"inv_drink_04"},
 {"id":21546,"name":"Elixir of Greater Firepower","icon":"inv_potion_60","requiresLevel":40},
+{"id":212568,"name":"Wolfshead Trophy","icon":"ability_hunter_pet_wolf","requiresLevel":40},
 {"id":221321,"name":"Atal'ai Signet of Might","icon":"inv_misc_armorkit_18","requiresLevel":50},
 {"id":221322,"name":"Atal'ai Signet of Mojo","icon":"inv_misc_armorkit_19","requiresLevel":50},
 {"id":221323,"name":"Atal'ai Signet of Serenity","icon":"spell_holy_powerwordshield","requiresLevel":50}
@@ -13598,6 +13600,7 @@
 {"id":431747,"name":"Engrave Bracers - Unstable Affliction","icon":"inv_misc_desecrated_clothbracer","requiresLevel":1},
 {"id":431756,"name":"Engrave Bracers - Summon Felguard","icon":"inv_misc_desecrated_clothbracer","requiresLevel":1},
 {"id":431758,"name":"Engrave Bracers - Immolation Aura","icon":"inv_misc_desecrated_clothbracer","requiresLevel":1},
+{"id":432190,"name":"Wolfshead Trophy","icon":"classic_temp"},
 {"id":435481,"name":"Enchant Weapon - Dismantle","icon":"spell_holy_greaterheal"},
 {"id":435903,"name":"Enchant Chest - Retricutioner","icon":"spell_holy_greaterheal"},
 {"id":436895,"name":"S03 - Tuning and Overrides Passive - Druid","icon":"trade_engineering","requiresLevel":1},

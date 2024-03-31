@@ -82,6 +82,8 @@ type Character struct {
 	defensiveTrinketCD *Timer
 	offensiveTrinketCD *Timer
 	conjuredCD         *Timer
+	// Used by Automatic Crowd Pummeler and Druid's Catnip
+	fiftyPercentHasteBuffCD *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 }
@@ -632,6 +634,9 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
+}
+func (character *Character) GetFiftyPercentHasteBuffCD() *Timer {
+	return character.GetOrInitTimer(&character.fiftyPercentHasteBuffCD)
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.
