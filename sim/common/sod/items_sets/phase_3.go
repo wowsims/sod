@@ -248,7 +248,7 @@ var ItemSetSerpentsAscension = core.NewItemSet(core.ItemSet{
 				Name:       "Serpent's Ascension",
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrRanged,
-				ProcChance: 0.3,
+				ProcChance: 0.03,
 				ICD:        time.Second * 120,
 				Handler:    handler,
 			})
