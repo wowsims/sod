@@ -120,7 +120,7 @@ func (rot *APLRotation) newAPLAction(config *proto.APLAction) *APLAction {
 		impl:      rot.newAPLActionImpl(config),
 	}
 
-	if action.impl == nil {
+	if action.impl == nil || (config.Condition != nil && action.condition == nil) {
 		return nil
 	} else {
 		return action

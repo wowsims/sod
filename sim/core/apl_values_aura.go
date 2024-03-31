@@ -14,6 +14,9 @@ type APLValueAuraIsActive struct {
 
 func (rot *APLRotation) newValueAuraIsActive(config *proto.APLValueAuraIsActive) APLValue {
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
+	if aura.Get() == nil {
+		return nil
+	}
 	return &APLValueAuraIsActive{
 		aura: aura,
 	}
@@ -22,7 +25,7 @@ func (value *APLValueAuraIsActive) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueAuraIsActive) GetBool(sim *Simulation) bool {
-	return value.aura.Get() != nil && value.aura.Get().IsActive()
+	return value.aura.Get().IsActive()
 }
 func (value *APLValueAuraIsActive) String() string {
 	return fmt.Sprintf("Aura Active(%s)", value.aura.String())
