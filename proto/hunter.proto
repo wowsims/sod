@@ -129,6 +129,7 @@ enum HunterRune {
 
 	RuneHelmLockAndLoad					= 415413;
 
+	RuneBracersFocusFire				= 428726;
 	RuneBracersRaptorFury				= 415358;
 }
 
