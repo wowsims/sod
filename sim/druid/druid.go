@@ -182,6 +182,7 @@ func (druid *Druid) Initialize() {
 
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
+	druid.registerCatnipCD()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {

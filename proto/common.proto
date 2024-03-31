@@ -316,6 +316,7 @@ enum Conjured {
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
 	ConjuredRogueThistleTea = 3;
+	ConjuredDruidCatnip = 4;
 }
 
 enum AtalAi {
