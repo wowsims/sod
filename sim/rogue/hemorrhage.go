@@ -37,6 +37,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 	rogue.Hemorrhage = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       rogue.builderFlags(),
 
