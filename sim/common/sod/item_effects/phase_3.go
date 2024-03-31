@@ -92,6 +92,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
 	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -135,6 +136,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 50+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+
 				procAuras.Get(target).Activate(sim)
 			},
 		})

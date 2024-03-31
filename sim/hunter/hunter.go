@@ -67,6 +67,7 @@ type Hunter struct {
 	SerpentStingChimeraShot *core.Spell
 
 	FlankingStrikeAura *core.Aura
+	RaptorFuryAura	   *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
 

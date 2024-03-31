@@ -9839,6 +9839,7 @@
 {"id":415236,"name":"Engrave Chest - Healing Rain","icon":"spell_nature_tranquility","class":7,"type":5,"requiresLevel":1},
 {"id":415320,"name":"Engrave Pants - Flanking Strike","icon":"ability_hunter_harass","class":2,"type":9,"requiresLevel":1},
 {"id":415352,"name":"Engrave Belt - Melee Specialist","icon":"inv_axe_03","class":2,"type":8,"requiresLevel":1},
+{"id":415358,"name":"Engrave Bracers - Raptor Fury","icon":"ability_mount_raptor","class":2,"type":6,"requiresLevel":1},
 {"id":415370,"name":"Engrave Chest - Lone Wolf","icon":"ability_mount_whitedirewolf","class":2,"type":5,"requiresLevel":1},
 {"id":415399,"name":"Engrave Pants - Sniper Training","icon":"ability_hunter_longshots","class":2,"type":9,"requiresLevel":1},
 {"id":415413,"name":"Engrave Helm - Lock and Load","icon":"ability_hunter_lockandload","class":2,"type":1,"requiresLevel":1},

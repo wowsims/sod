@@ -97,62 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Lvl25-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 82.13304
-  tps: 101.57908
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 82.48321
-  tps: 101.82782
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 91.88845
-  tps: 115.82426
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-InfernalPactEssence-216509"
- value: {
-  dps: 167.90599
-  tps: 320.69108
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 95.00354
-  tps: 119.67023
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 99.69885
-  tps: 126.05017
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 91.56124
-  tps: 115.94073
- }
-}
-dps_results: {
- key: "TestAffliction-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 88.81985
-  tps: 112.46249
- }
-}
-dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
   dps: 172.83659

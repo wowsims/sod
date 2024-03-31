@@ -293,167 +293,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 117.90983
-  tps: 110.42633
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 137.50975
-  tps: 136.48915
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 130.7531
-  tps: 129.24637
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 135.27752
-  tps: 134.25691
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-BloodCorruptedLeathers"
- value: {
-  dps: 130.23011
-  tps: 122.7049
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
- value: {
-  dps: 126.47116
-  tps: 119.02658
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-CorruptedSpiritweaver'sMail"
- value: {
-  dps: 120.75658
-  tps: 112.98166
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-DreadHunter'sChain"
- value: {
-  dps: 128.78566
-  tps: 121.07802
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-ElectromanticDevastator'sMail"
- value: {
-  dps: 135.80311
-  tps: 131.29344
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-ElectromanticStormbringer'sChain"
- value: {
-  dps: 122.94387
-  tps: 112.95028
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-ExiledProphet'sRaiment"
- value: {
-  dps: 118.7988
-  tps: 111.10052
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 118.91782
-  tps: 111.28927
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 120.23205
-  tps: 110.78961
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-InsulatedLeathers"
- value: {
-  dps: 133.16956
-  tps: 125.67933
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 117.78876
-  tps: 109.39462
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 121.3973
-  tps: 111.42695
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-LostWorshipper'sArmor"
- value: {
-  dps: 124.22519
-  tps: 113.17561
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 126.03853
-  tps: 115.13868
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 119.53154
-  tps: 109.8436
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-OstracizedBerserk'sBattlemail"
- value: {
-  dps: 139.48472
-  tps: 131.71529
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-ShunnedDevotee'sChainmail"
- value: {
-  dps: 126.99783
-  tps: 116.0939
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-StormshroudArmor"
- value: {
-  dps: 115.31549
-  tps: 107.6833
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 129.38318
-  tps: 127.82818
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl25-Average-Default"
  value: {
   dps: 171.50205
@@ -636,13 +475,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 599.45823
-  tps: 631.40755
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 640.81681
@@ -661,132 +493,6 @@ dps_results: {
  value: {
   dps: 635.2421
   tps: 678.96734
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-BloodCorruptedLeathers"
- value: {
-  dps: 654.47256
-  tps: 681.78452
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
- value: {
-  dps: 635.89294
-  tps: 663.3888
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
- value: {
-  dps: 606.21475
-  tps: 638.29871
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-DreadHunter'sChain"
- value: {
-  dps: 642.70229
-  tps: 671.52667
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-ElectromanticDevastator'sMail"
- value: {
-  dps: 646.84692
-  tps: 686.27463
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-ElectromanticStormbringer'sChain"
- value: {
-  dps: 623.62363
-  tps: 653.90295
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-ExiledProphet'sRaiment"
- value: {
-  dps: 599.56918
-  tps: 631.14636
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 597.37537
-  tps: 629.74146
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 624.45025
-  tps: 654.06336
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-InsulatedLeathers"
- value: {
-  dps: 647.34292
-  tps: 674.50251
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 620.90865
-  tps: 650.4796
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 634.23144
-  tps: 664.67628
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-LostWorshipper'sArmor"
- value: {
-  dps: 640.66503
-  tps: 669.47841
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 655.27489
-  tps: 686.10822
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 632.71851
-  tps: 659.67643
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
- value: {
-  dps: 668.56043
-  tps: 697.59141
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-ShunnedDevotee'sChainmail"
- value: {
-  dps: 655.99616
-  tps: 684.46612
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-StormshroudArmor"
- value: {
-  dps: 564.60696
-  tps: 582.64474
  }
 }
 dps_results: {
@@ -979,13 +685,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-BenevolentProphet'sVestments"
- value: {
-  dps: 678.0976
-  tps: 717.88054
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 716.56625
@@ -1007,34 +706,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-BloodCorruptedLeathers"
- value: {
-  dps: 729.3001
-  tps: 761.94532
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-CoagulateBloodguard'sLeathers"
- value: {
-  dps: 717.15081
-  tps: 749.96021
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-CorruptedSpiritweaver'sMail"
- value: {
-  dps: 687.07676
-  tps: 728.62271
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-DreadHunter'sChain"
- value: {
-  dps: 721.73645
-  tps: 756.23914
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 730.31587
@@ -1046,13 +717,6 @@ dps_results: {
  value: {
   dps: 697.98623
   tps: 735.86833
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-ExiledProphet'sRaiment"
- value: {
-  dps: 676.0921
-  tps: 714.39186
  }
 }
 dps_results: {
@@ -1088,48 +752,6 @@ dps_results: {
  value: {
   dps: 714.17552
   tps: 752.85337
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-LostWorshipper'sArmor"
- value: {
-  dps: 721.02356
-  tps: 756.10242
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 733.91682
-  tps: 772.12616
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 704.54847
-  tps: 735.65182
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-OstracizedBerserk'sBattlemail"
- value: {
-  dps: 746.80414
-  tps: 783.25198
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-ShunnedDevotee'sChainmail"
- value: {
-  dps: 738.89532
-  tps: 772.22172
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-StormshroudArmor"
- value: {
-  dps: 643.66057
-  tps: 664.08445
  }
 }
 dps_results: {
