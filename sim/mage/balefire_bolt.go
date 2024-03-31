@@ -14,8 +14,8 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		return
 	}
 
-	baseDamageLow := mage.runeAbility() * 2.8
-	baseDamageHigh := mage.runeAbility() * 4.2
+	baseDamageLow := mage.baseRuneAbilityDamage() * 2.8
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 4.2
 	spellCoeff := .857
 	castTime := time.Millisecond * 2500
 	buffDuration := time.Second * 30

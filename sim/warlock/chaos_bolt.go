@@ -14,8 +14,8 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	}
 
 	spellCoeff := 0.714
-	baseLowDamage := warlock.runeAbility() * 5.22
-	baseHighDamage := warlock.runeAbility() * 6.62
+	baseLowDamage := warlock.baseRuneAbilityDamage() * 5.22
+	baseHighDamage := warlock.baseRuneAbilityDamage() * 6.62
 
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 403629},

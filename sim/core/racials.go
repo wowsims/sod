@@ -57,7 +57,7 @@ func applyRaceEffects(agent Agent) {
 		character.PseudoStats.TwoHandedSwordsSkill += 5
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
-		character.AddStat(stats.Dodge, DodgeRatingPerDodgeChance*1)
+		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
 		// Command (Pet damage +5%)

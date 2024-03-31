@@ -17,8 +17,8 @@ func (priest *Priest) registerMindSpikeSpell() {
 
 func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	// 2024-02-22 tuning 10% buff
-	baseDamageLow := priest.runeAbility() * 1.11 * 1.1
-	baseDamageHigh := priest.runeAbility() * 1.29 * 1.1
+	baseDamageLow := priest.baseRuneAbilityDamage() * 1.11 * 1.1
+	baseDamageHigh := priest.baseRuneAbilityDamage() * 1.29 * 1.1
 	spellCoeff := .429
 	manaCost := .06
 	castTime := time.Millisecond * 1500

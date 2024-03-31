@@ -82,6 +82,8 @@ type Character struct {
 	defensiveTrinketCD *Timer
 	offensiveTrinketCD *Timer
 	conjuredCD         *Timer
+	// Used by Automatic Crowd Pummeler and Druid's Catnip
+	fiftyPercentHasteBuffCD *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 }
@@ -585,10 +587,6 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatOffHandDps:           character.AutoAttacks.OH().DPS(),
 		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
 		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
-		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
-		// TODO: Fix Dodge and Parry
-		proto.PseudoStat_PseudoStatDodge:                character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
-		proto.PseudoStat_PseudoStatParry:                character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
 		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),
 		proto.PseudoStat_PseudoStatSwordsSkill:          float64(character.PseudoStats.SwordsSkill),
 		proto.PseudoStat_PseudoStatMacesSkill:           float64(character.PseudoStats.MacesSkill),
@@ -628,6 +626,9 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
+}
+func (character *Character) GetFiftyPercentHasteBuffCD() *Timer {
+	return character.GetOrInitTimer(&character.fiftyPercentHasteBuffCD)
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.

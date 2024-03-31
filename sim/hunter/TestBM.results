@@ -246,8 +246,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 228.3113
-  tps: 98.3112
+  dps: 226.10352
+  tps: 96.09243
  }
 }
 dps_results: {
@@ -449,8 +449,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 619.17431
-  tps: 230.77358
+  dps: 617.31287
+  tps: 228.91214
  }
 }
 dps_results: {

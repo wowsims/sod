@@ -12,7 +12,9 @@ func (rogue *Rogue) registerEnvenom() {
 		return
 	}
 
-	baseAbilityDamage := rogue.runeAbility()
+	baseAbilityDamage := rogue.baseRuneAbilityDamage()
+
+	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
@@ -74,6 +76,9 @@ func (rogue *Rogue) registerEnvenom() {
 
 			if result.Landed() {
 				rogue.ApplyFinisher(sim, spell)
+				if cutToTheChase {
+					rogue.ApplyCutToTheChase(sim)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

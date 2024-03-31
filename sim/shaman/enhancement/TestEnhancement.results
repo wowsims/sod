@@ -239,8 +239,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 149.6854
-  tps: 140.05498
+  dps: 149.35374
+  tps: 139.9113
  }
 }
 dps_results: {
@@ -519,8 +519,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 591.94646
-  tps: 617.79592
+  dps: 586.73499
+  tps: 612.5599
  }
 }
 dps_results: {

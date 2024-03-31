@@ -41,6 +41,8 @@ var EnchantOverrides = []*proto.UIEnchant{
 
 	// Head
 	// {EffectId: 3795, ItemId: 44069, SpellId: 59777, Name: "Arcanum of Triumph", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50, stats.Resilience: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
+	// SoD Feral Druid Enchant
+	{EffectId: 7124, ItemId: 212568, SpellId: 432190, Name: "Wolfshead Trophy", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
 
 	// Shoulder
 	// SoD Phase 3 Enchants

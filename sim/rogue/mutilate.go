@@ -19,7 +19,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 
-	flatDamageBonus := rogue.runeAbility()
+	flatDamageBonus := rogue.baseRuneAbilityDamage()
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),

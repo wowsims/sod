@@ -182,6 +182,7 @@ func (druid *Druid) Initialize() {
 
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
+	druid.registerCatnipCD()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -248,13 +249,13 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[char.Class][int(druid.Level)]*core.CritRatingPerCritChance)
 	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[char.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
-	//Druid get 0.0209 dodge per agi (before dr), roughly 1 per 47.846
-	druid.AddStatDependency(stats.Agility, stats.Dodge, (0.0209)*core.DodgeRatingPerDodgeChance)
+	// TODO: Update DodgePerAgiAtLevel with the appropriate value for each level
+	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[char.Class][int(druid.Level)])
 
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Base dodge is unaffected by Diminishing Returns
+	// Switch to using AddStat as PseudoStat is being removed
 	// druid.PseudoStats.BaseDodge += 0.056097
 
 	return druid
@@ -290,7 +291,7 @@ func (druid *Druid) HasRune(rune proto.DruidRune) bool {
 	return druid.HasRuneById(int32(rune))
 }
 
-func (druid *Druid) runeAbility() float64 {
+func (druid *Druid) baseRuneAbilityDamage() float64 {
 	return 9.183105 + 0.616405*float64(druid.Level) + 0.028608*float64(druid.Level*druid.Level)
 }
 

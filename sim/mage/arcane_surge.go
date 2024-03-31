@@ -13,8 +13,8 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneLegsArcaneSurge)}
-	baseDamageLow := mage.runeAbility() * 2.26
-	baseDamageHigh := mage.runeAbility() * 2.64
+	baseDamageLow := mage.baseRuneAbilityDamage() * 2.26
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 2.64
 	spellCoeff := .429
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8

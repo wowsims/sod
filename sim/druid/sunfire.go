@@ -18,9 +18,9 @@ func (druid *Druid) registerSunfireSpell() {
 	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
 	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
 
-	baseLowDamage := druid.runeAbility() * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
-	baseHighDamage := druid.runeAbility() * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := druid.runeAbility() * 0.65 * moonfuryMultiplier * impMoonfireMultiplier
+	baseLowDamage := druid.baseRuneAbilityDamage() * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
+	baseHighDamage := druid.baseRuneAbilityDamage() * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
+	baseDotDamage := druid.baseRuneAbilityDamage() * 0.65 * moonfuryMultiplier * impMoonfireMultiplier
 	spellCoeff := .15
 	spellDotCoeff := .13
 

@@ -21,8 +21,8 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
 	paladin.AddStat(stats.SpellCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
 
-	paladin.PseudoStats.BaseParry += 0.01 * float64(paladin.Talents.Deflection)
-	paladin.PseudoStats.BaseDodge += 0.01 * float64(paladin.Talents.Anticipation)
+	paladin.AddStat(stats.Parry, 1*float64(paladin.Talents.Deflection))
+	paladin.AddStat(stats.Dodge, 1*float64(paladin.Talents.Anticipation))
 
 	paladin.ApplyEquipScaling(stats.Armor, paladin.ToughnessArmorMultiplier())
 
@@ -49,7 +49,8 @@ func (paladin *Paladin) ApplyTalents() {
 	}
 
 	if paladin.Talents.CombatExpertise > 0 {
-		paladin.AddStat(stats.Expertise, core.ExpertisePerQuarterPercentReduction*2*float64(paladin.Talents.CombatExpertise))
+		// Expertise is replaced by weapon skill in SoD
+		// paladin.AddStat(stats.Expertise, core.ExpertisePerQuarterPercentReduction*2*float64(paladin.Talents.CombatExpertise))
 		paladin.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*2*float64(paladin.Talents.CombatExpertise))
 		paladin.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*2*float64(paladin.Talents.CombatExpertise))
 		paladin.MultiplyStat(stats.Stamina, 1.0+0.02*float64(paladin.Talents.CombatExpertise))

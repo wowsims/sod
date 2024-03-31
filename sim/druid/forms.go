@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -153,7 +154,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FelineSwiftness)
+			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = true
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -187,7 +188,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FelineSwiftness)
+			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
 			druid.PseudoStats.Shapeshifted = false
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
@@ -220,6 +221,13 @@ func (druid *Druid) registerCatFormSpell() {
 
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 
+	furorProcChance := 0.2 * float64(druid.Talents.Furor)
+
+	hasWolfheadBonus := false
+	if head := druid.Equipment.Head(); head != nil && (head.ID == WolfsheadHelm || head.Enchant.EffectID == sod.WolfsheadTrophy) {
+		hasWolfheadBonus = true
+	}
+
 	druid.CatForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
@@ -236,7 +244,8 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < 0.2*float64(druid.Talents.Furor), 40, 0)
+			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
+			maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
 			if energyDelta > 0 {
@@ -292,6 +301,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 			druid.PseudoStats.ThreatMultiplier *= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier *= potpdtm
+//			Switch to using AddStat as PseudoStat is being removed
 // 			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
 // 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -325,6 +335,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 			druid.PseudoStats.ThreatMultiplier /= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier /= potpdtm
+//			Switch to using AddStat as PseudoStat is being removed
 // 			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
 // 			druid.AddStatsDynamic(sim, predBonus.Invert())
