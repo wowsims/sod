@@ -12,8 +12,8 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		return
 	}
 
-	focusFireMetrics := hunter.pet.Metrics.NewResourceMetrics(core.ActionID{SpellID: 428726}, proto.ResourceType_ResourceTypeFocus)
-	focusFireActionId := core.ActionID{SpellID: 428726}
+	focusFireMetrics := hunter.pet.NewFocusMetrics(core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersFocusFire)})
+	focusFireActionId := core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersFocusFire)}
 	focusFireFrenzyActionId := core.ActionID{SpellID: 428728}
 
 	// For tracking in timeline
