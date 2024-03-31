@@ -615,7 +615,7 @@ message Consumes {
 	AtalAi default_atal_ai = 25;
 }
 
-// NextIndex: 30
+// NextIndex: 31
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -662,7 +662,7 @@ message Debuffs {
 	bool mangle = 25;
 
 	bool mekkatorque_fist_debuff = 29;
-
+	bool serpents_striker_fist_debuff = 30;
 }
 
 enum MobType {
