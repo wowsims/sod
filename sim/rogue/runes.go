@@ -65,10 +65,13 @@ func (rogue *Rogue) applyFocusedAttacks() {
 		return
 	}
 
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 51637})
+	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneFocusedAttacks)}
+
+	energyMetrics := rogue.NewEnergyMetrics(actionID)
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Focused Attacks",
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -91,24 +94,17 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		return
 	}
 
-	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51701})
-	honorAmongThievesID := core.ActionID{SpellID: 51701}
+	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)}
 
+	comboMetrics := rogue.NewComboPointMetrics(actionID)
 	icd := core.Cooldown{
 		Timer:    rogue.NewTimer(),
 		Duration: time.Second,
 	}
 
-	maybeProc := func(sim *core.Simulation) {
-		if icd.IsReady(sim) {
-			rogue.AddComboPoints(sim, 1, comboMetrics)
-			icd.Use(sim)
-		}
-	}
-
 	rogue.HonorAmongThieves = rogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
-		ActionID: honorAmongThievesID,
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -128,7 +124,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 
 			pa := &core.PendingAction{}
 			pa.OnAction = func(sim *core.Simulation) {
-				maybeProc(sim)
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 				pa.NextActionAt = sim.CurrentTime + time.Duration(sim.RandomExpFloat("next party crit")*rateToDuration)
 				sim.AddPendingAction(pa)
 			}
@@ -137,15 +133,22 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto|core.ProcMaskMeleeOHAuto|core.ProcMaskRangedAuto) {
-				maybeProc(sim)
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 			}
 		},
 		OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() {
-				maybeProc(sim)
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 			}
 		},
 	})
+}
+
+func (rogue *Rogue) tryHonorAmongThievesProc(sim *core.Simulation, icd core.Cooldown, metrics *core.ResourceMetrics) {
+	if icd.IsReady(sim) {
+		rogue.AddComboPoints(sim, 1, metrics)
+		icd.Use(sim)
+	}
 }
 
 // Apply the effects of the Cut to the Chase talent
