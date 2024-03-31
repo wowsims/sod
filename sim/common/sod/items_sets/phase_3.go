@@ -1,6 +1,8 @@
 package item_sets
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -222,6 +224,57 @@ var ItemSetBanishedMartyrsFullPlate = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 15)
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Other
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetSerpentsAscension = core.NewItemSet(core.ItemSet{
+	Name: "Serpent's Ascension",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute * 2,
+			}
+
+			buffAura := character.RegisterAura(core.Aura{
+				Label:    "Serpent's Ascension",
+				ActionID: core.ActionID{SpellID: 446231},
+				Duration: time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, stats.Stats{
+						stats.AttackPower:       150,
+						stats.RangedAttackPower: 150,
+					})
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, stats.Stats{
+						stats.AttackPower:       -150,
+						stats.RangedAttackPower: -150,
+					})
+				},
+			})
+
+			// Hidden proc aura
+			character.RegisterAura(core.Aura{
+				Label:    "Serpent's Ascension Trigger",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && icd.IsReady(sim) && sim.RandomFloat("Serpent's Ascension Proc") < .03 {
+						icd.Use(sim)
+						buffAura.Activate(sim)
+					}
+				},
+			})
 		},
 	},
 })
