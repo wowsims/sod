@@ -910,13 +910,11 @@ func (caster *Unit) NewPartyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
 }
 
 func (caster *Unit) NewEnemyAuraArray(makeAura func(*Unit, int32) *Aura) AuraArray {
-	enemyUnits := FilterSlice(caster.Env.AllUnits, func(unit *Unit) bool {
-		return unit.Type == EnemyUnit
-	})
-
-	auras := make([]*Aura, len(enemyUnits))
-	for _, target := range enemyUnits {
-		auras[target.UnitIndex] = makeAura(target, caster.Level)
+	auras := make([]*Aura, len(caster.Env.AllUnits))
+	for _, target := range caster.Env.AllUnits {
+		if target.Type == EnemyUnit {
+			auras[target.UnitIndex] = makeAura(target, caster.Level)
+		}
 	}
 	return auras
 }

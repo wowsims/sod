@@ -34,10 +34,11 @@ func init() {
 
 func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64) {
 	procAura := hunter.NewTemporaryStatsAura("Bloodlash", core.ActionID{SpellID: 436471}, stats.Stats{stats.Strength: bonusStrength}, time.Second*15)
+	ppm := hunter.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 	core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 		Label: "Bloodlash Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && sim.RandomFloat("Bloodlash") < .05 {
+			if result.Landed() && ppm.Proc(sim, spell.ProcMask, "Bloodlash Proc") {
 				procAura.Activate(sim)
 			}
 		},
