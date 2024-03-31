@@ -16,9 +16,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 		return
 	}
 
-	level := float64(mage.GetCharacter().Level)
-	baseCalc := 13.828124 + 0.018012*level + 0.044141*level*level
-	baseDamage := baseCalc * 1
+	baseDamage := mage.baseRuneAbilityDamage() * 1
 	spellCoeff := .143
 	manaCost := .11
 	cooldown := time.Second * 30
@@ -72,8 +70,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
-					dot.Spell.SpellMetrics[target.UnitIndex].Hits += 1
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
 				}
 			},
 		},

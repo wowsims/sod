@@ -19,7 +19,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
@@ -64,7 +64,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 					rogue.WoundPoison[ShivProc].Cast(sim, target)
 				default:
 					if hasDeadlyBrew {
-						rogue.InstantPoison[NormalProc].Cast(sim, target)
+						rogue.InstantPoison[DeadlyBrewProc].Cast(sim, target)
 					}
 				}
 			} else {

@@ -13,12 +13,11 @@ import (
 func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 	var ticks int32 = 6
 
-	level := float64(priest.GetCharacter().Level)
 	manaCost := .13
 	cooldown := time.Second * 6
 
 	// 2024-02-22 tuning 10% buff
-	baseTickDamage := (9.456667 + 0.635108*level + 0.039063*level*level) * 1.17 * 1.1
+	baseTickDamage := priest.baseRuneAbilityDamage() * 1.17 * 1.1
 	spellCoeff := .166
 
 	return core.SpellConfig{

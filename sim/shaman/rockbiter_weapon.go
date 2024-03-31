@@ -25,8 +25,7 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := RockbiterWeaponRankByLevel[level]
+	rank := RockbiterWeaponRankByLevel[shaman.Level]
 	enchantId := RockbiterWeaponEnchantId[rank]
 
 	duration := time.Minute * 5
@@ -63,8 +62,7 @@ func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
 		return
 	}
 
-	level := shaman.GetCharacter().Level
-	rank := RockbiterWeaponRankByLevel[level]
+	rank := RockbiterWeaponRankByLevel[shaman.Level]
 	enchantId := RockbiterWeaponEnchantId[rank]
 
 	bonusAP := RockbiterWeaponBonusAP[rank] * []float64{1, 1.07, 1.14, 1.2}[shaman.Talents.ElementalWeapons]

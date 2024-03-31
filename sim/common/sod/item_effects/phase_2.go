@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
+	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -19,6 +20,7 @@ const (
 	MiniaturizedCombustionChamber       = 213347
 	Shawarmageddon                      = 213105
 	MekkatorquesArcanoShredder          = 213409
+	GyromaticExperiment420b             = 213348
 )
 
 func init() {
@@ -194,6 +196,56 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(GyromaticExperiment420b, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		hasteAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Gyromatic Experiment 420b",
+			ActionID: core.ActionID{SpellID: 435899},
+			Duration: time.Second * 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.05)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.0/1.05)
+			},
+		})
+
+		chickenAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Cluck Cluck??",
+			ActionID: core.ActionID{SpellID: 435896},
+			Duration: time.Second * 5,
+		})
+
+		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 435899},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 30,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				if sim.RandomFloat("Gyromatic Experiment 420b") > 0.95 {
+					chickenAura.Activate(sim)
+					character.WaitUntil(sim, chickenAura.ExpiresAt())
+					character.AutoAttacks.DelayMeleeBy(sim, time.Second*5)
+				} else {
+					hasteAura.Activate(sim)
+				}
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    activationSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
@@ -201,41 +253,7 @@ func init() {
 	// Automatic Crowd Pummeler
 	core.NewItemEffect(AutomaticCrowdPummeler, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 13494}
-
-		hasteAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Haste",
-			ActionID: actionID,
-			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.5)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.5)
-			},
-		})
-
-		hasteSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				hasteAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    hasteSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
+		sod.RegisterFiftyPercentHasteBuffCD(character, core.ActionID{ItemID: AutomaticCrowdPummeler})
 	})
 
 	itemhelpers.CreateWeaponProcDamage(ElectrocutionersNeedle, "Electrocutioner's Needle", 6.5, 434839, core.SpellSchoolNature, 25, 10, 0.05, core.DefenseTypeMagic)

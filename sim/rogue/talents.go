@@ -15,11 +15,10 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.applyWeaponExpertise()
 	rogue.applyInitiative()
 
-	rogue.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(rogue.Talents.LightningReflexes))
-	rogue.AddStat(stats.Parry, core.ParryRatingPerParryChance*1*float64(rogue.Talents.Deflection))
-	rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(rogue.Talents.Malice))
-	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
-	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
+	rogue.AddStat(stats.Dodge, 1*float64(rogue.Talents.LightningReflexes))
+	rogue.AddStat(stats.Parry, 1*float64(rogue.Talents.Deflection))
+	rogue.AddStat(stats.MeleeCrit, 1*float64(rogue.Talents.Malice))
+	rogue.AddStat(stats.MeleeHit, 1*float64(rogue.Talents.Precision))
 	// TODO: Test the Armor reduction amount
 	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
@@ -269,64 +268,6 @@ func (rogue *Rogue) applyWeaponExpertise() {
 	}
 }
 
-/** Wrath Energy gain talents
-func (rogue *Rogue) applyCombatPotency() {
-	if rogue.Talents.CombatPotency == 0 {
-		return
-	}
-
-	const procChance = 0.2
-	energyBonus := 3.0 * float64(rogue.Talents.CombatPotency)
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 35553})
-
-	rogue.RegisterAura(core.Aura{
-		Label:    "Combat Potency",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// from 3.0.3 patch notes: "Combat Potency: Now only works with auto attacks"
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOHAuto) {
-				return
-			}
-
-			if sim.RandomFloat("Combat Potency") < procChance {
-				rogue.AddEnergy(sim, energyBonus, energyMetrics)
-			}
-		},
-	})
-}
-
-func (rogue *Rogue) applyFocusedAttacks() {
-	if rogue.Talents.FocusedAttacks == 0 {
-		return
-	}
-
-	procChance := []float64{0, 0.33, 0.66, 1}[rogue.Talents.FocusedAttacks]
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 51637})
-
-	rogue.RegisterAura(core.Aura{
-		Label:    "Focused Attacks",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.DidCrit() {
-				return
-			}
-			// Fan of Knives OH hits do not trigger focused attacks
-			if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.IsSpellAction(FanOfKnivesSpellID) {
-				return
-			}
-			if sim.Proc(procChance, "Focused Attacks") {
-				rogue.AddEnergy(sim, 2, energyMetrics)
-			}
-		},
-	})
-}*/
-
 var BladeFlurryActionID = core.ActionID{SpellID: 13877}
 var BladeFlurryHitID = core.ActionID{SpellID: 22482}
 
@@ -474,70 +415,3 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 func (rogue *Rogue) lethality() float64 {
 	return 0.06 * float64(rogue.Talents.Lethality)
 }
-
-/** Honor Among Thieves (Possible P2 rune)
-func (rogue *Rogue) registerHonorAmongThieves() {
-	// When anyone in your group critically hits with a damage or healing spell or ability,
-	// you have a [33%/66%/100%] chance to gain a combo point on your current target.
-	// This effect cannot occur more than once per second.
-	if rogue.Talents.HonorAmongThieves == 0 {
-		return
-	}
-
-	procChance := []float64{0, 0.33, 0.66, 1}[rogue.Talents.HonorAmongThieves]
-	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51701})
-	honorAmongThievesID := core.ActionID{SpellID: 51701}
-
-	icd := core.Cooldown{
-		Timer:    rogue.NewTimer(),
-		Duration: time.Second,
-	}
-
-	maybeProc := func(sim *core.Simulation) {
-		if icd.IsReady(sim) && sim.Proc(procChance, "honor of thieves") {
-			rogue.AddComboPoints(sim, 1, comboMetrics)
-			icd.Use(sim)
-		}
-	}
-
-	rogue.HonorAmongThieves = rogue.RegisterAura(core.Aura{
-		Label:    "Honor Among Thieves",
-		ActionID: honorAmongThievesID,
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(_ *core.Aura, sim *core.Simulation) {
-			// In an ideal party, you'd probably get up to 6 ability crits/s (Rate = 600).
-			//  Survival Hunters, Enhancement Shamans, and Assassination Rogues are particularly good.
-			if rogue.Options.HonorOfThievesCritRate <= 0 {
-				return
-			}
-
-			if rogue.Options.HonorOfThievesCritRate > 2000 {
-				rogue.Options.HonorOfThievesCritRate = 2000 // limited, so performance doesn't suffer
-			}
-
-			rateToDuration := float64(time.Second) * 100 / float64(rogue.Options.HonorOfThievesCritRate)
-
-			pa := &core.PendingAction{}
-			pa.OnAction = func(sim *core.Simulation) {
-				maybeProc(sim)
-				pa.NextActionAt = sim.CurrentTime + time.Duration(sim.RandomExpFloat("next party crit")*rateToDuration)
-				sim.AddPendingAction(pa)
-			}
-			pa.NextActionAt = sim.CurrentTime + time.Duration(sim.RandomExpFloat("next party crit")*rateToDuration)
-			sim.AddPendingAction(pa)
-		},
-		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto|core.ProcMaskMeleeOHAuto|core.ProcMaskRangedAuto) {
-				maybeProc(sim)
-			}
-		},
-		OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() {
-				maybeProc(sim)
-			}
-		},
-	})
-}*/

@@ -5,6 +5,7 @@ import (
 
 	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const WrathRanks = 8
@@ -36,6 +37,8 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 	manaCost := WrathManaCost[rank]
 	castTime := WrathCastTime[rank]
 	level := WrathLevel[rank]
+
+	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -77,6 +80,10 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+
+				if hasElunesFires {
+					druid.tryElunesFiresSunfireExtension(sim, target)
+				}
 			})
 		},
 	}

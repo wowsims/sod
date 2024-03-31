@@ -1,4 +1,4 @@
-import { CURRENT_PHASE, Phase } from '../core/constants/other.js';
+import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
@@ -20,6 +20,7 @@ import { FeralDruid_Options as FeralDruidOptions, FeralDruid_Rotation as FeralDr
 import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
+import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/p1.gear.json';
 import Phase2Gear from './gear_sets/p2.gear.json';
 
@@ -37,9 +38,12 @@ export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[CURRENT_PHASE][0];
+export const DefaultGear = GearPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -47,18 +51,21 @@ export const DefaultGear = GearPresets[CURRENT_PHASE][0];
 
 export const APLPhase1 = PresetUtils.makePresetAPLRotation('Phase 1', Phase1APL);
 export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL);
+export const APLPhase3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3APL);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
 	[Phase.Phase2]: [APLPhase2],
+	[Phase.Phase3]: [APLPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset an pull from map
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
-	// TODO: Phase 3
-	50: APLPresets[Phase.Phase2][0],
+	50: APLPresets[Phase.Phase3][0],
 };
 
 export const DefaultRotation = FeralDruidRotation.create({
@@ -96,9 +103,12 @@ export const TalentsPhase2 = {
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultTalents = TalentPresets[CURRENT_PHASE][0];
+export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

@@ -136,10 +136,6 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 	if target.Level == 0 {
 		target.Level = defaultRaidBossLevel
 	}
-	if target.stats[stats.MeleeCrit] == 0 {
-		// Treat any % crit buff an enemy would gain as though it was scaled with level 80 ratings
-		target.stats[stats.MeleeCrit] = UnitLevelFloat64(target.Level, 5.0, 5.2, 5.4, 5.6) * CritRatingPerCritChance
-	}
 
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
@@ -254,6 +250,7 @@ type AttackTable struct {
 	BaseDodgeChance     float64
 	BaseParryChance     float64
 	BaseGlanceChance    float64
+	BaseCritChance      float64
 
 	GlanceMultiplierMin  float64
 	GlanceMultiplierMax  float64
@@ -264,11 +261,12 @@ type AttackTable struct {
 	//  Explicitly for hunters' "Monster Slaying" and "Humanoid Slaying", but likewise for rogues' "Murder", or trolls' "Beastslaying".
 	CritMultiplier float64
 
-	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
-	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
-	NatureDamageTakenMultiplier  float64
-	HauntSEDamageTakenMultiplier float64
-	HealingDealtMultiplier       float64
+	DamageDealtMultiplier float64 // attacker buff, applied in applyAttackerModifiers()
+	DamageTakenMultiplier float64 // defender debuff, applied in applyTargetModifiers()
+
+	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
+	// If set, the damage taken multiplier is multiplied by the callbacks result.
+	DamageDoneByCasterMultiplier func(spell *Spell, attackTable *AttackTable) float64
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
@@ -280,11 +278,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		CritMultiplier: 1,
 
-		DamageDealtMultiplier:        1,
-		DamageTakenMultiplier:        1,
-		NatureDamageTakenMultiplier:  1,
-		HauntSEDamageTakenMultiplier: 1,
-		HealingDealtMultiplier:       1,
+		DamageDealtMultiplier: 1,
+		DamageTakenMultiplier: 1,
 	}
 
 	if defender.Type == EnemyUnit {
@@ -329,11 +324,26 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		table.SpellCritSuppression = UnitLevelFloat64(defender.Level-attacker.Level, 0, 0, 0.003, 0.021)
 	} else {
 
+		levelDelta := 0.0004 * 5 * float64(defender.Level-attacker.Level)
+
 		table.BaseSpellMissChance = 0.05
-		table.BaseMissChance = UnitLevelFloat64(attacker.Level-defender.Level, 0.05, 0.048, 0.046, 0.044)
-		table.BaseBlockChance = UnitLevelFloat64(attacker.Level-defender.Level, 0.05, 0.048, 0.046, 0.044)
-		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level-defender.Level, 0, -0.002, -0.004, -0.006)
-		table.BaseParryChance = UnitLevelFloat64(attacker.Level-defender.Level, 0, -0.002, -0.004, -0.006)
+
+		// Apply base Parry
+		if defender.PseudoStats.CanParry {
+			table.BaseParryChance = 0.05 + levelDelta
+		} else {
+			table.BaseParryChance = 0
+		}
+		// Apply base Block
+		if defender.PseudoStats.CanBlock {
+			table.BaseBlockChance = 0.05 + levelDelta
+		} else {
+			table.BaseBlockChance = 0
+		}
+
+		table.BaseMissChance = 0.05 + levelDelta
+		table.BaseDodgeChance = 0.05 + levelDelta
+		table.BaseCritChance = 0.05 - levelDelta
 	}
 
 	return table

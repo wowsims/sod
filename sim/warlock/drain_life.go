@@ -33,7 +33,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         SpellFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -80,9 +80,16 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
 						modifier += .06
 					}
+					if hasAura(target, "SiphonLife-"+warlock.Label, 3) {
+						modifier += .06
+					}
+					if target.HasActiveAura("UnstableAffliction-" + warlock.Label) {
+						modifier += .06
+					}
 					if target.HasActiveAura("Haunt-" + warlock.Label) {
 						modifier += .06
 					}
+					modifier = max(modifier, 1.18)
 					baseDmg *= modifier
 				}
 				dot.SnapshotBaseDamage = baseDmg

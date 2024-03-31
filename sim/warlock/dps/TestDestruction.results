@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 48.51206
+  tps: 35.53694
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 48.83916
@@ -220,6 +227,20 @@ dps_results: {
  value: {
   dps: 53.04301
   tps: 41.50754
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 54.81815
+  tps: 43.03571
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 50.20342
+  tps: 42.38829
  }
 }
 dps_results: {
@@ -286,24 +307,45 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 69.67809
+  tps: 58.19016
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 69.69888
-  tps: 56.65864
+  dps: 69.48413
+  tps: 57.28824
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 73.51815
-  tps: 59.30728
+  dps: 73.30066
+  tps: 60.42118
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 74.79522
-  tps: 60.82053
+  dps: 74.57773
+  tps: 61.51926
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 78.36852
+  tps: 63.5564
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 75.34257
+  tps: 60.93719
  }
 }
 dps_results: {

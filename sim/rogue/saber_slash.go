@@ -12,30 +12,15 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 		return
 	}
 
-	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
+	rogue.saberSlashTick = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash), Tag: 100},
 		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
-		EnergyCost: core.EnergyCostOptions{
-			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
-			Refund: 0.8,
-		},
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: time.Second,
-			},
-			IgnoreHaste: true,
-		},
-
-		CritDamageBonus: rogue.lethality(),
+		Flags:       core.SpellFlagMeleeMetrics,
+		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
 
-		// TODO: Fix bleed so it works properly
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:     "Saber Slash - Bleed",
@@ -62,9 +47,33 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 			},
 		},
+	})
+
+	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       rogue.builderFlags(),
+		EnergyCost: core.EnergyCostOptions{
+			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
+			Refund: 0.8,
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			IgnoreHaste: true,
+		},
+
+		CritDamageBonus: rogue.lethality(),
+
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -75,7 +84,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 
-				dot := spell.Dot(target)
+				dot := rogue.saberSlashTick.Dot(target)
 
 				dot.ApplyOrRefresh(sim)
 				if dot.GetStacks() < dot.MaxStacks {

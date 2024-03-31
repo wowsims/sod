@@ -7,19 +7,20 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+func hauntMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
+	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagHaunt), 1.2, 1)
+}
+
 func (warlock *Warlock) registerHauntSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneHandsHaunt) {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 403501}
-	debuffMult := 1.2
 
 	spellCoeff := 0.714
-	level := float64(warlock.GetCharacter().Level)
-	baseCalc := (6.568597 + 0.672028*level + 0.031721*level*level)
-	baseLowDamage := baseCalc * 2.51
-	baseHighDamage := baseCalc * 2.95
+	baseLowDamage := warlock.baseRuneAbilityDamage() * 2.51
+	baseHighDamage := warlock.baseRuneAbilityDamage() * 2.95
 
 	warlock.HauntDebuffAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -27,10 +28,10 @@ func (warlock *Warlock) registerHauntSpell() {
 			ActionID: actionID,
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier *= debuffMult
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = hauntMultiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier /= debuffMult
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = nil
 			},
 		})
 	})

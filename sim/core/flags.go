@@ -171,14 +171,11 @@ const (
 	SpellFlagIgnoreResists            SpellFlag = 1 << iota // skip spell resist/armor
 	SpellFlagIgnoreTargetModifiers                          // skip target damage modifiers
 	SpellFlagIgnoreAttackerModifiers                        // skip attacker damage modifiers
-	SpellFlagApplyArmorReduction                            // Forces damage reduction from armor to apply, even if it otherwise wouldn't.
-	SpellFlagCannotBeDodged                                 // Ignores dodge in physical hit rolls
 	SpellFlagIncludeTargetBonusDamage                       // Spell benefits from Gift of Arthas and Hemorrhage.
 	SpellFlagBinary                                         // Does not do partial resists and could need a different hit roll.
 	SpellFlagChanneled                                      // Spell is channeled
 	SpellFlagDisease                                        // Spell is categorized as disease
 	SpellFlagPoison                                         // Spell is categorized as poison
-	SpellFlagHauntSE                                        // Spell benefits from haunt/SE effects
 	SpellFlagHelpful                                        // For healing spells / buffs.
 	SpellFlagMeleeMetrics                                   // Marks a spell as a melee ability for metrics.
 	SpellFlagNoOnCastComplete                               // Disables the OnCastComplete callback.

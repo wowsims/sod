@@ -20,10 +20,8 @@ func (shaman *Shaman) applyLavaBurst() {
 }
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
-	level := float64(shaman.Level)
-	baseCalc := 7.583798 + 0.471881*level + 0.036599*level*level
-	baseDamageLow := baseCalc * 4.69
-	baseDamageHigh := baseCalc * 6.05
+	baseDamageLow := shaman.baseRuneAbilityDamage() * 4.69
+	baseDamageHigh := shaman.baseRuneAbilityDamage() * 6.05
 	spellCoeff := .571
 	castTime := time.Second * 2
 	cooldown := time.Second * 8

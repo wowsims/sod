@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 242.45134
+  tps: 146.12287
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 242.25286
@@ -122,6 +129,20 @@ dps_results: {
  value: {
   dps: 258.45253
   tps: 157.58321
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 264.43436
+  tps: 161.07906
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 259.89664
+  tps: 157.52854
  }
 }
 dps_results: {

@@ -385,9 +385,6 @@ type PseudoStats struct {
 	DamageDealtMultiplier       float64            // All damage
 	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
-	// Treat melee haste as a pseudostat so that shamans, paladins, and druids can get the correct scaling
-	MeleeHasteRatingPerHastePercent float64
-
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
 
@@ -425,11 +422,6 @@ type PseudoStats struct {
 
 	ParryHaste bool
 
-	// Avoidance % not affected by Diminishing Returns
-	BaseDodge float64
-	BaseParry float64
-	//BaseMiss is not needed, this is always 5%
-
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
 	BonusRangedAttackPowerTaken float64 // Hunters mark
@@ -443,10 +435,8 @@ type PseudoStats struct {
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 
-	BleedDamageTakenMultiplier            float64 // Modifies damage taken from bleed effects
-	DiseaseDamageTakenMultiplier          float64 // Modifies damage taken from disease effects
-	PeriodicPhysicalDamageTakenMultiplier float64 // Modifies damage taken from periodic physical effects NOT bleeds
-	PoisonDamageTakenMultiplier           float64 // Modifies damage taken from poison effects
+	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
+	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
 
 	ArmorMultiplier float64 // Major/minor/special multiplicative armor modifiers
 
@@ -469,8 +459,6 @@ func NewPseudoStats() PseudoStats {
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolFloatArray(1),
 
-		MeleeHasteRatingPerHastePercent: 1,
-
 		BlockValueMultiplier: 1,
 
 		DamageSpread: 0.3333,
@@ -480,10 +468,8 @@ func NewPseudoStats() PseudoStats {
 		SchoolDamageTakenMultiplier: NewSchoolFloatArray(1),
 		SchoolCritTakenChance:       NewSchoolFloatArray(0),
 
-		BleedDamageTakenMultiplier:            1,
-		DiseaseDamageTakenMultiplier:          1,
-		PeriodicPhysicalDamageTakenMultiplier: 1,
-		PoisonDamageTakenMultiplier:           1,
+		BleedDamageTakenMultiplier:  1,
+		PoisonDamageTakenMultiplier: 1,
 
 		ArmorMultiplier: 1,
 

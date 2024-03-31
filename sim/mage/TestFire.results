@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 129.86331
+  tps: 94.17945
+ }
+}
+dps_results: {
  key: "TestFire-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 129.77653
@@ -213,6 +220,20 @@ dps_results: {
  value: {
   dps: 149.44976
   tps: 107.88412
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 152.36727
+  tps: 109.92865
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 127.79088
+  tps: 92.73265
  }
 }
 dps_results: {
@@ -321,6 +342,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 320.28083
+  tps: 236.49074
+ }
+}
+dps_results: {
  key: "TestFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 320.34327
@@ -339,6 +367,20 @@ dps_results: {
  value: {
   dps: 349.4095
   tps: 256.87269
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 356.45768
+  tps: 261.77095
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 316.78388
+  tps: 233.35661
  }
 }
 dps_results: {

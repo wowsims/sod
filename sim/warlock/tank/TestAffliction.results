@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 82.13304
+  tps: 101.57908
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 82.48321
@@ -122,6 +129,20 @@ dps_results: {
  value: {
   dps: 95.00354
   tps: 119.67023
+ }
+}
+dps_results: {
+ key: "TestAffliction-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 99.69885
+  tps: 126.05017
+ }
+}
+dps_results: {
+ key: "TestAffliction-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 91.56124
+  tps: 115.94073
  }
 }
 dps_results: {

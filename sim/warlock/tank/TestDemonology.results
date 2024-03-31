@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 73.5
   final_stats: 18.5
   final_stats: 32.5
-  final_stats: 442
+  final_stats: 492
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 253.22882
+  tps: 219.37967
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 253.22882
@@ -113,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 592.22669
-  tps: 1128.2857
+  dps: 590.31434
+  tps: 1125.49687
  }
 }
 dps_results: {
@@ -122,6 +129,20 @@ dps_results: {
  value: {
   dps: 269.61214
   tps: 237.14335
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 276.7337
+  tps: 244.27481
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 267.83446
+  tps: 233.74895
  }
 }
 dps_results: {

@@ -20,6 +20,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 
 	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery)
 
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	return core.SpellConfig{
@@ -27,7 +28,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
+		Flags:         SpellFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -50,7 +51,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Siphon Life-" + warlock.Label + strconv.Itoa(rank),
+				Label: "SiphonLife-" + warlock.Label + strconv.Itoa(rank),
 			},
 			NumberOfTicks:       10,
 			TickLength:          3 * time.Second,
@@ -91,6 +92,10 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
+
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
 
 				spell.Dot(target).Apply(sim)
 			}

@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 11.23108
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 1670.655
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 16.43417
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 3489.57
@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 113.53138
+  tps: 116.13677
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl25-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 134.56272
@@ -206,6 +213,27 @@ dps_results: {
  value: {
   dps: 122.4109
   tps: 125.01629
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 110.10635
+  tps: 112.71175
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 108.57239
+  tps: 111.17778
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 116.01398
+  tps: 118.61937
  }
 }
 dps_results: {
@@ -241,6 +269,27 @@ dps_results: {
  value: {
   dps: 130.00892
   tps: 132.61431
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 134.45208
+  tps: 137.05748
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 133.70672
+  tps: 136.31211
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 116.99461
+  tps: 119.60001
  }
 }
 dps_results: {
@@ -356,6 +405,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 304.02033
+  tps: 315.34638
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
   dps: 435.71158
@@ -370,45 +426,87 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 297.16437
+  tps: 308.55367
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 293.72001
+  tps: 305.0983
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 303.5934
+  tps: 314.8947
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 203.84679
-  tps: 212.18909
+  dps: 306.38033
+  tps: 317.65963
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 222.35315
-  tps: 231.11619
+  dps: 319.68524
+  tps: 331.07179
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-InsulatedLeathers"
  value: {
-  dps: 214.61985
-  tps: 223.72665
+  dps: 298.19655
+  tps: 309.5776
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 225.86568
-  tps: 234.61772
+  dps: 322.72321
+  tps: 334.10151
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 229.03256
-  tps: 237.64986
+  dps: 329.45151
+  tps: 340.82981
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 333.00286
+  tps: 344.37566
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 335.76028
+  tps: 347.18258
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 308.87911
+  tps: 320.28216
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-StormshroudArmor"
  value: {
-  dps: 181.77132
-  tps: 190.53162
+  dps: 242.67392
+  tps: 253.33447
  }
 }
 dps_results: {

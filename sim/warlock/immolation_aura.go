@@ -11,17 +11,15 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneBracerImmolationAura) {
 		return
 	}
-	spellCoeff := 0.045
 
-	level := float64(warlock.GetCharacter().Level)
-	baseCalc := (6.568597 + 0.672028*level + 0.031721*level*level)
-	baseDamage := baseCalc * 0.2
+	spellCoeff := 0.045
+	baseDamage := warlock.baseRuneAbilityDamage() * 0.2
 
 	immoAuraProc := warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 427725},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskEmpty,
 
 		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
 

@@ -12,11 +12,10 @@ func (druid *Druid) applyStarsurge() {
 		return
 	}
 
-	level := float64(druid.GetCharacter().Level)
 	actionID := core.ActionID{SpellID: 417157}
-	baseCalc := (9.183105 + 0.616405*level + 0.028608*level*level)
-	baseLowDamage := baseCalc * 2.48
-	baseHighDamage := baseCalc * 3.04
+
+	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48
+	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
 	spellCoeff := .429
 
 	starfireAuraMultiplier := 1 + .80

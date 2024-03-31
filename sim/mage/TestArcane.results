@@ -151,20 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.10561
+  weights: 0.10539
   weights: 0
-  weights: 0.5152
-  weights: 0.5152
-  weights: 0
-  weights: 0
+  weights: 0.51468
+  weights: 0.51468
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.63199
   weights: 0
   weights: 0
+  weights: 2.57533
   weights: 0
   weights: 0
   weights: 0
@@ -192,6 +190,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 97.74645
+  tps: 42.37597
  }
 }
 dps_results: {
@@ -213,6 +220,20 @@ dps_results: {
  value: {
   dps: 112.09648
   tps: 48.12257
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl25-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 115.24791
+  tps: 49.38151
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl25-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 99.26773
+  tps: 42.96941
  }
 }
 dps_results: {
@@ -321,52 +342,73 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 357.68802
+  tps: 150.06303
+ }
+}
+dps_results: {
  key: "TestArcane-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 359.68144
-  tps: 150.55046
+  dps: 357.25707
+  tps: 149.46157
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 381.58719
-  tps: 160.26374
+  dps: 379.37354
+  tps: 159.15843
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-IrradiatedGarments"
  value: {
-  dps: 387.70594
-  tps: 162.10572
+  dps: 386.14742
+  tps: 161.40057
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl40-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 392.96648
+  tps: 164.5636
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl40-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 367.2106
+  tps: 153.98982
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 375.63237
-  tps: 158.30011
+  dps: 375.68191
+  tps: 158.31745
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 447.12681
-  tps: 186.8154
+  dps: 447.13195
+  tps: 186.81416
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 446.57727
-  tps: 339.46123
+  dps: 446.51272
+  tps: 339.5536
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 446.57727
-  tps: 186.67242
+  dps: 446.51272
+  tps: 186.65251
  }
 }
 dps_results: {
@@ -379,15 +421,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 340.54942
-  tps: 249.87516
+  dps: 338.24608
+  tps: 248.95383
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Gnome-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 340.54942
-  tps: 141.90254
+  dps: 338.24608
+  tps: 140.9812
  }
 }
 dps_results: {
@@ -400,15 +442,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 451.17797
-  tps: 341.57788
+  dps: 449.72919
+  tps: 340.93551
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 451.17797
-  tps: 188.52652
+  dps: 449.72919
+  tps: 187.94387
  }
 }
 dps_results: {
@@ -421,15 +463,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 340.7288
-  tps: 249.96304
+  dps: 342.64736
+  tps: 250.73047
  }
 }
 dps_results: {
  key: "TestArcane-Lvl40-Settings-Troll-p2_arcane-Arcane-p2_arcane-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 340.7288
-  tps: 141.9751
+  dps: 342.64736
+  tps: 142.74252
  }
 }
 dps_results: {
@@ -442,7 +484,7 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 452.93565
-  tps: 189.19813
+  dps: 451.96539
+  tps: 188.80657
  }
 }
