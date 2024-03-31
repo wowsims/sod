@@ -181,16 +181,16 @@ func (hunter *Hunter) applyCobraStrikes() {
 }
 
 func (hunter *Hunter) applyLockAndLoad() {
-	if !hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad){
+	if !hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad) {
 		return
 	}
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
-		Label:     "Lock And Load",
-		ActionID:  core.ActionID{SpellID: 415413},
-		Duration:  time.Second * 20,
+		Label:    "Lock And Load",
+		ActionID: core.ActionID{SpellID: 415413},
+		Duration: time.Second * 20,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
