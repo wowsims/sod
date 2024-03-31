@@ -92,7 +92,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 			frenzyStacks := hunterPetFrenzyAura.GetStacks()
 			hunter.pet.AddFocus(sim, float64(4 * frenzyStacks), focusFireMetrics)
 
-			if !hunterFocusFireAura.IsActive() { hunterFocusFireAura.Activate(sim) }
+			hunterFocusFireAura.Activate(sim)
 			hunterFocusFireAura.SetStacks(sim, frenzyStacks)
 			hunterPetFrenzyAura.SetStacks(sim, 0)
 		},
