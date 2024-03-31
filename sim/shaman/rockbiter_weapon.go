@@ -67,7 +67,7 @@ func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
 
 	bonusAP := RockbiterWeaponBonusAP[rank] * []float64{1, 1.07, 1.14, 1.2}[shaman.Talents.ElementalWeapons]
 	// Nerfed by 90% going into SoD Phase 3
-	bonusAP *= .9
+	bonusAP *= .1
 
 	newStats := stats.Stats{stats.AttackPower: bonusAP}
 
