@@ -22,6 +22,7 @@ func init() {
 	for i, item := range db.Items {
 		simDB.Items[i] = &proto.SimItem{
 			Id:               item.Id,
+			RequiresLevel:    item.RequiresLevel,
 			Name:             item.Name,
 			Type:             item.Type,
 			ArmorType:        item.ArmorType,

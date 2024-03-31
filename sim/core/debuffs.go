@@ -58,6 +58,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(MekkatorqueFistDebuffAura(target, level))
 	}
 
+	if debuffs.SerpentsStrikerFistDebuff {
+		MakePermanent(SerpentsStrikerFistDebuffAura(target, level))
+	}
+
 	if debuffs.CurseOfElements {
 		MakePermanent(CurseOfElementsAura(target, level))
 	}
@@ -1002,4 +1006,35 @@ func AncientCorrosivePoisonAura(target *Unit) *Aura {
 			aura.Unit.stats[stats.Armor] += 150
 		},
 	})
+}
+
+func SerpentsStrikerFistDebuffAura(target *Unit, playerLevel int32) *Aura {
+	if playerLevel < 50 {
+		return nil
+	}
+
+	spellID := 447894
+	resistance := 60.0
+	dmgMod := 1.08
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Serpents Striker Debuff",
+		ActionID: ActionID{SpellID: int32(spellID)},
+		Duration: time.Second * 20,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.NatureResistance: -resistance,
+			})
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.NatureResistance: resistance,
+			})
+		},
+	})
+
+	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
+	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
+	return aura
 }

@@ -3,6 +3,7 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -10,6 +11,7 @@ import (
 const (
 	AtalaiBloodRitualCharm = 220634
 	CobraFangClaw          = 220588
+	SerpentsStriker        = 220589
 )
 
 func init() {
@@ -90,6 +92,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
 	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -113,6 +116,28 @@ func init() {
 				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
 					character.AutoAttacks.ExtraMHAttack(sim)
 				}
+			},
+		})
+	})
+
+	// Serpent's Striker
+	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, func(character *core.Character) *core.Spell {
+		procAuras := character.NewEnemyAuraArray(core.SerpentsStrikerFistDebuffAura)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 447894},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagPoison,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 50+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+
+				procAuras.Get(target).Activate(sim)
 			},
 		})
 	})
