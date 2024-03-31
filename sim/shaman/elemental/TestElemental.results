@@ -293,6 +293,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 130.30026
+  tps: 117.3477
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 146.10397
@@ -314,6 +321,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl25-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 122.54103
+  tps: 109.56153
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 121.42552
+  tps: 108.55662
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 131.45092
+  tps: 118.49668
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 122.54068
+  tps: 109.6221
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 129.9473
@@ -325,6 +360,13 @@ dps_results: {
  value: {
   dps: 144.62652
   tps: 129.29537
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 129.38534
+  tps: 116.43415
  }
 }
 dps_results: {
@@ -363,6 +405,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl25-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 149.91954
+  tps: 133.58558
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 150.93904
@@ -374,6 +423,20 @@ dps_results: {
  value: {
   dps: 134.71384
   tps: 119.14011
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 129.12181
+  tps: 115.92914
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl25-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 150.39995
+  tps: 133.5168
  }
 }
 dps_results: {
@@ -489,6 +552,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 346.08127
+  tps: 329.52414
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 452.61208
@@ -510,6 +580,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 338.21746
+  tps: 321.38575
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 333.65844
+  tps: 317.44374
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 351.1695
+  tps: 334.58424
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 338.14819
+  tps: 321.77504
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 366.56874
@@ -521,6 +619,13 @@ dps_results: {
  value: {
   dps: 376.62359
   tps: 357.79704
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 345.90507
+  tps: 329.31985
  }
 }
 dps_results: {
@@ -559,6 +664,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 380.34241
+  tps: 359.74486
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 386.37596
@@ -570,6 +682,20 @@ dps_results: {
  value: {
   dps: 353.25349
   tps: 333.7901
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 349.54947
+  tps: 333.05748
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl40-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 386.64335
+  tps: 365.19746
  }
 }
 dps_results: {
@@ -685,6 +811,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl50-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 530.39711
+  tps: 507.07558
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 652.44073
@@ -706,6 +839,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl50-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 523.53884
+  tps: 499.58331
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 517.45653
+  tps: 494.24129
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 540.0444
+  tps: 516.62887
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 521.7621
+  tps: 497.8837
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 544.35256
@@ -717,6 +878,13 @@ dps_results: {
  value: {
   dps: 558.95882
   tps: 533.43219
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 529.54499
+  tps: 506.24497
  }
 }
 dps_results: {
@@ -755,6 +923,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Lvl50-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 566.90117
+  tps: 539.18039
+ }
+}
+dps_results: {
  key: "TestElemental-Lvl50-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 569.89245
@@ -766,6 +941,20 @@ dps_results: {
  value: {
   dps: 538.07465
   tps: 511.66368
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 528.71545
+  tps: 505.09828
+ }
+}
+dps_results: {
+ key: "TestElemental-Lvl50-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 569.10203
+  tps: 540.12087
  }
 }
 dps_results: {

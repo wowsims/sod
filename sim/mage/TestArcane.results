@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 97.74645
+  tps: 42.37597
+ }
+}
+dps_results: {
  key: "TestArcane-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 94.81646
@@ -332,6 +339,13 @@ dps_results: {
  value: {
   dps: 147.99302
   tps: 62.46541
+ }
+}
+dps_results: {
+ key: "TestArcane-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 357.68802
+  tps: 150.06303
  }
 }
 dps_results: {
