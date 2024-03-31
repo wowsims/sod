@@ -1,20 +1,11 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
-
-// import (
-// 	"time"
-
-// 	"github.com/wowsims/sod/sim/core"
-// 	"github.com/wowsims/sod/sim/core/proto"
-// 	"github.com/wowsims/sod/sim/core/stats"
-// )
 
 func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
@@ -55,16 +46,8 @@ func (shaman *Shaman) applyElementalFocus() {
 		MaxStacks: maxStacks,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.LightningBolt,
-					shaman.ChainLightning,
-					shaman.EarthShock,
-					shaman.FlameShock,
-					shaman.FrostShock,
-					shaman.FireNova,
-					{shaman.LavaBurst},
-					{shaman.MoltenBlast},
-				}), func(spell *core.Spell) bool { return spell != nil },
+				shaman.Spellbook,
+				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -74,13 +57,9 @@ func (shaman *Shaman) applyElementalFocus() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
-				return
+			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
+				aura.RemoveStack(sim)
 			}
-			if spell.ActionID.Tag == CastTagOverload { // Filter Overloads
-				return
-			}
-			aura.RemoveStack(sim)
 		},
 	})
 
@@ -91,11 +70,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
-				return
-			}
-
-			if result.Landed() && sim.RandomFloat("LvB Overload") < procChance {
+			if spell.Flags.Matches(SpellFlagFocusable) && result.Landed() && sim.RandomFloat("Elemental Focus") < procChance {
 				clearcastingAura.Activate(sim)
 				clearcastingAura.SetStacks(sim, maxStacks)
 			}
@@ -118,13 +93,9 @@ func (shaman *Shaman) applyElementalDevastation() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.Outcome.Matches(core.OutcomeCrit) {
+				procAura.Activate(sim)
 			}
-			if !result.Outcome.Matches(core.OutcomeCrit) {
-				return
-			}
-			procAura.Activate(sim)
 		},
 	})
 }
@@ -140,18 +111,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cd := time.Minute * 3
 
 	var affectedSpells []*core.Spell
-	var affectedSpellCodes = []int32{
-		SpellCode_ShamanLightningBolt,
-		SpellCode_ShamanChainLightning,
-		SpellCode_ShamanLavaBurst,
-		SpellCode_ShamanEarthShock,
-		SpellCode_ShamanFlameShock,
-		SpellCode_ShamanFrostShock,
-		SpellCode_ShamanFireNova,
-		SpellCode_ShamanMoltenBlast,
-	}
-
-	// TODO: Share CD with Natures Swiftness
 
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
@@ -159,16 +118,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		Duration: core.NeverExpires,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.LightningBolt,
-					shaman.ChainLightning,
-					{shaman.LavaBurst},
-					shaman.EarthShock,
-					shaman.FlameShock,
-					shaman.FrostShock,
-					shaman.FireNova,
-					{shaman.MoltenBlast},
-				}), func(spell *core.Spell) bool { return spell != nil },
+				shaman.Spellbook,
+				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -184,13 +135,12 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) || spell.ActionID.Tag == CastTagOverload {
-				return
+			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
+				// Remove the buff and put skill on CD
+				aura.Deactivate(sim)
+				cdTimer.Set(sim.CurrentTime + cd)
+				shaman.UpdateMajorCooldowns()
 			}
-			// Remove the buff and put skill on CD
-			aura.Deactivate(sim)
-			cdTimer.Set(sim.CurrentTime + cd)
-			shaman.UpdateMajorCooldowns()
 		},
 	})
 
@@ -230,13 +180,10 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 		Duration: core.NeverExpires,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.LightningBolt,
-					shaman.ChainLightning,
-					shaman.HealingWave,
-					shaman.LesserHealingWave,
-					shaman.ChainHeal,
-				}), func(spell *core.Spell) bool { return spell != nil },
+				shaman.Spellbook,
+				func(spell *core.Spell) bool {
+					return spell != nil && spell.SpellSchool.Matches(core.SpellSchoolNature) && spell.DefaultCast.CastTime > 0
+				},
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -246,20 +193,12 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			spellTriggersNS := spell.SpellCode != SpellCode_ShamanLightningBolt &&
-				spell.SpellCode != SpellCode_ShamanChainLightning &&
-				spell.SpellCode != SpellCode_ShamanHealingWave &&
-				spell.SpellCode != SpellCode_ShamanLesserHealingWave &&
-				spell.SpellCode != SpellCode_ShamanChainHeal
-
-			if spellTriggersNS {
-				return
+			if spell.SpellSchool.Matches(core.SpellSchoolNature) && spell.DefaultCast.CastTime > 0 {
+				// Remove the buff and put skill on CD
+				aura.Deactivate(sim)
+				cdTimer.Set(sim.CurrentTime + cd)
+				shaman.UpdateMajorCooldowns()
 			}
-
-			// Remove the buff and put skill on CD
-			aura.Deactivate(sim)
-			cdTimer.Set(sim.CurrentTime + cd)
-			shaman.UpdateMajorCooldowns()
 		},
 	})
 

@@ -73,6 +73,7 @@ type Warrior struct {
 	ShieldSlam        *core.Spell
 	Slam              *core.Spell
 	SunderArmor       *core.Spell
+	Devastate         *core.Spell
 	ThunderClap       *core.Spell
 	Whirlwind         *core.Spell
 	DeepWounds        *core.Spell
