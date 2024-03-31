@@ -7,14 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// import (
-// 	"time"
-
-// 	"github.com/wowsims/sod/sim/core"
-// 	"github.com/wowsims/sod/sim/core/proto"
-// 	"github.com/wowsims/sod/sim/core/stats"
-// )
-
 func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
@@ -78,11 +70,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagFocusable) {
-				return
-			}
-
-			if result.Landed() && sim.RandomFloat("Elemental Focus") < procChance {
+			if spell.Flags.Matches(SpellFlagFocusable) && result.Landed() && sim.RandomFloat("Elemental Focus") < procChance {
 				clearcastingAura.Activate(sim)
 				clearcastingAura.SetStacks(sim, maxStacks)
 			}
@@ -105,13 +93,9 @@ func (shaman *Shaman) applyElementalDevastation() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.Outcome.Matches(core.OutcomeCrit) {
+				procAura.Activate(sim)
 			}
-			if !result.Outcome.Matches(core.OutcomeCrit) {
-				return
-			}
-			procAura.Activate(sim)
 		},
 	})
 }
