@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestBM-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.76801
+  weights: 0.76995
   weights: 0
   weights: 0
   weights: 0
@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.3357
-  weights: 9.05149
-  weights: 7.90668
+  weights: 8.97303
+  weights: 7.91214
   weights: 0
   weights: 0
   weights: 0
@@ -295,85 +295,85 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 664.09424
-  tps: 224.12269
+  dps: 662.28488
+  tps: 223.07457
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 648.75439
-  tps: 217.91517
+  dps: 646.94561
+  tps: 216.86314
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 669.70058
-  tps: 225.52545
+  dps: 667.86247
+  tps: 224.46675
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 844.06599
-  tps: 262.46331
+  dps: 841.97848
+  tps: 261.44287
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 645.11978
-  tps: 216.49259
+  dps: 643.31409
+  tps: 215.44117
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Average-Default"
  value: {
-  dps: 852.0843
-  tps: 269.62645
+  dps: 850.40892
+  tps: 268.82059
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1415.83634
-  tps: 857.93432
+  dps: 1414.85427
+  tps: 857.3583
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 746.85597
-  tps: 193.55209
+  dps: 745.58141
+  tps: 193.48018
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 775.20198
-  tps: 205.1321
+  dps: 774.80635
+  tps: 205.09839
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 654.49864
-  tps: 546.22225
+  dps: 653.368
+  tps: 545.66123
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 339.87804
-  tps: 105.56971
+  dps: 338.99455
+  tps: 105.51826
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 368.46815
-  tps: 109.11445
+  dps: 367.7579
+  tps: 109.05329
  }
 }
 dps_results: {
@@ -505,43 +505,43 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1419.26933
-  tps: 847.41662
+  dps: 1418.33562
+  tps: 846.979
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 754.25189
-  tps: 189.75569
+  dps: 752.79046
+  tps: 189.66131
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 786.74594
-  tps: 207.41057
+  dps: 785.97278
+  tps: 207.33192
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 652.46516
-  tps: 545.07756
+  dps: 651.64135
+  tps: 544.64512
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 340.77604
-  tps: 104.99556
+  dps: 340.05972
+  tps: 104.95138
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 371.31846
-  tps: 109.66739
+  dps: 371.08591
+  tps: 109.6458
  }
 }
 dps_results: {
@@ -673,7 +673,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 808.5965
-  tps: 247.91668
+  dps: 806.57188
+  tps: 247.03606
  }
 }
