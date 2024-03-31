@@ -17,6 +17,7 @@ import {
 } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
+import { HonorOfThievesCritRate } from './inputs';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
@@ -150,6 +151,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		inputs: [
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			HonorOfThievesCritRate,
 		],
 	},
 	encounterPicker: {

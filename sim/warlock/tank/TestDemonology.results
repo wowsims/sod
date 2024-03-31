@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 253.22882
+  tps: 219.37967
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 253.22882
@@ -113,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 592.22669
-  tps: 1128.2857
+  dps: 590.31434
+  tps: 1125.49687
  }
 }
 dps_results: {

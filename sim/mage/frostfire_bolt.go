@@ -14,9 +14,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneBeltFrostfireBolt)}
 	// 2024-03-05 tuning SFB +50% base damage and same spell coeff as max rank Fireball
-	baseDamageLow := mage.runeAbility() * 3.87
-	baseDamageHigh := mage.runeAbility() * 4.5
-	baseDotDamage := mage.runeAbility() * .08
+	baseDamageLow := mage.baseRuneAbilityDamage() * 3.87
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 4.5
+	baseDotDamage := mage.baseRuneAbilityDamage() * .08
 	spellCoeff := 1.0
 	castTime := time.Second * 3
 	manaCost := .14

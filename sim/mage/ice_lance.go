@@ -11,8 +11,8 @@ func (mage *Mage) registerIceLanceSpell() {
 		return
 	}
 
-	baseDamageLow := mage.runeAbility() * .55
-	baseDamageHigh := mage.runeAbility() * .65
+	baseDamageLow := mage.baseRuneAbilityDamage() * .55
+	baseDamageHigh := mage.baseRuneAbilityDamage() * .65
 	spellCoeff := .143
 	manaCost := .08
 

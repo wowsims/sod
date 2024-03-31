@@ -17,8 +17,8 @@ func (mage *Mage) registerLivingBombSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)}
-	baseDotDamage := mage.runeAbility() * .85
-	baseExplosionDamage := mage.runeAbility() * 1.71
+	baseDotDamage := mage.baseRuneAbilityDamage() * .85
+	baseExplosionDamage := mage.baseRuneAbilityDamage() * 1.71
 	dotCoeff := .20
 	explosionCoeff := .40
 	manaCost := .22

@@ -41,7 +41,7 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
 
-		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Combat Potion');
+		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Mana Potion');
 		const potionsPicker = buildIconInput(potionsElem, this.simUI.player, potionsOptions);
 
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));

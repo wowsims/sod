@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 146.75945
+  tps: 139.27595
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 167.40989
@@ -216,6 +223,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 161.81423
+  tps: 154.28902
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 157.4542
+  tps: 150.00963
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 149.96794
+  tps: 142.19301
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 161.95128
+  tps: 154.24364
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 165.92248
@@ -230,6 +265,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 147.69919
+  tps: 140.00091
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 147.73862
@@ -239,8 +281,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 149.6854
-  tps: 140.05498
+  dps: 149.35374
+  tps: 139.9113
  }
 }
 dps_results: {
@@ -265,6 +307,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 153.64242
+  tps: 142.59284
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 155.84839
@@ -276,6 +325,20 @@ dps_results: {
  value: {
   dps: 148.90031
   tps: 139.21237
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 169.86718
+  tps: 162.09776
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl25-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 157.48853
+  tps: 146.5846
  }
 }
 dps_results: {
@@ -475,6 +538,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 571.43341
+  tps: 599.8097
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
   dps: 603.64764
@@ -496,6 +566,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-BloodCorruptedLeathers"
+ value: {
+  dps: 619.04784
+  tps: 644.7928
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 603.66755
+  tps: 629.08528
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-CorruptedSpiritweaver'sMail"
+ value: {
+  dps: 575.14371
+  tps: 605.66799
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 614.80238
+  tps: 641.06281
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-ElectromanticDevastator'sMail"
  value: {
   dps: 617.52693
@@ -510,6 +608,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 567.30236
+  tps: 594.79835
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveMender'sMeditation"
  value: {
   dps: 570.87298
@@ -519,8 +624,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 591.94646
-  tps: 617.79592
+  dps: 586.73499
+  tps: 612.5599
  }
 }
 dps_results: {
@@ -545,6 +650,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 609.41735
+  tps: 635.43764
+ }
+}
+dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 618.68076
@@ -556,6 +668,20 @@ dps_results: {
  value: {
   dps: 591.52178
   tps: 614.6793
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-OstracizedBerserk'sBattlemail"
+ value: {
+  dps: 638.24422
+  tps: 665.4566
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Lvl40-AllItems-ShunnedDevotee'sChainmail"
+ value: {
+  dps: 629.05825
+  tps: 655.40644
  }
 }
 dps_results: {

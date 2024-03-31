@@ -230,9 +230,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 	for _, s := range statsToWeigh {
 		stat := stats.UnitStatFromStat(s)
 		statMod := defaultStatMod
-		if stat.EqualsStat(stats.Expertise) {
-			statMod = ExpertisePerQuarterPercentReduction
-		} else if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) || stat.EqualsStat(stats.Mana) {
+		if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) || stat.EqualsStat(stats.Mana) {
 			statMod = defaultStatMod * 20
 		}
 		statModsHigh[stat] = statMod

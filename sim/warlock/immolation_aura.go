@@ -13,7 +13,7 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	}
 
 	spellCoeff := 0.045
-	baseDamage := warlock.runeAbility() * 0.2
+	baseDamage := warlock.baseRuneAbilityDamage() * 0.2
 
 	immoAuraProc := warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 427725},
