@@ -7,13 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// import (
-// 	"time"
-
-// 	"github.com/wowsims/sod/sim/core"
-// )
-
-var FireNovaSpellId = [FireNovaTotemRanks + 1]int32{0, 408341, 408342, 408343, 408344, 408345}
+var FireNovaSpellId = [FireNovaTotemRanks + 1]int32{0, 408341, 408342, 408343, 408427, 408345}
 var FireNovaSpellCoeff = [FireNovaTotemRanks + 1]float64{0, .214, .214, .214, .214, .214}
 
 func (shaman *Shaman) applyFireNova() {
@@ -21,13 +15,12 @@ func (shaman *Shaman) applyFireNova() {
 		return
 	}
 
-	shaman.FireNova = make([]*core.Spell, FireNovaTotemRanks+1)
-
-	for rank := 1; rank <= FireNovaTotemRanks; rank++ {
+	for rank := FireNovaTotemRanks; rank >= 1; rank-- {
 		config := shaman.newFireNovaSpellConfig(rank)
 
 		if config.RequiredLevel <= int(shaman.Level) {
-			shaman.FireNova[rank] = shaman.RegisterSpell(config)
+			shaman.FireNova = shaman.RegisterSpell(config)
+			return
 		}
 	}
 }
@@ -36,7 +29,6 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 	spellId := FireNovaSpellId[rank]
 	baseDamageLow := FireNovaTotemBaseDamage[rank][0]
 	baseDamageHigh := FireNovaTotemBaseDamage[rank][1]
-	// Verify spell coef?
 	spellCoeff := FireNovaTotemSpellCoeff[rank]
 	cooldown := time.Second * 10
 	manaCost := .22

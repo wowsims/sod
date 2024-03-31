@@ -3,12 +3,15 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
 	AtalaiBloodRitualCharm = 220634
+	CobraFangClaw          = 220588
+	SerpentsStriker        = 220589
 )
 
 func init() {
@@ -89,6 +92,53 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(CobraFangClaw)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		character.RegisterAura(core.Aura{
+			Label:    "Cobra Fang Claw Thrash",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+				if !spell.ProcMask.Matches(procMask) {
+					return
+				}
+
+				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
+					character.AutoAttacks.ExtraMHAttack(sim)
+				}
+			},
+		})
+	})
+
+	// Serpent's Striker
+	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, func(character *core.Character) *core.Spell {
+		procAuras := character.NewEnemyAuraArray(core.SerpentsStrikerFistDebuffAura)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 447894},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagPoison,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 50+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				procAuras.Get(target).Activate(sim)
+			},
+		})
+	})
 
 	core.AddEffectsToTest = true
 }
