@@ -61,7 +61,7 @@ func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior
 	return war
 }
 
-func (cat *DpsWarrior) OnGCDReady(sim *core.Simulation) {
+func (war *DpsWarrior) OnGCDReady(sim *core.Simulation) {
 	return
 }
 
@@ -75,8 +75,9 @@ func (war *DpsWarrior) Initialize() {
 	if war.Options.UseRecklessness {
 		war.RegisterRecklessnessCD()
 	}
-
-	if war.PrimaryTalentTree == warrior.FuryTree {
+	if war.HasRune(proto.WarriorRune_RuneGladiatorStance) {
+		war.GladiatorStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
+	} else if war.PrimaryTalentTree == warrior.FuryTree {
 		war.BerserkerStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 	} else if war.PrimaryTalentTree == warrior.ArmsTree {
 		war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
@@ -84,12 +85,14 @@ func (war *DpsWarrior) Initialize() {
 }
 
 func (war *DpsWarrior) Reset(sim *core.Simulation) {
-	if war.PrimaryTalentTree == warrior.FuryTree {
-		war.Warrior.Reset(sim)
+	war.Warrior.Reset(sim)
+	if war.HasRune(proto.WarriorRune_RuneGladiatorStance) {
+		war.GladiatorStanceAura.Activate(sim)
+		war.Stance = warrior.GladiatorStance
+	} else if war.PrimaryTalentTree == warrior.FuryTree {
 		war.BerserkerStanceAura.Activate(sim)
 		war.Stance = warrior.BerserkerStance
 	} else if war.PrimaryTalentTree == warrior.ArmsTree {
-		war.Warrior.Reset(sim)
 		war.BattleStanceAura.Activate(sim)
 		war.Stance = warrior.BattleStance
 	}
