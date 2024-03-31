@@ -96,7 +96,7 @@ var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+			c.AddStat(stats.SpellCrit, 1*core.CritRatingPerCritChance)
 		},
 	},
 })
