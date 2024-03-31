@@ -128,6 +128,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagPoison,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
