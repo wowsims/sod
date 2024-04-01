@@ -115,11 +115,6 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// Placeholder spell coefficient
-				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
-			},
 		})
 
 		decayProcSpell := character.RegisterSpell(core.SpellConfig{
@@ -136,12 +131,13 @@ func init() {
 				// Placeholder damage and coefficient values, update when P3 releases
 				result := spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
+					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 					targetAura.Activate(sim)
 					targetAura.AddStack(sim)
-					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 				}
 				if targetAura.GetStacks() == 5 {
-					decayStackedSpell.Cast(sim, target)
+					// Placeholder coefficient
+					decayStackedSpell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
 					targetAura.SetStacks(sim, 0)
 				}
 			},
