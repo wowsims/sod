@@ -72,7 +72,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 
 	hunter.FocusFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: focusFireActionId,
-
+		Flags: core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 0,						// TODO: Update when mana cost is known
 		},
