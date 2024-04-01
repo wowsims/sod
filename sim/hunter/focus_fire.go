@@ -34,16 +34,18 @@ func (hunter *Hunter) registerFocusFireSpell() {
 			aura.Unit.MultiplyMeleeSpeed(sim, 1/(1+(0.06*float64(oldStacks))))
 			aura.Unit.MultiplyMeleeSpeed(sim, 1+(0.06*float64(newStacks)))
 
-  			// this is just so we can see the frenzy stacks working on the sim timeline
-			if !hunterFrenzyAura.IsActive() { hunterFrenzyAura.Activate(sim) }
+			// this is just so we can see the frenzy stacks working on the sim timeline
+			if !hunterFrenzyAura.IsActive() {
+				hunterFrenzyAura.Activate(sim)
+			}
 			hunterFrenzyAura.SetStacks(sim, newStacks)
 		},
 	})
 
 	hunterFocusFireAura := hunter.RegisterAura(core.Aura{
-		Label:    "Focus Fire",
-		ActionID: focusFireActionId,
-		Duration: time.Second * 20,
+		Label:     "Focus Fire",
+		ActionID:  focusFireActionId,
+		Duration:  time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			aura.Unit.MultiplyRangedSpeed(sim, 1/(1+(0.03*float64(oldStacks))))
@@ -72,9 +74,9 @@ func (hunter *Hunter) registerFocusFireSpell() {
 
 	hunter.FocusFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: focusFireActionId,
-
+		Flags:    core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 0,						// TODO: Update when mana cost is known
+			FlatCost: 0, // TODO: Update when mana cost is known
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -82,7 +84,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 15, 	// TODO: Update when cooldown is known (Currently using the cooldown value from Cataclysm)
+				Duration: time.Second * 15, // TODO: Update when cooldown is known (Currently using the cooldown value from Cataclysm)
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -90,7 +92,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			frenzyStacks := hunterPetFrenzyAura.GetStacks()
-			hunter.pet.AddFocus(sim, float64(4 * frenzyStacks), focusFireMetrics)
+			hunter.pet.AddFocus(sim, float64(4*frenzyStacks), focusFireMetrics)
 
 			hunterFocusFireAura.Activate(sim)
 			hunterFocusFireAura.SetStacks(sim, frenzyStacks)
