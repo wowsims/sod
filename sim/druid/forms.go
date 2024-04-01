@@ -185,6 +185,8 @@ func (druid *Druid) registerCatFormSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 
+			druid.TigersFuryAura.Deactivate(sim)
+
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
@@ -241,20 +243,29 @@ func (druid *Druid) registerCatFormSpell() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				if druid.CatFormAura.IsActive() {
+					cast.GCD = 0
+				}
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
-			maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
-			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
-
-			if energyDelta > 0 {
-				druid.AddEnergy(sim, energyDelta, energyMetrics)
+			if druid.CatFormAura.IsActive() {
+				druid.CatFormAura.Deactivate(sim)
 			} else {
-				druid.SpendEnergy(sim, -energyDelta, energyMetrics)
-			}
+				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
+				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
+				energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
-			druid.CatFormAura.Activate(sim)
+				if energyDelta > 0 {
+					druid.AddEnergy(sim, energyDelta, energyMetrics)
+				} else {
+					druid.SpendEnergy(sim, -energyDelta, energyMetrics)
+				}
+
+				druid.CatFormAura.Activate(sim)
+			}
 		},
 	})
 }
