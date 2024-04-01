@@ -52,6 +52,7 @@ type Hunter struct {
 	KillCommand    *core.Spell
 	KillShot       *core.Spell
 	MultiShot      *core.Spell
+	FocusFire      *core.Spell
 	RapidFire      *core.Spell
 	RaptorStrike   *core.Spell
 	FlankingStrike *core.Spell
@@ -66,6 +67,7 @@ type Hunter struct {
 	SerpentStingChimeraShot *core.Spell
 
 	FlankingStrikeAura *core.Aura
+	RaptorFuryAura	   *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
 
@@ -126,6 +128,7 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.registerKillCommand()
 	hunter.registerRapidFire()
+	hunter.registerFocusFireSpell()
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
