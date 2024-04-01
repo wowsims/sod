@@ -246,13 +246,15 @@ func (druid *Druid) registerCatFormSpell() {
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if druid.CatFormAura.IsActive() {
 					cast.GCD = 0
+					spell.CostMultiplier -= 1
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if druid.CatFormAura.IsActive() {
-				druid.CatFormAura.Deactivate(sim)
+				druid.ClearForm(sim)
+				spell.CostMultiplier += 1
 			} else {
 				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
 				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
