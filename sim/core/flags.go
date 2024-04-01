@@ -192,7 +192,6 @@ const (
 	SpellFlagResetAttackSwing                               // Indicates this spell resets the melee swing timer.
 	SpellFlagCastTimeNoGCD                                  // Indicates this spell is hunters Auto shot spell
 	SpellFlagPureDot                                        // Indicates this spell is a dot with no initial damage component
-	SpellFlagNoShapeshift                                   // Indicates this spell cannot be used while shapeshifted
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

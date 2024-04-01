@@ -620,7 +620,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		SpellSchool: school,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD | SpellFlagNoShapeshift,
+		Flags:       SpellFlagCastTimeNoGCD,
 
 		Cast: CastConfig{
 			DefaultCast: defaultCast,
@@ -677,7 +677,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD | SpellFlagNoShapeshift,
+		Flags:       SpellFlagCastTimeNoGCD,
 
 		Cast: CastConfig{
 			DefaultCast: Cast{
@@ -826,7 +826,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		},
 		Spell: character.GetOrRegisterSpell(SpellConfig{
 			ActionID: actionID,
-			Flags:    SpellFlagNoOnCastComplete | SpellFlagNoShapeshift,
+			Flags:    SpellFlagNoOnCastComplete,
 			Cast: CastConfig{
 				CD: Cooldown{
 					Timer:    cdTimer,
@@ -887,7 +887,7 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
 				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete | SpellFlagNoShapeshift,
+				Flags:    SpellFlagNoOnCastComplete,
 				Cast: CastConfig{
 					CD: Cooldown{
 						Timer:    character.NewTimer(),
