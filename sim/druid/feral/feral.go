@@ -99,7 +99,7 @@ func (cat *FeralDruid) Initialize() {
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
-	cat.Druid.ClearForm(sim)
+	cat.Druid.CancelShapeshift(sim)
 	cat.CatFormAura.Activate(sim)
 	cat.readyToShift = false
 	//cat.berserkUsed = false

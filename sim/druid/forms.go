@@ -30,18 +30,6 @@ func (druid *Druid) InForm(form DruidForm) bool {
 	return druid.form.Matches(form)
 }
 
-func (druid *Druid) ClearForm(sim *core.Simulation) {
-	if druid.InForm(Cat) {
-		druid.CatFormAura.Deactivate(sim)
-	} else if druid.InForm(Bear) {
-		druid.BearFormAura.Deactivate(sim)
-	} else if druid.InForm(Moonkin) {
-		druid.MoonkinFormAura.Deactivate(sim)
-	}
-	druid.form = Humanoid
-	druid.SetCurrentPowerBar(core.ManaBar)
-}
-
 // TODO: don't hardcode numbers
 func (druid *Druid) GetCatWeapon(level int32) core.Weapon {
 	// Level 25 values
@@ -146,7 +134,7 @@ func (druid *Druid) registerCatFormSpell() {
 		BuildPhase: core.Ternary(druid.StartingForm.Matches(Cat), core.CharacterBuildPhaseBase, core.CharacterBuildPhaseNone),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if !druid.Env.MeasuringStats && druid.form != Humanoid {
-				druid.ClearForm(sim)
+				druid.CancelShapeshift(sim)
 			}
 			druid.form = Cat
 			druid.SetCurrentPowerBar(core.EnergyBar)
@@ -155,7 +143,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
-			druid.PseudoStats.Shapeshifted = true
+			druid.SetShapeshift(aura)
 
 			predBonus = druid.GetDynamicPredStrikeStats()
 			druid.AddStatsDynamic(sim, predBonus)
@@ -184,6 +172,7 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
+			druid.SetCurrentPowerBar(core.ManaBar)
 
 			druid.TigersFuryAura.Deactivate(sim)
 
@@ -191,7 +180,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
-			druid.PseudoStats.Shapeshifted = false
+			druid.SetShapeshift(nil)
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
 			druid.AddStatsDynamic(sim, statBonus.Invert())
@@ -253,7 +242,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if druid.CatFormAura.IsActive() {
-				druid.ClearForm(sim)
+				druid.CancelShapeshift(sim)
 				spell.CostMultiplier += 1
 			} else {
 				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
@@ -304,7 +293,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 		BuildPhase: core.Ternary(druid.StartingForm.Matches(Bear), core.CharacterBuildPhaseBase, core.CharacterBuildPhaseNone),
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 // 			if !druid.Env.MeasuringStats && druid.form != Humanoid {
-// 				druid.ClearForm(sim)
+// 				druid.CancelShapeshift(sim)
 // 			}
 // 			druid.form = Bear
 // 			druid.SetCurrentPowerBar(core.RageBar)
@@ -444,7 +433,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if !druid.Env.MeasuringStats && druid.form != Humanoid {
-				druid.ClearForm(sim)
+				druid.CancelShapeshift(sim)
 			}
 			druid.form = Moonkin
 

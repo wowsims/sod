@@ -65,7 +65,7 @@ func (cat *FeralDruid) NextRotationAction(sim *core.Simulation, kickAt time.Dura
 
 func (cat *FeralDruid) tryPowershift(sim *core.Simulation) {
 	if cat.InForm(druid.Cat) {
-		cat.ClearForm(sim)
+		cat.CancelShapeshift(sim)
 		cat.TryUseCooldowns(sim)
 	}
 
