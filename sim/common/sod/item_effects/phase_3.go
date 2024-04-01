@@ -115,6 +115,11 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// Placeholder coefficient
+				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180), spell.OutcomeMagicHitAndCrit)
+			},
 		})
 
 		decayProcSpell := character.RegisterSpell(core.SpellConfig{
@@ -128,16 +133,15 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				targetAura := decayAuras[target.Index]
-				// Placeholder damage and coefficient values, update when P3 releases
-				result := spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				// Placeholder damage, update when P3 releases
+				result := spell.CalcAndDealDamage(sim, target, 30, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 					targetAura.Activate(sim)
 					targetAura.AddStack(sim)
 				}
 				if targetAura.GetStacks() == 5 {
-					// Placeholder coefficient
-					decayStackedSpell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+					decayStackedSpell.Cast(sim, target)
 					targetAura.SetStacks(sim, 0)
 				}
 			},
@@ -150,7 +154,7 @@ func init() {
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID: core.ActionID{SpellID: 446392},
 			Name:     "Decay",
-			Callback: core.CallbackOnCastComplete,
+			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskDirect,
 
 			// Placeholder proc value
@@ -174,7 +178,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(200, 300)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(200, 300), spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
