@@ -59,6 +59,7 @@ func (druid *Druid) registerInnervateCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			druid.ClearForm(sim)
 			innervateAura.Activate(sim)
 		},
 	})
@@ -71,7 +72,7 @@ func (druid *Druid) registerInnervateCD() {
 			// innervate gives so much mana that it can cause Super Mana Potion or Dark Rune usages
 			// to be delayed, if they come off CD soon after innervate. This delay is minimized by
 			// activating innervate from the smallest amount of mana possible.
-			return innervateTarget.CurrentMana() <= innervateManaThreshold
+			return innervateTarget.CurrentMana() <= innervateManaThreshold && !druid.form.Matches(Cat|Bear)
 		},
 	})
 }

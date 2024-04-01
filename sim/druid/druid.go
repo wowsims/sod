@@ -180,6 +180,8 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
+	druid.handleConsumablesUnshifts()
+
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
 	druid.registerCatnipCD()
@@ -225,6 +227,39 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerRipSpell()
 	// druid.registerSurvivalInstinctsCD()
 	// druid.registerSwipeBearSpell()
+}
+
+// Override the spell ApplyEffects functions for any consumables that require the druid to unshift out of Cat or Bear form
+// in order to be used so that the druid unshifts before usage.
+func (druid *Druid) handleConsumablesUnshifts() {
+	druid.RegisterAura(core.Aura{
+		Label:      "Apply clear form to consumes",
+		Duration:   core.NeverExpires,
+		BuildPhase: core.CharacterBuildPhaseConsumes,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, cd := range druid.GetMajorCooldowns() {
+				if cd != nil && cd.Spell.Flags.Matches(core.SpellFlagNoShapeshift) {
+					initialMCD := druid.GetInitialMajorCooldown(cd.Spell.ActionID)
+
+					oldApplyEffects := cd.Spell.ApplyEffects
+					newApplyEffects := func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						druid.ClearForm(sim)
+						oldApplyEffects(sim, target, spell)
+					}
+					cd.Spell.ApplyEffects = newApplyEffects
+					initialMCD.Spell.ApplyEffects = newApplyEffects
+
+					oldShouldActivate := cd.ShouldActivate
+					newShouldActivate := func(sim *core.Simulation, character *core.Character) bool {
+						return oldShouldActivate(sim, character) && !druid.form.Matches(Bear|Cat)
+					}
+					cd.ShouldActivate = newShouldActivate
+					initialMCD.ShouldActivate = newShouldActivate
+				}
+			}
+		},
+	})
+
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {

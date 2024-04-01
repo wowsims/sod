@@ -614,7 +614,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		SpellSchool: school,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		Flags:       SpellFlagCastTimeNoGCD | SpellFlagNoShapeshift,
 
 		Cast: CastConfig{
 			DefaultCast: defaultCast,
@@ -668,7 +668,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		Flags:       SpellFlagCastTimeNoGCD | SpellFlagNoShapeshift,
 
 		Cast: CastConfig{
 			DefaultCast: Cast{
@@ -813,11 +813,11 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 		ShouldActivate: func(sim *Simulation, character *Character) bool {
 			// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
 			totalRegen := character.ManaRegenPerSecondWhileCasting() * 2
-			return (character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxRoll) && !character.PseudoStats.Shapeshifted
+			return (character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxRoll)
 		},
 		Spell: character.GetOrRegisterSpell(SpellConfig{
 			ActionID: actionID,
-			Flags:    SpellFlagNoOnCastComplete,
+			Flags:    SpellFlagNoOnCastComplete | SpellFlagNoShapeshift,
 			Cast: CastConfig{
 				CD: Cooldown{
 					Timer:    cdTimer,
@@ -825,7 +825,6 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-
 				manaGain := sim.RollWithLabel(minRoll, maxRoll, "Mana Consumable")
 				character.AddMana(sim, manaGain, manaMetrics)
 			},
@@ -876,7 +875,7 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
 				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete,
+				Flags:    SpellFlagNoOnCastComplete | SpellFlagNoShapeshift,
 				Cast: CastConfig{
 					CD: Cooldown{
 						Timer:    character.NewTimer(),
