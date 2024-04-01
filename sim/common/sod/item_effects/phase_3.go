@@ -118,7 +118,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// Placeholder spell coefficient
-				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)*0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
@@ -158,7 +158,43 @@ func init() {
 			ProcMask: core.ProcMaskDirect,
 
 			// Placeholder proc value
-			ProcChance: 0.1,
+			ProcChance: 0.025,
+
+			Handler: handler,
+		})
+	})
+
+	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446388},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(200, 300)+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			procSpell.Cast(sim, character.CurrentTarget)
+		}
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{SpellID: 446389},
+			Name:     "Sandstorm",
+			Callback: core.CallbackOnCastComplete,
+			ProcMask: core.ProcMaskDirect,
+
+			// Placeholder proc value
+			ProcChance: 0.025,
 
 			Handler: handler,
 		})
