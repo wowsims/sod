@@ -242,7 +242,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if druid.CatFormAura.IsActive() {
-				druid.ClearForm(sim)
+				druid.CancelShapeshift(sim)
 				spell.CostMultiplier += 1
 			} else {
 				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
@@ -293,7 +293,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 		BuildPhase: core.Ternary(druid.StartingForm.Matches(Bear), core.CharacterBuildPhaseBase, core.CharacterBuildPhaseNone),
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 // 			if !druid.Env.MeasuringStats && druid.form != Humanoid {
-// 				druid.ClearForm(sim)
+// 				druid.CancelShapeshift(sim)
 // 			}
 // 			druid.form = Bear
 // 			druid.SetCurrentPowerBar(core.RageBar)
