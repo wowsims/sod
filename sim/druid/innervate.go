@@ -59,7 +59,6 @@ func (druid *Druid) registerInnervateCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			druid.ClearForm(sim)
 			innervateAura.Activate(sim)
 		},
 	})
