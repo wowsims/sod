@@ -81,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 67
+// NextIndex: 69
 message APLValue {
     oneof value {
         // Operators
@@ -121,6 +121,7 @@ message APLValue {
         APLValueAutoSwingTime auto_swing_time = 64;
 
         // Spell values
+        APLValueSpellIsKnown spell_is_known = 68;
         APLValueSpellCanCast spell_can_cast = 19;
         APLValueSpellIsReady spell_is_ready = 20;
         APLValueSpellTimeToReady spell_time_to_ready = 21;
@@ -132,6 +133,7 @@ message APLValue {
         APLValueSpellCurrentCost spell_current_cost = 62;
 
         // Aura values
+        APLValueAuraIsKnown aura_is_known = 67;
         APLValueAuraIsActive aura_is_active = 22;
         APLValueAuraIsActiveWithReactionTime aura_is_active_with_reaction_time = 50;
         APLValueAuraRemainingTime aura_remaining_time = 23;
@@ -394,6 +396,9 @@ message APLValueAutoSwingTime {
     SwingType auto_type = 1;
 }
 
+message APLValueSpellIsKnown {
+    ActionID spell_id = 1;
+}
 message APLValueSpellCanCast {
     ActionID spell_id = 1;
 }
@@ -427,6 +432,10 @@ message APLValueSpellCurrentCost {
     ActionID spell_id = 1;
 }
 
+message APLValueAuraIsKnown {
+    UnitReference source_unit = 2;
+    ActionID aura_id = 1;
+}
 message APLValueAuraIsActive {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
