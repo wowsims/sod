@@ -40,6 +40,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyExposeWeakness()
 	hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
+	hunter.applyRaptorFury()
 }
 
 func (hunter *Hunter) applyInvigoration() {
@@ -194,9 +195,22 @@ func (hunter *Hunter) applyLockAndLoad() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
-				hunter.AddMana(sim, spell.DefaultCast.Cost, lockAndLoadMetrics)
+				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 				spell.CD.Reset()
 			}
 		},
+	})
+}
+
+func (hunter *Hunter) applyRaptorFury() {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury){
+		return
+	}
+
+	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
+		Label:     "Raptor Fury Buff",
+		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 	})
 }
