@@ -12,6 +12,9 @@ const (
 	AtalaiBloodRitualCharm = 220634
 	CobraFangClaw          = 220588
 	SerpentsStriker        = 220589
+	DarkmoonCardSandstorm  = 221309
+	DarkmoonCardOvergrowth = 221308
+	DarkmoonCardDecay      = 221307
 )
 
 func init() {
@@ -86,6 +89,78 @@ func init() {
 			Spell:    triggerSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	core.NewItemEffect(DarkmoonCardDecay, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		makeDecayAura := func(target *core.Unit, playerLevel int32) *core.Aura {
+			return target.GetOrRegisterAura(core.Aura{
+				Label:    "Decay",
+				ActionID: core.ActionID{SpellID: 446393},
+				// Placeholder duration
+				Duration:  core.NeverExpires,
+				MaxStacks: 5,
+			})
+		}
+
+		decayAuras := character.NewEnemyAuraArray(makeDecayAura)
+
+		decayStackedSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446810},
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// Placeholder spell coefficient
+				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180)*0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		decayProcSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446393},
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				targetAura := decayAuras[target.Index]
+				// Placeholder damage and coefficient values, update when P3 releases
+				result := spell.CalcAndDealDamage(sim, target, 30+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					targetAura.Activate(sim)
+					targetAura.AddStack(sim)
+					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
+				}
+				if targetAura.GetStacks() == 5 {
+					decayStackedSpell.Cast(sim, target)
+					targetAura.SetStacks(sim, 0)
+				}
+			},
+		})
+
+		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			decayProcSpell.Cast(sim, character.CurrentTarget)
+		}
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{SpellID: 446392},
+			Name:     "Decay",
+			Callback: core.CallbackOnCastComplete,
+			ProcMask: core.ProcMaskDirect,
+
+			// Placeholder proc value
+			ProcChance: 0.1,
+
+			Handler: handler,
 		})
 	})
 
