@@ -144,8 +144,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	fervorOfTheTempleExplorer: true,
-	sparkOfInspiration: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
