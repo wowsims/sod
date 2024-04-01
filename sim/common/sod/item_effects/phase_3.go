@@ -12,6 +12,7 @@ const (
 	AtalaiBloodRitualCharm = 220634
 	CobraFangClaw          = 220588
 	SerpentsStriker        = 220589
+	RoarOfTheGuardian      = 221442
 )
 
 func init() {
@@ -74,6 +75,45 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    triggerSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	core.NewItemEffect(RoarOfTheGuardian, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:     "Roar of the Guardian",
+			ActionID:  core.ActionID{SpellID: 446709},
+			Duration:  time.Second * 20,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.AttackPower, 70)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.AttackPower, -70)
+			},
+		})
+
+		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 446709},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 5,
 				},
 			},
 
