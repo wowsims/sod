@@ -48,66 +48,29 @@ func TestBalance(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-	}))
-}
+		{
+			Class:      proto.Class_ClassDruid,
+			Level:      50,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassDruid,
-					Level:         25,
-					TalentsString: Phase1Talents,
-					Equipment:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_1").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/balance_druid/apls", "phase_1").Rotation,
-					Consumes:      Phase1Consumes.Consumes,
-					Spec:          PlayerOptionsAdaptive,
-					Buffs:         core.FullIndividualBuffsPhase1,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(25),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
+			Talents:     Phase3Talents,
+			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_3"),
+			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_3"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassDruid,
-					Level:         40,
-					TalentsString: Phase2Talents,
-					Equipment:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_2").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/balance_druid/apls", "phase_2").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          PlayerOptionsAdaptive,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
+	}))
 }
 
 var Phase1Talents = "50005003021"
 var Phase2Talents = "5000500302541051"
+var Phase3Talents = "5000550012551351--3"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -125,6 +88,18 @@ var Phase2Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodSagefishDelight,
 		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_LesserArcaneElixir,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultAtalAi:   proto.AtalAi_AtalAiForbiddenMagic,
+		DefaultConjured: proto.Conjured_ConjuredDruidCatnip,
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Food:            proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:   proto.WeaponImbue_WizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 

@@ -1,9 +1,12 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
+	AtalAi,
+	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	Flask,
 	Food,
 	IndividualBuffs,
 	PartyBuffs,
@@ -23,6 +26,7 @@ import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase3Gear from './gear_sets/phase_3.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -34,17 +38,18 @@ import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
+export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -66,7 +71,6 @@ export const APLPresets = {
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
-	// TODO: Phase 3
 	50: APLPresets[Phase.Phase3][0],
 };
 
@@ -90,17 +94,23 @@ export const TalentsPhase2 = {
 		talentsString: '5000500302541051',
 	}),
 };
+export const TalentsPhase3 = {
+	name: 'Phase 3',
+	data: SavedTalents.create({
+		talentsString: '5000550012551351--3',
+	}),
+};
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [TalentsPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 2 preset and pull from map
-export const DefaultTalents = TalentPresets[Phase.Phase2][0];
+export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -111,11 +121,15 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.GreaterManaPotion,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
-	food: Food.FoodSagefishDelight,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
+	defaultConjured: Conjured.ConjuredDruidCatnip,
+	defaultPotion: Potions.MajorManaPotion,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	flask: Flask.FlaskOfRestlessDreams,
+	food: Food.FoodRunnTumTuberSurprise,
+	mainHandImbue: WeaponImbue.WizardOil,
+	mildlyIrradiatedRejuvPot: true,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -123,14 +137,15 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
@@ -140,7 +155,7 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 18,
+	distanceFromTarget: 5,
 	profession1: Profession.Enchanting,
-	profession2: Profession.Leatherworking,
+	profession2: Profession.Alchemy,
 };
