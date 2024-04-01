@@ -165,7 +165,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 	}
 	config.Cast.ModifyCast = func(sim *core.Simulation, s *core.Spell, c *core.Cast) {
 		if !druid.InForm(ds.FormMask) && ds.FormMask.Matches(Humanoid) {
-			druid.ClearForm(sim)
+			druid.CancelShapeshift(sim)
 		}
 		if prevModify != nil {
 			prevModify(sim, s, c)

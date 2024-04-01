@@ -238,12 +238,6 @@ func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *
 			}
 		}
 	}
-
-	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
-		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
-		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickPeriod())
-	}
 }
 
 func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *core.Unit) {
