@@ -21,7 +21,6 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		60: 11585,
 	}[warrior.Level]
 
-	outcomeMask := core.OutcomeDodge
 	warrior.RegisterAura(core.Aura{
 		Label:    "Overpower Trigger",
 		Duration: core.NeverExpires,
@@ -29,7 +28,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(outcomeMask) {
+			if result.Outcome.Matches(core.OutcomeDodge) {
 				warrior.OverpowerAura.Activate(sim)
 			}
 		},
@@ -40,9 +39,6 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		ActionID: core.ActionID{SpellID: spellID},
 		Duration: time.Second * 5,
 	})
-
-	cooldownDur := time.Second * 5
-	gcdDur := core.GCDDefault
 
 	warrior.Overpower = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -57,12 +53,12 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: gcdDur,
+				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    cdTimer,
-				Duration: cooldownDur,
+				Duration: time.Second * 5,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

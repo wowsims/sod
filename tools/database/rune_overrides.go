@@ -7,7 +7,7 @@ import (
 // Overrides for runes as needed
 // Regen db with "go run ./tools/database/gen_db -outDir=assets -gen=db"
 // And ensure db files are copied from assets/db into dist/sod/database
-var RuneOverrides = []*proto.UIRune{}
+var RuneOverrides []*proto.UIRune
 
 // Remove runes as you implement them.
 var UnimplementedRuneOverrides = []int32{
@@ -32,7 +32,4 @@ var UnimplementedRuneOverrides = []int32{
 	431670, // Despair
 	431664, // Surge of Light
 	431681, // Void Zone
-
-	// Rogue
-	432273, // Unfair Advantage
 }
