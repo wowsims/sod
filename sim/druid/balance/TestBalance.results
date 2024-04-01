@@ -251,7 +251,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.94939
+  weights: 0.94854
   weights: 0
   weights: 0
   weights: 0
@@ -259,8 +259,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.67187
-  weights: 6.86209
+  weights: 6.90563
+  weights: 6.61731
   weights: 0
   weights: 0
   weights: 0
@@ -512,78 +512,78 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 771.19113
-  tps: 790.7318
+  dps: 770.09384
+  tps: 789.65368
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 734.83872
-  tps: 754.43307
+  dps: 738.67323
+  tps: 758.26757
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 485.7036
-  tps: 500.99311
+  dps: 480.50535
+  tps: 496.02486
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 506.73442
-  tps: 522.29609
+  dps: 502.51143
+  tps: 518.30311
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-InsulatedLeathers"
  value: {
-  dps: 483.41175
-  tps: 499.30693
+  dps: 478.97145
+  tps: 495.05829
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 514.90189
-  tps: 530.47506
+  dps: 511.65493
+  tps: 527.43894
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-IrradiatedGarments"
  value: {
-  dps: 520.52284
-  tps: 535.98101
+  dps: 516.33941
+  tps: 532.01992
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 766.43709
-  tps: 785.93944
+  dps: 766.91339
+  tps: 786.4119
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
-  dps: 962.66901
-  tps: 978.90789
+  dps: 962.50594
+  tps: 978.74582
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 926.08113
-  tps: 1197.27843
+  dps: 926.84257
+  tps: 1197.80987
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 926.08113
-  tps: 939.64099
+  dps: 926.84257
+  tps: 940.39093
  }
 }
 dps_results: {
@@ -596,36 +596,36 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 673.75641
-  tps: 845.38942
+  dps: 673.29237
+  tps: 844.92539
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 673.75641
-  tps: 682.33806
+  dps: 673.29237
+  tps: 681.87402
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 722.62922
-  tps: 737.81297
+  dps: 721.87136
+  tps: 737.05511
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 925.36978
-  tps: 1196.49042
+  dps: 926.12279
+  tps: 1197.01343
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 925.36978
-  tps: 938.92581
+  dps: 926.12279
+  tps: 939.66732
  }
 }
 dps_results: {
@@ -638,28 +638,28 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 671.47165
-  tps: 846.4939
+  dps: 670.36775
+  tps: 845.39
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 671.47165
-  tps: 680.22276
+  dps: 670.36775
+  tps: 679.11886
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 722.62922
-  tps: 737.81297
+  dps: 721.87136
+  tps: 737.05511
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 958.93395
-  tps: 975.21548
+  dps: 958.37307
+  tps: 974.6546
  }
 }
