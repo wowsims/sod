@@ -100,10 +100,17 @@ export const TalentsPhase2 = {
 	}),
 };
 
+export const TalentsPhase3 = {
+	name: 'Phase 3',
+	data: SavedTalents.create({
+		talentsString: '500005301-5500020323002-05',
+	}),
+};
+
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [TalentsPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
