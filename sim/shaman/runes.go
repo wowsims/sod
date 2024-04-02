@@ -138,7 +138,7 @@ func (shaman *Shaman) applyShieldMastery() {
 }
 
 func (shaman *Shaman) applyTwoHandedMastery() {
-	if !shaman.HasRune(proto.ShamanRune_RuneTwoHandedMastery) {
+	if !shaman.HasRune(proto.ShamanRune_RuneChestTwoHandedMastery) {
 		return
 	}
 
@@ -168,7 +168,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneTwoHandedMastery)},
+		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestTwoHandedMastery)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -315,9 +315,12 @@ func (shaman *Shaman) applyWayOfEarth() {
 		return
 	}
 
-	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_RockbiterWeapon {
-		shaman.PseudoStats.ThreatMultiplier *= 1.5
+	// Way of Earth only activates if you have Rockbiter Weapon on your mainhand and a shield in your offhand
+	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon && (shaman.OffHand() == nil || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield) {
+		return
 	}
+
+	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.3)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Way of Earth",
@@ -325,6 +328,18 @@ func (shaman *Shaman) applyWayOfEarth() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.EnableDynamicStatDep(sim, healthDep)
+			shaman.PseudoStats.DamageTakenMultiplier *= .9
+			shaman.PseudoStats.ReducedCritTakenChance += 6
+			shaman.PseudoStats.ThreatMultiplier *= 1.5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.DisableDynamicStatDep(sim, healthDep)
+			shaman.PseudoStats.DamageTakenMultiplier /= .9
+			shaman.PseudoStats.ReducedCritTakenChance -= 6
+			shaman.PseudoStats.ThreatMultiplier /= 1.5
 		},
 	})
 }
@@ -335,6 +350,37 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		return
 	}
 
-	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-	shaman.PseudoStats.ThreatMultiplier *= .70
+	if shaman.IsTanking() {
+		shaman.RegisterAura(core.Aura{
+			Label:    "Spirit of the Alpha",
+			ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.ThreatMultiplier *= 1.45
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.ThreatMultiplier /= 1.45
+			},
+		})
+	} else {
+		shaman.RegisterAura(core.Aura{
+			Label:    "Loyal Beta",
+			ActionID: core.ActionID{SpellID: 443320},
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
+				shaman.PseudoStats.ThreatMultiplier *= .70
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
+				shaman.PseudoStats.ThreatMultiplier /= .70
+			},
+		})
+	}
 }
