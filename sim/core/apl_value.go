@@ -164,6 +164,10 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	case *proto.APLValue_AuraShouldRefresh:
 		return rot.newValueAuraShouldRefresh(config.GetAuraShouldRefresh())
 
+	// Runes
+	case *proto.APLValue_RuneIsEquipped:
+		return rot.newValueRuneIsEquipped(config.GetRuneIsEquipped())
+
 	// Dots
 	case *proto.APLValue_DotIsActive:
 		return rot.newValueDotIsActive(config.GetDotIsActive())
