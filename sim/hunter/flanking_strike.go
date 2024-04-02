@@ -12,6 +12,12 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		return
 	}
 
+	hasCatlikeReflexes := hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes)
+	cooldownModifier := 1.0
+	if hasCatlikeReflexes {
+		cooldownModifier *= 0.5
+	}
+
 	hunter.FlankingStrikeAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Flanking Strike Buff",
 		ActionID:  core.ActionID{SpellID: 415320},
@@ -55,7 +61,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 30,
+				Duration: time.Second * time.Duration(30 * cooldownModifier),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

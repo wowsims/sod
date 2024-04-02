@@ -128,6 +128,7 @@ enum HunterRune {
 	RuneBootsInvigoration				= 437997;
 
 	RuneHelmLockAndLoad					= 415413;
+	RuneHelmCatlikeReflexes				= 415428;
 
 	RuneBracersFocusFire				= 428726;
 	RuneBracersRaptorFury				= 415358;
