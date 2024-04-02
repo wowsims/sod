@@ -17,13 +17,8 @@ var UnimplementedRuneOverrides = []int32{
 	428717, // T.N.T.
 
 	// Paladin
-	429142, // Fanaticism
 	429133, // Improved Sanctuary
 	428909, // Light's Grace
-	429139, // Wrath
-	407632, // Hammer of the Righteous
-	429152, // Improved Hammer of Wrath
-	429144, // Purifying power
 
 	// Priest
 	431622, // Divine Aegis

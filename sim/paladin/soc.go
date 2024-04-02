@@ -64,7 +64,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 		SpellCode:   SpellCode_PaladinJudgementOfCommand,
 
-		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+		BonusCritRating: paladin.holyPower() + paladin.fanaticism(),
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,

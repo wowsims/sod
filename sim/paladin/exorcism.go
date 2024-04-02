@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"github.com/wowsims/sod/sim/core/stats"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -17,7 +18,7 @@ var exorcismEffectDieSides = [exorcismRanks + 1]float64{0, 13, 21, 29, 39, 47, 5
 var exorcismEffectRealPointsPerLevel = [exorcismRanks + 1]float64{0, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2}
 var exorcismMinMaxLevels = [exorcismRanks + 1][]int32{{0}, {20, 25}, {28, 33}, {36, 40}, {44, 49}, {52, 72}, {60, 60}}
 
-func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) core.SpellConfig {
+func (paladin *Paladin) getExorcismBaseConfig(rank int) core.SpellConfig {
 	spellId := exorcismSpellIDs[rank]
 	manaCost := exorcismManaCosts[rank]
 	level := exorcismLevels[rank]
@@ -31,11 +32,8 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 	baseDamageMin := basePoints + float64(levelsToScale)*pointsPerLevel
 	baseDamageMax := baseDamageMin + dieSides
 
-	spellCoeff := 0.429
-	bonusCrit := core.TernaryFloat64(
-		guaranteed_crit,
-		100*core.CritRatingPerCritChance,
-		0)
+	hasExorcist := paladin.HasRune(proto.PaladinRune_RuneLegsExorcist)
+	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -62,13 +60,25 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 			CD: *paladin.ExorcismCooldown,
 		},
 
-		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+		BonusCritRating: paladin.holyPower() + paladin.fanaticism(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hasExorcist || target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + 0.429*spell.SpellDamage()
+
+			var bonusCrit float64
+			if hasExorcist && (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
+				bonusCrit += 100 * core.CritRatingPerCritChance
+			}
+			if hasWrath {
+				bonusCrit += paladin.GetStat(stats.MeleeCrit)
+			}
 
 			spell.BonusCritRating += bonusCrit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -80,31 +90,21 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int, guaranteed_crit bool) co
 
 // Exorcism in SoD is by default castable only on demon and undead targets.
 // If the paladin has the Exorcist leg rune equipped, they can cast the spell on
-// any target and it additonally always crits on demon and undead targets.
+// any target and it additionally always crits on demon and undead targets.
 func (paladin *Paladin) registerExorcismSpell() {
 	paladin.ExorcismCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 15,
 	}
-	guaranteed_crit := false
-	target := paladin.CurrentTarget
-	target_is_demon_or_undead := (target.MobType == proto.MobType_MobTypeDemon) ||
-		(target.MobType == proto.MobType_MobTypeUndead)
 
-	if !paladin.HasRune(proto.PaladinRune_RuneLegsExorcist) {
-		if !target_is_demon_or_undead {
-			return
-		}
-	} else {
-		if target_is_demon_or_undead {
-			guaranteed_crit = true
-		}
+	if paladin.HasRune(proto.PaladinRune_RuneWristPurifyingPower) {
+		paladin.ExorcismCooldown.Duration /= 2
 	}
 
 	paladin.Exorcism = make([]*core.Spell, exorcismRanks+1)
 
 	for rank := 1; rank <= exorcismRanks; rank++ {
-		config := paladin.getExorcismBaseConfig(rank, guaranteed_crit)
+		config := paladin.getExorcismBaseConfig(rank)
 		if config.RequiredLevel <= int(paladin.Level) {
 			paladin.Exorcism[rank] = paladin.GetOrRegisterSpell(config)
 		}

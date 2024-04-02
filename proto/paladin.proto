@@ -74,6 +74,13 @@ enum PaladinRune {
 	RuneFeetGuardedByTheLight = 415059;
 	RuneFeetSacredShield = 412019;
 	RuneFeetTheArtOfWar = 426157;
+
+	RuneHeadFanaticism = 429142;
+	RuneHeadWrath = 429139;
+
+	RuneWristHammerOfTheRighteous = 407632;
+	RuneWristImprovedHammerOfWrath = 429152;
+	RuneWristPurifyingPower = 429144;
 }
 
 enum Blessings {

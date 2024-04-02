@@ -48,8 +48,8 @@ type Paladin struct {
 	Judgement         *core.Spell
 	DivineFavor       *core.Spell
 	// HolyShield            *core.Spell
-	// HammerOfWrath         *core.Spell
-	// HolyWrath             *core.Spell
+	// HammerOfWrath         []*core.Spell
+	// HolyWrath             []*core.Spell
 
 	// Seal spells and their associated auras
 	SealOfRighteousness []*core.Spell
@@ -63,9 +63,6 @@ type Paladin struct {
 	// Auras from talents
 	DivineFavorAura *core.Aura
 	VengeanceAura   *core.Aura
-
-	// Placeholder for any auto-rotation with exo/HW.
-	DemonAndUndeadTargetCount int32
 }
 
 // Implemented by each Paladin spec.
@@ -104,16 +101,9 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyShockSpell()
 	paladin.registerExorcismSpell()
 	paladin.registerDivineFavorSpellAndAura()
-	// paladin.registerHammerOfWrathSpell()
-	// paladin.registerHolyWrathSpell()
+	paladin.registerHammerOfWrathSpell()
+	paladin.registerHolyWrathSpell()
 	// paladin.registerHolyShieldSpell()
-
-	for i := int32(0); i < paladin.Env.GetNumTargets(); i++ {
-		unit := paladin.Env.GetTargetUnit(i)
-		if unit.MobType == proto.MobType_MobTypeDemon || unit.MobType == proto.MobType_MobTypeUndead {
-			paladin.DemonAndUndeadTargetCount += 1
-		}
-	}
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
