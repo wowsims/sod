@@ -215,8 +215,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.37245
-  weights: 4.8997
-  weights: 5.61204
+  weights: 4.89873
+  weights: 5.61315
   weights: 0
   weights: 0
   weights: 0
@@ -264,7 +264,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.45732
-  weights: 7.6886
+  weights: 7.68591
   weights: 8.15796
   weights: 0
   weights: 0
@@ -561,8 +561,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 603.7167
-  tps: 448.29579
+  dps: 603.72387
+  tps: 448.30088
  }
 }
 dps_results: {
@@ -582,8 +582,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-Average-Default"
  value: {
-  dps: 741.21793
-  tps: 545.40364
+  dps: 741.21974
+  tps: 545.40493
  }
 }
 dps_results: {
@@ -904,8 +904,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl50-Average-Default"
  value: {
-  dps: 1267.75296
-  tps: 926.03784
+  dps: 1267.75543
+  tps: 926.03962
  }
 }
 dps_results: {
@@ -1163,7 +1163,7 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 618.48691
-  tps: 443.19443
+  dps: 618.49685
+  tps: 443.20149
  }
 }

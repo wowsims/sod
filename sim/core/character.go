@@ -49,6 +49,9 @@ type Character struct {
 	// Consumables this Character will be using.
 	Consumes *proto.Consumes
 
+	// ISB External configuration
+	IsbConfig IsbConfig
+
 	// Base stats for this Character.
 	baseStats stats.Stats
 
@@ -147,6 +150,8 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	if player.Consumes != nil {
 		character.Consumes = player.Consumes
 	}
+
+	character.createIsbConfig(player)
 
 	character.baseStats = getBaseStatsCombo(character.Race, character.Class, int(character.Level))
 
