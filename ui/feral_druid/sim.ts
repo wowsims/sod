@@ -125,7 +125,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Preset talents that the user can quickly select.
 		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		rotations: [
-			Presets.SIMPLE_ROTATION_DEFAULT,
+			// Simple Rotation is broken at the moment
+			// Presets.SIMPLE_ROTATION_DEFAULT,
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],

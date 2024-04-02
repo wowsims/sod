@@ -86,6 +86,8 @@ type Character struct {
 	fiftyPercentHasteBuffCD *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
+
+	ActiveShapeShift *Aura // Some things can't be used in shapeshift forms
 }
 
 func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character {
@@ -629,6 +631,23 @@ func (character *Character) GetConjuredCD() *Timer {
 }
 func (character *Character) GetFiftyPercentHasteBuffCD() *Timer {
 	return character.GetOrInitTimer(&character.fiftyPercentHasteBuffCD)
+}
+
+func (character *Character) IsShapeshifted() bool {
+	return character.ActiveShapeShift != nil
+}
+
+func (character *Character) CancelShapeshift(sim *Simulation) {
+	if character.ActiveShapeShift != nil {
+		character.ActiveShapeShift.Deactivate(sim)
+	}
+}
+
+func (character *Character) SetShapeshift(aura *Aura) {
+	if aura != nil && character.ActiveShapeShift != nil {
+		panic("Tried to set shapeshift while already shapeshifted!")
+	}
+	character.ActiveShapeShift = aura
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.
