@@ -13,6 +13,12 @@ func (hunter *Hunter) registerKillCommand() {
 	}
 
 	actionID := core.ActionID{SpellID: 409379}
+	hasCatlikeReflexes := hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes)
+
+	cooldownModifier := 1.0
+	if hasCatlikeReflexes {
+		cooldownModifier *= 0.5
+	}
 
 	// For tracking in timeline
 	hunterAura := hunter.RegisterAura(core.Aura{
@@ -47,7 +53,7 @@ func (hunter *Hunter) registerKillCommand() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute,
+				Duration: time.Second * time.Duration(60 * cooldownModifier),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

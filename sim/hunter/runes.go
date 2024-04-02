@@ -35,6 +35,13 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
 	}
 
+	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
+		hunter.AddStat(stats.Dodge, 20 * core.DodgeRatingPerDodgeChance)
+		if hunter.pet != nil {
+			hunter.pet.AddStat(stats.Dodge, 9 * core.DodgeRatingPerDodgeChance)
+		} 
+	}
+
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
