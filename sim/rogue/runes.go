@@ -30,7 +30,8 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerHonorAmongThieves()
 	rogue.applyCombatPotency()
 	rogue.applyFocusedAttacks()
-	rogue.registerCarnage()
+	rogue.applyCarnage()
+	rogue.applyUnfairAdvantage()
 }
 
 func (rogue *Rogue) applyCombatPotency() {
@@ -38,12 +39,11 @@ func (rogue *Rogue) applyCombatPotency() {
 		return
 	}
 
-	const procChance = 0.2
-	energyBonus := 15.0
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 432292})
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Combat Potency",
+		ActionID: energyMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -53,8 +53,8 @@ func (rogue *Rogue) applyCombatPotency() {
 				return
 			}
 
-			if sim.RandomFloat("Combat Potency") < procChance {
-				rogue.AddEnergy(sim, energyBonus, energyMetrics)
+			if sim.RandomFloat("Combat Potency") < 0.2 {
+				rogue.AddEnergy(sim, 15, energyMetrics)
 			}
 		},
 	})
@@ -65,13 +65,11 @@ func (rogue *Rogue) applyFocusedAttacks() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneFocusedAttacks)}
-
-	energyMetrics := rogue.NewEnergyMetrics(actionID)
+	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: int32(proto.RogueRune_RuneFocusedAttacks)})
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Focused Attacks",
-		ActionID: actionID,
+		ActionID: energyMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -80,10 +78,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() {
 				return
 			}
-			// Fan of Knives OH hits do not trigger focused attacks. Check other SoD spells
-			/**if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.IsSpellAction(FanOfKnivesSpellID) {
-				return
-			}*/
+			// TODO Check whether certain spells don't trigger this
 			rogue.AddEnergy(sim, 2, energyMetrics)
 		},
 	})
@@ -94,9 +89,8 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)}
+	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)})
 
-	comboMetrics := rogue.NewComboPointMetrics(actionID)
 	icd := core.Cooldown{
 		Timer:    rogue.NewTimer(),
 		Duration: time.Second,
@@ -104,7 +98,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 
 	rogue.HonorAmongThieves = rogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
-		ActionID: actionID,
+		ActionID: comboMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -132,7 +126,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 			sim.AddPendingAction(pa)
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto|core.ProcMaskMeleeOHAuto|core.ProcMaskRangedAuto) {
+			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskWhiteHit) {
 				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 			}
 		},
