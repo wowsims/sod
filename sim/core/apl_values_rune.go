@@ -29,5 +29,5 @@ func (value *APLValueRuneIsEquipped) GetBool(sim *Simulation) bool {
 	return slices.Contains(value.character.Equipment.GetRuneIds(), value.rune.ID)
 }
 func (value *APLValueRuneIsEquipped) String() string {
-	return fmt.Sprintf("Rune Equipped(%s)", value.rune.ID)
+	return fmt.Sprintf("Rune Equipped(%d)", value.rune.ID)
 }
