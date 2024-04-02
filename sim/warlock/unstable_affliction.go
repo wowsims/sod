@@ -29,7 +29,8 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:      core.GCDDefault,
+				CastTime: time.Millisecond * 1500,
 			},
 		},
 

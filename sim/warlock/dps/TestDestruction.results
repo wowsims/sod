@@ -151,17 +151,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.3231
+  weights: 3.30369
   weights: 0
-  weights: 2.07786
-  weights: 0
-  weights: 0
+  weights: 2.06689
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.84778
+  weights: 0
+  weights: 0
+  weights: 3.82369
   weights: 4.38122
   weights: 0
   weights: 0
@@ -253,36 +253,36 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 79.816
-  tps: 68.18457
+  dps: 79.67823
+  tps: 68.04679
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 749.02921
-  tps: 671.01634
+  dps: 748.88621
+  tps: 670.87334
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 743.81885
-  tps: 1054.55749
+  dps: 743.67162
+  tps: 1054.41026
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 743.81885
-  tps: 665.29097
+  dps: 743.67162
+  tps: 665.14374
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 930.6688
-  tps: 801.76474
+  dps: 930.09208
+  tps: 801.18802
  }
 }
 dps_results: {
@@ -309,7 +309,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 749.23239
-  tps: 671.3306
+  dps: 749.10674
+  tps: 671.20496
  }
 }

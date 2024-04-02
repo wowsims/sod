@@ -2,10 +2,10 @@ import { BooleanPicker } from '../components/boolean_picker.js';
 import { CURRENT_LEVEL_CAP } from '../constants/mechanics.js';
 import { CURRENT_PHASE } from '../constants/other.js';
 import { Player } from '../player.js';
-import { UnitReference } from '../proto/common.js';
+import { Spec, UnitReference } from '../proto/common.js';
 import { emptyUnitReference } from '../proto_utils/utils.js';
 import { Sim } from '../sim.js';
-import { EventID } from '../typed_event.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { EnumPicker } from './enum_picker.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
@@ -113,6 +113,68 @@ export const DistanceFromTarget = {
 		player.setDistanceFromTarget(eventID, newValue);
 	},
 };
+
+export const IsbSbFrequencey = {
+	type: 'number' as const,
+	label: 'SB Frequency',
+	labelTooltip: 'How often a Shadow Bolt is cast by the external warlock.',
+	float: true,
+	defaultValue: 3.0,
+	inline: true,
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.changeEmitter, player.getRaid()!.debuffsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getIsbSbFrequency(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setIsbSbFrequency(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true,
+};
+
+export const IsbCrit = {
+	type: 'number' as const,
+	label: 'SB Crit',
+	labelTooltip: 'How often a Shadow Bolt from external warlock is a crit.',
+	float: true,
+	defaultValue: 25.0,
+	inline: true,
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.changeEmitter, player.getRaid()!.debuffsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getIsbCrit(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setIsbCrit(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true,
+};
+
+export const IsbWarlocks = {
+	type: 'number' as const,
+	label: 'SB Warlocks',
+	labelTooltip: 'Number of ISB warlocks.',
+	defaultValue: 1.0,
+	inline: true,
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.changeEmitter, player.getRaid()!.debuffsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getIsbWarlocks(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setIsbWarlocks(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true,
+};
+
+export const IsbSpriests = {
+	type: 'number' as const,
+	label: 'Shadow Priests',
+	labelTooltip: 'Number of other shadow priests.',
+	inline: true,
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.changeEmitter, player.getRaid()!.debuffsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getIsbSpriests(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setIsbSpriests(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true || (player as Player<Spec.SpecWarlock>)?.getTalents().improvedShadowBolt > 0,
+};
+
+export const IsbConfig = {
+	tooltip: 'Improved Shadow Bolt debuff configuration',
+	inputs: [IsbSbFrequencey, IsbCrit, IsbWarlocks, IsbSpriests]
+}
 
 export const TankAssignment = {
 	type: 'enum' as const,

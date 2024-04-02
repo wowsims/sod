@@ -33,6 +33,7 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.registerPreparationCD()
 	rogue.registerPremeditation()
 	rogue.registerGhostlyStrikeSpell()
+	rogue.applyRiposte()
 }
 
 // dwsMultiplier returns the offhand damage multiplier

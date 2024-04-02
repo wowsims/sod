@@ -393,36 +393,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 463.02979
-  tps: 464.36212
+  dps: 463.03067
+  tps: 464.36596
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 500.85339
-  tps: 502.32573
+  dps: 500.85428
+  tps: 502.32973
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 462.56766
-  tps: 463.89797
+  dps: 462.56854
+  tps: 463.9018
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 494.8975
-  tps: 496.36708
+  dps: 494.89839
+  tps: 496.37106
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
-  dps: 652.61936
-  tps: 559.98485
+  dps: 652.619
+  tps: 559.98368
  }
 }
 dps_results: {
@@ -547,8 +547,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 631.91375
-  tps: 598.06204
+  dps: 631.9146
+  tps: 598.06289
  }
 }
 dps_results: {
