@@ -1793,6 +1793,7 @@
 {"id":432259,"name":"Engrave Helm - Combat Potency","icon":"inv_weapon_shortblade_38","class":6,"type":1,"requiresLevel":1},
 {"id":432264,"name":"Engrave Helm - Honor Among Thieves","icon":"ability_rogue_honoramongstthieves","class":6,"type":1,"requiresLevel":1},
 {"id":432271,"name":"Engrave Bracers - Cut to the Chase","icon":"ability_rogue_cuttothechase","class":6,"type":6,"requiresLevel":1},
+{"id":432273,"name":"Engrave Bracers - Unfair Advantage","icon":"ability_rogue_unfairadvantage","class":6,"type":6,"requiresLevel":1},
 {"id":432276,"name":"Engrave Bracers - Carnage","icon":"ability_rogue_bloodsplatter","class":6,"type":6,"requiresLevel":1},
 {"id":436364,"name":"Engrave Chest - Two-Handed Mastery","icon":"spell_fire_enchantweapon","class":7,"type":5,"requiresLevel":1},
 {"id":436516,"name":"Engrave Boots - Chronostatic Preservation","icon":"spell_arcane_arcane02","class":3,"type":10,"requiresLevel":1},
