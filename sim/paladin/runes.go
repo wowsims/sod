@@ -25,7 +25,7 @@ func (paladin *Paladin) ApplyRunes() {
 	// "RuneWristPurifyingPower" is handled in Exorcism
 }
 
-func (paladin *Paladin) fanaticism() float64 {
+func (paladin *Paladin) fanaticismCritChance() float64 {
 	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.CritRatingPerCritChance
 }
 

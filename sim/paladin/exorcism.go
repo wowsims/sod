@@ -60,7 +60,7 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int) core.SpellConfig {
 			CD: *paladin.ExorcismCooldown,
 		},
 
-		BonusCritRating: paladin.holyPower() + paladin.fanaticism(),
+		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

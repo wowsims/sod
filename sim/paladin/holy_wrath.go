@@ -61,7 +61,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 				CD:          cd,
 			},
 
-			BonusCritRating: paladin.holyPower() + paladin.fanaticism(),
+			BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,

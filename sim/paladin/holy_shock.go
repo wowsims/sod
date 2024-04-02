@@ -61,7 +61,7 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 			CD: *paladin.HolyShockCooldown,
 		},
 
-		BonusCritRating: paladin.holyPower() + paladin.fanaticism(),
+		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,

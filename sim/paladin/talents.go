@@ -49,7 +49,7 @@ func (paladin *Paladin) getIlluminationActionID() core.ActionID {
 	}
 }
 
-func (paladin *Paladin) holyPower() float64 {
+func (paladin *Paladin) holyPowerCritChance() float64 {
 	return core.CritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 }
 
