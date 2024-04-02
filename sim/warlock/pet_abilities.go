@@ -51,7 +51,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 
 			if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= 1.4
+				baseDamage *= wp.owner.getLakeOfFireMultiplier()
 			}
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

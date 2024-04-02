@@ -344,6 +344,10 @@ func (warlock *Warlock) applyNightfall() {
 			if spell == warlock.Corruption || spell == warlock.DrainLife {
 				if sim.Proc(nightfallProcChance, "Nightfall") {
 					warlock.NightfallProcAura.Activate(sim)
+
+					for _, spell := range warlock.ShadowCleave {
+						spell.CD.Reset()
+					}
 				}
 			}
 		},

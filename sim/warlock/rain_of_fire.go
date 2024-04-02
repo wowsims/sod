@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -44,11 +45,11 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "Rain of Fire",
+				Label: "RainOfFire-" + warlock.Label + strconv.Itoa(rank),
 			},
 			NumberOfTicks:       4,
 			TickLength:          time.Second * 2,
-			AffectedByCastSpeed: false,
+			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
@@ -58,32 +59,26 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					targetDamage := dot.SnapshotBaseDamage
 					if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(aoeTarget).IsActive() {
-						targetDamage *= 1.4
+						targetDamage *= warlock.getLakeOfFireMultiplier()
 					}
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+
+					if hasRune && dot.TickCount == dot.NumberOfTicks {
+						warlock.LakeOfFireAuras.Get(aoeTarget).Activate(sim)
+					}
 				}
+
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if warlock.LakeOfFireAuras != nil {
-					warlock.LakeOfFireAuras.Get(aoeTarget).Activate(sim)
-				}
-			}
 			spell.AOEDot().Apply(sim)
-
-			if hasRune {
-				spell.Unit.ChanneledDot.Cancel(sim)
-
-				sim.AddPendingAction(&core.PendingAction{
-					NextActionAt: sim.CurrentTime,
-					Priority:     core.ActionPriorityGCD,
-					OnAction:     spell.Unit.Rotation.DoNextAction,
-				})
-			}
 		},
 	}
+}
+
+func (warlock *Warlock) getLakeOfFireMultiplier() float64 {
+	return 1.5
 }
 
 func (warlock *Warlock) registerRainOfFireSpell() {

@@ -104,9 +104,9 @@ stat_weights_results: {
   weights: 0
   weights: 0.36584
   weights: 0
-  weights: 0.41473
+  weights: 0.41474
   weights: 0
-  weights: 0.41473
+  weights: 0.41474
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestFire-Lvl25-Average-Default"
  value: {
-  dps: 146.35496
-  tps: 105.71077
+  dps: 146.35577
+  tps: 105.71133
  }
 }
 dps_results: {
@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
-  dps: 451.66139
-  tps: 328.82512
+  dps: 451.66131
+  tps: 328.82506
  }
 }
 dps_results: {
