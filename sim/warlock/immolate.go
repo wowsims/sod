@@ -76,8 +76,8 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= 1.4
-					result.Threat *= 1.4
+					result.Damage *= warlock.getLakeOfFireMultiplier()
+					result.Threat *= warlock.getLakeOfFireMultiplier()
 				}
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
@@ -87,7 +87,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			damage := (baseDamage + directCoeff*spell.SpellDamage()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				damage *= 1.4
+				damage *= warlock.getLakeOfFireMultiplier()
 			}
 
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)

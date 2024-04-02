@@ -51,7 +51,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= 1.4
+				baseDamage *= warlock.getLakeOfFireMultiplier()
 			}
 
 			// Assuming 100% hit for all target levels, numbers could be updated for level comparison later
