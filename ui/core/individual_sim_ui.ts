@@ -187,7 +187,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.spec,
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
-			noticeText: `Phase 3 tier set bonuses and crafted shoulders procs are now active. More coming soon!`,
+			noticeText: `We're working to implement the many new gear changes that were just released. Many procs and effects may no longer be accurate in the sim.`,
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
