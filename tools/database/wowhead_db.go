@@ -240,15 +240,17 @@ func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
 type ClassMask uint16
 
 const (
-	ClassMaskWarrior ClassMask = 1 << iota
-	ClassMaskPaladin           // 2
-	ClassMaskHunter            // 4
-	ClassMaskRogue             // 8
-	ClassMaskPriest            // 16
-	ClassMaskDruid             // 32
-	ClassMaskShaman            // 64
-	ClassMaskMage              // 128
-	ClassMaskWarlock           // 256
+	ClassMaskWarrior     ClassMask = 1 << iota
+	ClassMaskPaladin               // 2
+	ClassMaskHunter                // 4
+	ClassMaskRogue                 // 8
+	ClassMaskPriest                // 16
+	ClassMaskDeathKnight           // 32
+	ClassMaskShaman                // 64
+	ClassMaskMage                  // 128
+	ClassMaskWarlock               // 256
+	ClassMaskUnknown               // 512 seemingly unused?
+	ClassMaskDruid                 // 1024
 )
 
 func (wi WowheadItem) getClassRestriction() []proto.Class {
