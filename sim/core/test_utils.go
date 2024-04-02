@@ -172,11 +172,13 @@ var FullIndividualBuffsPhase2 = &proto.IndividualBuffs{
 }
 
 var FullIndividualBuffsPhase3 = &proto.IndividualBuffs{
-	BlessingOfKings:     true,
-	BlessingOfMight:     proto.TristateEffect_TristateEffectImproved,
-	BlessingOfSanctuary: true,
-	BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
-	SaygesFortune:       proto.SaygesFortune_SaygesDamage,
+	BlessingOfKings:           true,
+	BlessingOfMight:           proto.TristateEffect_TristateEffectImproved,
+	BlessingOfSanctuary:       true,
+	BlessingOfWisdom:          proto.TristateEffect_TristateEffectImproved,
+	FervorOfTheTempleExplorer: true,
+	SaygesFortune:             proto.SaygesFortune_SaygesDamage,
+	SongflowerSerenade:        true,
 }
 
 ///////////////////////////////////////////////////////////////////////////

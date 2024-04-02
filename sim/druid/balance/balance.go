@@ -76,7 +76,7 @@ func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
 
 	if moonkin.Talents.MoonkinForm {
-		moonkin.Druid.ClearForm(sim)
+		moonkin.CancelShapeshift(sim)
 		moonkin.MoonkinFormAura.Activate(sim)
 	}
 }
