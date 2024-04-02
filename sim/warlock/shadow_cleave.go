@@ -86,11 +86,12 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 
 	maxRank := 10
 
+	warlock.ShadowCleave = make([]*core.Spell, 0)
 	for i := 1; i <= maxRank; i++ {
 		config := warlock.getShadowCleaveBaseConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.ShadowCleave = warlock.GetOrRegisterSpell(config)
+			warlock.ShadowCleave = append(warlock.ShadowCleave, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }
