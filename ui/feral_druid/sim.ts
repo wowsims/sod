@@ -3,10 +3,8 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType } from '../core/proto/apl.js';
-import { Class, Cooldowns, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
-import { FeralDruid_Rotation as DruidRotation } from '../core/proto/druid.js';
-import * as AplUtils from '../core/proto_utils/apl_utils.js';
+import { APLRotation_Type as APLRotationType } from '../core/proto/apl.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
 import { Gear } from '../core/proto_utils/gear.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
@@ -107,7 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			DruidInputs.LatencyMs,
+			OtherInputs.ReactionTime,
 			// DruidInputs.AssumeBleedActive,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
