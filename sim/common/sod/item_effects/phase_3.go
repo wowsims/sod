@@ -97,9 +97,8 @@ func init() {
 
 		makeDecayAura := func(target *core.Unit, playerLevel int32) *core.Aura {
 			return target.GetOrRegisterAura(core.Aura{
-				Label:    "Decay",
-				ActionID: core.ActionID{SpellID: 446393},
-				// Placeholder duration
+				Label:     "Decay",
+				ActionID:  core.ActionID{SpellID: 446393},
 				Duration:  core.NeverExpires,
 				MaxStacks: 5,
 			})
@@ -117,8 +116,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// Placeholder coefficient
-				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(150, 250), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
@@ -133,8 +131,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				targetAura := decayAuras[target.Index]
-				// Placeholder damage, update when P3 releases
-				result := spell.CalcAndDealDamage(sim, target, 30, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 					targetAura.Activate(sim)
@@ -178,7 +175,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(200, 300), spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(100, 200), spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
