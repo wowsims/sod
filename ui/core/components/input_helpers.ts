@@ -123,6 +123,7 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 		labelTooltip: config.labelTooltip,
 		float: config.float,
 		positive: config.positive,
+		defaultValue: config.defaultValue,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
 		setValue: (eventID: EventID, player: Player<SpecType>, newValue: number) => config.setValue(eventID, getModObject(player), newValue),

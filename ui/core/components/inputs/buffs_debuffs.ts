@@ -822,6 +822,10 @@ export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 213409, minLevel: 40 }]),
 	fieldName: 'mekkatorqueFistDebuff',
 });
+export const SerpentsStrikerFistDebuff = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingItemActionId([{ id: 220589, minLevel: 50 }]),
+	fieldName: 'serpentsStrikerFistDebuff',
+});
 export const JudgementOfLight = makeBooleanDebuffInput({
 	actionId: player =>
 		player.getMatchingSpellActionId([
@@ -1191,6 +1195,11 @@ export const DEBUFFS_MISC_CONFIG = [
 		config: MekkatorqueFistDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatSpellPower],
+	},
+	{
+		config: SerpentsStrikerFistDebuff,
+		picker: IconPicker,
+		stats: [Stat.StatNaturePower, Stat.StatHolyPower],
 	},
 	{
 		config: CurseOfVulnerability,

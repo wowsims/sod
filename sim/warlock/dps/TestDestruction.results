@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00037
+  weights: 0.09357
   weights: 0
-  weights: 0.3574
-  weights: 0
-  weights: 0
+  weights: 1.65227
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.24161
+  weights: 0
+  weights: 0
+  weights: 0.6367
   weights: 0
   weights: 0
   weights: 0
@@ -151,20 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.14366
+  weights: 3.30369
   weights: 0
-  weights: 0.09673
-  weights: 0
-  weights: 0
+  weights: 2.06689
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.60546
   weights: 0
   weights: 0
-  weights: 0
+  weights: 3.82369
+  weights: 4.38122
   weights: 0
   weights: 0
   weights: 0
@@ -192,208 +190,126 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 48.83916
-  tps: 35.51134
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 51.68344
-  tps: 41.35643
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-InfernalPactEssence-216509"
- value: {
-  dps: 109.10675
-  tps: 91.40549
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 53.04301
-  tps: 41.50754
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 54.81815
-  tps: 43.03571
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 50.20342
-  tps: 42.38829
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 48.56877
-  tps: 40.33882
+  weights: 0
+  weights: 0
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 108.55994
-  tps: 94.44039
+  dps: 199.53959
+  tps: 171.1143
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 377.61031
-  tps: 693.50291
+  dps: 198.36608
+  tps: 376.19322
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 108.40059
-  tps: 94.18511
+  dps: 198.36608
+  tps: 170.08122
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 208.03873
-  tps: 159.49472
+  dps: 250.60561
+  tps: 196.99991
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 277.02323
-  tps: 677.67484
+  dps: 147.19829
+  tps: 372.64242
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 63.47365
-  tps: 62.5639
+  dps: 147.19829
+  tps: 132.69016
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 161.39961
-  tps: 127.04111
+  dps: 177.3047
+  tps: 144.90754
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 108.40059
-  tps: 94.18511
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 69.48413
-  tps: 57.28824
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 73.30066
-  tps: 60.42118
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 74.57773
-  tps: 61.51926
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 78.36852
-  tps: 63.5564
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 75.34257
-  tps: 60.93719
+  dps: 198.36608
+  tps: 170.08122
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 79.816
-  tps: 68.18457
+  dps: 79.67823
+  tps: 68.04679
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 94.18352
-  tps: 78.37835
+  dps: 748.88621
+  tps: 670.87334
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 93.94474
-  tps: 1040.66464
+  dps: 743.67162
+  tps: 1054.41026
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 93.94474
-  tps: 76.61685
+  dps: 743.67162
+  tps: 665.14374
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 211.7034
-  tps: 149.64561
+  dps: 930.09208
+  tps: 801.18802
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 47.68452
-  tps: 1016.69201
+  dps: 423.72136
+  tps: 820.50447
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 47.68452
-  tps: 65.67974
+  dps: 423.72136
+  tps: 398.57649
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 120.86908
-  tps: 105.4156
+  dps: 510.54898
+  tps: 445.60411
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 92.97416
-  tps: 75.84718
+  dps: 749.10674
+  tps: 671.20496
  }
 }

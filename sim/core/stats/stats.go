@@ -391,9 +391,6 @@ type PseudoStats struct {
 	// Only used for NPCs, governs variance in enemy auto-attack damage
 	DamageSpread float64
 
-	// Blocks certain cooldowns
-	Shapeshifted bool
-
 	// Weapon Skills
 	UnarmedSkill         float64
 	DaggersSkill         float64

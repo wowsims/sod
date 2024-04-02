@@ -316,6 +316,7 @@ enum Conjured {
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
 	ConjuredRogueThistleTea = 3;
+	ConjuredDruidCatnip = 4;
 }
 
 enum AtalAi {
@@ -614,7 +615,7 @@ message Consumes {
 	AtalAi default_atal_ai = 25;
 }
 
-// NextIndex: 30
+// NextIndex: 31
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -624,7 +625,9 @@ message Debuffs {
 	bool curse_of_elements = 4;
 	bool curse_of_shadow = 5;
 	bool winters_chill = 6;
+	
 	bool improved_shadow_bolt = 7;
+
 	bool improved_scorch = 8;
 	bool shadow_weaving = 26;
 	bool stormstrike = 27;
@@ -661,7 +664,7 @@ message Debuffs {
 	bool mangle = 25;
 
 	bool mekkatorque_fist_debuff = 29;
-
+	bool serpents_striker_fist_debuff = 30;
 }
 
 enum MobType {
@@ -774,8 +777,10 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
+// NextIndex: 17
 message SimItem {
 	int32 id = 1;
+	int32 requires_level = 16;
 	string name = 2;
 
 	ItemType type = 3;

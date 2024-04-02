@@ -97,41 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestFrostFire-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 421.88494
-  tps: 305.42857
- }
-}
-dps_results: {
- key: "TestFrostFire-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 461.815
-  tps: 333.67134
- }
-}
-dps_results: {
- key: "TestFrostFire-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 472.82642
-  tps: 340.99936
- }
-}
-dps_results: {
- key: "TestFrostFire-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 486.23423
-  tps: 350.9422
- }
-}
-dps_results: {
- key: "TestFrostFire-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 468.72664
-  tps: 338.79911
- }
-}
-dps_results: {
  key: "TestFrostFire-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 438.01562

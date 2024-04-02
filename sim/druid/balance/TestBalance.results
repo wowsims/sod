@@ -96,6 +96,55 @@ character_stats_results: {
   final_stats: 0
  }
 }
+character_stats_results: {
+ key: "TestBalance-Lvl50-CharacterStats-Default"
+ value: {
+  final_stats: 163.8252
+  final_stats: 150.8166
+  final_stats: 403.92
+  final_stats: 371.25
+  final_stats: 252.45
+  final_stats: 342
+  final_stats: 23
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 23
+  final_stats: 34
+  final_stats: 3
+  final_stats: 23.522
+  final_stats: 0
+  final_stats: 0
+  final_stats: 677.584
+  final_stats: 3
+  final_stats: 23.37705
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6352.75
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2289.79
+  final_stats: 75
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5142.06
+  final_stats: 25.25
+  final_stats: 35.25
+  final_stats: 85.25
+  final_stats: 35.25
+  final_stats: 25.25
+  final_stats: 70
+  final_stats: 0
+  final_stats: 100
+  final_stats: 0
+ }
+}
 stat_weights_results: {
  key: "TestBalance-Lvl25-StatWeights-Default"
  value: {
@@ -194,81 +243,53 @@ stat_weights_results: {
   weights: 0
  }
 }
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-BlackfathomElementalist'sHide"
+stat_weights_results: {
+ key: "TestBalance-Lvl50-StatWeights-Default"
  value: {
-  dps: 134.56272
-  tps: 137.16812
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 122.4109
-  tps: 125.01629
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 113.44712
-  tps: 116.05251
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 124.13496
-  tps: 126.74036
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-InsulatedLeathers"
- value: {
-  dps: 110.101
-  tps: 112.7064
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 125.57937
-  tps: 128.18477
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 130.00892
-  tps: 132.61431
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 133.70672
-  tps: 136.31211
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 116.99461
-  tps: 119.60001
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-StormshroudArmor"
- value: {
-  dps: 95.44963
-  tps: 98.05502
- }
-}
-dps_results: {
- key: "TestBalance-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 133.68748
-  tps: 136.29287
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.94708
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 6.88976
+  weights: 6.63015
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
  }
 }
 dps_results: {
@@ -384,62 +405,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 306.38033
-  tps: 317.65963
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 319.68524
-  tps: 331.07179
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-InsulatedLeathers"
- value: {
-  dps: 298.19655
-  tps: 309.5776
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 322.72321
-  tps: 334.10151
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 329.45151
-  tps: 340.82981
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 335.76028
-  tps: 347.18258
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 308.87911
-  tps: 320.28216
- }
-}
-dps_results: {
- key: "TestBalance-Lvl40-AllItems-StormshroudArmor"
- value: {
-  dps: 242.67392
-  tps: 253.33447
- }
-}
-dps_results: {
  key: "TestBalance-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 433.52708
@@ -450,7 +415,7 @@ dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
   dps: 556.53678
-  tps: 567.07584
+  tps: 567.07522
  }
 }
 dps_results: {
@@ -542,5 +507,159 @@ dps_results: {
  value: {
   dps: 552.74858
   tps: 563.29827
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-BlackfathomElementalist'sHide"
+ value: {
+  dps: 768.96233
+  tps: 788.52217
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-BlackfathomSlayer'sLeather"
+ value: {
+  dps: 737.64577
+  tps: 757.24012
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-HyperconductiveMender'sMeditation"
+ value: {
+  dps: 479.4699
+  tps: 494.98941
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-HyperconductiveWizard'sAttire"
+ value: {
+  dps: 501.42485
+  tps: 517.21653
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-InsulatedLeathers"
+ value: {
+  dps: 477.93783
+  tps: 494.02467
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-InsulatedSorceror'sLeathers"
+ value: {
+  dps: 510.46497
+  tps: 526.24897
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-IrradiatedGarments"
+ value: {
+  dps: 515.13425
+  tps: 530.81476
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-TwilightInvoker'sVestments"
+ value: {
+  dps: 765.74669
+  tps: 785.2452
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Average-Default"
+ value: {
+  dps: 961.32767
+  tps: 977.56756
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ value: {
+  dps: 925.49037
+  tps: 1196.45768
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ value: {
+  dps: 925.49037
+  tps: 939.03874
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ value: {
+  dps: 936.79024
+  tps: 944.59107
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ value: {
+  dps: 673.29237
+  tps: 844.92539
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ value: {
+  dps: 673.29237
+  tps: 681.87402
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ value: {
+  dps: 721.87136
+  tps: 737.05511
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ value: {
+  dps: 924.81651
+  tps: 1195.70715
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ value: {
+  dps: 924.81651
+  tps: 938.36104
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ value: {
+  dps: 936.79024
+  tps: 944.59107
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ value: {
+  dps: 670.36775
+  tps: 845.39
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ value: {
+  dps: 670.36775
+  tps: 679.11886
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ value: {
+  dps: 721.87136
+  tps: 737.05511
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 957.14502
+  tps: 973.42655
  }
 }

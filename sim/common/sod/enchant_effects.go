@@ -6,6 +6,10 @@ import (
 	"github.com/wowsims/sod/sim/shaman"
 )
 
+const (
+	WolfsheadTrophy = 7124
+)
+
 func init() {
 	core.AddEffectsToTest = false
 

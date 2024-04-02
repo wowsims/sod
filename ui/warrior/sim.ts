@@ -99,7 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	},
 
 	autoRotation: player => {
-		throw new Error("Auto rotation is disabled until we can get optimized APL rotation, click the 'Auto' dropdown' to choose APL rotation");
+		throw new Error("Auto rotation is disabled until we can get optimized APL rotation, choose 'APL' under Rotation Type dropdown");
 		// return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
 

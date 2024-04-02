@@ -47,6 +47,13 @@ message Player {
 	int32 channel_clip_delay_ms = 15;
 	bool in_front_of_target = 16;
 	double distance_from_target = 17;
+
+	// ISB Info
+	double isb_sb_frequency = 41;
+	double isb_crit = 42;
+	int32 isb_warlocks = 43;
+	int32 isb_spriests = 44;
+
 	// Items/enchants/gems/etc to include in the database.
 	SimDatabase database = 18;
 	HealingModel healing_model = 19;
