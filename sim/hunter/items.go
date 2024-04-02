@@ -23,17 +23,17 @@ func init() {
 
 	core.NewItemEffect(BloodlashBow, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-		hunter.newBloodlashProcItem(50)
+		hunter.newBloodlashProcItem(50, 436471)
 	})
 
 	core.NewItemEffect(GurubashiPitFightersBow, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-		hunter.newBloodlashProcItem(75)
+		hunter.newBloodlashProcItem(75, 446723)
 	})
 }
 
-func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64) {
-	procAura := hunter.NewTemporaryStatsAura("Bloodlash", core.ActionID{SpellID: 436471}, stats.Stats{stats.Strength: bonusStrength}, time.Second*15)
+func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellId int32) {
+	procAura := hunter.NewTemporaryStatsAura("Bloodlash", core.ActionID{SpellID: spellId}, stats.Stats{stats.Strength: bonusStrength}, time.Second*15)
 	ppm := hunter.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 	core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 		Label: "Bloodlash Trigger",

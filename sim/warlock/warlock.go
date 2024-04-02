@@ -75,6 +75,7 @@ type Warlock struct {
 	petStmBonusSP        float64
 	demonicKnowledgeSp   float64
 	demonicSacrificeAura *core.Aura
+	zilaGularAura        *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
