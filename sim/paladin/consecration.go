@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 	"strconv"
 	"time"
 
@@ -14,20 +16,20 @@ var consecrationSpellIDs = [consecrationRanks + 1]int32{0, 26573, 20116, 20922, 
 var consecrationBaseDamages = [consecrationRanks + 1]float64{0, 64 / 8, 120 / 8, 192 / 8, 280 / 8, 384 / 8}
 var consecrationManaCosts = [consecrationRanks + 1]float64{0, 135, 235, 320, 435, 565}
 
-func (paladin *Paladin) getConsecrationBaseConfig(rank int, shared_cooldown *core.Cooldown) core.SpellConfig {
+func (paladin *Paladin) getConsecrationBaseConfig(rank int, cd core.Cooldown) core.SpellConfig {
 	spellId := consecrationSpellIDs[rank]
 	baseDamage := consecrationBaseDamages[rank]
 	manaCost := consecrationManaCosts[rank]
 	level := consecrationLevels[rank]
 
-	spellCoeff := 0.042
-	actionID := core.ActionID{SpellID: spellId}
+	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
 
 	return core.SpellConfig{
-		ActionID:      actionID,
+		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolHoly,
+		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:         core.SpellFlagPureDot | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -38,7 +40,7 @@ func (paladin *Paladin) getConsecrationBaseConfig(rank int, shared_cooldown *cor
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: *shared_cooldown,
+			CD: cd,
 		},
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -52,12 +54,18 @@ func (paladin *Paladin) getConsecrationBaseConfig(rank int, shared_cooldown *cor
 			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
 				target := paladin.CurrentTarget
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage = baseDamage + 0.042*dot.Spell.SpellDamage()
+				if hasWrath {
+					dot.Spell.BonusCritRating += paladin.GetStat(stats.MeleeCrit)
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+					dot.Spell.BonusCritRating -= paladin.GetStat(stats.MeleeCrit)
+				}
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.Spell.OutcomeMagicHit)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
 				}
 			},
 		},
@@ -73,13 +81,13 @@ func (paladin *Paladin) registerConsecrationSpell() {
 		return
 	}
 
-	shared_cooldown := &core.Cooldown{
+	cd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 8,
 	}
 	paladin.Consecration = make([]*core.Spell, consecrationRanks+1)
 	for rank := 1; rank <= consecrationRanks; rank++ {
-		config := paladin.getConsecrationBaseConfig(rank, shared_cooldown)
+		config := paladin.getConsecrationBaseConfig(rank, cd)
 		if config.RequiredLevel <= int(paladin.Level) {
 			paladin.Consecration[rank] = paladin.GetOrRegisterSpell(config)
 		}
