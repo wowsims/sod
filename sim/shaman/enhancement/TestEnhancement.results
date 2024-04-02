@@ -197,16 +197,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.04398
-  weights: 0.57551
+  weights: 1.04432
+  weights: 0.55739
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.43105
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.43095
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +210,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47454
-  weights: 2.66789
-  weights: 8.15374
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.47469
+  weights: 2.58256
+  weights: 8.20616
   weights: 0
   weights: 0
   weights: 0
@@ -246,12 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.2165
+  weights: 1.21654
   weights: 0.30552
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44446
+  weights: 0.44452
   weights: 0
   weights: 0
   weights: 0
@@ -263,8 +263,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.512
-  weights: 7.53485
+  weights: 0.51201
+  weights: 7.54465
   weights: 7.58321
   weights: 0
   weights: 0
@@ -491,8 +491,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 635.2421
-  tps: 678.96734
+  dps: 635.24271
+  tps: 678.96795
  }
 }
 dps_results: {
@@ -505,8 +505,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 857.67328
-  tps: 907.93898
+  dps: 857.6924
+  tps: 907.97039
  }
 }
 dps_results: {
@@ -708,50 +708,50 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 865.59989
-  tps: 919.64392
+  dps: 862.34701
+  tps: 916.19679
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 831.49565
-  tps: 875.03976
+  dps: 832.19725
+  tps: 876.07714
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 809.2851
-  tps: 855.71991
+  dps: 810.72737
+  tps: 857.22052
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 836.98769
-  tps: 878.50931
+  dps: 836.6084
+  tps: 877.81678
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-InsulatedLeathers"
  value: {
-  dps: 863.24467
-  tps: 903.02222
+  dps: 861.52368
+  tps: 901.27423
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 834.73889
-  tps: 876.09315
+  dps: 833.60285
+  tps: 874.6914
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-IrradiatedGarments"
  value: {
-  dps: 846.17819
-  tps: 889.95356
+  dps: 844.8656
+  tps: 888.28821
  }
 }
 dps_results: {
@@ -764,8 +764,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-Average-Default"
  value: {
-  dps: 1130.22949
-  tps: 1199.60645
+  dps: 1130.19488
+  tps: 1199.56616
  }
 }
 dps_results: {
@@ -939,7 +939,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1051.79132
-  tps: 1119.04261
+  dps: 1051.88482
+  tps: 1119.05121
  }
 }

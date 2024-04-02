@@ -33,9 +33,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		}
 	}
 
-	if debuffs.ImprovedShadowBolt {
-		//TODO: Apply periodically
-		MakePermanent(ImprovedShadowBoltAura(target, 5))
+	if debuffs.ImprovedShadowBolt && targetIdx == 0 {
+		ExternalIsbCaster(debuffs, target)
 	}
 
 	if debuffs.ShadowWeaving {
@@ -219,25 +218,117 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 	return aura
 }
 
+func ExternalIsbCaster(debuffs *proto.Debuffs, target *Unit) {
+	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
+	isbAura := ImprovedShadowBoltAura(target, 5)
+	isbCrit := isbConfig.casterCrit / 100.0
+	var pa *PendingAction
+	MakePermanent(target.GetOrRegisterAura(Aura{
+		Label: "Isb External Proc Aura",
+		OnGain: func(aura *Aura, sim *Simulation) {
+			pa = NewPeriodicAction(sim, PeriodicActionOptions{
+				Period: DurationFromSeconds(isbConfig.shadowBoltFrequency),
+				OnAction: func(s *Simulation) {
+					for i := 0; i < int(isbConfig.isbWarlocks); i++ {
+						if sim.Proc(isbCrit, "External Isb Crit") {
+							isbAura.Activate(sim)
+							isbAura.SetStacks(sim, 4)
+						} else if isbAura.IsActive() {
+							isbAura.RemoveStack(sim)
+						}
+					}
+				},
+			})
+			sim.AddPendingAction(pa)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			pa.Cancel(sim)
+		},
+	}))
+}
+
+type IsbConfig struct {
+	shadowBoltFrequency float64
+	casterCrit          float64
+	isbWarlocks         int32
+	isbShadowPriests    int32
+}
+
+func (character *Character) createIsbConfig(player *proto.Player) {
+	character.IsbConfig = IsbConfig{
+		shadowBoltFrequency: player.IsbSbFrequency,
+		casterCrit:          player.IsbCrit,
+		isbWarlocks:         player.IsbWarlocks,
+		isbShadowPriests:    player.IsbSpriests,
+	}
+	//Defaults if not configured
+	if character.IsbConfig.shadowBoltFrequency == 0.0 {
+		character.IsbConfig.shadowBoltFrequency = 3.0
+	}
+	if character.IsbConfig.casterCrit == 0.0 {
+		character.IsbConfig.casterCrit = 25.0
+	}
+	if character.IsbConfig.isbWarlocks == 0 {
+		character.IsbConfig.isbWarlocks = 1
+	}
+}
+
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
+	isbLabel := "Improved Shadow Bolt"
+	if unit.GetAura(isbLabel) != nil {
+		return unit.GetAura(isbLabel)
+	}
+
+	isbConfig := unit.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
+
+	priestGcds := []bool{false, true, true, true, true, true}
+	priestCurGcd := 0
+	externalShadowPriests := isbConfig.isbShadowPriests
+	var priestPa *PendingAction
+
 	damageMulti := 1. + 0.04*float64(rank)
-	return unit.GetOrRegisterAura(Aura{
-		Label:     "Improved Shadow Bolt",
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,
 		MaxStacks: 4,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			// External shadow priests simulation
+			if externalShadowPriests > 0 {
+				priestCurGcd = 0
+				priestPa = NewPeriodicAction(sim, PeriodicActionOptions{
+					Period: GCDDefault,
+					OnAction: func(s *Simulation) {
+						if priestGcds[priestCurGcd] {
+							for i := 0; i < int(externalShadowPriests); i++ {
+								if aura.IsActive() {
+									aura.RemoveStack(sim)
+								}
+							}
+						}
+						priestCurGcd++
+						if priestCurGcd >= len(priestGcds) {
+							priestCurGcd = 0
+						}
+					},
+				})
+				sim.AddPendingAction(priestPa)
+			}
+		},
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= damageMulti
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= damageMulti
 		},
-		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() {
 				aura.RemoveStack(sim)
 			}
 		},
 	})
+
+	return aura
 }
 
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {

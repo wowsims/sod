@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"github.com/wowsims/sod/sim/core/stats"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -33,6 +34,8 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 		manaCost,
 	)
 
+	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+
 	spellCoeff := 0.429
 	actionID := core.ActionID{SpellID: spellId}
 	manaMetrics := paladin.NewManaMetrics(paladin.getIlluminationActionID())
@@ -58,14 +61,19 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 			CD: *paladin.HolyShockCooldown,
 		},
 
-		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+
+			bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
+			spell.BonusCritRating += bonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.BonusCritRating -= bonusCrit
+
 			// If we crit, Infusion of Light refunds base mana cost and resets Holy Shock/Exorcism.
 			if !result.Outcome.Matches(core.OutcomeCrit) || !hasInfusion {
 				return

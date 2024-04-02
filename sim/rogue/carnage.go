@@ -10,7 +10,7 @@ func carnageMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
 	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagCarnage), 1.2, 1)
 }
 
-func (rogue *Rogue) registerCarnage() {
+func (rogue *Rogue) applyCarnage() {
 	if !rogue.HasRune(proto.RogueRune_RuneCarnage) {
 		return
 	}
