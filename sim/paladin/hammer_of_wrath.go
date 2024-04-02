@@ -48,7 +48,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
 					GCD:      time.Second,
-					CastTime: time.Second,
+					CastTime: core.TernaryDuration(hasImprovedHammerOfWrath, 0, time.Second),
 				},
 				IgnoreHaste: true,
 				CD:          cd,
