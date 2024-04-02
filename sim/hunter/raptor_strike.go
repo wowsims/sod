@@ -25,8 +25,8 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
-	flankingStrikeDmgMult 	:= 0.1
-	raptorFuryDmgMult		:= 0.15	// TODO: Verify value after launch, has been datamined to possibly get changed to 0.1 instead of 0.15 but until further confirmation
+	flankingStrikeDmgMult := 0.1
+	raptorFuryDmgMult := 0.15 // TODO: Verify value after launch, has been datamined to possibly get changed to 0.1 instead of 0.15 but until further confirmation
 
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
@@ -139,8 +139,8 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRaptorFury {
-				if !hunter.RaptorFuryAura.IsActive() { 
-					hunter.RaptorFuryAura.Activate(sim) 
+				if !hunter.RaptorFuryAura.IsActive() {
+					hunter.RaptorFuryAura.Activate(sim)
 				}
 				hunter.RaptorFuryAura.AddStack(sim)
 			}

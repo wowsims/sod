@@ -36,10 +36,10 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
-		hunter.AddStat(stats.Dodge, 20 * core.DodgeRatingPerDodgeChance)
+		hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
 		if hunter.pet != nil {
-			hunter.pet.AddStat(stats.Dodge, 9 * core.DodgeRatingPerDodgeChance)
-		} 
+			hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
+		}
 	}
 
 	hunter.applySniperTraining()
@@ -210,7 +210,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 }
 
 func (hunter *Hunter) applyRaptorFury() {
-	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury){
+	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
 	}
 

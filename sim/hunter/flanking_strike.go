@@ -61,7 +61,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * time.Duration(30 * cooldownModifier),
+				Duration: time.Second * time.Duration(30*cooldownModifier),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

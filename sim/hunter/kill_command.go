@@ -53,7 +53,7 @@ func (hunter *Hunter) registerKillCommand() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * time.Duration(60 * cooldownModifier),
+				Duration: time.Second * time.Duration(60*cooldownModifier),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

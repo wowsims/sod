@@ -30,7 +30,7 @@ type Warlock struct {
 	LifeTap            *core.Spell
 	SearingPain        *core.Spell
 	ShadowBolt         *core.Spell
-	ShadowCleave       *core.Spell
+	ShadowCleave       []*core.Spell
 	Shadowburn         *core.Spell
 	SoulFire           *core.Spell
 	DemonicGrace       *core.Spell

@@ -50,7 +50,7 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 			damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				damage *= 1.4
+				damage *= warlock.getLakeOfFireMultiplier()
 			}
 
 			results := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
