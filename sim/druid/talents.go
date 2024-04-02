@@ -7,21 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-func (druid *Druid) ThickHideMultiplier() float64 {
-	thickHideMulti := 1.0
-
-	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
-	}
-
-	return thickHideMulti
-}
-
-func (druid *Druid) BearArmorMultiplier() float64 {
-	sotfMulti := 1.0 + 0.33/3.0
-	return 4.7 * sotfMulti
-}
-
 func (druid *Druid) ApplyTalents() {
 	druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
@@ -36,6 +21,21 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyOmenOfClarity()
 	druid.applyBloodFrenzy()
 	druid.applyFuror()
+}
+
+func (druid *Druid) ThickHideMultiplier() float64 {
+	thickHideMulti := 1.0
+
+	if druid.Talents.ThickHide > 0 {
+		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
+	}
+
+	return thickHideMulti
+}
+
+func (druid *Druid) BearArmorMultiplier() float64 {
+	sotfMulti := 1.0 + 0.33/3.0
+	return 4.7 * sotfMulti
 }
 
 func (druid *Druid) setupNaturesGrace() {
@@ -241,43 +241,13 @@ func (druid *Druid) applyOmenOfClarity() {
 		return
 	}
 
-	var affectedSpells []*DruidSpell
+	var affectedSpells []*core.Spell
 	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 16870},
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			feralSpells := core.FilterSlice([]*DruidSpell{
-				// Feral Spells
-				druid.DemoralizingRoar,
-				druid.FerociousBite,
-				druid.Lacerate,
-				druid.MangleBear,
-				druid.MangleCat,
-				druid.Maul,
-				druid.Rake,
-				druid.Rip,
-				druid.Shred,
-				druid.SwipeBear,
-				druid.SwipeCat,
-				druid.SavageRoar,
-			}, func(spell *DruidSpell) bool { return spell != nil })
-
-			balanceSpells := core.FilterSlice(
-				core.Flatten([][]*DruidSpell{
-					druid.Wrath,
-					druid.Starfire,
-					druid.Moonfire,
-					druid.Hurricane,
-					{druid.Sunfire},
-					{druid.Starsurge},
-				}),
-				func(spell *DruidSpell) bool { return spell != nil })
-
-			affectedSpells = core.Flatten([][]*DruidSpell{
-				feralSpells,
-				balanceSpells,
-			})
+			affectedSpells = core.FilterSlice(druid.Spellbook, func(spell *core.Spell) bool { return spell.Flags.Matches(SpellFlagOmen) })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
@@ -290,24 +260,16 @@ func (druid *Druid) applyOmenOfClarity() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
-				// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate
-				// if it was just activated.
 				return
 			}
 
-			for _, as := range affectedSpells {
-				if as.IsEqual(spell) {
-					aura.Deactivate(sim)
-					break
-				}
+			if spell.Flags.Matches(SpellFlagOmen) {
+				aura.Deactivate(sim)
 			}
 		},
 	})
-
-	druid.ProcOoc = func(sim *core.Simulation) {
-		druid.ClearcastingAura.Activate(sim)
-	}
 
 	ppmm := druid.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
 	icd := core.Cooldown{
@@ -322,17 +284,14 @@ func (druid *Druid) applyOmenOfClarity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+			if !result.Landed() || !icd.IsReady(sim) {
 				return
 			}
-			if !icd.IsReady(sim) {
-				return
+			// TODO: Phase 3 "and non-instant spell casts" but we need to find out how the procs work for those
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity") {
+				icd.Use(sim)
+				druid.ClearcastingAura.Activate(sim)
 			}
-			if !ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity") {
-				return
-			}
-			icd.Use(sim)
-			druid.ClearcastingAura.Activate(sim)
 		},
 	})
 }

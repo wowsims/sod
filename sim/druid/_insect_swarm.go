@@ -18,7 +18,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		ActionID:    core.ActionID{SpellID: 48468},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.08,

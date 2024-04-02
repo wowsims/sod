@@ -15,7 +15,7 @@ func (druid *Druid) registerDemoralizingRoarSpell() {
 		ActionID:    core.ActionID{SpellID: 48560},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 10,
