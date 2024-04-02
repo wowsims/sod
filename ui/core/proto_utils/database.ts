@@ -1,33 +1,10 @@
-import {
-	Class,
-	EquipmentSpec,
-	ItemRandomSuffix,
-	ItemSlot,
-	ItemSpec,
-	ItemSwap,
-	PresetEncounter,
-	PresetTarget,
-	SimDatabase,
-} from '../proto/common.js';
-import {
-	UIEnchant as Enchant,
-	IconData,
-	UIItem as Item,
-	UINPC as Npc,
-	UIRune as Rune,
-	UIDatabase,
-	UIZone as Zone,
-} from '../proto/ui.js';
-
 import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
+import { Class, EquipmentSpec, ItemRandomSuffix, ItemSlot, ItemSpec, ItemSwap, PresetEncounter, PresetTarget, SimDatabase } from '../proto/common.js';
+import { IconData, UIDatabase, UIEnchant as Enchant, UIItem as Item, UINPC as Npc, UIRune as Rune, UIZone as Zone } from '../proto/ui.js';
+import { distinct } from '../utils.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
-import {
-	getEligibleEnchantSlots,
-	getEligibleItemSlots,
-	itemTypeToSlotsMap,
-} from './utils.js';
-import { distinct } from '../utils.js';
+import { getEligibleEnchantSlots, getEligibleItemSlots, itemTypeToSlotsMap } from './utils.js';
 
 const dbUrlJson = '/sod/assets/database/db.json';
 const dbUrlBin = '/sod/assets/database/db.bin';
@@ -37,7 +14,7 @@ const leftoversUrlBin = '/sod/assets/database/leftover_db.bin';
 const READ_JSON = true;
 const RANK_REGEX = /Rank ([0-9]+)/g;
 const REQ_LEVEL_ITEMS_REGEX = /\<!\-\-rlvl\-\-\>([0-9]+)/g;
-const REQ_LEVEL_SPELLS_REGEX = /Requires level ([0-9]+)/g
+const REQ_LEVEL_SPELLS_REGEX = /Requires level ([0-9]+)/g;
 
 export class Database {
 	private static loadPromise: Promise<Database> | null = null;
@@ -95,7 +72,7 @@ export class Database {
 	private readonly presetTargets = new Map<string, PresetTarget>();
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
-	private loadedLeftovers: boolean = false;
+	private loadedLeftovers = false;
 
 	private constructor(db: UIDatabase) {
 		this.loadProto(db);
@@ -119,10 +96,10 @@ export class Database {
 
 			const slots = itemTypeToSlotsMap[rune.type];
 			slots?.forEach(slot => {
-				if (!this.runesBySlotByClass[slot]){
+				if (!this.runesBySlotByClass[slot]) {
 					this.runesBySlotByClass[slot] = {};
 				}
-				if (!this.runesBySlotByClass[slot]![rune.class]){
+				if (!this.runesBySlotByClass[slot]![rune.class]) {
 					this.runesBySlotByClass[slot]![rune.class as Class] = [];
 				}
 				this.runesBySlotByClass[slot]![rune.class as Class]!.push(rune);
@@ -132,16 +109,24 @@ export class Database {
 		db.npcs.forEach(npc => this.npcs.set(npc.id, npc));
 		db.zones.forEach(zone => this.zones.set(zone.id, zone));
 		db.encounters.forEach(encounter => this.presetEncounters.set(encounter.path, encounter));
-		db.encounters.map(e => e.targets).flat().forEach(target => this.presetTargets.set(target.path, target));
+		db.encounters
+			.map(e => e.targets)
+			.flat()
+			.forEach(target => this.presetTargets.set(target.path, target));
 
-		db.items.forEach(item => this.itemIcons[item.id] = Promise.resolve(IconData.create({
-			id: item.id,
-			name: item.name,
-			icon: item.icon,
-		})));
+		db.items.forEach(
+			item =>
+				(this.itemIcons[item.id] = Promise.resolve(
+					IconData.create({
+						id: item.id,
+						name: item.name,
+						icon: item.icon,
+					}),
+				)),
+		);
 
-		db.itemIcons.forEach(data => this.itemIcons[data.id] = Promise.resolve(data));
-		db.spellIcons.forEach(data => this.spellIcons[data.id] = Promise.resolve(data));
+		db.itemIcons.forEach(data => (this.itemIcons[data.id] = Promise.resolve(data)));
+		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 	}
 
 	getAllItems(): Array<Item> {
@@ -183,21 +168,21 @@ export class Database {
 
 	lookupItemSpec(itemSpec: ItemSpec): EquippedItem | null {
 		const item = this.items.get(itemSpec.id);
-		if (!item)
-			return null;
+		if (!item) return null;
 
 		let enchant: Enchant | null = null;
 		if (itemSpec.enchant) {
 			const slots = getEligibleItemSlots(item);
 			for (let i = 0; i < slots.length; i++) {
-				enchant = (this.enchantsBySlot[slots[i]] || [])
-					.find(enchant => [enchant.effectId, enchant.itemId, enchant.spellId].includes(itemSpec.enchant)) || null;
+				enchant =
+					(this.enchantsBySlot[slots[i]] || []).find(enchant => [enchant.effectId, enchant.itemId, enchant.spellId].includes(itemSpec.enchant)) ||
+					null;
 				if (enchant) {
 					break;
 				}
 			}
 		}
-		
+
 		let rune: Rune | null = null;
 		if (itemSpec.rune && !!this.runesById[itemSpec.rune]) {
 			rune = this.runesById[itemSpec.rune];
@@ -208,7 +193,7 @@ export class Database {
 			randomSuffix = this.getRandomSuffixById(itemSpec.randomSuffix)!;
 		}
 
-		return new EquippedItem({item, enchant, rune, randomSuffix});
+		return new EquippedItem({ item, enchant, rune, randomSuffix });
 	}
 
 	lookupEquipmentSpec(equipSpec: EquipmentSpec): Gear {
@@ -218,14 +203,12 @@ export class Database {
 
 		equipSpec.items.forEach(itemSpec => {
 			const item = this.lookupItemSpec(itemSpec);
-			if (!item)
-				return;
+			if (!item) return;
 
 			const itemSlots = getEligibleItemSlots(item.item);
 
 			const assignedSlot = itemSlots.find(slot => !gearMap[slot]);
-			if (assignedSlot == null)
-				throw new Error('No slots left to equip ' + Item.toJsonString(item.item));
+			if (assignedSlot == null) throw new Error('No slots left to equip ' + Item.toJsonString(item.item));
 
 			gearMap[assignedSlot] = item;
 		});
@@ -235,14 +218,16 @@ export class Database {
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
 		return new ItemSwapGear({
-			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem): null,
-			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem): null,
-			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem): null,
+			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
+			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
+			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,
 		});
 	}
 
 	enchantSpellIdToEffectId(enchantSpellId: number): number {
-		const enchant = Object.values(this.enchantsBySlot).flat().find(enchant => enchant.spellId == enchantSpellId);
+		const enchant = Object.values(this.enchantsBySlot)
+			.flat()
+			.find(enchant => enchant.spellId == enchantSpellId);
 		return enchant ? enchant.effectId : 0;
 	}
 
@@ -296,19 +281,19 @@ export class Database {
 		try {
 			const response = await fetch(url);
 			const json = await response.json();
-			let rank: number = 0
-			let reqLevel: number = 0;
+			let rank = 0;
+			let reqLevel = 0;
 
-			if (tooltipPostfix === 'spell'){
+			if (tooltipPostfix === 'spell') {
 				const rankMatches = Array.from(json['tooltip'].matchAll(RANK_REGEX) as RegExpMatchArray[]);
 				const levelMatches = Array.from(json['tooltip'].matchAll(REQ_LEVEL_SPELLS_REGEX) as RegExpMatchArray[]);
 				rank = rankMatches.length ? parseInt(rankMatches[0][1]) : 0;
-				reqLevel = levelMatches.length ? parseInt(levelMatches[0][1]): 0;
-			} else if (tooltipPostfix == 'item'){
+				reqLevel = levelMatches.length ? parseInt(levelMatches[0][1]) : 0;
+			} else if (tooltipPostfix == 'item') {
 				const levelMatches = Array.from(json['tooltip'].matchAll(REQ_LEVEL_ITEMS_REGEX) as RegExpMatchArray[]);
-				reqLevel = levelMatches.length ? parseInt(levelMatches[0][1]): 0;
+				reqLevel = levelMatches.length ? parseInt(levelMatches[0][1]) : 0;
 			}
-			
+
 			return IconData.create({
 				id: id,
 				name: json['name'],
@@ -327,6 +312,6 @@ export class Database {
 			items: distinct(db1.items.concat(db2.items), (a, b) => a.id == b.id),
 			randomSuffixes: distinct(db1.randomSuffixes.concat(db2.randomSuffixes), (a, b) => a.id == b.id),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
-		})
+		});
 	}
 }
