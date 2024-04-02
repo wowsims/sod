@@ -89,7 +89,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
-		BonusCritRating: paladin.getBonusCritChanceFromHolyPower(),
+		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

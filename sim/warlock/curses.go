@@ -64,6 +64,11 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 						dot.SnapshotAttackerMultiplier *= 1.5
 						warlock.AmplifyCurseAura.Deactivate(sim)
 					}
+
+					if warlock.zilaGularAura.IsActive() {
+						dot.SnapshotAttackerMultiplier *= 1.25
+						warlock.zilaGularAura.Deactivate(sim)
+					}
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
