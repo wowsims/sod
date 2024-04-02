@@ -241,9 +241,9 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 			})
 		case proto.EnchantedSigil_LivingDreamsSigil:
 			character.AddStats(stats.Stats{
-				stats.AttackPower:       30,
-				stats.RangedAttackPower: 30,
-				stats.SpellPower:        30,
+				stats.AttackPower:       50,
+				stats.RangedAttackPower: 50,
+				stats.SpellPower:        50,
 			})
 		}
 	}
