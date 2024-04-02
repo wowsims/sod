@@ -65,10 +65,10 @@ enum ShamanRune {
 	RuneHelmTidalWaves			= 432042;
 
 	RuneChestDualWieldSpec		= 408496;
-	RuneHealingRain				= 415236;
+	RuneChestHealingRain		= 415236;
 	RuneChestOverload			= 408438;
 	RuneChestShieldMastery		= 408524;
-	RuneTwoHandedMastery		= 436364;
+	RuneChestTwoHandedMastery	= 436364;
 	
 	RuneBracersOvercharged		= 432140;
 	RuneBracersRiptide			= 408521;
