@@ -46,6 +46,7 @@ import {
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
+	APLValueRuneIsEquipped,
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
@@ -841,6 +842,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
 		],
+	}),
+
+	// Runes
+	runeIsEquipped: inputBuilder({
+		label: 'Rune Equipped',
+		submenu: ['Rune'],
+		shortDescription: '<b>True</b> if the rune is currently equipped, otherwise <b>False</b>.',
+		newValue: APLValueRuneIsEquipped.create,
+		fields: [AplHelpers.runeFieldConfig('runeId')],
 	}),
 
 	// DoT

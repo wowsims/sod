@@ -81,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 69
+// NextIndex: 70
 message APLValue {
     oneof value {
         // Operators
@@ -141,6 +141,9 @@ message APLValue {
         APLValueAuraInternalCooldown aura_internal_cooldown = 39;
         APLValueAuraICDIsReadyWithReactionTime aura_icd_is_ready_with_reaction_time = 51;
         APLValueAuraShouldRefresh aura_should_refresh = 43;
+
+        // Rune values
+        APLValueRuneIsEquipped rune_is_equipped = 69;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -464,6 +467,10 @@ message APLValueAuraShouldRefresh {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
     APLValue max_overlap = 3;
+}
+
+message APLValueRuneIsEquipped {
+    ActionID rune_id = 1;
 }
 
 message APLValueDotIsActive {
