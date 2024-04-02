@@ -40,7 +40,6 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -58,6 +57,39 @@ func init() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				}
+			},
+		})
+
+		warlock.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	// Zila Gular
+	core.NewItemEffect(223214, func(agent core.Agent) {
+		warlock := agent.(WarlockAgent).GetWarlock()
+
+		warlock.zilaGularAura = warlock.GetOrRegisterAura(core.Aura{
+			Label:    "Zila Gular",
+			ActionID: core.ActionID{SpellID: 448686},
+			Duration: time.Second * 20,
+		})
+
+		spell := warlock.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 448686},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    warlock.NewTimer(),
+					Duration: time.Minute * 5,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				warlock.zilaGularAura.Activate(sim)
 			},
 		})
 
