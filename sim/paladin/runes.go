@@ -9,14 +9,24 @@ import (
 )
 
 func (paladin *Paladin) ApplyRunes() {
-
 	if paladin.HasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
-		paladin.AddStat(stats.SpellHit, float64(core.SpellHitRatingPerHitChance*17.0))
+		paladin.AddStat(stats.SpellHit, 17*core.SpellHitRatingPerHitChance)
 	}
 
 	paladin.registerTheArtOfWar()
 	paladin.registerSheathOfLight()
 	paladin.registerGuardedByTheLight()
+
+	// "RuneHeadFanaticism" is handled in Exorcism, Holy Shock, SoC, and SoR
+	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)
+
+	paladin.registerHammerOfTheRighteous()
+	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
+	// "RuneWristPurifyingPower" is handled in Exorcism
+}
+
+func (paladin *Paladin) fanaticismCritChance() float64 {
+	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.CritRatingPerCritChance
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
@@ -76,11 +86,9 @@ func (paladin *Paladin) registerSheathOfLight() {
 			sheathAura.Activate(sim)
 		},
 	})
-
 }
 
 func (paladin *Paladin) registerGuardedByTheLight() {
-
 	if !paladin.HasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
 		return
 	}
