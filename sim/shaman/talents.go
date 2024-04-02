@@ -32,18 +32,12 @@ func (shaman *Shaman) applyElementalFocus() {
 
 	procChance := 0.1
 
-	// TODO: fix this.
-	// Right now: Set to 2 so that the spell that cast it consumes a charge down to expected 2.
-	// Correct fix would be to figure out how to make 'onCastComplete' fire before 'onspellhitdealt' without breaking all the other things.
-	maxStacks := int32(2)
-
 	var affectedSpells []*core.Spell
 
 	clearcastingAura := shaman.RegisterAura(core.Aura{
-		Label:     "Clearcasting",
-		ActionID:  core.ActionID{SpellID: 16246},
-		Duration:  time.Second * 15,
-		MaxStacks: maxStacks,
+		Label:    "Clearcasting",
+		ActionID: core.ActionID{SpellID: 16246},
+		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
 				shaman.Spellbook,
@@ -57,8 +51,13 @@ func (shaman *Shaman) applyElementalFocus() {
 			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+
 			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
-				aura.RemoveStack(sim)
+				aura.Deactivate(sim)
 			}
 		},
 	})
@@ -69,10 +68,9 @@ func (shaman *Shaman) applyElementalFocus() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagFocusable) && result.Landed() && sim.RandomFloat("Elemental Focus") < procChance {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload && sim.RandomFloat("Elemental Focus") < procChance {
 				clearcastingAura.Activate(sim)
-				clearcastingAura.SetStacks(sim, maxStacks)
 			}
 		},
 	})
