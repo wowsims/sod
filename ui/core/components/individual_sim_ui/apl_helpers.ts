@@ -303,21 +303,18 @@ export class APLRunePicker extends DropdownPicker<Player<any>, Rune, Rune> {
 			},
 			values: [],
 		});
-		const updateValues = async () => {
-			const values = Object.values(ItemSlot)
-				.filter(v => typeof v != 'string')
-				.map(slot => player.getRunes(slot as ItemSlot))
-				.flat()
-				.map(rune => {
-					return {
-						value: rune,
-						submenu: [itemTypeNames.get(rune.type) ?? ''],
-					};
-				});
-			this.setOptions(values);
-		};
-		updateValues();
-		TypedEvent.onAny([player.gearChangeEmitter]).on(updateValues);
+
+		const values = Object.values(ItemSlot)
+			.filter(v => typeof v != 'string')
+			.map(slot => player.getRunes(slot as ItemSlot))
+			.flat()
+			.map(rune => {
+				return {
+					value: rune,
+					submenu: [itemTypeNames.get(rune.type) ?? ''],
+				};
+			});
+		this.setOptions(values);
 	}
 }
 
