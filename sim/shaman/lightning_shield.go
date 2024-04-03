@@ -68,7 +68,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + spellCoeff*spell.SpellPower()
+			damage := baseDamage + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
 		},
 	})
@@ -100,7 +100,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRollingThunderRune && spell.SpellCode == SpellCode_ShamanEarthShock && aura.GetStacks() > 3 {
-				shieldSpellDamage := baseDamage + spellCoeff*procSpell.SpellPower()
+				shieldSpellDamage := baseDamage + spellCoeff*procSpell.SpellDamage()
 				numStacks := float64(aura.GetStacks() - baseCharges)
 				procSpell.CalcAndDealDamage(sim, result.Target, numStacks*shieldSpellDamage, procSpell.OutcomeAlwaysHit)
 				// procSpell.SpellMetrics[result.Target.UnitIndex].Casts++

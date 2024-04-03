@@ -44,7 +44,7 @@ func (paladin *Paladin) registerSealOfRighteousnessSpellAndAura() {
 			// i = 1 + 0.2 * AP + 0.32 * HolP
 			baseDamage := 1 +
 				.20*spell.MeleeAttackPower() +
-				.32*spell.SpellPower()
+				.32*spell.SpellDamage()
 
 			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -64,7 +64,7 @@ func (paladin *Paladin) registerSealOfRighteousnessSpellAndAura() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// weapon_speed * (0.022* AP + 0.044*HolP)
-			baseDamage := paladin.GetMHWeapon().SwingSpeed * (.022*spell.MeleeAttackPower() + .044*spell.SpellPower())
+			baseDamage := paladin.GetMHWeapon().SwingSpeed * (.022*spell.MeleeAttackPower() + .044*spell.SpellDamage())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})

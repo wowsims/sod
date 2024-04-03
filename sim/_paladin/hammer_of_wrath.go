@@ -41,7 +41,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(1139, 1257) +
-				.15*spell.SpellPower() +
+				.15*spell.SpellDamage() +
 				.15*spell.MeleeAttackPower()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

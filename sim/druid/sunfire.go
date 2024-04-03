@@ -31,7 +31,7 @@ func (druid *Druid) registerSunfireSpell() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:       core.SpellFlagAPL | SpellFlagOmen | core.SpellFlagResetAttackSwing,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.21,

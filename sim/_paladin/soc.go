@@ -48,7 +48,7 @@ func (paladin *Paladin) registerSealOfCommandSpellAndAura() {
 				spell.BonusWeaponDamage()
 			baseDamage := 0.19*mhWeaponDamage +
 				0.08*spell.MeleeAttackPower() +
-				0.13*spell.SpellPower()
+				0.13*spell.SpellDamage()
 
 			// Secondary Judgements cannot miss if the Primary Judgement hit, only roll for crit.
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)

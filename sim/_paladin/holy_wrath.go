@@ -35,7 +35,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 		CritMultiplier:   paladin.SpellCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			constBaseDamage := .07*spell.SpellPower() + .07*spell.MeleeAttackPower()
+			constBaseDamage := .07*spell.SpellDamage() + .07*spell.MeleeAttackPower()
 
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := constBaseDamage + sim.Roll(1050, 1234)
