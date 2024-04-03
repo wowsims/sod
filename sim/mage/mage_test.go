@@ -87,6 +87,23 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      50,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase3TalentsFire,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_fire"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -99,8 +116,8 @@ func TestFrostFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:     Phase2TalentsFrostfire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_frostfire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_frostfire"),
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_frost"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_fire"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frostfire", SpecOptions: PlayerOptionsFire},
@@ -109,26 +126,47 @@ func TestFrostFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      50,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase3TalentsFire,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_fire"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
-// func TestFrost(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class: proto.Class_ClassMage,
-// 		Race:  proto.Race_RaceTroll,
+func TestFrost(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      50,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-// 		GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_alliance"),
-// 		Talents:     FrostTalents,
-// 		Consumes:    FullFrostConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
-// 		Rotation:    core.GetAplRotation("../../ui/mage/apls", "frost"),
-// 		OtherRotations: []core.RotationCombo{
-// 			core.GetAplRotation("../../ui/mage/apls", "frost_aoe"),
-// 		},
+			Talents:     Phase3TalentsFrost,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_frost"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
 
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
 
 var Phase1TalentsArcane = "22500502"
 var Phase1TalentsFire = "-5050020121"
@@ -136,6 +174,9 @@ var Phase1TalentsFire = "-5050020121"
 var Phase2TalentsArcane = "2250050310031531"
 var Phase2TalentsFire = "-5050020123033151"
 var Phase2TalentsFrostfire = Phase2TalentsFire
+
+var Phase3TalentsFire = "-0550020123033151-2035"
+var Phase3TalentsFrost = "-055-20350203100351051"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
@@ -180,6 +221,19 @@ var Phase2Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodSagefishDelight,
 		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_LesserArcaneElixir,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultAtalAi:  proto.AtalAi_AtalAiForbiddenMagic,
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
+		Food:           proto.Food_FoodNightfinSoup,
+		MainHandImbue:  proto.WeaponImbue_WizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 
