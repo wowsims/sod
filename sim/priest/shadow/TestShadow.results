@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.16631
+  weights: 0.12823
   weights: 0
-  weights: 0.28046
-  weights: 0
-  weights: 0
+  weights: 0.28322
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18053
   weights: 0
   weights: 0
-  weights: 0.25463
+  weights: 0.18325
+  weights: 0
+  weights: 0
+  weights: 0.25659
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.86584
+  weights: 0.97624
   weights: 0
-  weights: 0.49292
-  weights: 0
-  weights: 0
+  weights: 0.5042
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.49292
   weights: 0
-  weights: 0.11184
-  weights: 0.74474
+  weights: 0
+  weights: 0.5042
+  weights: 0
+  weights: 0.10767
+  weights: 0.76441
   weights: 0
   weights: 0
   weights: 0
@@ -197,29 +197,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestShadow-Lvl25-Average-Default"
  value: {
-  dps: 110.75459
-  tps: 111.47711
+  dps: 111.97823
+  tps: 112.69037
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 112.62404
-  tps: 202.95608
+  dps: 113.89588
+  tps: 204.21562
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 112.62404
-  tps: 113.34998
+  dps: 113.89588
+  tps: 114.60952
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 170.09413
-  tps: 171.87621
+  dps: 171.67208
+  tps: 173.45415
  }
 }
 dps_results: {
@@ -246,22 +246,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Undead-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 110.88826
-  tps: 200.6585
+  dps: 112.17476
+  tps: 201.93379
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Undead-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 110.88826
-  tps: 111.62715
+  dps: 112.17476
+  tps: 112.90244
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Undead-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 171.62371
-  tps: 173.44107
+  dps: 172.71512
+  tps: 174.53248
  }
 }
 dps_results: {
@@ -288,43 +288,43 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 110.88826
-  tps: 111.62715
+  dps: 112.17476
+  tps: 112.90244
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 318.2639
-  tps: 242.30781
+  dps: 323.15165
+  tps: 246.35466
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Average-Default"
  value: {
-  dps: 443.94587
-  tps: 352.83756
+  dps: 453.77694
+  tps: 360.95201
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 464.81287
-  tps: 691.35329
+  dps: 474.85867
+  tps: 699.61281
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 464.81287
-  tps: 370.3501
+  dps: 474.85867
+  tps: 378.60962
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 541.70281
-  tps: 438.6353
+  dps: 551.20021
+  tps: 446.46537
  }
 }
 dps_results: {
@@ -351,22 +351,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Undead-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 445.24112
-  tps: 669.12615
+  dps: 455.17277
+  tps: 677.28196
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Undead-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 445.24112
-  tps: 353.73461
+  dps: 455.17277
+  tps: 361.89042
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Undead-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 550.1446
-  tps: 447.47093
+  dps: 560.45444
+  tps: 455.94579
  }
 }
 dps_results: {
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 445.24112
-  tps: 353.73461
+  dps: 455.17277
+  tps: 361.89042
  }
 }
