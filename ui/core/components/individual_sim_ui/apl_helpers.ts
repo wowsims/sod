@@ -276,19 +276,26 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 }
 
 export interface APLRunePickerConfig<ModObject>
-	extends Omit<DropdownPickerConfig<ModObject, Rune, Rune>, 'defaultLabel' | 'equals' | 'setOptionContent' | 'values' | 'getValue' | 'setValue'> {
-	getValue: (obj: ModObject) => Rune;
-	setValue: (eventID: EventID, obj: ModObject, newValue: Rune) => void;
+	extends Omit<DropdownPickerConfig<ModObject, ActionID, Rune>, 'defaultLabel' | 'equals' | 'setOptionContent' | 'values' | 'getValue' | 'setValue'> {
+	getValue: (obj: ModObject) => ActionID;
+	setValue: (eventID: EventID, obj: ModObject, newValue: ActionID) => void;
 }
 
-export class APLRunePicker extends DropdownPicker<Player<any>, Rune, Rune> {
+export class APLRunePicker extends DropdownPicker<Player<any>, ActionID, Rune> {
 	constructor(parent: HTMLElement, player: Player<any>, config: APLRunePickerConfig<Player<any>>) {
 		super(parent, player, {
 			...config,
-			sourceToValue: (src: Rune) => {
-				return src ? src : Rune.create();
+			sourceToValue: (src: ActionID) => {
+				return src?.rawId.oneofKind == 'spellId' ? player.sim.db.getRuneById(src.rawId.spellId) : Rune.create();
 			},
-			valueToSource: (val: Rune) => val,
+			valueToSource: (val: Rune) => {
+				return ActionID.create({
+					rawId: {
+						oneofKind: 'spellId',
+						spellId: val.id,
+					},
+				});
+			},
 			defaultLabel: 'Runes',
 			equals: (a, b) => a == b,
 			setOptionContent: (button, valueConfig) => {
@@ -304,17 +311,21 @@ export class APLRunePicker extends DropdownPicker<Player<any>, Rune, Rune> {
 			values: [],
 		});
 
-		const values = Object.values(ItemSlot)
-			.filter(v => typeof v != 'string')
-			.map(slot => player.getRunes(slot as ItemSlot))
-			.flat()
-			.map(rune => {
-				return {
-					value: rune,
-					submenu: [itemTypeNames.get(rune.type) ?? ''],
-				};
-			});
-		this.setOptions(values);
+		const updateValues = async () => {
+			const values = Object.values(ItemSlot)
+				.filter(v => typeof v != 'string')
+				.map(slot => player.getRunes(slot as ItemSlot))
+				.flat()
+				.map(rune => {
+					return {
+						value: rune,
+						submenu: [itemTypeNames.get(rune.type) ?? ''],
+					};
+				});
+			this.setOptions(values);
+		};
+		updateValues();
+		player.rotationChangeEmitter.on(() => this.update);
 	}
 }
 
