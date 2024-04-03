@@ -31,11 +31,12 @@ func (warrior *Warrior) registerQuickStrike() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(0.10*spell.MeleeAttackPower(), 0.20*spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

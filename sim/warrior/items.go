@@ -37,18 +37,18 @@ func init() {
 				NumberOfTicks: 15,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 5, 0, isRollover)
+					dot.Snapshot(target, 5, isRollover)
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, 0, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					// Has no DefenseType, also haven't seen a miss in logs.
-					result := spell.CalcAndDealDamageNew(sim, aoeTarget, 65, 0, spell.OutcomeAlwaysHit)
+					result := spell.CalcAndDealDamage(sim, aoeTarget, 65, spell.OutcomeAlwaysHit)
 					if result.Landed() {
 						spell.Dot(aoeTarget).Apply(sim)
 					}

@@ -91,10 +91,10 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				damage := damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
-				dot.Snapshot(target, damage, 0, isRollover)
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, 0, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
 		},
 
@@ -104,7 +104,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 				baseDamage *= 1.3
 			}
 
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -116,7 +116,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			baseDamage := damageInitial + 0.04*spell.MeleeAttackPower()
-			initial := spell.CalcPeriodicDamageNew(sim, target, baseDamage, 0, spell.OutcomeExpectedMagicAlwaysHit)
+			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
@@ -126,7 +126,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			tickBase := damageDotTick + 0.04*spell.MeleeAttackPower()
-			ticks := spell.CalcPeriodicDamageNew(sim, target, tickBase, 0, spell.OutcomeExpectedMagicAlwaysHit)
+			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 			return ticks
 		},
 	}

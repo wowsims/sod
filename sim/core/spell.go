@@ -44,6 +44,8 @@ type SpellConfig struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+
 	ThreatMultiplier float64
 
 	FlatThreatBonus float64
@@ -127,6 +129,8 @@ type Spell struct {
 	CostMultiplier           float64
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
+
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
 	CritDamageBonus float64
 
@@ -242,6 +246,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
+
+		BonusCoefficient: config.BonusCoefficient,
 
 		ThreatMultiplier: config.ThreatMultiplier,
 		FlatThreatBonus:  config.FlatThreatBonus,

@@ -35,7 +35,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 				weapon := warrior.AutoAttacks.MH()
 				baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
 				multiplier := 1 + 0.1*float64(effectiveStacks)
-				spell.CalcAndDealDamageNew(sim, target, baseDamage*multiplier, 0, spell.OutcomeMeleeSpecialCritOnly)
+				spell.CalcAndDealDamage(sim, target, baseDamage*multiplier, spell.OutcomeMeleeSpecialCritOnly)
 			},
 		})
 	}

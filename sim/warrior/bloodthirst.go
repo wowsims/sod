@@ -37,11 +37,11 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		// TODO BDR: Should be bonus coef 1
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.45 * spell.MeleeAttackPower()
-			// TODO BDR: Should be bonus coef 1
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

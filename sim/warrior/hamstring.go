@@ -40,10 +40,10 @@ func (warrior *Warrior) registerHamstringSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		// TODO BDR: Should be coef 1
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO BDR: Should be coef 1
-			result := spell.CalcAndDealDamageNew(sim, target, damage, 0, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

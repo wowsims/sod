@@ -104,10 +104,10 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				cpScaling := core.TernaryFloat64(cp == 5, 4, cp)
 
 				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + 0.01*ap*cpScaling)
-				dot.Snapshot(target, baseDamage, 0, isRollover)
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, 0, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
 		},
 

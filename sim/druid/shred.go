@@ -48,6 +48,7 @@ func (druid *Druid) registerShredSpell() {
 
 		DamageMultiplier: shredDamageMultiplier,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus +
@@ -66,7 +67,7 @@ func (druid *Druid) registerShredSpell() {
 			*/
 
 			spell.DamageMultiplier *= modifier
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			spell.DamageMultiplier /= modifier
 
 			if result.Landed() {
@@ -98,7 +99,7 @@ func (druid *Druid) registerShredSpell() {
 			*/
 
 			spell.DamageMultiplier *= modifier
-			baseres := spell.CalcDamageNew(sim, target, baseDamage, 1, spell.OutcomeExpectedMagicAlwaysHit)
+			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			spell.DamageMultiplier /= modifier
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]

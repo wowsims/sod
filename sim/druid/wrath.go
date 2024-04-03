@@ -69,10 +69,11 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1 + core.Ternary(druid.Ranged().ID == IdolOfWrath, .02, 0),
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
-			result := spell.CalcDamageNew(sim, target, baseDamage, spellCoeff, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
 				druid.NaturesGraceProcAura.Activate(sim)

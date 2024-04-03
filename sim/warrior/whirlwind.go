@@ -42,13 +42,14 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.25,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := 0 +
 					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				results[hitIndex] = spell.CalcDamageNew(sim, curTarget, baseDamage, 1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}

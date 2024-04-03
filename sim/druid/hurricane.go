@@ -87,7 +87,6 @@ func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer)
 func (druid *Druid) newHurricaneTickSpellConfig(rank int) core.SpellConfig {
 	spellId := HurricaneSpellId[rank]
 	baseDamage := HurricaneBaseDamage[rank]
-	spellCoef := HurricaneSpellCoef[rank]
 
 	damageMultiplier := 1.0
 	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
@@ -102,9 +101,11 @@ func (druid *Druid) newHurricaneTickSpellConfig(rank int) core.SpellConfig {
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: HurricaneSpellCoef[rank],
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamageNew(sim, aoeTarget, baseDamage, spellCoef, spell.OutcomeMagicHit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHit)
 				// TODO: Apply attack speed reduction
 			}
 		},

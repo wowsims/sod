@@ -52,6 +52,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.25,
+		// TODO BDR: Should be bonus coef 1
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			extraRage := spell.Unit.CurrentRage()
@@ -59,8 +60,8 @@ func (warrior *Warrior) registerExecuteSpell() {
 			rageMetrics.Events--
 
 			baseDamage := flatDamage + convertedRageDamage*(extraRage)
-			// TODO BDR: Should be bonus coef 1
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

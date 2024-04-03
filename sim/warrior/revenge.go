@@ -74,11 +74,11 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
+		// TODO BDR: Should be coef 1
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(basedamageLow, basedamageHigh)
-			// TODO BDR: Should be coef 1
-			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

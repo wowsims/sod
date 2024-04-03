@@ -40,11 +40,11 @@ func (warrior *Warrior) registerRagingBlow() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1, // TODO BDR: Should be coef 0?
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
-			// TODO BDR: Should be coef 0?
-			spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 		},
 	})
