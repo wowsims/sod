@@ -117,9 +117,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumes: Presets.DefaultConsumes[Phase.Phase3],
 		// Default talents.
-		talents: Presets.ColdBloodMutilate40Talents.data,
+		talents: Presets.ColdBloodSealFate50Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -162,16 +162,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
@@ -190,7 +193,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 
 			talents: Presets.DefaultTalentsAssassin.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumes: Presets.DefaultConsumes[Phase.Phase1],
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
@@ -214,7 +217,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 
 			talents: Presets.DefaultTalentsCombat.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumes: Presets.DefaultConsumes[Phase.Phase1],
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
