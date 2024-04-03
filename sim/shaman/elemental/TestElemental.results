@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.15554
+  weights: 0.3626
   weights: 0
-  weights: 0.86936
+  weights: 0.87121
   weights: 0
-  weights: 0.27762
-  weights: 0
-  weights: 0
-  weights: 0.59174
+  weights: 0.27876
   weights: 0
   weights: 0
-  weights: 6.51098
-  weights: 3.30317
+  weights: 0.59245
+  weights: 0
+  weights: 0
+  weights: 6.77521
+  weights: 3.34346
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.12304
+  weights: 0.53697
   weights: 0
-  weights: 0.93183
+  weights: 0.93267
   weights: 0
-  weights: 0.2962
-  weights: 0
-  weights: 0
-  weights: 0.63563
+  weights: 0.29649
   weights: 0
   weights: 0
-  weights: 11.67419
-  weights: 5.37664
+  weights: 0.63617
+  weights: 0
+  weights: 0
+  weights: 11.85222
+  weights: 5.30123
   weights: 0
   weights: 0
   weights: 0
@@ -393,50 +393,50 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 458.88671
-  tps: 460.91576
+  dps: 460.29265
+  tps: 462.31382
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 502.56367
-  tps: 505.22204
+  dps: 503.10546
+  tps: 505.71456
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 458.4494
-  tps: 460.47682
+  dps: 459.85418
+  tps: 461.87373
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 490.40342
-  tps: 492.65174
+  dps: 492.10835
+  tps: 494.21045
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
-  dps: 636.77938
-  tps: 546.82819
+  dps: 638.4861
+  tps: 548.31857
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 707.66878
-  tps: 1157.9255
+  dps: 712.10506
+  tps: 1161.7206
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 591.40983
-  tps: 504.50152
+  dps: 595.53494
+  tps: 507.79635
  }
 }
 dps_results: {
@@ -449,15 +449,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 384.91508
-  tps: 748.89788
+  dps: 386.42118
+  tps: 750.54285
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Orc-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 323.9839
-  tps: 279.90328
+  dps: 324.18738
+  tps: 280.13162
  }
 }
 dps_results: {
@@ -470,15 +470,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 715.69961
-  tps: 1176.09388
+  dps: 718.13179
+  tps: 1178.87895
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 589.03987
-  tps: 501.82495
+  dps: 593.46057
+  tps: 506.19871
  }
 }
 dps_results: {
@@ -491,15 +491,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 385.05962
-  tps: 757.09673
+  dps: 386.9913
+  tps: 758.557
  }
 }
 dps_results: {
  key: "TestElemental-Lvl40-Settings-Troll-phase_2-Adaptive-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 321.86411
-  tps: 278.45282
+  dps: 323.32112
+  tps: 279.2884
  }
 }
 dps_results: {
@@ -512,106 +512,106 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 636.80278
-  tps: 547.49686
+  dps: 638.93848
+  tps: 548.82036
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 761.91668
-  tps: 756.59368
+  dps: 764.51535
+  tps: 759.24541
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 802.01493
-  tps: 796.75961
+  dps: 804.69367
+  tps: 799.65358
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 761.4033
-  tps: 756.07523
+  dps: 764.01327
+  tps: 758.73826
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 629.05513
-  tps: 600.41005
+  dps: 630.92397
+  tps: 602.37555
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 633.23945
-  tps: 599.81514
+  dps: 635.86813
+  tps: 602.57786
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 604.02645
-  tps: 573.79085
+  dps: 604.26524
+  tps: 573.68328
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 626.8222
-  tps: 593.91017
+  dps: 632.65188
+  tps: 599.98651
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-InsulatedLeathers"
  value: {
-  dps: 596.71516
-  tps: 566.47585
+  dps: 600.94809
+  tps: 570.79274
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 624.52891
-  tps: 592.55775
+  dps: 623.03257
+  tps: 591.0395
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-IrradiatedGarments"
  value: {
-  dps: 639.39261
-  tps: 605.07084
+  dps: 643.22483
+  tps: 608.8489
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 795.96798
-  tps: 790.4478
+  dps: 796.43775
+  tps: 791.13312
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1002.65795
-  tps: 847.39476
+  dps: 1003.50452
+  tps: 848.00182
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1151.1831
-  tps: 1726.47182
+  dps: 1154.05042
+  tps: 1728.4108
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 949.19769
-  tps: 798.99787
+  dps: 951.21716
+  tps: 801.18325
  }
 }
 dps_results: {
@@ -624,15 +624,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 567.84654
-  tps: 998.46225
+  dps: 569.78619
+  tps: 1000.52061
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 478.76015
-  tps: 407.58669
+  dps: 480.86489
+  tps: 408.70217
  }
 }
 dps_results: {
@@ -645,15 +645,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1149.5405
-  tps: 1728.02283
+  dps: 1157.75907
+  tps: 1734.82666
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 964.61608
-  tps: 812.41259
+  dps: 966.33974
+  tps: 813.55025
  }
 }
 dps_results: {
@@ -666,15 +666,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 553.55647
-  tps: 989.27081
+  dps: 561.06571
+  tps: 995.73723
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 470.76129
-  tps: 401.34646
+  dps: 476.6623
+  tps: 406.13905
  }
 }
 dps_results: {
@@ -687,7 +687,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1000.06401
-  tps: 847.85336
+  dps: 1000.59118
+  tps: 847.86967
  }
 }
