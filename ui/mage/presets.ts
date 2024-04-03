@@ -196,12 +196,12 @@ export const DefaultOptions = MageOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GreaterManaPotion,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	flask: Flask.FlaskOfSupremePower,
+	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
 	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
@@ -224,6 +224,6 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 20,
-	profession1: Profession.Enchanting,
-	profession2: Profession.Tailoring,
+	profession1: Profession.Alchemy,
+	profession2: Profession.Enchanting,
 };
