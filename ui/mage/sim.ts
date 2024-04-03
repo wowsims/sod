@@ -2,8 +2,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
-import { MageRune } from '../core/proto/mage.js';
+import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
@@ -97,23 +96,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
 		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
-		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrostfire],
+		builds: [
+			// Presets.PresetBuildArcane,
+			Presets.PresetBuildFire,
+			Presets.PresetBuildFrostfire,
+			Presets.PresetBuildFrost,
+		],
 	},
 
 	autoRotation: player => {
 		const specNumber = player.getTalentTree();
-		const frostfireBoltEquipped = player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == MageRune.RuneBeltFrostfireBolt;
-
-		if (specNumber == 0 || (specNumber == 1 && !frostfireBoltEquipped)) {
-			// Prio standard arcane, standard fire only if not using FFB
-			return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
-		} else if (frostfireBoltEquipped) {
-			// Prio FFB over Frost when FFB rune is equipped
-			return Presets.DefaultAPLs[player.getLevel()][3].rotation.rotation!;
-		} else {
-			// Frost
-			return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
-		}
+		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -173,7 +166,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Frost',
 			iconUrl: getSpecIcon(Class.ClassMage, 2),
 
-			talents: Presets.DefaultTalentsFrostfire.data,
+			talents: Presets.DefaultTalentsFrost.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,

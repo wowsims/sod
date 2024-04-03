@@ -97,7 +97,7 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultAtalAi:   proto.AtalAi_AtalAiForbiddenMagic,
 		DefaultConjured: proto.Conjured_ConjuredDruidCatnip,
 		DefaultPotion:   proto.Potions_MajorManaPotion,
-		Food:            proto.Food_FoodRunnTumTuberSurprise,
+		Food:            proto.Food_FoodNightfinSoup,
 		MainHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
