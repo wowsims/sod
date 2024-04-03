@@ -4,16 +4,12 @@ import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuff
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import SinisterApl25 from './apls/basic_strike_25.apl.json';
-import CPCarnageMutilateApl50 from './apls/CP_Carnage_Mutilate.apl.json';
-import CPCarnageSaberApl50 from './apls/CP_Carnage_Saber.apl.json';
-import CPCttCMutilateApl50 from './apls/CP_CttC_Mutilate.apl.json';
-import CPCttCSaberApl50 from './apls/CP_CttC_Saber.apl.json';
-import HATCarnageMutilateApl50 from './apls/HAT_Carnage_Mutilate.apl.json';
-import HATCarnageSaberApl50 from './apls/HAT_Carnage_Saber.apl.json';
-import HATCttCMutilateApl50 from './apls/HAT_CttC_Mutilate.apl.json';
-import HATCttCSaberApl50 from './apls/HAT_CttC_Saber.apl.json';
-import MutilateApl from './apls/mutilate.apl.json';
-import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
+import MutilateApl40 from './apls/mutilate.apl.json';
+import MutilateDPSApl50 from './apls/Mutilate_DPS_50.apl.json';
+import MutilateIEAApl40 from './apls/mutilate_IEA.apl.json';
+import MutilateIEAApl50 from './apls/Mutilate_IEA_50.apl.json';
+import SaberDPSApl50 from './apls/Saber_DPS_50.apl.json';
+import SaberIEAApl50 from './apls/Saber_IEA_50.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P1Daggers from './gear_sets/p1_daggers.gear.json';
@@ -50,27 +46,21 @@ export const DefaultGear = GearPresets[Phase.Phase3][0];
 //                                 APL Presets[]
 ///////////////////////////////////////////////////////////////////////////
 
-export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { customCondition: player => player.getLevel() == 40 });
-export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, {
+export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl40, { customCondition: player => player.getLevel() == 40 });
+export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl40, {
 	customCondition: player => player.getLevel() == 40,
 });
 export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl25, { customCondition: player => player.getLevel() == 25 });
-export const ROTATION_PRESET_CP_CARNAGE_MUTI_50 = PresetUtils.makePresetAPLRotation('CP/FA Carnage Muti', CPCarnageMutilateApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_CP_CTTC_MUTI_50 = PresetUtils.makePresetAPLRotation('CP/FA CttC Muti', CPCttCMutilateApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_HAT_CARNAGE_MUTI_50 = PresetUtils.makePresetAPLRotation('HAT Carnage Muti', HATCarnageMutilateApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_HAT_CTTC_MUTI_50 = PresetUtils.makePresetAPLRotation('HAT CttC Muti', HATCttCMutilateApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_CP_CARNAGE_SABER_50 = PresetUtils.makePresetAPLRotation('CP/FA Carnage Saber', CPCarnageSaberApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_CP_CTTC_SABER_50 = PresetUtils.makePresetAPLRotation('CP/FA CttC Saber', CPCttCSaberApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_HAT_CARNAGE_SABER_50 = PresetUtils.makePresetAPLRotation('HAT Carnage Saber', HATCarnageSaberApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_HAT_CTTC_SABER_50 = PresetUtils.makePresetAPLRotation('HAT CttC Saber', HATCttCSaberApl50, { customCondition: player => player.getLevel() >= 50 })
+export const ROTATION_PRESET_MUTILATE_DPS_50 = PresetUtils.makePresetAPLRotation('Mutilate DPS', MutilateDPSApl50, { customCondition: player => player.getLevel() >= 50 })
+export const ROTATION_PRESET_MUTILATE_IEA_50 = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl50, { customCondition: player => player.getLevel() >= 50 })
+export const ROTATION_PRESET_SABER_SLASH_DPS_50 = PresetUtils.makePresetAPLRotation('Saber Slash DPS', SaberDPSApl50, { customCondition: player => player.getLevel() >= 50 })
+export const ROTATION_PRESET_SABER_SLASH_IEA_50 = PresetUtils.makePresetAPLRotation('Saber Slash IEA', SaberIEAApl50, { customCondition: player => player.getLevel() >= 50 })
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_SINISTER_25],
 	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
-	[Phase.Phase3]: [ROTATION_PRESET_CP_CARNAGE_MUTI_50, ROTATION_PRESET_CP_CARNAGE_SABER_50, 
-		ROTATION_PRESET_CP_CTTC_MUTI_50, ROTATION_PRESET_CP_CTTC_SABER_50, 
-		ROTATION_PRESET_HAT_CARNAGE_MUTI_50, ROTATION_PRESET_HAT_CARNAGE_SABER_50, 
-		ROTATION_PRESET_HAT_CTTC_MUTI_50, ROTATION_PRESET_HAT_CTTC_SABER_50],
+	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_DPS_50, ROTATION_PRESET_SABER_SLASH_DPS_50, 
+		ROTATION_PRESET_MUTILATE_IEA_50, ROTATION_PRESET_SABER_SLASH_IEA_50],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };

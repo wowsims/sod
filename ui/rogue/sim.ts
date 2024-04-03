@@ -119,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes[Phase.Phase3],
 		// Default talents.
-		talents: Presets.ColdBloodSealFate50Talents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
