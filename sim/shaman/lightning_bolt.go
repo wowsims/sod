@@ -54,7 +54,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
 
 	if shaman.HasSetBonus(item_sets.ItemSetElectromanticStormbringer, 3) {
-		castTime -= 200
+		castTime -= 100
 	}
 
 	spell := shaman.newElectricSpellConfig(
