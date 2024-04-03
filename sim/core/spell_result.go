@@ -97,16 +97,12 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
-// TODO: This should probably be merged with SpellDamage()? Doesn't make sense the way it is.
-func (spell *Spell) spellPower() float64 {
+func (spell *Spell) SpellDamage() float64 {
 	return spell.Unit.GetStat(stats.SpellPower) +
 		spell.BonusSpellPower +
 		spell.SpellSchoolPower() +
-		spell.Unit.PseudoStats.MobTypeSpellPower
-}
-
-func (spell *Spell) SpellDamage() float64 {
-	return spell.spellPower() + spell.Unit.GetStat(stats.SpellDamage)
+		spell.Unit.PseudoStats.MobTypeSpellPower +
+		spell.Unit.GetStat(stats.SpellDamage)
 }
 
 func (spell *Spell) SpellSchoolPower() float64 {
@@ -197,7 +193,10 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) HealingPower(target *Unit) float64 {
-	return spell.spellPower() + spell.Unit.GetStat(stats.HealingPower) + target.PseudoStats.BonusHealingTaken
+	return spell.Unit.GetStat(stats.SpellPower) +
+		spell.BonusSpellPower +
+		spell.Unit.GetStat(stats.HealingPower) +
+		target.PseudoStats.BonusHealingTaken
 }
 func (spell *Spell) healingCritRating() float64 {
 	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
