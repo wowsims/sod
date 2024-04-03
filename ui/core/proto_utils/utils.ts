@@ -1450,19 +1450,34 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 			return false;
 		}
 
-		if (
-			(item.handType == HandType.HandTypeOffHand || (item.handType == HandType.HandTypeOneHand && slot == ItemSlot.ItemSlotOffHand)) &&
-			![WeaponType.WeaponTypeShield, WeaponType.WeaponTypeOffHand].includes(item.weaponType) &&
-			!canDualWield(player)
-		) {
+		if (item.handType == HandType.HandTypeTwoHand) {
+			// Player can't equip two-handed weapons
+			if (!eligibleWeaponType.canUseTwoHand) {
+				return false;
+			}
+
+			// Only warriors with Titan's Grip can equip two-handers in the offhand
+			// TODO: SoD: Implement properly if Blizzard adds titan's grip
+			// if (slot == ItemSlot.ItemSlotOffHand && spec != Spec.SpecWarrior) {
+			// 	return false;
+			// }
+		}
+
+		// Can't equip offhand-only items in the mainhand
+		if (slot == ItemSlot.ItemSlotMainHand && item.handType == HandType.HandTypeOffHand) {
 			return false;
 		}
 
-		if (item.handType == HandType.HandTypeTwoHand && !eligibleWeaponType.canUseTwoHand) {
-			return false;
-		}
-		if (item.handType == HandType.HandTypeTwoHand && slot == ItemSlot.ItemSlotOffHand && spec != Spec.SpecWarrior) {
-			return false;
+		if (slot == ItemSlot.ItemSlotOffHand) {
+			// Can't equip mainhand-only items in the offhand
+			if (item.handType == HandType.HandTypeMainHand) {
+				return false;
+			}
+
+			// Can only equip weapons in the offhand if the player can dual wield
+			if (!canDualWield(player) && ![WeaponType.WeaponTypeShield, WeaponType.WeaponTypeOffHand].includes(item.weaponType)) {
+				return false;
+			}
 		}
 
 		return true;
