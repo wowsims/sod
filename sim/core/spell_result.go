@@ -99,7 +99,6 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 
 func (spell *Spell) SpellDamage() float64 {
 	return spell.Unit.GetStat(stats.SpellPower) +
-		spell.BonusSpellPower +
 		spell.SpellSchoolPower() +
 		spell.Unit.PseudoStats.MobTypeSpellPower +
 		spell.Unit.GetStat(stats.SpellDamage)
@@ -194,7 +193,6 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 
 func (spell *Spell) HealingPower(target *Unit) float64 {
 	return spell.Unit.GetStat(stats.SpellPower) +
-		spell.BonusSpellPower +
 		spell.Unit.GetStat(stats.HealingPower) +
 		target.PseudoStats.BonusHealingTaken
 }

@@ -36,11 +36,8 @@ type SpellConfig struct {
 	Cast               CastConfig
 	ExtraCastCondition CanCastCondition
 
-	BonusHitRating       float64
-	BonusCritRating      float64
-	BonusSpellPower      float64
-	BonusExpertiseRating float64
-	BonusArmorPenRating  float64
+	BonusHitRating  float64
+	BonusCritRating float64
 
 	CritDamageBonus float64
 
@@ -126,9 +123,6 @@ type Spell struct {
 
 	BonusHitRating           float64
 	BonusCritRating          float64
-	BonusSpellPower          float64
-	BonusExpertiseRating     float64
-	BonusArmorPenRating      float64
 	CastTimeMultiplier       float64
 	CostMultiplier           float64
 	DamageMultiplier         float64
@@ -144,7 +138,6 @@ type Spell struct {
 
 	initialBonusHitRating           float64
 	initialBonusCritRating          float64
-	initialBonusSpellPower          float64
 	initialDamageMultiplier         float64
 	initialDamageMultiplierAdditive float64
 	initialThreatMultiplier         float64
@@ -240,13 +233,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		expectedInitialDamageInternal: config.ExpectedInitialDamage,
 		expectedTickDamageInternal:    config.ExpectedTickDamage,
 
-		BonusHitRating:       config.BonusHitRating,
-		BonusCritRating:      config.BonusCritRating,
-		BonusSpellPower:      config.BonusSpellPower,
-		BonusExpertiseRating: config.BonusExpertiseRating,
-		BonusArmorPenRating:  config.BonusArmorPenRating,
-		CastTimeMultiplier:   1,
-		CostMultiplier:       1,
+		BonusHitRating:     config.BonusHitRating,
+		BonusCritRating:    config.BonusCritRating,
+		CastTimeMultiplier: 1,
+		CostMultiplier:     1,
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
@@ -401,7 +391,6 @@ func (spell *Spell) finalize() {
 	}
 	spell.initialBonusHitRating = spell.BonusHitRating
 	spell.initialBonusCritRating = spell.BonusCritRating
-	spell.initialBonusSpellPower = spell.BonusSpellPower
 	spell.initialDamageMultiplier = spell.DamageMultiplier
 	spell.initialDamageMultiplierAdditive = spell.DamageMultiplierAdditive
 	spell.initialThreatMultiplier = spell.ThreatMultiplier
@@ -427,7 +416,6 @@ func (spell *Spell) reset(_ *Simulation) {
 	// Reset dynamic effects.
 	spell.BonusHitRating = spell.initialBonusHitRating
 	spell.BonusCritRating = spell.initialBonusCritRating
-	spell.BonusSpellPower = spell.initialBonusSpellPower
 	spell.CastTimeMultiplier = 1
 	spell.CostMultiplier = 1
 	spell.CritDamageBonus = spell.initialCritDamageBonus

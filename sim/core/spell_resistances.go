@@ -82,7 +82,7 @@ func MultiSchoolShouldUseArmor(spell *Spell, target *Unit) bool {
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
-	armorPenRating := at.Attacker.stats[stats.ArmorPenetration] + spell.BonusArmorPenRating
+	armorPenRating := at.Attacker.stats[stats.ArmorPenetration]
 	defenderArmor := max(at.Defender.Armor()-armorPenRating, 0.0)
 	return 1 - defenderArmor/(defenderArmor+400+85*float64(at.Attacker.Level))
 }
