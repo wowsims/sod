@@ -79,8 +79,8 @@ func (druid *Druid) applyStarsurge() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)*druid.MoonfuryDamageMultiplier() + spellCoeff*spell.SpellDamage()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) * druid.MoonfuryDamageMultiplier()
+			result := spell.CalcDamageNew(sim, target, baseDamage, spellCoeff, spell.OutcomeMagicHitAndCrit)
 
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
 				druid.NaturesGraceProcAura.Activate(sim)

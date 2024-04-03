@@ -51,8 +51,7 @@ func (druid *Druid) registerShredSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			modifier := 1.0
 			if druid.BleedCategories.Get(target).AnyActive() {
@@ -66,9 +65,9 @@ func (druid *Druid) registerShredSpell() {
 				}
 			*/
 
-			baseDamage *= modifier
-
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.DamageMultiplier *= modifier
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.DamageMultiplier /= modifier
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -85,7 +84,7 @@ func (druid *Druid) registerShredSpell() {
 			}
 		},
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := flatDamageBonus + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := flatDamageBonus + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
 
 			modifier := 1.0
 			if druid.BleedCategories.Get(target).AnyActive() {
@@ -97,9 +96,10 @@ func (druid *Druid) registerShredSpell() {
 					modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
 				}
 			*/
-			baseDamage *= modifier
 
-			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			spell.DamageMultiplier *= modifier
+			baseres := spell.CalcDamageNew(sim, target, baseDamage, 1, spell.OutcomeExpectedMagicAlwaysHit)
+			spell.DamageMultiplier /= modifier
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)

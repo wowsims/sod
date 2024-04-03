@@ -296,6 +296,105 @@ func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier
 	return dot.Spell.calcDamageInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, true, outcomeApplier)
 }
 
+func (spell *Spell) calcDamageInternalNew(sim *Simulation, target *Unit, baseDamage float64, bonusCoef float64, attackerMultiplier float64, isPeriodic bool, outcomeApplier OutcomeApplier) *SpellResult {
+	attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
+
+	result := spell.NewResult(target)
+	result.Damage = baseDamage
+
+	if sim.Log == nil {
+		result.Damage *= attackerMultiplier
+		result.applyResistances(sim, spell, isPeriodic, attackTable)
+		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
+		// outcome applier overwrites the Outcome
+		outcomeApplier(sim, result, attackTable)
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
+		spell.ApplyPostOutcomeDamageModifiers(sim, result)
+	} else {
+		result.Damage *= attackerMultiplier
+		afterAttackMods := result.Damage
+		result.applyResistances(sim, spell, isPeriodic, attackTable)
+		afterResistances := result.Damage
+		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+		afterTargetMods := result.Damage
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
+		// outcome applier overwrites the Outcome
+		outcomeApplier(sim, result, attackTable)
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
+		afterOutcome := result.Damage
+		spell.ApplyPostOutcomeDamageModifiers(sim, result)
+		afterPostOutcome := result.Damage
+
+		spell.Unit.Log(
+			sim,
+			"%s %s [DEBUG] MAP: %0.01f, RAP: %0.01f, SP: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
+			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.Unit.GetStat(stats.SpellPower), baseDamage, afterAttackMods, afterResistances, afterTargetMods, afterOutcome, afterPostOutcome)
+	}
+
+	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+
+	return result
+}
+func (spell *Spell) CalcDamageNew(sim *Simulation, target *Unit, baseDamage float64, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	if bonusCoef > 0 {
+		baseDamage += bonusCoef * spell.SpellDamage()
+	}
+	return spell.calcDamageInternalNew(sim, target, baseDamage, bonusCoef, attackerMultiplier, false, outcomeApplier)
+}
+func (spell *Spell) CalcPeriodicDamageNew(sim *Simulation, target *Unit, baseDamage float64, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	if bonusCoef > 0 {
+		baseDamage += bonusCoef * spell.SpellDamage()
+	}
+	return spell.calcDamageInternalNew(sim, target, baseDamage, bonusCoef, attackerMultiplier, true, outcomeApplier)
+}
+
+func (dot *Dot) Snapshot(target *Unit, baseDamage float64, bonusCoef float64, isRollover bool) {
+	dot.SnapshotBaseDamage = baseDamage
+	if bonusCoef > 0 {
+		dot.SnapshotBaseDamage += bonusCoef * dot.Spell.SpellDamage()
+	}
+
+	if !isRollover {
+		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	}
+}
+func (dot *Dot) SnapshotWithCrit(target *Unit, baseDamage float64, bonusCoef float64, isRollover bool) {
+	dot.Snapshot(target, baseDamage, bonusCoef, isRollover)
+	if !isRollover {
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+	}
+}
+func (dot *Dot) CalcSnapshotDamageNew(sim *Simulation, target *Unit, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	return dot.Spell.calcDamageInternalNew(sim, target, dot.SnapshotBaseDamage, bonusCoef, dot.SnapshotAttackerMultiplier, true, outcomeApplier)
+}
+
 func (spell *Spell) DealOutcome(sim *Simulation, result *SpellResult) {
 	spell.DealDamage(sim, result)
 }
@@ -357,6 +456,22 @@ func (spell *Spell) CalcAndDealPeriodicDamage(sim *Simulation, target *Unit, bas
 }
 func (dot *Dot) CalcAndDealPeriodicSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	result := dot.CalcSnapshotDamage(sim, target, outcomeApplier)
+	dot.Spell.DealPeriodicDamage(sim, result)
+	return result
+}
+
+func (spell *Spell) CalcAndDealDamageNew(sim *Simulation, target *Unit, baseDamage float64, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	result := spell.CalcDamageNew(sim, target, baseDamage, bonusCoef, outcomeApplier)
+	spell.DealDamage(sim, result)
+	return result
+}
+func (spell *Spell) CalcAndDealPeriodicDamageNew(sim *Simulation, target *Unit, baseDamage float64, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	result := spell.CalcPeriodicDamageNew(sim, target, baseDamage, bonusCoef, outcomeApplier)
+	spell.DealPeriodicDamage(sim, result)
+	return result
+}
+func (dot *Dot) CalcAndDealPeriodicSnapshotDamageNew(sim *Simulation, target *Unit, bonusCoef float64, outcomeApplier OutcomeApplier) *SpellResult {
+	result := dot.CalcSnapshotDamageNew(sim, target, bonusCoef, outcomeApplier)
 	dot.Spell.DealPeriodicDamage(sim, result)
 	return result
 }

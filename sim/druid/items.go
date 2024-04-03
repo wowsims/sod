@@ -65,7 +65,7 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamageNew(sim, curTarget, 5, 0, spell.OutcomeMagicHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 		},

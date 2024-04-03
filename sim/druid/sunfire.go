@@ -50,12 +50,11 @@ func (druid *Druid) registerSunfireSpell() {
 			NumberOfTicks: SunfireTicks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage + spellDotCoeff*dot.Spell.SpellDamage()) *
-					druid.SunfireDotMultiplier
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDotDamage, spellDotCoeff, false)
+				dot.SnapshotAttackerMultiplier *= druid.SunfireDotMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, spellDotCoeff, dot.OutcomeTick)
 			},
 		},
 
@@ -67,8 +66,8 @@ func (druid *Druid) registerSunfireSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, spellCoeff, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				dot := spell.Dot(target)

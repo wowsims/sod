@@ -68,8 +68,8 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)*druid.MoonfuryDamageMultiplier() + spell.SpellDamage()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				if hasElunesFires {
