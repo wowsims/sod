@@ -134,10 +134,18 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
-				// Remove the buff and put skill on CD
-				aura.Deactivate(sim)
-				cdTimer.Set(sim.CurrentTime + cd)
-				shaman.UpdateMajorCooldowns()
+				// Elemental mastery can be batched
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Millisecond*1,
+					OnAction: func(sim *core.Simulation) {
+						if aura.IsActive() {
+							// Remove the buff and put skill on CD
+							aura.Deactivate(sim)
+							cdTimer.Set(sim.CurrentTime + cd)
+							shaman.UpdateMajorCooldowns()
+						}
+					},
+				})
 			}
 		},
 	})
