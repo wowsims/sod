@@ -137,8 +137,6 @@ func (mage *Mage) applyFingersOfFrost() {
 	procChance := 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
-	var proccedAt time.Duration
-
 	procAura := mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
@@ -151,7 +149,26 @@ func (mage *Mage) applyFingersOfFrost() {
 			mage.AddStatDynamic(sim, stats.SpellCrit, -bonusCrit)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if proccedAt != sim.CurrentTime {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+				return
+			}
+
+			if aura.GetStacks() == 1 {
+				// Brain freeze can be batched with 2x FFBs into Deep Freeze
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Millisecond*1,
+					OnAction: func(sim *core.Simulation) {
+						if aura.IsActive() {
+							aura.RemoveStack(sim)
+						}
+					},
+				})
+			} else {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -167,7 +184,6 @@ func (mage *Mage) applyFingersOfFrost() {
 			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < procChance {
 				procAura.Activate(sim)
 				procAura.SetStacks(sim, 2)
-				proccedAt = sim.CurrentTime
 			}
 		},
 	})
@@ -338,10 +354,9 @@ func (mage *Mage) applyBrainFreeze() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !slices.Contains(triggerSpellCodes, spell.SpellCode) {
-				return
+			if slices.Contains(triggerSpellCodes, spell.SpellCode) {
+				aura.Deactivate(sim)
 			}
-			aura.Deactivate(sim)
 		},
 	})
 

@@ -56,7 +56,7 @@ func (paladin *Paladin) registerSealOfVengeanceSpellAndAura() {
 			TickLength:    time.Second * 3, // ticking every three seconds for a grand total of 15s of duration
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				tickValue := 0 +
-					.013*dot.Spell.SpellPower() +
+					.013*dot.Spell.SpellDamage() +
 					.025*dot.Spell.MeleeAttackPower()
 				dot.SnapshotBaseDamage = tickValue * float64(dot.GetStacks())
 
@@ -112,7 +112,7 @@ func (paladin *Paladin) registerSealOfVengeanceSpellAndAura() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// i = 1 + 0.22 * HolP + 0.14 * AP
 			baseDamage := 1 +
-				.22*spell.SpellPower() +
+				.22*spell.SpellDamage() +
 				.14*spell.MeleeAttackPower()
 
 			// i = i * (1 + (0.10 * stacks))

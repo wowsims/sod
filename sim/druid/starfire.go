@@ -44,7 +44,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:       SpellFlagOmen | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
 		RequiredLevel: level,
 		Rank:          rank,

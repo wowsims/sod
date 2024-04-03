@@ -952,7 +952,7 @@ export class Player<SpecType extends Spec> {
 		return this.isbSbFrequency;
 	}
 
-	setIsbSbFrequency(eventID:EventID, newIsbSbFrequency:number) {
+	setIsbSbFrequency(eventID: EventID, newIsbSbFrequency: number) {
 		if (newIsbSbFrequency == this.isbSbFrequency) return;
 
 		this.isbSbFrequency = newIsbSbFrequency;
@@ -963,7 +963,7 @@ export class Player<SpecType extends Spec> {
 		return this.isbCrit;
 	}
 
-	setIsbCrit(eventID:EventID, newIsbCrit:number) {
+	setIsbCrit(eventID: EventID, newIsbCrit: number) {
 		if (newIsbCrit == this.isbCrit) return;
 
 		this.isbCrit = newIsbCrit;
@@ -974,7 +974,7 @@ export class Player<SpecType extends Spec> {
 		return this.isbWarlocks;
 	}
 
-	setIsbWarlocks(eventID:EventID, newIsbWarlocks:number) {
+	setIsbWarlocks(eventID: EventID, newIsbWarlocks: number) {
 		if (newIsbWarlocks == this.isbWarlocks) return;
 
 		this.isbWarlocks = newIsbWarlocks;
@@ -985,7 +985,7 @@ export class Player<SpecType extends Spec> {
 		return this.isbSpriests;
 	}
 
-	setIsbSpriests(eventID:EventID, newIsbSpriests:number) {
+	setIsbSpriests(eventID: EventID, newIsbSpriests: number) {
 		if (newIsbSpriests == this.isbSpriests) return;
 
 		this.isbSpriests = newIsbSpriests;

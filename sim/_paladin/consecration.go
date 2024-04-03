@@ -51,7 +51,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 				// i = 113 + 0.04*HolP + 0.04*AP
 				dot.SnapshotBaseDamage = 113 +
 					.04*dot.Spell.MeleeAttackPower() +
-					.04*(dot.Spell.SpellPower()+bonusSpellPower)
+					.04*(dot.Spell.SpellDamage()+bonusSpellPower)
 
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},

@@ -19,7 +19,7 @@ func (druid *Druid) registerMaulSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - float64(druid.Talents.Ferocity),

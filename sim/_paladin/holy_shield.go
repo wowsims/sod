@@ -23,7 +23,7 @@ func (paladin *Paladin) registerHolyShieldSpell() {
 			// Beta testing shows wowhead coeffs are probably correct
 			baseDamage := 274 +
 				0.0732*spell.MeleeAttackPower() +
-				0.117*spell.SpellPower()
+				0.117*spell.SpellDamage()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 		},
