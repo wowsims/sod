@@ -1,22 +1,18 @@
 import { ItemRandomSuffix, ItemSpec, Profession } from '../proto/common.js';
-import {
-	UIEnchant as Enchant,
-	UIItem as Item,
-	UIRune as Rune,
-} from '../proto/ui.js';
+import { UIEnchant as Enchant, UIItem as Item, UIRune as Rune } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
 import { enchantAppliesToItem } from './utils.js';
 
 export function getWeaponDPS(item: Item): number {
-	return ((item.weaponDamageMin + item.weaponDamageMax) / 2) / (item.weaponSpeed || 1);
+	return (item.weaponDamageMin + item.weaponDamageMax) / 2 / (item.weaponSpeed || 1);
 }
 
 interface EquippedItemConfig {
-	item: Item, 
-	enchant?: Enchant | null, 
-	rune?: Rune | null,
-	randomSuffix?: ItemRandomSuffix | null,
+	item: Item;
+	enchant?: Enchant | null;
+	rune?: Rune | null;
+	randomSuffix?: ItemRandomSuffix | null;
 }
 
 /**
@@ -61,26 +57,19 @@ export class EquippedItem {
 	}
 
 	equals(other: EquippedItem) {
-		if (!Item.equals(this._item, other.item))
-			return false;
+		if (!Item.equals(this._item, other.item)) return false;
 
-		if ((this._randomSuffix == null) != (other.randomSuffix == null))
-			return false;
+		if ((this._randomSuffix == null) != (other.randomSuffix == null)) return false;
 
-		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix))
-			return false;
+		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix)) return false;
 
-		if ((this._enchant == null) != (other.enchant == null))
-			return false;
+		if ((this._enchant == null) != (other.enchant == null)) return false;
 
-		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant))
-			return false;
+		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant)) return false;
 
-		if ((this._rune == null) != (other.rune == null))
-			return false;
+		if ((this._rune == null) != (other.rune == null)) return false;
 
-		if (this._rune && other.rune && !Rune.equals(this._rune, other.rune))
-			return false;
+		if (this._rune && other.rune && !Rune.equals(this._rune, other.rune)) return false;
 
 		return true;
 	}
@@ -90,30 +79,28 @@ export class EquippedItem {
 	 */
 	withItem(item: Item): EquippedItem {
 		let newEnchant;
-		if (this._enchant && enchantAppliesToItem(this._enchant, item))
-			newEnchant = this._enchant;
+		if (this._enchant && enchantAppliesToItem(this._enchant, item)) newEnchant = this._enchant;
 
-		return new EquippedItem({item, enchant: newEnchant, rune: this.rune});
+		return new EquippedItem({ item, enchant: newEnchant, rune: this.rune });
 	}
 
 	/**
 	 * Returns a new EquippedItem with the given enchant applied.
 	 */
 	withEnchant(enchant: Enchant | null): EquippedItem {
-		return new EquippedItem({item: this._item, enchant, rune: this._rune, randomSuffix: this._randomSuffix});
+		return new EquippedItem({ item: this._item, enchant, rune: this._rune, randomSuffix: this._randomSuffix });
 	}
 
 	withRune(rune: Rune | null): EquippedItem {
-		return new EquippedItem({item: this._item, enchant: this.enchant, rune, randomSuffix: this._randomSuffix});
+		return new EquippedItem({ item: this._item, enchant: this.enchant, rune, randomSuffix: this._randomSuffix });
 	}
 
 	withRandomSuffix(randomSuffix: ItemRandomSuffix | null): EquippedItem {
-		return new EquippedItem({item: this._item, enchant: this.enchant, rune: this._rune, randomSuffix});
+		return new EquippedItem({ item: this._item, enchant: this.enchant, rune: this._rune, randomSuffix });
 	}
 
 	asActionId(): ActionId {
-		if (this._randomSuffix)
-			return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
+		if (this._randomSuffix) return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
 
 		return ActionId.fromItemId(this._item.id);
 	}
@@ -128,7 +115,7 @@ export class EquippedItem {
 	}
 
 	getProfessionRequirements(): Array<Profession> {
-		let profs: Array<Profession> = [];
+		const profs: Array<Profession> = [];
 		if (this._item.requiredProfession != Profession.ProfessionUnknown) {
 			profs.push(this._item.requiredProfession);
 		}
@@ -138,13 +125,17 @@ export class EquippedItem {
 		return distinct(profs);
 	}
 	getFailedProfessionRequirements(professions: Array<Profession>): Array<Item | Enchant> {
-		let failed: Array<Item | Enchant> = [];
+		const failed: Array<Item | Enchant> = [];
 		if (this._item.requiredProfession != Profession.ProfessionUnknown && !professions.includes(this._item.requiredProfession)) {
 			failed.push(this._item);
 		}
-		if (this._enchant != null && this._enchant.requiredProfession != Profession.ProfessionUnknown && !professions.includes(this._enchant.requiredProfession)) {
+		if (
+			this._enchant != null &&
+			this._enchant.requiredProfession != Profession.ProfessionUnknown &&
+			!professions.includes(this._enchant.requiredProfession)
+		) {
 			failed.push(this._enchant);
 		}
 		return failed;
 	}
-};
+}

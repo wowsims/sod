@@ -155,6 +155,10 @@ export class Database {
 		return this.runesBySlotByClass[slot]![klass] || [];
 	}
 
+	getRuneById(runeID: number): Rune {
+		return this.runesById[runeID];
+	}
+
 	hasRuneBySlot(slot: ItemSlot, klass: Class): boolean {
 		return !!(this.runesBySlotByClass[slot] && this.runesBySlotByClass[slot]![klass]);
 	}
