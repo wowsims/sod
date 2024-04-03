@@ -47,9 +47,8 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := 0 +
-					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				results[hitIndex] = spell.CalcDamageNew(sim, curTarget, baseDamage, 1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}

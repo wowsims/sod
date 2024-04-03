@@ -69,11 +69,9 @@ func (warrior *Warrior) registerSlamSpell() {
 		FlatThreatBonus:  140,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatDamageBonus +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

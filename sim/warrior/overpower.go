@@ -75,11 +75,9 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warrior.OverpowerAura.Deactivate(sim)
 
-			baseDamage := bonusDamage +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := bonusDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

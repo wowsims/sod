@@ -54,7 +54,8 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
+			// TODO BDR: Should be coef 1
+			result := spell.CalcAndDealDamageNew(sim, target, damage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func init() {
@@ -38,20 +37,18 @@ func init() {
 				NumberOfTicks: 15,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.SnapshotBaseDamage = 5 * character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.Snapshot(target, 5, 0, isRollover)
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, 0, dot.OutcomeTick)
 				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					// Has no DefenseType, also haven't seen a miss in logs.
-					result := spell.CalcAndDealDamage(sim, aoeTarget, 65, spell.OutcomeAlwaysHit)
+					result := spell.CalcAndDealDamageNew(sim, aoeTarget, 65, 0, spell.OutcomeAlwaysHit)
 					if result.Landed() {
 						spell.Dot(aoeTarget).Apply(sim)
 					}

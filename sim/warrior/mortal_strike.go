@@ -51,11 +51,9 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := bonusDamage +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := bonusDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

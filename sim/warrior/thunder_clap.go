@@ -60,7 +60,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, info.baseDamage, spell.OutcomeMagicHitAndCrit)
+				results[hitIndex] = spell.CalcDamageNew(sim, curTarget, info.baseDamage, 0, spell.OutcomeMagicHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 

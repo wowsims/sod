@@ -37,7 +37,7 @@ func (warrior *Warrior) applyDeepWounds() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				attackTable := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamageNew(sim, target, 0, dot.OutcomeTick)
 			},
 		},
 

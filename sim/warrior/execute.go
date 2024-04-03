@@ -59,7 +59,8 @@ func (warrior *Warrior) registerExecuteSpell() {
 			rageMetrics.Events--
 
 			baseDamage := flatDamage + convertedRageDamage*(extraRage)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			// TODO BDR: Should be bonus coef 1
+			result := spell.CalcAndDealDamageNew(sim, target, baseDamage, 0, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
