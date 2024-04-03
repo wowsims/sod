@@ -356,7 +356,7 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 					return
 				}
 
-				power := spell.SpellSchoolPower()
+				power := spell.SpellDamage()
 				if power != highestValue {
 					t.Errorf("Expected %f to be highest power value found, but got %f for school %d!", highestValue, power, schoolMask)
 					return

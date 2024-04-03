@@ -97,46 +97,39 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
+// The combined bonus damage (aka spell power) for this spell's school(s).
 func (spell *Spell) SpellDamage() float64 {
-	return spell.Unit.GetStat(stats.SpellPower) +
-		spell.SpellSchoolPower() +
-		spell.Unit.PseudoStats.MobTypeSpellPower +
-		spell.Unit.GetStat(stats.SpellDamage)
-}
+	var bonusDamage float64
 
-func (spell *Spell) SpellSchoolPower() float64 {
 	switch spell.SchoolIndex {
 	case stats.SchoolIndexNone:
 		return 0
 	case stats.SchoolIndexPhysical:
-		// Return correct value if ever used for a physical spell.
+		// PseudoStats.BonusDamage is physical "spell power", just return that here.
+		// TODO: Do "MobTypeSpellPower" effects for physical exist? E.g. something like "Do x extra weapon damage against y type"?
+		// If yes then it needs to be handled here and for the multi school case below.
 		return spell.Unit.PseudoStats.BonusDamage
 	case stats.SchoolIndexArcane:
-		return spell.Unit.GetStat(stats.ArcanePower)
+		bonusDamage = spell.Unit.GetStat(stats.ArcanePower)
 	case stats.SchoolIndexFire:
-		return spell.Unit.GetStat(stats.FirePower)
+		bonusDamage = spell.Unit.GetStat(stats.FirePower)
 	case stats.SchoolIndexFrost:
-		return spell.Unit.GetStat(stats.FrostPower)
+		bonusDamage = spell.Unit.GetStat(stats.FrostPower)
 	case stats.SchoolIndexHoly:
-		return spell.Unit.GetStat(stats.HolyPower)
+		bonusDamage = spell.Unit.GetStat(stats.HolyPower)
 	case stats.SchoolIndexNature:
-		return spell.Unit.GetStat(stats.NaturePower)
+		bonusDamage = spell.Unit.GetStat(stats.NaturePower)
 	case stats.SchoolIndexShadow:
-		return spell.Unit.GetStat(stats.ShadowPower)
+		bonusDamage = spell.Unit.GetStat(stats.ShadowPower)
 	default:
 		// Multi school: Get best power choice available.
-		maxPower := 0.0
 		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 			var power float64
 
-			// TODO / NOTE: Not a bug, just really not a nice solution imho.
-			// Not having physical power with the other power stats makes this if-else required.
-			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
-			// are ever a thing, due to SpellPower being before ArcanePower in stats.
-			// Also, just having this loop or having the switch above is irrelevant in terms of performance.
-			// The jump table above saves some instructions for normal spells but loop only seems to
-			// cause the function to be inlined, making the whole SpellPower() call inline.
-			// Overall just not nice the way it is.
+			// TODO: If physical multi school spells with a coef > 0 emerge at any point this function or
+			// the way bonus damage stats are set up needs to be changed.
+			// SpellPower, MobTypeSpellPower and SpellDamage are a convinience to group bonus damage for non-physical schools
+			// and mustn't be added if physical ends up the highest here!
 			if baseSchoolIndex == stats.SchoolIndexPhysical {
 				power = spell.Unit.PseudoStats.BonusDamage
 			} else {
@@ -144,12 +137,16 @@ func (spell *Spell) SpellSchoolPower() float64 {
 				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
 			}
 
-			if power > maxPower {
-				maxPower = power
+			if power > bonusDamage {
+				bonusDamage = power
 			}
 		}
-		return maxPower
 	}
+
+	return bonusDamage +
+		spell.Unit.GetStat(stats.SpellPower) +
+		spell.Unit.PseudoStats.MobTypeSpellPower +
+		spell.Unit.GetStat(stats.SpellDamage)
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
