@@ -21,8 +21,12 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	manaCost := [9]float64{0, 15, 25, 35, 45, 55, 70, 80, 100}[rank]
 	level := [9]int{0, 1, 8, 16, 24, 32, 40, 48, 56}[rank]
 	hasFlankingStrike := hunter.HasRune(proto.HunterRune_RuneLegsFlankingStrike)
+	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
+
+	flankingStrikeDmgMult := 0.1
+	raptorFuryDmgMult := 0.15 // TODO: Verify value after launch, has been datamined to possibly get changed to 0.1 instead of 0.15 but until further confirmation
 
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
@@ -73,6 +77,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		DamageMultiplier: 1 * dwSpecMulti,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			flankingStrikeStacks := float64(hunter.FlankingStrikeAura.GetStacks())
+			raptorFuryStacks := float64(hunter.RaptorFuryAura.GetStacks())
+
 			weaponDamage := 0.0
 			if hasMeleeSpecialist {
 				weaponDamage = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
@@ -85,11 +92,15 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				spell.BonusWeaponDamage()
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-				mhBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+				mhBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)
 			}
 
 			if hasFlankingStrike && sim.RandomFloat("Flanking Strike Refresh") < 0.2 {
 				hunter.FlankingStrike.CD.Set(sim.CurrentTime)
+			}
+
+			if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
+				mhBaseDamage *= 1.0 + (raptorFuryDmgMult * raptorFuryStacks)
 			}
 
 			spell.CalcAndDealDamage(sim, target, mhBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -109,7 +120,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 					ohSpell.BonusWeaponDamage()
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
-					ohBaseDamage *= 1.0 + (0.1 * float64(hunter.FlankingStrikeAura.GetStacks()))
+					ohBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)
+				}
+
+				if hasRaptorFury && hunter.RaptorFuryAura.IsActive() {
+					ohBaseDamage *= 1.0 + (raptorFuryDmgMult * raptorFuryStacks)
 				}
 
 				ohSpell.CalcAndDealDamage(sim, target, ohBaseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -121,6 +136,13 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 			if hasMeleeSpecialist && sim.RandomFloat("Raptor Strike Reset") < 0.3 {
 				spell.CD.Reset()
+			}
+
+			if hasRaptorFury {
+				if !hunter.RaptorFuryAura.IsActive() {
+					hunter.RaptorFuryAura.Activate(sim)
+				}
+				hunter.RaptorFuryAura.AddStack(sim)
 			}
 		},
 	}

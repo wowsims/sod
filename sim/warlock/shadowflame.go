@@ -12,10 +12,10 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		return
 	}
 
-	baseSpellCoeff := 0.0715
-	dotSpellCoeff := 0.022
-	baseDamage := warlock.baseRuneAbilityDamage() * 0.64
-	dotDamage := warlock.baseRuneAbilityDamage() * 0.24
+	baseSpellCoeff := 0.107
+	dotSpellCoeff := 0.107
+	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
+	dotDamage := warlock.baseRuneAbilityDamage() * 0.61
 
 	fireDot := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},
@@ -43,8 +43,8 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
 				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= 1.4
-					result.Threat *= 1.4
+					result.Damage *= warlock.getLakeOfFireMultiplier()
+					result.Threat *= warlock.getLakeOfFireMultiplier()
 				}
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},

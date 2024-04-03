@@ -243,6 +243,11 @@ export class Player<SpecType extends Spec> {
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
+	private isbSbFrequency = 0.0;
+	private isbCrit = 0.0;
+	private isbWarlocks = 0;
+	private isbSpriests = 0;
+
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
 
@@ -943,6 +948,50 @@ export class Player<SpecType extends Spec> {
 		this.healingModelChangeEmitter.emit(eventID);
 	}
 
+	getIsbSbFrequency(): number {
+		return this.isbSbFrequency;
+	}
+
+	setIsbSbFrequency(eventID: EventID, newIsbSbFrequency: number) {
+		if (newIsbSbFrequency == this.isbSbFrequency) return;
+
+		this.isbSbFrequency = newIsbSbFrequency;
+		this.changeEmitter.emit(eventID);
+	}
+
+	getIsbCrit(): number {
+		return this.isbCrit;
+	}
+
+	setIsbCrit(eventID: EventID, newIsbCrit: number) {
+		if (newIsbCrit == this.isbCrit) return;
+
+		this.isbCrit = newIsbCrit;
+		this.changeEmitter.emit(eventID);
+	}
+
+	getIsbWarlocks(): number {
+		return this.isbWarlocks;
+	}
+
+	setIsbWarlocks(eventID: EventID, newIsbWarlocks: number) {
+		if (newIsbWarlocks == this.isbWarlocks) return;
+
+		this.isbWarlocks = newIsbWarlocks;
+		this.changeEmitter.emit(eventID);
+	}
+
+	getIsbSpriests(): number {
+		return this.isbSpriests;
+	}
+
+	setIsbSpriests(eventID: EventID, newIsbSpriests: number) {
+		if (newIsbSpriests == this.isbSpriests) return;
+
+		this.isbSpriests = newIsbSpriests;
+		this.changeEmitter.emit(eventID);
+	}
+
 	computeStatsEP(stats?: Stats): number {
 		if (stats == undefined) {
 			return 0;
@@ -1231,6 +1280,10 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				isbSbFrequency: this.getIsbSbFrequency(),
+				isbCrit: this.getIsbCrit(),
+				isbWarlocks: this.getIsbWarlocks(),
+				isbSpriests: this.getIsbSpriests(),
 			});
 			player = withSpecProto(this.spec, player, this.getSpecOptions());
 		}
@@ -1285,6 +1338,10 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setIsbSbFrequency(eventID, proto.isbSbFrequency);
+				this.setIsbCrit(eventID, proto.isbCrit);
+				this.setIsbWarlocks(eventID, proto.isbWarlocks);
+				this.setIsbSpriests(eventID, proto.isbSpriests);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());

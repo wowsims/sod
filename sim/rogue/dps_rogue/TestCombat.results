@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.24398
-  weights: 0.45773
+  weights: 0.24396
+  weights: 0.45255
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2218
-  weights: 1.48543
-  weights: 1.75981
+  weights: 0.22178
+  weights: 1.62279
+  weights: 1.77139
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.388
-  weights: 0.623
+  weights: 0.38759
+  weights: 0.62931
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35273
-  weights: 4.26628
-  weights: 3.84234
+  weights: 0.35235
+  weights: 3.27021
+  weights: 3.87015
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 207.33323
-  tps: 147.20659
+  dps: 207.33613
+  tps: 147.20865
  }
 }
 dps_results: {
@@ -288,36 +288,36 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 194.95825
-  tps: 138.42035
+  dps: 194.96463
+  tps: 138.42489
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 554.34161
-  tps: 393.58254
+  dps: 554.23571
+  tps: 393.50735
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 252.63496
-  tps: 179.37082
+  dps: 252.71224
+  tps: 179.42569
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 218.95893
-  tps: 155.46084
+  dps: 219.43811
+  tps: 155.80106
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 291.529
-  tps: 206.98559
+  dps: 290.60001
+  tps: 206.326
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 533.00621
-  tps: 378.43441
+  dps: 533.14071
+  tps: 378.52991
  }
 }

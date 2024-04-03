@@ -1,6 +1,8 @@
 import { Player, UnitMetadata } from '../../player.js';
-import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
+import { ActionID, ItemSlot, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
+import { UIRune as Rune } from '../../proto/ui.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
+import { itemTypeNames } from '../../proto_utils/names.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
 import { BooleanPicker } from '../boolean_picker.js';
@@ -240,12 +242,19 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 				const textElem = document.createTextNode(actionId.name);
 				button.appendChild(textElem);
 			},
-			createMissingValue: value =>
-				value.fill().then(filledId => {
+			createMissingValue: value => {
+				if (value.anyId() == 0) {
+					return new Promise<DropdownValueConfig<ActionId>>(() => {
+						value: actionIdSet.defaultLabel;
+					});
+				}
+
+				return value.fill().then(filledId => {
 					return {
 						value: filledId,
 					};
-				}),
+				});
+			},
 			values: [],
 		});
 
@@ -263,6 +272,60 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 		};
 		updateValues();
 		TypedEvent.onAny([player.sim.unitMetadataEmitter, player.rotationChangeEmitter]).on(updateValues);
+	}
+}
+
+export interface APLRunePickerConfig<ModObject>
+	extends Omit<DropdownPickerConfig<ModObject, ActionID, Rune>, 'defaultLabel' | 'equals' | 'setOptionContent' | 'values' | 'getValue' | 'setValue'> {
+	getValue: (obj: ModObject) => ActionID;
+	setValue: (eventID: EventID, obj: ModObject, newValue: ActionID) => void;
+}
+
+export class APLRunePicker extends DropdownPicker<Player<any>, ActionID, Rune> {
+	constructor(parent: HTMLElement, player: Player<any>, config: APLRunePickerConfig<Player<any>>) {
+		super(parent, player, {
+			...config,
+			sourceToValue: (src: ActionID) => {
+				return src?.rawId.oneofKind == 'spellId' ? player.sim.db.getRuneById(src.rawId.spellId) : Rune.create();
+			},
+			valueToSource: (val: Rune) => {
+				return ActionID.create({
+					rawId: {
+						oneofKind: 'spellId',
+						spellId: val.id,
+					},
+				});
+			},
+			defaultLabel: 'Runes',
+			equals: (a, b) => a == b,
+			setOptionContent: (button, valueConfig) => {
+				const actionId = ActionId.fromSpellId(valueConfig.value.id);
+				const iconElem = document.createElement('a');
+				iconElem.classList.add('apl-actionid-item-icon');
+				actionId.fillAndSet(iconElem, true, true);
+				button.appendChild(iconElem);
+
+				const textElem = document.createTextNode(valueConfig.value.name);
+				button.appendChild(textElem);
+			},
+			values: [],
+		});
+
+		const updateValues = async () => {
+			const values = Object.values(ItemSlot)
+				.filter(v => typeof v != 'string')
+				.map(slot => player.getRunes(slot as ItemSlot))
+				.flat()
+				.map(rune => {
+					return {
+						value: rune,
+						submenu: [itemTypeNames.get(rune.type) ?? ''],
+					};
+				});
+			this.setOptions(values);
+		};
+		updateValues();
+		player.rotationChangeEmitter.on(() => this.update);
 	}
 }
 
@@ -534,6 +597,18 @@ export function actionIdFieldConfig(
 			});
 		},
 		...(options || {}),
+	};
+}
+
+export function runeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
+	return {
+		field: field,
+		newValue: () => ActionID.create(),
+		factory: (parent, player, config, _getParentValue) => {
+			return new APLRunePicker(parent, player, {
+				...config,
+			});
+		},
 	};
 }
 

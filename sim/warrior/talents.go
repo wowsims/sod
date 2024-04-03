@@ -124,7 +124,6 @@ func (warrior *Warrior) applyWeaponSpecializations() {
 }
 
 func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
-	var swordSpecializationSpell *core.Spell
 	icd := core.Cooldown{
 		Timer:    warrior.NewTimer(),
 		Duration: time.Millisecond * 200,
@@ -134,11 +133,6 @@ func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
 	warrior.RegisterAura(core.Aura{
 		Label:    "Sword Specialization",
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			config := *warrior.AutoAttacks.MHConfig()
-			config.ActionID = core.ActionID{SpellID: 12281}
-			swordSpecializationSpell = warrior.GetOrRegisterSpell(config)
-		},
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -154,7 +148,7 @@ func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				aura.Unit.AutoAttacks.MaybeReplaceMHSwing(sim, swordSpecializationSpell).Cast(sim, result.Target)
+				warrior.AutoAttacks.ExtraMHAttack(sim)
 			}
 		},
 	})

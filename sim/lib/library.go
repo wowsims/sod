@@ -104,6 +104,7 @@ func getDatabase(itemIds *int32, numItems int32, enchantIds *int32, numEnchants 
 		item := core.ItemsByID[itemId]
 		simDB.Items[i] = &proto.SimItem{
 			Id:               item.ID,
+			RequiresLevel:    item.RequiresLevel,
 			Name:             item.Name,
 			Type:             item.Type,
 			ArmorType:        item.ArmorType,

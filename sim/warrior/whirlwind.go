@@ -11,12 +11,11 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 1680}
 	numHits := min(4, warrior.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
 	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 1680},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

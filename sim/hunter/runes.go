@@ -35,11 +35,19 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
 	}
 
+	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
+		hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+		if hunter.pet != nil {
+			hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
+		}
+	}
+
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
 	hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
+	hunter.applyRaptorFury()
 }
 
 func (hunter *Hunter) applyInvigoration() {
@@ -181,22 +189,35 @@ func (hunter *Hunter) applyCobraStrikes() {
 }
 
 func (hunter *Hunter) applyLockAndLoad() {
-	if !hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad){
+	if !hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad) {
 		return
 	}
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
-		Label:     "Lock And Load",
-		ActionID:  core.ActionID{SpellID: 415413},
-		Duration:  time.Second * 20,
+		Label:    "Lock And Load",
+		ActionID: core.ActionID{SpellID: 415413},
+		Duration: time.Second * 20,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
-				hunter.AddMana(sim, spell.DefaultCast.Cost, lockAndLoadMetrics)
+				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 				spell.CD.Reset()
 			}
 		},
+	})
+}
+
+func (hunter *Hunter) applyRaptorFury() {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
+		return
+	}
+
+	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
+		Label:     "Raptor Fury Buff",
+		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 	})
 }

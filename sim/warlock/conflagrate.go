@@ -54,7 +54,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= 1.4
+				baseDamage *= warlock.getLakeOfFireMultiplier()
 			}
 
 			if backdraft != nil {

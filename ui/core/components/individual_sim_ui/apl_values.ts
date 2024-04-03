@@ -6,6 +6,7 @@ import {
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
 	APLValueAuraIsActiveWithReactionTime,
+	APLValueAuraIsKnown,
 	APLValueAuraNumStacks,
 	APLValueAuraRemainingTime,
 	APLValueAuraShouldRefresh,
@@ -45,6 +46,7 @@ import {
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
+	APLValueRuneIsEquipped,
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
@@ -54,6 +56,7 @@ import {
 	APLValueSpellCPM,
 	APLValueSpellCurrentCost,
 	APLValueSpellIsChanneling,
+	APLValueSpellIsKnown,
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
@@ -679,6 +682,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Spells
+	spellIsKnown: inputBuilder({
+		label: 'Spell Known',
+		submenu: ['Spell'],
+		shortDescription: '<b>True</b> if the spell is currently known, otherwise <b>False</b>.',
+		newValue: APLValueSpellIsKnown.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	spellCurrentCost: inputBuilder({
 		label: 'Current Cost',
 		submenu: ['Spell'],
@@ -754,6 +764,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Auras
+	auraIsKnown: inputBuilder({
+		label: 'Aura Known',
+		submenu: ['Aura'],
+		shortDescription: '<b>True</b> if the aura is currently known, otherwise <b>False</b>.',
+		newValue: APLValueAuraIsKnown.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources'), AplHelpers.actionIdFieldConfig('auraId', 'auras', 'sourceUnit')],
+	}),
 	auraIsActive: inputBuilder({
 		label: 'Aura Active',
 		submenu: ['Aura'],
@@ -825,6 +842,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
 		],
+	}),
+
+	// Runes
+	runeIsEquipped: inputBuilder({
+		label: 'Rune Equipped',
+		submenu: ['Rune'],
+		shortDescription: '<b>True</b> if the rune is currently equipped, otherwise <b>False</b>.',
+		newValue: APLValueRuneIsEquipped.create,
+		fields: [AplHelpers.runeFieldConfig('runeId')],
 	}),
 
 	// DoT

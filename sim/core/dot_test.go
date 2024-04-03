@@ -70,7 +70,7 @@ func NewFakeElementalShaman(char *Character, _ *proto.Player) Agent {
 				TickLength:          time.Second * 3,
 				AffectedByCastSpeed: true,
 				OnSnapshot: func(sim *Simulation, target *Unit, dot *Dot, isRollover bool) {
-					dot.SnapshotBaseDamage = 100 + 1*dot.Spell.SpellPower()
+					dot.SnapshotBaseDamage = 100 + 1*dot.Spell.SpellDamage()
 					if !isRollover {
 						attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
 						dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)

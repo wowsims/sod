@@ -195,48 +195,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestArcane-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 94.81646
-  tps: 41.21056
- }
-}
-dps_results: {
- key: "TestArcane-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 106.65547
-  tps: 45.94599
- }
-}
-dps_results: {
- key: "TestArcane-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 112.09648
-  tps: 48.12257
- }
-}
-dps_results: {
- key: "TestArcane-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 115.24791
-  tps: 49.38151
- }
-}
-dps_results: {
- key: "TestArcane-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 99.26773
-  tps: 42.96941
- }
-}
-dps_results: {
- key: "TestArcane-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 139.48878
-  tps: 59.06371
- }
-}
-dps_results: {
  key: "TestArcane-Lvl25-Average-Default"
  value: {
   dps: 146.88727
@@ -335,41 +293,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 357.25707
-  tps: 149.46157
- }
-}
-dps_results: {
- key: "TestArcane-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 379.37354
-  tps: 159.15843
- }
-}
-dps_results: {
- key: "TestArcane-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 386.14742
-  tps: 161.40057
- }
-}
-dps_results: {
- key: "TestArcane-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 392.96648
-  tps: 164.5636
- }
-}
-dps_results: {
- key: "TestArcane-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 367.2106
-  tps: 153.98982
- }
-}
-dps_results: {
  key: "TestArcane-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
   dps: 375.68191
@@ -379,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 447.13195
-  tps: 186.81416
+  dps: 447.12876
+  tps: 186.81289
  }
 }
 dps_results: {

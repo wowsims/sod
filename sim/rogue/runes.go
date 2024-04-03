@@ -30,7 +30,8 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerHonorAmongThieves()
 	rogue.applyCombatPotency()
 	rogue.applyFocusedAttacks()
-	rogue.registerCarnage()
+	rogue.applyCarnage()
+	rogue.applyUnfairAdvantage()
 }
 
 func (rogue *Rogue) applyCombatPotency() {
@@ -38,12 +39,11 @@ func (rogue *Rogue) applyCombatPotency() {
 		return
 	}
 
-	const procChance = 0.2
-	energyBonus := 15.0
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 432292})
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Combat Potency",
+		ActionID: energyMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -53,8 +53,8 @@ func (rogue *Rogue) applyCombatPotency() {
 				return
 			}
 
-			if sim.RandomFloat("Combat Potency") < procChance {
-				rogue.AddEnergy(sim, energyBonus, energyMetrics)
+			if sim.RandomFloat("Combat Potency") < 0.2 {
+				rogue.AddEnergy(sim, 15, energyMetrics)
 			}
 		},
 	})
@@ -65,10 +65,11 @@ func (rogue *Rogue) applyFocusedAttacks() {
 		return
 	}
 
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 51637})
+	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: int32(proto.RogueRune_RuneFocusedAttacks)})
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Focused Attacks",
+		ActionID: energyMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -77,10 +78,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() {
 				return
 			}
-			// Fan of Knives OH hits do not trigger focused attacks. Check other SoD spells
-			/**if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.IsSpellAction(FanOfKnivesSpellID) {
-				return
-			}*/
+			// TODO Check whether certain spells don't trigger this
 			rogue.AddEnergy(sim, 2, energyMetrics)
 		},
 	})
@@ -91,24 +89,16 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		return
 	}
 
-	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51701})
-	honorAmongThievesID := core.ActionID{SpellID: 51701}
+	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: int32(proto.RogueRune_RuneHonorAmongThieves)})
 
 	icd := core.Cooldown{
 		Timer:    rogue.NewTimer(),
 		Duration: time.Second,
 	}
 
-	maybeProc := func(sim *core.Simulation) {
-		if icd.IsReady(sim) {
-			rogue.AddComboPoints(sim, 1, comboMetrics)
-			icd.Use(sim)
-		}
-	}
-
 	rogue.HonorAmongThieves = rogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
-		ActionID: honorAmongThievesID,
+		ActionID: comboMetrics.ActionID,
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -128,7 +118,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 
 			pa := &core.PendingAction{}
 			pa.OnAction = func(sim *core.Simulation) {
-				maybeProc(sim)
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 				pa.NextActionAt = sim.CurrentTime + time.Duration(sim.RandomExpFloat("next party crit")*rateToDuration)
 				sim.AddPendingAction(pa)
 			}
@@ -136,16 +126,23 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 			sim.AddPendingAction(pa)
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto|core.ProcMaskMeleeOHAuto|core.ProcMaskRangedAuto) {
-				maybeProc(sim)
+			if result.DidCrit() && !spell.ProcMask.Matches(core.ProcMaskWhiteHit) {
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 			}
 		},
 		OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() {
-				maybeProc(sim)
+				rogue.tryHonorAmongThievesProc(sim, icd, comboMetrics)
 			}
 		},
 	})
+}
+
+func (rogue *Rogue) tryHonorAmongThievesProc(sim *core.Simulation, icd core.Cooldown, metrics *core.ResourceMetrics) {
+	if icd.IsReady(sim) {
+		rogue.AddComboPoints(sim, 1, metrics)
+		icd.Use(sim)
+	}
 }
 
 // Apply the effects of the Cut to the Chase talent

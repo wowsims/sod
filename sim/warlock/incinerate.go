@@ -59,7 +59,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 			var baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
 
 			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= 1.4
+				baseDamage *= warlock.getLakeOfFireMultiplier()
 			}
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

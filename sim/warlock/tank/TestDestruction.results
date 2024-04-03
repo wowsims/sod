@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.83813
+  weights: 1.5347
   weights: 0
-  weights: 0.75339
-  weights: 0
-  weights: 0
+  weights: 1.52292
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.58149
+  weights: 0
+  weights: 0
+  weights: 0.30643
   weights: 0
   weights: 0
   weights: 0
@@ -151,20 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.75592
+  weights: 0.17412
   weights: 0
-  weights: 0.99686
-  weights: 0
-  weights: 0
+  weights: 0.66735
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.52433
-  weights: 3.1876
   weights: 0
   weights: 0
+  weights: 5.68423
+  weights: 3.44278
   weights: 0
   weights: 0
   weights: 0
@@ -192,208 +190,126 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 75.75539
-  tps: 90.97528
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 80.09065
-  tps: 93.71519
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-InfernalPactEssence-216509"
- value: {
-  dps: 161.55074
-  tps: 321.6887
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-IrradiatedGarments"
- value: {
-  dps: 82.83448
-  tps: 95.2617
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 82.54368
-  tps: 91.52703
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 79.32065
-  tps: 94.04646
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl25-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 75.94106
-  tps: 89.91758
+  weights: 0
+  weights: 0
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 165.24571
-  tps: 336.51661
+  dps: 147.83598
+  tps: 272.06258
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 165.64204
-  tps: 598.03599
+  dps: 393.19552
+  tps: 838.6597
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 165.64204
-  tps: 337.26479
+  dps: 139.67262
+  tps: 259.39976
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 194.04806
-  tps: 377.18732
+  dps: 168.1319
+  tps: 292.02559
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 119.18135
-  tps: 536.47722
+  dps: 305.39856
+  tps: 905.79281
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 119.18135
-  tps: 252.60202
+  dps: 81.6443
+  tps: 149.26002
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 138.91756
-  tps: 275.39618
+  dps: 126.50151
+  tps: 221.53173
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 165.71895
-  tps: 337.38015
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 114.1629
-  tps: 135.42498
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 120.43344
-  tps: 141.49063
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-IrradiatedGarments"
- value: {
-  dps: 120.64146
-  tps: 139.82711
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-MalevolentProphet'sVestments"
- value: {
-  dps: 125.67726
-  tps: 144.58345
- }
-}
-dps_results: {
- key: "TestDestruction-Lvl40-AllItems-NightmareProphet'sGarb"
- value: {
-  dps: 123.39016
-  tps: 144.06188
+  dps: 144.53927
+  tps: 266.69974
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 116.50521
-  tps: 140.99282
+  dps: 134.78864
+  tps: 129.20839
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 563.91952
-  tps: 1311.03269
+  dps: 488.6623
+  tps: 1082.78623
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 552.77341
-  tps: 1695.22491
+  dps: 818.66269
+  tps: 1778.52284
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 538.2648
-  tps: 1279.20699
+  dps: 450.63629
+  tps: 1020.94481
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 595.40384
-  tps: 1357.0562
+  dps: 467.26874
+  tps: 994.57734
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 335.98419
-  tps: 1273.18025
+  dps: 554.69854
+  tps: 1328.99908
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 322.8049
-  tps: 784.8033
+  dps: 274.03227
+  tps: 632.63519
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 382.30491
-  tps: 858.30096
+  dps: 308.62867
+  tps: 637.76645
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 562.6063
-  tps: 1317.68612
+  dps: 479.10534
+  tps: 1063.43348
  }
 }

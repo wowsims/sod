@@ -8,6 +8,10 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const (
+	SpellFlagOmen = core.SpellFlagAgentReserved1
+)
+
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
@@ -99,8 +103,6 @@ type Druid struct {
 	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
 	SavageRoarDurationTable        [6]time.Duration
 
-	ProcOoc func(sim *core.Simulation)
-
 	MoonfireDotMultiplier float64
 	SunfireDotMultiplier  float64
 
@@ -165,7 +167,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 	}
 	config.Cast.ModifyCast = func(sim *core.Simulation, s *core.Spell, c *core.Cast) {
 		if !druid.InForm(ds.FormMask) && ds.FormMask.Matches(Humanoid) {
-			druid.ClearForm(sim)
+			druid.CancelShapeshift(sim)
 		}
 		if prevModify != nil {
 			prevModify(sim, s, c)

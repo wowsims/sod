@@ -151,11 +151,12 @@ type WowheadItem struct {
 	Name string `json:"name"`
 	Icon string `json:"icon"`
 
-	Quality       int32 `json:"quality"`
-	Ilvl          int32 `json:"itemLevel"`
-	Phase         int32 `json:"contentPhase"`
-	RequiresLevel int32 `json:"requiredLevel"`
-	RaceMask      int32 `json:"raceMask"`
+	Quality       int32  `json:"quality"`
+	Ilvl          int32  `json:"itemLevel"`
+	Phase         int32  `json:"contentPhase"`
+	RequiresLevel int32  `json:"requiredLevel"`
+	RaceMask      uint16 `json:"raceMask"`
+	ClassMask     uint16 `json:"classMask"`
 
 	Stats               WowheadItemStats `json:"stats"`
 	RandomSuffixOptions []int32          `json:"randomEnchants"`
@@ -220,6 +221,7 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 		Phase:               wi.Phase,
 		RequiresLevel:       wi.RequiresLevel,
 		FactionRestriction:  wi.getFactionRstriction(),
+		ClassAllowlist:      wi.getClassRestriction(),
 		Sources:             sources,
 		RandomSuffixOptions: wi.RandomSuffixOptions,
 	}
@@ -233,4 +235,53 @@ func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
 	} else {
 		return proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED
 	}
+}
+
+type ClassMask uint16
+
+const (
+	ClassMaskWarrior     ClassMask = 1 << iota
+	ClassMaskPaladin               // 2
+	ClassMaskHunter                // 4
+	ClassMaskRogue                 // 8
+	ClassMaskPriest                // 16
+	ClassMaskDeathKnight           // 32
+	ClassMaskShaman                // 64
+	ClassMaskMage                  // 128
+	ClassMaskWarlock               // 256
+	ClassMaskUnknown               // 512 seemingly unused?
+	ClassMaskDruid                 // 1024
+)
+
+func (wi WowheadItem) getClassRestriction() []proto.Class {
+	classAllowlist := []proto.Class{}
+	if wi.ClassMask&uint16(ClassMaskWarrior) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassWarrior)
+	}
+	if wi.ClassMask&uint16(ClassMaskPaladin) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassPaladin)
+	}
+	if wi.ClassMask&uint16(ClassMaskHunter) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassHunter)
+	}
+	if wi.ClassMask&uint16(ClassMaskRogue) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassRogue)
+	}
+	if wi.ClassMask&uint16(ClassMaskPriest) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassPriest)
+	}
+	if wi.ClassMask&uint16(ClassMaskDruid) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassDruid)
+	}
+	if wi.ClassMask&uint16(ClassMaskShaman) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassShaman)
+	}
+	if wi.ClassMask&uint16(ClassMaskMage) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassMage)
+	}
+	if wi.ClassMask&uint16(ClassMaskWarlock) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassWarlock)
+	}
+
+	return classAllowlist
 }
