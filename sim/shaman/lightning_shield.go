@@ -76,8 +76,10 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 	rollingThunder := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 432129},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
