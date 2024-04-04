@@ -287,9 +287,10 @@ func ApplyAtalAiProc(character *Character, atalAi proto.AtalAi) {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.56,
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-				dmg := sim.Roll(204, 236) + 0.56*spell.SpellDamage()
+				dmg := sim.Roll(204, 236)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
 			},
 		})
@@ -427,9 +428,10 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.56,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(52, 61) + spell.SpellDamage()*0.56
+			damage := sim.Roll(52, 61)
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -475,9 +477,10 @@ func registerFrostOil(character *Character, isMh bool) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.269,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			damage := sim.Roll(33, 38) + spell.SpellDamage()*0.269
+			damage := sim.Roll(33, 38)
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -580,9 +583,10 @@ func DragonBreathChiliAura(character *Character) *Aura {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage+spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 

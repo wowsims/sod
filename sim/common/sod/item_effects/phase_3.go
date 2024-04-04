@@ -94,9 +94,9 @@ func init() {
 		character := agent.GetCharacter()
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
-			Label:     "Roar of the Guardian",
-			ActionID:  core.ActionID{SpellID: 446709},
-			Duration:  time.Second * 20,
+			Label:    "Roar of the Guardian",
+			ActionID: core.ActionID{SpellID: 446709},
+			Duration: time.Second * 20,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.AttackPower, 70)
@@ -173,9 +173,10 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.05,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 50+0.05*spell.SpellDamage(), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, 50, spell.OutcomeMagicHitAndCrit)
 
 				procAuras.Get(target).Activate(sim)
 			},

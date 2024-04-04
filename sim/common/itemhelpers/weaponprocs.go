@@ -21,42 +21,30 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: bonusCoef,
 		}
 
 		dmgMax := dmgMin + dmgRange
-		useBonus := bonusCoef > 0
 
 		switch defType {
 		case core.DefenseTypeNone:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := sim.Roll(dmgMin, dmgMax)
-				if useBonus {
-					dmg += bonusCoef * spell.SpellDamage()
-				}
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 			}
 		case core.DefenseTypeMagic:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := sim.Roll(dmgMin, dmgMax)
-				if useBonus {
-					dmg += bonusCoef * spell.SpellDamage()
-				}
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
 			}
 		case core.DefenseTypeMelee:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := sim.Roll(dmgMin, dmgMax)
-				if useBonus {
-					dmg += bonusCoef * spell.SpellDamage()
-				}
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		case core.DefenseTypeRanged:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := sim.Roll(dmgMin, dmgMax)
-				if useBonus {
-					dmg += bonusCoef * spell.SpellDamage()
-				}
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedHitAndCrit)
 			}
 		}
