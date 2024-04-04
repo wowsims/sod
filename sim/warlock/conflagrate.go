@@ -49,19 +49,26 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellDamage()
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= warlock.getLakeOfFireMultiplier()
-			}
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
 
 			if backdraft != nil {
 				backdraft.Activate(sim)
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.Landed() {
+				// TODO BDR: Use DamageDoneByCasterMultiplier?
+				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+					result.Damage *= warlock.getLakeOfFireMultiplier()
+					result.Threat *= warlock.getLakeOfFireMultiplier()
+				}
+			}
+
+			spell.DealDamage(sim, result)
 
 			immoDot := warlock.getActiveImmolateSpell(target).Dot(target)
 			if warlock.Shadowflame != nil {

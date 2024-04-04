@@ -60,9 +60,11 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			NumberOfTicks:       ticks,
 			TickLength:          1 * time.Second,
 			AffectedByCastSpeed: false,
+			BonusCoefficient:    spellCoeff,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDmg := baseDamage + spellCoeff*dot.Spell.SpellDamage()
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, baseDamage, false)
+
 				if soulSiphon {
 					modifier := 1.0
 
@@ -89,17 +91,15 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 					if target.HasActiveAura("Haunt-" + warlock.Label) {
 						modifier += .06
 					}
-					modifier = max(modifier, 1.18)
-					baseDmg *= modifier
+
+					dot.SnapshotAttackerMultiplier *= max(modifier, 1.18)
 				}
-				dot.SnapshotBaseDamage = baseDmg
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 
 				// Drain Life heals so it snapshots target modifiers
 				dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				// TODO: How does it interact with bonus damage taken?
 				// Remove target modifiers for the tick only
 				dot.Spell.Flags |= core.SpellFlagIgnoreTargetModifiers
 				//dot.Spell.Flags ^= core.SpellFlagBinary
@@ -134,8 +134,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDmg := baseDamage + spellCoeff*spell.SpellDamage()
-				return spell.CalcPeriodicDamage(sim, target, baseDmg, spell.OutcomeExpectedMagicAlwaysHit)
+				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	}

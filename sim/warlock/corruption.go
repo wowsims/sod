@@ -52,20 +52,15 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 				Label: "Corruption-" + warlock.Label + strconv.Itoa(rank),
 			},
 
-			NumberOfTicks: ticks,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    ticks,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: dotTickCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage + (dotTickCoeff * dot.Spell.SpellDamage())
-
-				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-
-					if warlock.zilaGularAura.IsActive() {
-						dot.SnapshotAttackerMultiplier *= 1.25
-						warlock.zilaGularAura.Deactivate(sim)
-					}
+				dot.SnapshotWithCrit(target, baseDamage, isRollover)
+				if !isRollover && warlock.zilaGularAura.IsActive() {
+					dot.SnapshotAttackerMultiplier *= 1.25
+					warlock.zilaGularAura.Deactivate(sim)
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -95,7 +90,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage/float64(ticks) + (dotTickCoeff * spell.SpellDamage())
+				baseDamage := baseDamage / float64(ticks)
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

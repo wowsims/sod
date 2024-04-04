@@ -46,16 +46,21 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= warlock.getLakeOfFireMultiplier()
-			}
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 
 			// Assuming 100% hit for all target levels, numbers could be updated for level comparison later
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+
+			// TODO BDR: Use DamageDoneByCasterMultiplier?
+			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+				result.Damage *= warlock.getLakeOfFireMultiplier()
+				result.Threat *= warlock.getLakeOfFireMultiplier()
+			}
+
+			spell.DealDamage(sim, result)
 		},
 	})
 }

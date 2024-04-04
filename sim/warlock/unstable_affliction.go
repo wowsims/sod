@@ -47,16 +47,12 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 				Label: "UnstableAffliction-" + warlock.Label,
 			},
 
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    5,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage + (spellCoeff * dot.Spell.SpellDamage())
-
-				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-				}
+				dot.SnapshotWithCrit(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {
@@ -86,7 +82,6 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDamage + (spellCoeff * spell.SpellDamage())
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

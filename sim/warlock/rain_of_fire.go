@@ -50,18 +50,25 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 			NumberOfTicks:       4,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
+			BonusCoefficient:    spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					targetDamage := dot.SnapshotBaseDamage
-					if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(aoeTarget).IsActive() {
-						targetDamage *= warlock.getLakeOfFireMultiplier()
+					result := dot.CalcSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+
+					if result.Landed() {
+						// TODO BDR: Use DamageDoneByCasterMultiplier?
+						if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
+							// TODO BDR: uncomment to break test results, was broken before
+							//result.Damage *= warlock.getLakeOfFireMultiplier()
+							//result.Threat *= warlock.getLakeOfFireMultiplier()
+						}
 					}
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+
+					dot.Spell.DealPeriodicDamage(sim, result)
 
 					if hasRune && dot.TickCount == dot.NumberOfTicks {
 						warlock.LakeOfFireAuras.Get(aoeTarget).Activate(sim)
