@@ -20,6 +20,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 	baseDamage *= 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness) + 0.02*float64(warlock.Talents.ShadowMastery)
 
+	snapshotBaseDmgNoBonus := 0.0
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
@@ -50,23 +52,25 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			Aura: core.Aura{
 				Label: "CurseofAgony-" + warlock.Label + strconv.Itoa(rank),
 			},
-			NumberOfTicks: 12,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:    12,
+			TickLength:       time.Second * 2,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				// TODO BDR: coef can be moved to struct if ramp up is fixed
-				dot.SnapshotBaseDamage = 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
+				baseDmg := baseDamage
+
+				if warlock.AmplifyCurseAura.IsActive() {
+					baseDmg *= 1.5
+					warlock.AmplifyCurseAura.Deactivate(sim)
+				}
+
+				// CoA starts with 50% base damage, but bonus from spell power is not changed.
+				// Every 4 ticks this base damage is added again, resulting in 150% base damage for the last 4 ticks
+				snapshotBaseDmgNoBonus = baseDmg * 0.5
+
+				dot.SnapshotWithCrit(target, snapshotBaseDmgNoBonus, isRollover)
 
 				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-
-					// TODO: This should probably be on base damage only, it's mod spell effect
-					if warlock.AmplifyCurseAura.IsActive() {
-						dot.SnapshotAttackerMultiplier *= 1.5
-						warlock.AmplifyCurseAura.Deactivate(sim)
-					}
-
 					if warlock.zilaGularAura.IsActive() {
 						dot.SnapshotAttackerMultiplier *= 1.25
 						warlock.zilaGularAura.Deactivate(sim)
@@ -80,8 +84,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				}
 				if dot.TickCount%4 == 0 { // CoA ramp up
-					// TODO BDR: Does not update bonus damage
-					dot.SnapshotBaseDamage += 0.5 * (baseDamage + spellCoeff*dot.Spell.SpellDamage())
+					dot.SnapshotBaseDamage += snapshotBaseDmgNoBonus
 				}
 			},
 		},

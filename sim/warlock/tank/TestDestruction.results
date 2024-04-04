@@ -102,9 +102,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.5347
+  weights: 1.53222
   weights: 0
-  weights: 1.52292
+  weights: 1.52026
   weights: 0
   weights: 0
   weights: 0
@@ -197,57 +197,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 147.83598
-  tps: 272.06258
+  dps: 147.8357
+  tps: 272.06216
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 393.19552
-  tps: 838.6597
+  dps: 393.17637
+  tps: 838.63097
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 139.67262
-  tps: 259.39976
+  dps: 139.6682
+  tps: 259.39313
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 168.1319
-  tps: 292.02559
+  dps: 168.11875
+  tps: 292.00585
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 305.39856
-  tps: 905.79281
+  dps: 305.39556
+  tps: 905.7883
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 81.6443
-  tps: 149.26002
+  dps: 81.64355
+  tps: 149.2589
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 126.50151
-  tps: 221.53173
+  dps: 126.50526
+  tps: 221.53736
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 144.53927
-  tps: 266.69974
+  dps: 144.53485
+  tps: 266.69311
  }
 }
 dps_results: {
