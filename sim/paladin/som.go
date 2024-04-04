@@ -38,7 +38,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		ActionID:      core.ActionID{SpellID: 407799},
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: 1,
 

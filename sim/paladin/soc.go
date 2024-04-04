@@ -79,7 +79,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		ActionID:      core.ActionID{SpellID: spellIDProc},
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,
 

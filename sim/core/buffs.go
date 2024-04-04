@@ -1820,10 +1820,6 @@ func ApplyWildStrikes(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
-				return
-			}
-
 			// charges are removed by every auto or next melee, whether it lands or not
 			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
 				wsBuffAura.RemoveStack(sim)
@@ -1888,10 +1884,6 @@ func ApplyWindfury(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Windfury",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.ProcMask.Matches(ProcMaskSuppressedExtraAttackAura) {
-				return
-			}
-
 			// charges are removed by every auto or next melee, whether it lands or not
 			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
 			//  but can be seen in both "vanilla" and "sod" era logs

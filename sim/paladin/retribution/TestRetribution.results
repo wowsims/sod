@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.43423
-  weights: 0.24169
+  weights: 0.44461
+  weights: 0.22687
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13227
+  weights: 0.13205
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.46289
+  weights: 0.53008
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.19738
-  weights: 1.38218
-  weights: 1.97163
+  weights: 0.20209
+  weights: 1.2273
+  weights: 2.13765
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-Average-Default"
  value: {
-  dps: 240.9357
-  tps: 247.20569
+  dps: 245.16767
+  tps: 251.43766
  }
 }
 dps_results: {
@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 224.82235
-  tps: 231.06275
+  dps: 230.42773
+  tps: 236.66814
  }
 }
 dps_results: {
