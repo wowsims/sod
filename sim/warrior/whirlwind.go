@@ -11,8 +11,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		return
 	}
 
-	numHits := min(4, warrior.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
 	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1680},
@@ -44,20 +43,14 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		ThreatMultiplier: 1.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := 0 +
-					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for idx := range results {
+				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

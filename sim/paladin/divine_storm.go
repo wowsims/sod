@@ -16,18 +16,17 @@ func (paladin *Paladin) registerDivineStormSpell() {
 	if !paladin.HasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
 	}
-	numHits := min(4, paladin.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
 
-	actionID := core.ActionID{SpellID: 407778}
-	healthMetrics := paladin.NewHealthMetrics(actionID)
+	results := make([]*core.SpellResult, min(4, paladin.Env.GetNumTargets()))
+
+	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)})
 
 	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    healthMetrics.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,
@@ -47,19 +46,15 @@ func (paladin *Paladin) registerDivineStormSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			totalDamageDealt := 0.0
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
-
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				totalDamageDealt += results[hitIndex].Damage
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			var totalDamageDealt float64
+			for idx := range results {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				totalDamageDealt += results[idx].Damage
+				target = sim.Environment.NextTargetUnit(target)
 			}
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 			paladin.GainHealth(sim, totalDamageDealt*0.25, healthMetrics)
 		},

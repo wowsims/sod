@@ -7,22 +7,19 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const ShurikenTossSpellID = int32(proto.RogueRune_RuneShurikenToss)
-
 func (rogue *Rogue) registerShurikenTossSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneShurikenToss) {
 		return
 	}
-	results := make([]*core.SpellResult, 5)
 
-	numHits := min(5, rogue.Env.GetNumTargets())
+	results := make([]*core.SpellResult, min(5, rogue.Env.GetNumTargets()))
 
 	rogue.ShurikenToss = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: ShurikenTossSpellID},
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneShurikenToss)},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       SpellFlagBuilder | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       SpellFlagBuilder | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL, // not affected by Cold Blood
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   30,
@@ -42,11 +39,13 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.MeleeAttackPower() * 0.15
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 
 			if results[0].Landed() {

@@ -17,7 +17,7 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		Flags:       rogue.builderFlags() | core.SpellFlagIncludeTargetBonusDamage,
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   20,
 			Refund: 0.8,
@@ -38,7 +38,7 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := rogue.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := rogue.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

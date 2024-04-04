@@ -14,8 +14,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	manaCost := [11]float64{0, 12, 20, 35, 55, 80, 105, 132, 157, 185, 190}[rank]
 	level := [11]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
 
-	numHits := min(3, warlock.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	results := make([]*core.SpellResult, min(3, warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -51,29 +50,24 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for idx := range results {
+				damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
+				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 
-				if results[hitIndex].Landed() {
-					warlock.EverlastingAfflictionRefresh(sim, curTarget)
+				if result.Landed() {
+					warlock.EverlastingAfflictionRefresh(sim, result.Target)
 
-					if warlock.Talents.ImprovedShadowBolt > 0 && results[hitIndex].DidCrit() {
-						impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(curTarget)
+					if warlock.Talents.ImprovedShadowBolt > 0 && result.DidCrit() {
+						impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 						impShadowBoltAura.Activate(sim)
 						impShadowBoltAura.SetStacks(sim, 4)
 					}
 				}
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 		},
 	}

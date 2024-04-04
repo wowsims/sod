@@ -28,7 +28,7 @@ const socRanks = 5
 // Below is the base sp coefficient before it gets reduced by the 70% modifier
 // weapon damage % effect to 20% actual.
 const socProcSpellCoeff = 0.29
-const socJudgeSpellCoeff = 0.423
+const socJudgeSpellCoeff = 0.429
 
 var socLevels = [socRanks + 1]int{0, 20, 30, 40, 50, 60}
 var socManaCosts = [socRanks + 1]float64{0, 65, 110, 140, 180, 210}
@@ -53,7 +53,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	judgeDieSides := socEffectDieSides[rank]
 
 	levelsToScale := min(paladin.Level, scalingLevelMax) - scalingLevelMin
-	judgeMinDamage := judgeBasePoints + float64(levelsToScale)*judgePointsPerLevel
+	judgeMinDamage := judgeBasePoints + 1 + float64(levelsToScale)*judgePointsPerLevel // 1..judgeDieSides
 	judgeMaxDamage := judgeMinDamage + judgeDieSides
 
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
@@ -87,8 +87,8 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := -1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellDamage() + spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, fullDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
