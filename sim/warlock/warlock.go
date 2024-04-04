@@ -12,6 +12,11 @@ var TalentTreeSizes = [3]int{17, 17, 16}
 
 const SpellFlagHaunt = core.SpellFlagAgentReserved1
 
+const (
+	SpellCode_WarlockNone int32 = iota
+	SpellCode_WarlockShadowCleave
+)
+
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
@@ -77,6 +82,7 @@ type Warlock struct {
 	demonicKnowledgeSp   float64
 	demonicSacrificeAura *core.Aura
 	zilaGularAura        *core.Aura
+	shadowSparkAura      *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

@@ -25,11 +25,11 @@ var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Lamellar Plate",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 15)
 		},
-		3: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 18)
 		},
@@ -39,11 +39,11 @@ var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
 var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Imbued Plate",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 15)
 		},
-		3: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.HealingPower, 33)
 		},
@@ -53,11 +53,11 @@ var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
 var ItemSetEmeraldEncrustedBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Emerald Encrusted Battleplate",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 10)
 		},
-		3: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.HealingPower, 22)
 		},

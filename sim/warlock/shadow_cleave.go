@@ -20,6 +20,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
+		SpellCode:     SpellCode_WarlockShadowCleave,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,

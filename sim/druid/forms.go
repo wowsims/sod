@@ -442,14 +442,14 @@ func (druid *Druid) registerMoonkinFormSpell() {
 			// periodic damage increase by 50%
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.Spell.CostMultiplier *= .5
+					spell.Spell.CostMultiplier -= .5
 				}
 			})
 
 			druid.MoonfireDotMultiplier *= 1.5
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
-				druid.Sunfire.CostMultiplier *= .5
+				druid.Sunfire.CostMultiplier -= .5
 				druid.SunfireDotMultiplier *= 1.5
 			}
 		},
@@ -458,13 +458,13 @@ func (druid *Druid) registerMoonkinFormSpell() {
 
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.Spell.CostMultiplier /= .5
+					spell.Spell.CostMultiplier += .5
 				}
 			})
 			druid.MoonfireDotMultiplier /= 1.5
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
-				druid.Sunfire.CostMultiplier /= .5
+				druid.Sunfire.CostMultiplier += .5
 				druid.SunfireDotMultiplier /= 1.5
 			}
 		},
