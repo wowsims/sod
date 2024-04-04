@@ -29,7 +29,7 @@ func (priest *Priest) registerShadowWordPainSpell() {
 }
 
 func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
-	var ticks int32 = 6
+	ticks := int32(6)
 
 	spellId := ShadowWordPainSpellId[rank]
 	baseDotDamage := ShadowWordPainBaseDamage[rank] / float64(ticks)
@@ -39,9 +39,12 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 
 	numHits := core.TernaryInt32(priest.HasRune(proto.PriestRune_RuneLegsSharedPain), 3, 1)
 
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagPureDot,
 
@@ -57,9 +60,12 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:   priest.shadowHitModifier(),
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
+		BonusCritRating: priest.forceOfWillCritRating(),
+		BonusHitRating:  priest.shadowHitModifier(),
 
+		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
+
+		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		Dot: core.DotConfig{
@@ -81,11 +87,19 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + (spellCoeff * dot.Spell.SpellDamage())
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.SnapshotBaseDamage = baseDotDamage + spellCoeff*dot.Spell.SpellDamage()
+
+				if !isRollover {
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				if hasDespairRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 

@@ -214,7 +214,6 @@ enum WeaponSkill {
 	WeaponSkillGuns = 14;
 }
 
-
 enum HandType {
 	HandTypeUnknown = 0;
 	HandTypeMainHand = 1;

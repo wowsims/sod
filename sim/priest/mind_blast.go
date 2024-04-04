@@ -76,15 +76,11 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
-				spell.BonusCritRating += float64(30 * priest.MindSpikeAuras.Get(target).GetStacks() * core.CritRatingPerCritChance)
-			}
-
 			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()) * priest.MindBlastModifier
 
 			bonusCrit := 0.0
 			if hasMindSpike && priest.MindSpikeAuras.Get(target).IsActive() {
-				bonusCrit = float64(priest.MindSpikeAuras.Get(target).GetStacks()) * 30 * core.SpellCritRatingPerCritChance
+				bonusCrit = float64(priest.MindSpikeAuras.Get(target).GetStacks()) * 30 * core.CritRatingPerCritChance
 			}
 
 			spell.BonusCritRating += bonusCrit

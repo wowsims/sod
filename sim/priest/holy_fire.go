@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const HolyFireRanks = 8
@@ -29,16 +30,20 @@ func (priest *Priest) registerHolyFire() {
 }
 
 func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
+	ticks := int32(5)
+
 	spellId := HolyFireSpellId[rank]
 	baseDamageLow := HolyFireBaseDamage[rank][0]
 	baseDamageHigh := HolyFireBaseDamage[rank][1]
-	dotDamage := HolyFireDotDamage[rank]
+	dotDamage := HolyFireDotDamage[rank] / float64(ticks)
 	manaCost := HolyFireManaCost[rank]
 	level := HolyFireLevel[rank]
 
 	directCoeff := 0.75
 	dotCoeff := 0.05
 	castTime := time.Millisecond * 3500
+
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -62,6 +67,8 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 
 		BonusCritRating: priest.holySpecCritRating() + priest.forceOfWillCritRating(),
 
+		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
+
 		DamageMultiplier: priest.searingLightDamageModifier() * priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: 1,
 
@@ -69,14 +76,18 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Holy Fire (Rank %d)", rank),
 			},
-			NumberOfTicks: 5,
+			NumberOfTicks: ticks,
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellDamage()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				if hasDespairRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				}
 			},
 		},
 
@@ -87,6 +98,16 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealDamage(sim, result)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			if useSnapshot {
+				dot := spell.Dot(target)
+				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
+			} else {
+				baseDamage := dotDamage + dotCoeff*spell.SpellDamage()
+				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			}
 		},
 	}
 }
