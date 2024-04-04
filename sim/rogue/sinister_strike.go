@@ -26,7 +26,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		Flags:       rogue.builderFlags() | core.SpellFlagIncludeTargetBonusDamage,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
@@ -46,15 +46,12 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := flatDamageBonus +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				points := int32(1)
-				rogue.AddComboPoints(sim, points, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

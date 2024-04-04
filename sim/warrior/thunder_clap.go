@@ -25,15 +25,14 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		return core.ThunderClapAura(target, info.spellID, info.duration, core.TernaryInt32(hasFuriousThunder, 16, 10))
 	})
 
-	numHits := min(4, warrior.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 20 - []float64{0, 1, 2, 4}[warrior.Talents.ImprovedThunderClap] - warrior.FocusedRageDiscount,
@@ -58,19 +57,16 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		ThreatMultiplier: core.TernaryFloat64(hasFuriousThunder, 2.5*1.5, 2.5),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, info.baseDamage, spell.OutcomeMagicHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, info.baseDamage, spell.OutcomeMagicHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				if results[hitIndex].Landed() {
-					warrior.ThunderClapAuras.Get(target).Activate(sim)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
+				if result.Landed() {
+					warrior.ThunderClapAuras.Get(result.Target).Activate(sim)
 				}
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 		},
 

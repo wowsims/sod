@@ -13,12 +13,10 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 424919}
-
 	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
-	mainGauchAura := rogue.RegisterAura(core.Aura{
+	mainGaucheAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Buff",
-		ActionID: actionID,
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
@@ -29,7 +27,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	})
 
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    mainGaucheAura.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
@@ -62,7 +60,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			mainGauchAura.Activate(sim)
+			mainGaucheAura.Activate(sim)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 3, spell.ComboPointMetrics())

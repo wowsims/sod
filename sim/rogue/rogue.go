@@ -101,7 +101,7 @@ func (rogue *Rogue) finisherFlags() core.SpellFlag {
 }
 
 func (rogue *Rogue) builderFlags() core.SpellFlag {
-	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL
+	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL
 }
 
 // Apply the effect of successfully casting a finisher to combo points

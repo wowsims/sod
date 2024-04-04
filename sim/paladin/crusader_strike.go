@@ -15,15 +15,15 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
 	}
-	actionID := core.ActionID{SpellID: 407676}
-	manaMetrics := paladin.NewManaMetrics(actionID)
+
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
 
 	paladin.CrusaderStrike = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    manaMetrics.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -39,7 +39,7 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
 		},
