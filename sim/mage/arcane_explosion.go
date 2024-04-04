@@ -54,13 +54,11 @@ func (mage *Mage) newArcaneExplosionSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dmgFromSP := spellCoeff * spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				damage := sim.Roll(baseDamageLow, baseDamageHigh) + dmgFromSP
-				// baseDamage *= sim.Encounter.AOECapMultiplier()
-
+				damage := sim.Roll(baseDamageLow, baseDamageHigh)
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicCrit)
 			}
 		},

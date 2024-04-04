@@ -68,18 +68,18 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Flamestrike (Rank %d)", rank),
 			},
-			NumberOfTicks: numTicks,
-			TickLength:    tickLength,
-			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
-				target := mage.CurrentTarget
-				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			NumberOfTicks:    numTicks,
+			TickLength:       tickLength,
+			BonusCoefficient: dotCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, baseDotDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -89,10 +89,8 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			bonusDamage := spellCoeff * spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + bonusDamage
-				// baseDamage *= sim.Encounter.AOECapMultiplier()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 			spell.AOEDot().Apply(sim)

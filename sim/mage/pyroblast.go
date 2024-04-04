@@ -74,17 +74,18 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:    fmt.Sprintf("Pyroblast (Rank %d)", rank),
 				ActionID: actionID.WithTag(1),
 			},
-			NumberOfTicks: numTicks,
-			TickLength:    tickLength,
+			NumberOfTicks:    numTicks,
+			TickLength:       tickLength,
+			BonusCoefficient: dotCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDotDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -92,7 +93,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if hasHotStreakRune && mage.HotStreakAura.IsActive() {

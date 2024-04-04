@@ -80,11 +80,11 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Blizzard (Rank %d)", rank),
 			},
-			NumberOfTicks: numTicks,
-			TickLength:    tickLength,
+			NumberOfTicks:    numTicks,
+			TickLength:       tickLength,
+			BonusCoefficient: spellCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {

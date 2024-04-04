@@ -36,12 +36,11 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: explosionCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseExplosionDamage + explosionCoeff*spell.SpellDamage()
-			// baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseExplosionDamage, spell.OutcomeMagicCrit)
 			}
 		},
 	})
@@ -72,12 +71,12 @@ func (mage *Mage) registerLivingBombSpell() {
 				},
 			},
 
-			NumberOfTicks: ticks,
-			TickLength:    tickLength,
+			NumberOfTicks:    ticks,
+			TickLength:       tickLength,
+			BonusCoefficient: dotCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + dotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDotDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)

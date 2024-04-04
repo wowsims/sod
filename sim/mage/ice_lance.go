@@ -37,13 +37,18 @@ func (mage *Mage) registerIceLanceSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+
+			mult := 1.0
 			if hasFingersOfFrostRune && mage.FingersOfFrostAura.IsActive() {
-				baseDamage *= 3
+				mult = 3.0
 			}
+			spell.DamageMultiplier *= mult
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier /= mult
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

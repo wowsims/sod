@@ -65,12 +65,11 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			bonusDamage := spellCoeff * spell.SpellDamage()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + bonusDamage
-				// baseDamage *= sim.Encounter.AOECapMultiplier()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 		},
