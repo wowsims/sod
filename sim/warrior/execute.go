@@ -52,7 +52,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.25,
-		// TODO BDR: Should be bonus coef 1
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			extraRage := spell.Unit.CurrentRage()
