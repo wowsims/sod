@@ -39,7 +39,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.getActiveImmolateSpell(target) != nil || (warlock.Shadowflame != nil && warlock.Shadowflame.Dot(target).IsActive())
+			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
 		},
 
 		BonusCritRating: float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,

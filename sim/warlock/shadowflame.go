@@ -17,7 +17,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 0.61
 
-	fireDot := warlock.RegisterSpell(core.SpellConfig{
+	warlock.ShadowflameDot = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
@@ -91,7 +91,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
-					fireDot.Cast(sim, aoeTarget)
+					warlock.ShadowflameDot.Cast(sim, aoeTarget)
 				}
 			}
 		},

@@ -54,6 +54,7 @@ type Warlock struct {
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 	Shadowflame              *core.Spell
+	ShadowflameDot           *core.Spell
 
 	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
