@@ -104,10 +104,10 @@ export const APLFirePhase2 = PresetUtils.makePresetAPLRotation('P2 Fire', Phase2
 
 // No new Phase 3 Arcane presets at the moment
 export const APLArcanePhase3 = APLArcanePhase2;
-export const APLFirePhase3 = PresetUtils.makePresetAPLRotation('P3 Fire FFB', Phase3APLFire, {
+export const APLFirePhase3 = PresetUtils.makePresetAPLRotation('P3 Fire', Phase3APLFire, {
 	customCondition: player => player.getLevel() >= 50,
 });
-export const APLFrostPhase3 = PresetUtils.makePresetAPLRotation('P3 Frost FFB', Phase3APLFrost, {
+export const APLFrostPhase3 = PresetUtils.makePresetAPLRotation('P3 Frost', Phase3APLFrost, {
 	customCondition: player => player.getLevel() >= 50,
 });
 
