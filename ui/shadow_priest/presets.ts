@@ -1,15 +1,18 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
+	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
 	Profession,
 	RaidBuffs,
 	SaygesFortune,
+	ShadowPowerBuff,
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
@@ -21,6 +24,7 @@ import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase3Gear from './gear_sets/phase_3.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -32,17 +36,18 @@ import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
+export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 3 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -88,16 +93,23 @@ export const TalentsPhase2 = {
 	}),
 };
 
+export const TalentsPhase3 = {
+	name: 'Phase 3',
+	data: SavedTalents.create({
+		talentsString: '-0055-5022204002501251',
+	}),
+};
+
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [TalentsPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 3 preset and pull from map
-export const DefaultTalents = TalentPresets[Phase.Phase2][0];
+export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -106,11 +118,15 @@ export const DefaultTalents = TalentPresets[Phase.Phase2][0];
 export const DefaultOptions = Options.create({});
 
 export const DefaultConsumes = Consumes.create({
+	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
-	food: Food.FoodSagefishDelight,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	flask: Flask.FlaskOfRestlessDreams,
+	food: Food.FoodNightfinSoup,
+	mainHandImbue: WeaponImbue.WizardOil,
+	mildlyIrradiatedRejuvPot: true,
+	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -124,14 +140,18 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
-	sparkOfInspiration: true,
+	songflowerSerenade: true,
 });
 
-export const DefaultDebuffs = Debuffs.create({});
+export const DefaultDebuffs = Debuffs.create({
+	curseOfShadow: true,
+	improvedShadowBolt: true,
+});
 
 export const OtherDefaults = {
 	channelClipDelay: 100,
-	profession1: Profession.Enchanting,
-	profession2: Profession.Tailoring,
+	profession1: Profession.Alchemy,
+	profession2: Profession.Enchanting,
 };

@@ -7,6 +7,9 @@ func (priest *Priest) ApplyRunes() {
 	priest.registerVoidPlagueSpell()
 	// priest.registerTwistedFaith() // Nothing to do
 
+	// Bracers
+	priest.registerVoidZoneSpell()
+
 	// Hands
 	// priest.registerCircleOfHealingSpell() // TODO
 	priest.registerMindSearSpell()

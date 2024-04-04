@@ -63,10 +63,18 @@ message PriestTalents {
 enum PriestRune {
 	PriestRuneNone = 0;
 
+	RuneHelmDivineAegis 		= 431622;
+	RuneHelmEyeOfTheVoid 		= 402789;
+	RuneHelmPainAndSuffering 	= 413251;
+
 	RuneChestSerendipity	 	= 413248;
 	RuneChestStrengthOfSoul		= 415739;
 	RuneChestTwistedFaith    	= 425198;
 	RuneChestVoidPlague			= 425204;
+
+	RuneBracersDespair 			= 431670;
+	RuneBracersSurgeOfLight 	= 431664;
+	RuneBracersVoidZone 		= 431681;
 
 	RuneHandsCircleOfHealing	= 401946;
 	RuneHandsMindSear			= 413259;

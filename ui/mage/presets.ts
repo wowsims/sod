@@ -1,6 +1,7 @@
 import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
 import {
+	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -82,7 +83,7 @@ export const DefaultGearFire = GearPresets[Phase.Phase3][1];
 export const DefaultGearFrost = GearPresets[Phase.Phase3][2];
 export const DefaultGearFrostfire = GearPresets[Phase.Phase3][3];
 
-export const DefaultGear = DefaultGearFire;
+export const DefaultGear = DefaultGearFrostfire;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -195,12 +196,14 @@ export const DefaultOptions = MageOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
+	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	mainHandImbue: WeaponImbue.WizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
@@ -215,7 +218,9 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({

@@ -186,12 +186,12 @@ var Phase2Consumes = core.ConsumesCombo{
 var Phase3Consumes = core.ConsumesCombo{
 	Label: "Phase 3 Consumes",
 	Consumes: &proto.Consumes{
+		DefaultAtalAi:  proto.AtalAi_AtalAiForbiddenMagic,
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
-		Flask:          proto.Flask_FlaskOfSupremePower,
-		Food:           proto.Food_FoodRunnTumTuberSurprise,
-		MainHandImbue:  proto.WeaponImbue_BrilliantManaOil,
-		OffHandImbue:   proto.WeaponImbue_BrilliantManaOil,
+		Food:           proto.Food_FoodNightfinSoup,
+		MainHandImbue:  proto.WeaponImbue_WizardOil,
+		OffHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 		StrengthBuff:   proto.StrengthBuff_ElixirOfGiants,
 	},
