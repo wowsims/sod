@@ -43,7 +43,6 @@ type Druid struct {
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
 	Hurricane            []*DruidSpell
-	HurricaneTickSpell   []*DruidSpell
 	InsectSwarm          *DruidSpell
 	GiftOfTheWild        *DruidSpell
 	Lacerate             *DruidSpell
