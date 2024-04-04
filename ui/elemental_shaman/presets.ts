@@ -1,6 +1,7 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
+	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -12,6 +13,7 @@ import {
 	RaidBuffs,
 	SaygesFortune,
 	SpellPowerBuff,
+	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
 } from '../core/proto/common.js';
@@ -112,13 +114,15 @@ export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 export const DefaultOptions = ElementalShamanOptions.create({});
 
 export const DefaultConsumes = Consumes.create({
+	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
-	food: Food.FoodSagefishDelight,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
-	offHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	food: Food.FoodNightfinSoup,
+	mainHandImbue: WeaponImbue.WizardOil,
+	offHandImbue: WeaponImbue.WizardOil,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfGiants,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -131,12 +135,15 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
 	improvedScorch: true,
+	serpentsStrikerFistDebuff: true,
 	stormstrike: true,
 });
 
