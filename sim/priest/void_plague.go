@@ -49,12 +49,12 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 				Label: "VoidPlague-" + strconv.Itoa(1),
 			},
 
-			NumberOfTicks: ticks,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    ticks,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseTickDamage + (spellCoeff * dot.Spell.SpellDamage())
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseTickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
@@ -76,8 +76,7 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+				return spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	}

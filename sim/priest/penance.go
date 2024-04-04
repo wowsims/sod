@@ -66,10 +66,10 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			NumberOfTicks:       2,
 			TickLength:          time.Second,
 			AffectedByCastSpeed: true,
+			BonusCoefficient:    spellCoeff,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dmg := baseDamage + (spellCoeff * dot.Spell.SpellDamage())
-				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dmg, dot.OutcomeTick)
+				dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.OutcomeTick)
 			},
 		}, core.DotConfig{}),
 		Hot: core.Ternary(isHeal, core.DotConfig{
@@ -79,10 +79,10 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 			NumberOfTicks:       2,
 			TickLength:          time.Second,
 			AffectedByCastSpeed: true,
+			BonusCoefficient:    spellCoeff,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				healing := baseHealing + spellCoeff*dot.Spell.HealingPower(target)
-				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healing, dot.Spell.OutcomeHealingCrit)
+				dot.Spell.CalcAndDealPeriodicHealing(sim, target, baseHealing, dot.Spell.OutcomeHealingCrit)
 			},
 		}, core.DotConfig{}),
 

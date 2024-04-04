@@ -54,6 +54,7 @@ func (rogue *Rogue) registerEnvenom() {
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -70,7 +71,7 @@ func (rogue *Rogue) registerEnvenom() {
 			// - apRatio is independent of consumed doses (== comboPoints)
 			// - Spell power is 1:1 at all ranks and cp
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := baseAbilityDamage*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower() + spell.SpellDamage()
+			baseDamage := baseAbilityDamage*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

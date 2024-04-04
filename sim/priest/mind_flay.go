@@ -43,8 +43,6 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	manaCost := MindFlayManaCost[rank]
 	level := MindFlayLevel[rank]
 
-	spellCoeff := 0.15 // classic penalty for mf having a slow effect
-
 	numTicks := tickIdx
 	flags := core.SpellFlagNoMetrics | core.SpellFlagChanneled
 	if tickIdx == 0 {
@@ -76,6 +74,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 		BonusHitRating: priest.shadowHitModifier(),
 
 		DamageMultiplier: 1,
+		BonusCoefficient: 0.15, // classic penalty for mf having a slow effect
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -101,7 +100,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := baseDamage/MindFlayTicks + (spellCoeff * spell.SpellDamage())
+			baseDamage := baseDamage / MindFlayTicks
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 		},
 	}
@@ -109,7 +108,6 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 
 func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell {
 	baseDamage := MindFlayBaseDamage[rank] / MindFlayTicks
-	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 412526}.WithTag(numTicks),
@@ -122,10 +120,12 @@ func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell
 
 		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
+		BonusCoefficient: 0.15, // classic penalty for mf having a slow effect
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := (baseDamage + (spellCoeff * spell.SpellDamage())) * priest.MindFlayModifier
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+			spell.DamageMultiplier *= priest.MindFlayModifier
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			spell.DamageMultiplier /= priest.MindFlayModifier
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

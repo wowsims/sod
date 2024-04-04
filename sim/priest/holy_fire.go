@@ -64,16 +64,17 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: priest.searingLightDamageModifier() * priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: directCoeff,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Holy Fire (Rank %d)", rank),
 			},
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:    5,
+			TickLength:       time.Second * 2,
+			BonusCoefficient: dotCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, dotDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -81,7 +82,7 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + directCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
