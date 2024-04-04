@@ -251,13 +251,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 134.78864
-  tps: 129.20839
- }
-}
-dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
   dps: 488.6623

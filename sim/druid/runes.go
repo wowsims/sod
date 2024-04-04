@@ -282,7 +282,7 @@ func (druid *Druid) applyDreamstate() {
 
 	manaRegenDuration := time.Second * 8
 
-	manaRegenAura := druid.RegisterAura(core.Aura{
+	druid.DreamstateManaRegenAura = druid.RegisterAura(core.Aura{
 		Label:    "Dreamstate Mana Regen",
 		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
 		Duration: manaRegenDuration,
@@ -306,7 +306,7 @@ func (druid *Druid) applyDreamstate() {
 				return
 			}
 
-			manaRegenAura.Activate(sim)
+			druid.DreamstateManaRegenAura.Activate(sim)
 			core.DreamstateAura(result.Target).Activate(sim)
 		},
 	})

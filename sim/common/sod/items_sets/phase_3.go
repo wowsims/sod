@@ -11,28 +11,25 @@ import (
 //                                 Cloth
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetNightmareProphetsGarb = core.NewItemSet(core.ItemSet{
-	Name: "Nightmare Prophet's Garb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.Stamina, 15)
-		},
-	},
-})
-
+// TODO: New Set Bonuses
 var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 	Name: "Malevolent Prophet's Vestments",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
+			// c := agent.GetCharacter()
+		},
+		3: func(agent core.Agent) {
+			// c := agent.GetCharacter()
+		},
+	},
+})
+
+var ItemSetKnightLieutenantsDreadweave = core.NewItemSet(core.ItemSet{
+	Name: "Knight-Lieutenant's Dreadweave",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
+			c.AddStat(stats.Stamina, 15)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -41,16 +38,72 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetBenevolentProphetsVestments = core.NewItemSet(core.ItemSet{
-	Name: "Benevolent Prophet's Vestments",
+var ItemSetBloodGuardsDreadweave = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Dreadweave",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MP5, 4)
+			c.AddStat(stats.Stamina, 15)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 18)
+		},
+	},
+})
+
+var ItemSetKnightLieutenantsSatin = core.NewItemSet(core.ItemSet{
+	Name: "Knight Lieutenant's Satin",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 15)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.HealingPower, 33)
+		},
+	},
+})
+
+var ItemSetBloodGuardsSatin = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Satin",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 15)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 33)
+		},
+	},
+})
+
+var ItemSetEmeraldEnchantedVestments = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Enchanted Vestments",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 10)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 12)
+		},
+	},
+})
+
+var ItemSetEmeraldWovenGarb = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Woven Garb",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 10)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 22)
 		},
 	},
 })
@@ -59,54 +112,36 @@ var ItemSetBenevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 //                                 Leather
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetExiledProphetsRaiment = core.NewItemSet(core.ItemSet{
-	Name: "Exiled Prophet's Raiment",
+var ItemSetKnightLieutenantsLeather = core.NewItemSet(core.ItemSet{
+	Name: "Knight-Lieutenant's Leather",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MP5, 4)
+			c.AddStat(stats.Stamina, 15)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.HealingPower, 33)
+			c.AddStat(stats.AttackPower, 30)
 		},
 	},
 })
 
-var ItemSetLostWorshippersArmor = core.NewItemSet(core.ItemSet{
-	Name: "Lost Worshipper's Armor",
+var ItemSetBloodGuardsLeather = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Leather",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MP5, 4)
+			c.AddStat(stats.Stamina, 15)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 18)
+			c.AddStat(stats.AttackPower, 30)
 		},
 	},
 })
 
-var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
-	Name: "Blood Corrupted Leathers",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-			c.AddStat(stats.SpellCrit, 1*core.CritRatingPerCritChance)
-		},
-	},
-})
-
-// Double check the name here. Feels like a typo that could be changed
-// https://www.wowhead.com/classic/item-set=1640/coagulate-bloodguards-leathers
-var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
-	Name: "Coagulate Bloodguard's Leathers",
+var ItemSetEmeraldLeathers = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Leathers",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -114,7 +149,7 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.Agility, 15)
+			c.AddStat(stats.AttackPower, 20)
 		},
 	},
 })
@@ -123,59 +158,14 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 //                                 Mail
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetDreadHuntersChain = core.NewItemSet(core.ItemSet{
-	Name: "Dread Hunter's Chain",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.RangedAttackPower, 24)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.Agility, 15)
-		},
-	},
-})
-
-var ItemSetCorruptedSpiritweaversMail = core.NewItemSet(core.ItemSet{
-	Name: "Corrupted Spiritweaver's Mail",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MP5, 4)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.HealingPower, 33)
-		},
-	},
-})
-
 var ItemSetShunnedDevoteesChainmail = core.NewItemSet(core.ItemSet{
 	Name: "Shunned Devotee's Chainmail",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
+			// c := agent.GetCharacter()
 		},
 		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 18)
-		},
-	},
-})
-
-var ItemSetOstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
-	Name: "Ostracized Berserk's Battlemail",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.AttackPower, 20)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.Strength, 15)
+			// c := agent.GetCharacter()
 		},
 	},
 })
@@ -184,46 +174,70 @@ var ItemSetOstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 //                                 Plate
 ///////////////////////////////////////////////////////////////////////////
 
+// TODO: New Set Bonuses
 var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 	Name: "Wailing Berserker's Plate Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
+			// c := agent.GetCharacter()
 		},
 		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.Strength, 15)
+			// c := agent.GetCharacter()
 		},
 	},
 })
 
-var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
-	Name: "Obsessed Prophet's Plate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.MP5, 4)
-		},
-		3: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.HealingPower, 33)
-		},
-	},
-})
-
+// TODO: New Set Bonuses
 var ItemSetBanishedMartyrsFullPlate = core.NewItemSet(core.ItemSet{
 	Name: "Banished Martyr's Full Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
+			// c := agent.GetCharacter()
+		},
+		3: func(agent core.Agent) {
+			// c := agent.GetCharacter()
+		},
+	},
+})
+
+var ItemSetKnightLieutenantsPlate = core.NewItemSet(core.ItemSet{
+	Name: "Knight-Lieutenant's Plate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeHit, 1)
-			c.AddStat(stats.SpellHit, 1)
+			c.AddStat(stats.Stamina, 15)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 30)
+		},
+	},
+})
+
+var ItemSetBloodGuardsPlate = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Plate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 15)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 30)
+		},
+	},
+})
+
+var ItemSetEmeraldDreamPlate = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Dream Plate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 10)
+		},
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 20)
 		},
 	},
 })

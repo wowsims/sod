@@ -97,13 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestDemonology-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 513.42054
-  tps: 427.99713
- }
-}
-dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
   dps: 635.12857

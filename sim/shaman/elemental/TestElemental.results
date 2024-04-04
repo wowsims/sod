@@ -391,34 +391,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-Lvl40-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 460.29265
-  tps: 462.31382
- }
-}
-dps_results: {
- key: "TestElemental-Lvl40-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 503.10546
-  tps: 505.71456
- }
-}
-dps_results: {
- key: "TestElemental-Lvl40-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 459.85418
-  tps: 461.87373
- }
-}
-dps_results: {
- key: "TestElemental-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 492.10835
-  tps: 494.21045
- }
-}
-dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
   dps: 638.4861
@@ -514,83 +486,6 @@ dps_results: {
  value: {
   dps: 638.93848
   tps: 548.82036
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 716.76007
-  tps: 714.17773
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 756.30954
-  tps: 753.79671
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 716.14062
-  tps: 713.55322
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-ElectromanticDevastator'sMail"
- value: {
-  dps: 593.75754
-  tps: 569.49805
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-ElectromanticStormbringer'sChain"
- value: {
-  dps: 606.24519
-  tps: 577.05189
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 573.05056
-  tps: 546.88623
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 595.10857
-  tps: 566.20093
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-InsulatedLeathers"
- value: {
-  dps: 569.86974
-  tps: 543.44516
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 590.42417
-  tps: 562.53418
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-IrradiatedGarments"
- value: {
-  dps: 611.80588
-  tps: 581.39604
- }
-}
-dps_results: {
- key: "TestElemental-Lvl50-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 746.03072
-  tps: 743.15361
  }
 }
 dps_results: {

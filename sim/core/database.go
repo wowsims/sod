@@ -47,10 +47,11 @@ func addToDatabase(newDB *proto.SimDatabase) {
 }
 
 type Item struct {
-	ID            int32
-	RequiresLevel int32
-	Type          proto.ItemType
-	ArmorType     proto.ArmorType
+	ID             int32
+	RequiresLevel  int32
+	ClassAllowlist []proto.Class
+	Type           proto.ItemType
+	ArmorType      proto.ArmorType
 
 	// Weapon Stats
 	WeaponType       proto.WeaponType
@@ -79,6 +80,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 	return Item{
 		ID:               pData.Id,
 		RequiresLevel:    pData.RequiresLevel,
+		ClassAllowlist:   pData.ClassAllowlist,
 		Name:             pData.Name,
 		Type:             pData.Type,
 		ArmorType:        pData.ArmorType,

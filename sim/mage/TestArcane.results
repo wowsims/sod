@@ -293,13 +293,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 375.68191
-  tps: 158.31745
- }
-}
-dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
   dps: 447.12876

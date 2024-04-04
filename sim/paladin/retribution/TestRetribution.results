@@ -293,13 +293,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
- value: {
-  dps: 582.20245
-  tps: 596.71173
- }
-}
-dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
   dps: 580.72305
