@@ -1461,6 +1461,10 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 			// if (slot == ItemSlot.ItemSlotOffHand && spec != Spec.SpecWarrior) {
 			// 	return false;
 			// }
+			// Offhands can only be equipped in the main-hand slot
+			if (slot == ItemSlot.ItemSlotOffHand) {
+				return false;
+			}
 		}
 
 		// Can't equip offhand-only items in the mainhand

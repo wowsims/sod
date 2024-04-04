@@ -47,7 +47,7 @@ func TestEnhancement(t *testing.T) {
 			Consumes: Phase2ConsumesWFWF,
 			OtherConsumes: []core.ConsumesCombo{
 				Phase2ConsumesWFRB,
-				Phase2ConsumesRBRB,
+				Phase2ConsumesWFFT,
 			},
 			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
 			OtherSpecOptions: []core.SpecOptionsCombo{
@@ -71,7 +71,7 @@ func TestEnhancement(t *testing.T) {
 			Consumes: Phase3ConsumesWFWF,
 			OtherConsumes: []core.ConsumesCombo{
 				Phase3ConsumesWFRB,
-				Phase3ConsumesRBRB,
+				Phase3ConsumesWFFT,
 			},
 			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
 			OtherSpecOptions: []core.SpecOptionsCombo{
@@ -233,16 +233,16 @@ var Phase2ConsumesWFRB = core.ConsumesCombo{
 	},
 }
 
-var Phase2ConsumesRBRB = core.ConsumesCombo{
-	Label: "Phase 2 Consumes RB/RB",
+var Phase2ConsumesWFFT = core.ConsumesCombo{
+	Label: "Phase 2 Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
 		Food:              proto.Food_FoodSagefishDelight,
-		MainHandImbue:     proto.WeaponImbue_RockbiterWeapon,
-		OffHandImbue:      proto.WeaponImbue_RockbiterWeapon,
+		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
+		OffHandImbue:      proto.WeaponImbue_FlametongueWeapon,
 		SpellPowerBuff:    proto.SpellPowerBuff_LesserArcaneElixir,
 		StrengthBuff:      proto.StrengthBuff_ScrollOfStrength,
 	},
@@ -252,6 +252,7 @@ var Phase3ConsumesWFWF = core.ConsumesCombo{
 	Label: "Phase 3 Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
+		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
@@ -267,6 +268,7 @@ var Phase3ConsumesWFRB = core.ConsumesCombo{
 	Label: "Phase 3 Consumes WF/RB",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
+		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
@@ -278,16 +280,17 @@ var Phase3ConsumesWFRB = core.ConsumesCombo{
 	},
 }
 
-var Phase3ConsumesRBRB = core.ConsumesCombo{
-	Label: "Phase 3 Consumes RB/RB",
+var Phase3ConsumesWFFT = core.ConsumesCombo{
+	Label: "Phase 3 Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
+		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
 		Food:              proto.Food_FoodSagefishDelight,
-		MainHandImbue:     proto.WeaponImbue_RockbiterWeapon,
-		OffHandImbue:      proto.WeaponImbue_RockbiterWeapon,
+		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
+		OffHandImbue:      proto.WeaponImbue_FlametongueWeapon,
 		SpellPowerBuff:    proto.SpellPowerBuff_LesserArcaneElixir,
 		StrengthBuff:      proto.StrengthBuff_ScrollOfStrength,
 	},

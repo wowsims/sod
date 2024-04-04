@@ -46,15 +46,15 @@ export const DefaultGear = GearPresets[Phase.Phase3][0];
 //                                 APL Presets[]
 ///////////////////////////////////////////////////////////////////////////
 
-export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl40, { customCondition: player => player.getLevel() == 40 });
-export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl40, {
+export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('P2 Mutilate', MutilateApl40, { customCondition: player => player.getLevel() == 40 });
+export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('P2 Mutilate IEA', MutilateIEAApl40, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('Sinister', SinisterApl25, { customCondition: player => player.getLevel() == 25 });
-export const ROTATION_PRESET_MUTILATE_DPS_50 = PresetUtils.makePresetAPLRotation('Mutilate DPS', MutilateDPSApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_MUTILATE_IEA_50 = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_SABER_SLASH_DPS_50 = PresetUtils.makePresetAPLRotation('Saber Slash DPS', SaberDPSApl50, { customCondition: player => player.getLevel() >= 50 })
-export const ROTATION_PRESET_SABER_SLASH_IEA_50 = PresetUtils.makePresetAPLRotation('Saber Slash IEA', SaberIEAApl50, { customCondition: player => player.getLevel() >= 50 })
+export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('P1 Sinister', SinisterApl25, { customCondition: player => player.getLevel() == 25 });
+export const ROTATION_PRESET_MUTILATE_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate DPS', MutilateDPSApl50, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_MUTILATE_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate IEA', MutilateIEAApl50, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_SLASH_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash DPS', SaberDPSApl50, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_SLASH_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash IEA', SaberIEAApl50, { customCondition: player => player.getLevel() >= 50 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_SINISTER_25],
@@ -89,6 +89,7 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
+// Preset name must be unique. Ex: 'Mutilate DPS' cannot be used as a name more than once
 export const CombatDagger25Talents = PresetUtils.makePresetTalents('P1 Combat Dagger', SavedTalents.create({ talentsString: '-023305002001' }), {
 	customCondition: player => player.getLevel() == 25,
 });
@@ -105,18 +106,27 @@ export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF M
 	customCondition: player => player.getLevel() == 40,
 });
 
-export const ColdBloodDualWieldSpec50Talents = PresetUtils.makePresetTalents('P3 CB/DWS', SavedTalents.create({ talentsString: '005323101501-320015202005' }), {
+export const SaberColdBloodDualWieldSpec50Talents = PresetUtils.makePresetTalents('P3 Saber CB/DWS', SavedTalents.create({ talentsString: '005323101501-320015202005' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
-export const ColdBloodSealFate50Talents = PresetUtils.makePresetTalents('P3 Cold Blood', SavedTalents.create({ talentsString: '00532310155105-320005' }), {
+export const MutilateColdBloodDualWieldSpec50Talents = PresetUtils.makePresetTalents('P3 Mutilate CB/DWS', SavedTalents.create({ talentsString: '005323101501-320305200005' }), {
+	customCondition: player => player.getLevel() >= 50,
+});
+
+export const SaberColdBloodSealFate50Talents = PresetUtils.makePresetTalents('P3 Saber Cold Blood', SavedTalents.create({ talentsString: '00532310155105-320005' }), {
+	customCondition: player => player.getLevel() >= 50,
+});
+
+export const MutilateColdBloodSealFate50Talents = PresetUtils.makePresetTalents('P3 Mutilate Cold Blood', SavedTalents.create({ talentsString: '00532310155105-320302' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
-	[Phase.Phase3]: [ColdBloodSealFate50Talents, ColdBloodDualWieldSpec50Talents],
+	[Phase.Phase3]: [MutilateColdBloodSealFate50Talents, SaberColdBloodSealFate50Talents, 
+		MutilateColdBloodDualWieldSpec50Talents, SaberColdBloodDualWieldSpec50Talents],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };

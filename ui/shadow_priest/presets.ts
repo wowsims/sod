@@ -24,6 +24,7 @@ import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase3Gear from './gear_sets/phase_3.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -35,17 +36,18 @@ import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
+export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Add Phase 3 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -138,11 +140,15 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
-	sparkOfInspiration: true,
+	songflowerSerenade: true,
 });
 
-export const DefaultDebuffs = Debuffs.create({});
+export const DefaultDebuffs = Debuffs.create({
+	curseOfShadow: true,
+	improvedShadowBolt: true,
+});
 
 export const OtherDefaults = {
 	channelClipDelay: 100,

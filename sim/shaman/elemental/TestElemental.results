@@ -102,18 +102,18 @@ character_stats_results: {
   final_stats: 205.4052
   final_stats: 153.1926
   final_stats: 455.004
-  final_stats: 283.338
+  final_stats: 271.458
   final_stats: 195.426
-  final_stats: 344
+  final_stats: 282
   final_stats: 0
   final_stats: 40
   final_stats: 0
   final_stats: 0
   final_stats: 17
   final_stats: 0
-  final_stats: 95.7
+  final_stats: 79.7
   final_stats: 4
-  final_stats: 21.2501
+  final_stats: 21.00062
   final_stats: 0
   final_stats: 0
   final_stats: 860.744
@@ -122,7 +122,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 5486.3235
+  final_stats: 5299.2135
   final_stats: 0
   final_stats: 0
   final_stats: 3061.542
@@ -140,7 +140,7 @@ character_stats_results: {
   final_stats: 28.25
   final_stats: 33.25
   final_stats: 70
-  final_stats: 50
+  final_stats: 0
   final_stats: 100
   final_stats: 0
  }
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.53697
+  weights: 0.85829
   weights: 0
-  weights: 0.93267
+  weights: 0.94204
   weights: 0
-  weights: 0.29649
-  weights: 0
-  weights: 0
-  weights: 0.63617
+  weights: 0.29247
   weights: 0
   weights: 0
-  weights: 11.85222
-  weights: 5.30123
+  weights: 0.6303
+  weights: 0
+  weights: 0
+  weights: 10.78054
+  weights: 5.29491
   weights: 0
   weights: 0
   weights: 0
@@ -519,175 +519,175 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomAvenger'sMail"
  value: {
-  dps: 764.51535
-  tps: 759.24541
+  dps: 716.76007
+  tps: 714.17773
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomElementalist'sHide"
  value: {
-  dps: 804.69367
-  tps: 799.65358
+  dps: 756.30954
+  tps: 753.79671
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-BlackfathomSlayer'sLeather"
  value: {
-  dps: 764.01327
-  tps: 758.73826
+  dps: 716.14062
+  tps: 713.55322
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticDevastator'sMail"
  value: {
-  dps: 630.92397
-  tps: 602.37555
+  dps: 593.75754
+  tps: 569.49805
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-ElectromanticStormbringer'sChain"
  value: {
-  dps: 635.86813
-  tps: 602.57786
+  dps: 606.24519
+  tps: 577.05189
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-HyperconductiveMender'sMeditation"
  value: {
-  dps: 604.26524
-  tps: 573.68328
+  dps: 573.05056
+  tps: 546.88623
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-HyperconductiveWizard'sAttire"
  value: {
-  dps: 632.65188
-  tps: 599.98651
+  dps: 595.10857
+  tps: 566.20093
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-InsulatedLeathers"
  value: {
-  dps: 600.94809
-  tps: 570.79274
+  dps: 569.86974
+  tps: 543.44516
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-InsulatedSorceror'sLeathers"
  value: {
-  dps: 623.03257
-  tps: 591.0395
+  dps: 590.42417
+  tps: 562.53418
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-IrradiatedGarments"
  value: {
-  dps: 643.22483
-  tps: 608.8489
+  dps: 611.80588
+  tps: 581.39604
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-TwilightInvoker'sVestments"
  value: {
-  dps: 796.43775
-  tps: 791.13312
+  dps: 746.03072
+  tps: 743.15361
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1003.50452
-  tps: 848.00182
+  dps: 950.88511
+  tps: 808.91894
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1154.05042
-  tps: 1728.4108
+  dps: 1068.34437
+  tps: 1645.23353
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 951.21716
-  tps: 801.18325
+  dps: 890.48297
+  tps: 753.43154
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1017.50951
-  tps: 875.72656
+  dps: 977.61057
+  tps: 848.47516
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 569.78619
-  tps: 1000.52061
+  dps: 515.01014
+  tps: 944.69228
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 480.86489
-  tps: 408.70217
+  dps: 437.3352
+  tps: 376.76425
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 656.43654
-  tps: 571.78108
+  dps: 627.99318
+  tps: 551.80197
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1157.75907
-  tps: 1734.82666
+  dps: 1063.77083
+  tps: 1640.01611
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 966.33974
-  tps: 813.55025
+  dps: 892.82091
+  tps: 756.77882
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1035.243
-  tps: 896.78088
+  dps: 983.94567
+  tps: 859.52116
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 561.06571
-  tps: 995.73723
+  dps: 507.70918
+  tps: 940.22113
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 476.6623
-  tps: 406.13905
+  dps: 433.07594
+  tps: 374.02553
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 666.02171
-  tps: 581.07322
+  dps: 621.5373
+  tps: 548.28745
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1000.59118
-  tps: 847.86967
+  dps: 944.18637
+  tps: 802.60756
  }
 }

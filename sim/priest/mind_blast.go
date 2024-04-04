@@ -37,6 +37,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 	manaCost := MindBlastManaCost[rank]
 	level := MindBlastLevel[rank]
 
+	hasPainAndSuffering := priest.HasRune(proto.PriestRune_RuneHelmPainAndSuffering)
 	hasMindSpike := priest.HasRune(proto.PriestRune_RuneWaistMindSpike)
 
 	return core.SpellConfig{
@@ -91,6 +92,14 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 				priest.AddShadowWeavingStack(sim, target)
 				if hasMindSpike {
 					priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				}
+
+				if hasPainAndSuffering {
+					for _, spell := range priest.ShadowWordPain {
+						if spell != nil && spell.Dot(target).IsActive() {
+							spell.Dot(target).Rollover(sim)
+						}
+					}
 				}
 			}
 
