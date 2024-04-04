@@ -41,6 +41,11 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				return
 			}
 
+			// TODO BDR: Is this correct?
+			// Auto attacks, Cleave, Slam etc. trigger https://www.wowhead.com/classic/spell=12723/sweeping-strikes
+			// -> School dmg, can't crit, EffectBonusCoefficient=0
+			// WW procs https://www.wowhead.com/classic/spell=26654/sweeping-strikes
+			// -> Normalized dmg, CAN crit, EffectBonusCoefficient=0
 			if spell == warrior.Execute && !sim.IsExecutePhase20() {
 				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 					spell.BonusWeaponDamage()
