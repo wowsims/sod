@@ -66,10 +66,23 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + spellCoeff*spell.SpellDamage()
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+		},
+	})
+
+	rollingThunder := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 432129},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskEmpty,
+
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			chargeDamage := baseDamage + spellCoeff*procSpell.SpellDamage()
+			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
 		},
 	})
 
@@ -100,12 +113,10 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 			}
 
 			if hasRollingThunderRune && spell.SpellCode == SpellCode_ShamanEarthShock && aura.GetStacks() > 3 {
-				shieldSpellDamage := baseDamage + spellCoeff*procSpell.SpellDamage()
-				numStacks := float64(aura.GetStacks() - baseCharges)
-				procSpell.CalcAndDealDamage(sim, result.Target, numStacks*shieldSpellDamage, procSpell.OutcomeAlwaysHit)
-				// procSpell.SpellMetrics[result.Target.UnitIndex].Casts++
-				// procSpell.SpellMetrics[result.Target.UnitIndex].Hits++
-				shaman.AddMana(sim, .02*numStacks*shaman.MaxMana(), manaMetrics)
+				multiplier := float64(aura.GetStacks() - baseCharges)
+				rollingThunder.DamageMultiplier = multiplier
+				rollingThunder.Cast(sim, result.Target)
+				shaman.AddMana(sim, .02*multiplier*shaman.MaxMana(), manaMetrics)
 				aura.SetStacks(sim, baseCharges)
 			}
 		},

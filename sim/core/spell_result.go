@@ -310,7 +310,6 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 
 	if !isRollover {
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 	}
 }
