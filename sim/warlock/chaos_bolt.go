@@ -22,7 +22,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.07,
@@ -50,17 +50,8 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
-
 			// Assuming 100% hit for all target levels, numbers could be updated for level comparison later
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-
-			// TODO BDR: Use DamageDoneByCasterMultiplier?
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				result.Damage *= warlock.getLakeOfFireMultiplier()
-				result.Threat *= warlock.getLakeOfFireMultiplier()
-			}
-
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 		},
 	})
 }

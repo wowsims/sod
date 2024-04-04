@@ -11,6 +11,7 @@ import (
 var TalentTreeSizes = [3]int{17, 17, 16}
 
 const SpellFlagHaunt = core.SpellFlagAgentReserved1
+const SpellFlagLoF = core.SpellFlagAgentReserved2 // Spell is affected by Lake of Fire debuff
 
 type Warlock struct {
 	core.Character

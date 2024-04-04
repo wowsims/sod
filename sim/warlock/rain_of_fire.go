@@ -21,7 +21,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -57,19 +57,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					result := dot.CalcSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
-
-					if result.Landed() {
-						// TODO BDR: Use DamageDoneByCasterMultiplier?
-						if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-							// TODO BDR: uncomment to break test results, was broken before
-							//result.Damage *= warlock.getLakeOfFireMultiplier()
-							//result.Threat *= warlock.getLakeOfFireMultiplier()
-						}
-					}
-
-					dot.Spell.DealPeriodicDamage(sim, result)
-
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 					if hasRune && dot.TickCount == dot.NumberOfTicks {
 						warlock.LakeOfFireAuras.Get(aoeTarget).Activate(sim)
 					}
@@ -84,8 +72,12 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 	}
 }
 
-func (warlock *Warlock) getLakeOfFireMultiplier() float64 {
+func getLakeOfFireMultiplier() float64 {
 	return 1.5
+}
+
+func lakeOfFireDDBCMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
+	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagLoF), getLakeOfFireMultiplier(), 1)
 }
 
 func (warlock *Warlock) registerRainOfFireSpell() {
@@ -96,6 +88,12 @@ func (warlock *Warlock) registerRainOfFireSpell() {
 				ActionID: core.ActionID{SpellID: 403650},
 				Label:    "Lake of Fire",
 				Duration: time.Second * 15,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = lakeOfFireDDBCMultiplier
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = nil
+				},
 			})
 		})
 	}

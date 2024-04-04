@@ -21,6 +21,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		ActionID:    core.ActionID{SpellID: 426325},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       SpellFlagLoF,
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
@@ -39,12 +40,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				dot.Snapshot(target, dotDamage, false)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
-				dot.Spell.DealPeriodicDamage(sim, result)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 

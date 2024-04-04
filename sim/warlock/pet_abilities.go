@@ -33,6 +33,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 		ProcMask:      core.ProcMaskSpellDamage,
 		Rank:          rank,
 		RequiredLevel: level,
+		Flags:         SpellFlagLoF,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -54,10 +55,9 @@ func (wp *WarlockPet) registerFireboltSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				// TODO BDR: Use DamageDoneByCasterMultiplier? Is it possible even?
 				if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= wp.owner.getLakeOfFireMultiplier()
-					result.Threat *= wp.owner.getLakeOfFireMultiplier()
+					result.Damage *= getLakeOfFireMultiplier()
+					result.Threat *= getLakeOfFireMultiplier()
 				}
 			}
 

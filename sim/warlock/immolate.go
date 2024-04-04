@@ -26,7 +26,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -72,11 +72,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				} else {
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
-				// TODO BDR: Use DamageDoneByCasterMultiplier?
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
@@ -88,12 +83,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			spell.DamageMultiplier /= imprImmoMult
 
 			if result.Landed() {
-				// TODO BDR: Use DamageDoneByCasterMultiplier?
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
-
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
 					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
 				}

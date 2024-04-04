@@ -18,7 +18,7 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		RequiredLevel: level,
 		Rank:          rank,
 		MissileSpeed:  24,
@@ -49,14 +49,7 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamage[0], baseDamage[1])
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				damage *= warlock.getLakeOfFireMultiplier()
-				// TODO: threat?
-			}
-
 			results := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, results)
 			})

@@ -21,7 +21,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | SpellFlagLoF,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -58,17 +58,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 				backdraft.Activate(sim)
 			}
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			if result.Landed() {
-				// TODO BDR: Use DamageDoneByCasterMultiplier?
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
-			}
-
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			immoDot := warlock.getActiveImmolateSpell(target).Dot(target)
 			if warlock.Shadowflame != nil {
