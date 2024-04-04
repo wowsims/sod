@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) registerImmolationAuraSpell() {
@@ -61,11 +62,16 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 			}
 			sim.AddPendingAction(pa)
 
-			warlock.PseudoStats.DamageTakenMultiplier *= 0.9
+			for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
+				warlock.PseudoStats.SchoolDamageTakenMultiplier[si] *= 0.9
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			pa.Cancel(sim)
-			warlock.PseudoStats.DamageTakenMultiplier /= 0.9
+
+			for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
+				warlock.PseudoStats.SchoolDamageTakenMultiplier[si] /= 0.9
+			}
 		},
 	})
 

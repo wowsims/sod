@@ -65,7 +65,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 
 			immoDot := warlock.getActiveImmolateSpell(target).Dot(target)
 			if warlock.Shadowflame != nil {
-				sfDot := warlock.Shadowflame.Dot(target)
+				sfDot := warlock.ShadowflameDot.Dot(target)
 
 				immoTime := core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
 				shadowflameTime := core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)

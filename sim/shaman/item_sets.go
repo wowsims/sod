@@ -1,6 +1,8 @@
 package shaman
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -19,23 +21,47 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 
-			// buffAura := c.RegisterAura(core.Aura{
-			// 	Label:     "Fiery Strength",
-			// 	ActionID:  core.ActionID{SpellID: 449931},
-			// 	Duration:  time.Second * 12,
-			// 	MaxStacks: 10,
-			// 	OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			// 		c.AddStatDynamic(sim, stats.AttackPower, float64(-5*oldStacks))
-			// 		c.AddStatDynamic(sim, stats.AttackPower, float64(5*newStacks))
-			// 	},
-			// })
+			procAura := c.GetOrRegisterAura(core.Aura{
+				Label:     "Fiery Strength Proc",
+				ActionID:  core.ActionID{SpellID: 449932},
+				Duration:  time.Second * 12,
+				MaxStacks: 10,
 
-			// procAura := c.RegisterAura(core.Aura{
-			// 	Label:    "Fiery Strength Trigger",
-			// 	Duration: core.NeverExpires,
-			// })
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					statsDelta := float64(newStacks-oldStacks) * 5.0
+					aura.Unit.AddStatDynamic(sim, stats.AttackPower, statsDelta)
+				},
+			})
 
-			c.AddStat(stats.SpellPower, 18)
+			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				}
+			}
+
+			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
+				ActionID: core.ActionID{SpellID: 449931},
+				Name:     "Fiery Strength",
+				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+				ProcMask: core.ProcMaskDirect,
+				Outcome:  core.OutcomeLanded,
+				Handler:  handler,
+			})
+		},
+	},
+})
+
+var ItemSetBloodGuardsInscribedMail = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Inscribed Mail",
+	Bonuses: map[int32]core.ApplyEffect{
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 15)
+		},
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 33)
 		},
 	},
 })
@@ -43,11 +69,11 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 var ItemSetBloodGuardsPulsingMail = core.NewItemSet(core.ItemSet{
 	Name: "Blood Guard's Pulsing Mail",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 15)
 		},
-		3: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 18)
 		},
@@ -57,11 +83,11 @@ var ItemSetBloodGuardsPulsingMail = core.NewItemSet(core.ItemSet{
 var ItemSetEmeraldChainmail = core.NewItemSet(core.ItemSet{
 	Name: "Emerald Chainmail",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Stamina, 10)
 		},
-		3: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 12)
 		},

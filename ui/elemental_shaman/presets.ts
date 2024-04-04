@@ -47,7 +47,7 @@ export const GearPresets = {
 };
 
 // TODO: Phase 3
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets

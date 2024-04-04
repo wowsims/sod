@@ -72,6 +72,10 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 				spell.DealDamage(sim, result)
 			}
 		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return shaman.ActiveTotems[FireTotem] != nil
+		},
 	}
 
 	return spell

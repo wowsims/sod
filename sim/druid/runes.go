@@ -280,12 +280,15 @@ func (druid *Druid) applyDreamstate() {
 		return
 	}
 
-	manaRegenDuration := time.Second * 8
+	dreamstateAuras := druid.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		return core.DreamstateAura(target)
+	})
 
 	druid.DreamstateManaRegenAura = druid.RegisterAura(core.Aura{
 		Label:    "Dreamstate Mana Regen",
 		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
-		Duration: manaRegenDuration,
+		Duration: time.Second * 8,
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.SpiritRegenRateCasting += .5
 		},
@@ -295,19 +298,15 @@ func (druid *Druid) applyDreamstate() {
 	})
 
 	// Hidden aura
-	druid.RegisterAura(core.Aura{
-		Label:    "Dreamstate Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.DidCrit() {
 				return
 			}
 
 			druid.DreamstateManaRegenAura.Activate(sim)
-			core.DreamstateAura(result.Target).Activate(sim)
+			dreamstateAuras.Get(result.Target).Activate(sim)
 		},
-	})
+	}))
 }
