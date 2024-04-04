@@ -80,6 +80,7 @@ type Druid struct {
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
+	DreamstateManaRegenAura  *core.Aura
 	EnrageAura               *core.Aura
 	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray

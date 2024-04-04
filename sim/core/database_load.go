@@ -23,6 +23,7 @@ func init() {
 		simDB.Items[i] = &proto.SimItem{
 			Id:               item.Id,
 			RequiresLevel:    item.RequiresLevel,
+			ClassAllowlist:   pData.ClassAllowlist,
 			Name:             item.Name,
 			Type:             item.Type,
 			ArmorType:        item.ArmorType,
