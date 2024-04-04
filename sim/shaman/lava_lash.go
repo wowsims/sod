@@ -48,7 +48,7 @@ func (shaman *Shaman) applyLavaLash() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()) *
+			baseDamage := (spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())) *
 				shaman.AutoAttacks.OHConfig().DamageMultiplier
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},

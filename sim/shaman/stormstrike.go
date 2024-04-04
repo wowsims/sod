@@ -25,7 +25,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+				damage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			},
 		})
@@ -61,7 +61,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 				ohSpell.Cast(sim, target)
 			}
 
-			damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				core.StormstrikeAura(target).Activate(sim) // only MH hitso apply the aura

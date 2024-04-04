@@ -48,11 +48,10 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			constBaseDamage := spell.BonusWeaponDamage()
 			mAP := spell.MeleeAttackPower() + bonusAP
 
-			baseDamage1 := constBaseDamage + weaponDamageFunc(sim, mAP)
-			baseDamage2 := constBaseDamage + weaponDamageFunc(sim, mAP)
+			baseDamage1 := weaponDamageFunc(sim, mAP)
+			baseDamage2 := weaponDamageFunc(sim, mAP)
 			result1 := spell.CalcDamage(sim, target, baseDamage1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			result2 := spell.CalcDamage(sim, target, baseDamage2, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			spell.DealDamage(sim, result1)

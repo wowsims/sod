@@ -52,7 +52,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				if i < targetCount {
-					baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower() + spell.BonusWeaponDamage()
+					baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				}
 			}
