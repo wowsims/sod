@@ -71,10 +71,10 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 
 		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			healPower := spell.HealingPower(target)
-			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh) + spellCoeff*healPower
+			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
 			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {

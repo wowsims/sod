@@ -415,10 +415,31 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 	return result
 }
 func (spell *Spell) CalcHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
+	if spell.BonusCoefficient > 0 {
+		baseHealing += spell.BonusCoefficient * spell.HealingPower(target)
+	}
 	return spell.calcHealingInternal(sim, target, baseHealing, spell.CasterHealingMultiplier(), outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotHealing(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	return dot.Spell.calcHealingInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, outcomeApplier)
+}
+
+func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool) {
+	dot.SnapshotBaseDamage = baseHealing
+	if dot.BonusCoefficient > 0 {
+		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
+	}
+
+	if !isRollover {
+		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	}
+}
+func (dot *Dot) SnapshotHealWithCrit(target *Unit, baseDamage float64, isRollover bool) {
+	dot.SnapshotHeal(target, baseDamage, isRollover)
+	if !isRollover {
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+	}
 }
 
 // Applies the fully computed spell result to the sim.
