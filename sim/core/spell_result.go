@@ -128,8 +128,9 @@ func (spell *Spell) SpellDamage() float64 {
 
 			// TODO: If physical multi school spells with a coef > 0 emerge at any point this function or
 			// the way bonus damage stats are set up needs to be changed.
-			// SpellPower, MobTypeSpellPower and SpellDamage are a convinience to group bonus damage for non-physical schools
-			// and mustn't be added if physical ends up the highest here!
+			// SpellPower, MobTypeSpellPower and SpellDamage stats are a convinience to group bonus damage for
+			// non-physical schools and would need to be considered against physical here and obviously not applied
+			// if physical is chosen.
 			if baseSchoolIndex == stats.SchoolIndexPhysical {
 				power = spell.Unit.PseudoStats.BonusDamage
 			} else {

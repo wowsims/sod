@@ -93,9 +93,10 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: jorBonusCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) + jorBonusCoefficient*spell.SpellDamage()
+			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -110,13 +111,11 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 
 		DamageMultiplier: 1 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1,
+		// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
+		BonusCoefficient: effectBonusCoefficient * core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
-			handednessModifierSP := core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0)
-			baseDamage := baseDamageNoSP + effectBonusCoefficient*spell.SpellDamage()*handednessModifierSP
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealDamage(sim, target, baseDamageNoSP, spell.OutcomeAlwaysHit)
 		},
 	})
 

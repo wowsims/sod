@@ -68,9 +68,10 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
+		BonusCoefficient: socJudgeSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage) + socJudgeSpellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
@@ -85,10 +86,11 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 		DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1.0,
+		BonusCoefficient: socProcSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := -1 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			fullDamage := baseDamage + socProcSpellCoeff*spell.SpellDamage() + spell.BonusWeaponDamage()
+			fullDamage := baseDamage + spell.BonusWeaponDamage()
 			spell.CalcAndDealDamage(sim, target, fullDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
