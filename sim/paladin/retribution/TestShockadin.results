@@ -97,13 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestShockadin-Lvl40-AllItems-DiscardedTenetsoftheSilverHand-209574"
- value: {
-  dps: 538.66294
-  tps: 557.08275
- }
-}
-dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
   dps: 530.16691

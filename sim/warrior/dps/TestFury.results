@@ -97,34 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestFury-Lvl40-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 630.25657
-  tps: 591.59492
- }
-}
-dps_results: {
- key: "TestFury-Lvl40-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 584.89321
-  tps: 549.62097
- }
-}
-dps_results: {
- key: "TestFury-Lvl40-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 617.59973
-  tps: 581.17399
- }
-}
-dps_results: {
- key: "TestFury-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 576.41493
-  tps: 541.00353
- }
-}
-dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
   dps: 784.35114

@@ -97,13 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 246.99527
-  tps: 218.58248
- }
-}
-dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
   dps: 559.33678

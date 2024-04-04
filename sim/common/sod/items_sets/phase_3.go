@@ -94,8 +94,8 @@ var ItemSetEmeraldEnchantedVestments = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetEmeraldWovenVestments = core.NewItemSet(core.ItemSet{
-	Name: "Emerald Woven Vestments",
+var ItemSetEmeraldWovenGarb = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Woven Garb",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()

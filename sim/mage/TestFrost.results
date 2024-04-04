@@ -6,7 +6,7 @@ character_stats_results: {
   final_stats: 359.964
   final_stats: 313.038
   final_stats: 239.382
-  final_stats: 298
+  final_stats: 280
   final_stats: 0
   final_stats: 145
   final_stats: 22
@@ -14,12 +14,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 38
-  final_stats: 1
+  final_stats: 0
   final_stats: 41.89901
   final_stats: 0
   final_stats: 0
   final_stats: 375.5
-  final_stats: 1
+  final_stats: 0
   final_stats: 18.2
   final_stats: 0
   final_stats: 0
@@ -64,7 +64,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 19.22989
+  weights: 18.9179
   weights: 0
   weights: 0
   weights: 0
@@ -94,131 +94,103 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
- }
-}
-dps_results: {
- key: "TestFrost-Lvl50-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 756.61167
-  tps: 576.74055
- }
-}
-dps_results: {
- key: "TestFrost-Lvl50-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 794.9038
-  tps: 607.42286
- }
-}
-dps_results: {
- key: "TestFrost-Lvl50-AllItems-IrradiatedGarments"
- value: {
-  dps: 820.70303
-  tps: 627.4752
- }
-}
-dps_results: {
- key: "TestFrost-Lvl50-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 789.00364
-  tps: 604.41016
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
-  dps: 1109.19156
-  tps: 862.78764
+  dps: 1090.6812
+  tps: 848.57254
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1082.41196
-  tps: 1061.77152
+  dps: 1064.33967
+  tps: 1047.90222
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1082.41196
-  tps: 840.79611
+  dps: 1064.33967
+  tps: 826.92682
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1157.13806
-  tps: 887.06901
+  dps: 1137.92347
+  tps: 872.38722
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 619.77148
-  tps: 650.0342
+  dps: 608.76791
+  tps: 641.69294
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 619.77148
-  tps: 477.90579
+  dps: 608.76791
+  tps: 469.56453
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 679.85703
-  tps: 518.76889
+  dps: 667.86546
+  tps: 509.72279
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1088.04119
-  tps: 1080.72042
+  dps: 1069.87905
+  tps: 1066.79214
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1088.04119
-  tps: 845.32159
+  dps: 1069.87905
+  tps: 831.39331
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1158.15904
-  tps: 890.27709
+  dps: 1138.95739
+  tps: 875.56589
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 624.47766
-  tps: 650.47666
+  dps: 613.38864
+  tps: 642.0741
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 624.47766
-  tps: 481.11265
+  dps: 613.38864
+  tps: 472.71009
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 688.2573
-  tps: 526.88232
+  dps: 676.13177
+  tps: 517.70614
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1089.77663
-  tps: 846.88513
+  dps: 1071.58341
+  tps: 832.929
  }
 }

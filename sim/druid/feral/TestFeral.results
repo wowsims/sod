@@ -559,27 +559,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-Lvl40-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 603.72387
-  tps: 448.30088
- }
-}
-dps_results: {
- key: "TestFeral-Lvl40-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 626.47379
-  tps: 464.84862
- }
-}
-dps_results: {
- key: "TestFeral-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 597.85827
-  tps: 444.03177
- }
-}
-dps_results: {
  key: "TestFeral-Lvl40-Average-Default"
  value: {
   dps: 741.21974
@@ -843,62 +822,6 @@ dps_results: {
  value: {
   dps: 407.72745
   tps: 292.1164
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 1065.29035
-  tps: 784.04046
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 1103.9281
-  tps: 812.53249
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-HyperconductiveMender'sMeditation"
- value: {
-  dps: 861.41915
-  tps: 634.97451
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-HyperconductiveWizard'sAttire"
- value: {
-  dps: 875.56801
-  tps: 645.76816
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-InsulatedLeathers"
- value: {
-  dps: 935.1403
-  tps: 689.27669
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-InsulatedSorceror'sLeathers"
- value: {
-  dps: 874.95805
-  tps: 645.23429
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-IrradiatedGarments"
- value: {
-  dps: 877.854
-  tps: 647.37573
- }
-}
-dps_results: {
- key: "TestFeral-Lvl50-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 1062.03001
-  tps: 781.93609
  }
 }
 dps_results: {
