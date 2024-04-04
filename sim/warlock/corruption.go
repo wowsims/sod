@@ -57,10 +57,14 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			BonusCoefficient: dotTickCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, baseDamage, isRollover)
-				if !isRollover && warlock.zilaGularAura.IsActive() {
-					dot.SnapshotAttackerMultiplier *= 1.25
-					warlock.zilaGularAura.Deactivate(sim)
+				if !isRollover {
+					// Testing corruption rolling with Everlasting Affliction shows that SP is not recalculated
+					dot.SnapshotWithCrit(target, baseDamage, isRollover)
+
+					if warlock.zilaGularAura.IsActive() {
+						dot.SnapshotAttackerMultiplier *= 1.25
+						warlock.zilaGularAura.Deactivate(sim)
+					}
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

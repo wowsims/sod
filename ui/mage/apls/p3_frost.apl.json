@@ -1,0 +1,18 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":401502}}},"doAtValue":{"const":{"val":"-3s"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"15%"}}}},"castSpell":{"spellId":{"spellId":12051}}}},
+    {"hide":true,"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":400613}}}}},"castSpell":{"spellId":{"spellId":400613}}}},
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":401502}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+    {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":412532}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+    {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":401502}}}}},{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":412532}}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":10180,"rank":9}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+    {"hide":true,"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"8"}}}},"castSpell":{"spellId":{"spellId":428878}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":401502}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":412532}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":10180,"rank":9}}}}
+  ]
+}

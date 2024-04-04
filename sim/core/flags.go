@@ -52,12 +52,8 @@ const (
 	ProcMaskProc
 	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
 	ProcMaskWeaponProc
-	// Mind Flay
+	// Mind Flay - currently used by "Arcane Missiles" and "Mind Sear", but does nothing
 	ProcMaskNotInSpellbook
-	// Can proc Talisman of Volatile power, but nothing else?
-	ProcMaskSuppressedProc
-	// Can't proc Windfury / Wild Strikes
-	ProcMaskSuppressedExtraAttackAura
 )
 
 const (

@@ -12,11 +12,12 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
-
 	if !paladin.HasRune(proto.PaladinRune_RuneChestSealofMartyrdom) {
 		return
 	}
+
 	multiplier := 1.0 + 0.03*float64(paladin.Talents.ImprovedSealOfRighteousness)
+
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803}, // Judgement of Righteousness.
 		SpellSchool: core.SpellSchoolHoly,
@@ -24,11 +25,11 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
-		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier(),
+		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * multiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := multiplier*spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
@@ -37,15 +38,15 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		ActionID:      core.ActionID{SpellID: 407799},
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressedExtraAttackAura,
+		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: 1,
 
-		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier(),
-		ThreatMultiplier: 1.0,
+		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * multiplier,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := multiplier*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})

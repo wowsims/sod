@@ -37,7 +37,7 @@ func init() {
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436479},
-			SpellSchool: core.SpellSchoolShadow,
+			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 
@@ -51,11 +51,8 @@ func init() {
 			DamageMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// The spell is also affected by fire school mods because it's shadow + fire school.
-				damage := 150 * warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *
-					target.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire]
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, 150, spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})

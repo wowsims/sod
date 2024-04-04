@@ -13,6 +13,11 @@ var TalentTreeSizes = [3]int{17, 17, 16}
 const SpellFlagHaunt = core.SpellFlagAgentReserved1
 const SpellFlagLoF = core.SpellFlagAgentReserved2 // Spell is affected by Lake of Fire debuff
 
+const (
+	SpellCode_WarlockNone int32 = iota
+	SpellCode_WarlockShadowCleave
+)
+
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
@@ -55,6 +60,7 @@ type Warlock struct {
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 	Shadowflame              *core.Spell
+	ShadowflameDot           *core.Spell
 
 	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
@@ -77,6 +83,7 @@ type Warlock struct {
 	demonicKnowledgeSp   float64
 	demonicSacrificeAura *core.Aura
 	zilaGularAura        *core.Aura
+	shadowSparkAura      *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

@@ -20,6 +20,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatFirePower,
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
@@ -37,7 +38,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatFirePower,
 		Stat.StatSpellHit,
@@ -63,6 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.65,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatFirePower]: 0.3,
 			[Stat.StatNaturePower]: 0.7,
 			[Stat.StatSpellHit]: 16.61,

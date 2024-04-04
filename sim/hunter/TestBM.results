@@ -293,38 +293,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBM-Lvl40-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 662.28488
-  tps: 223.07457
- }
-}
-dps_results: {
- key: "TestBM-Lvl40-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 646.94561
-  tps: 216.86314
- }
-}
-dps_results: {
- key: "TestBM-Lvl40-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 667.86247
-  tps: 224.46675
- }
-}
-dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
   dps: 841.01579
   tps: 261.19763
- }
-}
-dps_results: {
- key: "TestBM-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 643.31409
-  tps: 215.44117
  }
 }
 dps_results: {

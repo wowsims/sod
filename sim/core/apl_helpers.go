@@ -157,10 +157,6 @@ func (rot *APLRotation) GetAPLSpell(spellId *proto.ActionID) *Spell {
 	return spell
 }
 
-func (rot *APLRotation) GetAPLRune(spellId *proto.ActionID) Rune {
-	return RuneFromProto(&proto.SimRune{Id: spellId.GetSpellId()})
-}
-
 func (rot *APLRotation) GetAPLDot(targetUnit UnitReference, spellId *proto.ActionID) *Dot {
 	spell := rot.GetAPLSpell(spellId)
 

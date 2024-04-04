@@ -20,10 +20,5 @@ var UnimplementedRuneOverrides = []int32{
 	428909, // Light's Grace
 
 	// Priest
-	431622, // Divine Aegis
 	402789, // Eye of the Void
-	413251, // Pain and Suffering
-	431670, // Despair
-	431664, // Surge of Light
-	431681, // Void Zone
 }

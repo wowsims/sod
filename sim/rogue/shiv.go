@@ -19,8 +19,9 @@ func (rogue *Rogue) registerShivSpell() {
 		baseCost = baseCost + 10*ohWeapon.SwingSpeed
 	}
 
+	// Shiv /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=424800/shiv
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 424799},
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneShiv)},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeOHSpecial,
@@ -44,6 +45,7 @@ func (rogue *Rogue) registerShivSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
+			// TODO check whether Shiv is affected by
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

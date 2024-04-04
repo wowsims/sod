@@ -22,6 +22,9 @@ var sorLevelMinMaxEffects = [sorRanks + 1][]int32{{0}, {1, 7}, {10, 16}, {18, 24
 // Changed 15/02/24 on a hotfix, now all ranks beyond rank 3 benefit from the rank 3 coefficient
 var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.184, 0.184, 0.184, 0.184, 0.184}
 
+// The DB values are as follows:
+//var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.093, 0.1, 0.1, 0.1, 0.1, 0.1}
+
 var jorSpellIDs = [sorRanks + 1]int32{0, 20187, 20280, 20281, 20282, 20283, 20284, 20285, 20286}
 var jorEffectBasePoints = [sorRanks + 1]float64{0, 14, 24, 38, 56, 77, 101, 130, 161}
 var jorEffectRealPointsPerLevel = [sorRanks + 1]float64{0, 1.8, 1.9, 2.4, 2.8, 3.1, 3.8, 4.1, 4.1}
@@ -57,21 +60,21 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	if paladin.HasMHWeapon() {
 		weaponSpeed = paladin.GetMHWeapon().SwingSpeed
 	}
-	impSoRModifier := core.TernaryFloat64(
-		paladin.Talents.ImprovedSealOfRighteousness >= 1,
-		1+0.03*float64(paladin.Talents.ImprovedSealOfRighteousness),
-		1.0)
-	baseDamageNoSP := baseCoefficientFinal / 100 * handednessModifier * weaponSpeed * impSoRModifier
 
-	baseJoRMinDamage := jorBasePoints + float64(levelsToScale)*jorPointsPerLevel
+	baseSoRDamage := baseCoefficientFinal / 100 * handednessModifier * weaponSpeed
+
+	baseJoRMinDamage := jorBasePoints + 1 + float64(levelsToScale)*jorPointsPerLevel // rolls 1..jorDieSides
 	baseJoRMaxDamage := baseJoRMinDamage + jorDieSides
+
+	impSoRModifier := 1 + 0.03*float64(paladin.Talents.ImprovedSealOfRighteousness)
+
 	/*
-	 * Seal of Righteousness is an Spell/Aura that when active makes the paladin capable of procing
-	 * 2 different SpellIDs depending on a paladin's casted spell or melee swing.
+	 * Seal of Righteousness is a Spell/Aura that when active makes the paladin capable of procing
+	 * two different SpellIDs depending on a paladin's casted spell or melee swing.
 	 *
 	 * (Judgement of Righteousness):
-	 *   - Deals a flat damage that is affected by Improved SoR talent, and
-	 *     has a spellpower scaling that is unaffacted by that talent.
+	 *   - Deals flat damage that is affected by Improved SoR talent, and
+	 *     has a spellpower scaling that is unaffected by that talent.
 	 *   - Targets magic defense and rolls to hit and crit.
 	 *
 	 * (Seal of Righteousness):
@@ -96,7 +99,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		BonusCoefficient: jorBonusCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage)
+			baseDamage := sim.Roll(baseJoRMinDamage, baseJoRMaxDamage) * impSoRModifier
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -115,7 +118,8 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		BonusCoefficient: effectBonusCoefficient * core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamageNoSP, spell.OutcomeAlwaysHit)
+			baseDamage := baseSoRDamage * impSoRModifier
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 

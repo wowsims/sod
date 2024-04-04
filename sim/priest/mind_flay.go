@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const MindFlayRanks = 6
@@ -38,23 +39,28 @@ func (priest *Priest) registerMindFlay() {
 }
 
 func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.SpellConfig {
+	ticks := tickIdx
+	flags := core.SpellFlagChanneled
+	if tickIdx == 0 {
+		ticks = 3
+		flags |= core.SpellFlagAPL
+	}
+
 	spellId := MindFlaySpellId[rank]
-	baseDamage := MindFlayBaseDamage[rank]
+	baseDamage := MindFlayBaseDamage[rank] / float64(ticks)
 	manaCost := MindFlayManaCost[rank]
 	level := MindFlayLevel[rank]
 
-	numTicks := tickIdx
-	flags := core.SpellFlagNoMetrics | core.SpellFlagChanneled
-	if tickIdx == 0 {
-		numTicks = 3
-		flags |= core.SpellFlagAPL
-	}
+	spellCoeff := 0.15 // classic penalty for mf having a slow effect
+
 	tickLength := time.Second
-	mindFlayTickSpell := priest.newMindFlayTickSpell(rank, tickIdx)
+
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       flags,
 
@@ -71,29 +77,39 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 		},
 
-		BonusHitRating: priest.shadowHitModifier(),
+		BonusCritRating: priest.forceOfWillCritRating(),
+		BonusHitRating:  priest.shadowHitModifier(),
+
+		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
 
 		DamageMultiplier: 1,
-		BonusCoefficient: 0.15, // classic penalty for mf having a slow effect
+		ThreatMultiplier: priest.shadowThreatModifier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("MindFlay-%d-%d", rank, tickIdx),
 			},
-			NumberOfTicks:       numTicks,
+			NumberOfTicks:       ticks,
 			TickLength:          tickLength,
 			AffectedByCastSpeed: false,
+			BonusCoefficient:    spellCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, baseDamage, false)
+			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				mindFlayTickSpell.Cast(sim, target)
-				mindFlayTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
+				if hasDespairRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
-			mindFlayTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
-
 			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
+				priest.AddShadowWeavingStack(sim, target)
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
@@ -104,32 +120,4 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 		},
 	}
-}
-
-func (priest *Priest) newMindFlayTickSpell(rank int, numTicks int32) *core.Spell {
-	baseDamage := MindFlayBaseDamage[rank] / MindFlayTicks
-
-	return priest.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 412526}.WithTag(numTicks),
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskProc | core.ProcMaskNotInSpellbook,
-
-		Rank: rank,
-
-		BonusHitRating: 1, // Not an independent hit once initial lands
-
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
-		BonusCoefficient: 0.15, // classic penalty for mf having a slow effect
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.DamageMultiplier *= priest.MindFlayModifier
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-			spell.DamageMultiplier /= priest.MindFlayModifier
-
-			if result.Landed() {
-				priest.AddShadowWeavingStack(sim, target)
-			}
-		},
-	})
 }

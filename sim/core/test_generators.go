@@ -225,6 +225,8 @@ type ItemFilter struct {
 func (filter *ItemFilter) Matches(item Item, equipChecksOnly bool) bool {
 	if item.RequiresLevel >= filter.Level {
 		return false
+	} else if !slices.Contains(item.ClassAllowlist, filter.Class) {
+		return false
 	} else if item.Type == proto.ItemType_ItemTypeWeapon {
 		if len(filter.WeaponTypes) > 0 && !slices.Contains(filter.WeaponTypes, item.WeaponType) {
 			return false

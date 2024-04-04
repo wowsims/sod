@@ -251,44 +251,37 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 134.78864
-  tps: 129.20839
- }
-}
-dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 488.6623
+  dps: 488.55859
   tps: 1082.78623
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 818.66269
+  dps: 816.3559
   tps: 1778.52284
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 450.63629
+  dps: 450.55228
   tps: 1020.94481
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 467.26874
+  dps: 466.84873
   tps: 994.57734
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 554.69854
+  dps: 554.04252
   tps: 1328.99908
  }
 }
@@ -309,7 +302,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 479.10534
+  dps: 479.02156
   tps: 1063.43348
  }
 }

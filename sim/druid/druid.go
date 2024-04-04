@@ -43,7 +43,6 @@ type Druid struct {
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
 	Hurricane            []*DruidSpell
-	HurricaneTickSpell   []*DruidSpell
 	InsectSwarm          *DruidSpell
 	GiftOfTheWild        *DruidSpell
 	Lacerate             *DruidSpell
@@ -81,6 +80,7 @@ type Druid struct {
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
+	DreamstateManaRegenAura  *core.Aura
 	EnrageAura               *core.Aura
 	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray

@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-var MutilateSpellID int32 = 399956
-
 func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 	actionID := core.ActionID{SpellID: 399960}
 	procMask := core.ProcMaskMeleeMHSpecial
@@ -26,7 +24,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics,
+		Flags:       SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 
@@ -38,12 +36,11 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO check whether Mutilate profits from "+Damage Done" or "+Damage Taken" auras (not the case in TBC)
 			var baseDamage float64
 			if isMH {
-				baseDamage = flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 			} else {
-				baseDamage = flatDamageBonus + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
 			}
 			// TODO: Add support for all poison effects (such as chipped bite proc)
 			if rogue.deadlyPoisonTick.Dot(target).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
@@ -69,7 +66,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 	rogue.MutilateOH = rogue.newMutilateHitSpell(false)
 
 	rogue.Mutilate = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: MutilateSpellID},
+		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneMutilate)},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -89,7 +86,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit) // Miss/Dodge/Parry/Hit
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
 

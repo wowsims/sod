@@ -72,9 +72,9 @@ func (warrior *Warrior) registerCleaveSpell() {
 		60: 20569,
 	}[warrior.Level]
 
-	targets := int32(2)
-	numHits := min(targets, warrior.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	flatDamageBonus += []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
+
+	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
 
 	warrior.Cleave = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -95,19 +95,16 @@ func (warrior *Warrior) registerCleaveSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			for idx := range results {
 				baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
+
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
 			}

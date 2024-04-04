@@ -39,7 +39,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.getActiveImmolateSpell(target) != nil || (warlock.Shadowflame != nil && warlock.Shadowflame.Dot(target).IsActive())
+			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
 		},
 
 		BonusCritRating: float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
@@ -62,7 +62,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 
 			immoDot := warlock.getActiveImmolateSpell(target).Dot(target)
 			if warlock.Shadowflame != nil {
-				sfDot := warlock.Shadowflame.Dot(target)
+				sfDot := warlock.ShadowflameDot.Dot(target)
 
 				immoTime := core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
 				shadowflameTime := core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)

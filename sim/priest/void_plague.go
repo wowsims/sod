@@ -10,19 +10,26 @@ import (
 
 // https://www.wowhead.com/classic/spell=425204/void-plague
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044
-func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
-	var ticks int32 = 6
+func (priest *Priest) registerVoidPlagueSpell() {
+	if !priest.HasRune(proto.PriestRune_RuneChestVoidPlague) {
+		return
+	}
 
-	manaCost := .13
-	cooldown := time.Second * 6
+	ticks := int32(6)
+	tickLength := time.Second * 3
 
 	// 2024-02-22 tuning 10% buff
 	baseTickDamage := priest.baseRuneAbilityDamage() * 1.17 * 1.1
 	spellCoeff := .166
+	manaCost := .13
+	cooldown := time.Second * 6
 
-	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 425204},
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
+
+	priest.VoidPlague = priest.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneChestVoidPlague)},
 		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
 
@@ -39,7 +46,10 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: priest.shadowHitModifier(),
+		BonusCritRating: priest.forceOfWillCritRating(),
+		BonusHitRating:  priest.shadowHitModifier(),
+
+		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
 
 		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
@@ -50,14 +60,18 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 			},
 
 			NumberOfTicks:    ticks,
-			TickLength:       time.Second * 3,
+			TickLength:       tickLength,
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseTickDamage, isRollover)
+				dot.SnapshotWithCrit(target, baseTickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				if hasDespairRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
@@ -79,12 +93,5 @@ func (priest *Priest) getVoidPlagueConfig() core.SpellConfig {
 				return spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
-	}
-}
-
-func (priest *Priest) registerVoidPlagueSpell() {
-	if !priest.HasRune(proto.PriestRune_RuneChestVoidPlague) {
-		return
-	}
-	priest.VoidPlague = priest.GetOrRegisterSpell(priest.getVoidPlagueConfig())
+	})
 }

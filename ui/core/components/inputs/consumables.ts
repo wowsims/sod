@@ -317,6 +317,10 @@ export const TenderWolfSteak: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18045, minLevel: 40 }]),
 	value: Food.FoodTenderWolfSteak,
 };
+export const SagefishDelight: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21217, minLevel: 30 }]),
+	value: Food.FoodSagefishDelight,
+};
 export const HotWolfRibs: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13851, minLevel: 25 }]),
 	value: Food.FoodHotWolfRibs,
@@ -325,22 +329,20 @@ export const SmokedSagefish: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21072, minLevel: 10 }]),
 	value: Food.FoodSmokedSagefish,
 };
-export const SagefishDelight: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21217, minLevel: 30 }]),
-	value: Food.FoodSagefishDelight,
-};
 
+// Ordered by level
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
-	{ config: BlessSunfruit, stats: [Stat.StatStrength] },
-	{ config: BlessedSunfruitJuice, stats: [Stat.StatSpirit] },
 	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
 	{ config: GrilledSquid, stats: [Stat.StatAgility] },
-	{ config: HotWolfRibs, stats: [Stat.StatSpirit] },
-	{ config: RunnTumTuberSurprise, stats: [Stat.StatIntellect] },
-	{ config: SagefishDelight, stats: [Stat.StatMP5] },
 	{ config: SmokedDesertDumpling, stats: [Stat.StatStrength] },
-	{ config: SmokedSagefish, stats: [Stat.StatMP5] },
+	{ config: RunnTumTuberSurprise, stats: [Stat.StatIntellect] },
+	{ config: BlessSunfruit, stats: [Stat.StatStrength] },
+	{ config: BlessedSunfruitJuice, stats: [Stat.StatSpirit] },
+	{ config: NightfinSoup, stats: [Stat.StatMP5] },
 	{ config: TenderWolfSteak, stats: [Stat.StatStamina, Stat.StatSpirit] },
+	{ config: SagefishDelight, stats: [Stat.StatMP5] },
+	{ config: HotWolfRibs, stats: [Stat.StatSpirit] },
+	{ config: SmokedSagefish, stats: [Stat.StatMP5] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food' });

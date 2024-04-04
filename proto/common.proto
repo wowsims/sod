@@ -214,7 +214,6 @@ enum WeaponSkill {
 	WeaponSkillGuns = 14;
 }
 
-
 enum HandType {
 	HandTypeUnknown = 0;
 	HandTypeMainHand = 1;
@@ -777,10 +776,11 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
-// NextIndex: 17
+// NextIndex: 18
 message SimItem {
 	int32 id = 1;
 	int32 requires_level = 16;
+	repeated Class class_allowlist = 17;
 	string name = 2;
 
 	ItemType type = 3;

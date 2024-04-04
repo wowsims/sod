@@ -17,7 +17,6 @@ var HurricaneLevel = [HurricaneRanks + 1]int{0, 40, 50, 60}
 
 func (druid *Druid) registerHurricaneSpell() {
 	druid.Hurricane = make([]*DruidSpell, HurricaneRanks+1)
-	druid.HurricaneTickSpell = make([]*DruidSpell, HurricaneRanks+1)
 
 	cooldownTimer := druid.NewTimer()
 
@@ -26,19 +25,22 @@ func (druid *Druid) registerHurricaneSpell() {
 
 		if config.RequiredLevel <= int(druid.Level) {
 			druid.Hurricane[rank] = druid.RegisterSpell(Humanoid|Moonkin, config)
-			druid.HurricaneTickSpell[rank] = druid.RegisterSpell(Humanoid|Moonkin, druid.newHurricaneTickSpellConfig(rank))
 		}
 	}
 }
 
 func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer) core.SpellConfig {
 	spellId := HurricaneSpellId[rank]
+	baseDamage := HurricaneBaseDamage[rank]
+	spellCoeff := HurricaneSpellCoef[rank]
 	manaCost := HurricaneManaCost[rank]
 	level := HurricaneLevel[rank]
 
+	damageMultiplier := 1.0
 	cooldown := time.Second * 60
 
 	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		damageMultiplier += 1.0
 		cooldown = core.GCDDefault
 		manaCost *= .80
 	}
@@ -65,49 +67,31 @@ func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer)
 				Duration: cooldown,
 			},
 		},
+
+		DamageMultiplier: damageMultiplier,
+		ThreatMultiplier: 1,
+
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				Label: "Hurricane",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 1,
+			NumberOfTicks:    10,
+			TickLength:       time.Second * 1,
+			BonusCoefficient: spellCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, baseDamage, false)
+			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				druid.HurricaneTickSpell[rank].Cast(sim, target)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, dot.SnapshotBaseDamage, dot.OutcomeTick)
+				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			druid.AutoAttacks.CancelAutoSwing(sim)
 			spell.AOEDot().Apply(sim)
-		},
-	}
-}
-
-func (druid *Druid) newHurricaneTickSpellConfig(rank int) core.SpellConfig {
-	spellId := HurricaneSpellId[rank]
-	baseDamage := HurricaneBaseDamage[rank]
-
-	damageMultiplier := 1.0
-	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
-		damageMultiplier += 1.0
-	}
-
-	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskProc,
-
-		DamageMultiplier: damageMultiplier,
-		ThreatMultiplier: 1,
-
-		BonusCoefficient: HurricaneSpellCoef[rank],
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHit)
-				// TODO: Apply attack speed reduction
-			}
 		},
 	}
 }

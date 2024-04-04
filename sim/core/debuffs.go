@@ -322,7 +322,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= damageMulti
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() {
+			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() && result.Damage > 0 {
 				aura.RemoveStack(sim)
 			}
 		},

@@ -97,34 +97,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestArms-Lvl40-AllItems-BlackfathomAvenger'sMail"
- value: {
-  dps: 681.97892
-  tps: 594.36246
- }
-}
-dps_results: {
- key: "TestArms-Lvl40-AllItems-BlackfathomElementalist'sHide"
- value: {
-  dps: 650.03801
-  tps: 567.30432
- }
-}
-dps_results: {
- key: "TestArms-Lvl40-AllItems-BlackfathomSlayer'sLeather"
- value: {
-  dps: 675.38223
-  tps: 588.82879
- }
-}
-dps_results: {
- key: "TestArms-Lvl40-AllItems-TwilightInvoker'sVestments"
- value: {
-  dps: 647.02944
-  tps: 564.75953
- }
-}
-dps_results: {
  key: "TestArms-Lvl40-Average-Default"
  value: {
   dps: 834.95407
