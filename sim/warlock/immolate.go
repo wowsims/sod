@@ -12,7 +12,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	directCoeff := [9]float64{0, .058, .125, .2, .2, .2, .2, .2, .2}[rank]
 	dotCoeff := [9]float64{0, .037, .081, .13, .13, .13, .13, .13, .13}[rank]
 	baseDamage := [9]float64{0, 11, 24, 53, 101, 148, 208, 258, 279}[rank]
-	dotDamage := [9]float64{0, 20, 40, 90, 165, 255, 365, 485, 510}[rank]
+	dotDamage := [9]float64{0, 20, 40, 90, 165, 255, 365, 485, 510}[rank] / 5
 	spellId := [9]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
 	manaCost := [9]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [9]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
@@ -39,6 +39,16 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * (2000 - 100*time.Duration(warlock.Talents.Bane)),
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
+			CastTime: func(spell *core.Spell) time.Duration {
+				durationDecrease := time.Duration(0)
+				if warlock.shadowSparkAura.IsActive() {
+					durationDecrease = (spell.DefaultCast.CastTime / 2) * time.Duration(warlock.shadowSparkAura.GetStacks())
+				}
+				return spell.DefaultCast.CastTime - durationDecrease
+			},
 		},
 
 		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
@@ -58,7 +68,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = dotDamage/5 + dotCoeff*dot.Spell.SpellDamage()
+				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellDamage()
 
 				if !isRollover {
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)

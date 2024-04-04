@@ -25,11 +25,11 @@ func init() {
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.SpellPower, 50)
-				character.PseudoStats.CostMultiplier *= 0.5
+				character.PseudoStats.CostMultiplier -= 0.5
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.SpellPower, -50)
-				character.PseudoStats.CostMultiplier /= 0.5
+				character.PseudoStats.CostMultiplier += 0.5
 			},
 		})
 
