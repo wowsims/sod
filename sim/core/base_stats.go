@@ -86,39 +86,47 @@ var ClassBaseCrit = map[proto.Class]stats.Stats{
 	proto.Class_ClassWarrior: {
 		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
+		stats.Dodge:     0.0000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassPaladin: {
 		stats.SpellCrit: 3.5000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.7000 * CritRatingPerCritChance,
+		stats.Dodge:     0.7000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassHunter: {
 		stats.SpellCrit: 3.6000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
+		stats.Dodge:     0.0000 * DodgeRatingPerDodgeChance,
 	},
-	// TODO: Check if there are missing base values for rogue
 	proto.Class_ClassRogue: {
 		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
+		stats.Dodge:     0.0000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassPriest: {
 		stats.SpellCrit: 0.8000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 3.0000 * CritRatingPerCritChance,
+		stats.Dodge:     3.0000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassShaman: {
 		stats.SpellCrit: 2.3000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 1.7000 * CritRatingPerCritChance,
+		stats.Dodge:     1.7000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassMage: {
 		stats.SpellCrit: 0.2000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 3.2000 * CritRatingPerCritChance,
+		stats.Dodge:     3.2000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassWarlock: {
 		stats.SpellCrit: 1.7000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 2.0000 * CritRatingPerCritChance,
+		stats.Dodge:     2.0000 * DodgeRatingPerDodgeChance,
 	},
 	proto.Class_ClassDruid: {
 		stats.SpellCrit: 1.8000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.9000 * CritRatingPerCritChance,
+		stats.Dodge:     0.9000 * DodgeRatingPerDodgeChance,
 	},
 }
 
