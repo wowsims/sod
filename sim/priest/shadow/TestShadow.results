@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
+  final_stats: 3
   final_stats: 0
   final_stats: 0
   final_stats: 1454.1
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
+  final_stats: 3
   final_stats: 0
   final_stats: 0
   final_stats: 3343.4
@@ -113,7 +113,7 @@ character_stats_results: {
   final_stats: 144
   final_stats: 41
   final_stats: 1
-  final_stats: 22.50454
+  final_stats: 22.39691
   final_stats: 0
   final_stats: 0
   final_stats: 375.5
@@ -130,7 +130,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
+  final_stats: 3
   final_stats: 0
   final_stats: 0
   final_stats: 4700.52
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.94285
+  weights: 1.02163
   weights: 0
-  weights: 0.64826
-  weights: 0
-  weights: 0
+  weights: 0.64797
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.64826
   weights: 0
-  weights: 2.79994
-  weights: 4.14046
+  weights: 0
+  weights: 0.64797
+  weights: 0
+  weights: 2.78239
+  weights: 3.98057
   weights: 0
   weights: 0
   weights: 0
@@ -491,25 +491,25 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Average-Default"
  value: {
-  dps: 805.00639
-  tps: 699.0033
-  hps: 5.88797
+  dps: 804.57787
+  tps: 698.6404
+  hps: 5.88538
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 803.72325
-  tps: 1147.64378
-  hps: 5.83612
+  dps: 803.21015
+  tps: 1147.20006
+  hps: 5.82836
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 803.72325
-  tps: 697.94436
-  hps: 5.83612
+  dps: 803.21015
+  tps: 697.50063
+  hps: 5.82836
  }
 }
 dps_results: {
@@ -523,16 +523,16 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 364.03767
-  tps: 564.50746
+  dps: 363.88691
+  tps: 564.38082
   hps: 2.93815
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 364.03767
-  tps: 318.05539
+  dps: 363.88691
+  tps: 317.92875
   hps: 2.93815
  }
 }
@@ -547,56 +547,56 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 794.29794
-  tps: 1131.09829
-  hps: 5.82133
+  dps: 793.86772
+  tps: 1130.73644
+  hps: 5.81842
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 794.29794
-  tps: 689.48418
-  hps: 5.82133
+  dps: 793.86772
+  tps: 689.12233
+  hps: 5.81842
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 907.26654
-  tps: 777.75249
+  dps: 906.68846
+  tps: 777.2669
   hps: 7.26964
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 356.62577
-  tps: 554.39596
-  hps: 2.85377
+  dps: 356.43327
+  tps: 554.23391
+  hps: 2.85157
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 356.62577
-  tps: 311.46523
-  hps: 2.85377
+  dps: 356.43327
+  tps: 311.30317
+  hps: 2.85157
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 684.71618
-  tps: 584.01921
+  dps: 684.39826
+  tps: 583.75216
   hps: 5.89538
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 794.29794
-  tps: 689.48418
-  hps: 5.82133
+  dps: 793.86772
+  tps: 689.12233
+  hps: 5.81842
  }
 }
