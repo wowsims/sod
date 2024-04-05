@@ -67,6 +67,7 @@ func (rogue *Rogue) registerEviscerate() {
 			[]float64{0, 0.05, 0.10, 0.15}[rogue.Talents.ImprovedEviscerate] +
 			[]float64{0, 0.02, 0.04, 0.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -75,8 +76,7 @@ func (rogue *Rogue) registerEviscerate() {
 			flatBaseDamage := flatDamage + comboDamageBonus*float64(comboPoints)
 
 			baseDamage := sim.Roll(flatBaseDamage, flatBaseDamage+damageVariance) +
-				0.03*float64(comboPoints)*spell.MeleeAttackPower() +
-				spell.BonusWeaponDamage()
+				0.03*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

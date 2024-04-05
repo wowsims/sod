@@ -1,8 +1,9 @@
 package rogue
 
 import (
-	"github.com/wowsims/sod/sim/core/stats"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/stats"
 
 	"github.com/wowsims/sod/sim/core"
 )
@@ -50,10 +51,11 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 
 		DamageMultiplier: 1.25,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
