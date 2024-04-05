@@ -76,10 +76,6 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) BonusWeaponDamage() float64 {
-	return spell.Unit.PseudoStats.BonusDamage
-}
-
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 	hitRating := spell.Unit.stats[stats.MeleeHit] +
 		spell.BonusHitRating +
@@ -98,7 +94,7 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 }
 
 // The combined bonus damage (aka spell power) for this spell's school(s).
-func (spell *Spell) SpellDamage() float64 {
+func (spell *Spell) BonusDamage() float64 {
 	var bonusDamage float64
 
 	switch spell.SchoolIndex {
@@ -288,14 +284,14 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
 	if spell.BonusCoefficient > 0 {
-		baseDamage += spell.BonusCoefficient * spell.SpellDamage()
+		baseDamage += spell.BonusCoefficient * spell.BonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
 	if spell.Dot(target).BonusCoefficient > 0 {
-		baseDamage += spell.Dot(target).BonusCoefficient * spell.SpellDamage()
+		baseDamage += spell.Dot(target).BonusCoefficient * spell.BonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
@@ -306,7 +302,7 @@ func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier
 func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 	dot.SnapshotBaseDamage = baseDamage
 	if dot.BonusCoefficient > 0 {
-		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.SpellDamage()
+		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
 	}
 
 	if !isRollover {

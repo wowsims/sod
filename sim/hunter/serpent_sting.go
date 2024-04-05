@@ -57,7 +57,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 				if isRollover {
 					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera
-					dot.SnapshotBaseDamage += spellCoeff * (dot.Spell.SpellDamage() - dot.Spell.Unit.GetStat(stats.NaturePower))
+					dot.SnapshotBaseDamage += spellCoeff * (dot.Spell.BonusDamage() - dot.Spell.Unit.GetStat(stats.NaturePower))
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

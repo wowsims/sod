@@ -83,7 +83,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			chargeDamage := baseDamage + spellCoeff*procSpell.SpellDamage()
+			chargeDamage := baseDamage + spellCoeff*procSpell.BonusDamage()
 			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
 		},
 	})
