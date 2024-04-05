@@ -103,7 +103,7 @@ type Aura struct {
 	OnPeriodicHealTaken   OnPeriodicDamage // Invoked when a hot tick occurs and this unit is the target.
 	OnRageChange          OnRageChange     // Invoked when unit's rage value changes.
 
-	// If non-default, stat bonuses fron the OnGain callback of this aura will be
+	// If non-default, stat bonuses from the OnGain callback of this aura will be
 	// included in Character Stats in the UI.
 	BuildPhase CharacterBuildPhase
 
