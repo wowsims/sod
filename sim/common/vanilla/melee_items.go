@@ -87,11 +87,10 @@ func init() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 
 			DamageMultiplier: 1,
+			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := 5.0 +
-					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+				damage := 5.0 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 				}
