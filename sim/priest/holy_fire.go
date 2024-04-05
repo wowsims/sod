@@ -106,8 +106,7 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := dotDamage + dotCoeff*spell.SpellDamage()
-				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+				return spell.CalcPeriodicDamage(sim, target, dotDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	}
