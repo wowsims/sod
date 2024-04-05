@@ -249,9 +249,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.85194
+  weights: 5.85622
   weights: 0
-  weights: 0.8044
+  weights: 0.80596
   weights: 0
   weights: 0.78497
   weights: 0
@@ -260,7 +260,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.12597
+  weights: 7.14453
   weights: 0
   weights: 0
   weights: 0
@@ -491,29 +491,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-Average-Default"
  value: {
-  dps: 829.29802
-  tps: 611.30404
+  dps: 831.00631
+  tps: 613.01234
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1715.61943
-  tps: 1784.7686
+  dps: 1718.32445
+  tps: 1787.47361
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 874.89026
-  tps: 643.72732
+  dps: 876.64494
+  tps: 645.48199
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1128.83247
-  tps: 837.07001
+  dps: 1131.07041
+  tps: 839.30794
  }
 }
 dps_results: {
@@ -540,22 +540,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1660.38983
-  tps: 1735.78137
+  dps: 1663.01734
+  tps: 1738.40887
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 817.45783
-  tps: 602.65208
+  dps: 819.12481
+  tps: 604.31906
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1148.73332
-  tps: 851.45249
+  dps: 1150.98955
+  tps: 853.70871
  }
 }
 dps_results: {
@@ -582,7 +582,7 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 823.47385
-  tps: 606.90791
+  dps: 825.14407
+  tps: 608.57813
  }
 }

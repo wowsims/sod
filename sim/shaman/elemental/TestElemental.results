@@ -249,9 +249,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.09854
+  weights: 0.09969
   weights: 0
-  weights: 0.96658
+  weights: 0.96811
   weights: 0
   weights: 0.28892
   weights: 0
@@ -259,8 +259,8 @@ stat_weights_results: {
   weights: 0.65861
   weights: 0
   weights: 0
-  weights: 13.02614
-  weights: 4.92129
+  weights: 13.02304
+  weights: 4.92681
   weights: 0
   weights: 0
   weights: 0
@@ -491,29 +491,29 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 952.93526
-  tps: 790.74057
+  dps: 954.11695
+  tps: 791.9266
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1290.34843
-  tps: 1553.96551
+  dps: 1291.50711
+  tps: 1555.12516
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 906.7565
-  tps: 749.97915
+  dps: 907.92665
+  tps: 751.15598
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 965.83367
-  tps: 819.61411
+  dps: 967.45948
+  tps: 821.27332
  }
 }
 dps_results: {
@@ -540,22 +540,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1281.02128
-  tps: 1552.88594
+  dps: 1282.2017
+  tps: 1554.06733
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 924.40901
-  tps: 764.57541
+  dps: 925.60413
+  tps: 765.77721
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_2-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 991.23993
-  tps: 850.77413
+  dps: 992.78603
+  tps: 852.35363
  }
 }
 dps_results: {
@@ -582,7 +582,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 947.37869
-  tps: 788.21868
+  dps: 948.55222
+  tps: 789.398
  }
 }
