@@ -11,12 +11,12 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 12723}
-
+	// Procs from auto attacks and most abilities https://www.wowhead.com/classic/spell=12723/sweeping-strikes
 	var curDmg float64
-	ssHit := warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+	hitSchoolDamagWithValue := warrior.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 12723},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
@@ -27,6 +27,25 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 			spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
 		},
 	})
+
+	// Procs from WW, also Execute? https://www.wowhead.com/classic/spell=26654/sweeping-strikes
+	hitSpecialNormalized := warrior.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 26654},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
+
+	actionID := core.ActionID{SpellID: 12292}
 
 	ssAura := warrior.RegisterAura(core.Aura{
 		Label:     "Sweeping Strikes",
@@ -41,26 +60,18 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				return
 			}
 
-			// TODO BDR: Is this correct?
-			// Auto attacks, Cleave, Slam etc. trigger https://www.wowhead.com/classic/spell=12723/sweeping-strikes
-			// -> School dmg, can't crit, EffectBonusCoefficient=0
-			// WW procs https://www.wowhead.com/classic/spell=26654/sweeping-strikes
-			// -> Normalized dmg, CAN crit, EffectBonusCoefficient=0
-			if spell == warrior.Execute && !sim.IsExecutePhase20() {
-				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-			} else if spell == warrior.Whirlwind {
-				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+			var spellToUse *core.Spell
+
+			if spell == warrior.Whirlwind || (spell == warrior.Execute && !sim.IsExecutePhase20()) {
+				spellToUse = hitSpecialNormalized
 			} else {
 				curDmg = result.Damage
+				curDmg /= result.ResistanceMultiplier // Undo armor reduction to get the raw damage value.
+				spellToUse = hitSchoolDamagWithValue
 			}
 
-			// Undo armor reduction to get the raw damage value.
-			curDmg /= result.ResistanceMultiplier
-
-			ssHit.Cast(sim, warrior.Env.NextTargetUnit(result.Target))
-			ssHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			spellToUse.Cast(sim, warrior.Env.NextTargetUnit(result.Target))
+			spellToUse.SpellMetrics[result.Target.UnitIndex].Casts--
 			if aura.GetStacks() > 0 {
 				aura.RemoveStack(sim)
 			}
