@@ -61,12 +61,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(SerpentsStrikerFistDebuffAura(target, level))
 	}
 
-	if debuffs.CurseOfElements {
-		MakePermanent(CurseOfElementsAura(target, level))
+	if debuffs.CurseOfElementsNew != proto.TristateEffect_TristateEffectMissing {
+		MakePermanent(CurseOfElementsAura(target, TernaryInt32(debuffs.CurseOfElementsNew == proto.TristateEffect_TristateEffectImproved, 60, level)))
 	}
 
-	if debuffs.CurseOfShadow {
-		MakePermanent(CurseOfShadowAura(target, level))
+	if debuffs.CurseOfShadowNew != proto.TristateEffect_TristateEffectMissing {
+		MakePermanent(CurseOfShadowAura(target, TernaryInt32(debuffs.CurseOfShadowNew == proto.TristateEffect_TristateEffectImproved, 60, level)))
 	}
 
 	if debuffs.ImprovedScorch && targetIdx == 0 {

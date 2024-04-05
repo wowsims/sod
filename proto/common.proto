@@ -614,15 +614,19 @@ message Consumes {
 	AtalAi default_atal_ai = 25;
 }
 
-// NextIndex: 31
+// NextIndex: 33
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	bool faerie_fire = 3;
 
 	// Bonus spell damage
-	bool curse_of_elements = 4;
-	bool curse_of_shadow = 5;
+	bool curse_of_elements = 4 [deprecated=true];
+	bool curse_of_shadow = 5 [deprecated=true];
+
+	TristateEffect curse_of_elements_new = 31;
+	TristateEffect curse_of_shadow_new = 32;
+
 	bool winters_chill = 6;
 	
 	bool improved_shadow_bolt = 7;
