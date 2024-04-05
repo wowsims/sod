@@ -16,35 +16,33 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 		sc := core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: spellId},
 			SpellSchool: school,
-			ProcMask:    core.ProcMaskEmpty,
 			DefenseType: defType,
+			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			BonusCoefficient: bonusCoef,
 		}
 
-		dmgMax := dmgMin + dmgRange
-
 		switch defType {
 		case core.DefenseTypeNone:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(dmgMin, dmgMax)
+				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 			}
 		case core.DefenseTypeMagic:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(dmgMin, dmgMax)
+				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
 			}
 		case core.DefenseTypeMelee:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(dmgMin, dmgMax)
+				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		case core.DefenseTypeRanged:
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				dmg := sim.Roll(dmgMin, dmgMax)
+				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedHitAndCrit)
 			}
 		}
@@ -60,7 +58,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, fmt.Sprintf("%s Proc", itemName)) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, aura.Label) {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
