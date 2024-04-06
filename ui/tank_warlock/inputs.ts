@@ -4,8 +4,8 @@ import { ItemSlot, Spec } from '../core/proto/common.js';
 import {
 	WarlockOptions_Armor as Armor,
 	WarlockOptions_Summon as Summon,
-	WarlockOptions_WeaponImbue as WeaponImbue
-} from '../core/proto/warlock.js';
+	WarlockOptions_WeaponImbue as WeaponImbue,
+	WarlockRune} from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
@@ -52,6 +52,7 @@ export const PetInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecTankW
 		{ actionId: () => ActionId.fromSpellId(697), value: Summon.Voidwalker },
 		{ actionId: () => ActionId.fromSpellId(712), value: Summon.Succubus },
 		{ actionId: () => ActionId.fromSpellId(691), value: Summon.Felhunter },
+		{ actionId: () => ActionId.fromSpellId(427733), value: Summon.Felguard, showWhen: player => player.getEquippedItem(ItemSlot.ItemSlotWrist)?.rune?.id == WarlockRune.RuneBracerSummonFelguard },
 	],
 	changeEmitter: (player: Player<Spec.SpecTankWarlock>) => player.changeEmitter,
 });
