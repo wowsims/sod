@@ -8,7 +8,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// TODO: Classic warlock talents
 func (warlock *Warlock) ApplyTalents() {
 	// Demonic Embrace
 	if warlock.Talents.DemonicEmbrace > 0 {
@@ -16,7 +15,7 @@ func (warlock *Warlock) ApplyTalents() {
 		warlock.MultiplyStat(stats.Spirit, 1-.01*(float64(warlock.Talents.DemonicEmbrace)))
 	}
 
-	if warlock.Talents.FelIntellect > 0 {
+	if warlock.Pet != nil && warlock.Talents.FelIntellect > 0 {
 		warlock.Pet.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
 	}
 
@@ -48,6 +47,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Voidwalker:
 				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Felguard:
+				aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			}
 		},
 		OnExpire: func(aura *core.Aura, _ *core.Simulation) {
@@ -57,6 +60,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 			case proto.WarlockOptions_Succubus:
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Voidwalker:
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+			case proto.WarlockOptions_Felguard:
+				aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			}
 		},
@@ -150,9 +157,10 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		if oldPetEnable != nil {
 			oldPetEnable(sim)
 		}
-		if warlock.demonicSacrificeAura.IsActive() {
-			warlock.demonicSacrificeAura.Deactivate(sim)
-			warlock.demonicSacrificeAura = nil
+		for _, dsAura := range warlock.demonicSacrificeAuras {
+			if dsAura.IsActive() {
+				dsAura.Deactivate(sim)
+			}
 		}
 	}
 
@@ -169,6 +177,27 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		},
 	})
 
+	var vwPa *core.PendingAction
+	healthMetric := warlock.NewHealthMetrics(core.ActionID{SpellID: 18790})
+	voidwalkerAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Fel Stamina",
+		ActionID: core.ActionID{SpellID: 18790},
+		Duration: 30 * time.Minute,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			vwPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 4,
+				OnAction: func(s *core.Simulation) {
+					warlock.GainHealth(sim, warlock.MaxHealth()*0.03, healthMetric)
+				},
+			})
+			sim.AddPendingAction(vwPa)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			vwPa.Cancel(sim)
+		},
+	})
+
 	succubusAura := warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Touch of Shadow",
 		ActionID: core.ActionID{SpellID: 18791},
@@ -182,6 +211,44 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		},
 	})
 
+	var fhPa *core.PendingAction
+	manaMetric := warlock.NewManaMetrics(core.ActionID{SpellID: 18792})
+	felhunterAura := warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Fel Energy",
+		ActionID: core.ActionID{SpellID: 18792},
+		Duration: 30 * time.Minute,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			fhPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 4,
+				OnAction: func(s *core.Simulation) {
+					warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
+				},
+			})
+			sim.AddPendingAction(fhPa)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			fhPa.Cancel(sim)
+		},
+	})
+
+	warlock.demonicSacrificeAuras = make([]*core.Aura, 0)
+	switch warlock.Options.Summon {
+	case proto.WarlockOptions_Imp:
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, impAura)
+	case proto.WarlockOptions_Voidwalker:
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, voidwalkerAura)
+	case proto.WarlockOptions_Succubus:
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, succubusAura)
+	case proto.WarlockOptions_Felhunter:
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, felhunterAura)
+	case proto.WarlockOptions_Felguard:
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, impAura)
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, voidwalkerAura)
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, succubusAura)
+		warlock.demonicSacrificeAuras = append(warlock.demonicSacrificeAuras, felhunterAura)
+	}
+
 	warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 18788},
 		SpellSchool: core.SpellSchoolShadow,
@@ -192,20 +259,11 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			switch warlock.Options.Summon {
-			case proto.WarlockOptions_Imp:
-				warlock.demonicSacrificeAura = impAura
-			case proto.WarlockOptions_Succubus:
-				warlock.demonicSacrificeAura = succubusAura
-			case proto.WarlockOptions_Voidwalker:
-				break
-			case proto.WarlockOptions_Felhunter:
-				break
-			}
-
-			if warlock.demonicSacrificeAura != nil {
-				warlock.demonicSacrificeAura.Activate(sim)
-				warlock.Pet.Disable(sim)
+			for _, dsAura := range warlock.demonicSacrificeAuras {
+				if dsAura != nil {
+					dsAura.Activate(sim)
+					warlock.Pet.Disable(sim)
+				}
 			}
 		},
 	})
