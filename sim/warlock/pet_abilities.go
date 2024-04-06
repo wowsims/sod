@@ -113,45 +113,45 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 	})
 }
 
-// func (wp *WarlockPet) registerCleaveSpell() {
-// 	numHits := min(2, wp.Env.GetNumTargets())
+func (wp *WarlockPet) registerCleaveSpell() {
+	numHits := min(2, wp.Env.GetNumTargets())
 
-// 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
-// 		ActionID:    core.ActionID{SpellID: 47994},
-// 		SpellSchool: core.SpellSchoolPhysical,
-//      DefenseType: core.DefenseTypeMelee,
-// 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-// 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 427744},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
-// 		ManaCost: core.ManaCostOptions{
-// 			FlatCost: 439,
-// 		},
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD: core.GCDDefault,
-// 			},
-// 			IgnoreHaste: true,
-// 			CD: core.Cooldown{
-// 				Timer:    wp.NewTimer(),
-// 				Duration: time.Second * 6,
-// 			},
-// 		},
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.1,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    wp.NewTimer(),
+				Duration: time.Second * 6,
+			},
+		},
 
-// 		DamageMultiplier: 1,
-// 		ThreatMultiplier: 1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			constBaseDamage := 124 + spell.BonusWeaponDamage()
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			constBaseDamage := 2 + spell.BonusWeaponDamage()
 
-// 			curTarget := target
-// 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-// 				baseDamage := constBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-// 				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-// 				curTarget = sim.Environment.NextTargetUnit(curTarget)
-// 			}
-// 		},
-// 	})
-// }
+			curTarget := target
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+				baseDamage := constBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
+		},
+	})
+}
 
 // func (wp *WarlockPet) registerInterceptSpell() {
 // 	wp.secondaryAbility = nil // not implemented

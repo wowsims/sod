@@ -186,7 +186,7 @@ var FullIndividualBuffsPhase3 = &proto.IndividualBuffs{
 ///////////////////////////////////////////////////////////////////////////
 
 var FullDebuffsPhase1 = &proto.Debuffs{
-	CurseOfElements:      true,
+	CurseOfElementsNew:   proto.TristateEffect_TristateEffectRegular,
 	CurseOfRecklessness:  true,
 	CurseOfVulnerability: true,
 	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
@@ -203,7 +203,7 @@ var FullDebuffsPhase1 = &proto.Debuffs{
 }
 
 var FullDebuffsPhase2 = &proto.Debuffs{
-	CurseOfElements:      true,
+	CurseOfElementsNew:   proto.TristateEffect_TristateEffectRegular,
 	CurseOfRecklessness:  true,
 	CurseOfVulnerability: true,
 	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
@@ -226,7 +226,8 @@ var FullDebuffsPhase2 = &proto.Debuffs{
 }
 
 var FullDebuffsPhase3 = &proto.Debuffs{
-	CurseOfElements:      true,
+	CurseOfElementsNew:   proto.TristateEffect_TristateEffectRegular,
+	CurseOfShadowNew:     proto.TristateEffect_TristateEffectRegular,
 	CurseOfRecklessness:  true,
 	CurseOfVulnerability: true,
 	CurseOfWeakness:      proto.TristateEffect_TristateEffectImproved,
