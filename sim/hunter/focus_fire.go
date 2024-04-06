@@ -60,7 +60,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskSpellDamage) {
 				if !hunterPetFrenzyAura.IsActive() {
 					hunterPetFrenzyAura.Activate(sim)
 				}
