@@ -262,9 +262,9 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 			for _, dsAura := range warlock.demonicSacrificeAuras {
 				if dsAura != nil {
 					dsAura.Activate(sim)
-					warlock.Pet.Disable(sim)
 				}
 			}
+			warlock.Pet.Disable(sim)
 		},
 	})
 }
