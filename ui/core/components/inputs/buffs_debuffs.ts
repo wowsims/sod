@@ -766,26 +766,28 @@ export const SpellShadowWeavingDebuff = withLabel(
 );
 
 export const CurseOfElements = withLabel(
-	makeBooleanDebuffInput({
+	makeTristateDebuffInput({
 		actionId: player =>
 			player.getMatchingSpellActionId([
 				{ id: 1490, minLevel: 32, maxLevel: 45 },
 				{ id: 11721, minLevel: 46, maxLevel: 59 },
 				{ id: 11722, minLevel: 60 },
 			]),
-		fieldName: 'curseOfElements',
+		impId: ActionId.fromSpellId(402792),
+		fieldName: 'curseOfElementsNew',
 	}),
 	'Curse of Elements',
 );
 
 export const CurseOfShadow = withLabel(
-	makeBooleanDebuffInput({
+	makeTristateDebuffInput({
 		actionId: player =>
 			player.getMatchingSpellActionId([
 				{ id: 17862, minLevel: 44, maxLevel: 59 },
 				{ id: 17937, minLevel: 60 },
 			]),
-		fieldName: 'curseOfShadow',
+		impId: ActionId.fromSpellId(402791),
+		fieldName: 'curseOfShadowNew',
 	}),
 	'Curse of Shadow',
 );

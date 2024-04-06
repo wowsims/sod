@@ -105,6 +105,7 @@ message WarlockOptions {
 		Voidwalker = 2;
 		Succubus = 3;
 		Felhunter = 4;
+		Felguard = 5;
 	}
 
 	enum Armor {

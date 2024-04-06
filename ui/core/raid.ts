@@ -1,16 +1,16 @@
+import { MAX_PARTY_SIZE,Party } from './party.js';
+import { Player } from './player.js';
+import { Raid as RaidProto } from './proto/api.js';
 import {
 	Class,
 	Debuffs,
 	RaidBuffs,
+	TristateEffect,
 	UnitReference,
 	UnitReference_Type as UnitType,
 } from './proto/common.js';
-import { Raid as RaidProto } from './proto/api.js';
-
-import { Party, MAX_PARTY_SIZE } from './party.js';
-import { Player } from './player.js';
-import { EventID, TypedEvent } from './typed_event.js';
 import { Sim } from './sim.js';
+import { EventID, TypedEvent } from './typed_event.js';
 import { sum } from './utils.js';
 
 export const MAX_NUM_PARTIES = 8;
@@ -20,8 +20,8 @@ export class Raid {
 	private buffs: RaidBuffs = RaidBuffs.create();
 	private debuffs: Debuffs = Debuffs.create();
 	private tanks: Array<UnitReference> = [];
-	private targetDummies: number = 0;
-	private numActiveParties: number = 5;
+	private targetDummies = 0;
+	private numActiveParties = 5;
 
 	// Emits when a raid member is added/removed/moved.
 	readonly compChangeEmitter = new TypedEvent<void>();
@@ -205,6 +205,16 @@ export class Raid {
 	}
 
 	fromProto(eventID: EventID, proto: RaidProto) {
+		// Backwards compatbility with old curses inputs
+		if (proto.debuffs?.curseOfElements && proto.debuffs.curseOfElementsNew == TristateEffect.TristateEffectMissing) {
+			proto.debuffs.curseOfElementsNew = TristateEffect.TristateEffectRegular;
+			proto.debuffs.curseOfElements = false;
+		}
+		if (proto.debuffs?.curseOfShadow && proto.debuffs.curseOfShadowNew == TristateEffect.TristateEffectMissing) {
+			proto.debuffs.curseOfShadowNew = TristateEffect.TristateEffectRegular;
+			proto.debuffs.curseOfShadow = false;
+		}
+
 		TypedEvent.freezeAllAndDo(() => {
 			this.setBuffs(eventID, proto.buffs || RaidBuffs.create());
 			this.setDebuffs(eventID, proto.debuffs || Debuffs.create());
