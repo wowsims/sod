@@ -68,7 +68,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 				// Every 4 ticks this base damage is added again, resulting in 150% base damage for the last 4 ticks
 				snapshotBaseDmgNoBonus = baseDmg * 0.5
 
-				dot.SnapshotWithCrit(target, snapshotBaseDmgNoBonus, isRollover)
+				dot.Snapshot(target, snapshotBaseDmgNoBonus, isRollover)
 
 				if !isRollover {
 					if warlock.zilaGularAura.IsActive() {

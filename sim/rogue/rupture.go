@@ -50,8 +50,8 @@ func (rogue *Rogue) registerRupture() {
 			NumberOfTicks: 0, // Set dynamically
 			TickLength:    time.Second * 2,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, rogue.RuptureDamage(rogue.ComboPoints()), false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, rogue.RuptureDamage(rogue.ComboPoints()), isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

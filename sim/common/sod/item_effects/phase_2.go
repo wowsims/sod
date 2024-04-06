@@ -277,8 +277,8 @@ func init() {
 				TickLength:    5 * time.Second,
 				NumberOfTicks: 3,
 
-				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-					dot.Snapshot(target, 30, false)
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 30, isRollover)
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

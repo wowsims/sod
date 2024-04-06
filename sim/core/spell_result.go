@@ -300,20 +300,15 @@ func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier
 }
 
 func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
-	dot.SnapshotBaseDamage = baseDamage
-	if dot.BonusCoefficient > 0 {
-		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
-	}
-
+	// Rollovers in SoD don't seem to update anything
 	if !isRollover {
+		dot.SnapshotBaseDamage = baseDamage
+		if dot.BonusCoefficient > 0 {
+			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
+		}
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-	}
-}
-func (dot *Dot) SnapshotWithCrit(target *Unit, baseDamage float64, isRollover bool) {
-	dot.Snapshot(target, baseDamage, isRollover)
-	if !isRollover {
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 	}
 }
 
@@ -421,20 +416,15 @@ func (dot *Dot) CalcSnapshotHealing(sim *Simulation, target *Unit, outcomeApplie
 }
 
 func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool) {
-	dot.SnapshotBaseDamage = baseHealing
-	if dot.BonusCoefficient > 0 {
-		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
-	}
-
+	// Rollovers in SoD don't seem to update anything
 	if !isRollover {
+		dot.SnapshotBaseDamage = baseHealing
+		if dot.BonusCoefficient > 0 {
+			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
+		}
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-	}
-}
-func (dot *Dot) SnapshotHealWithCrit(target *Unit, baseDamage float64, isRollover bool) {
-	dot.SnapshotHeal(target, baseDamage, isRollover)
-	if !isRollover {
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 	}
 }
 

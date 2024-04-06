@@ -76,8 +76,8 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			NumberOfTicks:    ticks,
 			TickLength:       tickLength,
 			BonusCoefficient: spellDotCoeff,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, baseDotDamage, false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDotDamage, isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.MoonfireDotMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

@@ -52,7 +52,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, baseDamage, isRollover)
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {

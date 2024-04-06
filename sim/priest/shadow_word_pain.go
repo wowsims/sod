@@ -88,7 +88,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, baseDotDamage, isRollover)
+				dot.Snapshot(target, baseDotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {

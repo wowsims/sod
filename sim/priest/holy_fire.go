@@ -80,8 +80,8 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 			NumberOfTicks:    ticks,
 			TickLength:       time.Second * 2,
 			BonusCoefficient: dotCoeff,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotWithCrit(target, dotDamage, false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {

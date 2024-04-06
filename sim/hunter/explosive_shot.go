@@ -63,7 +63,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target)
-				dot.SnapshotWithCrit(target, baseDamage, isRollover)
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)

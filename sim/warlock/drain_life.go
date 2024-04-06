@@ -62,8 +62,8 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			AffectedByCastSpeed: false,
 			BonusCoefficient:    spellCoeff,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, baseDamage, false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 
 				if soulSiphon {
 					modifier := 1.0

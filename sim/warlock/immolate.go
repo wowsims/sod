@@ -70,7 +70,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			BonusCoefficient: dotCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, dotDamage, isRollover)
+				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				var result *core.SpellResult

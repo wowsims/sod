@@ -50,8 +50,8 @@ func (druid *Druid) registerSunfireSpell() {
 			NumberOfTicks:    SunfireTicks,
 			TickLength:       time.Second * 3,
 			BonusCoefficient: spellDotCoeff,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, baseDotDamage, false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDotDamage, isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.SunfireDotMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

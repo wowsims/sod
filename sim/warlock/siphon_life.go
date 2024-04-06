@@ -59,7 +59,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 			BonusCoefficient:    spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, baseDamage, isRollover)
+				dot.Snapshot(target, baseDamage, isRollover)
 
 				if !isRollover {
 					// Siphon Life heals so it snapshots target modifiers

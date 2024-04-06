@@ -62,7 +62,7 @@ func (priest *Priest) registerVoidZoneSpell() {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotWithCrit(target, baseTickDamage, isRollover)
+				dot.Snapshot(target, baseTickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {

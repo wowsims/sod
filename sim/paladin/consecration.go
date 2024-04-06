@@ -54,8 +54,8 @@ func (paladin *Paladin) getConsecrationBaseConfig(rank int, cd core.Cooldown) co
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: false,
 			BonusCoefficient:    0.042,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, baseDamage, false)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 				if hasWrath {
 					dot.Spell.BonusCritRating += paladin.GetStat(stats.MeleeCrit)
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
