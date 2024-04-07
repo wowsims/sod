@@ -361,7 +361,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		SpellSchool: options.MainHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeMHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
 
 		DamageMultiplier: 1,
@@ -379,7 +379,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		SpellSchool: options.OffHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeOHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeOffHand,
 
 		DamageMultiplier: 1,
@@ -397,7 +397,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		SpellSchool:  options.Ranged.GetSpellSchool(),
 		DefenseType:  DefenseTypeRanged,
 		ProcMask:     ProcMaskRangedAuto,
-		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		Flags:        SpellFlagMeleeMetrics,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 

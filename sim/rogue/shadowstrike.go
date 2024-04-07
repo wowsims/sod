@@ -17,7 +17,7 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags() | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   20,
 			Refund: 0.8,

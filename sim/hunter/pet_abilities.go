@@ -72,7 +72,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagMeleeMetrics,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 25,
@@ -124,7 +124,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagMeleeMetrics,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,

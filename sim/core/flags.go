@@ -163,31 +163,30 @@ func (se SpellFlag) Matches(other SpellFlag) bool {
 }
 
 const (
-	SpellFlagNone                     SpellFlag = 0
-	SpellFlagIgnoreResists            SpellFlag = 1 << iota // skip spell resist/armor
-	SpellFlagIgnoreTargetModifiers                          // skip target damage modifiers
-	SpellFlagIgnoreAttackerModifiers                        // skip attacker damage modifiers
-	SpellFlagIncludeTargetBonusDamage                       // Spell benefits from Gift of Arthas and Hemorrhage.
-	SpellFlagBinary                                         // Does not do partial resists and could need a different hit roll.
-	SpellFlagChanneled                                      // Spell is channeled
-	SpellFlagDisease                                        // Spell is categorized as disease
-	SpellFlagPoison                                         // Spell is categorized as poison
-	SpellFlagHelpful                                        // For healing spells / buffs.
-	SpellFlagMeleeMetrics                                   // Marks a spell as a melee ability for metrics.
-	SpellFlagNoOnCastComplete                               // Disables the OnCastComplete callback.
-	SpellFlagNoMetrics                                      // Disables metrics for a spell.
-	SpellFlagNoLogs                                         // Disables logs for a spell.
-	SpellFlagAPL                                            // Indicates this spell can be used from an APL rotation.
-	SpellFlagMCD                                            // Indicates this spell is a MajorCooldown.
-	SpellFlagNoOnDamageDealt                                // Disables OnSpellHitDealt and OnPeriodicDamageDealt aura callbacks for this spell.
-	SpellFlagPrepullOnly                                    // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
-	SpellFlagEncounterOnly                                  // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
-	SpellFlagPotion                                         // Indicates this spell is a potion spell.
-	SpellFlagPrepullPotion                                  // Indicates this spell is the prepull potion.
-	SpellFlagCombatPotion                                   // Indicates this spell is the combat potion.
-	SpellFlagResetAttackSwing                               // Indicates this spell resets the melee swing timer.
-	SpellFlagCastTimeNoGCD                                  // Indicates this spell is hunters Auto shot spell
-	SpellFlagPureDot                                        // Indicates this spell is a dot with no initial damage component
+	SpellFlagNone                    SpellFlag = 0
+	SpellFlagIgnoreResists           SpellFlag = 1 << iota // skip spell resist/armor
+	SpellFlagIgnoreTargetModifiers                         // skip target damage modifiers
+	SpellFlagIgnoreAttackerModifiers                       // skip attacker damage modifiers
+	SpellFlagBinary                                        // Does not do partial resists and could need a different hit roll.
+	SpellFlagChanneled                                     // Spell is channeled
+	SpellFlagDisease                                       // Spell is categorized as disease
+	SpellFlagPoison                                        // Spell is categorized as poison
+	SpellFlagHelpful                                       // For healing spells / buffs.
+	SpellFlagMeleeMetrics                                  // Marks a spell as a melee ability for metrics.
+	SpellFlagNoOnCastComplete                              // Disables the OnCastComplete callback.
+	SpellFlagNoMetrics                                     // Disables metrics for a spell.
+	SpellFlagNoLogs                                        // Disables logs for a spell.
+	SpellFlagAPL                                           // Indicates this spell can be used from an APL rotation.
+	SpellFlagMCD                                           // Indicates this spell is a MajorCooldown.
+	SpellFlagNoOnDamageDealt                               // Disables OnSpellHitDealt and OnPeriodicDamageDealt aura callbacks for this spell.
+	SpellFlagPrepullOnly                                   // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
+	SpellFlagEncounterOnly                                 // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
+	SpellFlagPotion                                        // Indicates this spell is a potion spell.
+	SpellFlagPrepullPotion                                 // Indicates this spell is the prepull potion.
+	SpellFlagCombatPotion                                  // Indicates this spell is the combat potion.
+	SpellFlagResetAttackSwing                              // Indicates this spell resets the melee swing timer.
+	SpellFlagCastTimeNoGCD                                 // Indicates this spell is hunters Auto shot spell
+	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

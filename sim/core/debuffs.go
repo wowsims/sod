@@ -570,10 +570,10 @@ func GiftOfArthasAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 11374},
 		Duration: time.Minute * 3,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken += 8
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += 8
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken -= 8
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 8
 		},
 	})
 }
@@ -597,10 +597,10 @@ func HemorrhageAura(target *Unit, casterLevel int32) *Aura {
 		Duration:  time.Second * 8,
 		MaxStacks: 30,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken += debuffBonusDamage
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += debuffBonusDamage
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken -= debuffBonusDamage
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= debuffBonusDamage
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if spell.SpellSchool != SpellSchoolPhysical {
@@ -621,10 +621,11 @@ func CurseOfVulnerabilityAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 427143},
 		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken += 2
+			// TODO: Add other schools
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += 2
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamageTaken -= 2
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 2
 		},
 	})
 }

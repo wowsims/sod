@@ -20,7 +20,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        rogue.finisherFlags() | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:        rogue.finisherFlags(),
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

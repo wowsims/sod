@@ -1,8 +1,9 @@
 package rogue
 
 import (
-	"github.com/wowsims/sod/sim/core"
 	"time"
+
+	"github.com/wowsims/sod/sim/core"
 )
 
 func (rogue *Rogue) applyRiposte() {
@@ -17,7 +18,7 @@ func (rogue *Rogue) applyRiposte() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 10,
@@ -34,6 +35,7 @@ func (rogue *Rogue) applyRiposte() {
 
 		DamageMultiplier: 1.5,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			riposteReady.Deactivate(sim)
