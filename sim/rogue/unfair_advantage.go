@@ -21,9 +21,10 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// TODO: Verify this should be normalized as the spell has 2 effects
+			// one being normalized with 0 BasePoints and one being not normalized with 100 base points
 			damage := rogue.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},

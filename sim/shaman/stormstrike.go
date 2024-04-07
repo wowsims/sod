@@ -23,7 +23,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 
 			DamageMultiplier: shaman.AutoAttacks.OHConfig().DamageMultiplier,
 			ThreatMultiplier: 1,
-			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
@@ -55,7 +54,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// offhand always swings first
