@@ -82,7 +82,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	numHits := min(ChainLightningTargetCount, shaman.Env.GetNumTargets())
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		if hasRollingThunderRune {
+		if hasRollingThunderRune && !isOverload {
 			shaman.rollRollingThunderCharge(sim)
 		}
 

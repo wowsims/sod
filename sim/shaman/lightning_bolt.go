@@ -72,7 +72,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-		if hasRollingThunderRune {
+		if hasRollingThunderRune && !isOverload {
 			shaman.rollRollingThunderCharge(sim)
 		}
 

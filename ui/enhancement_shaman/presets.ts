@@ -2,10 +2,12 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
 	FirePowerBuff,
+	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -24,6 +26,7 @@ import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase3Gear from './gear_sets/phase_3.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -34,17 +37,18 @@ import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
+export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Phase 3
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -92,7 +96,7 @@ export const TalentsPhase2 = {
 export const TalentsPhase3 = {
 	name: 'Phase 3',
 	data: SavedTalents.create({
-		talentsString: '05003-5005222105023051',
+		talentsString: '05003-5005132105023051',
 	}),
 };
 
@@ -115,16 +119,19 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfAgility,
-	defaultPotion: Potions.GreaterManaPotion,
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	defaultAtalAi: AtalAi.AtalAiWar,
+	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
-	food: Food.FoodSagefishDelight,
+	flask: Flask.FlaskOfEverlastingNightmares,
+	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WindfuryWeapon,
+	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.WindfuryWeapon,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
+	strengthBuff: StrengthBuff.ElixirOfGiants,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -133,26 +140,29 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	graceOfAirTotem: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,
-	moonkinAura: true,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElementsNew: TristateEffect.TristateEffectRegular,
 	curseOfRecklessness: true,
-	dreamstate: true,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
 	improvedScorch: true,
+	serpentsStrikerFistDebuff: true,
+	stormstrike: true,
 	sunderArmor: true,
 });
 
 export const OtherDefaults = {
-	profession1: Profession.Enchanting,
-	profession2: Profession.Leatherworking,
+	profession1: Profession.Alchemy,
+	profession2: Profession.Enchanting,
 };

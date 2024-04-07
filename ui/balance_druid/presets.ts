@@ -127,9 +127,9 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodRunnTumTuberSurprise,
-	mainHandImbue: WeaponImbue.WizardOil,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

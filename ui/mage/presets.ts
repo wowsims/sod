@@ -203,9 +203,9 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.WizardOil,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

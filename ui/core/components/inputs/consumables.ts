@@ -591,8 +591,9 @@ export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 51 }]),
 	value: WeaponImbue.BrillianWizardOil,
 };
+// Original lvl 45 but not obtainable in Phase 3
 export const WizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 40 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 51 }]),
 	value: WeaponImbue.WizardOil,
 };
 export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
