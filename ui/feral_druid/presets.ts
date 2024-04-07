@@ -110,11 +110,17 @@ export const TalentsPhase3 = {
 		talentsString: '500005301-5500020323002-05',
 	}),
 };
+export const TalentsPhase3LoTP = {
+	name: 'Phase 3 LoTP',
+	data: SavedTalents.create({
+		talentsString: '-5500020323202151-55',
+	}),
+};
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
-	[Phase.Phase3]: [TalentsPhase3],
+	[Phase.Phase3]: [TalentsPhase3, TalentsPhase3LoTP],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
