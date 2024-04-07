@@ -97,8 +97,8 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultAtalAi:   proto.AtalAi_AtalAiForbiddenMagic,
 		DefaultPotion:   proto.Potions_GreaterManaPotion,
 		Food:            proto.Food_FoodNightfinSoup,
-		MainHandImbue:   proto.WeaponImbue_WizardOil,
-		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_ArcaneElixir,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
 	},
 }

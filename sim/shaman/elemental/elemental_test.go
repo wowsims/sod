@@ -190,9 +190,9 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		Food:           proto.Food_FoodNightfinSoup,
-		MainHandImbue:  proto.WeaponImbue_WizardOil,
-		OffHandImbue:   proto.WeaponImbue_WizardOil,
-		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
+		OffHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
 		StrengthBuff:   proto.StrengthBuff_ElixirOfGiants,
 	},
 }

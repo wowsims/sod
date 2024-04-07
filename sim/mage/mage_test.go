@@ -233,7 +233,7 @@ var Phase3Consumes = core.ConsumesCombo{
 		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
 		Food:           proto.Food_FoodNightfinSoup,
 		MainHandImbue:  proto.WeaponImbue_WizardOil,
-		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
 	},
 }
 
