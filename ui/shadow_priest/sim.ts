@@ -60,13 +60,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.11,
-			[Stat.StatSpirit]: 0.47,
+			[Stat.StatIntellect]: 0.16,
+			[Stat.StatSpirit]: 0.01,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellDamage]: 1,
 			[Stat.StatShadowPower]: 1,
-			[Stat.StatSpellHit]: 0.87,
-			[Stat.StatSpellCrit]: 3.1, // Averaged between using and not using Despair for dot crits
+			[Stat.StatSpellHit]: 5.51,
+			[Stat.StatSpellCrit]: 5.99, // Averaged between using and not using Despair for dot crits
 			[Stat.StatSpellHaste]: 1.65,
 			[Stat.StatMP5]: 0.0,
 		}),

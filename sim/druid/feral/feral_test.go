@@ -63,7 +63,7 @@ func TestFeral(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase3Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_2"),
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_3"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
