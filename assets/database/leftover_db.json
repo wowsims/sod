@@ -1590,7 +1590,6 @@
 {"effectId":2563,"spellId":23799,"name":"Enchant Weapon - Strength","type":13,"stats":[15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2564,"spellId":23800,"name":"Enchant Weapon - Agility","type":13,"stats":[0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2567,"spellId":23803,"name":"Enchant Weapon - Mighty Spirit","type":13,"stats":[0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":2568,"spellId":23804,"name":"Enchant Weapon - Mighty Intellect","type":13,"stats":[0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":2646,"spellId":27837,"name":"Enchant 2H Weapon - Agility","type":13,"enchantType":1,"stats":[0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":7124,"itemId":212568,"spellId":432190,"name":"Wolfshead Trophy","type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3,"classAllowlist":[1]},
 {"effectId":7210,"spellId":435481,"name":"Enchant Weapon - Dismantle","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
