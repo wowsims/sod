@@ -92,10 +92,10 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			healPower := spell.HealingPower(target)
-			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh) + spellCoeff*healPower
+			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
 
 			// TODO: Take Healing Way into account 6% stacking up to 3x
 			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)

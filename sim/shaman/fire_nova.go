@@ -63,10 +63,11 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1 + .05*float64(shaman.Talents.CallOfFlame),
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 				result := spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
 
 				spell.DealDamage(sim, result)

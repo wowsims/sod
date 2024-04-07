@@ -338,9 +338,10 @@ func (warlock *Warlock) applyFirestone() {
 			DamageMultiplier:         firestoneMulti,
 			ThreatMultiplier:         1,
 			DamageMultiplierAdditive: 1,
+			BonusCoefficient:         spellCoeff,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(damageMin, damageMax) + spellCoeff*spell.SpellDamage()
+				baseDamage := sim.Roll(damageMin, damageMax)
 
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 			},

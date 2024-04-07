@@ -92,16 +92,15 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 
 		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(ChainHealTargetCount)
 			curTarget := targets[0]
-			bounceCoeff := 1.0
+			origMult := spell.DamageMultiplier
 			// TODO: This bounces to most hurt friendly...
 			for hitIndex := int32(0); hitIndex < ChainHealTargetCount; hitIndex++ {
-				healPower := spell.HealingPower(target)
-				baseHealing := sim.Roll(baseHealingLow, baseHealingHigh) + spellCoeff*healPower
-				baseHealing *= bounceCoeff
+				baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
 
 				result := spell.CalcAndDealHealing(sim, curTarget, baseHealing, spell.OutcomeHealingCrit)
 
@@ -109,9 +108,10 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 
-				bounceCoeff *= ChainHealBounceCoeff
+				spell.DamageMultiplier *= ChainHealBounceCoeff
 				curTarget = targets[hitIndex]
 			}
+			spell.DamageMultiplier = origMult
 		},
 	}
 

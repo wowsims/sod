@@ -21,7 +21,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | SpellFlagLoF,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -49,13 +49,10 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + spCoeff*spell.SpellDamage()
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= warlock.getLakeOfFireMultiplier()
-			}
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
 
 			if backdraft != nil {
 				backdraft.Activate(sim)

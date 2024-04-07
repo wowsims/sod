@@ -90,10 +90,8 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotCritChance = 0
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				damage := damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)

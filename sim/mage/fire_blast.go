@@ -64,13 +64,14 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamageCacl := (baseDamageLow+baseDamageHigh)/2 + spellCoeff*spell.SpellDamage()
+			baseDamageCacl := (baseDamageLow + baseDamageHigh) / 2
 			return spell.CalcDamage(sim, target, baseDamageCacl, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

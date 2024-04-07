@@ -52,6 +52,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.25,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			extraRage := spell.Unit.CurrentRage()
@@ -59,6 +60,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 			rageMetrics.Events--
 
 			baseDamage := flatDamage + convertedRageDamage*(extraRage)
+
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {

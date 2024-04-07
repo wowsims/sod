@@ -70,9 +70,3 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 
 	return spell
 }
-
-// Leaving this in-place in case we get any applicable items/spells in SoD
-func (shaman *Shaman) electricSpellBonusDamage(spellCoeff float64) float64 {
-	bonusDamage := float64(0)
-	return bonusDamage * spellCoeff
-}

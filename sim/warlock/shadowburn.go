@@ -43,9 +43,10 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamage[0], baseDamage[1])
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

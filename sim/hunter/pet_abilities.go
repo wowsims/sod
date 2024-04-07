@@ -86,9 +86,10 @@ func (hp *HunterPet) newClaw() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 1.5 / 14) + spell.BonusWeaponDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 1.5 / 14)
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -141,9 +142,10 @@ func (hp *HunterPet) newBite() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 2.15 / 14) + spell.BonusWeaponDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 2.15 / 14)
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -297,12 +299,13 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			Aura: core.Aura{
 				Label: "ScorpidPoison",
 			},
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:    5,
+			TickLength:       time.Second * 2,
+			BonusCoefficient: 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				damage := sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
+				dot.Snapshot(target, damage, isRollover)
+				dot.SnapshotAttackerMultiplier *= hp.killCommandMult()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

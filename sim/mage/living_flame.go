@@ -56,12 +56,12 @@ func (mage *Mage) registerLivingFlameSpell() {
 				Label: "Living Flame",
 			},
 
-			NumberOfTicks: ticks,
-			TickLength:    tickLength,
+			NumberOfTicks:    ticks,
+			TickLength:       tickLength,
+			BonusCoefficient: spellCoeff,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 
 				// We have to deactivate AB here because otherwise the stacks are removed before the snapshot is calculated
 				if hasArcaneBlastRune && mage.ArcaneBlastAura.IsActive() {

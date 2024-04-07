@@ -53,10 +53,9 @@ func (rogue *Rogue) registerGarrote() {
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 3,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + dot.Spell.MeleeAttackPower()*0.03
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				damage := baseDamage + dot.Spell.MeleeAttackPower()*0.03
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

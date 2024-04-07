@@ -366,11 +366,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: TernaryFloat64(options.MainHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
-
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
 	}
@@ -385,11 +384,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
-
+			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
 	}
@@ -405,10 +403,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: TernaryFloat64(options.Ranged.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

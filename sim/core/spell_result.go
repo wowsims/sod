@@ -76,10 +76,6 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) BonusWeaponDamage() float64 {
-	return spell.Unit.PseudoStats.BonusDamage
-}
-
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 	hitRating := spell.Unit.stats[stats.MeleeHit] +
 		spell.BonusHitRating +
@@ -97,51 +93,40 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
-// TODO: This should probably be merged with SpellDamage()? Doesn't make sense the way it is.
-func (spell *Spell) spellPower() float64 {
-	return spell.Unit.GetStat(stats.SpellPower) +
-		spell.BonusSpellPower +
-		spell.SpellSchoolPower() +
-		spell.Unit.PseudoStats.MobTypeSpellPower
-}
+// The combined bonus damage (aka spell power) for this spell's school(s).
+func (spell *Spell) BonusDamage() float64 {
+	var bonusDamage float64
 
-func (spell *Spell) SpellDamage() float64 {
-	return spell.spellPower() + spell.Unit.GetStat(stats.SpellDamage)
-}
-
-func (spell *Spell) SpellSchoolPower() float64 {
 	switch spell.SchoolIndex {
 	case stats.SchoolIndexNone:
 		return 0
 	case stats.SchoolIndexPhysical:
-		// Return correct value if ever used for a physical spell.
+		// PseudoStats.BonusDamage is physical "spell power", just return that here.
+		// TODO: Do "MobTypeSpellPower" effects for physical exist? E.g. something like "Do x extra weapon damage against y type"?
+		// If yes then it needs to be handled here and for the multi school case below.
 		return spell.Unit.PseudoStats.BonusDamage
 	case stats.SchoolIndexArcane:
-		return spell.Unit.GetStat(stats.ArcanePower)
+		bonusDamage = spell.Unit.GetStat(stats.ArcanePower)
 	case stats.SchoolIndexFire:
-		return spell.Unit.GetStat(stats.FirePower)
+		bonusDamage = spell.Unit.GetStat(stats.FirePower)
 	case stats.SchoolIndexFrost:
-		return spell.Unit.GetStat(stats.FrostPower)
+		bonusDamage = spell.Unit.GetStat(stats.FrostPower)
 	case stats.SchoolIndexHoly:
-		return spell.Unit.GetStat(stats.HolyPower)
+		bonusDamage = spell.Unit.GetStat(stats.HolyPower)
 	case stats.SchoolIndexNature:
-		return spell.Unit.GetStat(stats.NaturePower)
+		bonusDamage = spell.Unit.GetStat(stats.NaturePower)
 	case stats.SchoolIndexShadow:
-		return spell.Unit.GetStat(stats.ShadowPower)
+		bonusDamage = spell.Unit.GetStat(stats.ShadowPower)
 	default:
 		// Multi school: Get best power choice available.
-		maxPower := 0.0
 		for _, baseSchoolIndex := range spell.SchoolBaseIndices {
 			var power float64
 
-			// TODO / NOTE: Not a bug, just really not a nice solution imho.
-			// Not having physical power with the other power stats makes this if-else required.
-			// Ignoring this case would result in bad return values if physical multi schools with a coef > 0
-			// are ever a thing, due to SpellPower being before ArcanePower in stats.
-			// Also, just having this loop or having the switch above is irrelevant in terms of performance.
-			// The jump table above saves some instructions for normal spells but loop only seems to
-			// cause the function to be inlined, making the whole SpellPower() call inline.
-			// Overall just not nice the way it is.
+			// TODO: If physical multi school spells with a coef > 0 emerge at any point this function or
+			// the way bonus damage stats are set up needs to be changed.
+			// SpellPower, MobTypeSpellPower and SpellDamage stats are a convinience to group bonus damage for
+			// non-physical schools and would need to be considered against physical here and obviously not applied
+			// if physical is chosen.
 			if baseSchoolIndex == stats.SchoolIndexPhysical {
 				power = spell.Unit.PseudoStats.BonusDamage
 			} else {
@@ -149,12 +134,16 @@ func (spell *Spell) SpellSchoolPower() float64 {
 				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
 			}
 
-			if power > maxPower {
-				maxPower = power
+			if power > bonusDamage {
+				bonusDamage = power
 			}
 		}
-		return maxPower
 	}
+
+	return bonusDamage +
+		spell.Unit.GetStat(stats.SpellPower) +
+		spell.Unit.PseudoStats.MobTypeSpellPower +
+		spell.Unit.GetStat(stats.SpellDamage)
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
@@ -197,7 +186,9 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) HealingPower(target *Unit) float64 {
-	return spell.spellPower() + spell.Unit.GetStat(stats.HealingPower) + target.PseudoStats.BonusHealingTaken
+	return spell.Unit.GetStat(stats.SpellPower) +
+		spell.Unit.GetStat(stats.HealingPower) +
+		target.PseudoStats.BonusHealingTaken
 }
 func (spell *Spell) healingCritRating() float64 {
 	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
@@ -292,14 +283,33 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	if spell.BonusCoefficient > 0 {
+		baseDamage += spell.BonusCoefficient * spell.BonusDamage()
+	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	if spell.Dot(target).BonusCoefficient > 0 {
+		baseDamage += spell.Dot(target).BonusCoefficient * spell.BonusDamage()
+	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	return dot.Spell.calcDamageInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, true, outcomeApplier)
+}
+
+func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
+	// Rollovers in SoD don't seem to update anything
+	if !isRollover {
+		dot.SnapshotBaseDamage = baseDamage
+		if dot.BonusCoefficient > 0 {
+			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
+		}
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	}
 }
 
 func (spell *Spell) DealOutcome(sim *Simulation, result *SpellResult) {
@@ -396,10 +406,26 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 	return result
 }
 func (spell *Spell) CalcHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
+	if spell.BonusCoefficient > 0 {
+		baseHealing += spell.BonusCoefficient * spell.HealingPower(target)
+	}
 	return spell.calcHealingInternal(sim, target, baseHealing, spell.CasterHealingMultiplier(), outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotHealing(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	return dot.Spell.calcHealingInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, outcomeApplier)
+}
+
+func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool) {
+	// Rollovers in SoD don't seem to update anything
+	if !isRollover {
+		dot.SnapshotBaseDamage = baseHealing
+		if dot.BonusCoefficient > 0 {
+			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
+		}
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	}
 }
 
 // Applies the fully computed spell result to the sim.

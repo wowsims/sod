@@ -73,12 +73,12 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 				Label:    fmt.Sprintf("Moonfire (Rank %d)", rank),
 				ActionID: core.ActionID{SpellID: spellId},
 			},
-			NumberOfTicks: ticks,
-			TickLength:    tickLength,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (baseDotDamage + spellDotCoeff*dot.Spell.SpellDamage()) *
-					druid.MoonfireDotMultiplier
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			NumberOfTicks:    ticks,
+			TickLength:       tickLength,
+			BonusCoefficient: spellDotCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDotDamage, isRollover)
+				dot.SnapshotAttackerMultiplier *= druid.MoonfireDotMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -91,9 +91,10 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

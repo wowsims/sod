@@ -19,7 +19,7 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -49,15 +49,13 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         2,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				damage *= warlock.getLakeOfFireMultiplier()
-			}
-
+			damage := sim.Roll(baseDamage[0], baseDamage[1])
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+
+			// TODO: does this happen on miss?
 			warlock.EverlastingAfflictionRefresh(sim, target)
 		},
 	}

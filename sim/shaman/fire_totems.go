@@ -40,6 +40,22 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 	attackInterval := time.Millisecond * 2500
 
+	attackSpell := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 22048},
+		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		CritDamageBonus:  shaman.elementalFury(),
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		BonusCoefficient: spellCoeff,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_SearingTotem,
@@ -63,10 +79,6 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Searing Totem (Rank %d)", rank),
@@ -79,8 +91,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 			NumberOfTicks: int32(duration / attackInterval),
 			TickLength:    attackInterval,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellDamage()
-				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				attackSpell.Cast(sim, target)
 			},
 		},
 
@@ -131,6 +142,24 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 	duration := time.Second * 20
 	attackInterval := time.Second * 2
 
+	aoeSpell := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 8187},
+		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		CritDamageBonus:  shaman.elementalFury(),
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		BonusCoefficient: spellCoeff,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := baseDamage * sim.Encounter.AOECapMultiplier()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+		},
+	})
+
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_MagmaTotem,
@@ -154,10 +183,6 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
@@ -167,11 +192,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			TickLength:    attackInterval,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				baseDamage *= sim.Encounter.AOECapMultiplier()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
-				}
+				aoeSpell.Cast(sim, target)
 			},
 		},
 
@@ -258,6 +279,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		CritDamageBonus: shaman.elementalFury(),
 
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		BonusCoefficient: spellCoeff,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -268,7 +290,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			TickLength:    attackInterval,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*dot.Spell.SpellDamage()
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)

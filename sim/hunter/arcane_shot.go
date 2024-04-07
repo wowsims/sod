@@ -53,10 +53,9 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage + spellCoeff*spell.SpellDamage()
-
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

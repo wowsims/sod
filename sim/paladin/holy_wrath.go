@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
-	"time"
 
 	"github.com/wowsims/sod/sim/core"
 )
@@ -65,6 +66,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.19,
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
@@ -73,7 +75,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 				results = results[:0]
 				for _, target := range paladin.Env.Encounter.TargetUnits {
 					if hasPurifyingPower || (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
-						damage := sim.Roll(rank.damageLow, rank.damageHigh) + 0.19*spell.SpellDamage()
+						damage := sim.Roll(rank.damageLow, rank.damageHigh)
 						result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 						results = append(results, result)
 					}

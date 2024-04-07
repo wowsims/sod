@@ -51,10 +51,10 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 
 		DamageMultiplier: 1 + (.02 * float64(shaman.Talents.Purification)) + 0.05*float64(shaman.Talents.RestorativeTotems),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			healing := baseHealing + spellCoeff*spell.HealingPower(target)
-			spell.CalcAndDealHealing(sim, target, healing, spell.OutcomeHealing)
+			spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealing)
 		},
 	})
 

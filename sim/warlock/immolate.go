@@ -26,7 +26,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -58,22 +58,19 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         directCoeff,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Immolate-" + warlock.Label + strconv.Itoa(rank),
 			},
 
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    5,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: dotCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = dotDamage + dotCoeff*dot.Spell.SpellDamage()
-
-				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-				}
+				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				var result *core.SpellResult
@@ -85,22 +82,15 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				} else {
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := (baseDamage + directCoeff*spell.SpellDamage()) * (1 + 0.05*float64(warlock.Talents.ImprovedImmolate))
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				damage *= warlock.getLakeOfFireMultiplier()
-			}
-
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			imprImmoMult := 1 + 0.05*float64(warlock.Talents.ImprovedImmolate)
+			spell.DamageMultiplier *= imprImmoMult
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier /= imprImmoMult
 
 			if result.Landed() {
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
@@ -111,13 +101,14 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				}
 				spell.Dot(target).Apply(sim)
 			}
+
+			spell.DealDamage(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := dotDamage + dotCoeff*spell.SpellDamage()
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},

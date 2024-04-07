@@ -46,6 +46,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -56,8 +57,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 
 			// TODO: test combo point AP scaling. Also, does BTE use Melee or Ranged Attack Power?
 			baseDamage := variableDamage +
-				0.03*float64(comboPoints)*spell.MeleeAttackPower() +
-				spell.BonusWeaponDamage()
+				0.03*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

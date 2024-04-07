@@ -49,10 +49,11 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				damage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
+				damage := sim.Roll(baseDamage[0], baseDamage[1])
 				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}

@@ -33,7 +33,6 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 	spellId := ArcaneMissilesSpellId[rank]
 	baseTickDamage := ArcaneMissilesBaseTickDamage[rank]
-	spellCoeff := ArcaneMissilesSpellCoeff[rank]
 	castTime := ArcaneMissilesCastTime[rank]
 	manaCost := ArcaneMissilesManaCost[rank]
 	level := ArcaneMissilesLevel[rank]
@@ -99,8 +98,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-			return tickSpell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
+			return tickSpell.CalcDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	}
 }
@@ -120,10 +118,10 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseTickDamage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

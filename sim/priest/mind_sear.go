@@ -102,9 +102,10 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := sim.Roll(baseDamageLow, baseDamageHigh) + (spellCoeff * spell.SpellDamage())
+			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

@@ -33,10 +33,7 @@ func init() {
 				NumberOfTicks: 3,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.SnapshotBaseDamage = 8
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotCritChance = 0
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.Snapshot(target, 8, isRollover)
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -87,11 +84,10 @@ func init() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 
 			DamageMultiplier: 1,
+			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := 5.0 +
-					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+				damage := 5.0 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 				}

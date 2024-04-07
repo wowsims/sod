@@ -59,9 +59,10 @@ func (warlock *Warlock) registerHauntSpell() {
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

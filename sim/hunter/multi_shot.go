@@ -63,14 +63,13 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 
 		DamageMultiplier: 1 + .05*float64(hunter.Talents.Barrage),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 
-			sharedDmg := spell.BonusWeaponDamage() + baseDamage
-
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := sharedDmg +
+				baseDamage := baseDamage +
 					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
 					hunter.NormalizedAmmoDamageBonus
 

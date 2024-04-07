@@ -43,10 +43,10 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + spellCoeff*spell.SpellDamage()
-			results := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			results := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, results)

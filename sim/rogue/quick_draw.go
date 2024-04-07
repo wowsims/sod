@@ -56,11 +56,12 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := rogue.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				normalizedAmmoBonusDamage + spell.BonusWeaponDamage()
+				normalizedAmmoBonusDamage
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
