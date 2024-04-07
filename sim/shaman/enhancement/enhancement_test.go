@@ -167,7 +167,7 @@ func BenchmarkSimulate(b *testing.B) {
 
 var Phase1Talents = "-5005202101"
 var Phase2Talents = "-5005202105023051"
-var Phase3Talents = "05003-5005222105023051"
+var Phase3Talents = "05003-5005132105023051"
 
 var PlayerOptionsSyncDelayOH = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{

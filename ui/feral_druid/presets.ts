@@ -2,6 +2,8 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	AtalAi,
+	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -21,8 +23,9 @@ import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
-import Phase1Gear from './gear_sets/p1.gear.json';
-import Phase2Gear from './gear_sets/p2.gear.json';
+import Phase1Gear from './gear_sets/phase_1.gear.json';
+import Phase2Gear from './gear_sets/phase_2.gear.json';
+import Phase3Gear from './gear_sets/phase_3.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -34,16 +37,17 @@ import Phase2Gear from './gear_sets/p2.gear.json';
 
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
+export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -106,16 +110,22 @@ export const TalentsPhase3 = {
 		talentsString: '500005301-5500020323002-05',
 	}),
 };
+export const TalentsPhase3LoTP = {
+	name: 'Phase 3 LoTP',
+	data: SavedTalents.create({
+		talentsString: '-5500020323202151-55',
+	}),
+};
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
-	[Phase.Phase3]: [TalentsPhase3],
+	[Phase.Phase3]: [TalentsPhase3, TalentsPhase3LoTP],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase2][0];
+export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -127,12 +137,15 @@ export const DefaultOptions = FeralDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfAgility,
-	defaultPotion: Potions.GreaterManaPotion,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	defaultAtalAi: AtalAi.AtalAiWar,
+	defaultConjured: Conjured.ConjuredDruidCatnip,
+	defaultPotion: Potions.MajorManaPotion,
+	dragonBreathChili: true,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	food: Food.FoodSagefishDelight,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	strengthBuff: StrengthBuff.ElixirOfGiants,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -141,13 +154,15 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	graceOfAirTotem: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	sparkOfInspiration: true,
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({

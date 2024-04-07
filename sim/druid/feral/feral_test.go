@@ -21,7 +21,7 @@ func TestFeral(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase1Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p1"),
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_1"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_1"),
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
@@ -42,7 +42,7 @@ func TestFeral(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase2Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p2"),
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_2"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_2"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
@@ -63,7 +63,7 @@ func TestFeral(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase3Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p2"),
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_3"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
@@ -80,34 +80,34 @@ func TestFeral(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceTauren,
-					Class:         proto.Class_ClassDruid,
-					Level:         40,
-					TalentsString: Phase2Talents,
-					Equipment:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "p2").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/feral_druid/apls", "phase_2").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          PlayerOptionsMonoCat,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
-}
+// func BenchmarkSimulate(b *testing.B) {
+// 	core.Each([]*proto.RaidSimRequest{
+// 		{
+// 			Raid: core.SinglePlayerRaidProto(
+// 				&proto.Player{
+// 					Race:          proto.Race_RaceTauren,
+// 					Class:         proto.Class_ClassDruid,
+// 					Level:         40,
+// 					TalentsString: Phase2Talents,
+// 					Equipment:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_2").GearSet,
+// 					Rotation:      core.GetAplRotation("../../../ui/feral_druid/apls", "phase_2").Rotation,
+// 					Consumes:      Phase2Consumes.Consumes,
+// 					Spec:          PlayerOptionsMonoCat,
+// 					Buffs:         core.FullIndividualBuffsPhase2,
+// 				},
+// 				core.FullPartyBuffs,
+// 				core.FullRaidBuffsPhase2,
+// 				core.FullDebuffsPhase2),
+// 			Encounter: &proto.Encounter{
+// 				Duration: 120,
+// 				Targets: []*proto.Target{
+// 					core.NewDefaultTarget(40),
+// 				},
+// 			},
+// 			SimOptions: core.AverageDefaultSimTestOptions,
+// 		},
+// 	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
+// }
 
 var Phase1Talents = "500005001--05"
 var Phase2Talents = "-550002032320211-05"

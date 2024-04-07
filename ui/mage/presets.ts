@@ -199,13 +199,13 @@ export const DefaultConsumes = Consumes.create({
 	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodSagefishDelight,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.WizardOil,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

@@ -98,8 +98,8 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultConjured: proto.Conjured_ConjuredDruidCatnip,
 		DefaultPotion:   proto.Potions_MajorManaPotion,
 		Food:            proto.Food_FoodNightfinSoup,
-		MainHandImbue:   proto.WeaponImbue_WizardOil,
-		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_ArcaneElixir,
 	},
 }
 

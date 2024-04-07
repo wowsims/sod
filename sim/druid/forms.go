@@ -120,7 +120,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 	var hotwDep *stats.StatDependency
 	if druid.Talents.HeartOfTheWild > 0 {
-		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
+		hotwDep = druid.NewDynamicMultiplyStat(stats.Strength, 1.0+0.04*float64(druid.Talents.HeartOfTheWild))
 	}
 
 	clawWeapon := druid.GetCatWeapon(druid.Level)

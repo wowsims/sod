@@ -293,12 +293,14 @@ export const GrilledSquid: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13928, minLevel: 50 }]),
 	value: Food.FoodGrilledSquid,
 };
+// Original lvl 50 not obtainable in Phase 3
 export const SmokedDesertDumpling: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 45 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 51 }]),
 	value: Food.FoodSmokedDesertDumpling,
 };
+// Original lvl 45 not obtainable in Phase 3
 export const RunnTumTuberSurprise: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 45 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 51 }]),
 	value: Food.FoodRunnTumTuberSurprise,
 };
 export const BlessSunfruit: ConsumableInputConfig<Food> = {
@@ -526,8 +528,9 @@ export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'spellPowerBuff' });
 
 // Fire
+// Original lvl 40 not obtainable in Phase 3
 export const ElixirOfGreaterFirepower: ConsumableInputConfig<FirePowerBuff> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 21546, minLevel: 40 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 21546, minLevel: 51 }]),
 	value: FirePowerBuff.ElixirOfGreaterFirepower,
 };
 export const ElixirOfFirepower: ConsumableInputConfig<FirePowerBuff> = {
@@ -591,8 +594,9 @@ export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 51 }]),
 	value: WeaponImbue.BrillianWizardOil,
 };
+// Original lvl 45 but not obtainable in Phase 3
 export const WizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 40 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 51 }]),
 	value: WeaponImbue.WizardOil,
 };
 export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
