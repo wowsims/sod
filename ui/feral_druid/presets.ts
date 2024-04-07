@@ -21,8 +21,8 @@ import { SavedTalents } from '../core/proto/ui.js';
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
-import Phase1Gear from './gear_sets/p1.gear.json';
-import Phase2Gear from './gear_sets/p2.gear.json';
+import Phase1Gear from './gear_sets/phase_1.gear.json';
+import Phase2Gear from './gear_sets/phase_2.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
