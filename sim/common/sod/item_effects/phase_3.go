@@ -34,6 +34,7 @@ const (
 	DarkmoonCardDecay        = 221307
 	DarkmoonCardOvergrowth   = 221308
 	DarkmoonCardSandstorm    = 221309
+	RoarOfTheDream           = 221440
 	RoarOfTheGuardian        = 221442
 	BloodthirstCrossbow      = 221451
 	FistOfStone              = 223524
@@ -62,6 +63,22 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
+
+	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446705}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID:   core.ActionID{SpellID: 450110},
+			Name:       "Roar of the Dream Trigger",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskSpellOrProc,
+			ProcChance: 0.05,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				procAura.Activate(sim)
+			},
+		})
+	})
 
 	core.NewItemEffect(AtalaiBloodRitualCharm, func(agent core.Agent) {
 		character := agent.GetCharacter()
