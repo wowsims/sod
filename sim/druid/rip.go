@@ -103,13 +103,8 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 
 				cpScaling := core.TernaryFloat64(cp == 5, 4, cp)
 
-				dot.SnapshotBaseDamage = (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + 0.01*ap*cpScaling)
-
-				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotCritChance = 0
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				}
+				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + 0.01*ap*cpScaling)
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)

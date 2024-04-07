@@ -21,7 +21,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -50,19 +50,14 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 			NumberOfTicks:       4,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
+			BonusCoefficient:    spellCoeff,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					targetDamage := dot.SnapshotBaseDamage
-					if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(aoeTarget).IsActive() {
-						targetDamage *= warlock.getLakeOfFireMultiplier()
-					}
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
-
 					if hasRune && dot.TickCount == dot.NumberOfTicks {
 						warlock.LakeOfFireAuras.Get(aoeTarget).Activate(sim)
 					}
@@ -77,8 +72,12 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 	}
 }
 
-func (warlock *Warlock) getLakeOfFireMultiplier() float64 {
+func getLakeOfFireMultiplier() float64 {
 	return 1.5
+}
+
+func lakeOfFireDDBCMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
+	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagLoF), getLakeOfFireMultiplier(), 1)
 }
 
 func (warlock *Warlock) registerRainOfFireSpell() {
@@ -89,6 +88,12 @@ func (warlock *Warlock) registerRainOfFireSpell() {
 				ActionID: core.ActionID{SpellID: 403650},
 				Label:    "Lake of Fire",
 				Duration: time.Second * 15,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = lakeOfFireDDBCMultiplier
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = nil
+				},
 			})
 		})
 	}

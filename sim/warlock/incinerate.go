@@ -33,7 +33,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
+		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | SpellFlagLoF,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
@@ -54,18 +54,12 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
-
-			if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= warlock.getLakeOfFireMultiplier()
-			}
-
+			var baseDamage = sim.Roll(baseLowDamage, baseHighDamage)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
 			warlock.IncinerateAura.Activate(sim)
-
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

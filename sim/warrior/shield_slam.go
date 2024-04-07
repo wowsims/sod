@@ -51,9 +51,11 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.3,
 		FlatThreatBonus:  770, // TODO level-dependent
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()
+
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {

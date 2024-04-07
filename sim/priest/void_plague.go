@@ -59,16 +59,12 @@ func (priest *Priest) registerVoidPlagueSpell() {
 				Label: "VoidPlague-" + strconv.Itoa(1),
 			},
 
-			NumberOfTicks: ticks,
-			TickLength:    tickLength,
+			NumberOfTicks:    ticks,
+			TickLength:       tickLength,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseTickDamage + spellCoeff*dot.Spell.SpellDamage()
-
-				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-				}
+				dot.Snapshot(target, baseTickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
@@ -94,8 +90,7 @@ func (priest *Priest) registerVoidPlagueSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseTickDamage + (spellCoeff * spell.SpellDamage())
-				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+				return spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	})

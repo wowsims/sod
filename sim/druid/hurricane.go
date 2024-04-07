@@ -76,11 +76,11 @@ func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer)
 			Aura: core.Aura{
 				Label: "Hurricane",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 1,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+			NumberOfTicks:    10,
+			TickLength:       time.Second * 1,
+			BonusCoefficient: spellCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {

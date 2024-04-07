@@ -56,8 +56,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				hunter.AmmoDamageBonus +
-				spell.BonusWeaponDamage()
+				hunter.AmmoDamageBonus
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {

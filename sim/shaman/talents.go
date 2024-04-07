@@ -11,6 +11,11 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
+
+	// TODO: Check whether this does what it should.
+	// From all I've seen this appears to not actually be a school modifier at all, but instead simply applies
+	// to all attacks done with a weapon. The weaponmask seems to take precedence and the school mask is actually ignored.
+	// Will also be the case for similar talents like the one for retribution.
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
 	if shaman.Talents.AncestralKnowledge > 0 {

@@ -33,6 +33,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 		ProcMask:      core.ProcMaskSpellDamage,
 		Rank:          rank,
 		RequiredLevel: level,
+		Flags:         SpellFlagLoF,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -46,15 +47,21 @@ func (wp *WarlockPet) registerFireboltSpell() {
 
 		DamageMultiplier: 1 + 0.1*float64(wp.owner.Talents.ImprovedImp),
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamage[0], baseDamage[1]) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamage[0], baseDamage[1])
 
-			if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
-				baseDamage *= wp.owner.getLakeOfFireMultiplier()
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.Landed() {
+				if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
+					result.Damage *= getLakeOfFireMultiplier()
+					result.Threat *= getLakeOfFireMultiplier()
+				}
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DealDamage(sim, result)
 		},
 	})
 }
@@ -98,9 +105,9 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamage + spellCoeff*spell.SpellDamage()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -132,13 +139,12 @@ func (wp *WarlockPet) registerCleaveSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			constBaseDamage := 2 + spell.BonusWeaponDamage()
-
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := constBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage := 2.0 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}

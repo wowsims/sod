@@ -83,16 +83,12 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 				},
 			},
 
-			NumberOfTicks: ticks + (priest.Talents.ImprovedShadowWordPain),
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    ticks + (priest.Talents.ImprovedShadowWordPain),
+			TickLength:       time.Second * 3,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDotDamage + spellCoeff*dot.Spell.SpellDamage()
-
-				if !isRollover {
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
-				}
+				dot.Snapshot(target, baseDotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
@@ -122,8 +118,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
-				baseDamage := baseDotDamage + (spellCoeff * spell.SpellDamage())
-				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+				return spell.CalcPeriodicDamage(sim, target, baseDotDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	}

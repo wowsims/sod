@@ -48,7 +48,6 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	manaCost := LightningBoltManaCost[rank]
 	level := LightningBoltLevel[rank]
 
-	bonusDamage := shaman.electricSpellBonusDamage(spellCoeff)
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
@@ -67,9 +66,10 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	spell.MissileSpeed = 20
 	spell.RequiredLevel = level
 	spell.Rank = rank
+	spell.BonusCoefficient = spellCoeff
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := bonusDamage + sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 		if hasRollingThunderRune {

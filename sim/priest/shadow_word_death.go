@@ -44,9 +44,10 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 
 		DamageMultiplier: priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: priest.shadowThreatModifier(),
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
@@ -55,7 +56,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			spell.DealDamage(sim, result)
 		},
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := (baseLowDamage+baseHighDamage)/2 + spellCoeff*spell.SpellDamage()
+			baseDamage := (baseLowDamage + baseHighDamage) / 2
 			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	})

@@ -21,6 +21,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		ActionID:    core.ActionID{SpellID: 426325},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       SpellFlagLoF,
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
@@ -31,22 +32,15 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				Label: "Shadowflame" + warlock.Label,
 			},
 
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:    4,
+			TickLength:       time.Second * 2,
+			BonusCoefficient: dotSpellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = dotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
-
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
-				if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= warlock.getLakeOfFireMultiplier()
-					result.Threat *= warlock.getLakeOfFireMultiplier()
-				}
-				dot.Spell.DealPeriodicDamage(sim, result)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -84,10 +78,9 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         baseSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var baseDamage = baseDamage + baseSpellCoeff*spell.SpellDamage()
-
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {

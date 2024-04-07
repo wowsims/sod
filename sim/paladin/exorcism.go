@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core/stats"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/stats"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -64,13 +65,14 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.429,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hasExorcist || target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + 0.429*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
 
 			var bonusCrit float64
 			if hasExorcist && (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {

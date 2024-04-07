@@ -82,12 +82,12 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 			},
 		},
 
-		NumberOfTicks: int32(numTicks),
-		TickLength:    tickDuration,
+		NumberOfTicks:    int32(numTicks),
+		TickLength:       tickDuration,
+		BonusCoefficient: dotSpellCoeff,
 
-		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			dot.SnapshotBaseDamage = baseDotDamage + dotSpellCoeff*dot.Spell.SpellDamage()
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			dot.Snapshot(target, baseDotDamage, isRollover)
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -103,10 +103,11 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		},
 	}
 
+	spell.BonusCoefficient = baseSpellCoeff
+
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		curTarget := target
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			baseDamage := baseDamage + baseSpellCoeff*spell.SpellDamage()
 			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.Dot(curTarget).Apply(sim)

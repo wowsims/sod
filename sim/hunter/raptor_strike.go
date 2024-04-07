@@ -47,6 +47,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			BonusCritRating: float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 
 			DamageMultiplier: 1.5 * dwSpecMulti,
+			BonusCoefficient: 1,
 		})
 	}
 
@@ -75,6 +76,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1 * dwSpecMulti,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			flankingStrikeStacks := float64(hunter.FlankingStrikeAura.GetStacks())
@@ -87,9 +89,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				weaponDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 
-			mhBaseDamage := baseDamage +
-				weaponDamage +
-				spell.BonusWeaponDamage()
+			mhBaseDamage := baseDamage + weaponDamage
 
 			if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
 				mhBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)
@@ -115,9 +115,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 					ohWeaponDamage = ohSpell.Unit.OHWeaponDamage(sim, ohSpell.MeleeAttackPower())
 				}
 
-				ohBaseDamage := baseDamage*0.5 +
-					ohWeaponDamage +
-					ohSpell.BonusWeaponDamage()
+				ohBaseDamage := baseDamage*0.5 + ohWeaponDamage
 
 				if hasFlankingStrike && hunter.FlankingStrikeAura.IsActive() {
 					ohBaseDamage *= 1.0 + (flankingStrikeDmgMult * flankingStrikeStacks)

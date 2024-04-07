@@ -60,9 +60,10 @@ func (priest *Priest) getSmiteBaseConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: priest.searingLightDamageModifier() * priest.forceOfWillDamageModifier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

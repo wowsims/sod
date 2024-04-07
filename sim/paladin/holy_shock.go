@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core/stats"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/stats"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -65,9 +66,10 @@ func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + spellCoeff*spell.SpellDamage()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
 			bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
 			spell.BonusCritRating += bonusCrit

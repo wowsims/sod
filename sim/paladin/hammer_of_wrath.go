@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core/proto"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/proto"
 
 	"github.com/wowsims/sod/sim/core"
 )
@@ -56,13 +57,14 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.429,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 				return sim.IsExecutePhase20()
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := sim.Roll(rank.damageLow, rank.damageHigh) + 0.429*spell.SpellDamage()
+				damage := sim.Roll(rank.damageLow, rank.damageHigh)
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
 				// should be based on target.CurrentHealthPercent(), which is not available

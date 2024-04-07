@@ -1,10 +1,11 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 	"strconv"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 
 	"github.com/wowsims/sod/sim/core"
 )
@@ -52,15 +53,14 @@ func (paladin *Paladin) getConsecrationBaseConfig(rank int, cd core.Cooldown) co
 			NumberOfTicks:       8,
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: false,
-			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
-				target := paladin.CurrentTarget
-				dot.SnapshotBaseDamage = baseDamage + 0.042*dot.Spell.SpellDamage()
+			BonusCoefficient:    0.042,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, baseDamage, isRollover)
 				if hasWrath {
 					dot.Spell.BonusCritRating += paladin.GetStat(stats.MeleeCrit)
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 					dot.Spell.BonusCritRating -= paladin.GetStat(stats.MeleeCrit)
 				}
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)

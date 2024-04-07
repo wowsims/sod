@@ -16,6 +16,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
 
+	snapshotBase := 0.0
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
@@ -49,17 +51,17 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				Label: "SerpentSting" + hunter.Label + strconv.Itoa(rank),
 				Tag:   "SerpentSting",
 			},
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    5,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = baseDamage + spellCoeff*dot.Spell.SpellDamage()
-				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				} else {
+				dot.Snapshot(target, baseDamage, isRollover)
+				if isRollover {
 					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera
-					dot.SnapshotBaseDamage += spellCoeff * (dot.Spell.SpellDamage() - dot.Spell.Unit.GetStat(stats.NaturePower))
+					dot.SnapshotBaseDamage = snapshotBase + spellCoeff*(dot.Spell.BonusDamage()-dot.Spell.Unit.GetStat(stats.NaturePower))
+				} else {
+					snapshotBase = dot.SnapshotBaseDamage
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -91,13 +93,12 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell() *core.Spell {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics,
 
-
-		BonusCritRating:          1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
+		BonusCritRating: 1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
 
 		CritDamageBonus: hunter.mortalShots(),
 
 		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		ThreatMultiplier:         1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := (hunter.SerpentSting.Dot(target).SnapshotBaseDamage * 5) * 0.48

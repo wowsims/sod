@@ -29,17 +29,11 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 		DamageMultiplierAdditive: 1, // + 0.02*float64(warlock.Talents.Emberstorm), Not affected by any talent atm
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				targetDamage := baseDamage + spellCoeff*spell.SpellDamage()
-
-				// TODO: Right now Immolation Aura is not listed in the Lake of Fire debuff affected spells
-				// if warlock.LakeOfFireAuras != nil && warlock.LakeOfFireAuras.Get(aoeTarget).IsActive() {
-				// 	targetDamage *= 1.4
-				// }
-
-				spell.CalcAndDealDamage(sim, aoeTarget, targetDamage, spell.OutcomeAlwaysHit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeAlwaysHit)
 			}
 		},
 	})
