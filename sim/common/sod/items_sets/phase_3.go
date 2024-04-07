@@ -32,16 +32,14 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
 						//aura.SetStacks(sim, aura.MaxStacks)
 
-						// TODO: Blocked by Bonus Damage Taken feature implementation
-						// for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
-						// 	aura.Unit.PseudoStats.BonusDamageTaken[si] += 50
-						// }
+						for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
+							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 50
+						}
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						// TODO: Blocked by Bonus Damage Taken feature implementation
-						// for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
-						// 	aura.Unit.PseudoStats.BonusDamageTaken[si] -= 50
-						// }
+						for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
+							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] -= 50
+						}
 					},
 					// OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					// 	if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {

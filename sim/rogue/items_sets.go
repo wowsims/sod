@@ -32,16 +32,14 @@ var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
 						aura.SetStacks(sim, aura.MaxStacks)
 
-						// TODO: Blocked by Bonus Damage Taken feature implementation
-						// for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
-						// 	aura.Unit.PseudoStats.BonusDamageTaken[si] += 7
-						// }
+						for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
+							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 7
+						}
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						// TODO: Blocked by Bonus Damage Taken feature implementation
-						// for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
-						// 	aura.Unit.PseudoStats.BonusDamageTaken[si] -= 7
-						// }
+						for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
+							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] -= 7
+						}
 					},
 					OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 						if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {

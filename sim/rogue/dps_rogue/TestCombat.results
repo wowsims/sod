@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
   weights: 0.38886
-  weights: 0.63099
+  weights: 0.63104
   weights: 0
   weights: 0
   weights: 0
@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.35351
-  weights: 3.3872
-  weights: 3.89736
+  weights: 3.38725
+  weights: 3.89853
   weights: 0
   weights: 0
   weights: 0
@@ -295,29 +295,29 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 557.15964
-  tps: 395.58334
+  dps: 557.30875
+  tps: 395.68921
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 255.12484
-  tps: 181.13864
+  dps: 255.27213
+  tps: 181.24322
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 221.63088
-  tps: 157.35792
+  dps: 221.75728
+  tps: 157.44767
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 294.20403
-  tps: 208.88486
+  dps: 294.40403
+  tps: 209.02686
  }
 }
 dps_results: {
@@ -344,22 +344,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 258.33093
-  tps: 183.41496
+  dps: 258.47627
+  tps: 183.51815
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 222.19621
-  tps: 157.75931
+  dps: 222.32181
+  tps: 157.84849
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 293.78694
-  tps: 208.58873
+  dps: 293.98294
+  tps: 208.72789
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 535.80631
-  tps: 380.42248
+  dps: 535.94791
+  tps: 380.52302
  }
 }

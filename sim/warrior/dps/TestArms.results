@@ -68,8 +68,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: -0.01702
-  weights: 10.50703
-  weights: 10.00206
+  weights: 10.50764
+  weights: 10.00201
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl40-Average-Default"
  value: {
-  dps: 834.95407
-  tps: 723.89221
+  dps: 835.04576
+  tps: 723.96556
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 60.39543
-  tps: 126.00071
+  dps: 60.40179
+  tps: 126.0058
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 47.03879
-  tps: 45.50566
+  dps: 47.04409
+  tps: 45.5099
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Human-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 68.63386
-  tps: 64.11079
+  dps: 68.64093
+  tps: 64.11644
  }
 }
 dps_results: {
@@ -148,22 +148,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 62.31047
-  tps: 127.66854
+  dps: 62.31648
+  tps: 127.67335
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 48.78163
-  tps: 46.85165
+  dps: 48.78693
+  tps: 46.85589
  }
 }
 dps_results: {
  key: "TestArms-Lvl40-Settings-Orc-phase_2_2h-Arms-phase_2_arms-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 71.62857
-  tps: 66.59334
+  dps: 71.63564
+  tps: 66.59899
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 781.92783
-  tps: 678.48463
+  dps: 782.01016
+  tps: 678.55049
  }
 }
