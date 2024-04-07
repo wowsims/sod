@@ -24,13 +24,13 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 
 			procAuras := c.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 				return target.GetOrRegisterAura(core.Aura{
-					Label:    "Malelovance Proc",
-					ActionID: core.ActionID{SpellID: 449920},
-					Duration: time.Second * 30,
-					//MaxStacks: 30, // If the debuff has stacks uncomment everything related to stacks
+					Label:     "Malelovance Proc",
+					ActionID:  core.ActionID{SpellID: 449920},
+					Duration:  time.Second * 30,
+					MaxStacks: 1,
 
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						//aura.SetStacks(sim, aura.MaxStacks)
+						aura.SetStacks(sim, aura.MaxStacks)
 
 						for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
 							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 50
@@ -41,11 +41,11 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] -= 50
 						}
 					},
-					// OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// 	if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {
-					// 		aura.RemoveStack(sim)
-					// 	}
-					// },
+					OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {
+							aura.RemoveStack(sim)
+						}
+					},
 				})
 			})
 
