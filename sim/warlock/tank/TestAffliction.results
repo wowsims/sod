@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.05798
+  weights: 0.05811
   weights: 0
-  weights: 0.55299
-  weights: 0
-  weights: 0
+  weights: 0.55301
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.37695
+  weights: 0
+  weights: 0
+  weights: 0.37886
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
-  dps: 168.25488
-  tps: 325.82813
+  dps: 169.24964
+  tps: 327.14618
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 204.05653
-  tps: 613.30297
+  dps: 205.30973
+  tps: 614.72614
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 168.29047
-  tps: 325.49431
+  dps: 169.28388
+  tps: 326.81245
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 182.29299
-  tps: 347.19222
+  dps: 183.48171
+  tps: 348.70497
  }
 }
 dps_results: {
@@ -148,22 +148,22 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 204.05653
-  tps: 613.30297
+  dps: 205.30973
+  tps: 614.72614
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 168.29047
-  tps: 325.49431
+  dps: 169.28388
+  tps: 326.81245
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 182.29299
-  tps: 347.19222
+  dps: 183.48171
+  tps: 348.70497
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 168.36738
-  tps: 325.60968
+  dps: 169.36079
+  tps: 326.92781
  }
 }

@@ -621,11 +621,14 @@ func CurseOfVulnerabilityAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 427143},
 		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			// TODO: Add other schools
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += 2
+			for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 2
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 2
+			for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] -= 2
+			}
 		},
 	})
 }

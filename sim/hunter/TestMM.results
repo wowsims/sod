@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestMM-Lvl25-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.43869
+  weights: 0.4388
   weights: 0
   weights: 0
   weights: 0
@@ -117,8 +117,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.02322
-  weights: 2.34555
-  weights: 1.72533
+  weights: 2.34689
+  weights: 1.72606
   weights: 0
   weights: 0
   weights: 0
@@ -166,7 +166,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.11574
-  weights: 3.18926
+  weights: 3.18972
   weights: 4.05878
   weights: 0
   weights: 0
@@ -197,29 +197,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestMM-Lvl25-Average-Default"
  value: {
-  dps: 218.50977
-  tps: 101.49667
+  dps: 218.72965
+  tps: 101.71744
  }
 }
 dps_results: {
  key: "TestMM-Lvl25-Settings-Dwarf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 218.97668
-  tps: 110.32929
+  dps: 219.35049
+  tps: 110.70511
  }
 }
 dps_results: {
  key: "TestMM-Lvl25-Settings-Dwarf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 205.71696
-  tps: 95.57634
+  dps: 205.93948
+  tps: 95.80107
  }
 }
 dps_results: {
  key: "TestMM-Lvl25-Settings-Dwarf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 255.18129
-  tps: 115.26732
+  dps: 255.40383
+  tps: 115.50088
  }
 }
 dps_results: {
@@ -246,22 +246,22 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 225.24556
-  tps: 111.28989
+  dps: 225.6197
+  tps: 111.66605
  }
 }
 dps_results: {
  key: "TestMM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 212.12648
-  tps: 97.73181
+  dps: 212.35221
+  tps: 97.95975
  }
 }
 dps_results: {
  key: "TestMM-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 260.95168
-  tps: 115.85705
+  dps: 261.17422
+  tps: 116.0906
  }
 }
 dps_results: {
@@ -288,43 +288,43 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 215.32035
-  tps: 100.03212
+  dps: 215.54163
+  tps: 100.25415
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 324.68008
-  tps: 175.65079
+  dps: 324.78776
+  tps: 175.75908
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Average-Default"
  value: {
-  dps: 328.02934
-  tps: 177.69569
+  dps: 328.14098
+  tps: 177.80819
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 692.36774
-  tps: 884.6856
+  dps: 692.52598
+  tps: 884.84477
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 600.0183
-  tps: 475.97927
+  dps: 600.17638
+  tps: 476.13827
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 625.0752
-  tps: 500.67523
+  dps: 625.2264
+  tps: 500.83107
  }
 }
 dps_results: {
@@ -351,22 +351,22 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 696.63451
-  tps: 881.45154
+  dps: 696.79275
+  tps: 881.61071
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 606.25827
-  tps: 475.7063
+  dps: 606.41651
+  tps: 475.86547
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 631.56296
-  tps: 499.55986
+  dps: 631.71416
+  tps: 499.7157
  }
 }
 dps_results: {
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 313.09602
-  tps: 163.46972
+  dps: 313.1964
+  tps: 163.57088
  }
 }
