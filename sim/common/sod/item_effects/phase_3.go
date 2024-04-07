@@ -573,6 +573,7 @@ func init() {
 			Name:       "Engulfing Shadows",
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellDamage,
+			Outcome:    core.OutcomeLanded,
 			ProcChance: .10,
 			Handler:    handler,
 		})
