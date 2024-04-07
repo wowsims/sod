@@ -79,27 +79,29 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		}
 	}
 
-	numHits := min(ChainLightningTargetCount, shaman.Env.GetNumTargets())
+	results := make([]*core.SpellResult, min(ChainLightningTargetCount, shaman.Env.GetNumTargets()))
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		if hasRollingThunderRune {
-			shaman.rollRollingThunderCharge(sim)
+		origMult := spell.DamageMultiplier
+		for hitIndex := range results {
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+			results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			target = sim.Environment.NextTargetUnit(target)
+			spell.DamageMultiplier *= ChainLightningBounceCoeff
 		}
 
-		curTarget := target
-		origMult := spell.DamageMultiplier
-		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-
-			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+		for _, result := range results {
+			spell.DealDamage(sim, result)
 
 			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= overloadChance {
-				shaman.ChainLightningOverload[rank].Cast(sim, curTarget)
+				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
 			}
 
-			spell.DamageMultiplier *= ChainLightningBounceCoeff
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
+			if hasRollingThunderRune && !isOverload {
+				shaman.rollRollingThunderCharge(sim)
+			}
 		}
+
 		spell.DamageMultiplier = origMult
 	}
 

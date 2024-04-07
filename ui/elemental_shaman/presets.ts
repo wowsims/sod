@@ -6,6 +6,7 @@ import {
 	Debuffs,
 	EnchantedSigil,
 	FirePowerBuff,
+	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -121,9 +122,9 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	food: Food.FoodNightfinSoup,
-	mainHandImbue: WeaponImbue.WizardOil,
-	offHandImbue: WeaponImbue.WizardOil,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
+	offHandImbue: WeaponImbue.LesserWizardOil,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfGiants,
 });
 
@@ -134,6 +135,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	moonkinAura: true,
+	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

@@ -123,10 +123,10 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	flask: Flask.FlaskOfRestlessDreams,
 	food: Food.FoodNightfinSoup,
-	mainHandImbue: WeaponImbue.WizardOil,
+	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
