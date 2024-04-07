@@ -46,7 +46,6 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 				Label:    "Power Shredder Proc",
 				ActionID: core.ActionID{SpellID: 449925},
 				Duration: time.Second * 10,
-
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					druid.CatForm.CostMultiplier -= 0.3
 					druid.BearForm.CostMultiplier -= 0.3
@@ -67,7 +66,7 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 449924},
 				Callback: core.CallbackOnCastComplete,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == druid.Shred.Spell {
+					if spell.SpellCode == SpellCode_DruidShred {
 						procAura.Activate(sim)
 					}
 				},
