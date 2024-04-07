@@ -373,7 +373,10 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 30, spell.OutcomeMagicHitAndCrit)
-				procAuras.Get(target).Activate(sim)
+
+				if target.Level <= 45 {
+					procAuras.Get(target).Activate(sim)
+				}
 			},
 		})
 	})
