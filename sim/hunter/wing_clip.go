@@ -15,7 +15,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
 

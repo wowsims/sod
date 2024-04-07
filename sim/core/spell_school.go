@@ -173,3 +173,11 @@ func (unit *Unit) GetSchoolCritTakenChance(spell *Spell) float64 {
 	}
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCritTakenChance)
 }
+
+// Returns highest if spell is multi school.
+func (unit *Unit) GetSchoolBonusDamageTaken(spell *Spell) float64 {
+	if !spell.SchoolIndex.IsMultiSchool() {
+		return unit.PseudoStats.SchoolBonusDamageTaken[spell.SchoolIndex]
+	}
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolBonusDamageTaken)
+}

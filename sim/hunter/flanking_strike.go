@@ -31,7 +31,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+			Flags:       core.SpellFlagMeleeMetrics,
 
 			DamageMultiplier: 0.45,
 			BonusCoefficient: 1,
@@ -49,7 +49,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.015,

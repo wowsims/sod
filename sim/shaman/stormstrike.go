@@ -19,10 +19,11 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: shaman.AutoAttacks.OHConfig().DamageMultiplier,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
@@ -36,7 +37,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: .063,
@@ -54,6 +55,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// offhand always swings first

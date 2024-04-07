@@ -425,12 +425,12 @@ type PseudoStats struct {
 	BonusMeleeHitRatingTaken    float64 // Formerly Imp FF and SW Radiance;
 	BonusSpellHitRatingTaken    float64 // Imp FF
 
-	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
-	BonusHealingTaken        float64 // Talisman of Troll Divinity
+	BonusHealingTaken float64 // Talisman of Troll Divinity
 
 	DamageTakenMultiplier       float64            // All damage
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusDamageTaken      [SchoolLen]float64 // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
@@ -464,6 +464,7 @@ func NewPseudoStats() PseudoStats {
 		DamageTakenMultiplier:       1,
 		SchoolDamageTakenMultiplier: NewSchoolFloatArray(1),
 		SchoolCritTakenChance:       NewSchoolFloatArray(0),
+		SchoolBonusDamageTaken:      NewSchoolFloatArray(0),
 
 		BleedDamageTakenMultiplier:  1,
 		PoisonDamageTakenMultiplier: 1,

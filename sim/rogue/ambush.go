@@ -29,7 +29,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags() | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),

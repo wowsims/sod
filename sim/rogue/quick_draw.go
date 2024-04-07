@@ -28,7 +28,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       rogue.builderFlags() | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       rogue.builderFlags(),
 
 		MissileSpeed: 40,
 

@@ -15,7 +15,7 @@ func (warrior *Warrior) registerQuickStrike() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagBloodSurge,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,
@@ -31,6 +31,7 @@ func (warrior *Warrior) registerQuickStrike() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(0.10*spell.MeleeAttackPower(), 0.20*spell.MeleeAttackPower())
