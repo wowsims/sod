@@ -120,7 +120,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	food: Food.FoodNightfinSoup,
 	mainHandImbue: WeaponImbue.LesserWizardOil,
 	offHandImbue: WeaponImbue.LesserWizardOil,
