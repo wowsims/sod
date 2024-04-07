@@ -101,7 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		BuffDebuffInputs.ManaSpringTotem,
 		BuffDebuffInputs.JudgementOfWisdom,
 	],
-	excludeBuffDebuffInputs: [WeaponImbue.ElementalSharpeningStone, WeaponImbue.DenseSharpeningStone, WeaponImbue.WildStrikes, BuffDebuffInputs.BleedDebuff],
+	excludeBuffDebuffInputs: [WeaponImbue.ElementalSharpeningStone, WeaponImbue.DenseSharpeningStone, WeaponImbue.WildStrikes],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
