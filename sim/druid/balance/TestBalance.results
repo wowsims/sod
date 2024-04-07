@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.02808
   final_stats: 0
   final_stats: 0
-  final_stats: 482.41
+  final_stats: 532.41
   final_stats: 3
   final_stats: 7.99686
   final_stats: 0
@@ -77,7 +77,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2059.96
-  final_stats: 50
+  final_stats: 200
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 25.2645
   final_stats: 0
   final_stats: 0
-  final_stats: 677.584
+  final_stats: 752.584
   final_stats: 2
   final_stats: 25.30629
   final_stats: 0
@@ -126,7 +126,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2219.79
-  final_stats: 75
+  final_stats: 300
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -200,7 +200,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.19397
+  weights: -0.19472
   weights: 0
   weights: 0.77253
   weights: 0
@@ -210,8 +210,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.28447
-  weights: 3.40325
+  weights: 5.27801
+  weights: 3.40348
   weights: 0
   weights: 0
   weights: 0
@@ -259,8 +259,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.60494
-  weights: 6.53467
+  weights: 9.58384
+  weights: 6.53258
   weights: 0
   weights: 0
   weights: 0
@@ -393,8 +393,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
-  dps: 557.6295
-  tps: 568.16794
+  dps: 559.023
+  tps: 569.56144
  }
 }
 dps_results: {
@@ -484,15 +484,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 553.83525
-  tps: 564.38493
+  dps: 555.13005
+  tps: 565.67974
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
-  dps: 1029.18077
-  tps: 1047.17267
+  dps: 1031.72689
+  tps: 1049.71879
  }
 }
 dps_results: {
@@ -582,7 +582,7 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1024.16643
-  tps: 1042.13368
+  dps: 1026.56981
+  tps: 1044.53705
  }
 }
