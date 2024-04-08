@@ -91,11 +91,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
@@ -123,10 +123,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase2][0].gear,
+					3: Presets.GearPresets[Phase.Phase3][0].gear,
+
 				},
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase2][0].gear,
+					3: Presets.GearPresets[Phase.Phase3][0].gear,
 				},
 			},
 		},
