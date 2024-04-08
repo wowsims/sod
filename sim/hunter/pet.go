@@ -15,12 +15,12 @@ type HunterPet struct {
 
 	hunterOwner *Hunter
 
-	KillCommandAura *core.Aura
+	killCommandAura *core.Aura
 
 	specialAbility *core.Spell
 	focusDump      *core.Spell
 
-	FlankingStrike *core.Spell
+	flankingStrike *core.Spell
 
 	uptimePercent    float64
 	hasOwnerCooldown bool
@@ -249,10 +249,10 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 func (hp *HunterPet) killCommandMult() float64 {
-	if hp.KillCommandAura == nil {
+	if hp.killCommandAura == nil {
 		return 1
 	}
-	return 1 + 0.2*float64(hp.KillCommandAura.GetStacks())
+	return 1 + 0.2*float64(hp.killCommandAura.GetStacks())
 }
 
 const PetExpertiseScale = 3.25
