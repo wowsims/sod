@@ -262,19 +262,27 @@ func ApplyAtalAiProc(character *Character, atalAi proto.AtalAi) {
 
 	switch atalAi {
 	case proto.AtalAi_AtalAiWar:
-		procAura := character.NewTemporaryStatsAura("Voodoo Frenzy Proc", ActionID{SpellID: 446335}, stats.Stats{stats.Strength: 35}, time.Second*10)
-		procAura.Icd = &icd
+
+		procAuraStr := character.NewTemporaryStatsAura("Voodoo Frenzy Str Proc", ActionID{SpellID: 446335}, stats.Stats{stats.Strength: 35}, time.Second*10)
+		procAuraAgi := character.NewTemporaryStatsAura("Voodoo Frenzy Agi Proc", ActionID{SpellID: 449409}, stats.Stats{stats.Agility: 35}, time.Second*10)
+		procAuraStr.Icd = &icd
+		procAuraAgi.Icd = &icd
 
 		MakePermanent(character.RegisterAura(Aura{
 			Label: "Voodoo Frenzy",
 			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) || !icd.IsReady(sim) {
+				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeOrRanged) || !icd.IsReady(sim) {
 					return
 				}
 
 				if sim.Proc(0.15, "Voodoo Frenzy") {
 					icd.Use(sim)
-					procAura.Activate(sim)
+
+					if aura.Unit.GetStat(stats.Strength) > aura.Unit.GetStat(stats.Agility) {
+						procAuraStr.Activate(sim)
+					} else {
+						procAuraAgi.Activate(sim)
+					}
 				}
 			},
 		}))
