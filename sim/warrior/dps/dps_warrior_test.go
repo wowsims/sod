@@ -38,15 +38,15 @@ func TestArms(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassWarrior,
-			Level:      40,
+			Level:      50,
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-			Talents:     P2ArmsTalents,
-			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_2h"),
-			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2_arms"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase2Consumes,
+			Talents:     P3ArmsTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_3_2h"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_3_arms"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
 			ItemFilter:      ItemFilters,
@@ -91,6 +91,8 @@ var P2ArmsTalents = "303050213525100001"
 
 var P2FuryTalents = "-05050005405010051"
 
+var P3ArmsTalents = "303050213520105001-0505"
+
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
 	Consumes: &proto.Consumes{
@@ -107,6 +109,18 @@ var Phase2Consumes = core.ConsumesCombo{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DragonBreathChili: true,
 		Food:              proto.Food_FoodSagefishDelight,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodGrilledSquid,
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
 		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
 		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
