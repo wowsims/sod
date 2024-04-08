@@ -256,8 +256,6 @@ func (warrior *Warrior) applyWreckingCrew() {
 		},
 	})
 
-	warrior.WreckingCrewEnrageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: 1})
-
 	warrior.RegisterAura(core.Aura{
 		Label:    "Wrecking Crew",
 		Duration: core.NeverExpires,
