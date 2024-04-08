@@ -30,6 +30,22 @@ func TestAffliction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 50,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase3NFRuinTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p3", "nf.ruin"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "nf.ruin"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -96,22 +112,6 @@ func TestDestruction(t *testing.T) {
 			Talents:     Phase3BackdraftTalents,
 			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p3", "backdraft"),
 			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "backdraft"),
-			Buffs:       core.FullBuffsPhase3,
-			Consumes:    Phase3Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
-			StatsToWeigh:    Stats,
-		},
-		{
-			Class: proto.Class_ClassWarlock,
-			Level: 50,
-			Race:  proto.Race_RaceOrc,
-
-			Talents:     Phase3NFRuinTalents,
-			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p3", "nf.ruin"),
-			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "nf.ruin"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
