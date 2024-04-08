@@ -9,6 +9,7 @@ import (
 const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
+	LibramOfFervor                       = 23203
 )
 
 func init() {

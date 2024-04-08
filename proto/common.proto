@@ -618,6 +618,7 @@ message Consumes {
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
+	bool judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
 
 	// Bonus spell damage

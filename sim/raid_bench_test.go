@@ -201,8 +201,9 @@ func BenchmarkSimulate(b *testing.B) {
 				ManaSpringTotem:  proto.TristateEffect_TristateEffectImproved,
 			},
 			Debuffs: &proto.Debuffs{
-				JudgementOfWisdom: true,
-				CurseOfElements:   true,
+				JudgementOfWisdom:      true,
+				JudgementOfTheCrusader: true,
+				CurseOfElements:        true,
 			},
 		},
 		Encounter: &proto.Encounter{
