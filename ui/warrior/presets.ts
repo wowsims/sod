@@ -18,10 +18,13 @@ import { Warrior_Options as WarriorOptions, WarriorShout } from '../core/proto/w
 import Phase1APLArms from './apls/phase_1_arms.apl.json';
 import Phase2APLArms from './apls/phase_2_arms.apl.json';
 import Phase2APLFury from './apls/phase_2_fury.apl.json';
+import Phase3APLArms from './apls/phase_3_arms.apl.json';
+
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 import Phase22HGear from './gear_sets/phase_2_2h.gear.json';
 import Phase2DWGear from './gear_sets/phase_2_dw.gear.json';
+import Phase32HGear from './gear_sets/phase_3_2h.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -32,20 +35,20 @@ import Phase2DWGear from './gear_sets/phase_2_dw.gear.json';
 
 export const GearArmsPhase1 = PresetUtils.makePresetGear('P1 Arms 2H', Phase1Gear, { talentTree: 0 });
 export const GearArmsDWPhase1 = PresetUtils.makePresetGear('P1 Arms DW', Phase1DWGear, { talentTree: 0 });
-export const GearArmsPhase2 = PresetUtils.makePresetGear('P2 Arms', Phase22HGear, { talentTree: 0 });
-export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 Fury', Phase1Gear, { talentTree: 1 });
-export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 Fury', Phase2DWGear, { talentTree: 1 });
+export const GearArmsPhase2 = PresetUtils.makePresetGear('P2 2H', Phase22HGear, { talentTree: 0 });
+export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 DW Fury', Phase1Gear, { talentTree: 1 });
+export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 DW', Phase2DWGear, { talentTree: 1 });
+export const GearArmsPhase3 = PresetUtils.makePresetGear('P3 2H', Phase32HGear, { talentTree: 0 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
 	[Phase.Phase2]: [GearArmsPhase2, GearFuryPhase2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearArmsPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-// TODO: Phase 3
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -54,11 +57,12 @@ export const DefaultGear = GearPresets[Phase.Phase2][0];
 export const APLPhase1Arms = PresetUtils.makePresetAPLRotation('P1 Preset Arms', Phase1APLArms);
 export const APLPhase2Arms = PresetUtils.makePresetAPLRotation('P2 Preset Arms', Phase2APLArms);
 export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Preset Fury', Phase2APLFury);
+export const APLPhase3Arms = PresetUtils.makePresetAPLRotation('P3 Preset Arms', Phase3APLArms);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1Arms],
 	[Phase.Phase2]: [APLPhase2Arms, APLPhase2Fury],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [APLPhase3Arms],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -74,11 +78,10 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		1: APLPresets[Phase.Phase2][1],
 		2: APLPresets[Phase.Phase2][0],
 	},
-	// TODO: Phase 3
 	50: {
-		0: APLPresets[Phase.Phase2][0],
-		1: APLPresets[Phase.Phase2][1],
-		2: APLPresets[Phase.Phase2][0],
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][1],
+		2: APLPresets[Phase.Phase3][0],
 	},
 };
 
@@ -110,17 +113,23 @@ export const TalentsPhase2Arms = {
 	}),
 };
 
+export const TalentsPhase3Arms = {
+	name: 'P3 Arms',
+	data: SavedTalents.create({
+		talentsString: '303050213520105001-0505'
+	}),
+}
+
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [TalentsPhase3Arms],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-// TODO: Phase 3
-export const DefaultTalentsFury = TalentPresets[Phase.Phase2][0];
-export const DefaultTalentsArms = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsFury = TalentPresets[Phase.Phase2][1];
+export const DefaultTalentsArms = TalentPresets[Phase.Phase3][0];
 
 export const DefaultTalents = DefaultTalentsArms;
 
