@@ -26,7 +26,9 @@ func (druid *Druid) registerSunfireSpell() {
 
 	druid.SunfireDotMultiplier = 1
 
-	druid.Sunfire = druid.RegisterSpell(Humanoid|Bear|Cat|Moonkin, core.SpellConfig{
+	// TODO: Sunfire (Cat) and Sunfire (Bear)
+
+	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414684},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
