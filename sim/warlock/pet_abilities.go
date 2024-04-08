@@ -114,7 +114,7 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 }
 
 func (wp *WarlockPet) registerCleaveSpell() {
-	numHits := min(2, wp.Env.GetNumTargets())
+	results := make([]*core.SpellResult, min(2, wp.Env.GetNumTargets()))
 
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 427744},
@@ -142,11 +142,13 @@ func (wp *WarlockPet) registerCleaveSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			for idx := range results {
 				baseDamage := 2.0 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

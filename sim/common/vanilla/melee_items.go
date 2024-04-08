@@ -187,7 +187,7 @@ func init() {
 			},
 		})
 
-		makeDebuffAura := func(target *core.Unit) *core.Aura {
+		debuffAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 			return target.GetOrRegisterAura(core.Aura{
 				Label:    "Thunderfury",
 				ActionID: procActionID,
@@ -199,13 +199,9 @@ func init() {
 					target.AddStatDynamic(sim, stats.NatureResistance, 25)
 				},
 			})
-		}
+		})
 
-		numHits := min(5, character.Env.GetNumTargets())
-		debuffAuras := make([]*core.Aura, len(character.Env.Encounter.TargetUnits))
-		for i, target := range character.Env.Encounter.TargetUnits {
-			debuffAuras[i] = makeDebuffAura(target)
-		}
+		results := make([]*core.SpellResult, min(5, character.Env.GetNumTargets()))
 
 		bounceSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    procActionID.WithTag(2),
@@ -216,14 +212,15 @@ func init() {
 			FlatThreatBonus:  63,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					result := spell.CalcDamage(sim, curTarget, 0, spell.OutcomeMagicHit)
+				for idx := range results {
+					results[idx] = spell.CalcDamage(sim, target, 0, spell.OutcomeMagicHit)
+					target = sim.Environment.NextTargetUnit(target)
+				}
+				for _, result := range results {
 					if result.Landed() {
-						debuffAuras[target.Index].Activate(sim)
+						debuffAuras[result.Target.Index].Activate(sim)
 					}
 					spell.DealDamage(sim, result)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			},
 		})

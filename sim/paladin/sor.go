@@ -50,7 +50,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	level := sorLevels[rank]
 
 	levelsToScale := min(paladin.Level, scalingLevelMax) - scalingLevelMin
-	baseCoefficientFinal := basePoints + float64(levelsToScale)*pointsPerLevel
+	baseCoefficientFinal := basePoints + 1 + float64(levelsToScale)*pointsPerLevel
 
 	handednessModifier := sor1hModifier
 	if paladin.Has2hEquipped() {
