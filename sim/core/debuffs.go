@@ -33,8 +33,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		}
 	}
 
-	if debuffs.JudgementOfTheCrusader && targetIdx == 0 {
-		MakePermanent(JudgementOfTheCrusaderAura(target, level, 1, 0))
+	if targetIdx == 0 {
+		if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectRegular {
+			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1, 0))
+		} else if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectImproved {
+			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1.15, 0))
+		}
 	}
 
 	if debuffs.ImprovedShadowBolt && targetIdx == 0 {

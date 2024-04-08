@@ -819,7 +819,7 @@ export const JudgementOfWisdom = withLabel(
 	'Judgement of Wisdom',
 );
 export const JudgementOfTheCrusader = withLabel(
-	makeBooleanDebuffInput({
+	makeTristateDebuffInput({
 		actionId: player =>
 			player.getMatchingSpellActionId([
 				{ id: 20300, minLevel: 22, maxLevel: 31 },
@@ -827,6 +827,7 @@ export const JudgementOfTheCrusader = withLabel(
 				{ id: 20302, minLevel: 42, maxLevel: 51 },
 				{ id: 20303, minLevel: 52 },
 			]),
+		impId: ActionId.fromSpellId(20337),
 		fieldName: 'judgementOfTheCrusader',
 		showWhen: player => player.getFaction() == Faction.Alliance,
 	}),

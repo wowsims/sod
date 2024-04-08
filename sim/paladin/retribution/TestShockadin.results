@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
   weights: 0.69096
-  weights: -1.04017
+  weights: -1.04212
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.63765
-  weights: 0.36447
+  weights: 2.65969
+  weights: 0.36772
   weights: 0
   weights: 0
   weights: 0.28552
-  weights: -3.90489
-  weights: 7.27346
+  weights: -3.91705
+  weights: 7.31901
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
-  dps: 559.87028
-  tps: 577.90315
+  dps: 562.11413
+  tps: 580.147
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 571.37774
-  tps: 858.15405
+  dps: 572.77635
+  tps: 859.55266
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 167.38437
-  tps: 181.7635
+  dps: 168.78461
+  tps: 183.16374
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 183.014
-  tps: 198.70882
+  dps: 184.58224
+  tps: 200.27705
  }
 }
 dps_results: {
@@ -148,22 +148,22 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 579.30656
-  tps: 868.90266
+  dps: 580.71936
+  tps: 870.31546
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 166.97364
-  tps: 181.40324
+  dps: 168.37801
+  tps: 182.8076
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 184.07043
-  tps: 199.79152
+  dps: 185.64804
+  tps: 201.36913
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 542.76278
-  tps: 561.05398
+  dps: 544.98167
+  tps: 563.27287
  }
 }

@@ -202,7 +202,7 @@ func BenchmarkSimulate(b *testing.B) {
 			},
 			Debuffs: &proto.Debuffs{
 				JudgementOfWisdom:      true,
-				JudgementOfTheCrusader: true,
+				JudgementOfTheCrusader: proto.TristateEffect_TristateEffectImproved,
 				CurseOfElements:        true,
 			},
 		},
