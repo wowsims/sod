@@ -17,7 +17,8 @@ var ItemSetDreadHuntersChain = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.AttackPower, 20)
 		},
 		3: func(agent core.Agent) {
-			// Implemented in rapid_fire.go
+			c := agent.GetCharacter()
+			c.AddBonusRangedCritRating(2)
 		},
 	},
 })

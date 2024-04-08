@@ -43,7 +43,7 @@ func (hunter *Hunter) registerRapidFire() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute * time.Duration(core.TernaryInt(hasDreadhunter3Pc, 3, 5)),
+				Duration: time.Minute * 5,
 			},
 		},
 
