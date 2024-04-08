@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestRetribution-Lvl40-StatWeights-Default"
  value: {
   weights: 0.66831
-  weights: 0.6091
+  weights: 0.63843
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.11171
+  weights: 2.2567
   weights: 0.07016
   weights: 0
   weights: 0
   weights: 0.30378
-  weights: 6.81509
-  weights: 7.32398
+  weights: 6.97325
+  weights: 7.5648
   weights: 0
   weights: 0
   weights: 0
@@ -295,29 +295,29 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
-  dps: 596.86287
-  tps: 611.02038
+  dps: 613.56673
+  tps: 627.72424
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 378.65135
-  tps: 629.46571
+  dps: 389.77146
+  tps: 640.58582
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 212.61786
-  tps: 224.85623
+  dps: 222.8335
+  tps: 235.07187
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 225.8151
-  tps: 237.85455
+  dps: 236.50435
+  tps: 248.5438
  }
 }
 dps_results: {
@@ -344,22 +344,22 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 378.12542
-  tps: 626.48643
+  dps: 389.16659
+  tps: 637.5276
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 213.20136
-  tps: 225.39232
+  dps: 223.44331
+  tps: 235.63426
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 226.96604
-  tps: 239.04231
+  dps: 237.73751
+  tps: 249.81379
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 563.38991
-  tps: 577.43697
+  dps: 579.44516
+  tps: 593.49222
  }
 }

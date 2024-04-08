@@ -73,9 +73,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	})
 	// Necessary because of the mix of % base mana cost and flat reduction on the libram
 	manaCost := paladin.BaseMana * 0.04
-	if paladin.Ranged().ID == LibramOfBenediction {
-		manaCost -= 10
-	}
+	manaCost -= paladin.GetLibramSealCostReduction()
 	aura := paladin.SealOfMartyrdomAura
 	paladin.SealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    auraActionID,

@@ -822,6 +822,21 @@ export const JudgementOfWisdom = withLabel(
 	}),
 	'Judgement of Wisdom',
 );
+export const JudgementOfTheCrusader = withLabel(
+	makeTristateDebuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 20300, minLevel: 22, maxLevel: 31 },
+				{ id: 20301, minLevel: 32, maxLevel: 41 },
+				{ id: 20302, minLevel: 42, maxLevel: 51 },
+				{ id: 20303, minLevel: 52 },
+			]),
+		impId: ActionId.fromSpellId(20337),
+		fieldName: 'judgementOfTheCrusader',
+		showWhen: player => player.getFaction() == Faction.Alliance,
+	}),
+	'Judgement of the Crusader',
+);
 
 // Misc Debuffs
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
@@ -1125,6 +1140,11 @@ export const DEBUFFS_CONFIG = [
 		config: BleedDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
+	},
+	{
+		config: JudgementOfTheCrusader,
+		picker: IconPicker,
+		stats: [Stat.StatHolyPower],
 	},
 	{
 		config: SpellISBDebuff,
