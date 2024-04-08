@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	DevilsaurEye            = 19991
 	DevilsaurTooth          = 19992
 	SignetOfBeasts          = 209823
 	BloodlashBow            = 216516
@@ -15,6 +16,46 @@ const (
 )
 
 func init() {
+	core.NewItemEffect(DevilsaurEye, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		procBonus := stats.Stats{
+			stats.AttackPower:       150,
+			stats.RangedAttackPower: 150,
+			stats.MeleeHit:          2,
+		}
+		aura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Devilsaur Fury",
+			ActionID: core.ActionID{SpellID: 24352},
+			Duration: time.Second * 20,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, procBonus)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, procBonus.Invert())
+			},
+		})
+
+		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 24352},
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    hunter.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		hunter.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
 	core.NewItemEffect(DevilsaurTooth, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		if hunter.pet == nil {
