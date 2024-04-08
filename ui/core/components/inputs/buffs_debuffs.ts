@@ -264,7 +264,11 @@ export const BattleShoutBuff = withLabel(
 
 export const TrueshotAuraBuff = withLabel(
 	makeBooleanRaidBuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 19506, minLevel: 40 }]),
+		actionId: player => player.getMatchingSpellActionId([
+				{ id: 19506, minLevel: 40, maxLevel: 49 },
+				{ id: 20905, minLevel: 50, maxLevel: 59 },
+				{ id: 20906, minLevel: 60},
+			]),
 		fieldName: 'trueshotAura',
 	}),
 	'Trueshot Aura',
