@@ -16,6 +16,8 @@ const SpellFlagLoF = core.SpellFlagAgentReserved2 // Spell is affected by Lake o
 const (
 	SpellCode_WarlockNone int32 = iota
 	SpellCode_WarlockShadowCleave
+	SpellCode_Corruption
+	SpellCode_DrainLife
 )
 
 type Warlock struct {

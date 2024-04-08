@@ -6,7 +6,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
@@ -15,8 +14,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	spellCoeff := [10]float64{0, .08, .125, .185, .2, .2, .2, .2, .2, .2}[rank]
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
-
-	snapshotBase := 0.0
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -57,12 +54,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
-				if isRollover {
-					// Serpent Sting double dips on the generic spell power of the hunter when rollovered with Chimera
-					dot.SnapshotBaseDamage = snapshotBase + spellCoeff*(dot.Spell.BonusDamage()-dot.Spell.Unit.GetStat(stats.NaturePower))
-				} else {
-					snapshotBase = dot.SnapshotBaseDamage
-				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
@@ -70,7 +61,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Reports of Bow of Searing Arrows proccing from SS applications means it has a hit event
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {

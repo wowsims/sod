@@ -26,7 +26,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	})
 
 	if hunter.pet != nil {
-		hunter.pet.FlankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
+		hunter.pet.flankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 415320},
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
@@ -77,7 +77,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if hunter.pet != nil {
-				hunter.pet.FlankingStrike.Cast(sim, hunter.pet.CurrentTarget)
+				hunter.pet.flankingStrike.Cast(sim, hunter.pet.CurrentTarget)
 			}
 
 			hunter.FlankingStrikeAura.Activate(sim)

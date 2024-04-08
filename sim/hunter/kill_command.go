@@ -28,7 +28,7 @@ func (hunter *Hunter) registerKillCommand() {
 		MaxStacks: 3,
 	})
 
-	hunter.pet.KillCommandAura = hunter.pet.RegisterAura(core.Aura{
+	hunter.pet.killCommandAura = hunter.pet.RegisterAura(core.Aura{
 		Label:     "Kill Command",
 		ActionID:  actionID,
 		Duration:  time.Second * 30,
@@ -61,8 +61,8 @@ func (hunter *Hunter) registerKillCommand() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			hunter.pet.KillCommandAura.Activate(sim)
-			hunter.pet.KillCommandAura.SetStacks(sim, 3)
+			hunter.pet.killCommandAura.Activate(sim)
+			hunter.pet.killCommandAura.SetStacks(sim, 3)
 
 			hunterAura.Activate(sim)
 			hunterAura.SetStacks(sim, 3)

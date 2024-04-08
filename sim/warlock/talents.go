@@ -400,7 +400,7 @@ func (warlock *Warlock) applyNightfall() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warlock.Corruption || spell == warlock.DrainLife {
+			if spell.SpellCode == SpellCode_Corruption || spell.SpellCode == SpellCode_DrainLife {
 				if sim.Proc(nightfallProcChance, "Nightfall") {
 					warlock.NightfallProcAura.Activate(sim)
 
