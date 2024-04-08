@@ -75,18 +75,6 @@ func (hunter *Hunter) registerFocusFireSpell() {
 	hunter.FocusFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: focusFireActionId,
 		Flags:    core.SpellFlagAPL,
-		ManaCost: core.ManaCostOptions{
-			FlatCost: 0, // TODO: Update when mana cost is known
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 15, // TODO: Update when cooldown is known (Currently using the cooldown value from Cataclysm)
-			},
-		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.pet.IsEnabled() && (hunterPetFrenzyAura.GetStacks() > 0)
 		},
