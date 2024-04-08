@@ -88,6 +88,38 @@ func TestDestruction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 50,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase3BackdraftTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p3", "backdraft"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "backdraft"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 50,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase3NFRuinTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p3", "nf.ruin"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "nf.ruin"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -96,6 +128,9 @@ var Phase1DestructionTalents = "-03-0550201"
 var Phase2AfflictionTalents = "3500253012201105--1"
 var Phase2DemonologyTalents = "-2050033132501051"
 var Phase2DestructionTalents = "-01-055020512000415"
+
+var Phase3BackdraftTalents = "-032004-5050205102005151"
+var Phase3NFRuinTalents = "25002500102-03-50502051020001"
 
 var defaultDestroOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
@@ -155,6 +190,18 @@ var Phase2Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodSagefishDelight,
 		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_LesserArcaneElixir,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_SuperiorManaPotion,
+		FirePowerBuff:   proto.FirePowerBuff_ElixirOfFirepower,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+		Food:            proto.Food_FoodSagefishDelight,
+		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 

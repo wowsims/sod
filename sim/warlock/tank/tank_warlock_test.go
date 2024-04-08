@@ -91,6 +91,22 @@ func TestDestruction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 50,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase3DestructionTalents,
+			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "p3.destro.tank"),
+			Rotation:    core.GetAplRotation("../../../ui/tank_warlock/apls", "p3.destro.tank"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -99,6 +115,8 @@ var Phase1DestructionTalents = "-03-0550201"
 
 var Phase2DemonologyTalents = "-2050033112501251"
 var Phase2DestructionTalents = "-035-05500050025001"
+
+var Phase3DestructionTalents = "05-03-505020500050515"
 
 var defaultDestroOptions = &proto.WarlockOptions{
 	Armor:       proto.WarlockOptions_DemonArmor,
@@ -166,6 +184,18 @@ var Phase2Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodSagefishDelight,
 		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_LesserArcaneElixir,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_SuperiorManaPotion,
+		FirePowerBuff:   proto.FirePowerBuff_ElixirOfFirepower,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+		Food:            proto.Food_FoodSagefishDelight,
+		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 

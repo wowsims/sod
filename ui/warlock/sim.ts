@@ -13,6 +13,7 @@ import {
 	Spec,
 	Stat,
 } from '../core/proto/common.js';
+import { WarlockRune } from '../core/proto/warlock';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as WarlockInputs from './inputs.js';
@@ -194,24 +195,34 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
 	},
 
 	autoRotation: player => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const level = player.getLevel()
+		if (level < 50) {
+			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		}
+
+		const hasBackdraft = player.getEquippedItem(ItemSlot.ItemSlotHead)?.rune?.id == WarlockRune.RuneHelmBackdraft;
+		const specNumber = hasBackdraft ? 2 : 0;
+		return Presets.DefaultAPLs[50][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [
