@@ -265,7 +265,7 @@ func (druid *Druid) applyOmenOfClarity() {
 				return
 			}
 
-			if spell.Flags.Matches(SpellFlagOmen) {
+			if spell.Flags.Matches(SpellFlagOmen) && spell.DefaultCast.Cost > 0 {
 				aura.Deactivate(sim)
 			}
 		},
