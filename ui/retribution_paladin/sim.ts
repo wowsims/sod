@@ -73,6 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeHaste,
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
+		Stat.StatHolyPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatMana,

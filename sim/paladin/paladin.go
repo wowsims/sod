@@ -55,6 +55,7 @@ type Paladin struct {
 	SealOfRighteousness []*core.Spell
 	SealOfCommand       []*core.Spell
 	SealOfMartyrdom     *core.Spell
+	SealOfTheCrusader   *core.Spell
 
 	SealOfRighteousnessAura []*core.Aura
 	SealOfCommandAura       []*core.Aura
@@ -93,6 +94,7 @@ func (paladin *Paladin) Initialize() {
 
 	paladin.registerSealOfCommandSpellAndAura()
 	paladin.registerSealOfMartyrdomSpellAndAura()
+	paladin.registerSealOfTheCrusader()
 
 	// Active abilities
 	paladin.registerCrusaderStrikeSpell()
@@ -173,4 +175,14 @@ func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *c
 	paladin.CurrentJudgement = judgement
 	paladin.CurrentSeal.Activate(sim)
 	paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
+}
+
+func (paladin *Paladin) GetLibramSealCostReduction() float64 {
+	if paladin.Ranged().ID == LibramOfBenediction {
+		return 10
+	}
+	if paladin.Ranged().ID == LibramOfBenediction {
+		return 20
+	}
+	return 0
 }

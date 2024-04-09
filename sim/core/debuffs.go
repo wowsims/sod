@@ -33,6 +33,14 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		}
 	}
 
+	if targetIdx == 0 {
+		if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectRegular {
+			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1, 0))
+		} else if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectImproved {
+			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1.15, 0))
+		}
+	}
+
 	if debuffs.ImprovedShadowBolt && targetIdx == 0 {
 		ExternalIsbCaster(debuffs, target)
 	}
@@ -430,6 +438,42 @@ func JudgementOfLightAura(target *Unit) *Aura {
 			if !spell.ProcMask.Matches(ProcMaskMelee) || !result.Landed() {
 				return
 			}
+		},
+	})
+}
+
+func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBonus float64) *Aura {
+	var spellId int32
+	var bonus float64
+
+	switch level {
+	case 25:
+		spellId = 20300
+		bonus = 50
+	case 40:
+		spellId = 20301
+		bonus = 80
+	case 50:
+		spellId = 20302
+		bonus = 110
+	default:
+		spellId = 20303
+		bonus = 140
+	}
+
+	bonus *= mult
+	bonus += extraBonus
+
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Judgement of the Crusader",
+		ActionID: ActionID{SpellID: spellId},
+		Duration: 30 * time.Second,
+
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += bonus
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= bonus
 		},
 	})
 }

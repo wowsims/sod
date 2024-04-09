@@ -230,3 +230,7 @@ func (paladin *Paladin) applyVengeance() {
 // 		},
 // 	})
 // }
+
+func (paladin *Paladin) GetImprovedSealOfTheCrusaderMult() float64 {
+	return 1 + 0.05*float64(paladin.Talents.ImprovedSealOfTheCrusader)
+}

@@ -42,6 +42,11 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 						}
 					},
 					OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+						if aura.RemainingDuration(sim) == aura.Duration {
+							return
+						}
+
 						if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {
 							aura.RemoveStack(sim)
 						}
@@ -261,7 +266,7 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 				Name:       "Extra Attack",
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 0.05,
+				ProcChance: 0.03,
 				Handler:    handler,
 			})
 		},

@@ -18,6 +18,7 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Data/source.lua")
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
 	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_PvP/data.lua")
+	readAtlasLootFactionData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Factions/data.lua")
 
 	readZoneData(db)
 
@@ -198,19 +199,82 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 			fmt.Printf("Reputation: %s\n", repLevel)
 
 			for _, factionMatch := range factionItemsPattern.FindAllStringSubmatch(repLevelMatch[2], -1) {
-				faction := factionMatch[1]
-				fmt.Printf("Faction: %s\n", faction)
+				factionStr := factionMatch[1]
+				fmt.Printf("Faction: %s\n", factionStr)
 
 				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(factionMatch[0], -1) {
 					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
 
 					idStr := itemParams[1]
 					itemID, _ := strconv.Atoi(idStr)
-					//fmt.Printf("Item: %d\n", itemID)
+
+					if itemID != 0 {
+						// fmt.Printf("Item: %d\n", itemID)
+						repSource := &proto.RepSource{
+							RepFactionId: AtlasLootPVPFactions[zoneID][factionStr],
+							RepLevel:     AtlasLootRepLevels[repLevel],
+							FactionId:    core.Ternary(factionStr == "ALLIANCE", proto.Faction_Alliance, proto.Faction_Horde),
+						}
+
+						item := &proto.UIItem{Id: int32(itemID)}
+						item.Sources = append(item.Sources, &proto.UIItemSource{
+							Source: &proto.UIItemSource_Rep{
+								Rep: repSource,
+							},
+						})
+						if factionStr == "ALLIANCE" {
+							item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
+						} else if factionStr == "HORDE" {
+							item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
+						}
+
+						db.MergeItem(item)
+					}
+				}
+			}
+		}
+	}
+}
+
+func readAtlasLootFactionData(db *WowDatabase, expansion proto.Expansion, srcUrl string) {
+	srcTxt, err := tools.ReadWeb(srcUrl)
+	if err != nil {
+		log.Fatalf("Error reading atlasloot file %s", err)
+	}
+
+	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
+	regex := regexp.MustCompile(`\r?\n`)
+	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
+	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
+
+	factionpattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sFactionID = (\d+),.*?items = {(.*?)@@@}@@@`)
+	repLevelPattern := regexp.MustCompile(`{ -- (Friendly|Honored|Revered|Exalted)[\d]?@@@\s+name =(.*?@@@\s+},?@@@\s+},?)`)
+	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
+
+	for _, factionMatch := range factionpattern.FindAllStringSubmatch(srcTxt, -1) {
+		factionID, err := strconv.Atoi(factionMatch[2])
+		if err != nil {
+			fmt.Printf("Error reading faction %s\n", factionMatch[1])
+			return
+		}
+		fmt.Printf("Faction: %s\n", factionMatch[1])
+
+		for _, repLevelMatch := range repLevelPattern.FindAllStringSubmatch(factionMatch[3], -1) {
+			repLevel := repLevelMatch[1]
+			fmt.Printf("Reputation: %s\n", repLevel)
+
+			fmt.Println(repLevelMatch[2])
+			for _, itemMatch := range itemsPattern.FindAllStringSubmatch(repLevelMatch[2], -1) {
+				itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+
+				idStr := itemParams[1]
+				itemID, _ := strconv.Atoi(idStr)
+
+				if itemID != 0 {
+					// fmt.Printf("Item: %d\n", itemID)
 					repSource := &proto.RepSource{
-						RepFactionId: AtlasLootPVPFactions[zoneID][faction],
+						RepFactionId: proto.RepFaction(factionID),
 						RepLevel:     AtlasLootRepLevels[repLevel],
-						FactionId:    core.Ternary(faction == "ALLIANCE", proto.Faction_Alliance, proto.Faction_Horde),
 					}
 
 					item := &proto.UIItem{Id: int32(itemID)}
@@ -219,11 +283,6 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 							Rep: repSource,
 						},
 					})
-					if faction == "ALLIANCE" {
-						item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
-					} else if faction == "HORDE" {
-						item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
-					}
 
 					db.MergeItem(item)
 				}
@@ -286,7 +345,7 @@ var AtlasLootPVPFactions = map[int]map[string]proto.RepFaction{
 		// The League of Arathor
 		"ALLIANCE": proto.RepFaction_RepFactionLeagueOfArathor,
 		// The Defilers
-		"HORDE": proto.RepFaction_RepFactionDefilers,
+		"HORDE": proto.RepFaction_RepFactionTheDefilers,
 	},
 	2597: {
 		// Stormpike Guard

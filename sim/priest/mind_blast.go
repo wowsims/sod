@@ -72,14 +72,6 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		ThreatMultiplier: priest.shadowThreatModifier(),
 		BonusCoefficient: spellCoeff,
 
-		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			damage := (baseDamageLow + baseDamageHigh) / 2
-			spell.DamageMultiplier *= priest.MindBlastModifier
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-			spell.DamageMultiplier /= priest.MindBlastModifier
-			return result
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh))
 
@@ -110,6 +102,14 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			}
 
 			spell.DealDamage(sim, result)
+		},
+
+		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			damage := (baseDamageLow + baseDamageHigh) / 2
+			spell.DamageMultiplier *= priest.MindBlastModifier
+			result := spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
+			spell.DamageMultiplier /= priest.MindBlastModifier
+			return result
 		},
 	}
 }

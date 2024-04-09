@@ -54,11 +54,11 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
 
-			if backdraft != nil {
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.Landed() && backdraft != nil {
 				backdraft.Activate(sim)
 			}
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			immoDot := warlock.getActiveImmolateSpell(target).Dot(target)
 			if warlock.Shadowflame != nil {

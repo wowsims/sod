@@ -111,13 +111,35 @@ enum RepLevel {
 }
 
 enum RepFaction {
-	RepFactionUnknown 						= 0;
-	RepFactionSilverwingSentinels = 890;
-	RepFactionWarsongOutriders 		= 889;
-	RepFactionLeagueOfArathor 		= 509;
-	RepFactionDefilers 						= 510;
-	RepFactionStormpikeGuard 			= 730;
-	RepFactionFrostwolfClan 			= 729;
+	RepFactionUnknown					= 0;
+
+	// Vanilla PVP Factions
+	// Warsong Gulch
+	RepFactionSilverwingSentinels		= 890;
+	RepFactionWarsongOutriders			= 889;
+	// Arathi Basin
+	RepFactionLeagueOfArathor			= 509;
+	RepFactionTheDefilers				= 510;
+	// Alterac Valley
+	RepFactionStormpikeGuard			= 730;
+	RepFactionFrostwolfClan				= 729;
+
+	// Vanilla Factions
+	RepFactionArgentDawn				= 529;
+	RepFactionBloodsailBuccaneers		= 87;
+	RepFactionBroodOfNozdormu			= 910;
+	RepFactionCenarionCircle			= 609;
+	RepFactionHydraxianWaterlords		= 749;
+	RepFactionTimbermawHold				= 576;
+	RepFactionThoriumBrotherhood		= 59;
+	RepFactionWintersaberTrainers 		= 589;
+	RepFactionZandalarTribe				= 270;
+
+	// SoD Factions
+	RepFactionAzerothCommerceAuthority	= 2586;
+	RepFactionDurotarSupplyAndLogistics	= 2587;
+	RepFactionEmeraldWardens			= 2641;
+	
 }
 
 message UIItemSource {

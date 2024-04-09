@@ -158,17 +158,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
@@ -179,7 +182,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
 
 		// MC vs LoF
-		const specNumber = hasMasterChanneler ? 0 : 1
+		const specNumber = hasMasterChanneler ? 0 : 1;
 		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
 	},
 
