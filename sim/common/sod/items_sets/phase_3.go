@@ -251,8 +251,8 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.MeleeCrit, 1)
-			c.AddStat(stats.SpellCrit, 1)
+			c.AddStat(stats.MeleeHit, 1)
+			c.AddStat(stats.SpellHit, 1)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
