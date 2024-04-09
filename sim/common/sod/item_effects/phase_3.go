@@ -154,7 +154,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(150, 250), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(225, 375), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
@@ -169,7 +169,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				targetAura := decayAuras.Get(target)
-				result := spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 					targetAura.Activate(sim)

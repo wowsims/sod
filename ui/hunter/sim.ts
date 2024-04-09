@@ -5,10 +5,9 @@ import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, RangedWeaponType, Spec, Stat } from '../core/proto/common.js';
+import { ItemSlot, PartyBuffs, PseudoStat, Spec, Stat } from '../core/proto/common.js';
 import { HunterRune } from '../core/proto/hunter.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -146,12 +145,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase3], 
+			...Presets.TalentPresets[Phase.Phase2], 
+			...Presets.TalentPresets[Phase.Phase1]
+		],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase3], 
+			...Presets.APLPresets[Phase.Phase2], 
+			...Presets.APLPresets[Phase.Phase1]
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
-		builds: [Presets.PresetBuildRangedBM, Presets.PresetBuildRangedMM, Presets.PresetBuildMeleeSV],
+		gear: [
+			...Presets.GearPresets[Phase.Phase3], 
+			...Presets.GearPresets[Phase.Phase2], 
+			...Presets.GearPresets[Phase.Phase1]
+		],
+		builds: [
+			Presets.PresetBuildMeleeBM, 
+			Presets.PresetBuildRangedMM
+		],
 	},
 
 	autoRotation: player => {
@@ -160,88 +174,96 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization;
 
 		if (isMelee) {
-			return Presets.DefaultAPLs[player.getLevel()][2].rotation.rotation!;
+			return player.getLevel() == 50 ? Presets.APLMeleeBmPhase3.rotation.rotation! : player.getLevel() == 40 ? Presets.APLMeleePhase2.rotation.rotation! : Presets.APLMeleeWeavePhase1.rotation.rotation!;
 		} else {
-			if (player.getTalentTree() == 1) {
-				return Presets.DefaultAPLs[player.getLevel()][1].rotation.rotation!;
+			if (player.getLevel() == 50) {
+				return Presets.APLRangedMmPhase3.rotation.rotation!;
+			} else if (player.getLevel() == 40) {
+				if (player.getTalentTree() == 1) {
+					return Presets.APLRangedMmPhase2.rotation.rotation!;
+				} else {
+					return Presets.APLRangedBmPhase2.rotation.rotation!;
+				}
 			} else {
-				return Presets.DefaultAPLs[player.getLevel()][0].rotation.rotation!;
+				return Presets.APLMeleeWeavePhase1.rotation.rotation!;
 			}
 		}
 	},
 
 	raidSimPresets: [
-		{
-			spec: Spec.SpecHunter,
-			tooltip: 'Beast Mastery Hunter',
-			defaultName: 'Beast Mastery',
-			iconUrl: getSpecIcon(Class.ClassHunter, 0),
+		// Raid sim presets dont work very well with SoD specs between phases
+		// and we dont support raid sim atm so just comment this out
+		// {
+		// 	spec: Spec.SpecHunter,
+		// 	tooltip: 'Beast Mastery Hunter',
+		// 	defaultName: 'Beast Mastery',
+		// 	iconUrl: getSpecIcon(Class.ClassHunter, 0),
 
-			talents: Presets.DefaultTalentsBeastMastery.data,
-			specOptions: Presets.BMDefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-			},
-		},
-		{
-			spec: Spec.SpecHunter,
-			tooltip: 'Marksmanship Hunter',
-			defaultName: 'Marksmanship',
-			iconUrl: getSpecIcon(Class.ClassHunter, 1),
-			talents: Presets.DefaultTalentsMarksman.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-			},
-		},
-		{
-			spec: Spec.SpecHunter,
-			tooltip: 'Survival Hunter',
-			defaultName: 'Survival',
-			iconUrl: getSpecIcon(Class.ClassHunter, 2),
+		// 	talents: Presets.DefaultTalentsBeastMastery.data,
+		// 	specOptions: Presets.BMDefaultOptions,
+		// 	consumes: Presets.DefaultConsumes,
+		// 	defaultFactionRaces: {
+		// 		[Faction.Unknown]: Race.RaceUnknown,
+		// 		[Faction.Alliance]: Race.RaceNightElf,
+		// 		[Faction.Horde]: Race.RaceOrc,
+		// 	},
+		// 	defaultGear: {
+		// 		[Faction.Unknown]: {},
+		// 		[Faction.Alliance]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][0].gear,
+		// 		},
+		// 		[Faction.Horde]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][0].gear,
+		// 		},
+		// 	},
+		// },
+		// {
+		// 	spec: Spec.SpecHunter,
+		// 	tooltip: 'Marksmanship Hunter',
+		// 	defaultName: 'Marksmanship',
+		// 	iconUrl: getSpecIcon(Class.ClassHunter, 1),
+		// 	talents: Presets.DefaultTalentsMarksman.data,
+		// 	specOptions: Presets.DefaultOptions,
+		// 	consumes: Presets.DefaultConsumes,
+		// 	defaultFactionRaces: {
+		// 		[Faction.Unknown]: Race.RaceUnknown,
+		// 		[Faction.Alliance]: Race.RaceNightElf,
+		// 		[Faction.Horde]: Race.RaceOrc,
+		// 	},
+		// 	defaultGear: {
+		// 		[Faction.Unknown]: {},
+		// 		[Faction.Alliance]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][1].gear,
+		// 		},
+		// 		[Faction.Horde]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][1].gear,
+		// 		},
+		// 	},
+		// },
+		// {
+		// 	spec: Spec.SpecHunter,
+		// 	tooltip: 'Survival Hunter',
+		// 	defaultName: 'Survival',
+		// 	iconUrl: getSpecIcon(Class.ClassHunter, 2),
 
-			talents: Presets.DefaultTalentsSurvival.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
-				},
-			},
-		},
+		// 	talents: Presets.DefaultTalentsSurvival.data,
+		// 	specOptions: Presets.DefaultOptions,
+		// 	consumes: Presets.DefaultConsumes,
+		// 	defaultFactionRaces: {
+		// 		[Faction.Unknown]: Race.RaceUnknown,
+		// 		[Faction.Alliance]: Race.RaceNightElf,
+		// 		[Faction.Horde]: Race.RaceOrc,
+		// 	},
+		// 	defaultGear: {
+		// 		[Faction.Unknown]: {},
+		// 		[Faction.Alliance]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][2].gear,
+		// 		},
+		// 		[Faction.Horde]: {
+		// 			1: Presets.GearPresets[Phase.Phase1][2].gear,
+		// 		},
+		// 	},
+		// },
 	],
 });
 
