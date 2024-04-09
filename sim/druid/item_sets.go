@@ -48,14 +48,14 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					druid.CatForm.CostMultiplier -= 0.3
-					druid.BearForm.CostMultiplier -= 0.3
+					//druid.BearForm.CostMultiplier -= 0.3
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					druid.CatForm.CostMultiplier += 0.3
-					druid.BearForm.CostMultiplier += 0.3
+					//druid.BearForm.CostMultiplier += 0.3
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell == druid.CatForm.Spell || spell == druid.BearForm.Spell {
+					if spell == druid.CatForm.Spell /* || spell == druid.BearForm.Spell */ {
 						aura.Deactivate(sim)
 					}
 				},
