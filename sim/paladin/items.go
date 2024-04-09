@@ -10,6 +10,7 @@ const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
 	LibramOfFervor                       = 23203
+	LibramOfHope                         = 22401
 )
 
 func init() {
