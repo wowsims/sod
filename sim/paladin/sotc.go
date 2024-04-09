@@ -53,7 +53,7 @@ func makeJudgementOfTheCrusader(paladin *Paladin) *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
 			if result.Landed() {
 				debuffs.Get(target).Activate(sim)
 			}
