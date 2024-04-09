@@ -56,7 +56,7 @@ func TestElemental(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     Phase3Talents,
-			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2"),
+			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_3"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
@@ -128,7 +128,7 @@ func BenchmarkSimulate(b *testing.B) {
 					Class:         proto.Class_ClassShaman,
 					Level:         50,
 					TalentsString: Phase3Talents,
-					Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2").GearSet,
+					Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3").GearSet,
 					Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_3").Rotation,
 					Buffs:         core.FullIndividualBuffsPhase3,
 					Consumes:      Phase3Consumes.Consumes,
