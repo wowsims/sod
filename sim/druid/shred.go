@@ -20,6 +20,10 @@ func (druid *Druid) registerShredSpell() {
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
+	if druid.Ranged().ID == IdolOfTheDream {
+		shredDamageMultiplier *= 1.02
+	}
+
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: map[int32]int32{
 			25: 5221,
