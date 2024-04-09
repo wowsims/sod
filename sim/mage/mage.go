@@ -36,6 +36,7 @@ const (
 	SpellCode_MageArcaneExplosion
 	SpellCode_MageArcaneMissiles
 	SpellCode_MageArcaneSurge
+	SpellCode_MageBalefireBolt
 	SpellCode_MageFireball
 	SpellCode_MageFireBlast
 	SpellCode_MageFrostbolt
