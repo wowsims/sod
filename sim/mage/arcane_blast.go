@@ -42,6 +42,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 					mage.ArcaneMissilesTickSpell,
 					{mage.ArcaneSurge},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
