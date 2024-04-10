@@ -19,6 +19,11 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 	baseLowDamage := hunter.baseRuneAbilityDamage() * 0.36 * 1.15 // Buff from 1/3/2024 - verify with new build and update numbers
 	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15
 
+	damageMult := 1.0
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		damageMult *= 1.1
+	}
+
 	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		manaCostMultiplier -= 0.25
@@ -62,7 +67,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target)
+				baseDamage := ( sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target) ) * damageMult
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -71,7 +76,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target)
+			baseDamage := ( sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target) ) * damageMult
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
@@ -81,7 +86,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 					curTarget := target
 					for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 						if curTarget != target {
-							baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget)
+							baseDamage = ( sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget) ) * damageMult
 							spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedCritOnly)
 						}
 

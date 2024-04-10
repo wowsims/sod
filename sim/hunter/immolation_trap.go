@@ -16,6 +16,11 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 
 	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
 
+	damageMult := 1.0
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		damageMult *= 1.1
+	}
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
@@ -52,7 +57,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, dotDamage/5, isRollover)
+				dot.Snapshot(target, dotDamage/5*damageMult, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
