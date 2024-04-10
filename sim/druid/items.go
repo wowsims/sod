@@ -50,7 +50,8 @@ func (druid *Druid) registerCatnipCD() {
 
 func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 	auraActionID := core.ActionID{SpellID: 436482}
-	numHits := min(3, druid.Env.GetNumTargets())
+
+	results := make([]*core.SpellResult, min(3, druid.Env.GetNumTargets()))
 
 	damageSpell := druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 436481},
@@ -63,10 +64,12 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, 5, spell.OutcomeMagicCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

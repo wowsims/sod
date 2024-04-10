@@ -35,9 +35,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	if targetIdx == 0 {
 		if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectRegular {
-			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1, 0))
+			MakePermanent(JudgementOfTheCrusaderAura(nil, target, level, 1, 0))
 		} else if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectImproved {
-			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1.15, 0))
+			MakePermanent(JudgementOfTheCrusaderAura(nil, target, level, 1.15, 0))
 		}
 	}
 
@@ -226,7 +226,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 	return aura
 }
 
-func ExternalIsbCaster(debuffs *proto.Debuffs, target *Unit) {
+func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
 	isbAura := ImprovedShadowBoltAura(target, 5)
 	isbCrit := isbConfig.casterCrit / 100.0
@@ -442,7 +442,7 @@ func JudgementOfLightAura(target *Unit) *Aura {
 	})
 }
 
-func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBonus float64) *Aura {
+func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult float64, extraBonus float64) *Aura {
 	var spellId int32
 	var bonus float64
 
@@ -467,13 +467,21 @@ func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBo
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Judgement of the Crusader",
 		ActionID: ActionID{SpellID: spellId},
-		Duration: 30 * time.Second,
+		Duration: 10 * time.Second,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += bonus
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= bonus
+		},
+		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if spell.Unit != caster { // caster is nil for permanent auras
+				return
+			}
+			if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
+				aura.Refresh(sim)
+			}
 		},
 	})
 }
