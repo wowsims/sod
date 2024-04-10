@@ -16,6 +16,7 @@ const (
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
+	IdolOfTheDream	          = 220606
 	RitualistsHammer          = 221446
 )
 

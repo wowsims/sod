@@ -45,6 +45,7 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 # Install node
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+source $HOME/.bashrc
 nvm install 19.8.0
 
 # Install the npm package dependencies using node
