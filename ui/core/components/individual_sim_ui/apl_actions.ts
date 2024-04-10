@@ -4,6 +4,7 @@ import {
 	APLAction,
 	APLActionActivateAura,
 	APLActionActivateAuraWithStacks,
+	APLActionAddComboPoints,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
 	APLActionCastPaladinPrimarySeal,
@@ -556,6 +557,21 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.stringFieldConfig('numStacks', {
 				label: 'stacks',
 				labelTooltip: 'Desired number of initial aura stacks.',
+			}),
+		],
+	}),
+	['addComboPoints']: inputBuilder({
+		label: 'Add Combo Points',
+		submenu: ['Misc'],
+		shortDescription: 'Add combo points to target.',
+		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		newValue: () =>
+			APLActionAddComboPoints.create({
+				numPoints: '1',
+			}),
+		fields: [
+			AplHelpers.stringFieldConfig('numPoints', {
+				labelTooltip: 'Desired number of initial combo points.',
 			}),
 		],
 	}),

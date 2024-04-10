@@ -136,7 +136,46 @@ func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
 }
+//START
+type APLActionAddComboPoints struct {
+	defaultAPLActionImpl
+	character *Character
+	numPoints int32
+}
 
+func (rot *APLRotation) newActionAddComboPoints(config *proto.APLActionAddComboPoints) APLActionImpl {
+	character := rot.unit.Env.Raid.GetPlayerFromUnit(rot.unit).GetCharacter()
+	numPoints, err := strconv.Atoi(config.NumPoints)
+	
+	if err != nil {
+		numPoints = 0
+	}
+	return &APLActionAddComboPoints{
+		character: character,
+		numPoints: int32(numPoints),
+	}
+}
+
+func (action *APLActionAddComboPoints) IsReady(sim *Simulation) bool {
+	return true
+}
+
+func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
+	numPoints := strconv.Itoa(int(action.numPoints))
+
+	if sim.Log != nil {
+		action.character.Log(sim, "Adding combo points (%s points)", numPoints)
+	}
+	metrics := action.character.NewComboPointMetrics(ActionID{SpellID: 432264})
+	action.character.AddComboPoints(sim, action.numPoints, metrics)
+}
+
+func (action *APLActionAddComboPoints) String() string {
+	numPoints := strconv.Itoa(int(action.numPoints))
+	return fmt.Sprintf("Add Combo Points(%s)", numPoints)
+}
+
+//END
 type APLActionTriggerICD struct {
 	defaultAPLActionImpl
 	aura *Aura
