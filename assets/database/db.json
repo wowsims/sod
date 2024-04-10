@@ -9778,7 +9778,7 @@
 {"effectId":7223,"spellId":435903,"name":"Enchant Chest - Retricutioner","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7325,"itemId":221322,"spellId":446459,"name":"Atal'ai Signet of Mojo","type":3,"stats":[0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":7326,"itemId":221323,"spellId":446472,"name":"Atal'ai Signet of Serenity","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0],"quality":3},
-{"effectId":7328,"itemId":221321,"spellId":446451,"name":"Atal'ai Signet of Might","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3}
+{"effectId":7328,"itemId":221321,"spellId":446451,"name":"Atal'ai Signet of Might","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3}
 ],
 "runes":[
 {"id":29787,"name":"Engrave Belt - Focused Rage","icon":"ability_warrior_focusedrage","class":9,"type":8,"requiresLevel":1},
