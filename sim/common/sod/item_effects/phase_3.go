@@ -163,12 +163,13 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHit)
 				if result.Landed() {
 					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
 					decayAura.Activate(sim)
