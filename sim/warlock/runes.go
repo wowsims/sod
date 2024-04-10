@@ -249,19 +249,22 @@ func (warlock *Warlock) applyShadowAndFlame() {
 		},
 	})
 
+	procHandler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if !spell.SpellSchool.Matches(core.SpellSchoolFire | core.SpellSchoolShadow) {
+			return
+		}
+
+		if !result.DidCrit() {
+			return
+		}
+
+		procAura.Activate(sim)
+	}
+
 	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-		Label: "Shadow and Flame",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.SpellSchool.Matches(core.SpellSchoolFire | core.SpellSchoolShadow) {
-				return
-			}
-
-			if !result.DidCrit() {
-				return
-			}
-
-			procAura.Activate(sim)
-		},
+		Label:                 "Shadow and Flame",
+		OnSpellHitDealt:       procHandler,
+		OnPeriodicDamageDealt: procHandler,
 	}))
 }
 
