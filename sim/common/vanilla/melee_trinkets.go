@@ -1,4 +1,4 @@
-package sod
+package vanilla
 
 import (
 	"time"

@@ -16,6 +16,7 @@ const (
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
+	IdolOfTheDream            = 220606
 	RitualistsHammer          = 221446
 )
 
@@ -25,6 +26,17 @@ func init() {
 	core.NewItemEffect(IdolMindExpandingMushroom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.Spirit, 5)
+	})
+
+	// https://www.wowhead.com/classic/item=220606/idol-of-the-dream
+	core.NewItemEffect(IdolOfTheDream, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.OnSpellRegistered(func(spell *core.Spell) {
+			// TODO: Also boosts the damage of swipe by 2%
+			if spell.SpellCode == SpellCode_DruidShred /*|| spell.SpellCode == SpellCode_DruidSwipe*/ {
+				spell.DamageMultiplier *= 1.02
+			}
+		})
 	})
 
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
