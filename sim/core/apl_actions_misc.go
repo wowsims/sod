@@ -136,7 +136,7 @@ func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
 }
-//START
+
 type APLActionAddComboPoints struct {
 	defaultAPLActionImpl
 	character *Character
@@ -175,7 +175,6 @@ func (action *APLActionAddComboPoints) String() string {
 	return fmt.Sprintf("Add Combo Points(%s)", numPoints)
 }
 
-//END
 type APLActionTriggerICD struct {
 	defaultAPLActionImpl
 	aura *Aura
