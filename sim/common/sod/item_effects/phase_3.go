@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -31,6 +32,7 @@ const (
 	CobraFangClaw            = 220588
 	SerpentsStriker          = 220589
 	AtalaiBloodRitualCharm   = 220634
+	ScalebaneGreataxe        = 220965
 	DarkmoonCardDecay        = 221307
 	DarkmoonCardOvergrowth   = 221308
 	DarkmoonCardSandstorm    = 221309
@@ -135,13 +137,11 @@ func init() {
 	core.NewItemEffect(DarkmoonCardDecay, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		decayAuras := character.NewEnemyAuraArray(func(target *core.Unit, playerLevel int32) *core.Aura {
-			return target.GetOrRegisterAura(core.Aura{
-				Label:     "Decay" + character.Label,
-				ActionID:  core.ActionID{SpellID: 446393},
-				Duration:  core.NeverExpires,
-				MaxStacks: 5,
-			})
+		decayAura := character.GetOrRegisterAura(core.Aura{
+			Label:     "DMC Decay",
+			ActionID:  core.ActionID{SpellID: 446393},
+			Duration:  core.NeverExpires,
+			MaxStacks: 5,
 		})
 
 		decayStackedSpell := character.RegisterSpell(core.SpellConfig{
@@ -168,16 +168,15 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				targetAura := decayAuras.Get(target)
 				result := spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.CalcAndDealHealing(sim, &character.Unit, result.Damage, spell.OutcomeHealing)
-					targetAura.Activate(sim)
-					targetAura.AddStack(sim)
+					decayAura.Activate(sim)
+					decayAura.AddStack(sim)
 				}
-				if targetAura.GetStacks() == 5 {
+				if decayAura.GetStacks() == 5 {
 					decayStackedSpell.Cast(sim, target)
-					targetAura.Deactivate(sim)
+					decayAura.Deactivate(sim)
 				}
 			},
 		})
@@ -188,7 +187,7 @@ func init() {
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID: core.ActionID{SpellID: 446392},
-			Name:     "Decay Spell Hit",
+			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
 			PPM:      5.0, // Placeholder proc value
@@ -198,7 +197,7 @@ func init() {
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 450110},
-			Name:       "Decay Spell Cast",
+			Name:       "DMC Decay Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage,
 			ProcChance: 0.35,
@@ -626,6 +625,17 @@ func init() {
 				procAuras.Get(target).Activate(sim)
 			},
 		})
+	})
+
+	core.NewItemEffect(ScalebaneGreataxe, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       93,
+				stats.RangedAttackPower: 93,
+			})
+		}
 	})
 
 	core.AddEffectsToTest = true
