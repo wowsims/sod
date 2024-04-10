@@ -182,29 +182,40 @@ func init() {
 			},
 		})
 
+		// Custom ICD so it can be shared by both proc triggers
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 200,
+		}
+
 		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
 			decayProcSpell.Cast(sim, character.CurrentTarget)
 		}
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID: core.ActionID{SpellID: 446392},
 			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
 			PPM:      5.0, // Placeholder proc value
-			ICD:      time.Millisecond * 200,
 			Handler:  handler,
 		})
+		hitAura.Icd = &icd
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		castAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 450110},
 			Name:       "DMC Decay Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage,
 			ProcChance: 0.35,
-			ICD:        time.Millisecond * 200,
 			Handler:    handler,
 		})
+		castAura.Icd = &icd
 	})
 
 	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
