@@ -12,15 +12,14 @@ import (
 // - A 7ppm on-hit proc with a 1s ICD that deals 70% weapon damage and scales with spellpower.
 
 // Judgement of Command has some unusual behaviour in classic:
-// - The judgement operates via a dummy spell, that likely figures out wether or not to apply
-//   half damage if the target is not stunned (counter to the tooltip, the base damage only is
+// - The judgement operates via a dummy spell, that likely figures out whether to apply
+//   half damage if the target is not stunned or not (counter to the tooltip, the base damage only is
 //   multiplied by 2 if the target is stunned). These dummy spells are implemented as targetting
 //   magic defense type, and have no flags to prevent misses, meaning they roll on spell hit table
 //   and can miss. If it succeeds, it calls the "actual" Judgement of Command spell.
 // - The actual Judgement of Command has flags to not miss and to avoid block/parry/dodge, but
 //   it targets the melee defense type and so crits for double damage.
-// - This is accomplished via the use of the SpellFlagPrimaryJudgement spell flag that is used exclusively by
-//   the base judgement spell. The Seal of Command aura watches for this spell, and casts the actual
+//   The Seal of Command aura watches for the base Judgement spell, and casts the actual
 //   Judgement of Command when it successfully is cast.
 
 const socRanks = 5
@@ -61,12 +60,12 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:       core.SpellFlagMeleeMetrics,
 		SpellCode:   SpellCode_PaladinJudgementOfCommand,
 
 		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: socJudgeSpellCoeff,
 
@@ -94,18 +93,17 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		},
 	})
 
-	ppmm := paladin.AutoAttacks.NewPPMManager(7.0, core.ProcMaskMelee)
+	ppmm := paladin.AutoAttacks.NewPPMManager(7, core.ProcMaskMelee)
+
 	icd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 1,
 	}
 
-	auraActionID := core.ActionID{SpellID: spellIDAura}
-	aura := paladin.RegisterAura(core.Aura{
+	paladin.SealOfCommandAura[rank] = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Command" + paladin.Label + strconv.Itoa(rank),
-		Tag:      "Seal",
-		ActionID: auraActionID,
-		Duration: SealDuration,
+		ActionID: core.ActionID{SpellID: spellIDAura},
+		Duration: time.Second * 30,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
 				return
@@ -113,35 +111,30 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 
 			// If a white hit, handle seal proc.
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				if !icd.IsReady(sim) {
-					return
+				if icd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "seal of command") {
+					icd.Use(sim)
+					onSwingProc.Cast(sim, result.Target)
 				}
-				if !ppmm.Proc(sim, spell.ProcMask, "seal of command") {
-					return
-				}
-				// If we get here, SoC has procced, cast it.
-				icd.Use(sim)
-				onSwingProc.Cast(sim, result.Target)
+				return
 			}
+
 			// Else handle Judgements.
-			if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
+			if spell == paladin.Judgement {
 				onJudgementProc.Cast(sim, result.Target)
 			}
-
 		},
 	})
-	paladin.SealOfCommandAura[rank] = aura
 
-	manaCost -= paladin.GetLibramSealCostReduction()
+	aura := paladin.SealOfCommandAura[rank]
 
 	paladin.SealOfCommand[rank] = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    auraActionID,
+		ActionID:    aura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1.0 - (float64(paladin.Talents.Benediction) * 0.03),
+			FlatCost:   manaCost - paladin.GetLibramSealCostReduction(),
+			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -149,7 +142,7 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})

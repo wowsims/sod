@@ -37,7 +37,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 	manaCost := ShadowWordPainManaCost[rank]
 	level := ShadowWordPainLevel[rank]
 
-	numHits := core.TernaryInt32(priest.HasRune(proto.PriestRune_RuneLegsSharedPain), 3, 1)
+	results := make([]*core.SpellResult, min(core.TernaryInt32(priest.HasRune(proto.PriestRune_RuneLegsSharedPain), 3, 1), priest.Env.GetNumTargets()))
 
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
@@ -100,16 +100,17 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				result := spell.CalcAndDealOutcome(sim, curTarget, spell.OutcomeMagicHit)
+			for idx := range results {
+				results[idx] = spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+			for _, result := range results {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
-					priest.AddShadowWeavingStack(sim, curTarget)
-					spell.Dot(curTarget).Apply(sim)
-					spell.DealOutcome(sim, result)
+					spell.SpellMetrics[result.Target.UnitIndex].Hits--
+					priest.AddShadowWeavingStack(sim, result.Target)
+					spell.Dot(result.Target).Apply(sim)
 				}
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				spell.DealOutcome(sim, result)
 			}
 		},
 

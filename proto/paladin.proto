@@ -57,25 +57,32 @@ message PaladinTalents {
 
 enum PaladinRune {
 	PaladinRuneNone = 0;
+
 	RuneHeadFanaticism = 429142;
 	RuneHeadWrath = 429139;
+
 	RuneHandsCrusaderStrike	= 407676;
 	RuneHandsHandOfReckoning = 407631;
 	RuneHandsBeaconOfLight = 407613;
+
 	RuneWristHammerOfTheRighteous = 407632;
 	RuneWristImprovedHammerOfWrath = 429152;
 	RuneWristPurifyingPower = 429144;
-	RuneLegsAvengersShield = 407669;
-	RuneChestSealofMartyrdom = 407798;
+
+	RuneChestSealOfMartyrdom = 407798;
 	RuneChestHornOfLordaeron = 425600;
 	RuneChestDivineStorm = 407778;
+
 	RuneWaistEnlightenedJudgements = 426173;
 	RuneWaistInfusionOfLight = 426065;
 	RuneWaistSheathOfLight = 426158;
+
+	RuneLegsAvengersShield = 407669;
 	RuneLegsInspirationExemplar = 407880;
 	RuneLegsRebuke = 425609;
 	RuneLegsDivineSacrifice = 407804;
 	RuneLegsExorcist = 415076;
+
 	RuneFeetGuardedByTheLight = 415059;
 	RuneFeetSacredShield = 412019;
 	RuneFeetTheArtOfWar = 426157;

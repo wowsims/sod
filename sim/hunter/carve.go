@@ -13,20 +13,19 @@ func (hunter *Hunter) registerCarveSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: 425711}
-	numHits := hunter.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
 
-	hasDwRune := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
+	results := make([]*core.SpellResult, hunter.Env.GetNumTargets())
 
+	var ohSpell *core.Spell
 	if hunter.AutoAttacks.IsDualWielding {
-		hunter.CarveOh = hunter.RegisterSpell(core.SpellConfig{
+		ohSpell = hunter.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID.WithTag(1),
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeOHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-			DamageMultiplier: core.TernaryFloat64(hasDwRune, 1.5, 1) * 0.65,
+			DamageMultiplier: hunter.AutoAttacks.OHConfig().DamageMultiplier * 0.65,
 		})
 	}
 
@@ -59,36 +58,28 @@ func (hunter *Hunter) registerCarveSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			for idx := range results {
 				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
+				results[idx] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 
-			if hunter.CarveOh != nil {
-				hunter.CarveOh.Cast(sim, target)
+			if ohSpell != nil {
+				ohSpell.Cast(sim, target)
 
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-					results[hitIndex] = hunter.CarveOh.CalcDamage(sim, curTarget, baseDamage, hunter.CarveOh.OutcomeMeleeWeaponSpecialHitAndCrit)
-
+				curTarget := target
+				for idx := range results {
+					baseDamage := ohSpell.Unit.OHNormalizedWeaponDamage(sim, ohSpell.MeleeAttackPower())
+					results[idx] = ohSpell.CalcDamage(sim, curTarget, baseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					hunter.CarveOh.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				for _, result := range results {
+					ohSpell.DealDamage(sim, result)
 				}
 			}
 		},

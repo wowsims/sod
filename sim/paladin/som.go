@@ -3,6 +3,7 @@ package paladin
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"time"
 )
 
 // Seal of Martyrdom is a spell consisting of:
@@ -12,20 +13,20 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
-	if !paladin.HasRune(proto.PaladinRune_RuneChestSealofMartyrdom) {
+	if !paladin.HasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
 		return
 	}
 
-	multiplier := 1.0 + 0.03*float64(paladin.Talents.ImprovedSealOfRighteousness)
+	impSoRModifier := 1.0 + 0.03*float64(paladin.Talents.ImprovedSealOfRighteousness)
 
 	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 407803}, // Judgement of Righteousness.
+		ActionID:    core.ActionID{SpellID: 407803}, // Judgement of Martyrdom
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:       core.SpellFlagMeleeMetrics,
 
-		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * multiplier,
+		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * impSoRModifier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -35,14 +36,14 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 	})
 
 	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 407799},
+		ActionID:      core.ActionID{SpellID: 407799}, // Seal of Martyrdom
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: 1,
 
-		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * multiplier,
+		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * impSoRModifier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -51,38 +52,32 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		},
 	})
 
-	auraActionID := core.ActionID{SpellID: 407798}
 	paladin.SealOfMartyrdomAura = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Martyrdom",
-		Tag:      "Seal",
-		ActionID: auraActionID,
-		Duration: SealDuration,
+		ActionID: core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestSealOfMartyrdom)},
+		Duration: time.Second * 30,
 
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				onSwingProc.Cast(sim, result.Target)
-			}
-			if spell.ProcMask.Matches(core.ProcMaskProc) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit | core.ProcMaskProc) {
 				onSwingProc.Cast(sim, result.Target)
 			}
 		},
 	})
-	// Necessary because of the mix of % base mana cost and flat reduction on the libram
-	manaCost := paladin.BaseMana * 0.04
-	manaCost -= paladin.GetLibramSealCostReduction()
+
 	aura := paladin.SealOfMartyrdomAura
+
 	paladin.SealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    auraActionID,
+		ActionID:    aura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1.0 - (float64(paladin.Talents.Benediction) * 0.03),
+			FlatCost:   paladin.BaseMana*0.04 - paladin.GetLibramSealCostReduction(),
+			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -90,7 +85,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})

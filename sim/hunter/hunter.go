@@ -61,7 +61,6 @@ type Hunter struct {
 	SilencingShot  *core.Spell
 	Volley         *core.Spell
 	CarveMh        *core.Spell
-	CarveOh        *core.Spell
 	WingClip       *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
@@ -74,8 +73,6 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
-	ScorpidStingAuras      core.AuraArray
-	TalonOfAlarAura        *core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {

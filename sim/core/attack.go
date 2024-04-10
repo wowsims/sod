@@ -144,8 +144,6 @@ func (unit *Unit) RangedWeaponDamage(sim *Simulation, attackPower float64) float
 	return unit.AutoAttacks.ranged.CalculateWeaponDamage(sim, attackPower)
 }
 
-type MeleeDamageCalculator func(attackPower float64, bonusWeaponDamage float64) float64
-
 // Returns whether this hit effect is associated with the main-hand weapon.
 func (spell *Spell) IsMH() bool {
 	return spell.ProcMask.Matches(ProcMaskMeleeMH)
