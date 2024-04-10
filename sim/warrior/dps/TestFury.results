@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.95198
-  weights: 0.95992
+  weights: 1.96548
+  weights: 1.14313
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.09185
-  weights: 11.75434
-  weights: 11.52283
+  weights: 1.07122
+  weights: 10.94179
+  weights: 12.04275
   weights: 0
   weights: 0
   weights: 0
@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
-  dps: 813.00438
-  tps: 757.5695
+  dps: 813.157
+  tps: 757.67613
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 759.25227
-  tps: 709.88678
+  dps: 754.40745
+  tps: 705.85747
  }
 }

@@ -17,7 +17,11 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 	whelpBaseStats := stats.Stats{
 		stats.Health:      1500, // https://wowwiki-archive.fandom.com/wiki/Dragon%27s_Call
 		stats.Mana:        300,  // TODO: Assumed value. The whelp seems to cast 3 Acid Spits (90 mana) per spawn
-		stats.SpellDamage: 200,  // Puts the Acid Spit damage very close to the below log
+		stats.SpellDamage: 220,  // Puts the Acid Spit damage very close to the below log
+		// Based on this log but more data needed
+		// https://sod.warcraftlogs.com/reports/xTwQVgbjF9cPnd3R#type=damage-done&ability=-13049&view=events&boss=-2&difficulty=0&wipes=2
+		stats.MeleeCrit: 4.5 * core.CritRatingPerCritChance,
+		stats.SpellCrit: 13 * core.CritRatingPerCritChance,
 	}
 
 	whelp := &EmeraldDragonWhelp{
@@ -33,11 +37,10 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 		MainHand: core.Weapon{
 			// These stats are a complete guess from looking at the lone log I could find with Dragon's Call below
 			// https://vanilla.warcraftlogs.com/reports/tQW9mqDrx3R4AdYZ#type=damage-done&ability=-13049&boss=-2&difficulty=0&wipes=2&source=25
-			BaseDamageMin:     20.0,
-			BaseDamageMax:     20.0,
-			SwingSpeed:        1.5,
-			AttackPowerPerDPS: 14.0 / 6.0,
-			SpellSchool:       core.SpellSchoolPhysical,
+			BaseDamageMin: 80.0,
+			BaseDamageMax: 100.0,
+			SwingSpeed:    1.5,
+			SpellSchool:   core.SpellSchoolPhysical,
 		},
 		AutoSwingMelee: true,
 	})
@@ -82,6 +85,8 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
+		// All of the casts and hits in the above log had the same damage so it would seem debuffs are ignored
+		Flags: core.SpellFlagIgnoreModifiers,
 
 		// This is causing errors because of nil spell.Unit.Env in mana.go:315 so setting a cooldown instead
 		// ManaCost: core.ManaCostOptions{
@@ -138,5 +143,6 @@ func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent) {
 }
 
 func ConstructEmeralDragonWhelpPets(character *core.Character) {
+	// Original could have up to 3 whelps active at a time however the SoD version seems to only summon 1 whelp on a 1 minute cooldown
 	character.AddPet(NewEmeraldDragonWhelp(character))
 }
