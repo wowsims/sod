@@ -203,7 +203,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
-				spell.CD.Reset()
+
+				if spell.CD.Timer != nil {
+					spell.CD.Reset()
+				}
 			}
 		},
 	})
