@@ -9,70 +9,84 @@ import (
 
 // Registers all consume-related effects to the Agent.
 // TODO: Classic Consumes
-func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
+func applyConsumeEffects(agent Agent) {
 	character := agent.GetCharacter()
 	consumes := character.Consumes
+
 	if consumes == nil {
 		return
 	}
 
-	if consumes.Flask != proto.Flask_FlaskUnknown {
-		switch consumes.Flask {
-		case proto.Flask_FlaskOfDistilledWisdom:
-			character.AddStats(stats.Stats{
-				stats.Mana: 2000,
-			})
-		case proto.Flask_FlaskOfSupremePower:
-			character.AddStats(stats.Stats{
-				stats.SpellPower: 150,
-			})
-		case proto.Flask_FlaskOfTheTitans:
-			character.AddStats(stats.Stats{
-				stats.Health: 1200,
-			})
-		case proto.Flask_FlaskOfChromaticResistance:
-			character.AddStats(stats.Stats{
-				stats.ArcaneResistance: 25,
-				stats.FireResistance:   25,
-				stats.FrostResistance:  25,
-				stats.NatureResistance: 25,
-				stats.ShadowResistance: 25,
-			})
-		case proto.Flask_FlaskOfRestlessDreams:
-			character.AddStats(stats.Stats{
-				// +30 Spell Damage, +45 Healing Power, +12 MP5
-				stats.SpellDamage:  30,
-				stats.HealingPower: 15,
-				stats.MP5:          12,
-			})
-		case proto.Flask_FlaskOfEverlastingNightmares:
-			character.AddStats(stats.Stats{
-				stats.AttackPower:       45,
-				stats.RangedAttackPower: 45,
-			})
-		}
+	applyFlaskConsumes(character, consumes)
+	applyWeaponImbueConsumes(character, consumes)
+	applyFoodConsumes(character, consumes)
+	applyPhysicalBuffConsumes(character, consumes)
+	applySpellBuffConsumes(character, consumes)
+	applyZanzaBuffConsumes(character, consumes)
+	applyMiscConsumes(character, consumes.MiscConsumes)
+	applyEnchantingConsumes(character, consumes)
+
+	registerPotionCD(agent, consumes)
+	registerConjuredCD(agent, consumes)
+	registerMildlyIrradiatedRejuvCD(agent, consumes)
+	registerExplosivesCD(agent, consumes)
+}
+
+func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
+	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
+	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Flasks
+///////////////////////////////////////////////////////////////////////////
+
+func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.Flask == proto.Flask_FlaskUnknown {
+		return
 	}
 
-	if consumes.DefaultAtalAi != proto.AtalAi_AtalAiUnknown {
-		switch consumes.DefaultAtalAi {
-		case proto.AtalAi_AtalAiWar:
-			character.AddStats(stats.Stats{
-				stats.AttackPower:       48,
-				stats.RangedAttackPower: 48,
-			})
-		case proto.AtalAi_AtalAiForbiddenMagic:
-			character.AddStats(stats.Stats{
-				stats.SpellPower: 40,
-			})
-		case proto.AtalAi_AtalAiLife:
-			character.AddStats(stats.Stats{
-				stats.HealingPower: 45,
-				stats.MP5:          11,
-			})
-		}
-		ApplyAtalAiProc(character, consumes.DefaultAtalAi)
+	switch consumes.Flask {
+	case proto.Flask_FlaskOfDistilledWisdom:
+		character.AddStats(stats.Stats{
+			stats.Mana: 2000,
+		})
+	case proto.Flask_FlaskOfSupremePower:
+		character.AddStats(stats.Stats{
+			stats.SpellPower: 150,
+		})
+	case proto.Flask_FlaskOfTheTitans:
+		character.AddStats(stats.Stats{
+			stats.Health: 1200,
+		})
+	case proto.Flask_FlaskOfChromaticResistance:
+		character.AddStats(stats.Stats{
+			stats.ArcaneResistance: 25,
+			stats.FireResistance:   25,
+			stats.FrostResistance:  25,
+			stats.NatureResistance: 25,
+			stats.ShadowResistance: 25,
+		})
+	case proto.Flask_FlaskOfRestlessDreams:
+		character.AddStats(stats.Stats{
+			// +30 Spell Damage, +45 Healing Power, +12 MP5
+			stats.SpellDamage:  30,
+			stats.HealingPower: 15,
+			stats.MP5:          12,
+		})
+	case proto.Flask_FlaskOfEverlastingNightmares:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       45,
+			stats.RangedAttackPower: 45,
+		})
 	}
+}
 
+///////////////////////////////////////////////////////////////////////////
+//                             Weapon Imbues
+///////////////////////////////////////////////////////////////////////////
+
+func applyWeaponImbueConsumes(character *Character, consumes *proto.Consumes) {
 	// There must be a nicer way to do this...
 	shadowOilIcd := Cooldown{
 		Timer:    character.NewTimer(),
@@ -85,246 +99,6 @@ func applyConsumeEffects(agent Agent, partyBuffs *proto.PartyBuffs) {
 	if character.HasOHWeapon() {
 		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
-
-	if consumes.Food != proto.Food_FoodUnknown {
-		switch consumes.Food {
-		case proto.Food_FoodHotWolfRibs:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 8,
-				stats.Spirit:  8,
-			})
-		case proto.Food_FoodSmokedSagefish:
-			character.AddStats(stats.Stats{
-				stats.MP5: 3,
-			})
-		case proto.Food_FoodSagefishDelight:
-			character.AddStats(stats.Stats{
-				stats.MP5: 6,
-			})
-		case proto.Food_FoodGrilledSquid:
-			character.AddStats(stats.Stats{
-				stats.Agility: 10,
-			})
-		case proto.Food_FoodSmokedDesertDumpling:
-			character.AddStats(stats.Stats{
-				stats.Strength: 20,
-			})
-		case proto.Food_FoodNightfinSoup:
-			character.AddStats(stats.Stats{
-				stats.MP5: 8,
-			})
-		case proto.Food_FoodRunnTumTuberSurprise:
-			character.AddStats(stats.Stats{
-				stats.Intellect: 10,
-			})
-		case proto.Food_FoodDirgesKickChimaerokChops:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 25,
-			})
-		case proto.Food_FoodBlessedSunfruitJuice:
-			character.AddStats(stats.Stats{
-				stats.Spirit: 10,
-			})
-		case proto.Food_FoodBlessSunfruit:
-			character.AddStats(stats.Stats{
-				stats.Strength: 10,
-			})
-		}
-	}
-
-	if consumes.DragonBreathChili {
-		MakePermanent(DragonBreathChiliAura(character))
-	}
-
-	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
-		switch consumes.AgilityElixir {
-		case proto.AgilityElixir_ElixirOfTheMongoose:
-			character.AddStats(stats.Stats{
-				stats.Agility:   25,
-				stats.MeleeCrit: 2 * CritRatingPerCritChance,
-			})
-		case proto.AgilityElixir_ElixirOfGreaterAgility:
-			character.AddStats(stats.Stats{
-				stats.Agility: 25,
-			})
-		case proto.AgilityElixir_ElixirOfAgility:
-			character.AddStats(stats.Stats{
-				stats.Agility: 15,
-			})
-		case proto.AgilityElixir_ElixirOfLesserAgility:
-			character.AddStats(stats.Stats{
-				stats.Agility: 8,
-			})
-		case proto.AgilityElixir_ScrollOfAgility:
-			character.AddStats(BuffSpellByLevel[ScrollOfAgility][character.Level])
-		}
-	}
-
-	if consumes.StrengthBuff != proto.StrengthBuff_StrengthBuffUnknown {
-		switch consumes.StrengthBuff {
-		case proto.StrengthBuff_JujuPower:
-			character.AddStats(stats.Stats{
-				stats.Strength: 30,
-			})
-		case proto.StrengthBuff_ElixirOfGiants:
-			character.AddStats(stats.Stats{
-				stats.Strength: 25,
-			})
-		case proto.StrengthBuff_ElixirOfOgresStrength:
-			character.AddStats(stats.Stats{
-				stats.Strength: 8,
-			})
-		case proto.StrengthBuff_ScrollOfStrength:
-			character.AddStats(BuffSpellByLevel[ScrollOfStrength][character.Level])
-		}
-	}
-
-	if consumes.BoglingRoot {
-		character.PseudoStats.BonusDamage += 1
-	}
-
-	if consumes.SpellPowerBuff != proto.SpellPowerBuff_SpellPowerBuffUnknown {
-		switch consumes.SpellPowerBuff {
-		case proto.SpellPowerBuff_LesserArcaneElixir:
-			character.AddStats(stats.Stats{
-				stats.SpellDamage: 14,
-			})
-		case proto.SpellPowerBuff_ArcaneElixir:
-			character.AddStats(stats.Stats{
-				stats.SpellDamage: 20,
-			})
-		case proto.SpellPowerBuff_GreaterArcaneElixir:
-			character.AddStats(stats.Stats{
-				stats.SpellDamage: 35,
-			})
-		}
-	}
-
-	if consumes.FirePowerBuff != proto.FirePowerBuff_FirePowerBuffUnknown {
-		switch consumes.FirePowerBuff {
-		case proto.FirePowerBuff_ElixirOfFirepower:
-			character.AddStats(stats.Stats{
-				stats.FirePower: 10,
-			})
-		case proto.FirePowerBuff_ElixirOfGreaterFirepower:
-			character.AddStats(stats.Stats{
-				stats.FirePower: 40,
-			})
-		}
-	}
-
-	if consumes.ShadowPowerBuff != proto.ShadowPowerBuff_ShadowPowerBuffUnknown {
-		switch consumes.ShadowPowerBuff {
-		case proto.ShadowPowerBuff_ElixirOfShadowPower:
-			character.AddStats(stats.Stats{
-				stats.ShadowPower: 40,
-			})
-		}
-	}
-
-	if consumes.FrostPowerBuff != proto.FrostPowerBuff_FrostPowerBuffUnknown {
-		switch consumes.FrostPowerBuff {
-		case proto.FrostPowerBuff_ElixirOfFrostPower:
-			character.AddStats(stats.Stats{
-				stats.FrostPower: 15,
-			})
-		}
-	}
-
-	if character.HasProfession(proto.Profession_Enchanting) && consumes.EnchantedSigil != proto.EnchantedSigil_UnknownSigil {
-		switch consumes.EnchantedSigil {
-		case proto.EnchantedSigil_InnovationSigil:
-			character.AddStats(stats.Stats{
-				stats.AttackPower:       20,
-				stats.RangedAttackPower: 20,
-				stats.SpellPower:        20,
-			})
-		case proto.EnchantedSigil_LivingDreamsSigil:
-			character.AddStats(stats.Stats{
-				stats.AttackPower:       50,
-				stats.RangedAttackPower: 50,
-				stats.SpellPower:        50,
-			})
-		}
-	}
-
-	registerPotionCD(agent, consumes)
-	registerConjuredCD(agent, consumes)
-	registerMildlyIrradiatedRejuvCD(agent, consumes)
-	registerExplosivesCD(agent, consumes)
-}
-
-func ApplyAtalAiProc(character *Character, atalAi proto.AtalAi) {
-	icd := Cooldown{
-		Timer:    character.NewTimer(),
-		Duration: time.Second * 40,
-	}
-
-	switch atalAi {
-	case proto.AtalAi_AtalAiWar:
-
-		procAuraStr := character.NewTemporaryStatsAura("Voodoo Frenzy Str Proc", ActionID{SpellID: 446335}, stats.Stats{stats.Strength: 35}, time.Second*10)
-		procAuraAgi := character.NewTemporaryStatsAura("Voodoo Frenzy Agi Proc", ActionID{SpellID: 449409}, stats.Stats{stats.Agility: 35}, time.Second*10)
-		procAuraStr.Icd = &icd
-		procAuraAgi.Icd = &icd
-
-		MakePermanent(character.RegisterAura(Aura{
-			Label: "Voodoo Frenzy",
-			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeOrRanged) || !icd.IsReady(sim) {
-					return
-				}
-
-				if sim.Proc(0.15, "Voodoo Frenzy") {
-					icd.Use(sim)
-
-					if aura.Unit.GetStat(stats.Strength) > aura.Unit.GetStat(stats.Agility) {
-						procAuraStr.Activate(sim)
-					} else {
-						procAuraAgi.Activate(sim)
-					}
-				}
-			},
-		}))
-	case proto.AtalAi_AtalAiForbiddenMagic:
-		procSpell := character.RegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 446258},
-			SpellSchool: SpellSchoolShadow,
-			ProcMask:    ProcMaskEmpty,
-			DefenseType: DefenseTypeMagic,
-
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			BonusCoefficient: 0.56,
-
-			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-				dmg := sim.Roll(204, 236)
-				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
-			},
-		})
-
-		MakePermanent(character.RegisterAura(Aura{
-			Label: "Forbidden Magic",
-			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskSpellDamage) || !icd.IsReady(sim) {
-					return
-				}
-
-				if sim.Proc(0.25, "Forbidden Magic") {
-					icd.Use(sim)
-					procSpell.Cast(sim, character.CurrentTarget)
-				}
-			},
-		}))
-	case proto.AtalAi_AtalAiLife:
-		// Your heals have a chance to restore 8 Energy, 1% Mana, or 4 Rage
-		// TODO: This needs to be handled as a Misc Buff instead of here.
-	}
-}
-
-func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
-	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
-	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
 }
 
 func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, shadowOilIcd Cooldown) {
@@ -518,6 +292,399 @@ func registerFrostOil(character *Character, isMh bool) {
 	}))
 }
 
+///////////////////////////////////////////////////////////////////////////
+//                             Food
+///////////////////////////////////////////////////////////////////////////
+
+func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.Food != proto.Food_FoodUnknown {
+		switch consumes.Food {
+		case proto.Food_FoodHotWolfRibs:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 8,
+				stats.Spirit:  8,
+			})
+		case proto.Food_FoodSmokedSagefish:
+			character.AddStats(stats.Stats{
+				stats.MP5: 3,
+			})
+		case proto.Food_FoodSagefishDelight:
+			character.AddStats(stats.Stats{
+				stats.MP5: 6,
+			})
+		case proto.Food_FoodGrilledSquid:
+			character.AddStats(stats.Stats{
+				stats.Agility: 10,
+			})
+		case proto.Food_FoodSmokedDesertDumpling:
+			character.AddStats(stats.Stats{
+				stats.Strength: 20,
+			})
+		case proto.Food_FoodNightfinSoup:
+			character.AddStats(stats.Stats{
+				stats.MP5: 8,
+			})
+		case proto.Food_FoodRunnTumTuberSurprise:
+			character.AddStats(stats.Stats{
+				stats.Intellect: 10,
+			})
+		case proto.Food_FoodDirgesKickChimaerokChops:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 25,
+			})
+		case proto.Food_FoodBlessedSunfruitJuice:
+			character.AddStats(stats.Stats{
+				stats.Spirit: 10,
+			})
+		case proto.Food_FoodBlessSunfruit:
+			character.AddStats(stats.Stats{
+				stats.Strength: 10,
+			})
+		}
+	}
+
+	if consumes.DragonBreathChili {
+		MakePermanent(DragonBreathChiliAura(character))
+	}
+}
+
+func DragonBreathChiliAura(character *Character) *Aura {
+	baseDamage := 60.0
+	procChance := .05
+
+	procSpell := character.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 15851},
+		SpellSchool: SpellSchoolFire,
+		DefenseType: DefenseTypeMagic,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNone,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	aura := character.GetOrRegisterAura(Aura{
+		Label:    "Dragonbreath Chili",
+		ActionID: ActionID{SpellID: 15852},
+		Duration: NeverExpires,
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+	return aura
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Physical Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.AttackPowerBuff != proto.AttackPowerBuff_AttackPowerBuffUnknown {
+		switch consumes.AttackPowerBuff {
+		case proto.AttackPowerBuff_JujuMight:
+			character.AddStats(stats.Stats{
+				stats.AttackPower: 40,
+			})
+		case proto.AttackPowerBuff_WinterfallFirewater:
+			character.AddStats(stats.Stats{
+				stats.AttackPower: 35,
+			})
+		}
+	}
+
+	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
+		switch consumes.AgilityElixir {
+		case proto.AgilityElixir_ElixirOfTheMongoose:
+			character.AddStats(stats.Stats{
+				stats.Agility:   25,
+				stats.MeleeCrit: 2 * CritRatingPerCritChance,
+			})
+		case proto.AgilityElixir_ElixirOfGreaterAgility:
+			character.AddStats(stats.Stats{
+				stats.Agility: 25,
+			})
+		case proto.AgilityElixir_ElixirOfAgility:
+			character.AddStats(stats.Stats{
+				stats.Agility: 15,
+			})
+		case proto.AgilityElixir_ElixirOfLesserAgility:
+			character.AddStats(stats.Stats{
+				stats.Agility: 8,
+			})
+		case proto.AgilityElixir_ScrollOfAgility:
+			character.AddStats(BuffSpellByLevel[ScrollOfAgility][character.Level])
+		}
+	}
+
+	if consumes.StrengthBuff != proto.StrengthBuff_StrengthBuffUnknown {
+		switch consumes.StrengthBuff {
+		case proto.StrengthBuff_JujuPower:
+			character.AddStats(stats.Stats{
+				stats.Strength: 30,
+			})
+		case proto.StrengthBuff_ElixirOfGiants:
+			character.AddStats(stats.Stats{
+				stats.Strength: 25,
+			})
+		case proto.StrengthBuff_ElixirOfOgresStrength:
+			character.AddStats(stats.Stats{
+				stats.Strength: 8,
+			})
+		case proto.StrengthBuff_ScrollOfStrength:
+			character.AddStats(BuffSpellByLevel[ScrollOfStrength][character.Level])
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Spell Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.SpellPowerBuff != proto.SpellPowerBuff_SpellPowerBuffUnknown {
+		switch consumes.SpellPowerBuff {
+		case proto.SpellPowerBuff_LesserArcaneElixir:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage: 14,
+			})
+		case proto.SpellPowerBuff_ArcaneElixir:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage: 20,
+			})
+		case proto.SpellPowerBuff_GreaterArcaneElixir:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage: 35,
+			})
+		}
+	}
+
+	if consumes.FirePowerBuff != proto.FirePowerBuff_FirePowerBuffUnknown {
+		switch consumes.FirePowerBuff {
+		case proto.FirePowerBuff_ElixirOfFirepower:
+			character.AddStats(stats.Stats{
+				stats.FirePower: 10,
+			})
+		case proto.FirePowerBuff_ElixirOfGreaterFirepower:
+			character.AddStats(stats.Stats{
+				stats.FirePower: 40,
+			})
+		}
+	}
+
+	if consumes.ShadowPowerBuff != proto.ShadowPowerBuff_ShadowPowerBuffUnknown {
+		switch consumes.ShadowPowerBuff {
+		case proto.ShadowPowerBuff_ElixirOfShadowPower:
+			character.AddStats(stats.Stats{
+				stats.ShadowPower: 40,
+			})
+		}
+	}
+
+	if consumes.FrostPowerBuff != proto.FrostPowerBuff_FrostPowerBuffUnknown {
+		switch consumes.FrostPowerBuff {
+		case proto.FrostPowerBuff_ElixirOfFrostPower:
+			character.AddStats(stats.Stats{
+				stats.FrostPower: 15,
+			})
+		}
+	}
+
+	if consumes.ManaRegenElixir != proto.ManaRegenElixir_ManaRegenElixirUnknown {
+		switch consumes.ManaRegenElixir {
+		case proto.ManaRegenElixir_MagebloodPotion:
+			character.AddStats(stats.Stats{
+				stats.MP5: 12,
+			})
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Zanza-esque Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyZanzaBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.ZanzaBuff == proto.ZanzaBuff_ZanzaBuffUnknown {
+		return
+	}
+
+	switch consumes.ZanzaBuff {
+	case proto.ZanzaBuff_SpiritOfZanza:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 50,
+			stats.Spirit:  50,
+		})
+	case proto.ZanzaBuff_ROIDS:
+		character.AddStats(stats.Stats{
+			stats.Strength: 25,
+		})
+	case proto.ZanzaBuff_GroundScorpokAssay:
+		character.AddStats(stats.Stats{
+			stats.Agility: 25,
+		})
+	case proto.ZanzaBuff_CerebralCortexCompound:
+		character.AddStats(stats.Stats{
+			stats.Intellect: 25,
+		})
+	case proto.ZanzaBuff_GizzardGum:
+		character.AddStats(stats.Stats{
+			stats.Spirit: 25,
+		})
+	case proto.ZanzaBuff_LungJuiceCocktail:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 25,
+		})
+	case proto.ZanzaBuff_AtalaiMojoOfWar:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       48,
+			stats.RangedAttackPower: 48,
+		})
+		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+	case proto.ZanzaBuff_AtalaiMojoOfForbiddenMagic:
+		character.AddStats(stats.Stats{
+			stats.SpellPower: 40,
+		})
+		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+	case proto.ZanzaBuff_AtalaiMojoOfLife:
+		character.AddStats(stats.Stats{
+			stats.HealingPower: 45,
+			stats.MP5:          11,
+		})
+		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+	}
+}
+
+func ApplyAtalAiProc(character *Character, atalaiBuff proto.ZanzaBuff) {
+	icd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Second * 40,
+	}
+
+	switch atalaiBuff {
+	case proto.ZanzaBuff_AtalaiMojoOfWar:
+		procAuraStr := character.NewTemporaryStatsAura("Voodoo Frenzy Str Proc", ActionID{SpellID: 446335}, stats.Stats{stats.Strength: 35}, time.Second*10)
+		procAuraAgi := character.NewTemporaryStatsAura("Voodoo Frenzy Agi Proc", ActionID{SpellID: 449409}, stats.Stats{stats.Agility: 35}, time.Second*10)
+		procAuraStr.Icd = &icd
+		procAuraAgi.Icd = &icd
+
+		MakePermanent(character.RegisterAura(Aura{
+			Label: "Voodoo Frenzy",
+			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeOrRanged) || !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.Proc(0.15, "Voodoo Frenzy") {
+					icd.Use(sim)
+
+					if aura.Unit.GetStat(stats.Strength) > aura.Unit.GetStat(stats.Agility) {
+						procAuraStr.Activate(sim)
+					} else {
+						procAuraAgi.Activate(sim)
+					}
+				}
+			},
+		}))
+	case proto.ZanzaBuff_AtalaiMojoOfForbiddenMagic:
+		procSpell := character.RegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 446258},
+			SpellSchool: SpellSchoolShadow,
+			ProcMask:    ProcMaskEmpty,
+			DefenseType: DefenseTypeMagic,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 0.56,
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				dmg := sim.Roll(204, 236)
+				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit) // TODO: Verify if it rolls miss? Most procs dont so we have it like this
+			},
+		})
+
+		MakePermanent(character.RegisterAura(Aura{
+			Label: "Forbidden Magic",
+			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskSpellDamage) || !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.Proc(0.25, "Forbidden Magic") {
+					icd.Use(sim)
+					procSpell.Cast(sim, character.CurrentTarget)
+				}
+			},
+		}))
+	case proto.ZanzaBuff_AtalaiMojoOfLife:
+		// TODO: Your heals have a chance to restore 8 Energy, 1% Mana, or 4 Rage
+		// This is also shared with the Darkmoon Card: Overgrowth trinket but unsure if they stack or not
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Misc Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
+	if miscConsumes == nil {
+		return
+	}
+
+	if miscConsumes.BoglingRoot {
+		character.PseudoStats.BonusDamage += 1
+	}
+
+	if miscConsumes.ElixirOfCoalescedRegret {
+		character.AddStats(stats.Stats{
+			stats.Stamina:   1,
+			stats.Agility:   1,
+			stats.Strength:  1,
+			stats.Intellect: 1,
+			stats.Spirit:    1,
+		})
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Enchanting Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
+	if !character.HasProfession(proto.Profession_Enchanting) || consumes.EnchantedSigil == proto.EnchantedSigil_UnknownSigil {
+		return
+	}
+
+	switch consumes.EnchantedSigil {
+	case proto.EnchantedSigil_InnovationSigil:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       20,
+			stats.RangedAttackPower: 20,
+			stats.SpellPower:        20,
+		})
+	case proto.EnchantedSigil_LivingDreamsSigil:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       50,
+			stats.RangedAttackPower: 50,
+			stats.SpellPower:        50,
+		})
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Engineering Explosives
+///////////////////////////////////////////////////////////////////////////
+
 var SapperActionID = ActionID{ItemID: 10646}
 var SolidDynamiteActionID = ActionID{ItemID: 10507}
 var DenseDynamiteActionID = ActionID{ItemID: 18641}
@@ -576,43 +743,6 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			},
 		})
 	}
-}
-
-func DragonBreathChiliAura(character *Character) *Aura {
-	baseDamage := 60.0
-	procChance := .05
-
-	procSpell := character.RegisterSpell(SpellConfig{
-		ActionID:    ActionID{SpellID: 15851},
-		SpellSchool: SpellSchoolFire,
-		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagNone,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
-
-		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-		},
-	})
-
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "Dragonbreath Chili",
-		ActionID: ActionID{SpellID: 15852},
-		Duration: NeverExpires,
-		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
-				return
-			}
-
-			if sim.RandomFloat("Dragonbreath Chili") < procChance {
-				procSpell.Cast(sim, result.Target)
-			}
-		},
-	})
-	return aura
 }
 
 // Creates a spell object for the common explosive case.
@@ -765,6 +895,10 @@ func (character *Character) newEzThroRadiationBombSpell(sharedTimer *Timer) *Spe
 func (character *Character) newHighYieldRadiationBombSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(sharedTimer, HighYieldRadiationBombActionID, 150, 250, 25, Cooldown{}))
 }
+
+///////////////////////////////////////////////////////////////////////////
+//                             Potions
+///////////////////////////////////////////////////////////////////////////
 
 func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()

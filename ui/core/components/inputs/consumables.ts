@@ -1,7 +1,7 @@
 import { Player } from '../../player';
 import {
 	AgilityElixir,
-	AtalAi,
+	AttackPowerBuff,
 	Class,
 	Conjured,
 	Consumes,
@@ -12,6 +12,7 @@ import {
 	Food,
 	FrostPowerBuff,
 	ItemSlot,
+	ManaRegenElixir,
 	Potions,
 	Profession,
 	ShadowPowerBuff,
@@ -21,16 +22,19 @@ import {
 	StrengthBuff,
 	WeaponImbue,
 	WeaponType,
+	ZanzaBuff,
 } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { isBluntWeaponType, isSharpWeaponType } from '../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../typed_event';
-import { IconEnumPickerDirection, IconEnumValueConfig } from '../icon_enum_picker';
-import { makeBooleanConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
+import { IconEnumValueConfig } from '../icon_enum_picker';
+import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
+import { IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
+import { MultiIconPicker } from '../multi_icon_picker';
 import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, WoundPoisonWeaponImbue } from './rogue_imbues';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from './shaman_imbues';
-import { ActionInputConfig, ItemStatOption } from './stat_options';
+import { ActionInputConfig, ItemStatOption, PickerStatOptions } from './stat_options';
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T;
@@ -107,50 +111,14 @@ export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
 	value: Conjured.ConjuredRogueThistleTea,
 	showWhen: player => player.getClass() == Class.ClassRogue,
 };
-export const ConjuredDruidCatnip: ConsumableInputConfig<Conjured> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
-	value: Conjured.ConjuredDruidCatnip,
-	showWhen: player => player.getClass() == Class.ClassDruid,
-};
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
 	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect] },
 	{ config: ConjuredRogueThistleTea, stats: [] },
-	{ config: ConjuredDruidCatnip, stats: [] },
 ];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
-
-///////////////////////////////////////////////////////////////////////////
-//                        ATAL'AI POTIONS
-///////////////////////////////////////////////////////////////////////////
-
-export const AtalAiMojoOfWar: ConsumableInputConfig<AtalAi> = {
-	actionId: () => ActionId.fromItemId(221196),
-	value: AtalAi.AtalAiWar,
-	showWhen: (player: Player<any>) => player.getLevel() == 50,
-};
-
-export const AtalAiMojoOfForbiddenMagic: ConsumableInputConfig<AtalAi> = {
-	actionId: () => ActionId.fromItemId(221030),
-	value: AtalAi.AtalAiForbiddenMagic,
-	showWhen: (player: Player<any>) => player.getLevel() == 50,
-};
-
-export const AtalAiMojoOfLife: ConsumableInputConfig<AtalAi> = {
-	actionId: () => ActionId.fromItemId(221311),
-	value: AtalAi.AtalAiLife,
-	showWhen: (player: Player<any>) => player.getLevel() == 50,
-};
-
-export const ATALAI_CONFIG: ConsumableStatOption<AtalAi>[] = [
-	{ config: AtalAiMojoOfWar, stats: [Stat.StatAttackPower] },
-	{ config: AtalAiMojoOfForbiddenMagic, stats: [Stat.StatSpellPower] },
-	{ config: AtalAiMojoOfLife, stats: [Stat.StatHealingPower] },
-];
-
-export const makeAtalaiInput = makeConsumeInputFactory({ consumesFieldName: 'defaultAtalAi' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                             ENCHANTING SIGIL
@@ -358,6 +326,23 @@ export const DragonBreathChili = makeBooleanConsumeInput({
 //                                 PHYSICAL DAMAGE CONSUMES
 ///////////////////////////////////////////////////////////////////////////
 
+// Attack Power
+export const JujuMight: ConsumableInputConfig<AttackPowerBuff> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 12460, minLevel: 55 }]),
+	value: AttackPowerBuff.JujuMight,
+};
+export const WinterfallFirewater: ConsumableInputConfig<AttackPowerBuff> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 12820, minLevel: 45 }]),
+	value: AttackPowerBuff.WinterfallFirewater,
+};
+
+export const ATTACK_POWER_CONSUMES_CONFIG: ConsumableStatOption<AttackPowerBuff>[] = [
+	{ config: JujuMight, stats: [Stat.StatAttackPower] },
+	{ config: WinterfallFirewater, stats: [Stat.StatAttackPower] },
+];
+
+export const makeAttackPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'attackPowerBuff' });
+
 // Agility
 export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13452, minLevel: 46 }]),
@@ -429,15 +414,92 @@ export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 
 export const makeStrengthConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'strengthBuff' });
 
-// Other
-export const BoglingRootBuff = makeBooleanConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
+///////////////////////////////////////////////////////////////////////////
+//                                 Misc Throughput Consumes
+///////////////////////////////////////////////////////////////////////////
+
+// Blasted Lands Consumes
+export const ROIDS: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 8410, minLevel: 45 }]),
+	value: ZanzaBuff.ROIDS,
+};
+export const GroundScorpokAssay: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 8412, minLevel: 45 }]),
+	value: ZanzaBuff.GroundScorpokAssay,
+};
+export const LungJuiceCocktail: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 8411, minLevel: 45 }]),
+	value: ZanzaBuff.LungJuiceCocktail,
+};
+export const CerebralCortexCompound: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 8423, minLevel: 45 }]),
+	value: ZanzaBuff.CerebralCortexCompound,
+};
+export const GizzardGum: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 8424, minLevel: 45 }]),
+	value: ZanzaBuff.GizzardGum,
+};
+
+// Zanza Potions
+export const SpiritOfZanza: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 20079, minLevel: 55 }]),
+	value: ZanzaBuff.SpiritOfZanza,
+};
+
+// Atal'ai Potions
+export const AtalAiMojoOfWar: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: () => ActionId.fromItemId(221196),
+	value: ZanzaBuff.AtalaiMojoOfWar,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const AtalAiMojoOfForbiddenMagic: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: () => ActionId.fromItemId(221030),
+	value: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const AtalAiMojoOfLife: ConsumableInputConfig<ZanzaBuff> = {
+	actionId: () => ActionId.fromItemId(221311),
+	value: ZanzaBuff.AtalaiMojoOfLife,
+	showWhen: (player: Player<any>) => player.getLevel() == 50,
+};
+
+export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
+	{ config: SpiritOfZanza, stats: [Stat.StatStamina, Stat.StatSpirit] },
+	{ config: ROIDS, stats: [Stat.StatStrength] },
+	{ config: GroundScorpokAssay, stats: [Stat.StatAgility] },
+	{ config: LungJuiceCocktail, stats: [Stat.StatStamina] },
+	{ config: CerebralCortexCompound, stats: [Stat.StatIntellect] },
+	{ config: GizzardGum, stats: [Stat.StatSpirit] },
+	{ config: AtalAiMojoOfWar, stats: [Stat.StatAttackPower] },
+	{ config: AtalAiMojoOfForbiddenMagic, stats: [Stat.StatSpellPower] },
+	{ config: AtalAiMojoOfLife, stats: [Stat.StatHealingPower] },
+];
+export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
+
+export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
+	[
+		makeBooleanMiscConsumeInput({
+			actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
+			fieldName: 'catnip',
+			showWhen: player => player.getClass() == Class.ClassDruid,
+		}),
+		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' }),
+		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' }),
+	],
+	'',
+	IconPickerDirection.Vertical,
+);
+
+export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumesConfig, picker: MultiIconPicker, stats: [Stat.StatAttackPower] }];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
 
 export const PetScrollOfAgility = makeEnumConsumeInput({
-	direction: IconEnumPickerDirection.Vertical,
+	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
 		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: player => player.getLevel() >= 10 },
@@ -449,7 +511,7 @@ export const PetScrollOfAgility = makeEnumConsumeInput({
 });
 
 export const PetScrollOfStrength = makeEnumConsumeInput({
-	direction: IconEnumPickerDirection.Vertical,
+	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
 		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: player => player.getLevel() >= 10 },
@@ -563,7 +625,18 @@ export const ElixirOfShadowPower: ConsumableInputConfig<ShadowPowerBuff> = {
 
 export const SHADOW_POWER_CONFIG: ConsumableStatOption<ShadowPowerBuff>[] = [{ config: ElixirOfShadowPower, stats: [Stat.StatShadowPower] }];
 
-export const makeshadowPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'shadowPowerBuff' });
+export const makeShadowPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'shadowPowerBuff' });
+
+// MP5
+// Original lvl 40 but not obtainable in Phase 3
+export const MagebloodPotion: ConsumableInputConfig<ManaRegenElixir> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 20007, minLevel: 51 }]),
+	value: ManaRegenElixir.MagebloodPotion,
+};
+
+export const MP5_CONFIG: ConsumableStatOption<ManaRegenElixir>[] = [{ config: MagebloodPotion, stats: [Stat.StatMP5] }];
+
+export const makeMp5ConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'manaRegenElixir' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Weapon Imbues
