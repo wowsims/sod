@@ -25,7 +25,7 @@ func addSunkenTempleDragonkin(bossPrefix string) {
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
 			SwingSpeed:       2,      // TODO:
-			MinBaseDamage:    1000,   // TODO:
+			MinBaseDamage:    3000,   // TODO:
 			DamageSpread:     0.3333, // TODO:
 			ParryHaste:       true,
 			DualWield:        false,
@@ -50,9 +50,6 @@ func NewSunkenTempleDragonkinAI() core.AIFactory {
 }
 
 func (ai *SunkenTempleDragonkinAI) Initialize(target *core.Target, _ *proto.Target) {
-	target.Unit.PseudoStats.BleedDamageTakenMultiplier *= .8
-	target.Unit.PseudoStats.PoisonDamageTakenMultiplier *= .8
-
 	ai.Target = target
 }
 

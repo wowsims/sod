@@ -488,7 +488,7 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 
 func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 40 {
-		return nil
+		panic("Mekkatorque's Arcano-Shredder requires level 40+")
 	}
 
 	spellID := 434841
@@ -1157,7 +1157,7 @@ func AncientCorrosivePoisonAura(target *Unit) *Aura {
 
 func SerpentsStrikerFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 50 {
-		return nil
+		panic("Serpent's Striker requires level 50+")
 	}
 
 	spellID := 447894

@@ -132,6 +132,7 @@ enum HunterRune {
 
 	RuneBracersFocusFire				= 428726;
 	RuneBracersRaptorFury				= 415358;
+	RuneBracersTNT						= 428717;
 }
 
 message Hunter {

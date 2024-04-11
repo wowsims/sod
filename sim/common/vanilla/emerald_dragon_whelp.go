@@ -10,13 +10,16 @@ import (
 type EmeraldDragonWhelp struct {
 	core.Pet
 
-	AcidSpit *core.Spell
+	acidSpit *core.Spell
+
+	disabledAt time.Duration
 }
 
 func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 	whelpBaseStats := stats.Stats{
 		stats.Health:      1500, // https://wowwiki-archive.fandom.com/wiki/Dragon%27s_Call
-		stats.Mana:        300,  // TODO: Assumed value. The whelp seems to cast 3 Acid Spits (90 mana) per spawn
+		stats.Intellect:   20,   // Adding the base 20 intellect to not mess with the base mana function
+		stats.Mana:        500,  // TODO: Assumed value. The whelp seems to cast 3 Acid Spits (90 mana) per spawn (Rain: In the log you can see a whelp casting 4 acid spits so i'm increasing this to 500)
 		stats.SpellDamage: 220,  // Puts the Acid Spit damage very close to the below log
 		// Based on this log but more data needed
 		// https://sod.warcraftlogs.com/reports/xTwQVgbjF9cPnd3R#type=damage-done&ability=-13049&view=events&boss=-2&difficulty=0&wipes=2
@@ -30,7 +33,6 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 	whelp.Level = 55
 
 	whelp.EnableManaBar()
-	whelp.registerAcidSpitSpell()
 
 	whelp.EnableAutoAttacks(whelp, core.AutoAttackOptions{
 		// TODO: Need whelp data
@@ -39,7 +41,7 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 			// https://vanilla.warcraftlogs.com/reports/tQW9mqDrx3R4AdYZ#type=damage-done&ability=-13049&boss=-2&difficulty=0&wipes=2&source=25
 			BaseDamageMin: 80.0,
 			BaseDamageMax: 100.0,
-			SwingSpeed:    1.5,
+			SwingSpeed:    2.0,
 			SpellSchool:   core.SpellSchoolPhysical,
 		},
 		AutoSwingMelee: true,
@@ -55,15 +57,29 @@ func emeraldWhelpingStatInheritance() core.PetStatInheritance {
 	}
 }
 
-func (whelp *EmeraldDragonWhelp) Initialize() {}
+func (whelp *EmeraldDragonWhelp) Initialize() {
+	whelp.registerAcidSpitSpell()
+}
 
 func (whelp *EmeraldDragonWhelp) ExecuteCustomRotation(sim *core.Simulation) {
-	if !whelp.AcidSpit.IsReady(sim) {
-		whelp.WaitUntil(sim, whelp.AcidSpit.CD.ReadyAt())
+	// Run the cast check only on swings or cast completes
+	if whelp.AutoAttacks.NextAttackAt() != sim.CurrentTime+whelp.AutoAttacks.MainhandSwingSpeed() && whelp.AutoAttacks.NextAnyAttackAt()-1 > sim.CurrentTime {
+		whelp.WaitUntil(sim, whelp.AutoAttacks.NextAttackAt()-1)
 		return
 	}
 
-	whelp.AcidSpit.Cast(sim, whelp.CurrentTarget)
+	if sim.Proc(0.5, "Acid Spit Cast") {
+		// If the whelp will timeout during this cast just dont do it and stop attacks as well
+		// If we dont do this the timeline cast time visual for the spell never ends because we
+		// dont support hardcast interrupts
+		if sim.CurrentTime+whelp.acidSpit.CastTime() >= whelp.disabledAt {
+			whelp.AutoAttacks.StopMeleeUntil(sim, whelp.disabledAt, false)
+		} else {
+			whelp.acidSpit.Cast(sim, whelp.CurrentTarget)
+		}
+	} else {
+		whelp.WaitUntil(sim, whelp.AutoAttacks.NextAttackAt()-1)
+	}
 }
 
 func (whelp *EmeraldDragonWhelp) Reset(sim *core.Simulation) {
@@ -80,34 +96,22 @@ func (whelp *EmeraldDragonWhelp) GetPet() *core.Pet {
 func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 	actionID := core.ActionID{SpellID: 9591}
 
-	whelp.AcidSpit = whelp.RegisterSpell(core.SpellConfig{
+	whelp.acidSpit = whelp.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		// All of the casts and hits in the above log had the same damage so it would seem debuffs are ignored
-		Flags: core.SpellFlagIgnoreModifiers,
+		Flags: core.SpellFlagIgnoreModifiers | core.SpellFlagResetAttackSwing,
 
-		// This is causing errors because of nil spell.Unit.Env in mana.go:315 so setting a cooldown instead
-		// ManaCost: core.ManaCostOptions{
-		// 	FlatCost: 90,
-		// },
+		ManaCost: core.ManaCostOptions{
+			FlatCost: 90,
+		},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: time.Second * 3,
-			},
-			CD: core.Cooldown{
-				Timer:    whelp.NewTimer(),
-				Duration: time.Second * 2,
-			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := whelp.ApplyCastSpeedForSpell(cast.CastTime, spell)
-
-				if castTime > 0 {
-					whelp.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
-				}
 			},
 		},
 
@@ -116,25 +120,30 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// TODO: The one log i was looking at has 0 misses on the spell but it also has only 25 casts
+			// so i can't make a good assumption. Right now we leave it with a hit check and we can remove later.
 			spell.CalcAndDealDamage(sim, target, sim.Roll(64, 86), spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
 
-func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent) {
+func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent, itemId int32) {
 	character := agent.GetCharacter()
+
+	procMask := character.GetProcMaskForItem(itemId)
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		ActionID: core.ActionID{SpellID: 13049},
 		Name:     "Emerald Dragon Whelp Proc",
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMelee,
+		ProcMask: procMask,
 		PPM:      1.0, // Reported by armaments discord
 		ICD:      time.Minute * 1,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			for _, petAgent := range character.PetAgents {
-				if whelp, ok := petAgent.(*EmeraldDragonWhelp); ok && !whelp.IsEnabled() {
+				if whelp, ok := petAgent.(*EmeraldDragonWhelp); ok {
 					whelp.EnableWithTimeout(sim, whelp, time.Second*15)
+					whelp.disabledAt = sim.CurrentTime + time.Second*15
 					break
 				}
 			}
