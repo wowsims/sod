@@ -95,11 +95,3 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		},
 	})
 }
-
-func (hunter *Hunter) calcExplosiveShotDamageMultipliers() float64 {
-	damageMultiplier := 1.0
-	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
-		damageMultiplier *= 1.1
-	}
-	return damageMultiplier
-}
