@@ -1,12 +1,10 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
-	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
 	FirePowerBuff,
-	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -17,6 +15,7 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { ElementalShaman_Options as ElementalShamanOptions } from '../core/proto/shaman.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -117,7 +116,6 @@ export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 export const DefaultOptions = ElementalShamanOptions.create({});
 
 export const DefaultConsumes = Consumes.create({
-	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
@@ -126,6 +124,7 @@ export const DefaultConsumes = Consumes.create({
 	offHandImbue: WeaponImbue.LesserWizardOil,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfGiants,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

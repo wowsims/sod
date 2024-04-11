@@ -1,11 +1,11 @@
 import { Player } from '../player';
-import { Spec } from '../proto/common';
+import { MiscConsumes, Spec } from '../proto/common';
 import { Consumes, Debuffs, Faction, IndividualBuffs, RaidBuffs } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';
-import { IconEnumPicker, IconEnumPickerDirection, IconEnumValueConfig } from './icon_enum_picker';
-import { IconPicker } from './icon_picker';
+import { IconEnumPicker, IconEnumValueConfig } from './icon_enum_picker';
+import { IconPicker, IconPickerDirection } from './icon_picker';
 import * as InputHelpers from './input_helpers';
 
 // Component Functions
@@ -84,6 +84,27 @@ export function makeBooleanConsumeInput<SpecType extends Spec>(
 			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 			getValue: (player: Player<SpecType>) => player.getConsumes(),
 			setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
+			changeEmitter: (player: Player<SpecType>) =>
+				TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.professionChangeEmitter]),
+		},
+		config.actionId,
+		config.fieldName,
+		config.value,
+	);
+}
+export function makeBooleanMiscConsumeInput<SpecType extends Spec>(
+	config: BooleanInputConfig<MiscConsumes>,
+): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
+	return InputHelpers.makeBooleanIconInput<any, MiscConsumes, Player<SpecType>>(
+		{
+			getModObject: (player: Player<SpecType>) => player,
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
+			getValue: (player: Player<SpecType>) => player.getConsumes().miscConsumes ?? MiscConsumes.create(),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: MiscConsumes) => {
+				const consumes = player.getConsumes();
+				consumes.miscConsumes = newVal;
+				player.setConsumes(eventID, consumes);
+			},
 			changeEmitter: (player: Player<SpecType>) =>
 				TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.professionChangeEmitter]),
 		},
@@ -259,7 +280,7 @@ export function makeMultistateMultiplierDebuffInput(config: MultiStateInputConfi
 interface EnumInputConfig<ModObject, Message, T> {
 	fieldName: keyof Message;
 	values: Array<IconEnumValueConfig<ModObject, T>>;
-	direction?: IconEnumPickerDirection;
+	direction?: IconPickerDirection;
 	numColumns?: number;
 	faction?: Faction;
 }
@@ -278,7 +299,7 @@ export function makeEnumIndividualBuffInput<SpecType extends Spec>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
-		config.direction || IconEnumPickerDirection.Vertical,
+		config.direction || IconPickerDirection.Vertical,
 	);
 }
 
@@ -295,6 +316,6 @@ export function makeEnumConsumeInput<SpecType extends Spec>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
-		config.direction || IconEnumPickerDirection.Vertical,
+		config.direction || IconPickerDirection.Vertical,
 	);
 }

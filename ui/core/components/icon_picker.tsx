@@ -6,6 +6,11 @@ import { TypedEvent } from '../typed_event.js';
 import { isRightClick } from '../utils.js';
 import { Input, InputConfig } from './input.js';
 
+export enum IconPickerDirection {
+	Vertical = 'vertical',
+	Horizontal = 'Horizontal',
+}
+
 // Data for creating an icon-based input component.
 //
 // E.g. one of these for arcane brilliance, another for kings, etc.
