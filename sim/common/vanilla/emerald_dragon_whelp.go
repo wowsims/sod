@@ -127,14 +127,16 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 	})
 }
 
-func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent) {
+func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent, itemId int32) {
 	character := agent.GetCharacter()
+
+	procMask := character.GetProcMaskForItem(itemId)
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		ActionID: core.ActionID{SpellID: 13049},
 		Name:     "Emerald Dragon Whelp Proc",
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMelee,
+		ProcMask: procMask,
 		PPM:      1.0, // Reported by armaments discord
 		ICD:      time.Minute * 1,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

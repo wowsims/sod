@@ -385,7 +385,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(DragonsCry, func(agent core.Agent) {
-		vanilla.MakeEmeraldDragonWhelpTriggerAura(agent)
+		vanilla.MakeEmeraldDragonWhelpTriggerAura(agent, DragonsCry)
 	})
 
 	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
