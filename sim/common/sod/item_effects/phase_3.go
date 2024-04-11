@@ -393,7 +393,7 @@ func init() {
 				character.AddStatDynamic(sim, stats.Strength, 75)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, -75)
+				character.AddStatDynamic(sim, stats.Strength, -75)
 			},
 		})
 
