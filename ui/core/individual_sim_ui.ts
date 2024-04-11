@@ -251,7 +251,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					this.player
 						.getGear()
 						.asArray()
-						.filter(item => item != null && item.item.requiresLevel > playerLevel)
+						.filter(item => item != null && item.item.requiresLevel < playerLevel)
 				) {
 					return Tooltips.GEAR_MIN_LEVEL_WARNING(playerLevel);
 				} else {
