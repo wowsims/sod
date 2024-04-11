@@ -52,7 +52,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: hunter.applyTntDamageMultiplier(),
+		DamageMultiplier: hunter.tntDamageMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

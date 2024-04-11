@@ -225,10 +225,9 @@ func (hunter *Hunter) applyRaptorFury() {
 	})
 }
 
-func (hunter *Hunter) applyTntDamageMultiplier() float64 {
-	damageMult := 1.0
+func (hunter *Hunter) tntDamageMultiplier() float64 {
 	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
-		damageMult *= 1.1
+		return 1.1
 	}
-	return damageMult
+	return 1.0
 }
