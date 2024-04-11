@@ -47,6 +47,12 @@ var ItemOverrides = []*proto.UIItem{
 	// Golden Scale Leggings
 	{Id: 217285, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Blacksmithing, SpellId: 439132}}}}},
 
+	// The item tooltip is missing the usual Libram tag
+	{Id: 221457, RangedWeaponType: proto.RangedWeaponType_RangedWeaponTypeLibram},
+
+	// The item tooltip is missing the usual Totem tag
+	{Id: 221464, RangedWeaponType: proto.RangedWeaponType_RangedWeaponTypeTotem},
+
 	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
 	// {Id: 44093, Stats: stats.Stats{stats.MeleeCrit: 30, stats.SpellCrit: 30, stats.Resilience: 13, stats.AttackPower: 34}.ToFloatArray()},
 }
@@ -119,14 +125,25 @@ var ItemDenyList = map[int32]struct{}{
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
 	20522:  {}, // Feral Staff
-	215116: {}, // UNUSED - Hyperconductive Speed Belt
 	33350:  {},
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity
 	34578:  {}, // Battlemaster's Determination
 	34579:  {}, // Battlemaster's Audacity
 	34580:  {}, // Battlemaster's Perseverence
-
+	206382: {}, // Tempest Icon
+	206387: {}, // Kajaric Icon
+	206954: {}, // Idol of Ursine Rage
+	208689: {}, // Ferocious Idol
+	208849: {}, // Libram of Blessings
+	208851: {}, // Libram of Justice
+	210195: {}, // Unbalanced Idol
+	210534: {}, // Idol of the Wild
+	215116: {}, // UNUSED - Hyperconductive Speed Belt
+	211472: {}, // Libram of Banishment
+	213513: {}, // Libram of Deliverance
+	213594: {}, // Idol of the Heckler
+	220915: {}, // Idol of the Raging Shambler
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

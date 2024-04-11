@@ -1,4 +1,4 @@
-package sod
+package vanilla
 
 import (
 	"time"
@@ -9,13 +9,48 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const (
+	ShortswordOfVengeance    = 754
+	FieryWarAxe              = 870
+	Bloodrazor               = 809
+	HammerOfTheNorthernWind  = 810
+	Nightblade               = 1982
+	Shadowblade              = 2163
+	GutRipper                = 2164
+	BowOfSearingArrows       = 2825
+	Gutwrencher              = 5616
+	Ravager                  = 7717
+	HanzoSword               = 8190
+	TheJackhammer            = 9423
+	PendulumOfDoom           = 9425
+	BloodletterScalpel       = 9511
+	TheHandOfAntusul         = 9639
+	GryphonRidersStormhammer = 9651
+	Firebreather             = 10797
+	VilerendSlicer           = 11603
+	HookfangShanker          = 11635
+	LinkensSwordOfMastery    = 11902
+	SearingNeedle            = 12531
+	PipsSkinner              = 12709
+	SerpentSlicer            = 13035
+	JoonhosMercy             = 17054
+	ThrashBlade              = 17705
+	SatyrsLash               = 17752
+	FiendishMachete          = 18310
+	Thunderfury              = 19019
+	MarkOfTheChampion        = 23206
+)
+
 func init() {
 	core.AddEffectsToTest = false
 
-	// Proc effects. Keep these in order by item ID.
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Weapons
+	///////////////////////////////////////////////////////////////////////////
 
-	// Fiery War Axe
-	itemhelpers.CreateWeaponProcSpell(870, "Fiery War Axe", 1.0, func(character *core.Character) *core.Spell {
+	itemhelpers.CreateWeaponProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcSpell(FieryWarAxe, "Fiery War Axe", 1.0, func(character *core.Character) *core.Spell {
 		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 18796},
 			SpellSchool: core.SpellSchoolFire,
@@ -51,11 +86,42 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(1982, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 17504},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+			Dot: core.DotConfig{
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 3,
+				Aura: core.Aura{
+					Label: "Rend",
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 12, dot.OutcomeTick)
+				},
+			},
+		})
+	})
 
-	itemhelpers.CreateWeaponProcDamage(2164, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponProcSpell(2825, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
+	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcDamage(GutRipper, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
+
+	itemhelpers.CreateWeaponProcSpell(BowOfSearingArrows, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
 		return character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 29638},
 			SpellSchool: core.SpellSchoolFire,
@@ -72,7 +138,34 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcAura(7717, "Ravager", 1.0, func(character *core.Character) *core.Aura {
+	itemhelpers.CreateWeaponProcSpell(Gutwrencher, "Gutwrencher", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 16406},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+			Dot: core.DotConfig{
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 3,
+				Aura: core.Aura{
+					Label: "Rend",
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 8, dot.OutcomeTick)
+				},
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcAura(Ravager, "Ravager", 1.0, func(character *core.Character) *core.Aura {
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}
 		auraActionID := core.ActionID{SpellID: 433801}
@@ -130,7 +223,9 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcAura(9423, "The Jackhammer", 1.0, func(character *core.Character) *core.Aura {
+	itemhelpers.CreateWeaponProcDamage(HanzoSword, "Hanzo Sword", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+
+	itemhelpers.CreateWeaponProcAura(TheJackhammer, "The Jackhammer", 1.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "The Jackhammer Haste Aura",
 			ActionID: core.ActionID{SpellID: 13533},
@@ -144,10 +239,116 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(9425, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponProcDamage(PendulumOfDoom, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
 
-	// Pip's Skinner
-	core.NewItemEffect(12709, func(agent core.Agent) {
+	itemhelpers.CreateWeaponProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
+
+	itemhelpers.CreateWeaponProcSpell(TheHandOfAntusul, "The Hand of Antu'sul", 1.0, func(character *core.Character) *core.Spell {
+		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			aura := unit.GetOrRegisterAura(core.Aura{
+				Label:    "ThunderClap-Antu'sul",
+				ActionID: core.ActionID{SpellID: 13532},
+				Duration: time.Second * 10,
+			})
+			core.AtkSpeedReductionEffect(aura, 1.11)
+			return aura
+		})
+
+		results := make([]*core.SpellResult, min(4, character.Env.GetNumTargets()))
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 13532},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for idx := range results {
+					results[idx] = spell.CalcDamage(sim, target, 7, spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+				for _, result := range results {
+					spell.DealDamage(sim, result)
+					if result.Landed() {
+						debuffAuras.Get(result.Target).Activate(sim)
+					}
+				}
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcDamage(GryphonRidersStormhammer, "Gryphon Rider's Stormhammer", 1.0, 18081, core.SpellSchoolNature, 91, 34, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcSpell(Firebreather, "Firebreather", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 16413},
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, 70, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+			Dot: core.DotConfig{
+				NumberOfTicks: 3,
+				TickLength:    time.Second * 2,
+				Aura: core.Aura{
+					Label: "Fireball",
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 3, dot.OutcomeTick)
+				},
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+
+	itemhelpers.CreateWeaponProcSpell(HookfangShanker, "Hookfang Shanker", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 13526},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagPoison,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+			Dot: core.DotConfig{
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 3,
+				Aura: core.Aura{
+					Label: "Corrosive Poison",
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Armor: -50})
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Armor: 50})
+					},
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 7, dot.OutcomeTick)
+				},
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
+
+	// TODO Searing Needle adds an "Apply Aura: Mod Damage Done (Fire): 10" aura to the /target/, buffing it; not currently modelled
+	itemhelpers.CreateWeaponProcDamage(SearingNeedle, "Searing Needle", 1.0, 16454, core.SpellSchoolFire, 60, 0, 0, core.DefenseTypeMagic)
+
+	core.NewItemEffect(PipsSkinner, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
@@ -155,8 +356,53 @@ func init() {
 		}
 	})
 
-	// Fiendish Machete
-	core.NewItemEffect(18310, func(agent core.Agent) {
+	itemhelpers.CreateWeaponProcSpell(SerpentSlicer, "Serpent Slicer", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 17511},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagPoison,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			},
+			Dot: core.DotConfig{
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 2,
+				Aura: core.Aura{
+					Label: "Poison",
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 8, dot.OutcomeTick)
+				},
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcSpell(ThrashBlade, "Thrash Blade", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 21919},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AutoAttacks.ExtraMHAttack(sim)
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
+
+	core.NewItemEffect(FiendishMachete, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
@@ -164,8 +410,7 @@ func init() {
 		}
 	})
 
-	//Thunderfury
-	core.NewItemEffect(19019, func(agent core.Agent) {
+	core.NewItemEffect(Thunderfury, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procMask := character.GetProcMaskForItem(19019)
@@ -244,8 +489,12 @@ func init() {
 		})
 	})
 
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
+
 	// Mark of the Champion
-	core.NewItemEffect(23206, func(agent core.Agent) {
+	core.NewItemEffect(MarkOfTheChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
