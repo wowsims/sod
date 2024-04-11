@@ -166,7 +166,7 @@ func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.character.Log(sim, "Adding combo points (%s points)", numPoints)
 	}
-	metrics := action.character.NewComboPointMetrics(ActionID{SpellID: 432264})
+	metrics := action.character.NewComboPointMetrics(ActionID{OtherID: proto.OtherAction_OtherActionComboPoints})
 	action.character.AddComboPoints(sim, action.numPoints, metrics)
 }
 

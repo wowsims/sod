@@ -62,6 +62,10 @@ export class ActionId {
 				baseName = 'Energy Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeEnergy];
 				break;
+			case OtherAction.OtherActionComboPoints:
+				baseName = 'Combo Point Gain';
+				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeComboPoints];
+				break;
 			case OtherAction.OtherActionFocusRegen:
 				baseName = 'Focus Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeFocus];
