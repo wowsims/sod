@@ -243,22 +243,23 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				}
 			},
 		});
-		this.addWarning({
-			updateOn: TypedEvent.onAny([this.player.gearChangeEmitter]),
-			getContent: () => {
-				const playerLevel = player.getLevel();
-				if (
-					this.player
-						.getGear()
-						.asArray()
-						.filter(item => item != null && item.item.requiresLevel < playerLevel)
-				) {
-					return Tooltips.GEAR_MIN_LEVEL_WARNING(playerLevel);
-				} else {
-					return '';
-				}
-			},
-		});
+		// TODO: This is showing the warning even when no items above player level are equipped
+		// this.addWarning({
+		// 	updateOn: TypedEvent.onAny([this.player.gearChangeEmitter]),
+		// 	getContent: () => {
+		// 		const playerLevel = player.getLevel();
+		// 		if (
+		// 			this.player
+		// 				.getGear()
+		// 				.asArray()
+		// 				.filter(item => item != null && item.item.requiresLevel < playerLevel)
+		// 		) {
+		// 			return Tooltips.GEAR_MIN_LEVEL_WARNING(playerLevel);
+		// 		} else {
+		// 			return '';
+		// 		}
+		// 	},
+		// });
 		(config.warnings || []).forEach(warning => this.addWarning(warning(this)));
 
 		if (!this.isWithinRaidSim) {
