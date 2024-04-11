@@ -384,18 +384,7 @@ func init() {
 	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Diamond Flask",
-			ActionID: core.ActionID{SpellID: 24427},
-			Duration: time.Second * 60,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, 75)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, -75)
-			},
-		})
+		buffAura := character.NewTemporaryStatsAura("Diamond Flask", core.ActionID{SpellID: 24427}, stats.Stats{stats.Strength: 75}, time.Second*60)
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24427},
