@@ -10,12 +10,15 @@ import (
 type EmeraldDragonWhelp struct {
 	core.Pet
 
-	AcidSpit *core.Spell
+	acidSpit *core.Spell
+
+	disabledAt time.Duration
 }
 
 func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 	whelpBaseStats := stats.Stats{
 		stats.Health:      1500, // https://wowwiki-archive.fandom.com/wiki/Dragon%27s_Call
+		stats.Intellect:   20,   // Adding the base 20 intellect to not mess with the base mana function
 		stats.Mana:        500,  // TODO: Assumed value. The whelp seems to cast 3 Acid Spits (90 mana) per spawn (Rain: In the log you can see a whelp casting 4 acid spits so i'm increasing this to 500)
 		stats.SpellDamage: 220,  // Puts the Acid Spit damage very close to the below log
 		// Based on this log but more data needed
@@ -38,7 +41,7 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 			// https://vanilla.warcraftlogs.com/reports/tQW9mqDrx3R4AdYZ#type=damage-done&ability=-13049&boss=-2&difficulty=0&wipes=2&source=25
 			BaseDamageMin: 80.0,
 			BaseDamageMax: 100.0,
-			SwingSpeed:    1.5,
+			SwingSpeed:    2.0,
 			SpellSchool:   core.SpellSchoolPhysical,
 		},
 		AutoSwingMelee: true,
@@ -59,10 +62,22 @@ func (whelp *EmeraldDragonWhelp) Initialize() {
 }
 
 func (whelp *EmeraldDragonWhelp) ExecuteCustomRotation(sim *core.Simulation) {
+	// Run the cast check only on swings or cast completes
+	if whelp.AutoAttacks.NextAttackAt() != sim.CurrentTime+whelp.AutoAttacks.MainhandSwingSpeed() && whelp.AutoAttacks.NextAnyAttackAt()-1 > sim.CurrentTime {
+		whelp.WaitUntil(sim, whelp.AutoAttacks.NextAttackAt()-1)
+		return
+	}
+
 	if sim.Proc(0.5, "Acid Spit Cast") {
-		whelp.AcidSpit.Cast(sim, whelp.CurrentTarget)
+		// If the whelp will timeout during this cast just dont do it and stop attacks as well
+		// If we dont do this the timeline cast time visual for the spell never ends because we
+		// dont support hardcast interrupts
+		if sim.CurrentTime+whelp.acidSpit.CastTime() >= whelp.disabledAt {
+			whelp.AutoAttacks.StopMeleeUntil(sim, whelp.disabledAt, false)
+		} else {
+			whelp.acidSpit.Cast(sim, whelp.CurrentTarget)
+		}
 	} else {
-		// We do -1 because from logs it looks like the cast check is done instead of an attack and the attack is then skipped due to hard casting
 		whelp.WaitUntil(sim, whelp.AutoAttacks.NextAttackAt()-1)
 	}
 }
@@ -81,7 +96,7 @@ func (whelp *EmeraldDragonWhelp) GetPet() *core.Pet {
 func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 	actionID := core.ActionID{SpellID: 9591}
 
-	whelp.AcidSpit = whelp.RegisterSpell(core.SpellConfig{
+	whelp.acidSpit = whelp.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
@@ -105,6 +120,8 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// TODO: The one log i was looking at has 0 misses on the spell but it also has only 25 casts
+			// so i can't make a good assumption. Right now we leave it with a hit check and we can remove later.
 			spell.CalcAndDealDamage(sim, target, sim.Roll(64, 86), spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -124,6 +141,7 @@ func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent) {
 			for _, petAgent := range character.PetAgents {
 				if whelp, ok := petAgent.(*EmeraldDragonWhelp); ok {
 					whelp.EnableWithTimeout(sim, whelp, time.Second*15)
+					whelp.disabledAt = sim.CurrentTime + time.Second*15
 					break
 				}
 			}
