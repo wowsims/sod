@@ -13,7 +13,6 @@ var RuneOverrides []*proto.UIRune
 var UnimplementedRuneOverrides = []int32{
 	// Hunter
 	415405, // Rapid Killing
-	428717, // T.N.T.
 
 	// Paladin
 	429133, // Improved Sanctuary
