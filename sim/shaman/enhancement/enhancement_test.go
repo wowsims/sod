@@ -252,7 +252,6 @@ var Phase3ConsumesWFWF = core.ConsumesCombo{
 	Label: "Phase 3 Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
-		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
@@ -268,7 +267,6 @@ var Phase3ConsumesWFRB = core.ConsumesCombo{
 	Label: "Phase 3 Consumes WF/RB",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
-		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
@@ -284,7 +282,6 @@ var Phase3ConsumesWFFT = core.ConsumesCombo{
 	Label: "Phase 3 Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
-		DefaultAtalAi:     proto.AtalAi_AtalAiWar,
 		DefaultPotion:     proto.Potions_ManaPotion,
 		DragonBreathChili: true,
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
