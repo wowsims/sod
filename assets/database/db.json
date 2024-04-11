@@ -9952,6 +9952,7 @@
 {"id":427717,"name":"Engrave Bracers - Unstable Affliction","icon":"spell_shadow_unstableaffliction_3","class":8,"type":6,"requiresLevel":1},
 {"id":427726,"name":"Engrave Bracers - Immolation Aura","icon":"spell_fire_felimmolation","class":8,"type":6,"requiresLevel":1},
 {"id":427733,"name":"Engrave Bracers - Summon Felguard","icon":"spell_shadow_summonfelguard","class":8,"type":6,"requiresLevel":1},
+{"id":428717,"name":"Engrave Bracers - T.N.T.","icon":"inv_misc_bomb_05","class":2,"type":6,"requiresLevel":1},
 {"id":428726,"name":"Engrave Bracers - Focus Fire","icon":"inv_weapon_crossbow_19","class":2,"type":6,"requiresLevel":1},
 {"id":428738,"name":"Engrave Helm - Advanced Warding","icon":"spell_arcane_arcaneresilience","class":3,"type":1,"requiresLevel":1},
 {"id":428739,"name":"Engrave Helm - Deep Freeze","icon":"ability_mage_deepfreeze","class":3,"type":1,"requiresLevel":1},
