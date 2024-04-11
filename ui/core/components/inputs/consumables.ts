@@ -687,8 +687,9 @@ export const BrilliantManaOil: ConsumableInputConfig<WeaponImbue> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 20748, minLevel: 51 }]),
 	value: WeaponImbue.BrilliantManaOil,
 };
+// Original lvl 40 but not obtainable in Phase 3
 export const LesserManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20747, minLevel: 40 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 20747, minLevel: 51 }]),
 	value: WeaponImbue.LesserManaOil,
 };
 export const MinorManaOil: ConsumableInputConfig<WeaponImbue> = {
