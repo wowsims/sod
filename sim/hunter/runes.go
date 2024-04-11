@@ -224,3 +224,11 @@ func (hunter *Hunter) applyRaptorFury() {
 		MaxStacks: 5,
 	})
 }
+
+func (hunter *Hunter) applyTntDamageMultiplier() float64 {
+	damageMult := 1.0
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		damageMult *= 1.1
+	}
+	return damageMult
+}
