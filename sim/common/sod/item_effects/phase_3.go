@@ -12,6 +12,7 @@ import (
 
 const (
 	// Ordered by ID
+	DiamondFlask               = 20130
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -378,6 +379,46 @@ func init() {
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
 		})
+	})
+
+	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Diamond Flask",
+			ActionID: core.ActionID{SpellID: 24427},
+			Duration: time.Second * 60,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.Strength, 75)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.Strength, -75)
+			},
+		})
+
+		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 24427},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 6,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    triggerSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
+
 	})
 
 	///////////////////////////////////////////////////////////////////////////
