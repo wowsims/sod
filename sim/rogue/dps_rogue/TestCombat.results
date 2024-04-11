@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.24396
-  weights: 0.45255
+  weights: 0.24471
+  weights: 0.4595
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22178
-  weights: 1.62279
-  weights: 1.77139
+  weights: 0.22246
+  weights: 1.66793
+  weights: 1.76792
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.38886
-  weights: 0.63956
+  weights: 0.38904
+  weights: 0.63813
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35351
-  weights: 3.50669
-  weights: 4.03501
+  weights: 0.35367
+  weights: 3.49404
+  weights: 4.03813
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 207.33613
-  tps: 147.20865
+  dps: 207.4125
+  tps: 147.26287
  }
 }
 dps_results: {
@@ -288,15 +288,15 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 194.96463
-  tps: 138.42489
+  dps: 195.43849
+  tps: 138.76132
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 574.99493
-  tps: 408.2464
+  dps: 575.00453
+  tps: 408.25321
  }
 }
 dps_results: {
@@ -323,22 +323,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 139.23675
-  tps: 98.85809
+  dps: 139.11529
+  tps: 98.77186
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 121.16592
-  tps: 86.0278
+  dps: 121.24823
+  tps: 86.08625
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 162.27747
-  tps: 115.217
+  dps: 161.69155
+  tps: 114.801
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 552.89782
-  tps: 392.55746
+  dps: 552.91981
+  tps: 392.57306
  }
 }
