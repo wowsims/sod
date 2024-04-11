@@ -220,9 +220,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					// Just return here, so we don't show a warning during page load.
 					return '';
 				} else if (talentPoints < this.player.getLevel() - 9) {
-					return 'Unspent talent points.';
+					return Tooltips.UNSPECT_TALENT_POINTS_WARNING;
 				} else if (talentPoints > this.player.getLevel() - 9) {
-					return Tooltips.TOO_MANY_TALENT_POINTS;
+					return Tooltips.TOO_MANY_TALENT_POINTS_WARNING;
 				} else {
 					return '';
 				}
@@ -237,7 +237,23 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null) ||
 						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.handType == HandType.HandTypeTwoHand)
 				) {
-					return "Dual wielding two-handed weapon(s) without Titan's Grip spec.";
+					return Tooltips.TITANS_GRIP_WARNING;
+				} else {
+					return '';
+				}
+			},
+		});
+		this.addWarning({
+			updateOn: TypedEvent.onAny([this.player.gearChangeEmitter]),
+			getContent: () => {
+				const playerLevel = player.getLevel();
+				if (
+					this.player
+						.getGear()
+						.asArray()
+						.filter(item => item != null && item.item.requiresLevel > playerLevel)
+				) {
+					return Tooltips.GEAR_MIN_LEVEL_WARNING(playerLevel);
 				} else {
 					return '';
 				}
