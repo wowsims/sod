@@ -301,7 +301,7 @@ func (druid *Druid) applyDreamstate() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.DidCrit() {
+			if !result.DidCrit() || result.Target == &druid.Unit {
 				return
 			}
 
