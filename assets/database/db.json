@@ -9774,7 +9774,7 @@
 {"id":399956,"name":"Engrave Gloves - Mutilate","icon":"ability_rogue_shadowstrikes","class":6,"type":7,"requiresLevel":1},
 {"id":399963,"name":"Engrave Pants - Envenom","icon":"ability_rogue_disembowel","class":6,"type":9,"requiresLevel":1},
 {"id":399965,"name":"Engrave Chest - Deadly Brew","icon":"ability_rogue_deadlybrew","class":6,"type":5,"requiresLevel":1},
-{"id":399985,"name":"Engrave Gloves - Shadowstrike","icon":"ability_theblackarrow","class":6,"type":7,"requiresLevel":1},
+{"id":399985,"name":"Engrave Pants - Cutty's Rune","icon":"ability_theblackarrow","class":6,"type":9,"requiresLevel":1},
 {"id":399986,"name":"Engrave Belt - Shuriken Toss","icon":"ability_upgrademoonglaive","class":6,"type":8,"requiresLevel":1},
 {"id":400009,"name":"Engrave Pants - Between the Eyes","icon":"inv_weapon_rifle_01","class":6,"type":9,"requiresLevel":1},
 {"id":400012,"name":"Engrave Pants - Blade Dance","icon":"ability_parry","class":6,"type":9,"requiresLevel":1},
