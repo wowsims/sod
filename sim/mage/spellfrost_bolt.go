@@ -21,7 +21,7 @@ func (mage *Mage) registerSpellfrostBoltSpell() {
 	mage.SpellfrostBolt = mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneBeltSpellfrostBolt)},
 		SpellCode:    SpellCode_MageSpellfrostBolt,
-		SpellSchool:  core.SpellSchoolSpellFrost,
+		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFrost,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,

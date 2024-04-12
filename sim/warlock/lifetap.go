@@ -10,6 +10,10 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	level := [7]int{0, 6, 16, 26, 36, 46, 56}[rank]
 
 	actionID := core.ActionID{SpellID: spellId}
+	var manaPetMetrics *core.ResourceMetrics
+	if warlock.Pet != nil {
+		manaPetMetrics = warlock.Pet.NewManaMetrics(actionID)
+	}
 	manaMetrics := warlock.NewManaMetrics(actionID)
 	impLifetap := 1.0 + 0.1*float64(warlock.Talents.ImprovedLifeTap)
 	spellCoef := 0.68
@@ -38,6 +42,9 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 				restore *= 2
 			}
 			warlock.AddMana(sim, restore, manaMetrics)
+			if warlock.Pet != nil && warlock.Pet.IsActive() {
+				warlock.AddMana(sim, restore, manaPetMetrics)
+			}
 		},
 	}
 }
