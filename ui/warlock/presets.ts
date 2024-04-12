@@ -2,13 +2,10 @@ import { Phase } from '../core/constants/other.js';
 import { Player } from '../core/player.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
-	AgilityElixir,
-	AtalAi,
 	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
-	Explosive,
 	FirePowerBuff,
 	Food,
 	IndividualBuffs,
@@ -20,6 +17,7 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import {
@@ -79,13 +77,13 @@ export const DefaultGear = BackdraftGearPhase3;
 ///////////////////////////////////////////////////////////////////////////
 
 // P1
-export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroP1APL, { 
-	customCondition: player => player.getLevel() == 25 
+export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroP1APL, {
+	customCondition: player => player.getLevel() == 25,
 });
 
 // P2
-export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAPL, { 
-	customCondition: player => player.getLevel() == 40 
+export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAPL, {
+	customCondition: player => player.getLevel() == 40,
 });
 export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, {
 	customCondition: player => player.getLevel() == 40,
@@ -196,7 +194,6 @@ export const DefaultOptions = WarlockOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.SuperiorManaPotion,
-	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
@@ -204,6 +201,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.LesserWizardOil,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

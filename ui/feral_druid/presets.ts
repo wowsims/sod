@@ -2,8 +2,6 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
-	AtalAi,
-	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -17,6 +15,7 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { FeralDruid_Options as FeralDruidOptions, FeralDruid_Rotation as FeralDruidRotation } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -138,14 +137,16 @@ export const DefaultOptions = FeralDruidOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
-	defaultAtalAi: AtalAi.AtalAiWar,
-	defaultConjured: Conjured.ConjuredDruidCatnip,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	food: Food.FoodSagefishDelight,
 	mainHandImbue: WeaponImbue.WildStrikes,
+	miscConsumes: {
+		catnip: true,
+	},
 	strengthBuff: StrengthBuff.ElixirOfGiants,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

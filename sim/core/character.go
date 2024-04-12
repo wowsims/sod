@@ -318,7 +318,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
 
-	applyConsumeEffects(agent, partyBuffs)
+	applyConsumeEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseConsumes)
 	playerStats.ConsumesStats = measureStats()
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)

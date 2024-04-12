@@ -12,7 +12,6 @@ import (
 
 const (
 	// Ordered by ID
-	DiamondFlask               = 20130
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -50,7 +49,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////
-	//                                 Trinkets
+	//                                 Rings
 	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
@@ -68,6 +67,10 @@ func init() {
 			},
 		})
 	})
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(AtalaiBloodRitualMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -320,95 +323,25 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(100, 200), spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(50, 100), spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
 
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procSpell.Cast(sim, character.CurrentTarget)
-		}
-
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID: core.ActionID{SpellID: 446389},
-			Name:     "Sandstorm",
-			Callback: core.CallbackOnCastComplete,
-			ProcMask: core.ProcMaskDirect,
-
-			// Placeholder proc value
-			ProcChance: 0.025,
-
-			Handler: handler,
+			ActionID:   core.ActionID{SpellID: 446389},
+			Name:       "Sandstorm",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskDirect,
+			ProcChance: 0.30,
+			ICD:        time.Second * 5,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				procSpell.Cast(sim, character.CurrentTarget)
+			},
 		})
 	})
 
-	core.NewItemEffect(RoarOfTheGuardian, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		buffAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Roar of the Guardian",
-			ActionID: core.ActionID{SpellID: 446709},
-			Duration: time.Second * 20,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, 70)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, -70)
-			},
-		})
-
-		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 446709},
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 5,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
-
-	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		buffAura := character.NewTemporaryStatsAura("Diamond Flask", core.ActionID{SpellID: 24427}, stats.Stats{stats.Strength: 75}, time.Second*60)
-
-		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 24427},
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 6,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
-
-	})
+	core.NewSimpleStatOffensiveTrinketEffect(RoarOfTheGuardian, stats.Stats{stats.AttackPower: 70, stats.RangedAttackPower: 70}, time.Second*20, time.Minute*5)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons

@@ -94,7 +94,6 @@ var Phase2Consumes = core.ConsumesCombo{
 var Phase3Consumes = core.ConsumesCombo{
 	Label: "Phase 3 Consumes",
 	Consumes: &proto.Consumes{
-		DefaultAtalAi:   proto.AtalAi_AtalAiForbiddenMagic,
 		DefaultConjured: proto.Conjured_ConjuredDruidCatnip,
 		DefaultPotion:   proto.Potions_MajorManaPotion,
 		Food:            proto.Food_FoodNightfinSoup,

@@ -263,7 +263,6 @@ func readAtlasLootFactionData(db *WowDatabase, expansion proto.Expansion, srcUrl
 			repLevel := repLevelMatch[1]
 			fmt.Printf("Reputation: %s\n", repLevel)
 
-			fmt.Println(repLevelMatch[2])
 			for _, itemMatch := range itemsPattern.FindAllStringSubmatch(repLevelMatch[2], -1) {
 				itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
 

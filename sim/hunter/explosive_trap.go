@@ -43,7 +43,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
 
-		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.CleverTraps),
+		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -79,7 +79,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 				return
 			}
 			// TODO Check whether certain spells don't trigger this
-			rogue.AddEnergy(sim, 2, energyMetrics)
+			rogue.AddEnergy(sim, 3, energyMetrics)
 		},
 	})
 }

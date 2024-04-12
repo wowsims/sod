@@ -171,12 +171,14 @@ var Phase3Consumes = core.ConsumesCombo{
 	Label: "Phase 3 Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
-		DefaultConjured:   proto.Conjured_ConjuredDruidCatnip,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		DragonBreathChili: true,
 		Food:              proto.Food_FoodSmokedDesertDumpling,
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
-		StrengthBuff:      proto.StrengthBuff_ElixirOfGiants,
+		MiscConsumes: &proto.MiscConsumes{
+			Catnip: true,
+		},
+		StrengthBuff: proto.StrengthBuff_ElixirOfGiants,
 	},
 }
 
