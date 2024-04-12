@@ -29,6 +29,7 @@ const (
 	Firebreather             = 10797
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
+	HandOfJustice            = 11815
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
 	PipsSkinner              = 12709
@@ -38,7 +39,9 @@ const (
 	SatyrsLash               = 17752
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
-	MarkOfTheChampion        = 23206
+	ScarabBrooch             = 21625
+	MarkOfTheChampionPhys    = 23206
+	MarkOfTheChampionSpell   = 23207
 )
 
 func init() {
@@ -343,6 +346,50 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		var handOfJusticeSpell *core.Spell
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 2,
+		}
+		procChance := 0.013333
+
+		character.RegisterAura(core.Aura{
+			Label:    "Hand of Justice",
+			Duration: core.NeverExpires,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				config := *character.AutoAttacks.MHConfig()
+				config.ActionID = core.ActionID{ItemID: HandOfJustice}
+				handOfJusticeSpell = character.GetOrRegisterSpell(config)
+			},
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// https://wotlk.wowhead.com/spell=15600/hand-of-justice, proc mask = 20.
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.RandomFloat("HandOfJustice") > procChance {
+					return
+				}
+				icd.Use(sim)
+
+				aura.Unit.AutoAttacks.MaybeReplaceMHSwing(sim, handOfJusticeSpell).Cast(sim, result.Target)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
 	// TODO Searing Needle adds an "Apply Aura: Mod Damage Done (Fire): 10" aura to the /target/, buffing it; not currently modelled
@@ -493,12 +540,74 @@ func init() {
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
 
-	// Mark of the Champion
-	core.NewItemEffect(MarkOfTheChampion, func(agent core.Agent) {
+	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: ScarabBrooch}
+
+		shieldSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 26470},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskSpellHealing,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			Shield: core.ShieldConfig{
+				Aura: core.Aura{
+					Label:    "Scarab Brooch Shield",
+					Duration: time.Second * 30,
+				},
+			},
+		})
+
+		activeAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Persistent Shield",
+			ActionID: core.ActionID{SpellID: 26467},
+			Callback: core.CallbackOnHealDealt,
+			Duration: time.Second * 30,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				shieldSpell.Shield(result.Target).Apply(sim, result.Damage*0.15)
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 3,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				activeAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 			character.AddStat(stats.AttackPower, 150)
+		}
+	})
+
+	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.AddStat(stats.SpellDamage, 85)
 		}
 	})
 
