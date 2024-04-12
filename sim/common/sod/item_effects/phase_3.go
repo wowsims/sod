@@ -319,25 +319,21 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(100, 200), spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(50, 100), spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
 
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procSpell.Cast(sim, character.CurrentTarget)
-		}
-
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID: core.ActionID{SpellID: 446389},
-			Name:     "Sandstorm",
-			Callback: core.CallbackOnCastComplete,
-			ProcMask: core.ProcMaskDirect,
-
-			// Placeholder proc value
-			ProcChance: 0.025,
-
-			Handler: handler,
+			ActionID:   core.ActionID{SpellID: 446389},
+			Name:       "Sandstorm",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskDirect,
+			ProcChance: 0.30,
+			ICD:        time.Second * 5,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				procSpell.Cast(sim, character.CurrentTarget)
+			},
 		})
 	})
 
