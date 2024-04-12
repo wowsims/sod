@@ -183,6 +183,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionMove(config.GetMove())
 	case *proto.APLAction_CustomRotation:
 		return rot.newActionCustomRotation(config.GetCustomRotation())
+	case *proto.APLAction_AddComboPoints:
+		return rot.newActionAddComboPoints(config.GetAddComboPoints())
 	default:
 		return nil
 	}
