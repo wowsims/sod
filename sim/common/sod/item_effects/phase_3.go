@@ -49,7 +49,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////
-	//                                 Trinkets
+	//                                 Rings
 	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
@@ -67,6 +67,10 @@ func init() {
 			},
 		})
 	})
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(AtalaiBloodRitualMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -337,44 +341,7 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(RoarOfTheGuardian, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		buffAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Roar of the Guardian",
-			ActionID: core.ActionID{SpellID: 446709},
-			Duration: time.Second * 20,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, 70)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, -70)
-			},
-		})
-
-		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 446709},
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 5,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
+	core.NewSimpleStatOffensiveTrinketEffect(RoarOfTheGuardian, stats.Stats{stats.AttackPower: 70, stats.RangedAttackPower: 70}, time.Second*20, time.Minute*5)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
