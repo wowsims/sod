@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.05417
+  weights: 0.61961
   weights: 0
-  weights: 0.76189
-  weights: 0
-  weights: 0
+  weights: 1.78394
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.86454
-  weights: 1.80251
+  weights: 0
+  weights: 0
+  weights: 3.70698
+  weights: 1.72032
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.84563
+  weights: -2.6519
   weights: 0
-  weights: -0.28734
-  weights: 0
-  weights: 0
+  weights: -0.13989
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.54381
-  weights: 7.03765
+  weights: 0
+  weights: 0
+  weights: 11.08217
+  weights: 7.9629
   weights: 0
   weights: 0
   weights: 0
@@ -197,78 +197,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 560.71579
-  tps: 544.94284
+  dps: 582.00603
+  tps: 552.52865
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 551.79024
-  tps: 1168.37479
+  dps: 577.00016
+  tps: 921.98427
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 551.79024
-  tps: 536.21612
+  dps: 577.00016
+  tps: 547.71366
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 573.35419
-  tps: 531.20302
+  dps: 580.75229
+  tps: 536.9655
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 336.88598
-  tps: 985.48411
+  dps: 352.83513
+  tps: 702.67394
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 336.88598
-  tps: 345.17878
+  dps: 352.83513
+  tps: 346.30114
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 361.95106
-  tps: 344.30663
+  dps: 367.43566
+  tps: 345.63149
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 563.87564
-  tps: 548.22239
+  dps: 586.97173
+  tps: 558.05166
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1160.8347
-  tps: 1066.92677
+  dps: 1206.83921
+  tps: 1095.10593
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1721.27128
-  tps: 2577.13736
+  dps: 1763.83481
+  tps: 2266.73295
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1156.11528
-  tps: 1062.89655
+  dps: 1198.44991
+  tps: 1088.11258
  }
 }
 dps_results: {
@@ -281,28 +281,28 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 975.70977
-  tps: 1974.84575
+  dps: 1013.94244
+  tps: 1599.52638
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 572.43367
-  tps: 571.7663
+  dps: 609.46185
+  tps: 587.50151
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 670.27546
-  tps: 621.93419
+  dps: 687.46586
+  tps: 629.39836
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1157.5191
-  tps: 1064.67149
+  dps: 1199.47248
+  tps: 1088.59177
  }
 }
