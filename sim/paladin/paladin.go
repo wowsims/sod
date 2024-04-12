@@ -3,6 +3,7 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -134,6 +135,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
 
+	vanilla.ConstructEmeralDragonWhelpPets(&paladin.Character)
 	return paladin
 }
 

@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 23
+// NextIndex: 24
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -71,6 +71,7 @@ message APLAction {
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
         APLActionMove move = 18;
+        APLActionAddComboPoints add_combo_points = 23;
 
         // Class or Spec-specific actions
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
@@ -245,6 +246,10 @@ message APLActionActivateAura {
 message APLActionActivateAuraWithStacks {
     ActionID aura_id = 1;
     string num_stacks = 2; 
+}
+
+message APLActionAddComboPoints {
+    string num_points = 2; 
 }
 
 message APLActionTriggerICD {

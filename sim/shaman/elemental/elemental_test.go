@@ -186,7 +186,6 @@ var Phase2Consumes = core.ConsumesCombo{
 var Phase3Consumes = core.ConsumesCombo{
 	Label: "Phase 3 Consumes",
 	Consumes: &proto.Consumes{
-		DefaultAtalAi:  proto.AtalAi_AtalAiForbiddenMagic,
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		Food:           proto.Food_FoodNightfinSoup,

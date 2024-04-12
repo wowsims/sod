@@ -1,6 +1,5 @@
 import { Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
-import { IconEnumPickerDirection } from '../icon_enum_picker';
 import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
@@ -14,7 +13,7 @@ import {
 	makeTristateRaidBuffInput,
 	withLabel,
 } from '../icon_inputs';
-import { IconPicker } from '../icon_picker';
+import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
 import { MultiIconPicker } from '../multi_icon_picker';
 import { ItemStatOption, PickerStatOptions } from './stat_options';
@@ -264,10 +263,11 @@ export const BattleShoutBuff = withLabel(
 
 export const TrueshotAuraBuff = withLabel(
 	makeBooleanRaidBuffInput({
-		actionId: player => player.getMatchingSpellActionId([
+		actionId: player =>
+			player.getMatchingSpellActionId([
 				{ id: 19506, minLevel: 40, maxLevel: 49 },
 				{ id: 20905, minLevel: 50, maxLevel: 59 },
-				{ id: 20906, minLevel: 60},
+				{ id: 20906, minLevel: 60 },
 			]),
 		fieldName: 'trueshotAura',
 	}),
@@ -521,7 +521,7 @@ export const WarchiefsBlessing = withLabel(
 
 export const SaygesDarkFortune = (inputs: ItemStatOption<SaygesFortune>[]) =>
 	makeEnumIndividualBuffInput({
-		direction: IconEnumPickerDirection.Horizontal,
+		direction: IconPickerDirection.Horizontal,
 		values: [
 			{ iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_orb_02.jpg', value: SaygesFortune.SaygesUnknown, text: `Sayge's Dark Fortune` },
 			...inputs.map(input => input.config),

@@ -3,6 +3,7 @@ package warrior
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -160,6 +161,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .05) // 20 str = 1 block
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
+	vanilla.ConstructEmeralDragonWhelpPets(&warrior.Character)
 	return warrior
 }
 

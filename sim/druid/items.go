@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -43,7 +42,7 @@ func init() {
 
 // https://www.wowhead.com/classic/item=213407/catnip
 func (druid *Druid) registerCatnipCD() {
-	if druid.Consumes.DefaultConjured != proto.Conjured_ConjuredDruidCatnip {
+	if druid.Consumes.MiscConsumes == nil || !druid.Consumes.MiscConsumes.Catnip {
 		return
 	}
 	sod.RegisterFiftyPercentHasteBuffCD(&druid.Character, core.ActionID{ItemID: Catnip})

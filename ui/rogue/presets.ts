@@ -132,7 +132,7 @@ export const TalentPresets = {
 };
 
 export const DefaultTalentsAssassin = TalentPresets[Phase.Phase3][0];
-export const DefaultTalentsCombat = TalentPresets[Phase.Phase3][1];
+export const DefaultTalentsCombat = TalentPresets[Phase.Phase3][0];
 export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase3][0];
 
 export const DefaultTalents = DefaultTalentsAssassin;

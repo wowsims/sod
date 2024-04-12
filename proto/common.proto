@@ -315,14 +315,8 @@ enum Conjured {
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
 	ConjuredRogueThistleTea = 3;
-	ConjuredDruidCatnip = 4;
-}
 
-enum AtalAi {
-	AtalAiUnknown = 0;
-	AtalAiWar = 1;
-	AtalAiForbiddenMagic = 2;
-	AtalAiLife = 3;
+	ConjuredDruidCatnip = 4 [deprecated = true];
 }
 
 enum EnchantedSigil {
@@ -339,21 +333,6 @@ enum Flask {
 	FlaskOfChromaticResistance = 4;
 	FlaskOfRestlessDreams = 5;
 	FlaskOfEverlastingNightmares = 6;
-}
-
-enum Zanza {
-	ZanzaUnknown = 0;
-	SpiritOfZanza = 1;
-	SheenOfZanza = 2;
-	SwiftnessOfZanza = 3;
-}
-
-enum BlastedLandsBuff {
-	BlastedLandsBuffUnknown = 0;
-	GroundScorpokAssay = 1;
-	CerebralCoretexCompound = 2;
-	GizzardGum = 3;
-	LungJuiceCocktail = 4;
 }
 
 enum AgilityElixir {
@@ -405,6 +384,34 @@ enum FirePowerBuff {
 enum FrostPowerBuff {
 	FrostPowerBuffUnknown = 0;
 	ElixirOfFrostPower = 1;
+}
+
+enum ZanzaBuff {
+	ZanzaBuffUnknown = 0;
+	SpiritOfZanza = 1;
+	SheenOfZanza = 2;
+	SwiftnessOfZanza = 3;
+	ROIDS = 4;
+	GroundScorpokAssay = 5;
+	CerebralCortexCompound = 6;
+	GizzardGum = 7;
+	LungJuiceCocktail = 8;
+	AtalaiMojoOfWar = 9;
+	AtalaiMojoOfForbiddenMagic = 10;
+	AtalaiMojoOfLife = 11;
+}
+
+enum AtalaiMojo {
+	AtalaiMojoUnknown = 0;
+	MojoOfWar = 1;
+	MojoOfForbiddenMagic = 2;
+	MojoOfLife = 3;
+}
+
+message MiscConsumes {
+	bool bogling_root = 1;
+	bool elixir_of_coalesced_regret = 2;
+	bool catnip = 3;
 }
 
 // NextIndex: 26
@@ -585,12 +592,10 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 26
+// NextIndex: 28
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
-	Zanza zanza = 3;
-	BlastedLandsBuff blasted_lands_buff = 4;
 	AgilityElixir agility_elixir = 5;
 	ManaRegenElixir mana_regen_elixir = 6;
 	StrengthBuff strength_buff = 7;
@@ -605,13 +610,16 @@ message Consumes {
 	WeaponImbue off_hand_imbue = 16;
 	Potions default_potion = 17;
 	Conjured default_conjured = 18;
-	bool bogling_root = 19;
 	EnchantedSigil enchanted_sigil = 20;
 	bool mildly_irradiated_rejuv_pot = 21;
 	int32 pet_scroll_of_agility = 22;
 	int32 pet_scroll_of_strength = 23;
 	bool dragon_breath_chili = 24;
-	AtalAi default_atal_ai = 25;
+	MiscConsumes misc_consumes = 26;
+	ZanzaBuff zanza_buff = 27;
+
+	AtalaiMojo atalai_mojo = 25 [deprecated=true];
+	bool bogling_root = 19 [deprecated=true];
 }
 
 // NextIndex: 33
@@ -864,6 +872,7 @@ enum OtherAction {
 	OtherActionHealingModel = 12; // Indicates healing received from healing model.
 	OtherActionPotion = 13; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionMove = 14; // Used by movement to be able to show it in timeline
+	OtherActionComboPoints = 15; //Used by APL to generically add Combo Points.
 }
 
 message ActionID {
