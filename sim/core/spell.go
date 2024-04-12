@@ -140,14 +140,6 @@ type Spell struct {
 	// Adds a fixed amount of threat to this spell, before multipliers.
 	FlatThreatBonus float64
 
-	initialBonusHitRating           float64
-	initialBonusCritRating          float64
-	initialDamageMultiplier         float64
-	initialDamageMultiplierAdditive float64
-	initialThreatMultiplier         float64
-	initialCritDamageBonus          float64
-	// Note that bonus expertise and armor pen are static, so we don't bother resetting them.
-
 	resultCache SpellResult
 
 	dots   DotArray
@@ -388,20 +380,6 @@ func (spell *Spell) CurCPM(sim *Simulation) float64 {
 }
 
 func (spell *Spell) finalize() {
-	// Assert that user doesn't set dynamic fields during static initialization.
-	if spell.CastTimeMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CastTimeMultiplier during finalize!")
-	}
-	if spell.CostMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CostMultiplier during finalize!")
-	}
-	spell.initialBonusHitRating = spell.BonusHitRating
-	spell.initialBonusCritRating = spell.BonusCritRating
-	spell.initialDamageMultiplier = spell.DamageMultiplier
-	spell.initialDamageMultiplierAdditive = spell.DamageMultiplierAdditive
-	spell.initialThreatMultiplier = spell.ThreatMultiplier
-	spell.initialCritDamageBonus = spell.CritDamageBonus
-
 	if len(spell.splitSpellMetrics) > 1 && spell.ActionID.Tag != 0 {
 		panic(spell.ActionID.String() + " has split metrics and a non-zero tag, can only have one!")
 	}
@@ -418,16 +396,6 @@ func (spell *Spell) reset(_ *Simulation) {
 		}
 	}
 	spell.casts = 0
-
-	// Reset dynamic effects.
-	spell.BonusHitRating = spell.initialBonusHitRating
-	spell.BonusCritRating = spell.initialBonusCritRating
-	spell.CastTimeMultiplier = 1
-	spell.CostMultiplier = 1
-	spell.CritDamageBonus = spell.initialCritDamageBonus
-	spell.DamageMultiplier = spell.initialDamageMultiplier
-	spell.DamageMultiplierAdditive = spell.initialDamageMultiplierAdditive
-	spell.ThreatMultiplier = spell.initialThreatMultiplier
 }
 
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {

@@ -218,7 +218,7 @@ func Test_MultiSchoolResistance(t *testing.T) {
 }
 
 func Test_MultiSchoolResistanceArmor(t *testing.T) {
-	ss := SpellSchoolFlamestrike
+	ss := SpellSchoolPhysical | SpellSchoolFire
 	spell := &Spell{
 		SpellSchool:       ss,
 		SchoolIndex:       ss.GetSchoolIndex(),

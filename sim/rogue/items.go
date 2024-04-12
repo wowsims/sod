@@ -2,6 +2,7 @@ package rogue
 
 import (
 	"time"
+
 	"github.com/wowsims/sod/sim/core"
 )
 
@@ -14,7 +15,7 @@ func init() {
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 436477},
-			SpellSchool: core.SpellSchoolShadowstrike,
+			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagAPL,

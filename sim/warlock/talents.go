@@ -35,6 +35,9 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		return
 	}
 
+	hasMeta := warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis)
+	threatMultiplier := core.TernaryFloat64(hasMeta, 1+0.04*float64(warlock.Talents.MasterDemonologist), 1-0.04*float64(warlock.Talents.MasterDemonologist))
+
 	masterDemonologistConfig := core.Aura{
 		Label:    "Master Demonologist",
 		ActionID: core.ActionID{SpellID: 23825},
@@ -42,29 +45,29 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		OnGain: func(aura *core.Aura, _ *core.Simulation) {
 			switch warlock.Options.Summon {
 			case proto.WarlockOptions_Imp:
-				aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 			case proto.WarlockOptions_Succubus:
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Voidwalker:
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 - 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Felguard:
-				aura.Unit.PseudoStats.ThreatMultiplier /= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 - 0.02*float64(warlock.Talents.MasterDemonologist)
 			}
 		},
 		OnExpire: func(aura *core.Aura, _ *core.Simulation) {
 			switch warlock.Options.Summon {
 			case proto.WarlockOptions_Imp:
-				aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 			case proto.WarlockOptions_Succubus:
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Voidwalker:
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 - 0.02*float64(warlock.Talents.MasterDemonologist)
 			case proto.WarlockOptions_Felguard:
-				aura.Unit.PseudoStats.ThreatMultiplier *= 1 + 0.04*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 + 0.02*float64(warlock.Talents.MasterDemonologist)
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 - 0.02*float64(warlock.Talents.MasterDemonologist)
 			}
 		},
 	}

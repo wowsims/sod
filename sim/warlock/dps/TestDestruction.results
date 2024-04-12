@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00529
+  weights: 0.82452
   weights: 0
-  weights: 0.35717
-  weights: 0
-  weights: 0
+  weights: 1.44086
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22135
+  weights: 0
+  weights: 0
+  weights: 0.48399
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -5.29546
+  weights: -5.51174
   weights: 0
-  weights: 0.29337
-  weights: 0
-  weights: 0
+  weights: 3.46026
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.67145
-  weights: 6.70486
+  weights: 0
+  weights: 0
+  weights: 21.73524
+  weights: 7.39795
   weights: 0
   weights: 0
   weights: 0
@@ -295,22 +295,22 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 109.45205
-  tps: 94.71819
+  dps: 187.01436
+  tps: 152.92824
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 379.14038
-  tps: 694.42097
+  dps: 458.11861
+  tps: 491.48169
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 109.28935
-  tps: 94.46186
+  dps: 186.81293
+  tps: 152.88937
  }
 }
 dps_results: {
@@ -323,15 +323,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 277.02323
-  tps: 677.67484
+  dps: 347.71836
+  tps: 553.48118
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 63.47365
-  tps: 62.5639
+  dps: 89.84722
+  tps: 78.60906
  }
 }
 dps_results: {
@@ -344,85 +344,85 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 109.28935
-  tps: 94.46186
+  dps: 186.81293
+  tps: 152.88937
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 94.86912
-  tps: 78.26719
+  dps: 94.90711
+  tps: 58.68603
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
   dps: 94.61695
-  tps: 1040.53846
+  tps: 661.43702
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
   dps: 94.61695
-  tps: 76.49066
+  tps: 57.53559
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
   dps: 212.72167
-  tps: 149.517
+  tps: 137.67008
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 47.68452
-  tps: 1016.69201
+  dps: 46.22163
+  tps: 634.41802
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 47.68452
-  tps: 65.67974
+  dps: 46.22163
+  tps: 45.0583
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
   dps: 120.86908
-  tps: 105.4156
+  tps: 94.84096
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 93.66893
-  tps: 75.74413
+  tps: 56.78905
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1145.86694
-  tps: 1063.4847
+  dps: 1196.54947
+  tps: 1103.55895
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1843.58306
-  tps: 2421.18307
+  dps: 1888.59494
+  tps: 2260.09798
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1135.64036
-  tps: 1052.37847
+  dps: 1185.12764
+  tps: 1091.13996
  }
 }
 dps_results: {
@@ -435,28 +435,28 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1105.05158
-  tps: 1801.30535
+  dps: 1148.53483
+  tps: 1559.67486
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 594.50053
-  tps: 583.89156
+  dps: 641.29658
+  tps: 617.08748
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 729.80042
-  tps: 672.32608
+  dps: 734.32015
+  tps: 676.58838
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1141.97769
-  tps: 1061.03002
+  dps: 1196.81964
+  tps: 1104.97017
  }
 }

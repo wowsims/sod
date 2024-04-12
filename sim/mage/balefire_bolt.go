@@ -57,7 +57,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	mage.BalefireBolt = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
 		SpellCode:   SpellCode_MageBalefireBolt,
-		SpellSchool: core.SpellSchoolSpellfire,
+		SpellSchool: core.SpellSchoolArcane | core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,

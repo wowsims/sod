@@ -120,24 +120,27 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 		petMetric = warlock.Pet.NewManaMetrics(actionId)
 	}
 
+	handler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if !spell.ProcMask.Matches(core.ProcMaskDirect) {
+			return
+		}
+
+		if !result.DidCrit() {
+			return
+		}
+
+		dotwAura.Activate(sim)
+
+		warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
+		if warlock.Pet != nil && warlock.Pet.IsActive() {
+			warlock.Pet.AddMana(sim, warlock.Pet.MaxMana()*0.02, petMetric)
+		}
+	}
+
 	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-		Label: "Dance of the Wicked",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
-				return
-			}
-
-			if !result.DidCrit() {
-				return
-			}
-
-			dotwAura.Activate(sim)
-
-			warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
-			if warlock.Pet != nil && warlock.Pet.IsActive() {
-				warlock.Pet.AddMana(sim, warlock.Pet.MaxMana()*0.02, petMetric)
-			}
-		},
+		Label:                 "Dance of the Wicked",
+		OnSpellHitDealt:       handler,
+		OnPeriodicDamageDealt: handler,
 	}))
 }
 
