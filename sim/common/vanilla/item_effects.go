@@ -39,7 +39,6 @@ const (
 	SatyrsLash               = 17752
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
-	SanctifiedOrb            = 20512
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
@@ -540,8 +539,6 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
-
-	core.NewSimpleStatOffensiveTrinketEffect(SanctifiedOrb, stats.Stats{stats.MeleeCrit: 3 * core.CritRatingPerCritChance, stats.SpellCrit: 3 * core.CritRatingPerCritChance}, time.Second*25, time.Minute*3)
 
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()
