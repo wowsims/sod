@@ -197,8 +197,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.83466
-  weights: 0.70667
+  weights: 0.83398
+  weights: 0.79587
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.36483
-  weights: 5.01
-  weights: 5.73988
+  weights: 0.36453
+  weights: 4.4971
+  weights: 5.70423
   weights: 0
   weights: 0
   weights: 0
@@ -561,8 +561,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-Average-Default"
  value: {
-  dps: 757.7518
-  tps: 557.27136
+  dps: 757.63455
+  tps: 557.18859
  }
 }
 dps_results: {
@@ -828,7 +828,7 @@ dps_results: {
  key: "TestFeral-Lvl50-Average-Default"
  value: {
   dps: 1788.11828
-  tps: 1288.25756
+  tps: 1288.27458
  }
 }
 dps_results: {
@@ -1087,6 +1087,6 @@ dps_results: {
  key: "TestFeral-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
   dps: 1257.66486
-  tps: 900.87475
+  tps: 900.75661
  }
 }

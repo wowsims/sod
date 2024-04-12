@@ -52,8 +52,6 @@ const (
 	ProcMaskProc
 	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
 	ProcMaskWeaponProc
-	// Mind Flay - currently used by "Arcane Missiles" and "Mind Sear", but does nothing
-	ProcMaskNotInSpellbook
 )
 
 const (

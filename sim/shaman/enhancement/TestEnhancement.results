@@ -197,16 +197,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.04432
-  weights: 0.5756
+  weights: 1.04448
+  weights: 0.59383
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.43412
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.43431
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +210,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47469
-  weights: 2.65766
-  weights: 8.41278
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.47476
+  weights: 2.71787
+  weights: 8.3659
   weights: 0
   weights: 0
   weights: 0
@@ -246,7 +246,7 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.59411
+  weights: 1.59406
   weights: 0.85655
   weights: 0
   weights: 0
@@ -263,8 +263,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.67092
-  weights: 8.80046
+  weights: 0.6709
+  weights: 9.01344
   weights: 11.67612
   weights: 0
   weights: 0
@@ -477,8 +477,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 875.25277
-  tps: 925.70519
+  dps: 875.27447
+  tps: 925.73855
  }
 }
 dps_results: {
@@ -653,14 +653,14 @@ dps_results: {
  key: "TestEnhancement-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 811.70204
-  tps: 859.17312
+  tps: 859.16095
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl50-Average-Default"
  value: {
-  dps: 1833.11938
-  tps: 1346.62972
+  dps: 1833.09807
+  tps: 1346.62817
  }
 }
 dps_results: {
@@ -835,6 +835,6 @@ dps_results: {
  key: "TestEnhancement-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
   dps: 1703.21447
-  tps: 1253.75162
+  tps: 1253.80248
  }
 }
