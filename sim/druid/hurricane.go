@@ -49,7 +49,7 @@ func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer)
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmen | core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagChanneled | core.SpellFlagBinary | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

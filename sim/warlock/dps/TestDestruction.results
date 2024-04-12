@@ -249,17 +249,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.58443
+  weights: 8.71011
   weights: 0
-  weights: -0.40299
-  weights: 0
-  weights: 0
+  weights: 0.10675
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.60859
+  weights: 0
+  weights: 0
+  weights: 20.04789
   weights: 6.75843
   weights: 0
   weights: 0
@@ -407,56 +407,56 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1274.01513
-  tps: 1105.49072
+  dps: 1279.97295
+  tps: 1111.43375
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2008.91374
-  tps: 2498.5711
+  dps: 2013.17239
+  tps: 2502.70732
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1269.46251
-  tps: 1101.6938
+  dps: 1275.97578
+  tps: 1107.82719
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1355.28402
-  tps: 1206.89145
+  dps: 1366.18309
+  tps: 1217.88406
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1244.84907
-  tps: 1863.07487
+  dps: 1246.72212
+  tps: 1865.06428
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 700.43582
-  tps: 613.31335
+  dps: 704.04374
+  tps: 616.87371
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 736.3066
-  tps: 673.9714
+  dps: 742.9627
+  tps: 680.39569
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1263.80119
-  tps: 1094.5225
+  dps: 1272.14272
+  tps: 1103.10161
  }
 }

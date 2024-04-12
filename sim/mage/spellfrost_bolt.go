@@ -24,7 +24,7 @@ func (mage *Mage) registerSpellfrostBoltSpell() {
 		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFrost,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
+		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagBinary | core.SpellFlagAPL,
 		MissileSpeed: 28,
 
 		ManaCost: core.ManaCostOptions{
