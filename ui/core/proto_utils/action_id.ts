@@ -385,6 +385,10 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Sunfire':
+				if (this.spellId == 414689) {
+					name = `${name} (Cat)`;
+				}
 			default:
 				if (this.tag) {
 					name += ' (??)';
