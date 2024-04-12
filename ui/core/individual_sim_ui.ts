@@ -187,7 +187,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.spec,
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
-			noticeText: `All item sets are now implemented and we're working to finish item effects and update consumables.`,
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;

@@ -141,7 +141,7 @@ type APLActionAddComboPoints struct {
 	defaultAPLActionImpl
 	character *Character
 	numPoints int32
-	metrics *ResourceMetrics
+	metrics   *ResourceMetrics
 }
 
 func (rot *APLRotation) newActionAddComboPoints(config *proto.APLActionAddComboPoints) APLActionImpl {
@@ -155,7 +155,7 @@ func (rot *APLRotation) newActionAddComboPoints(config *proto.APLActionAddComboP
 	return &APLActionAddComboPoints{
 		character: character,
 		numPoints: int32(numPoints),
-		metrics: metrics,
+		metrics:   metrics,
 	}
 }
 
@@ -169,7 +169,7 @@ func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.character.Log(sim, "Adding combo points (%s points)", numPoints)
 	}
-	
+
 	action.character.AddComboPoints(sim, action.numPoints, action.metrics)
 }
 
