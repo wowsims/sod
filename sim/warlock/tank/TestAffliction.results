@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34664
+  weights: 0.09661
   weights: 0
-  weights: 0.95778
-  weights: 0
-  weights: 0
+  weights: 0.5995
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.39045
+  weights: 0
+  weights: 0
+  weights: 0.38058
   weights: 0
   weights: 0
   weights: 0
@@ -99,22 +99,22 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
-  dps: 172.97668
-  tps: 334.04543
+  dps: 174.72925
+  tps: 327.22402
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 213.27698
-  tps: 490.91904
+  dps: 211.14778
+  tps: 613.9037
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 172.70118
-  tps: 333.60043
+  dps: 175.00747
+  tps: 327.75983
  }
 }
 dps_results: {
@@ -127,36 +127,36 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 157.18291
-  tps: 425.43114
+  dps: 158.60907
+  tps: 572.07147
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 125.77685
-  tps: 247.31992
+  dps: 127.46521
+  tps: 238.77123
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-AffItemSwap-p1.affi.tank-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 134.47864
-  tps: 258.27532
+  dps: 134.89084
+  tps: 254.47979
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 213.27698
-  tps: 490.91904
+  dps: 211.14778
+  tps: 613.9037
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 172.70118
-  tps: 333.60043
+  dps: 175.00747
+  tps: 327.75983
  }
 }
 dps_results: {
@@ -169,28 +169,28 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 157.18291
-  tps: 425.43114
+  dps: 158.60907
+  tps: 572.07147
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 125.77685
-  tps: 247.31992
+  dps: 127.46521
+  tps: 238.77123
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 134.47864
-  tps: 258.27532
+  dps: 134.89084
+  tps: 254.47979
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 172.77808
-  tps: 333.71579
+  dps: 175.08438
+  tps: 327.8752
  }
 }

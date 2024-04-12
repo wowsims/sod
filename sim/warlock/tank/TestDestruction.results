@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.5272
+  weights: 1.27694
   weights: 0
-  weights: -0.66798
-  weights: 0
-  weights: 0
+  weights: 1.38157
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.37926
+  weights: 0
+  weights: 0
+  weights: 0.33145
   weights: 0
   weights: 0
   weights: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.02884
+  weights: -1.06131
   weights: 0
-  weights: 0.66741
-  weights: 0
-  weights: 0
+  weights: 0.68312
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.82611
-  weights: 3.49205
+  weights: 0
+  weights: 0
+  weights: 4.85171
+  weights: 3.47578
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.17832
+  weights: 1.12958
   weights: 0
-  weights: 0.9757
-  weights: 0
-  weights: 0
+  weights: -0.7384
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.7818
-  weights: 5.29062
+  weights: 0
+  weights: 0
+  weights: 6.60993
+  weights: 5.54624
   weights: 0
   weights: 0
   weights: 0
@@ -295,22 +295,22 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 159.96594
-  tps: 299.94665
+  dps: 173.37617
+  tps: 273.43016
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 393.13636
-  tps: 735.98701
+  dps: 418.10686
+  tps: 835.72675
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 152.1332
-  tps: 286.96194
+  dps: 165.07847
+  tps: 261.33228
  }
 }
 dps_results: {
@@ -323,15 +323,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 309.12065
-  tps: 613.02652
+  dps: 331.59493
+  tps: 906.90102
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 115.74195
-  tps: 225.37488
+  dps: 107.71298
+  tps: 149.0877
  }
 }
 dps_results: {
@@ -344,29 +344,29 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 156.928
-  tps: 294.15414
+  dps: 169.9419
+  tps: 268.62743
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 492.17911
-  tps: 1088.50015
+  dps: 497.20922
+  tps: 1090.42155
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 827.66674
-  tps: 1741.57578
+  dps: 834.43045
+  tps: 1804.73476
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 458.56101
-  tps: 1040.22917
+  dps: 464.10069
+  tps: 1032.6701
  }
 }
 dps_results: {
@@ -379,15 +379,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 562.34922
-  tps: 1229.20793
+  dps: 594.13567
+  tps: 1356.57881
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-p2.destro.tank-Destruction Warlock-p2.destro.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 282.57071
-  tps: 651.69534
+  dps: 304.5766
+  tps: 646.45412
  }
 }
 dps_results: {
@@ -400,71 +400,71 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 481.7279
-  tps: 1067.26517
+  dps: 485.20365
+  tps: 1067.35323
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1132.49396
-  tps: 2036.64153
-  hps: 17.08832
+  dps: 1300.50316
+  tps: 2099.75615
+  hps: 17.93389
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1664.2649
-  tps: 3470.55268
-  hps: 14.53649
+  dps: 1864.3347
+  tps: 3879.90481
+  hps: 15.30247
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1072.76711
-  tps: 1934.95553
-  hps: 14.47525
+  dps: 1244.03308
+  tps: 1979.99722
+  hps: 15.17748
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1147.47967
-  tps: 1920.63206
-  hps: 14.91843
+  dps: 1152.16879
+  tps: 1920.02313
+  hps: 14.95714
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 973.62058
-  tps: 2314.49832
-  hps: 9.48167
+  dps: 1151.75558
+  tps: 2820.01412
+  hps: 10.14833
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 555.88396
-  tps: 1057.4909
-  hps: 9.56333
+  dps: 706.79341
+  tps: 1113.00347
+  hps: 10.25667
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 597.57427
-  tps: 1053.58216
-  hps: 10.225
+  dps: 666.6289
+  tps: 1087.2358
+  hps: 10.55833
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1101.3503
-  tps: 1982.62753
-  hps: 17.43357
+  dps: 1280.03569
+  tps: 2066.74092
+  hps: 18.04198
  }
 }

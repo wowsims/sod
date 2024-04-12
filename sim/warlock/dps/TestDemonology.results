@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04622
+  weights: -0.02694
   weights: 0
-  weights: 0.72959
-  weights: 0
-  weights: 0
+  weights: 0.52293
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.15229
-  weights: 2.11264
+  weights: 0
+  weights: 0
+  weights: 5.43648
+  weights: 2.24429
   weights: 0
   weights: 0
   weights: 0
@@ -99,22 +99,22 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 660.26564
-  tps: 545.44599
+  dps: 640.93894
+  tps: 532.2626
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 658.95625
-  tps: 749.47482
+  dps: 638.59925
+  tps: 847.97907
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 658.95625
-  tps: 544.39893
+  dps: 638.59925
+  tps: 530.79855
  }
 }
 dps_results: {
@@ -127,15 +127,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 394.47635
-  tps: 534.04926
+  dps: 372.89583
+  tps: 673.38533
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 394.47635
-  tps: 346.28859
+  dps: 372.89583
+  tps: 331.88334
  }
 }
 dps_results: {
@@ -148,7 +148,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 657.02061
-  tps: 542.18669
+  dps: 640.46524
+  tps: 532.61461
  }
 }
