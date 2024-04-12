@@ -64,7 +64,7 @@ func (druid *Druid) registerSunfireCatSpell(baseDamageLow float64, baseDamageHig
 
 	config := druid.getSunfireBaseSpellConfig(
 		actionID,
-		core.SpellFlagResetAttackSwing,
+		core.SpellFlagNone,
 		func(sim *core.Simulation, spell *core.Spell) float64 {
 			// Sunfire (Cat) uses a different scaling formula based on the Druid's AP
 			return sim.Roll(baseDamageLow, baseDamageHigh) + spellAPCoeff*spell.MeleeAttackPower()
@@ -114,7 +114,8 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 			NumberOfTicks: SunfireTicks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, getBaseDotDamage(dot.Spell), isRollover)
+				baseDamage := getBaseDotDamage(dot.Spell)
+				dot.Snapshot(target, baseDamage, isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.SunfireDotMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -130,7 +131,8 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealDamage(sim, target, getBaseDamage(sim, spell), spell.OutcomeMagicHitAndCrit)
+			baseDamage := getBaseDamage(sim, spell)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
 				dot := spell.Dot(target)
