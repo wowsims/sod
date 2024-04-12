@@ -13,7 +13,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	}
 
 	spellCoeff := 0.2
-	baseDamage := warlock.baseRuneAbilityDamage() * 0.6
+	baseDamage := warlock.baseRuneAbilityDamage() * 0.6 * 2.2
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 

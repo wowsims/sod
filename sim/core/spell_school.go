@@ -16,46 +16,6 @@ const (
 	SpellSchoolHoly
 	SpellSchoolNature
 	SpellSchoolShadow
-
-	// Physical x Other
-	SpellSchoolSpellstrike  = SpellSchoolPhysical | SpellSchoolArcane
-	SpellSchoolFlamestrike  = SpellSchoolPhysical | SpellSchoolFire
-	SpellSchoolFroststrike  = SpellSchoolPhysical | SpellSchoolFrost
-	SpellSchoolHolystrike   = SpellSchoolPhysical | SpellSchoolHoly
-	SpellSchoolStormstrike  = SpellSchoolPhysical | SpellSchoolNature
-	SpellSchoolShadowstrike = SpellSchoolPhysical | SpellSchoolShadow
-
-	// Arcane x Other
-	SpellSchoolSpellfire   = SpellSchoolArcane | SpellSchoolFire
-	SpellSchoolSpellFrost  = SpellSchoolArcane | SpellSchoolFrost
-	SpellSchoolDivine      = SpellSchoolArcane | SpellSchoolHoly
-	SpellSchoolAstral      = SpellSchoolArcane | SpellSchoolNature
-	SpellSchoolSpellShadow = SpellSchoolArcane | SpellSchoolShadow
-
-	// Fire x Other
-	SpellSchoolFrostfire   = SpellSchoolFire | SpellSchoolFrost
-	SpellSchoolRadiant     = SpellSchoolFire | SpellSchoolHoly
-	SpellSchoolVolcanic    = SpellSchoolFire | SpellSchoolNature
-	SpellSchoolShadowflame = SpellSchoolFire | SpellSchoolShadow
-
-	// Frost x Other
-	SpellSchoolHolyfrost   = SpellSchoolFrost | SpellSchoolHoly
-	SpellSchoolFroststorm  = SpellSchoolFrost | SpellSchoolNature
-	SpellSchoolShadowfrost = SpellSchoolFrost | SpellSchoolShadow
-
-	// Holy x Other
-	SpellSchoolHolystorm = SpellSchoolHoly | SpellSchoolNature
-	SpellSchoolTwilight  = SpellSchoolHoly | SpellSchoolShadow
-
-	// Nature x Other
-	SpellSchoolPlague = SpellSchoolNature | SpellSchoolShadow
-
-	SpellSchoolElemental = SpellSchoolFire | SpellSchoolFrost | SpellSchoolNature
-
-	SpellSchoolAttack = SpellSchoolPhysical |
-		SpellSchoolSpellstrike | SpellSchoolFlamestrike | SpellSchoolFroststrike | SpellSchoolHolystrike | SpellSchoolStormstrike | SpellSchoolShadowstrike
-
-	SpellSchoolMagic = SpellSchoolArcane | SpellSchoolFire | SpellSchoolFrost | SpellSchoolHoly | SpellSchoolNature | SpellSchoolShadow
 )
 
 // Get associated school mask for a school index.
