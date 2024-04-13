@@ -32,7 +32,7 @@ func (rogue *Rogue) registerEnvenom() {
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagBinary | core.SpellFlagPoison,
+		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIgnoreResists | core.SpellFlagPoison,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

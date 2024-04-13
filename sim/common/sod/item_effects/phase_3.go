@@ -293,7 +293,7 @@ func init() {
 			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
-			PPM:      5.0, // Placeholder proc value
+			PPM:      7.0, // Estimate from log
 			Handler:  handler,
 		})
 		hitAura.Icd = &icd
@@ -312,8 +312,8 @@ func init() {
 	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 446388},
+		tickSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 449288},
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
@@ -322,22 +322,74 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(50, 100), spell.OutcomeMagicHitAndCrit)
-				}
+				spell.CalcAndDealDamage(sim, target, sim.Roll(50, 100), spell.OutcomeMagicCrit)
 			},
 		})
 
+		// Sandstorm lasts for 10 seconds and moves in an outward spiral. It seems to be able to hit the same boss target
+		// multiple times during this duration, especially depending on size and positioning.
+		// On Hakkar seems to on average hit anywhere from 1-3 times
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446388},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			Dot: core.DotConfig{
+				IsAOE: true,
+				Aura: core.Aura{
+					Label: "Sandstorm Hit",
+				},
+				NumberOfTicks: 1,
+				TickLength:    time.Second * 1,
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						tickSpell.Cast(sim, aoeTarget)
+					}
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dot := spell.AOEDot()
+				dot.NumberOfTicks = int32(sim.Roll(1, 3))
+				dot.Apply(sim)
+				dot.TickOnce(sim)
+			},
+		})
+
+		// Custom ICD so it can be shared by both proc triggers
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 5,
+		}
+
+		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
+			procSpell.Cast(sim, character.CurrentTarget)
+		}
+
+		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{SpellID: 446389},
+			Name:     "Sandstorm Spell Hit",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
+			PPM:      10.0, // Estimate from log
+			Handler:  handler,
+		})
+		hitAura.Icd = &icd
+
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 446389},
-			Name:       "Sandstorm",
+			Name:       "Sandstorm Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskDirect,
+			ProcMask:   core.ProcMaskSpellDamage,
 			ProcChance: 0.30,
-			ICD:        time.Second * 5,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procSpell.Cast(sim, character.CurrentTarget)
-			},
+			Handler:    handler,
 		})
 	})
 

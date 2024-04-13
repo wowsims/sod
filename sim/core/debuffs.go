@@ -396,31 +396,22 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 				return // Phantom spells (Romulo's, Lightning Capacitor, etc.) don't proc JoW.
 			}
 
-			procChance := 0.5
-			if spell.ProcMask.Matches(ProcMaskWhiteHit | ProcMaskRanged) {
-				// Apparently ranged/melee can still proc on miss
-				if sim.RandomFloat("JoW Proc") > procChance {
-					return
-				}
-			} else { // spell casting
-				if !spell.ProcMask.Matches(ProcMaskDirect) {
-					return
-				}
-
-				if !result.Landed() {
-					return
-				}
-
-				if sim.RandomFloat("jow") > procChance {
-					return
-				}
+			if !spell.ProcMask.Matches(ProcMaskDirect) {
+				return
 			}
 
-			if unit.JowManaMetrics == nil {
-				unit.JowManaMetrics = unit.NewManaMetrics(actionID)
+			// melee auto attacks don't even need to land
+			if !result.Landed() && !spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				return
 			}
-			// JoW returns flat mana
-			unit.AddMana(sim, jowMana, unit.JowManaMetrics)
+
+			if sim.RandomFloat("jow") < 0.5 {
+				if unit.JowManaMetrics == nil {
+					unit.JowManaMetrics = unit.NewManaMetrics(actionID)
+				}
+				// JoW returns flat mana
+				unit.AddMana(sim, jowMana, unit.JowManaMetrics)
+			}
 		},
 	})
 }

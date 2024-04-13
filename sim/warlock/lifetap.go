@@ -43,7 +43,7 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 			}
 			warlock.AddMana(sim, restore, manaMetrics)
 			if warlock.Pet != nil && warlock.Pet.IsActive() {
-				warlock.AddMana(sim, restore, manaPetMetrics)
+				warlock.Pet.AddMana(sim, restore, manaPetMetrics)
 			}
 		},
 	}
