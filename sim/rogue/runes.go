@@ -229,7 +229,7 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	}
 	// Mod threat
 	// TODO: Confirm threat mod
-	rogue.PseudoStats.ThreatMultiplier *= 1.76
+	rogue.PseudoStats.ThreatMultiplier *= 1.895
 
 	// Blade Dance 20% Physical DR - Added in registerBladeDance()
 
