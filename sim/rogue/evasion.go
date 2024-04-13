@@ -39,4 +39,9 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 			rogue.EvasionAura.Activate(sim)
 		},
 	})
+
+	rogue.AddMajorCooldown(core.MajorCooldown{
+		Spell: rogue.Evasion,
+		Type:  core.CooldownTypeSurvival,
+	})
 }
