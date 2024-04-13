@@ -240,4 +240,7 @@ func (shaman *Shaman) baseRuneAbilityDamage() float64 {
 }
 
 func (shaman *Shaman) Reset(_ *core.Simulation) {
+	for i := range shaman.TotemExpirations {
+		shaman.TotemExpirations[i] = 0
+	}
 }

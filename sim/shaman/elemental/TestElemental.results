@@ -498,7 +498,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1829.67738
+  dps: 1829.8341
   tps: 2203.21008
  }
 }
@@ -519,7 +519,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 874.67848
+  dps: 874.73182
   tps: 1244.77857
  }
 }
