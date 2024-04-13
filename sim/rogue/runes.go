@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (rogue *Rogue) ApplyRunes() {
@@ -32,6 +33,9 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.applyFocusedAttacks()
 	rogue.applyCarnage()
 	rogue.applyUnfairAdvantage()
+	rogue.registerBladeDance()
+	rogue.applyJustAFleshWound()
+	rogue.applyRollingWithThePunches()
 }
 
 func (rogue *Rogue) applyCombatPotency() {
@@ -152,4 +156,120 @@ func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 		rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 		rogue.SliceAndDiceAura.Activate(sim)
 	}
+}
+
+// TODO: Update cut to the chase to refresh
+func (rogue *Rogue) registerBladeDance() {
+	if !rogue.HasRune(proto.RogueRune_RuneBladeDance) {
+		return
+	}
+
+	justAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
+
+	rogue.bladeDanceDurations = [6]time.Duration{
+		0,
+		time.Duration(time.Second * 14),
+		time.Duration(time.Second * 18),
+		time.Duration(time.Second * 22),
+		time.Duration(time.Second * 26),
+		time.Duration(time.Second * 30),
+	}
+
+	rogue.BladeDanceAura = rogue.RegisterAura(core.Aura{
+		Label:    "Blade Dance",
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
+		Duration: rogue.bladeDanceDurations[5],
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
+			if justAFleshWound {
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 0.8
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
+			if justAFleshWound {
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= 0.8
+			}
+		},
+	})
+
+	rogue.BladeDance = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
+		SpellSchool:  core.SpellSchoolPhysical,
+		Flags:        core.SpellFlagAPL, // TODO: Add all flags
+		MetricSplits: 6,
+
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 25,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			IgnoreHaste: true,
+			ModifyCast: func(s1 *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return rogue.ComboPoints() > 0
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			rogue.BladeDanceAura.Duration = rogue.bladeDanceDurations[rogue.ComboPoints()]
+			rogue.BladeDanceAura.Activate(sim)
+			rogue.ApplyFinisher(sim, spell)
+		},
+	})
+}
+
+func (rogue *Rogue) applyJustAFleshWound() {
+	if !rogue.HasRune(proto.RogueRune_RuneJustAFleshWound) {
+		return
+	}
+	// Mod threat
+	// TODO: Confirm threat mod
+	rogue.PseudoStats.ThreatMultiplier *= 1.76
+
+	// Blade Dance 20% Physical DR - Added in registerBladeDance()
+
+	// -6% to be critically hit
+	rogue.PseudoStats.ReducedCritTakenChance += 6
+
+	// Replace Feint with Tease
+
+	// Shuriken Toss and Poisoned Knife gain 50% threat mod
+	// TODO: Add in the appropriate file
+}
+
+func (rogue *Rogue) applyRollingWithThePunches() {
+	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
+		return
+	}
+
+	procAura := rogue.RegisterAura(core.Aura{
+		Label:     "Rolling with the Punches",
+		ActionID:  core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches)},
+		Duration:  time.Second * 30,
+		MaxStacks: 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.NewDynamicMultiplyStat(stats.Health, 1+0.06*float64(aura.GetStacks()))
+		},
+	})
+
+	rogue.RegisterAura(core.Aura{
+		Label:    "Rolling with the Punches Trigger",
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome == core.OutcomeDodge || result.Outcome == core.OutcomeParry {
+				// gain stack
+				procAura.Activate(sim)
+				procAura.AddStack(sim)
+			}
+		},
+	})
 }

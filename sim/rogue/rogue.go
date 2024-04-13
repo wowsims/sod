@@ -27,6 +27,7 @@ type Rogue struct {
 	Options *proto.RogueOptions
 
 	sliceAndDiceDurations [6]time.Duration
+	bladeDanceDurations   [6]time.Duration
 
 	Backstab       *core.Spell
 	BladeFlurry    *core.Spell
@@ -61,6 +62,9 @@ type Rogue struct {
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
 
+	Evasion    *core.Spell
+	BladeDance *core.Spell
+
 	DeadlyPoison     [3]*core.Spell
 	deadlyPoisonTick *core.Spell
 	InstantPoison    [3]*core.Spell
@@ -72,6 +76,8 @@ type Rogue struct {
 	BladeFlurryAura      *core.Aura
 	EnvenomAura          *core.Aura
 	ExposeArmorAuras     core.AuraArray
+	EvasionAura          *core.Aura
+	BladeDanceAura       *core.Aura
 	SliceAndDiceAura     *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
