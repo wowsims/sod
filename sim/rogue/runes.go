@@ -237,9 +237,10 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	rogue.PseudoStats.ReducedCritTakenChance += 6
 
 	// Replace Feint with Tease
+	// Warrior sim from wrath did not implement it. May implement later
 
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
-	// TODO: Add in the appropriate file
+	// Implemented in the relevant files
 }
 
 func (rogue *Rogue) applyRollingWithThePunches() {
