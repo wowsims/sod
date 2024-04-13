@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -2.31662
+  weights: -0.57427
   weights: 0
-  weights: -1.32874
-  weights: 0
-  weights: 0
+  weights: 5.15938
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.60008
-  weights: 4.98735
+  weights: 0
+  weights: 0
+  weights: 3.44309
+  weights: 5.51983
   weights: 0
   weights: 0
   weights: 0
@@ -407,9 +407,9 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1306.33724
-  tps: 2108.73553
-  hps: 17.9557
+  dps: 1308.26032
+  tps: 2110.90612
+  hps: 19.24115
  }
 }
 dps_results: {
@@ -463,8 +463,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1283.59166
-  tps: 2061.87471
-  hps: 18.25283
+  dps: 1281.69198
+  tps: 2056.865
+  hps: 19.46473
  }
 }
