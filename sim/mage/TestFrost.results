@@ -55,16 +55,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.02577
+  weights: 1.10466
   weights: 0
-  weights: 1.02577
-  weights: 0
-  weights: 0
+  weights: 1.10466
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 21.03535
+  weights: 0
+  weights: 0
+  weights: 24.18085
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
-  dps: 1081.62749
-  tps: 840.11859
+  dps: 1165.20226
+  tps: 923.69336
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1049.2402
-  tps: 1052.29613
+  dps: 1129.19875
+  tps: 1132.25468
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1049.2402
-  tps: 813.99638
+  dps: 1129.19875
+  tps: 893.95493
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1125.91729
-  tps: 862.40948
+  dps: 1206.95595
+  tps: 943.44814
  }
 }
 dps_results: {
@@ -148,22 +148,22 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1052.69888
-  tps: 1062.08771
+  dps: 1132.64552
+  tps: 1142.03436
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1052.69888
-  tps: 816.79844
+  dps: 1132.64552
+  tps: 896.74508
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1125.55912
-  tps: 863.44967
+  dps: 1208.22189
+  tps: 946.11244
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1053.60252
-  tps: 817.72836
+  dps: 1133.82555
+  tps: 897.9514
  }
 }
