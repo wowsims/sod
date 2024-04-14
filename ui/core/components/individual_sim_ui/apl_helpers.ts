@@ -246,6 +246,8 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 
 				const iconElem = document.createElement('a');
 				iconElem.classList.add('apl-actionid-item-icon');
+				iconElem.dataset.whtticon = 'false';
+				iconElem.dataset.disableWowheadTouchTooltip = 'true';
 				actionId.setBackgroundAndHref(iconElem);
 				button.appendChild(iconElem);
 
@@ -311,6 +313,8 @@ export class APLRunePicker extends DropdownPicker<Player<any>, ActionID, Rune> {
 			setOptionContent: (button, valueConfig) => {
 				const actionId = ActionId.fromSpellId(valueConfig.value.id);
 				const iconElem = document.createElement('a');
+				iconElem.classList.add('apl-actionid-item-icon');
+				iconElem.dataset.whtticon = 'false';
 				iconElem.classList.add('apl-actionid-item-icon');
 				actionId.fillAndSet(iconElem, true, true);
 				button.appendChild(iconElem);
