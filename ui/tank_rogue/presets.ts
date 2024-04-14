@@ -5,10 +5,14 @@ import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import MutilateApl from './apls/mutilate.apl.json';
 import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
+import P3MutilateApl from './apls/p3_mutilate.apl.json';
+import P3SaberApl from './apls/p3_saber.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P1DaggersGear from './gear_sets/p1_daggers.gear.json';
 import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
+import P3DaggersGear from './gear_sets/p3_daggers.gear.json';
+import P3SaberGear from './gear_sets/p3_saber.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -23,29 +27,33 @@ export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1DaggersGear, { customCondition: player => player.getLevel() == 25 });
 export const GearDaggersP2 = PresetUtils.makePresetGear('P2 Daggers', P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
 export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
+export const GearDaggersP3 = PresetUtils.makePresetGear("P3 Daggers", P3DaggersGear, { customCondition: player => player.getLevel() >= 50 });
+export const GearSaberP3 = PresetUtils.makePresetGear('P3 Saber', P3SaberGear, { customCondition: player => player.getLevel() >= 50 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearDaggersP1, GearCombatP1],
 	[Phase.Phase2]: [GearDaggersP2],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [GearDaggersP3, GearSaberP3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
 // TODO: Phase 3
-export const DefaultGear = GearPresets[Phase.Phase2][0];
+export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, {});
-export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, {});
+export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { customCondition: player => player.getLevel() <= 40 });
+export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, { customCondition: player => player.getLevel() <= 40 });
+export const ROTATION_PRESET_MUTILATE_P3 = PresetUtils.makePresetAPLRotation('P3 Tank Mutilate', P3MutilateApl, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_P3 = PresetUtils.makePresetAPLRotation('P3 Tank Saber', P3SaberApl, { customCondition: player => player.getLevel() >= 50 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
 	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_P3, ROTATION_PRESET_SABER_P3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -63,9 +71,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	},
 	// TODO: Phase 3
 	50: {
-		0: APLPresets[Phase.Phase2][0],
-		1: APLPresets[Phase.Phase2][0],
-		2: APLPresets[Phase.Phase2][0],
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][0],
+		2: APLPresets[Phase.Phase3][0],
 	},
 };
 
@@ -94,18 +102,25 @@ export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF M
 	customCondition: player => player.getLevel() == 40,
 });
 
+export const TankMutilate50Talents = PresetUtils.makePresetTalents('P3 HAT/CttC Mutilate', SavedTalents.create({ talentsString: '00532012-00532500004501001-02' }), {
+	customCondition: player => player.getLevel() >= 50,
+});
+
+export const TankSaber50Talents = PresetUtils.makePresetTalents('P3 Saber Carnage', SavedTalents.create({ talentsString: '0053221-02505501000501031' }), {
+	customCondition: player => player.getLevel() >= 50,
+});
+
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
-	[Phase.Phase3]: [],
+	[Phase.Phase3]: [TankMutilate50Talents, TankSaber50Talents],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-// TODO: Phase 3
-export const DefaultTalentsAssassin = TalentPresets[Phase.Phase2][0];
-export const DefaultTalentsCombat = TalentPresets[Phase.Phase2][2];
-export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase1][0];
+export const DefaultTalentsAssassin = TalentPresets[Phase.Phase3][0];
+export const DefaultTalentsCombat = TalentPresets[Phase.Phase3][0];
+export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase3][0];
 
 export const DefaultTalents = DefaultTalentsCombat;
 
@@ -114,7 +129,7 @@ export const DefaultTalents = DefaultTalentsCombat;
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = RogueOptions.create({
-	honorAmongThievesCritRate: 200,
+	honorAmongThievesCritRate: 100,
 });
 
 ///////////////////////////////////////////////////////////////////////////
