@@ -53,7 +53,15 @@ func (druid *Druid) registerShredSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+
+			modifier := 1.0
+			if druid.BleedCategories.Get(target).AnyActive() {
+				modifier += .3
+			}
+
+			spell.DamageMultiplier *= modifier
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.DamageMultiplier /= modifier
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
