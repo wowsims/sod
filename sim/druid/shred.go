@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	shredDamageMultiplier := 1.0 + 2.0 * core.Ternary(druid.Ranged().ID == IdolOfTheDream, 1.02, 1.0)
+	shredDamageMultiplier := 3.0
 
 	flatDamageBonus := map[int32]float64{
 		25: 54.0,

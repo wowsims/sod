@@ -15,7 +15,7 @@ const (
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
-	IdolOfTheDream	          = 220606
+	IdolOfTheDream            = 220606
 	RitualistsHammer          = 221446
 )
 
@@ -30,6 +30,16 @@ func init() {
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.newBloodbarkCleaveItem(BloodBarkCrusher)
+	})
+
+	core.NewItemEffect(IdolOfTheDream, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.OnSpellRegistered(func(spell *core.Spell) {
+			// TODO: Also boosts the damage of swipe by 2%
+			if spell.SpellCode == SpellCode_DruidShred /*|| spell.SpellCode == SpellCode_DruidSwipe*/ {
+				spell.DamageMultiplier *= 1.02
+			}
+		})
 	})
 
 	core.NewItemEffect(RitualistsHammer, func(agent core.Agent) {
