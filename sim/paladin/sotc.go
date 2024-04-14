@@ -3,6 +3,7 @@ package paladin
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
+	"time"
 )
 
 type SealOfTheCrusaderRankInfo struct {
@@ -39,10 +40,11 @@ func (paladin *Paladin) hasLibramOfFervor() bool {
 }
 
 func makeJudgementOfTheCrusader(paladin *Paladin) *core.Spell {
-	debuffs := paladin.NewEnemyAuraArray(func(u *core.Unit, i int32) *core.Aura {
-		mult := paladin.GetImprovedSealOfTheCrusaderMult()
-		extraBonus := core.TernaryFloat64(paladin.hasLibramOfFervor(), 33, 0)
-		return core.JudgementOfTheCrusaderAura(u, i, mult, extraBonus)
+	mult := paladin.GetImprovedSealOfTheCrusaderMult()
+	extraBonus := core.TernaryFloat64(paladin.hasLibramOfFervor(), 33, 0)
+
+	debuffs := paladin.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		return core.JudgementOfTheCrusaderAura(&paladin.Unit, target, level, mult, extraBonus)
 	})
 
 	return paladin.RegisterSpell(core.SpellConfig{
@@ -50,10 +52,10 @@ func makeJudgementOfTheCrusader(paladin *Paladin) *core.Spell {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			if result.Landed() {
 				debuffs.Get(target).Activate(sim)
 			}
@@ -63,28 +65,24 @@ func makeJudgementOfTheCrusader(paladin *Paladin) *core.Spell {
 
 func (paladin *Paladin) registerSealOfTheCrusader() {
 	rankInfo := sotcRanks[paladin.Level]
-	spellAction := core.ActionID{SpellID: rankInfo.SealId}
 
 	apAtLevel := rankInfo.AttackPower * paladin.GetImprovedSealOfTheCrusaderMult()
-	sotcMultiplier := 1.4
-
 	if paladin.hasLibramOfFervor() {
 		apAtLevel += 48
 	}
 
 	sealAura := paladin.RegisterAura(core.Aura{
 		Label:    "Seal of the Crusader" + paladin.Label,
-		Tag:      "Seal",
-		ActionID: spellAction,
-		Duration: SealDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyMeleeSpeed(sim, sotcMultiplier)
-			paladin.AutoAttacks.MHAuto().DamageMultiplier /= sotcMultiplier
+		ActionID: core.ActionID{SpellID: rankInfo.SealId},
+		Duration: time.Second * 30,
+		OnGain: func(_ *core.Aura, sim *core.Simulation) {
+			paladin.MultiplyMeleeSpeed(sim, 1.4)
+			paladin.AutoAttacks.MHAuto().DamageMultiplier /= 1.4
 			paladin.AddStatDynamic(sim, stats.AttackPower, apAtLevel)
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyMeleeSpeed(sim, 1/sotcMultiplier)
-			paladin.AutoAttacks.MHAuto().DamageMultiplier *= sotcMultiplier
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
+			paladin.MultiplyMeleeSpeed(sim, 1/1.4)
+			paladin.AutoAttacks.MHAuto().DamageMultiplier *= 1.4
 			paladin.AddStatDynamic(sim, stats.AttackPower, -apAtLevel)
 		},
 	})
@@ -92,13 +90,13 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 	judgementSpell := makeJudgementOfTheCrusader(paladin)
 
 	paladin.SealOfTheCrusader = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    spellAction,
+		ActionID:    sealAura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   rankInfo.ManaCost - paladin.GetLibramSealCostReduction(),
-			Multiplier: 1.0 - (float64(paladin.Talents.Benediction) * 0.03),
+			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -106,7 +104,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			paladin.ApplySeal(sealAura, judgementSpell, sim)
 		},
 	})

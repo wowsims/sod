@@ -53,7 +53,7 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 		{
 			actionId: () => ActionId.fromSpellId(407798),
 			value: PaladinSeal.Martyrdom,
-			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == PaladinRune.RuneChestSealofMartyrdom,
+			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == PaladinRune.RuneChestSealOfMartyrdom,
 		},
 	],
 	// changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,

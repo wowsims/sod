@@ -28,7 +28,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists | core.SpellFlagBinary,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -52,7 +52,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: hunter.tntDamageMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

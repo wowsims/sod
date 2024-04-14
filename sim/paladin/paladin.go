@@ -3,15 +3,10 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
-)
-
-const (
-	SealDuration                = time.Second * 30
-	SpellFlagSecondaryJudgement = core.SpellFlagAgentReserved1
-	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
 )
 
 var TalentTreeSizes = [3]int{14, 15, 15}
@@ -79,7 +74,7 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+func (paladin *Paladin) AddRaidBuffs(_ *proto.RaidBuffs) {
 	// Buffs are handled explicitly through APLs now
 }
 
@@ -140,6 +135,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
 
+	vanilla.ConstructEmeralDragonWhelpPets(&paladin.Character)
 	return paladin
 }
 
@@ -148,11 +144,11 @@ func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
 }
 
 func (paladin *Paladin) Has1hEquipped() bool {
-	return paladin.HasMHWeapon() && paladin.GetMHWeapon().HandType == proto.HandType_HandTypeOneHand
+	return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
 }
 
 func (paladin *Paladin) Has2hEquipped() bool {
-	return paladin.HasMHWeapon() && paladin.GetMHWeapon().HandType == proto.HandType_HandTypeTwoHand
+	return paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand
 }
 
 func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
@@ -174,14 +170,14 @@ func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *c
 	paladin.CurrentSeal = aura
 	paladin.CurrentJudgement = judgement
 	paladin.CurrentSeal.Activate(sim)
-	paladin.CurrentSealExpiration = sim.CurrentTime + SealDuration
+	paladin.CurrentSealExpiration = sim.CurrentTime + aura.Duration
 }
 
 func (paladin *Paladin) GetLibramSealCostReduction() float64 {
 	if paladin.Ranged().ID == LibramOfBenediction {
 		return 10
 	}
-	if paladin.Ranged().ID == LibramOfBenediction {
+	if paladin.Ranged().ID == LibramOfHope {
 		return 20
 	}
 	return 0

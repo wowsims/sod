@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -43,7 +42,7 @@ func init() {
 
 // https://www.wowhead.com/classic/item=213407/catnip
 func (druid *Druid) registerCatnipCD() {
-	if druid.Consumes.DefaultConjured != proto.Conjured_ConjuredDruidCatnip {
+	if druid.Consumes.MiscConsumes == nil || !druid.Consumes.MiscConsumes.Catnip {
 		return
 	}
 	sod.RegisterFiftyPercentHasteBuffCD(&druid.Character, core.ActionID{ItemID: Catnip})
@@ -51,11 +50,12 @@ func (druid *Druid) registerCatnipCD() {
 
 func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 	auraActionID := core.ActionID{SpellID: 436482}
-	numHits := min(3, druid.Env.GetNumTargets())
+
+	results := make([]*core.SpellResult, min(3, druid.Env.GetNumTargets()))
 
 	damageSpell := druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 436481},
-		SpellSchool: core.SpellSchoolStormstrike,
+		SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMelee, // actually has DefenseTypeNone, but is likely using the greatest CritMultiplier available
 		ProcMask:    core.ProcMaskEmpty,
 
@@ -64,10 +64,12 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.CalcAndDealDamage(sim, curTarget, 5, spell.OutcomeMagicHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, 5, spell.OutcomeMagicCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

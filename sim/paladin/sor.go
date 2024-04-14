@@ -2,6 +2,7 @@ package paladin
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/wowsims/sod/sim/core"
 )
@@ -24,6 +25,9 @@ var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.184, 0.
 
 // The DB values are as follows:
 //var sorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.029, 0.063, 0.093, 0.1, 0.1, 0.1, 0.1, 0.1}
+// these coefficients are very like used for the "damage taken" scaling
+// ... but the judgement spells also have a spell with same EffectBasePoints and EffectBasePointsPerLevel, but ~double the coefficient:
+//var jorSorEffectBonusCoefficient = [sorRanks + 1]float64{0, 0.058, 0.125, 0.185, 0.2, 0.2, 0.2, 0.2, 0.2}
 
 var jorSpellIDs = [sorRanks + 1]int32{0, 20187, 20280, 20281, 20282, 20283, 20284, 20285, 20286}
 var jorEffectBasePoints = [sorRanks + 1]float64{0, 14, 24, 38, 56, 77, 101, 130, 161}
@@ -50,7 +54,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	level := sorLevels[rank]
 
 	levelsToScale := min(paladin.Level, scalingLevelMax) - scalingLevelMin
-	baseCoefficientFinal := basePoints + float64(levelsToScale)*pointsPerLevel
+	baseCoefficientFinal := basePoints + 1 + float64(levelsToScale)*pointsPerLevel
 
 	handednessModifier := sor1hModifier
 	if paladin.Has2hEquipped() {
@@ -90,7 +94,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:       core.SpellFlagMeleeMetrics,
 
 		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
 
@@ -112,7 +116,7 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: level,
 
-		DamageMultiplier: 1 * paladin.getWeaponSpecializationModifier(),
+		DamageMultiplier: 1 * paladin.getWeaponSpecializationModifier(), // This sounds quite unlikely, as specializations only affect physical damage
 		ThreatMultiplier: 1,
 		// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
 		BonusCoefficient: effectBonusCoefficient * core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0),
@@ -124,15 +128,13 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 	})
 
 	// Seal of Righteousness aura.
-	auraActionID := core.ActionID{SpellID: spellIdAura}
 	paladin.SealOfRighteousnessAura[rank] = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Righteousness" + paladin.Label + strconv.Itoa(rank),
-		Tag:      "Seal",
-		ActionID: auraActionID,
-		Duration: SealDuration,
+		ActionID: core.ActionID{SpellID: spellIdAura},
+		Duration: time.Second * 30,
 
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || spell.SpellID == onSwingProc.SpellID {
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
 				return
 			}
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
@@ -140,16 +142,17 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 			}
 		},
 	})
-	manaCost -= paladin.GetLibramSealCostReduction()
+
 	aura := paladin.SealOfRighteousnessAura[rank]
+
 	paladin.SealOfRighteousness[rank] = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    auraActionID,
+		ActionID:    aura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1.0 - (float64(paladin.Talents.Benediction) * 0.03),
+			FlatCost:   manaCost - paladin.GetLibramSealCostReduction(),
+			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -157,14 +160,13 @@ func (paladin *Paladin) applySealOfRighteousnessSpellAndAuraBaseConfig(rank int)
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			paladin.ApplySeal(aura, onJudgementProc, sim)
 		},
 	})
 }
 
 func (paladin *Paladin) registerSealOfRighteousnessSpellAndAura() {
-
 	paladin.SealOfRighteousness = make([]*core.Spell, sorRanks+1)
 	paladin.SealOfRighteousnessAura = make([]*core.Aura, sorRanks+1)
 
@@ -174,5 +176,4 @@ func (paladin *Paladin) registerSealOfRighteousnessSpellAndAura() {
 			paladin.applySealOfRighteousnessSpellAndAuraBaseConfig(rank)
 		}
 	}
-
 }

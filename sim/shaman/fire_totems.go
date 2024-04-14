@@ -11,6 +11,7 @@ import (
 const SearingTotemRanks = 6
 
 var SearingTotemSpellId = [SearingTotemRanks + 1]int32{0, 3599, 6363, 6364, 6365, 10437, 10438}
+var SearingTotemAttackSpellId = [SearingTotemRanks + 1]int32{0, 3606, 6350, 6351, 6352, 10435, 10436}
 var SearingTotemBaseDamage = [SearingTotemRanks + 1][]float64{{0}, {9, 11}, {13, 17}, {19, 25}, {26, 34}, {33, 45}, {40, 54}}
 var SearingTotemSpellCoef = [SearingTotemRanks + 1]float64{0, .052, .083, .083, .083, .083, .083}
 var SearingTotemManaCost = [SearingTotemRanks + 1]float64{0, 25, 45, 75, 110, 145, 170}
@@ -30,7 +31,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 }
 
 func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
-	spellId := SearingTotemSpellId[rank]
+	totemSpellId := SearingTotemSpellId[rank]
 	baseDamageLow := SearingTotemBaseDamage[rank][0]
 	baseDamageHigh := SearingTotemBaseDamage[rank][1]
 	spellCoeff := SearingTotemSpellCoef[rank]
@@ -41,7 +42,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 	attackInterval := time.Millisecond * 2500
 
 	attackSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 22048},
+		ActionID:    core.ActionID{SpellID: SearingTotemAttackSpellId[rank]},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -57,7 +58,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 	})
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
+		ActionID:    core.ActionID{SpellID: totemSpellId},
 		SpellCode:   SpellCode_SearingTotem,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
@@ -96,11 +97,8 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_MagmaTotem {
-				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
-			}
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_FireNovaTotem {
-				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
+			if shaman.ActiveTotems[FireTotem] != nil {
+				shaman.ActiveTotems[FireTotem].Dot(sim.GetTargetUnit(0)).Cancel(sim)
 			}
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			// +1 needed because of rounding issues with totem tick time.
@@ -115,6 +113,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 const MagmaTotemRanks = 4
 
 var MagmaTotemSpellId = [MagmaTotemRanks + 1]int32{0, 8190, 10585, 10586, 10587}
+var MagmaTotemAoeSpellId = [MagmaTotemRanks + 1]int32{0, 8187, 10579, 10580, 10581}
 var MagmaTotemBaseDamage = [MagmaTotemRanks + 1]float64{0, 22, 37, 54, 75}
 var MagmaTotemSpellCoeff = [MagmaTotemRanks + 1]float64{0, .033, .033, .033, .033}
 var MagmaTotemManaCost = [MagmaTotemRanks + 1]float64{0, 230, 360, 500, 650}
@@ -143,7 +142,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 	attackInterval := time.Second * 2
 
 	aoeSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8187},
+		ActionID:    core.ActionID{SpellID: MagmaTotemAoeSpellId[rank]},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -184,7 +183,6 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		},
 
 		Dot: core.DotConfig{
-			IsAOE: true,
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Magma Totem (Rank %d)", rank),
 			},
@@ -196,14 +194,11 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_SearingTotem {
-				shaman.ActiveTotems[FireTotem].Dot(shaman.CurrentTarget).Cancel(sim)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if shaman.ActiveTotems[FireTotem] != nil {
+				shaman.ActiveTotems[FireTotem].Dot(sim.GetTargetUnit(0)).Cancel(sim)
 			}
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_FireNovaTotem {
-				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
-			}
-			spell.AOEDot().Apply(sim)
+			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			// +1 needed because of rounding issues with totem tick time.
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + duration + 1
 			shaman.ActiveTotems[FireTotem] = spell
@@ -216,6 +211,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 const FireNovaTotemRanks = 5
 
 var FireNovaTotemSpellId = [FireNovaTotemRanks + 1]int32{0, 1535, 8498, 8499, 11314, 11315}
+var FireNovaTotemAoeSpellId = [FireNovaTotemRanks + 1]int32{0, 8349, 8502, 8503, 11306, 11307}
 var FireNovaTotemBaseDamage = [FireNovaTotemRanks + 1][]float64{{0, 0}, {53, 62}, {110, 124}, {195, 219}, {295, 331}, {413, 459}}
 var FireNovaTotemSpellCoeff = [FireNovaTotemRanks + 1]float64{0, .1, .143, .143, .143, .143}
 var FireNovaTotemManaCost = [FireNovaTotemRanks + 1]float64{0, 95, 170, 280, 395, 520}
@@ -249,6 +245,26 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	duration := time.Second * 5
 	attackInterval := duration
 
+	novaSpell := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: FireNovaTotemAoeSpellId[rank]},
+		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		CritDamageBonus: shaman.elementalFury(),
+
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		BonusCoefficient: spellCoeff,
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+			baseDamage *= sim.Encounter.AOECapMultiplier()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+		},
+	})
+
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
@@ -276,13 +292,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
-		BonusCoefficient: spellCoeff,
-
 		Dot: core.DotConfig{
-			IsAOE: true,
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Fire Nova Totem (Rank %d)", rank),
 			},
@@ -290,22 +300,15 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			TickLength:    attackInterval,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
-				}
+				novaSpell.Cast(sim, target)
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_SearingTotem {
-				shaman.ActiveTotems[FireTotem].Dot(shaman.CurrentTarget).Cancel(sim)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if shaman.ActiveTotems[FireTotem] != nil {
+				shaman.ActiveTotems[FireTotem].Dot(sim.GetTargetUnit(0)).Cancel(sim)
 			}
-			if shaman.ActiveTotems[FireTotem] != nil && shaman.ActiveTotems[FireTotem].SpellCode == SpellCode_MagmaTotem {
-				shaman.ActiveTotems[FireTotem].AOEDot().Cancel(sim)
-			}
-			spell.AOEDot().Apply(sim)
+			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			// +1 needed because of rounding issues with totem tick time.
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + duration + 1
 			shaman.ActiveTotems[FireTotem] = spell

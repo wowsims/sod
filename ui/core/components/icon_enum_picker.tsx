@@ -4,12 +4,8 @@ import { element, fragment } from 'tsx-vanilla';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
+import { IconPickerDirection } from './icon_picker.jsx';
 import { Input, InputConfig } from './input.js';
-
-export enum IconEnumPickerDirection {
-	Vertical = 'vertical',
-	Horizontal = 'Horizontal',
-}
 
 export interface IconEnumValueConfig<ModObject, T> {
 	value: T;
@@ -37,7 +33,7 @@ export interface IconEnumPickerConfig<ModObject, T> extends InputConfig<ModObjec
 	// Tooltip that will be shown whne hovering over the icon-picker-button
 	tooltip?: string;
 	// The direction the menu will open in relative to the root element
-	direction?: IconEnumPickerDirection;
+	direction?: IconPickerDirection;
 	equals: (a: T, b: T) => boolean;
 	backupIconUrl?: (value: T) => ActionId;
 	showWhen?: (obj: ModObject) => boolean;
@@ -53,10 +49,11 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 	private readonly buttonElem: HTMLAnchorElement;
 	private readonly buttonText: HTMLElement;
+	private readonly dropdownMenu: HTMLElement;
 
 	constructor(parent: HTMLElement, modObj: ModObject, config: IconEnumPickerConfig<ModObject, T>) {
 		super(parent, 'icon-enum-picker-root', modObj, config);
-		this.rootElem.classList.add('icon-picker', (config.direction ?? 'vertical') === 'vertical' ? 'dropdown' : 'dropend');
+		this.rootElem.classList.add('icon-picker', (config.direction ?? IconPickerDirection.Vertical) === 'vertical' ? 'dropdown' : 'dropend');
 		this.config = config;
 		this.currentValue = this.config.zeroValue;
 
@@ -88,19 +85,24 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
 		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
-		const dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
 
-		if (this.config.numColumns) dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
+		if (this.config.numColumns) {
+			this.dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
+		}
 
-		if (this.config.direction == IconEnumPickerDirection.Horizontal) dropdownMenu.style.gridAutoFlow = 'column';
+		if (this.config.direction == IconPickerDirection.Horizontal) {
+			this.dropdownMenu.style.gridAutoFlow = 'column';
+		}
 
 		this.config.values.forEach((valueConfig, _) => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option');
-			dropdownMenu.appendChild(optionContainer);
+			this.dropdownMenu.appendChild(optionContainer);
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
+			option.dataset.whtticon = 'false';
 			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
 

@@ -1,7 +1,6 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
-	AtalAi,
 	Conjured,
 	Consumes,
 	Debuffs,
@@ -18,6 +17,7 @@ import {
 	TristateEffect,
 	UnitReference,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -121,7 +121,6 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultConjured: Conjured.ConjuredDruidCatnip,
 	defaultPotion: Potions.MajorManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
@@ -130,6 +129,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

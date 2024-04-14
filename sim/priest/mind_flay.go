@@ -62,7 +62,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		Flags:       flags | core.SpellFlagBinary,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -94,7 +94,9 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			AffectedByCastSpeed: false,
 			BonusCoefficient:    spellCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Spell.DamageMultiplier *= priest.MindFlayModifier
 				dot.Snapshot(target, baseDamage, isRollover)
+				dot.Spell.DamageMultiplier /= priest.MindFlayModifier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
@@ -117,7 +119,10 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			baseDamage := baseDamage / MindFlayTicks
-			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			spell.DamageMultiplier *= priest.MindFlayModifier
+			result := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			spell.DamageMultiplier /= priest.MindFlayModifier
+			return result
 		},
 	}
 }

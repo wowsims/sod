@@ -104,18 +104,19 @@ export class ItemRenderer extends Component {
 	}
 
 	clear() {
-		this.nameElem.removeAttribute('data-wowhead');
-		this.nameElem.removeAttribute('href');
 		this.iconElem.removeAttribute('data-wowhead');
 		this.iconElem.removeAttribute('href');
+		this.nameElem.removeAttribute('data-wowhead');
+		this.nameElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
-		this.iconElem.removeAttribute('href');
+		this.runeElem.removeAttribute('data-wowhead');
+		this.runeElem.removeAttribute('href');
 
 		this.iconElem.style.backgroundImage = '';
+		this.nameElem.innerText = '';
 		this.enchantElem.innerText = '';
 		this.runeElem.innerText = '';
-		this.nameElem.textContent = '';
 	}
 
 	update(newItem: EquippedItem) {
@@ -159,7 +160,8 @@ export class ItemRenderer extends Component {
 			if (newItem.rune) {
 				this.runeElem.textContent = newItem.rune.name;
 				this.runeElem.href = ActionId.makeSpellUrl(newItem.rune.id);
-				this.enchantElem.dataset.wowhead = `domain=classic&spell=${newItem.rune.id}`;
+				this.runeElem.dataset.wowhead = `domain=classic&spell=${newItem.rune.id}`;
+				this.runeElem.dataset.whtticon = 'false';
 			}
 		}
 	}
@@ -230,10 +232,15 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
 			};
+			const openRuneSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Runes, gearData);
+			};
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
+			this.itemElem.runeElem.addEventListener('click', openRuneSelector);
 
 			player.levelChangeEmitter.on(loadItems);
 			player.gearChangeEmitter.on(loadItem);
@@ -362,7 +369,7 @@ export interface GearData {
 export enum SelectorModalTabs {
 	Items = 'Items',
 	Enchants = 'Enchants',
-	Rune = 'Rune',
+	Runes = 'Runes',
 }
 
 interface SelectorModalConfig {
@@ -438,7 +445,7 @@ export class SelectorModal extends BaseModal {
 		const { slot, equippedItem, eligibleItems, eligibleEnchants, eligibleRunes, gearData } = this.config;
 
 		this.addTab<Item>(
-			'Items',
+			SelectorModalTabs.Items,
 			eligibleItems.map(item => {
 				return {
 					item: item,
@@ -468,7 +475,7 @@ export class SelectorModal extends BaseModal {
 		);
 
 		this.addTab<Enchant>(
-			'Enchants',
+			SelectorModalTabs.Enchants,
 			eligibleEnchants.map(enchant => {
 				return {
 					item: enchant,
@@ -494,7 +501,7 @@ export class SelectorModal extends BaseModal {
 		);
 
 		this.addTab<Rune>(
-			'Rune',
+			SelectorModalTabs.Runes,
 			eligibleRunes.map(rune => {
 				return {
 					item: rune,
@@ -534,6 +541,8 @@ export class SelectorModal extends BaseModal {
 			this.ilists[0].sizeRefresh();
 		} else if (tab.includes('Enchant')) {
 			this.ilists[1].sizeRefresh();
+		} else if (tab.includes('Rune')) {
+			this.ilists[2].sizeRefresh();
 		}
 	}
 
@@ -1163,7 +1172,7 @@ export class ItemList<T> {
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
 		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
-				<a href={href} target="_blank">
+				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
 					<small>{inner}</small>
 				</a>
 			);

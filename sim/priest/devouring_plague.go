@@ -30,7 +30,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 			priest.DevouringPlague[rank] = priest.GetOrRegisterSpell(config)
 			priest.AddMajorCooldown(core.MajorCooldown{
 				Spell:    priest.DevouringPlague[rank],
-				Priority: 1,
+				Priority: int32(rank),
 				Type:     core.CooldownTypeDPS,
 			})
 		}

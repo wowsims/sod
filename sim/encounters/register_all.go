@@ -11,6 +11,7 @@ func init() {
 	addLevel40("SoD")
 	addGnomereganMechanical("SoD")
 	addLevel50("SoD")
+	addSunkenTempleDragonkin("SoD")
 	addLevel60("SoD")
 }
 

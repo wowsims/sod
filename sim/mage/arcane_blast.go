@@ -27,7 +27,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	additiveDamageAffectedSpells := []*core.Spell{}
 	// Purposefully excluded living flame and arcane missiles ticks because we manually disable the arcane blast aura after the final tick
 	affectedSpellCodes := []int32{
-		SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageSpellfrostBolt,
+		SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageSpellfrostBolt, SpellCode_MageBalefireBolt,
 	}
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
@@ -42,13 +42,14 @@ func (mage *Mage) registerArcaneBlastSpell() {
 					mage.ArcaneMissilesTickSpell,
 					{mage.ArcaneSurge},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			aura.Refresh(sim)
-			mage.ArcaneBlast.CostMultiplier = 1.75 * float64(newStacks)
+			mage.ArcaneBlast.CostMultiplier -= 1.75 * float64(oldStacks)
+			mage.ArcaneBlast.CostMultiplier += 1.75 * float64(newStacks)
 
 			oldMultiplier := .15 * float64(oldStacks)
 			newMultiplier := .15 * float64(newStacks)

@@ -1,20 +1,24 @@
-@use "sass:map";
+@use 'sass:map';
 
-@import "./icon_picker";
+@import './icon_picker';
 
 .multi-icon-picker-root {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 
-  .multi-icon-picker-label {
-    margin-bottom: 0;
-  }
+	&.dropend {
+		.dropdown-menu {
+			grid-auto-flow: column;
+		}
+	}
 
-  .dropdown-menu {
-    grid-auto-flow: column;
+	.multi-icon-picker-label {
+		margin-bottom: 0;
+	}
 
-    .icon-picker {
-      margin-bottom: 0;
-    }
-  }
+	.dropdown-menu {
+		.icon-picker {
+			margin-bottom: 0;
+		}
+	}
 }

@@ -1,7 +1,6 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
-	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -16,6 +15,7 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -118,7 +118,6 @@ export const DefaultTalents = TalentPresets[Phase.Phase3][0];
 export const DefaultOptions = Options.create({});
 
 export const DefaultConsumes = Consumes.create({
-	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	flask: Flask.FlaskOfRestlessDreams,
@@ -127,6 +126,7 @@ export const DefaultConsumes = Consumes.create({
 	mildlyIrradiatedRejuvPot: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

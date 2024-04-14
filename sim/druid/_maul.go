@@ -12,8 +12,6 @@ func (druid *Druid) registerMaulSpell() {
 		flatBaseDamage += 120
 	}
 
-	numHits := 1
-
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48480},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -44,20 +42,15 @@ func (druid *Druid) registerMaulSpell() {
 				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
 			}
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := flatBaseDamage +
-					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-				baseDamage *= modifier
+			baseDamage := flatBaseDamage +
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
+				spell.BonusWeaponDamage()
+			baseDamage *= modifier
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-				if !result.Landed() {
-					spell.IssueRefund(sim)
-				}
-
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			if !result.Landed() {
+				spell.IssueRefund(sim)
 			}
 
 			druid.MaulQueueAura.Deactivate(sim)

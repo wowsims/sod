@@ -13,6 +13,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":401955}}}},
     {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"castSpell":{"spellId":{"spellId":431681}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":19278,"rank":4}}}},
     {"action":{"castSpell":{"spellId":{"spellId":431655}}}}
   ]
 }

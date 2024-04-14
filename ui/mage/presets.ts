@@ -1,7 +1,6 @@
 import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
 import {
-	AtalAi,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -17,6 +16,7 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common';
 import { Mage_Options as MageOptions, Mage_Options_ArmorType as ArmorType } from '../core/proto/mage';
 import { SavedTalents } from '../core/proto/ui';
@@ -196,7 +196,6 @@ export const DefaultOptions = MageOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultAtalAi: AtalAi.AtalAiForbiddenMagic,
 	defaultPotion: Potions.GreaterManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
@@ -206,6 +205,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.LesserWizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

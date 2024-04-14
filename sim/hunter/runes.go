@@ -203,7 +203,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
-				spell.CD.Reset()
+
+				if spell.CD.Timer != nil {
+					spell.CD.Reset()
+				}
 			}
 		},
 	})
@@ -220,4 +223,11 @@ func (hunter *Hunter) applyRaptorFury() {
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
 	})
+}
+
+func (hunter *Hunter) tntDamageMultiplier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return 1.1
+	}
+	return 1.0
 }

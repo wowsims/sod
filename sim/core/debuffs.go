@@ -35,9 +35,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	if targetIdx == 0 {
 		if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectRegular {
-			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1, 0))
+			MakePermanent(JudgementOfTheCrusaderAura(nil, target, level, 1, 0))
 		} else if debuffs.JudgementOfTheCrusader == proto.TristateEffect_TristateEffectImproved {
-			MakePermanent(JudgementOfTheCrusaderAura(target, level, 1.15, 0))
+			MakePermanent(JudgementOfTheCrusaderAura(nil, target, level, 1.15, 0))
 		}
 	}
 
@@ -226,7 +226,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 	return aura
 }
 
-func ExternalIsbCaster(debuffs *proto.Debuffs, target *Unit) {
+func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
 	isbAura := ImprovedShadowBoltAura(target, 5)
 	isbCrit := isbConfig.casterCrit / 100.0
@@ -396,31 +396,22 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 				return // Phantom spells (Romulo's, Lightning Capacitor, etc.) don't proc JoW.
 			}
 
-			procChance := 0.5
-			if spell.ProcMask.Matches(ProcMaskWhiteHit | ProcMaskRanged) {
-				// Apparently ranged/melee can still proc on miss
-				if sim.RandomFloat("JoW Proc") > procChance {
-					return
-				}
-			} else { // spell casting
-				if !spell.ProcMask.Matches(ProcMaskDirect) {
-					return
-				}
-
-				if !result.Landed() {
-					return
-				}
-
-				if sim.RandomFloat("jow") > procChance {
-					return
-				}
+			if !spell.ProcMask.Matches(ProcMaskDirect) {
+				return
 			}
 
-			if unit.JowManaMetrics == nil {
-				unit.JowManaMetrics = unit.NewManaMetrics(actionID)
+			// melee auto attacks don't even need to land
+			if !result.Landed() && !spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				return
 			}
-			// JoW returns flat mana
-			unit.AddMana(sim, jowMana, unit.JowManaMetrics)
+
+			if sim.RandomFloat("jow") < 0.5 {
+				if unit.JowManaMetrics == nil {
+					unit.JowManaMetrics = unit.NewManaMetrics(actionID)
+				}
+				// JoW returns flat mana
+				unit.AddMana(sim, jowMana, unit.JowManaMetrics)
+			}
 		},
 	})
 }
@@ -442,7 +433,7 @@ func JudgementOfLightAura(target *Unit) *Aura {
 	})
 }
 
-func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBonus float64) *Aura {
+func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult float64, extraBonus float64) *Aura {
 	var spellId int32
 	var bonus float64
 
@@ -467,7 +458,7 @@ func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBo
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Judgement of the Crusader",
 		ActionID: ActionID{SpellID: spellId},
-		Duration: 30 * time.Second,
+		Duration: 10 * time.Second,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += bonus
@@ -475,12 +466,20 @@ func JudgementOfTheCrusaderAura(target *Unit, level int32, mult float64, extraBo
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= bonus
 		},
+		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if spell.Unit != caster { // caster is nil for permanent auras
+				return
+			}
+			if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
+				aura.Refresh(sim)
+			}
+		},
 	})
 }
 
 func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 40 {
-		return nil
+		panic("Mekkatorque's Arcano-Shredder requires level 40+")
 	}
 
 	spellID := 434841
@@ -1149,7 +1148,7 @@ func AncientCorrosivePoisonAura(target *Unit) *Aura {
 
 func SerpentsStrikerFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 50 {
-		return nil
+		panic("Serpent's Striker requires level 50+")
 	}
 
 	spellID := 447894

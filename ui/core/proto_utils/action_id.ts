@@ -62,6 +62,10 @@ export class ActionId {
 				baseName = 'Energy Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeEnergy];
 				break;
+			case OtherAction.OtherActionComboPoints:
+				baseName = 'Combo Point Gain';
+				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeComboPoints];
+				break;
 			case OtherAction.OtherActionFocusRegen:
 				baseName = 'Focus Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeFocus];
@@ -381,6 +385,10 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Sunfire':
+				if (this.spellId == 414689) {
+					name = `${name} (Cat)`;
+				}
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -555,28 +563,15 @@ export class ActionId {
 
 // Some items/spells have weird icons, so use this to show a different icon instead.
 const idOverrides: Record<string, ActionId> = {};
-idOverrides[ActionId.fromSpellId(37212).toProtoString()] = ActionId.fromItemId(29035); // Improved Wrath of Air Totem
-idOverrides[ActionId.fromSpellId(37223).toProtoString()] = ActionId.fromItemId(29040); // Improved Strength of Earth Totem
-idOverrides[ActionId.fromSpellId(37447).toProtoString()] = ActionId.fromItemId(30720); // Serpent-Coil Braid
-idOverrides[ActionId.fromSpellId(37443).toProtoString()] = ActionId.fromItemId(30196); // Robes of Tirisfal (4pc bonus)
+idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(221309); // Darkmoon Card: Sandstorm
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
-	'Gnomish Flame Turret': ActionId.fromItemId(23841),
-	'Mirror Image': ActionId.fromSpellId(55342),
-	'Water Elemental': ActionId.fromSpellId(31687),
-	'Greater Fire Elemental': ActionId.fromSpellId(2894),
 	Shadowfiend: ActionId.fromSpellId(401977),
 	Homunculi: ActionId.fromSpellId(402799),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
-	'Rune Weapon': ActionId.fromSpellId(49028),
-	Bloodworm: ActionId.fromSpellId(50452),
-	Gargoyle: ActionId.fromSpellId(49206),
-	Ghoul: ActionId.fromSpellId(46584),
-	'Army of the Dead': ActionId.fromSpellId(42650),
-	Valkyr: ActionId.fromSpellId(71844),
 };
 
 // https://wowhead.com/classic/hunter-pets
@@ -593,6 +588,7 @@ const petNameToIcon: Record<string, string> = {
 	Crocolisk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crocolisk.jpg',
 	Devilsaur: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
 	Dragonhawk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
+	'Emerald Dragon Whelp': 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_green.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',

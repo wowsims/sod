@@ -4,19 +4,52 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
+)
+
+const (
+	DiamondFlask = 20130
+	Exsanguinar  = 216497
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
-	// Exsanguinar
-	core.NewItemEffect(216497, func(agent core.Agent) {
+	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.NewTemporaryStatsAura("Diamond Flask", core.ActionID{SpellID: 24427}, stats.Stats{stats.Strength: 75}, time.Second*60)
+
+		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 24427},
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 6,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    triggerSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	core.NewItemEffect(Exsanguinar, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 436332}
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionId,
-			SpellSchool: core.SpellSchoolShadowstrike,
+			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagAPL,
 

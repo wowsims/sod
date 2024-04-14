@@ -29,7 +29,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
-		SpellSchool: core.SpellSchoolShadowfrost,
+		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
@@ -54,18 +54,14 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			damage := (baseDamageLow + baseDamageHigh) / 2
-			spell.DamageMultiplier *= priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-			spell.DamageMultiplier /= priest.MindBlastModifier
 			return result
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			spell.DamageMultiplier *= priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= priest.MindBlastModifier
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

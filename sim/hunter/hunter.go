@@ -3,6 +3,7 @@ package hunter
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -61,7 +62,6 @@ type Hunter struct {
 	SilencingShot  *core.Spell
 	Volley         *core.Spell
 	CarveMh        *core.Spell
-	CarveOh        *core.Spell
 	WingClip       *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
@@ -74,8 +74,6 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
-	ScorpidStingAuras      core.AuraArray
-	TalonOfAlarAura        *core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -246,6 +244,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(character.Level)]*core.CritRatingPerCritChance)
 	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(character.Level)]*core.SpellCritRatingPerCritChance)
 
+	vanilla.ConstructEmeralDragonWhelpPets(&hunter.Character)
 	return hunter
 }
 
