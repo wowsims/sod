@@ -15,11 +15,15 @@ type APLActionChangeTarget struct {
 }
 
 func (rot *APLRotation) newActionChangeTarget(config *proto.APLActionChangeTarget) APLActionImpl {
+	if config.NewTarget == nil {
+		return nil
+	}
 	newTarget := rot.GetSourceUnit(config.NewTarget)
 	if newTarget.Get() == nil {
 		return nil
 	}
 	return &APLActionChangeTarget{
+		unit:      rot.unit,
 		newTarget: newTarget,
 	}
 }
@@ -141,7 +145,7 @@ type APLActionAddComboPoints struct {
 	defaultAPLActionImpl
 	character *Character
 	numPoints int32
-	metrics *ResourceMetrics
+	metrics   *ResourceMetrics
 }
 
 func (rot *APLRotation) newActionAddComboPoints(config *proto.APLActionAddComboPoints) APLActionImpl {
@@ -155,7 +159,7 @@ func (rot *APLRotation) newActionAddComboPoints(config *proto.APLActionAddComboP
 	return &APLActionAddComboPoints{
 		character: character,
 		numPoints: int32(numPoints),
-		metrics: metrics,
+		metrics:   metrics,
 	}
 }
 
@@ -169,7 +173,7 @@ func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.character.Log(sim, "Adding combo points (%s points)", numPoints)
 	}
-	
+
 	action.character.AddComboPoints(sim, action.numPoints, action.metrics)
 }
 

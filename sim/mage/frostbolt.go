@@ -42,7 +42,7 @@ func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 		SpellSchool:  core.SpellSchoolFrost,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | SpellFlagMage | SpellFlagChillSpell,
+		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagBinary | core.SpellFlagAPL,
 		MissileSpeed: 28,
 
 		RequiredLevel: level,

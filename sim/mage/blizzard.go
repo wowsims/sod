@@ -88,7 +88,7 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, dot.SnapshotBaseDamage, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 
 					if improvedBlizzardProcApplication != nil {
 						improvedBlizzardProcApplication.Cast(sim, aoeTarget)
@@ -96,6 +96,9 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 				}
 			},
 		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.AOEDot().Apply(sim)

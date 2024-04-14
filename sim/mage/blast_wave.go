@@ -45,7 +45,7 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagBinary | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

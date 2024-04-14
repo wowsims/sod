@@ -65,7 +65,7 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 
 	damageSpell := druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 436481},
-		SpellSchool: core.SpellSchoolStormstrike,
+		SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMelee, // actually has DefenseTypeNone, but is likely using the greatest CritMultiplier available
 		ProcMask:    core.ProcMaskEmpty,
 

@@ -100,7 +100,7 @@ dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
   dps: 562.11413
-  tps: 580.147
+  tps: 580.15107
  }
 }
 dps_results: {
@@ -191,6 +191,6 @@ dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 544.98167
-  tps: 563.27287
+  tps: 563.29815
  }
 }

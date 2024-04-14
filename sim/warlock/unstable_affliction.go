@@ -13,7 +13,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	}
 
 	spellCoeff := 0.2
-	baseDamage := warlock.baseRuneAbilityDamage() * 0.6
+	baseDamage := warlock.baseRuneAbilityDamage() * 0.6 * 2.2
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
@@ -22,7 +22,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		DefenseType: core.DefenseTypeMagic,
-		Flags:       core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
+		Flags:       core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.15,

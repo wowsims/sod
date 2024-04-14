@@ -49,7 +49,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////
-	//                                 Trinkets
+	//                                 Rings
 	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
@@ -67,6 +67,10 @@ func init() {
 			},
 		})
 	})
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
 
 	core.NewItemEffect(AtalaiBloodRitualMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -289,7 +293,7 @@ func init() {
 			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
-			PPM:      5.0, // Placeholder proc value
+			PPM:      7.0, // Estimate from log
 			Handler:  handler,
 		})
 		hitAura.Icd = &icd
@@ -308,8 +312,8 @@ func init() {
 	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 446388},
+		tickSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 449288},
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
@@ -318,63 +322,78 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(50, 100), spell.OutcomeMagicHitAndCrit)
-				}
+				spell.CalcAndDealDamage(sim, target, sim.Roll(50, 100), spell.OutcomeMagicCrit)
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446389},
-			Name:       "Sandstorm",
-			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskDirect,
-			ProcChance: 0.30,
-			ICD:        time.Second * 5,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procSpell.Cast(sim, character.CurrentTarget)
-			},
-		})
-	})
+		// Sandstorm lasts for 10 seconds and moves in an outward spiral. It seems to be able to hit the same boss target
+		// multiple times during this duration, especially depending on size and positioning.
+		// On Hakkar seems to on average hit anywhere from 1-3 times
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446388},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
 
-	core.NewItemEffect(RoarOfTheGuardian, func(agent core.Agent) {
-		character := agent.GetCharacter()
+			Dot: core.DotConfig{
+				IsAOE: true,
+				Aura: core.Aura{
+					Label: "Sandstorm Hit",
+				},
+				NumberOfTicks: 1,
+				TickLength:    time.Second * 1,
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Roar of the Guardian",
-			ActionID: core.ActionID{SpellID: 446709},
-			Duration: time.Second * 20,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, 70)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, -70)
-			},
-		})
-
-		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 446709},
-			Flags:    core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 5,
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						tickSpell.Cast(sim, aoeTarget)
+					}
 				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAura.Activate(sim)
+				dot := spell.AOEDot()
+				dot.NumberOfTicks = int32(sim.Roll(1, 3))
+				dot.Apply(sim)
+				dot.TickOnce(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
+		// Custom ICD so it can be shared by both proc triggers
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 5,
+		}
+
+		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
+			procSpell.Cast(sim, character.CurrentTarget)
+		}
+
+		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{SpellID: 446389},
+			Name:     "Sandstorm Spell Hit",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
+			PPM:      10.0, // Estimate from log
+			Handler:  handler,
+		})
+		hitAura.Icd = &icd
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID:   core.ActionID{SpellID: 446389},
+			Name:       "Sandstorm Spell Cast",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.30,
+			Handler:    handler,
 		})
 	})
+
+	core.NewSimpleStatOffensiveTrinketEffect(RoarOfTheGuardian, stats.Stats{stats.AttackPower: 70, stats.RangedAttackPower: 70}, time.Second*20, time.Minute*5)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
