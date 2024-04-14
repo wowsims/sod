@@ -45,7 +45,7 @@ func (mage *Mage) applyIgnite() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc,
-		Flags:       SpellFlagMage | core.SpellFlagIgnoreModifiers,
+		Flags:       SpellFlagMage,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -74,7 +74,7 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	newDamage := result.Damage * 0.08 * float64(mage.Talents.Ignite)
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
-	dot.SnapshotAttackerMultiplier = 1
-	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicks)
+	dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(IgniteTicks), false)
+
 	mage.Ignite.Cast(sim, result.Target)
 }
