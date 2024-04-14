@@ -102,6 +102,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
+			option.dataset.whtticon = 'false';
 			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
 
@@ -190,8 +191,6 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		const actionId = valueConfig.actionId?.(this.modObject);
 		if (actionId) {
 			this.setActionImage(elem, actionId);
-			elem.dataset.whtticon = 'false';
-			elem.dataset.disableWowheadTouchTooltip = 'true';
 			elem.style.filter = '';
 		} else if (valueConfig.iconUrl) {
 			elem.style.backgroundImage = `url(${valueConfig.iconUrl})`;
