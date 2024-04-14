@@ -1172,7 +1172,7 @@ export class ItemList<T> {
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
 		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
-				<a href={href} target="_blank">
+				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
 					<small>{inner}</small>
 				</a>
 			);

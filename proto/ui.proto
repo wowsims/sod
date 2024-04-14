@@ -102,7 +102,7 @@ enum RepLevel {
 	RepLevelUnknown 		= 0;
 	RepLevelHated 			= 1;
 	RepLevelHostile 		= 2;
-	RepLevelUnfriendly 	= 3;
+	RepLevelUnfriendly 		= 3;
 	RepLevelNeutral 		= 4;
 	RepLevelFriendly 		= 5;
 	RepLevelHonored 		= 6;
@@ -139,7 +139,6 @@ enum RepFaction {
 	RepFactionAzerothCommerceAuthority	= 2586;
 	RepFactionDurotarSupplyAndLogistics	= 2587;
 	RepFactionEmeraldWardens			= 2641;
-	
 }
 
 message UIItemSource {
@@ -173,8 +172,8 @@ message SoldBySource {
 }
 message RepSource {
 	RepFaction rep_faction_id = 1;
-	RepLevel rep_level 				= 2;
-	Faction faction_id 				= 3;
+	RepLevel rep_level = 2;
+	Faction faction_id = 3;
 }
 
 message UIEnchant {
