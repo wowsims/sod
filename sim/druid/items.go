@@ -35,10 +35,15 @@ func init() {
 	core.NewItemEffect(IdolOfTheDream, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.OnSpellRegistered(func(spell *core.Spell) {
-			// TODO: Also boosts the damage of swipe by 2%
-			if spell.SpellCode == SpellCode_DruidShred /*|| spell.SpellCode == SpellCode_DruidSwipe*/ {
-				spell.DamageMultiplier *= 1.02
+			// In-game increases the weapon damage from 300% to 304%
+			if spell.SpellCode == SpellCode_DruidShred {
+				spell.DamageMultiplier += 2 * .02
 			}
+
+			// TODO: Also boosts the damage of swipe by 2%
+			// if spell.SpellCode == SpellCode_DruidSwipe {
+			// 	spell.DamageMultiplier *= 1.02
+			// }
 		})
 	})
 
