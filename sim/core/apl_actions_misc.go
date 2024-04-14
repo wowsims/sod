@@ -15,11 +15,15 @@ type APLActionChangeTarget struct {
 }
 
 func (rot *APLRotation) newActionChangeTarget(config *proto.APLActionChangeTarget) APLActionImpl {
+	if config.NewTarget == nil {
+		return nil
+	}
 	newTarget := rot.GetSourceUnit(config.NewTarget)
 	if newTarget.Get() == nil {
 		return nil
 	}
 	return &APLActionChangeTarget{
+		unit:      rot.unit,
 		newTarget: newTarget,
 	}
 }
