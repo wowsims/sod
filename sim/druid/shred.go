@@ -7,22 +7,28 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+var sodShredEffect1Mult = 0.75 // Multiply flat dmg by this
+var sodShredEffect2Add = 0.75  // Add this to the multiplier, AFTER percent spell mods
+
 func (druid *Druid) registerShredSpell() {
-	shredDamageMultiplier := 3.0
+	shredDamageMultiplier := 2.25
 
 	flatDamageBonus := map[int32]float64{
-		25: 54.0,
-		40: 99.0,
-		50: 144.0,
-		60: 180.0,
-	}[druid.Level] / shredDamageMultiplier
+		25: 24.0,
+		40: 44.0,
+		50: 64.0,
+		60: 80.0,
+	}[druid.Level] * sodShredEffect1Mult
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	if druid.Ranged().ID == IdolOfTheDream {
 		shredDamageMultiplier *= 1.02
+		flatDamageBonus *= 1.02
 	}
+
+	shredDamageMultiplier += sodShredEffect2Add
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		SpellCode: SpellCode_DruidShred,
