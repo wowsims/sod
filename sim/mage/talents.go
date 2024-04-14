@@ -101,7 +101,8 @@ func (mage *Mage) applyFireTalents() {
 	if mage.Talents.FirePower > 0 {
 		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
+			// Fire Power buffs pretty much all mage fire spells EXCEPT ignite
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell != mage.Ignite {
 				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
 			}
 		})
