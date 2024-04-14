@@ -92,16 +92,6 @@ $favorite-cell-width: 2rem;
 	}
 }
 
-.selector-modal {
-	.modal-header {
-		padding-bottom: 0;
-
-		.selector-modal-tabs {
-			border-bottom: 0;
-		}
-	}
-}
-
 @include media-breakpoint-down(xl) {
 	.gear-picker-right {
 		margin-bottom: 2 * map.get($spacers, 3);
@@ -124,6 +114,16 @@ $favorite-cell-width: 2rem;
 					align-items: flex-start;
 				}
 			}
+		}
+	}
+}
+
+.selector-modal {
+	.modal-header {
+		padding-bottom: 0;
+
+		.selector-modal-tabs {
+			border-bottom: 0;
 		}
 	}
 }
