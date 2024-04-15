@@ -42,6 +42,7 @@ const (
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	MarkOfTheChosen          = 17774
 )
 
 func init() {
@@ -609,6 +610,46 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 			character.AddStat(stats.SpellDamage, 85)
 		}
+	})
+
+	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		statIncrease := float64(25)
+		markProcChance := 0.02
+
+		procAura := character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen Effect",
+			ActionID: core.ActionID{SpellID: 21970},
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   statIncrease,
+					stats.Agility:   statIncrease,
+					stats.Strength:  statIncrease,
+					stats.Intellect: statIncrease,
+					stats.Spirit:    statIncrease,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   -statIncrease,
+					stats.Agility:   -statIncrease,
+					stats.Strength:  -statIncrease,
+					stats.Intellect: -statIncrease,
+					stats.Spirit:    -statIncrease,
+				})
+			},
+		})
+
+		core.MakePermanent(character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen",
+			ActionID: core.ActionID{SpellID: 21969},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Static Shock") < markProcChance {
+					procAura.Activate(sim)
+				}
+			},
+		}))
 	})
 
 	core.AddEffectsToTest = true
