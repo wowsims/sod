@@ -645,7 +645,7 @@ func init() {
 			Label:    "Mark of the Chosen",
 			ActionID: core.ActionID{SpellID: 21969},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Static Shock") < markProcChance {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
 					procAura.Activate(sim)
 				}
 			},
