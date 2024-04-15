@@ -26,6 +26,10 @@ func (wp *WarlockPet) registerFireboltSpell() {
 	manaCost := [8]float64{0, 10, 20, 35, 50, 70, 95, 115}[rank]
 	level := [8]int{0, 1, 8, 18, 28, 38, 48, 58}[rank]
 
+	improvedImp := []float64{1, 1.1, 1.2, 1.3}[wp.owner.Talents.ImprovedImp]
+	baseDamage[0] *= improvedImp
+	baseDamage[1] *= improvedImp
+
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
@@ -45,7 +49,7 @@ func (wp *WarlockPet) registerFireboltSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(wp.owner.Talents.ImprovedImp),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
