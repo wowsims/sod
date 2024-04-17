@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 70
+// NextIndex: 72
 message APLValue {
     oneof value {
         // Operators
@@ -165,6 +165,8 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValueWarlockCurrentPetMana warlock_current_pet_mana = 70;
+        APLValueWarlockCurrentPetManaPercent warlock_current_pet_mana_percent = 71;
         APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
     }
 }
@@ -508,6 +510,12 @@ message APLValueWarlockShouldRecastDrainSoul {
 }
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
+}
+message APLValueWarlockCurrentPetMana {
+    UnitReference source_unit = 1;
+}
+message APLValueWarlockCurrentPetManaPercent {
+    UnitReference source_unit = 1;
 }
 message APLValueCurrentSealRemainingTime {
 }

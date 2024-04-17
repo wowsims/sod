@@ -13,6 +13,8 @@ func (warlock *Warlock) NewAPLValue(rot *core.APLRotation, config *proto.APLValu
 		return warlock.newValueWarlockShouldRecastDrainSoul(rot, config.GetWarlockShouldRecastDrainSoul())
 	case *proto.APLValue_WarlockShouldRefreshCorruption:
 		return warlock.newValueWarlockShouldRefreshCorruption(rot, config.GetWarlockShouldRefreshCorruption())
+	case *proto.APLValue_WarlockCurrentPetMana:
+		return warlock.newValueWarlockCurrentPetMana(rot, config.GetWarlockCurrentPetMana())
 	default:
 		return nil
 	}
@@ -138,4 +140,95 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 }
 func (value *APLValueWarlockShouldRefreshCorruption) String() string {
 	return "Warlock Should Refresh Corruption()"
+}
+
+type APLValueWarlockCurrentPetMana struct {
+	core.DefaultAPLValueImpl
+	pet core.PetAgent
+}
+
+func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
+	unit := rot.GetSourceUnit(config.SourceUnit)
+	if unit.Get() == nil {
+		return nil
+	}
+	pets := unit.Get().PetAgents
+	var pet core.PetAgent
+	for _, pet_agent := range pets {
+		switch pet_agent.GetPet().Name {
+		case "Imp":
+		case "Succubuse":
+		case "Felhunter":
+		case "Voidwalker":
+		case "Felguard":
+			pet = pet_agent
+		}
+	}
+	if pet.GetPet() == nil {
+		return nil
+	}
+	if !pet.GetPet().HasManaBar() {
+		rot.ValidationWarning("%s does not use Mana", pet.GetPet().Label)
+		return nil
+	}
+	return &APLValueWarlockCurrentPetMana{
+		pet: pet,
+	}
+}
+func (value *APLValueWarlockCurrentPetMana) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueWarlockCurrentPetMana) GetFloat(sim *core.Simulation) float64 {
+	return value.pet.GetPet().CurrentMana()
+}
+func (value *APLValueWarlockCurrentPetMana) String() string {
+	return "Warlock Current Pet Mana()"
+}
+
+type APLValueWarlockCurrentPetManaPercent struct {
+	core.DefaultAPLValueImpl
+	pet core.PetAgent
+}
+
+func (warlock *Warlock) newValueWarlockCurrentPetManaPercent(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
+	unit := rot.GetSourceUnit(config.SourceUnit)
+	if unit.Get() == nil {
+		return nil
+	}
+	pets := unit.Get().PetAgents
+	var pet core.PetAgent
+	for _, pet_agent := range pets {
+		switch pet_agent.GetPet().Name {
+		case "Imp":
+		case "Succubuse":
+		case "Felhunter":
+		case "Voidwalker":
+		case "Felguard":
+			pet = pet_agent
+		}
+	}
+
+	if pet == nil {
+		return nil
+	}
+
+	if pet.GetPet() == nil {
+		return nil
+	}
+	if !pet.GetPet().HasManaBar() {
+		rot.ValidationWarning("%s does not use Mana", pet.GetPet().Label)
+		return nil
+	}
+	return &APLValueWarlockCurrentPetManaPercent{
+		pet: pet,
+	}
+}
+func (value *APLValueWarlockCurrentPetManaPercent) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueWarlockCurrentPetManaPercent) GetFloat(sim *core.Simulation) float64 {
+	return value.pet.GetPet().CurrentManaPercent()
+}
+func (value *APLValueWarlockCurrentPetManaPercent) String() string {
+	return "Warlock Current Pet Mana Percent()"
 }

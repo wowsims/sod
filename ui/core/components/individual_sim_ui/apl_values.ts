@@ -64,6 +64,8 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
+	APLValueWarlockCurrentPetMana,
+	APLValueWarlockCurrentPetManaPercent,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -930,6 +932,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueWarlockShouldRefreshCorruption.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+	}),
+	warlockCurrentPetMana: inputBuilder({
+		label: 'Pet Mana',
+		submenu: ['Warlock'],
+		shortDescription: 'Amount of currently available pet mana.',
+		newValue: APLValueWarlockCurrentPetMana.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		fields: [],
+	}),
+	warlockCurrentPetManaPercent: inputBuilder({
+		label: 'Pet Mana (%)',
+		submenu: ['Warlock'],
+		shortDescription: 'Amount of currently available pet mana, as a percentage.',
+		newValue: APLValueWarlockCurrentPetManaPercent.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		fields: [],
 	}),
 	currentSealRemainingTime: inputBuilder({
 		label: 'Current Seal Remaining Time',
