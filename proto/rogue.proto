@@ -78,7 +78,7 @@ enum RogueRune {
 	RuneShiv = 424799;
 	RuneMasterOfSubtlety = 425096;
 	RuneWaylay = 408700;
-	RuneRollingWithThePunches = 400093;
+	RuneRollingWithThePunches = 400016;
 	RuneShadowstep = 400101;
 	RuneShurikenToss = 399986;
 	RunePoisonedKnife = 425012;

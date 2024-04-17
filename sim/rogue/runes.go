@@ -248,28 +248,39 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		return
 	}
 
-	procAura := rogue.RegisterAura(core.Aura{
-		Label:     "Rolling with the Punches",
-		ActionID:  core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches)},
+	statDep := rogue.NewDynamicMultiplyStat(stats.Health, 1+0.06*float64(rogue.RollingWithThePunchesProcAura.GetStacks()))
+
+	rogue.RollingWithThePunchesProcAura = rogue.RegisterAura(core.Aura{
+		Label:     "Rolling with the Punches Proc",
+		ActionID:  core.ActionID{SpellID: 400015},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.NewDynamicMultiplyStat(stats.Health, 1+0.06*float64(aura.GetStacks()))
+			aura.Unit.EnableDynamicStatDep(sim, statDep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.DisableDynamicStatDep(sim, statDep)
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.EnableDynamicStatDep(sim, statDep)
 		},
 	})
 
-	rogue.RegisterAura(core.Aura{
-		Label:    "Rolling with the Punches Trigger",
-		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches)},
-		Duration: core.NeverExpires,
+	rogue.RollingWithThePunchesAura = rogue.RegisterAura(core.Aura{
+		Label:           "Rolling with the Punches",
+		ActionID:        core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches)},
+		ActionIDForProc: core.ActionID{SpellID: int32(proto.RogueRune_RuneRollingWithThePunches) - 1},
+		Duration:        core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome == core.OutcomeDodge || result.Outcome == core.OutcomeParry {
-				// gain stack
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) {
+				if rogue.RollingWithThePunchesProcAura.IsActive() {
+					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+				} else {
+					rogue.RollingWithThePunchesProcAura.Activate(sim)
+				}
 			}
 		},
 	})
