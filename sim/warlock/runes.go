@@ -172,7 +172,7 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		Duration: core.NeverExpires,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.1
+			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.12
 			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
