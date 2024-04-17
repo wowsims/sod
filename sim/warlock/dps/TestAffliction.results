@@ -102,15 +102,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-<<<<<<< HEAD
-  weights: 0.3498
-  weights: 0
-  weights: 0.85175
-=======
   weights: 0.33433
   weights: 0
   weights: 1.14914
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -118,13 +112,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-<<<<<<< HEAD
-  weights: 4.33415
-  weights: 1.63252
-=======
   weights: 3.6844
   weights: 1.72181
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -162,15 +151,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-<<<<<<< HEAD
-  weights: 0.10795
-  weights: 0
-  weights: -0.37008
-=======
   weights: 1.57318
   weights: 0
   weights: 1.52472
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -178,13 +161,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-<<<<<<< HEAD
-  weights: 10.8692
-  weights: 7.49935
-=======
   weights: 11.50014
   weights: 7.74406
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -219,192 +197,112 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-<<<<<<< HEAD
-  dps: 598.73464
-  tps: 567.32935
-=======
   dps: 589.7335
   tps: 558.99314
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-<<<<<<< HEAD
-  dps: 591.15328
-  tps: 1196.1784
-=======
   dps: 586.14869
   tps: 1187.06506
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 591.15328
-  tps: 559.66614
-=======
   dps: 586.14869
   tps: 555.35323
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 585.39964
-  tps: 542.89609
-=======
   dps: 576.63077
   tps: 534.52574
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-<<<<<<< HEAD
-  dps: 373.63797
-  tps: 998.20618
-=======
   dps: 369.10544
   tps: 997.3032
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 373.63797
-  tps: 360.47239
-=======
   dps: 369.10544
   tps: 356.11261
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 379.52923
-  tps: 353.1449
-=======
   dps: 375.98542
   tps: 349.74382
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-<<<<<<< HEAD
-  dps: 601.89986
-  tps: 570.08021
-=======
   dps: 591.38767
   tps: 559.89636
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-<<<<<<< HEAD
-  dps: 1354.36862
-  tps: 1153.9304
-=======
   dps: 1348.75704
   tps: 1144.79965
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-<<<<<<< HEAD
-  dps: 1952.20599
-  tps: 2701.44989
-=======
   dps: 1953.77428
   tps: 2704.98061
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 1343.22973
-  tps: 1144.42781
-=======
   dps: 1345.46103
   tps: 1143.46075
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 1374.34558
-  tps: 1206.44251
-=======
   dps: 1407.89852
   tps: 1218.97962
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-<<<<<<< HEAD
-  dps: 1198.98377
-  tps: 2082.05249
-=======
   dps: 1197.75979
   tps: 2075.21042
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 753.85192
-  tps: 633.82532
-=======
   dps: 754.00531
   tps: 629.17208
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-<<<<<<< HEAD
-  dps: 716.68652
-  tps: 639.37389
-=======
   dps: 748.67521
   tps: 657.61708
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-<<<<<<< HEAD
-  dps: 1350.88053
-  tps: 1150.95943
-=======
   dps: 1352.18224
   tps: 1148.54549
->>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
