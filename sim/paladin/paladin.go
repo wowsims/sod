@@ -47,14 +47,13 @@ type Paladin struct {
 	// HolyWrath             []*core.Spell
 
 	// Seal spells and their associated auras
-	SealOfRighteousness []*core.Spell
+	sealOfRighteousness *core.Spell
 	SealOfCommand       []*core.Spell
 	SealOfMartyrdom     *core.Spell
 	SealOfTheCrusader   *core.Spell
 
-	SealOfRighteousnessAura []*core.Aura
-	SealOfCommandAura       []*core.Aura
-	SealOfMartyrdomAura     *core.Aura
+	SealOfCommandAura   []*core.Aura
+	SealOfMartyrdomAura *core.Aura
 
 	// Auras from talents
 	DivineFavorAura *core.Aura
@@ -85,10 +84,10 @@ func (paladin *Paladin) Initialize() {
 
 	// Judgement and Seals
 	paladin.registerJudgementSpell()
-	paladin.registerSealOfRighteousnessSpellAndAura()
+	paladin.registerSealOfRighteousness()
 
-	paladin.registerSealOfCommandSpellAndAura()
-	paladin.registerSealOfMartyrdomSpellAndAura()
+	paladin.registerSealOfCommand()
+	paladin.registerSealOfMartyrdom()
 	paladin.registerSealOfTheCrusader()
 
 	// Active abilities
@@ -153,14 +152,14 @@ func (paladin *Paladin) Has2hEquipped() bool {
 
 func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
-	var returnSpell *core.Spell
 	switch seal {
-	case proto.PaladinSeal_Righteousness:
-		returnSpell = paladin.SealOfRighteousness[paladin.MaxRankRighteousness]
+	case proto.PaladinSeal_Martyrdom:
+		return paladin.SealOfMartyrdom
 	case proto.PaladinSeal_Command:
-		returnSpell = paladin.SealOfCommand[paladin.MaxRankCommand]
+		return paladin.SealOfCommand[paladin.MaxRankCommand]
+	default:
+		return paladin.sealOfRighteousness
 	}
-	return returnSpell
 }
 
 func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *core.Simulation) {

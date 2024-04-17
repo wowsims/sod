@@ -148,9 +148,9 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 	})
 }
 
-func (paladin *Paladin) registerSealOfCommandSpellAndAura() {
-	paladin.SealOfCommand = make([]*core.Spell, sorRanks+1)
-	paladin.SealOfCommandAura = make([]*core.Aura, sorRanks+1)
+func (paladin *Paladin) registerSealOfCommand() {
+	paladin.SealOfCommand = make([]*core.Spell, socRanks+1)
+	paladin.SealOfCommandAura = make([]*core.Aura, socRanks+1)
 
 	for rank := 1; rank <= socRanks; rank++ {
 		if int(paladin.Level) >= socLevels[rank] {

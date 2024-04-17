@@ -12,7 +12,7 @@ import (
 // Both the on-hit and judgement are subject to weapon specialization talent modifiers as
 // they both target melee defense.
 
-func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
+func (paladin *Paladin) registerSealOfMartyrdom() {
 	if !paladin.HasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
 		return
 	}
