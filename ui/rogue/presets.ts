@@ -77,7 +77,7 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	},
 	50: {
 		0: APLPresets[Phase.Phase3][0],
-		1: APLPresets[Phase.Phase3][1],
+		1: APLPresets[Phase.Phase3][0],
 		2: APLPresets[Phase.Phase3][0],
 	},
 };
