@@ -37,12 +37,12 @@ const (
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
+	MarkOfTheChosen          = 17774
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
-	MarkOfTheChosen          = 17774
 )
 
 func init() {
