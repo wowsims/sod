@@ -1619,7 +1619,7 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 	spellId := map[int32]int32{
 		25: 8162,
 		40: 8163,
-		50: 8835,
+		50: 8163,
 		60: 25362,
 	}[level]
 	duration := time.Minute * 2
