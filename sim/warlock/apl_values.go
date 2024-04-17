@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -15,6 +16,8 @@ func (warlock *Warlock) NewAPLValue(rot *core.APLRotation, config *proto.APLValu
 		return warlock.newValueWarlockShouldRefreshCorruption(rot, config.GetWarlockShouldRefreshCorruption())
 	case *proto.APLValue_WarlockCurrentPetMana:
 		return warlock.newValueWarlockCurrentPetMana(rot, config.GetWarlockCurrentPetMana())
+	case *proto.APLValue_WarlockCurrentPetManaPercent:
+		return warlock.newValueWarlockCurrentPetManaPercent(rot, config.GetWarlockCurrentPetManaPercent())
 	default:
 		return nil
 	}
@@ -168,4 +171,32 @@ func (value *APLValueWarlockCurrentPetMana) GetFloat(sim *core.Simulation) float
 }
 func (value *APLValueWarlockCurrentPetMana) String() string {
 	return "Current Pet Mana"
+}
+
+type APLValueWarlockCurrentPetManaPercent struct {
+	core.DefaultAPLValueImpl
+	pet *WarlockPet
+}
+
+func (warlock *Warlock) newValueWarlockCurrentPetManaPercent(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetManaPercent) core.APLValue {
+	pet := warlock.Pet
+	if pet.GetPet() == nil {
+		return nil
+	}
+	if !pet.GetPet().HasManaBar() {
+		rot.ValidationWarning("%s does not use Mana", pet.GetPet().Label)
+		return nil
+	}
+	return &APLValueWarlockCurrentPetManaPercent{
+		pet: pet,
+	}
+}
+func (value *APLValueWarlockCurrentPetManaPercent) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueWarlockCurrentPetManaPercent) GetFloat(sim *core.Simulation) float64 {
+	return value.pet.GetPet().CurrentManaPercent()
+}
+func (value *APLValueWarlockCurrentPetManaPercent) String() string {
+	return fmt.Sprintf("Current Pet Mana %%")
 }
