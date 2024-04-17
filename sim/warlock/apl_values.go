@@ -13,6 +13,8 @@ func (warlock *Warlock) NewAPLValue(rot *core.APLRotation, config *proto.APLValu
 		return warlock.newValueWarlockShouldRecastDrainSoul(rot, config.GetWarlockShouldRecastDrainSoul())
 	case *proto.APLValue_WarlockShouldRefreshCorruption:
 		return warlock.newValueWarlockShouldRefreshCorruption(rot, config.GetWarlockShouldRefreshCorruption())
+	case *proto.APLValue_WarlockCurrentPetMana:
+		return warlock.newValueWarlockCurrentPetMana(rot, config.GetWarlockCurrentPetMana())
 	default:
 		return nil
 	}
@@ -138,4 +140,32 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 }
 func (value *APLValueWarlockShouldRefreshCorruption) String() string {
 	return "Warlock Should Refresh Corruption()"
+}
+
+type APLValueWarlockCurrentPetMana struct {
+	core.DefaultAPLValueImpl
+	pet *WarlockPet
+}
+
+func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
+	pet := warlock.Pet
+	if pet.GetPet() == nil {
+		return nil
+	}
+	if !pet.GetPet().HasManaBar() {
+		rot.ValidationWarning("%s does not use Mana", pet.GetPet().Label)
+		return nil
+	}
+	return &APLValueWarlockCurrentPetMana{
+		pet: pet,
+	}
+}
+func (value *APLValueWarlockCurrentPetMana) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueWarlockCurrentPetMana) GetFloat(sim *core.Simulation) float64 {
+	return value.pet.GetPet().CurrentMana()
+}
+func (value *APLValueWarlockCurrentPetMana) String() string {
+	return "Current Pet Mana"
 }
