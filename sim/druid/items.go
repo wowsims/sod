@@ -16,6 +16,7 @@ const (
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
 	RitualistsHammer          = 221446
+	IdolOfTheDream            = 220606
 )
 
 func init() {
