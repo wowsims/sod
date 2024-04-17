@@ -144,26 +144,11 @@ func (value *APLValueWarlockShouldRefreshCorruption) String() string {
 
 type APLValueWarlockCurrentPetMana struct {
 	core.DefaultAPLValueImpl
-	pet core.PetAgent
+	pet *WarlockPet
 }
 
 func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
-	unit := rot.GetSourceUnit(config.SourceUnit)
-	if unit.Get() == nil {
-		return nil
-	}
-	pets := unit.Get().PetAgents
-	var pet core.PetAgent
-	for _, pet_agent := range pets {
-		switch pet_agent.GetPet().Name {
-		case "Imp":
-		case "Succubuse":
-		case "Felhunter":
-		case "Voidwalker":
-		case "Felguard":
-			pet = pet_agent
-		}
-	}
+	pet := warlock.Pet
 	if pet.GetPet() == nil {
 		return nil
 	}
