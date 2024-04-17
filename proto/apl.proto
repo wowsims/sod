@@ -511,7 +511,6 @@ message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
 message APLValueWarlockCurrentPetMana {
-    UnitReference source_unit = 1;
 }
 message APLValueCurrentSealRemainingTime {
 }
