@@ -15,6 +15,8 @@ func (warlock *Warlock) NewAPLValue(rot *core.APLRotation, config *proto.APLValu
 		return warlock.newValueWarlockShouldRefreshCorruption(rot, config.GetWarlockShouldRefreshCorruption())
 	case *proto.APLValue_WarlockCurrentPetMana:
 		return warlock.newValueWarlockCurrentPetMana(rot, config.GetWarlockCurrentPetMana())
+	case *proto.APLValue_WarlockCurrentPetManaPercent:
+		return warlock.newValueWarlockCurrentPetManaPercent(rot, config.GetWarlockCurrentPetManaPercent())
 	default:
 		return nil
 	}
