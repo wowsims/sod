@@ -96,15 +96,14 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	case 50:
-		// TODO:
-		baseMinDamage = 9.5 * attackSpeed
-		baseMaxDamage = 15.5 * attackSpeed
+		baseMinDamage = 23.5 * attackSpeed
+		baseMaxDamage = 27.5 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
-			stats.Strength:  78,
-			stats.Agility:   66,
-			stats.Stamina:   160,
-			stats.Intellect: 37,
-			stats.Spirit:    55,
+			stats.Strength:  113,
+			stats.Agility:   82,
+			stats.Stamina:   257,
+			stats.Intellect: 43,
+			stats.Spirit:    67,
 
 			stats.AttackPower: -20,
 

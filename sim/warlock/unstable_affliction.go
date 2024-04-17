@@ -12,8 +12,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		return
 	}
 
-	spellCoeff := 0.2
-	baseDamage := warlock.baseRuneAbilityDamage() * 0.6 * 2.2
+	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
@@ -47,9 +46,9 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 				Label: "UnstableAffliction-" + warlock.Label,
 			},
 
-			NumberOfTicks:    5,
+			NumberOfTicks:    6,
 			TickLength:       time.Second * 3,
-			BonusCoefficient: spellCoeff,
+			BonusCoefficient: 0.2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
