@@ -27,6 +27,7 @@ const (
 	BloodthirstCrossbow        = 221451
 	FistOfStone                = 223524
 	BladeOfEternalDarkness     = 223964
+	SerpentsStrikerSlow        = 224409
 )
 
 func init() {
@@ -430,7 +431,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, func(character *core.Character) *core.Spell {
+	serpentsStrikerEffect := func(character *core.Character) *core.Spell {
 		procAuras := character.NewEnemyAuraArray(core.SerpentsStrikerFistDebuffAura)
 
 		return character.RegisterSpell(core.SpellConfig{
@@ -450,7 +451,9 @@ func init() {
 				procAuras.Get(target).Activate(sim)
 			},
 		})
-	})
+	}
+	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, serpentsStrikerEffect)
+	itemhelpers.CreateWeaponProcSpell(SerpentsStrikerSlow, "Serpent's Striker", 5.0, serpentsStrikerEffect)
 
 	core.NewItemEffect(BloodthirstCrossbow, func(agent core.Agent) {
 		character := agent.GetCharacter()
