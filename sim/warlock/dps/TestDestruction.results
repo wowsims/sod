@@ -200,7 +200,11 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 0.02916
+=======
+  weights: 0.02789
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0.13619
   weights: 0
@@ -210,8 +214,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 3.12032
   weights: 0.17147
+=======
+  weights: 3.0746
+  weights: 0.16813
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -249,9 +258,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: -2.79953
   weights: 0
   weights: 2.88604
+=======
+  weights: -1.44202
+  weights: 0
+  weights: 1.81676
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -259,8 +274,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 8.96163
   weights: 5.41451
+=======
+  weights: 2.55315
+  weights: 7.46154
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
   weights: 0
   weights: 0
   weights: 0
@@ -351,112 +371,192 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
+<<<<<<< HEAD
   dps: 147.85594
   tps: 79.59037
+=======
+  dps: 145.88362
+  tps: 78.5602
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 144.92268
   tps: 1045.56735
+=======
+  dps: 143.06771
+  tps: 1041.4637
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 144.92268
   tps: 74.88232
+=======
+  dps: 143.06771
+  tps: 74.27992
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 243.52858
   tps: 163.02771
+=======
+  dps: 239.97289
+  tps: 160.13069
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 104.87286
   tps: 1017.4809
+=======
+  dps: 103.79064
+  tps: 1017.94113
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 104.87286
   tps: 65.5411
+=======
+  dps: 103.79064
+  tps: 65.5804
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 167.8639
   tps: 113.91043
+=======
+  dps: 166.18089
+  tps: 112.4566
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
+<<<<<<< HEAD
   dps: 145.19356
   tps: 75.24074
+=======
+  dps: 143.33342
+  tps: 74.63173
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
+<<<<<<< HEAD
   dps: 1287.74693
   tps: 1134.08907
+=======
+  dps: 1279.64056
+  tps: 1124.37828
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 2034.51456
   tps: 2541.93019
+=======
+  dps: 2023.03682
+  tps: 2526.57451
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 1275.03876
   tps: 1121.36481
+=======
+  dps: 1279.89626
+  tps: 1126.77888
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 1376.22675
   tps: 1241.83769
+=======
+  dps: 1400.19427
+  tps: 1252.13572
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 1258.55476
   tps: 1886.49774
+=======
+  dps: 1250.33491
+  tps: 1871.63283
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 704.70424
   tps: 625.35902
+=======
+  dps: 707.12608
+  tps: 622.85398
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 745.0004
   tps: 688.1706
+=======
+  dps: 753.10698
+  tps: 680.0301
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
+<<<<<<< HEAD
   dps: 1289.46603
   tps: 1135.95401
+=======
+  dps: 1265.86558
+  tps: 1110.17806
+>>>>>>> 8670393ed (Fix imp base stats and stamina scaling)
  }
 }

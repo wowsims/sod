@@ -63,12 +63,12 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 50:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  70,
-				stats.Agility:   29,
-				stats.Stamina:   67,
-				stats.Intellect: 163,
-				stats.Spirit:    163,
-				stats.Mana:      318,
+				stats.Strength:  101,
+				stats.Agility:   32,
+				stats.Stamina:   72,
+				stats.Intellect: 212,
+				stats.Spirit:    211,
+				stats.Mana:      476,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
 				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
@@ -556,7 +556,7 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
 
 		return stats.Stats{
-			stats.Stamina:          ownerStats[stats.Stamina] * core.Ternary(warlock.Options.Summon == proto.WarlockOptions_Imp, 0.66, 0.75),
+			stats.Stamina:          ownerStats[stats.Stamina] * 0.75,
 			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
 			stats.Armor:            ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower:      highestSchoolPower * 0.57,
