@@ -14,6 +14,7 @@ const (
 	FieryWarAxe              = 870
 	Bloodrazor               = 809
 	HammerOfTheNorthernWind  = 810
+	FlurryAxe                = 871
 	Nightblade               = 1982
 	Shadowblade              = 2163
 	GutRipper                = 2164
@@ -117,6 +118,20 @@ func init() {
 	})
 
 	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.0, func(character *core.Character) *core.Spell {
+		return character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 18797},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AutoAttacks.ExtraMHAttack(sim)
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
