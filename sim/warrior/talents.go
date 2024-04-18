@@ -234,7 +234,6 @@ func (warrior *Warrior) applyShieldSpecialization() {
 	warrior.AddStat(stats.Block, core.BlockRatingPerBlockChance*1*float64(warrior.Talents.ShieldSpecialization))
 
 	procChance := 0.2 * float64(warrior.Talents.ShieldSpecialization)
-	rageAdded := float64(warrior.Talents.ShieldSpecialization)
 	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12727})
 
 	warrior.RegisterAura(core.Aura{
@@ -246,7 +245,7 @@ func (warrior *Warrior) applyShieldSpecialization() {
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
 				if sim.Proc(procChance, "Shield Specialization") {
-					warrior.AddRage(sim, rageAdded, rageMetrics)
+					warrior.AddRage(sim, 1.0, rageMetrics)
 				}
 			}
 		},
