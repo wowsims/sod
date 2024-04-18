@@ -7,7 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
@@ -121,8 +120,7 @@ func init() {
 	core.NewItemEffect(MachinistsGloves, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeMechanical {
-			character.AddStat(stats.AttackPower, 30)
-			character.AddStat(stats.RangedAttackPower, 30)
+			character.PseudoStats.MobTypeAttackPower += 30
 		}
 	})
 
