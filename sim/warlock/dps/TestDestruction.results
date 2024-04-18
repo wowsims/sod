@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.0029
+  weights: 0.20223
   weights: 0
-  weights: 0.36308
-  weights: 0
-  weights: 0
+  weights: 0.3762
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.23665
+  weights: 0
+  weights: 0
+  weights: 0.23816
   weights: 0
   weights: 0
   weights: 0
@@ -295,57 +295,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 122.31451
-  tps: 94.72223
+  dps: 125.24834
+  tps: 94.73149
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 392.07622
-  tps: 694.34373
+  dps: 394.05901
+  tps: 693.41252
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 122.301
-  tps: 94.55663
+  dps: 124.50648
+  tps: 93.81014
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 205.64351
-  tps: 160.0771
+  dps: 213.78234
+  tps: 159.67588
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 299.14278
-  tps: 677.79138
+  dps: 300.56398
+  tps: 677.9282
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 85.66284
-  tps: 62.58916
+  dps: 87.03549
+  tps: 62.64213
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 158.88402
-  tps: 127.04111
+  dps: 165.04308
+  tps: 125.59337
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 122.301
-  tps: 94.55663
+  dps: 124.50648
+  tps: 93.81014
  }
 }
 dps_results: {
