@@ -560,7 +560,7 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
 			stats.Armor:            ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower:      highestSchoolPower * 0.565,
-			stats.MP5:              ownerStats[stats.MP5] * 0.3,
+			stats.MP5:              ownerStats[stats.Intellect] * 0.315,
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
 			stats.SpellDamage:      ownerStats[stats.SpellDamage] * 0.15,
 			stats.FirePower:        ownerStats[stats.FirePower] * 0.15,
