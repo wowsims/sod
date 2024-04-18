@@ -101,7 +101,7 @@ character_stats_results: {
  value: {
   final_stats: 136.5012
   final_stats: 143.6886
-  final_stats: 445.78512
+  final_stats: 439.23686
   final_stats: 370.062
   final_stats: 245.07252
   final_stats: 259
@@ -133,7 +133,7 @@ character_stats_results: {
   final_stats: 2
   final_stats: 0
   final_stats: 0
-  final_stats: 5256.8512
+  final_stats: 5191.36864
   final_stats: 20.25
   final_stats: 20.25
   final_stats: 80.25
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.14701
+  weights: 4.74309
   weights: 0
-  weights: -1.93254
-  weights: 0
-  weights: 0
+  weights: 0.92235
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 15.16937
-  weights: 7.04899
+  weights: 0
+  weights: 0
+  weights: 14.9734
+  weights: 7.72797
   weights: 0
   weights: 0
   weights: 0
@@ -407,56 +407,56 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1307.94659
-  tps: 1150.19087
+  dps: 1306.47495
+  tps: 1148.86545
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2055.23046
-  tps: 2564.04352
+  dps: 2053.0088
+  tps: 2560.13324
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1304.89164
-  tps: 1149.87445
+  dps: 1304.22093
+  tps: 1149.25913
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1428.78065
-  tps: 1278.84982
+  dps: 1427.01417
+  tps: 1277.19905
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1272.46907
-  tps: 1894.5028
+  dps: 1271.43318
+  tps: 1891.32739
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 721.84525
-  tps: 636.10559
+  dps: 722.91023
+  tps: 637.31062
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 762.59077
-  tps: 688.99744
+  dps: 761.69938
+  tps: 688.15459
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1298.07401
-  tps: 1139.62091
+  dps: 1293.71058
+  tps: 1135.27633
  }
 }

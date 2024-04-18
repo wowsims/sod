@@ -65,7 +65,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			cfg.Stats = stats.Stats{
 				stats.Strength:  101,
 				stats.Agility:   32,
-				stats.Stamina:   72,
+				stats.Stamina:   71,
 				stats.Intellect: 212,
 				stats.Spirit:    211,
 				stats.Mana:      476,
