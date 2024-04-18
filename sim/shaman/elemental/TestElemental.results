@@ -101,7 +101,7 @@ character_stats_results: {
  value: {
   final_stats: 242.2332
   final_stats: 154.3806
-  final_stats: 459.756
+  final_stats: 453.5784
   final_stats: 309.474
   final_stats: 200.178
   final_stats: 254
@@ -133,7 +133,7 @@ character_stats_results: {
   final_stats: 1.7
   final_stats: 0
   final_stats: 0
-  final_stats: 5364.56
+  final_stats: 5302.784
   final_stats: 23.25
   final_stats: 33.25
   final_stats: 83.25
@@ -491,8 +491,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1427.08483
-  tps: 1207.0795
+  dps: 1427.1341
+  tps: 1207.13275
  }
 }
 dps_results: {
