@@ -414,7 +414,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.AddStat(stats.AttackPower, 45)
+			character.PseudoStats.MobTypeAttackPower += 45
 		}
 	})
 
@@ -468,7 +468,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
-			character.AddStat(stats.AttackPower, 36)
+			character.PseudoStats.MobTypeAttackPower += 36
 		}
 	})
 
@@ -614,7 +614,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.AddStat(stats.AttackPower, 150)
+			character.PseudoStats.MobTypeAttackPower += 150
 		}
 	})
 
@@ -622,7 +622,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.AddStat(stats.SpellDamage, 85)
+			character.PseudoStats.MobTypeSpellPower += 85
 		}
 	})
 

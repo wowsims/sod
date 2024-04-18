@@ -169,6 +169,7 @@ var ItemSetKnightLieutenantsLeather = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -183,6 +184,7 @@ var ItemSetBloodGuardsLeather = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -197,6 +199,7 @@ var ItemSetEmeraldLeathers = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })
@@ -313,6 +316,7 @@ var ItemSetKnightLieutenantsPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -327,6 +331,7 @@ var ItemSetBloodGuardsPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -341,6 +346,7 @@ var ItemSetEmeraldDreamPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })

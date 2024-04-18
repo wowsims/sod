@@ -6,7 +6,6 @@ import (
 	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -536,9 +535,7 @@ func init() {
 	core.NewItemEffect(ScalebaneGreataxe, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.AddStat(stats.AttackPower, 93)
-		}
+		character.PseudoStats.MobTypeAttackPower += 93
 	})
 
 	core.AddEffectsToTest = true
