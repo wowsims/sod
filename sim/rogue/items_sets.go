@@ -11,7 +11,7 @@ import (
 //                            SoD Phase 3 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Blood Corrupted Leathers",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -23,15 +23,13 @@ var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
 			rogue := agent.(RogueAgent).GetRogue()
 
 			procAuras := rogue.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-				return target.GetOrRegisterAura(core.Aura{
-					Label:     "Blood Corruption Proc",
+				return target.RegisterAura(core.Aura{
+					Label:     "Blood Corruption",
 					ActionID:  core.ActionID{SpellID: 449927},
 					Duration:  time.Second * 15,
 					MaxStacks: 30,
 
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						aura.SetStacks(sim, aura.MaxStacks)
-
 						for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
 							aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 7
 						}
@@ -49,21 +47,22 @@ var ItemSetBloodCorruptedLeathers = core.NewItemSet(core.ItemSet{
 				})
 			})
 
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == rogue.Backstab || spell == rogue.SinisterStrike {
-					procAuras.Get(result.Target).Activate(sim)
-				}
-			}
+			core.MakePermanent(rogue.RegisterAura(core.Aura{
+				Label:    "Blood Corrupting" + rogue.Label,
+				ActionID: core.ActionID{SpellID: 449928},
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) {
+						return
+					}
 
-			core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449919},
-				Name:       "Blood Corruption",
-				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskDirect,
-				Outcome:    core.OutcomeLanded,
-				ProcChance: 1,
-				Handler:    handler,
-			})
+					switch spell {
+					case rogue.Backstab, rogue.Mutilate, rogue.SinisterStrike, rogue.SaberSlash, rogue.Shiv, rogue.PoisonedKnife, rogue.MainGauche, rogue.QuickDraw:
+						aura := procAuras.Get(result.Target)
+						aura.Activate(sim)
+						aura.SetStacks(sim, aura.MaxStacks)
+					}
+				},
+			}))
 		},
 	},
 })
