@@ -281,7 +281,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
 		if wa.spell.Tag == tagExtraAttack {
-			wa.spell.SetMetricsSplit(tagMainhand)
+			wa.spell.SetMetricsSplit(0)
 		}
 
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
@@ -369,7 +369,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
 
-		MetricSplits: 4,
+		MetricSplits: 2,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -442,6 +442,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 func (aa *AutoAttacks) finalize() {
 	if aa.AutoSwingMelee {
 		aa.mh.spell = aa.mh.unit.GetOrRegisterSpell(aa.mh.config)
+		aa.mh.spell.TagSplitMetric(1, tagExtraAttack)
 		// Will keep the OH spell registered for Item swapping
 		aa.oh.spell = aa.oh.unit.GetOrRegisterSpell(aa.oh.config)
 	}
@@ -616,7 +617,7 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
 func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
-	aa.mh.spell.SetMetricsSplit(tagExtraAttack)
+	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 }
 
