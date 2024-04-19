@@ -223,6 +223,12 @@ func (aa *AutoAttacks) RangedConfig() *SpellConfig {
 	return &aa.ranged.config
 }
 
+const (
+	tagMainhand    = 1
+	tagOffhand     = 2
+	tagExtraAttack = 3
+)
+
 type WeaponAttack struct {
 	Weapon
 
@@ -264,11 +270,8 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Need to check APL here to allow last-moment HS queue casts.
 		wa.unit.Rotation.DoNextAction(sim)
 
-		// Need to check this again in case the DoNextAction call swapped items.
-		if wa.replaceSwing != nil {
-			// Allow MH swing to be overridden for abilities like Heroic Strike.
-			attackSpell = wa.replaceSwing(sim, attackSpell)
-		}
+		// Allow MH swing to be overridden for abilities like Heroic Strike.
+		attackSpell = wa.replaceSwing(sim, attackSpell)
 	}
 
 	if attackSpell.CanCast(sim, wa.unit.CurrentTarget) {
@@ -277,11 +280,15 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
+		if wa.spell.Tag == tagExtraAttack {
+			wa.spell.SetMetricsSplit(tagMainhand)
+		}
+
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
 			wa.unit.Rotation.DoNextAction(sim)
 		}
 	} else {
-		// Delay till cast finishes if casting or 500 ms if not
+		// Delay till cast finishes if casting or 100 ms if not
 		wa.swingAt = max(wa.unit.Hardcast.Expires, sim.CurrentTime+time.Millisecond*100)
 	}
 
@@ -355,12 +362,14 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.mh.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
+		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: tagMainhand},
 		SpellSchool: options.MainHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
+
+		MetricSplits: 4,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -373,7 +382,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.oh.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
+		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: tagOffhand},
 		SpellSchool: options.OffHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeOHAuto,
@@ -571,17 +580,6 @@ func (aa *AutoAttacks) RangedSwingSpeed() time.Duration {
 	return aa.ranged.curSwingDuration - aa.RangedAuto().CastTime()
 }
 
-// Optionally replaces the given swing spell with an Agent-specified MH Swing replacer.
-// This is for effects like Heroic Strike or Raptor Strike.
-func (aa *AutoAttacks) MaybeReplaceMHSwing(sim *Simulation, mhSwingSpell *Spell) *Spell {
-	if aa.mh.replaceSwing == nil {
-		return mhSwingSpell
-	}
-
-	// Allow MH swing to be overridden for abilities like Heroic Strike.
-	return aa.mh.replaceSwing(sim, mhSwingSpell)
-}
-
 func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 	if !aa.enabled {
 		return
@@ -618,6 +616,7 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
 func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
+	aa.mh.spell.SetMetricsSplit(tagExtraAttack)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 }
 

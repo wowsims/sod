@@ -39,18 +39,11 @@ func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior
 		Options: warOptions.Options,
 	}
 
-	rbo := core.RageBarOptions{
+	war.EnableRageBar(core.RageBarOptions{
 		StartingRage:   warOptions.Options.StartingRage,
 		RageMultiplier: core.TernaryFloat64(war.HasRune(proto.WarriorRune_RuneEndlessRage), 1.25, 1),
-	}
-	if mh := war.GetMHWeapon(); mh != nil {
-		rbo.MHSwingSpeed = mh.SwingSpeed
-	}
-	if oh := war.GetOHWeapon(); oh != nil {
-		rbo.OHSwingSpeed = oh.SwingSpeed
-	}
+	})
 
-	war.EnableRageBar(rbo)
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{
 		MainHand:       war.WeaponFromMainHand(),
 		OffHand:        war.WeaponFromOffHand(),

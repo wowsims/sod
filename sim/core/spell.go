@@ -380,13 +380,17 @@ func (spell *Spell) CurCPM(sim *Simulation) float64 {
 }
 
 func (spell *Spell) finalize() {
-	if len(spell.splitSpellMetrics) > 1 && spell.ActionID.Tag != 0 {
-		panic(spell.ActionID.String() + " has split metrics and a non-zero tag, can only have one!")
-	}
 	for i := range spell.splitSpellMetrics {
 		spell.splitSpellMetrics[i] = make([]SpellMetrics, len(spell.Unit.Env.AllUnits))
 	}
-	spell.SpellMetrics = spell.splitSpellMetrics[0]
+	if len(spell.splitSpellMetrics) == 1 {
+		spell.SpellMetrics = spell.splitSpellMetrics[0]
+	} else {
+		if spell.ActionID.Tag < 0 || spell.ActionID.Tag >= int32(len(spell.splitSpellMetrics)) {
+			panic(spell.ActionID.String() + " has split metrics but invalid tag")
+		}
+		spell.SpellMetrics = spell.splitSpellMetrics[spell.ActionID.Tag]
+	}
 }
 
 func (spell *Spell) reset(_ *Simulation) {

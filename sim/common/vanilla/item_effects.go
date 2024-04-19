@@ -367,26 +367,18 @@ func init() {
 			return
 		}
 
-		var handOfJusticeSpell *core.Spell
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
 			Duration: time.Second * 2,
 		}
-		procChance := 0.013333
 
 		character.RegisterAura(core.Aura{
 			Label:    "Hand of Justice",
 			Duration: core.NeverExpires,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				config := *character.AutoAttacks.MHConfig()
-				config.ActionID = core.ActionID{ItemID: HandOfJustice}
-				handOfJusticeSpell = character.GetOrRegisterSpell(config)
-			},
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				// https://wotlk.wowhead.com/spell=15600/hand-of-justice, proc mask = 20.
 				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
 					return
 				}
@@ -395,12 +387,10 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("HandOfJustice") > procChance {
-					return
+				if sim.RandomFloat("HandOfJustice") < 0.02 {
+					icd.Use(sim)
+					aura.Unit.AutoAttacks.ExtraMHAttack(sim)
 				}
-				icd.Use(sim)
-
-				aura.Unit.AutoAttacks.MaybeReplaceMHSwing(sim, handOfJusticeSpell).Cast(sim, result.Target)
 			},
 		})
 	})
