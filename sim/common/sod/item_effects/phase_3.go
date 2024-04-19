@@ -537,7 +537,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.AddStat(stats.AttackPower, 93)
+			character.PseudoStats.MobTypeAttackPower += 93
 		}
 	})
 

@@ -167,7 +167,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Stamina: 30,
 		},
 		50: stats.Stats{
-			stats.Stamina: 42,
+			stats.Stamina: 38,
 		},
 		60: stats.Stats{
 			stats.Stamina: 42,

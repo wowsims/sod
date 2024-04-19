@@ -15,6 +15,7 @@ var ItemSetDreadHuntersChain = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
@@ -33,6 +34,7 @@ var ItemSetBloodGuardsChain = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })
@@ -47,6 +49,7 @@ var ItemSetKnightLieutenantsChain = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })
