@@ -6,11 +6,11 @@ import { setItemQualityCssClass } from '../css_utils';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player';
 import { Class, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../proto/common';
-import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIItem as Item, UIItem_FactionRestriction, UIRune as Rune } from '../proto/ui.js';
+import { DatabaseFilters, UIEnchant as Enchant, UIItem as Item, UIItem_FactionRestriction, UIRune as Rune } from '../proto/ui.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
 import { EquippedItem } from '../proto_utils/equipped_item';
-import { professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, slotNames } from '../proto_utils/names.js';
+import { professionNames, REP_LEVEL_NAMES, slotNames } from '../proto_utils/names.js';
 import { Stats } from '../proto_utils/stats';
 import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
 import { Sim } from '../sim.js';
@@ -1199,7 +1199,7 @@ export class ItemList<T> {
 			const zone = sim.db.getZone(src.zoneId);
 			const npc = sim.db.getNpc(src.npcId);
 			if (!zone) {
-				throw new Error('No zone found for item: ' + item);
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
 			}
 
 			const category = src.category ? ` - ${src.category}` : '';
@@ -1227,24 +1227,26 @@ export class ItemList<T> {
 			const src = source.source.quest;
 			return makeAnchor(
 				ActionId.makeQuestUrl(src.id),
-				<span>
-					Quest
-					{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
-						<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
-					)}
-					{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
-						<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
-					)}
+				<>
+					<span>Quest</span>
 					<br />
-					{src.name}
-				</span>,
+					<span>
+						{src.name}
+						{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+							<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+						)}
+						{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+							<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
+						)}
+					</span>
+				</>,
 			);
 		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
 			const factionNames = item.sources
-				.filter(source => source.source.oneofKind == 'rep')
-				.map(source =>
-					source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown],
-				);
+				.map(src => (src.source.oneofKind == 'rep' ? sim.db.getFaction(src.source.rep.repFactionId)?.name : ''))
+				.filter(src => src != '');
+			// We assume that if an item is available from multiple reputations, it's available at the same rep level from each.
+			// The main case for multi-faction items are shared PVP items where this is always true, so it's not a big deal right now.
 			const src = source.source.rep;
 			return makeAnchor(
 				ActionId.makeItemUrl(item.id),

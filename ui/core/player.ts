@@ -1114,6 +1114,10 @@ export class Player<SpecType extends Spec> {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'quest'));
 		}
 
+		if (!filters.sources.includes(SourceFilterOption.SourceReputation)) {
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'rep'));
+		}
+
 		if (!filters.sources.includes(SourceFilterOption.SourceDungeon)) {
 			for (const zoneName in DungeonFilterOption) {
 				const zoneId = DungeonFilterOption[zoneName];

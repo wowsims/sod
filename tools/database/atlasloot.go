@@ -1,8 +1,11 @@
 package database
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -12,7 +15,7 @@ import (
 	"github.com/wowsims/sod/tools"
 )
 
-func ReadAtlasLootData() *WowDatabase {
+func ReadAtlasLootData(inputsDir string) *WowDatabase {
 	db := NewWowDatabase()
 
 	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Data/source.lua")
@@ -21,6 +24,7 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootFactionData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Factions/data.lua")
 
 	readZoneData(db)
+	readFactionData(db, inputsDir)
 
 	return db
 }
@@ -200,7 +204,13 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 
 			for _, factionMatch := range factionItemsPattern.FindAllStringSubmatch(repLevelMatch[2], -1) {
 				factionStr := factionMatch[1]
-				fmt.Printf("Faction: %s\n", factionStr)
+				factionID := AtlasLootPVPFactions[zoneID][factionStr]
+				fmt.Printf("Faction: %d %s\n", factionID, factionStr)
+
+				db.MergeFaction(&proto.UIFaction{
+					Id:        int32(factionID),
+					Expansion: expansion,
+				})
 
 				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(factionMatch[0], -1) {
 					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
@@ -211,9 +221,9 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 					if itemID != 0 {
 						// fmt.Printf("Item: %d\n", itemID)
 						repSource := &proto.RepSource{
-							RepFactionId: AtlasLootPVPFactions[zoneID][factionStr],
-							RepLevel:     AtlasLootRepLevels[repLevel],
-							FactionId:    core.Ternary(factionStr == "ALLIANCE", proto.Faction_Alliance, proto.Faction_Horde),
+							RepFactionId:  factionID,
+							RepLevel:      AtlasLootRepLevels[repLevel],
+							PlayerFaction: core.Ternary(factionStr == "ALLIANCE", proto.Faction_Alliance, proto.Faction_Horde),
 						}
 
 						item := &proto.UIItem{Id: int32(itemID)}
@@ -259,6 +269,11 @@ func readAtlasLootFactionData(db *WowDatabase, expansion proto.Expansion, srcUrl
 		}
 		fmt.Printf("Faction: %s\n", factionMatch[1])
 
+		db.MergeFaction(&proto.UIFaction{
+			Id:        int32(factionID),
+			Expansion: expansion,
+		})
+
 		for _, repLevelMatch := range repLevelPattern.FindAllStringSubmatch(factionMatch[3], -1) {
 			repLevel := repLevelMatch[1]
 			fmt.Printf("Reputation: %s\n", repLevel)
@@ -272,7 +287,7 @@ func readAtlasLootFactionData(db *WowDatabase, expansion proto.Expansion, srcUrl
 				if itemID != 0 {
 					// fmt.Printf("Item: %d\n", itemID)
 					repSource := &proto.RepSource{
-						RepFactionId: proto.RepFaction(factionID),
+						RepFactionId: int32(factionID),
 						RepLevel:     AtlasLootRepLevels[repLevel],
 					}
 
@@ -316,6 +331,37 @@ func readZoneData(db *WowDatabase) {
 	}
 }
 
+type FactionConfig struct {
+	Id   int32  `json:"id"`
+	Name string `json:"name"`
+}
+
+func readFactionData(db *WowDatabase, inputsDir string) {
+	data, err := os.ReadFile(fmt.Sprintf("%s/factions.json", inputsDir))
+	if err != nil {
+		log.Fatalf("failed to load talent json file: %s", err)
+	}
+
+	var buf bytes.Buffer
+	err = json.Compact(&buf, []byte(data))
+	if err != nil {
+		log.Fatalf("failed to compact json: %s", err)
+	}
+
+	var jsonFactions []FactionConfig
+
+	err = json.Unmarshal(buf.Bytes(), &jsonFactions)
+	if err != nil {
+		log.Fatalf("failed to parse talent to json %s", err)
+	}
+
+	for _, factionConfig := range jsonFactions {
+		if db.Factions[factionConfig.Id] != nil {
+			db.Factions[factionConfig.Id].Name = factionConfig.Name
+		}
+	}
+}
+
 var AtlasLootProfessionIDs = map[int]proto.Profession{
 	3: proto.Profession_Leatherworking,
 	//4: proto.Profession_FirstAid,
@@ -333,24 +379,24 @@ var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
 	"NORMAL_DIFF": proto.DungeonDifficulty_DifficultyNormal,
 }
 
-var AtlasLootPVPFactions = map[int]map[string]proto.RepFaction{
+var AtlasLootPVPFactions = map[int]map[string]int32{
 	3277: {
 		// Silverwing Sentinels
-		"ALLIANCE": proto.RepFaction_RepFactionSilverwingSentinels,
+		"ALLIANCE": 890,
 		// Warsong Outriders
-		"HORDE": proto.RepFaction_RepFactionWarsongOutriders,
+		"HORDE": 889,
 	},
 	3358: {
 		// The League of Arathor
-		"ALLIANCE": proto.RepFaction_RepFactionLeagueOfArathor,
+		"ALLIANCE": 509,
 		// The Defilers
-		"HORDE": proto.RepFaction_RepFactionTheDefilers,
+		"HORDE": 510,
 	},
 	2597: {
 		// Stormpike Guard
-		"ALLIANCE": proto.RepFaction_RepFactionStormpikeGuard,
+		"ALLIANCE": 730,
 		// Frostwolf Clan
-		"HORDE": proto.RepFaction_RepFactionFrostwolfClan,
+		"HORDE": 729,
 	},
 }
 
