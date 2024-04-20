@@ -121,20 +121,41 @@ func (shaman *Shaman) applyDualWieldSpec() {
 	})
 }
 
-// TODO: Not functional
 func (shaman *Shaman) applyShieldMastery() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestShieldMastery) {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Shield Mastery",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	shaman.AddStat(stats.Block, 10)
+	shaman.PseudoStats.BlockValueMultiplier = 1.15
+
+	actionId := core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)}
+	procId := core.ActionID{SpellID: 408525}
+	manaMetrics := shaman.NewManaMetrics(actionId)
+	procManaReturn := 0.08
+	armorPerStack := shaman.Equipment.OffHand().Stats[stats.Armor] * 0.3
+
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:     "Shield Mastery Proc",
+		ActionID:  procId,
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			shaman.AddStatDynamic(sim, stats.Armor, armorPerStack*float64(newStacks-oldStacks))
 		},
 	})
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label:    "Shield Mastery",
+		ActionID: actionId,
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeBlock) {
+				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
+				procAura.Activate(sim)
+				procAura.AddStack(sim)
+			}
+		},
+	}))
 }
 
 func (shaman *Shaman) applyTwoHandedMastery() {

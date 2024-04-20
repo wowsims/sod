@@ -241,6 +241,9 @@ func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *
 }
 
 func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *core.Unit) {
+	if druid.Sunfire == nil {
+		return
+	}
 	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
 		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
 		dot.RecomputeAuraDuration()

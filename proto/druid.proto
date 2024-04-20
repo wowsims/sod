@@ -76,10 +76,10 @@ enum DruidRune {
 	RuneBracersElunesFires			= 414719;
 	RuneBracersImpFrenziedRegen		= 431389;
 
-	RuneHandsLacerate				= 414644;
 	RuneHandsMangle					= 407995;
 	RuneHandsSunfire				= 414684;
 	RuneHandsWildGrowth				= 408120;
+	RuneHandsSkullBash				= 410176;
 
 	RuneBeltBerserk					= 417141;
 	RuneBeltEclipse					= 408248;
@@ -88,7 +88,7 @@ enum DruidRune {
 	RuneLegsStarsurge				= 417157;
 	RuneLegsSavageRoar				= 407988;
 	RuneLegsLifebloom				= 409824;
-	RuneLegsSkullBash				= 410176;
+	RuneLegsLacerate				= 414644;
 
 	RuneFeetDreamstate				= 408258;
 	RuneFeetKingOfTheJungle			= 417046;

@@ -1,6 +1,6 @@
 import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { Class, EquipmentSpec, ItemRandomSuffix, ItemSlot, ItemSpec, ItemSwap, PresetEncounter, PresetTarget, SimDatabase } from '../proto/common.js';
-import { IconData, UIDatabase, UIEnchant as Enchant, UIItem as Item, UINPC as Npc, UIRune as Rune, UIZone as Zone } from '../proto/ui.js';
+import { IconData, UIDatabase, UIEnchant as Enchant, UIFaction as Faction, UIItem as Item, UINPC as Npc, UIRune as Rune, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
@@ -66,8 +66,9 @@ export class Database {
 	private readonly enchantsBySlot: Partial<Record<ItemSlot, Enchant[]>> = {};
 	private readonly runesBySlotByClass: Partial<Record<ItemSlot, Partial<Record<Class, Rune[]>>>> = {};
 	private readonly runesById: Record<number, Rune> = {};
-	private readonly npcs = new Map<number, Npc>();
 	private readonly zones = new Map<number, Zone>();
+	private readonly npcs = new Map<number, Npc>();
+	private readonly factions = new Map<number, Faction>();
 	private readonly presetEncounters = new Map<string, PresetEncounter>();
 	private readonly presetTargets = new Map<string, PresetTarget>();
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
@@ -108,6 +109,7 @@ export class Database {
 
 		db.npcs.forEach(npc => this.npcs.set(npc.id, npc));
 		db.zones.forEach(zone => this.zones.set(zone.id, zone));
+		db.factions.forEach(faction => this.factions.set(faction.id, faction));
 		db.encounters.forEach(encounter => this.presetEncounters.set(encounter.path, encounter));
 		db.encounters
 			.map(e => e.targets)
@@ -168,6 +170,9 @@ export class Database {
 	}
 	getZone(zoneId: number): Zone | null {
 		return this.zones.get(zoneId) || null;
+	}
+	getFaction(factionId: number): Zone | null {
+		return this.factions.get(factionId) || null;
 	}
 
 	lookupItemSpec(itemSpec: ItemSpec): EquippedItem | null {
