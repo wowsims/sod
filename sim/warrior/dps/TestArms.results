@@ -100,7 +100,7 @@ dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
   dps: 1311.29626
-  tps: 1141.22895
+  tps: 1141.35804
  }
 }
 dps_results: {

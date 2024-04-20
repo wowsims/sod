@@ -25,8 +25,6 @@ type rageBar struct {
 type RageBarOptions struct {
 	StartingRage   float64
 	RageMultiplier float64
-	MHSwingSpeed   float64
-	OHSwingSpeed   float64
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
