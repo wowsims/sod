@@ -1,6 +1,6 @@
 import { ResourceType } from '../proto/api.js';
 import { ArmorType, Class, ItemSlot, ItemType, Profession, PseudoStat, Race, RangedWeaponType, Stat, WeaponType } from '../proto/common.js';
-import { RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
+import { RepLevel, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -289,6 +289,7 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceUnknown, 'Unknown'],
 	[SourceFilterOption.SourceCrafting, 'Crafting'],
 	[SourceFilterOption.SourceQuest, 'Quest'],
+	[SourceFilterOption.SourceReputation, 'Reputation'],
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
 	// [SourceFilterOption.SourceWorldBoss, 'World Boss'],
@@ -320,26 +321,4 @@ export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
 	[RepLevel.RepLevelHonored]: 'Honored',
 	[RepLevel.RepLevelRevered]: 'Revered',
 	[RepLevel.RepLevelExalted]: 'Exalted',
-};
-
-export const REP_FACTION_NAMES: Record<RepFaction, string> = {
-	[RepFaction.RepFactionUnknown]: 'Unknown',
-	[RepFaction.RepFactionArgentDawn]: 'Argent Dawn',
-	[RepFaction.RepFactionAzerothCommerceAuthority]: 'Azeroth Commerce Authority',
-	[RepFaction.RepFactionBloodsailBuccaneers]: 'Bloodsail Buccaneers',
-	[RepFaction.RepFactionBroodOfNozdormu]: 'Brood of Nozdormu',
-	[RepFaction.RepFactionCenarionCircle]: 'Cenrion Circle',
-	[RepFaction.RepFactionTheDefilers]: 'The Defilers',
-	[RepFaction.RepFactionDurotarSupplyAndLogistics]: 'Durotar Supply and Logistics',
-	[RepFaction.RepFactionEmeraldWardens]: 'Emerald Wardens',
-	[RepFaction.RepFactionFrostwolfClan]: 'Frostwolf Clan',
-	[RepFaction.RepFactionHydraxianWaterlords]: 'Hydraxian Waterlords',
-	[RepFaction.RepFactionLeagueOfArathor]: 'The League of Arathor',
-	[RepFaction.RepFactionSilverwingSentinels]: 'Silverwing Sentinels',
-	[RepFaction.RepFactionStormpikeGuard]: 'Stormpike Guard',
-	[RepFaction.RepFactionTimbermawHold]: 'Timbermaw Hold',
-	[RepFaction.RepFactionThoriumBrotherhood]: 'Thorium Brotherhood',
-	[RepFaction.RepFactionWarsongOutriders]: 'Warsong Outriders',
-	[RepFaction.RepFactionWintersaberTrainers]: 'Wintersaber Trainers',
-	[RepFaction.RepFactionZandalarTribe]: 'ZandalarTribe',
 };

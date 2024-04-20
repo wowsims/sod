@@ -803,7 +803,6 @@ message SimItem {
 	RangedWeaponType ranged_weapon_type = 7;
 
 	repeated double stats = 8;
-	repeated double socketBonus = 10;
 
 	double weapon_damage_min = 11;
 	double weapon_damage_max = 12;

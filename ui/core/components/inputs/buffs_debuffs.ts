@@ -875,9 +875,10 @@ export const CrystalYield = makeBooleanDebuffInput({
 	fieldName: 'crystalYield',
 });
 export const AncientCorrosivePoison = makeMultistateMultiplierDebuffInput({
-	actionId: () => ActionId.fromSpellId(422996),
-	numStates: 101,
+	actionId: () => ActionId.fromItemId(209562),
+	numStates: 11,
 	multiplier: 10,
+	reverse: true,
 	fieldName: 'ancientCorrosivePoison',
 });
 
