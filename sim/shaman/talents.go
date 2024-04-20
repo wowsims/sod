@@ -12,6 +12,13 @@ func (shaman *Shaman) ApplyTalents() {
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
 
+	if shaman.Talents.Parry == true {
+		shaman.PseudoStats.CanParry = true
+		shaman.AddStat(stats.Parry, 5)
+	}
+
+	shaman.AddStat(stats.Block, 1*float64(shaman.Talents.ShieldSpecialization))
+
 	// TODO: Check whether this does what it should.
 	// From all I've seen this appears to not actually be a school modifier at all, but instead simply applies
 	// to all attacks done with a weapon. The weaponmask seems to take precedence and the school mask is actually ignored.

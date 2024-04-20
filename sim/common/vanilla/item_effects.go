@@ -38,6 +38,7 @@ const (
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
+	MarkOfTheChosen          = 17774
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
@@ -624,6 +625,46 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 			character.PseudoStats.MobTypeSpellPower += 85
 		}
+	})
+
+	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		statIncrease := float64(25)
+		markProcChance := 0.02
+
+		procAura := character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen Effect",
+			ActionID: core.ActionID{SpellID: 21970},
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   statIncrease,
+					stats.Agility:   statIncrease,
+					stats.Strength:  statIncrease,
+					stats.Intellect: statIncrease,
+					stats.Spirit:    statIncrease,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   -statIncrease,
+					stats.Agility:   -statIncrease,
+					stats.Strength:  -statIncrease,
+					stats.Intellect: -statIncrease,
+					stats.Spirit:    -statIncrease,
+				})
+			},
+		})
+
+		core.MakePermanent(character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen",
+			ActionID: core.ActionID{SpellID: 21969},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
+					procAura.Activate(sim)
+				}
+			},
+		}))
 	})
 
 	core.AddEffectsToTest = true

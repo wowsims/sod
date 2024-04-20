@@ -91,7 +91,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 	// TODO: Does vanilla have an ICD?
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
-		Duration: core.Ternary(hasOverchargedRune, time.Second*1, time.Millisecond*3500),
+		Duration: core.Ternary(hasOverchargedRune, time.Second*3, time.Millisecond*3500),
 	}
 
 	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: procSpellId})
@@ -140,6 +140,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 				}
 			} else {
 				aura.RemoveStack(sim)
+				procSpell.Cast(sim, spell.Unit)
 			}
 		},
 	})
