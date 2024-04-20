@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (paladin *Paladin) registerJudgementSpell() {
+func (paladin *Paladin) registerJudgement() {
 	// Judgement functions as a dummy spell in vanilla.
 	// It rolls on the spell hit table and can only miss or hit.
 	// Individual seals have their own effects that this spell triggers,

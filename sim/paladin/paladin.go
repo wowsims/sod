@@ -60,7 +60,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (paladin *Paladin) Initialize() {
 	// Judgement and Seals
-	paladin.registerJudgementSpell()
+	paladin.registerJudgement()
 
 	paladin.registerSealOfRighteousness()
 	paladin.registerSealOfCommand()

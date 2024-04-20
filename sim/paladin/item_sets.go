@@ -23,7 +23,7 @@ var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Lamellar Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {
@@ -37,7 +37,7 @@ var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Imbued Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {
@@ -51,7 +51,7 @@ var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetEmeraldEncrustedBattleplate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Emerald Encrusted Battleplate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {

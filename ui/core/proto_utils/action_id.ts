@@ -79,12 +79,14 @@ export class ActionId {
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeRage];
 				break;
 			case OtherAction.OtherActionAttack:
-				name = 'Attack';
+				name = 'Melee';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
 				if (tag == 1) {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				} else if (tag == 3) {
+					name += ' (Extra Attack)';
 				}
 				break;
 			case OtherAction.OtherActionShoot:
