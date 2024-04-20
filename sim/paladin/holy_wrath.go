@@ -9,16 +9,18 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (paladin *Paladin) registerHolyWrathSpell() {
+func (paladin *Paladin) registerHolyWrath() {
 	ranks := []struct {
 		level      int32
 		spellID    int32
-		damageLow  float64
-		damageHigh float64
 		manaCost   float64
+		scaleLevel int32
+		minDamage  float64
+		maxDamage  float64
+		scale      float64
 	}{
-		{level: 50, spellID: 2812, damageLow: 362, damageHigh: 428, manaCost: 645}, // 368-435 at level >= 54
-		{level: 60, spellID: 10318, damageLow: 490, damageHigh: 576, manaCost: 805},
+		{level: 50, spellID: 2812, manaCost: 645, scaleLevel: 54, minDamage: 362, maxDamage: 428, scale: 1.6},
+		{level: 60, spellID: 10318, manaCost: 805, scaleLevel: 60, minDamage: 490, maxDamage: 576, scale: 1.9},
 	}
 
 	cd := core.Cooldown{
@@ -36,9 +38,13 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 	var results []*core.SpellResult
 
 	for i, rank := range ranks {
+		i, rank := i, rank
 		if paladin.Level < rank.level {
 			break
 		}
+
+		minDamage := rank.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
+		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
 		paladin.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
@@ -47,8 +53,8 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 			ProcMask:    core.ProcMaskSpellDamage, // TODO to be tested
 			Flags:       core.SpellFlagAPL,
 
-			Rank:          i + 1,
 			RequiredLevel: int(rank.level),
+			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost: rank.manaCost,
@@ -62,7 +68,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 				CD:          cd,
 			},
 
-			BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
+			BonusCritRating: paladin.holyCrit(),
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -75,7 +81,7 @@ func (paladin *Paladin) registerHolyWrathSpell() {
 				results = results[:0]
 				for _, target := range paladin.Env.Encounter.TargetUnits {
 					if hasPurifyingPower || (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
-						damage := sim.Roll(rank.damageLow, rank.damageHigh)
+						damage := sim.Roll(minDamage, maxDamage)
 						result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 						results = append(results, result)
 					}

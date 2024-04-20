@@ -6,36 +6,35 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (paladin *Paladin) registerDivineFavorSpellAndAura() {
+func (paladin *Paladin) registerDivineFavor() {
 	if !paladin.Talents.DivineFavor {
 		return
 	}
+
 	var affectedSpells []*core.Spell
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinHolyShock {
+			affectedSpells = append(affectedSpells, spell)
+		}
+	})
 
-	cdTimer := paladin.NewTimer()
-	cd := time.Minute * 2
+	cd := core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Minute * 2,
+	}
 
-	auraActionID := core.ActionID{SpellID: 20216}
-
-	paladin.DivineFavorAura = paladin.RegisterAura(core.Aura{
+	aura := paladin.RegisterAura(core.Aura{
 		Label:    "Divine Favor",
-		ActionID: auraActionID,
+		ActionID: core.ActionID{SpellID: 20216},
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					paladin.HolyShock,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.BonusCritRating += core.CritRatingPerCritChance * 100
+				spell.BonusCritRating += core.SpellCritRatingPerCritChance * 100
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
+				spell.BonusCritRating -= core.SpellCritRatingPerCritChance * 100
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -44,26 +43,23 @@ func (paladin *Paladin) registerDivineFavorSpellAndAura() {
 			}
 			// Remove the buff and put skill on CD
 			aura.Deactivate(sim)
-			cdTimer.Set(sim.CurrentTime + cd)
+			cd.Set(sim.CurrentTime + cd.Duration)
 			paladin.UpdateMajorCooldowns()
 		},
 	})
 
-	paladin.DivineFavor = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: auraActionID,
+	divineFavor := paladin.RegisterSpell(core.SpellConfig{
+		ActionID: aura.ActionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    cdTimer,
-				Duration: cd,
-			},
+			CD: cd,
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			paladin.DivineFavorAura.Activate(sim)
+			aura.Activate(sim)
 		},
 	})
 	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell: paladin.DivineFavor,
+		Spell: divineFavor,
 		Type:  core.CooldownTypeDPS,
 	})
 }

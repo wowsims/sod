@@ -11,7 +11,7 @@ func (paladin *Paladin) registerJudgementSpell() {
 	// It rolls on the spell hit table and can only miss or hit.
 	// Individual seals have their own effects that this spell triggers,
 	// that are handled in the implementations of the seal auras.
-	paladin.Judgement = paladin.RegisterSpell(core.SpellConfig{
+	paladin.judgement = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
@@ -19,7 +19,7 @@ func (paladin *Paladin) registerJudgementSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.06,
-			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
+			Multiplier: paladin.benediction(),
 		},
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
