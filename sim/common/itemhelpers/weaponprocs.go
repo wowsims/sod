@@ -75,11 +75,12 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 
 		procMask := character.GetProcMaskForItem(itemId)
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		procLabel := itemName + " Proc"
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: fmt.Sprintf("%s Proc Aura", itemName),
+			Label: itemName + " Proc Aura",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, fmt.Sprintf("%s Proc", itemName)) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
@@ -93,14 +94,16 @@ func CreateWeaponProcAura(itemId int32, itemName string, ppm float64, procAuraGe
 		character := agent.GetCharacter()
 
 		procAura := procAuraGenerator(character)
+
 		procMask := character.GetProcMaskForItem(itemId)
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		procLabel := itemName + " Proc"
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    fmt.Sprintf("%s Proc Aura", itemName),
+			Label:    itemName + " Proc Aura",
 			Duration: core.NeverExpires,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, fmt.Sprintf("%s Proc", itemName)) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {
 					procAura.Activate(sim)
 				}
 			},
