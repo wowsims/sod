@@ -290,8 +290,8 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
-	if spell.Dot(target).BonusCoefficient > 0 {
-		baseDamage += spell.Dot(target).BonusCoefficient * spell.BonusDamage()
+	if dot := spell.DotOrAOEDot(target); dot.BonusCoefficient > 0 {
+		baseDamage += dot.BonusCoefficient * spell.BonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
@@ -505,13 +505,7 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 	}
 
 	if isPeriodic {
-		var dot *Dot
-		if spell.aoeDot != nil {
-			dot = spell.aoeDot
-		} else {
-			dot = spell.Dot(attackTable.Defender)
-		}
-		if dot.BonusCoefficient > 0 {
+		if dot := spell.DotOrAOEDot(attackTable.Defender); dot.BonusCoefficient > 0 {
 			result.Damage += attackTable.Defender.GetSchoolBonusDamageTaken(spell) * dot.BonusCoefficient
 		}
 	} else {
