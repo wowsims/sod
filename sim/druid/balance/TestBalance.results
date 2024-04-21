@@ -393,8 +393,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
-  dps: 562.56716
-  tps: 573.10803
+  dps: 562.57673
+  tps: 573.14439
  }
 }
 dps_results: {
@@ -492,7 +492,7 @@ dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
   dps: 967.88952
-  tps: 985.77586
+  tps: 985.77914
  }
 }
 dps_results: {

@@ -338,6 +338,12 @@ func (spell *Spell) CurDot() *Dot {
 func (spell *Spell) AOEDot() *Dot {
 	return spell.aoeDot
 }
+func (spell *Spell) DotOrAOEDot(target *Unit) *Dot {
+	if spell.aoeDot != nil {
+		return spell.aoeDot
+	}
+	return spell.dots.Get(target)
+}
 func (spell *Spell) Hot(target *Unit) *Dot {
 	return spell.dots.Get(target)
 }
