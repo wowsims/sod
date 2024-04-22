@@ -38,6 +38,7 @@ func (priest *Priest) getSmiteBaseConfig(rank int) core.SpellConfig {
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
+		SpellCode:   SpellCode_PriestSmite,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
