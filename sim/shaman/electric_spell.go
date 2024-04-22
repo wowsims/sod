@@ -25,7 +25,7 @@ const (
 
 // Shared precomputation logic for LB and CL.
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
-	flags := SpellFlagElectric | SpellFlagFocusable
+	flags := SpellFlagElectric | SpellFlagFocusable | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
