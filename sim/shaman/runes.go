@@ -319,7 +319,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 	}
 
 	// Way of Earth only activates if you have Rockbiter Weapon on your mainhand and a shield in your offhand
-	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon && shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
 
