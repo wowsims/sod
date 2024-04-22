@@ -151,15 +151,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.14668
+  weights: 0.13515
   weights: 0
-  weights: 0.28605
-  weights: 0
-  weights: 0
+  weights: 0.287
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.17957
+  weights: 0
+  weights: 0
+  weights: 0.18005
   weights: 0
   weights: 0
   weights: 0.3124
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33431
+  weights: 0.08049
   weights: 0
-  weights: 0.51621
-  weights: 0
-  weights: 0
+  weights: 0.69601
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.51621
   weights: 0
-  weights: 0.07317
-  weights: 1.1325
+  weights: 0
+  weights: 0.69601
+  weights: 0
+  weights: 0.08752
+  weights: 1.3832
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.96565
+  weights: 0.13622
   weights: 0
-  weights: 0.68241
-  weights: 0
-  weights: 0
+  weights: 0.84608
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.68241
   weights: 0
-  weights: 5.36394
-  weights: 4.14187
+  weights: 0
+  weights: 0.84608
+  weights: 0
+  weights: 2.9584
+  weights: 4.74834
   weights: 0
   weights: 0
   weights: 0
@@ -295,308 +295,308 @@ stat_weights_results: {
 dps_results: {
  key: "TestShadow-Lvl25-Average-Default"
  value: {
-  dps: 112.5162
+  dps: 138.51336
   tps: 113.19199
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 114.70186
+  dps: 140.67668
   tps: 205.02945
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 114.70186
+  dps: 140.67668
   tps: 115.42335
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 170.30284
+  dps: 193.77876
   tps: 172.08491
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 71.5162
+  dps: 95.97376
   tps: 157.92852
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 71.5162
+  dps: 95.97376
   tps: 74.86412
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 118.28337
+  dps: 143.38296
   tps: 124.45612
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 112.56598
+  dps: 138.56038
   tps: 201.74112
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 112.56598
+  dps: 138.56038
   tps: 113.28452
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 170.57249
+  dps: 194.04841
   tps: 172.35457
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 70.2662
+  dps: 94.79992
   tps: 155.55247
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 70.2662
+  dps: 94.79992
   tps: 73.53307
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 116.96213
+  dps: 142.07921
   tps: 122.7982
  }
 }
 dps_results: {
  key: "TestShadow-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 112.56598
+  dps: 138.56038
   tps: 113.28452
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Average-Default"
  value: {
-  dps: 460.32726
-  tps: 366.2166
+  dps: 627.97649
+  tps: 496.90526
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 469.3017
-  tps: 688.18841
+  dps: 627.35694
+  tps: 716.22108
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 469.3017
-  tps: 373.66422
+  dps: 627.35694
+  tps: 496.58787
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 550.45756
-  tps: 445.75673
+  dps: 603.56732
+  tps: 481.18085
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 269.66613
-  tps: 408.71311
+  dps: 451.74776
+  tps: 552.46482
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 269.66613
-  tps: 204.02298
+  dps: 451.74776
+  tps: 352.02537
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 457.66279
-  tps: 352.40477
+  dps: 474.89809
+  tps: 373.46121
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 462.62787
-  tps: 679.35945
+  dps: 626.96127
+  tps: 714.51419
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 462.62787
-  tps: 367.80306
+  dps: 626.96127
+  tps: 495.82949
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 549.12367
-  tps: 445.63186
+  dps: 603.71583
+  tps: 482.59365
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 264.03854
-  tps: 401.28275
+  dps: 448.41257
+  tps: 550.84622
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 264.03854
-  tps: 199.00562
+  dps: 448.41257
+  tps: 348.56909
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-Settings-Troll-phase_2-Basic-phase_2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 458.23657
-  tps: 351.7959
+  dps: 474.35476
+  tps: 373.00482
  }
 }
 dps_results: {
  key: "TestShadow-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 462.62787
-  tps: 367.80306
+  dps: 626.96127
+  tps: 495.82949
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Average-Default"
  value: {
-  dps: 820.3427
-  tps: 711.34673
-  hps: 11.86533
+  dps: 1080.93078
+  tps: 873.91627
+  hps: 14.65683
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 821.77512
-  tps: 1159.04855
-  hps: 12.14816
+  dps: 1079.85716
+  tps: 1186.99584
+  hps: 15.06255
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 821.77512
-  tps: 712.4758
-  hps: 12.14816
+  dps: 1079.85716
+  tps: 872.54583
+  hps: 15.06255
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 929.8198
-  tps: 796.14874
-  hps: 14.42388
+  dps: 1095.07664
+  tps: 842.411
+  hps: 15.67813
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 339.26823
-  tps: 542.67908
-  hps: 5.99595
+  dps: 714.41831
+  tps: 813.61768
+  hps: 11.17558
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 339.26823
-  tps: 296.92051
-  hps: 5.99595
+  dps: 714.41831
+  tps: 564.9581
+  hps: 11.17558
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 643.57641
-  tps: 552.32739
-  hps: 11.38002
+  dps: 781.06898
+  tps: 591.68853
+  hps: 12.60917
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 817.94495
-  tps: 1154.14673
-  hps: 12.4163
+  dps: 1078.65579
+  tps: 1190.62455
+  hps: 15.05572
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 817.94495
-  tps: 709.24679
-  hps: 12.4163
+  dps: 1078.65579
+  tps: 871.79093
+  hps: 15.05572
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 930.82372
-  tps: 797.59326
-  hps: 14.42388
+  dps: 1096.15772
+  tps: 844.03434
+  hps: 15.67813
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 331.14784
-  tps: 532.30961
-  hps: 6.00898
+  dps: 705.18143
+  tps: 810.14299
+  hps: 11.03183
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 331.14784
-  tps: 289.75571
-  hps: 6.00898
+  dps: 705.18143
+  tps: 557.70279
+  hps: 11.03183
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 643.88073
-  tps: 551.90422
-  hps: 11.4241
+  dps: 781.74891
+  tps: 592.94504
+  hps: 12.60917
  }
 }
 dps_results: {
  key: "TestShadow-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 817.94495
-  tps: 709.24679
-  hps: 12.4163
+  dps: 1078.65579
+  tps: 871.79093
+  hps: 15.05572
  }
 }
