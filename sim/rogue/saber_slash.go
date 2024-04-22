@@ -26,7 +26,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				Label:     "Saber Slash - Bleed",
 				Tag:       RogueBleedTag,
 				Duration:  time.Second * 12,
-				MaxStacks: 3,
+				MaxStacks: 5,
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,
@@ -44,7 +44,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				}
 
 				// each stack snapshots the AP it was applied with
-				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage += 0.03 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
@@ -72,7 +72,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * []float64{1, 1.15, 1.3, 1.45, 1.6, 1.75}[rogue.GetSaberSlashBleedStacks()],
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
@@ -98,4 +98,11 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			}
 		},
 	})
+}
+
+func (rogue *Rogue) GetSaberSlashBleedStacks() int32 {
+	if rogue.CurrentTarget.HasActiveAuraWithTag("Saber Slash - Bleed") {
+		return rogue.CurrentTarget.GetAura("Saber Slash - Bleed").GetStacks()
+	}
+	return 0
 }
