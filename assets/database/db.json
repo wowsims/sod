@@ -9799,6 +9799,7 @@
 {"id":401969,"name":"Engrave Pants - Shared Pain","icon":"spell_shadow_gathershadows","class":5,"type":9,"requiresLevel":1},
 {"id":402004,"name":"Engrave Boots - Pain Suppression","icon":"spell_holy_painsupression","class":5,"type":10,"requiresLevel":1},
 {"id":402174,"name":"Engrave Gloves - Penance","icon":"spell_holy_penance","class":5,"type":7,"requiresLevel":1},
+{"id":402789,"name":"Engrave Helm - Eye of the Void","icon":"inv_misc_eye_03","class":5,"type":1,"requiresLevel":1},
 {"id":402799,"name":"Engrave Pants - Homunculi","icon":"spell_shadow_twistedfaith","class":5,"type":9,"requiresLevel":1},
 {"id":402877,"name":"Engrave Chest - Flagellation","icon":"ability_warrior_intensifyrage","class":9,"type":5,"requiresLevel":1},
 {"id":402911,"name":"Engrave Chest - Raging Blow","icon":"ability_hunter_swiftstrike","class":9,"type":5,"requiresLevel":1},

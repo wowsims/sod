@@ -570,8 +570,9 @@ idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
-	Shadowfiend: ActionId.fromSpellId(401977),
+	'Eye of the Void': ActionId.fromSpellId(402789),
 	Homunculi: ActionId.fromSpellId(402799),
+	Shadowfiend: ActionId.fromSpellId(401977),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 };
