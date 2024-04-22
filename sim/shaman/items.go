@@ -22,6 +22,16 @@ func init() {
 		character.AddStat(stats.MP5, 2)
 	})
 
+	core.NewItemEffect(TotemInvigoratingFlame, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanFlameShock {
+				spell.DefaultCast.Cost -= 10
+			}
+		})
+	})
+
 	// Ancestral Bloodstorm Beacon
 	core.NewItemEffect(216615, func(agent core.Agent) {
 		character := agent.GetCharacter()
