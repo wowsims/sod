@@ -14,6 +14,7 @@ const (
 	SpellFlagElectric  = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagFocusable = core.SpellFlagAgentReserved3
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
 )
 
 func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *Shaman {
