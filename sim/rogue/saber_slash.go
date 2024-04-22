@@ -101,7 +101,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 }
 
 func (rogue *Rogue) GetSaberSlashBleedStacks() int32 {
-	if rogue.CurrentTarget.HasActiveAuraWithTag("Saber Slash - Bleed") {
+	if rogue.CurrentTarget.HasActiveAuraWithTag("Saber Slash - Bleed") && rogue.CurrentTarget.HasAura("Saber Slash - Bleed") {
 		return rogue.CurrentTarget.GetAura("Saber Slash - Bleed").GetStacks()
 	}
 	return 0
