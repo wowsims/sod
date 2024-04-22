@@ -49,7 +49,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHelmMentalDexterity)},
-		Duration: time.Second * 60,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, intToApStatDep)
 			aura.Unit.EnableDynamicStatDep(sim, apToSpStatDep)
@@ -62,17 +62,15 @@ func (shaman *Shaman) applyMentalDexterity() {
 
 	// Hidden Aura
 	shaman.RegisterAura(core.Aura{
-		Label:    "MentalDexterity",
+		Label:    "Mental Dexterity",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
+			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.Stormstrike) {
+				procAura.Activate(sim)
 			}
-
-			procAura.Activate(sim)
 		},
 	})
 }
