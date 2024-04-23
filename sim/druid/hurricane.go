@@ -22,13 +22,14 @@ func (druid *Druid) registerHurricaneSpell() {
 		{level: 60, spellID: 17402, manaCost: 1495, scaleLevel: 66, damage: 134, scale: 0.3},
 	}
 
-	damageMultiplier := 1.0
-	costMultiplier := 1.0
+	// assuming Gale Winds is in use, to save creating an unused timer
+	damageMultiplier := 2.0
+	costMultiplier := 0.4
 	cd := core.Cooldown{}
 
-	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
-		damageMultiplier = 2.0
-		costMultiplier *= .40
+	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		damageMultiplier = 1.0
+		costMultiplier = 1.0
 		cd = core.Cooldown{
 			Timer:    druid.NewTimer(),
 			Duration: time.Second * 60,
