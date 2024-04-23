@@ -51,7 +51,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: 1.2,
+		DamageMultiplier: 1.35,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
