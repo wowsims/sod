@@ -30,13 +30,13 @@ func (paladin *Paladin) registerHolyShock() {
 		{level: 56, spellID: 20930, manaCost: 325, minDamage: 365, maxDamage: 395},
 	}
 
-	hasInfusionOfLight := paladin.HasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
+	hasInfusionOfLight := paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
 	damageMultiplier := core.TernaryFloat64(hasInfusionOfLight, 1.2, 1.0)
 
-	hasArtOfWar := paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
+	hasArtOfWar := paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
 	manaCostMultiplier := core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
 
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 437063}) // Infusion of Light mana restore
 

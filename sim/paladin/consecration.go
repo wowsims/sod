@@ -33,7 +33,7 @@ func (paladin *Paladin) registerConsecration() {
 		Duration: time.Second * 8,
 	}
 
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	for i, rank := range ranks {
 		rank := rank

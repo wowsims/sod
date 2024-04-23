@@ -145,7 +145,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				paladin.ApplySeal(aura, judgeSpell, sim)
+				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
 	}

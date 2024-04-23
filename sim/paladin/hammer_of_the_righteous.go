@@ -7,7 +7,7 @@ import (
 )
 
 func (paladin *Paladin) registerHammerOfTheRighteous() {
-	if !paladin.HasRune(proto.PaladinRune_RuneWristHammerOfTheRighteous) {
+	if !paladin.hasRune(proto.PaladinRune_RuneWristHammerOfTheRighteous) {
 		return
 	}
 

@@ -26,7 +26,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 		Duration: time.Second * 6,
 	}
 
-	hasImprovedHammerOfWrath := paladin.HasRune(proto.PaladinRune_RuneWristImprovedHammerOfWrath)
+	hasImprovedHammerOfWrath := paladin.hasRune(proto.PaladinRune_RuneWristImprovedHammerOfWrath)
 
 	for i, rank := range ranks {
 		rank := rank

@@ -13,7 +13,7 @@ import (
 // paladin threat, so we'll implement this as a heal to the casting paladin for now.
 
 func (paladin *Paladin) registerDivineStorm() {
-	if !paladin.HasRune(proto.PaladinRune_RuneChestDivineStorm) {
+	if !paladin.hasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
 	}
 

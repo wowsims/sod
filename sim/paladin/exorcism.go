@@ -27,15 +27,15 @@ func (paladin *Paladin) registerExorcism() {
 		{level: 60, spellID: 415073, manaCost: 345, scaleLevel: 60, minDamage: 505, maxDamage: 563, scale: 3.2},
 	}
 
-	hasExorcist := paladin.HasRune(proto.PaladinRune_RuneLegsExorcist)
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+	hasExorcist := paladin.hasRune(proto.PaladinRune_RuneLegsExorcist)
+	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	paladin.exorcismCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 15,
 	}
 
-	if paladin.HasRune(proto.PaladinRune_RuneWristPurifyingPower) {
+	if paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
 		paladin.exorcismCooldown.Duration /= 2
 	}
 
@@ -60,7 +60,7 @@ func (paladin *Paladin) registerExorcism() {
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost:   rank.manaCost,
-				Multiplier: core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 0.2, 1.0),
+				Multiplier: core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 0.2, 1.0),
 			},
 
 			Cast: core.CastConfig{
