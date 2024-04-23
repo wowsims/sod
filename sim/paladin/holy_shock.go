@@ -1,109 +1,96 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/core/stats"
+	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const holyShockRanks = 3
-
-var holyShockLevels = [holyShockRanks + 1]int{0, 40, 48, 56}
-var holyShockSpellIds = [holyShockRanks + 1]int32{0, 20473, 20929, 20930}
-var holyShockBaseDamages = [holyShockRanks + 1][]float64{{0}, {204, 220}, {279, 301}, {365, 395}}
-var holyShockManaCosts = [holyShockRanks + 1]float64{0, 225, 275, 325}
-
-func (paladin *Paladin) getHolyShockBaseConfig(rank int) core.SpellConfig {
-	level := holyShockLevels[rank]
-	spellId := holyShockSpellIds[rank]
-	baseDamageLow := holyShockBaseDamages[rank][0]
-	baseDamageHigh := holyShockBaseDamages[rank][1]
-	manaCost := holyShockManaCosts[rank]
-
-	// Art of War reduces cost by 80%
-	hasAoW := paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
-	manaCostMultiplier := core.TernaryFloat64(hasAoW, 0.2, 1.0)
-	// Infusion of Light increases base damage by 20%
-	hasInfusion := paladin.HasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
-	damageMultiplier := core.TernaryFloat64(hasInfusion, 1.2, 1.0)
-	manaCostActual := core.TernaryFloat64(
-		hasAoW,
-		manaCost*manaCostMultiplier,
-		manaCost,
-	)
-
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
-
-	spellCoeff := 0.429
-	actionID := core.ActionID{SpellID: spellId}
-	manaMetrics := paladin.NewManaMetrics(paladin.getIlluminationActionID())
-
-	return core.SpellConfig{
-		ActionID:      actionID,
-		SpellSchool:   core.SpellSchoolHoly,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		RequiredLevel: level,
-		Rank:          rank,
-		SpellCode:     SpellCode_PaladinHolyShock,
-		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: manaCostMultiplier,
-		},
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: *paladin.HolyShockCooldown,
-		},
-
-		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
-
-		DamageMultiplier: damageMultiplier,
-		ThreatMultiplier: 1,
-		BonusCoefficient: spellCoeff,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-
-			bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
-			spell.BonusCritRating += bonusCrit
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.BonusCritRating -= bonusCrit
-
-			// If we crit, Infusion of Light refunds base mana cost and resets Holy Shock/Exorcism.
-			if !result.Outcome.Matches(core.OutcomeCrit) || !hasInfusion {
-				return
-			}
-			// The mana refund in game is bugged and will often refund more mana than intended.
-			// For now, refund the base cost if no AoW rune equipped, or the actual cost if it is.
-			paladin.AddMana(sim, manaCostActual, manaMetrics)
-			paladin.HolyShockCooldown.Reset()
-			paladin.ExorcismCooldown.Reset()
-		},
-	}
-
-}
-
-func (paladin *Paladin) registerHolyShockSpell() {
-	// If the player has Holy Shock talented, register all holyShockRanks up to their level.
-	paladin.HolyShockCooldown = &core.Cooldown{
+func (paladin *Paladin) registerHolyShock() {
+	paladin.holyShockCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 15,
 	}
+
 	if !paladin.Talents.HolyShock {
 		return
 	}
 
-	paladin.HolyShock = make([]*core.Spell, holyShockRanks+1)
-	for rank := 1; rank <= holyShockRanks; rank++ {
-		if int(paladin.Level) >= holyShockLevels[rank] {
-			paladin.HolyShock[rank] = paladin.RegisterSpell(paladin.getHolyShockBaseConfig(rank))
+	ranks := []struct {
+		level     int32
+		spellID   int32
+		manaCost  float64
+		minDamage float64
+		maxDamage float64
+	}{
+		{level: 40, spellID: 20473, manaCost: 225, minDamage: 204, maxDamage: 220},
+		{level: 48, spellID: 20929, manaCost: 275, minDamage: 279, maxDamage: 301},
+		{level: 56, spellID: 20930, manaCost: 325, minDamage: 365, maxDamage: 395},
+	}
+
+	hasInfusionOfLight := paladin.HasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
+	damageMultiplier := core.TernaryFloat64(hasInfusionOfLight, 1.2, 1.0)
+
+	hasArtOfWar := paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
+	manaCostMultiplier := core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
+
+	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 437063}) // Infusion of Light mana restore
+
+	for i, rank := range ranks {
+		rank := rank
+		if paladin.Level < rank.level {
+			break
 		}
+
+		paladin.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: rank.spellID},
+			SpellSchool: core.SpellSchoolHoly,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+			RequiredLevel: int(rank.level),
+			Rank:          i + 1,
+
+			SpellCode: SpellCode_PaladinHolyShock,
+
+			ManaCost: core.ManaCostOptions{
+				FlatCost:   rank.manaCost,
+				Multiplier: manaCostMultiplier,
+			},
+
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				CD: *paladin.holyShockCooldown,
+			},
+
+			BonusCritRating: paladin.holyCrit(),
+
+			DamageMultiplier: damageMultiplier,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 0.429,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := sim.Roll(rank.minDamage, rank.maxDamage)
+
+				bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
+				spell.BonusCritRating += bonusCrit
+				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.BonusCritRating -= bonusCrit
+
+				// If we crit, Infusion of Light refunds base mana cost and resets Holy Shock/Exorcism.
+				if hasInfusionOfLight && result.Outcome.Matches(core.OutcomeCrit) {
+					paladin.AddMana(sim, rank.manaCost, manaMetrics)
+					paladin.holyShockCooldown.Reset()
+					paladin.exorcismCooldown.Reset()
+				}
+			},
+		})
 	}
 }

@@ -8,17 +8,17 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (paladin *Paladin) registerHammerOfWrathSpell() {
+func (paladin *Paladin) registerHammerOfWrath() {
 	ranks := []struct {
-		level      int32
-		spellID    int32
-		damageLow  float64
-		damageHigh float64
-		manaCost   float64
+		level     int32
+		spellID   int32
+		minDamage float64
+		maxDamage float64
+		manaCost  float64
 	}{
-		{level: 44, spellID: 24275, damageLow: 316, damageHigh: 348, manaCost: 295},
-		{level: 52, spellID: 24274, damageLow: 412, damageHigh: 455, manaCost: 360},
-		{level: 60, spellID: 24239, damageLow: 504, damageHigh: 566, manaCost: 425},
+		{level: 44, spellID: 24275, manaCost: 295, minDamage: 316, maxDamage: 348},
+		{level: 52, spellID: 24274, manaCost: 360, minDamage: 412, maxDamage: 455},
+		{level: 60, spellID: 24239, manaCost: 425, minDamage: 504, maxDamage: 566},
 	}
 
 	cd := core.Cooldown{
@@ -29,6 +29,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 	hasImprovedHammerOfWrath := paladin.HasRune(proto.PaladinRune_RuneWristImprovedHammerOfWrath)
 
 	for i, rank := range ranks {
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}
@@ -64,7 +65,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				damage := sim.Roll(rank.damageLow, rank.damageHigh)
+				damage := sim.Roll(rank.minDamage, rank.maxDamage)
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
 				// should be based on target.CurrentHealthPercent(), which is not available

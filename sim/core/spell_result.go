@@ -54,8 +54,13 @@ func (result *SpellResult) DamageString() string {
 	}
 	return fmt.Sprintf("%s for %0.3f damage", outcomeStr, result.Damage)
 }
+
 func (result *SpellResult) HealingString() string {
 	return fmt.Sprintf("%s for %0.3f healing", result.Outcome.String(), result.Damage)
+}
+
+func (result *SpellResult) RawDamage() float64 {
+	return result.PreOutcomeDamage / result.ResistanceMultiplier
 }
 
 func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64 {

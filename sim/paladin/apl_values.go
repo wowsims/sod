@@ -23,7 +23,7 @@ type APLValueCurrentSealRemainingTime struct {
 	paladin *Paladin
 }
 
-func (paladin *Paladin) newValueCurrentSealRemainingTime(rot *core.APLRotation, config *proto.APLValueCurrentSealRemainingTime) core.APLValue {
+func (paladin *Paladin) newValueCurrentSealRemainingTime(_ *core.APLRotation, _ *proto.APLValueCurrentSealRemainingTime) core.APLValue {
 	return &APLValueCurrentSealRemainingTime{
 		paladin: paladin,
 	}
@@ -57,22 +57,22 @@ type APLActionCastPaladinPrimarySeal struct {
 	lastAction time.Duration
 }
 
-func (impl *APLActionCastPaladinPrimarySeal) GetInnerActions() []*core.APLAction { return nil }
-func (impl *APLActionCastPaladinPrimarySeal) GetAPLValues() []core.APLValue      { return nil }
-func (impl *APLActionCastPaladinPrimarySeal) Finalize(*core.APLRotation)         {}
-func (impl *APLActionCastPaladinPrimarySeal) GetNextAction(*core.Simulation) *core.APLAction {
+func (cast *APLActionCastPaladinPrimarySeal) GetInnerActions() []*core.APLAction { return nil }
+func (cast *APLActionCastPaladinPrimarySeal) GetAPLValues() []core.APLValue      { return nil }
+func (cast *APLActionCastPaladinPrimarySeal) Finalize(*core.APLRotation)         {}
+func (cast *APLActionCastPaladinPrimarySeal) GetNextAction(*core.Simulation) *core.APLAction {
 	return nil
 }
 
-func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, config *proto.APLActionCastPaladinPrimarySeal) core.APLActionImpl {
+func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, _ *proto.APLActionCastPaladinPrimarySeal) core.APLActionImpl {
 	return &APLActionCastPaladinPrimarySeal{
 		paladin: paladin,
 	}
 }
 
-func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
-	action.lastAction = sim.CurrentTime
-	paladin := action.paladin
+func (cast *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
+	cast.lastAction = sim.CurrentTime
+	paladin := cast.paladin
 	// If the player options are incorrectly configured, then no primary seal will be selected.
 	if paladin.PrimarySealSpell == nil {
 		return
@@ -80,15 +80,15 @@ func (action *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
 	paladin.PrimarySealSpell.Cast(sim, paladin.CurrentTarget)
 }
 
-func (action *APLActionCastPaladinPrimarySeal) IsReady(sim *core.Simulation) bool {
-	paladin := action.paladin
-	return sim.CurrentTime > action.lastAction && paladin.PrimarySealSpell.CanCast(sim, paladin.CurrentTarget)
+func (cast *APLActionCastPaladinPrimarySeal) IsReady(sim *core.Simulation) bool {
+	paladin := cast.paladin
+	return sim.CurrentTime > cast.lastAction && paladin.PrimarySealSpell.CanCast(sim, paladin.CurrentTarget)
 }
 
-func (action *APLActionCastPaladinPrimarySeal) Reset(*core.Simulation) {
-	action.lastAction = core.DurationFromSeconds(-100)
+func (cast *APLActionCastPaladinPrimarySeal) Reset(*core.Simulation) {
+	cast.lastAction = core.DurationFromSeconds(-100)
 }
 
-func (action *APLActionCastPaladinPrimarySeal) String() string {
+func (cast *APLActionCastPaladinPrimarySeal) String() string {
 	return "Cast Primary Seal()"
 }
