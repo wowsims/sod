@@ -22,8 +22,9 @@ func (druid *Druid) registerHurricaneSpell() {
 		{level: 60, spellID: 17402, manaCost: 1495, scaleLevel: 66, damage: 134, scale: 0.3},
 	}
 
+	// assuming Gale Winds is in use, to save creating an unused timer
 	damageMultiplier := 2.0
-	costMultiplier := .40
+	costMultiplier := 0.4
 	cd := core.Cooldown{}
 
 	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {

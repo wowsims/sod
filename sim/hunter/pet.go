@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -215,14 +216,25 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 
 	target := hp.CurrentTarget
 
+	// using Cast() directly is very expensive, since cast failures are logged, involving string operations
+	tryCast := func(spell *core.Spell) bool {
+		if !spell.CanCast(sim, target) {
+			return false
+		}
+		if !spell.Cast(sim, target) {
+			panic(fmt.Sprintf("Cast failed after CanCast() for spell %d", spell.SpellID))
+		}
+		return true
+	}
+
 	if hp.focusDump == nil {
-		if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+		if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
 	}
 	if hp.specialAbility == nil {
-		if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+		if !tryCast(hp.focusDump) && hp.GCD.IsReady(sim) {
 			hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 		}
 		return
@@ -230,17 +242,17 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 
 	if hp.config.RandomSelection {
 		if sim.RandomFloat("Hunter Pet Ability") < 0.5 {
-			_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
+			_ = tryCast(hp.specialAbility) || tryCast(hp.focusDump)
 		} else {
-			_ = hp.focusDump.Cast(sim, target) || hp.specialAbility.Cast(sim, target)
+			_ = tryCast(hp.focusDump) || tryCast(hp.specialAbility)
 		}
 	} else {
 		if hp.specialAbility.IsReady(sim) {
-			if !hp.specialAbility.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 			}
 		} else if hp.focusDump.IsReady(sim) {
-			if !hp.focusDump.Cast(sim, target) && hp.GCD.IsReady(sim) {
+			if !tryCast(hp.focusDump) && hp.GCD.IsReady(sim) {
 				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 			}
 		}
@@ -253,8 +265,6 @@ func (hp *HunterPet) killCommandMult() float64 {
 	}
 	return 1 + 0.2*float64(hp.killCommandAura.GetStacks())
 }
-
-const PetExpertiseScale = 3.25
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
