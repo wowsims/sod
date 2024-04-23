@@ -1,24 +1,15 @@
 import pako from 'pako';
 
 import { IndividualSimUI } from '../individual_sim_ui';
-import {
-	Class,
-	EquipmentSpec,
-	ItemSlot,
-	ItemSpec,
-	Profession,
-	Race,
-	Spec,
-} from '../proto/common';
+import { Class, EquipmentSpec, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
 import { Database } from '../proto_utils/database';
-import { classNames, nameToClass, nameToRace, nameToProfession } from '../proto_utils/names';
+import { classNames, nameToClass, nameToProfession, nameToRace } from '../proto_utils/names';
 import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
 import { talentSpellIdsToTalentString } from '../talents/factory';
 import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
-
 import { BaseModal } from './base_modal';
 
 export abstract class Importer extends BaseModal {
@@ -37,13 +28,16 @@ export abstract class Importer extends BaseModal {
 			<textarea spellCheck="false" class="importer-textarea form-control"></textarea>
 		`;
 		this.footer!.innerHTML = `
-			${this.includeFile ? `
+			${
+				this.includeFile
+					? `
 				<label for="${uploadInputId}" class="importer-button btn btn-primary upload-button me-2">
 					<i class="fas fa-file-arrow-up"></i>
 					Upload File
 				</label>
 				<input type="file" id="${uploadInputId}" class="importer-upload-input d-none" hidden>
-			` : ''
+			`
+					: ''
 			}
 			<button class="importer-button btn btn-primary import-button">
 				<i class="fa fa-download"></i>
@@ -72,9 +66,16 @@ export abstract class Importer extends BaseModal {
 		});
 	}
 
-	abstract onImport(data: string): void
+	abstract onImport(data: string): void;
 
-	protected async finishIndividualImport<SpecType extends Spec>(simUI: IndividualSimUI<SpecType>, charClass: Class, race: Race, equipmentSpec: EquipmentSpec, talentsStr: string, professions: Array<Profession>): Promise<void> {
+	protected async finishIndividualImport<SpecType extends Spec>(
+		simUI: IndividualSimUI<SpecType>,
+		charClass: Class,
+		race: Race,
+		equipmentSpec: EquipmentSpec,
+		talentsStr: string,
+		professions: Array<Profession>,
+	): Promise<void> {
 		const playerClass = simUI.player.getClass();
 		if (charClass != playerClass) {
 			throw new Error(`Wrong Class! Expected ${classNames.get(playerClass)} but found ${classNames.get(charClass)}!`);
@@ -101,7 +102,7 @@ export abstract class Importer extends BaseModal {
 				simUI.player.setTalentsString(eventID, talentsStr);
 			}
 			if (professions.length > 0) {
-				simUI.player.setProfessions(eventID, professions)
+				simUI.player.setProfessions(eventID, professions);
 			}
 		});
 
@@ -110,21 +111,22 @@ export abstract class Importer extends BaseModal {
 		if (missingItems.length == 0 && missingEnchants.length == 0) {
 			alert('Import successful!');
 		} else {
-			alert('Import successful, but the following IDs were not found in the sim database:' +
-				(missingItems.length == 0 ? '' : '\n\nItems: ' + missingItems.join(', ')) +
-				(missingEnchants.length == 0 ? '' : '\n\nEnchants: ' + missingEnchants.join(', ')));
+			alert(
+				'Import successful, but the following IDs were not found in the sim database:' +
+					(missingItems.length == 0 ? '' : '\n\nItems: ' + missingItems.join(', ')) +
+					(missingEnchants.length == 0 ? '' : '\n\nEnchants: ' + missingEnchants.join(', ')),
+			);
 		}
 	}
 }
 
 interface UrlParseData {
-	settings: IndividualSimSettings,
-	categories: Array<SimSettingCategories>,
+	settings: IndividualSimSettings;
+	categories: Array<SimSettingCategories>;
 }
 
 // For now this just holds static helpers to match the exporter, so it doesn't extend Importer.
 export class IndividualLinkImporter {
-
 	// Exclude UISettings by default, since most users don't intend to export those.
 	static readonly DEFAULT_CATEGORIES = getEnumValues(SimSettingCategories).filter(c => c != SimSettingCategories.UISettings) as Array<SimSettingCategories>;
 
@@ -143,7 +145,7 @@ export class IndividualLinkImporter {
 		return map;
 	})();
 
-	static tryParseUrlLocation(location: Location): UrlParseData|null {
+	static tryParseUrlLocation(location: Location): UrlParseData | null {
 		let hash = location.hash;
 		if (hash.length <= 1) {
 			return null;
@@ -165,8 +167,7 @@ export class IndividualLinkImporter {
 		if (urlParams.has(IndividualLinkImporter.CATEGORY_PARAM)) {
 			const categoryChars = urlParams.get(IndividualLinkImporter.CATEGORY_PARAM)!.split('');
 			exportCategories = categoryChars
-				.map(char => [...IndividualLinkImporter.CATEGORY_KEYS.entries()]
-				.find(e => e[1] == char))
+				.map(char => [...IndividualLinkImporter.CATEGORY_KEYS.entries()].find(e => e[1] == char))
 				.filter(e => e)
 				.map(e => e![0]);
 		}
@@ -206,15 +207,15 @@ export class IndividualJsonImporter<SpecType extends Spec> extends Importer {
 	}
 }
 
-export class Individual80UImporter<SpecType extends Spec> extends Importer {
+export class Individual60UImporter<SpecType extends Spec> extends Importer {
 	private readonly simUI: IndividualSimUI<SpecType>;
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, '80 Upgrades Import', true);
+		super(parent, simUI, 'Sixty Upgrades SoD Import', true);
 		this.simUI = simUI;
 
 		this.descriptionElem.innerHTML = `
 			<p>
-				Import settings from <a href="https://eightyupgrades.com" target="_blank">Eighty Upgrades</a>.
+				Import settings from <a href="https://sixtyupgrades.com/sod/" target="_blank">Sixty Upgrades Season of Discovery</a>.
 			</p>
 			<p>
 				This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
@@ -245,9 +246,9 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 			talentsStr = talentSpellIdsToTalentString(charClass, talentIds);
 		}
 
-		let equipmentSpec = EquipmentSpec.create();
+		const equipmentSpec = EquipmentSpec.create();
 		(importJson.items as Array<any>).forEach(itemJson => {
-			let itemSpec = ItemSpec.create();
+			const itemSpec = ItemSpec.create();
 			itemSpec.id = itemJson.id;
 			if (itemJson.enchant?.id) {
 				itemSpec.enchant = itemJson.enchant.id;
@@ -299,7 +300,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 
 		const base64Data = match[3].replaceAll('_', '/').replaceAll('-', '+');
 		//console.log('Base64: ' + base64Data);
-		const data = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0))
+		const data = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 		//console.log('Hex: ' + buf2hex(data));
 
 		// Binary schema
@@ -327,7 +328,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		//   16-bit enchant id
 		const gearBytes = data.subarray(numTalentBytes);
 		//console.log(`Remaining ${gearBytes.length} bytes: ${buf2hex(gearBytes)}`);
-		
+
 		const equipmentSpec = EquipmentSpec.create();
 		let cur = 0;
 		while (cur < gearBytes.length) {
@@ -337,7 +338,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 			// const randomEnchant = Boolean(gearBytes[cur] & 0b01000000);
 			cur++;
 
-			const highid = (gearBytes[cur] & 0b00011111);
+			const highid = gearBytes[cur] & 0b00011111;
 			cur++;
 
 			itemSpec.id = (highid << 16) + (gearBytes[cur] << 8) + gearBytes[cur + 1];
@@ -417,7 +418,7 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 			throw new Error('Could not parse Race!');
 		}
 
-		const professions = (importJson['professions'] as Array<{ name: string, level: number }>).map(profData => nameToProfession(profData.name));
+		const professions = (importJson['professions'] as Array<{ name: string; level: number }>).map(profData => nameToProfession(profData.name));
 		professions.forEach((prof, i) => {
 			if (prof == Profession.ProfessionUnknown) {
 				throw new Error(`Could not parse profession '${importJson['professions'][i]}'`);
