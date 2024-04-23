@@ -23,7 +23,7 @@ func (druid *Druid) registerHurricaneSpell() {
 	}
 
 	damageMultiplier := 2.0
-	costMultiplier := 0.8
+	costMultiplier := .40
 	cd := core.Cooldown{}
 
 	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
