@@ -51,7 +51,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: 0.75,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

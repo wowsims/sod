@@ -11,9 +11,6 @@ var RuneOverrides []*proto.UIRune
 
 // Remove runes as you implement them.
 var UnimplementedRuneOverrides = []int32{
-	// Hunter
-	415405, // Rapid Killing
-
 	// Paladin
 	429133, // Improved Sanctuary
 	428909, // Light's Grace

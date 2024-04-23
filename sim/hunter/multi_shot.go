@@ -91,12 +91,12 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 						serpentStingAura := hunter.SerpentSting.Dot(curTarget)
 						serpentStingTicks := serpentStingAura.NumberOfTicks
 						if serpentStingAura.IsActive() {
-							// If less then 2 ticks are left then we rollover with a 2 tick duration
-							serpentStingAura.NumberOfTicks = max(2, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
+							// If less then 4 ticks are left then we rollover with a 4 tick duration
+							serpentStingAura.NumberOfTicks = max(4, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
 							serpentStingAura.Rollover(sim)
 						} else {
-							// Else we apply with a 2 tick duration
-							serpentStingAura.NumberOfTicks = 2
+							// Else we apply with a 4 tick duration
+							serpentStingAura.NumberOfTicks = 4
 							serpentStingAura.Apply(sim)
 						}
 						serpentStingAura.NumberOfTicks = serpentStingTicks
