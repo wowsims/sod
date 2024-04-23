@@ -7,26 +7,26 @@ import (
 )
 
 // Seal of Martyrdom is a spell consisting of:
-// - A judgement that deals 70% weapon damage that is not normalised. Cannot miss or be dodged/blocked/parried.
-// - An on-hit 100% chance proc that deals 40% *normalised* weapon damage.
+// - A judgement that deals 85% weapon damage that is not normalised. Cannot miss or be dodged/blocked/parried.
+// - An on-hit 100% chance proc that deals 50% *normalised* weapon damage.
 // Both the on-hit and judgement are subject to weapon specialization talent modifiers as
 // they both target melee defense.
 
-func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
+func (paladin *Paladin) registerSealOfMartyrdom() {
 	if !paladin.HasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
 		return
 	}
 
-	impSoRModifier := 1.0 + 0.03*float64(paladin.Talents.ImprovedSealOfRighteousness)
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802}) // SoM's mana restore
 
-	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 407803}, // Judgement of Martyrdom
+	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 407803},
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics,
 
-		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * impSoRModifier,
+		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -35,25 +35,28 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		},
 	})
 
-	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 407799}, // Seal of Martyrdom
+	procSpell := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:      core.ActionID{SpellID: 407799},
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
 		Flags:         core.SpellFlagMeleeMetrics,
 		RequiredLevel: 1,
 
-		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * impSoRModifier,
+		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
+			paladin.AddMana(sim, result.RawDamage()*0.1*1.33, manaMetrics)
 		},
 	})
 
-	paladin.SealOfMartyrdomAura = paladin.RegisterAura(core.Aura{
-		Label:    "Seal of Martyrdom",
+	aura := paladin.RegisterAura(core.Aura{
+		Label:    "Seal of Martyrdom" + paladin.Label,
 		ActionID: core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestSealOfMartyrdom)},
 		Duration: time.Second * 30,
 
@@ -63,21 +66,19 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 			}
 
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit | core.ProcMaskProc) {
-				onSwingProc.Cast(sim, result.Target)
+				procSpell.Cast(sim, result.Target)
 			}
 		},
 	})
 
-	aura := paladin.SealOfMartyrdomAura
-
-	paladin.SealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
+	paladin.sealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    aura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   paladin.BaseMana*0.04 - paladin.GetLibramSealCostReduction(),
-			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
+			FlatCost:   paladin.BaseMana*0.04 - paladin.getLibramSealCostReduction(),
+			Multiplier: paladin.benediction(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -86,7 +87,7 @@ func (paladin *Paladin) registerSealOfMartyrdomSpellAndAura() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			paladin.ApplySeal(aura, onJudgementProc, sim)
+			paladin.ApplySeal(aura, judgeSpell, sim)
 		},
 	})
 }

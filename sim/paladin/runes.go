@@ -25,8 +25,8 @@ func (paladin *Paladin) ApplyRunes() {
 	// "RuneWristPurifyingPower" is handled in Exorcism
 }
 
-func (paladin *Paladin) fanaticismCritChance() float64 {
-	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.CritRatingPerCritChance
+func (paladin *Paladin) fanaticism() float64 {
+	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.SpellCritRatingPerCritChance
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
@@ -45,8 +45,8 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-			paladin.HolyShockCooldown.Reset()
-			paladin.ExorcismCooldown.Reset()
+			paladin.holyShockCooldown.Reset()
+			paladin.exorcismCooldown.Reset()
 		},
 	})
 }

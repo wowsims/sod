@@ -10,86 +10,88 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-const consecrationRanks = 5
-
-var consecrationLevels = [consecrationRanks + 1]int{0, 20, 30, 40, 50, 60}
-var consecrationSpellIDs = [consecrationRanks + 1]int32{0, 26573, 20116, 20922, 20923, 20924}
-var consecrationBaseDamages = [consecrationRanks + 1]float64{0, 64 / 8, 120 / 8, 192 / 8, 280 / 8, 384 / 8}
-var consecrationManaCosts = [consecrationRanks + 1]float64{0, 135, 235, 320, 435, 565}
-
-func (paladin *Paladin) getConsecrationBaseConfig(rank int, cd core.Cooldown) core.SpellConfig {
-	spellId := consecrationSpellIDs[rank]
-	baseDamage := consecrationBaseDamages[rank]
-	manaCost := consecrationManaCosts[rank]
-	level := consecrationLevels[rank]
-
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
-
-	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolHoly,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagPureDot | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		RequiredLevel: level,
-		Rank:          rank,
-
-		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: cd,
-		},
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label: "Consecration-" + paladin.Label + strconv.Itoa(rank),
-			},
-			NumberOfTicks:       8,
-			TickLength:          time.Second * 1,
-			AffectedByCastSpeed: false,
-			BonusCoefficient:    0.042,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseDamage, isRollover)
-				if hasWrath {
-					dot.Spell.BonusCritRating += paladin.GetStat(stats.MeleeCrit)
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-					dot.Spell.BonusCritRating -= paladin.GetStat(stats.MeleeCrit)
-				}
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
-				}
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.AOEDot().Apply(sim)
-		},
-	}
-}
-
-func (paladin *Paladin) registerConsecrationSpell() {
+func (paladin *Paladin) registerConsecration() {
 	if !paladin.Talents.Consecration {
 		return
+	}
+
+	ranks := []struct {
+		level    int32
+		spellID  int32
+		manaCost float64
+		damage   float64
+	}{
+		{level: 20, spellID: 26573, manaCost: 135, damage: 64 / 8},
+		{level: 30, spellID: 20116, manaCost: 235, damage: 120 / 8},
+		{level: 40, spellID: 20922, manaCost: 320, damage: 192 / 8},
+		{level: 50, spellID: 20923, manaCost: 435, damage: 280 / 8},
+		{level: 60, spellID: 20924, manaCost: 565, damage: 384 / 8},
 	}
 
 	cd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 8,
 	}
-	paladin.Consecration = make([]*core.Spell, consecrationRanks+1)
-	for rank := 1; rank <= consecrationRanks; rank++ {
-		config := paladin.getConsecrationBaseConfig(rank, cd)
-		if config.RequiredLevel <= int(paladin.Level) {
-			paladin.Consecration[rank] = paladin.GetOrRegisterSpell(config)
+
+	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+
+	for i, rank := range ranks {
+		rank := rank
+		if paladin.Level < rank.level {
+			break
 		}
+
+		paladin.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: rank.spellID},
+			SpellSchool: core.SpellSchoolHoly,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagPureDot | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+			RequiredLevel: int(rank.level),
+			Rank:          i + 1,
+
+			ManaCost: core.ManaCostOptions{
+				FlatCost: rank.manaCost,
+			},
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				CD: cd,
+			},
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			Dot: core.DotConfig{
+				IsAOE: true,
+				Aura: core.Aura{
+					Label: "Consecration" + paladin.Label + strconv.Itoa(i+1),
+				},
+				NumberOfTicks: 8,
+				TickLength:    time.Second * 1,
+
+				BonusCoefficient: 0.042,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, rank.damage, isRollover)
+					if hasWrath {
+						dot.Spell.BonusCritRating += paladin.GetStat(stats.MeleeCrit)
+						dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+						dot.Spell.BonusCritRating -= paladin.GetStat(stats.MeleeCrit)
+					}
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					// consecration ticks can miss, but those misses aren't logged as "resist"
+					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
+					}
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.AOEDot().Apply(sim)
+			},
+		})
 	}
 }

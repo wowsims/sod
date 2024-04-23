@@ -11,14 +11,14 @@ import (
 // It also returns 5% of the paladin's maximum mana when cast, regardless of the ability being negated.
 // As of 27/02/24 it deals holy school damage, but otherwise behaves like a melee attack.
 
-func (paladin *Paladin) registerCrusaderStrikeSpell() {
+func (paladin *Paladin) registerCrusaderStrike() {
 	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
 	}
 
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
 
-	paladin.CrusaderStrike = paladin.RegisterSpell(core.SpellConfig{
+	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    manaMetrics.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,

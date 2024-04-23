@@ -30,7 +30,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 
 	ret := &RetributionPaladin{
 		Paladin:     pal,
-		PrimarySeal: retOptions.Options.PrimarySeal,
+		primarySeal: retOptions.Options.PrimarySeal,
 	}
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
@@ -44,7 +44,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	PrimarySeal proto.PaladinSeal
+	primarySeal proto.PaladinSeal
 }
 
 func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
@@ -60,18 +60,5 @@ func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.CurrentSeal = nil
 
 	// Set the primary seal for APL actions.
-	switch ret.PrimarySeal {
-	case proto.PaladinSeal_Righteousness:
-		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
-	case proto.PaladinSeal_Command:
-		ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.PrimarySeal)
-	case proto.PaladinSeal_Martyrdom:
-		ret.PrimarySealSpell = ret.Paladin.SealOfMartyrdom
-	// The following provisions for when a player has chosen a seal in the UI
-	// which is no longer viable based on rune/talent changes. This stops the
-	// APL being hung up on conditions where the current seal APL value is nearing
-	// expiry.
-	case proto.PaladinSeal_NoSeal:
-		ret.Paladin.CurrentSealExpiration = 100000000
-	}
+	ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.primarySeal)
 }
