@@ -1,97 +1,94 @@
 package druid
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const HurricaneRanks = 3
-
-var HurricaneSpellId = [HurricaneRanks + 1]int32{0, 16914, 17401, 17402}
-var HurricaneBaseDamage = [HurricaneRanks + 1]float64{0, 72, 102, 134}
-var HurricaneSpellCoef = [HurricaneRanks + 1]float64{0, .03, .03, .03}
-var HurricaneManaCost = [HurricaneRanks + 1]float64{0, 880, 1180, 1495}
-var HurricaneLevel = [HurricaneRanks + 1]int{0, 40, 50, 60}
-
 func (druid *Druid) registerHurricaneSpell() {
-	druid.Hurricane = make([]*DruidSpell, HurricaneRanks+1)
+	ranks := []struct {
+		level      int32
+		spellID    int32
+		manaCost   float64
+		scaleLevel int32
+		damage     float64
+		scale      float64
+	}{
+		{level: 40, spellID: 16914, manaCost: 880, scaleLevel: 46, damage: 70, scale: 0.2},
+		{level: 50, spellID: 17401, manaCost: 1180, scaleLevel: 56, damage: 100, scale: 0.2},
+		{level: 60, spellID: 17402, manaCost: 1495, scaleLevel: 66, damage: 134, scale: 0.3},
+	}
 
-	cooldownTimer := druid.NewTimer()
+	damageMultiplier := 2.0
+	costMultiplier := .40
+	cd := core.Cooldown{}
 
-	for rank := 1; rank <= HurricaneRanks; rank++ {
-		config := druid.newHurricaneSpellConfig(rank, cooldownTimer)
-
-		if config.RequiredLevel <= int(druid.Level) {
-			druid.Hurricane[rank] = druid.RegisterSpell(Humanoid|Moonkin, config)
+	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
+		damageMultiplier = 1.0
+		costMultiplier = 1.0
+		cd = core.Cooldown{
+			Timer:    druid.NewTimer(),
+			Duration: time.Second * 60,
 		}
 	}
-}
 
-func (druid *Druid) newHurricaneSpellConfig(rank int, cooldownTimer *core.Timer) core.SpellConfig {
-	spellId := HurricaneSpellId[rank]
-	baseDamage := HurricaneBaseDamage[rank]
-	spellCoeff := HurricaneSpellCoef[rank]
-	manaCost := HurricaneManaCost[rank]
-	level := HurricaneLevel[rank]
+	for i, rank := range ranks {
+		if druid.Level < rank.level {
+			break
+		}
 
-	damageMultiplier := 1.0
-	cooldown := time.Second * 60
+		damage := rank.damage + float64(min(druid.Level, rank.scaleLevel)-rank.level)*rank.scale
 
-	if druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
-		damageMultiplier += 1.0
-		cooldown = core.GCDDefault
-		manaCost *= .80
-	}
+		druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: rank.spellID},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       SpellFlagOmen | core.SpellFlagChanneled | core.SpellFlagBinary | core.SpellFlagAPL,
 
-	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmen | core.SpellFlagChanneled | core.SpellFlagBinary | core.SpellFlagAPL,
+			RequiredLevel: int(rank.level),
+			Rank:          i + 1,
 
-		RequiredLevel: level,
-		Rank:          rank,
-
-		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+			ManaCost: core.ManaCostOptions{
+				FlatCost:   rank.manaCost,
+				Multiplier: costMultiplier,
 			},
-			CD: core.Cooldown{
-				Timer:    cooldownTimer,
-				Duration: cooldown,
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				CD: cd,
 			},
-		},
 
-		DamageMultiplier: damageMultiplier,
-		ThreatMultiplier: 1,
+			DamageMultiplier: damageMultiplier,
+			ThreatMultiplier: 1,
 
-		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label: "Hurricane",
-			},
-			NumberOfTicks:    10,
-			TickLength:       time.Second * 1,
-			BonusCoefficient: spellCoeff,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseDamage, isRollover)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, dot.SnapshotBaseDamage, dot.OutcomeTick)
-				}
-			},
-		},
+			Dot: core.DotConfig{
+				IsAOE: true,
+				Aura: core.Aura{
+					Label: "Hurricane" + druid.Label + strconv.Itoa(i+1),
+				},
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 1,
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			druid.AutoAttacks.CancelAutoSwing(sim)
-			spell.AOEDot().Apply(sim)
-		},
+				BonusCoefficient: 0.03,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, damage, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
+					}
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				druid.AutoAttacks.CancelAutoSwing(sim)
+				spell.AOEDot().Apply(sim)
+			},
+		})
 	}
 }

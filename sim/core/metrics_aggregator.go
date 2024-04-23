@@ -126,9 +126,9 @@ type tmiListItem struct {
 }
 
 func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetrics {
-	targetMetrics := make([]*proto.TargetedActionMetrics, 0, len(actionMetrics.Targets))
-	for _, tam := range actionMetrics.Targets {
-		targetMetrics = append(targetMetrics, tam.ToProto())
+	targetMetrics := make([]*proto.TargetedActionMetrics, len(actionMetrics.Targets))
+	for i, tam := range actionMetrics.Targets {
+		targetMetrics[i] = tam.ToProto(int32(i))
 	}
 
 	return &proto.ActionMetrics{
@@ -160,8 +160,6 @@ type SpellMetrics struct {
 }
 
 type TargetedActionMetrics struct {
-	UnitIndex int32
-
 	Casts   int32
 	Hits    int32
 	Crits   int32
@@ -178,9 +176,9 @@ type TargetedActionMetrics struct {
 	CastTime  time.Duration
 }
 
-func (tam *TargetedActionMetrics) ToProto() *proto.TargetedActionMetrics {
+func (tam *TargetedActionMetrics) ToProto(unitIndex int32) *proto.TargetedActionMetrics {
 	return &proto.TargetedActionMetrics{
-		UnitIndex: tam.UnitIndex,
+		UnitIndex: unitIndex,
 
 		Casts:      tam.Casts,
 		Hits:       tam.Hits,
@@ -280,21 +278,30 @@ func (unit *Unit) NewFocusMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeFocus)
 }
 
+var emptySpellMetrics SpellMetrics
+
+func empty(spellMetrics []SpellMetrics) bool {
+	for _, spellMetric := range spellMetrics {
+		if spellMetric != emptySpellMetrics {
+			return false
+		}
+	}
+	return true
+}
+
 // Adds the results of a spell to the character metrics.
 func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID, spellMetrics []SpellMetrics) {
-	actionMetrics, ok := unitMetrics.actions[actionID]
-
-	if !ok {
-		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics)}
-		unitMetrics.actions[actionID] = actionMetrics
+	if empty(spellMetrics) {
+		return
 	}
 
-	if len(actionMetrics.Targets) == 0 {
-		actionMetrics.Targets = make([]TargetedActionMetrics, len(spellMetrics))
-		for i := range actionMetrics.Targets {
-			tam := &actionMetrics.Targets[i]
-			tam.UnitIndex = spell.Unit.AttackTables[i][proto.CastType_CastTypeMainHand].Defender.UnitIndex
+	actionMetrics, ok := unitMetrics.actions[actionID]
+	if !ok {
+		actionMetrics = &ActionMetrics{
+			IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics),
+			Targets: make([]TargetedActionMetrics, len(spellMetrics)),
 		}
+		unitMetrics.actions[actionID] = actionMetrics
 	}
 
 	for i, spellTargetMetrics := range spellMetrics {
@@ -313,7 +320,7 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Shielding += spellTargetMetrics.TotalShielding
 		tam.CastTime += spellTargetMetrics.TotalCastTime
 
-		target := spell.Unit.AttackTables[i][proto.CastType_CastTypeMainHand].Defender
+		target := spell.Unit.Env.AllUnits[i]
 		target.Metrics.dtps.Total += spellTargetMetrics.TotalDamage
 
 		if spell.Unit.IsOpponent(target) {

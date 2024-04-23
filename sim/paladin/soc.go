@@ -57,7 +57,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 	}
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}
@@ -74,9 +74,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
 
-			// TODO check whether this benefits from holyCrit (it shouldn't)
-
-			DamageMultiplier: 1, // TODO does this benefit from weapon specializations? if SoM does, this could as well
+			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
 
 			BonusCoefficient: 0.429,

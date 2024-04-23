@@ -29,7 +29,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 	hasImprovedHammerOfWrath := paladin.HasRune(proto.PaladinRune_RuneWristImprovedHammerOfWrath)
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}

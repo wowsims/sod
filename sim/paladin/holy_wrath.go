@@ -38,7 +38,7 @@ func (paladin *Paladin) registerHolyWrath() {
 	var results []*core.SpellResult
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}

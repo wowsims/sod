@@ -8,7 +8,8 @@ import (
 )
 
 func (druid *Druid) ApplyTalents() {
-	druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
+	// SoD tuning made this all damage, not just physical damage
+	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
 	if druid.Talents.HeartOfTheWild > 0 {
@@ -265,7 +266,8 @@ func (druid *Druid) applyOmenOfClarity() {
 				return
 			}
 
-			if spell.Flags.Matches(SpellFlagOmen) && spell.DefaultCast.Cost > 0 {
+			// Hotfix 2024-04-13 Starsurge does not consume clearcasting
+			if spell.Flags.Matches(SpellFlagOmen) && spell.SpellCode != SpellCode_DruidStarsurge && spell.DefaultCast.Cost > 0 {
 				aura.Deactivate(sim)
 			}
 		},

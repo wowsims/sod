@@ -51,7 +51,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
-	flags := core.SpellFlagHelpful
+	flags := core.SpellFlagHelpful | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -99,7 +99,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			curTarget := targets[0]
 			origMult := spell.DamageMultiplier
 			// TODO: This bounces to most hurt friendly...
-			for hitIndex := int32(0); hitIndex < ChainHealTargetCount; hitIndex++ {
+			for hitIndex := 0; hitIndex < len(targets); hitIndex++ {
 				baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
 
 				result := spell.CalcAndDealHealing(sim, curTarget, baseHealing, spell.OutcomeHealingCrit)

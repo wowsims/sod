@@ -49,7 +49,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHelmMentalDexterity)},
-		Duration: time.Second * 60,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, intToApStatDep)
 			aura.Unit.EnableDynamicStatDep(sim, apToSpStatDep)
@@ -62,17 +62,15 @@ func (shaman *Shaman) applyMentalDexterity() {
 
 	// Hidden Aura
 	shaman.RegisterAura(core.Aura{
-		Label:    "MentalDexterity",
+		Label:    "Mental Dexterity",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
+			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.Stormstrike) {
+				procAura.Activate(sim)
 			}
-
-			procAura.Activate(sim)
 		},
 	})
 }
@@ -213,49 +211,31 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		return
 	}
 
-	buffSpellId := 408505
-	buffDuration := time.Second * 30
-
 	ppm := core.TernaryFloat64(shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon, 15, 10)
 
 	var affectedSpells []*core.Spell
-	var affectedSpellCodes = []int32{
-		SpellCode_ShamanLightningBolt,
-		SpellCode_ShamanChainLightning,
-		SpellCode_ShamanLavaBurst,
-		SpellCode_ShamanHealingWave,
-		SpellCode_ShamanLesserHealingWave,
-		SpellCode_ShamanChainHeal,
-	}
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMaelstrom) {
+			affectedSpells = append(affectedSpells, spell)
+		}
+	})
 
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
-		ActionID:  core.ActionID{SpellID: int32(buffSpellId)},
-		Duration:  buffDuration,
+		ActionID:  core.ActionID{SpellID: 408505},
+		Duration:  time.Second * 30,
 		MaxStacks: 5,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.LightningBolt,
-					shaman.ChainLightning,
-					{shaman.LavaBurst},
-					shaman.HealingWave,
-					shaman.LesserHealingWave,
-					shaman.ChainHeal,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			multDiff := 0.2 * float64(newStacks-oldStacks)
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= multDiff })
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= multDiff })
+			for _, spell := range affectedSpells {
+				spell.CastTimeMultiplier -= multDiff
+				spell.CostMultiplier -= multDiff
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				return
+			if spell.Flags.Matches(SpellFlagMaelstrom) {
+				shaman.MaelstromWeaponAura.Deactivate(sim)
 			}
-
-			shaman.MaelstromWeaponAura.Deactivate(sim)
 		},
 	})
 
@@ -288,7 +268,7 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	// TODO: Figure out how this actually works becaue the 2024-02-27 tuning notes make it sound like
+	// TODO: Figure out how this actually works because the 2024-02-27 tuning notes make it sound like
 	// this is not just a fully passive stat boost
 	shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
 
@@ -337,7 +317,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 	}
 
 	// Way of Earth only activates if you have Rockbiter Weapon on your mainhand and a shield in your offhand
-	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon && (shaman.OffHand() == nil || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield) {
+	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
 

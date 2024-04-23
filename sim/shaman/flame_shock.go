@@ -42,11 +42,11 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	manaCost := FlameShockManaCost[rank]
 	level := FlameShockLevel[rank]
 
-	numHits := core.TernaryInt32(shaman.HasRune(proto.ShamanRune_RuneHelmBurn), 3, 1)
-
-	if shaman.Ranged().ID == TotemInvigoratingFlame {
-		manaCost -= 10
-	}
+	hasBurnRune := shaman.HasRune(proto.ShamanRune_RuneHelmBurn)
+	hasPowerSurgeRune := shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge)
+	hasLavaBurstRune := shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst)
+	hasMoltenBlastRune := shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast)
+	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
 	spell := shaman.newShockSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -54,6 +54,11 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		manaCost,
 		shockTimer,
 	)
+
+	if hasBurnRune {
+		spell.DamageMultiplier += 1
+		numTicks += 2
+	}
 
 	spell.SpellCode = SpellCode_ShamanFlameShock
 	spell.RequiredLevel = level
@@ -65,17 +70,17 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		Aura: core.Aura{
 			Label: fmt.Sprintf("Flame Shock (Rank %d)", rank),
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
+				if hasLavaBurstRune {
 					shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
-					if shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
+					if hasOverloadRune {
 						shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
 					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
+				if hasLavaBurstRune {
 					shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
-					if shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
+					if hasOverloadRune {
 						shaman.LavaBurstOverload.BonusCritRating -= 100 * core.CritRatingPerCritChance
 					}
 				}
@@ -91,13 +96,13 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 
-			if shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) && result.Landed() && sim.RandomFloat("Molten Blast Reset") < ShamanMoltenBlastResetChance {
+			if hasMoltenBlastRune && result.Landed() && sim.Proc(ShamanMoltenBlastResetChance, "Molten Blast Reset") {
 				shaman.MoltenBlast.CD.Reset()
 			}
 
-			if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+			if hasPowerSurgeRune && sim.Proc(ShamanPowerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeAura.Activate(sim)
 			}
 		},
@@ -105,22 +110,27 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 	spell.BonusCoefficient = baseSpellCoeff
 
+	results := make([]*core.SpellResult, min(core.TernaryInt32(hasBurnRune, 5, 1), shaman.Env.GetNumTargets()))
+
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		curTarget := target
-		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+		for idx := range results {
+			results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			target = sim.Environment.NextTargetUnit(target)
+		}
+
+		for _, result := range results {
+			spell.DealDamage(sim, result)
 			if result.Landed() {
-				spell.Dot(curTarget).Apply(sim)
+				spell.Dot(result.Target).Apply(sim)
 
 				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 					shaman.lastFlameShockTarget = target
 				}
 
-				if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) && sim.RandomFloat("Power Surge Proc") < ShamanPowerSurgeProcChance {
+				if hasPowerSurgeRune && sim.Proc(ShamanPowerSurgeProcChance, "Power Surge Proc") {
 					shaman.PowerSurgeAura.Activate(sim)
 				}
 			}
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
 		}
 	}
 

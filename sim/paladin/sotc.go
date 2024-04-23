@@ -39,7 +39,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 	}
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}

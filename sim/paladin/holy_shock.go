@@ -41,7 +41,7 @@ func (paladin *Paladin) registerHolyShock() {
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 437063}) // Infusion of Light mana restore
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}

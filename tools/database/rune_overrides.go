@@ -17,7 +17,4 @@ var UnimplementedRuneOverrides = []int32{
 	// Paladin
 	429133, // Improved Sanctuary
 	428909, // Light's Grace
-
-	// Priest
-	402789, // Eye of the Void
 }

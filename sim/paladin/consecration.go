@@ -36,7 +36,7 @@ func (paladin *Paladin) registerConsecration() {
 	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}

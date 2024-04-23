@@ -46,7 +46,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	improvedSoR := paladin.improvedSoR()
 
 	for i, rank := range ranks {
-		i, rank := i, rank
+		rank := rank
 		if paladin.Level < rank.level {
 			break
 		}
@@ -78,7 +78,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics,
 
-			BonusCritRating: paladin.holyCrit(), // TODO check whether fanaticism applies
+			BonusCritRating: paladin.holyCrit(), // TODO to be tested
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -101,7 +101,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics,
 
-			DamageMultiplier: 1, // TODO check whether this benefits from weapon specializations
+			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
 
 			// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.

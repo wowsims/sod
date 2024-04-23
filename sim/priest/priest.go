@@ -11,8 +11,9 @@ var TalentTreeSizes = [3]int{15, 16, 16}
 const (
 	SpellCode_PriestNone int32 = iota
 	SpellCode_PriestFlashHeal
-	SpellCode_PriestHeal
 	SpellCode_PriestGreaterHeal
+	SpellCode_PriestHeal
+	SpellCode_PriestSmite
 )
 
 type Priest struct {
@@ -51,6 +52,9 @@ type Priest struct {
 	Dispersion                  *core.Spell
 	DispersionAura              *core.Aura
 	EmpoweredRenew              *core.Spell
+	EyeOfTheVoid                *core.Spell
+	EyeOfTheVoidAura            *core.Aura
+	EyeOfTheVoidPet             *EyeOfTheVoid
 	Homunculi                   *core.Spell
 	HomunculiAura               *core.Aura
 	HomunculiPets               []*Homunculus
@@ -66,7 +70,10 @@ type Priest struct {
 	Shadowfiend                 *core.Spell
 	ShadowfiendAura             *core.Aura
 	ShadowfiendPet              *Shadowfiend
+	Shadowform                  *core.Spell
+	ShadowformAura              *core.Aura
 	ShadowWordDeath             *core.Spell
+	SurgeOfLightAura            *core.Aura
 	VoidPlague                  *core.Spell
 
 	ProcPrayerOfMending core.ApplySpellResults
@@ -131,10 +138,17 @@ func New(char *core.Character, talents string) *Priest {
 	}
 
 	priest.ShadowfiendPet = priest.NewShadowfiend()
-	priest.HomunculiPets = make([]*Homunculus, 3)
-	priest.HomunculiPets[0] = priest.NewHomunculus(1, 202390)
-	priest.HomunculiPets[1] = priest.NewHomunculus(2, 202392)
-	priest.HomunculiPets[2] = priest.NewHomunculus(3, 202391)
+
+	if priest.HasRune(proto.PriestRune_RuneHelmEyeOfTheVoid) {
+		priest.EyeOfTheVoidPet = priest.NewEyeOfTheVoid()
+	}
+
+	if priest.HasRune(proto.PriestRune_RuneLegsHomunculi) {
+		priest.HomunculiPets = make([]*Homunculus, 3)
+		priest.HomunculiPets[0] = priest.NewHomunculus(1, 202390)
+		priest.HomunculiPets[1] = priest.NewHomunculus(2, 202392)
+		priest.HomunculiPets[2] = priest.NewHomunculus(3, 202391)
+	}
 
 	return priest
 }

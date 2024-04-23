@@ -304,12 +304,10 @@ func (druid *Druid) applyDreamstate() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.DidCrit() || result.Target == &druid.Unit {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+				druid.DreamstateManaRegenAura.Activate(sim)
+				dreamstateAuras.Get(result.Target).Activate(sim)
 			}
-
-			druid.DreamstateManaRegenAura.Activate(sim)
-			dreamstateAuras.Get(result.Target).Activate(sim)
 		},
 	}))
 }
