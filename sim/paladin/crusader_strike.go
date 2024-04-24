@@ -12,7 +12,7 @@ import (
 // As of 27/02/24 it deals holy school damage, but otherwise behaves like a melee attack.
 
 func (paladin *Paladin) registerCrusaderStrike() {
-	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+	if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
 	}
 
@@ -41,7 +41,14 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
+
+			for _, aura := range target.GetAurasWithTag(core.JudgementAuraTag) {
+				if aura.IsActive() && aura.Duration < core.NeverExpires {
+					aura.UpdateExpires(sim, sim.CurrentTime+time.Second*30)
+				}
+			}
 		},
 	})
 }

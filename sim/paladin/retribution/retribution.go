@@ -55,10 +55,6 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 }
 
-func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
-	ret.Paladin.Reset(sim)
-	ret.CurrentSeal = nil
-
-	// Set the primary seal for APL actions.
-	ret.PrimarySealSpell = ret.Paladin.GetMaxRankSeal(ret.primarySeal)
+func (ret *RetributionPaladin) Reset(_ *core.Simulation) {
+	ret.Paladin.ResetPrimarySeal(ret.primarySeal)
 }

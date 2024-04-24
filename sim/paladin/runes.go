@@ -9,7 +9,7 @@ import (
 )
 
 func (paladin *Paladin) ApplyRunes() {
-	if paladin.HasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
+	if paladin.hasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
 		paladin.AddStat(stats.SpellHit, 17*core.SpellHitRatingPerHitChance)
 	}
 
@@ -26,11 +26,11 @@ func (paladin *Paladin) ApplyRunes() {
 }
 
 func (paladin *Paladin) fanaticism() float64 {
-	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.SpellCritRatingPerCritChance
+	return core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.SpellCritRatingPerCritChance
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
-	if !paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar) {
+	if !paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar) {
 		return
 	}
 
@@ -53,7 +53,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 
 func (paladin *Paladin) registerSheathOfLight() {
 
-	if !paladin.HasRune(proto.PaladinRune_RuneWaistSheathOfLight) {
+	if !paladin.hasRune(proto.PaladinRune_RuneWaistSheathOfLight) {
 		return
 	}
 
@@ -89,7 +89,7 @@ func (paladin *Paladin) registerSheathOfLight() {
 }
 
 func (paladin *Paladin) registerGuardedByTheLight() {
-	if !paladin.HasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
+	if !paladin.hasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
 		return
 	}
 

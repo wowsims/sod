@@ -82,6 +82,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+
 			BonusCoefficient: rank.judge.coeff,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -92,24 +93,26 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 		value := rank.proc.value + rank.proc.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level)
 
-		damage := value / 100 * core.TernaryFloat64(paladin.Has2hEquipped(), 1.2, 0.85) * paladin.MainHand().SwingSpeed
+		damage := value / 100 * core.TernaryFloat64(paladin.has2hEquipped(), 1.2, 0.85) * paladin.MainHand().SwingSpeed
 
 		procSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
-			DefenseType: core.DefenseTypeMagic,
+			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics,
+
+			//BonusCritRating: paladin.holyCrit(), // TODO to be tested, but unlikely
 
 			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
 
 			// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
-			BonusCoefficient: rank.proc.coeff * core.TernaryFloat64(paladin.Has2hEquipped(), 1.12, 1.0),
+			BonusCoefficient: rank.proc.coeff * core.TernaryFloat64(paladin.has2hEquipped(), 1.12, 1.0),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := damage * improvedSoR
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 			},
 		})
 
@@ -147,7 +150,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				paladin.ApplySeal(aura, judgeSpell, sim)
+				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
 	}

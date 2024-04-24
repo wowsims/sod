@@ -28,8 +28,8 @@ func (paladin *Paladin) registerHolyWrath() {
 		Duration: time.Second * 60,
 	}
 
-	hasPurifyingPower := paladin.HasRune(proto.PaladinRune_RuneWristPurifyingPower)
-	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
+	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
+	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	if hasPurifyingPower {
 		cd.Duration /= 2

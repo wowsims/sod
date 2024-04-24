@@ -89,7 +89,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskProc,
 			Flags:       core.SpellFlagMeleeMetrics,
 
 			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
@@ -145,7 +145,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				paladin.ApplySeal(aura, judgeSpell, sim)
+				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
 	}

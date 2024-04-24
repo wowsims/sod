@@ -13,7 +13,7 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
-	if !paladin.HasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
+	if !paladin.hasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
 		return
 	}
 
@@ -87,7 +87,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			paladin.ApplySeal(aura, judgeSpell, sim)
+			paladin.applySeal(aura, judgeSpell, sim)
 		},
 	})
 }

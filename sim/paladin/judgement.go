@@ -29,21 +29,20 @@ func (paladin *Paladin) registerJudgement() {
 			},
 		},
 		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
-			return paladin.CurrentSeal.IsActive()
+			return paladin.currentSeal.IsActive()
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Seal of Command requires this spell to act as its intermediary dummy,
 			// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
 			// melee special attack crit/hit table, necessitating two discrete spells.
 			// All other judgements are cast directly.
-			if paladin.CurrentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
+			if paladin.currentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
 				spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			} else {
-				paladin.CurrentJudgement.Cast(sim, target)
+				paladin.currentJudgement.Cast(sim, target)
 			}
 
-			paladin.CurrentSealExpiration = sim.CurrentTime
-			paladin.CurrentSeal.Deactivate(sim)
+			paladin.currentSeal.Deactivate(sim)
 		},
 	})
 }

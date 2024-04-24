@@ -22,10 +22,10 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	CurrentJudgement      *core.Spell
-	CurrentSeal           *core.Aura
-	CurrentSealExpiration time.Duration
-	PrimarySealSpell      *core.Spell
+	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+
+	currentSeal      *core.Aura
+	currentJudgement *core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcismCooldown  *core.Cooldown
@@ -113,21 +113,22 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
+func (paladin *Paladin) hasRune(rune proto.PaladinRune) bool {
 	return paladin.HasRuneById(int32(rune))
 }
 
-func (paladin *Paladin) Has1hEquipped() bool {
-	return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
-}
-
-func (paladin *Paladin) Has2hEquipped() bool {
+func (paladin *Paladin) has2hEquipped() bool {
 	return paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand
 }
 
-func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
+func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
+	paladin.currentSeal = nil
+	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
+}
+
+func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
-	switch seal {
+	switch primarySeal {
 	case proto.PaladinSeal_Martyrdom:
 		return paladin.sealOfMartyrdom
 	case proto.PaladinSeal_Command:
@@ -137,14 +138,18 @@ func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
 	}
 }
 
-func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	if paladin.CurrentSeal != nil {
-		paladin.CurrentSeal.Deactivate(sim)
+func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
+	const lingerDuration = time.Millisecond * 400
+
+	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
+		if seal.RemainingDuration(sim) >= lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		}
 	}
-	paladin.CurrentSeal = aura
-	paladin.CurrentJudgement = judgement
-	paladin.CurrentSeal.Activate(sim)
-	paladin.CurrentSealExpiration = sim.CurrentTime + aura.Duration
+
+	paladin.currentSeal = newSeal
+	paladin.currentJudgement = judgement
+	paladin.currentSeal.Activate(sim)
 }
 
 func (paladin *Paladin) getLibramSealCostReduction() float64 {
