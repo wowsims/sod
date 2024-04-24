@@ -138,23 +138,13 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 	}
 }
 
-func (paladin *Paladin) applyTwistableSeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
+func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	const lingerDuration = time.Millisecond * 400
 
 	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
 		if seal.RemainingDuration(sim) >= lingerDuration {
 			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
 		}
-	}
-
-	paladin.currentSeal = newSeal
-	paladin.currentJudgement = judgement
-	paladin.currentSeal.Activate(sim)
-}
-
-func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		seal.Deactivate(sim)
 	}
 
 	paladin.currentSeal = newSeal

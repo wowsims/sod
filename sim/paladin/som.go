@@ -87,7 +87,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			paladin.applyTwistableSeal(aura, judgeSpell, sim)
+			paladin.applySeal(aura, judgeSpell, sim)
 		},
 	})
 }

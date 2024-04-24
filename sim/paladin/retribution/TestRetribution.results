@@ -296,7 +296,7 @@ dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
   dps: 605.94188
-  tps: 620.10153
+  tps: 619.86833
  }
 }
 dps_results: {
@@ -387,6 +387,6 @@ dps_results: {
  key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 571.66369
-  tps: 585.70026
+  tps: 585.52767
  }
 }
