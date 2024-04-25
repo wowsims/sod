@@ -37,6 +37,8 @@ func (paladin *Paladin) getExorcismBaseConfig(rank int) core.SpellConfig {
 	hasWrath := paladin.HasRune(proto.PaladinRune_RuneHeadWrath)
 
 	return core.SpellConfig{
+		// The SoD exorcism replacements don't list a rank so the DB doesn't list one either.
+		// Using a tag as a replacement so that we can group Exorcism in the UI.
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMagic,
