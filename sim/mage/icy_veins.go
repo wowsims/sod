@@ -31,8 +31,9 @@ func (mage *Mage) registerIcyVeinsSpell() {
 	})
 
 	mage.IcyVeins = mage.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolFrost,
+		Flags:       core.SpellFlagNoOnCastComplete,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
