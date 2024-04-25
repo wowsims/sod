@@ -94,9 +94,10 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			AffectedByCastSpeed: false,
 			BonusCoefficient:    spellCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				oldMultiplier := dot.Spell.DamageMultiplier
 				dot.Spell.DamageMultiplier *= priest.MindFlayModifier
 				dot.Snapshot(target, baseDamage, isRollover)
-				dot.Spell.DamageMultiplier /= priest.MindFlayModifier
+				dot.Spell.DamageMultiplier = oldMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {

@@ -87,10 +87,10 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			imprImmoMult := 1 + 0.05*float64(warlock.Talents.ImprovedImmolate)
-			spell.DamageMultiplier *= imprImmoMult
+			oldMultiplier := spell.DamageMultiplier
+			spell.DamageMultiplier *= 1 + 0.05*float64(warlock.Talents.ImprovedImmolate) // TODO should most likely just be done statically (?)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= imprImmoMult
+			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {

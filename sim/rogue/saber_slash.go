@@ -72,15 +72,20 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * []float64{1, 1.15, 1.3, 1.45, 1.6, 1.75}[rogue.GetSaberSlashBleedStacks()],
+		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
+			oldMultiplier := spell.DamageMultiplier
+			spell.DamageMultiplier *= rogue.saberSlashMultiplier(target)
+
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -100,10 +105,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	})
 }
 
-func (rogue *Rogue) GetSaberSlashBleedStacks() int32 {
-	// Should only count the player's Saber Slash stacks, but no way to identify applying player for future raid sim
-	if rogue.HasRune(proto.RogueRune_RuneSaberSlash) && rogue.CurrentTarget.HasActiveAuraWithTag("Saber Slash - Bleed") {
-		return rogue.CurrentTarget.GetAura("Saber Slash - Bleed").GetStacks()
+func (rogue *Rogue) saberSlashMultiplier(target *core.Unit) float64 {
+	if rogue.saberSlashTick == nil {
+		return 1
 	}
-	return 0
+	return 1 + 0.2*float64(rogue.saberSlashTick.Dot(target).GetStacks())
 }
