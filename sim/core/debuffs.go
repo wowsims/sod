@@ -807,7 +807,7 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 		60: 1700,
 	}[playerLevel]
 
-	arpen *= 1 + 0.25*float64(improvedEA)
+	arpen *= []float64{1, 1.25, 1.5}[improvedEA]
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "ExposeArmor",
@@ -837,7 +837,7 @@ func HomunculiAttackSpeedAura(target *Unit, _ int32) *Aura {
 		Duration: time.Second * 15,
 	})
 
-	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{
+	aura.NewExclusiveEffect("AtkSpdReduction", true, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/multiplier)
