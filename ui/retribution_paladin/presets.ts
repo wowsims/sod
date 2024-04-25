@@ -153,7 +153,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	sparkOfInspiration: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	fervorOfTheTempleExplorer: true,
 	songflowerSerenade: true,
