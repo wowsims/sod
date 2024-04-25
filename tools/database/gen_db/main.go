@@ -159,6 +159,8 @@ func main() {
 		}
 	}
 
+	db.MergeSpellIcons(database.SpellIconoverrides)
+
 	atlasDBProto := atlaslootDB.ToUIProto()
 	db.MergeZones(atlasDBProto.Zones)
 	db.MergeNpcs(atlasDBProto.Npcs)

@@ -226,6 +226,20 @@ func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResp
 	}
 }
 
+func (db *WowDatabase) MergeSpellIcons(arr []*proto.IconData) {
+	for _, item := range arr {
+		db.MergeSpellIcon(item)
+	}
+}
+func (db *WowDatabase) MergeSpellIcon(src *proto.IconData) {
+	if dst, ok := db.SpellIcons[src.Id]; ok {
+		// googleproto.Merge concatenates lists, but we want replacement, so do them manually.
+		googleProto.Merge(dst, src)
+	} else {
+		db.SpellIcons[src.Id] = src
+	}
+}
+
 type idKeyed interface {
 	GetId() int32
 }

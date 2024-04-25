@@ -274,6 +274,15 @@ var ExtraItemIcons = []int32{
 	18262,
 }
 
+var SpellIconoverrides = []*proto.IconData{
+	{Id: 415068, Name: "Exorcism (Rank 1)"},
+	{Id: 415069, Name: "Exorcism (Rank 2)"},
+	{Id: 415070, Name: "Exorcism (Rank 3)"},
+	{Id: 415071, Name: "Exorcism (Rank 4)"},
+	{Id: 415072, Name: "Exorcism (Rank 5)"},
+	{Id: 415073, Name: "Exorcism (Rank 6)"},
+}
+
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{
 	// World Buffs
