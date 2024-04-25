@@ -21,9 +21,15 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 	arpenPerCombo := map[int32]float64{
 		25: 80,
 		40: 210,
-		50: 270,
+		50: 275,
 		60: 340,
-	}
+	}[rogue.Level]
+
+	arpenPerCombo *= []float64{1, 1.25, 1.5}[rogue.Talents.ImprovedExposeArmor]
+
+	// share ExtraCastCondition() state with ApplyEffects()
+	var arpen float64
+	var eaAura *core.Aura
 
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: spellID},
@@ -34,8 +40,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   25.0,
-			Refund: 0,
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -47,29 +52,28 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && rogue.CanApplyExposeAura(target)
+			if rogue.ComboPoints() == 0 {
+				return false
+			}
+
+			eaAura = rogue.ExposeArmorAuras.Get(target)
+			arpen = float64(rogue.ComboPoints()) * arpenPerCombo
+
+			if curActive := eaAura.ExclusiveEffects[0].Category.GetActiveEffect(); curActive != nil {
+				return arpen >= curActive.Priority
+			}
+			return true
 		},
 
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
+
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				debuffAura := rogue.ExposeArmorAuras.Get(target)
-
-				if debuffAura.IsActive() {
-					// More powerful?
-					debuffAura.Deactivate(sim)
-				}
-				// recalculate and apply armor reduction value
-				arpen := arpenPerCombo[rogue.Level]
-				arpen *= float64(rogue.ComboPoints())
-				// Improved Expose Armor Multiplier
-				arpen *= 1 + 0.25*float64(rogue.Talents.ImprovedExposeArmor)
-				debuffAura.ExclusiveEffects[0].Priority = arpen
-				debuffAura.Activate(sim)
-
+				eaAura.ExclusiveEffects[0].Priority = arpen
+				eaAura.Activate(sim)
 				rogue.ApplyFinisher(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
@@ -79,8 +83,4 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 
 		RelatedAuras: []core.AuraArray{rogue.ExposeArmorAuras},
 	})
-}
-
-func (rogue *Rogue) CanApplyExposeAura(target *core.Unit) bool {
-	return rogue.ExposeArmorAuras.Get(target).IsActive() || !rogue.ExposeArmorAuras.Get(target).ExclusiveEffects[0].Category.AnyActive()
 }
