@@ -109,7 +109,7 @@ export const P2ShockadinTalents = {
 export const P3RetTalents = {
 	name: 'P3 Ret',
 	data: SavedTalents.create({
-		talentsString: '050501--53230051200315',
+		talentsString: '500501--53230051200315',
 	}),
 }
 
