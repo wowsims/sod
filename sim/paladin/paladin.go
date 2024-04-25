@@ -19,46 +19,23 @@ const (
 
 type Paladin struct {
 	core.Character
+
 	Talents *proto.PaladinTalents
 
-	PaladinAura proto.PaladinAura
+	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
 
-	CurrentJudgement      *core.Spell
-	CurrentSeal           *core.Aura
-	CurrentSealExpiration time.Duration
-	PrimarySealSpell      *core.Spell
+	currentSeal      *core.Aura
+	currentJudgement *core.Spell
 
-	// Variables for max rank seal spells, used in APL Actions.
-	MaxRankRighteousness int
-	MaxRankCommand       int
+	// Active abilities and shared cooldowns that are externally manipulated.
+	exorcismCooldown  *core.Cooldown
+	holyShockCooldown *core.Cooldown
+	judgement         *core.Spell
 
-	// Active abilities and shared cooldowns that need externally manipulated.
-	CrusaderStrike    *core.Spell
-	DivineStorm       *core.Spell
-	Consecration      []*core.Spell
-	Exorcism          []*core.Spell
-	ExorcismCooldown  *core.Cooldown
-	HolyShock         []*core.Spell
-	HolyShockCooldown *core.Cooldown
-	Judgement         *core.Spell
-	DivineFavor       *core.Spell
-	// HolyShield            *core.Spell
-	// HammerOfWrath         []*core.Spell
-	// HolyWrath             []*core.Spell
-
-	// Seal spells and their associated auras
-	SealOfRighteousness []*core.Spell
-	SealOfCommand       []*core.Spell
-	SealOfMartyrdom     *core.Spell
-	SealOfTheCrusader   *core.Spell
-
-	SealOfRighteousnessAura []*core.Aura
-	SealOfCommandAura       []*core.Aura
-	SealOfMartyrdomAura     *core.Aura
-
-	// Auras from talents
-	DivineFavorAura *core.Aura
-	VengeanceAura   *core.Aura
+	// highest rank seal spell if available
+	sealOfRighteousness *core.Spell
+	sealOfCommand       *core.Spell
+	sealOfMartyrdom     *core.Spell
 }
 
 // Implemented by each Paladin spec.
@@ -82,29 +59,26 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-
 	// Judgement and Seals
-	paladin.registerJudgementSpell()
-	paladin.registerSealOfRighteousnessSpellAndAura()
+	paladin.registerJudgement()
 
-	paladin.registerSealOfCommandSpellAndAura()
-	paladin.registerSealOfMartyrdomSpellAndAura()
+	paladin.registerSealOfRighteousness()
+	paladin.registerSealOfCommand()
+	paladin.registerSealOfMartyrdom()
 	paladin.registerSealOfTheCrusader()
 
 	// Active abilities
-	paladin.registerCrusaderStrikeSpell()
-	paladin.registerDivineStormSpell()
-	paladin.registerConsecrationSpell()
-	paladin.registerHolyShockSpell()
-	paladin.registerExorcismSpell()
-	paladin.registerDivineFavorSpellAndAura()
-	paladin.registerHammerOfWrathSpell()
-	paladin.registerHolyWrathSpell()
-	// paladin.registerHolyShieldSpell()
+	paladin.registerCrusaderStrike()
+	paladin.registerDivineStorm()
+	paladin.registerConsecration()
+	paladin.registerHolyShock()
+	paladin.registerExorcism()
+	paladin.registerDivineFavor()
+	paladin.registerHammerOfWrath()
+	paladin.registerHolyWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
-	paladin.CurrentSeal = nil
 }
 
 // maybe need to add stat dependencies
@@ -139,41 +113,46 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) HasRune(rune proto.PaladinRune) bool {
+func (paladin *Paladin) hasRune(rune proto.PaladinRune) bool {
 	return paladin.HasRuneById(int32(rune))
 }
 
-func (paladin *Paladin) Has1hEquipped() bool {
-	return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
-}
-
-func (paladin *Paladin) Has2hEquipped() bool {
+func (paladin *Paladin) has2hEquipped() bool {
 	return paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand
 }
 
-func (paladin *Paladin) GetMaxRankSeal(seal proto.PaladinSeal) *core.Spell {
+func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
+	paladin.currentSeal = nil
+	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
+}
+
+func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
-	var returnSpell *core.Spell
-	switch seal {
-	case proto.PaladinSeal_Righteousness:
-		returnSpell = paladin.SealOfRighteousness[paladin.MaxRankRighteousness]
+	switch primarySeal {
+	case proto.PaladinSeal_Martyrdom:
+		return paladin.sealOfMartyrdom
 	case proto.PaladinSeal_Command:
-		returnSpell = paladin.SealOfCommand[paladin.MaxRankCommand]
+		return paladin.sealOfCommand
+	default:
+		return paladin.sealOfRighteousness
 	}
-	return returnSpell
 }
 
-func (paladin *Paladin) ApplySeal(aura *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	if paladin.CurrentSeal != nil {
-		paladin.CurrentSeal.Deactivate(sim)
+func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
+	const lingerDuration = time.Millisecond * 400
+
+	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
+		if seal.RemainingDuration(sim) >= lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		}
 	}
-	paladin.CurrentSeal = aura
-	paladin.CurrentJudgement = judgement
-	paladin.CurrentSeal.Activate(sim)
-	paladin.CurrentSealExpiration = sim.CurrentTime + aura.Duration
+
+	paladin.currentSeal = newSeal
+	paladin.currentJudgement = judgement
+	paladin.currentSeal.Activate(sim)
 }
 
-func (paladin *Paladin) GetLibramSealCostReduction() float64 {
+func (paladin *Paladin) getLibramSealCostReduction() float64 {
 	if paladin.Ranged().ID == LibramOfBenediction {
 		return 10
 	}
@@ -181,4 +160,14 @@ func (paladin *Paladin) GetLibramSealCostReduction() float64 {
 		return 20
 	}
 	return 0
+}
+
+func (paladin *Paladin) holyCrit() float64 {
+	var holySpellCrit float64
+	if paladin.HasSetBonus(ItemSetObsessedProphetsPlate, 2) {
+		holySpellCrit += 3 * core.SpellCritRatingPerCritChance
+	}
+	holySpellCrit += paladin.holyPower()
+	holySpellCrit += paladin.fanaticism()
+	return holySpellCrit
 }

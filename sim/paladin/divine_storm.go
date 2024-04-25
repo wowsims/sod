@@ -12,8 +12,8 @@ import (
 // DS also heals up to 3 party or raid members for 25% of the total damage caused. This has implications for prot
 // paladin threat, so we'll implement this as a heal to the casting paladin for now.
 
-func (paladin *Paladin) registerDivineStormSpell() {
-	if !paladin.HasRune(proto.PaladinRune_RuneChestDivineStorm) {
+func (paladin *Paladin) registerDivineStorm() {
+	if !paladin.hasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
 	}
 
@@ -21,7 +21,7 @@ func (paladin *Paladin) registerDivineStormSpell() {
 
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)})
 
-	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
+	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    healthMetrics.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

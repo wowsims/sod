@@ -280,7 +280,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	}
 }
 
-export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
+export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
@@ -296,7 +296,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 
 		const namesToWeights: Record<string, number> = {};
 		allUnitStats.forEach(stat => {
-			const statName = Individual80UEPExporter.getName(stat);
+			const statName = Individual60UEPExporter.getName(stat);
 			const weight = epValues.getUnitStat(stat);
 			if (weight == 0 || statName == '') {
 				return;
@@ -320,9 +320,9 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 
 	static getName(stat: UnitStat): string {
 		if (stat.isStat()) {
-			return Individual80UEPExporter.statNames[stat.getStat()];
+			return Individual60UEPExporter.statNames[stat.getStat()];
 		} else {
-			return Individual80UEPExporter.pseudoStatNames[stat.getPseudoStat()] || '';
+			return Individual60UEPExporter.pseudoStatNames[stat.getPseudoStat()] || '';
 		}
 	}
 

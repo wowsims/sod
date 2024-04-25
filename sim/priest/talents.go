@@ -12,6 +12,7 @@ func (priest *Priest) ApplyTalents() {
 	priest.applyInspiration()
 	priest.applyShadowWeaving()
 	priest.registerInnerFocus()
+	priest.registerShadowform()
 
 	// Meditation
 	priest.PseudoStats.SpiritRegenRateCasting = []float64{0.0, 0.17, 0.33, 0.5}[priest.Talents.Meditation]
@@ -23,10 +24,6 @@ func (priest *Priest) ApplyTalents() {
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 - .02*float64(priest.Talents.SpellWarding)
-
-	if priest.Talents.Shadowform {
-		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.25
-	}
 
 	if priest.Talents.SpiritualGuidance > 0 {
 		priest.AddStatDependency(stats.Spirit, stats.SpellPower, 0.05*float64(priest.Talents.SpiritualGuidance))
@@ -179,6 +176,56 @@ func (priest *Priest) registerInnerFocus() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			priest.InnerFocusAura.Activate(sim)
+		},
+	})
+}
+
+func (priest *Priest) registerShadowform() {
+	if !priest.Talents.Shadowform {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 15473}
+
+	priest.ShadowformAura = priest.RegisterAura(core.Aura{
+		Label:    "Shadowform",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.25
+			for _, spell := range priest.Spellbook {
+				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+					spell.CostMultiplier *= .5
+				}
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.25
+			for _, spell := range priest.Spellbook {
+				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+					spell.CostMultiplier /= .5
+				}
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolHoly) {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	priest.Shadowform = priest.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			priest.ShadowformAura.Activate(sim)
 		},
 	})
 }

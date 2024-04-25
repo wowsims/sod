@@ -9,20 +9,21 @@ import (
 //                            SoD Phase 3 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
-// TODO: New Set Bonuses
 var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 	Name: "Obsessed Prophet's Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			// c := agent.GetCharacter()
+			c := agent.GetCharacter()
+			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+			c.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
 		3: func(agent core.Agent) {
-			// c := agent.GetCharacter()
+			// handled via paladin.holyCrit()
 		},
 	},
 })
 
-var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Lamellar Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {
@@ -36,7 +37,7 @@ var ItemSetKnightLieutenantsLamellarPlate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Knight-Lieutenant's Imbued Plate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {
@@ -50,7 +51,7 @@ var ItemSetKnightLieutenantsImbuedPlate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetEmeraldEncrustedBattleplate = core.NewItemSet(core.ItemSet{
+var _ = core.NewItemSet(core.ItemSet{
 	Name: "Emerald Encrusted Battleplate",
 	Bonuses: map[int32]core.ApplyEffect{
 		3: func(agent core.Agent) {

@@ -56,9 +56,9 @@ func init() {
 	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446705}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446706}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 450110},
+			ActionID:   core.ActionID{SpellID: 446705},
 			Name:       "Roar of the Dream Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellOrProc,

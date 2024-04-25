@@ -11,14 +11,14 @@ import (
 // It also returns 5% of the paladin's maximum mana when cast, regardless of the ability being negated.
 // As of 27/02/24 it deals holy school damage, but otherwise behaves like a melee attack.
 
-func (paladin *Paladin) registerCrusaderStrikeSpell() {
-	if !paladin.HasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+func (paladin *Paladin) registerCrusaderStrike() {
+	if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 		return
 	}
 
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
 
-	paladin.CrusaderStrike = paladin.RegisterSpell(core.SpellConfig{
+	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    manaMetrics.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
@@ -41,7 +41,14 @@ func (paladin *Paladin) registerCrusaderStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
+
+			for _, aura := range target.GetAurasWithTag(core.JudgementAuraTag) {
+				if aura.IsActive() && aura.Duration < core.NeverExpires {
+					aura.UpdateExpires(sim, sim.CurrentTime+time.Second*30)
+				}
+			}
 		},
 	})
 }

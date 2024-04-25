@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) registerRapidFire() {
@@ -34,6 +35,8 @@ func (hunter *Hunter) registerRapidFire() {
 		},
 	})
 
+	hasRapidKilling := hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling)
+
 	hunter.RapidFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 
@@ -43,7 +46,7 @@ func (hunter *Hunter) registerRapidFire() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: core.TernaryDuration(hasRapidKilling, time.Minute*1, time.Minute*5),
 			},
 		},
 

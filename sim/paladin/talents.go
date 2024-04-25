@@ -35,22 +35,16 @@ func (paladin *Paladin) ApplyTalents() {
 	// paladin.applyArdentDefender()
 }
 
-var IlluminationSpellIDs = [6]int32{0, 20210, 20213, 20214, 20212, 20215}
-
-func (paladin *Paladin) getIlluminationActionID() core.ActionID {
-	// If no points in Illumination return a dummy spellID, the ActionID itself
-	// won't be used.
-	spellID := IlluminationSpellIDs[1]
-	if paladin.Talents.Illumination > 0 {
-		spellID = IlluminationSpellIDs[paladin.Talents.Illumination]
-	}
-	return core.ActionID{
-		SpellID: spellID,
-	}
+func (paladin *Paladin) holyPower() float64 {
+	return core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 }
 
-func (paladin *Paladin) holyPowerCritChance() float64 {
-	return core.CritRatingPerCritChance * float64(paladin.Talents.HolyPower)
+func (paladin *Paladin) improvedSoR() float64 {
+	return []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.ImprovedSealOfRighteousness]
+}
+
+func (paladin *Paladin) benediction() float64 {
+	return []float64{1, 0.97, 0.94, 0.91, 0.88, 0.85}[paladin.Talents.Benediction]
 }
 
 // func (paladin *Paladin) applyRedoubt() {
@@ -142,36 +136,19 @@ func (paladin *Paladin) holyPowerCritChance() float64 {
 // }
 
 func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
-	mhWeapon := paladin.GetMHWeapon()
-	if mhWeapon == nil {
-		return 1.0
-	}
-
-	switch mhWeapon.HandType {
+	switch paladin.MainHand().HandType {
 	case proto.HandType_HandTypeOneHand:
-		return 1.0 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
+		return 1 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
 	case proto.HandType_HandTypeTwoHand:
-		return 1.0 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+		return 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+	default:
+		return 1
 	}
-	return 1.0
 }
 
-// Affects all physical damage or spells that can be rolled as physical
-// It affects white, Windfury, Crusader Strike, Seals, DS, and Judgement of Command / Blood
+// Affects all physical damage or spells that can be rolled as physical.
 func (paladin *Paladin) applyWeaponSpecialization() {
-	// This impacts Crusader Strike, Melee Attacks, WF attacks, DS.
-	// Seals + Judgements need to be implemented separately
-	mhWeapon := paladin.GetMHWeapon()
-	if mhWeapon == nil {
-		return
-	}
-
-	switch mhWeapon.HandType {
-	case proto.HandType_HandTypeOneHand:
-		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.00 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
-	case proto.HandType_HandTypeTwoHand:
-		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.00 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
-	}
+	paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= paladin.getWeaponSpecializationModifier()
 }
 
 func (paladin *Paladin) applyVengeance() {
@@ -179,8 +156,9 @@ func (paladin *Paladin) applyVengeance() {
 		return
 	}
 
-	vengeanceMultiplier := 1.0 + 0.03*float64(paladin.Talents.Vengeance)
-	paladin.VengeanceAura = paladin.RegisterAura(core.Aura{
+	vengeanceMultiplier := []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.Vengeance]
+
+	procAura := paladin.RegisterAura(core.Aura{
 		Label:    "Vengeance Proc",
 		ActionID: core.ActionID{SpellID: 20059},
 		Duration: time.Second * 8,
@@ -201,8 +179,8 @@ func (paladin *Paladin) applyVengeance() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
-				paladin.VengeanceAura.Activate(sim)
+			if result.DidCrit() {
+				procAura.Activate(sim)
 			}
 		},
 	})
@@ -230,7 +208,3 @@ func (paladin *Paladin) applyVengeance() {
 // 		},
 // 	})
 // }
-
-func (paladin *Paladin) GetImprovedSealOfTheCrusaderMult() float64 {
-	return 1 + 0.05*float64(paladin.Talents.ImprovedSealOfTheCrusader)
-}

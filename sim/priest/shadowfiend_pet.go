@@ -20,16 +20,24 @@ type Shadowfiend struct {
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	baseDamageMin := 0.0
 	baseDamageMax := 0.0
-	shadowfiendBaseStats := stats.Stats{}
+	baseStats := stats.Stats{}
+	// Seems to basically be a reskinned Felhunter so using Felhunter stats
 	switch priest.Level {
 	case 25:
-		// TODO
+		baseStats = stats.Stats{
+			stats.Strength:  50,
+			stats.Agility:   40,
+			stats.Stamina:   87,
+			stats.Intellect: 35,
+			stats.Spirit:    61,
+			stats.Mana:      653,
+			stats.MP5:       0,
+			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		}
 	case 40:
-		// 40 stats
 		// TODO: All of the stats and stat inheritance needs to be verified
-		baseDamageMin = -38.3
-		baseDamageMax = -26.3
-		shadowfiendBaseStats = stats.Stats{
+		baseStats = stats.Stats{
 			stats.Strength:  74,
 			stats.Agility:   58,
 			stats.Stamina:   148,
@@ -41,13 +49,34 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 		}
 	case 50:
-		// TODO
+		baseStats = stats.Stats{
+			stats.Strength:  107,
+			stats.Agility:   71,
+			stats.Stamina:   190,
+			stats.Intellect: 59,
+			stats.Spirit:    123,
+			stats.Mana:      912,
+			stats.MP5:       0,
+			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		}
 	case 60:
-		// TODO
+		// TODO: Verify level 60 stats
+		baseStats = stats.Stats{
+			stats.Strength:  107,
+			stats.Agility:   71,
+			stats.Stamina:   190,
+			stats.Intellect: 59,
+			stats.Spirit:    123,
+			stats.Mana:      912,
+			stats.MP5:       0,
+			stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+			stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		}
 	}
 
 	shadowfiend := &Shadowfiend{
-		Pet:    core.NewPet("Shadowfiend", &priest.Character, shadowfiendBaseStats, priest.shadowfiendStatInheritance(), false, true),
+		Pet:    core.NewPet("Shadowfiend", &priest.Character, baseStats, priest.shadowfiendStatInheritance(), false, true),
 		Priest: priest,
 	}
 

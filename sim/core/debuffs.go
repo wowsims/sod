@@ -360,7 +360,7 @@ func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, _ *proto
 	}
 }
 
-var JudgementOfWisdomAuraLabel = "Judgement of Wisdom"
+const JudgementAuraTag = "Judgement"
 
 // TODO: Classic verify logic
 func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
@@ -383,8 +383,9 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 	}
 
 	return target.GetOrRegisterAura(Aura{
-		Label:    JudgementOfWisdomAuraLabel,
+		Label:    "Judgement of Wisdom",
 		ActionID: actionID,
+		Tag:      JudgementAuraTag,
 		Duration: time.Second * 10,
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			unit := spell.Unit
@@ -416,15 +417,14 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 	})
 }
 
-var JudgementOfLightAuraLabel = "Judgement of Light"
-
 func JudgementOfLightAura(target *Unit) *Aura {
 	actionID := ActionID{SpellID: 20271}
 
 	return target.GetOrRegisterAura(Aura{
-		Label:    JudgementOfLightAuraLabel,
+		Label:    "Judgement of Light",
 		ActionID: actionID,
-		Duration: time.Second * 20,
+		Tag:      JudgementAuraTag,
+		Duration: time.Second * 10,
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if !spell.ProcMask.Matches(ProcMaskMelee) || !result.Landed() {
 				return
@@ -458,6 +458,7 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Judgement of the Crusader",
 		ActionID: ActionID{SpellID: spellId},
+		Tag:      JudgementAuraTag,
 		Duration: 10 * time.Second,
 
 		OnGain: func(aura *Aura, sim *Simulation) {

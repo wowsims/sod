@@ -127,11 +127,12 @@ enum HunterRune {
 	RuneBootsDualWieldSpecialization 	= 409687;
 	RuneBootsInvigoration				= 437997;
 
+	RuneHelmRapidKilling				= 415405;
 	RuneHelmLockAndLoad					= 415413;
 	RuneHelmCatlikeReflexes				= 415428;
 
-	RuneBracersFocusFire				= 428726;
 	RuneBracersRaptorFury				= 415358;
+	RuneBracersFocusFire				= 428726;
 	RuneBracersTNT						= 428717;
 }
 

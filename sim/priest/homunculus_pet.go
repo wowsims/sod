@@ -18,31 +18,35 @@ type Homunculus struct {
 func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 	baseDamageMin := 0.0
 	baseDamageMax := 0.0
-	homunculusBaseStats := stats.Stats{}
+	baseStats := stats.Stats{
+		stats.Strength:    0,
+		stats.Agility:     0,
+		stats.Stamina:     0,
+		stats.Intellect:   0,
+		stats.Spirit:      0,
+		stats.AttackPower: 0,
+		// Across all 3 pets there seems to be somewhere around 20% crit chance on average between all 3 pets.
+		// In reality the pets have vastly different chances to crit, but they're just not worth the time to dig into right now.
+		stats.MeleeCrit: 20 * core.CritRatingPerCritChance,
+	}
 	switch priest.Level {
 	case 25:
+		baseDamageMin = 10
+		baseDamageMax = 20
 	case 40:
-		// 40 stats
-		// TODO: All of the stats and stat inheritance needs to be verified
 		baseDamageMin = 20
 		baseDamageMax = 30
-		homunculusBaseStats = stats.Stats{
-			stats.Strength:    0,
-			stats.Agility:     0,
-			stats.Stamina:     0,
-			stats.Intellect:   0,
-			stats.Spirit:      0,
-			stats.AttackPower: 0,
-			// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
-			stats.MeleeCrit: 8 * core.CritRatingPerCritChance,
-		}
 	case 50:
+		baseDamageMin = 30
+		baseDamageMax = 40
 	case 60:
+		baseDamageMin = 40
+		baseDamageMax = 50
 	}
 
 	homunculus := &Homunculus{
 		npcID:  npcID,
-		Pet:    core.NewPet("Homunculi", &priest.Character, homunculusBaseStats, priest.homunculusStatInheritance(), false, true),
+		Pet:    core.NewPet("Homunculi", &priest.Character, baseStats, priest.homunculusStatInheritance(), false, true),
 		Priest: priest,
 	}
 
