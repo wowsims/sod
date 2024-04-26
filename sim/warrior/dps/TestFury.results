@@ -100,7 +100,7 @@ dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
   dps: 813.157
-  tps: 757.67613
+  tps: 757.73762
  }
 }
 dps_results: {

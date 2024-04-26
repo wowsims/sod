@@ -652,15 +652,14 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 	aura.active = false
 
 	if !aura.ActionID.IsEmptyAction() {
-		if sim.CurrentTime > aura.expires {
-			aura.metrics.Uptime += aura.expires - max(aura.startTime, 0)
-		} else {
-			aura.metrics.Uptime += sim.CurrentTime - max(aura.startTime, 0)
+		// fix logging timestamps for lazy aura expiration
+		oldTime := sim.CurrentTime
+		sim.CurrentTime = min(sim.CurrentTime, aura.expires)
+		aura.metrics.Uptime += sim.CurrentTime - max(aura.startTime, 0)
+		if sim.Log != nil {
+			aura.Unit.Log(sim, "Aura faded: %s", aura.ActionID)
 		}
-	}
-
-	if sim.Log != nil && !aura.ActionID.IsEmptyAction() {
-		aura.Unit.Log(sim, "Aura faded: %s", aura.ActionID)
+		sim.CurrentTime = oldTime
 	}
 
 	aura.expires = 0
