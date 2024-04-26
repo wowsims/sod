@@ -278,9 +278,12 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
+
+		isExtraAttack := wa.spell.Tag == tagExtraAttack
+
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
-		if wa.spell.Tag == tagExtraAttack {
+		if isExtraAttack {
 			wa.spell.SetMetricsSplit(0)
 		}
 
