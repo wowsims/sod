@@ -32,6 +32,7 @@ import {
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
+	APLValueEnergyThreshold,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -62,10 +63,10 @@ import {
 	APLValueSpellTravelTime,
 	APLValueTimeToEnergyTick,
 	APLValueTotemRemainingTime,
-	APLValueWarlockShouldRecastDrainSoul,
-	APLValueWarlockShouldRefreshCorruption,
 	APLValueWarlockCurrentPetMana,
 	APLValueWarlockCurrentPetManaPercent,
+	APLValueWarlockShouldRecastDrainSoul,
+	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -640,6 +641,19 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Time until the next energy regen tick will happen',
 		newValue: APLValueTimeToEnergyTick.create,
 		fields: [],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+	}),
+	energyThreshold: inputBuilder({
+		label: 'Energy Threshold',
+		submenu: ['Resources'],
+		shortDescription: 'Compares current energy to a threshold value.',
+		newValue: APLValueEnergyThreshold.create,
+		fields: [
+			AplHelpers.numberFieldConfig('threshold', false, {
+				label: '>=',
+				labelTooltip: "Energy threshold. Subtracted from maximum energy if negative.",
+			}),
+		],
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
 	}),
 	currentComboPoints: inputBuilder({

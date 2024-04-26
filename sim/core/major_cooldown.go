@@ -131,7 +131,7 @@ func (mcd *MajorCooldown) shouldActivateHelper(sim *Simulation, character *Chara
 		return sim.CurrentTime >= mcd.timings[mcd.numUsages]
 	}
 
-	if mcd.Type.Matches(CooldownTypeSurvival) && character.cooldownConfigs.HpPercentForDefensives != 0 {
+	if mcd.Type.Matches(CooldownTypeSurvival) { // survival cooldowns are now skipped unless HpPercentForDefensives is > 0
 		if character.CurrentHealthPercent() > character.cooldownConfigs.HpPercentForDefensives {
 			return false
 		}
@@ -225,15 +225,6 @@ func (mcdm *majorCooldownManager) finalize() {
 	}
 
 	mcdm.majorCooldowns = make([]*MajorCooldown, len(mcdm.initialMajorCooldowns))
-}
-
-func findTrinketAura(character *Character, trinketID int32) *Aura {
-	for _, aura := range character.auras {
-		if aura.ActionIDForProc.ItemID == trinketID {
-			return aura
-		}
-	}
-	return nil
 }
 
 func (mcdm *majorCooldownManager) reset(_ *Simulation) {
