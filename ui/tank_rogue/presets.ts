@@ -4,9 +4,11 @@ import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuff
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import MutilateApl from './apls/mutilate.apl.json';
+import P3MutilateApl from './apls/Mutilate_DPS_50.apl.json';
 import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
-import P3MutilateApl from './apls/p3_mutilate.apl.json';
-import P3SaberApl from './apls/p3_saber.apl.json';
+import P3ExposeMutilateApl from './apls/Mutilate_IEA_50.apl.json';
+import P3SaberApl from './apls/Saber_DPS_50.apl.json';
+import P3SaberIEAApl from './apls/Saber_IEA_50.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P1DaggersGear from './gear_sets/p1_daggers.gear.json';
@@ -38,7 +40,6 @@ export const GearPresets = {
 	[Phase.Phase5]: [],
 };
 
-// TODO: Phase 3
 export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 ///////////////////////////////////////////////////////////////////////////
@@ -47,13 +48,15 @@ export const DefaultGear = GearPresets[Phase.Phase3][0];
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { customCondition: player => player.getLevel() <= 40 });
 export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, { customCondition: player => player.getLevel() <= 40 });
-export const ROTATION_PRESET_MUTILATE_P3 = PresetUtils.makePresetAPLRotation('P3 Tank Mutilate', P3MutilateApl, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_SABER_P3 = PresetUtils.makePresetAPLRotation('P3 Tank Saber', P3SaberApl, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_MUTILATE_P3 = PresetUtils.makePresetAPLRotation('P3 Mutilate', P3MutilateApl, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_MUTILATE_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Mutilate', P3ExposeMutilateApl, {customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_P3 = PresetUtils.makePresetAPLRotation('P3 Saber', P3SaberApl, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Saber', P3SaberIEAApl, {customCondition: player => player.getLevel() >= 50 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
 	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
-	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_P3, ROTATION_PRESET_SABER_P3],
+	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_P3, ROTATION_PRESET_MUTILATE_IEA_P3, ROTATION_PRESET_SABER_P3, ROTATION_PRESET_SABER_IEA_P3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -69,7 +72,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		1: APLPresets[Phase.Phase2][0],
 		2: APLPresets[Phase.Phase2][0],
 	},
-	// TODO: Phase 3
 	50: {
 		0: APLPresets[Phase.Phase3][0],
 		1: APLPresets[Phase.Phase3][0],
@@ -84,7 +86,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-// TODO: Add tank talents
 
 export const CombatDagger25Talents = PresetUtils.makePresetTalents('P1 Combat Dagger', SavedTalents.create({ talentsString: '-023305002001' }), {
 	customCondition: player => player.getLevel() == 25,
@@ -110,10 +111,14 @@ export const TankSaber50Talents = PresetUtils.makePresetTalents('P3 Saber Carnag
 	customCondition: player => player.getLevel() >= 50,
 });
 
+export const TankBladeFlurry50Talents = PresetUtils.makePresetTalents("P3 BF Poison", SavedTalents.create({ talentsString: '0053221205-02330520000501'}), {
+	customCondition: player => player.getLevel() >= 50,
+})
+
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
-	[Phase.Phase3]: [TankMutilate50Talents, TankSaber50Talents],
+	[Phase.Phase3]: [TankMutilate50Talents, TankSaber50Talents, TankBladeFlurry50Talents],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -141,7 +146,7 @@ export const DefaultConsumes = Consumes.create({
 	dragonBreathChili: false,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	offHandImbue: WeaponImbue.ShadowOil,
+	offHandImbue: WeaponImbue.DeadlyPoison,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
