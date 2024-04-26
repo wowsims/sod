@@ -28,7 +28,7 @@ func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealt
 func (value *APLValueCurrentHealth) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentHealth) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentHealth) GetFloat(_ *Simulation) float64 {
 	return value.unit.Get().CurrentHealth()
 }
 func (value *APLValueCurrentHealth) String() string {
@@ -56,7 +56,7 @@ func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurre
 func (value *APLValueCurrentHealthPercent) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentHealthPercent) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentHealthPercent) GetFloat(_ *Simulation) float64 {
 	return value.unit.Get().CurrentHealthPercent()
 }
 func (value *APLValueCurrentHealthPercent) String() string {
@@ -84,7 +84,7 @@ func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana) A
 func (value *APLValueCurrentMana) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentMana) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentMana) GetFloat(_ *Simulation) float64 {
 	return value.unit.Get().CurrentMana()
 }
 func (value *APLValueCurrentMana) String() string {
@@ -112,7 +112,7 @@ func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrent
 func (value *APLValueCurrentManaPercent) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentManaPercent) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentManaPercent) GetFloat(_ *Simulation) float64 {
 	return value.unit.Get().CurrentManaPercent()
 }
 func (value *APLValueCurrentManaPercent) String() string {
@@ -124,7 +124,7 @@ type APLValueCurrentRage struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) APLValue {
+func (rot *APLRotation) newValueCurrentRage(_ *proto.APLValueCurrentRage) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
 		rot.ValidationWarning("%s does not use Rage", unit.Label)
@@ -137,7 +137,7 @@ func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) A
 func (value *APLValueCurrentRage) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentRage) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentRage) GetFloat(_ *Simulation) float64 {
 	return value.unit.CurrentRage()
 }
 func (value *APLValueCurrentRage) String() string {
@@ -149,7 +149,7 @@ type APLValueCurrentEnergy struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy) APLValue {
+func (rot *APLRotation) newValueCurrentEnergy(_ *proto.APLValueCurrentEnergy) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationWarning("%s does not use Energy", unit.Label)
@@ -162,7 +162,7 @@ func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnerg
 func (value *APLValueCurrentEnergy) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
-func (value *APLValueCurrentEnergy) GetFloat(sim *Simulation) float64 {
+func (value *APLValueCurrentEnergy) GetFloat(_ *Simulation) float64 {
 	return value.unit.CurrentEnergy()
 }
 func (value *APLValueCurrentEnergy) String() string {
@@ -174,7 +174,7 @@ type APLValueCurrentComboPoints struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints) APLValue {
+func (rot *APLRotation) newValueCurrentComboPoints(_ *proto.APLValueCurrentComboPoints) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationWarning("%s does not use Combo Points", unit.Label)
@@ -187,7 +187,7 @@ func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrent
 func (value *APLValueCurrentComboPoints) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
-func (value *APLValueCurrentComboPoints) GetInt(sim *Simulation) int32 {
+func (value *APLValueCurrentComboPoints) GetInt(_ *Simulation) int32 {
 	return value.unit.ComboPoints()
 }
 func (value *APLValueCurrentComboPoints) String() string {
@@ -199,7 +199,7 @@ type APLValueTimeToEnergyTick struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueTimeToEnergyTick(config *proto.APLValueTimeToEnergyTick) APLValue {
+func (rot *APLRotation) newValueTimeToEnergyTick(_ *proto.APLValueTimeToEnergyTick) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationWarning("%s does not use Energy", unit.Label)
@@ -217,4 +217,34 @@ func (value *APLValueTimeToEnergyTick) GetDuration(sim *Simulation) time.Duratio
 }
 func (value *APLValueTimeToEnergyTick) String() string {
 	return "Time to Next Energy Tick"
+}
+
+type APLValueEnergyThreshold struct {
+	DefaultAPLValueImpl
+	unit      *Unit
+	threshold float64
+}
+
+func (rot *APLRotation) newValueEnergyThreshold(config *proto.APLValueEnergyThreshold) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		return nil
+	}
+	return &APLValueEnergyThreshold{
+		unit:      unit,
+		threshold: float64(config.Threshold),
+	}
+}
+func (value *APLValueEnergyThreshold) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueEnergyThreshold) GetBool(_ *Simulation) bool {
+	if value.threshold > 0 {
+		return value.unit.currentEnergy >= value.threshold
+	}
+	return value.unit.currentEnergy >= value.unit.maxEnergy+value.threshold
+}
+func (value *APLValueEnergyThreshold) String() string {
+	return "Energy Threshold"
 }

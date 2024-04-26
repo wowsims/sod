@@ -112,6 +112,7 @@ message APLValue {
         APLValueCurrentEnergy current_energy = 15;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueTimeToEnergyTick time_to_energy_tick = 66;
+        APLValueEnergyThreshold energy_threshold = 73;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -378,6 +379,9 @@ message APLValueCurrentRage {}
 message APLValueCurrentEnergy {}
 message APLValueCurrentComboPoints {}
 message APLValueTimeToEnergyTick {}
+message APLValueEnergyThreshold {
+    int32 threshold = 1;
+}
 
 message APLValueGCDIsReady {}
 message APLValueGCDTimeToReady {}

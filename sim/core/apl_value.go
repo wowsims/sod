@@ -35,19 +35,19 @@ type DefaultAPLValueImpl struct {
 func (impl DefaultAPLValueImpl) GetInnerValues() []APLValue { return nil }
 func (impl DefaultAPLValueImpl) Finalize(*APLRotation)      {}
 
-func (impl DefaultAPLValueImpl) GetBool(sim *Simulation) bool {
+func (impl DefaultAPLValueImpl) GetBool(_ *Simulation) bool {
 	panic("Unimplemented GetBool")
 }
-func (impl DefaultAPLValueImpl) GetInt(sim *Simulation) int32 {
+func (impl DefaultAPLValueImpl) GetInt(_ *Simulation) int32 {
 	panic("Unimplemented GetInt")
 }
-func (impl DefaultAPLValueImpl) GetFloat(sim *Simulation) float64 {
+func (impl DefaultAPLValueImpl) GetFloat(_ *Simulation) float64 {
 	panic("Unimplemented GetFloat")
 }
-func (impl DefaultAPLValueImpl) GetDuration(sim *Simulation) time.Duration {
+func (impl DefaultAPLValueImpl) GetDuration(_ *Simulation) time.Duration {
 	panic("Unimplemented GetDuration")
 }
-func (impl DefaultAPLValueImpl) GetString(sim *Simulation) string {
+func (impl DefaultAPLValueImpl) GetString(_ *Simulation) string {
 	panic("Unimplemented GetString")
 }
 
@@ -111,6 +111,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_TimeToEnergyTick:
 		return rot.newValueTimeToEnergyTick(config.GetTimeToEnergyTick())
+	case *proto.APLValue_EnergyThreshold:
+		return rot.newValueEnergyThreshold(config.GetEnergyThreshold())
 
 	// GCD
 	case *proto.APLValue_GcdIsReady:
@@ -192,6 +194,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 }
 
 // Default implementation of Agent.NewAPLValue so each spec doesn't need this boilerplate.
-func (unit *Unit) NewAPLValue(rot *APLRotation, config *proto.APLValue) APLValue {
+func (unit *Unit) NewAPLValue(_ *APLRotation, _ *proto.APLValue) APLValue {
 	return nil
 }

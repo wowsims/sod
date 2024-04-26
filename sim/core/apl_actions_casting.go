@@ -242,7 +242,7 @@ type APLActionAutocastOtherCooldowns struct {
 	nextReadyMCD *MajorCooldown
 }
 
-func (rot *APLRotation) newActionAutocastOtherCooldowns(config *proto.APLActionAutocastOtherCooldowns) APLActionImpl {
+func (rot *APLRotation) newActionAutocastOtherCooldowns(_ *proto.APLActionAutocastOtherCooldowns) APLActionImpl {
 	unit := rot.unit
 	return &APLActionAutocastOtherCooldowns{
 		character: unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter(),
