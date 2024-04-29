@@ -3,19 +3,23 @@ import * as PresetUtils from '../core/preset_utils.js';
 import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuffs, StrengthBuff, TristateEffect, WeaponImbue } from '../core/proto/common.js';
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
+
 import SinisterApl25 from './apls/basic_strike_25.apl.json';
 import MutilateApl40 from './apls/mutilate.apl.json';
-import MutilateDPSApl50 from './apls/Mutilate_DPS_50.apl.json';
 import MutilateIEAApl40 from './apls/mutilate_IEA.apl.json';
+import MutilateDPSApl50 from './apls/Mutilate_DPS_50.apl.json';
 import MutilateIEAApl50 from './apls/Mutilate_IEA_50.apl.json';
 import SaberDPSApl50 from './apls/Saber_DPS_50.apl.json';
 import SaberIEAApl50 from './apls/Saber_IEA_50.apl.json';
+
 import BlankGear from './gear_sets/blank.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P1Daggers from './gear_sets/p1_daggers.gear.json';
 import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
-import P3DaggersGear from './gear_sets/p3_muti.gear.json';
-import P3CombatGear from './gear_sets/p3_saber.gear.json';
+import P3MutiGear from './gear_sets/p3_muti.gear.json';
+import P3MutiHatGear from './gear_sets/p3_muti_hat.gear.json';
+import P3SaberGear from './gear_sets/p3_saber.gear.json';
+
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -26,16 +30,17 @@ import P3CombatGear from './gear_sets/p3_saber.gear.json';
 ///////////////////////////////////////////////////////////////////////////
 
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
-export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1Daggers, { customCondition: player => player.getLevel() == 25 });
-export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
-export const GearDaggersP2 = PresetUtils.makePresetGear('P2 Daggers', P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
-export const GearDaggersP3 = PresetUtils.makePresetGear('P3 Daggers', P3DaggersGear, { customCondition: player => player.getLevel() >= 50 });
-export const GearCombatP3 = PresetUtils.makePresetGear('P3 Combat', P3CombatGear, { customCondition: player => player.getLevel() >= 50 });
+export const P1GearDaggers = PresetUtils.makePresetGear('P1 Daggers', P1Daggers, { customCondition: player => player.getLevel() == 25 });
+export const P1GearSaber = PresetUtils.makePresetGear('P1 Saber', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
+export const P2GearDaggers = PresetUtils.makePresetGear('P2 Daggers', P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
+export const P3GearMuti = PresetUtils.makePresetGear('P3 Mutilate', P3MutiGear, { customCondition: player => player.getLevel() >= 50 });
+export const P3GearMutiHat = PresetUtils.makePresetGear('P3 Mutilate (HaT)', P3MutiHatGear, { customCondition: player => player.getLevel() >= 50 });
+export const P3GearSaber = PresetUtils.makePresetGear('P3 Saber', P3SaberGear, { customCondition: player => player.getLevel() >= 50 });
 
 export const GearPresets = {
-	[Phase.Phase1]: [GearDaggersP1, GearCombatP1],
-	[Phase.Phase2]: [GearDaggersP2],
-	[Phase.Phase3]: [GearDaggersP3, GearCombatP3],
+	[Phase.Phase1]: [P1GearDaggers, P1GearSaber],
+	[Phase.Phase2]: [P2GearDaggers],
+	[Phase.Phase3]: [P3GearMuti, P3GearMutiHat, P3GearSaber],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -106,27 +111,22 @@ export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF M
 	customCondition: player => player.getLevel() == 40,
 });
 
-export const SaberColdBloodDualWieldSpec50Talents = PresetUtils.makePresetTalents('P3 Saber CB/DWS', SavedTalents.create({ talentsString: '005323101501-320015202005' }), {
+export const P3TalentsMuti = PresetUtils.makePresetTalents('P3 Mutilate', SavedTalents.create({ talentsString: '00532010555101-3203-05' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
-export const MutilateColdBloodDualWieldSpec50Talents = PresetUtils.makePresetTalents('P3 Mutilate CB/DWS', SavedTalents.create({ talentsString: '005323101501-320305200005' }), {
+export const P3TalentsMutiHat = PresetUtils.makePresetTalents('P3 Mutilate (HaT)', SavedTalents.create({ talentsString: '005323101551051-3203-01' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
-export const SaberColdBloodSealFate50Talents = PresetUtils.makePresetTalents('P3 Saber Cold Blood', SavedTalents.create({ talentsString: '00532310155105-320005' }), {
-	customCondition: player => player.getLevel() >= 50,
-});
-
-export const MutilateColdBloodSealFate50Talents = PresetUtils.makePresetTalents('P3 Mutilate Cold Blood', SavedTalents.create({ talentsString: '00532310155105-320302' }), {
+export const P3TalentsSaber = PresetUtils.makePresetTalents('P3 Saber', SavedTalents.create({ talentsString: '005323101551051-320004' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
-	[Phase.Phase3]: [MutilateColdBloodSealFate50Talents, SaberColdBloodSealFate50Talents, 
-		MutilateColdBloodDualWieldSpec50Talents, SaberColdBloodDualWieldSpec50Talents],
+	[Phase.Phase3]: [P3TalentsMuti, P3TalentsMutiHat, P3TalentsSaber],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
