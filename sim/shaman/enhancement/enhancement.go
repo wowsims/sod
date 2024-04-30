@@ -28,12 +28,8 @@ func RegisterEnhancementShaman() {
 func NewEnhancementShaman(character *core.Character, options *proto.Player) *EnhancementShaman {
 	enhOptions := options.GetEnhancementShaman()
 
-	selfBuffs := shaman.SelfBuffs{
-		Shield: enhOptions.Options.Shield,
-	}
-
 	enh := &EnhancementShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs),
+		Shaman: shaman.NewShaman(character, options.TalentsString),
 	}
 
 	// Enable Auto Attacks for this spec

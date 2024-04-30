@@ -17,13 +17,11 @@ const (
 	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *Shaman {
+func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman := &Shaman{
 		Character: *character,
 		Talents:   &proto.ShamanTalents{},
-		SelfBuffs: selfBuffs,
 	}
-	shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)})
 
 	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	shaman.EnableManaBar()
@@ -33,10 +31,6 @@ func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs) *
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
-	if selfBuffs.Shield == proto.ShamanShield_WaterShield {
-		shaman.AddStat(stats.MP5, shaman.MaxMana()*.01)
-	}
 
 	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
@@ -55,11 +49,6 @@ func (shaman *Shaman) getImbueProcMask(_ *core.Character, imbue proto.WeaponImbu
 		mask |= core.ProcMaskMeleeOH
 	}
 	return mask
-}
-
-// Which buffs this shaman is using.
-type SelfBuffs struct {
-	Shield proto.ShamanShield
 }
 
 // Indexes into NextTotemDrops for self buffs
@@ -90,19 +79,17 @@ const (
 	SpellCode_SearingTotem
 	SpellCode_MagmaTotem
 	SpellCode_FireNovaTotem
+
+	SpellCode_LightningShield
 )
 
 // Shaman represents a shaman character.
 type Shaman struct {
 	core.Character
 
-	Talents   *proto.ShamanTalents
-	SelfBuffs SelfBuffs
+	Talents *proto.ShamanTalents
 
 	Totems *proto.ShamanTotems
-
-	// The expiration time of each totem (earth, air, fire, water).
-	TotemExpirations [4]time.Duration
 
 	LightningBolt         []*core.Spell
 	LightningBoltOverload []*core.Spell
@@ -112,8 +99,12 @@ type Shaman struct {
 
 	Stormstrike *core.Spell
 
-	LightningShield     []*core.Spell
-	LightningShieldAura *core.Aura
+	ActiveShield     *core.Spell
+	ActiveShieldAura *core.Aura
+
+	LightningShield []*core.Spell
+	// The damage component of lightning shield is a separate spell
+	LightningShieldProcs []*core.Spell
 
 	EarthShock     []*core.Spell
 	FlameShock     []*core.Spell
@@ -122,6 +113,8 @@ type Shaman struct {
 
 	// Totems
 	ActiveTotems [4]*core.Spell
+	// The expiration time of each totem (earth, air, fire, water).
+	TotemExpirations [4]time.Duration
 
 	StrengthOfEarthTotem []*core.Spell
 	StoneskinTotem       []*core.Spell
@@ -138,8 +131,6 @@ type Shaman struct {
 	GraceOfAirTotem []*core.Spell
 
 	// Healing Spells
-	tidalWaveProc *core.Aura
-
 	HealingWave         []*core.Spell
 	HealingWaveOverload []*core.Spell
 
@@ -148,15 +139,15 @@ type Shaman struct {
 	ChainHeal         []*core.Spell
 	ChainHealOverload []*core.Spell
 
-	waterShieldManaMetrics *core.ResourceMetrics
-
-	// Runes
+	// Rune Abilities
 	EarthShield       *core.Spell
 	FireNova          *core.Spell
 	LavaBurst         *core.Spell
 	LavaBurstOverload *core.Spell
 	LavaLash          *core.Spell
 	MoltenBlast       *core.Spell
+	RollingThunder    *core.Spell
+	WaterShield       *core.Spell
 
 	MaelstromWeaponAura *core.Aura
 	PowerSurgeAura      *core.Aura

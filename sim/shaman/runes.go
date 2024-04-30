@@ -11,6 +11,7 @@ import (
 
 func (shaman *Shaman) ApplyRunes() {
 	// Helm
+	shaman.applyBurn()
 	shaman.applyMentalDexterity()
 
 	// Chest
@@ -18,8 +19,12 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyShieldMastery()
 	shaman.applyTwoHandedMastery()
 
+	// Bracers
+	shaman.applyRollingThunder()
+
 	// Hands
-	shaman.applyLavaBurst()
+	shaman.registerWaterShieldSpell()
+	shaman.registerLavaBurstSpell()
 	shaman.applyLavaLash()
 	shaman.applyMoltenBlast()
 
@@ -36,6 +41,22 @@ func (shaman *Shaman) ApplyRunes() {
 	// Feet
 	shaman.applyAncestralAwakening()
 	shaman.applySpiritOfTheAlpha()
+}
+
+var BurnFlameShockTargetCount = int32(5)
+var BurnFlameShockDamageBonus = 1.0
+var BurnFlameShockBonusTicks = 2
+
+func (shaman *Shaman) applyBurn() {
+	if !shaman.HasRune(proto.ShamanRune_RuneHelmBurn) {
+		return
+	}
+
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		shaman.AddStat(stats.SpellDamage, float64(4*shaman.Level))
+	}
+
+	// Other parts of burn are handled in flame_shock.go
 }
 
 func (shaman *Shaman) applyMentalDexterity() {
@@ -204,6 +225,45 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 			}
 		},
 	})
+}
+
+var RollingThunderProcChance = .50
+
+func (shaman *Shaman) applyRollingThunder() {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
+		return
+	}
+
+	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
+
+	// Casts handled in lightning_shield.go
+	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 432129},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if shaman.ActiveShield.SpellCode != SpellCode_LightningShield {
+				return
+			}
+
+			rank := shaman.ActiveShield.Rank
+			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].BonusDamage()
+			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
+		},
+	})
+}
+
+func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
+	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_LightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
+		shaman.ActiveShieldAura.AddStack(sim)
+	}
 }
 
 func (shaman *Shaman) applyMaelstromWeapon() {

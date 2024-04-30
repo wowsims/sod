@@ -182,12 +182,10 @@ var PlayerOptionsSyncAuto = &proto.Player_EnhancementShaman{
 }
 
 var optionsSyncDelayOffhand = &proto.EnhancementShaman_Options{
-	Shield:   proto.ShamanShield_WaterShield,
 	SyncType: proto.ShamanSyncType_DelayOffhandSwings,
 }
 
 var optionsSyncAuto = &proto.EnhancementShaman_Options{
-	Shield:   proto.ShamanShield_LightningShield,
 	SyncType: proto.ShamanSyncType_Auto,
 }
 

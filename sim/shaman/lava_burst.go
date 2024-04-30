@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (shaman *Shaman) applyLavaBurst() {
+func (shaman *Shaman) registerLavaBurstSpell() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 		return
 	}
