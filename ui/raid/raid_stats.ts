@@ -1,55 +1,49 @@
-import {
-	Class,
-	RaidBuffs,
-	Spec,
-} from '../core/proto/common.js';
+import { Tooltip } from 'bootstrap';
+
 import { Component } from '../core/components/component.js';
-import { Player } from "../core/player.js";
-import { Raid } from "../core/raid.js";
+import { Player } from '../core/player.js';
+import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
+import { Hunter_Options_PetType as HunterPetType, Hunter_Rotation_StingType as HunterStingType } from '../core/proto/hunter.js';
+import { PaladinAura } from '../core/proto/paladin.js';
+import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
+import { WarriorShout } from '../core/proto/warrior.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import {
 	ClassSpecs,
-	SpecTalents,
-	specToClass,
-	isTankSpec,
 	isHealingSpec,
 	isMeleeDpsSpec,
 	isRangedDpsSpec,
+	isTankSpec,
+	SpecTalents,
+	specToClass,
 	textCssClassForClass,
 } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
 import { sum } from '../core/utils.js';
-
-import { Hunter_Rotation_StingType as HunterStingType, Hunter_Options_PetType as HunterPetType } from '../core/proto/hunter.js';
-import { PaladinAura } from '../core/proto/paladin.js';
-import { EarthTotem, WaterTotem } from '../core/proto/shaman.js';
-import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
-import { WarriorShout } from '../core/proto/warrior.js';
-
 import { RaidSimUI } from './raid_sim_ui.js';
-import { Tooltip } from 'bootstrap';
 
 interface RaidStatsOptions {
-	sections: Array<RaidStatsSectionOptions>,
+	sections: Array<RaidStatsSectionOptions>;
 }
 
 interface RaidStatsSectionOptions {
-	label: string,
-	categories: Array<RaidStatsCategoryOptions>,
+	label: string;
+	categories: Array<RaidStatsCategoryOptions>;
 }
 
 interface RaidStatsCategoryOptions {
-	label: string,
-	effects: Array<RaidStatsEffectOptions>,
+	label: string;
+	effects: Array<RaidStatsEffectOptions>;
 }
 
-type PlayerProvider = { class?: Class, condition: (player: Player<any>) => boolean };
+type PlayerProvider = { class?: Class; condition: (player: Player<any>) => boolean };
 type RaidProvider = (raid: Raid) => boolean;
 
 interface RaidStatsEffectOptions {
-	label: string,
-	actionId?: ActionId,
-	playerData?: PlayerProvider,
-	raidData?: RaidProvider,
+	label: string;
+	actionId?: ActionId;
+	playerData?: PlayerProvider;
+	raidData?: RaidProvider;
 }
 
 export class RaidStats extends Component {
@@ -58,7 +52,7 @@ export class RaidStats extends Component {
 	constructor(parent: HTMLElement, raidSimUI: RaidSimUI) {
 		super(parent, 'raid-stats');
 
-		let categories: Array<RaidStatsCategory> = [];
+		const categories: Array<RaidStatsCategory> = [];
 		RAID_STATS_OPTIONS.sections.forEach(section => {
 			const sectionElem = document.createElement('div');
 			sectionElem.classList.add('raid-stats-section');
@@ -104,7 +98,7 @@ class RaidStatsCategory extends Component {
 		this.tooltipElem = document.createElement('div');
 		this.tooltipElem.innerHTML = `
 			<label class="raid-stats-category-label">${options.label}</label>
-		`
+		`;
 
 		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
 
@@ -117,7 +111,7 @@ class RaidStatsCategory extends Component {
 				html: true,
 				placement: 'right',
 				title: this.tooltipElem,
-			})
+			});
 		}
 	}
 
@@ -168,7 +162,7 @@ class RaidStatsEffect extends Component {
 
 		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
 		if (options.actionId) {
-			options.actionId.fill().then(actionId => iconElem.src = actionId.iconUrl);
+			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
 		} else {
 			iconElem.remove();
 		}
@@ -199,41 +193,64 @@ function playerClass<T extends Class>(clazz: T, extraCondition?: (player: Player
 	return {
 		class: clazz,
 		condition: (player: Player<any>): boolean => {
-			return player.isClass(clazz)
-				&& (!extraCondition || extraCondition(player));
+			return player.isClass(clazz) && (!extraCondition || extraCondition(player));
 		},
 	};
 }
-function playerClassAndTalentInternal<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, negateTalent: boolean, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndTalentInternal<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return {
 		class: clazz,
 		condition: (player: Player<any>): boolean => {
-			return player.isClass(clazz)
-				&& negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent)
-				&& (!extraCondition || extraCondition(player));
+			return (
+				player.isClass(clazz) &&
+				negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) &&
+				(!extraCondition || extraCondition(player))
+			);
 		},
 	};
 }
-function playerClassAndTalent<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return playerClassAndTalentInternal(clazz, talentName, false, extraCondition);
 }
-function playerClassAndMissingTalent<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndMissingTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return playerClassAndTalentInternal(clazz, talentName, true, extraCondition);
 }
-function playerSpecAndTalentInternal<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, negateTalent: boolean, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
+function playerSpecAndTalentInternal<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
 	return {
 		class: specToClass[spec],
 		condition: (player: Player<any>): boolean => {
-			return player.isSpec(spec)
-				&& negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent)
-				&& (!extraCondition || extraCondition(player));
+			return (
+				player.isSpec(spec) && negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) && (!extraCondition || extraCondition(player))
+			);
 		},
 	};
 }
 function playerSpecAndTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
 	return playerSpecAndTalentInternal(spec, talentName, false, extraCondition);
 }
-function playerSpecAndMissingTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
+function playerSpecAndMissingTalent<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
 	return playerSpecAndTalentInternal(spec, talentName, true, extraCondition);
 }
 
@@ -330,22 +347,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Devotion Aura',
 							actionId: ActionId.fromSpellId(20140),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'improvedDevotionAura', player => player.getSpecOptions().aura == PaladinAura.DevotionAura),
+							playerData: playerClassAndTalent(
+								Class.ClassPaladin,
+								'improvedDevotionAura',
+								player => player.getSpecOptions().aura == PaladinAura.DevotionAura,
+							),
 						},
 						{
 							label: 'Devotion Aura',
 							actionId: ActionId.fromSpellId(48942),
-							playerData: playerClassAndMissingTalent(Class.ClassPaladin, 'improvedDevotionAura', player => player.getSpecOptions().aura == PaladinAura.DevotionAura),
-						},
-						{
-							label: 'Improved Stoneskin Totem',
-							actionId: ActionId.fromSpellId(16293),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'guardianTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem),
-						},
-						{
-							label: 'Stoneskin Totem',
-							actionId: ActionId.fromSpellId(58753),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'guardianTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassPaladin,
+								'improvedDevotionAura',
+								player => player.getSpecOptions().aura == PaladinAura.DevotionAura,
+							),
 						},
 						{
 							label: 'Scroll of Protection',
@@ -377,11 +392,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Str + Agi',
 					effects: [
-						{
-							label: 'Strength of Earth Totem',
-							actionId: ActionId.fromSpellId(58643),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'enhancingTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StrengthOfEarthTotem),
-						},
 						{
 							label: 'Scroll of Strength',
 							actionId: ActionId.fromItemId(43466),
@@ -440,12 +450,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Battle Shout',
 							actionId: ActionId.fromSpellId(12861),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'improvedBattleShout', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle),
+							playerData: playerClassAndTalent(
+								Class.ClassWarrior,
+								'improvedBattleShout',
+								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle,
+							),
 						},
 						{
 							label: 'Battle Shout',
 							actionId: ActionId.fromSpellId(47436),
-							playerData: playerClassAndMissingTalent(Class.ClassWarrior, 'improvedBattleShout', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarrior,
+								'improvedBattleShout',
+								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle,
+							),
 						},
 					],
 				},
@@ -466,7 +484,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Blessing Of Sanctuary',
 							actionId: ActionId.fromSpellId(25899),
 							playerData: playerClass(Class.ClassPaladin),
-						}
+						},
 					],
 				},
 				{
@@ -482,16 +500,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(48938),
 							playerData: playerClassAndMissingTalent(Class.ClassPaladin, 'improvedBlessingOfWisdom'),
 						},
-						{
-							label: 'Improved Mana Spring Totem',
-							actionId: ActionId.fromSpellId(16206),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'restorativeTotems', player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem),
-						},
-						{
-							label: 'Mana Spring Totem',
-							actionId: ActionId.fromSpellId(58774),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'restorativeTotems', player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem),
-						},
 					],
 				},
 				{
@@ -506,8 +514,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				},
 				{
 					label: 'Melee Haste',
-					effects: [
-					],
+					effects: [],
 				},
 				{
 					label: 'Spell Crit',
@@ -530,7 +537,11 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Blood Pact',
 							actionId: ActionId.fromSpellId(47982),
-							playerData: playerClassAndMissingTalent(Class.ClassWarlock, 'improvedImp', player => player.getSpecOptions().summon == WarlockSummon.Imp),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarlock,
+								'improvedImp',
+								player => player.getSpecOptions().summon == WarlockSummon.Imp,
+							),
 						},
 					],
 				},
@@ -620,7 +631,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Vindication',
 							actionId: ActionId.fromSpellId(26016),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player => [Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec)),
+							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player =>
+								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec),
+							),
 						},
 						{
 							label: 'Improved Demoralizing Shout',
@@ -635,12 +648,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Demoralizing Roar',
 							actionId: ActionId.fromSpellId(16862),
-							playerData: playerSpecAndTalent(Spec.SpecFeralTankDruid, 'feralAggression', player => player.getSimpleRotation().maintainDemoralizingRoar),
+							playerData: playerSpecAndTalent(
+								Spec.SpecFeralTankDruid,
+								'feralAggression',
+								player => player.getSimpleRotation().maintainDemoralizingRoar,
+							),
 						},
 						{
 							label: 'Demoralizing Roar',
 							actionId: ActionId.fromSpellId(9898),
-							playerData: playerSpecAndMissingTalent(Spec.SpecFeralTankDruid, 'feralAggression', player => player.getSimpleRotation().maintainDemoralizingRoar),
+							playerData: playerSpecAndMissingTalent(
+								Spec.SpecFeralTankDruid,
+								'feralAggression',
+								player => player.getSimpleRotation().maintainDemoralizingRoar,
+							),
 						},
 						// {
 						// 	label: 'Improved Curse of Weakness',
@@ -691,5 +712,5 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				},
 			],
 		},
-	]
+	],
 };
