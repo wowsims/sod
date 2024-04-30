@@ -29,7 +29,7 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
