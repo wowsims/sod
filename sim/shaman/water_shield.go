@@ -13,14 +13,17 @@ func (shaman *Shaman) registerWaterShieldSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)}
+
 	passiveMP5Pct := .01
 	onHitManaGainedPct := .04
 
-	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)})
+	manaMetrics := shaman.NewManaMetrics(actionID)
 	mp5StatDep := shaman.NewDynamicStatDependency(stats.Mana, stats.MP5, passiveMP5Pct)
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Water Shield",
+		ActionID: actionID,
 		Duration: time.Minute * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, mp5StatDep)
@@ -36,9 +39,16 @@ func (shaman *Shaman) registerWaterShieldSpell() {
 	})
 
 	shaman.WaterShield = shaman.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsWaterShield)},
+		ActionID: actionID,
 		ProcMask: core.ProcMaskEmpty,
 		Flags:    core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if shaman.ActiveShieldAura != nil {
 				shaman.ActiveShieldAura.Deactivate(sim)
