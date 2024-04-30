@@ -26,7 +26,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
 	flankingStrikeDmgMult := 0.1
-	raptorFuryDmgMult := 0.15 // TODO: Verify value after launch, has been datamined to possibly get changed to 0.1 instead of 0.15 but until further confirmation
+	raptorFuryDmgMult := 0.1 // Nerfed to 10% per stack per April 30 change.
 
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
