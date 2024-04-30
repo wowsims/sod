@@ -27,8 +27,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatAttackPower,
-		Stat.StatStrength,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -45,8 +43,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatAttackPower,
-		Stat.StatStrength,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		let stats = new Stats();
@@ -71,8 +67,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			[Stat.StatSpellCrit]: 7.91,
 			[Stat.StatSpellHaste]: 7.28,
 			[Stat.StatMP5]: 0.02,
-			[Stat.StatAttackPower]: 0.31,
-			[Stat.StatStrength]: 0.68,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

@@ -18,9 +18,7 @@ import (
 
 var basicSpec = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
-		Options: &proto.ElementalShaman_Options{
-			Shield: proto.ShamanShield_WaterShield,
-		},
+		Options: &proto.ElementalShaman_Options{},
 	},
 }
 

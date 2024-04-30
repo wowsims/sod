@@ -120,7 +120,7 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	food: Food.FoodNightfinSoup,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
+	mainHandImbue: WeaponImbue.FlametongueWeapon,
 	offHandImbue: WeaponImbue.LesserWizardOil,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfGiants,

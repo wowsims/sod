@@ -155,9 +155,7 @@ var Phase3Talents = "550031550000151-500203"
 
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
-		Options: &proto.ElementalShaman_Options{
-			Shield: proto.ShamanShield_LightningShield,
-		},
+		Options: &proto.ElementalShaman_Options{},
 	},
 }
 
@@ -189,7 +187,7 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		Food:           proto.Food_FoodNightfinSoup,
-		MainHandImbue:  proto.WeaponImbue_LesserWizardOil,
+		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
 		OffHandImbue:   proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
 		StrengthBuff:   proto.StrengthBuff_ElixirOfGiants,

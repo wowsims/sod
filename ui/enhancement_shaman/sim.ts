@@ -117,9 +117,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
-	customSections: [
-		// TotemsSection,
-	],
+	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

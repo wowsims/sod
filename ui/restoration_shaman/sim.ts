@@ -1,4 +1,3 @@
-import { TotemsSection } from '../core/components/inputs/totem_inputs.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
@@ -86,7 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	otherInputs: {
 		inputs: [OtherInputs.TankAssignment],
 	},
-	customSections: [TotemsSection],
+	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

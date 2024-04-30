@@ -56,8 +56,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	)
 
 	if hasBurnRune {
-		spell.DamageMultiplier += 1
-		numTicks += 2
+		spell.DamageMultiplier += BurnFlameShockDamageBonus
+		numTicks += BurnFlameShockBonusTicks
 	}
 
 	spell.SpellCode = SpellCode_ShamanFlameShock
@@ -110,7 +110,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 	spell.BonusCoefficient = baseSpellCoeff
 
-	results := make([]*core.SpellResult, min(core.TernaryInt32(hasBurnRune, 5, 1), shaman.Env.GetNumTargets()))
+	results := make([]*core.SpellResult, min(core.TernaryInt32(hasBurnRune, BurnFlameShockTargetCount, 1), shaman.Env.GetNumTargets()))
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		for idx := range results {
