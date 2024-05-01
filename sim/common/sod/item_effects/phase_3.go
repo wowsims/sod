@@ -12,6 +12,7 @@ import (
 
 const (
 	// Ordered by ID
+	BlisteringRagehammer       = 220569
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -399,6 +400,22 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			Label:    "Enrage",
+			ActionID: core.ActionID{SpellID: 446327},
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.1)
+				character.PseudoStats.BonusDamage += 30
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.BonusDamage -= 30
+				character.MultiplyAttackSpeed(sim, 1/1.1)
+			},
+		})
+	})
 
 	core.NewItemEffect(DragonsCry, func(agent core.Agent) {
 		vanilla.MakeEmeraldDragonWhelpTriggerAura(agent, DragonsCry)
