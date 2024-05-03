@@ -118,13 +118,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	// TODO: Class Melee specific AP?
 	BattleShout: {
 		25: stats.Stats{
-			stats.AttackPower: 60,
+			stats.AttackPower: 57,
 		},
 		40: stats.Stats{
-			stats.AttackPower: 94,
+			stats.AttackPower: 93,
 		},
 		50: stats.Stats{
-			stats.AttackPower: 139,
+			stats.AttackPower: 138,
 		},
 		60: stats.Stats{
 			stats.AttackPower: 193,
