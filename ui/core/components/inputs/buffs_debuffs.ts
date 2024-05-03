@@ -56,33 +56,21 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput(
 	'Stats %',
 );
 
-export const ArmorBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeTristateRaidBuffInput({
-			actionId: player =>
-				player.getMatchingSpellActionId([
-					{ id: 465, maxLevel: 9 },
-					{ id: 10290, minLevel: 10, maxLevel: 19 },
-					{ id: 643, minLevel: 20, maxLevel: 29 },
-					{ id: 10291, minLevel: 30, maxLevel: 39 },
-					{ id: 1032, minLevel: 40, maxLevel: 49 },
-					{ id: 10292, minLevel: 50, maxLevel: 59 },
-					{ id: 10293, minLevel: 60 },
-				]),
-			impId: ActionId.fromSpellId(20142),
-			fieldName: 'devotionAura',
-		}),
-		makeBooleanRaidBuffInput({
-			actionId: player =>
-				player.getMatchingItemActionId([
-					{ id: 3013, maxLevel: 14 },
-					{ id: 1478, minLevel: 15, maxLevel: 29 },
-					{ id: 4421, minLevel: 30, maxLevel: 44 },
-					{ id: 10305, minLevel: 45 },
-				]),
-			fieldName: 'scrollOfProtection',
-		}),
-	],
+export const ArmorBuff = withLabel(
+	makeTristateRaidBuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 465, maxLevel: 9 },
+				{ id: 10290, minLevel: 10, maxLevel: 19 },
+				{ id: 643, minLevel: 20, maxLevel: 29 },
+				{ id: 10291, minLevel: 30, maxLevel: 39 },
+				{ id: 1032, minLevel: 40, maxLevel: 49 },
+				{ id: 10292, minLevel: 50, maxLevel: 59 },
+				{ id: 10293, minLevel: 60 },
+			]),
+		impId: ActionId.fromSpellId(20142),
+		fieldName: 'devotionAura',
+	}),
 	'Armor',
 );
 
@@ -115,19 +103,25 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 	'Stamina',
 );
 
-export const BloodPactBuff = withLabel(
-	makeTristateRaidBuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 6307, minLevel: 4, maxLevel: 13 },
-				{ id: 7804, minLevel: 14, maxLevel: 25 },
-				{ id: 7805, minLevel: 26, maxLevel: 37 },
-				{ id: 11766, minLevel: 38, maxLevel: 49 },
-				{ id: 11767, minLevel: 50 },
-			]),
-		impId: ActionId.fromSpellId(18696),
-		fieldName: 'bloodPact',
-	}),
+export const BloodPactBuff = InputHelpers.makeMultiIconInput(
+	[
+		makeTristateRaidBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 6307, minLevel: 4, maxLevel: 13 },
+					{ id: 7804, minLevel: 14, maxLevel: 25 },
+					{ id: 7805, minLevel: 26, maxLevel: 37 },
+					{ id: 11766, minLevel: 38, maxLevel: 49 },
+					{ id: 11767, minLevel: 50 },
+				]),
+			impId: ActionId.fromSpellId(18696),
+			fieldName: 'bloodPact',
+		}),
+		makeBooleanRaidBuffInput({
+			actionId: () => ActionId.fromSpellId(403215),
+			fieldName: 'commandingShout',
+		}),
+	],
 	'BloodPact',
 );
 
@@ -311,6 +305,15 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput(
 					{ id: 10958, minLevel: 56 },
 				]),
 			fieldName: 'shadowProtection',
+		}),
+		makeBooleanRaidBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 19876, minLevel: 28, maxLevel: 39 },
+					{ id: 19895, minLevel: 40, maxLevel: 51 },
+					{ id: 19896, minLevel: 52 },
+				]),
+			fieldName: 'shadowResistanceAura',
 		}),
 		// Nature
 		makeBooleanRaidBuffInput({
@@ -900,7 +903,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: ArmorBuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
@@ -910,7 +913,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: BloodPactBuff,
-		picker: IconPicker,
+		picker: MultiIconPicker,
 		stats: [Stat.StatStamina],
 	},
 	{
