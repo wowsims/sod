@@ -1059,6 +1059,41 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	}
 }
 
+func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
+	actionID := ActionID{ItemID: itemId}
+	cdDuration := time.Minute * 2
+
+	return MajorCooldown{
+		Type: CooldownTypeDPS,
+		ShouldActivate: func(sim *Simulation, character *Character) bool {
+			return true
+		},
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				switch itemId {
+				case 4623:
+					lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Second*90)
+					lesserStoneshieldAura.Activate(sim)
+				case 13455:
+					greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
+					greaterStoneshieldAura.Activate(sim)
+				}
+			},
+		}),
+	}
+}
+
 func makeRageConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
 		5631:  20.0,
@@ -1124,6 +1159,11 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			return makeRageConsumableMCD(5633, character, potionCD)
 		case proto.Potions_MightyRagePotion:
 			return makeRageConsumableMCD(13442, character, potionCD)
+		case proto.Potions_LesserStoneshieldPotion:
+			return makeArmorConsumableMCD(4623, character, potionCD)
+		case proto.Potions_GreaterStoneshieldPotion:
+			return makeArmorConsumableMCD(13455, character, potionCD)
+
 		default:
 			return MajorCooldown{}
 		}
