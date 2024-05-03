@@ -335,6 +335,15 @@ enum Flask {
 	FlaskOfEverlastingNightmares = 6;
 }
 
+enum Alcohol {
+	AlcoholUnknown = 0;
+	AlcoholRumseyRumBlackLabel = 1;
+	AlcoholGordokGreenGrog = 2;
+	AlcoholRumseyRumDark = 3;
+	AlcoholRumseyRumLight = 4;
+	AlcoholKreegsStoutBeatdown = 5;
+}
+
 enum AgilityElixir {
 	AgilityElixirUnknown = 0;
 	ElixirOfTheMongoose = 1;
@@ -342,6 +351,21 @@ enum AgilityElixir {
 	ElixirOfLesserAgility = 3;
 	ScrollOfAgility = 4;
 	ElixirOfAgility = 5;
+}
+
+enum ArmorElixir {
+	ArmorElixirUnknown = 0;
+	ElixirOfSuperiorDefense = 1;
+	ElixirOfGreaterDefense = 2;
+	ElixirOfDefense = 3;
+	ElixirOfMinorDefense = 4;
+	ScrollOfProtection = 5;
+}
+
+enum HealthElixir {
+	HealthElixirUnknown = 0;
+	ElixirOfFortitude = 1;
+	ElixirOfMinorFortitude = 2;
 }
 
 enum ManaRegenElixir {
@@ -592,7 +616,7 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 28
+// NextIndex: 31
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -617,6 +641,9 @@ message Consumes {
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
 	ZanzaBuff zanza_buff = 27;
+	ArmorElixir armor_elixir = 28;
+	HealthElixir health_elixir = 29;
+	Alcohol alcohol = 30;
 
 	AtalaiMojo atalai_mojo = 25 [deprecated=true];
 	bool bogling_root = 19 [deprecated=true];

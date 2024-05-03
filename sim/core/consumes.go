@@ -20,6 +20,7 @@ func applyConsumeEffects(agent Agent) {
 	applyFlaskConsumes(character, consumes)
 	applyWeaponImbueConsumes(character, consumes)
 	applyFoodConsumes(character, consumes)
+	applyDefensiveBuffConsumes(character, consumes)
 	applyPhysicalBuffConsumes(character, consumes)
 	applySpellBuffConsumes(character, consumes)
 	applyZanzaBuffConsumes(character, consumes)
@@ -343,6 +344,32 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 		}
 	}
 
+	if consumes.Alcohol != proto.Alcohol_AlcoholUnknown {
+		switch consumes.Alcohol {
+		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
+			character.AddStats(stats.Stats{
+				stats.Stamina:   25,
+				stats.Intellect: -5,
+			})
+		case proto.Alcohol_AlcoholRumseyRumLight:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 5,
+			})
+		case proto.Alcohol_AlcoholRumseyRumDark:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 10,
+			})
+		case proto.Alcohol_AlcoholGordokGreenGrog:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 10,
+			})
+		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 15,
+			})
+		}
+	}
+
 	if consumes.DragonBreathChili {
 		MakePermanent(DragonBreathChiliAura(character))
 	}
@@ -383,6 +410,48 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		},
 	})
 	return aura
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Defensive Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.ArmorElixir != proto.ArmorElixir_ArmorElixirUnknown {
+		switch consumes.ArmorElixir {
+		case proto.ArmorElixir_ElixirOfSuperiorDefense:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 450,
+			})
+		case proto.ArmorElixir_ElixirOfGreaterDefense:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 250,
+			})
+		case proto.ArmorElixir_ElixirOfDefense:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 150,
+			})
+		case proto.ArmorElixir_ElixirOfMinorDefense:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 50,
+			})
+		case proto.ArmorElixir_ScrollOfProtection:
+			character.AddStats(BuffSpellByLevel[ScrollOfProtection][character.Level])
+		}
+	}
+
+	if consumes.HealthElixir != proto.HealthElixir_HealthElixirUnknown {
+		switch consumes.HealthElixir {
+		case proto.HealthElixir_ElixirOfFortitude:
+			character.AddStats(stats.Stats{
+				stats.Health: 120,
+			})
+		case proto.HealthElixir_ElixirOfMinorFortitude:
+			character.AddStats(stats.Stats{
+				stats.Health: 27,
+			})
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////

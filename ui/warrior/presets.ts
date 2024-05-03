@@ -2,9 +2,12 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	Alcohol,
+	ArmorElixir,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	HealthElixir,
 	IndividualBuffs,
 	Profession,
 	RaidBuffs,
@@ -162,6 +165,9 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DenseSharpeningStone,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
+	healthElixir: HealthElixir.HealthElixirUnknown,
+	alcohol: Alcohol.AlcoholUnknown,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

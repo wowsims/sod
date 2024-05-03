@@ -45,6 +45,7 @@ const (
 	ScrollOfSpirit
 	ScrollOfStrength
 	ScrollOfStamina
+	ScrollOfProtection
 )
 
 var LevelToBuffRank = map[BuffName]map[int32]int32{
@@ -443,6 +444,20 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		},
 		60: stats.Stats{
 			stats.Strength: 17,
+		},
+	},
+	ScrollOfProtection: {
+		25: stats.Stats{
+			stats.BonusArmor: 120,
+		},
+		40: stats.Stats{
+			stats.BonusArmor: 180,
+		},
+		50: stats.Stats{
+			stats.BonusArmor: 240,
+		},
+		60: stats.Stats{
+			stats.BonusArmor: 240,
 		},
 	},
 }

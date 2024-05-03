@@ -1,6 +1,8 @@
 import { Player } from '../../player';
 import {
 	AgilityElixir,
+	Alcohol,
+	ArmorElixir,
 	AttackPowerBuff,
 	Class,
 	Conjured,
@@ -11,6 +13,7 @@ import {
 	Flask,
 	Food,
 	FrostPowerBuff,
+	HealthElixir,
 	ItemSlot,
 	ManaRegenElixir,
 	Potions,
@@ -321,6 +324,98 @@ export const DragonBreathChili = makeBooleanConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 12217, minLevel: 35 }]),
 	fieldName: 'dragonBreathChili',
 });
+
+export const RumseyRumBlackLabel: ConsumableInputConfig<Alcohol> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21151, minLevel: 1 }]),
+	value: Alcohol.AlcoholRumseyRumLight,
+};
+
+export const GordokGreenGrog: ConsumableInputConfig<Alcohol> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18269, minLevel: 56 }]),
+	value: Alcohol.AlcoholRumseyRumLight,
+};
+
+export const RumseyRumDark: ConsumableInputConfig<Alcohol> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21114, minLevel: 1 }]),
+	value: Alcohol.AlcoholRumseyRumLight,
+};
+
+export const RumseyRumLight: ConsumableInputConfig<Alcohol> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20709, minLevel: 1 }]),
+	value: Alcohol.AlcoholRumseyRumLight,
+};
+
+export const KreegsStoutBeatdown: ConsumableInputConfig<Alcohol> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18284, minLevel: 56 }]),
+	value: Alcohol.AlcoholRumseyRumLight,
+};
+
+export const ALCOHOL_CONFIG: ConsumableStatOption<Alcohol>[] = [
+	{ config: RumseyRumBlackLabel, stats: [Stat.StatStamina] },
+	{ config: GordokGreenGrog, stats: [Stat.StatStamina] },
+	{ config: RumseyRumDark, stats: [Stat.StatStamina] },
+	{ config: RumseyRumLight, stats: [Stat.StatStamina] },
+	{ config: KreegsStoutBeatdown, stats: [Stat.StatSpirit] },
+];
+
+export const makeAlcoholInput = makeConsumeInputFactory({ consumesFieldName: 'alcohol' });
+
+///////////////////////////////////////////////////////////////////////////
+//                                 DEFENSIVE CONSUMES
+///////////////////////////////////////////////////////////////////////////
+
+// Armor
+export const ElixirOfSuperiorDefense: ConsumableInputConfig<ArmorElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13445, minLevel: 43 }]),
+	value: ArmorElixir.ElixirOfSuperiorDefense,
+};
+export const ElixirOfGreaterDefense: ConsumableInputConfig<ArmorElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 8951, minLevel: 29 }]),
+	value: ArmorElixir.ElixirOfGreaterDefense,
+};
+export const ElixirOfDefense: ConsumableInputConfig<ArmorElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 3389, minLevel: 16 }]),
+	value: ArmorElixir.ElixirOfDefense,
+};
+export const ElixirOfMinorDefense: ConsumableInputConfig<ArmorElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 5997, minLevel: 1 }]),
+	value: ArmorElixir.ElixirOfMinorDefense,
+};
+export const ScrollOfProtection: ConsumableInputConfig<ArmorElixir> = {
+	actionId: player =>
+		player.getMatchingItemActionId([
+			{ id: 3013, minLevel: 1, maxLevel: 14 },
+			{ id: 1478, minLevel: 15, maxLevel: 29 },
+			{ id: 4421, minLevel: 30, maxLevel: 44 },
+			{ id: 10305, minLevel: 45 },
+		]),
+	value: ArmorElixir.ScrollOfProtection,
+};
+export const ARMOR_CONSUMES_CONFIG: ConsumableStatOption<ArmorElixir>[] = [
+	{ config: ElixirOfSuperiorDefense, stats: [Stat.StatArmor] },
+	{ config: ElixirOfGreaterDefense, stats: [Stat.StatArmor] },
+	{ config: ElixirOfDefense, stats: [Stat.StatArmor] },
+	{ config: ElixirOfMinorDefense, stats: [Stat.StatArmor] },
+	{ config: ScrollOfProtection, stats: [Stat.StatArmor] },
+];
+
+export const makeArmorConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'armorElixir' });
+
+// Health
+export const ElixirOfFortitude: ConsumableInputConfig<HealthElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 3825, minLevel: 25 }]),
+	value: HealthElixir.ElixirOfFortitude,
+};
+export const ElixirOfMinorFortitude: ConsumableInputConfig<HealthElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 2458, minLevel: 2 }]),
+	value: HealthElixir.ElixirOfMinorFortitude,
+};
+export const HEALTH_CONSUMES_CONFIG: ConsumableStatOption<HealthElixir>[] = [
+	{ config: ElixirOfFortitude, stats: [Stat.StatStamina] },
+	{ config: ElixirOfMinorFortitude, stats: [Stat.StatStamina] },
+];
+
+export const makeHealthConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'healthElixir' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PHYSICAL DAMAGE CONSUMES
