@@ -641,6 +641,21 @@ export const MajorManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13444, minLevel: 49 }]),
 	value: Potions.MajorManaPotion,
 };
+export const MightRagePotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 13442, minLevel: 46 }]),
+	value: Potions.MightyRagePotion,
+	showWhen: player => player.getClass() == Class.ClassWarrior,
+};
+export const GreatRagePotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 5633, minLevel: 25 }]),
+	value: Potions.GreatRagePotion,
+	showWhen: player => player.getClass() == Class.ClassWarrior,
+};
+export const RagePotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 5631, minLevel: 4 }]),
+	value: Potions.RagePotion,
+	showWhen: player => player.getClass() == Class.ClassWarrior,
+};
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: MajorManaPotion, stats: [Stat.StatIntellect] },
@@ -648,6 +663,9 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, stats: [Stat.StatIntellect] },
 	{ config: LesserManaPotion, stats: [Stat.StatIntellect] },
+	{ config: MightRagePotion, stats: [] },
+	{ config: GreatRagePotion, stats: [] },
+	{ config: RagePotion, stats: [] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });

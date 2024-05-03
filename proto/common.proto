@@ -308,6 +308,9 @@ enum Potions {
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
+	RagePotion = 6;
+	GreatRagePotion = 7;
+	MightyRagePotion = 8;
 }
 
 enum Conjured {

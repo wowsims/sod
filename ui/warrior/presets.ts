@@ -9,6 +9,7 @@ import {
 	EnchantedSigil,
 	HealthElixir,
 	IndividualBuffs,
+	Potions,
 	Profession,
 	RaidBuffs,
 	SaygesFortune,
@@ -168,6 +169,7 @@ export const DefaultConsumes = Consumes.create({
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	healthElixir: HealthElixir.HealthElixirUnknown,
 	alcohol: Alcohol.AlcoholUnknown,
+	defaultPotion: Potions.MightyRagePotion,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

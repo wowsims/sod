@@ -1059,18 +1059,74 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	}
 }
 
-func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	// All potions are mana
-	if potionType != proto.Potions_UnknownPotion {
-		itemId := map[proto.Potions]int32{
-			proto.Potions_LesserManaPotion:   3385,
-			proto.Potions_ManaPotion:         3827,
-			proto.Potions_GreaterManaPotion:  6149,
-			proto.Potions_SuperiorManaPotion: 13443,
-			proto.Potions_MajorManaPotion:    13444,
-		}[potionType]
+func makeRageConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
+	minRoll := map[int32]float64{
+		5631:  20.0,
+		5633:  30.0,
+		13442: 45.0,
+	}[itemId]
 
-		return makeManaConsumableMCD(itemId, character, potionCD)
+	maxRoll := map[int32]float64{
+		5631:  40.0,
+		5633:  60.0,
+		13442: 75.0,
+	}[itemId]
+
+	cdDuration := time.Minute * 2
+
+	actionID := ActionID{ItemID: itemId}
+	rageMetrics := character.NewRageMetrics(actionID)
+	aura := character.NewTemporaryStatsAura("Mighty Rage Potion", actionID, stats.Stats{stats.Strength: 60}, time.Second*20)
+	return MajorCooldown{
+		Type: CooldownTypeDPS,
+		ShouldActivate: func(sim *Simulation, character *Character) bool {
+			return !character.IsShapeshifted()
+		},
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				rageGain := sim.RollWithLabel(minRoll, maxRoll, "Rage Consumable")
+				character.AddRage(sim, rageGain, rageMetrics)
+				if itemId == 13442 {
+					aura.Activate(sim)
+				}
+			},
+		}),
+	}
+}
+
+func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
+	if potionType != proto.Potions_UnknownPotion {
+		switch potionType {
+		case proto.Potions_LesserManaPotion:
+			return makeManaConsumableMCD(3385, character, potionCD)
+		case proto.Potions_ManaPotion:
+			return makeManaConsumableMCD(3827, character, potionCD)
+		case proto.Potions_GreaterManaPotion:
+			return makeManaConsumableMCD(6149, character, potionCD)
+		case proto.Potions_SuperiorManaPotion:
+			return makeManaConsumableMCD(13443, character, potionCD)
+		case proto.Potions_MajorManaPotion:
+			return makeManaConsumableMCD(13444, character, potionCD)
+		case proto.Potions_RagePotion:
+			return makeRageConsumableMCD(5631, character, potionCD)
+		case proto.Potions_GreatRagePotion:
+			return makeRageConsumableMCD(5633, character, potionCD)
+		case proto.Potions_MightyRagePotion:
+			return makeRageConsumableMCD(13442, character, potionCD)
+		default:
+			return MajorCooldown{}
+		}
 	} else {
 		return MajorCooldown{}
 	}

@@ -124,6 +124,7 @@ var Phase3Consumes = core.ConsumesCombo{
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
 		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
 		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
+		DefaultPotion:     proto.Potions_MightyRagePotion,
 	},
 }
 
