@@ -683,10 +683,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStats(updateStats)
 	}
 
-	// TODO: Classic version
-	// if raidBuffs.RetributionAura {
-	// 	RetributionAura(character)
-	// }
+	if raidBuffs.RetributionAura == proto.TristateEffect_TristateEffectImproved {
+		RetributionAura(character, 2)
+	} else if raidBuffs.RetributionAura == proto.TristateEffect_TristateEffectRegular {
+		RetributionAura(character, 0)
+	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
@@ -930,13 +931,25 @@ func ApplyInspiration(character *Character, uptime float64) {
 	ApplyFixedUptimeAura(inspirationAura, uptime, time.Millisecond*2500, 1)
 }
 
-func RetributionAura(character *Character, sanctifiedRetribution bool) *Aura {
-	actionID := ActionID{SpellID: 54043}
+func RetributionAura(character *Character, points int32) *Aura {
+	level := character.Level
+	spellID := map[int32]int32{
+		25: 7294,
+		40: 10299,
+		50: 10300,
+		60: 10301,
+	}[level]
 
-	baseDamage := 112.0
-	if sanctifiedRetribution {
-		baseDamage *= 1.5
-	}
+	baseDamage := map[int32]int32{
+		25: 5,
+		40: 12,
+		50: 16,
+		60: 20,
+	}[level]
+
+	actionID := ActionID{SpellID: spellID}
+
+	damage := float64(baseDamage) * (1 + 0.25*float64(points))
 
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    actionID,
@@ -948,7 +961,7 @@ func RetributionAura(character *Character, sanctifiedRetribution bool) *Aura {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
 		},
 	})
 
