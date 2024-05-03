@@ -463,7 +463,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.GiftOfTheWild > 0 {
 		updateStats := BuffSpellByLevel[MarkOfTheWild][level]
 		if raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.35)
+			updateStats = updateStats.Multiply(1.35).Floor()
 		}
 		character.AddStats(updateStats)
 		bonusResist = updateStats[NatureResistanceTotem]
@@ -506,7 +506,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.PowerWordFortitude > 0 {
 		updateStats := BuffSpellByLevel[PowerWordFortitude][level]
 		if raidBuffs.PowerWordFortitude == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.3)
+			updateStats = updateStats.Multiply(1.3).Floor()
 		}
 		character.AddStats(updateStats)
 	} else if raidBuffs.ScrollOfStamina {
@@ -516,7 +516,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.BloodPact > 0 {
 		updateStats := BuffSpellByLevel[BloodPact][level]
 		if raidBuffs.BloodPact == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.3)
+			updateStats = updateStats.Multiply(1.3).Floor()
 		}
 		character.AddStats(updateStats)
 	}
@@ -1623,7 +1623,7 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		60: 25362,
 	}[level]
 	duration := time.Minute * 2
-	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier)
+	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Strength of Earth Totem",
@@ -1646,7 +1646,7 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		60: 25359,
 	}[level]
 	duration := time.Minute * 2
-	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier)
+	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Grace of Air Totem",
@@ -1681,12 +1681,12 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: baseAP * (1 + 0.05*float64(impBattleShout)),
+				stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
 			})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * baseAP * (1 + 0.05*float64(impBattleShout)),
+				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))),
 			})
 		},
 	})
