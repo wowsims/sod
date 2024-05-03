@@ -3,7 +3,7 @@ character_stats_results: {
  value: {
   final_stats: 93.5
   final_stats: 39.6
-  final_stats: 279.565
+  final_stats: 203.665
   final_stats: 221.1
   final_stats: 173.47
   final_stats: 281
@@ -35,13 +35,13 @@ character_stats_results: {
   final_stats: 2
   final_stats: 0
   final_stats: 0
-  final_stats: 3249.65
+  final_stats: 2490.65
   final_stats: 18
   final_stats: 23
-  final_stats: 73
-  final_stats: 35
-  final_stats: 32
-  final_stats: 160
+  final_stats: 60
+  final_stats: 52
+  final_stats: 49
+  final_stats: 423
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.63084
+  weights: 0.57422
   weights: 0
-  weights: 1.10396
-  weights: 0
-  weights: 0
+  weights: 0.9762
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.01308
-  weights: 2.04166
+  weights: 0
+  weights: 0
+  weights: 5.52283
+  weights: 2.16027
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 654.39162
-  tps: 545.37953
+  dps: 642.5165
+  tps: 534.38772
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 654.86103
-  tps: 867.91497
+  dps: 645.14307
+  tps: 854.61754
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 654.86103
-  tps: 547.0362
+  dps: 645.14307
+  tps: 538.20271
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 698.7244
-  tps: 587.49089
+  dps: 686.6049
+  tps: 575.9718
  }
 }
 dps_results: {
@@ -148,7 +148,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 658.02643
-  tps: 550.60375
+  dps: 645.9956
+  tps: 539.51019
  }
 }

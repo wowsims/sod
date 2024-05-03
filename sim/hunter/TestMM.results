@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 1111.45
   final_stats: 0
   final_stats: 0
-  final_stats: 2066.79
+  final_stats: 1925.79
   final_stats: 491.04
   final_stats: 0
   final_stats: 0
@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 10
-  final_stats: 40
+  final_stats: 181
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -52,7 +52,7 @@ character_stats_results: {
  value: {
   final_stats: 145.2
   final_stats: 312.18
-  final_stats: 327.91
+  final_stats: 255.31
   final_stats: 95.59
   final_stats: 110.11
   final_stats: 42
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 2258.85
   final_stats: 0
   final_stats: 0
-  final_stats: 2880.11
+  final_stats: 2617.11
   final_stats: 1036.36
   final_stats: 0
   final_stats: 0
@@ -84,13 +84,13 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 3766.1
+  final_stats: 3040.1
   final_stats: 13
   final_stats: 13
-  final_stats: 83
-  final_stats: 13
-  final_stats: 23
+  final_stats: 70
+  final_stats: 30
   final_stats: 40
+  final_stats: 303
   final_stats: 0
   final_stats: 14
   final_stats: 0

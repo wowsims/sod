@@ -3,7 +3,7 @@ character_stats_results: {
  value: {
   final_stats: 96.8
   final_stats: 53.9
-  final_stats: 370.645
+  final_stats: 294.745
   final_stats: 221.1
   final_stats: 142.12
   final_stats: 251
@@ -35,13 +35,13 @@ character_stats_results: {
   final_stats: 2
   final_stats: 0
   final_stats: 0
-  final_stats: 4160.45
+  final_stats: 3401.45
   final_stats: 18
   final_stats: 23
-  final_stats: 73
-  final_stats: 18
-  final_stats: 32
-  final_stats: 492
+  final_stats: 60
+  final_stats: 35
+  final_stats: 49
+  final_stats: 755
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.16325
+  weights: -0.03124
   weights: 0
-  weights: 0.62203
-  weights: 0
-  weights: 0
+  weights: 1.21203
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.94151
-  weights: 1.48907
+  weights: 0
+  weights: 0
+  weights: 6.56627
+  weights: 1.41855
   weights: 0
   weights: 0
   weights: 0
@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 594.58946
-  tps: 1141.53574
+  dps: 583.51479
+  tps: 1116.35268
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 557.60887
-  tps: 1592.96008
+  dps: 547.17913
+  tps: 1566.36708
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 557.60887
-  tps: 1078.83678
+  dps: 547.17913
+  tps: 1054.1079
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 584.77182
-  tps: 1130.40454
+  dps: 573.74021
+  tps: 1105.31698
  }
 }
 dps_results: {
@@ -148,7 +148,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 591.31627
-  tps: 1135.84584
+  dps: 578.5522
+  tps: 1106.04337
  }
 }

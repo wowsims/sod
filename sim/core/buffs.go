@@ -107,13 +107,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.NatureResistance: 0,
 		},
 		40: stats.Stats{
-			stats.Stamina: 0,
+			stats.NatureResistance: 0,
 		},
 		50: stats.Stats{
-			stats.Stamina: 45,
+			stats.NatureResistance: 45,
 		},
 		60: stats.Stats{
-			stats.Stamina: 60,
+			stats.NatureResistance: 60,
 		},
 	},
 	// TODO: Class Melee specific AP?
@@ -190,30 +190,30 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	},
 	FrostResistanceAura: {
 		25: stats.Stats{
-			stats.NatureResistance: 0,
+			stats.FrostResistance: 0,
 		},
 		40: stats.Stats{
-			stats.Stamina: 30,
+			stats.FrostResistance: 30,
 		},
 		50: stats.Stats{
-			stats.Stamina: 45,
+			stats.FrostResistance: 45,
 		},
 		60: stats.Stats{
-			stats.Stamina: 60,
+			stats.FrostResistance: 60,
 		},
 	},
 	FrostResistanceTotem: {
 		25: stats.Stats{
-			stats.NatureResistance: 30,
+			stats.FrostResistance: 30,
 		},
 		40: stats.Stats{
-			stats.Stamina: 45,
+			stats.FrostResistance: 45,
 		},
 		50: stats.Stats{
-			stats.Stamina: 60,
+			stats.FrostResistance: 45,
 		},
 		60: stats.Stats{
-			stats.Stamina: 60,
+			stats.FrostResistance: 60,
 		},
 	},
 	HornOfLordaeron: {
@@ -250,7 +250,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	},
 	MarkOfTheWild: {
 		25: stats.Stats{
-			stats.Armor:            105,
+			stats.BonusArmor:       105,
 			stats.Stamina:          4,
 			stats.Agility:          4,
 			stats.Strength:         4,
@@ -263,7 +263,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.FrostResistance:  0,
 		},
 		40: stats.Stats{
-			stats.Armor:            195,
+			stats.BonusArmor:       195,
 			stats.Stamina:          8,
 			stats.Agility:          8,
 			stats.Strength:         8,
@@ -276,7 +276,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.FrostResistance:  10,
 		},
 		50: stats.Stats{
-			stats.Armor:            240,
+			stats.BonusArmor:       240,
 			stats.Stamina:          10,
 			stats.Agility:          10,
 			stats.Strength:         10,
@@ -289,7 +289,7 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.FrostResistance:  15,
 		},
 		60: stats.Stats{
-			stats.Armor:            285,
+			stats.BonusArmor:       285,
 			stats.Stamina:          12,
 			stats.Agility:          12,
 			stats.Strength:         12,
@@ -307,13 +307,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.NatureResistance: 0,
 		},
 		40: stats.Stats{
-			stats.Stamina: 30,
+			stats.NatureResistance: 30,
 		},
 		50: stats.Stats{
-			stats.Stamina: 45,
+			stats.NatureResistance: 45,
 		},
 		60: stats.Stats{
-			stats.Stamina: 60,
+			stats.NatureResistance: 60,
 		},
 	},
 	PowerWordFortitude: {
@@ -335,13 +335,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.ShadowResistance: 0,
 		},
 		40: stats.Stats{
-			stats.Stamina: 30,
+			stats.ShadowResistance: 30,
 		},
 		50: stats.Stats{
-			stats.Stamina: 45,
+			stats.ShadowResistance: 45,
 		},
 		60: stats.Stats{
-			stats.Stamina: 60,
+			stats.ShadowResistance: 60,
 		},
 	},
 	TrueshotAura: {
@@ -481,7 +481,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 			updateStats = updateStats.Multiply(1.35).Floor()
 		}
 		character.AddStats(updateStats)
-		bonusResist = updateStats[NatureResistanceTotem]
+		bonusResist = updateStats[stats.NatureResistance]
 	}
 
 	if raidBuffs.NatureResistanceTotem {

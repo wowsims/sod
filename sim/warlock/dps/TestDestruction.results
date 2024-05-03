@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 18
-  final_stats: 21
+  final_stats: 162
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -52,7 +52,7 @@ character_stats_results: {
  value: {
   final_stats: 93.5
   final_stats: 39.6
-  final_stats: 239.8
+  final_stats: 173.8
   final_stats: 212.3
   final_stats: 182.6
   final_stats: 279
@@ -84,13 +84,13 @@ character_stats_results: {
   final_stats: 2
   final_stats: 0
   final_stats: 0
-  final_stats: 2852
+  final_stats: 2192
   final_stats: 18
   final_stats: 23
-  final_stats: 73
-  final_stats: 35
-  final_stats: 22
-  final_stats: 160
+  final_stats: 60
+  final_stats: 52
+  final_stats: 39
+  final_stats: 423
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -101,7 +101,7 @@ character_stats_results: {
  value: {
   final_stats: 135.432
   final_stats: 142.56
-  final_stats: 436.97016
+  final_stats: 323.63496
   final_stats: 369.468
   final_stats: 244.4904
   final_stats: 259
@@ -133,13 +133,13 @@ character_stats_results: {
   final_stats: 2
   final_stats: 0
   final_stats: 0
-  final_stats: 5168.7016
+  final_stats: 4035.3496
   final_stats: 20
   final_stats: 20
-  final_stats: 80
-  final_stats: 20
-  final_stats: 32
-  final_stats: 0
+  final_stats: 60
+  final_stats: 45
+  final_stats: 57
+  final_stats: 324
   final_stats: 35
   final_stats: 100
   final_stats: 0
@@ -210,8 +210,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.12821
-  weights: 0.17205
+  weights: 3.07989
+  weights: 0.16853
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.26284
+  weights: 7.91948
   weights: 0
-  weights: 3.81207
-  weights: 0
-  weights: 0
+  weights: 1.46823
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 19.70188
-  weights: 6.73792
+  weights: 0
+  weights: 0
+  weights: 18.16846
+  weights: 6.90242
   weights: 0
   weights: 0
   weights: 0
@@ -351,29 +351,29 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 148.22125
-  tps: 79.86331
+  dps: 146.13539
+  tps: 78.78047
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 145.2259
-  tps: 1049.05246
+  dps: 143.26629
+  tps: 1043.85705
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 145.2259
-  tps: 75.12595
+  dps: 143.26629
+  tps: 74.4465
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 244.14961
-  tps: 163.5337
+  dps: 240.39285
+  tps: 160.47286
  }
 }
 dps_results: {
@@ -400,36 +400,36 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 145.49768
-  tps: 75.48553
+  dps: 143.53262
+  tps: 74.7991
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1324.69399
-  tps: 1154.8631
+  dps: 1296.71774
+  tps: 1129.4448
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2072.3678
-  tps: 2564.05915
+  dps: 2034.21177
+  tps: 2525.72072
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1310.83766
-  tps: 1141.43364
+  dps: 1287.9392
+  tps: 1122.12114
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1468.72518
-  tps: 1282.85275
+  dps: 1440.2917
+  tps: 1256.75356
  }
 }
 dps_results: {
@@ -456,7 +456,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1332.55364
-  tps: 1162.72532
+  dps: 1287.12802
+  tps: 1119.6369
  }
 }

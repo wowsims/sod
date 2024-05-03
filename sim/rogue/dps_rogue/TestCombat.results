@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1988.15
+  final_stats: 1847.15
   final_stats: 235.2
   final_stats: 0
   final_stats: 0
@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 10
-  final_stats: 0
+  final_stats: 141
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -52,7 +52,7 @@ character_stats_results: {
  value: {
   final_stats: 215.6
   final_stats: 250.8
-  final_stats: 322.3
+  final_stats: 256.3
   final_stats: 61.6
   final_stats: 83.16
   final_stats: 42
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 2455.35
+  final_stats: 2192.35
   final_stats: 518.8
   final_stats: 0
   final_stats: 0
@@ -84,13 +84,13 @@ character_stats_results: {
   final_stats: 5
   final_stats: 0
   final_stats: 0
-  final_stats: 3746
+  final_stats: 3086
   final_stats: 18
   final_stats: 13
-  final_stats: 83
-  final_stats: 18
-  final_stats: 23
-  final_stats: 0
+  final_stats: 70
+  final_stats: 35
+  final_stats: 40
+  final_stats: 263
   final_stats: 0
   final_stats: 0
   final_stats: 0

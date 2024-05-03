@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 10
-  final_stats: 70
+  final_stats: 211
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -52,7 +52,7 @@ character_stats_results: {
  value: {
   final_stats: 174.9
   final_stats: 171.6
-  final_stats: 327.8
+  final_stats: 261.8
   final_stats: 136.4
   final_stats: 124.3
   final_stats: 42
@@ -84,13 +84,13 @@ character_stats_results: {
   final_stats: 1.7
   final_stats: 0
   final_stats: 0
-  final_stats: 3708
+  final_stats: 3048
   final_stats: 18
   final_stats: 13
-  final_stats: 83
-  final_stats: 18
-  final_stats: 23
+  final_stats: 70
+  final_stats: 35
   final_stats: 40
+  final_stats: 303
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -101,7 +101,7 @@ character_stats_results: {
  value: {
   final_stats: 367.092
   final_stats: 264.924
-  final_stats: 478.764
+  final_stats: 371.844
   final_stats: 238.788
   final_stats: 181.764
   final_stats: 0
@@ -133,13 +133,13 @@ character_stats_results: {
   final_stats: 1.7
   final_stats: 0
   final_stats: 0
-  final_stats: 5554.64
+  final_stats: 4485.44
   final_stats: 20
   final_stats: 20
-  final_stats: 80
-  final_stats: 20
-  final_stats: 20
-  final_stats: 0
+  final_stats: 60
+  final_stats: 45
+  final_stats: 45
+  final_stats: 324
   final_stats: 0
   final_stats: 79
   final_stats: 0
@@ -197,16 +197,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.04254
-  weights: 0.84671
+  weights: 1.04402
+  weights: 0.85308
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.43276
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.43202
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +210,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47388
-  weights: 3.68116
-  weights: 8.78943
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.47456
+  weights: 4.89135
+  weights: 6.96708
   weights: 0
   weights: 0
   weights: 0
@@ -477,8 +477,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 873.0946
-  tps: 924.77103
+  dps: 873.63545
+  tps: 925.34632
  }
 }
 dps_results: {
@@ -652,8 +652,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 807.97664
-  tps: 856.43722
+  dps: 808.1577
+  tps: 855.76074
  }
 }
 dps_results: {
