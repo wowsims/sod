@@ -670,12 +670,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// TODO: Classic
-	if individualBuffs.BlessingOfSanctuary {
-		character.PseudoStats.DamageTakenMultiplier *= 0.97
-		BlessingOfSanctuaryAura(character)
-	}
-
-	// TODO: Classic
+	/*	if individualBuffs.BlessingOfSanctuary {
+			character.PseudoStats.DamageTakenMultiplier *= 0.97
+			BlessingOfSanctuaryAura(character)
+		}
+	*/
 	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing {
 		updateStats := BuffSpellByLevel[DevotionAura][level]
 		if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectImproved {
@@ -741,6 +740,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
 		// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
 		character.AddStat(stats.AttackPower, 140)
+		character.AddStat(stats.RangedAttackPower, 140)
 	}
 
 	if individualBuffs.SpiritOfZandalar {
@@ -771,6 +771,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// Dire Maul Buffs
 	if individualBuffs.FengusFerocity {
 		character.AddStat(stats.AttackPower, 200)
+		character.AddStat(stats.RangedAttackPower, 200)
 	}
 
 	if individualBuffs.MoldarsMoxie {
@@ -1010,6 +1011,8 @@ func ThornsAura(character *Character, points int32) *Aura {
 	}))
 }
 
+//TODO: Classic
+/*
 func BlessingOfSanctuaryAura(character *Character) {
 	if !character.HasManaBar() {
 		return
@@ -1031,7 +1034,7 @@ func BlessingOfSanctuaryAura(character *Character) {
 		},
 	})
 }
-
+*/
 // Used for approximating cooldowns applied by other players to you, such as
 // bloodlust, innervate, power infusion, etc. This is specifically for buffs
 // which can be consecutively applied multiple times to a single player.
