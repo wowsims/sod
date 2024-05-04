@@ -159,6 +159,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 			totalDuration := time.Second * 15
 			uptimePercent := float64(debuffs.Homunculi) / 100.0
 			ApplyFixedUptimeAura(HomunculiArmorAura(target, level), uptimePercent, totalDuration, 1)
+			ApplyFixedUptimeAura(HomunculiAttackSpeedAura(target, level), uptimePercent, totalDuration, 1)
+			ApplyFixedUptimeAura(HomunculiAttackPowerAura(target, level), uptimePercent, totalDuration, 1)
 		}
 	}
 
@@ -837,16 +839,7 @@ func HomunculiAttackSpeedAura(target *Unit, _ int32) *Aura {
 		Duration: time.Second * 15,
 	})
 
-	aura.NewExclusiveEffect("AtkSpdReduction", true, ExclusiveEffect{
-		Priority: multiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/multiplier)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, multiplier)
-		},
-	})
-
+	AtkSpeedReductionEffect(aura, multiplier)
 	return aura
 }
 
@@ -881,15 +874,7 @@ func HomunculiAttackPowerAura(target *Unit, playerLevel int32) *Aura {
 		Duration: time.Second * 15,
 	})
 
-	aura.NewExclusiveEffect("Homonculi AP", true, ExclusiveEffect{
-		Priority: ap,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			target.AddStatDynamic(sim, stats.AttackPower, -1*ap)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			target.AddStatDynamic(sim, stats.AttackPower, ap)
-		},
-	})
+	apReductionEffect(aura, ap)
 
 	return aura
 }

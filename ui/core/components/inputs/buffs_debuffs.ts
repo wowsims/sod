@@ -694,6 +694,13 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 			impId: ActionId.fromSpellId(16862),
 			fieldName: 'demoralizingRoar',
 		}),
+		makeMultistateMultiplierDebuffInput({
+			actionId: () => ActionId.fromSpellId(402811),
+			numStates: 11,
+			multiplier: 10,
+			reverse: true,
+			fieldName: 'homunculi',
+		}),
 	],
 	'Attack Power',
 );
@@ -701,12 +708,21 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 // TODO: SoD Mangle
 export const BleedDebuff = withLabel(makeBooleanDebuffInput({ actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle' }), 'Bleed');
 
-export const MeleeAttackSpeedDebuff = withLabel(
-	makeTristateDebuffInput({
-		actionId: () => ActionId.fromSpellId(6343),
-		impId: ActionId.fromSpellId(12666),
-		fieldName: 'thunderClap',
-	}),
+export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
+	[
+		makeTristateDebuffInput({
+			actionId: () => ActionId.fromSpellId(6343),
+			impId: ActionId.fromSpellId(12666),
+			fieldName: 'thunderClap',
+		}),
+		makeMultistateMultiplierDebuffInput({
+			actionId: () => ActionId.fromSpellId(402808),
+			numStates: 11,
+			multiplier: 10,
+			reverse: true,
+			fieldName: 'homunculi',
+		}),
+	],
 	'Thunder Clap',
 );
 
@@ -1192,7 +1208,7 @@ export const DEBUFFS_CONFIG = [
 	},
 	{
 		config: MeleeAttackSpeedDebuff,
-		picker: IconPicker,
+		picker: MultiIconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
