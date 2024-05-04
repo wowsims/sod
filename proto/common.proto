@@ -564,7 +564,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 19
+// NextIndex: 30
 message IndividualBuffs {
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
@@ -590,6 +590,19 @@ message IndividualBuffs {
 	bool ashenvale_pvp_buff = 16;
 	bool spark_of_inspiration = 17;
 	bool fervor_of_the_temple_explorer = 18;
+
+	// Custom Specilizations
+	bool axe_specialization = 19;
+	bool bow_specialization = 20;
+	bool crossbow_specialization = 21;
+	bool dagger_specialization = 22;
+	bool fist_specialization = 23;
+	bool gun_specialization = 24;
+	bool mace_specialization = 25;
+	bool polearm_specialization = 26;
+	bool staff_specialization = 27;
+	bool sword_specialization = 28;
+	bool thrown_specialization = 29;
 }
 
 // NextIndex: 28

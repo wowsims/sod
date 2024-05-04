@@ -1,4 +1,4 @@
-import { Faction, SaygesFortune, Stat } from '../../proto/common';
+import { Class, Race, Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import {
 	makeBooleanDebuffInput,
@@ -298,6 +298,106 @@ export const DamageReductionPercentBuff = withLabel(
 		fieldName: 'blessingOfSanctuary',
 	}),
 	'Blessing of Sanctuary',
+);
+
+export const SpecializationPicker = InputHelpers.makeMultiIconInput(
+	[
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20574, minLevel: 51}, // Ok Placeholder
+				]),
+			fieldName: 'axeSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassPaladin, Class.ClassHunter, Class.ClassShaman].includes(player.getClass())
+								&& player.getRace() != Race.RaceOrc,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 26290, minLevel: 51}, // Ok Placeholder
+				]),
+			fieldName: 'bowSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue].includes(player.getClass())
+								&& player.getRace() != Race.RaceTroll,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 5011, minLevel: 51}, // Ok Placeholder
+				]),
+			fieldName: 'crossbowSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue].includes(player.getClass()),
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 1180, minLevel: 51}, // Bad Placeholder
+				]),
+			fieldName: 'daggerSpecialization',
+			showWhen: player => player.getClass() != Class.ClassPaladin,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 203, minLevel: 51}, // Bad Placeholder
+				]),
+			fieldName: 'fistSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue, Class.ClassShaman, Class.ClassDruid].includes(player.getClass()),
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20595, minLevel: 51}, // Ok Placeholder
+				]),
+			fieldName: 'gunSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue].includes(player.getClass())
+								&& player.getRace() != Race.RaceDwarf,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20864, minLevel: 51}, // Ok Placeholder Id
+				]),
+			fieldName: 'maceSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassPaladin, Class.ClassRogue, Class.ClassPriest, Class.ClassShaman, Class.ClassDruid].includes(player.getClass())
+								&& player.getRace() != Race.RaceHuman,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 200, minLevel: 51},  // Bad Placeholder Id
+				]),
+			fieldName: 'polearmSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue].includes(player.getClass()),
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 227, minLevel: 51},  // Ok Placeholder
+				]),
+			fieldName: 'staffSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassPriest, Class.ClassShaman, Class.ClassMage, Class.ClassWarlock, Class.ClassDruid].includes(player.getClass())
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20597, minLevel: 51},  // Ok Placeholder Id
+				]),
+			fieldName: 'swordSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassPaladin, Class.ClassHunter, Class.ClassRogue, Class.ClassMage, Class.ClassWarlock].includes(player.getClass())
+								&& player.getRace() != Race.RaceHuman,
+		}),
+		makeBooleanIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20558, minLevel: 51}, // Ok Placeholder Id
+				]),
+			fieldName: 'thrownSpecialization',
+			showWhen: player => [Class.ClassWarrior, Class.ClassHunter, Class.ClassRogue].includes(player.getClass())
+									&& player.getRace() != Race.RaceTroll,
+		}),
+	],
+	'Specialization',
 );
 
 export const ResistanceBuff = InputHelpers.makeMultiIconInput(
@@ -972,6 +1072,11 @@ export const RAID_BUFFS_CONFIG = [
 		config: DamageReductionPercentBuff,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
+	},
+	{
+		config: SpecializationPicker,
+		picker: MultiIconPicker,
+		stats: [Stat.StatAttackPower],
 	},
 	{
 		config: ResistanceBuff,

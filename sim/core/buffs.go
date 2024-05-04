@@ -728,6 +728,44 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		//TODO: healing dealt multiplier?
 	}
 
+	// Custom Specializations
+	if individualBuffs.AxeSpecialization {
+		character.PseudoStats.AxesSkill += 5
+		character.PseudoStats.TwoHandedAxesSkill += 5
+	}
+	if individualBuffs.BowSpecialization {
+		character.PseudoStats.BowsSkill += 5
+	}
+	if individualBuffs.CrossbowSpecialization {
+		character.PseudoStats.CrossbowsSkill += 5
+	}
+	if individualBuffs.DaggerSpecialization {
+		character.PseudoStats.DaggersSkill += 5
+	}
+	if individualBuffs.FistSpecialization {
+		character.PseudoStats.UnarmedSkill += 5
+	}
+	if individualBuffs.GunSpecialization {
+		character.PseudoStats.GunsSkill += 5
+	}
+	if individualBuffs.MaceSpecialization {
+		character.PseudoStats.MacesSkill += 5
+		character.PseudoStats.TwoHandedMacesSkill += 5
+	}
+	if individualBuffs.PolearmSpecialization {
+		character.PseudoStats.PolearmsSkill += 5
+	}
+	if individualBuffs.StaffSpecialization {
+		character.PseudoStats.StavesSkill += 5
+	}
+	if individualBuffs.SwordSpecialization {
+		character.PseudoStats.SwordsSkill += 5
+		character.PseudoStats.TwoHandedSwordsSkill += 5
+	}
+	if individualBuffs.ThrownSpecialization {
+		character.PseudoStats.ThrownSkill += 5
+	}
+
 	// TODO: Classic provide in APL?
 	registerPowerInfusionCD(agent, individualBuffs.PowerInfusions)
 	registerManaTideTotemCD(agent, partyBuffs.ManaTideTotems)
