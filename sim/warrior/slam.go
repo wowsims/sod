@@ -31,6 +31,12 @@ func (warrior *Warrior) registerSlamSpell() {
 		60: 87,
 	}[warrior.Level]
 
+	spell_level := map[int32]float64{
+		40: 38,
+		50: 46,
+		60: 54,
+	}[warrior.Level]
+
 	spellID := map[int32]int32{
 		40: 8820,
 		50: 11604,
@@ -66,7 +72,7 @@ func (warrior *Warrior) registerSlamSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  140,
+		FlatThreatBonus:  1 * spell_level,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

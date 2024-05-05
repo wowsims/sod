@@ -100,97 +100,97 @@ dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
   dps: 810.63111
-  tps: 755.50169
+  tps: 707.87732
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 20.37359
-  tps: 56.34753
+  tps: 55.06913
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
   dps: 16.76075
-  tps: 17.99829
+  tps: 16.37989
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
   dps: 32.51052
-  tps: 32.33025
+  tps: 29.67825
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 10.06521
-  tps: 47.38368
+  tps: 46.10528
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
   dps: 8.31915
-  tps: 11.06471
+  tps: 9.44631
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
   dps: 14.52074
-  tps: 17.84164
+  tps: 15.18964
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 21.95139
-  tps: 57.74891
+  tps: 56.48411
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
   dps: 18.04809
-  tps: 19.04224
+  tps: 17.42384
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
   dps: 37.52428
-  tps: 36.36404
+  tps: 33.71204
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 10.85473
-  tps: 48.07875
+  tps: 46.81395
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
   dps: 8.89801
-  tps: 11.53668
+  tps: 9.91828
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
   dps: 16.67627
-  tps: 19.57853
+  tps: 16.92653
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 756.3503
-  tps: 707.39878
+  tps: 661.82838
  }
 }

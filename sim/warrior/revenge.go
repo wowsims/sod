@@ -72,8 +72,8 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		CritDamageBonus: warrior.impale(),
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		FlatThreatBonus:  121,
+		ThreatMultiplier: 2.25,
+		FlatThreatBonus:  2.25 * 2 * float64(RevengeLevel[rank]),
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
