@@ -1,11 +1,11 @@
 character_stats_results: {
  key: "TestSV-Lvl25-CharacterStats-Default"
  value: {
-  final_stats: 98.494
-  final_stats: 196.504
-  final_stats: 164.681
-  final_stats: 52.514
-  final_stats: 80.344
+  final_stats: 98.01
+  final_stats: 196.02
+  final_stats: 163.35
+  final_stats: 52.03
+  final_stats: 79.86
   final_stats: 25
   final_stats: 0
   final_stats: 0
@@ -15,33 +15,33 @@ character_stats_results: {
   final_stats: 0
   final_stats: 21
   final_stats: 6
-  final_stats: 5.43799
+  final_stats: 5.42105
   final_stats: 0
   final_stats: 0
-  final_stats: 523.718
+  final_stats: 522.5
   final_stats: 3
-  final_stats: 12.11996
+  final_stats: 12.09503
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1118.71
+  final_stats: 1111.45
   final_stats: 0
   final_stats: 0
-  final_stats: 2068.508
-  final_stats: 492.008
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
+  final_stats: 1007.04
+  final_stats: 491.04
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1793.9862
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1780.41
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 10
-  final_stats: 40
+  final_stats: 524.75
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -50,11 +50,11 @@ character_stats_results: {
 character_stats_results: {
  key: "TestSV-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 136.62
-  final_stats: 281.842
-  final_stats: 315.04
-  final_stats: 105.38
-  final_stats: 96.58
+  final_stats: 135.3
+  final_stats: 280.83
+  final_stats: 247.5
+  final_stats: 104.5
+  final_stats: 95.7
   final_stats: 42
   final_stats: 0
   final_stats: 0
@@ -64,33 +64,33 @@ character_stats_results: {
   final_stats: 0
   final_stats: 30
   final_stats: 6
-  final_stats: 14.13966
+  final_stats: 14.11845
   final_stats: 0
   final_stats: 0
-  final_stats: 974.572
+  final_stats: 972.03
   final_stats: 6
-  final_stats: 15.53981
+  final_stats: 15.50915
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 2405.7
+  final_stats: 2392.5
   final_stats: 0
   final_stats: 0
-  final_stats: 3140.684
-  final_stats: 1005.684
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
+  final_stats: 1956.66
+  final_stats: 1003.66
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 4001.14
-  final_stats: 13.5
-  final_stats: 13.5
-  final_stats: 83.5
-  final_stats: 13.5
-  final_stats: 23.5
   final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3258.2
+  final_stats: 13
+  final_stats: 30
+  final_stats: 40
+  final_stats: 30
+  final_stats: 40
+  final_stats: 894.25
   final_stats: 0
   final_stats: 14
   final_stats: 0
@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestSV-Lvl25-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.41784
+  weights: 0.44677
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.02418
-  weights: 1.8105
-  weights: 1.84758
+  weights: 0.0241
+  weights: 2.03318
+  weights: 1.77652
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.11943
+  weights: 0.11883
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 1.0914
+  weights: 1.09055
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.38434
-  weights: 8.96253
-  weights: 6.44758
+  weights: 0.38382
+  weights: 8.60687
+  weights: 6.63871
   weights: 0
   weights: 0
   weights: 0
@@ -175,7 +175,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03682
+  weights: 0.03674
   weights: 0
   weights: 0
   weights: 0
@@ -197,29 +197,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl25-Average-Default"
  value: {
-  dps: 209.916
-  tps: 99.92339
+  dps: 209.27722
+  tps: 99.58194
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 214.31131
-  tps: 110.43105
+  dps: 213.72499
+  tps: 110.87562
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 202.53852
-  tps: 97.07045
+  dps: 202.44
+  tps: 97.11311
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 257.78864
-  tps: 114.44836
+  dps: 257.33083
+  tps: 114.33382
  }
 }
 dps_results: {
@@ -246,22 +246,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 214.75532
-  tps: 107.86492
+  dps: 213.94845
+  tps: 109.24336
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 204.18385
-  tps: 95.57262
+  dps: 203.58847
+  tps: 95.91106
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 259.09256
-  tps: 112.61581
+  dps: 258.69044
+  tps: 112.50165
  }
 }
 dps_results: {
@@ -288,43 +288,43 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 206.98783
-  tps: 99.03491
+  dps: 206.32254
+  tps: 98.70545
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 872.80793
-  tps: 299.23756
+  dps: 870.86536
+  tps: 298.7251
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 880.0975
-  tps: 305.70182
+  dps: 878.17862
+  tps: 305.13898
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1452.58883
-  tps: 883.93653
+  dps: 1449.87488
+  tps: 882.95044
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 746.56071
-  tps: 211.82617
+  dps: 745.09712
+  tps: 211.58767
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 757.08428
-  tps: 222.58687
+  dps: 755.79071
+  tps: 222.33327
  }
 }
 dps_results: {
@@ -351,22 +351,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1463.21743
-  tps: 881.29361
+  dps: 1460.32546
+  tps: 880.32229
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 755.2676
-  tps: 211.88608
+  dps: 753.56104
+  tps: 211.57321
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 767.6757
-  tps: 226.16248
+  dps: 766.32663
+  tps: 225.90238
  }
 }
 dps_results: {
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 829.56173
-  tps: 281.17457
+  dps: 827.5296
+  tps: 280.69426
  }
 }

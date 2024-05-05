@@ -2,6 +2,7 @@ package stats
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -276,6 +277,13 @@ func (stats Stats) Invert() Stats {
 func (stats Stats) Multiply(multiplier float64) Stats {
 	for k := range stats {
 		stats[k] *= multiplier
+	}
+	return stats
+}
+
+func (stats Stats) Floor() Stats {
+	for k := range stats {
+		stats[k] = math.Floor(stats[k])
 	}
 	return stats
 }

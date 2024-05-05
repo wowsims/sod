@@ -232,9 +232,17 @@ var ExtraItemIcons = []int32{
 
 	// Single Elixirs
 	20007, // Mana Regen Elixir
-	13445, // Defense
 	20004, // Major Troll's Blood Potion
 	9088,  // Gift of Arthas
+
+	// Armor Elixirs
+	3389,  // Defense
+	8951,  // Greater
+	13445, // Superior Defense
+
+	// Health Elixirs
+	2458, // Minor Fortitude
+	3825, // Fortitude
 
 	// Strength
 	12451,
@@ -259,6 +267,8 @@ var ExtraItemIcons = []int32{
 	// Alcohol Buff
 	18284,
 	18269,
+	20709,
+	21114,
 	21151,
 
 	// Potions / In Battle Consumes
