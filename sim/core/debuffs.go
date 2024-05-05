@@ -1,11 +1,11 @@
 package core
 
 import (
-	"strconv"
-	"time"
-
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	"math"
+	"strconv"
+	"time"
 )
 
 type DebuffName int32
@@ -173,7 +173,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(CurseOfWeaknessAura(target, GetTristateValueInt32(debuffs.CurseOfWeakness, 1, 2), level))
+		MakePermanent(CurseOfWeaknessAura(target, GetTristateValueInt32(debuffs.CurseOfWeakness, 0, 3), level))
 	}
 
 	if debuffs.DemoralizingRoar != proto.TristateEffect_TristateEffectMissing {
@@ -189,6 +189,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	// Atk spd reduction
 	if debuffs.ThunderClap != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(ThunderClapAura(target, 8205, time.Second*22, GetTristateValueInt32(debuffs.ThunderClap, 10, 16)))
+	}
+	if debuffs.Waylay {
+		MakePermanent(WaylayAura(target))
 	}
 
 	// Miss
@@ -894,15 +897,24 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 		60: 640,
 	}[playerLevel]
 
+	ap := map[int32]float64{
+		25: 20,
+		40: 45,
+		50: 65,
+		60: 90,
+	}[playerLevel]
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Recklessness",
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, ap)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, arpen)
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, -ap)
 		},
 	})
 	return aura
@@ -937,12 +949,34 @@ func FaerieFireAura(target *Unit, playerLevel int32) *Aura {
 	return aura
 }
 
-// TODO: Classic
-func CurseOfWeaknessAura(target *Unit, points int32, _ int32) *Aura {
+func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
+	spellID := map[int32]int32{
+		25: 6205,
+		40: 7646,
+		50: 11707,
+		60: 11708,
+	}[playerLevel]
+
+	modDmgReduction := map[int32]float64{
+		25: 10,
+		40: 15,
+		50: 22,
+		60: 31,
+	}[playerLevel]
+
+	modDmgReduction *= []float64{1, 1.06, 1.13, 1.20}[points]
+	modDmgReduction = math.Floor(modDmgReduction)
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Weakness" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 50511},
+		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 2,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusDamage += modDmgReduction
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusDamage -= modDmgReduction
+		},
 	})
 	return aura
 }
@@ -986,14 +1020,26 @@ func HuntersMarkAura(target *Unit, points int32, playerLevel int32) *Aura {
 	return aura
 }
 
-// TODO: Classic
-func DemoralizingRoarAura(target *Unit, points int32, _ int32) *Aura {
+func DemoralizingRoarAura(target *Unit, points int32, playerLevel int32) *Aura {
+	spellID := map[int32]int32{
+		25: 1735,
+		40: 9490,
+		50: 9747,
+		60: 9898,
+	}[playerLevel]
+	baseAPReduction := map[int32]float64{
+		25: 55,
+		40: 73,
+		50: 108,
+		60: 138,
+	}[playerLevel]
+
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "DemoralizingRoar-" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 9898},
+		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Second * 30,
 	})
-	apReductionEffect(aura, 411*(1+0.08*float64(points)))
+	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.08*float64(points))))
 	return aura
 }
 
@@ -1003,8 +1049,8 @@ var DemoralizingShoutSpellId = [DemoralizingShoutRanks + 1]int32{0, 1160, 6190, 
 var DemoralizingShoutBaseAP = [DemoralizingShoutRanks + 1]float64{0, 45, 56, 76, 111, 146}
 var DemoralizingShoutLevel = [DemoralizingShoutRanks + 1]int{0, 14, 24, 34, 44, 54}
 
-func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32, _ int32) *Aura {
-	rank := LevelToDebuffRank[DemoralizingShout][target.Level]
+func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32, playerLevel int32) *Aura {
+	rank := LevelToDebuffRank[DemoralizingShout][playerLevel]
 	spellId := DemoralizingShoutSpellId[rank]
 	baseAPReduction := DemoralizingShoutBaseAP[rank]
 
@@ -1013,18 +1059,16 @@ func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts 
 		ActionID: ActionID{SpellID: spellId},
 		Duration: time.Duration(float64(time.Second*30) * (1 + 0.1*float64(boomingVoicePts))),
 	})
-	apReductionEffect(aura, baseAPReduction*(1+0.08*float64(impDemoShoutPts)))
+	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.08*float64(impDemoShoutPts))))
 	return aura
 }
 
-// TODO: Classic
 func VindicationAura(target *Unit, points int32, _ int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Vindication",
 		ActionID: ActionID{SpellID: 26016},
 		Duration: time.Second * 10,
 	})
-	apReductionEffect(aura, 287*float64(points))
 	return aura
 }
 

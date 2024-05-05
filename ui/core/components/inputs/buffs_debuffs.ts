@@ -662,11 +662,23 @@ export const FaerieFire = withLabel(
 	'Faerie Fire',
 );
 
-// TODO: Classic
-// export const MinorArmorDebuff = InputHelpers.makeMultiIconInput([
-// 	makeTristateDebuffInput(ActionId.fromSpellId(770), ActionId.fromSpellId(33602), 'faerieFire'),
-// 	makeBooleanDebuffInput({actionId: () => ActionId.fromSpellId(50511), fieldName: 'curseOfWeakness'}),
-// ], 'Minor ArP');
+export const curseOfWeaknessDebuff = withLabel(
+	makeTristateDebuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 702, minLevel: 4, maxLevel: 11 },
+				{ id: 1108, minLevel: 12, maxLevel: 21 },
+				{ id: 6205, minLevel: 22, maxLevel: 31 },
+				{ id: 6205, minLevel: 22, maxLevel: 31 },
+				{ id: 7646, minLevel: 32, maxLevel: 41 },
+				{ id: 11707, minLevel: 42, maxLevel: 51 },
+				{ id: 11708, minLevel: 52 },
+			]),
+		impId: ActionId.fromSpellId(18181),
+		fieldName: 'curseOfWeakness',
+	}),
+	'Curse of Weakness',
+);
 
 export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 	[
@@ -721,6 +733,10 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
 			multiplier: 10,
 			reverse: true,
 			fieldName: 'homunculi',
+		}),
+		makeBooleanDebuffInput({
+			actionId: () => ActionId.fromSpellId(408699),
+			fieldName: 'waylay',
 		}),
 	],
 	'Thunder Clap',
@@ -1151,16 +1167,13 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower],
 	},
-	// // {
-	// // 	config: MinorArmorDebuff,
-	// // 	picker: MultiIconPicker,
-	// // 	stats: [Stat.StatAttackPower]
-	// // },
 	{
 		config: BleedDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
+
+	// Magic
 	{
 		config: JudgementOfTheCrusader,
 		picker: IconPicker,
@@ -1201,6 +1214,8 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
 	},
+
+	// Defensive
 	{
 		config: AttackPowerDebuff,
 		picker: MultiIconPicker,
@@ -1209,6 +1224,11 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: MeleeAttackSpeedDebuff,
 		picker: MultiIconPicker,
+		stats: [Stat.StatArmor],
+	},
+	{
+		config: curseOfWeaknessDebuff,
+		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
