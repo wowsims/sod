@@ -56,33 +56,21 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput(
 	'Stats %',
 );
 
-export const ArmorBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeTristateRaidBuffInput({
-			actionId: player =>
-				player.getMatchingSpellActionId([
-					{ id: 465, maxLevel: 9 },
-					{ id: 10290, minLevel: 10, maxLevel: 19 },
-					{ id: 643, minLevel: 20, maxLevel: 29 },
-					{ id: 10291, minLevel: 30, maxLevel: 39 },
-					{ id: 1032, minLevel: 40, maxLevel: 49 },
-					{ id: 10292, minLevel: 50, maxLevel: 59 },
-					{ id: 10293, minLevel: 60 },
-				]),
-			impId: ActionId.fromSpellId(20142),
-			fieldName: 'devotionAura',
-		}),
-		makeBooleanRaidBuffInput({
-			actionId: player =>
-				player.getMatchingItemActionId([
-					{ id: 3013, maxLevel: 14 },
-					{ id: 1478, minLevel: 15, maxLevel: 29 },
-					{ id: 4421, minLevel: 30, maxLevel: 44 },
-					{ id: 10305, minLevel: 45 },
-				]),
-			fieldName: 'scrollOfProtection',
-		}),
-	],
+export const ArmorBuff = withLabel(
+	makeTristateRaidBuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 465, maxLevel: 9 },
+				{ id: 10290, minLevel: 10, maxLevel: 19 },
+				{ id: 643, minLevel: 20, maxLevel: 29 },
+				{ id: 10291, minLevel: 30, maxLevel: 39 },
+				{ id: 1032, minLevel: 40, maxLevel: 49 },
+				{ id: 10292, minLevel: 50, maxLevel: 59 },
+				{ id: 10293, minLevel: 60 },
+			]),
+		impId: ActionId.fromSpellId(20142),
+		fieldName: 'devotionAura',
+	}),
 	'Armor',
 );
 
@@ -115,19 +103,25 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 	'Stamina',
 );
 
-export const BloodPactBuff = withLabel(
-	makeTristateRaidBuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 6307, minLevel: 4, maxLevel: 13 },
-				{ id: 7804, minLevel: 14, maxLevel: 25 },
-				{ id: 7805, minLevel: 26, maxLevel: 37 },
-				{ id: 11766, minLevel: 38, maxLevel: 49 },
-				{ id: 11767, minLevel: 50 },
-			]),
-		impId: ActionId.fromSpellId(18696),
-		fieldName: 'bloodPact',
-	}),
+export const BloodPactBuff = InputHelpers.makeMultiIconInput(
+	[
+		makeTristateRaidBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 6307, minLevel: 4, maxLevel: 13 },
+					{ id: 7804, minLevel: 14, maxLevel: 25 },
+					{ id: 7805, minLevel: 26, maxLevel: 37 },
+					{ id: 11766, minLevel: 38, maxLevel: 49 },
+					{ id: 11767, minLevel: 50 },
+				]),
+			impId: ActionId.fromSpellId(18696),
+			fieldName: 'bloodPact',
+		}),
+		makeBooleanRaidBuffInput({
+			actionId: () => ActionId.fromSpellId(403215),
+			fieldName: 'commandingShout',
+		}),
+	],
 	'BloodPact',
 );
 
@@ -411,6 +405,15 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput(
 					{ id: 10958, minLevel: 56 },
 				]),
 			fieldName: 'shadowProtection',
+		}),
+		makeBooleanRaidBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 19876, minLevel: 28, maxLevel: 39 },
+					{ id: 19895, minLevel: 40, maxLevel: 51 },
+					{ id: 19896, minLevel: 52 },
+				]),
+			fieldName: 'shadowResistanceAura',
 		}),
 		// Nature
 		makeBooleanRaidBuffInput({
@@ -759,11 +762,23 @@ export const FaerieFire = withLabel(
 	'Faerie Fire',
 );
 
-// TODO: Classic
-// export const MinorArmorDebuff = InputHelpers.makeMultiIconInput([
-// 	makeTristateDebuffInput(ActionId.fromSpellId(770), ActionId.fromSpellId(33602), 'faerieFire'),
-// 	makeBooleanDebuffInput({actionId: () => ActionId.fromSpellId(50511), fieldName: 'curseOfWeakness'}),
-// ], 'Minor ArP');
+export const curseOfWeaknessDebuff = withLabel(
+	makeTristateDebuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 702, minLevel: 4, maxLevel: 11 },
+				{ id: 1108, minLevel: 12, maxLevel: 21 },
+				{ id: 6205, minLevel: 22, maxLevel: 31 },
+				{ id: 6205, minLevel: 22, maxLevel: 31 },
+				{ id: 7646, minLevel: 32, maxLevel: 41 },
+				{ id: 11707, minLevel: 42, maxLevel: 51 },
+				{ id: 11708, minLevel: 52 },
+			]),
+		impId: ActionId.fromSpellId(18181),
+		fieldName: 'curseOfWeakness',
+	}),
+	'Curse of Weakness',
+);
 
 export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 	[
@@ -791,6 +806,13 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 			impId: ActionId.fromSpellId(16862),
 			fieldName: 'demoralizingRoar',
 		}),
+		makeMultistateMultiplierDebuffInput({
+			actionId: () => ActionId.fromSpellId(402811),
+			numStates: 11,
+			multiplier: 10,
+			reverse: true,
+			fieldName: 'homunculi',
+		}),
 	],
 	'Attack Power',
 );
@@ -798,12 +820,25 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 // TODO: SoD Mangle
 export const BleedDebuff = withLabel(makeBooleanDebuffInput({ actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle' }), 'Bleed');
 
-export const MeleeAttackSpeedDebuff = withLabel(
-	makeTristateDebuffInput({
-		actionId: () => ActionId.fromSpellId(6343),
-		impId: ActionId.fromSpellId(12666),
-		fieldName: 'thunderClap',
-	}),
+export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
+	[
+		makeTristateDebuffInput({
+			actionId: () => ActionId.fromSpellId(6343),
+			impId: ActionId.fromSpellId(12666),
+			fieldName: 'thunderClap',
+		}),
+		makeMultistateMultiplierDebuffInput({
+			actionId: () => ActionId.fromSpellId(402808),
+			numStates: 11,
+			multiplier: 10,
+			reverse: true,
+			fieldName: 'homunculi',
+		}),
+		makeBooleanDebuffInput({
+			actionId: () => ActionId.fromSpellId(408699),
+			fieldName: 'waylay',
+		}),
+	],
 	'Thunder Clap',
 );
 
@@ -1000,7 +1035,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: ArmorBuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
@@ -1010,7 +1045,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: BloodPactBuff,
-		picker: IconPicker,
+		picker: MultiIconPicker,
 		stats: [Stat.StatStamina],
 	},
 	{
@@ -1237,16 +1272,13 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower],
 	},
-	// // {
-	// // 	config: MinorArmorDebuff,
-	// // 	picker: MultiIconPicker,
-	// // 	stats: [Stat.StatAttackPower]
-	// // },
 	{
 		config: BleedDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
+
+	// Magic
 	{
 		config: JudgementOfTheCrusader,
 		picker: IconPicker,
@@ -1287,6 +1319,8 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
 	},
+
+	// Defensive
 	{
 		config: AttackPowerDebuff,
 		picker: MultiIconPicker,
@@ -1294,6 +1328,11 @@ export const DEBUFFS_CONFIG = [
 	},
 	{
 		config: MeleeAttackSpeedDebuff,
+		picker: MultiIconPicker,
+		stats: [Stat.StatArmor],
+	},
+	{
+		config: curseOfWeaknessDebuff,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},

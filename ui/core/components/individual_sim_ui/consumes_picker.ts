@@ -23,6 +23,7 @@ export class ConsumesPicker extends Component {
 			this.buildWeaponImbuePicker();
 			this.buildFoodPicker();
 			this.buildPhysicalBuffPickers();
+			this.buildDefensiveBuffPickers();
 			this.buildSpellPowerBuffPickers();
 			this.buildMiscConsumesPickers();
 			this.buildEngPickers();
@@ -113,10 +114,12 @@ export class ConsumesPicker extends Component {
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));
+		const alcoholOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
 
 		const pickers = [
 			buildIconInput(foodsElem, this.simUI.player, foodOptions),
 			buildIconInput(foodsElem, this.simUI.player, ConsumablesInputs.DragonBreathChili),
+			buildIconInput(foodsElem, this.simUI.player, alcoholOptions),
 		];
 
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));
@@ -154,6 +157,37 @@ export class ConsumesPicker extends Component {
 			buildIconInput(physicalConsumesElem, this.simUI.player, apBuffOptions),
 			buildIconInput(physicalConsumesElem, this.simUI.player, agiBuffOptions),
 			buildIconInput(physicalConsumesElem, this.simUI.player, strBuffOptions),
+		];
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));
+		this.updateRow(row, pickers);
+	}
+
+	private buildDefensiveBuffPickers() {
+		const fragment = document.createElement('fragment');
+		fragment.innerHTML = `
+			<div class="consumes-row input-root input-inline">
+				<label class="form-label">Defensive</label>
+				<div class="consumes-row-inputs consumes-defensive"></div>
+			</div>
+		`;
+
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const defensiveConsumesElem = this.rootElem.querySelector('.consumes-defensive') as HTMLElement;
+
+		const healthBuffOptions = ConsumablesInputs.makeHealthConsumeInput(
+			relevantStatOptions(ConsumablesInputs.HEALTH_CONSUMES_CONFIG, this.simUI), 
+			'Health'
+		);
+
+		const armorBuffOptions = ConsumablesInputs.makeArmorConsumeInput(
+			relevantStatOptions(ConsumablesInputs.ARMOR_CONSUMES_CONFIG, this.simUI), 
+			'Armor'
+		);
+
+		const pickers = [
+			buildIconInput(defensiveConsumesElem, this.simUI.player, healthBuffOptions),
+			buildIconInput(defensiveConsumesElem, this.simUI.player, armorBuffOptions),
 		];
 
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));

@@ -308,6 +308,11 @@ enum Potions {
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
+	RagePotion = 6;
+	GreatRagePotion = 7;
+	MightyRagePotion = 8;
+	LesserStoneshieldPotion = 9;
+	GreaterStoneshieldPotion = 10;
 }
 
 enum Conjured {
@@ -335,6 +340,15 @@ enum Flask {
 	FlaskOfEverlastingNightmares = 6;
 }
 
+enum Alcohol {
+	AlcoholUnknown = 0;
+	AlcoholRumseyRumBlackLabel = 1;
+	AlcoholGordokGreenGrog = 2;
+	AlcoholRumseyRumDark = 3;
+	AlcoholRumseyRumLight = 4;
+	AlcoholKreegsStoutBeatdown = 5;
+}
+
 enum AgilityElixir {
 	AgilityElixirUnknown = 0;
 	ElixirOfTheMongoose = 1;
@@ -342,6 +356,21 @@ enum AgilityElixir {
 	ElixirOfLesserAgility = 3;
 	ScrollOfAgility = 4;
 	ElixirOfAgility = 5;
+}
+
+enum ArmorElixir {
+	ArmorElixirUnknown = 0;
+	ElixirOfSuperiorDefense = 1;
+	ElixirOfGreaterDefense = 2;
+	ElixirOfDefense = 3;
+	ElixirOfMinorDefense = 4;
+	ScrollOfProtection = 5;
+}
+
+enum HealthElixir {
+	HealthElixirUnknown = 0;
+	ElixirOfFortitude = 1;
+	ElixirOfMinorFortitude = 2;
 }
 
 enum ManaRegenElixir {
@@ -486,7 +515,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 38
+// NextIndex: 40
 message RaidBuffs {
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
@@ -524,6 +553,7 @@ message RaidBuffs {
 
 	// Resistances
 	bool shadow_protection = 16;
+	bool shadow_resistance_aura = 39;
 	bool nature_resistance_totem = 17;
 	bool aspect_of_the_wild = 18;
 	bool frost_resistance_aura = 19;
@@ -551,6 +581,7 @@ message RaidBuffs {
 	int32 demonic_pact = 32;
 	bool horn_of_lordaeron = 33;
 	bool aspect_of_the_lion = 34;
+	bool commanding_shout = 38;
 }
 
 // Buffs that affect a single party.
@@ -605,7 +636,7 @@ message IndividualBuffs {
 	bool thrown_specialization = 29;
 }
 
-// NextIndex: 28
+// NextIndex: 31
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -630,12 +661,15 @@ message Consumes {
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
 	ZanzaBuff zanza_buff = 27;
+	ArmorElixir armor_elixir = 28;
+	HealthElixir health_elixir = 29;
+	Alcohol alcohol = 30;
 
 	AtalaiMojo atalai_mojo = 25 [deprecated=true];
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 33
+// NextIndex: 35
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -674,6 +708,7 @@ message Debuffs {
 	TristateEffect demoralizing_shout = 15;
 
 	TristateEffect thunder_clap = 16;
+	bool waylay = 34;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;

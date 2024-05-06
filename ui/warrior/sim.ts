@@ -16,7 +16,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				'Wrecking crew assumed as lowest priority of enrage. Overwritten by regular enrage'],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatMeleeHaste, Stat.StatArmor],
+	epStats: [
+		Stat.StatStrength, 
+		Stat.StatAgility, 
+		Stat.StatAttackPower, 
+		Stat.StatMeleeHit, 
+		Stat.StatMeleeCrit, 
+		Stat.StatMeleeHaste, 
+		Stat.StatStamina,
+		Stat.StatArmor],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
