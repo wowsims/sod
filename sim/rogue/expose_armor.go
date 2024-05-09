@@ -40,7 +40,8 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 25,
+			Cost:   25,
+			Refund: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

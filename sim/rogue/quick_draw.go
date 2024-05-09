@@ -34,7 +34,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
-			Refund: 0.8,
+			Refund: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
