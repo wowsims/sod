@@ -19,6 +19,13 @@ func (warrior *Warrior) registerHamstringSpell() {
 		60: 27584,
 	}[warrior.Level]
 
+	spell_level := map[int32]int32{
+		25: 8,
+		40: 32,
+		50: 32,
+		60: 54,
+	}[warrior.Level]
+
 	warrior.Hamstring = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -39,7 +46,8 @@ func (warrior *Warrior) registerHamstringSpell() {
 		CritDamageBonus: warrior.impale(),
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 1.25,
+		FlatThreatBonus:  1.25 * 2 * float64(spell_level),
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
