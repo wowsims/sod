@@ -240,7 +240,8 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt time.Duration
+	swingAt     time.Duration
+	lastSwingAt time.Duration
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -278,6 +279,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
+		wa.lastSwingAt = sim.CurrentTime
 
 		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
@@ -807,17 +809,17 @@ func (unit *Unit) applyParryHaste() {
 				return
 			}
 
-			remainingTime := aura.Unit.AutoAttacks.mh.swingAt - sim.CurrentTime
+			currentSwingTime := aura.Unit.AutoAttacks.mh.swingAt - aura.Unit.AutoAttacks.mh.lastSwingAt
 			swingSpeed := aura.Unit.AutoAttacks.mh.curSwingDuration
 			minRemainingTime := time.Duration(float64(swingSpeed) * 0.2) // 20% of Swing Speed
 			defaultReduction := minRemainingTime * 2                     // 40% of Swing Speed
 
-			if remainingTime <= minRemainingTime {
+			if currentSwingTime <= minRemainingTime {
 				return
 			}
 
-			parryHasteReduction := min(defaultReduction, remainingTime-minRemainingTime)
-			newReadyAt := aura.Unit.AutoAttacks.mh.swingAt - parryHasteReduction
+			newReadyAt := max(aura.Unit.AutoAttacks.mh.swingAt-defaultReduction, aura.Unit.AutoAttacks.mh.lastSwingAt+minRemainingTime)
+			parryHasteReduction := newReadyAt - aura.Unit.AutoAttacks.mh.swingAt
 			if sim.Log != nil {
 				aura.Unit.Log(sim, "MH Swing reduced by %s due to parry haste, will now occur at %s", parryHasteReduction, newReadyAt)
 			}
