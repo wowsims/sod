@@ -31,6 +31,7 @@ func (shaman *Shaman) applyLavaLash() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
+			// Refund: 0.8, -- Not implemented for ManaCostOption
 		},
 
 		Cast: core.CastConfig{
@@ -50,7 +51,11 @@ func (shaman *Shaman) applyLavaLash() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := (spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())) *
 				shaman.AutoAttacks.OHConfig().DamageMultiplier
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			if !result.Landed() {
+				spell.IssueRefund(sim)
+			}
 		},
 	})
 }
