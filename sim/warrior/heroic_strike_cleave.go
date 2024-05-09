@@ -19,6 +19,14 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 		60: 11567,
 	}[warrior.Level]
 
+	// No known equation
+	threat := map[int32]float64{
+		25: 68,  //guess
+		40: 103, //guess
+		50: 120,
+		60: 173,
+	}[warrior.Level]
+
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -35,7 +43,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  259,
+		FlatThreatBonus:  threat,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -72,6 +80,13 @@ func (warrior *Warrior) registerCleaveSpell() {
 		60: 20569,
 	}[warrior.Level]
 
+	threat := map[int32]float64{
+		25: 20, //guess
+		40: 60, //guess
+		50: 80,
+		60: 100,
+	}[warrior.Level]
+
 	flatDamageBonus += []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
@@ -91,7 +106,7 @@ func (warrior *Warrior) registerCleaveSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  225,
+		FlatThreatBonus:  threat,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -15,6 +15,13 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		60: 11597,
 	}[warrior.Level]
 
+	spell_level := map[int32]int32{
+		25: 22,
+		40: 34,
+		50: 46,
+		60: 58,
+	}[warrior.Level]
+
 	var effectiveStacks int32
 	var canApplySunder bool
 
@@ -72,7 +79,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  360, // TODO Warrior: set threat according to spell's level
+		FlatThreatBonus:  2.25 * 2 * float64(spell_level),
 
 		RelatedAuras: []core.AuraArray{warrior.SunderArmorAuras},
 
