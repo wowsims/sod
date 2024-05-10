@@ -129,7 +129,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttack(sim, 1)
+				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 18797})
 			},
 		})
 	})
@@ -390,7 +390,7 @@ func init() {
 
 				if sim.RandomFloat("HandOfJustice") < 0.02 {
 					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1)
+					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
 				}
 			},
 		})
@@ -448,7 +448,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttack(sim, 1)
+				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 21919})
 			},
 		})
 	})

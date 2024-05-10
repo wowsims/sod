@@ -623,7 +623,10 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 }
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
-func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32) {
+func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID) {
+	if sim.Log != nil {
+		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
