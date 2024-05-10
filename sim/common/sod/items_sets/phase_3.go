@@ -261,7 +261,7 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				c.AutoAttacks.ExtraMHAttack(sim)
+				c.AutoAttacks.ExtraMHAttack(sim, 1)
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{

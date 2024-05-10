@@ -240,8 +240,9 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt     time.Duration
-	lastSwingAt time.Duration
+	swingAt      time.Duration
+	lastSwingAt  time.Duration
+	extraAttacks int32
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -284,6 +285,8 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
+
+		wa.extraAttacks = 0
 
 		if isExtraAttack {
 			wa.spell.SetMetricsSplit(0)
@@ -620,10 +623,11 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 }
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
-func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
+func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32) {
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	aa.mh.extraAttacks += attacks
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it

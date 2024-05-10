@@ -1947,7 +1947,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 				wsBuffAura.Activate(sim)
 				// aura is up _after_ the triggering swing lands, so the aura always stays up after the extra attack
 				wsBuffAura.SetStacks(sim, 2)
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim)
+				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1)
 			}
 		},
 	}))
@@ -2017,7 +2017,7 @@ func ApplyWindfury(character *Character) *Aura {
 				} else {
 					windfuryBuffAura.SetStacks(sim, 2)
 				}
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim)
+				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1)
 			}
 		},
 	}))
