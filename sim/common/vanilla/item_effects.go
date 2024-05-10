@@ -30,6 +30,7 @@ const (
 	Firebreather             = 10797
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
+	Ironfoe                  = 11684
 	HandOfJustice            = 11815
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
@@ -449,6 +450,20 @@ func init() {
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 21919})
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 15494},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AutoAttacks.ExtraMHAttack(sim, 2, core.ActionID{SpellID: 15494})
 			},
 		})
 	})
