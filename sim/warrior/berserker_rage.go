@@ -20,10 +20,9 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 
-		// Copy from rage.go
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			rageConversionTaken := 0.0091107836*float64(spell.Unit.Level^2) + 3.225598133*float64(spell.Unit.Level) + 4.2652911
-			generatedRage := result.Damage * 2.5 / rageConversionTaken
+			rageConversionDamageTaken := core.GetRageConversion(spell.Unit.Level)
+			generatedRage := result.Damage * 2.5 / rageConversionDamageTaken
 			generatedRage *= rageMultiplier
 			warrior.AddRage(sim, generatedRage, rageMetrics)
 		},

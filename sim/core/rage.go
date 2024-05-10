@@ -27,19 +27,25 @@ type RageBarOptions struct {
 	RageMultiplier float64
 }
 
+func GetRageConversion(attacker_level int32) float64 {
+	if attacker_level == 25 {
+		return 82.25 // Tested
+	} else if attacker_level == 40 {
+		return 140.5 // Tested
+	} else if attacker_level < 45 {
+		// Poor fit, but better then current formula below 45
+		return 0.0215*float64(attacker_level^2) + 2.66*float64(attacker_level) + 0.89
+	} else {
+		// Rage conversion is adjusted according to target stats (https://web.archive.org/web/20201118213002/https://blue.mmo-champion.com/topic/18325-the-new-rage-formula-by-kalgan/)\
+		// So this is probably only the base value formula and will be slightly wrong for most target
+		return 0.0091107836*float64(attacker_level^2) + 3.225598133*float64(attacker_level) + 4.2652911
+	}
+}
+
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	rageFromDamageTakenMetrics := unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDamageTaken})
-	// Rage conversion is adjusted according to target stats (https://web.archive.org/web/20201118213002/https://blue.mmo-champion.com/topic/18325-the-new-rage-formula-by-kalgan/)\
-	// So this is probably only the base value formula and will be slightly wrong for most target
-	rageConversion := 0.0091107836*float64(unit.Level^2) + 3.225598133*float64(unit.Level) + 4.2652911
 
-	// Observed Rage Conversion from testing (This is more accurate)
-	if unit.Level == 25 {
-		rageConversion = 82.25
-	} else if unit.Level == 40 {
-		rageConversion = 140.5
-	}
-
+	rageConversion := GetRageConversion(unit.Level)
 	unit.SetCurrentPowerBar(RageBar)
 	unit.RegisterAura(Aura{
 		Label:    "RageBar",
@@ -83,9 +89,8 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if unit.GetCurrentPowerBar() != RageBar {
 				return
 			}
-			// based on attacker's level, not player's
-			rageConversionTaken := 0.0091107836*float64(spell.Unit.Level^2) + 3.225598133*float64(spell.Unit.Level) + 4.2652911
-			generatedRage := result.Damage * 2.5 / rageConversionTaken
+			rageConversionDamageTaken := GetRageConversion(spell.Unit.Level)
+			generatedRage := result.Damage * 2.5 / rageConversionDamageTaken
 			unit.AddRage(sim, generatedRage, rageFromDamageTakenMetrics)
 		},
 	})
