@@ -270,6 +270,7 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
 				ProcChance: 0.03,
+				ICD:        200 * time.Millisecond,
 				Handler:    handler,
 			})
 		},
