@@ -83,7 +83,9 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if unit.GetCurrentPowerBar() != RageBar {
 				return
 			}
-			generatedRage := result.Damage * 2.5 / rageConversion
+			// based on attacker's level, not player's
+			rageConversionTaken := 0.0091107836*float64(spell.Unit.Level^2) + 3.225598133*float64(spell.Unit.Level) + 4.2652911
+			generatedRage := result.Damage * 2.5 / rageConversionTaken
 			unit.AddRage(sim, generatedRage, rageFromDamageTakenMetrics)
 		},
 	})
