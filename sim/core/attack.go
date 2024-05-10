@@ -286,7 +286,14 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
-		wa.extraAttacks = 0
+		if wa.extraAttacks > 0 {
+			// Ignore the first extra attack, that was used to speed up next attack
+			for i := int32(1); i < wa.extraAttacks; i++ {
+				// use original attacks for subsequent extra Attacks
+				wa.spell.Cast(sim, wa.unit.CurrentTarget)
+			}
+			wa.extraAttacks = 0
+		}
 
 		if isExtraAttack {
 			wa.spell.SetMetricsSplit(0)

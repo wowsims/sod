@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-Average-Default"
  value: {
-  dps: 292.58782
-  tps: 207.73735
+  dps: 292.58557
+  tps: 207.73575
  }
 }
 dps_results: {
@@ -295,8 +295,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl40-Average-Default"
  value: {
-  dps: 634.70159
-  tps: 450.63813
+  dps: 634.69923
+  tps: 450.63646
  }
 }
 dps_results: {

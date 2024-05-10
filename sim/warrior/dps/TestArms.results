@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.22892
-  weights: 0.83088
+  weights: 1.21516
+  weights: 0.95892
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.42284
-  weights: 15.43844
-  weights: 13.87321
+  weights: 0.37515
+  weights: 16.11781
+  weights: 13.06259
   weights: 0
   weights: 0
   weights: 0
@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
-  dps: 1331.10887
-  tps: 1126.48341
+  dps: 1348.89873
+  tps: 1141.30113
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1227.63319
-  tps: 1039.01461
+  dps: 1245.05006
+  tps: 1055.23141
  }
 }
