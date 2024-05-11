@@ -240,8 +240,9 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt     time.Duration
-	lastSwingAt time.Duration
+	swingAt      time.Duration
+	lastSwingAt  time.Duration
+	extraAttacks int32
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -284,6 +285,15 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
+
+		if wa.extraAttacks > 0 {
+			// Ignore the first extra attack, that was used to speed up next attack
+			for i := int32(1); i < wa.extraAttacks; i++ {
+				// use original attacks for subsequent extra Attacks
+				wa.spell.Cast(sim, wa.unit.CurrentTarget)
+			}
+			wa.extraAttacks = 0
+		}
 
 		if isExtraAttack {
 			wa.spell.SetMetricsSplit(0)
@@ -620,10 +630,14 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 }
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
-func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
+func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID) {
+	if sim.Log != nil {
+		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	aa.mh.extraAttacks += attacks
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it

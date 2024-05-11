@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl25-Average-Default"
  value: {
-  dps: 209.27722
-  tps: 99.58194
+  dps: 209.34676
+  tps: 99.6615
  }
 }
 dps_results: {
@@ -211,15 +211,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 202.44
-  tps: 97.11311
+  dps: 202.27027
+  tps: 96.98789
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 257.33083
-  tps: 114.33382
+  dps: 257.32355
+  tps: 114.48659
  }
 }
 dps_results: {
@@ -232,15 +232,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 100.55451
-  tps: 54.18102
+  dps: 100.62444
+  tps: 54.26406
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 125.21638
-  tps: 60.60317
+  dps: 125.21504
+  tps: 60.53762
  }
 }
 dps_results: {
@@ -253,15 +253,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 203.58847
-  tps: 95.91106
+  dps: 203.34542
+  tps: 95.6315
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 258.69044
-  tps: 112.50165
+  dps: 258.46288
+  tps: 112.44074
  }
 }
 dps_results: {
@@ -274,22 +274,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 100.47232
-  tps: 53.50536
+  dps: 100.43025
+  tps: 53.46346
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 124.46336
-  tps: 61.93222
+  dps: 124.41494
+  tps: 61.84778
  }
 }
 dps_results: {
  key: "TestSV-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 206.32254
-  tps: 98.70545
+  dps: 206.37504
+  tps: 98.78682
  }
 }
 dps_results: {
@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 878.17862
-  tps: 305.13898
+  dps: 878.17624
+  tps: 305.14763
  }
 }
 dps_results: {
