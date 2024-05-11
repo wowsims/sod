@@ -138,6 +138,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.SunderArmor = warrior.newSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
+	warrior.RegisterShieldBlockCD()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
