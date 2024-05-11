@@ -140,7 +140,9 @@ func (warrior *Warrior) applyConsumedByRage() {
 			}
 
 			warrior.ConsumedByRageAura.Activate(sim)
-			warrior.ConsumedByRageAura.SetStacks(sim, 12)
+			if warrior.ConsumedByRageAura.IsActive() {
+				warrior.ConsumedByRageAura.SetStacks(sim, 12)
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !warrior.ConsumedByRageAura.IsActive() {

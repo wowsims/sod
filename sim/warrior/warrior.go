@@ -45,6 +45,7 @@ type Warrior struct {
 	RampageAura            *core.Aura
 	rampageValidAura       *core.Aura
 	WreckingCrewEnrageAura *core.Aura
+	EnrageAura             *core.Aura
 
 	// Rune passive
 	FocusedRageDiscount float64
