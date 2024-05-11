@@ -6,7 +6,7 @@ import {
 	ArmorElixir,
 	Consumes,
 	Debuffs,
-	EnchantedSigil,
+	Food,
 	HealthElixir,
 	IndividualBuffs,
 	Potions,
@@ -16,6 +16,7 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import { Warrior_Options as WarriorOptions, WarriorShout } from '../core/proto/warrior.js';
@@ -160,35 +161,40 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfAgility,
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
 	dragonBreathChili: true,
+	food: Food.FoodTenderWolfSteak,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DenseSharpeningStone,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	strengthBuff: StrengthBuff.ElixirOfGiants,
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	healthElixir: HealthElixir.HealthElixirUnknown,
 	alcohol: Alcohol.AlcoholUnknown,
 	defaultPotion: Potions.MightyRagePotion,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
+	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
-	devotionAura: TristateEffect.TristateEffectImproved,
+	commandingShout: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	stoneskinTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
-	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectRegular,
 	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	faerieFire: true,
+	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
 	mangle: true,
 	sunderArmor: true,
