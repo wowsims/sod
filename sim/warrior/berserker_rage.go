@@ -12,11 +12,20 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: 18499}
+	rageMetrics := warrior.NewRageMetrics(actionID)
+	rageMultiplier := 1.0
 
 	warrior.BerserkerRageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Berserker Rage",
 		ActionID: actionID,
 		Duration: time.Second * 10,
+
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rageConversionDamageTaken := core.GetRageConversion(spell.Unit.Level)
+			generatedRage := result.Damage * 2.5 / rageConversionDamageTaken
+			generatedRage *= rageMultiplier
+			warrior.AddRage(sim, generatedRage, rageMetrics)
+		},
 	})
 
 	warrior.BerserkerRage = warrior.RegisterSpell(core.SpellConfig{
