@@ -50,7 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearFuryPhase2.gear,
+		gear: Presets.GearFuryPhase3.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -72,7 +72,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.TalentsPhase2Fury.data,
+		talents: Presets.TalentsPhase3Fury.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -160,10 +160,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][1].gear,
 					2: Presets.GearPresets[Phase.Phase2][1].gear,
+					3: Presets.GearPresets[Phase.Phase3][1].gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][1].gear,
 					2: Presets.GearPresets[Phase.Phase2][1].gear,
+					3: Presets.GearPresets[Phase.Phase3][1].gear,
 				},
 			},
 		},

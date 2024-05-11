@@ -41,8 +41,8 @@ import Phase3DWGear from './gear_sets/phase_3_dw.gear.json';
 
 export const GearArmsPhase1 = PresetUtils.makePresetGear('P1 Arms 2H', Phase1Gear, { talentTree: 0 });
 export const GearArmsDWPhase1 = PresetUtils.makePresetGear('P1 Arms DW', Phase1DWGear, { talentTree: 0 });
-export const GearArmsPhase2 = PresetUtils.makePresetGear('P2 2H', Phase22HGear, { talentTree: 0 });
 export const GearFuryPhase1 = PresetUtils.makePresetGear('P1 DW Fury', Phase1Gear, { talentTree: 1 });
+export const GearArmsPhase2 = PresetUtils.makePresetGear('P2 2H', Phase22HGear, { talentTree: 0 });
 export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 DW', Phase2DWGear, { talentTree: 1 });
 export const GearArmsPhase3 = PresetUtils.makePresetGear('P3 2H', Phase32HGear, { talentTree: 0 });
 export const GearFuryPhase3 = PresetUtils.makePresetGear('P3 DW', Phase3DWGear, { talentTree: 1 });
@@ -128,7 +128,7 @@ export const TalentsPhase3Arms = {
 	}),
 }
 
-export const TalentPhase3Fury = {
+export const TalentsPhase3Fury = {
 	name: 'P3 Fury',
 	data: SavedTalents.create({
 		talentsString: '303040003-0505000540501003'
@@ -139,13 +139,13 @@ export const TalentPhase3Fury = {
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
-	[Phase.Phase3]: [TalentsPhase3Arms, TalentPhase3Fury],
+	[Phase.Phase3]: [TalentsPhase3Arms, TalentsPhase3Fury],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultTalentsFury = TalentPresets[Phase.Phase2][1];
 export const DefaultTalentsArms = TalentPresets[Phase.Phase3][0];
+export const DefaultTalentsFury = TalentPresets[Phase.Phase3][1];
 
 export const DefaultTalents = DefaultTalentsArms;
 
@@ -162,7 +162,6 @@ export const DefaultOptions = WarriorOptions.create({
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfAgility,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DenseSharpeningStone,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
@@ -183,7 +182,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectRegular,
-	sparkOfInspiration: true,
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 });
 
@@ -196,6 +195,6 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-	profession1: Profession.Enchanting,
-	profession2: Profession.Leatherworking,
+	profession1: Profession.Blacksmithing,
+	profession2: Profession.Engineering,
 };
