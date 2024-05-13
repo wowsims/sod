@@ -16,6 +16,8 @@ export const LEVEL_THRESHOLDS: Record<Phase, number> = {
 
 export const CURRENT_PHASE = Phase.Phase3;
 
+export const LEVEL_BRACKETS = [25, 40, 50, 60];
+
 // Github pages serves our site under the /sod directory (because the repo name is wotlk)
 export const REPO_NAME = 'sod';
 

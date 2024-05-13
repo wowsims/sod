@@ -99,7 +99,7 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Lvl50-CharacterStats-Default"
  value: {
-  final_stats: 241.164
+  final_stats: 199.584
   final_stats: 153.252
   final_stats: 344.52
   final_stats: 308.88
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 26.7247
   final_stats: 0
   final_stats: 0
-  final_stats: 1006.912
+  final_stats: 923.752
   final_stats: 5
   final_stats: 30.3424
   final_stats: 0
@@ -491,8 +491,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1365.35469
-  tps: 1217.17427
+  dps: 1363.45477
+  tps: 1215.26329
  }
 }
 dps_results: {
@@ -582,7 +582,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1353.27178
-  tps: 1205.89641
+  dps: 1351.57091
+  tps: 1204.18523
  }
 }
