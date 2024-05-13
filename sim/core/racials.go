@@ -45,6 +45,10 @@ func applyRaceEffects(agent Agent) {
 		character.AddMajorCooldown(MajorCooldown{
 			Spell: spell,
 			Type:  CooldownTypeSurvival,
+			ShouldActivate: func(s *Simulation, c *Character) bool {
+				// Only castable with manual APL Action
+				return false
+			},
 		})
 	case proto.Race_RaceGnome:
 		character.AddStat(stats.ArcaneResistance, 10)
