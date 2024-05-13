@@ -1,7 +1,7 @@
+import { LEVEL_BRACKETS } from '../../constants/other';
 import * as Tooltips from '../../constants/tooltips';
 import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
-import { simLaunchStatuses } from '../../launched_sims';
 import { Player } from '../../player';
 import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs, Spec } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
@@ -110,10 +110,9 @@ export class SettingsTab extends SimTab {
 
 		new PresetBuildsPicker(contentBlock.bodyElement, this.simUI);
 
-		const levels = [25, 40, 50, 60].filter((_level, i) => i < simLaunchStatuses[this.simUI.player.spec].phase);
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			label: 'Level',
-			values: levels.map(level => {
+			values: LEVEL_BRACKETS.map(level => {
 				return {
 					name: `Level ${level}`,
 					value: level,
@@ -220,13 +219,13 @@ export class SettingsTab extends SimTab {
 			const contentBlock = new ContentBlock(this.column1, 'other-settings', {
 				header: { title: 'Improved Shadow Bolt' },
 			});
-	
+
 			this.configureInputSection(contentBlock.bodyElement, IsbConfig);
 
 			TypedEvent.onAny([this.simUI.player.talentsChangeEmitter, this.simUI.player.getRaid()!.debuffsChangeEmitter]).on(() => {
-				const isWlAndIsb = (this.simUI.player as Player<Spec.SpecWarlock>)?.getTalents().improvedShadowBolt > 0
-				const isTankWlAndIsb = (this.simUI.player as Player<Spec.SpecTankWarlock>)?.getTalents().improvedShadowBolt > 0
-				const externalIsb = this.simUI.player.getRaid()?.getDebuffs()?.improvedShadowBolt == true
+				const isWlAndIsb = (this.simUI.player as Player<Spec.SpecWarlock>)?.getTalents().improvedShadowBolt > 0;
+				const isTankWlAndIsb = (this.simUI.player as Player<Spec.SpecTankWarlock>)?.getTalents().improvedShadowBolt > 0;
+				const externalIsb = this.simUI.player.getRaid()?.getDebuffs()?.improvedShadowBolt == true;
 				if (externalIsb || isWlAndIsb || isTankWlAndIsb) {
 					contentBlock.rootElem.classList.remove('hide');
 				} else {
