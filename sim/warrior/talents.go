@@ -25,6 +25,7 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.applyTwoHandedWeaponSpecialization()
 	warrior.applyWeaponSpecializations()
 	warrior.applyUnbridledWrath()
+	warrior.applyEnrage()
 	warrior.applyFlurry()
 	warrior.applyShieldSpecialization()
 	warrior.registerDeathWishCD()
@@ -148,7 +149,7 @@ func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				warrior.AutoAttacks.ExtraMHAttack(sim)
+				warrior.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 12815})
 			}
 		},
 	})
@@ -176,6 +177,58 @@ func (warrior *Warrior) applyUnbridledWrath() {
 
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.RandomFloat("Unbrided Wrath") < procChance {
 				warrior.AddRage(sim, 1, rageMetrics)
+			}
+		},
+	})
+}
+
+func (warrior *Warrior) applyEnrage() {
+	if warrior.Talents.Enrage == 0 {
+		return
+	}
+
+	warrior.EnrageAura = warrior.GetOrRegisterAura(core.Aura{
+		Label:     "Enrage",
+		ActionID:  core.ActionID{SpellID: 13048},
+		Duration:  time.Second * 12,
+		MaxStacks: 12,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.05*float64(warrior.Talents.Enrage)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + 0.05*float64(warrior.Talents.Enrage)
+		},
+	})
+
+	warrior.EnrageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: 5 * float64(warrior.Talents.Enrage)})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Enrage Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !warrior.EnrageAura.IsActive() {
+				return
+			}
+
+			if spell.ProcMask.Matches(core.ProcMaskMelee) {
+				warrior.EnrageAura.RemoveStack(sim)
+			}
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if !result.Outcome.Matches(core.OutcomeCrit) {
+				return
+			}
+
+			warrior.EnrageAura.Activate(sim)
+			if warrior.EnrageAura.IsActive() {
+				warrior.EnrageAura.SetStacks(sim, 12)
 			}
 		},
 	})
@@ -243,7 +296,7 @@ func (warrior *Warrior) applyShieldSpecialization() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
+			if result.Outcome.Matches(core.OutcomeBlock) {
 				if sim.Proc(procChance, "Shield Specialization") {
 					warrior.AddRage(sim, 1.0, rageMetrics)
 				}

@@ -45,6 +45,7 @@ type Warrior struct {
 	RampageAura            *core.Aura
 	rampageValidAura       *core.Aura
 	WreckingCrewEnrageAura *core.Aura
+	EnrageAura             *core.Aura
 
 	// Rune passive
 	FocusedRageDiscount float64
@@ -138,6 +139,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.SunderArmor = warrior.newSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
+	warrior.RegisterShieldBlockCD()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

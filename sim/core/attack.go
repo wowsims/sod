@@ -240,7 +240,9 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt time.Duration
+	swingAt      time.Duration
+	lastSwingAt  time.Duration
+	extraAttacks int32
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -278,10 +280,20 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
+		wa.lastSwingAt = sim.CurrentTime
 
 		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
+
+		if wa.extraAttacks > 0 {
+			// Ignore the first extra attack, that was used to speed up next attack
+			for i := int32(1); i < wa.extraAttacks; i++ {
+				// use original attacks for subsequent extra Attacks
+				wa.spell.Cast(sim, wa.unit.CurrentTarget)
+			}
+			wa.extraAttacks = 0
+		}
 
 		if isExtraAttack {
 			wa.spell.SetMetricsSplit(0)
@@ -618,10 +630,14 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 }
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
-func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
+func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID) {
+	if sim.Log != nil {
+		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	aa.mh.extraAttacks += attacks
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it
@@ -807,17 +823,17 @@ func (unit *Unit) applyParryHaste() {
 				return
 			}
 
-			remainingTime := aura.Unit.AutoAttacks.mh.swingAt - sim.CurrentTime
+			currentSwingTime := aura.Unit.AutoAttacks.mh.swingAt - aura.Unit.AutoAttacks.mh.lastSwingAt
 			swingSpeed := aura.Unit.AutoAttacks.mh.curSwingDuration
 			minRemainingTime := time.Duration(float64(swingSpeed) * 0.2) // 20% of Swing Speed
 			defaultReduction := minRemainingTime * 2                     // 40% of Swing Speed
 
-			if remainingTime <= minRemainingTime {
+			if currentSwingTime <= minRemainingTime {
 				return
 			}
 
-			parryHasteReduction := min(defaultReduction, remainingTime-minRemainingTime)
-			newReadyAt := aura.Unit.AutoAttacks.mh.swingAt - parryHasteReduction
+			newReadyAt := max(aura.Unit.AutoAttacks.mh.swingAt-defaultReduction, aura.Unit.AutoAttacks.mh.lastSwingAt+minRemainingTime)
+			parryHasteReduction := newReadyAt - aura.Unit.AutoAttacks.mh.swingAt
 			if sim.Log != nil {
 				aura.Unit.Log(sim, "MH Swing reduced by %s due to parry haste, will now occur at %s", parryHasteReduction, newReadyAt)
 			}

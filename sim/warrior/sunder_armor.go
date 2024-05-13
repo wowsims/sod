@@ -15,6 +15,13 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		60: 11597,
 	}[warrior.Level]
 
+	spell_level := map[int32]int32{
+		25: 22,
+		40: 34,
+		50: 46,
+		60: 58,
+	}[warrior.Level]
+
 	var effectiveStacks int32
 	var canApplySunder bool
 
@@ -30,6 +37,10 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 			DamageMultiplier: 1.5,
 
 			ThreatMultiplier: 1,
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				weapon := warrior.AutoAttacks.MH()
@@ -72,12 +83,12 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  360, // TODO Warrior: set threat according to spell's level
+		FlatThreatBonus:  2.25 * 2 * float64(spell_level),
 
 		RelatedAuras: []core.AuraArray{warrior.SunderArmorAuras},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeWeaponSpecialNoCrit) // completely stopped by blocks
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeWeaponSpecialNoCrit) // Cannot be blocked
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

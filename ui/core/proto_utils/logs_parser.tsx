@@ -211,6 +211,7 @@ export class SimLog {
 				|| CastBeganLog.parse(params)
 				|| CastCompletedLog.parse(params)
 				|| StatChangeLog.parse(params)
+				|| ExtraAttackLog.parse(params)
 				|| Promise.resolve(new SimLog(params));
 		}));
 	}
@@ -245,6 +246,10 @@ export class SimLog {
 
 	isStatChange(): this is StatChangeLog {
 		return this instanceof StatChangeLog;
+	}
+
+	isExtraAttack(): this is ExtraAttackLog {
+		return this instanceof ExtraAttackLog;
 	}
 
 	// Group events that happen at the same time.
@@ -936,6 +941,31 @@ export class StatChangeLog extends SimLog {
 				params.actionId = effectId;
 				const sign = match[1] == 'Lost' ? -1 : 1;
 				return new StatChangeLog(params, sign == 1, match[4]);
+			});
+		} else {
+			return null;
+		}
+	}
+}
+
+export class ExtraAttackLog extends SimLog {
+	readonly attacks: number;
+
+	constructor(params: SimLogParams, attacks: number) {
+		super(params);
+		this.attacks = attacks;
+	}
+
+	toString(includeTimestamp = true): string {
+		return `${this.toStringPrefix(includeTimestamp)} Gained ${this.attacks} extra attacks from ${this.newActionIdLink()}.`;
+	}
+
+	static parse(params: SimLogParams): Promise<ExtraAttackLog> | null {
+		const match = params.raw.match(/gains ([0-9]+) extra attacks from (.*)/);
+		if (match) {
+			return ActionId.fromLogString(match[2]).fill(params.source?.index).then(effectId => {
+				params.actionId = effectId;
+				return new ExtraAttackLog(params, parseInt(match[1]));
 			});
 		} else {
 			return null;

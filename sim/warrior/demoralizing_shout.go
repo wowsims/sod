@@ -28,8 +28,8 @@ func (warrior *Warrior) registerDemoralizingShoutSpell() {
 			IgnoreHaste: true,
 		},
 
-		ThreatMultiplier: 1,
-		FlatThreatBonus:  63.2,
+		ThreatMultiplier: 0.4,
+		FlatThreatBonus:  0.4 * 2 * float64(core.DemoralizingShoutLevel[rank]),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
