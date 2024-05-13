@@ -7,22 +7,27 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// TODO: Classic Update
 func (warrior *Warrior) RegisterShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
-	cooldownDur := time.Second * 60
+	cooldownDur := time.Second * 5
 
 	warrior.ShieldBlockAura = warrior.RegisterAura(core.Aura{
-		Label:    "Shield Block",
-		ActionID: actionID,
-		Duration: time.Second * 10,
+		Label:     "Shield Block",
+		ActionID:  actionID,
+		Duration:  time.Second * time.Duration(5+[]float64{0, 0.5, 1, 2}[warrior.Talents.ImprovedShieldBlock]),
+		MaxStacks: 1 + []int32{0, 1, 1, 1}[warrior.Talents.ImprovedShieldBlock],
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Block, 100*core.BlockRatingPerBlockChance)
-			warrior.PseudoStats.BlockValueMultiplier += 1
+			aura.SetStacks(sim, aura.MaxStacks)
+			warrior.AddStatDynamic(sim, stats.Block, 75*core.BlockRatingPerBlockChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Block, -100*core.BlockRatingPerBlockChance)
-			warrior.PseudoStats.BlockValueMultiplier -= 1
+			warrior.AddStatDynamic(sim, stats.Block, -75*core.BlockRatingPerBlockChance)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeBlock) {
+				aura.RemoveStack(sim)
+			}
 		},
 	})
 
@@ -30,6 +35,9 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 
+		RageCost: core.RageCostOptions{
+			Cost: 10,
+		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
@@ -47,7 +55,12 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: warrior.ShieldBlock,
-		Type:  core.CooldownTypeDPS,
+		Spell:    warrior.ShieldBlock,
+		Priority: core.CooldownPriorityDefault,
+		Type:     core.CooldownTypeSurvival,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			// Only castable with manual APL Action
+			return false
+		},
 	})
 }

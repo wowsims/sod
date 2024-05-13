@@ -87,7 +87,7 @@ func (warrior *Warrior) registerCleaveSpell() {
 		60: 100,
 	}[warrior.Level]
 
-	flatDamageBonus += []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
+	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
 

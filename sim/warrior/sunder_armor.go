@@ -38,6 +38,10 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 
 			ThreatMultiplier: 1,
 
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+			},
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				weapon := warrior.AutoAttacks.MH()
 				baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
@@ -84,7 +88,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		RelatedAuras: []core.AuraArray{warrior.SunderArmorAuras},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeWeaponSpecialNoCrit) // completely stopped by blocks
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeWeaponSpecialNoCrit) // Cannot be blocked
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
