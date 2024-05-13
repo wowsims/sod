@@ -13,6 +13,7 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 
 	actionID := core.ActionID{SpellID: 18499}
 	rageMetrics := warrior.NewRageMetrics(actionID)
+	instantRage := 5 * float64(warrior.Talents.ImprovedBerserkerRage)
 	rageMultiplier := 1.0
 
 	warrior.BerserkerRageAura = warrior.RegisterAura(core.Aura{
@@ -42,6 +43,9 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			if instantRage > 0 {
+				warrior.AddRage(sim, instantRage, rageMetrics)
+			}
 			warrior.BerserkerRageAura.Activate(sim)
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
