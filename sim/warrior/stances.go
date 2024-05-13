@@ -84,12 +84,12 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 		ActionID: core.ActionID{SpellID: 71},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= 1.3
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.9
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.9
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= 1.3
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.9
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.9
 		},

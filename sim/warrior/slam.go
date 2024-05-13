@@ -22,7 +22,7 @@ func (warrior *Warrior) registerSlamSpell() {
 			Duration: 6 * time.Second,
 		}
 	} else {
-		castTime = time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam)
+		castTime = time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam)
 	}
 
 	flatDamageBonus := map[int32]float64{
