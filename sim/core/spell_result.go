@@ -339,7 +339,7 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 		sim.Encounter.DamageTaken += result.Damage
 	}
 
-	if sim.Log != nil {
+	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 		if isPeriodic {
 			spell.Unit.Log(sim, "%s %s tick %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
 		} else {
@@ -505,10 +505,6 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 }
 
 func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *AttackTable, isPeriodic bool) {
-	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
-		return
-	}
-
 	if isPeriodic {
 		if dot := spell.DotOrAOEDot(attackTable.Defender); dot.BonusCoefficient > 0 {
 			result.Damage += attackTable.Defender.GetSchoolBonusDamageTaken(spell) * dot.BonusCoefficient
