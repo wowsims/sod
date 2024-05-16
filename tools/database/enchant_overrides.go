@@ -199,7 +199,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	// {EffectId: 1898, SpellId: 20032, Name: "Enchant Weapon - Lifestealing", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	// Requires rep that's not obtainable in phase 3
 	// {EffectId: 2568, SpellId: 23804, Name: "Enchant Weapon - Mighty Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 22}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
-	{EffectId: 2567, SpellId: 23803, Name: "Enchant Weapon - Mighty Spirit", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
+	{EffectId: 2567, SpellId: 23803, Name: "Enchant Weapon - Mighty Spirit", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Spirit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	// Drop in MC
 	// {EffectId: 2504, SpellId: 22749, Name: "Enchant Weapon - Spell Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellDamage: 30}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	// Drop in BRS
