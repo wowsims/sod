@@ -23,8 +23,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		coeff     float64
 	}
 
-	// proc coefficients are likely 0.058/0.125/0.185 for ranks 1/2/3, and reach 0.2 for ranks >= 4.
-	//  there's a weird SotC interaction, in that both "damage done" and "damage taken" are affected.
 	var ranks = []struct {
 		level      int32
 		spellID    int32
@@ -35,12 +33,12 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	}{
 		{level: 1, spellID: 20154, manaCost: 20, scaleLevel: 7, proc: proc{spellID: 25742, value: 108, scale: 18, coeff: 0.029}, judge: judge{spellID: 20187, minDamage: 15, maxDamage: 15, scale: 1.8, coeff: 0.144}},
 		{level: 10, spellID: 20287, manaCost: 40, scaleLevel: 16, proc: proc{spellID: 25740, value: 216, scale: 17, coeff: 0.063}, judge: judge{spellID: 20280, minDamage: 25, maxDamage: 27, scale: 1.9, coeff: 0.312}},
-		{level: 18, spellID: 20288, manaCost: 60, scaleLevel: 24, proc: proc{spellID: 25739, value: 352, scale: 23, coeff: 0.184}, judge: judge{spellID: 20281, minDamage: 39, maxDamage: 43, scale: 2.4, coeff: 0.462}},
-		{level: 26, spellID: 20289, manaCost: 90, scaleLevel: 32, proc: proc{spellID: 25738, value: 541, scale: 31, coeff: 0.184}, judge: judge{spellID: 20282, minDamage: 57, maxDamage: 63, scale: 2.8, coeff: 0.5}},
-		{level: 34, spellID: 20290, manaCost: 120, scaleLevel: 40, proc: proc{spellID: 25737, value: 785, scale: 37, coeff: 0.184}, judge: judge{spellID: 20283, minDamage: 78, maxDamage: 86, scale: 3.1, coeff: 0.5}},
-		{level: 42, spellID: 20291, manaCost: 140, scaleLevel: 48, proc: proc{spellID: 25736, value: 1082, scale: 41, coeff: 0.184}, judge: judge{spellID: 20284, minDamage: 102, maxDamage: 112, scale: 3.8, coeff: 0.5}},
-		{level: 50, spellID: 20292, manaCost: 170, scaleLevel: 56, proc: proc{spellID: 25735, value: 1407, scale: 47, coeff: 0.184}, judge: judge{spellID: 20285, minDamage: 131, maxDamage: 143, scale: 4.1, coeff: 0.5}},
-		{level: 58, spellID: 20293, manaCost: 200, scaleLevel: 60, proc: proc{spellID: 25713, value: 1786, scale: 47, coeff: 0.184}, judge: judge{spellID: 20286, minDamage: 162, maxDamage: 178, scale: 4.1, coeff: 0.5}},
+		{level: 18, spellID: 20288, manaCost: 60, scaleLevel: 24, proc: proc{spellID: 25739, value: 352, scale: 23, coeff: 0.093}, judge: judge{spellID: 20281, minDamage: 39, maxDamage: 43, scale: 2.4, coeff: 0.462}},
+		{level: 26, spellID: 20289, manaCost: 90, scaleLevel: 32, proc: proc{spellID: 25738, value: 541, scale: 31, coeff: 0.1}, judge: judge{spellID: 20282, minDamage: 57, maxDamage: 63, scale: 2.8, coeff: 0.5}},
+		{level: 34, spellID: 20290, manaCost: 120, scaleLevel: 40, proc: proc{spellID: 25737, value: 785, scale: 37, coeff: 0.1}, judge: judge{spellID: 20283, minDamage: 78, maxDamage: 86, scale: 3.1, coeff: 0.5}},
+		{level: 42, spellID: 20291, manaCost: 140, scaleLevel: 48, proc: proc{spellID: 25736, value: 1082, scale: 41, coeff: 0.1}, judge: judge{spellID: 20284, minDamage: 102, maxDamage: 112, scale: 3.8, coeff: 0.5}},
+		{level: 50, spellID: 20292, manaCost: 170, scaleLevel: 56, proc: proc{spellID: 25735, value: 1407, scale: 47, coeff: 0.1}, judge: judge{spellID: 20285, minDamage: 131, maxDamage: 143, scale: 4.1, coeff: 0.5}},
+		{level: 58, spellID: 20293, manaCost: 200, scaleLevel: 60, proc: proc{spellID: 25713, value: 1786, scale: 47, coeff: 0.1}, judge: judge{spellID: 20286, minDamage: 162, maxDamage: 178, scale: 4.1, coeff: 0.5}},
 	}
 
 	improvedSoR := paladin.improvedSoR()
@@ -65,7 +63,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		 *   - Cannot miss or be dodged/parried/blocked if the underlying white hit lands.
 		 *   - Deals damage that is a function of weapon speed, and spellpower.
 		 *   - Has 0.85 scale factor on base damage if using 1h, 1.2 if using 2h.
-		 *   - CANNOT CRIT.
+		 *   - Calculates damage including spellpower scaling but ignoring damage multipliers,
+		 *      then feeds that value as base damage into the proc spell.
 		 */
 
 		minDamage := rank.judge.minDamage + rank.judge.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level)
@@ -91,9 +90,14 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			},
 		})
 
-		value := rank.proc.value + rank.proc.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level)
+		value := 0.01 * (rank.proc.value + rank.proc.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level))
 
-		damage := value / 100 * core.TernaryFloat64(paladin.has2hEquipped(), 1.2, 0.85) * paladin.MainHand().SwingSpeed
+		coeff := rank.proc.coeff
+		damage := value * 0.85 * paladin.MainHand().SwingSpeed
+		if paladin.has2hEquipped() {
+			coeff = rank.proc.coeff * 1.1 // from testing in SoD
+			damage = value * 1.2 * paladin.MainHand().SwingSpeed
+		}
 
 		procSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
@@ -107,11 +111,11 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
 
-			// Testing seems to show 2h benefits from spellpower about 12% more than 1h weapons.
-			BonusCoefficient: rank.proc.coeff * core.TernaryFloat64(paladin.has2hEquipped(), 1.12, 1.0),
+			BonusCoefficient: coeff,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := damage * improvedSoR
+				// effectively scales with coeff x 2, and damage dealt multipliers affect half the damage taken bonus
+				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spell.BonusDamage()+target.GetSchoolBonusDamageTaken(spell))
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 			},
 		})

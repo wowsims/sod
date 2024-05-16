@@ -518,16 +518,6 @@ func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 	return spell.castFn(sim, target)
 }
 
-// Skips the actual cast and applies spell effects immediately.
-func (spell *Spell) SkipCastAndApplyEffects(sim *Simulation, target *Unit) {
-	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
-		spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s)",
-			spell.ActionID, spell.DefaultCast.Cost, time.Duration(0))
-		spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
-	}
-	spell.applyEffects(sim, target)
-}
-
 func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	spell.SpellMetrics[target.UnitIndex].Casts++
 	spell.casts++
