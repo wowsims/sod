@@ -1101,6 +1101,11 @@ export const WORLD_BUFFS_CONFIG = [
 		stats: [Stat.StatStamina],
 	},
 	{
+		config: SlipKiksSavvy,
+		picker: IconPicker,
+		stats: [Stat.StatSpellCrit],
+	},
+	{
 		config: RallyingCryOfTheDragonslayer,
 		picker: IconPicker,
 		stats: [
