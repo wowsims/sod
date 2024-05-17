@@ -29,7 +29,8 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
+		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {

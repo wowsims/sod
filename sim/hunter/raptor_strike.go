@@ -26,7 +26,8 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
 	flankingStrikeDmgMult := 0.1
-	raptorFuryDmgMult := 0.15
+	// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
+	raptorFuryDmgMult := 0.1
 
 	if hasMeleeSpecialist {
 		spellId = [9]int32{0, 415335, 415336, 415337, 415338, 415340, 415341, 415342, 415343}[rank]
