@@ -15,6 +15,7 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import {
 	Hunter_Options as HunterOptions,
@@ -162,12 +163,13 @@ export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfAgility,
 	defaultPotion: Potions.GreaterManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.InnovationSigil,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	food: Food.FoodSagefishDelight,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	offHandImbue: WeaponImbue.SolidWeightstone,
-	spellPowerBuff: SpellPowerBuff.LesserArcaneElixir,
+	offHandImbue: WeaponImbue.DenseSharpeningStone,
+	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -182,8 +184,9 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectRegular,
 	blessingOfWisdom: TristateEffect.TristateEffectRegular,
-	sparkOfInspiration: true,
+	fervorOfTheTempleExplorer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	songflowerSerenade: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
