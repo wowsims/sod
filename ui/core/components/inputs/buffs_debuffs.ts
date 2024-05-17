@@ -122,7 +122,7 @@ export const BloodPactBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'commandingShout',
 		}),
 	],
-	'BloodPact',
+	'Blood Pact',
 );
 
 // Separate Strength buffs allow us to use boolean pickers for each
