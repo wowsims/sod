@@ -29,7 +29,7 @@ type Warlock struct {
 
 	ChaosBolt          *core.Spell
 	Conflagrate        *core.Spell
-	Corruption         *core.Spell
+	Corruption         []*core.Spell
 	DarkPact           *core.Spell
 	DrainSoul          *core.Spell
 	Haunt              *core.Spell

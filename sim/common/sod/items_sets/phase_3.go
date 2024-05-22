@@ -169,6 +169,7 @@ var ItemSetKnightLieutenantsLeather = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -183,6 +184,7 @@ var ItemSetBloodGuardsLeather = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -197,6 +199,7 @@ var ItemSetEmeraldLeathers = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })
@@ -258,7 +261,7 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				c.AutoAttacks.ExtraMHAttack(sim)
+				c.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 449970})
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -267,6 +270,7 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
 				ProcChance: 0.03,
+				ICD:        200 * time.Millisecond,
 				Handler:    handler,
 			})
 		},
@@ -313,6 +317,7 @@ var ItemSetKnightLieutenantsPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -327,6 +332,7 @@ var ItemSetBloodGuardsPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 30)
+			c.AddStat(stats.RangedAttackPower, 30)
 		},
 	},
 })
@@ -341,6 +347,7 @@ var ItemSetEmeraldDreamPlate = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 	},
 })

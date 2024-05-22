@@ -11,6 +11,7 @@ import (
 
 func (shaman *Shaman) ApplyRunes() {
 	// Helm
+	shaman.applyBurn()
 	shaman.applyMentalDexterity()
 
 	// Chest
@@ -18,8 +19,12 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyShieldMastery()
 	shaman.applyTwoHandedMastery()
 
+	// Bracers
+	shaman.applyRollingThunder()
+
 	// Hands
-	shaman.applyLavaBurst()
+	shaman.registerWaterShieldSpell()
+	shaman.registerLavaBurstSpell()
 	shaman.applyLavaLash()
 	shaman.applyMoltenBlast()
 
@@ -38,6 +43,22 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applySpiritOfTheAlpha()
 }
 
+var BurnFlameShockTargetCount = int32(5)
+var BurnFlameShockDamageBonus = 1.0
+var BurnFlameShockBonusTicks = 2
+
+func (shaman *Shaman) applyBurn() {
+	if !shaman.HasRune(proto.ShamanRune_RuneHelmBurn) {
+		return
+	}
+
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		shaman.AddStat(stats.SpellDamage, float64(4*shaman.Level))
+	}
+
+	// Other parts of burn are handled in flame_shock.go
+}
+
 func (shaman *Shaman) applyMentalDexterity() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHelmMentalDexterity) {
 		return
@@ -49,7 +70,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneHelmMentalDexterity)},
-		Duration: time.Second * 60,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, intToApStatDep)
 			aura.Unit.EnableDynamicStatDep(sim, apToSpStatDep)
@@ -62,17 +83,15 @@ func (shaman *Shaman) applyMentalDexterity() {
 
 	// Hidden Aura
 	shaman.RegisterAura(core.Aura{
-		Label:    "MentalDexterity",
+		Label:    "Mental Dexterity",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
+			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.Stormstrike) {
+				procAura.Activate(sim)
 			}
-
-			procAura.Activate(sim)
 		},
 	})
 }
@@ -121,20 +140,41 @@ func (shaman *Shaman) applyDualWieldSpec() {
 	})
 }
 
-// TODO: Not functional
 func (shaman *Shaman) applyShieldMastery() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestShieldMastery) {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Shield Mastery",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	shaman.AddStat(stats.Block, 10)
+	shaman.PseudoStats.BlockValueMultiplier = 1.15
+
+	actionId := core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)}
+	procId := core.ActionID{SpellID: 408525}
+	manaMetrics := shaman.NewManaMetrics(actionId)
+	procManaReturn := 0.08
+	armorPerStack := shaman.Equipment.OffHand().Stats[stats.Armor] * 0.3
+
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:     "Shield Mastery Proc",
+		ActionID:  procId,
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			shaman.AddStatDynamic(sim, stats.Armor, armorPerStack*float64(newStacks-oldStacks))
 		},
 	})
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label:    "Shield Mastery",
+		ActionID: actionId,
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeBlock) {
+				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
+				procAura.Activate(sim)
+				procAura.AddStack(sim)
+			}
+		},
+	}))
 }
 
 func (shaman *Shaman) applyTwoHandedMastery() {
@@ -187,54 +227,75 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	})
 }
 
+var RollingThunderProcChance = .50
+
+func (shaman *Shaman) applyRollingThunder() {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
+		return
+	}
+
+	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
+
+	// Casts handled in lightning_shield.go
+	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 432129},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if shaman.ActiveShield.SpellCode != SpellCode_LightningShield {
+				return
+			}
+
+			rank := shaman.ActiveShield.Rank
+			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].BonusDamage()
+			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
+		},
+	})
+}
+
+func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
+	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_LightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
+		shaman.ActiveShieldAura.AddStack(sim)
+	}
+}
+
 func (shaman *Shaman) applyMaelstromWeapon() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
 	}
 
-	buffSpellId := 408505
-	buffDuration := time.Second * 30
-
 	ppm := core.TernaryFloat64(shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon, 15, 10)
 
 	var affectedSpells []*core.Spell
-	var affectedSpellCodes = []int32{
-		SpellCode_ShamanLightningBolt,
-		SpellCode_ShamanChainLightning,
-		SpellCode_ShamanLavaBurst,
-		SpellCode_ShamanHealingWave,
-		SpellCode_ShamanLesserHealingWave,
-		SpellCode_ShamanChainHeal,
-	}
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMaelstrom) {
+			affectedSpells = append(affectedSpells, spell)
+		}
+	})
 
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
-		ActionID:  core.ActionID{SpellID: int32(buffSpellId)},
-		Duration:  buffDuration,
+		ActionID:  core.ActionID{SpellID: 408505},
+		Duration:  time.Second * 30,
 		MaxStacks: 5,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.LightningBolt,
-					shaman.ChainLightning,
-					{shaman.LavaBurst},
-					shaman.HealingWave,
-					shaman.LesserHealingWave,
-					shaman.ChainHeal,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			multDiff := 0.2 * float64(newStacks-oldStacks)
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= multDiff })
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= multDiff })
+			for _, spell := range affectedSpells {
+				spell.CastTimeMultiplier -= multDiff
+				spell.CostMultiplier -= multDiff
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				return
+			if spell.Flags.Matches(SpellFlagMaelstrom) {
+				shaman.MaelstromWeaponAura.Deactivate(sim)
 			}
-
-			shaman.MaelstromWeaponAura.Deactivate(sim)
 		},
 	})
 
@@ -267,7 +328,7 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	// TODO: Figure out how this actually works becaue the 2024-02-27 tuning notes make it sound like
+	// TODO: Figure out how this actually works because the 2024-02-27 tuning notes make it sound like
 	// this is not just a fully passive stat boost
 	shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
 
@@ -316,7 +377,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 	}
 
 	// Way of Earth only activates if you have Rockbiter Weapon on your mainhand and a shield in your offhand
-	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon && (shaman.OffHand() == nil || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield) {
+	if shaman.Consumes.MainHandImbue != proto.WeaponImbue_RockbiterWeapon || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
 

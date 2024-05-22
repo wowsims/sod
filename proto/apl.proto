@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 70
+// NextIndex: 72
 message APLValue {
     oneof value {
         // Operators
@@ -112,6 +112,7 @@ message APLValue {
         APLValueCurrentEnergy current_energy = 15;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueTimeToEnergyTick time_to_energy_tick = 66;
+        APLValueEnergyThreshold energy_threshold = 73;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -165,6 +166,8 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValueWarlockCurrentPetMana warlock_current_pet_mana = 70;
+        APLValueWarlockCurrentPetManaPercent warlock_current_pet_mana_percent = 71;
         APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
     }
 }
@@ -376,6 +379,9 @@ message APLValueCurrentRage {}
 message APLValueCurrentEnergy {}
 message APLValueCurrentComboPoints {}
 message APLValueTimeToEnergyTick {}
+message APLValueEnergyThreshold {
+    int32 threshold = 1;
+}
 
 message APLValueGCDIsReady {}
 message APLValueGCDTimeToReady {}
@@ -508,6 +514,10 @@ message APLValueWarlockShouldRecastDrainSoul {
 }
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
+}
+message APLValueWarlockCurrentPetMana {
+}
+message APLValueWarlockCurrentPetManaPercent {
 }
 message APLValueCurrentSealRemainingTime {
 }

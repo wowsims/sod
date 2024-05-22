@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -28,7 +29,8 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.2
+		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
@@ -126,34 +128,64 @@ func (hunter *Hunter) applySniperTraining() {
 	}
 
 	hunter.SniperTrainingAura = hunter.GetOrRegisterAura(core.Aura{
-		Label:    "Sniper Training",
-		ActionID: core.ActionID{SpellID: 415399},
-		Duration: time.Second * 6,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		Label:     "Sniper Training",
+		ActionID:  core.ActionID{SpellID: 415399},
+		Duration:  time.Second * 6,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			statDelta := float64(newStacks - oldStacks)
 			for _, spell := range aura.Unit.Spellbook {
 				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
-					spell.BonusCritRating += 10 * core.CritRatingPerCritChance
+					spell.BonusCritRating += statDelta * 2 * core.CritRatingPerCritChance
 				}
 				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just add 20 here
 				if spell.ActionID.SpellID == 409493 {
-					spell.BonusCritRating += 20 * core.CritRatingPerCritChance
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
-					spell.BonusCritRating -= 10 * core.CritRatingPerCritChance
-				}
-				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just remove 20 here
-				if spell.ActionID.SpellID == 409493 {
-					spell.BonusCritRating -= 20 * core.CritRatingPerCritChance
+					spell.BonusCritRating += statDelta * 4 * core.CritRatingPerCritChance
 				}
 			}
 		},
 	})
 
-	core.ApplyFixedUptimeAura(hunter.SniperTrainingAura, hunter.Options.SniperTrainingUptime, time.Second*6, 0)
+	aura := hunter.SniperTrainingAura
+	uptime := hunter.Options.SniperTrainingUptime
+	chancePerTick := core.TernaryFloat64(uptime == 1, 1, 1.0-math.Pow(1-uptime, 1))
+
+	lastMoved := false
+	aura.Unit.RegisterResetEffect(func(sim *core.Simulation) {
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			Period: time.Second,
+			OnAction: func(sim *core.Simulation) {
+				if sim.Proc(chancePerTick, "FixedAura") {
+					// Gain stack every second after 2 seconds
+					if !lastMoved {
+						aura.Activate(sim)
+						aura.AddStack(sim)
+					} else {
+						lastMoved = false
+					}
+				} else {
+					// Lose stack every second moving
+					if aura.IsActive() {
+						aura.RemoveStack(sim)
+					}
+					lastMoved = true
+				}
+			},
+		})
+
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			Period:   0,
+			NumTicks: 1,
+			OnAction: func(sim *core.Simulation) {
+				if sim.Proc(chancePerTick, "FixedAura") {
+					aura.Activate(sim)
+					aura.SetStacks(sim, 5)
+				} else {
+					lastMoved = true
+				}
+			},
+		})
+	})
 }
 
 func (hunter *Hunter) applyCobraStrikes() {

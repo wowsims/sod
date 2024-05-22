@@ -78,32 +78,16 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const TalentsPhase1 = {
-	name: 'Phase 1',
-	data: SavedTalents.create({
-		talentsString: '25003105',
-	}),
-};
-
-export const TalentsPhase2 = {
-	name: 'Phase 2',
-	data: SavedTalents.create({
-		talentsString: '550031550000151',
-	}),
-};
-
-export const TalentsPhase3 = {
-	name: 'Phase 3',
-	data: SavedTalents.create({
-		talentsString: '550031550000151-500203',
-	}),
-};
+export const TalentsPhase1 = PresetUtils.makePresetTalents('Level 25', SavedTalents.create({ talentsString: '25003105' }));
+export const TalentsPhase2 = PresetUtils.makePresetTalents('Level 40', SavedTalents.create({ talentsString: '550031550000151' }));
+export const TalentsPhase3 = PresetUtils.makePresetTalents('Level 50', SavedTalents.create({ talentsString: '550031550000151-500203' }));
+export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '550031550000151--50105301005' }));
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2],
 	[Phase.Phase3]: [TalentsPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [TalentsPhase4],
 	[Phase.Phase5]: [],
 };
 
@@ -120,7 +104,7 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
 	food: Food.FoodNightfinSoup,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
+	mainHandImbue: WeaponImbue.FlametongueWeapon,
 	offHandImbue: WeaponImbue.LesserWizardOil,
 	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
 	strengthBuff: StrengthBuff.ElixirOfGiants,
@@ -151,7 +135,7 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 5,
+	distanceFromTarget: 15,
 	profession1: Profession.Enchanting,
 	profession2: Profession.Leatherworking,
 };

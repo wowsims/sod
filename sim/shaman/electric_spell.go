@@ -25,7 +25,7 @@ const (
 
 // Shared precomputation logic for LB and CL.
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
-	flags := SpellFlagElectric | SpellFlagFocusable
+	flags := SpellFlagElectric | SpellFlagFocusable | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -58,8 +58,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			},
 		},
 
-		BonusCritRating: 0 +
-			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
+		BonusCritRating: float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
 			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
 
 		CritDamageBonus: shaman.elementalFury(),

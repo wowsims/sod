@@ -30,6 +30,8 @@ var ItemOverrides = []*proto.UIItem{
 	{Id: 217245, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439085}}}}},
 	// Black Mageweave Vest
 	{Id: 217246, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439086}}}}},
+	// Long Silken Cloak
+	{Id: 217252, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439094}}}}},
 	// Enchanter's Cowl
 	{Id: 217257, Sources: []*proto.UIItemSource{{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: proto.Profession_Tailoring, SpellId: 439102}}}}},
 	// Big Voodoo Mask
@@ -52,6 +54,46 @@ var ItemOverrides = []*proto.UIItem{
 
 	// The item tooltip is missing the usual Totem tag
 	{Id: 221464, RangedWeaponType: proto.RangedWeaponType_RangedWeaponTypeTotem},
+
+	// SoD Gnomeregan Quest Necklaces are missing quest info from the gear planner DB
+	{Id: 213343, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80324, Name: "The Mad King"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80325, Name: "The Mad King"}}},
+	}},
+	{Id: 213344, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80324, Name: "The Mad King"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80325, Name: "The Mad King"}}},
+	}},
+	{Id: 213345, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80324, Name: "The Mad King"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80325, Name: "The Mad King"}}},
+	}},
+	{Id: 213346, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80324, Name: "The Mad King"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 80325, Name: "The Mad King"}}},
+	}},
+
+	// SoD Sunken Temple Drakeclaw Bands are missing quest info from the gear planner DB
+	{Id: 220626, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
+	}},
+	{Id: 220627, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
+	}},
+	{Id: 220628, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
+	}},
+	{Id: 220629, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
+	}},
+	{Id: 220630, Sources: []*proto.UIItemSource{
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
+		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
+	}},
 
 	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
 	// {Id: 44093, Stats: stats.Stats{stats.MeleeCrit: 30, stats.SpellCrit: 30, stats.Resilience: 13, stats.AttackPower: 34}.ToFloatArray()},
@@ -190,9 +232,17 @@ var ExtraItemIcons = []int32{
 
 	// Single Elixirs
 	20007, // Mana Regen Elixir
-	13445, // Defense
 	20004, // Major Troll's Blood Potion
 	9088,  // Gift of Arthas
+
+	// Armor Elixirs
+	3389,  // Defense
+	8951,  // Greater
+	13445, // Superior Defense
+
+	// Health Elixirs
+	2458, // Minor Fortitude
+	3825, // Fortitude
 
 	// Strength
 	12451,
@@ -217,6 +267,8 @@ var ExtraItemIcons = []int32{
 	// Alcohol Buff
 	18284,
 	18269,
+	20709,
+	21114,
 	21151,
 
 	// Potions / In Battle Consumes
@@ -230,6 +282,15 @@ var ExtraItemIcons = []int32{
 	20749,
 	12404,
 	18262,
+}
+
+var SpellIconoverrides = []*proto.IconData{
+	{Id: 415068, Name: "Exorcism (Rank 1)"},
+	{Id: 415069, Name: "Exorcism (Rank 2)"},
+	{Id: 415070, Name: "Exorcism (Rank 3)"},
+	{Id: 415071, Name: "Exorcism (Rank 4)"},
+	{Id: 415072, Name: "Exorcism (Rank 5)"},
+	{Id: 415073, Name: "Exorcism (Rank 6)"},
 }
 
 // Raid buffs / debuffs

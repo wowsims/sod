@@ -27,7 +27,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -51,7 +51,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: 1.2,
+		DamageMultiplier: 1.35,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

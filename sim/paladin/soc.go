@@ -22,76 +22,32 @@ import (
 //   The Seal of Command aura watches for the base Judgement spell, and casts the actual
 //   Judgement of Command when it successfully is cast.
 
-const socRanks = 5
+func (paladin *Paladin) registerSealOfCommand() {
+	type judge struct {
+		spellID   int32
+		minDamage float64
+		maxDamage float64
+		scale     float64
+	}
 
-// Below is the base sp coefficient before it gets reduced by the 70% modifier
-// weapon damage % effect to 20% actual.
-const socProcSpellCoeff = 0.29
-const socJudgeSpellCoeff = 0.429
+	type proc struct {
+		spellID int32
+	}
 
-var socLevels = [socRanks + 1]int{0, 20, 30, 40, 50, 60}
-var socManaCosts = [socRanks + 1]float64{0, 65, 110, 140, 180, 210}
-var socAuraSpellIDs = [socRanks + 1]int32{0, 20375, 20915, 20918, 20919, 20920}
-var socProcSpellIDs = [socRanks + 1]int32{0, 20424, 20944, 20945, 20946, 20947}
-var socJudgeSpellIDs = [socRanks + 1]int32{0, 20467, 20963, 20964, 20965, 20966}
-var socJudgeBasePoints = [socRanks + 1]float64{0, 92, 145, 203, 260, 338}
-var socJudgeRealPointsPerLevel = [socRanks + 1]float64{0, 5.6, 6.1, 5.6, 6.1, 6.1}
-var socEffectDieSides = [socRanks + 1]float64{0, 9, 15, 21, 27, 35}
-var socLevelMinMaxEffects = [socRanks + 1][]int32{{0}, {20, 28}, {30, 38}, {40, 48}, {50, 58}, {60, 60}}
-
-func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
-	spellIDProc := socProcSpellIDs[rank]
-	spellIDAura := socAuraSpellIDs[rank]
-	spellIDJudge := socJudgeSpellIDs[rank]
-	manaCost := socManaCosts[rank]
-	level := socLevels[rank]
-	scalingLevelMin := socLevelMinMaxEffects[rank][0]
-	scalingLevelMax := socLevelMinMaxEffects[rank][1]
-	judgeBasePoints := socJudgeBasePoints[rank]
-	judgePointsPerLevel := socJudgeRealPointsPerLevel[rank]
-	judgeDieSides := socEffectDieSides[rank]
-
-	levelsToScale := min(paladin.Level, scalingLevelMax) - scalingLevelMin
-	judgeMinDamage := judgeBasePoints + 1 + float64(levelsToScale)*judgePointsPerLevel // 1..judgeDieSides
-	judgeMaxDamage := judgeMinDamage + judgeDieSides
-
-	onJudgementProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellIDJudge},
-		SpellSchool: core.SpellSchoolHoly,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
-		SpellCode:   SpellCode_PaladinJudgementOfCommand,
-
-		BonusCritRating: paladin.holyPowerCritChance() + paladin.fanaticismCritChance(),
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		BonusCoefficient: socJudgeSpellCoeff,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(judgeMinDamage, judgeMaxDamage)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-		},
-	})
-
-	onSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellIDProc},
-		SpellSchool:   core.SpellSchoolHoly,
-		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics,
-		RequiredLevel: level,
-
-		DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
-		ThreatMultiplier: 1.0,
-		BonusCoefficient: socProcSpellCoeff,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-		},
-	})
+	ranks := []struct {
+		level      int32
+		spellID    int32
+		manaCost   float64
+		scaleLevel int32
+		proc       proc
+		judge      judge
+	}{
+		{level: 20, spellID: 20375, manaCost: 65, scaleLevel: 28, proc: proc{spellID: 20424}, judge: judge{spellID: 20467, minDamage: 93, maxDamage: 101, scale: 5.6}},
+		{level: 30, spellID: 20915, manaCost: 110, scaleLevel: 38, proc: proc{spellID: 20944}, judge: judge{spellID: 20963, minDamage: 146, maxDamage: 160, scale: 6.1}},
+		{level: 40, spellID: 20918, manaCost: 140, scaleLevel: 48, proc: proc{spellID: 20945}, judge: judge{spellID: 20964, minDamage: 204, maxDamage: 224, scale: 5.6}},
+		{level: 50, spellID: 20919, manaCost: 180, scaleLevel: 58, proc: proc{spellID: 20946}, judge: judge{spellID: 20965, minDamage: 261, maxDamage: 287, scale: 6.1}},
+		{level: 60, spellID: 20920, manaCost: 210, scaleLevel: 60, proc: proc{spellID: 20947}, judge: judge{spellID: 20966, minDamage: 339, maxDamage: 373, scale: 6.1}},
+	}
 
 	ppmm := paladin.AutoAttacks.NewPPMManager(7, core.ProcMaskMelee)
 
@@ -100,62 +56,97 @@ func (paladin *Paladin) applySealOfCommandSpellAndAuraBaseConfig(rank int) {
 		Duration: time.Second * 1,
 	}
 
-	paladin.SealOfCommandAura[rank] = paladin.RegisterAura(core.Aura{
-		Label:    "Seal of Command" + paladin.Label + strconv.Itoa(rank),
-		ActionID: core.ActionID{SpellID: spellIDAura},
-		Duration: time.Second * 30,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			// If a white hit, handle seal proc.
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				if icd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "seal of command") {
-					icd.Use(sim)
-					onSwingProc.Cast(sim, result.Target)
-				}
-				return
-			}
-
-			// Else handle Judgements.
-			if spell == paladin.Judgement {
-				onJudgementProc.Cast(sim, result.Target)
-			}
-		},
-	})
-
-	aura := paladin.SealOfCommandAura[rank]
-
-	paladin.SealOfCommand[rank] = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    aura.ActionID,
-		SpellSchool: core.SpellSchoolHoly,
-		Flags:       core.SpellFlagAPL,
-
-		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost - paladin.GetLibramSealCostReduction(),
-			Multiplier: 1 - 0.03*float64(paladin.Talents.Benediction),
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			paladin.ApplySeal(aura, onJudgementProc, sim)
-		},
-	})
-}
-
-func (paladin *Paladin) registerSealOfCommandSpellAndAura() {
-	paladin.SealOfCommand = make([]*core.Spell, sorRanks+1)
-	paladin.SealOfCommandAura = make([]*core.Aura, sorRanks+1)
-
-	for rank := 1; rank <= socRanks; rank++ {
-		if int(paladin.Level) >= socLevels[rank] {
-			paladin.MaxRankCommand = rank
-			paladin.applySealOfCommandSpellAndAuraBaseConfig(rank)
+	for i, rank := range ranks {
+		rank := rank
+		if paladin.Level < rank.level {
+			break
 		}
+
+		minDamage := rank.judge.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.judge.scale
+		maxDamage := rank.judge.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.judge.scale
+
+		judgeSpell := paladin.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: rank.judge.spellID},
+			SpellSchool: core.SpellSchoolHoly,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagMeleeMetrics,
+
+			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
+
+			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
+			ThreatMultiplier: 1,
+
+			BonusCoefficient: 0.429,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			},
+		})
+
+		procSpell := paladin.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
+			SpellSchool: core.SpellSchoolHoly,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskProc,
+			Flags:       core.SpellFlagMeleeMetrics,
+
+			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
+			ThreatMultiplier: 1,
+
+			BonusCoefficient: 0.29,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			},
+		})
+
+		aura := paladin.RegisterAura(core.Aura{
+			Label:    "Seal of Command" + paladin.Label + strconv.Itoa(i+1),
+			ActionID: core.ActionID{SpellID: rank.spellID},
+			Duration: time.Second * 30,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if spell == paladin.judgement {
+					judgeSpell.Cast(sim, result.Target)
+					return
+				}
+
+				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+					if icd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "seal of command") {
+						icd.Use(sim)
+						procSpell.Cast(sim, result.Target)
+					}
+				}
+			},
+		})
+
+		paladin.sealOfCommand = paladin.RegisterSpell(core.SpellConfig{
+			ActionID:    aura.ActionID,
+			SpellSchool: core.SpellSchoolHoly,
+			Flags:       core.SpellFlagAPL,
+
+			RequiredLevel: int(rank.level),
+			Rank:          i + 1,
+
+			ManaCost: core.ManaCostOptions{
+				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
+				Multiplier: paladin.benediction(),
+			},
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				paladin.applySeal(aura, judgeSpell, sim)
+			},
+		})
 	}
 }

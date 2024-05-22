@@ -241,6 +241,9 @@ func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *
 }
 
 func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *core.Unit) {
+	if druid.Sunfire == nil {
+		return
+	}
 	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
 		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
 		dot.RecomputeAuraDuration()
@@ -301,12 +304,10 @@ func (druid *Druid) applyDreamstate() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.DidCrit() || result.Target == &druid.Unit {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+				druid.DreamstateManaRegenAura.Activate(sim)
+				dreamstateAuras.Get(result.Target).Activate(sim)
 			}
-
-			druid.DreamstateManaRegenAura.Activate(sim)
-			dreamstateAuras.Get(result.Target).Activate(sim)
 		},
 	}))
 }

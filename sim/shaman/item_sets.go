@@ -52,6 +52,20 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetBloodGuardsMail = core.NewItemSet(core.ItemSet{
+	Name: "Blood Guard's Mail",
+	Bonuses: map[int32]core.ApplyEffect{
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 15)
+		},
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 30)
+		},
+	},
+})
+
 var ItemSetBloodGuardsInscribedMail = core.NewItemSet(core.ItemSet{
 	Name: "Blood Guard's Inscribed Mail",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -90,6 +104,34 @@ var ItemSetEmeraldChainmail = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 12)
+		},
+	},
+})
+
+var ItemSetEmeraldScalemail = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Scalemail",
+	Bonuses: map[int32]core.ApplyEffect{
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 10)
+		},
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 20)
+		},
+	},
+})
+
+var ItemSetEmeraldLadenChain = core.NewItemSet(core.ItemSet{
+	Name: "Emerald Laden Chain",
+	Bonuses: map[int32]core.ApplyEffect{
+		3: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 10)
+		},
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 22)
 		},
 	},
 })

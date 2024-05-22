@@ -26,8 +26,8 @@ func (shaman *Shaman) applyMoltenBlast() {
 		SpellCode:   SpellCode_ShamanMoltenBlast,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagFocusable,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL | SpellFlagFocusable,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -53,7 +53,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				if i < targetCount {
 					baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 			}
 		},

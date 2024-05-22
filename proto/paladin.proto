@@ -68,6 +68,7 @@ enum PaladinRune {
 	RuneWristHammerOfTheRighteous = 407632;
 	RuneWristImprovedHammerOfWrath = 429152;
 	RuneWristPurifyingPower = 429144;
+	RuneWristLightsGrace = 428909;
 
 	RuneChestSealOfMartyrdom = 407798;
 	RuneChestHornOfLordaeron = 425600;

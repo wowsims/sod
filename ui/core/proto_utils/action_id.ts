@@ -79,12 +79,14 @@ export class ActionId {
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeRage];
 				break;
 			case OtherAction.OtherActionAttack:
-				name = 'Attack';
+				name = 'Melee';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
 				if (tag == 1) {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				} else if (tag == 3) {
+					name += ' (Extra Attack)';
 				}
 				break;
 			case OtherAction.OtherActionShoot:
@@ -385,6 +387,10 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Sunfire':
+				if (this.spellId == 414689) {
+					name = `${name} (Cat)`;
+				}
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -559,16 +565,14 @@ export class ActionId {
 
 // Some items/spells have weird icons, so use this to show a different icon instead.
 const idOverrides: Record<string, ActionId> = {};
-idOverrides[ActionId.fromSpellId(37212).toProtoString()] = ActionId.fromItemId(29035); // Improved Wrath of Air Totem
-idOverrides[ActionId.fromSpellId(37223).toProtoString()] = ActionId.fromItemId(29040); // Improved Strength of Earth Totem
-idOverrides[ActionId.fromSpellId(37447).toProtoString()] = ActionId.fromItemId(30720); // Serpent-Coil Braid
-idOverrides[ActionId.fromSpellId(37443).toProtoString()] = ActionId.fromItemId(30196); // Robes of Tirisfal (4pc bonus)
+idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(221309); // Darkmoon Card: Sandstorm
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
-	Shadowfiend: ActionId.fromSpellId(401977),
+	'Eye of the Void': ActionId.fromSpellId(402789),
 	Homunculi: ActionId.fromSpellId(402799),
+	Shadowfiend: ActionId.fromSpellId(401977),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 };

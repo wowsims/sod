@@ -9,7 +9,7 @@ import (
 )
 
 func (paladin *Paladin) ApplyRunes() {
-	if paladin.HasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
+	if paladin.hasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
 		paladin.AddStat(stats.SpellHit, 17*core.SpellHitRatingPerHitChance)
 	}
 
@@ -25,12 +25,12 @@ func (paladin *Paladin) ApplyRunes() {
 	// "RuneWristPurifyingPower" is handled in Exorcism
 }
 
-func (paladin *Paladin) fanaticismCritChance() float64 {
-	return core.TernaryFloat64(paladin.HasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.CritRatingPerCritChance
+func (paladin *Paladin) fanaticism() float64 {
+	return core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.SpellCritRatingPerCritChance
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
-	if !paladin.HasRune(proto.PaladinRune_RuneFeetTheArtOfWar) {
+	if !paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar) {
 		return
 	}
 
@@ -45,15 +45,15 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-			paladin.HolyShockCooldown.Reset()
-			paladin.ExorcismCooldown.Reset()
+			paladin.holyShockCooldown.Reset()
+			paladin.exorcismCooldown.Reset()
 		},
 	})
 }
 
 func (paladin *Paladin) registerSheathOfLight() {
 
-	if !paladin.HasRune(proto.PaladinRune_RuneWaistSheathOfLight) {
+	if !paladin.hasRune(proto.PaladinRune_RuneWaistSheathOfLight) {
 		return
 	}
 
@@ -89,7 +89,7 @@ func (paladin *Paladin) registerSheathOfLight() {
 }
 
 func (paladin *Paladin) registerGuardedByTheLight() {
-	if !paladin.HasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
+	if !paladin.hasRune(proto.PaladinRune_RuneFeetGuardedByTheLight) {
 		return
 	}
 

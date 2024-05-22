@@ -40,7 +40,6 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 	bear.EnableRageBar(core.RageBarOptions{
 		StartingRage:   bear.Options.StartingRage,
 		RageMultiplier: 1,
-		MHSwingSpeed:   2.5,
 	})
 
 	bear.EnableAutoAttacks(bear, core.AutoAttackOptions{

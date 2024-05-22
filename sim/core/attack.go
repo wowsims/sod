@@ -223,6 +223,12 @@ func (aa *AutoAttacks) RangedConfig() *SpellConfig {
 	return &aa.ranged.config
 }
 
+const (
+	tagMainhand    = 1
+	tagOffhand     = 2
+	tagExtraAttack = 3
+)
+
 type WeaponAttack struct {
 	Weapon
 
@@ -234,7 +240,9 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt time.Duration
+	swingAt      time.Duration
+	lastSwingAt  time.Duration
+	extraAttacks int32
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -264,24 +272,38 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Need to check APL here to allow last-moment HS queue casts.
 		wa.unit.Rotation.DoNextAction(sim)
 
-		// Need to check this again in case the DoNextAction call swapped items.
-		if wa.replaceSwing != nil {
-			// Allow MH swing to be overridden for abilities like Heroic Strike.
-			attackSpell = wa.replaceSwing(sim, attackSpell)
-		}
+		// Allow MH swing to be overridden for abilities like Heroic Strike.
+		attackSpell = wa.replaceSwing(sim, attackSpell)
 	}
 
 	if attackSpell.CanCast(sim, wa.unit.CurrentTarget) {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
+		wa.lastSwingAt = sim.CurrentTime
+
+		isExtraAttack := wa.spell.Tag == tagExtraAttack
+
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
+
+		if wa.extraAttacks > 0 {
+			// Ignore the first extra attack, that was used to speed up next attack
+			for i := int32(1); i < wa.extraAttacks; i++ {
+				// use original attacks for subsequent extra Attacks
+				wa.spell.Cast(sim, wa.unit.CurrentTarget)
+			}
+			wa.extraAttacks = 0
+		}
+
+		if isExtraAttack {
+			wa.spell.SetMetricsSplit(0)
+		}
 
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
 			wa.unit.Rotation.DoNextAction(sim)
 		}
 	} else {
-		// Delay till cast finishes if casting or 500 ms if not
+		// Delay till cast finishes if casting or 100 ms if not
 		wa.swingAt = max(wa.unit.Hardcast.Expires, sim.CurrentTime+time.Millisecond*100)
 	}
 
@@ -355,12 +377,14 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.mh.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
+		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: tagMainhand},
 		SpellSchool: options.MainHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
+
+		MetricSplits: 2,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -373,7 +397,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.oh.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
+		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: tagOffhand},
 		SpellSchool: options.OffHand.GetSpellSchool(),
 		DefenseType: DefenseTypeMelee,
 		ProcMask:    ProcMaskMeleeOHAuto,
@@ -433,6 +457,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 func (aa *AutoAttacks) finalize() {
 	if aa.AutoSwingMelee {
 		aa.mh.spell = aa.mh.unit.GetOrRegisterSpell(aa.mh.config)
+		aa.mh.spell.TagSplitMetric(1, tagExtraAttack)
 		// Will keep the OH spell registered for Item swapping
 		aa.oh.spell = aa.oh.unit.GetOrRegisterSpell(aa.oh.config)
 	}
@@ -571,17 +596,6 @@ func (aa *AutoAttacks) RangedSwingSpeed() time.Duration {
 	return aa.ranged.curSwingDuration - aa.RangedAuto().CastTime()
 }
 
-// Optionally replaces the given swing spell with an Agent-specified MH Swing replacer.
-// This is for effects like Heroic Strike or Raptor Strike.
-func (aa *AutoAttacks) MaybeReplaceMHSwing(sim *Simulation, mhSwingSpell *Spell) *Spell {
-	if aa.mh.replaceSwing == nil {
-		return mhSwingSpell
-	}
-
-	// Allow MH swing to be overridden for abilities like Heroic Strike.
-	return aa.mh.replaceSwing(sim, mhSwingSpell)
-}
-
 func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 	if !aa.enabled {
 		return
@@ -616,9 +630,14 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 }
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
-func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation) {
+func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID) {
+	if sim.Log != nil {
+		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
+	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	aa.mh.extraAttacks += attacks
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it
@@ -804,17 +823,17 @@ func (unit *Unit) applyParryHaste() {
 				return
 			}
 
-			remainingTime := aura.Unit.AutoAttacks.mh.swingAt - sim.CurrentTime
+			currentSwingTime := aura.Unit.AutoAttacks.mh.swingAt - aura.Unit.AutoAttacks.mh.lastSwingAt
 			swingSpeed := aura.Unit.AutoAttacks.mh.curSwingDuration
 			minRemainingTime := time.Duration(float64(swingSpeed) * 0.2) // 20% of Swing Speed
 			defaultReduction := minRemainingTime * 2                     // 40% of Swing Speed
 
-			if remainingTime <= minRemainingTime {
+			if currentSwingTime <= minRemainingTime {
 				return
 			}
 
-			parryHasteReduction := min(defaultReduction, remainingTime-minRemainingTime)
-			newReadyAt := aura.Unit.AutoAttacks.mh.swingAt - parryHasteReduction
+			newReadyAt := max(aura.Unit.AutoAttacks.mh.swingAt-defaultReduction, aura.Unit.AutoAttacks.mh.lastSwingAt+minRemainingTime)
+			parryHasteReduction := newReadyAt - aura.Unit.AutoAttacks.mh.swingAt
 			if sim.Log != nil {
 				aura.Unit.Log(sim, "MH Swing reduced by %s due to parry haste, will now occur at %s", parryHasteReduction, newReadyAt)
 			}

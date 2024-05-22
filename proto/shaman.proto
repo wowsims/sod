@@ -153,12 +153,6 @@ message ShamanTotems {
 	bool enh_tier_ten_bonus = 11;
 }
 
-enum ShamanShield {
-	NoShield = 0;
-	WaterShield = 1;
-	LightningShield = 2;
-}
-
 enum ShamanSyncType {
   NoSync = 0;
   SyncMainhandOffhandSwings = 1;
@@ -172,8 +166,6 @@ message ElementalShaman {
 
 	// NextIndex: 6
 	message Options {
-		ShamanShield shield = 1;
-		ShamanTotems totems = 3 [deprecated=true];
 	}
 	Options options = 3;
 }
@@ -184,9 +176,7 @@ message EnhancementShaman {
 
 	// NextIndex: 7
 	message Options {
-		ShamanShield shield = 1;
 		ShamanSyncType sync_type = 3;
-		ShamanTotems totems = 6 [deprecated=true];
 	}
 	Options options = 3;
 }
@@ -204,7 +194,6 @@ message RestorationShaman {
 
 	// NextIndex: 8
 	message Options {
-		ShamanShield shield = 1;
 		int32 earth_shield_p_p_m = 5;
 		ShamanTotems totems = 6 [deprecated=true];
 	}

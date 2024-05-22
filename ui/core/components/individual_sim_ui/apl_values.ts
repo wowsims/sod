@@ -32,6 +32,7 @@ import {
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
+	APLValueEnergyThreshold,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -62,6 +63,8 @@ import {
 	APLValueSpellTravelTime,
 	APLValueTimeToEnergyTick,
 	APLValueTotemRemainingTime,
+	APLValueWarlockCurrentPetMana,
+	APLValueWarlockCurrentPetManaPercent,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
@@ -640,6 +643,19 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [],
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
 	}),
+	energyThreshold: inputBuilder({
+		label: 'Energy Threshold',
+		submenu: ['Resources'],
+		shortDescription: 'Compares current energy to a threshold value.',
+		newValue: APLValueEnergyThreshold.create,
+		fields: [
+			AplHelpers.numberFieldConfig('threshold', false, {
+				label: '>=',
+				labelTooltip: "Energy threshold. Subtracted from maximum energy if negative.",
+			}),
+		],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',
 		submenu: ['Resources'],
@@ -930,6 +946,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueWarlockShouldRefreshCorruption.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+	}),
+	warlockCurrentPetMana: inputBuilder({
+		label: 'Pet Mana',
+		submenu: ['Warlock'],
+		shortDescription: 'Amount of currently available pet mana.',
+		newValue: APLValueWarlockCurrentPetMana.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		fields: [],
+	}),
+	warlockCurrentPetManaPercent: inputBuilder({
+		label: 'Pet Mana (%)',
+		submenu: ['Warlock'],
+		shortDescription: 'Amount of currently available pet mana, as a percentage.',
+		newValue: APLValueWarlockCurrentPetManaPercent.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		fields: [],
 	}),
 	currentSealRemainingTime: inputBuilder({
 		label: 'Current Seal Remaining Time',

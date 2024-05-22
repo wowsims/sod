@@ -54,8 +54,13 @@ func (result *SpellResult) DamageString() string {
 	}
 	return fmt.Sprintf("%s for %0.3f damage", outcomeStr, result.Damage)
 }
+
 func (result *SpellResult) HealingString() string {
 	return fmt.Sprintf("%s for %0.3f healing", result.Outcome.String(), result.Damage)
+}
+
+func (result *SpellResult) RawDamage() float64 {
+	return result.PreOutcomeDamage / result.ResistanceMultiplier
 }
 
 func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64 {
@@ -290,8 +295,8 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
-	if spell.Dot(target).BonusCoefficient > 0 {
-		baseDamage += spell.Dot(target).BonusCoefficient * spell.BonusDamage()
+	if dot := spell.DotOrAOEDot(target); dot.BonusCoefficient > 0 {
+		baseDamage += dot.BonusCoefficient * spell.BonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
@@ -334,7 +339,7 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 		sim.Encounter.DamageTaken += result.Damage
 	}
 
-	if sim.Log != nil {
+	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 		if isPeriodic {
 			spell.Unit.Log(sim, "%s %s tick %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
 		} else {
@@ -500,18 +505,8 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 }
 
 func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *AttackTable, isPeriodic bool) {
-	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
-		return
-	}
-
 	if isPeriodic {
-		var dot *Dot
-		if spell.aoeDot != nil {
-			dot = spell.aoeDot
-		} else {
-			dot = spell.Dot(attackTable.Defender)
-		}
-		if dot.BonusCoefficient > 0 {
+		if dot := spell.DotOrAOEDot(attackTable.Defender); dot.BonusCoefficient > 0 {
 			result.Damage += attackTable.Defender.GetSchoolBonusDamageTaken(spell) * dot.BonusCoefficient
 		}
 	} else {

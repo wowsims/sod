@@ -12,6 +12,7 @@ import (
 
 const (
 	// Ordered by ID
+	BlisteringRagehammer       = 220569
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -27,6 +28,7 @@ const (
 	BloodthirstCrossbow        = 221451
 	FistOfStone                = 223524
 	BladeOfEternalDarkness     = 223964
+	SerpentsStrikerSlow        = 224409
 )
 
 func init() {
@@ -55,9 +57,9 @@ func init() {
 	core.NewItemEffect(RoarOfTheDream, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446705}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446706}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 450110},
+			ActionID:   core.ActionID{SpellID: 446705},
 			Name:       "Roar of the Dream Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellOrProc,
@@ -293,7 +295,7 @@ func init() {
 			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
-			PPM:      5.0, // Placeholder proc value
+			PPM:      7.0, // Estimate from log
 			Handler:  handler,
 		})
 		hitAura.Icd = &icd
@@ -312,8 +314,8 @@ func init() {
 	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 446388},
+		tickSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 449288},
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
@@ -322,22 +324,74 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(50, 100), spell.OutcomeMagicHitAndCrit)
-				}
+				spell.CalcAndDealDamage(sim, target, sim.Roll(50, 100), spell.OutcomeMagicCrit)
 			},
 		})
 
+		// Sandstorm lasts for 10 seconds and moves in an outward spiral. It seems to be able to hit the same boss target
+		// multiple times during this duration, especially depending on size and positioning.
+		// On Hakkar seems to on average hit anywhere from 1-3 times
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 446388},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			Dot: core.DotConfig{
+				IsAOE: true,
+				Aura: core.Aura{
+					Label: "Sandstorm Hit",
+				},
+				NumberOfTicks: 1,
+				TickLength:    time.Second * 1,
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						tickSpell.Cast(sim, aoeTarget)
+					}
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				dot := spell.AOEDot()
+				dot.NumberOfTicks = int32(sim.Roll(1, 3))
+				dot.Apply(sim)
+				dot.TickOnce(sim)
+			},
+		})
+
+		// Custom ICD so it can be shared by both proc triggers
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 5,
+		}
+
+		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
+			procSpell.Cast(sim, character.CurrentTarget)
+		}
+
+		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{SpellID: 446389},
+			Name:     "Sandstorm Spell Hit",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
+			PPM:      10.0, // Estimate from log
+			Handler:  handler,
+		})
+		hitAura.Icd = &icd
+
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 446389},
-			Name:       "Sandstorm",
+			Name:       "Sandstorm Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskDirect,
+			ProcMask:   core.ProcMaskSpellDamage,
 			ProcChance: 0.30,
-			ICD:        time.Second * 5,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procSpell.Cast(sim, character.CurrentTarget)
-			},
+			Handler:    handler,
 		})
 	})
 
@@ -346,6 +400,22 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			Label:    "Enrage",
+			ActionID: core.ActionID{SpellID: 446327},
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.1)
+				character.PseudoStats.BonusDamage += 30
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.BonusDamage -= 30
+				character.MultiplyAttackSpeed(sim, 1/1.1)
+			},
+		})
+	})
 
 	core.NewItemEffect(DragonsCry, func(agent core.Agent) {
 		vanilla.MakeEmeraldDragonWhelpTriggerAura(agent, DragonsCry)
@@ -372,13 +442,13 @@ func init() {
 				}
 
 				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
-					character.AutoAttacks.ExtraMHAttack(sim)
+					character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{ItemID: 220588})
 				}
 			},
 		})
 	})
 
-	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, func(character *core.Character) *core.Spell {
+	serpentsStrikerEffect := func(character *core.Character) *core.Spell {
 		procAuras := character.NewEnemyAuraArray(core.SerpentsStrikerFistDebuffAura)
 
 		return character.RegisterSpell(core.SpellConfig{
@@ -398,7 +468,9 @@ func init() {
 				procAuras.Get(target).Activate(sim)
 			},
 		})
-	})
+	}
+	itemhelpers.CreateWeaponProcSpell(SerpentsStriker, "Serpent's Striker", 5.0, serpentsStrikerEffect)
+	itemhelpers.CreateWeaponProcSpell(SerpentsStrikerSlow, "Serpent's Striker", 5.0, serpentsStrikerEffect)
 
 	core.NewItemEffect(BloodthirstCrossbow, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -482,7 +554,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.AddStat(stats.AttackPower, 93)
+			character.PseudoStats.MobTypeAttackPower += 93
 		}
 	})
 

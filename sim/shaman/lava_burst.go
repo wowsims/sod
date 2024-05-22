@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (shaman *Shaman) applyLavaBurst() {
+func (shaman *Shaman) registerLavaBurstSpell() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 		return
 	}
@@ -27,7 +27,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	cooldown := time.Second * 8
 	manaCost := .10
 
-	flags := SpellFlagFocusable
+	flags := SpellFlagFocusable | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}

@@ -33,8 +33,10 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 		return
 	}
 
-	if warlock.Corruption.Dot(target).IsActive() {
-		warlock.Corruption.Dot(target).Rollover(sim)
+	for _, spell := range warlock.Corruption {
+		if spell.Dot(target).IsActive() {
+			spell.Dot(target).Rollover(sim)
+		}
 	}
 }
 
@@ -172,7 +174,7 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		Duration: core.NeverExpires,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.1
+			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.12
 			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

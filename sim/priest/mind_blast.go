@@ -73,23 +73,27 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (sim.Roll(baseDamageLow, baseDamageHigh))
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			bonusCrit := 0.0
-			if hasMindSpike && priest.MindSpikeAuras.Get(target).IsActive() {
-				bonusCrit = float64(priest.MindSpikeAuras.Get(target).GetStacks()) * 30 * core.CritRatingPerCritChance
+			var mindSpike *core.Aura
+			if hasMindSpike {
+				mindSpike = priest.MindSpikeAuras.Get(target)
 			}
 
-			spell.BonusCritRating += bonusCrit
+			oldBonusCrit := spell.BonusCritRating
+			oldMultiplier := spell.DamageMultiplier
+			spell.BonusCritRating += float64(mindSpike.GetStacks()) * 30 * core.CritRatingPerCritChance
 			spell.DamageMultiplier *= priest.MindBlastModifier
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.BonusCritRating -= bonusCrit
-			spell.DamageMultiplier /= priest.MindBlastModifier
+
+			spell.BonusCritRating = oldBonusCrit
+			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
-				if hasMindSpike {
-					priest.MindSpikeAuras.Get(target).Deactivate(sim)
+				if mindSpike != nil {
+					mindSpike.Deactivate(sim)
 				}
 
 				if hasPainAndSuffering {
@@ -106,9 +110,11 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			damage := (baseDamageLow + baseDamageHigh) / 2
+
+			oldMultiplier := spell.DamageMultiplier
 			spell.DamageMultiplier *= priest.MindBlastModifier
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-			spell.DamageMultiplier /= priest.MindBlastModifier
+			spell.DamageMultiplier = oldMultiplier
 			return result
 		},
 	}

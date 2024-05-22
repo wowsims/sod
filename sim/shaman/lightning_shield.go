@@ -20,17 +20,18 @@ var LightningShieldLevel = [LightningShieldRanks + 1]int{0, 8, 16, 24, 32, 40, 4
 
 func (shaman *Shaman) registerLightningShieldSpell() {
 	shaman.LightningShield = make([]*core.Spell, LightningShieldRanks+1)
+	shaman.LightningShieldProcs = make([]*core.Spell, LightningShieldRanks+1)
 
 	for rank := 1; rank <= LightningShieldRanks; rank++ {
-		config := shaman.newLightningShieldSpellConfig(rank)
+		level := LightningShieldLevel[rank]
 
-		if config.RequiredLevel <= int(shaman.Level) {
-			shaman.LightningShield[rank] = shaman.RegisterSpell(config)
+		if level <= int(shaman.Level) {
+			shaman.registerNewLightningShieldSpell(rank)
 		}
 	}
 }
 
-func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
+func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	hasOverchargedRune := shaman.HasRune(proto.ShamanRune_RuneBracersOvercharged)
 	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
 	hasStaticShockRune := shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock)
@@ -44,10 +45,6 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 	manaCost := LightningShieldManaCost[rank]
 	level := LightningShieldLevel[rank]
 
-	if level > int(shaman.Level) {
-		return core.SpellConfig{RequiredLevel: level}
-	}
-
 	staticShockProcChance := .06
 
 	baseCharges := int32(3)
@@ -59,7 +56,7 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 		maxCharges = 9
 	}
 
-	procSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.LightningShieldProcs[rank] = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: procSpellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskEmpty,
@@ -73,25 +70,10 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 		},
 	})
 
-	rollingThunder := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 432129},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			chargeDamage := baseDamage + spellCoeff*procSpell.BonusDamage()
-			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
-		},
-	})
-
 	// TODO: Does vanilla have an ICD?
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
-		Duration: core.Ternary(hasOverchargedRune, time.Second*1, time.Millisecond*3500),
+		Duration: core.Ternary(hasOverchargedRune, time.Second*3, time.Millisecond*3500),
 	}
 
 	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: procSpellId})
@@ -111,13 +93,13 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 
 			if hasStaticShockRune && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Static Shock") < staticShockProcChance {
 				aura.RemoveStack(sim)
-				procSpell.Cast(sim, result.Target)
+				shaman.LightningShieldProcs[rank].Cast(sim, result.Target)
 			}
 
 			if hasRollingThunderRune && spell.SpellCode == SpellCode_ShamanEarthShock && aura.GetStacks() > 3 {
 				multiplier := float64(aura.GetStacks() - baseCharges)
-				rollingThunder.DamageMultiplier = multiplier
-				rollingThunder.Cast(sim, result.Target)
+				shaman.RollingThunder.DamageMultiplier = multiplier
+				shaman.RollingThunder.Cast(sim, result.Target)
 				shaman.AddMana(sim, .02*multiplier*shaman.MaxMana(), manaMetrics)
 				aura.SetStacks(sim, baseCharges)
 			}
@@ -135,18 +117,21 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 				// Deals damage to all targets within 8 yards and does not lose stacks
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if aoeTarget.DistanceFromTarget <= 8 {
-						procSpell.Cast(sim, aoeTarget)
+						shaman.LightningShieldProcs[rank].Cast(sim, aoeTarget)
 					}
 				}
 			} else {
 				aura.RemoveStack(sim)
+				shaman.LightningShieldProcs[rank].Cast(sim, spell.Unit)
 			}
 		},
 	})
 
-	return core.SpellConfig{
-		ActionID: core.ActionID{SpellID: spellId},
-		Flags:    core.SpellFlagAPL,
+	shaman.LightningShield[rank] = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:  core.ActionID{SpellID: spellId},
+		SpellCode: SpellCode_LightningShield,
+		ProcMask:  core.ProcMaskEmpty,
+		Flags:     core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -159,18 +144,13 @@ func (shaman *Shaman) newLightningShieldSpellConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if shaman.LightningShieldAura != nil {
-				shaman.LightningShieldAura.Deactivate(sim)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			if shaman.ActiveShieldAura != nil {
+				shaman.ActiveShieldAura.Deactivate(sim)
 			}
-			shaman.LightningShieldAura = aura
-			shaman.LightningShieldAura.Activate(sim)
+			shaman.ActiveShield = spell
+			shaman.ActiveShieldAura = aura
+			shaman.ActiveShieldAura.Activate(sim)
 		},
-	}
-}
-
-func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
-	if shaman.LightningShieldAura.IsActive() && sim.RandomFloat("Rolling Thunder") < .30 {
-		shaman.LightningShieldAura.AddStack(sim)
-	}
+	})
 }

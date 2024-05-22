@@ -8,17 +8,26 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	shredDamageMultiplier := 3.0
+	damageMultiplier := 2.25
 
 	flatDamageBonus := map[int32]float64{
-		25: 54.0,
-		40: 99.0,
-		50: 144.0,
-		60: 180.0,
-	}[druid.Level] / shredDamageMultiplier
+		25: 24,
+		40: 44,
+		50: 64,
+		60: 80,
+	}[druid.Level]
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
+
+	if druid.Ranged().ID == IdolOfTheDream {
+		damageMultiplier *= 1.02
+		flatDamageBonus *= 1.02
+	}
+
+	// cp. https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
+	damageMultiplier += 0.75 // multiplier +75%
+	flatDamageBonus *= 0.75  // base damage -25%
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		SpellCode: SpellCode_DruidShred,
@@ -47,29 +56,20 @@ func (druid *Druid) registerShredSpell() {
 			return !druid.PseudoStats.InFrontOfTarget
 		},
 
-		DamageMultiplier: shredDamageMultiplier,
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatDamageBonus +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			modifier := 1.0
+			oldMultiplier := spell.DamageMultiplier
 			if druid.BleedCategories.Get(target).AnyActive() {
-				modifier += .3
+				spell.DamageMultiplier *= 1.3
 			}
 
-			/*
-				ripDot := druid.Rip.Dot(target)
-				if druid.AssumeBleedActive || ripDot.IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-					modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
-				}
-			*/
-
-			spell.DamageMultiplier *= modifier
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.DamageMultiplier /= modifier
+			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -88,26 +88,19 @@ func (druid *Druid) registerShredSpell() {
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			baseDamage := flatDamageBonus + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
 
-			modifier := 1.0
+			oldMultiplier := spell.DamageMultiplier
 			if druid.BleedCategories.Get(target).AnyActive() {
-				modifier += .3
+				spell.DamageMultiplier *= 1.3
 			}
 
-			/*
-				if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-					modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
-				}
-			*/
-
-			spell.DamageMultiplier *= modifier
 			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
-			spell.DamageMultiplier /= modifier
+			spell.DamageMultiplier = oldMultiplier
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier(attackTable) - 1))
+			critMod := critChance * (spell.CritMultiplier(attackTable) - 1)
 
-			baseres.Damage *= (1 + critMod)
+			baseres.Damage *= 1 + critMod
 
 			return baseres
 		},

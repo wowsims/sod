@@ -18,6 +18,7 @@ message UIDatabase {
 
 	repeated UIZone zones = 8;
 	repeated UINPC npcs = 9;
+	repeated UIFaction factions = 12;
 
 	// Entities for which we just need a name/icon.
 	repeated IconData item_icons = 4;
@@ -33,6 +34,11 @@ message UINPC {
 	int32 id = 1;
 	string name = 2;
 	int32 zone_id = 3;
+}
+message UIFaction {
+	int32 id = 1;
+	string name = 2;
+	Expansion expansion = 3;
 }
 
 // Contains all information about an Item needed by the UI.
@@ -52,7 +58,6 @@ message UIItem {
 	int32 requires_level = 9;
 
 	repeated double stats = 10;
-	repeated double socketBonus = 12;
 	repeated int32 random_suffix_options = 27;
 
 	// Weapon stats, needed for computing proper EP for melee weapons
@@ -102,44 +107,12 @@ enum RepLevel {
 	RepLevelUnknown 		= 0;
 	RepLevelHated 			= 1;
 	RepLevelHostile 		= 2;
-	RepLevelUnfriendly 	= 3;
+	RepLevelUnfriendly 		= 3;
 	RepLevelNeutral 		= 4;
 	RepLevelFriendly 		= 5;
 	RepLevelHonored 		= 6;
 	RepLevelRevered 		= 7;
 	RepLevelExalted 		= 8;
-}
-
-enum RepFaction {
-	RepFactionUnknown					= 0;
-
-	// Vanilla PVP Factions
-	// Warsong Gulch
-	RepFactionSilverwingSentinels		= 890;
-	RepFactionWarsongOutriders			= 889;
-	// Arathi Basin
-	RepFactionLeagueOfArathor			= 509;
-	RepFactionTheDefilers				= 510;
-	// Alterac Valley
-	RepFactionStormpikeGuard			= 730;
-	RepFactionFrostwolfClan				= 729;
-
-	// Vanilla Factions
-	RepFactionArgentDawn				= 529;
-	RepFactionBloodsailBuccaneers		= 87;
-	RepFactionBroodOfNozdormu			= 910;
-	RepFactionCenarionCircle			= 609;
-	RepFactionHydraxianWaterlords		= 749;
-	RepFactionTimbermawHold				= 576;
-	RepFactionThoriumBrotherhood		= 59;
-	RepFactionWintersaberTrainers 		= 589;
-	RepFactionZandalarTribe				= 270;
-
-	// SoD Factions
-	RepFactionAzerothCommerceAuthority	= 2586;
-	RepFactionDurotarSupplyAndLogistics	= 2587;
-	RepFactionEmeraldWardens			= 2641;
-	
 }
 
 message UIItemSource {
@@ -172,9 +145,9 @@ message SoldBySource {
 	int32 zone_id = 3;
 }
 message RepSource {
-	RepFaction rep_faction_id = 1;
-	RepLevel rep_level 				= 2;
-	Faction faction_id 				= 3;
+	int32 rep_faction_id = 1;
+	RepLevel rep_level = 2;
+	Faction player_faction = 3;
 }
 
 message UIEnchant {
@@ -228,6 +201,7 @@ enum SourceFilterOption {
 	SourceRaid = 4;
 	// SourceWorldBoss = 5;
 	SourceWorldBOE = 6;
+	SourceReputation = 7;
 }
 
 enum DungeonFilterOption {
@@ -245,7 +219,7 @@ enum DungeonFilterOption {
 	DungeonUldaman = 1337;
 	DungeonZulFarrak = 1176;
 	DungeonMaraudon = 2100;
-	DungeonSunkenTemple = 1477;
+	// DungeonSunkenTemple = 1477;
 	DungeonBlackrockDepths = 1584;
 	DungeonScholomance = 2057;
 	DungeonStratholme = 2017;
@@ -257,9 +231,10 @@ enum RaidFilterOption {
 	RaidUnknown = 0;
 	RaidBlackfathomDeeps = 719;
 	RaidGnomeregan = 721;
-	RaidMoltenCore = 2717;
-	RaidBlackwingLair = 2677;
+	RaidSunkenTemple = 1477;
 	RaidZulGurub = 1977;
+	RaidBlackwingLair = 2677;
+	RaidMoltenCore = 2717;
 	RaidRuinsOfAQ = 3428;
 	RaidTempleOfAQ = 3429;
 	RaidNaxxramas = 3456;

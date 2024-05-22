@@ -106,12 +106,14 @@ type Spell struct {
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
 
-	// Performs a cast of this spell.
-	castFn CastSuccessFunc
+	castFn CastSuccessFunc // Performs a cast of this spell.
 
-	SpellMetrics      []SpellMetrics
-	splitSpellMetrics [][]SpellMetrics // Used to split metrics by some condition.
-	casts             int              // Sum of casts on all targets, for efficient CPM calculation
+	SpellMetrics []SpellMetrics
+
+	splitSpellMetrics [][]SpellMetrics // Used to split metrics by some condition, via SetMetricsSplit
+	splitTags         []int32          // Tags for each splitSpellMetrics used in doneIteration, defaults to the metrics splitIdx.
+
+	casts int // Sum of casts on all targets, for efficient CPM calculation
 
 	// Performs the actions of this spell.
 	ApplyEffects ApplySpellResults
@@ -245,6 +247,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		FlatThreatBonus:  config.FlatThreatBonus,
 
 		splitSpellMetrics: make([][]SpellMetrics, max(1, config.MetricSplits)),
+		splitTags:         make([]int32, max(1, config.MetricSplits)),
 
 		RelatedAuras: config.RelatedAuras,
 	}
@@ -335,6 +338,12 @@ func (spell *Spell) CurDot() *Dot {
 func (spell *Spell) AOEDot() *Dot {
 	return spell.aoeDot
 }
+func (spell *Spell) DotOrAOEDot(target *Unit) *Dot {
+	if spell.aoeDot != nil {
+		return spell.aoeDot
+	}
+	return spell.dots.Get(target)
+}
 func (spell *Spell) Hot(target *Unit) *Dot {
 	return spell.dots.Get(target)
 }
@@ -380,12 +389,14 @@ func (spell *Spell) CurCPM(sim *Simulation) float64 {
 }
 
 func (spell *Spell) finalize() {
-	if len(spell.splitSpellMetrics) > 1 && spell.ActionID.Tag != 0 {
-		panic(spell.ActionID.String() + " has split metrics and a non-zero tag, can only have one!")
-	}
+	spell.splitTags[0] = spell.Tag
 	for i := range spell.splitSpellMetrics {
 		spell.splitSpellMetrics[i] = make([]SpellMetrics, len(spell.Unit.Env.AllUnits))
+		if spell.splitTags[i] == 0 {
+			spell.splitTags[i] = int32(i) // default to tag = splitIndex
+		}
 	}
+
 	spell.SpellMetrics = spell.splitSpellMetrics[0]
 }
 
@@ -400,7 +411,12 @@ func (spell *Spell) reset(_ *Simulation) {
 
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {
 	spell.SpellMetrics = spell.splitSpellMetrics[splitIdx]
-	spell.ActionID.Tag = splitIdx
+	spell.Tag = spell.splitTags[splitIdx]
+}
+
+// TagSplitMetric allows to override the default tag for a given splitIdx. Use after spell registration.
+func (spell *Spell) TagSplitMetric(splitIdx int32, tag int32) {
+	spell.splitTags[splitIdx] = tag
 }
 
 func (spell *Spell) doneIteration() {
@@ -408,12 +424,8 @@ func (spell *Spell) doneIteration() {
 		return
 	}
 
-	if len(spell.splitSpellMetrics) == 1 {
-		spell.Unit.Metrics.addSpellMetrics(spell, spell.ActionID, spell.SpellMetrics)
-	} else {
-		for i, spellMetrics := range spell.splitSpellMetrics {
-			spell.Unit.Metrics.addSpellMetrics(spell, spell.ActionID.WithTag(int32(i)), spellMetrics)
-		}
+	for i, spellMetrics := range spell.splitSpellMetrics {
+		spell.Unit.Metrics.addSpellMetrics(spell, spell.ActionID.WithTag(spell.splitTags[i]), spellMetrics)
 	}
 }
 
@@ -442,8 +454,7 @@ func (spell *Spell) TimeToReady(sim *Simulation) time.Duration {
 	return MaxTimeToReady(spell.CdSpell.CD.Timer, spell.CdSpell.SharedCD.Timer, sim)
 }
 
-// Returns whether a call to Cast() would be successful, without actually
-// doing a cast.
+// Returns whether a call to Cast() would be successful, without actually doing a cast.
 func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	if spell == nil {
 		return false
@@ -505,16 +516,6 @@ func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 		target = spell.Unit.CurrentTarget
 	}
 	return spell.castFn(sim, target)
-}
-
-// Skips the actual cast and applies spell effects immediately.
-func (spell *Spell) SkipCastAndApplyEffects(sim *Simulation, target *Unit) {
-	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
-		spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s)",
-			spell.ActionID, spell.DefaultCast.Cost, time.Duration(0))
-		spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
-	}
-	spell.applyEffects(sim, target)
 }
 
 func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {

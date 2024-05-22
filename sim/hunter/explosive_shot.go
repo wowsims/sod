@@ -16,8 +16,8 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 	actionID := core.ActionID{SpellID: 409552}
 	numHits := hunter.Env.GetNumTargets()
 
-	baseLowDamage := hunter.baseRuneAbilityDamage() * 0.36 * 1.15 // Buff from 1/3/2024 - verify with new build and update numbers
-	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15
+	baseLowDamage := hunter.baseRuneAbilityDamage() * 0.36 * 1.15 * 1.5  // 15% Buff from 1/3/2024 - verify with new build and update numbers
+	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15 * 1.5 // Second 50% buff from 23/4/2024
 
 	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
@@ -28,7 +28,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists | core.SpellFlagBinary,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 

@@ -93,11 +93,11 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 
-			if canOverload && result.Landed() && sim.RandomFloat("CL Overload") <= overloadChance {
+			if canOverload && result.Landed() && sim.Proc(overloadChance, "CL Overload") {
 				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
 			}
 
-			if hasRollingThunderRune && !isOverload {
+			if hasRollingThunderRune {
 				shaman.rollRollingThunderCharge(sim)
 			}
 		}

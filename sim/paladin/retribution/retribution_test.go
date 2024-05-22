@@ -47,6 +47,23 @@ func TestRetribution(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Level:      50,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase3RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3retsom"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p3ret"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P3 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -124,37 +141,38 @@ func BenchmarkSimulate(b *testing.B) {
 			},
 			SimOptions: core.AverageDefaultSimTestOptions,
 		},
-		// {
-		// 	Raid: core.SinglePlayerRaidProto(
-		// 		&proto.Player{
-		// 			Race:          proto.Race_RaceHuman,
-		// 			Class:         proto.Class_ClassPaladin,
-		// 			Level:         40,
-		// 			TalentsString: Phase2RetTalents,
-		// 			Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2shockadin").GearSet,
-		// 			Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret").Rotation,
-		// 			Consumes:      Phase2Consumes.Consumes,
-		// 			Spec:          PlayerOptionsSealofMartyrdom,
-		// 			Buffs:         core.FullIndividualBuffsPhase2,
-		// 		},
-		// 		core.FullPartyBuffs,
-		// 		core.FullRaidBuffsPhase2,
-		// 		core.FullDebuffsPhase2,
-		// 	),
-		// 	Encounter: &proto.Encounter{
-		// 		Duration: 120,
-		// 		Targets: []*proto.Target{
-		// 			core.NewDefaultTarget(40),
-		// 		},
-		// 	},
-		// 	SimOptions: core.AverageDefaultSimTestOptions,
-		// },
+		{
+			Raid: core.SinglePlayerRaidProto(
+				&proto.Player{
+					Race:          proto.Race_RaceHuman,
+					Class:         proto.Class_ClassPaladin,
+					Level:         50,
+					TalentsString: Phase3RetTalents,
+					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3ret").GearSet,
+					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p3ret").Rotation,
+					Consumes:      Phase3Consumes.Consumes,
+					Spec:          PlayerOptionsSealofMartyrdom,
+					Buffs:         core.FullIndividualBuffsPhase3,
+				},
+				core.FullPartyBuffs,
+				core.FullRaidBuffsPhase3,
+				core.FullDebuffsPhase3,
+			),
+			Encounter: &proto.Encounter{
+				Duration: 120,
+				Targets: []*proto.Target{
+					core.NewDefaultTarget(50),
+				},
+			},
+			SimOptions: core.AverageDefaultSimTestOptions,
+		},
 	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
 }
 
 var Phase1RetTalents = "--05230051"
 var Phase2RetTalents = "--532300512003151"
 var Phase2ShockadinTalents = "55050100521151--"
+var Phase3RetTalents = "500501--53230051200315"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -178,6 +196,24 @@ var Phase2Consumes = core.ConsumesCombo{
 		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
 		SpellPowerBuff:    proto.SpellPowerBuff_LesserArcaneElixir,
 		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		DefaultConjured:   proto.Conjured_ConjuredDemonicRune,
+		DragonBreathChili: true,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
+		Food:              proto.Food_FoodBlessSunfruit,
+		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		StrengthBuff:      proto.StrengthBuff_ElixirOfGiants,
+		EnchantedSigil:    proto.EnchantedSigil_LivingDreamsSigil,
+		AttackPowerBuff:   proto.AttackPowerBuff_WinterfallFirewater,
+		ZanzaBuff:         proto.ZanzaBuff_AtalaiMojoOfWar,
 	},
 }
 

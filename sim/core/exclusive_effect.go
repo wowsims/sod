@@ -130,17 +130,18 @@ func (ee *ExclusiveEffect) Activate(sim *Simulation) bool {
 		return true
 	}
 
-	if ee.Category.SingleAura && ee.Category.activeEffect != nil && ee.Category.activeEffect != ee && (ee.Category.activeEffect.Priority > ee.Priority || (ee.Priority == ee.Category.activeEffect.Priority && ee.Category.activeEffect.Aura.RemainingDuration(sim) > ee.Aura.Duration)) {
+	curActive := ee.Category.activeEffect
+	if ee.Category.SingleAura && curActive != nil && curActive != ee && (curActive.Priority > ee.Priority || (ee.Priority == curActive.Priority && curActive.Aura.RemainingDuration(sim) > ee.Aura.Duration)) {
 		return false
 	}
 
 	ee.isEnabled = true
 
-	if ee.Category.activeEffect == nil {
+	if curActive == nil {
 		ee.Category.SetActive(sim, ee)
-	} else if ee.Priority >= ee.Category.activeEffect.Priority {
-		if ee.Category.SingleAura && ee.Category.activeEffect != ee {
-			ee.Category.activeEffect.Aura.Deactivate(sim)
+	} else if ee.Priority >= curActive.Priority {
+		if ee.Category.SingleAura && curActive != ee {
+			curActive.Aura.Deactivate(sim)
 		}
 		ee.Category.SetActive(sim, ee)
 	}

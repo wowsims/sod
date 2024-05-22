@@ -14,6 +14,7 @@ const (
 	FieryWarAxe              = 870
 	Bloodrazor               = 809
 	HammerOfTheNorthernWind  = 810
+	FlurryAxe                = 871
 	Nightblade               = 1982
 	Shadowblade              = 2163
 	GutRipper                = 2164
@@ -29,6 +30,7 @@ const (
 	Firebreather             = 10797
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
+	Ironfoe                  = 11684
 	HandOfJustice            = 11815
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
@@ -37,6 +39,7 @@ const (
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
+	MarkOfTheChosen          = 17774
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
@@ -117,6 +120,20 @@ func init() {
 	})
 
 	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
+
+	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.0, func(character *core.Character) *core.Spell {
+		return character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 18797},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 18797})
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -352,26 +369,18 @@ func init() {
 			return
 		}
 
-		var handOfJusticeSpell *core.Spell
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
 			Duration: time.Second * 2,
 		}
-		procChance := 0.013333
 
 		character.RegisterAura(core.Aura{
 			Label:    "Hand of Justice",
 			Duration: core.NeverExpires,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				config := *character.AutoAttacks.MHConfig()
-				config.ActionID = core.ActionID{ItemID: HandOfJustice}
-				handOfJusticeSpell = character.GetOrRegisterSpell(config)
-			},
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				// https://wotlk.wowhead.com/spell=15600/hand-of-justice, proc mask = 20.
 				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
 					return
 				}
@@ -380,12 +389,10 @@ func init() {
 					return
 				}
 
-				if sim.RandomFloat("HandOfJustice") > procChance {
-					return
+				if sim.RandomFloat("HandOfJustice") < 0.02 {
+					icd.Use(sim)
+					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
 				}
-				icd.Use(sim)
-
-				aura.Unit.AutoAttacks.MaybeReplaceMHSwing(sim, handOfJusticeSpell).Cast(sim, result.Target)
 			},
 		})
 	})
@@ -399,7 +406,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.AddStat(stats.AttackPower, 45)
+			character.PseudoStats.MobTypeAttackPower += 45
 		}
 	})
 
@@ -442,7 +449,21 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttack(sim)
+				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 21919})
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 15494},
+			SpellSchool:      core.SpellSchoolPhysical,
+			DefenseType:      core.DefenseTypeMelee,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AutoAttacks.ExtraMHAttack(sim, 2, core.ActionID{SpellID: 15494})
 			},
 		})
 	})
@@ -453,7 +474,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
-			character.AddStat(stats.AttackPower, 36)
+			character.PseudoStats.MobTypeAttackPower += 36
 		}
 	})
 
@@ -599,7 +620,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.AddStat(stats.AttackPower, 150)
+			character.PseudoStats.MobTypeAttackPower += 150
 		}
 	})
 
@@ -607,8 +628,48 @@ func init() {
 		character := agent.GetCharacter()
 
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.AddStat(stats.SpellDamage, 85)
+			character.PseudoStats.MobTypeSpellPower += 85
 		}
+	})
+
+	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		statIncrease := float64(25)
+		markProcChance := 0.02
+
+		procAura := character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen Effect",
+			ActionID: core.ActionID{SpellID: 21970},
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   statIncrease,
+					stats.Agility:   statIncrease,
+					stats.Strength:  statIncrease,
+					stats.Intellect: statIncrease,
+					stats.Spirit:    statIncrease,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:   -statIncrease,
+					stats.Agility:   -statIncrease,
+					stats.Strength:  -statIncrease,
+					stats.Intellect: -statIncrease,
+					stats.Spirit:    -statIncrease,
+				})
+			},
+		})
+
+		core.MakePermanent(character.RegisterAura(core.Aura{
+			Label:    "Mark of the Chosen",
+			ActionID: core.ActionID{SpellID: 21969},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
+					procAura.Activate(sim)
+				}
+			},
+		}))
 	})
 
 	core.AddEffectsToTest = true

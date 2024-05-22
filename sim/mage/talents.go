@@ -101,7 +101,8 @@ func (mage *Mage) applyFireTalents() {
 	if mage.Talents.FirePower > 0 {
 		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
+			// Fire Power buffs pretty much all mage fire spells EXCEPT ignite
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell != mage.Ignite {
 				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
 			}
 		})
@@ -279,11 +280,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			if !mage.GCD.IsReady(sim) {
-				return false
-			}
-
-			return true
+			return mage.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			pomAura.Activate(sim)
@@ -472,6 +469,14 @@ func (mage *Mage) registerColdSnapCD() {
 		return
 	}
 
+	// Grab all frost spells with a CD > 0
+	var affectedSpells = []*core.Spell{}
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.CD.Duration > 0 {
+			affectedSpells = append(affectedSpells, spell)
+		}
+	})
+
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 12472},
 		Flags:    core.SpellFlagNoOnCastComplete,
@@ -483,8 +488,8 @@ func (mage *Mage) registerColdSnapCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			if mage.IcyVeins != nil {
-				mage.IcyVeins.CD.Reset()
+			for _, spell := range affectedSpells {
+				spell.CD.Reset()
 			}
 		},
 	})
@@ -492,13 +497,6 @@ func (mage *Mage) registerColdSnapCD() {
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
-		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if mage.IcyVeins != nil && mage.IcyVeins.IsReady(sim) {
-				return false
-			}
-
-			return true
-		},
 	})
 }
 

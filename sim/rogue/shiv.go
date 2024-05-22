@@ -66,6 +66,10 @@ func (rogue *Rogue) registerShivSpell() {
 					}
 				}
 			}
+
+			if !result.Landed() {
+				spell.IssueRefund(sim)
+			}
 		},
 	})
 }

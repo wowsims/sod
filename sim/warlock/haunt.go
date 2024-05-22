@@ -41,7 +41,7 @@ func (warlock *Warlock) registerHauntSpell() {
 		SpellSchool:  core.SpellSchoolShadow,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:        core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagResetAttackSwing,
 		MissileSpeed: 20,
 
 		ManaCost: core.ManaCostOptions{

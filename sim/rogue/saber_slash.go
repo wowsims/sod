@@ -26,7 +26,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				Label:     "Saber Slash - Bleed",
 				Tag:       RogueBleedTag,
 				Duration:  time.Second * 12,
-				MaxStacks: 3,
+				MaxStacks: 5,
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,
@@ -44,7 +44,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				}
 
 				// each stack snapshots the AP it was applied with
-				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage += 0.03 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
@@ -78,9 +78,14 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
+			oldMultiplier := spell.DamageMultiplier
+			spell.DamageMultiplier *= rogue.saberSlashMultiplier(target)
+
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -98,4 +103,11 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			}
 		},
 	})
+}
+
+func (rogue *Rogue) saberSlashMultiplier(target *core.Unit) float64 {
+	if rogue.saberSlashTick == nil {
+		return 1
+	}
+	return 1 + 0.2*float64(rogue.saberSlashTick.Dot(target).GetStacks())
 }
