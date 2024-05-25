@@ -91,9 +91,15 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)
+				if hasPandemicRune {
+					return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicCrit)
+				}
 				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
 			} else {
 				baseDamage := baseDamage / float64(ticks)
+				if hasPandemicRune {
+					return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
+				}
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
@@ -103,11 +109,12 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 func (warlock *Warlock) registerCorruptionSpell() {
 	maxRank := 7
 
+	warlock.Corruption = make([]*core.Spell, 0)
 	for i := 1; i <= maxRank; i++ {
 		config := warlock.getCorruptionConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.Corruption = warlock.GetOrRegisterSpell(config)
+			warlock.Corruption = append(warlock.Corruption, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

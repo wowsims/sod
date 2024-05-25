@@ -33,8 +33,10 @@ func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, targe
 		return
 	}
 
-	if warlock.Corruption.Dot(target).IsActive() {
-		warlock.Corruption.Dot(target).Rollover(sim)
+	for _, spell := range warlock.Corruption {
+		if spell.Dot(target).IsActive() {
+			spell.Dot(target).Rollover(sim)
+		}
 	}
 }
 
