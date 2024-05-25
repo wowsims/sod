@@ -114,8 +114,14 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 	warlock := value.warlock
 	target := value.target.Get()
 
-	dot := warlock.Corruption.Dot(target)
-	if !dot.IsActive() {
+	var dot *core.Dot
+	for _, spell := range warlock.Corruption {
+		dot = spell.Dot(target)
+		if dot.IsActive() {
+			break
+		}
+	}
+	if dot == nil || !dot.IsActive() {
 		return true
 	}
 
@@ -123,17 +129,17 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 
 	// check if reapplying corruption is worthwhile
 	snapshotCrit := dot.SnapshotCritChance
-	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(warlock.Corruption.CritMultiplier(attackTable)-1) + 1)
+	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(dot.Spell.CritMultiplier(attackTable)-1) + 1)
 
-	curCrit := warlock.Corruption.SpellCritChance(target)
-	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(warlock.Corruption.CritMultiplier(attackTable)-1) + 1)
+	curCrit := dot.Spell.SpellCritChance(target)
+	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(dot.Spell.CritMultiplier(attackTable)-1) + 1)
 
 	relDmgInc := curDmg / snapshotMult
 
-	snapshotDmg := warlock.Corruption.ExpectedTickDamageFromCurrentSnapshot(sim, target)
+	snapshotDmg := dot.Spell.ExpectedTickDamageFromCurrentSnapshot(sim, target)
 	snapshotDmg *= float64(sim.GetRemainingDuration()) / float64(dot.TickPeriod())
 	snapshotDmg *= relDmgInc - 1
-	snapshotDmg -= warlock.Corruption.ExpectedTickDamageFromCurrentSnapshot(sim, target)
+	snapshotDmg -= dot.Spell.ExpectedTickDamageFromCurrentSnapshot(sim, target)
 
 	//if sim.Log != nil {
 	//	warlock.Log(sim, "Relative Corruption Inc: [%.2f], expected dmg gain: [%.2f]", relDmgInc, snapshotDmg)
