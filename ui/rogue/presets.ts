@@ -3,15 +3,13 @@ import * as PresetUtils from '../core/preset_utils.js';
 import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuffs, StrengthBuff, TristateEffect, WeaponImbue } from '../core/proto/common.js';
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
-
 import SinisterApl25 from './apls/basic_strike_25.apl.json';
 import MutilateApl40 from './apls/mutilate.apl.json';
-import MutilateIEAApl40 from './apls/mutilate_IEA.apl.json';
 import MutilateDPSApl50 from './apls/Mutilate_DPS_50.apl.json';
+import MutilateIEAApl40 from './apls/mutilate_IEA.apl.json';
 import MutilateIEAApl50 from './apls/Mutilate_IEA_50.apl.json';
 import SaberDPSApl50 from './apls/Saber_DPS_50.apl.json';
 import SaberIEAApl50 from './apls/Saber_IEA_50.apl.json';
-
 import BlankGear from './gear_sets/blank.gear.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P1Daggers from './gear_sets/p1_daggers.gear.json';
@@ -19,7 +17,6 @@ import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 import P3MutiGear from './gear_sets/p3_muti.gear.json';
 import P3MutiHatGear from './gear_sets/p3_muti_hat.gear.json';
 import P3SaberGear from './gear_sets/p3_saber.gear.json';
-
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -55,17 +52,26 @@ export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('P2 Mu
 export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('P2 Mutilate IEA', MutilateIEAApl40, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('P1 Sinister', SinisterApl25, { customCondition: player => player.getLevel() == 25 });
-export const ROTATION_PRESET_MUTILATE_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate DPS', MutilateDPSApl50, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_MUTILATE_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate IEA', MutilateIEAApl50, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_SABER_SLASH_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash DPS', SaberDPSApl50, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_SABER_SLASH_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash IEA', SaberIEAApl50, { customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SINISTER_25 = PresetUtils.makePresetAPLRotation('P1 Sinister', SinisterApl25, {
+	customCondition: player => player.getLevel() == 25,
+});
+export const ROTATION_PRESET_MUTILATE_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate DPS', MutilateDPSApl50, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const ROTATION_PRESET_MUTILATE_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Mutilate IEA', MutilateIEAApl50, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const ROTATION_PRESET_SABER_SLASH_DPS_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash DPS', SaberDPSApl50, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const ROTATION_PRESET_SABER_SLASH_IEA_50 = PresetUtils.makePresetAPLRotation('P3 Saber Slash IEA', SaberIEAApl50, {
+	customCondition: player => player.getLevel() >= 50,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_SINISTER_25],
 	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
-	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_DPS_50, ROTATION_PRESET_SABER_SLASH_DPS_50, 
-		ROTATION_PRESET_MUTILATE_IEA_50, ROTATION_PRESET_SABER_SLASH_IEA_50],
+	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_DPS_50, ROTATION_PRESET_SABER_SLASH_DPS_50, ROTATION_PRESET_MUTILATE_IEA_50, ROTATION_PRESET_SABER_SLASH_IEA_50],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 };
@@ -81,6 +87,11 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase2][0],
 	},
 	50: {
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][0],
+		2: APLPresets[Phase.Phase3][0],
+	},
+	60: {
 		0: APLPresets[Phase.Phase3][0],
 		1: APLPresets[Phase.Phase3][0],
 		2: APLPresets[Phase.Phase3][0],
@@ -171,7 +182,7 @@ export const P3Consumes = Consumes.create({
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.ShadowOil,
-})
+});
 
 export const DefaultConsumes = {
 	[Phase.Phase1]: P1Consumes,
