@@ -12,7 +12,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
 
-	if shaman.Talents.Parry == true {
+	if shaman.Talents.Parry {
 		shaman.PseudoStats.CanParry = true
 		shaman.AddStat(stats.Parry, 5)
 	}
@@ -29,10 +29,16 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
 	}
 
+	// Ele Talents
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
-	shaman.applyFlurry()
 	shaman.registerElementalMasteryCD()
+
+	// Enh Talents
+	shaman.applyFlurry()
+
+	// Resto Talents
+	shaman.applyNaturesGuidance()
 	shaman.registerNaturesSwiftnessCD()
 	// shaman.registerManaTideTotemCD()
 }
@@ -180,6 +186,15 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		Spell: eleMastSpell,
 		Type:  core.CooldownTypeDPS,
 	})
+}
+
+func (shaman *Shaman) applyNaturesGuidance() {
+	if shaman.Talents.NaturesGuidance == 0 {
+		return
+	}
+
+	shaman.AddStat(stats.MeleeHit, float64(shaman.Talents.NaturesGuidance))
+	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 }
 
 func (shaman *Shaman) registerNaturesSwiftnessCD() {
