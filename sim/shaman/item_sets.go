@@ -12,7 +12,7 @@ import (
 ///////////////////////////////////////////////////////////////////////////
 
 var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
-	Name: "Ostracized Berserk's Battlemail",
+	Name: "Ostracized Berserker's Battlemail",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()

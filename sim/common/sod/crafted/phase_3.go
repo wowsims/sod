@@ -40,6 +40,10 @@ func init() {
 	core.NewItemEffect(ShoulderpadsOfTheDeranged, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		if character.Level != 50 {
+			return
+		}
+
 		procAura := character.NewTemporaryStatsAura("Echoes of the Depraved Proc", core.ActionID{SpellID: 446572}, stats.Stats{stats.SpellDamage: 30, stats.Dodge: 2}, time.Second*10)
 
 		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
@@ -80,6 +84,10 @@ func init() {
 	// Shrieking Spaulders
 	core.NewItemEffect(ShriekingSpaulders, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		if character.Level != 50 {
+			return
+		}
 
 		procAura := character.NewTemporaryStatsAura("Echoes of the Damned Proc", core.ActionID{SpellID: 446618}, stats.Stats{stats.AttackPower: 60}, time.Second*10)
 
@@ -123,6 +131,10 @@ func init() {
 func echoesOfFearEffect(agent core.Agent) {
 	character := agent.GetCharacter()
 
+	if character.Level != 50 {
+		return
+	}
+
 	procAura := character.NewTemporaryStatsAura("Echoes of Fear Proc", core.ActionID{SpellID: 446597}, stats.Stats{stats.SpellDamage: 50}, time.Second*10)
 
 	handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -146,6 +158,10 @@ func echoesOfFearEffect(agent core.Agent) {
 func echoesOfInsanityEffect(agent core.Agent) {
 	character := agent.GetCharacter()
 
+	if character.Level != 50 {
+		return
+	}
+
 	procAura := character.NewTemporaryStatsAura("Echoes of Insanity Proc", core.ActionID{SpellID: 446541}, stats.Stats{stats.HealingPower: 50}, time.Second*10)
 
 	handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
@@ -165,6 +181,10 @@ func echoesOfInsanityEffect(agent core.Agent) {
 
 func echoesOfMadnessEffect(agent core.Agent) {
 	character := agent.GetCharacter()
+
+	if character.Level != 50 {
+		return
+	}
 
 	procAura := character.GetOrRegisterAura(core.Aura{
 		Label:    "Echoes of Madness Proc",
@@ -195,6 +215,10 @@ func echoesOfMadnessEffect(agent core.Agent) {
 
 func echoesOfDreadEffect(agent core.Agent) {
 	character := agent.GetCharacter()
+
+	if character.Level != 50 {
+		return
+	}
 
 	procAura := character.GetOrRegisterAura(core.Aura{
 		Label:    "Echoes of Dread Proc",

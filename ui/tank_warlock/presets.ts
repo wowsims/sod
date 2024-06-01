@@ -42,11 +42,19 @@ import TankGearPhase3 from './gear_sets/p3.destro.tank.gear.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Affliction', AfflictionGearPhase1, { customCondition: player => player.getLevel() == 25 });
-export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destruction', DestructionGearPhase1, { customCondition: player => player.getLevel() == 25 });
+export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Affliction', AfflictionGearPhase1, {
+	customCondition: player => player.getLevel() == 25,
+});
+export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destruction', DestructionGearPhase1, {
+	customCondition: player => player.getLevel() == 25,
+});
 
-export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demonology', DemonologyGearPhase2, { customCondition: player => player.getLevel() == 40 });
-export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destruction', DestructionGearPhase2, { customCondition: player => player.getLevel() == 40 });
+export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demonology', DemonologyGearPhase2, {
+	customCondition: player => player.getLevel() == 40,
+});
+export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destruction', DestructionGearPhase2, {
+	customCondition: player => player.getLevel() == 40,
+});
 
 export const GearTankPhase3 = PresetUtils.makePresetGear('P3 Destruction', TankGearPhase3, { customCondition: player => player.getLevel() == 50 });
 
@@ -65,22 +73,22 @@ export const DefaultGear = GearTankPhase3;
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Affliction', Phase1AfflictionAPL, { 
-	customCondition: player => player.getLevel() == 25 
+export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Affliction', Phase1AfflictionAPL, {
+	customCondition: player => player.getLevel() == 25,
 });
-export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Destruction', Phase1DestroTankAPL, { 
-	customCondition: player => player.getLevel() == 25 
-});
-
-export const APLDemonologyTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', Phase2DemonologyAPL, { 
-	customCondition: player => player.getLevel() == 40 
-});
-export const APLDestructionTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Destruction', Phase2DestroTankAPL, { 
-	customCondition: player => player.getLevel() == 40 
+export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Destruction', Phase1DestroTankAPL, {
+	customCondition: player => player.getLevel() == 25,
 });
 
-export const APLTankPhase3 = PresetUtils.makePresetAPLRotation('P3 Destruction', Phase3TankAPL, { 
-	customCondition: player => player.getLevel() == 50 
+export const APLDemonologyTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', Phase2DemonologyAPL, {
+	customCondition: player => player.getLevel() == 40,
+});
+export const APLDestructionTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Destruction', Phase2DestroTankAPL, {
+	customCondition: player => player.getLevel() == 40,
+});
+
+export const APLTankPhase3 = PresetUtils.makePresetAPLRotation('P3 Destruction', Phase3TankAPL, {
+	customCondition: player => player.getLevel() == 50,
 });
 
 export const APLPresets = {
@@ -98,8 +106,11 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		0: APLPresets[Phase.Phase2][0],
 		1: APLPresets[Phase.Phase2][1],
 	},
-	// TODO: Phase 3
 	50: {
+		0: APLPresets[Phase.Phase3][0],
+		1: APLPresets[Phase.Phase3][0],
+	},
+	60: {
 		0: APLPresets[Phase.Phase3][0],
 		1: APLPresets[Phase.Phase3][0],
 	},

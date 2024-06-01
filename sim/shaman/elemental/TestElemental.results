@@ -104,7 +104,7 @@ character_stats_results: {
   final_stats: 344.52
   final_stats: 308.88
   final_stats: 199.584
-  final_stats: 238
+  final_stats: 245
   final_stats: 0
   final_stats: 40
   final_stats: 0
@@ -125,7 +125,7 @@ character_stats_results: {
   final_stats: 5888.61
   final_stats: 0
   final_stats: 0
-  final_stats: 2892.08
+  final_stats: 2897.08
   final_stats: 300
   final_stats: 0
   final_stats: 0
@@ -139,7 +139,7 @@ character_stats_results: {
   final_stats: 48
   final_stats: 48
   final_stats: 48
-  final_stats: 1099
+  final_stats: 1209
   final_stats: 0
   final_stats: 285
   final_stats: 0
@@ -260,7 +260,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.78169
+  weights: 5.81918
   weights: 0
   weights: 0
   weights: 0
@@ -491,98 +491,98 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1363.45477
-  tps: 1215.26329
+  dps: 1371.29809
+  tps: 1221.86486
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2762.32448
-  tps: 3244.58451
+  dps: 2777.76119
+  tps: 3255.84643
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1269.14767
-  tps: 1126.56447
+  dps: 1276.61709
+  tps: 1132.82151
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1337.06347
-  tps: 1223.15118
+  dps: 1344.96332
+  tps: 1230.00096
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1562.99742
-  tps: 2023.52505
+  dps: 1572.23696
+  tps: 2030.30589
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 826.93627
-  tps: 748.93445
+  dps: 832.0638
+  tps: 753.23925
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 874.47479
-  tps: 808.21986
+  dps: 879.91399
+  tps: 812.94329
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2784.41615
-  tps: 3296.75351
+  dps: 2800.00002
+  tps: 3308.1842
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1282.66848
-  tps: 1137.57346
+  dps: 1290.22952
+  tps: 1143.90424
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1355.82863
-  tps: 1244.23389
+  dps: 1363.80389
+  tps: 1251.17881
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1531.07497
-  tps: 2003.88383
+  dps: 1540.14206
+  tps: 2010.55755
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 844.28688
-  tps: 767.16165
+  dps: 849.52871
+  tps: 771.57725
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 899.79789
-  tps: 842.19872
+  dps: 905.37322
+  tps: 847.10328
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1351.57091
-  tps: 1204.18523
+  dps: 1359.38203
+  tps: 1210.75768
  }
 }
