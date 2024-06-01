@@ -615,22 +615,28 @@ func applyZanzaBuffConsumes(character *Character, consumes *proto.Consumes) {
 			stats.Stamina: 25,
 		})
 	case proto.ZanzaBuff_AtalaiMojoOfWar:
-		character.AddStats(stats.Stats{
-			stats.AttackPower:       48,
-			stats.RangedAttackPower: 48,
-		})
-		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		if character.Level == 50 {
+			character.AddStats(stats.Stats{
+				stats.AttackPower:       48,
+				stats.RangedAttackPower: 48,
+			})
+			ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		}
 	case proto.ZanzaBuff_AtalaiMojoOfForbiddenMagic:
-		character.AddStats(stats.Stats{
-			stats.SpellPower: 40,
-		})
-		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		if character.Level == 50 {
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 40,
+			})
+			ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		}
 	case proto.ZanzaBuff_AtalaiMojoOfLife:
-		character.AddStats(stats.Stats{
-			stats.HealingPower: 45,
-			stats.MP5:          11,
-		})
-		ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		if character.Level == 50 {
+			character.AddStats(stats.Stats{
+				stats.HealingPower: 45,
+				stats.MP5:          11,
+			})
+			ApplyAtalAiProc(character, consumes.ZanzaBuff)
+		}
 	}
 }
 
