@@ -101,10 +101,10 @@ character_stats_results: {
  value: {
   final_stats: 162.756
   final_stats: 149.688
-  final_stats: 313.632
-  final_stats: 313.632
+  final_stats: 327.888
+  final_stats: 324.324
   final_stats: 213.84
-  final_stats: 279
+  final_stats: 284
   final_stats: 23
   final_stats: 20
   final_stats: 0
@@ -112,20 +112,20 @@ character_stats_results: {
   final_stats: 0
   final_stats: 43
   final_stats: 38
-  final_stats: 4
-  final_stats: 23.22946
+  final_stats: 5
+  final_stats: 23.44864
   final_stats: 0
   final_stats: 0
   final_stats: 750.096
-  final_stats: 4
+  final_stats: 5
   final_stats: 24.24427
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 5488.48
+  final_stats: 5648.86
   final_stats: 0
   final_stats: 0
-  final_stats: 2076.952
+  final_stats: 2126.952
   final_stats: 300
   final_stats: 0
   final_stats: 0
@@ -133,7 +133,7 @@ character_stats_results: {
   final_stats: 9.24427
   final_stats: 0
   final_stats: 0
-  final_stats: 4194.036
+  final_stats: 4343.724
   final_stats: 25
   final_stats: 45
   final_stats: 50
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.02099
+  weights: 0.395
   weights: 0
-  weights: 1.10146
-  weights: 0
-  weights: 0
+  weights: 1.10786
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.26386
-  weights: 8.97874
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 6.94821
   weights: 0
   weights: 0
   weights: 0
@@ -491,98 +491,98 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
-  dps: 1079.80211
-  tps: 1097.67822
+  dps: 1038.98328
+  tps: 1052.64591
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1024.19961
-  tps: 1358.02025
+  dps: 1031.32396
+  tps: 1305.51127
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1024.19961
-  tps: 1040.89064
+  dps: 1031.32396
+  tps: 1045.03332
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1022.15307
-  tps: 1032.96641
+  dps: 1032.4648
+  tps: 1040.38063
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 715.91258
-  tps: 952.03135
+  dps: 703.06592
+  tps: 883.81274
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 715.91258
-  tps: 727.71852
+  dps: 703.06592
+  tps: 712.10326
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 760.93002
-  tps: 779.03044
+  dps: 760.40874
+  tps: 775.5925
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1023.50351
-  tps: 1357.24749
+  dps: 1029.00794
+  tps: 1303.11859
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1023.50351
-  tps: 1040.19071
+  dps: 1029.00794
+  tps: 1042.71348
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1021.62182
-  tps: 1032.43515
+  dps: 1029.84557
+  tps: 1037.7614
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 713.85591
-  tps: 951.06024
+  dps: 701.82796
+  tps: 879.60706
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 713.85591
-  tps: 725.71613
+  dps: 701.82796
+  tps: 710.71692
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 760.93002
-  tps: 779.03044
+  dps: 760.40874
+  tps: 775.5925
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1071.42618
-  tps: 1089.28296
+  dps: 1032.05011
+  tps: 1045.77098
  }
 }
