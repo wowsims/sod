@@ -78,13 +78,13 @@ export type WowheadTooltipSpellParams = {
 	difficultyId?: 14 | 15 | 16;
 };
 
-export const WOWHEAD_EXPANSION_ENV = 11;
+export const WOWHEAD_EXPANSION_ENV = 4;
 
 export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemParams | WowheadTooltipSpellParams) => {
 	const lang = getLanguageCode();
 	const params = new URLSearchParams();
 	const langPrefix = lang ? lang + '.' : '';
-	params.set('domain', `${langPrefix}cata`);
+	params.set('domain', `${langPrefix}classic`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
 	if (options.level) {
@@ -97,6 +97,7 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		}
 		if (options.useBuffAura) {
 			const data = await Database.getSpellIconData(options.spellId);
+			console.log(options.spellId, data);
 			if (data.hasBuff) params.set('buff', '1');
 		}
 	}
@@ -128,6 +129,5 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 			params.set('transmog', String(options.transmogId));
 		}
 	}
-
 	return decodeURIComponent(params.toString());
 };
