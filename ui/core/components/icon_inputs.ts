@@ -4,8 +4,8 @@ import { Consumes, Debuffs, Faction, IndividualBuffs, RaidBuffs } from '../proto
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';
-import { IconEnumPicker, IconEnumValueConfig } from './icon_enum_picker';
-import { IconPicker, IconPickerDirection } from './icon_picker';
+import { IconEnumPicker, IconEnumPickerDirection, IconEnumValueConfig } from './icon_enum_picker';
+import { IconPicker } from './icon_picker';
 import * as InputHelpers from './input_helpers';
 
 // Component Functions
@@ -280,7 +280,7 @@ export function makeMultistateMultiplierDebuffInput(config: MultiStateInputConfi
 interface EnumInputConfig<ModObject, Message, T> {
 	fieldName: keyof Message;
 	values: Array<IconEnumValueConfig<ModObject, T>>;
-	direction?: IconPickerDirection;
+	direction?: IconEnumPickerDirection;
 	numColumns?: number;
 	faction?: Faction;
 }
@@ -299,7 +299,7 @@ export function makeEnumIndividualBuffInput<SpecType extends Spec>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
-		config.direction || IconPickerDirection.Vertical,
+		config.direction || IconEnumPickerDirection.Vertical,
 	);
 }
 
@@ -316,6 +316,6 @@ export function makeEnumConsumeInput<SpecType extends Spec>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
-		config.direction || IconPickerDirection.Vertical,
+		config.direction || IconEnumPickerDirection.Vertical,
 	);
 }

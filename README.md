@@ -11,9 +11,9 @@ This project is licensed with MIT license. We request that anyone using this sof
 # Downloading Sim
 
 Links for latest Sim build:
-- [Windows Sim](https://github.com/wowsims/sod/releases/latest/download/wowsims-classic-sod-windows.exe.zip)
-- [MacOS Sim](https://github.com/wowsims/sod/releases/latest/download/wowsims-classic-sod-amd64-darwin.zip)
-- [Linux Sim](https://github.com/wowsims/sod/releases/latest/download/wowsims-classic-sod-amd64-linux.zip)
+- [Windows Sim](https://github.com/wowsims/sod/releases/latest/download/wowsimsod-windows.exe.zip)
+- [MacOS Sim](https://github.com/wowsims/sod/releases/latest/download/wowsimsod-amd64-darwin.zip)
+- [Linux Sim](https://github.com/wowsims/sod/releases/latest/download/wowsimsod-amd64-linux.zip)
 
 Then unzip the downloaded file, then open the unzipped file to open the sim in your browser!
 
@@ -28,7 +28,7 @@ Script below will curl latest versions and install them.
 ```sh
 # Standard Go installation script
 curl -O https://dl.google.com/go/go1.21.1.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go 
+sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
@@ -44,8 +44,8 @@ go get -u -v google.golang.org/protobuf
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 # Install node
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-nvm install 19.8.0
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 20.13.1
 
 # Install the npm package dependencies using node
 npm install
@@ -64,6 +64,9 @@ docker run --rm -v $(pwd):/sod wowsims-sod npm install
 # Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/sod wowsims-sod".
 # For convenience, set this as an environment variable:
 SOD_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/sod wowsims-sod"
+
+#For the watch commands assign this environment variable:
+SOD_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/sod wowsims-sod"
 
 # ... do some coding on the sim ...
 
@@ -84,7 +87,7 @@ If you want to develop on Windows, we recommend setting up a Ubuntu virtual mach
 * You can also use the Ubuntu setup instructions as above to run natively, with a few modifications:
   * You may need a different Go installer if `go1.18.3.linux-amd64.tar.gz` is not compatible with your system's architecture; you can do the Go install manually from `https://go.dev/doc/install`.
   * OS X uses Homebrew instead of apt, so in order to install protobuf-compiler you’ll instead need to run `brew install protobuf-c` (note the package name is also a little different than in apt). You might need to first update or upgrade brew.
-  * The provided install script for Node will not included a precompiled binary for OS X, but it’s smart enough to compile one. Be ready for your CPU to melt on running `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash`.
+  * The provided install script for Node will not included a precompiled binary for OS X, but it’s smart enough to compile one. Be ready for your CPU to melt on running `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`.
 
 # Commands
 We use a makefile for our build system. These commands will usually be all you need while developing for this project:
@@ -113,7 +116,7 @@ make clean
 # Recompiles the ts only for the given spec (e.g. make host_elemental_shaman)
 make host_$spec
 
-# Recompiles the `wowsimsod` server binary and runs it, hosting /dist directory at http://localhost:3333/classic. 
+# Recompiles the `wowsimsod` server binary and runs it, hosting /dist directory at http://localhost:3333/sod.
 # This is the fastest way to iterate on core go simulator code so you don't have to wait for client rebuilds.
 # To rebuild client for a spec just do 'make $spec' and refresh browser.
 make rundevserver
@@ -121,15 +124,33 @@ make rundevserver
 # With file-watching so the server auto-restarts and recompiles on Go or TS changes:
 WATCH=1 make rundevserver
 
+
+# The same as rundevserver, recompiles  `wowsimsod` binary and runs it on port 3333. Instead of serving content from the dist folder,
+# this command also runs `vite serve` to start the Vite dev server on port 5173 (or similar) and automatically reloads the page on .ts changes in less than a second.
+# This allows for more rapid development, with sub second reloads on TS changes. This combines the benefits of `WATCH=1 make rundevserver` and `WATCH=1 make host`
+# to create something that allows you to work in any part of the code with ease and speed.
+# This might get rolled into `WATCH=1 make rundevserver` at some point.
+WATCH=1 make devmode
+
+# This is just the same as rundevserver currently
+make devmode
+
+# This command recompiles the workers in the /ui/worker folder for easier debugging/development
+# Can be used with or without WATCH command
+make webworkers
+
+# With file watch enabled
+WATCH=1 make webworkers
+
 # Creates the 'wowsimsod' binary that can host the UI and run simulations natively (instead of with wasm).
 # Builds the UI and the compiles it into the binary so that you can host the sim as a server instead of wasm on the client.
-# It does this by first doing make dist/classic and then copying all those files to binary_dist/classic and loading all the files in that directory into its binary on compile.
+# It does this by first doing make dist/sod and then copying all those files to binary_dist/sod and loading all the files in that directory into its binary on compile.
 make wowsimsod
 
-# Using the --usefs flag will instead of hosting the client built into the binary, it will host whatever code is found in the /dist directory. 
+# Using the --usefs flag will instead of hosting the client built into the binary, it will host whatever code is found in the /dist directory.
 # Use --wasm to host the client with the wasm simulator.
 # The server also disables all caching so that refreshes should pickup any changed files in dist/. The client will still call to the server to run simulations so you can iterate more quickly on client changes.
-# make dist/classic && ./wowsimsod --usefs would rebuild the whole client and host it. (you would have had to run `make devserver` to build the wowsimsod binary first.)
+# make dist/sod && ./wowsimsod --usefs would rebuild the whole client and host it. (you would have had to run `make devserver` to build the wowsimsod binary first.)
 ./wowsimsod --usefs
 
 # Generate code for items. Only necessary if you changed the items generator.

@@ -1,4 +1,4 @@
-import pako from 'pako';
+import { default as pako } from 'pako';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';

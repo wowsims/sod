@@ -191,6 +191,7 @@ message IconData {
 	string icon = 3;
 	int32 rank = 4;
 	int32 requires_level = 5;
+	bool has_buff = 6;
 }
 
 enum SourceFilterOption {

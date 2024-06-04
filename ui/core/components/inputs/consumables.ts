@@ -30,7 +30,7 @@ import {
 import { ActionId } from '../../proto_utils/action_id';
 import { isBluntWeaponType, isSharpWeaponType } from '../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../typed_event';
-import { IconEnumValueConfig } from '../icon_enum_picker';
+import { IconEnumPickerDirection, IconEnumValueConfig } from '../icon_enum_picker';
 import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
 import { IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
@@ -594,7 +594,7 @@ export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumes
 ///////////////////////////////////////////////////////////////////////////
 
 export const PetScrollOfAgility = makeEnumConsumeInput({
-	direction: IconPickerDirection.Vertical,
+	direction: IconEnumPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
 		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: player => player.getLevel() >= 10 },
@@ -606,7 +606,7 @@ export const PetScrollOfAgility = makeEnumConsumeInput({
 });
 
 export const PetScrollOfStrength = makeEnumConsumeInput({
-	direction: IconPickerDirection.Vertical,
+	direction: IconEnumPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
 		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: player => player.getLevel() >= 10 },

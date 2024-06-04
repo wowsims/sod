@@ -1,5 +1,5 @@
-import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
-import { Player } from '../../player.js';
+import { itemSwapEnabledSpecs } from '../../individual_sim_ui';
+import { Player } from '../../player';
 import {
 	APLAction,
 	APLActionActivateAura,
@@ -26,15 +26,16 @@ import {
 	APLActionWait,
 	APLActionWaitUntil,
 	APLValue,
-} from '../../proto/apl.js';
-import { Spec } from '../../proto/common.js';
-import { isHealingSpec } from '../../proto_utils/utils.js';
-import { EventID } from '../../typed_event.js';
-import { TextDropdownPicker } from '../dropdown_picker.js';
-import { Input, InputConfig } from '../input.js';
-import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
-import * as AplHelpers from './apl_helpers.js';
-import * as AplValues from './apl_values.js';
+} from '../../proto/apl';
+import { Spec } from '../../proto/common';
+import { isHealingSpec } from '../../proto_utils/utils';
+import { EventID } from '../../typed_event';
+import { randomUUID } from '../../utils';
+import { TextDropdownPicker } from '../dropdown_picker';
+import { Input, InputConfig } from '../input';
+import { ListItemPickerConfig, ListPicker } from '../list_picker';
+import * as AplHelpers from './apl_helpers';
+import * as AplValues from './apl_values';
 
 export interface APLActionPickerConfig extends InputConfig<Player<any>, APLAction> {}
 
@@ -89,6 +90,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		);
 
 		this.kindPicker = new TextDropdownPicker(this.actionDiv, player, {
+			id: randomUUID(),
 			defaultLabel: 'Action',
 			values: allActionKinds.map(actionKind => {
 				const factory = actionKindFactories[actionKind];
@@ -257,6 +259,7 @@ function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderField
 		newValue: () => ItemSwapSet.Swap1,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,

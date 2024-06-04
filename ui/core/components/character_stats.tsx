@@ -1,6 +1,5 @@
 import { Popover, Tooltip } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
 import { Class, PseudoStat, Spec, Stat } from '..//proto/common.js';
@@ -85,7 +84,7 @@ export class CharacterStats extends Component {
 			? this.modifyDisplayStats(this.player)
 			: {
 					talents: new Stats(),
-				};
+			  };
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
 		const gearStats = Stats.fromProto(playerStats.gearStats);
@@ -285,13 +284,17 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) + 5.0).toFixed(2)}%)`;
+			displayStr += ` (${(
+				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
+				Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) +
+				5.0
+			).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr = `${(stats.getStat(Stat.StatDodge)).toFixed(2)}%`;
+			displayStr = `${stats.getStat(Stat.StatDodge).toFixed(2)}%`;
 		} else if (stat == Stat.StatParry) {
 			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr = `${(stats.getStat(Stat.StatParry)).toFixed(2)}%`;
+			displayStr = `${stats.getStat(Stat.StatParry).toFixed(2)}%`;
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
 		}
@@ -322,27 +325,28 @@ export class CharacterStats extends Component {
 
 		Tooltip.getOrCreateInstance(link.children[0], { title: `Bonus ${statName}` });
 
-		let popover: Popover | null = null;
-
-		const picker = new NumberPicker(null, this.player, {
-			label: `Bonus ${statName}`,
-			extraCssClasses: ['mb-0'],
-			changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-			getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
-			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-				const bonusStats = player.getBonusStats().withStat(stat, newValue);
-				player.setBonusStats(eventID, bonusStats);
-				popover?.hide();
-			},
-		});
-
-		popover = Popover.getOrCreateInstance(link, {
+		const popover = Popover.getOrCreateInstance(link, {
 			customClass: 'bonus-stats-popover',
 			placement: 'right',
 			fallbackPlacements: ['left'],
 			sanitize: false,
 			html: true,
-			content: picker.rootElem,
+		});
+
+		link.addEventListener('show.bs.popover', () => {
+			const picker = new NumberPicker(null, this.player, {
+				id: `character-bonus-stat-${stat}`,
+				label: `Bonus ${statName}`,
+				extraCssClasses: ['mb-0'],
+				changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
+				getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+				setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+					const bonusStats = player.getBonusStats().withStat(stat, newValue);
+					player.setBonusStats(eventID, bonusStats);
+					popover?.hide();
+				},
+			});
+			popover.setContent({ '.tooltip-inner': picker.rootElem });
 		});
 
 		return link as HTMLElement;

@@ -602,6 +602,7 @@ export class BulkTab extends SimTab {
 		settingsBlock.bodyElement.appendChild(clearButton);
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
 			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
@@ -611,6 +612,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-combinations',
 			label: 'Combinations',
 			labelTooltip:
 				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
@@ -621,6 +623,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-auto-enchant',
 			label: 'Auto Enchant',
 			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,

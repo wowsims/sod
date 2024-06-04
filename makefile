@@ -40,23 +40,16 @@ $(OUT_DIR)/.dirstamp: \
 $(OUT_DIR)/bundle/.dirstamp: \
   $(UI_SRC) \
   $(HTML_INDECIES) \
-  vite.config.js \
+  vite.config.mts \
+  vite.build-workers.ts \
   node_modules \
   tsconfig.json \
   ui/core/index.ts \
-  ui/core/proto/api.ts \
-  $(OUT_DIR)/net_worker.js \
-  $(OUT_DIR)/sim_worker.js
+  ui/core/proto/api.ts
 	npx tsc --noEmit
+	npx tsx vite.build-workers.ts
 	npx vite build
 	touch $@
-
-$(OUT_DIR)/sim_worker.js: ui/worker/sim_worker.js
-	cat '$(GOROOT)/misc/wasm/wasm_exec.js' > $(OUT_DIR)/sim_worker.js
-	cat ui/worker/sim_worker.js >> $(OUT_DIR)/sim_worker.js
-
-$(OUT_DIR)/net_worker.js: ui/worker/net_worker.js
-	cp ui/worker/net_worker.js $(OUT_DIR)
 
 ui/core/index.ts: $(TS_CORE_SRC)
 	find ui/core -name '*.ts' | \
@@ -260,3 +253,14 @@ else
 	# directory just like github pages.
 	npx http-server $(OUT_DIR)/..
 endif
+
+devmode: air devserver
+ifeq ($(WATCH), 1)
+	npx tsx vite.build-workers.ts & npx vite serve --host &
+	air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false --wasm=false" -build.bin "./wowsimsod" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
+else
+	./wowsimsod --usefs=true --launch=false --host=":3333"
+endif
+
+webworkers:
+	npx tsx vite.build-workers.ts --watch=$(if $(WATCH),true,false)

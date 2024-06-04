@@ -1,6 +1,4 @@
 import { Tooltip } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';

@@ -51,6 +51,7 @@ export class RaidPicker extends Component {
 		this.newPlayerPicker = new NewPlayerPicker(this.rootElem, this);
 
 		new EnumPicker<Raid>(raidControls, this.raidSimUI.sim.raid, {
+			id: 'raid-picker-size',
 			label: 'Raid Size',
 			labelTooltip: 'Number of players participating in the sim.',
 			values: [
@@ -67,6 +68,7 @@ export class RaidPicker extends Component {
 		});
 
 		new EnumPicker<NewPlayerPicker>(raidControls, this.newPlayerPicker, {
+			id: 'raid-picker-faction',
 			label: 'Default Faction',
 			labelTooltip: 'Default faction for newly-created players.',
 			values: [
@@ -84,6 +86,7 @@ export class RaidPicker extends Component {
 			...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))),
 		);
 		new EnumPicker<NewPlayerPicker>(raidControls, this.newPlayerPicker, {
+			id: 'raid-picker-gear',
 			label: 'Default Gear',
 			labelTooltip: 'Newly-created players will start with approximate BIS gear from this phase.',
 			values: [...Array(latestPhaseWithAllPresets).keys()].map(val => {

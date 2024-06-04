@@ -34,12 +34,12 @@ function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsRe
 	if (!result) return 0;
 
 	return (
-		epRatios[0] * stat.getProtoValue(result.dps?.epValues!) +
-		epRatios[1] * stat.getProtoValue(result.hps?.epValues!) +
-		epRatios[2] * stat.getProtoValue(result.tps?.epValues!) +
-		epRatios[3] * stat.getProtoValue(result.dtps?.epValues!) +
-		epRatios[4] * stat.getProtoValue(result.tmi?.epValues!) +
-		epRatios[5] * stat.getProtoValue(result.pDeath?.epValues!)
+		(result.dps?.epValues ? epRatios[0] * stat.getProtoValue(result.dps.epValues) : 0) +
+		(result.hps?.epValues ? epRatios[1] * stat.getProtoValue(result.hps.epValues) : 0) +
+		(result.tps?.epValues ? epRatios[2] * stat.getProtoValue(result.tps.epValues) : 0) +
+		(result.dtps?.epValues ? epRatios[3] * stat.getProtoValue(result.dtps.epValues) : 0) +
+		(result.tmi?.epValues ? epRatios[4] * stat.getProtoValue(result.tmi.epValues) : 0) +
+		(result.pDeath?.epValues ? epRatios[5] * stat.getProtoValue(result.pDeath.epValues) : 0)
 	);
 }
 
@@ -441,6 +441,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const showAllStatsContainer = this.rootElem.getElementsByClassName('show-all-stats-container')[0] as HTMLElement;
 		new BooleanPicker(showAllStatsContainer, this, {
+			id: 'ep-show-all-stats',
 			label: 'Show All Stats',
 			inline: true,
 			changedEvent: () => new TypedEvent(),
@@ -455,6 +456,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const makeEpRatioCell = (cell: HTMLElement, idx: number) => {
 			new NumberPicker(cell, this.simUI.player, {
+				id: `ep-ratio-${idx}`,
 				float: true,
 				changedEvent: (player: Player<any>) => player.epRatiosChangeEmitter,
 				getValue: (_player: Player<any>) => this.simUI.player.getEpRatios()[idx],
@@ -553,6 +555,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const currentEpCell = row.querySelector('.current-ep') as HTMLElement;
 		new NumberPicker(currentEpCell, this.simUI.player, {
+			id: `ep-weight-stat-${stat}`,
 			float: true,
 			changedEvent: (player: Player<any>) => player.epWeightsChangeEmitter,
 			getValue: (_player: Player<any>) => this.simUI.player.getEpWeights().getUnitStat(stat),
@@ -602,8 +605,7 @@ class EpWeightsMenu extends BaseModal {
 		const epDelta = epTotal - epCurrent;
 
 		const epAvgElem = template.content.querySelector('.type-ep .results-avg') as HTMLElement;
-		if (epDelta.toFixed(2) == '0.00')
-			epAvgElem; // no-op
+		if (epDelta.toFixed(2) == '0.00') epAvgElem; // no-op
 		else if (epDelta > 0) epAvgElem.classList.add('positive');
 		else if (epDelta < 0) epAvgElem.classList.add('negative');
 

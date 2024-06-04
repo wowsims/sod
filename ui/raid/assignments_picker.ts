@@ -1,14 +1,11 @@
 import { Component } from '../core/components/component.js';
 import { UnitReferencePicker } from '../core/components/raid_target_picker.js';
-
 import { Player } from '../core/player.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-
-import { Class, UnitReference, Spec } from '../core/proto/common.js';
+import { Class, Spec,UnitReference } from '../core/proto/common.js';
+import { PriestTalents } from '../core/proto/priest.js';
 import { emptyUnitReference } from '../core/proto_utils/utils.js';
-
+import { EventID, TypedEvent } from '../core/typed_event.js';
 import { RaidSimUI } from './raid_sim_ui.js';
-import { PriestTalents } from 'ui/core/proto/priest.js';
 
 export class AssignmentsPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -64,12 +61,12 @@ abstract class AssignedBuffPicker extends Component {
 		else
 			this.rootElem.classList.remove('hide');
 
-		this.targetPickers = sourcePlayers.map((sourcePlayer) => {
+		this.targetPickers = sourcePlayers.map(sourcePlayer => {
 			const row = document.createElement('div');
 			row.classList.add('assigned-buff-player', 'input-inline');
 			this.playersContainer.appendChild(row);
 
-			let sourceElem = document.createElement('div');
+			const sourceElem = document.createElement('div');
 			sourceElem.classList.add('raid-target-picker-root');
 			sourceElem.appendChild(
 				UnitReferencePicker.makeOptionElem({ player: sourcePlayer, isDropdown: false })

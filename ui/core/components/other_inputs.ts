@@ -10,6 +10,7 @@ import { EnumPicker } from './enum_picker.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
+		id: 'show-1h-weapons-selector',
 		extraCssClasses: ['show-1h-weapons-selector', 'mb-0'],
 		label: '1H',
 		inline: true,
@@ -25,6 +26,7 @@ export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): Boolea
 
 export function makeShow2hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
+		id: 'show-2h-weapons-selector',
 		extraCssClasses: ['show-2h-weapons-selector', 'mb-0'],
 		label: '2H',
 		inline: true,
@@ -40,6 +42,7 @@ export function makeShow2hWeaponsSelector(parent: HTMLElement, sim: Sim): Boolea
 
 export function makeShowEPValuesSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
+		id: 'show-ep-values-selector',
 		extraCssClasses: ['show-ep-values-selector', 'input-inline', 'mb-0'],
 		label: 'Show EP',
 		inline: true,
@@ -53,6 +56,7 @@ export function makeShowEPValuesSelector(parent: HTMLElement, sim: Sim): Boolean
 
 export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim> {
 	return new EnumPicker<Sim>(parent, sim, {
+		id: 'phase-selector',
 		extraCssClasses: ['phase-selector'],
 		values: [
 			{ name: 'Phase 5', value: 5, level: 60 },
@@ -70,6 +74,7 @@ export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim
 }
 
 export const ReactionTime = {
+	id: 'reaction-time',
 	type: 'number' as const,
 	label: 'Reaction Time',
 	labelTooltip: "Reaction time of the player, in milliseconds. Used with certain APL values (such as 'Aura Is Active With Reaction Time').",
@@ -81,6 +86,7 @@ export const ReactionTime = {
 };
 
 export const ChannelClipDelay = {
+	id: 'channel-clip-delay',
 	type: 'number' as const,
 	label: 'Channel Clip Delay',
 	labelTooltip:
@@ -93,6 +99,7 @@ export const ChannelClipDelay = {
 };
 
 export const InFrontOfTarget = {
+	id: 'in-front-of-target',
 	type: 'boolean' as const,
 	label: 'In Front of Target',
 	labelTooltip: 'Stand in front of the target, causing Blocks and Parries to be included in the attack table.',
@@ -104,6 +111,7 @@ export const InFrontOfTarget = {
 };
 
 export const DistanceFromTarget = {
+	id: 'distance-from-target',
 	type: 'number' as const,
 	label: 'Distance From Target',
 	labelTooltip: 'Distance from targets, in yards. Used to calculate travel time for certain spells.',
@@ -115,6 +123,7 @@ export const DistanceFromTarget = {
 };
 
 export const IsbSbFrequencey = {
+	id: 'isb-sb-frequency',
 	type: 'number' as const,
 	label: 'SB Frequency',
 	labelTooltip: 'How often a Shadow Bolt is cast by the external warlock.',
@@ -130,6 +139,7 @@ export const IsbSbFrequencey = {
 };
 
 export const IsbCrit = {
+	id: 'isb-sb-crit',
 	type: 'number' as const,
 	label: 'SB Crit',
 	labelTooltip: 'How often a Shadow Bolt from external warlock is a crit.',
@@ -145,6 +155,7 @@ export const IsbCrit = {
 };
 
 export const IsbWarlocks = {
+	id: 'isb-warlock',
 	type: 'number' as const,
 	label: 'SB Warlocks',
 	labelTooltip: 'Number of ISB warlocks.',
@@ -159,6 +170,7 @@ export const IsbWarlocks = {
 };
 
 export const IsbSpriests = {
+	id: 'isb-sb-priests',
 	type: 'number' as const,
 	label: 'Shadow Priests',
 	labelTooltip: 'Number of other shadow priests.',
@@ -168,15 +180,17 @@ export const IsbSpriests = {
 	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 		player.setIsbSpriests(eventID, newValue);
 	},
-	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true || (player as Player<Spec.SpecWarlock>)?.getTalents().improvedShadowBolt > 0,
+	showWhen: (player: Player<any>) =>
+		player.getRaid()?.getDebuffs().improvedShadowBolt == true || (player as Player<Spec.SpecWarlock>)?.getTalents().improvedShadowBolt > 0,
 };
 
 export const IsbConfig = {
 	tooltip: 'Improved Shadow Bolt debuff configuration',
-	inputs: [IsbSbFrequencey, IsbCrit, IsbWarlocks, IsbSpriests]
-}
+	inputs: [IsbSbFrequencey, IsbCrit, IsbWarlocks, IsbSpriests],
+};
 
 export const TankAssignment = {
+	id: 'tank-assignment',
 	type: 'enum' as const,
 	extraCssClasses: ['tank-selector', 'threat-metrics', 'within-raid-sim-hide'],
 	label: 'Tank Assignment',
@@ -204,6 +218,7 @@ export const TankAssignment = {
 };
 
 export const IncomingHps = {
+	id: 'incoming-hps',
 	type: 'number' as const,
 	label: 'Incoming HPS',
 	labelTooltip: `
@@ -221,6 +236,7 @@ export const IncomingHps = {
 };
 
 export const HealingCadence = {
+	id: 'healing-cadence',
 	type: 'number' as const,
 	float: true,
 	label: 'Healing Cadence',
@@ -240,6 +256,7 @@ export const HealingCadence = {
 };
 
 export const HealingCadenceVariation = {
+	id: 'healing-cadence-variation',
 	type: 'number' as const,
 	float: true,
 	label: 'Cadence +/-',
@@ -259,6 +276,7 @@ export const HealingCadenceVariation = {
 };
 
 export const BurstWindow = {
+	id: 'burst-window',
 	type: 'number' as const,
 	float: false,
 	label: 'TMI Burst Window',
@@ -277,6 +295,7 @@ export const BurstWindow = {
 };
 
 export const HpPercentForDefensives = {
+	id: 'hp-percent-for-defensives',
 	type: 'number' as const,
 	float: true,
 	label: 'HP % for Defensive CDs',
@@ -294,6 +313,7 @@ export const HpPercentForDefensives = {
 };
 
 export const InspirationUptime = {
+	id: 'inspiration-uptime',
 	type: 'number' as const,
 	float: true,
 	label: 'Inspiration % Uptime',

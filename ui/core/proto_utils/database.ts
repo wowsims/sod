@@ -307,6 +307,7 @@ export class Database {
 				id: id,
 				name: json['name'],
 				icon: json['icon'],
+				hasBuff: json['buff'] !== '',
 				rank: rank,
 				requiresLevel: reqLevel,
 			});

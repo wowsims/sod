@@ -1,6 +1,5 @@
-import { Player } from 'ui/core/player.js';
-
 import { Phase } from '../core/constants/other.js';
+import { Player } from '../core/player.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,

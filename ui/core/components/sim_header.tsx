@@ -1,8 +1,7 @@
 import { Tooltip } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
+import { isLocal } from '../utils';
 import { Component } from './component';
 import { SettingsMenu } from './settings_menu';
 import { SimTab } from './sim_tab';
@@ -172,7 +171,7 @@ export class SimHeader extends Component {
 		const icon = 'fas fa-gauge-high fa-lg';
 		const parent = this.simToolbar;
 
-		if (document.location.href.includes('localhost')) {
+		if (isLocal()) {
 			fetch('/version').then(resp => {
 				resp.json()
 					.then(versionInfo => {

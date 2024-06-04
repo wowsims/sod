@@ -111,6 +111,7 @@ export class SettingsTab extends SimTab {
 		new PresetBuildsPicker(contentBlock.bodyElement, this.simUI);
 
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+			id: 'player-level',
 			label: 'Level',
 			values: LEVEL_BRACKETS.map(level => {
 				return {
@@ -125,6 +126,7 @@ export class SettingsTab extends SimTab {
 
 		const races = specToEligibleRaces[this.simUI.player.spec];
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+			id: 'player-race',
 			label: 'Race',
 			values: races.map(race => {
 				return {
@@ -146,6 +148,7 @@ export class SettingsTab extends SimTab {
 
 		const professions = getEnumValues(Profession) as Array<Profession>;
 		new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'player-profession-1',
 			label: 'Profession 1',
 			values: professions.map(p => {
 				return {
@@ -159,6 +162,7 @@ export class SettingsTab extends SimTab {
 		});
 
 		new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'player-profession-2',
 			label: 'Profession 2',
 			values: professions.map(p => {
 				return {

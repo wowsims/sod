@@ -1,23 +1,17 @@
 import { Tooltip } from 'bootstrap';
 
-import { Player } from '../../player.js';
-import {
-	APLAction,
-	APLListItem,
-	APLPrepullAction,
-	APLValue
-} from '../../proto/apl.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
-import { AdaptiveStringPicker } from '../inputs/string_picker.js';
-
-import { ActionId } from '../../proto_utils/action_id.js';
-import { SimUI } from '../../sim_ui.js';
-import { Component } from '../component.js';
-import { Input, InputConfig } from '../input.js';
-
-import { APLActionPicker } from './apl_actions.js';
-import { APLValueImplStruct } from './apl_values.js';
+import { Player } from '../../player';
+import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/apl';
+import { ActionId } from '../../proto_utils/action_id';
+import { SimUI } from '../../sim_ui';
+import { EventID, TypedEvent } from '../../typed_event';
+import { randomUUID } from '../../utils';
+import { Component } from '../component';
+import { Input, InputConfig } from '../input';
+import { AdaptiveStringPicker } from '../inputs/string_picker';
+import { ListItemPickerConfig, ListPicker } from '../list_picker';
+import { APLActionPicker } from './apl_actions';
+import { APLValueImplStruct } from './apl_values';
 
 export class APLRotationPicker extends Component {
 	constructor(parent: HTMLElement, simUI: SimUI, modPlayer: Player<any>) {
@@ -34,14 +28,20 @@ export class APLRotationPicker extends Component {
 				player.aplRotation.prepullActions = newValue;
 				player.rotationChangeEmitter.emit(eventID);
 			},
-			newItem: () => APLPrepullAction.create({
-				action: {},
-				doAtValue: {
-					value: {oneofKind: 'const', const: { val: '-1s' }}
-				},
-			}),
+			newItem: () =>
+				APLPrepullAction.create({
+					action: {},
+					doAtValue: {
+						value: { oneofKind: 'const', const: { val: '-1s' } },
+					},
+				}),
 			copyItem: (oldItem: APLPrepullAction) => APLPrepullAction.clone(oldItem),
-			newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Player<any>, APLPrepullAction>, index: number, config: ListItemPickerConfig<Player<any>, APLPrepullAction>) => new APLPrepullActionPicker(parent, modPlayer, config, index),
+			newItemPicker: (
+				parent: HTMLElement,
+				listPicker: ListPicker<Player<any>, APLPrepullAction>,
+				index: number,
+				config: ListItemPickerConfig<Player<any>, APLPrepullAction>,
+			) => new APLPrepullActionPicker(parent, modPlayer, config, index),
 			inlineMenuBar: true,
 		});
 
@@ -56,11 +56,17 @@ export class APLRotationPicker extends Component {
 				player.aplRotation.priorityList = newValue;
 				player.rotationChangeEmitter.emit(eventID);
 			},
-			newItem: () => APLListItem.create({
-				action: {},
-			}),
+			newItem: () =>
+				APLListItem.create({
+					action: {},
+				}),
 			copyItem: (oldItem: APLListItem) => APLListItem.clone(oldItem),
-			newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Player<any>, APLListItem>, index: number, config: ListItemPickerConfig<Player<any>, APLListItem>) => new APLListItemPicker(parent, modPlayer, config, index),
+			newItemPicker: (
+				parent: HTMLElement,
+				listPicker: ListPicker<Player<any>, APLListItem>,
+				index: number,
+				config: ListItemPickerConfig<Player<any>, APLListItem>,
+			) => new APLListItemPicker(parent, modPlayer, config, index),
 			inlineMenuBar: true,
 		});
 
@@ -76,9 +82,12 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 	private readonly actionPicker: APLActionPicker;
 
 	private getItem(): APLPrepullAction {
-		return this.getSourceValue() || APLPrepullAction.create({
-			action: {},
-		});
+		return (
+			this.getSourceValue() ||
+			APLPrepullAction.create({
+				action: {},
+			})
+		);
 	}
 
 	constructor(parent: HTMLElement, player: Player<any>, config: ListItemPickerConfig<Player<any>, APLPrepullAction>, index: number) {
@@ -99,15 +108,16 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 		});
 
 		this.doAtPicker = new AdaptiveStringPicker(this.rootElem, this.player, {
+			id: randomUUID(),
 			label: 'Do At',
-			labelTooltip: 'Time before pull to do the action. Should be negative, and formatted like, \'-1s\' or \'-2500ms\'.',
+			labelTooltip: "Time before pull to do the action. Should be negative, and formatted like, '-1s' or '-2500ms'.",
 			extraCssClasses: ['apl-prepull-actions-doat'],
 			changedEvent: () => this.player.rotationChangeEmitter,
-			getValue: () => (this.getItem().doAtValue?.value as APLValueImplStruct<'const'>|undefined)?.const.val || '',
+			getValue: () => (this.getItem().doAtValue?.value as APLValueImplStruct<'const'> | undefined)?.const.val || '',
 			setValue: (eventID: EventID, player: Player<any>, newValue: string) => {
 				if (newValue) {
 					this.getItem().doAtValue = APLValue.create({
-						value: {oneofKind: 'const', const: { val: newValue }}
+						value: { oneofKind: 'const', const: { val: newValue } },
 					});
 				} else {
 					this.getItem().doAtValue = undefined;
@@ -148,7 +158,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 		const item = APLPrepullAction.create({
 			hide: this.hidePicker.getInputValue(),
 			doAtValue: {
-				value: {oneofKind: 'const', const: { val: this.doAtPicker.getInputValue() }},
+				value: { oneofKind: 'const', const: { val: this.doAtPicker.getInputValue() } },
 			},
 			action: this.actionPicker.getInputValue(),
 		});
@@ -160,7 +170,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 			return;
 		}
 		this.hidePicker.setInputValue(newValue.hide);
-		this.doAtPicker.setInputValue((newValue.doAtValue?.value as APLValueImplStruct<'const'>|undefined)?.const.val || '');
+		this.doAtPicker.setInputValue((newValue.doAtValue?.value as APLValueImplStruct<'const'> | undefined)?.const.val || '');
 		this.actionPicker.setInputValue(newValue.action || APLAction.create());
 	}
 }
@@ -172,9 +182,12 @@ class APLListItemPicker extends Input<Player<any>, APLListItem> {
 	private readonly actionPicker: APLActionPicker;
 
 	private getItem(): APLListItem {
-		return this.getSourceValue() || APLListItem.create({
-			action: {},
-		});
+		return (
+			this.getSourceValue() ||
+			APLListItem.create({
+				action: {},
+			})
+		);
 	}
 
 	constructor(parent: HTMLElement, player: Player<any>, config: ListItemPickerConfig<Player<any>, APLListItem>, index: number) {
@@ -251,7 +264,8 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 				<ul>
 					${formattedWarnings.map(w => `<li>${w}</li>`).join('')}
 				</ul>
-			`});
+			`,
+			});
 		}
 	};
 	updateWarnings();
