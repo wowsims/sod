@@ -94,6 +94,10 @@ func (db *WowDatabase) MergeItem(src *proto.UIItem) {
 			dst.Stats = src.Stats
 			src.Stats = nil
 		}
+		// Fields don't get overwritten if the new value is a default value and the original value wasn't
+		if src.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
+			dst.FactionRestriction = src.FactionRestriction
+		}
 		googleProto.Merge(dst, src)
 	} else {
 		db.Items[src.Id] = src

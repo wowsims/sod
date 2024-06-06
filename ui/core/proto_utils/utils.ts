@@ -1013,6 +1013,16 @@ export const raceToFaction: Record<Race, Faction> = {
 	[Race.RaceUndead]: Faction.Horde,
 };
 
+const ALLIANCE_FACTIONS = new Set([509, 730, 889]);
+const HORDE_FACTIONS = new Set([510, 729, 890]);
+
+export const isAllianceFaction = (factionId: number): boolean => {
+	return ALLIANCE_FACTIONS.has(factionId);
+};
+export const isHordeFaction = (factionId: number): boolean => {
+	return HORDE_FACTIONS.has(factionId);
+};
+
 export const specToClass: Record<Spec, Class> = {
 	[Spec.SpecBalanceDruid]: Class.ClassDruid,
 	[Spec.SpecFeralDruid]: Class.ClassDruid,

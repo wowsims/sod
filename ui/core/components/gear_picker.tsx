@@ -6,13 +6,13 @@ import { setItemQualityCssClass } from '../css_utils';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player';
 import { Class, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../proto/common';
-import { DatabaseFilters, UIEnchant as Enchant, UIItem as Item, UIItem_FactionRestriction, UIRune as Rune } from '../proto/ui.js';
+import { DatabaseFilters, RepSource, UIEnchant as Enchant, UIFaction, UIItem as Item, UIItem_FactionRestriction, UIRune as Rune } from '../proto/ui.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
 import { EquippedItem } from '../proto_utils/equipped_item';
 import { professionNames, REP_LEVEL_NAMES, slotNames } from '../proto_utils/names.js';
 import { Stats } from '../proto_utils/stats';
-import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
+import { isAllianceFaction, isHordeFaction, itemTypeToSlotsMap } from '../proto_utils/utils.js';
 import { Sim } from '../sim.js';
 import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
@@ -1180,7 +1180,13 @@ export class ItemList<T> {
 
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
-				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+				return makeAnchor(
+					`${ActionId.makeItemUrl(item.id)}#dropped-by`,
+					<div className="d-flex align-items-center">
+						{this.getDropSourceIcon()}
+						<span>World Drop</span>
+					</div>,
+				);
 			}
 
 			return <></>;
@@ -1189,94 +1195,126 @@ export class ItemList<T> {
 		let source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-
-			if (src.spellId) {
-				return makeAnchor(ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
-			}
-			return makeAnchor(ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
+			const href = src.spellId ? ActionId.makeSpellUrl(src.spellId) : ActionId.makeItemUrl(item.id);
+			return makeAnchor(
+				href,
+				<div className="d-flex">
+					{this.getProfessionSourceIcon()}
+					{professionNames.get(src.profession) ?? 'Unknown'}
+				</div>,
+			);
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
 			const npc = sim.db.getNpc(src.npcId);
-			if (!zone) {
-				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
-			}
 
-			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
 				return makeAnchor(
 					ActionId.makeNpcUrl(npc.id),
-					<span>
-						{zone.name}
-						<br />
-						{npc.name + category}
-					</span>,
+					<div className="d-flex">
+						{this.getDropSourceIcon()}
+						<span>
+							{zone && zone.name}
+							{zone && <br />}
+							{npc.name}
+							{src.category && ` - ${src.category}`}
+						</span>
+					</div>,
 				);
-			} else if (src.otherName) {
+			} else if (zone) {
 				return makeAnchor(
-					ActionId.makeZoneUrl(zone.id),
-					<span>
-						{zone.name}
-						<br />
-						{src.otherName}
-					</span>,
+					ActionId.makeItemUrl(item.id),
+					<div className="d-flex">
+						{this.getDropSourceIcon()}
+						<span>
+							{zone.name}
+							<br />
+							{src.otherName ? src.otherName : 'Multiple Sources'}
+						</span>
+					</div>,
 				);
 			}
-			return makeAnchor(ActionId.makeZoneUrl(zone.id), zone.name);
+			return makeAnchor(
+				`${ActionId.makeItemUrl(item.id)}#dropped-by`,
+				<div className="d-flex">
+					{this.getDropSourceIcon()}
+					<span>Multiple Sources</span>
+				</div>,
+			);
 		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
 			return makeAnchor(
 				ActionId.makeQuestUrl(src.id),
-				<>
-					<span>Quest</span>
-					<br />
-					<span>
-						{src.name}
-						{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
-							<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
-						)}
-						{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
-							<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
-						)}
+				<div className="d-flex">
+					<span className="d-flex me-1">
+						{this.getQuestSourceIcon()}
+						{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && this.getAllianceSourceIcon()}
+						{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && this.getHordeSourceIcon()}
 					</span>
-				</>,
+					<span>{src.name}</span>
+				</div>,
 			);
 		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
-			const factionNames = item.sources
-				.map(src => (src.source.oneofKind == 'rep' ? sim.db.getFaction(src.source.rep.repFactionId)?.name : ''))
-				.filter(src => src != '');
+			const factions = item.sources
+				.filter(src => src.source.oneofKind == 'rep')
+				.map(src => sim.db.getFaction((src.source as { rep: RepSource }).rep.repFactionId))
+				.filter(faction => !!faction) as UIFaction[];
 			// We assume that if an item is available from multiple reputations, it's available at the same rep level from each.
 			// The main case for multi-faction items are shared PVP items where this is always true, so it's not a big deal right now.
 			const src = source.source.rep;
 			return makeAnchor(
 				ActionId.makeItemUrl(item.id),
-				<>
-					{factionNames.map(name => (
-						<span>
-							{name}
-							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
-								<img src="/sod/assets/img/alliance.png" className="ms-1" width="15" height="15" />
-							)}
-							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
-								<img src="/sod/assets/img/horde.png" className="ms-1" width="15" height="15" />
-							)}
-							<br />
-						</span>
-					))}
-					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
-				</>,
+				<div className="d-flex">
+					<img src="https://static.wikia.nocookie.net/wowpedia/images/1/1f/Pointer_buy_on_32x32.png" width="16" height="16" />
+					<div className="d-flex flex-column">
+						{factions.map(faction => (
+							<div className="d-flex">
+								{(item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY || isAllianceFaction(faction.id)) && (
+									<span className="d-flex me-1">{this.getAllianceSourceIcon()}</span>
+								)}
+								{(item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY || isHordeFaction(faction.id)) && (
+									<span className="d-flex me-1">{this.getHordeSourceIcon()}</span>
+								)}
+								{faction.name} - {REP_LEVEL_NAMES[src.repLevel]}
+							</div>
+						))}
+					</div>
+				</div>,
 			);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
 			return makeAnchor(
 				ActionId.makeNpcUrl(src.npcId),
-				<span>
-					Sold by
-					<br />
-					{src.npcName}
-				</span>,
+				<div className="d-flex">
+					{this.getVendorSourceIcon()}
+					<span>{src.npcName}</span>
+				</div>,
 			);
 		}
 		return <></>;
+	}
+
+	private getDropSourceIcon(): Element {
+		return <img src="https://wow.zamimg.com/images/icons/boss.gif" className="item-source-icon-drop me-1" />;
+	}
+
+	private getVendorSourceIcon(): Element {
+		return <img src="https://static.wikia.nocookie.net/wowpedia/images/1/1f/Pointer_buy_on_32x32.png" className="item-source-icon-vendor me-1" />;
+	}
+
+	private getProfessionSourceIcon(): Element {
+		return <img src="https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png" className="item-source-icon-profession me-1" />;
+	}
+
+	private getQuestSourceIcon(): Element {
+		return <img src="https://wow.zamimg.com/images/wow/icons/tiny/quest-start.gif" className="item-source-icon-quest" />;
+	}
+
+	private getAllianceSourceIcon(): Element {
+		return <img src="https://wow.zamimg.com/images/icons/alliance.png" className="item-source-icon-alliance" />;
+	}
+
+	private getHordeSourceIcon(): Element {
+		return <img src="https://wow.zamimg.com/images/icons/horde.png" className="item-source-icon-horde" />;
 	}
 }

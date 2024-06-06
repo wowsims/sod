@@ -82,19 +82,28 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
 	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
 
-	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?items = {(.*?)@@@}@@@`)
-	npcNameAndIDPattern := regexp.MustCompile(`^[^@]*?AL\["(.*?)"\]\)?,(.*?(@@@\s*npcID = {?(\d+),))?`)
+	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {(.*?)items = {(.*?)@@@}@@@`)
+	mapIdRegexp := regexp.MustCompile(`MapID = (\d+),`)
+	npcNameAndIDPattern := regexp.MustCompile(`^[^@]*?AL\["(.*?)"\]\)?(.*?(@@@\s*npcID = {?(\d+),))?`)
 	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
 	itemParamPattern := regexp.MustCompile(`AL\["(.*?)"\]`)
 
 	for _, dungeonMatch := range dungeonPattern.FindAllStringSubmatch(srcTxt, -1) {
 		fmt.Printf("Zone: %s\n", dungeonMatch[1])
-		zoneID, _ := strconv.Atoi(dungeonMatch[2])
-		db.MergeZone(&proto.UIZone{
-			Id:        int32(zoneID),
-			Expansion: expansion,
-		})
+
+		zoneID := 0
+		mapIDMatch := mapIdRegexp.FindStringSubmatch(dungeonMatch[2])
+		// A Map ID may be missing for non-instanced bosses like World Bosses
+		if len(mapIDMatch) > 0 {
+			zoneID, _ = strconv.Atoi(mapIDMatch[1])
+			if zoneID != 0 {
+				db.MergeZone(&proto.UIZone{
+					Id:        int32(zoneID),
+					Expansion: expansion,
+				})
+			}
+		}
 
 		npcSplits := strings.Split(dungeonMatch[3], "name = ")[1:]
 		for _, npcSplit := range npcSplits {
@@ -149,8 +158,12 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 						//fmt.Printf("Item: %d\n", itemID)
 						dropSource := &proto.DropSource{
 							Difficulty: difficulty,
-							ZoneId:     int32(zoneID),
 						}
+
+						if zoneID != 0 {
+							dropSource.ZoneId = int32(zoneID)
+						}
+
 						if npcID == 0 {
 							dropSource.OtherName = npcName
 						} else {
@@ -232,7 +245,16 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 								Rep: repSource,
 							},
 						})
-						if factionStr == "ALLIANCE" {
+
+						existingItem := db.Items[int32(itemID)]
+
+						// Add faction restrictions
+						// Some PVP items occur twice under both Alliance and Horde, so if the item was already added check if it has the opposite
+						// faction restriction already to avoid adding a faction restriction when an item is actually available to both factions.
+						if existingItem != nil && ((factionStr == "ALLIANCE" && existingItem.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY) ||
+							(factionStr == "HORDE" && existingItem.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY)) {
+							item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED
+						} else if factionStr == "ALLIANCE" {
 							item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
 						} else if factionStr == "HORDE" {
 							item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY

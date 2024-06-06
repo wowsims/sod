@@ -2,7 +2,7 @@
 
 @import './filters_menu';
 
-$source-cell-width: 16rem;
+$source-cell-width: 20rem;
 $ep-cell-width: 4rem;
 $favorite-cell-width: 2rem;
 
@@ -204,7 +204,7 @@ $favorite-cell-width: 2rem;
 .selector-modal-list {
 	width: 100%;
 	max-height: 65vh;
-	overflow-y: auto;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	padding: 0;
 	margin-bottom: 0;
@@ -301,6 +301,35 @@ $favorite-cell-width: 2rem;
 		margin-left: map-get($spacers, 1);
 		font-size: 0.8rem;
 	}
+}
+
+// All of these icon widths are the original image sizes. They're too small that scaling them up looks horrible.
+.item-source-icon-drop {
+	// Original image is 12 x 16 but for nice alignment add 2px padding for a total width of 16px
+	width: 16px;
+	height: 16px;
+	padding: 0 2px;
+}
+
+.item-source-icon-vendor {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-profession {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-quest {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-alliance,
+.item-source-icon-horde {
+	width: 15px;
+	height: 15px;
 }
 
 @include media-breakpoint-down(lg) {
