@@ -3,7 +3,7 @@ import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
 import { ResourceType } from '../proto/api';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common';
 import { IconData, UIItem as Item } from '../proto/ui';
-import { buildWowheadTooltipDataset,WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
+import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
 
 // Used to filter action IDs by level
@@ -120,7 +120,7 @@ export class ActionId {
 		this.baseName = baseName;
 		this.name = name || baseName;
 		this.iconUrl = iconUrl;
-		this.name += rank ? ` (Rank ${rank})` : '';
+		if (this.name) this.name += rank ? ` (Rank ${rank})` : '';
 	}
 
 	anyId(): number {
