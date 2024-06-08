@@ -18,6 +18,7 @@ export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): Boolea
 		changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 		getValue: (sim: Sim) => sim.getFilters().oneHandedWeapons,
 		setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
+			console.log('test');
 			const filters = sim.getFilters();
 			filters.oneHandedWeapons = newValue;
 			sim.setFilters(eventID, filters);

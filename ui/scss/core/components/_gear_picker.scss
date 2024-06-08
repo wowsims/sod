@@ -252,7 +252,7 @@
 
 .selector-modal-list {
 	width: 100%;
-	max-height: 60vh;
+	max-height: 65vh;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding: 0;
@@ -345,4 +345,33 @@
 		margin-left: var(--spacer-1);
 		font-size: 0.8rem;
 	}
+}
+
+// All of these icon widths are the original image sizes. They're too small that scaling them up looks horrible.
+.item-source-icon-drop {
+	// Original image is 12 x 16 but for nice alignment add 2px padding for a total width of 16px
+	width: 16px;
+	height: 16px;
+	padding: 0 2px;
+}
+
+.item-source-icon-vendor {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-profession {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-quest {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-alliance,
+.item-source-icon-horde {
+	width: 15px;
+	height: 15px;
 }
