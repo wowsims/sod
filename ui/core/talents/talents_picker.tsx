@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
@@ -28,7 +28,7 @@ export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
 	readonly trees: Array<TalentTreePicker<TalentsProto>>;
 
 	constructor(parent: HTMLElement, player: Player<Spec>, config: TalentsPickerConfig<TalentsProto>) {
-		super(parent, 'talents-picker-root', player, { ...config, inline: true });
+		super(parent, 'talents-picker-root', player, config);
 		this.config = config;
 		this.pointsPerRow = config.pointsPerRow;
 		this.numRows = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.rowIdx).flat()).flat()) + 1;
@@ -49,11 +49,11 @@ export class TalentsPicker<TalentsProto> extends Input<Player<Spec>, string> {
 		this.rootElem.appendChild(
 			<div className="talents-picker-inner">
 				<div className="talents-picker-header">
-					<div>
-						<label>Points Remaining:</label>
-						<span className="talent-tree-points" ref={pointsRemainingElemRef}>
-							{getPointsRemaining()}
-						</span>
+					<div className="d-flex">
+						<label>
+							Points Remaining:
+							<span ref={pointsRemainingElemRef}>{getPointsRemaining()}</span>
+						</label>
 					</div>
 					<div className="talents-picker-actions" ref={actionsContainerRef}></div>
 				</div>
@@ -184,14 +184,14 @@ class TalentTreePicker<TalentsProto> extends Component {
 			<>
 				<div className="talent-tree-header">
 					<img src={getSpecIcon(klass, specNumber)} className="talent-tree-icon" />
-					<span className="talent-tree-title"></span>
-					<span className="talent-tree-points"></span>
+					<span className="talent-tree-title" />
+					<label className="talent-tree-points" />
 					<button className="talent-tree-reset btn btn-link link-danger">
 						<i className="fa fa-times"></i>
 					</button>
 				</div>
-				<div className="talent-tree-background"></div>
-				<div className="talent-tree-main"></div>
+				<div className="talent-tree-background" />
+				<div className="talent-tree-main" />
 			</>,
 		);
 
@@ -236,9 +236,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 			recurseCalcIdx(t, 20);
 		}
 		const resetBtn = this.rootElem.querySelector('.talent-tree-reset') as HTMLElement;
-		new Tooltip(resetBtn, {
-			title: 'Reset talent points',
-		});
+		tippy(resetBtn, { content: 'Reset talent points' });
 		resetBtn.addEventListener('click', _ => {
 			this.talents.forEach(talent => talent.setPoints(0, false));
 			this.picker.inputChanged(TypedEvent.nextEventID());

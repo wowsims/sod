@@ -1,23 +1,15 @@
+import tippy from 'tippy.js';
+
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
-
-import { EventID, TypedEvent } from '../core/typed_event';
-
 import { Class, Spec } from '../core/proto/common';
 import { Blessings } from '../core/proto/paladin';
 import { BlessingsAssignments } from '../core/proto/ui';
 import { ActionId } from '../core/proto_utils/action_id';
-import {
-	makeDefaultBlessings,
-	classColors,
-	naturalSpecOrder,
-	specNames,
-	titleIcons,
-} from '../core/proto_utils/utils';
-
-import { RaidSimUI } from './raid_sim_ui';
+import { classColors, makeDefaultBlessings, naturalSpecOrder, specNames, titleIcons } from '../core/proto_utils/utils';
+import { EventID, TypedEvent } from '../core/typed_event';
 import { implementedSpecs } from './presets';
-import { Tooltip } from 'bootstrap';
+import { RaidSimUI } from './raid_sim_ui';
 
 const MAX_PALADINS = 4;
 
@@ -34,8 +26,7 @@ export class BlessingsPicker extends Component {
 		this.simUI = raidSimUI;
 		this.assignments = BlessingsAssignments.clone(makeDefaultBlessings(4));
 
-		const specs = naturalSpecOrder
-			.filter(spec => implementedSpecs.includes(spec))
+		const specs = naturalSpecOrder.filter(spec => implementedSpecs.includes(spec));
 		const paladinIndexes = [...Array(MAX_PALADINS).keys()];
 
 		specs.map(spec => {
@@ -50,8 +41,7 @@ export class BlessingsPicker extends Component {
 			row.appendChild(container);
 
 			paladinIndexes.forEach(paladinIdx => {
-				if (!this.pickers[paladinIdx])
-					this.pickers.push([]);
+				if (!this.pickers[paladinIdx]) this.pickers.push([]);
 
 				const blessingPicker = new IconEnumPicker(container, this, {
 					extraCssClasses: ['blessing-picker'],
@@ -86,7 +76,7 @@ export class BlessingsPicker extends Component {
 			return row;
 		});
 
-		this.updatePickers()
+		this.updatePickers();
 		this.simUI.compChangeEmitter.on(_eventID => this.updatePickers());
 	}
 
@@ -97,7 +87,7 @@ export class BlessingsPicker extends Component {
 	}
 
 	private buildSpecIcon(spec: Spec): HTMLElement {
-		let fragment = document.createElement('fragment');
+		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="blessings-picker-spec">
 				<img
@@ -108,7 +98,7 @@ export class BlessingsPicker extends Component {
 		`;
 
 		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
-		Tooltip.getOrCreateInstance(icon, { title: specNames[spec]});
+		tippy(icon, { content: specNames[spec] });
 
 		return fragment.children[0] as HTMLElement;
 	}

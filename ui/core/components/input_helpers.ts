@@ -6,7 +6,7 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { randomUUID } from '../utils.js';
 import { BooleanPickerConfig } from './boolean_picker.js';
 import { EnumPickerConfig, EnumValueConfig } from './enum_picker.js';
-import { IconEnumPickerConfig, IconEnumPickerDirection, IconEnumValueConfig } from './icon_enum_picker.js';
+import { IconEnumPickerConfig, IconEnumValueConfig } from './icon_enum_picker.js';
 import { IconPickerConfig, IconPickerDirection } from './icon_picker.js';
 import { MultiIconPickerConfig } from './multi_icon_picker.js';
 import { NumberPickerConfig } from './number_picker.js';
@@ -497,10 +497,10 @@ export function makeEnumIconInput<SpecType extends Spec, Message, ModObject, T>(
 	fieldName: keyof Message,
 	values: Array<IconEnumValueConfig<ModObject, T>>,
 	numColumns?: number,
-	direction?: IconEnumPickerDirection,
+	direction?: IconPickerDirection,
 ): TypedIconEnumPickerConfig<Player<SpecType>, T> {
 	return makeWrappedEnumIconInput<SpecType, ModObject, T>({
-		direction: direction || IconEnumPickerDirection.Vertical,
+		direction: direction || IconPickerDirection.Vertical,
 		numColumns: numColumns,
 		values: values,
 		zeroValue: 0 as unknown as T,

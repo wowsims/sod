@@ -1,47 +1,47 @@
-@use "sass:map";
+@use 'sass:map';
 
 .consumes-picker-root {
-  .consumes-row {
-    .consumes-row-inputs {
-      display: flex;
-      align-items: center;
+	.consumes-row {
+		.consumes-row-inputs {
+			display: flex;
+			align-items: center;
 
-      &> * {
-        margin-bottom: 0;
+			& > * {
+				margin-bottom: 0;
 
-        &:not(:first-child) {
-          margin-left: map.get($spacers, 1);
-        }
-      }
-    }
+				&:not(:first-child) {
+					margin-left: map.get($spacers, 1);
+				}
+			}
+		}
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 
-  .elixir-space {
-    width: $icon-size-md;
-    text-align: center;;
-  }
+	.elixir-space {
+		width: var(--icon-size-md);
+		text-align: center;
+	}
 }
 
 @include media-breakpoint-between(sm, xl) {
-  .consumes-picker-root {
-    display: flex;
-    flex-wrap: wrap;
+	.consumes-picker-root {
+		display: flex;
+		flex-wrap: wrap;
 
-    &> * {
-      // Use 49% instead of 50% because of the margin-right
-      flex-basis: 49%;
+		& > * {
+			// Use 49% instead of 50% because of the margin-right
+			flex-basis: 49%;
 
-      &:not(:first-child) {
-        margin-left: $block-spacer !important;
-      }
+			&:not(:first-child) {
+				margin-left: var(--block-spacer) !important;
+			}
 
-      &:nth-last-child(2) {
-        margin-bottom: 0 !important;
-      }
-    }
-  }
+			&:nth-last-child(2) {
+				margin-bottom: 0 !important;
+			}
+		}
+	}
 }

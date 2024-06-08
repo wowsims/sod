@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 .blessings-picker-root {
 	.blessings-picker-row {
@@ -10,7 +10,7 @@
 		}
 
 		.blessings-picker-spec {
-			margin-right: $block-spacer * 2;
+			margin-right: var(--block-spacer) * 2;
 
 			.blessings-spec-icon {
 				@extend .icon-md;
@@ -27,7 +27,7 @@
 					filter: none !important;
 				}
 
-				&> .icon-picker-button:not(.active) {
+				& > .icon-picker-button:not(.active) {
 					filter: grayscale(1);
 				}
 			}

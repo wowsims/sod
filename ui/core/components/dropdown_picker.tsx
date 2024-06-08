@@ -1,10 +1,11 @@
-import { Dropdown, Tooltip } from 'bootstrap';
+import { Dropdown } from 'bootstrap';
 import clsx from 'clsx';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { TypedEvent } from '../typed_event.js';
-import { existsInDOM } from '../utils.js';
-import { Input, InputConfig } from './input.jsx';
+import { existsInDOM } from '../utils';
+import { Input, InputConfig } from './input.js';
 
 export interface DropdownValueConfig<V> {
 	value: V;
@@ -133,16 +134,12 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 				this.config.setOptionContent(buttonRef.value!, valueConfig);
 
 				if (valueConfig.tooltip) {
-					const tooltip = Tooltip.getOrCreateInstance(buttonRef.value!, {
+					const tooltip = tippy(buttonRef.value!, {
 						animation: false,
-						placement: 'right',
-						fallbackPlacements: ['left', 'bottom'],
-						offset: [0, 10],
-						customClass: 'dropdown-tooltip',
-						html: true,
-						title: valueConfig.tooltip,
+						theme: 'dropdown-tooltip',
+						content: valueConfig.tooltip,
 					});
-					this.addOnResetCallback(() => tooltip.dispose());
+					this.addOnResetCallback(() => tooltip?.destroy());
 				}
 				const onButtonClick = () => {
 					this.updateValue(valueConfig);

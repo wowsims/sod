@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { BooleanPicker } from '../components/boolean_picker.js';
 import { NumberPicker } from '../components/number_picker.js';
@@ -339,16 +339,12 @@ class EpWeightsMenu extends BaseModal {
 				const refStatName = getNameFromStat(epRefStat());
 				return labelTooltip + ` Normalized by ${refStatName}.`;
 			};
-			const labelTooltipConfig = {
-				toggle: 'tooltip',
-				html: true,
-				title: title,
-			};
 
-			new Tooltip(label, labelTooltipConfig);
-			Tooltip.getOrCreateInstance(button, {
-				title: tooltip,
-				html: true,
+			tippy(label, {
+				content: title,
+			});
+			tippy(button, {
+				content: tooltip,
 			});
 
 			button.addEventListener('click', _event => {
@@ -475,8 +471,8 @@ class EpWeightsMenu extends BaseModal {
 		weightRatioCells.forEach(makeEpRatioCell);
 
 		const updateButton = this.rootElem.getElementsByClassName('compute-ep')[0] as HTMLElement;
-		Tooltip.getOrCreateInstance(updateButton, {
-			title: 'Compute Weighted EP',
+		tippy(updateButton, {
+			content: 'Compute Weighted EP',
 		});
 
 		updateButton.addEventListener('click', _event => {
@@ -605,7 +601,8 @@ class EpWeightsMenu extends BaseModal {
 		const epDelta = epTotal - epCurrent;
 
 		const epAvgElem = template.content.querySelector('.type-ep .results-avg') as HTMLElement;
-		if (epDelta.toFixed(2) == '0.00') epAvgElem; // no-op
+		if (epDelta.toFixed(2) == '0.00')
+			epAvgElem; // no-op
 		else if (epDelta > 0) epAvgElem.classList.add('positive');
 		else if (epDelta < 0) epAvgElem.classList.add('negative');
 

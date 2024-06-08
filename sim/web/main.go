@@ -295,7 +295,7 @@ func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName 
 	})
 	http.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == "/" {
-			http.Redirect(resp, req, "/cata/", http.StatusPermanentRedirect)
+			http.Redirect(resp, req, "/sod/", http.StatusPermanentRedirect)
 			return
 		}
 		resp.Header().Add("Cache-Control", "no-cache")

@@ -1,4 +1,5 @@
-import { Tooltip } from 'bootstrap';
+import clsx from 'clsx';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
 
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Input, InputConfig } from './input.js';
@@ -13,7 +14,7 @@ export interface ListPickerActionsConfig {
 	};
 }
 
-export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModObject, Array<ItemType>> {
+export interface ListPickerConfig<ModObject, ItemType> extends Omit<InputConfig<ModObject, Array<ItemType>>, 'id'> {
 	itemLabel: string;
 	newItem: () => ItemType;
 	copyItem: (oldItem: ItemType) => ItemType;
@@ -29,7 +30,10 @@ export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModOb
 	inlineMenuBar?: boolean;
 	hideUi?: boolean;
 	horizontalLayout?: boolean;
-
+	// if set, will remove the border and padding of the list items
+	isCompact?: boolean;
+	// If set, will disable the delete button if the list is at the minimum.
+	minimumItems?: number;
 	// If set, only actions included in the list are allowed. Otherwise, all actions are allowed.
 	allowedActions?: Array<ListItemAction>;
 }
@@ -64,6 +68,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	private itemPickerPairs: Array<ItemPickerPair<ItemType>>;
 
 	constructor(parent: HTMLElement, modObject: ModObject, config: ListPickerConfig<ModObject, ItemType>) {
+		if (config.isCompact) config.extraCssClasses = [...(config.extraCssClasses || []), 'list-picker-compact'];
+
 		super(parent, 'list-picker-root', modObject, config);
 		this.config = { ...DEFAULT_CONFIG, ...config };
 		this.itemPickerPairs = [];
@@ -84,34 +90,41 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.config.titleTooltip) {
-			const cfg = {
-				title: this.config.titleTooltip,
-			};
-			Tooltip.getOrCreateInstance(this.rootElem.querySelector('.list-picker-title') as HTMLElement, cfg);
+			const titleTooltip = tippy(this.rootElem.querySelector('.list-picker-title') as HTMLElement, {
+				content: this.config.titleTooltip,
+			});
+			this.addOnDisposeCallback(() => titleTooltip?.destroy());
 		}
 
 		this.itemsDiv = this.rootElem.getElementsByClassName('list-picker-items')[0] as HTMLElement;
 
 		if (this.actionEnabled('create')) {
-			let newItemButton = null;
-			let newButtonTooltip: Tooltip | null = null;
+			let newItemButton: HTMLElement | null = null;
+			let newButtonTooltip: TippyInstance | null = null;
 			if (this.config.actions?.create?.useIcon) {
 				newItemButton = ListPicker.makeActionElem('link-success', 'fa-plus');
-				newButtonTooltip = Tooltip.getOrCreateInstance(newItemButton, { title: `New ${config.itemLabel}` });
+				newButtonTooltip = tippy(newItemButton, {
+					allowHTML: false,
+					content: `New ${config.itemLabel}`,
+				});
+				this.addOnDisposeCallback(() => newButtonTooltip?.destroy());
 			} else {
-				newItemButton = document.createElement('button');
-				newItemButton.classList.add('btn', 'btn-primary');
-				newItemButton.textContent = `New ${config.itemLabel}`;
+				newItemButton = (<button className="btn btn-primary">New {config.itemLabel}</button>) as HTMLButtonElement;
 			}
 			newItemButton.classList.add('list-picker-new-button');
-			newItemButton.addEventListener('click', event => {
-				const newItem = this.config.newItem();
-				const newList = this.config.getValue(this.modObject).concat([newItem]);
-				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-				if (newButtonTooltip) {
-					newButtonTooltip.hide();
-				}
-			});
+			newItemButton.addEventListener(
+				'click',
+				() => {
+					const newItem = this.config.newItem();
+					const newList = this.config.getValue(this.modObject).concat([newItem]);
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+					if (newButtonTooltip) {
+						newButtonTooltip.hide();
+					}
+				},
+				{ signal: this.signal },
+			);
+
 			this.rootElem.appendChild(newItemButton);
 		}
 
@@ -160,7 +173,6 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemHeader = document.createElement('div');
 		itemHeader.classList.add('list-picker-item-header');
-		const itemHTML = '<div class="list-picker-item"></div>';
 
 		if (this.config.inlineMenuBar) {
 			itemContainer.appendChild(itemElem);
@@ -178,7 +190,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemPicker = this.config.newItemPicker(itemElem, this, index, {
 			changedEvent: this.config.changedEvent,
-			getValue: (modObj: ModObject) => this.getSourceValue()[index],
+			getValue: () => this.getSourceValue()[index],
 			setValue: (eventID: EventID, modObj: ModObject, newValue: ItemType) => {
 				const newList = this.getSourceValue();
 				newList[index] = newValue;
@@ -192,111 +204,159 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
 			itemHeader.appendChild(moveButton);
 
-			const moveButtonTooltip = Tooltip.getOrCreateInstance(moveButton, { title: 'Move (Drag+Drop)' });
-			moveButton.addEventListener('click', event => {
-				moveButtonTooltip.hide();
+			const moveButtonTooltip = tippy(moveButton, {
+				allowHTML: false,
+				content: 'Move (Drag+Drop)',
+			});
+
+			moveButton.addEventListener(
+				'click',
+				() => {
+					moveButtonTooltip.hide();
+				},
+				{ signal: this.signal },
+			);
+			this.addOnDisposeCallback(() => {
+				moveButtonTooltip?.destroy();
 			});
 
 			moveButton.draggable = true;
-			moveButton.ondragstart = event => {
-				if (event.target == moveButton) {
-					event.dataTransfer!.dropEffect = 'move';
-					event.dataTransfer!.effectAllowed = 'move';
-					itemContainer.classList.add('dragfrom');
-					curDragData = {
-						listPicker: this,
-						item: item,
-					};
-				}
-			};
+			moveButton.addEventListener(
+				'dragstart',
+				event => {
+					if (event.target == moveButton) {
+						event.dataTransfer!.dropEffect = 'move';
+						event.dataTransfer!.effectAllowed = 'move';
+						itemContainer.classList.add('dragfrom');
+						curDragData = {
+							listPicker: this,
+							item: item,
+						};
+					}
+				},
+				{ signal: this.signal },
+			);
 
 			let dragEnterCounter = 0;
-			itemContainer.ondragenter = event => {
-				if (!curDragData || curDragData.listPicker != this) {
-					return;
-				}
-				event.preventDefault();
-				dragEnterCounter++;
-				itemContainer.classList.add('dragto');
-			};
-			itemContainer.ondragleave = event => {
-				if (!curDragData || curDragData.listPicker != this) {
-					return;
-				}
-				event.preventDefault();
-				dragEnterCounter--;
-				if (dragEnterCounter <= 0) {
+			itemContainer.addEventListener(
+				'dragenter',
+				event => {
+					if (!curDragData || curDragData.listPicker != this) {
+						return;
+					}
+					event.preventDefault();
+					dragEnterCounter++;
+					itemContainer.classList.add('dragto');
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'dragleave',
+				event => {
+					if (!curDragData || curDragData.listPicker != this) {
+						return;
+					}
+					event.preventDefault();
+					dragEnterCounter--;
+					if (dragEnterCounter <= 0) {
+						itemContainer.classList.remove('dragto');
+					}
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'dragover',
+				event => {
+					if (!curDragData || curDragData.listPicker != this) {
+						return;
+					}
+					event.preventDefault();
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'drop',
+				event => {
+					if (!curDragData || curDragData.listPicker != this) {
+						return;
+					}
+					event.preventDefault();
+					dragEnterCounter = 0;
 					itemContainer.classList.remove('dragto');
-				}
-			};
-			itemContainer.ondragover = event => {
-				if (!curDragData || curDragData.listPicker != this) {
-					return;
-				}
-				event.preventDefault();
-			};
-			itemContainer.ondrop = event => {
-				if (!curDragData || curDragData.listPicker != this) {
-					return;
-				}
-				event.preventDefault();
-				dragEnterCounter = 0;
-				itemContainer.classList.remove('dragto');
-				curDragData.item.elem.classList.remove('dragfrom');
+					curDragData.item.elem.classList.remove('dragfrom');
 
-				const srcIdx = curDragData.item.idx;
-				const dstIdx = index;
-				const newList = this.config.getValue(this.modObject);
-				const arrElem = newList[srcIdx];
-				newList.splice(srcIdx, 1);
-				newList.splice(dstIdx, 0, arrElem);
-				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+					const srcIdx = curDragData.item.idx;
+					const dstIdx = index;
+					const newList = this.config.getValue(this.modObject);
+					const arrElem = newList[srcIdx];
+					newList.splice(srcIdx, 1);
+					newList.splice(dstIdx, 0, arrElem);
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
 
-				curDragData = null;
-			};
+					curDragData = null;
+				},
+				{ signal: this.signal },
+			);
 		}
 
 		if (this.actionEnabled('copy')) {
 			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
 			itemHeader.appendChild(copyButton);
-			const copyButtonTooltip = Tooltip.getOrCreateInstance(copyButton, { title: `Copy to New ${this.config.itemLabel}` });
-
-			copyButton.addEventListener('click', event => {
-				const newList = this.config.getValue(this.modObject).slice();
-				newList.splice(index, 0, this.config.copyItem(newList[index]));
-				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-				copyButtonTooltip.hide();
+			const copyButtonTooltip = tippy(copyButton, {
+				allowHTML: false,
+				content: `Copy to New ${this.config.itemLabel}`,
 			});
+
+			copyButton.addEventListener(
+				'click',
+				() => {
+					const newList = this.config.getValue(this.modObject).slice();
+					newList.splice(index, 0, this.config.copyItem(newList[index]));
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+					copyButtonTooltip.hide();
+				},
+				{ signal: this.signal },
+			);
+			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
 		}
 
 		if (this.actionEnabled('delete')) {
-			const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
-			deleteButton.classList.add('link-danger');
-			itemHeader.appendChild(deleteButton);
-			const deleteButtonTooltip = Tooltip.getOrCreateInstance(deleteButton, { title: `Delete ${this.config.itemLabel}` });
+			if (!this.config.minimumItems || index + 1 > this.config.minimumItems) {
+				const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
+				deleteButton.classList.add('link-danger');
+				itemHeader.appendChild(deleteButton);
 
-			deleteButton.addEventListener('click', event => {
-				const newList = this.config.getValue(this.modObject);
-				newList.splice(index, 1);
-				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-				deleteButtonTooltip.hide();
-			});
+				const deleteButtonTooltip = tippy(deleteButton, {
+					allowHTML: false,
+					content: `Delete ${this.config.itemLabel}`,
+				});
+
+				deleteButton.addEventListener(
+					'click',
+					() => {
+						const newList = this.config.getValue(this.modObject);
+						newList.splice(index, 1);
+						this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+						deleteButtonTooltip.hide();
+					},
+					{ signal: this.signal },
+				);
+				this.addOnDisposeCallback(() => deleteButtonTooltip?.destroy());
+			}
 		}
 
 		this.itemPickerPairs.push(item);
 	}
 
-	static makeActionElem(cssClass: string, iconCssClass: string): HTMLElement {
-		const actionElem = document.createElement('a');
-		actionElem.classList.add('list-picker-item-action', cssClass);
-		actionElem.href = 'javascript:void(0)';
-		actionElem.setAttribute('role', 'button');
-
-		const icon = document.createElement('i');
-		icon.classList.add('fa', 'fa-xl', iconCssClass);
-		actionElem.appendChild(icon);
-
-		return actionElem;
+	static makeActionElem(cssClass: string, iconCssClass: string): HTMLAnchorElement {
+		return (
+			<a href="javascript:void(0)" className={clsx('list-picker-item-action', cssClass)} attributes={{ role: 'button' }}>
+				<i className={clsx('fa', 'fa-xl', iconCssClass)}></i>
+			</a>
+		) as HTMLAnchorElement;
 	}
 
 	static getItemHeaderElem(itemPicker: Input<any, any>): HTMLElement {

@@ -9,6 +9,10 @@ export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 export const existsInDOM = (element: HTMLElement | null) => document.body.contains(element);
 
+export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
+
+export const sanitizeId = (id: string) => id.split(' ').join('');
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
 	if (a == null && b == null) return true;
@@ -305,6 +309,11 @@ export function htmlDecode(input: string) {
 	const doc = new DOMParser().parseFromString(input, 'text/html');
 	return doc.documentElement.textContent;
 }
+
+// JavaScript's built in modulo (%) has several issues. This is a fix that works similar to the intuitive way modulo works in most languages
+export const mod = (n: number, m: number): number => {
+	return ((n % m) + m) % m;
+};
 
 type Environments = 'local' | 'external';
 

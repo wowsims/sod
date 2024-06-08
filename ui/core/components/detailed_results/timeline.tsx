@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { ResourceType } from '../../proto/api.js';
@@ -628,11 +628,10 @@ export class Timeline extends ResultComponent {
 			this.hiddenIdsChangeEmitter.emit(TypedEvent.nextEventID());
 		};
 		hideElem.value!.addEventListener('click', onClickHandler);
-		const tooltip = Tooltip.getOrCreateInstance(hideElem.value!, {
-			customClass: 'timeline-tooltip',
-			html: true,
+		const tooltip = tippy(hideElem.value!, {
+			theme: 'timeline-tooltip',
 			placement: 'bottom',
-			title: isHiddenLabel ? 'Show Row' : 'Hide Row',
+			content: isHiddenLabel ? 'Show Row' : 'Hide Row',
 		});
 
 		const updateHidden = () => {
@@ -649,7 +648,7 @@ export class Timeline extends ResultComponent {
 
 		this.addOnResetCallback(() => {
 			hideElem.value?.removeEventListener('click', onClickHandler);
-			tooltip.dispose();
+			tooltip.destroy();
 			event.dispose();
 		});
 
@@ -761,12 +760,11 @@ export class Timeline extends ResultComponent {
 			}
 			rowElem.appendChild(resourceElem);
 
-			const tooltip = Tooltip.getOrCreateInstance(resourceElem, {
-				html: true,
+			const tooltip = tippy(resourceElem, {
 				placement: 'bottom',
-				title: this.resourceTooltipElem(resourceLogGroup, startValue, false),
+				content: this.resourceTooltipElem(resourceLogGroup, startValue, false),
 			});
-			this.addOnResetCallback(() => tooltip.dispose());
+			this.addOnResetCallback(() => tooltip.destroy());
 		});
 		this.rotationTimeline.appendChild(rowElem);
 	}
@@ -850,10 +848,9 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(castElem, {
-				html: true,
+			tippy(castElem, {
 				placement: 'bottom',
-				title: tt,
+				content: tt,
 			});
 
 			castLog.damageDealtLogs
@@ -878,10 +875,9 @@ export class Timeline extends ResultComponent {
 						</div>
 					);
 
-					Tooltip.getOrCreateInstance(tickElem, {
-						html: true,
+					tippy(tickElem, {
 						placement: 'bottom',
-						title: tt,
+						content: tt,
 					});
 				});
 		});
@@ -926,12 +922,11 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			const tooltip = Tooltip.getOrCreateInstance(auraElem, {
-				html: true,
+			const tooltip = tippy(auraElem, {
 				placement: 'bottom',
-				title: tt,
+				content: tt,
 			});
-			this.addOnResetCallback(() => tooltip.dispose());
+			this.addOnResetCallback(() => tooltip.destroy());
 
 			aul.stacksChange.forEach((scl, i) => {
 				if (scl.timestamp == aul.fadedAt) {

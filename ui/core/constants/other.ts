@@ -25,3 +25,8 @@ export const REPO_NAME = 'sod';
 const pathnameParts = window.location.pathname.split('/');
 const repoPartIdx = pathnameParts.findIndex(part => part == REPO_NAME);
 export const SPEC_DIRECTORY = repoPartIdx == -1 ? '' : pathnameParts[repoPartIdx + 1];
+
+export enum SortDirection {
+	ASC,
+	DESC,
+}

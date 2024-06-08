@@ -7,13 +7,7 @@
 .settings-tab {
 	.tab-pane-content-container {
 		.tab-panel-left {
-			.tab-panel-col {
-				flex: 2;
-
-				&:last-child {
-					flex: 3;
-				}
-			}
+			grid-template-columns: 2fr 2fr 3fr;
 		}
 	}
 
@@ -60,7 +54,7 @@
 		.content-block-body {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
-			grid-gap: $block-spacer;
+			grid-gap: var(--block-spacer);
 
 			& > .icon-picker {
 				margin-bottom: 0;
@@ -102,7 +96,7 @@
 			.content-block-body {
 				& > .picker-group {
 					& > .input-root:not(:last-child) {
-						margin-bottom: $block-spacer;
+						margin-bottom: var(--block-spacer);
 					}
 				}
 			}

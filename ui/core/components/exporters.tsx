@@ -150,7 +150,10 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 				changedEvent: () => this.changedEvent,
 			});
 		});
+	}
 
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -192,6 +195,10 @@ export class IndividualJsonExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'JSON Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -220,6 +227,10 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Wowhead Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -288,6 +299,10 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -386,6 +401,10 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Pawn EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -485,6 +504,10 @@ export class IndividualCLIExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'CLI Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 

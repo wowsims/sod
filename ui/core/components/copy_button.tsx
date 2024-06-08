@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { Component } from './component';
@@ -27,7 +27,7 @@ export class CopyButton extends Component {
 
 		const button = btnRef.value!;
 		let clicked = false;
-		button.addEventListener('click', _event => {
+		button.addEventListener('click', () => {
 			if (clicked) return;
 
 			const data = this.config.getContent();
@@ -46,7 +46,7 @@ export class CopyButton extends Component {
 		});
 
 		if (config.tooltip) {
-			Tooltip.getOrCreateInstance(button, { title: config.tooltip });
+			tippy(button, { content: config.tooltip });
 		}
 	}
 }

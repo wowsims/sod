@@ -1,19 +1,20 @@
-@use "sass:map";
-@use "sass:math";
-
 .sim-header {
 	position: sticky;
 	top: -1px;
-	height: $sim-header-height;
-	padding-top: $gap-width;
+	height: var(--sim-header-height);
+	padding-top: var(--gap-width);
 	padding-left: var(--container-padding);
 	padding-right: var(--container-padding);
 	margin-left: calc(-1 * var(--container-padding));
 	margin-right: calc(-1 * var(--container-padding));
 	white-space: nowrap;
-	transition: background-color .15s ease-in-out; 
-	z-index: $header-z-index;
-	
+	transition: background-color 0.15s ease-in-out;
+	z-index: var(--header-z-index);
+
+	@include media-breakpoint-down(lg) {
+		padding-top: var(--gap-width-sm);
+	}
+
 	&::after {
 		content: ' ';
 		position: absolute;
@@ -24,12 +25,12 @@
 		height: 1px;
 		margin-left: auto;
 		margin-right: auto;
-		background-color: $border-color;
-		transition: width .15s ease-in-out;
+		background-color: var(--bs-border-color);
+		transition: width 0.15s ease-in-out;
 	}
 
 	&.stuck {
-		background: $body-bg;
+		background: var(--bs-body-bg);
 
 		&::after {
 			width: 100%;
@@ -44,15 +45,17 @@
 		// Horizontal scroll for smaller screens
 		// TODO: This is not a good solution
 		overflow-x: scroll;
-		-ms-overflow-style: none;  /* IE and Edge */
-		scrollbar-width: none;  /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
 			display: none;
 		}
 	}
 
-	.sim-tabs, .import-export, .sim-toolbar {
+	.sim-tabs,
+	.import-export,
+	.sim-toolbar {
 		display: flex;
 		flex-wrap: nowrap;
 		align-items: flex-end;
@@ -64,23 +67,25 @@
 	}
 
 	.import-export {
-		.import-link, .export-link {
+		.import-link,
+		.export-link {
 			padding: $nav-link-padding-y $nav-link-padding-x;
 			font-size: $nav-link-font-size;
 			transition: $nav-link-transition;
 
 			&.show {
-				color: white;
+				color: var(--bs-white);
 			}
 		}
 	}
 
 	.sim-toolbar {
 		margin-left: auto;
-		font-size: $content-font-size;
+		font-size: var(--content-font-size);
 
-		.sim-toolbar-item, .sim-toolbar-socials {
-			margin-left: map.get($spacers, 3);
+		.sim-toolbar-item,
+		.sim-toolbar-socials {
+			margin-left: var(--spacer-3);
 			display: flex;
 
 			a {
@@ -90,21 +95,17 @@
 		}
 
 		.sim-toolbar-item {
-			transition: $link-transition;
-
-			.known-issues {
-				color: #ef9eaa;
-			}
+			transition: var(--link-transition);
 		}
 
 		.sim-toolbar-socials {
-			margin-top: math.div($nav-link-padding-y, 2);
-			margin-bottom: math.div($nav-link-padding-y, 2);
-			border-left: $border-default;
+			margin-top: calc($nav-link-padding-y / 2);
+			margin-bottom: calc($nav-link-padding-y / 2);
+			border-left: var(--border-default);
 
 			a {
-				margin-top: math.div($nav-link-padding-y, 2);
-				margin-bottom: math.div($nav-link-padding-y, 2);
+				margin-top: calc($nav-link-padding-y / 2);
+				margin-bottom: calc($nav-link-padding-y / 2);
 			}
 		}
 	}
@@ -118,10 +119,4 @@
 			top: -2px;
 		}
 	}
-}
-
-@include media-breakpoint-down(lg) {
-	.sim-header {
-		padding-top: $gap-width-sm;
-	}	
 }

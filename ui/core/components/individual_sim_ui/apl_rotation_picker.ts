@@ -1,11 +1,11 @@
-import { Tooltip } from 'bootstrap';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
 
 import { Player } from '../../player';
 import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/apl';
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
 import { AdaptiveStringPicker } from '../inputs/string_picker';
@@ -243,29 +243,34 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 	const warningsElem = ListPicker.makeActionElem('apl-warnings', 'fa-exclamation-triangle');
 	warningsElem.classList.add('warning', 'link-warning');
 	warningsElem.setAttribute('data-bs-html', 'true');
-	const warningsTooltip = Tooltip.getOrCreateInstance(warningsElem, {
-		customClass: 'dropdown-tooltip',
-		title: 'Warnings',
-		html: true,
+	const warningsTooltip = tippy(warningsElem, {
+		theme: 'dropdown-tooltip',
+		content: 'Warnings',
 	});
 	itemHeaderElem.appendChild(warningsElem);
 
 	const updateWarnings = async () => {
-		warningsTooltip.setContent({ '.tooltip-inner': '' });
+		if (!existsInDOM(warningsElem)) {
+			warningsTooltip?.destroy();
+			warningsElem?.remove();
+			player.currentStatsEmitter.off(updateWarnings);
+			return;
+		}
+		warningsTooltip.setContent('');
 		const warnings = getWarnings(player);
-		if (warnings.length == 0) {
+		if (!warnings.length) {
 			warningsElem.style.visibility = 'hidden';
 		} else {
 			warningsElem.style.visibility = 'visible';
 			const formattedWarnings = await Promise.all(warnings.map(w => ActionId.replaceAllInString(w)));
-			warningsTooltip.setContent({
-				'.tooltip-inner': `
+			warningsTooltip.setContent(
+				`
 				<p>This action has warnings, and might not behave as expected.</p>
 				<ul>
 					${formattedWarnings.map(w => `<li>${w}</li>`).join('')}
 				</ul>
 			`,
-			});
+			);
 		}
 	};
 	updateWarnings();
@@ -275,7 +280,7 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 class HidePicker extends Input<Player<any>, boolean> {
 	private readonly inputElem: HTMLElement;
 	private readonly iconElem: HTMLElement;
-	private tooltip: Tooltip;
+	private tooltip: TippyInstance;
 
 	constructor(parent: HTMLElement, modObject: Player<any>, config: InputConfig<Player<any>, boolean>) {
 		super(parent, 'hide-picker-root', modObject, config);
@@ -283,7 +288,7 @@ class HidePicker extends Input<Player<any>, boolean> {
 		this.inputElem = ListPicker.makeActionElem('hide-picker-button', 'fa-eye');
 		this.iconElem = this.inputElem.childNodes[0] as HTMLElement;
 		this.rootElem.appendChild(this.inputElem);
-		this.tooltip = Tooltip.getOrCreateInstance(this.inputElem, { title: 'Enable/Disable' });
+		this.tooltip = tippy(this.inputElem, { content: 'Enable/Disable' });
 
 		this.init();
 
@@ -305,11 +310,11 @@ class HidePicker extends Input<Player<any>, boolean> {
 		if (newValue) {
 			this.iconElem.classList.add('fa-eye-slash');
 			this.iconElem.classList.remove('fa-eye');
-			this.tooltip.setContent({ '.tooltip-inner': 'Enable Action' });
+			this.tooltip.setContent('Enable Action');
 		} else {
 			this.iconElem.classList.add('fa-eye');
 			this.iconElem.classList.remove('fa-eye-slash');
-			this.tooltip.setContent({ '.tooltip-inner': 'Disable Action' });
+			this.tooltip.setContent('Disable Action');
 		}
 	}
 }

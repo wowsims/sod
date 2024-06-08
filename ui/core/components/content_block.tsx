@@ -1,4 +1,5 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from './component.js';
 
@@ -41,9 +42,12 @@ export class ContentBlock extends Component {
 	private buildHeader(): HTMLElement | null {
 		if (this.config.header && Object.keys(this.config.header).length) {
 			const TitleTag = this.config.header.titleTag || 'h6';
+			const titleRef = ref<HTMLElement>();
 			const header = (
 				<div className="content-block-header">
-					<TitleTag className="content-block-title">{this.config.header.title}</TitleTag>
+					<TitleTag ref={titleRef} className="content-block-title">
+						{this.config.header.title}
+					</TitleTag>
 				</div>
 			);
 
@@ -52,9 +56,8 @@ export class ContentBlock extends Component {
 			}
 
 			if (this.config.header.tooltip)
-				Tooltip.getOrCreateInstance(header.querySelector('.content-block-title') as HTMLElement, {
-					html: true,
-					title: this.config.header.tooltip,
+				tippy(titleRef.value!, {
+					content: this.config.header.tooltip,
 				});
 
 			this.rootElem.appendChild(header);
@@ -66,11 +69,10 @@ export class ContentBlock extends Component {
 	}
 
 	private buildBody(): HTMLElement {
-		const bodyElem = document.createElement('div');
-		bodyElem.classList.add('content-block-body');
+		const bodyElem = <div className="content-block-body"></div>;
 
 		this.rootElem.appendChild(bodyElem);
 
-		return bodyElem;
+		return bodyElem as HTMLElement;
 	}
 }

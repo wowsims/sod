@@ -11,7 +11,7 @@ import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
-import { ItemSwapConfig } from './components/item_swap_picker';
+import { ItemSwapConfig } from './components/item_swap/item_swap_picker';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
@@ -377,17 +377,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addTopbarComponents() {
 		// TODO: Classic
-		this.simHeader.addImportLink('JSON', _parent => new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('60U SoD', _parent => new Importers.Individual60UImporter(this.rootElem, this), true);
-		//this.simHeader.addImportLink('WoWHead', _parent => new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
-		this.simHeader.addImportLink('Addon', _parent => new Importers.IndividualAddonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('60U SoD', new Importers.Individual60UImporter(this.rootElem, this), true);
+		//this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
+		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
 
-		this.simHeader.addExportLink('Link', _parent => new Exporters.IndividualLinkExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('JSON', _parent => new Exporters.IndividualJsonExporter(this.rootElem, this), true);
-		//this.simHeader.addExportLink('WoWHead', _parent => new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('60U SoD EP', _parent => new Exporters.Individual60UEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('Pawn EP', _parent => new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
-		//this.simHeader.addExportLink("CLI", _parent => new Exporters.IndividualCLIExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
+		//this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('60U SoD EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
+		//this.simHeader.addExportLink("CLI", new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}
 
 	applyDefaults(eventID: EventID) {

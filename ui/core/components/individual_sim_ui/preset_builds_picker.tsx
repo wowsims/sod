@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
@@ -37,7 +37,9 @@ export class PresetBuildsPicker extends Component {
 			</>,
 		);
 
-		Tooltip.getOrCreateInstance(infoElemRef.value!, { title: 'Preset builds apply an optimal combination of gear, talents, and rotation.' });
+		tippy(infoElemRef.value!, {
+			content: 'Preset builds apply an optimal combination of gear, talents, and rotation.',
+		});
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.builds.forEach(build => {

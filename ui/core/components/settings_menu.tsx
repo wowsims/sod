@@ -1,4 +1,3 @@
-import { Tooltip } from 'bootstrap';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -10,6 +9,7 @@ import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
 import { NumberPicker } from './number_picker.js';
+import Toast from './toast.jsx';
 
 export class SettingsMenu extends BaseModal {
 	private readonly simUI: SimUI;
@@ -58,11 +58,15 @@ export class SettingsMenu extends BaseModal {
 		}
 
 		if (restoreDefaultsButton.value) {
-			Tooltip.getOrCreateInstance(restoreDefaultsButton.value, {
-				title: 'Restores all default settings (gear, consumes, buffs, talents, EP weights, etc). Saved settings are preserved.',
+			tippy(restoreDefaultsButton.value, {
+				content: 'Restores all default settings (gear, consumes, buffs, talents, EP weights, etc). Saved settings are preserved.',
 			});
 			restoreDefaultsButton.value.addEventListener('click', () => {
 				this.simUI.applyDefaults(TypedEvent.nextEventID());
+				new Toast({
+					variant: 'success',
+					body: 'Restored to default settings.',
+				});
 			});
 		}
 

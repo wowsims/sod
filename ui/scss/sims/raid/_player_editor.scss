@@ -8,11 +8,11 @@ $player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}))
 	max-width: $player-editor-modal-width;
 	width: $player-editor-modal-width;
 
-	&> .modal-content {
+	& > .modal-content {
 		height: $player-editor-modal-height;
 		overflow: hidden;
 
-		&> .modal-body {
+		& > .modal-body {
 			padding: 0;
 		}
 	}
@@ -20,7 +20,7 @@ $player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}))
 	.sim-ui {
 		// Because of the placement of the modal we have to add an extra gap below to be able
 		// to view the full contents of the individual sim ui
-		padding-bottom: calc($modal-dialog-margin-y-sm-up + $gap-width)
+		padding-bottom: calc($modal-dialog-margin-y-sm-up + var(--gap-width));
 	}
 
 	.sim-bg {
@@ -33,9 +33,9 @@ $player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}))
 		z-index: 0 !important;
 	}
 
-  .settings-tab {
-    .tab-panel-col {
-      flex: 1 !important;
-    }
-  }
+	.settings-tab {
+		.tab-panel-col {
+			flex: 1 !important;
+		}
+	}
 }

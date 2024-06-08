@@ -9,6 +9,7 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { EnumPicker } from './enum_picker.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
+	parent.classList.remove('hide');
 	return new BooleanPicker<Sim>(parent, sim, {
 		id: 'show-1h-weapons-selector',
 		extraCssClasses: ['show-1h-weapons-selector', 'mb-0'],
@@ -25,6 +26,7 @@ export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): Boolea
 }
 
 export function makeShow2hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
+	parent.classList.remove('hide');
 	return new BooleanPicker<Sim>(parent, sim, {
 		id: 'show-2h-weapons-selector',
 		extraCssClasses: ['show-2h-weapons-selector', 'mb-0'],

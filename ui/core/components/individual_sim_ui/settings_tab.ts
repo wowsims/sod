@@ -18,7 +18,7 @@ import * as IconInputs from '../icon_inputs';
 import { Input } from '../input';
 import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 import { relevantStatOptions } from '../inputs/stat_options';
-import { ItemSwapPicker } from '../item_swap_picker';
+import { ItemSwapPicker } from '../item_swap/item_swap_picker';
 import { MultiIconPicker, MultiIconPickerItemConfig } from '../multi_icon_picker';
 import { NumberPicker } from '../number_picker';
 import { SavedDataManager } from '../saved_data_manager';

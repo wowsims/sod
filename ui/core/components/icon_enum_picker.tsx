@@ -1,14 +1,10 @@
-import { Tooltip } from 'bootstrap';
-import { ref } from 'tsx-vanilla';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import tippy from 'tippy.js';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
+import { IconPickerDirection } from './icon_picker.jsx';
 import { Input, InputConfig } from './input.js';
-
-export enum IconEnumPickerDirection {
-	Vertical = 'vertical',
-	Horizontal = 'Horizontal',
-}
 
 export interface IconEnumValueConfig<ModObject, T> {
 	value: T;
@@ -36,7 +32,7 @@ export interface IconEnumPickerConfig<ModObject, T> extends InputConfig<ModObjec
 	// Tooltip that will be shown whne hovering over the icon-picker-button
 	tooltip?: string;
 	// The direction the menu will open in relative to the root element
-	direction?: IconEnumPickerDirection;
+	direction?: IconPickerDirection;
 	equals: (a: T, b: T) => boolean;
 	backupIconUrl?: (value: T) => ActionId;
 	showWhen?: (obj: ModObject) => boolean;
@@ -52,28 +48,24 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 	private readonly buttonElem: HTMLAnchorElement;
 	private readonly buttonText: HTMLElement;
+	private readonly dropdownMenu: HTMLElement;
 
 	constructor(parent: HTMLElement, modObj: ModObject, config: IconEnumPickerConfig<ModObject, T>) {
 		super(parent, 'icon-enum-picker-root', modObj, config);
-		this.rootElem.classList.add('icon-picker', (config.direction ?? IconEnumPickerDirection.Vertical) === 'vertical' ? 'dropdown' : 'dropend');
+		this.rootElem.classList.add('icon-picker', (config.direction ?? IconPickerDirection.Vertical) === 'vertical' ? 'dropdown' : 'dropend');
 		this.config = config;
 		this.currentValue = this.config.zeroValue;
 
 		if (config.tooltip) {
-			const tooltip = Tooltip.getOrCreateInstance(this.rootElem, {
-				html: true,
-				title: config.tooltip,
+			const tooltip = tippy(this.rootElem, {
+				content: config.tooltip,
 			});
-			this.addOnDisposeCallback(() => tooltip.dispose());
+			this.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
-		const buttonRef = ref<HTMLAnchorElement>();
-		const dropdownRef = ref<HTMLUListElement>();
-		const labelRef = ref<HTMLLabelElement>();
 		this.rootElem.appendChild(
 			<>
 				<a
-					ref={buttonRef}
 					href="javascript:void(0)"
 					className="icon-picker-button"
 					attributes={{
@@ -85,25 +77,27 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 						whtticon: 'false',
 						disableWowheadTouchTooltip: 'true',
 					}}></a>
-				<ul
-					ref={dropdownRef}
-					className={'dropdown-menu'}
-					style={{
-						gridTemplateColumns: this.config.numColumns ? `repeat(${this.config.numColumns}, 1fr)` : undefined,
-						gridAutoFlow: this.config.direction == IconEnumPickerDirection.Horizontal ? 'column' : undefined,
-					}}></ul>
-				<label ref={labelRef} className="form-label"></label>
+				<ul className="dropdown-menu"></ul>
+				<label className="form-label"></label>
 			</>,
 		);
 
-		this.buttonElem = buttonRef.value!;
-		this.buttonText = labelRef.value!;
-		const dropdownMenu = dropdownRef.value!;
+		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
+		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
+		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
 
-		this.config.values.forEach(valueConfig => {
+		if (this.config.numColumns) {
+			this.dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
+		}
+
+		if (this.config.direction == IconPickerDirection.Horizontal) {
+			this.dropdownMenu.style.gridAutoFlow = 'column';
+		}
+
+		this.config.values.forEach((valueConfig, _) => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option');
-			dropdownMenu.appendChild(optionContainer);
+			this.dropdownMenu.appendChild(optionContainer);
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
@@ -125,27 +119,21 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 				}
 			};
 
-			const event = this.config.changedEvent(this.modObject).on(updateOption);
+			this.config.changedEvent(this.modObject).on(updateOption);
 			updateOption();
 
-			option.addEventListener(
-				'click',
-				event => {
-					event.preventDefault();
-					this.currentValue = valueConfig.value;
-					this.storedValue = undefined;
-					this.inputChanged(TypedEvent.nextEventID());
-				},
-				{ signal: this.signal },
-			);
-			this.addOnDisposeCallback(() => event.dispose());
+			option.addEventListener('click', event => {
+				event.preventDefault();
+				this.currentValue = valueConfig.value;
+				this.storedValue = undefined;
+				this.inputChanged(TypedEvent.nextEventID());
+			});
 
 			if (valueConfig.tooltip) {
-				const tooltip = Tooltip.getOrCreateInstance(option, {
-					html: true,
-					title: valueConfig.tooltip,
+				const tooltip = tippy(option, {
+					content: valueConfig.tooltip,
 				});
-				this.addOnDisposeCallback(() => tooltip.dispose());
+				this.addOnDisposeCallback(() => tooltip.destroy());
 			}
 		});
 
@@ -162,8 +150,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			}
 		};
 		updateState();
-		const event = this.config.changedEvent(this.modObject).on(updateState);
-		this.addOnDisposeCallback(() => event.dispose());
+		this.config.changedEvent(this.modObject).on(updateState);
 	}
 
 	/**

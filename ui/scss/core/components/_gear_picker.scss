@@ -1,33 +1,19 @@
-@use 'sass:map';
-
 @import './filters_menu';
-
-$source-cell-width: 16rem;
-$ep-cell-width: 4rem;
-$favorite-cell-width: 2rem;
+:root {
+	--ilvl-cell-width: 3rem;
+	--source-cell-width: 16rem;
+	--ep-cell-width: 4rem;
+	--icon-cell-width: 2rem;
+}
 
 .gear-picker-root {
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
+	&:not(.gear-picker-root-bulk) {
+		display: grid;
+		gap: var(--section-spacer);
+		grid-template-columns: 1fr 1fr;
 
-	.gear-picker-left,
-	.gear-picker-right {
-		width: 50%;
-	}
-
-	.item-picker-root {
-		display: flex;
-
-		&:not(:last-child) {
-			margin-bottom: $block-spacer;
-		}
-
-		.item-picker-icon {
-			@include wowhead-background-icon;
-			width: 4rem;
-			height: 4rem;
-			border: $border-default;
+		@include media-breakpoint-down(sm) {
+			grid-template-columns: 1fr;
 		}
 	}
 
@@ -38,7 +24,7 @@ $favorite-cell-width: 2rem;
 
 			// Add space to separate weapon categories
 			&:nth-child(6) {
-				margin-bottom: map.get($spacers, 5);
+				margin-bottom: calc(var(--spacer-3) * 2);
 			}
 		}
 	}
@@ -46,71 +32,14 @@ $favorite-cell-width: 2rem;
 	.gear-picker-right {
 		.item-picker-root {
 			flex-direction: row-reverse;
+			@include media-breakpoint-down(md) {
+				flex-direction: row;
+			}
 
 			.item-picker-labels-container {
 				align-items: flex-end;
-			}
-		}
-	}
-}
-
-.item-picker-labels-container {
-	padding: map.get($spacers, 2);
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-
-	.item-picker-name {
-		color: white;
-		font-size: map.get($font-sizes, 6);
-		letter-spacing: normal;
-	}
-
-	.item-picker-enchant {
-		color: $item-quality-uncommon;
-		font-size: $content-font-size;
-		letter-spacing: normal;
-	}
-
-	.item-picker-rune {
-		color: $brand;
-		font-size: $content-font-size;
-		letter-spacing: normal;
-	}
-}
-
-.item-picker-rune-container {
-	@include vertical-top;
-	@include horizontal-right;
-	display: flex;
-	justify-content: center;
-
-	.item-picker-rune-icon {
-		width: 1.75rem;
-		height: 1.75rem;
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.gear-picker-right {
-		margin-bottom: 2 * map.get($spacers, 3);
-	}
-}
-
-@include media-breakpoint-down(md) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root:last-child {
-				margin-bottom: map.get($spacers, 5);
-			}
-		}
-
-		.gear-picker-right {
-			.item-picker-root {
-				flex-direction: row;
-
-				.item-picker-labels-container {
+				text-align: right;
+				@include media-breakpoint-down(md) {
 					align-items: flex-start;
 				}
 			}
@@ -118,7 +47,125 @@ $favorite-cell-width: 2rem;
 	}
 }
 
+.item-picker-root {
+	display: flex;
+
+	&:not(:last-child) {
+		margin-bottom: var(--block-spacer);
+	}
+
+	.item-picker-labels-container {
+		padding: var(--spacer-2);
+		padding-bottom: 0;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		.item-picker-name,
+		.item-picker-enchant,
+		.item-picker-rune {
+			letter-spacing: normal;
+
+			.gear-picker-right & {
+				text-align: right;
+				@include media-breakpoint-down(md) {
+					text-align: left;
+				}
+			}
+		}
+
+		.item-picker-name {
+			color: var(--bs-white);
+			font-size: var(--h6-font-size);
+		}
+		.item-picker-enchant {
+			color: var(--bs-uncommon);
+			font-size: var(--content-font-size);
+		}
+		.item-picker-rune {
+			color: var(--bs-brand);
+			font-size: var(--content-font-size);
+		}
+	}
+
+	.item-picker-rune-container {
+		@include vertical-top;
+		@include horizontal-right;
+		display: flex;
+		justify-content: center;
+
+		.item-picker-rune-icon {
+			width: 1.75rem;
+			height: 1.75rem;
+		}
+	}
+}
+
+.item-picker-icon-wrapper {
+	position: relative;
+	width: 4rem;
+	height: 4rem;
+	border: var(--border-default);
+
+	@include media-breakpoint-down(lg) {
+		width: 3rem;
+		height: 3rem;
+	}
+}
+
+.item-picker-icon {
+	@include wowhead-background-icon;
+	height: 100%;
+	width: 100%;
+
+	.item-picker-labels-container {
+		align-items: flex-start;
+		text-align: left;
+	}
+}
+
+.gear-picker-modal-slots {
+	// Without this the slots are not clickable
+	pointer-events: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin-right: -1px;
+	z-index: 1;
+	@include media-breakpoint-down(sm) {
+		display: none;
+	}
+
+	.item-picker-icon-wrapper {
+		width: var(--icon-size-md);
+		height: var(--icon-size-md);
+		border-color: var(--bs-modal-border-color);
+
+		&.active {
+			width: calc(var(--icon-size-md) + var(--spacer-2));
+			height: calc(var(--icon-size-md) + var(--spacer-2));
+			border-width: 2px;
+			border-right: 0;
+		}
+
+		&:nth-child(6),
+		&:nth-child(14) {
+			// Spacing between ragdoll sections
+			margin-bottom: var(--spacer-3);
+		}
+
+		&:not(:first-child) {
+			margin-top: -1px;
+		}
+	}
+}
+
 .selector-modal {
+	.selector-modal-title {
+		margin-bottom: 0;
+	}
+
 	.modal-header {
 		padding-bottom: 0;
 
@@ -133,19 +180,19 @@ $favorite-cell-width: 2rem;
 		padding: 0;
 
 		.selector-modal-filters {
-			margin-bottom: map.get($spacers, 3);
+			margin-bottom: var(--bs-modal-padding);
 			display: flex;
 			align-items: center;
 
 			& > *:not(:last-child) {
-				margin-right: map.get($spacers, 2);
+				margin-right: var(--spacer-2);
 			}
 
 			input,
 			select {
-				padding-top: $btn-padding-y;
-				padding-bottom: $btn-padding-y;
-				font-size: $btn-font-size;
+				padding-top: var(--btn-padding-y);
+				padding-bottom: var(--btn-padding-y);
+				font-size: var(--btn-font-size);
 			}
 		}
 	}
@@ -169,42 +216,44 @@ $favorite-cell-width: 2rem;
 
 .selector-modal-list-labels {
 	display: flex;
-	padding-right: map-get($spacers, 2);
-	margin-right: map-get($spacers, 3);
-	margin-bottom: map-get($spacers, 2);
+	padding-right: var(--spacer-2);
+	margin-right: var(--spacer-3);
+	margin-bottom: var(--spacer-2);
 	font-size: 1.125rem;
+	justify-content: space-between; // Ensures labels are evenly spaced
+	gap: var(--spacer-3);
 
-	label {
-		font-weight: normal;
+	@include media-breakpoint-down(xl) {
+		margin-right: 0;
 	}
 
 	.item-label {
 		flex: 1;
+		margin-right: var(--spacer-2);
 	}
-
+	.ilvl-label {
+		width: var(--ilvl-cell-width);
+	}
 	.source-label {
-		width: $source-cell-width;
-		margin-left: map-get($spacers, 3);
+		width: var(--source-cell-width);
 	}
-
 	.ep-label {
-		width: $ep-cell-width;
-		margin-left: map-get($spacers, 3);
+		width: var(--ep-cell-width);
 		display: flex;
 		align-items: center;
 		float: right;
 	}
 
-	.favorite-label {
-		width: $favorite-cell-width;
-		margin-left: map-get($spacers, 3);
+	.favorite-label,
+	.compare-label {
+		width: var(--icon-cell-width);
 	}
 }
 
 .selector-modal-list {
 	width: 100%;
-	max-height: 65vh;
-	overflow-y: auto;
+	max-height: 60vh;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	padding: 0;
 	margin-bottom: 0;
@@ -218,29 +267,29 @@ $favorite-cell-width: 2rem;
 
 // TODO: Move all of these to a shared file, as they're used in other places too
 .selector-modal-list-item {
-	padding: 0.5rem;
+	padding: var(--spacer-2);
 	display: flex;
 	align-items: center;
-	background-color: #111218;
+	background-color: var(--bs-gray-900);
+	gap: var(--spacer-3);
 
 	&:nth-child(2n) {
-		background: $table-row-even-bg;
+		background: var(--bs-table-row-even-bg);
 	}
 
 	&:nth-child(2n + 1) {
-		background: $table-row-odd-bg;
+		background: var(--bs-table-row-odd-bg);
 	}
 
 	&:hover {
-		background: #333;
+		background: var(--bs-gray-800);
 	}
 
 	&.active {
 		.selector-modal-list-item-icon {
-			outline: 2px solid $success;
+			outline: 2px solid var(--bs-success);
 		}
 	}
-
 	.selector-modal-list-item-link {
 		display: flex;
 		align-items: center;
@@ -256,56 +305,44 @@ $favorite-cell-width: 2rem;
 		@include wowhead-background-icon;
 		width: 3rem;
 		height: 3rem;
-		border: $border-default;
+		border: var(--border-default);
 	}
 
 	.selector-modal-list-item-name {
 		font-size: 1.125rem;
-		margin-left: map-get($spacers, 3);
+		margin-left: var(--spacer-2);
 		letter-spacing: normal;
 		font-weight: normal;
 		cursor: pointer;
 	}
 }
 
+.selector-modal-list-item-ilvl-container {
+	width: var(--ilvl-cell-width);
+}
+
 .selector-modal-list-item-source-container {
-	margin-left: map-get($spacers, 3);
-	width: $source-cell-width;
+	width: var(--source-cell-width);
 }
 
-.selector-modal-list-item-favorite {
-	width: $favorite-cell-width;
-	margin-left: map-get($spacers, 3);
-	color: $brand;
-}
-
-.selector-modal-list-item-favorite:hover {
-	text-shadow:
-		0 0 10px white,
-		0 0 10px white;
+.selector-modal-list-item-favorite,
+.selector-modal-list-item-compare {
+	width: var(--icon-cell-width);
 }
 
 .selector-modal-list-item-ep {
-	width: $ep-cell-width;
-	margin-left: map-get($spacers, 3);
+	width: var(--ep-cell-width);
 	display: flex;
 	align-items: center;
 
 	& > span {
 		display: inline-block;
-		color: white;
+		color: var(--bs-white);
 		text-align: right;
 	}
 
 	.selector-modal-list-item-ep-delta {
-		margin-left: map-get($spacers, 1);
+		margin-left: var(--spacer-1);
 		font-size: 0.8rem;
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	.item-picker-icon {
-		width: 3rem;
-		height: 3rem;
 	}
 }

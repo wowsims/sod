@@ -241,7 +241,7 @@ enum RaidFilterOption {
 	RaidNaxxramas = 3456;
 }
 
-// Next tag: 20.
+// Next tag: 22
 message DatabaseFilters {
 	repeated ArmorType armor_types = 1;
 	repeated WeaponType weapon_types = 2;
@@ -264,6 +264,8 @@ message DatabaseFilters {
 	repeated int32 favorite_items = 11;
 	// Uniquely-identifying strings for favorited enchants.
 	repeated string favorite_enchants = 13;
+	repeated int32 favorite_runes = 20;
+	repeated int32 favorite_random_suffixes = 21;
 }
 
 message SimSettings {

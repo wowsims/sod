@@ -1,63 +1,63 @@
 .within-raid-sim .within-raid-sim-hide {
-  display: none !important;
+	display: none !important;
 }
 
 .not-within-raid-sim .not-within-raid-sim-hide {
-  display: none !important;
+	display: none !important;
 }
 
 .character-stats-header {
-  padding: 5px;
-  font-size: 14px;
+	padding: 5px;
+	font-size: 14px;
 }
 
 .character-stats-table {
-  padding: 10px;
+	padding: 10px;
 }
 
 .gear-tab-columns {
-  display: flex;
+	display: flex;
 }
 
 .left-gear-panel {
-  min-width: calc(550px + 2vw);
-  flex: 3;
-  margin-right: var(--container-padding);
+	min-width: calc(550px + 2vw);
+	flex: 3;
+	margin-right: var(--container-padding);
 }
 
 @include media-breakpoint-down(xl) {
-  .gear-tab-columns {
-    flex-flow: column;
-  }
+	.gear-tab-columns {
+		flex-flow: column;
+	}
 
-  .left-gear-panel {
-    margin: 0;
-  }
+	.left-gear-panel {
+		margin: 0;
+	}
 
-  .right-gear-panel {
-    margin-top: $gap-width;
-  }
+	.right-gear-panel {
+		margin-top: var(--gap-width);
+	}
 }
 
 @media only screen and (max-width: calc(800px + 1vw)) {
-  .left-gear-panel {
-    min-width: calc(275px + 1vw);
-  }
+	.left-gear-panel {
+		min-width: calc(275px + 1vw);
+	}
 }
 
 .right-gear-panel {
-  position: relative;
-  flex: 1.25;
-  min-width: 250px;
+	position: relative;
+	flex: 1.25;
+	min-width: 250px;
 }
 
 @media only screen and (max-width: calc(1050px + 2vw)) {
-  .right-gear-panel {
-    min-width: 275px;
-  }
+	.right-gear-panel {
+		min-width: 275px;
+	}
 }
 
 .talents-tab-content {
-  display: flex;
-  flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
