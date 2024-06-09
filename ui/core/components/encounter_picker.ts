@@ -192,6 +192,7 @@ class AdvancedEncounterModal extends BaseModal {
 				index: number,
 				config: ListItemPickerConfig<Encounter, TargetProto>,
 			) => new TargetPicker(parent, encounter, index, config),
+			minimumItems: 1,
 		});
 	}
 
