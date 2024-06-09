@@ -38,8 +38,6 @@ type SelectorModalOptions = {
 	id: string;
 	// Prevents rendering of certail tabs
 	disabledTabs?: SelectorModalTabs[];
-	// If defined will render a remove button in the header
-	removeButtonText?: string;
 };
 
 export class SelectorModal extends BaseModal {
@@ -52,7 +50,6 @@ export class SelectorModal extends BaseModal {
 	private readonly titleElem: HTMLElement;
 	private readonly tabsElem: HTMLElement;
 	private readonly contentElem: HTMLElement;
-	public readonly removeButton?: HTMLButtonElement;
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
@@ -78,20 +75,6 @@ export class SelectorModal extends BaseModal {
 			</div>,
 		);
 
-		if (this.options.removeButtonText) {
-			const closeX = this.header?.querySelector('.btn-close');
-			if (!!closeX) {
-				const removeButtonRef = ref<HTMLButtonElement>();
-				this.header?.insertBefore(
-					<button ref={removeButtonRef} className="btn btn-danger">
-						{this.options.removeButtonText}
-					</button>,
-					closeX,
-				);
-				if (removeButtonRef.value) this.removeButton = removeButtonRef.value;
-			}
-		}
-
 		this.body.appendChild(<div className="tab-content selector-modal-tab-content" />);
 
 		this.titleElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-title')!;
@@ -99,7 +82,7 @@ export class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-tab-content')!;
 
 		this.body.appendChild(
-			<div className="d-flex align-items-center form-text mt-3">
+			<div className="d-flex align-items-center form-text mt-auto pt-3">
 				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
 				<span>
 					If gear is missing, check the selected phase and your gear filters.
@@ -501,8 +484,8 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private removeTabs(labelSubstring: string) {
-		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(
-			tab => tab.dataset?.label?.includes(labelSubstring),
+		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(tab =>
+			tab.dataset?.label?.includes(labelSubstring),
 		);
 		const contentElems = tabElems.map(tabElem => document.querySelector(tabElem.dataset.bsTarget!)).filter(tabElem => Boolean(tabElem));
 

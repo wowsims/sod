@@ -3,207 +3,22 @@ import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { EquipmentSpec, ItemSpec, SimDatabase, SimEnchant, SimItem } from '../../proto/common';
+import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
+import { ItemSpec, SimDatabase, SimEnchant, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
-import { Database } from '../../proto_utils/database';
-import { EquippedItem } from '../../proto_utils/equipped_item';
-import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
+import { canEquipItem } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { cloneChildren } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { BooleanPicker } from '../boolean_picker';
-import { Component } from '../component';
 import { ContentBlock } from '../content_block';
-import { ItemRenderer } from '../gear_picker';
-import { GearData } from '../gear_picker/item_list';
 import { SelectorModal, SelectorModalTabs } from '../gear_picker/selector_modal';
-import { Importer } from '../importers';
+import BulkGearJsonImporter from '../importers/bulk_gear_json_importer';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
 import Toast from '../toast';
-
-export class BulkGearJsonImporter extends Importer {
-	private readonly simUI: IndividualSimUI<any>;
-	private readonly bulkUI: BulkTab;
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab) {
-		super(parent, simUI, 'Bag Item Import', true);
-		this.simUI = simUI;
-		this.bulkUI = bulkUI;
-		this.descriptionElem.appendChild(
-			<>
-				<p>Import bag items from a JSON file, which can be created by the WowSimsExporter in-game AddOn.</p>
-				<p>To import, upload the file or paste the text below, then click, 'Import'.</p>
-			</>,
-		);
-	}
-
-	async onImport(data: string) {
-		try {
-			const equipment = EquipmentSpec.fromJsonString(data, { ignoreUnknownFields: true });
-			if (equipment?.items?.length > 0) {
-				const db = await Database.loadLeftoversIfNecessary(equipment);
-				const items = equipment.items.filter(spec => spec.id > 0 && db.lookupItemSpec(spec));
-				if (items.length > 0) {
-					this.bulkUI.addItems(items);
-				}
-			}
-			this.close();
-		} catch (e: any) {
-			console.warn(e);
-			alert(e.toString());
-		}
-	}
-}
-
-class BulkSimResultRenderer {
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
-		const dpsDelta = result.unitMetrics!.dps!.avg! - baseResult.unitMetrics!.dps!.avg;
-
-		const equipButtonRef = ref<HTMLButtonElement>();
-		const dpsDeltaRef = ref<HTMLDivElement>();
-		const itemsContainerRef = ref<HTMLDivElement>();
-		parent.appendChild(
-			<>
-				<div className="results-sim">
-					<div className="bulk-result-body-dps bulk-items-text-line results-sim-dps damage-metrics">
-						<span className="topline-result-avg">{this.formatDps(result.unitMetrics!.dps!.avg)}</span>
-
-						<span ref={dpsDeltaRef} className={clsx(dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative')}>
-							{this.formatDpsDelta(dpsDelta)}
-						</span>
-
-						<p className="talent-loadout-text">
-							{result.talentLoadout && typeof result.talentLoadout === 'object' ? (
-								typeof result.talentLoadout.name === 'string' && <>Talent loadout used: {result.talentLoadout.name}</>
-							) : (
-								<>Current talents</>
-							)}
-						</p>
-					</div>
-				</div>
-				<div ref={itemsContainerRef} className="bulk-gear-combo"></div>
-				{!!result.itemsAdded?.length && (
-					<button ref={equipButtonRef} className="btn btn-primary bulk-equipit">
-						Equip
-					</button>
-				)}
-			</>,
-		);
-
-		if (!!result.itemsAdded?.length) {
-			equipButtonRef.value?.addEventListener('click', () => {
-				result.itemsAdded.forEach(itemAdded => {
-					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
-					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
-					simUI.simHeader.activateTab('gear-tab');
-				});
-			});
-
-			const items = (<></>) as HTMLElement;
-			for (const is of result.itemsAdded) {
-				const itemContainer = (<div className="bulk-result-item" />) as HTMLElement;
-				const item = simUI.sim.db.lookupItemSpec(is.item!);
-				const renderer = new ItemRenderer(items, itemContainer, simUI.player);
-				renderer.update(item!);
-				renderer.nameElem.appendChild(<a className="bulk-result-item-slot">{this.itemSlotName(is)}</a>);
-				items.appendChild(itemContainer);
-			}
-			itemsContainerRef.value?.appendChild(items);
-		} else if (!result.talentLoadout || typeof result.talentLoadout !== 'object') {
-			dpsDeltaRef.value?.classList.add('hide');
-			parent.appendChild(<p>No changes - this is your currently equipped gear!</p>);
-		}
-	}
-
-	private formatDps(dps: number): string {
-		return (Math.round(dps * 100) / 100).toFixed(2);
-	}
-
-	private formatDpsDelta(delta: number): string {
-		return (delta >= 0 ? '+' : '') + this.formatDps(delta);
-	}
-
-	private itemSlotName(is: ItemSpecWithSlot): string {
-		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))['slot'].replace('ItemSlot', '');
-	}
-}
-
-export class BulkItemPicker extends Component {
-	private readonly itemElem: ItemRenderer;
-	readonly simUI: IndividualSimUI<any>;
-	readonly bulkUI: BulkTab;
-	readonly index: number;
-
-	protected item: EquippedItem;
-
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem, index: number) {
-		super(parent, 'bulk-item-picker');
-		this.simUI = simUI;
-		this.bulkUI = bulkUI;
-		this.index = index;
-		this.item = item;
-		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
-
-		this.simUI.sim.waitForInit().then(() => {
-			this.setItem(item);
-			const slot = getEligibleItemSlots(this.item.item)[0];
-			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
-			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
-			const removeItem = () => {
-				this.bulkUI.removeItemByIndex(this.index);
-				this.bulkUI.selectorModal.close();
-			};
-
-			const openEnchantSelector = (event: Event) => {
-				event.preventDefault();
-
-				if (!!eligibleEnchants.length) {
-					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
-				} else if (!!eligibleRandomSuffixes.length) {
-					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
-				}
-
-				this.bulkUI.selectorModal.removeButton?.addEventListener('click', removeItem);
-			};
-
-			this.bulkUI.selectorModal.addOnHideCallback(() => this.bulkUI.selectorModal.removeButton?.removeEventListener('click', removeItem));
-			this.itemElem.iconElem.addEventListener('click', openEnchantSelector);
-			this.itemElem.nameElem.addEventListener('click', openEnchantSelector);
-			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
-		});
-	}
-
-	setItem(newItem: EquippedItem | null) {
-		this.itemElem.clear();
-		if (!!newItem) {
-			this.itemElem.update(newItem);
-			this.item = newItem;
-		} else {
-			this.itemElem.rootElem.style.opacity = '30%';
-			this.itemElem.iconElem.style.backgroundImage = `url('/cata/assets/item_slots/empty.jpg')`;
-			this.itemElem.nameElem.textContent = 'Add new item (not implemented)';
-			this.itemElem.rootElem.style.alignItems = 'center';
-		}
-	}
-
-	private createGearData(): GearData {
-		const changeEvent = new TypedEvent<void>();
-		return {
-			equipItem: (_, equippedItem: EquippedItem | null) => {
-				if (equippedItem) {
-					const allItems = this.bulkUI.getItems();
-					allItems[this.index] = equippedItem.asSpec();
-					this.item = equippedItem;
-					this.bulkUI.setItems(allItems);
-					changeEvent.emit(TypedEvent.nextEventID());
-				}
-			},
-			getEquippedItem: () => this.item,
-			changeEvent: changeEvent,
-		};
-	}
-}
+import BulkItemPicker from './bulk/bulk_item_picker';
+import BulkSimResultRenderer from './bulk/bulk_sim_result_renderer';
 
 export class BulkTab extends SimTab {
 	readonly simUI: IndividualSimUI<any>;
@@ -241,7 +56,6 @@ export class BulkTab extends SimTab {
 		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, {
 			id: 'bulk-selector-modal',
 			disabledTabs: [SelectorModalTabs.Items],
-			removeButtonText: 'Remove from Batch',
 		});
 
 		this.contentContainer.appendChild(
