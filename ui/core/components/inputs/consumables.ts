@@ -578,7 +578,7 @@ export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
 		makeBooleanMiscConsumeInput({
 			actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
 			fieldName: 'catnip',
-			showWhen: player => player.getClass() == Class.ClassDruid,
+			showWhen: player => player.getClass() === Class.ClassDruid,
 		}),
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' }),
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' }),
@@ -587,7 +587,7 @@ export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
 	IconPickerDirection.Vertical,
 );
 
-export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumesConfig, picker: MultiIconPicker, stats: [Stat.StatAttackPower] }];
+export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumesConfig, picker: MultiIconPicker, stats: [] }];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
