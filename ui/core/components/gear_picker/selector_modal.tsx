@@ -359,7 +359,7 @@ export default class SelectorModal extends BaseModal {
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) {
-					gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+					gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(null));
 				}
 			},
 		});
