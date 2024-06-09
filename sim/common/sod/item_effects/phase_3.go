@@ -13,6 +13,7 @@ import (
 const (
 	// Ordered by ID
 	BlisteringRagehammer       = 220569
+	FistOfTheForsaken          = 220578
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -401,9 +402,11 @@ func init() {
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
 
+	itemhelpers.CreateWeaponProcDamage(FistOfTheForsaken, "Fist of the Forsaken", 7, 446317, core.SpellSchoolShadow, 39, 0, 0.50, core.DefenseTypeMagic)
+
 	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
-			Label:    "Enrage",
+			Label:    "Enrage (Blistering Ragehammer)",
 			ActionID: core.ActionID{SpellID: 446327},
 			Duration: time.Second * 15,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
