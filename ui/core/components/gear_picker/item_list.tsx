@@ -230,13 +230,20 @@ export class ItemList<T extends ItemListType> {
 			},
 		);
 
-		const removeButton = this.tabContent.getElementsByClassName('selector-modal-remove-button')[0] as HTMLButtonElement;
-		removeButton.addEventListener('click', _ => onRemove(TypedEvent.nextEventID()));
+		const removeButton = removeButtonRef.value!;
+		if (removeButton) {
+			removeButton.addEventListener('click', _event => {
+				onRemove(TypedEvent.nextEventID());
+			});
 
-		if (label.startsWith('Enchants')) {
-			removeButton.textContent = 'Remove Enchant';
-		} else if (label.startsWith('Rune')) {
-			removeButton.textContent = 'Remove Rune';
+			switch (label) {
+				case SelectorModalTabs.Enchants:
+					removeButton.textContent = 'Remove Enchant';
+					break;
+				case SelectorModalTabs.Runes:
+					removeButton.textContent = 'Remove Rune';
+					break;
+			}
 		}
 
 		this.updateSelected();

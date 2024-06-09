@@ -159,19 +159,10 @@ export class BulkItemPicker extends Component {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
 				}
 
-				const destroyItemButton = <button className="btn btn-danger">Remove from Batch</button>;
-				destroyItemButton.addEventListener('click', () => {
-					bulkUI.setItems(
-						bulkUI.getItems().filter((_, idx) => {
-							return idx != this.index;
-						}),
-					);
+				this.bulkUI.selectorModal.header?.querySelector('.btn-danger')?.addEventListener('click', () => {
+					this.bulkUI.removeItem(this.item.asSpec());
 					this.bulkUI.selectorModal.close();
 				});
-				const closeX = this.bulkUI.selectorModal.header?.querySelector('.close-button');
-				if (!!closeX) {
-					this.bulkUI.selectorModal.header?.insertBefore(destroyItemButton, closeX);
-				}
 			};
 
 			this.itemElem.iconElem.addEventListener('click', openEnchantSelector);
@@ -248,6 +239,11 @@ export class BulkTab extends SimTab {
 			id: 'bulk-selector-modal',
 			disabledTabs: [SelectorModalTabs.Items],
 		});
+
+		const closeX = this.selectorModal.header?.querySelector('.btn-close');
+		if (!!closeX) {
+			this.selectorModal.header?.insertBefore(<button className="btn btn-danger">Remove from Batch</button>, closeX);
+		}
 
 		this.contentContainer.appendChild(
 			<>
