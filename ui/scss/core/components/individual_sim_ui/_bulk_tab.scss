@@ -84,4 +84,15 @@
 			display: flex;
 		}
 	}
+
+	.bulk-items-text-line {
+		margin-bottom: 1rem;
+	}
+
+	.bulk-gear-combo {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: auto;
+		gap: var(--spacer-3);
+	}
 }
