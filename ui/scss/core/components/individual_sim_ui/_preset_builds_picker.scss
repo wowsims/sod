@@ -1,10 +1,10 @@
 .preset-builds-picker-root {
-	margin-bottom: $block-spacer;
+	margin-bottom: var(--block-spacer);
 
 	.presets-container {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		grid-gap: $block-spacer;
+		grid-gap: var(--block-spacer);
 
 		.saved-data-set-chip {
 			margin: 0;

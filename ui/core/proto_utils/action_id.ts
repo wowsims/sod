@@ -1,9 +1,10 @@
-import { getWowheadLanguagePrefix } from '../constants/lang.js';
-import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
-import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
-import { IconData, UIItem as Item } from '../proto/ui.js';
-import { Database } from './database.js';
+import { getWowheadLanguagePrefix } from '../constants/lang';
+import { MAX_CHARACTER_LEVEL } from '../constants/mechanics';
+import { ResourceType } from '../proto/api';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common';
+import { IconData, UIItem as Item } from '../proto/ui';
+import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
+import { Database } from './database';
 
 // Used to filter action IDs by level
 export interface ActionIdConfig {
@@ -119,7 +120,7 @@ export class ActionId {
 		this.baseName = baseName;
 		this.name = name || baseName;
 		this.iconUrl = iconUrl;
-		this.name += rank ? ` (Rank ${rank})` : '';
+		if (this.name) this.name += rank ? ` (Rank ${rank})` : '';
 	}
 
 	anyId(): number {
@@ -142,11 +143,20 @@ export class ActionId {
 
 	static makeItemUrl(id: number, randomSuffixId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}item=${id}?lvl=${MAX_CHARACTER_LEVEL}?rand=${randomSuffixId || 0}`;
+		const url = new URL(`https://wowhead.com/classic/${langPrefix}item=${id}`);
+		url.searchParams.set('level', String(MAX_CHARACTER_LEVEL));
+		url.searchParams.set('rand', String(randomSuffixId || 0));
+		return url.toString();
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
 		return `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+	}
+	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
+		return buildWowheadTooltipDataset({ itemId: id, ...params });
+	}
+	static async makeSpellTooltipData(id: number, params?: Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		return buildWowheadTooltipDataset({ spellId: id, ...params });
 	}
 	static makeQuestUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -167,6 +177,12 @@ export class ActionId {
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
+	}
+
+	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		(this.itemId ? ActionId.makeItemTooltipData(this.itemId, params) : ActionId.makeSpellTooltipData(this.spellId, params)).then(url => {
+			if (elem) elem.dataset.wowhead = url;
+		});
 	}
 
 	setBackgroundAndHref(elem: HTMLAnchorElement) {

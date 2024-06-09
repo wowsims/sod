@@ -18,13 +18,13 @@ import * as IconInputs from '../icon_inputs';
 import { Input } from '../input';
 import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 import { relevantStatOptions } from '../inputs/stat_options';
-import { ItemSwapPicker } from '../item_swap_picker';
 import { MultiIconPicker, MultiIconPickerItemConfig } from '../multi_icon_picker';
 import { NumberPicker } from '../number_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { IsbConfig } from './../other_inputs';
 import { ConsumesPicker } from './consumes_picker';
+import { ItemSwapPicker } from './item_swap_picker';
 import { PresetBuildsPicker } from './preset_builds_picker';
 
 export class SettingsTab extends SimTab {
@@ -111,6 +111,7 @@ export class SettingsTab extends SimTab {
 		new PresetBuildsPicker(contentBlock.bodyElement, this.simUI);
 
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+			id: 'player-level',
 			label: 'Level',
 			values: LEVEL_BRACKETS.map(level => {
 				return {
@@ -125,6 +126,7 @@ export class SettingsTab extends SimTab {
 
 		const races = specToEligibleRaces[this.simUI.player.spec];
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+			id: 'player-race',
 			label: 'Race',
 			values: races.map(race => {
 				return {
@@ -146,6 +148,7 @@ export class SettingsTab extends SimTab {
 
 		const professions = getEnumValues(Profession) as Array<Profession>;
 		new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'player-profession-1',
 			label: 'Profession 1',
 			values: professions.map(p => {
 				return {
@@ -159,6 +162,7 @@ export class SettingsTab extends SimTab {
 		});
 
 		new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'player-profession-2',
 			label: 'Profession 2',
 			values: professions.map(p => {
 				return {

@@ -1,4 +1,5 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from '../core/components/component.js';
 import { Player } from '../core/player.js';
@@ -87,30 +88,32 @@ class RaidStatsCategory extends Component {
 		this.raidSimUI = raidSimUI;
 		this.options = options;
 
-		this.rootElem.innerHTML = `
-			<a href="javascript:void(0)" role="button" class="raid-stats-category">
-				<span class="raid-stats-category-counter"></span>
-				<span class="raid-stats-category-label">${options.label}</span>
-			</a>
-		`;
+		const counterElemRef = ref<HTMLElement>();
+		const categoryElemRef = ref<HTMLAnchorElement>();
+		this.rootElem.appendChild(
+			<a ref={categoryElemRef} href="javascript:void(0)" className="raid-stats-category" attributes={{ role: 'button' }}>
+				<span ref={counterElemRef} className="raid-stats-category-counter"></span>
+				<span className="raid-stats-category-label">{options.label}</span>
+			</a>,
+		);
 
-		this.counterElem = this.rootElem.querySelector('.raid-stats-category-counter') as HTMLElement;
-		this.tooltipElem = document.createElement('div');
-		this.tooltipElem.innerHTML = `
-			<label class="raid-stats-category-label">${options.label}</label>
-		`;
+		this.counterElem = counterElemRef.value!;
+		this.tooltipElem = (
+			<div>
+				<label className="raid-stats-category-label">{options.label}</label>
+			</div>
+		) as HTMLElement;
 
 		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
 
 		if (options.effects.length != 1 || options.effects[0].playerData?.class) {
-			const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+			const statsLink = categoryElemRef.value!;
 
 			// Using the title option here because outerHTML sanitizes and filters out the img src options
-			Tooltip.getOrCreateInstance(statsLink, {
-				customClass: 'raid-stats-category-tooltip',
-				html: true,
+			tippy(statsLink, {
+				theme: 'raid-stats-category-tooltip',
 				placement: 'right',
-				title: this.tooltipElem,
+				content: this.tooltipElem,
 			});
 		}
 	}
@@ -147,12 +150,20 @@ class RaidStatsEffect extends Component {
 		this.curPlayers = [];
 		this.count = 0;
 
-		this.rootElem.innerHTML = `
-			<span class="raid-stats-effect-counter"></span>
-			<img class="raid-stats-effect-icon"></img>
-			<span class="raid-stats-effect-label">${options.label}</span>
-		`;
-		this.counterElem = this.rootElem.querySelector('.raid-stats-effect-counter') as HTMLElement;
+		const counterElemRef = ref<HTMLElement>();
+		const labelElemRef = ref<HTMLElement>();
+		const iconElemRef = ref<HTMLImageElement>();
+		this.rootElem.appendChild(
+			<>
+				<span ref={counterElemRef} className="raid-stats-effect-counter"></span>
+				<img ref={iconElemRef} className="raid-stats-effect-icon"></img>
+				<span ref={labelElemRef} className="raid-stats-effect-label">
+					{options.label}
+				</span>
+			</>,
+		);
+
+		this.counterElem = counterElemRef.value!;
 
 		if (this.options.playerData?.class) {
 			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;

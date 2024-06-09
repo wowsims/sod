@@ -1,25 +1,19 @@
+import * as Mechanics from './constants/mechanics.js';
 import { UnitMetadataList } from './player.js';
-import {
-	Encounter as EncounterProto,
-	Target as TargetProto,
-	PresetEncounter,
-	PresetTarget,
-} from './proto/common.js';
+import { Encounter as EncounterProto, PresetEncounter, PresetTarget,Target as TargetProto } from './proto/common.js';
 import { Sim } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
-
-import * as Mechanics from './constants/mechanics.js';
 
 // Manages all the settings for an Encounter.
 export class Encounter {
 	readonly sim: Sim;
 
-	private duration: number = 60;
-	private durationVariation: number = 5;
-	private executeProportion20: number = 0.2;
-	private executeProportion25: number = 0.25;
-	private executeProportion35: number = 0.35;
-	private useHealth: boolean = false;
+	private duration = 60;
+	private durationVariation = 5;
+	private executeProportion20 = 0.2;
+	private executeProportion25 = 0.25;
+	private executeProportion35 = 0.35;
+	private useHealth = false;
 
 	targets!: Array<TargetProto>;
 	targetsMetadata: UnitMetadataList;
@@ -38,16 +32,14 @@ export class Encounter {
 
 		sim.waitForInit().then(() => {
 			const level = sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
-			const presetTarget = Encounter.getPresetTargetForLevel(level, sim)
+			const presetTarget = Encounter.getPresetTargetForLevel(level, sim);
 
 			this.targets = [presetTarget.target!];
 
-			[
-				this.targetsChangeEmitter,
-				this.durationChangeEmitter,
-				this.executeProportionChangeEmitter,
-			].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
-		})
+			[this.targetsChangeEmitter, this.durationChangeEmitter, this.executeProportionChangeEmitter].forEach(emitter =>
+				emitter.on(eventID => this.changeEmitter.emit(eventID)),
+			);
+		});
 	}
 
 	get primaryTarget(): TargetProto {
@@ -58,8 +50,7 @@ export class Encounter {
 		return this.durationVariation;
 	}
 	setDurationVariation(eventID: EventID, newDuration: number) {
-		if (newDuration == this.durationVariation)
-			return;
+		if (newDuration == this.durationVariation) return;
 
 		this.durationVariation = newDuration;
 		this.durationChangeEmitter.emit(eventID);
@@ -69,8 +60,7 @@ export class Encounter {
 		return this.duration;
 	}
 	setDuration(eventID: EventID, newDuration: number) {
-		if (newDuration == this.duration)
-			return;
+		if (newDuration == this.duration) return;
 
 		this.duration = newDuration;
 		this.durationChangeEmitter.emit(eventID);
@@ -80,8 +70,7 @@ export class Encounter {
 		return this.executeProportion20;
 	}
 	setExecuteProportion20(eventID: EventID, newExecuteProportion20: number) {
-		if (newExecuteProportion20 == this.executeProportion20)
-			return;
+		if (newExecuteProportion20 == this.executeProportion20) return;
 
 		this.executeProportion20 = newExecuteProportion20;
 		this.executeProportionChangeEmitter.emit(eventID);
@@ -90,8 +79,7 @@ export class Encounter {
 		return this.executeProportion25;
 	}
 	setExecuteProportion25(eventID: EventID, newExecuteProportion25: number) {
-		if (newExecuteProportion25 == this.executeProportion25)
-			return;
+		if (newExecuteProportion25 == this.executeProportion25) return;
 
 		this.executeProportion25 = newExecuteProportion25;
 		this.executeProportionChangeEmitter.emit(eventID);
@@ -100,8 +88,7 @@ export class Encounter {
 		return this.executeProportion35;
 	}
 	setExecuteProportion35(eventID: EventID, newExecuteProportion35: number) {
-		if (newExecuteProportion35 == this.executeProportion35)
-			return;
+		if (newExecuteProportion35 == this.executeProportion35) return;
 
 		this.executeProportion35 = newExecuteProportion35;
 		this.executeProportionChangeEmitter.emit(eventID);
@@ -111,8 +98,7 @@ export class Encounter {
 		return this.useHealth;
 	}
 	setUseHealth(eventID: EventID, newUseHealth: boolean) {
-		if (newUseHealth == this.useHealth)
-			return;
+		if (newUseHealth == this.useHealth) return;
 
 		this.useHealth = newUseHealth;
 		this.durationChangeEmitter.emit(eventID);
@@ -160,15 +146,18 @@ export class Encounter {
 
 	applyDefaults(eventID: EventID) {
 		const level = this.sim.raid.getPlayer(0)?.getLevel() ?? Mechanics.CURRENT_LEVEL_CAP;
-		const presetTarget = Encounter.getPresetTargetForLevel(level, this.sim)
-		this.fromProto(eventID, EncounterProto.create({
-			duration: 60,
-			durationVariation: 5,
-			executeProportion20: 0.2,
-			executeProportion25: 0.25,
-			executeProportion35: 0.35,
-			targets: [presetTarget.target!],
-		}));
+		const presetTarget = Encounter.getPresetTargetForLevel(level, this.sim);
+		this.fromProto(
+			eventID,
+			EncounterProto.create({
+				duration: 60,
+				durationVariation: 5,
+				executeProportion20: 0.2,
+				executeProportion25: 0.25,
+				executeProportion35: 0.35,
+				targets: [presetTarget.target!],
+			}),
+		);
 	}
 
 	static getPresetTargetForLevel(playerLevel: number, sim: Sim): PresetTarget {

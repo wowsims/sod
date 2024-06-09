@@ -1,8 +1,8 @@
-@use "sass:map";
+@use 'sass:map';
 
 .raid-stats {
 	.raid-stats-section {
-		margin-bottom: $block-spacer * 2;
+		margin-bottom: calc(var(--block-spacer) * 2);
 
 		.raid-stats-section-label {
 			font-weight: bold;
@@ -13,11 +13,11 @@
 			border: $border-default;
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			background-color: rgba(50,50,50,.5);
+			background-color: rgba(50, 50, 50, 0.5);
 
 			.raid-stats-category-root {
-				&:not(:nth-last-child(-n+4)) {
-					margin-bottom: $block-spacer;
+				&:not(:nth-last-child(-n + 4)) {
+					margin-bottom: var(--block-spacer);
 				}
 
 				.raid-stats-category {
@@ -25,16 +25,16 @@
 					color: white;
 
 					.raid-stats-category-label {
-						filter: brightness(.4);
+						filter: brightness(0.4);
 					}
 
 					.raid-stats-category-counter,
 					&:hover .raid-stats-category-label {
-						filter: brightness(.6);
+						filter: brightness(0.6);
 					}
 
 					&.active .raid-stats-category-label {
-						filter: brightness(.8);
+						filter: brightness(0.8);
 					}
 
 					&.active .raid-stats-category-counter,
@@ -67,7 +67,7 @@
 			margin-bottom: map.get($spacers, 1);
 		}
 
-		&> :not(:last-child) {
+		& > :not(:last-child) {
 			margin-right: map.get($spacers, 1);
 		}
 
@@ -77,8 +77,8 @@
 		}
 
 		.raid-stats-effect-icon {
-			width: $icon-size-sm;
-			height: $icon-size-sm;
+			width: var(--icon-size-sm);
+			height: var(--icon-size-sm);
 		}
 	}
 }

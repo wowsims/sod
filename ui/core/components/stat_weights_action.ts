@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { BooleanPicker } from '../components/boolean_picker.js';
 import { NumberPicker } from '../components/number_picker.js';
@@ -15,7 +15,7 @@ import { ResultsViewer } from './results_viewer.js';
 
 export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Array<Stat>, epPseudoStats: Array<PseudoStat> | undefined, epReferenceStat: Stat) {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
-		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat);
+		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat).open();
 	});
 }
 
@@ -34,12 +34,12 @@ function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsRe
 	if (!result) return 0;
 
 	return (
-		epRatios[0] * stat.getProtoValue(result.dps?.epValues!) +
-		epRatios[1] * stat.getProtoValue(result.hps?.epValues!) +
-		epRatios[2] * stat.getProtoValue(result.tps?.epValues!) +
-		epRatios[3] * stat.getProtoValue(result.dtps?.epValues!) +
-		epRatios[4] * stat.getProtoValue(result.tmi?.epValues!) +
-		epRatios[5] * stat.getProtoValue(result.pDeath?.epValues!)
+		(result.dps?.epValues ? epRatios[0] * stat.getProtoValue(result.dps.epValues) : 0) +
+		(result.hps?.epValues ? epRatios[1] * stat.getProtoValue(result.hps.epValues) : 0) +
+		(result.tps?.epValues ? epRatios[2] * stat.getProtoValue(result.tps.epValues) : 0) +
+		(result.dtps?.epValues ? epRatios[3] * stat.getProtoValue(result.dtps.epValues) : 0) +
+		(result.tmi?.epValues ? epRatios[4] * stat.getProtoValue(result.tmi.epValues) : 0) +
+		(result.pDeath?.epValues ? epRatios[5] * stat.getProtoValue(result.pDeath.epValues) : 0)
 	);
 }
 
@@ -339,16 +339,12 @@ class EpWeightsMenu extends BaseModal {
 				const refStatName = getNameFromStat(epRefStat());
 				return labelTooltip + ` Normalized by ${refStatName}.`;
 			};
-			const labelTooltipConfig = {
-				toggle: 'tooltip',
-				html: true,
-				title: title,
-			};
 
-			new Tooltip(label, labelTooltipConfig);
-			Tooltip.getOrCreateInstance(button, {
-				title: tooltip,
-				html: true,
+			tippy(label, {
+				content: title,
+			});
+			tippy(button, {
+				content: tooltip,
 			});
 
 			button.addEventListener('click', _event => {
@@ -441,6 +437,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const showAllStatsContainer = this.rootElem.getElementsByClassName('show-all-stats-container')[0] as HTMLElement;
 		new BooleanPicker(showAllStatsContainer, this, {
+			id: 'ep-show-all-stats',
 			label: 'Show All Stats',
 			inline: true,
 			changedEvent: () => new TypedEvent(),
@@ -455,6 +452,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const makeEpRatioCell = (cell: HTMLElement, idx: number) => {
 			new NumberPicker(cell, this.simUI.player, {
+				id: `ep-ratio-${idx}`,
 				float: true,
 				changedEvent: (player: Player<any>) => player.epRatiosChangeEmitter,
 				getValue: (_player: Player<any>) => this.simUI.player.getEpRatios()[idx],
@@ -473,8 +471,8 @@ class EpWeightsMenu extends BaseModal {
 		weightRatioCells.forEach(makeEpRatioCell);
 
 		const updateButton = this.rootElem.getElementsByClassName('compute-ep')[0] as HTMLElement;
-		Tooltip.getOrCreateInstance(updateButton, {
-			title: 'Compute Weighted EP',
+		tippy(updateButton, {
+			content: 'Compute Weighted EP',
 		});
 
 		updateButton.addEventListener('click', _event => {
@@ -553,6 +551,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const currentEpCell = row.querySelector('.current-ep') as HTMLElement;
 		new NumberPicker(currentEpCell, this.simUI.player, {
+			id: `ep-weight-stat-${stat}`,
 			float: true,
 			changedEvent: (player: Player<any>) => player.epWeightsChangeEmitter,
 			getValue: (_player: Player<any>) => this.simUI.player.getEpWeights().getUnitStat(stat),

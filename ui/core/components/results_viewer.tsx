@@ -1,6 +1,5 @@
-import { Tooltip } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+import tippy, { inlinePositioning, Instance as TippyInstance } from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';
@@ -16,33 +15,40 @@ interface WarningLinkArgs {
 	href?: string;
 	text?: string;
 	icon?: string;
-	tooltip?: string;
+	tooltip?: HTMLElement | Element;
 	classes?: string;
-	onclick?: (_?: any) => void;
 }
 
+const TOOLTIP_HTML_BASE = <ul className="text-start ps-3 mb-0"></ul>;
+
 export class ResultsViewer extends Component {
-	readonly pendingElem: HTMLElement;
-	readonly contentElem: HTMLElement;
-	readonly warningElem: HTMLElement;
+	readonly pendingElem: HTMLDivElement;
+	readonly contentElem: HTMLDivElement;
+	readonly warningElem: HTMLDivElement;
 	private warningsLink: HTMLElement;
 
 	private warnings: Array<SimWarning> = [];
+	private warningsTooltip: TippyInstance | null = null;
 
 	constructor(parentElem: HTMLElement) {
 		super(parentElem, 'results-viewer');
+
+		const pendingElemRef = ref<HTMLDivElement>();
+		const contentElemRef = ref<HTMLDivElement>();
+		const warningElemRef = ref<HTMLDivElement>();
+
 		this.rootElem.appendChild(
 			<>
-				<div className="results-pending">
+				<div ref={pendingElemRef} className="results-pending">
 					<div className="loader"></div>
 				</div>
-				<div className="results-content"></div>
-				<div className="warning-zone" style="text-align: center"></div>
+				<div ref={contentElemRef} className="results-content"></div>
+				<div ref={warningElemRef} className="warning-zone" style="text-align: center"></div>
 			</>,
 		);
-		this.pendingElem = this.rootElem.getElementsByClassName('results-pending')[0] as HTMLElement;
-		this.contentElem = this.rootElem.getElementsByClassName('results-content')[0] as HTMLElement;
-		this.warningElem = this.rootElem.getElementsByClassName('warning-zone')[0] as HTMLElement;
+		this.pendingElem = pendingElemRef.value!;
+		this.contentElem = contentElemRef.value!;
+		this.warningElem = warningElemRef.value!;
 
 		this.warningsLink = this.addWarningsLink();
 		this.updateWarnings();
@@ -58,38 +64,30 @@ export class ResultsViewer extends Component {
 					{args.text ? args.text : ''}
 				</a>
 			</div>
-		);
+		) as HTMLElement;
 
-		const link = item.children[0] as HTMLElement;
+		args.parent.appendChild(item);
 
-		if (args.onclick) {
-			link.addEventListener('click', () => {
-				if (args.onclick) args.onclick();
+		if (args.tooltip) {
+			this.warningsTooltip = tippy(item, {
+				appendTo: 'parent',
+				content: args.tooltip,
+				placement: 'bottom',
+				inlinePositioning: true,
+				plugins: [inlinePositioning],
 			});
 		}
 
-		let cfg = {};
-		if (args.tooltip) {
-			cfg = {
-				title: args.tooltip,
-				html: true,
-				placement: 'bottom',
-			};
-			link.setAttribute('data-bs-title', args.tooltip);
-		}
-		new Tooltip(link, cfg);
-		args.parent.appendChild(item);
-
-		return item as HTMLElement;
+		return item;
 	}
 
-	private addWarningsLink(): HTMLElement {
+	private addWarningsLink() {
 		return this.addWarningLink({
 			parent: this.warningElem,
 			icon: 'fas fa-exclamation-triangle fa-3x',
-			tooltip: "<ul class='text-start ps-3 mb-0'></ul>",
+			tooltip: TOOLTIP_HTML_BASE,
 			classes: 'warning link-warning',
-		}).children[0] as HTMLElement;
+		}) as HTMLElement;
 	}
 
 	addWarning(warning: SimWarning) {
@@ -102,27 +100,14 @@ export class ResultsViewer extends Component {
 		const activeWarnings = this.warnings
 			.map(warning => warning.getContent())
 			.flat()
-			.filter(content => content != '');
-		const tooltipFragment = document.createElement('fragment');
-		tooltipFragment.innerHTML = this.warningsLink.getAttribute('data-bs-title') as string;
-		const list = tooltipFragment.children[0] as HTMLElement;
-		list.innerHTML = '';
-		if (activeWarnings.length == 0) {
-			this.warningsLink.parentElement?.classList?.add('hide');
-		} else {
-			this.warningsLink.parentElement?.classList?.remove('hide');
-			activeWarnings.forEach(warning => {
-				const listItem = document.createElement('li');
-				listItem.innerHTML = warning;
-				list.appendChild(listItem);
-			});
-		}
-		this.warningsLink.setAttribute('data-bs-title', list.outerHTML);
-		new Tooltip(this.warningsLink, {
-			title: list.outerHTML,
-			html: true,
-			placement: 'bottom',
-		});
+			.filter(content => content !== '');
+
+		const list = ((this.warningsTooltip?.props.content as Element)?.cloneNode(true) || <></>) as HTMLElement;
+		if (list) list.innerHTML = '';
+		list.appendChild(<>{activeWarnings?.map(warning => <li>{warning}</li>)}</>);
+
+		this.warningsLink.parentElement?.classList?.[activeWarnings.length ? 'remove' : 'add']('hide');
+		this.warningsTooltip?.setContent(list);
 	}
 
 	hideAll() {
@@ -135,8 +120,13 @@ export class ResultsViewer extends Component {
 		this.pendingElem.style.display = 'block';
 	}
 
-	setContent(innerHTML: string) {
-		this.contentElem.innerHTML = innerHTML;
+	setContent(html: Element | HTMLElement | string) {
+		if (typeof html === 'string') {
+			this.contentElem.innerHTML = html;
+		} else {
+			this.contentElem.innerHTML = '';
+			this.contentElem.appendChild(html);
+		}
 		this.contentElem.style.display = 'block';
 		this.pendingElem.style.display = 'none';
 	}

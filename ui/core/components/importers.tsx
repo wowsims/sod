@@ -1,4 +1,5 @@
-import pako from 'pako';
+import { default as pako } from 'pako';
+import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
@@ -11,6 +12,7 @@ import { talentSpellIdsToTalentString } from '../talents/factory';
 import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
 import { BaseModal } from './base_modal';
+import Toast from './toast';
 
 export abstract class Importer extends BaseModal {
 	protected readonly textElem: HTMLTextAreaElement;
@@ -19,49 +21,55 @@ export abstract class Importer extends BaseModal {
 	private readonly includeFile: boolean;
 
 	constructor(parent: HTMLElement, simUI: SimUI, title: string, includeFile: boolean) {
-		super(parent, 'importer', { title: title, footer: true });
+		super(parent, 'importer', { title: title, footer: true, disposeOnClose: false });
 		this.includeFile = includeFile;
 		const uploadInputId = 'upload-input-' + title.toLowerCase().replaceAll(' ', '-');
 
-		this.body.innerHTML = `
-			<div class="import-description"></div>
-			<textarea spellCheck="false" class="importer-textarea form-control"></textarea>
-		`;
-		this.footer!.innerHTML = `
-			${
-				this.includeFile
-					? `
-				<label for="${uploadInputId}" class="importer-button btn btn-primary upload-button me-2">
-					<i class="fas fa-file-arrow-up"></i>
-					Upload File
-				</label>
-				<input type="file" id="${uploadInputId}" class="importer-upload-input d-none" hidden>
-			`
-					: ''
-			}
-			<button class="importer-button btn btn-primary import-button">
-				<i class="fa fa-download"></i>
-				Import
-			</button>
-		`;
+		const descriptionElemRef = ref<HTMLDivElement>();
+		const textElemRef = ref<HTMLTextAreaElement>();
+		const importButtonRef = ref<HTMLButtonElement>();
+		const uploadInputRef = ref<HTMLInputElement>();
 
-		this.textElem = this.rootElem.getElementsByClassName('importer-textarea')[0] as HTMLTextAreaElement;
-		this.descriptionElem = this.rootElem.getElementsByClassName('import-description')[0] as HTMLElement;
+		this.body.replaceChildren(
+			<>
+				<div ref={descriptionElemRef} className="import-description"></div>
+				<textarea ref={textElemRef} className="importer-textarea form-control" attributes={{ spellcheck: false }}></textarea>
+			</>,
+		);
 
-		if (this.includeFile) {
-			const uploadInput = this.rootElem.getElementsByClassName('importer-upload-input')[0] as HTMLButtonElement;
-			uploadInput.addEventListener('change', async event => {
-				const data: string = await (event as any).target.files[0].text();
-				this.textElem.textContent = data;
+		this.footer!.appendChild(
+			<>
+				{this.includeFile && (
+					<>
+						<label htmlFor={uploadInputId} className="importer-button btn btn-primary upload-button me-2">
+							<i className="fas fa-file-arrow-up me-1"></i>
+							Upload File
+						</label>
+						<input ref={uploadInputRef} type="file" id={uploadInputId} className="importer-upload-input d-none" hidden />
+					</>
+				)}
+				<button ref={importButtonRef} className="importer-button btn btn-primary import-button">
+					<i className="fa fa-download me-1"></i>
+					Import
+				</button>
+			</>,
+		);
+
+		this.descriptionElem = descriptionElemRef.value!;
+		this.textElem = textElemRef.value!;
+
+		if (this.includeFile && uploadInputRef.value) {
+			uploadInputRef.value.addEventListener('change', async event => {
+				this.textElem.textContent = await (event as any).target.files[0].text();
 			});
 		}
 
-		this.importButton = this.rootElem.getElementsByClassName('import-button')[0] as HTMLButtonElement;
-		this.importButton.addEventListener('click', () => {
+		this.importButton = importButtonRef.value!;
+		this.importButton.addEventListener('click', async _event => {
 			try {
-				this.onImport(this.textElem.value || '');
-			} catch (error) {
-				alert('Import error: ' + error);
+				await this.onImport(this.textElem.value || '');
+			} catch (error: any) {
+				new Toast({ variant: 'error', body: `Import error: ${error?.message || error}` });
 			}
 		});
 	}

@@ -224,6 +224,7 @@ func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResp
 			Icon:          tooltip.GetIcon(),
 			Rank:          int32(tooltip.GetSpellRank()),
 			RequiresLevel: int32(tooltip.GetRequiresLevel()),
+			HasBuff:       tooltip.HasBuff(),
 		}
 	} else if id != 0 {
 		println(fmt.Sprintf("No spell tooltip with id %d", id))
