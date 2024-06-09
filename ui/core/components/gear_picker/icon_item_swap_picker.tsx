@@ -4,9 +4,9 @@ import { EquippedItem } from '../../proto_utils/equipped_item';
 import { SimUI } from '../../sim_ui';
 import { EventID } from '../../typed_event';
 import { Component } from '../component';
-import { getEmptySlotIconUrl } from '../gear_picker';
-import { GearData } from '../gear_picker/item_list';
-import { SelectorModal, SelectorModalTabs } from '../gear_picker/selector_modal';
+import { GearData } from './item_list';
+import SelectorModal, { SelectorModalTabs } from './selector_modal';
+import { getEmptySlotIconUrl } from './utils';
 
 export class IconItemSwapPicker extends Component {
 	private readonly iconAnchor: HTMLAnchorElement;

@@ -5,7 +5,7 @@ import { EquippedItem } from '../../../proto_utils/equipped_item';
 import { getEligibleItemSlots } from '../../../proto_utils/utils';
 import { TypedEvent } from '../../../typed_event';
 import { Component } from '../../component';
-import { ItemRenderer } from '../../gear_picker';
+import { ItemRenderer } from '../../gear_picker/gear_picker';
 import { GearData } from '../../gear_picker/item_list';
 import { SelectorModalTabs } from '../../gear_picker/selector_modal';
 import { BulkTab } from '../bulk_tab';

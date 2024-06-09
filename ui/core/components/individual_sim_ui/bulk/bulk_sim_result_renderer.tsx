@@ -5,7 +5,7 @@ import { IndividualSimUI } from '../../../individual_sim_ui';
 import { BulkComboResult, ItemSpecWithSlot } from '../../../proto/api';
 import { TypedEvent } from '../../../typed_event';
 import { Component } from '../../component';
-import { ItemRenderer } from '../../gear_picker';
+import { ItemRenderer } from '../../gear_picker/gear_picker';
 
 export default class BulkSimResultRenderer extends Component {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {

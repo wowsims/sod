@@ -13,8 +13,9 @@ import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
 import { mod, randomUUID, sanitizeId } from '../../utils';
 import { BaseModal } from '../base_modal';
-import { GearPicker, getEmptySlotIconUrl } from '../gear_picker';
+import GearPicker from './gear_picker';
 import ItemList, { GearData, ItemData, ItemListType } from './item_list';
+import { getEmptySlotIconUrl } from './utils';
 
 export enum SelectorModalTabs {
 	Enchants = 'Enchant',

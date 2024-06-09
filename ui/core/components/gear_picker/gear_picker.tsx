@@ -1,44 +1,22 @@
 import { ref } from 'tsx-vanilla';
 
-import { setItemQualityCssClass } from '../css_utils';
-import { Player } from '../player';
-import { ItemSlot } from '../proto/common';
-import { UIRune } from '../proto/ui.js';
-import { ActionId } from '../proto_utils/action_id';
-import { getEnchantDescription } from '../proto_utils/enchants';
-import { EquippedItem } from '../proto_utils/equipped_item';
-import { slotNames } from '../proto_utils/names.js';
-import { itemTypeToSlotsMap } from '../proto_utils/utils.js';
-import { SimUI } from '../sim_ui';
-import { EventID } from '../typed_event';
-import { Component } from './component';
-import { GearData } from './gear_picker/item_list';
-import SelectorModal, { SelectorModalTabs } from './gear_picker/selector_modal';
+import { setItemQualityCssClass } from '../../css_utils';
+import { Player } from '../../player';
+import { ItemSlot } from '../../proto/common';
+import { UIRune } from '../../proto/ui.js';
+import { ActionId } from '../../proto_utils/action_id';
+import { getEnchantDescription } from '../../proto_utils/enchants';
+import { EquippedItem } from '../../proto_utils/equipped_item';
+import { slotNames } from '../../proto_utils/names.js';
+import { itemTypeToSlotsMap } from '../../proto_utils/utils.js';
+import { SimUI } from '../../sim_ui';
+import { EventID } from '../../typed_event';
+import { Component } from '../component';
+import { GearData } from './item_list';
+import SelectorModal, { SelectorModalTabs } from './selector_modal';
+import { getEmptySlotIconUrl } from './utils';
 
-const emptySlotIcons: Record<ItemSlot, string> = {
-	[ItemSlot.ItemSlotHead]: '/sod/assets/item_slots/head.jpg',
-	[ItemSlot.ItemSlotNeck]: '/sod/assets/item_slots/neck.jpg',
-	[ItemSlot.ItemSlotShoulder]: '/sod/assets/item_slots/shoulders.jpg',
-	[ItemSlot.ItemSlotBack]: '/sod/assets/item_slots/shirt.jpg',
-	[ItemSlot.ItemSlotChest]: '/sod/assets/item_slots/chest.jpg',
-	[ItemSlot.ItemSlotWrist]: '/sod/assets/item_slots/wrists.jpg',
-	[ItemSlot.ItemSlotHands]: '/sod/assets/item_slots/hands.jpg',
-	[ItemSlot.ItemSlotWaist]: '/sod/assets/item_slots/waist.jpg',
-	[ItemSlot.ItemSlotLegs]: '/sod/assets/item_slots/legs.jpg',
-	[ItemSlot.ItemSlotFeet]: '/sod/assets/item_slots/feet.jpg',
-	[ItemSlot.ItemSlotFinger1]: '/sod/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotFinger2]: '/sod/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotTrinket1]: '/sod/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotTrinket2]: '/sod/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotMainHand]: '/sod/assets/item_slots/mainhand.jpg',
-	[ItemSlot.ItemSlotOffHand]: '/sod/assets/item_slots/offhand.jpg',
-	[ItemSlot.ItemSlotRanged]: '/sod/assets/item_slots/ranged.jpg',
-};
-export function getEmptySlotIconUrl(slot: ItemSlot): string {
-	return emptySlotIcons[slot];
-}
-
-export class GearPicker extends Component {
+export default class GearPicker extends Component {
 	// ItemSlot is used as the index
 	readonly itemPickers: Array<ItemPicker>;
 	readonly selectorModal: SelectorModal;
