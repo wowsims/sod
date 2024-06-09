@@ -189,7 +189,14 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 			//	},
 			//})
 		case 2: // Dropped by
-			// Do nothing, we'll get this from AtlasLoot.
+			sources = append(sources, &proto.UIItemSource{
+				Source: &proto.UIItemSource_Drop{
+					Drop: &proto.DropSource{
+						NpcId:  details.EntityID,
+						ZoneId: details.ZoneID,
+					},
+				},
+			})
 		case 3: // Sold by zone vendor? barely used
 		case 4: // Quest
 			if details.EntityID != 0 {
