@@ -53,7 +53,7 @@ enum ItemListSortBy {
 	ILVL,
 }
 
-export class ItemList<T extends ItemListType> {
+export default class ItemList<T extends ItemListType> {
 	public id: string;
 	public label: string;
 

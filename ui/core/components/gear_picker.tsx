@@ -13,7 +13,7 @@ import { SimUI } from '../sim_ui';
 import { EventID } from '../typed_event';
 import { Component } from './component';
 import { GearData } from './gear_picker/item_list';
-import { SelectorModal, SelectorModalTabs } from './gear_picker/selector_modal';
+import SelectorModal, { SelectorModalTabs } from './gear_picker/selector_modal';
 
 const emptySlotIcons: Record<ItemSlot, string> = {
 	[ItemSlot.ItemSlotHead]: '/sod/assets/item_slots/head.jpg',

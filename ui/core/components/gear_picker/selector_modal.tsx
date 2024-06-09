@@ -14,7 +14,7 @@ import { EventID, TypedEvent } from '../../typed_event';
 import { mod, randomUUID, sanitizeId } from '../../utils';
 import { BaseModal } from '../base_modal';
 import { GearPicker, getEmptySlotIconUrl } from '../gear_picker';
-import { GearData, ItemData, ItemList, ItemListType } from './item_list';
+import ItemList, { GearData, ItemData, ItemListType } from './item_list';
 
 export enum SelectorModalTabs {
 	Enchants = 'Enchant',
@@ -40,7 +40,7 @@ type SelectorModalOptions = {
 	disabledTabs?: SelectorModalTabs[];
 };
 
-export class SelectorModal extends BaseModal {
+export default class SelectorModal extends BaseModal {
 	private readonly simUI: SimUI;
 	private player: Player<any>;
 	private gearPicker: GearPicker | undefined;
