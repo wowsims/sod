@@ -21,6 +21,7 @@ import { SelectorModal, SelectorModalTabs } from '../gear_picker/selector_modal'
 import { Importer } from '../importers';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
+import Toast from '../toast';
 
 export class BulkGearJsonImporter extends Importer {
 	private readonly simUI: IndividualSimUI<any>;
@@ -151,10 +152,9 @@ export class BulkItemPicker extends Component {
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
 			const removeItemButton = this.bulkUI.selectorModal.header?.querySelector('.btn-danger');
 			const removeItem = () => {
-				this.bulkUI.removeItem(this.item.asSpec());
+				this.bulkUI.removeItemByIndex(this.index);
 				this.bulkUI.selectorModal.close();
 			};
-			this.bulkUI.selectorModal.addOnHideCallback(() => removeItemButton?.removeEventListener('click', removeItem));
 
 			const openEnchantSelector = (event: Event) => {
 				event.preventDefault();
@@ -167,6 +167,8 @@ export class BulkItemPicker extends Component {
 
 				removeItemButton?.addEventListener('click', removeItem);
 			};
+
+			this.bulkUI.selectorModal.addOnHideCallback(() => removeItemButton?.removeEventListener('click', removeItem));
 
 			this.itemElem.iconElem.addEventListener('click', openEnchantSelector);
 			this.itemElem.nameElem.addEventListener('click', openEnchantSelector);
@@ -345,6 +347,18 @@ export class BulkTab extends SimTab {
 		this.items.splice(indexToRemove, 1);
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
+	removeItemByIndex(index: number) {
+		if (this.items.length < index) {
+			new Toast({
+				variant: 'error',
+				body: 'Failed to remove item, please report this issue.',
+			});
+			return;
+		}
+		this.items.splice(index, 1);
+		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
+
 	clearItems() {
 		this.items = new Array<ItemSpec>();
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
@@ -522,9 +536,7 @@ export class BulkTab extends SimTab {
 		);
 		importFavsButton.addEventListener('click', () => {
 			const filters = this.simUI.player.sim.getFilters();
-			const items = filters.favoriteItems.map(itemID => {
-				return ItemSpec.create({ id: itemID });
-			});
+			const items = filters.favoriteItems.map(itemID => ItemSpec.create({ id: itemID }));
 			this.addItems(items);
 		});
 
@@ -590,9 +602,7 @@ export class BulkTab extends SimTab {
 						</li>,
 					);
 					setItemQualityCssClass(itemNameRef.value!, item.quality);
-					itemRef.value?.addEventListener('click', () => {
-						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
-					});
+					itemRef.value?.addEventListener('click', () => this.addItem(ItemSpec.create({ id: item.id })));
 				}
 			});
 			searchResultsRef.value?.replaceChildren(items);
