@@ -149,6 +149,12 @@ export class BulkItemPicker extends Component {
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
+			const removeItemButton = this.bulkUI.selectorModal.header?.querySelector('.btn-danger');
+			const removeItem = () => {
+				this.bulkUI.removeItem(this.item.asSpec());
+				this.bulkUI.selectorModal.close();
+			};
+			this.bulkUI.selectorModal.addOnHideCallback(() => removeItemButton?.removeEventListener('click', removeItem));
 
 			const openEnchantSelector = (event: Event) => {
 				event.preventDefault();
@@ -159,10 +165,7 @@ export class BulkItemPicker extends Component {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
 				}
 
-				this.bulkUI.selectorModal.header?.querySelector('.btn-danger')?.addEventListener('click', () => {
-					this.bulkUI.removeItem(this.item.asSpec());
-					this.bulkUI.selectorModal.close();
-				});
+				removeItemButton?.addEventListener('click', removeItem);
 			};
 
 			this.itemElem.iconElem.addEventListener('click', openEnchantSelector);
