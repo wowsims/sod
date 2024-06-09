@@ -32,7 +32,9 @@ export default class BulkItemPicker extends Component {
 				<i className="fas fa-times" />
 			</button>,
 		);
-		removeBtn.value!.addEventListener('click', () => this.bulkUI.removeItemByIndex(this.index));
+		const removeItem = () => this.bulkUI.removeItemByIndex(this.index);
+		removeBtn.value!.addEventListener('click', removeItem);
+		this.addOnDisposeCallback(() => removeBtn.value!.removeEventListener('click', removeItem));
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.setItem(item);
