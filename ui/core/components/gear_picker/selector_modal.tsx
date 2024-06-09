@@ -38,6 +38,8 @@ type SelectorModalOptions = {
 	id: string;
 	// Prevents rendering of certail tabs
 	disabledTabs?: SelectorModalTabs[];
+	// If defined will render a remove button in the header
+	removeButtonText?: string;
 };
 
 export class SelectorModal extends BaseModal {
@@ -50,6 +52,7 @@ export class SelectorModal extends BaseModal {
 	private readonly titleElem: HTMLElement;
 	private readonly tabsElem: HTMLElement;
 	private readonly contentElem: HTMLElement;
+	public readonly removeButton?: HTMLButtonElement;
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
@@ -74,6 +77,20 @@ export class SelectorModal extends BaseModal {
 				<ul className="nav nav-tabs selector-modal-tabs"></ul>
 			</div>,
 		);
+
+		if (this.options.removeButtonText) {
+			const closeX = this.header?.querySelector('.btn-close');
+			if (!!closeX) {
+				const removeButtonRef = ref<HTMLButtonElement>();
+				this.header?.insertBefore(
+					<button ref={removeButtonRef} className="btn btn-danger">
+						{this.options.removeButtonText}
+					</button>,
+					closeX,
+				);
+				if (removeButtonRef.value) this.removeButton = removeButtonRef.value;
+			}
+		}
 
 		this.body.appendChild(<div className="tab-content selector-modal-tab-content" />);
 
@@ -484,8 +501,8 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private removeTabs(labelSubstring: string) {
-		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(tab =>
-			tab.dataset?.label?.includes(labelSubstring),
+		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(
+			tab => tab.dataset?.label?.includes(labelSubstring),
 		);
 		const contentElems = tabElems.map(tabElem => document.querySelector(tabElem.dataset.bsTarget!)).filter(tabElem => Boolean(tabElem));
 
