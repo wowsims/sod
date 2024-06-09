@@ -3,7 +3,6 @@
 
 // Import Individual Sim UI Styles
 @import './shared';
-@import './bulk';
 
 // Import component styles
 @import '../components/boolean_picker';
@@ -12,7 +11,6 @@
 @import '../components/encounter_picker';
 @import '../components/exporters';
 @import '../components/enum_picker';
-@import '../components/bulk';
 @import '../components/gear_picker';
 @import '../components/icon_enum_picker';
 @import '../components/icon_picker';
