@@ -1,0 +1,36 @@
+.selector-modal {
+	.selector-modal-title {
+		margin-bottom: 0;
+	}
+
+	.modal-header {
+		padding-bottom: 0;
+
+		.selector-modal-tabs {
+			border-bottom: 0;
+		}
+	}
+}
+
+.selector-modal-tab-content {
+	.selector-modal-tab-pane {
+		padding: 0;
+
+		.selector-modal-filters {
+			margin-bottom: var(--bs-modal-padding);
+			display: flex;
+			align-items: center;
+
+			& > *:not(:last-child) {
+				margin-right: var(--spacer-2);
+			}
+
+			input,
+			select {
+				padding-top: var(--btn-padding-y);
+				padding-bottom: var(--btn-padding-y);
+				font-size: var(--btn-font-size);
+			}
+		}
+	}
+}

@@ -9,9 +9,11 @@
 //////////////////////////
 
 // Custom theme color mapping
+$expansion: #f94119;
 $brand: #e0a335;
 $success: #1eff00;
 
+$death-knight: rgb(194, 46, 70);
 $druid: rgb(255, 125, 10);
 $hunter: rgb(171, 212, 115);
 $mage: rgb(105, 204, 240);
@@ -23,23 +25,35 @@ $warlock: rgb(148, 130, 201);
 $warrior: rgb(199, 156, 110);
 
 $class-colors: (
-	'druid': $druid,
-	'hunter': $hunter,
-	'mage': $mage,
-	'paladin': $paladin,
-	'priest': $priest,
-	'raid': $brand,
-	'rogue': $rogue,
-	'shaman': $shaman,
-	'warlock': $warlock,
-	'warrior': $warrior,
+	death-knight: $death-knight,
+	druid: $druid,
+	hunter: $hunter,
+	mage: $mage,
+	paladin: $paladin,
+	priest: $priest,
+	raid: $brand,
+	rogue: $rogue,
+	shaman: $shaman,
+	warlock: $warlock,
+	warrior: $warrior,
 );
+$theme-colors: map-merge($theme-colors, $class-colors);
 
 $custom-colors: (
-	'brand': $brand,
-	'primary': $primary,
-	'success': $success,
+	expansion: $expansion,
+	brand: $brand,
+	primary: $primary,
+	success: $success,
+	off-white: #f0f0f0,
 );
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+$custom-alpha: (
+	black-alpha-30: rgba($black, 0.3),
+	black-alpha-50: rgba($black, 0.5),
+	gray-800-alpha-50: rgba($gray-800, 0.5),
+);
+$theme-colors: map-merge($theme-colors, $custom-alpha);
 
 $custom-breakpoints: (
 	xxxl: 1600px,
@@ -276,7 +290,7 @@ $form-check-input-focus-border: $input-focus-border-color;
 $form-check-input-focus-box-shadow: 0 0 0.25rem $primary;
 $form-check-input-checked-bg-color: $primary;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{color-contrast($primary)}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
-$form-check-input-checked-border-color: $primary;
+$form-check-input-checked-border-color: var(--bs-primary);
 $form-check-padding-start: $form-check-input-width;
 
 $form-label-margin-bottom: 0.25rem;

@@ -1,0 +1,183 @@
+:root {
+	--ilvl-cell-width: 3rem;
+	--source-cell-width: 16rem;
+	--ep-cell-width: 4rem;
+	--icon-cell-width: 2rem;
+}
+
+.selector-modal-search {
+	max-width: 12rem;
+}
+
+.selector-modal-phase-selector {
+	min-width: 7rem;
+
+	.phase-selector {
+		margin-bottom: 0;
+	}
+}
+
+.selector-modal-remove-button {
+	margin-left: auto;
+}
+
+.selector-modal-list-labels {
+	display: flex;
+	padding-right: var(--spacer-2);
+	margin-right: var(--spacer-3);
+	margin-bottom: var(--spacer-2);
+	font-size: 1.125rem;
+	justify-content: space-between; // Ensures labels are evenly spaced
+	gap: var(--spacer-3);
+
+	@include media-breakpoint-down(xl) {
+		margin-right: 0;
+	}
+
+	.item-label {
+		flex: 1;
+		margin-right: var(--spacer-2);
+	}
+	.ilvl-label {
+		width: var(--ilvl-cell-width);
+	}
+	.source-label {
+		width: var(--source-cell-width);
+	}
+	.ep-label {
+		width: var(--ep-cell-width);
+		display: flex;
+		align-items: center;
+		float: right;
+	}
+
+	.favorite-label,
+	.compare-label {
+		width: var(--icon-cell-width);
+	}
+}
+
+.selector-modal-list {
+	width: 100%;
+	height: 65vh;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 0;
+	margin-bottom: 0;
+
+	&.hide-ep {
+		.selector-modal-list-item-ep {
+			display: none;
+		}
+	}
+}
+
+.selector-modal-list-item {
+	padding: var(--spacer-2);
+	display: flex;
+	align-items: center;
+	background-color: var(--bs-gray-900);
+	gap: var(--spacer-3);
+
+	&:nth-child(2n) {
+		background: var(--bs-table-row-even-bg);
+	}
+
+	&:nth-child(2n + 1) {
+		background: var(--bs-table-row-odd-bg);
+	}
+
+	&:hover {
+		background: var(--bs-gray-800);
+	}
+
+	&.active {
+		.selector-modal-list-item-icon {
+			outline: 2px solid var(--bs-success);
+		}
+	}
+	.selector-modal-list-item-link {
+		display: flex;
+		align-items: center;
+	}
+
+	.selector-modal-list-label-cell {
+		flex: 1;
+		display: flex;
+		align-items: center;
+	}
+
+	.selector-modal-list-item-icon {
+		@include wowhead-background-icon;
+		width: 3rem;
+		height: 3rem;
+		border: var(--border-default);
+	}
+
+	.selector-modal-list-item-name {
+		font-size: 1.125rem;
+		margin-left: var(--spacer-2);
+		letter-spacing: normal;
+		font-weight: normal;
+		cursor: pointer;
+	}
+}
+
+.selector-modal-list-item-ilvl-container {
+	width: var(--ilvl-cell-width);
+}
+
+.selector-modal-list-item-source-container {
+	width: var(--source-cell-width);
+}
+
+.selector-modal-list-item-favorite,
+.selector-modal-list-item-compare {
+	width: var(--icon-cell-width);
+}
+
+.selector-modal-list-item-ep {
+	width: var(--ep-cell-width);
+	display: flex;
+	align-items: center;
+
+	& > span {
+		display: inline-block;
+		color: var(--bs-white);
+		text-align: right;
+	}
+
+	.selector-modal-list-item-ep-delta {
+		margin-left: var(--spacer-1);
+		font-size: 0.8rem;
+	}
+}
+
+// All of these icon widths are the original image sizes. They're too small that scaling them up looks horrible.
+.item-source-icon-drop {
+	// Original image is 12 x 16 but for nice alignment add 2px padding for a total width of 16px
+	width: 16px;
+	height: 16px;
+	padding: 0 2px;
+}
+
+.item-source-icon-vendor {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-profession {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-quest {
+	width: 16px;
+	height: 16px;
+}
+
+.item-source-icon-alliance,
+.item-source-icon-horde {
+	width: 15px;
+	height: 15px;
+}
