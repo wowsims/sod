@@ -1,15 +1,15 @@
-import { Player } from '../player.js';
-import { ArmorType, ItemSlot } from '../proto/common.js';
-import { SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
-import { armorTypeNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
-import { canDualWield, classToEligibleRangedWeaponTypes, classToEligibleWeaponTypes, classToMaxArmorType } from '../proto_utils/utils.js';
-import { Sim } from '../sim.js';
-import { EventID } from '../typed_event.js';
-import { getEnumValues } from '../utils.js';
-import { BaseModal } from './base_modal.js';
-import { BooleanPicker } from './boolean_picker.js';
-import { EnumPicker } from './enum_picker.js';
-import { NumberPicker } from './number_picker.js';
+import { Player } from '../../player.js';
+import { ArmorType, ItemSlot } from '../../proto/common.js';
+import { SourceFilterOption, UIItem_FactionRestriction } from '../../proto/ui.js';
+import { armorTypeNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../../proto_utils/names.js';
+import { canDualWield, classToEligibleRangedWeaponTypes, classToEligibleWeaponTypes, classToMaxArmorType } from '../../proto_utils/utils.js';
+import { Sim } from '../../sim.js';
+import { EventID } from '../../typed_event.js';
+import { getEnumValues } from '../../utils.js';
+import { BaseModal } from '../base_modal.jsx';
+import { BooleanPicker } from '../boolean_picker.js';
+import { EnumPicker } from '../enum_picker.js';
+import { NumberPicker } from '../number_picker.js';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',
@@ -21,11 +21,42 @@ export class FiltersMenu extends BaseModal {
 	constructor(rootElem: HTMLElement, player: Player<any>, slot: ItemSlot) {
 		super(rootElem, 'filters-menu', { size: 'md', title: 'Filters' });
 
-		let section = this.newSection('Factions');
+		const generalSection = this.newSection('General');
 
-		new EnumPicker(section, player.sim, {
+		const ilvlFiltersContainer = (<div className="ilvl-filters" />) as HTMLElement;
+		generalSection.appendChild(ilvlFiltersContainer);
+
+		new NumberPicker(ilvlFiltersContainer, player.sim, {
+			id: 'filters-min-ilvl',
+			label: 'Min ILvl',
+			showZeroes: false,
+			changedEvent: sim => sim.filtersChangeEmitter,
+			getValue: (sim: Sim) => sim.getFilters().minIlvl,
+			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+				const newFilters = sim.getFilters();
+				newFilters.minIlvl = newValue;
+				sim.setFilters(eventID, newFilters);
+			},
+		});
+
+		ilvlFiltersContainer.appendChild(<span className="ilvl-filters-separator">-</span>);
+
+		new NumberPicker(ilvlFiltersContainer, player.sim, {
+			id: 'filters-max-ilvl',
+			label: 'Max ILvl',
+			showZeroes: false,
+			changedEvent: sim => sim.filtersChangeEmitter,
+			getValue: (sim: Sim) => sim.getFilters().maxIlvl,
+			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+				const newFilters = sim.getFilters();
+				newFilters.maxIlvl = newValue;
+				sim.setFilters(eventID, newFilters);
+			},
+		});
+
+		new EnumPicker(generalSection, player.sim, {
 			id: 'filters-faction-restriction',
-			extraCssClasses: ['w-50'],
+			label: 'Faction Restrictions',
 			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
 					name: factionRestrictionsToLabels[restriction],
@@ -41,11 +72,11 @@ export class FiltersMenu extends BaseModal {
 			},
 		});
 
-		section = this.newSection('Source');
-		section.classList.add('filters-menu-section-bool-list');
+		const sourceSection = this.newSection('Source');
+		sourceSection.classList.add('filters-menu-section-bool-list');
 		const sources = Sim.ALL_SOURCES.filter(s => s != SourceFilterOption.SourceUnknown);
 		sources.forEach(source => {
-			new BooleanPicker<Sim>(section, player.sim, {
+			new BooleanPicker<Sim>(sourceSection, player.sim, {
 				id: `filters-source-${source}`,
 				label: sourceNames.get(source),
 				inline: true,

@@ -18,10 +18,10 @@ import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
 import { formatDeltaTextElem } from '../../utils';
-import { FiltersMenu } from '../filters_menu';
 import { makeShow1hWeaponsSelector, makeShow2hWeaponsSelector, makeShowEPValuesSelector } from '../other_inputs';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
+import { FiltersMenu } from './filters_menu';
 import { SelectorModalTabs } from './selector_modal';
 
 export interface ItemData<T> {
