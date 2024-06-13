@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 10.76519
   final_stats: 0
   final_stats: 10
-  final_stats: 290.8
+  final_stats: 224.8
   final_stats: 1
   final_stats: 6.84625
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.0052
   final_stats: 0
   final_stats: 0
-  final_stats: 529.6
+  final_stats: 427.6
   final_stats: 3
   final_stats: 7.93359
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 23.44864
   final_stats: 0
   final_stats: 0
-  final_stats: 750.096
+  final_stats: 612.096
   final_stats: 5
   final_stats: 24.24427
   final_stats: 0
@@ -200,7 +200,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.08497
+  weights: -0.08319
   weights: 0
   weights: 0.7766
   weights: 0
@@ -210,8 +210,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.85657
-  weights: 3.23611
+  weights: 5.86617
+  weights: 3.23572
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestBalance-Lvl25-Average-Default"
  value: {
-  dps: 174.56957
-  tps: 176.79281
+  dps: 174.51394
+  tps: 176.73718
  }
 }
 dps_results: {
@@ -386,15 +386,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 173.2193
-  tps: 175.47885
+  dps: 173.16618
+  tps: 175.42573
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
-  dps: 562.3414
-  tps: 572.91011
+  dps: 559.50139
+  tps: 570.0701
  }
 }
 dps_results: {
@@ -484,15 +484,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 557.18909
-  tps: 567.70461
+  dps: 554.54609
+  tps: 565.06161
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
-  dps: 1038.98328
-  tps: 1052.64591
+  dps: 1038.96353
+  tps: 1052.62616
  }
 }
 dps_results: {
@@ -582,7 +582,7 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1032.05011
-  tps: 1045.77098
+  dps: 1032.02506
+  tps: 1045.74593
  }
 }
