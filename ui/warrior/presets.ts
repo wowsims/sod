@@ -129,19 +129,18 @@ export const TalentsPhase2Arms = {
 export const TalentsPhase3Arms = {
 	name: 'P3 Arms',
 	data: SavedTalents.create({
-		talentsString: '303050213520105001-0505'
+		talentsString: '303050213520105001-0505',
 	}),
-}
+};
 
 export const TalentsPhase3Fury = {
 	name: 'P3 Fury',
 	data: SavedTalents.create({
-		talentsString: '303040003-0505000540501003'
+		talentsString: '303040003-0505000540501003',
 	}),
-}
+};
 // Glad talents are identical to fury at the moment
 export const TalentsPhase3Glad = TalentsPhase3Fury;
-
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
@@ -182,7 +181,7 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	aspectOfTheLion: true,
+	// aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,

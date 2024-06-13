@@ -11,7 +11,7 @@ import (
 // https://www.wowhead.com/classic/spell=425204/void-plague
 // https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044
 func (priest *Priest) registerVoidPlagueSpell() {
-	if !priest.HasRune(proto.PriestRune_RuneChestVoidPlague) {
+	if !priest.HasRune(proto.PriestRune_RuneFeetVoidPlague) {
 		return
 	}
 
@@ -27,7 +27,7 @@ func (priest *Priest) registerVoidPlagueSpell() {
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	priest.VoidPlague = priest.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneChestVoidPlague)},
+		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneFeetVoidPlague)},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,

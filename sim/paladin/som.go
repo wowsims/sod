@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"time"
 )
 
 // Seal of Martyrdom is a spell consisting of:
@@ -13,7 +14,7 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
-	if !paladin.hasRune(proto.PaladinRune_RuneChestSealOfMartyrdom) {
+	if !paladin.hasRune(proto.PaladinRune_RuneUtilitySealOfMartyrdom) {
 		return
 	}
 
@@ -57,7 +58,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 
 	aura := paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Martyrdom" + paladin.Label,
-		ActionID: core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestSealOfMartyrdom)},
+		ActionID: core.ActionID{SpellID: int32(proto.PaladinRune_RuneUtilitySealOfMartyrdom)},
 		Duration: time.Second * 30,
 
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

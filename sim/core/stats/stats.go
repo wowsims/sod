@@ -439,6 +439,7 @@ type PseudoStats struct {
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusDamageTaken      [SchoolLen]float64 // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusHitChance        [SchoolLen]float64 // Spell school-specific hit bonuses such as ring runes
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects

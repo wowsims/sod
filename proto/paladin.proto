@@ -58,35 +58,45 @@ message PaladinTalents {
 enum PaladinRune {
 	PaladinRuneNone = 0;
 
-	RuneHeadFanaticism = 429142;
-	RuneHeadWrath = 429139;
+	RuneHeadFanaticism				= 429142;
+	RuneHeadImprovedSanctuary		= 429247;
+	RuneHeadWrath					= 429139;
 
-	RuneHandsCrusaderStrike	= 407676;
-	RuneHandsHandOfReckoning = 407631;
-	RuneHandsBeaconOfLight = 407613;
+	RuneCloakShieldOfRighteousness	= 440658;
+	RuneCloakVindicator				= 440666;
+	RuneCloakRighteousVengeance		= 440672;
 
-	RuneWristHammerOfTheRighteous = 407632;
-	RuneWristImprovedHammerOfWrath = 429152;
-	RuneWristPurifyingPower = 429144;
-	RuneWristLightsGrace = 428909;
+	RuneChestDivineStorm			= 407778;
+	RuneChestAegis					= 425619;
+	RuneChestHallowedGround			= 458287;
+	RuneChestDivineLight			= 458856;
 
-	RuneChestSealOfMartyrdom = 407798;
-	RuneChestHornOfLordaeron = 425600;
-	RuneChestDivineStorm = 407778;
+	RuneWristHammerOfTheRighteous	= 407632;
+	RuneWristLightsGrace			= 428909;
+	RuneWristPurifyingPower			= 429144;
+	RuneWristImprovedHammerOfWrath	= 429152;
 
-	RuneWaistEnlightenedJudgements = 426173;
-	RuneWaistInfusionOfLight = 426065;
-	RuneWaistSheathOfLight = 426158;
+	RuneHandsBeaconOfLight			= 407613;
+	RuneHandsHandOfReckoning		= 407631;
+	RuneHandsCrusaderStrike			= 407676;
 
-	RuneLegsAvengersShield = 407669;
-	RuneLegsInspirationExemplar = 407880;
-	RuneLegsRebuke = 425609;
-	RuneLegsDivineSacrifice = 407804;
-	RuneLegsExorcist = 415076;
+	RuneWaistInfusionOfLight		= 426065;
+	RuneWaistSheathOfLight			= 426158;
+	RuneWaistMalleableProtection	= 426173;
 
-	RuneFeetGuardedByTheLight = 415059;
-	RuneFeetSacredShield = 412019;
-	RuneFeetTheArtOfWar = 426157;
+	RuneLEgsAuraMastery				= 407624;
+	RuneLegsAvengersShield			= 407669;
+	RuneLegsDivineSacrifice			= 407804;
+	RuneLegsInspirationExemplar 	= 407880;
+	RuneLegsRebuke					= 425609;
+
+	RuneFeetSacredShield			= 412019;
+	RuneFeetGuardedByTheLight		= 415059;
+	RuneFeetTheArtOfWar				= 426157;
+
+	RuneUtilitySealOfMartyrdom		= 407798;
+	RuneUtilityExorcist				= 415076;
+	RuneUtilityAvengingWrath		= 407788;
 }
 
 enum Blessings {

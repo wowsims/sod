@@ -187,12 +187,12 @@ func (db *WowDatabase) AddRune(id int32, tooltip WowheadItemResponse) {
 		return
 	}
 	db.Runes[id] = &proto.UIRune{
-		Id:            id,
-		Name:          tooltip.GetName(),
-		Icon:          tooltip.GetIcon(),
-		Class:         tooltip.GetRequiredClass(),
-		Type:          tooltip.GetRequiredItemSlot(),
-		RequiresLevel: int32(tooltip.GetRequiresLevel()),
+		Id:             id,
+		Name:           tooltip.GetName(),
+		Icon:           tooltip.GetIcon(),
+		ClassAllowlist: []proto.Class{tooltip.GetRequiredClass()},
+		Type:           tooltip.GetRequiredItemSlot(),
+		RequiresLevel:  int32(tooltip.GetRequiresLevel()),
 	}
 }
 

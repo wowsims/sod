@@ -100,10 +100,12 @@ export class Database {
 				if (!this.runesBySlotByClass[slot]) {
 					this.runesBySlotByClass[slot] = {};
 				}
-				if (!this.runesBySlotByClass[slot]![rune.class]) {
-					this.runesBySlotByClass[slot]![rune.class as Class] = [];
-				}
-				this.runesBySlotByClass[slot]![rune.class as Class]!.push(rune);
+				rune.classAllowlist.forEach(klass => {
+					if (!this.runesBySlotByClass[slot]![klass]) {
+						this.runesBySlotByClass[slot]![klass] = [];
+					}
+					this.runesBySlotByClass[slot]![klass]!.push(rune);
+				});
 			});
 		});
 

@@ -35,7 +35,6 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Legs
 	shaman.applyAncestralGuidance()
-	shaman.applyShamanisticRage()
 	shaman.applyWayOfEarth()
 
 	// Feet

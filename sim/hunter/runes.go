@@ -10,14 +10,15 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-		statMultiply := 1.1
-		hunter.MultiplyStat(stats.Strength, statMultiply)
-		hunter.MultiplyStat(stats.Stamina, statMultiply)
-		hunter.MultiplyStat(stats.Agility, statMultiply)
-		hunter.MultiplyStat(stats.Intellect, statMultiply)
-		hunter.MultiplyStat(stats.Spirit, statMultiply)
-	}
+	// TODO: 2024-06-13 - Heart of the Lion replaced with Cobra Slayer
+	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
+	// 	statMultiply := 1.1
+	// 	hunter.MultiplyStat(stats.Strength, statMultiply)
+	// 	hunter.MultiplyStat(stats.Stamina, statMultiply)
+	// 	hunter.MultiplyStat(stats.Agility, statMultiply)
+	// 	hunter.MultiplyStat(stats.Intellect, statMultiply)
+	// 	hunter.MultiplyStat(stats.Spirit, statMultiply)
+	// }
 
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
@@ -47,41 +48,42 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
-	hunter.applyInvigoration()
+	// hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
 	hunter.applyRaptorFury()
 }
 
-func (hunter *Hunter) applyInvigoration() {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsInvigoration) || hunter.pet == nil {
-		return
-	}
+// TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
+// func (hunter *Hunter) applyInvigoration() {
+// 	if !hunter.HasRune(proto.HunterRune_RuneBootsInvigoration) || hunter.pet == nil {
+// 		return
+// 	}
 
-	procSpellId := core.ActionID{SpellID: 437999}
-	metrics := hunter.NewManaMetrics(procSpellId)
-	procSpell := hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    procSpellId,
-		SpellSchool: core.SpellSchoolNature,
-		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
-			hunter.AddMana(sim, hunter.MaxMana()*0.05, metrics)
-		},
-	})
+// 	procSpellId := core.ActionID{SpellID: 437999}
+// 	metrics := hunter.NewManaMetrics(procSpellId)
+// 	procSpell := hunter.RegisterSpell(core.SpellConfig{
+// 		ActionID:    procSpellId,
+// 		SpellSchool: core.SpellSchoolNature,
+// 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
+// 			hunter.AddMana(sim, hunter.MaxMana()*0.05, metrics)
+// 		},
+// 	})
 
-	core.MakePermanent(hunter.pet.GetOrRegisterAura(core.Aura{
-		Label: "Invigoration",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-				return
-			}
+// 	core.MakePermanent(hunter.pet.GetOrRegisterAura(core.Aura{
+// 		Label: "Invigoration",
+// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+// 				return
+// 			}
 
-			if !result.DidCrit() {
-				return
-			}
+// 			if !result.DidCrit() {
+// 				return
+// 			}
 
-			procSpell.Cast(sim, result.Target)
-		},
-	}))
-}
+// 			procSpell.Cast(sim, result.Target)
+// 		},
+// 	}))
+// }
 
 func (hunter *Hunter) applyExposeWeakness() {
 	if !hunter.HasRune(proto.HunterRune_RuneBeltExposeWeakness) {

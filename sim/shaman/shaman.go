@@ -211,6 +211,9 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerWindfuryTotemSpell()
 	shaman.registerGraceOfAirTotemSpell()
 
+	// Other Abilities
+	shaman.registerShamanisticRageCD()
+
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()
 
