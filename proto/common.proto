@@ -978,3 +978,23 @@ message ItemSwap {
 message Duration {
 	double ms = 1;
 }
+
+enum RingRune {
+	RuneRingNone = 0;
+
+	RuneRingArcaneSpecialization		= 442893;
+	RuneRingAxeSpecialization			= 442876;
+	RuneRingDaggerSpecialization		= 442887;
+	RuneRingDefenseSpecialization		= 459312;
+	RuneRingFeralCombatSpecialization	= 453622;
+	RuneRingFireSpecialization			= 442894;
+	RuneRingFistWeaponSpecialization	= 442890;
+	RuneRingFrostSpecialization			= 442895;
+	RuneRingHolySpecialization			= 442898;
+	RuneRingMaceSpecialization			= 442881;
+	RuneRingNatureSpecialization		= 442896;
+	RuneRingPoleWeaponSpecialization	= 442892;
+	RuneRingRangedWeaponSpecialization	= 442891;
+	RuneRingShadowSpecialization		= 442897;
+	RuneRingSwordSpecialization			= 442813;
+}
