@@ -651,11 +651,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if individualBuffs.BlessingOfKings {
 		kingsAgiIntSpiAmount = 1.1
 		kingsStrStamAmount = 1.1
+	} else if raidBuffs.AspectOfTheLion {
+		kingsAgiIntSpiAmount = 1.1
+		kingsStrStamAmount = 1.1
 	}
-	// } else if raidBuffs.AspectOfTheLion {
-	// 	kingsAgiIntSpiAmount = 1.1
-	// 	kingsStrStamAmount = 1.1
-	// }
 	if kingsStrStamAmount > 0 {
 		character.MultiplyStat(stats.Strength, kingsStrStamAmount)
 		character.MultiplyStat(stats.Stamina, kingsStrStamAmount)

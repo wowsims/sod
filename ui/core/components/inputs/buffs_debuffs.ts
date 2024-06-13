@@ -48,10 +48,10 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'blessingOfKings',
 			showWhen: player => player.getFaction() == Faction.Alliance,
 		}),
-		// makeBooleanRaidBuffInput({
-		// 	actionId: () => ActionId.fromSpellId(409580),
-		// 	fieldName: 'aspectOfTheLion',
-		// }),
+		makeBooleanRaidBuffInput({
+			actionId: () => ActionId.fromSpellId(409580),
+			fieldName: 'aspectOfTheLion',
+		}),
 	],
 	'Stats %',
 );

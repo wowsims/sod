@@ -91,8 +91,9 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 	// TODO: 2024-06-13 - Heart of the Lion replaced with Cobra Slayer
 	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-	// 	raidBuffs.AspectOfTheLion = true
+	// raidBuffs.AspectOfTheLion = true
 	// }
+	raidBuffs.AspectOfTheLion = true
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }

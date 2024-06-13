@@ -139,6 +139,8 @@ enum HunterRune {
 	RuneBootsTrapLauncher 				= 409541;
 	RuneBootsDualWieldSpecialization 	= 409687;
 	RuneBootsWyvernStrike				= 458479;
+
+	RuneUtilityHeartOfTheLion 			= 409580;
 }
 
 message Hunter {
