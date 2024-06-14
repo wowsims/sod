@@ -262,6 +262,7 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 			aura.Unit.DisableDynamicStatDep(sim, statDep)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.DisableDynamicStatDep(sim, statDep)
 			aura.Unit.EnableDynamicStatDep(sim, statDep)
 		},
 	})
