@@ -13,10 +13,10 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 		ActionID: core.ActionID{SpellID: 5277},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Dodge, 15*core.DodgeRatingPerDodgeChance)
+			rogue.AddStatDynamic(sim, stats.Dodge, 50*core.DodgeRatingPerDodgeChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Dodge, -15*core.DodgeRatingPerDodgeChance)
+			rogue.AddStatDynamic(sim, stats.Dodge, -50*core.DodgeRatingPerDodgeChance)
 		},
 	})
 
