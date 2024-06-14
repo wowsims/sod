@@ -13,6 +13,7 @@ import (
 const (
 	// Ordered by ID
 	BlisteringRagehammer       = 220569
+	FistOfTheForsaken          = 220578
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
 	SerpentsStriker            = 220589
@@ -401,9 +402,30 @@ func init() {
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
 
+	itemhelpers.CreateWeaponProcSpell(FistOfTheForsaken, "Fist of the Forsaken", 7.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 446317}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: .50,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, 39, spell.OutcomeAlwaysHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
-			Label:    "Enrage",
+			Label:    "Enrage (Blistering Ragehammer)",
 			ActionID: core.ActionID{SpellID: 446327},
 			Duration: time.Second * 15,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -475,7 +497,7 @@ func init() {
 	core.NewItemEffect(BloodthirstCrossbow, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		healthMetrics := character.NewManaMetrics(core.ActionID{SpellID: 446725})
+		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 446725})
 
 		thirstForBlood := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         healthMetrics.ActionID,

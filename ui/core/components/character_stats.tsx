@@ -1,6 +1,5 @@
-import { Popover, Tooltip } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
 import { Class, PseudoStat, Spec, Stat } from '..//proto/common.js';
@@ -104,24 +103,30 @@ export class CharacterStats extends Component {
 		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
 
 		this.stats.forEach((stat, idx) => {
+			const bonusStatValue = bonusStats.getStat(stat);
+			let contextualClass: string;
+			if (bonusStatValue == 0) {
+				contextualClass = 'text-white';
+			} else if (bonusStatValue > 0) {
+				contextualClass = 'text-success';
+			} else {
+				contextualClass = 'text-danger';
+			}
+
+			const statLinkElemRef = ref<HTMLAnchorElement>();
+
 			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{this.statDisplayString(finalStats, finalStats, stat)}
-				</a>
+				<div className="stat-value-link-container">
+					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+						{`${this.statDisplayString(finalStats, finalStats, stat)} `}
+					</a>
+				</div>
 			);
 
-			this.valueElems[idx].querySelector('.stat-value-link')?.remove();
+			const statLinkElem = statLinkElemRef.value!;
+
+			this.valueElems[idx].querySelector('.stat-value-link-container')?.remove();
 			this.valueElems[idx].prepend(valueElem);
-
-			const bonusStatValue = bonusStats.getStat(stat);
-
-			if (bonusStatValue == 0) {
-				valueElem.classList.add('text-white');
-			} else if (bonusStatValue > 0) {
-				valueElem.classList.add('text-success');
-			} else if (bonusStatValue < 0) {
-				valueElem.classList.add('text-danger');
-			}
 
 			const tooltipContent = (
 				<div>
@@ -163,9 +168,9 @@ export class CharacterStats extends Component {
 					</div>
 				</div>
 			);
-			Tooltip.getOrCreateInstance(valueElem, {
-				title: tooltipContent,
-				html: true,
+
+			tippy(statLinkElem, {
+				content: tooltipContent,
 			});
 		});
 
@@ -230,9 +235,8 @@ export class CharacterStats extends Component {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(valueElem, {
-				title: tooltipContent,
-				html: true,
+			tippy(valueElem, {
+				content: tooltipContent,
 			});
 		}
 	}
@@ -285,13 +289,17 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) + 5.0).toFixed(2)}%)`;
+			displayStr += ` (${(
+				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
+				Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) +
+				5.0
+			).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr = `${(stats.getStat(Stat.StatDodge)).toFixed(2)}%`;
+			displayStr = `${stats.getStat(Stat.StatDodge).toFixed(2)}%`;
 		} else if (stat == Stat.StatParry) {
 			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr = `${(stats.getStat(Stat.StatParry)).toFixed(2)}%`;
+			displayStr = `${stats.getStat(Stat.StatParry).toFixed(2)}%`;
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
 		}
@@ -313,36 +321,41 @@ export class CharacterStats extends Component {
 
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
+		const linkRef = ref<HTMLAnchorElement>();
+		const iconRef = ref<HTMLDivElement>();
 
 		const link = (
-			<a href="javascript:void(0)" className="add-bonus-stats ms-2" dataset={{ bsToggle: 'popover' }} attributes={{ role: 'button' }}>
-				<i className="fas fa-plus-minus"></i>
+			<a
+				ref={linkRef}
+				href="javascript:void(0)"
+				className="add-bonus-stats text-white ms-2"
+				dataset={{ bsToggle: 'popover' }}
+				attributes={{ role: 'button' }}>
+				<i ref={iconRef} className="fas fa-plus-minus"></i>
 			</a>
 		);
 
-		Tooltip.getOrCreateInstance(link.children[0], { title: `Bonus ${statName}` });
-
-		let popover: Popover | null = null;
-
-		const picker = new NumberPicker(null, this.player, {
-			label: `Bonus ${statName}`,
-			extraCssClasses: ['mb-0'],
-			changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-			getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
-			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-				const bonusStats = player.getBonusStats().withStat(stat, newValue);
-				player.setBonusStats(eventID, bonusStats);
-				popover?.hide();
-			},
-		});
-
-		popover = Popover.getOrCreateInstance(link, {
-			customClass: 'bonus-stats-popover',
+		tippy(iconRef.value!, { content: `Bonus ${statName}` });
+		tippy(linkRef.value!, {
+			interactive: true,
+			trigger: 'click',
+			theme: 'bonus-stats-popover',
 			placement: 'right',
-			fallbackPlacements: ['left'],
-			sanitize: false,
-			html: true,
-			content: picker.rootElem,
+			onShow: instance => {
+				const picker = new NumberPicker(null, this.player, {
+					id: `character-bonus-stat-${stat}`,
+					label: `Bonus ${statName}`,
+					extraCssClasses: ['mb-0'],
+					changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
+					getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+					setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+						const bonusStats = player.getBonusStats().withStat(stat, newValue);
+						player.setBonusStats(eventID, bonusStats);
+						instance?.hide();
+					},
+				});
+				instance.setContent(picker.rootElem);
+			},
 		});
 
 		return link as HTMLElement;

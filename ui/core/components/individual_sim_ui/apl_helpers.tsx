@@ -1,16 +1,18 @@
-import { Player, UnitMetadata } from '../../player.js';
-import { ActionID, ItemSlot, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
-import { UIRune as Rune } from '../../proto/ui.js';
-import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
-import { itemTypeNames } from '../../proto_utils/names.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-import { bucket } from '../../utils.js';
-import { BooleanPicker } from '../boolean_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig } from '../dropdown_picker.js';
-import { Input, InputConfig } from '../input.js';
-import { AdaptiveStringPicker } from '../inputs/string_picker.js';
-import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
-import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
+import { ref } from 'tsx-vanilla';
+
+import { Player, UnitMetadata } from '../../player';
+import { ActionID, ItemSlot, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common';
+import { UIRune as Rune } from '../../proto/ui';
+import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id';
+import { itemTypeNames } from '../../proto_utils/names';
+import { EventID } from '../../typed_event';
+import { bucket, randomUUID } from '../../utils';
+import { BooleanPicker } from '../boolean_picker';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig } from '../dropdown_picker.jsx';
+import { Input, InputConfig } from '../input.jsx';
+import { AdaptiveStringPicker } from '../inputs/string_picker';
+import { NumberPicker, NumberPickerConfig } from '../number_picker';
+import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker';
 
 export type ACTION_ID_SET =
 	| 'auras'
@@ -123,8 +125,8 @@ const actionIdSets: Record<
 						extraCssClasses: actionId.data.prepullOnly
 							? ['apl-prepull-actions-only']
 							: actionId.data.encounterOnly
-								? ['apl-priority-list-only']
-								: [],
+							? ['apl-priority-list-only']
+							: [],
 					};
 				}),
 				[
@@ -145,8 +147,8 @@ const actionIdSets: Record<
 						extraCssClasses: actionId.data.prepullOnly
 							? ['apl-prepull-actions-only']
 							: actionId.data.encounterOnly
-								? ['apl-priority-list-only']
-								: [],
+							? ['apl-priority-list-only']
+							: [],
 					};
 				}),
 				[
@@ -235,24 +237,29 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 		const actionIdSet = actionIdSets[config.actionIdSet];
 		super(parent, player, {
 			...config,
-			sourceToValue: (src: ActionID) => {
-				return src ? ActionId.fromProto(src) : ActionId.fromEmpty();
-			},
+			sourceToValue: (src: ActionID) => (src ? ActionId.fromProto(src) : ActionId.fromEmpty()),
 			valueToSource: (val: ActionId) => val.toProto(),
 			defaultLabel: actionIdSet.defaultLabel,
 			equals: (a, b) => (a == null) == (b == null) && (!a || a.equals(b!)),
 			setOptionContent: (button, valueConfig) => {
 				const actionId = valueConfig.value;
+				const iconRef = ref<HTMLAnchorElement>();
+				const isAuraType = ['auras', 'stackable_auras', 'icd_auras', 'exclusive_effect_auras'].includes(config.actionIdSet);
+				button.appendChild(
+					<>
+						<a
+							ref={iconRef}
+							className="apl-actionid-item-icon"
+							dataset={{
+								whtticon: false,
+							}}
+						/>
+						{actionId.name}
+					</>,
+				);
 
-				const iconElem = document.createElement('a');
-				iconElem.classList.add('apl-actionid-item-icon');
-				iconElem.dataset.whtticon = 'false';
-				iconElem.dataset.disableWowheadTouchTooltip = 'true';
-				actionId.setBackgroundAndHref(iconElem);
-				button.appendChild(iconElem);
-
-				const textElem = document.createTextNode(actionId.name);
-				button.appendChild(textElem);
+				actionId.setBackgroundAndHref(iconRef.value!);
+				actionId.setWowheadDataset(iconRef.value!, { useBuffAura: isAuraType });
 			},
 			createMissingValue: value => {
 				if (value.anyId() == 0) {
@@ -261,11 +268,9 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 					});
 				}
 
-				return value.fill().then(filledId => {
-					return {
-						value: filledId,
-					};
-				});
+				return value.fill().then(filledId => ({
+					value: filledId,
+				}));
 			},
 			values: [],
 		});
@@ -283,7 +288,12 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 			}
 		};
 		updateValues();
-		TypedEvent.onAny([player.sim.unitMetadataEmitter, player.rotationChangeEmitter]).on(updateValues);
+		const unitMetaEvent = player.sim.unitMetadataEmitter.on(updateValues);
+		const rotationChangeEvent = player.rotationChangeEmitter.on(updateValues);
+		this.addOnDisposeCallback(() => {
+			unitMetaEvent.dispose();
+			rotationChangeEvent.dispose();
+		});
 	}
 }
 
@@ -385,7 +395,7 @@ const unitSets: Record<
 		getUnits: player => {
 			return [
 				undefined,
-				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
+				player.sim.encounter.targetsMetadata.asList().map((_targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
 			].flat();
 		},
 	},
@@ -411,7 +421,10 @@ export class APLUnitPicker extends UnitPicker<Player<any>> {
 		this.rootElem.classList.add('apl-unit-picker');
 
 		this.updateValues();
-		player.sim.unitMetadataEmitter.on(() => this.updateValues());
+		const event = player.sim.unitMetadataEmitter.on(() => this.updateValues());
+		this.addOnDisposeCallback(() => {
+			event.dispose();
+		});
 	}
 
 	private static refToValue(ref: UnitReference | undefined, thisPlayer: Player<any>, targetUI: boolean | undefined): UnitValue {
@@ -438,7 +451,6 @@ export class APLUnitPicker extends UnitPicker<Player<any>> {
 			if (player) {
 				return {
 					value: ref,
-					//color: player.getClassColor(),
 					iconUrl: player.getSpecIcon(),
 					text: `Player ${ref.index + 1}`,
 				};
@@ -547,6 +559,7 @@ export class APLPickerBuilder<T> extends Input<Player<any>, T> {
 			{
 				label: fieldConfig.label,
 				labelTooltip: fieldConfig.labelTooltip,
+				id: randomUUID(),
 				changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 				getValue: () => {
 					const source = builder.getSourceValue();
@@ -602,14 +615,14 @@ export function actionIdFieldConfig(
 	return {
 		field: field,
 		newValue: () => ActionID.create(),
-		factory: (parent, player, config, getParentValue) => {
-			return new APLActionIDPicker(parent, player, {
+		factory: (parent, player, config, getParentValue) =>
+			new APLActionIDPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				actionIdSet: actionIdSet,
 				getUnitRef: () => (unitRefField ? getParentValue()[unitRefField] : UnitReference.create()),
 				defaultUnitRef: defaultUnitRef || 'self',
-			});
-		},
+			}),
 		...(options || {}),
 	};
 }
@@ -620,6 +633,7 @@ export function runeFieldConfig(field: string): APLPickerBuilderFieldConfig<any,
 		newValue: () => ActionID.create(),
 		factory: (parent, player, config, _getParentValue) => {
 			return new APLRunePicker(parent, player, {
+				id: randomUUID(),
 				...config,
 			});
 		},
@@ -636,6 +650,7 @@ export function unitFieldConfig(
 		newValue: () => undefined,
 		factory: (parent, player, config) =>
 			new APLUnitPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				unitSet: unitSet,
 			}),
@@ -653,7 +668,7 @@ export function booleanFieldConfig(
 		newValue: () => false,
 		factory: (parent, player, config) => {
 			config.extraCssClasses = ['input-inline'].concat(config.extraCssClasses || []);
-			return new BooleanPicker(parent, player, config);
+			return new BooleanPicker(parent, player, { id: randomUUID(), ...config });
 		},
 		...(options || {}),
 		label: label,
@@ -684,7 +699,7 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 		newValue: () => '',
 		factory: (parent, player, config) => {
 			config.extraCssClasses = ['input-inline'].concat(config.extraCssClasses || []);
-			return new AdaptiveStringPicker(parent, player, config);
+			return new AdaptiveStringPicker(parent, player, { id: randomUUID(), ...config });
 		},
 		...(options || {}),
 	};

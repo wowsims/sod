@@ -3,19 +3,19 @@ character_stats_results: {
  value: {
   final_stats: 119.988
   final_stats: 135.432
-  final_stats: 261.36
-  final_stats: 304.128
+  final_stats: 275.616
+  final_stats: 324.324
   final_stats: 234.036
-  final_stats: 229
+  final_stats: 250
   final_stats: 0
-  final_stats: 145
+  final_stats: 132
   final_stats: 22
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 38
   final_stats: 0
-  final_stats: 27.6171
+  final_stats: 28.04324
   final_stats: 0
   final_stats: 0
   final_stats: 450
@@ -24,7 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 5329.92
+  final_stats: 5632.86
   final_stats: 0
   final_stats: 0
   final_stats: 742.44
@@ -35,7 +35,7 @@ character_stats_results: {
   final_stats: 3.2
   final_stats: 0
   final_stats: 0
-  final_stats: 3388.6
+  final_stats: 3531.16
   final_stats: 20
   final_stats: 55
   final_stats: 45
@@ -55,10 +55,10 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.26053
+  weights: 1.25784
   weights: 0
-  weights: 1.08475
-  weights: 0.17577
+  weights: 1.09059
+  weights: 0.16725
   weights: 0
   weights: 0
   weights: 0
@@ -99,98 +99,98 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
-  dps: 1199.78245
-  tps: 940.21608
+  dps: 1211.71207
+  tps: 949.3134
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1186.80676
-  tps: 1125.8798
+  dps: 1197.2297
+  tps: 1147.486
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1186.80676
-  tps: 929.83804
+  dps: 1197.2297
+  tps: 937.47374
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1268.88929
-  tps: 983.44038
+  dps: 1277.6357
+  tps: 987.01802
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 636.4483
-  tps: 683.60012
+  dps: 640.10977
+  tps: 660.87668
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 636.4483
-  tps: 486.75656
+  dps: 640.10977
+  tps: 487.94776
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 694.04541
-  tps: 525.09751
+  dps: 701.76088
+  tps: 528.23404
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1188.50359
-  tps: 1133.4839
+  dps: 1201.41973
+  tps: 1162.5436
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1188.50359
-  tps: 930.93963
+  dps: 1201.41973
+  tps: 941.1215
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1285.85027
-  tps: 997.572
+  dps: 1291.72532
+  tps: 998.87182
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 634.93613
-  tps: 683.9564
+  dps: 642.50018
+  tps: 662.09216
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 634.93613
-  tps: 485.34489
+  dps: 642.50018
+  tps: 489.28284
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 695.11079
-  tps: 525.4775
+  dps: 706.52502
+  tps: 531.32591
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1190.03879
-  tps: 932.3028
+  dps: 1203.27065
+  tps: 942.81152
  }
 }

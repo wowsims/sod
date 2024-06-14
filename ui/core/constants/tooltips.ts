@@ -12,7 +12,10 @@ export const BASIC_BIS_DISCLAIMER =
 
 export const HEALING_SIM_DISCLAIMER =
 	'*** WARNING - USE AT YOUR OWN RISK ***\n\nThe entire concept of a healing sim is EXPERIMENTAL. All results should be taken with an EXTREMELY large grain of salt.\n\nThis tool is currently more similar to a spreadsheet than a true sim. Options for specifying incoming damage profiles in order to have proper reactive rotations have not yet been added.';
-
+export const EP_TOOLTIP = `
+	EP (Equivalence Points) is way of comparing items by multiplying the raw stats of an item with your current stat weights.
+	More EP does not necessarily mean more DPS, as EP doesn't take into account stat caps and non-linear stat calculations.
+`;
 export const UNSPECT_TALENT_POINTS_WARNING = 'Unspent talent points.';
 export const TOO_MANY_TALENT_POINTS_WARNING = 'More talent points spent than current level selected.';
 

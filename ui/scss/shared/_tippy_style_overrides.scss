@@ -1,0 +1,28 @@
+.tippy-box {
+	font-size: var(--btn-font-size);
+	max-width: var(--bs-tooltip-max-width);
+
+	@include media-breakpoint-down(xl) {
+		--bs-tooltip-max-width: var(--bs-tooltip-max-width-lg);
+	}
+
+	@include media-breakpoint-down(md) {
+		--bs-tooltip-max-width: var(--bs-tooltip-max-width-sm);
+	}
+}
+.tippy-tooltip {
+}
+
+.tippy-backdrop {
+}
+
+.tippy-arrow {
+	display: none;
+}
+
+.tippy-content {
+	background-color: var(--bs-tooltip-bg);
+	border: var(--bs-tooltip-border) 1px solid;
+	color: var(--bs-tooltip-body-color);
+	padding: var(--bs-tooltip-body-padding-y) var(--bs-tooltip-body-padding-x);
+}

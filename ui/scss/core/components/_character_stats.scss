@@ -13,7 +13,7 @@
 
 		.character-stats-table-row {
 			border-top: $border-default;
-			font-size: $content-font-size;
+			font-size: var(--content-font-size);
 
 			.character-stats-table-label,
 			.character-stats-table-value {
@@ -30,12 +30,17 @@
 				padding-left: map.get($spacers, 2);
 				font-weight: bold;
 				text-align: right;
+
+				.stat-value-link-container {
+					display: inline-flex;
+					flex-direction: column;
+				}
 			}
 		}
 	}
 }
 
-.bonus-stats-popover {
+.tippy-box[data-theme='bonus-stats-popover'] {
 	.number-picker-root {
 		flex-direction: column;
 

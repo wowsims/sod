@@ -54,7 +54,7 @@ message Player {
 	int32 isb_warlocks = 43;
 	int32 isb_spriests = 44;
 
-	// Items/enchants/gems/etc to include in the database.
+	// Items/enchants/etc to include in the database.
 	SimDatabase database = 18;
 	HealingModel healing_model = 19;
 
@@ -424,6 +424,11 @@ message BulkSimRequest {
     BulkSettings bulk_settings = 2;
 }
 
+message TalentLoadout {
+	string talents_string = 1;
+	string name = 2;
+}
+
 message BulkSettings {
 	repeated ItemSpec items = 1;
 	bool combinations = 2;
@@ -432,29 +437,38 @@ message BulkSettings {
 	// Only works when replacement item is valid target for enchant.
 	bool auto_enchant = 4;
 
-	// Currently not used.
-	// Used to fill out gem slots that are not filled in the ItemSpec
-	bool auto_gem = 5;
-	int32 default_red_gem = 6;
-	int32 default_blue_gem = 7;
-	int32 default_yellow_gem = 8;
-	int32 default_meta_gem = 9;
-	bool ensure_meta_req_met = 10; // ensures that meta requirements are met when auto-gemming.
+	// Copied from WOTLK but not removed so reserved instead
+	reserved 5;
+    reserved "auto_gem";
+	reserved 6;
+    reserved "default_red_gem";
+	reserved 7;
+    reserved "default_blue_gem";
+	reserved 8;
+    reserved "default_yellow_gem";
+	reserved 9;
+    reserved "default_meta_gem";
+	reserved 10;
+    reserved "ensure_meta_req_met";
 
 	// Number of iterations per combo.
 	// If set to 0 the sim core decides the optimal iterations.
 	int32 iterations_per_combo = 11;
+	// Should sim talents as well
+	bool sim_talents = 12;
+	repeated TalentLoadout talents_to_sim = 13;
 }
 
 message BulkSimResult {
     repeated BulkComboResult results = 1;
-		BulkComboResult equipped_gear_result = 2;
+	BulkComboResult equipped_gear_result = 2;
     string error_result = 3; // only set if sim failed.
 }
 
 message BulkComboResult {
     repeated ItemSpecWithSlot items_added = 1;
     UnitMetrics unit_metrics = 2;
+	TalentLoadout talent_loadout = 3;
 }
 
 message ItemSpecWithSlot {

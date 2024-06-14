@@ -1,30 +1,26 @@
-import { EmbeddedDetailedResults } from "../core/components/detailed_results.js";
-import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from "../core/components/raid_sim_action.js";
+import { default as pako } from 'pako';
 
-import { Player } from "../core/player.js";
-import { Raid as RaidProto } from "../core/proto/api.js";
-import { Class, Encounter as EncounterProto, TristateEffect } from "../core/proto/common.js";
-import { Blessings } from "../core/proto/paladin.js";
-import { BlessingsAssignments, RaidSimSettings } from "../core/proto/ui.js";
-import { playerToSpec } from "../core/proto_utils/utils.js";
-import { Sim } from "../core/sim.js";
-import { SimUI } from "../core/sim_ui.js";
+import { EmbeddedDetailedResults } from '../core/components/detailed_results.js';
+import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.js';
 import { raidSimStatus } from '../core/launched_sims.js';
-import { EventID, TypedEvent } from "../core/typed_event.js";
-
-import { RaidTab } from "./raid_tab.js";
-import { SettingsTab } from "./settings_tab.js";
-
-import { BlessingsPicker } from "./blessings_picker.js";
-import { implementedSpecs } from "./presets.js";
-import { RaidPicker } from "./raid_picker.js";
-
-import * as ImportExport from "./import_export.js";
-
-declare var pako: any;
+import { Player } from '../core/player.js';
+import { Raid as RaidProto } from '../core/proto/api.js';
+import { Class, Encounter as EncounterProto, TristateEffect } from '../core/proto/common.js';
+import { Blessings } from '../core/proto/paladin.js';
+import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
+import { playerToSpec } from '../core/proto_utils/utils.js';
+import { Sim } from '../core/sim.js';
+import { SimUI } from '../core/sim_ui.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
+import { BlessingsPicker } from './blessings_picker.js';
+import * as ImportExport from './import_export.js';
+import { implementedSpecs } from './presets.js';
+import { RaidPicker } from './raid_picker.js';
+import { RaidTab } from './raid_tab.js';
+import { SettingsTab } from './settings_tab.js';
 
 export interface RaidSimConfig {
-	knownIssues?: Array<string>,
+	knownIssues?: Array<string>;
 }
 
 const extraKnownIssues: Array<string> = [
@@ -55,10 +51,7 @@ export class RaidSimUI extends SimUI {
 		this.config = config;
 
 		this.sim.raid.compChangeEmitter.on(eventID => this.compChangeEmitter.emit(eventID));
-		[
-			this.compChangeEmitter,
-			this.sim.changeEmitter,
-		].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
+		[this.compChangeEmitter, this.sim.changeEmitter].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
 		this.changeEmitter.on(() => this.recomputeSettingsLayout());
 
 		this.sim.setModifyRaidProto(raidProto => this.modifyRaidProto(raidProto));
@@ -105,10 +98,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', (parent) => new ImportExport.RaidJsonImporter(this.rootElem, this));
-		this.simHeader.addImportLink('WCL', (parent) => new ImportExport.RaidWCLImporter(this.rootElem, this));
+		this.simHeader.addImportLink('JSON', new ImportExport.RaidJsonImporter(this.rootElem, this));
+		this.simHeader.addImportLink('WCL', new ImportExport.RaidWCLImporter(this.rootElem, this));
 
-		this.simHeader.addExportLink('JSON', (parent) => new ImportExport.RaidJsonExporter(this.rootElem, this));
+		this.simHeader.addExportLink('JSON', new ImportExport.RaidJsonExporter(this.rootElem, this));
 	}
 
 	private addRaidTab() {
@@ -120,12 +113,20 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab('Results', 'detailed-results-tab', `
+		this.addTab(
+			'Results',
+			'detailed-results-tab',
+			`
 			<div class="detailed-results">
 			</div>
-		`);
+		`,
+		);
 
-		const detailedResults = new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
+		const detailedResults = new EmbeddedDetailedResults(
+			this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement,
+			this,
+			this.raidSimResultsManager!,
+		);
 	}
 
 	private recomputeSettingsLayout() {
@@ -147,13 +148,13 @@ export class RaidSimUI extends SimUI {
 				}
 
 				if (paladin.blessings[spec] == Blessings.BlessingOfKings) {
-					playerProtos.forEach(playerProto => playerProto.buffs!.blessingOfKings = true);
+					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfKings = true));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfMight) {
-					playerProtos.forEach(playerProto => playerProto.buffs!.blessingOfMight = TristateEffect.TristateEffectImproved);
+					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfMight = TristateEffect.TristateEffectImproved));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfWisdom) {
-					playerProtos.forEach(playerProto => playerProto.buffs!.blessingOfWisdom = TristateEffect.TristateEffectImproved);
+					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfWisdom = TristateEffect.TristateEffectImproved));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfSanctuary) {
-					playerProtos.forEach(playerProto => playerProto.buffs!.blessingOfSanctuary = true);
+					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfSanctuary = true));
 				}
 			});
 		});
@@ -185,9 +186,12 @@ export class RaidSimUI extends SimUI {
 
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.sim.raid.fromProto(eventID, RaidProto.create({
-				numActiveParties: 5,
-			}));
+			this.sim.raid.fromProto(
+				eventID,
+				RaidProto.create({
+					numActiveParties: 5,
+				}),
+			);
 			this.sim.setPhase(eventID, 1);
 			this.sim.encounter.applyDefaults(eventID);
 			this.sim.applyDefaults(eventID, true, true);
@@ -210,6 +214,8 @@ export class RaidSimUI extends SimUI {
 		proto.settings = undefined;
 
 		const protoBytes = RaidSimSettings.toBinary(proto);
+		// @ts-ignore Pako did some weird stuff between versions and the @types package doesn't correctly support this syntax for version 2.0.4 but it's completely valid
+		// The syntax was removed in 2.1.0 and there were several complaints but the project seems to be largely abandoned now
 		const deflated = pako.deflate(protoBytes, { to: 'string' });
 		const encoded = btoa(String.fromCharCode(...deflated));
 

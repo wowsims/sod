@@ -4,8 +4,8 @@
 	}
 
 	.unit-picker-item-icon {
-		width: $icon-size-sm;
-		height: $icon-size-sm;
+		width: var(--icon-size-sm);
+		height: var(--icon-size-sm);
 		margin-right: map-get($spacers, 1);
 		display: flex;
 		justify-content: center;

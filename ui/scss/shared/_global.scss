@@ -1,140 +1,160 @@
-@use "sass:map";
-
 :root {
-  --bs-body-font-size: 14px;
-  --container-padding: #{$gap-width-sm};
-  font-size: var(--bs-body-font-size);
-}
+	--bs-body-font-size: 14px;
+	font-size: var(--bs-body-font-size);
 
-@include media-breakpoint-up(lg) {
-  :root {
-    --container-padding: 3rem;
-  }
-}
+	@include media-breakpoint-up(1080p) {
+		--bs-body-font-size: 16px;
+	}
 
-@include media-breakpoint-up(xxl) {
-  :root {
-    --container-padding: 4rem;
-  }
-}
+	// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
+	@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
+		--bs-body-font-size: 24px;
+	}
 
-@include media-breakpoint-up(1080p) {
-  :root {
-    --bs-body-font-size: 16px;
-  }
-}
+	@include media-breakpoint-up(4k) {
+		--bs-body-font-size: 32px;
+	}
 
-// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
-@media (min-width: map.get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
-  :root {
-    --bs-body-font-size: 24px;
-  }
-}
+	@include media-breakpoint-up(lg) {
+		--section-spacer: var(--section-spacer-lg) !important;
+		--container-padding: var(--container-padding-lg) !important;
+	}
 
-@include media-breakpoint-up(4k) {
-  :root {
-    --bs-body-font-size: 32px;
-  }
+	@include media-breakpoint-up(xxl) {
+		--section-spacer: var(--section-spacer-xxl) !important;
+		--container-padding: var(--container-padding-xxl) !important;
+	}
 }
 
 * {
-  letter-spacing: 1px;
+	letter-spacing: 1px;
 }
 
 html {
-  height: 100%;
-  color-scheme: dark;
-  font-size: var(--bs-body-font-size);
+	height: 100%;
+	color-scheme: dark;
+	font-size: var(--bs-body-font-size);
 }
 
 body {
-  height: 100%;
-  // Bootstrap adds padding-right when Modals open for some reason, causing popping
-  padding-right: 0 !important;
-  // Prevent browser scrollbars from adjusting page contents
-  margin-right: calc(-1 * (100vw - 100%));
-  overflow-x: hidden;
-  opacity: 0;
-  transition: opacity .25s linear;
+	height: 100%;
+	// Bootstrap adds padding-right when Modals open for some reason, causing popping
+	padding-right: 0 !important;
+	// Prevent browser scrollbars from adjusting page contents
+	margin-right: calc(-1 * (100vw - 100%));
+	overflow-x: hidden;
+	opacity: 0;
+	transition: opacity 0.25s linear;
 
-  &.ready {
-    opacity: 1;
-  }
+	&.ready {
+		opacity: 1;
+	}
 }
 
 a {
-  outline: none;
-  transition: color .15s ease-in-out;
+	outline: none;
+	transition: color 0.15s ease-in-out;
 
-  &.link-alt {
-    color: white;
+	&.link-alt {
+		color: var(--bs-white);
 
-    &:hover, &:focus, &.active {
-      color: $brand;
-    }
-  }
+		&:hover,
+		&:focus,
+		&.active {
+			color: var(--bs-brand);
+		}
+	}
 }
 
 hr {
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
 }
 
 label {
-  font-weight: bold;
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
 }
 
 p {
-  margin-bottom: $block-spacer;
+	margin-bottom: var(--block-spacer);
 }
 
 kbd {
-  background: $body-bg;
-  color: white;
+	background: var(--bs-body-bg);
+	color: var(--bs-white);
 }
 
 .dragto:not(.dragfrom) {
-  filter: brightness(.75);
+	filter: brightness(0.75);
+}
+
+.interactive {
+	cursor: pointer;
+	user-select: none;
 }
 
 .hide {
-  display: none !important;
+	display: none !important;
 }
 
 .icon-sm {
 	display: inline-block;
-	min-width: $icon-size-sm;
-	width: $icon-size-sm;
-	height: $icon-size-sm;
+	min-width: var(--icon-size-sm);
+	width: var(--icon-size-sm);
+	height: var(--icon-size-sm);
 	background-size: cover;
 }
 
 .icon-md {
 	display: inline-block;
-	min-width: $icon-size-md;
-	width: $icon-size-md;
-	height: $icon-size-md;
+	min-width: var(--icon-size-md);
+	width: var(--icon-size-md);
+	height: var(--icon-size-md);
 	background-size: cover;
 }
 
-@each $label, $value in $item-qualities {
-  	.item-quality-#{$label} {
-    	color: $value !important;
-  	}
+@each $label, $value in $item-quality-colors {
+	.item-quality-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
 }
 
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
-	  color: $value !important;
+		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $damage-colors {
+	.damage-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $faction-colors {
+	.faction-#{$label} {
+		color: var(--bs-#{$label}) !important;
 	}
 }
 
-[contenteditable="true"]:active,
-[contenteditable="true"]:focus {
-  border:none;
-  outline:none;
+[contenteditable='true']:active,
+[contenteditable='true']:focus {
+	border: none;
+	outline: none;
 }
 
-[draggable="true"] {
-  cursor: grab;
+[draggable='true'] {
+	cursor: grab;
+}
+
+.notices-banner {
+	width: 100%;
+	background: color-mix(in srgb, var(--bs-body-bg), var(--bs-white) 5%);
 }

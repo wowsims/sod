@@ -457,10 +457,9 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(wp.Level)]*core.SpellCritRatingPerCritChance)
 	}
 
-	wp.AutoAttacks.MHConfig().DamageMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
-
 	if warlock.Options.Summon != proto.WarlockOptions_Imp { // imps generally don't melee
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
+		wp.AutoAttacks.MHConfig().DamageMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
 	}
 
 	core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)

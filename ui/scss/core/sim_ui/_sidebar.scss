@@ -1,37 +1,48 @@
-@use 'sass:map';
-
 @import '../components/sim_title_dropdown';
 
 .sim-sidebar {
+	position: relative;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	background: $body-bg;
+	background: var(--bs-body-bg);
 	// This must be larger than the z-index on .sim-content otherwise the dropdown is overlapped
-	z-index: $sidebar-z-index;
+	z-index: var(--sidebar-z-index);
 
 	.sim-sidebar-content {
-		min-height: calc(100vh - $sim-header-height - 1px);
-		padding: $gap-width;
+		min-height: calc(100vh - var(--sim-header-height) - 1px);
+		padding: var(--gap-width);
 		display: flex;
 		flex-direction: column;
+		@include media-breakpoint-down(xxl) {
+			padding-left: calc(var(--gap-width-sm) * 2);
+			padding-right: calc(var(--gap-width-sm) * 2);
+		}
+		@include media-breakpoint-down(lg) {
+			padding: calc(var(--gap-width-sm) * 2) var(--gap-width-sm);
+			min-height: 0;
+		}
 
 		& > *:not(:last-child) {
-			margin-bottom: map.get($spacers, 4);
+			margin-bottom: var(--spacer-4);
 		}
 
 		.sim-sidebar-actions {
 			padding-left: var(--container-padding);
 			padding-right: var(--container-padding);
-			margin-left: $gap-width * -1;
-			margin-right: $gap-width * -1;
+			margin-left: calc(var(--gap-width) * -1);
+			margin-right: calc(var(--gap-width) * -1);
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			@include media-breakpoint-down(xxl) {
+				padding: 0;
+				margin: 0;
+			}
 
 			& > *:not(:last-child) {
-				margin-bottom: $block-spacer;
+				margin-bottom: var(--block-spacer);
 			}
 
 			.iterations-picker {
@@ -54,6 +65,9 @@
 
 		.sim-sidebar-stats {
 			margin-top: auto;
+			@include media-breakpoint-down(lg) {
+				margin-top: 0;
+			}
 		}
 
 		.sim-sidebar-socials {
@@ -61,30 +75,14 @@
 			justify-content: center;
 
 			& > *:not(:last-child) {
-				margin-right: map-get($spacers, 3);
+				margin-right: var(--spacer-3);
 			}
 		}
 	}
-}
 
-@include media-breakpoint-down(xxl) {
-	.sim-sidebar {
-		.sim-sidebar-content {
-			padding-left: $gap-width-sm * 2;
-			padding-right: $gap-width-sm * 2;
-
-			.sim-sidebar-actions {
-				padding: 0;
-				margin: 0;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	.sim-sidebar {
-		.sim-sidebar-content {
-			padding: $gap-width-sm * 2 $gap-width-sm;
+	.warning-zone {
+		[data-tippy-root] {
+			width: 100%;
 		}
 	}
 }

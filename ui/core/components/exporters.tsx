@@ -1,6 +1,5 @@
-import pako from 'pako';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, ref } from 'tsx-vanilla';
+import { default as pako } from 'pako';
+import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';
@@ -139,6 +138,7 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 		IndividualLinkExporter.exportPickerConfigs.forEach(exportConfig => {
 			const category = exportConfig.category;
 			new BooleanPicker(pickersContainer, this, {
+				id: `link-exporter-${category}`,
 				label: exportConfig.label,
 				labelTooltip: exportConfig.labelTooltip,
 				inline: true,
@@ -150,7 +150,10 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 				changedEvent: () => this.changedEvent,
 			});
 		});
+	}
 
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -169,8 +172,10 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 		const proto = simUI.toProto(exportCategories);
 
 		const protoBytes = IndividualSimSettings.toBinary(proto);
+		// @ts-ignore Pako did some weird stuff between versions and the @types package doesn't correctly support this syntax for version 2.0.4 but it's completely valid
+		// The syntax was removed in 2.1.0 and there were several complaints but the project seems to be largely abandoned now
 		const deflated = pako.deflate(protoBytes, { to: 'string' });
-		const encoded = btoa(deflated);
+		const encoded = btoa(String.fromCharCode(...deflated));
 
 		const linkUrl = new URL(window.location.href);
 		linkUrl.hash = encoded;
@@ -190,6 +195,10 @@ export class IndividualJsonExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'JSON Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -218,6 +227,10 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Wowhead Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -286,6 +299,10 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -384,6 +401,10 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Pawn EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -483,6 +504,10 @@ export class IndividualCLIExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'CLI Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 

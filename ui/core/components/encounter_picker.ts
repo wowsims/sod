@@ -12,6 +12,7 @@ import { isHealingSpec, isTankSpec } from '../proto_utils/utils.js';
 import { Raid } from '../raid.js';
 import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
+import { randomUUID } from '../utils.js';
 import { BaseModal } from './base_modal.js';
 import { Component } from './component.js';
 import { Input } from './input.js';
@@ -31,6 +32,7 @@ export class EncounterPicker extends Component {
 			const presetTargets = modEncounter.sim.db.getAllPresetTargets();
 
 			new EnumPicker<Encounter>(this.rootElem, modEncounter, {
+				id: 'encounter-npc',
 				extraCssClasses: ['damage-metrics', 'npc-picker'],
 				label: 'NPC',
 				labelTooltip: 'Selects a preset NPC configuration.',
@@ -93,6 +95,7 @@ export class EncounterPicker extends Component {
 
 			if (simUI.isIndividualSim() && isHealingSpec((simUI as IndividualSimUI<any>).player.spec)) {
 				new NumberPicker(this.rootElem, simUI.sim.raid, {
+					id: 'encounter-num-allies',
 					label: 'Num Allies',
 					labelTooltip: 'Number of allied players in the raid.',
 					changedEvent: (raid: Raid) => raid.targetDummiesChangeEmitter,
@@ -105,6 +108,7 @@ export class EncounterPicker extends Component {
 
 			if (simUI.isIndividualSim() && isTankSpec((simUI as IndividualSimUI<any>).player.spec)) {
 				new NumberPicker(this.rootElem, modEncounter, {
+					id: 'encounter-min-base-damage',
 					label: 'Min Base Damage',
 					labelTooltip: 'Base damage for auto attacks, i.e. lowest roll with 0 AP against a 0-armor Player.',
 					changedEvent: (encounter: Encounter) => encounter.changeEmitter,
@@ -130,10 +134,11 @@ export class EncounterPicker extends Component {
 
 			makeTargetInputsPicker(this.rootElem, modEncounter, 0);
 
+			const advancedModal = new AdvancedEncounterModal(simUI.rootElem, simUI, modEncounter);
 			const advancedButton = document.createElement('button');
 			advancedButton.classList.add('advanced-button', 'btn', 'btn-primary');
 			advancedButton.textContent = 'Advanced';
-			advancedButton.addEventListener('click', () => new AdvancedEncounterModal(simUI.rootElem, simUI, modEncounter));
+			advancedButton.addEventListener('click', () => advancedModal.open());
 			this.rootElem.appendChild(advancedButton);
 		});
 	}
@@ -159,6 +164,7 @@ class AdvancedEncounterModal extends BaseModal {
 		addEncounterFieldPickers(header, this.encounter, true);
 		if (!simUI.isIndividualSim()) {
 			new BooleanPicker<Encounter>(header, encounter, {
+				id: 'encounter-use-health',
 				label: 'Use Health',
 				labelTooltip: 'Uses a damage limit in place of a duration limit. Damage limit is equal to sum of all targets health.',
 				inline: true,
@@ -186,6 +192,7 @@ class AdvancedEncounterModal extends BaseModal {
 				index: number,
 				config: ListItemPickerConfig<Encounter, TargetProto>,
 			) => new TargetPicker(parent, encounter, index, config),
+			minimumItems: 1,
 		});
 	}
 
@@ -193,6 +200,7 @@ class AdvancedEncounterModal extends BaseModal {
 		const presetEncounters = this.encounter.sim.db.getAllPresetEncounters();
 
 		new EnumPicker<Encounter>(this.header as HTMLElement, this.encounter, {
+			id: 'encounter-preset-encouter',
 			label: 'Encounter',
 			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2', 'order-first'],
 			values: [{ name: 'Custom', value: -1 }].concat(
@@ -253,6 +261,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 
 		const presetTargets = encounter.sim.db.getAllPresetTargets();
 		new EnumPicker<null>(section1, null, {
+			id: 'encounter-npc-picker',
 			extraCssClasses: ['npc-picker'],
 			label: 'NPC',
 			labelTooltip: 'Selects a preset NPC configuration.',
@@ -275,6 +284,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 
 		this.aiPicker = new EnumPicker<null>(section1, null, {
+			id: 'encounter-ai-picker',
 			extraCssClasses: ['ai-picker'],
 			label: 'AI',
 			labelTooltip: `
@@ -303,6 +313,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 
 		this.levelPicker = new EnumPicker<null>(section1, null, {
+			id: 'encounter-level-picker',
 			label: 'Level',
 			values: [
 				{ name: '63', value: 63 },
@@ -330,6 +341,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.mobTypePicker = new EnumPicker(section1, null, {
+			id: 'encounter-mob-type',
 			label: 'Mob Type',
 			values: mobTypeEnumValues,
 			changedEvent: () => encounter.targetsChangeEmitter,
@@ -340,6 +352,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.tankIndexPicker = new EnumPicker<null>(section1, null, {
+			id: 'target-picker-tanked-by',
 			extraCssClasses: ['threat-metrics'],
 			label: 'Tanked By',
 			labelTooltip:
@@ -364,6 +377,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.statPickers = ALL_TARGET_STATS.map(statData => {
 			const stat = statData.stat;
 			return new NumberPicker(section2, null, {
+				id: `target-picker-stats-${statData.stat}`,
 				inline: true,
 				extraCssClasses: statData.extraCssClasses,
 				label: statNames.get(stat),
@@ -378,6 +392,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 
 		this.swingSpeedPicker = new NumberPicker(section3, null, {
+			id: 'target-picker-swing-speed',
 			label: 'Swing Speed',
 			labelTooltip: 'Time in seconds between auto attacks. Set to 0 to disable auto attacks.',
 			float: true,
@@ -389,6 +404,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.minBaseDamagePicker = new NumberPicker(section3, null, {
+			id: 'target-picker-min-base-damage',
 			label: 'Min Base Damage',
 			labelTooltip: 'Base damage for auto attacks, i.e. lowest roll with 0 AP against a 0-armor Player.',
 			changedEvent: () => encounter.targetsChangeEmitter,
@@ -399,6 +415,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.damageSpreadPicker = new NumberPicker(section3, null, {
+			id: 'target-picker-damage-spread',
 			label: 'Damage Spread',
 			labelTooltip: 'Fractional spread between the minimum and maximum auto-attack damage from this enemy at 0 Attack Power.',
 			float: true,
@@ -410,6 +427,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.dualWieldPicker = new BooleanPicker(section3, null, {
+			id: 'target-picker-dual-wield',
 			label: 'Dual Wield',
 			labelTooltip: 'Uses 2 separate weapons to attack.',
 			inline: true,
@@ -422,6 +440,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.dwMissPenaltyPicker = new BooleanPicker(section3, null, {
+			id: 'target-picker-dw-miss-penalty',
 			label: 'DW Miss Penalty',
 			labelTooltip:
 				'Enables the Dual Wield Miss Penalty (+19% chance to miss) if dual wielding. Bosses in Hyjal/BT/SWP usually have this disabled to stop tanks from avoidance stacking.',
@@ -436,6 +455,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			enableWhen: () => this.getTarget().dualWield,
 		});
 		this.parryHastePicker = new BooleanPicker(section3, null, {
+			id: 'target-picker-parry-haste',
 			label: 'Parry Haste',
 			labelTooltip: 'Whether this enemy will gain parry haste when parrying attacks.',
 			inline: true,
@@ -448,6 +468,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.spellSchoolPicker = new EnumPicker<null>(section3, null, {
+			id: 'target-picker-spell-school',
 			label: 'Spell School',
 			labelTooltip: 'Type of damage caused by auto attacks. This is usually Physical, but some enemies have elemental attacks.',
 			values: [
@@ -562,6 +583,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.boolPicker = null;
 			}
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
+				id: randomUUID(),
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
 				changedEvent: () => this.encounter.targetsChangeEmitter,
@@ -577,6 +599,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.numberPicker = null;
 			}
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
+				id: randomUUID(),
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
 				changedEvent: () => this.encounter.targetsChangeEmitter,
@@ -595,6 +618,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 	rootElem.appendChild(durationGroup);
 
 	new NumberPicker(durationGroup, encounter, {
+		id: 'encounter-duration',
 		label: 'Duration',
 		labelTooltip: 'The fight length for each sim iteration, in seconds.',
 		changedEvent: (encounter: Encounter) => encounter.changeEmitter,
@@ -607,6 +631,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		},
 	});
 	new NumberPicker(durationGroup, encounter, {
+		id: 'encounter-duration-variation',
 		label: 'Duration +/-',
 		labelTooltip:
 			'Adds a random amount of time, in seconds, between [value, -1 * value] to each sim iteration. For example, setting Duration to 180 and Duration +/- to 10 will result in random durations between 170s and 190s.',
@@ -626,6 +651,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		rootElem.appendChild(executeGroup);
 
 		new NumberPicker(executeGroup, encounter, {
+			id: 'encounter-execute-proportion',
 			label: 'Execute Duration 20 (%)',
 			labelTooltip:
 				'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 20% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',
@@ -639,6 +665,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			},
 		});
 		new NumberPicker(executeGroup, encounter, {
+			id: 'encounter-execute-proportion-25',
 			label: 'Execute Duration 25 (%)',
 			labelTooltip:
 				"Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 25% HP) for the purpose of effects like Warlock's Drain Soul.",
@@ -652,6 +679,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			},
 		});
 		new NumberPicker(executeGroup, encounter, {
+			id: 'encounter-execute-proportion-35',
 			label: 'Execute Duration 35 (%)',
 			labelTooltip:
 				'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 35% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',

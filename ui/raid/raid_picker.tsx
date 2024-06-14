@@ -1,6 +1,7 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
-import { BaseModal } from '../core/components/base_modal.js';
+import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
 import { EnumPicker } from '../core/components/enum_picker.js';
 import { MAX_PARTY_SIZE, Party } from '../core/party.js';
@@ -30,6 +31,7 @@ export class RaidPicker extends Component {
 	readonly raid: Raid;
 	readonly partyPickers: Array<PartyPicker>;
 	readonly newPlayerPicker: NewPlayerPicker;
+	readonly playerEditorModal: PlayerEditorModal<Spec>;
 
 	// Hold data about the player being dragged while the drag is happening.
 	currentDragPlayer: Player<any> | null = null;
@@ -49,8 +51,10 @@ export class RaidPicker extends Component {
 		this.rootElem.appendChild(raidControls);
 
 		this.newPlayerPicker = new NewPlayerPicker(this.rootElem, this);
+		this.playerEditorModal = new PlayerEditorModal();
 
 		new EnumPicker<Raid>(raidControls, this.raidSimUI.sim.raid, {
+			id: 'raid-picker-size',
 			label: 'Raid Size',
 			labelTooltip: 'Number of players participating in the sim.',
 			values: [
@@ -67,6 +71,7 @@ export class RaidPicker extends Component {
 		});
 
 		new EnumPicker<NewPlayerPicker>(raidControls, this.newPlayerPicker, {
+			id: 'raid-picker-faction',
 			label: 'Default Faction',
 			labelTooltip: 'Default faction for newly-created players.',
 			values: [
@@ -84,6 +89,7 @@ export class RaidPicker extends Component {
 			...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))),
 		);
 		new EnumPicker<NewPlayerPicker>(raidControls, this.newPlayerPicker, {
+			id: 'raid-picker-gear',
 			label: 'Default Gear',
 			labelTooltip: 'Newly-created players will start with approximate BIS gear from this phase.',
 			values: [...Array(latestPhaseWithAllPresets).keys()].map(val => {
@@ -311,9 +317,15 @@ export class PlayerPicker extends Component {
 	private resultsElem: HTMLElement | null;
 	private dpsResultElem: HTMLElement | null;
 	private referenceDeltaElem: HTMLElement | null;
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
 
 	constructor(parent: HTMLElement, partyPicker: PartyPicker, index: number) {
 		super(parent, 'player-picker-root');
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.index = index;
 		this.raidIndex = partyPicker.index * MAX_PARTY_SIZE + index;
 		this.player = null;
@@ -485,8 +497,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-edit"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Edit"
+						data-tippy-content="Click to Edit"
 					>
 						<i class="fa fa-edit fa-lg"></i>
 					</a>
@@ -495,8 +506,7 @@ export class PlayerPicker extends Component {
 						class="player-copy link-warning"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="Drag to Copy"
+						data-tippy-content="Drag to Copy"
 					>
 						<i class="fa fa-copy fa-lg"></i>
 					</a>
@@ -504,8 +514,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-delete link-danger"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Delete"
+						data-tippy-content="Click to Delete"
 					>
 						<i class="fa fa-times fa-lg"></i>
 					</a>
@@ -561,49 +570,72 @@ export class PlayerPicker extends Component {
 			this.raidPicker.setDragPlayer(this.player, this.raidIndex, type);
 		};
 
-		const editElem = this.rootElem.querySelector('.player-edit') as HTMLElement;
-		const copyElem = this.rootElem.querySelector('.player-copy') as HTMLElement;
-		const deleteElem = this.rootElem.querySelector('.player-delete') as HTMLElement;
+		const editElem = this.rootElem.querySelector<HTMLElement>('.player-edit')!;
+		const copyElem = this.rootElem.querySelector<HTMLElement>('.player-copy')!;
+		const deleteElem = this.rootElem.querySelector<HTMLElement>('.player-delete')!;
 
-		const _editTooltip = Tooltip.getOrCreateInstance(editElem);
-		const _copyTooltip = Tooltip.getOrCreateInstance(copyElem);
-		const deleteTooltip = Tooltip.getOrCreateInstance(deleteElem);
+		const editTooltip = tippy(editElem);
+		const copyTooltip = tippy(copyElem);
+		const deleteTooltip = tippy(deleteElem);
 
-		(this.iconElem as HTMLElement).ondragstart = event => {
+		const onIconDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Swap);
 		};
-		editElem.onclick = _event => {
-			new PlayerEditorModal(this.player as Player<any>);
+		this.iconElem?.addEventListener('dragstart', onIconDragStartHandler, { signal: this.signal });
+
+		const onEditClickHandler = () => {
+			if (this.player) this.raidPicker.playerEditorModal.openEditor(this.player);
 		};
-		copyElem.ondragstart = event => {
+		editElem.addEventListener('click', onEditClickHandler, { signal: this.signal });
+
+		const onCopyDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
 		};
-		deleteElem.onclick = _event => {
-			deleteTooltip.hide();
+		copyElem.addEventListener('dragstart', onCopyDragStartHandler, { signal: this.signal });
+
+		const onDeleteClickHandler = () => {
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
+			this.dispose();
 		};
+		deleteElem.addEventListener('click', onDeleteClickHandler, { signal: this.signal });
+
+		this.addOnDisposeCallback(() => {
+			editTooltip?.destroy();
+			copyTooltip?.destroy();
+			deleteTooltip?.destroy();
+		});
 	}
 }
 
-class PlayerEditorModal extends BaseModal {
-	constructor(player: Player<any>) {
+class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
+	playerEditorRoot: HTMLDivElement;
+
+	constructor() {
 		super(document.body, 'player-editor-modal', {
 			closeButton: { fixed: true },
 			header: false,
+			disposeOnClose: false,
 		});
 
-		this.rootElem.id = 'playerEditorModal';
-		this.body.insertAdjacentHTML(
-			'beforeend',
-			`
-			<div class="player-editor within-raid-sim"></div>
-		`,
-		);
+		const playerEditorElemRef = ref<HTMLDivElement>();
+		const playerEditorElem = (<div ref={playerEditorElemRef} className="player-editor within-raid-sim"></div>) as HTMLDivElement;
 
-		const editorRoot = this.rootElem.getElementsByClassName('player-editor')[0] as HTMLElement;
-		specSimFactories[player.spec]!(editorRoot, player);
+		this.rootElem.id = 'playerEditorModal';
+		this.body.appendChild(playerEditorElem);
+
+		this.playerEditorRoot = playerEditorElemRef.value!;
+	}
+
+	openEditor(player: Player<SpecType>) {
+		this.setData(player);
+		super.open();
+	}
+
+	setData(player: Player<SpecType>) {
+		this.playerEditorRoot.innerHTML = '';
+		specSimFactories[player.spec]?.(this.playerEditorRoot!, player);
 	}
 }
 
@@ -635,9 +667,7 @@ class NewPlayerPicker extends Component {
 						href="javascript:void(0)"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="${matchingPreset.tooltip}"
-						data-bs-html="true"
+						data-tippy-content="${matchingPreset.tooltip}"
 					>
 						<img class="preset-picker-icon player-icon" src="${matchingPreset.iconUrl}"/>
 					</a>
@@ -645,7 +675,7 @@ class NewPlayerPicker extends Component {
 				const presetElem = presetElemFragment.children[0] as HTMLElement;
 				classPresetsContainer.appendChild(presetElem);
 
-				Tooltip.getOrCreateInstance(presetElem);
+				tippy(presetElem);
 
 				presetElem.ondragstart = event => {
 					const eventID = TypedEvent.nextEventID();

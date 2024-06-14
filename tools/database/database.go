@@ -94,6 +94,10 @@ func (db *WowDatabase) MergeItem(src *proto.UIItem) {
 			dst.Stats = src.Stats
 			src.Stats = nil
 		}
+		// Fields don't get overwritten if the new value is a default value and the original value wasn't
+		if src.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
+			dst.FactionRestriction = src.FactionRestriction
+		}
 		googleProto.Merge(dst, src)
 	} else {
 		db.Items[src.Id] = src
@@ -220,6 +224,7 @@ func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResp
 			Icon:          tooltip.GetIcon(),
 			Rank:          int32(tooltip.GetSpellRank()),
 			RequiresLevel: int32(tooltip.GetRequiresLevel()),
+			HasBuff:       tooltip.HasBuff(),
 		}
 	} else if id != 0 {
 		println(fmt.Sprintf("No spell tooltip with id %d", id))

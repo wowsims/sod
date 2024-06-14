@@ -1,6 +1,5 @@
-import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+import tippy from 'tippy.js';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
@@ -58,10 +57,10 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		this.currentValue = this.config.zeroValue;
 
 		if (config.tooltip) {
-			Tooltip.getOrCreateInstance(this.rootElem, {
-				html: true,
-				title: config.tooltip,
+			const tooltip = tippy(this.rootElem, {
+				content: config.tooltip,
 			});
+			this.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
 		this.rootElem.appendChild(
@@ -131,10 +130,10 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			});
 
 			if (valueConfig.tooltip) {
-				Tooltip.getOrCreateInstance(option, {
-					html: true,
-					title: valueConfig.tooltip,
+				const tooltip = tippy(option, {
+					content: valueConfig.tooltip,
 				});
+				this.addOnDisposeCallback(() => tooltip.destroy());
 			}
 		});
 
