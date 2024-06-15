@@ -10,9 +10,6 @@ import (
 const ChainHealRanks = 3
 const ChainHealTargetCount = 3
 
-// 50% reduction per bounce
-const ChainHealBounceCoeff = .5
-
 var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622, 10623}
 var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {416, 477}, {567, 646}}
 var ChainHealSpellCoef = [ChainHealRanks + 1]float64{0, .714, .714, .714}
@@ -51,10 +48,13 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
-	flags := core.SpellFlagHelpful | SpellFlagMaelstrom
+	flags := core.SpellFlagHelpful
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
+
+	// 50% reduction per bounce or 35% with Coherence
+	ChainHealBounceCoeff := core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneCloakCoherence), .65, .5)
 
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 

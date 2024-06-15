@@ -14,6 +14,9 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyBurn()
 	shaman.applyMentalDexterity()
 
+	// Cloak
+	shaman.registerFeralSpiritCD()
+
 	// Chest
 	shaman.applyDualWieldSpec()
 	shaman.applyShieldMastery()
@@ -44,7 +47,8 @@ func (shaman *Shaman) ApplyRunes() {
 
 var BurnFlameShockTargetCount = int32(5)
 var BurnFlameShockDamageBonus = 1.0
-var BurnFlameShockBonusTicks = 2
+var BurnFlameShockBonusTicks = int32(2)
+var BurnSpellPowerPerLevel = int32(2)
 
 func (shaman *Shaman) applyBurn() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHelmBurn) {
@@ -52,10 +56,14 @@ func (shaman *Shaman) applyBurn() {
 	}
 
 	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		shaman.AddStat(stats.SpellDamage, float64(4*shaman.Level))
+		shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
 	}
 
 	// Other parts of burn are handled in flame_shock.go
+}
+
+func (shaman *Shaman) burnFlameShockDamageMultiplier() float64 {
+	return core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneHelmBurn), BurnFlameShockDamageBonus, 0)
 }
 
 func (shaman *Shaman) applyMentalDexterity() {
@@ -63,8 +71,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 		return
 	}
 
-	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
-	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellPower, .30)
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .65)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .20)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",

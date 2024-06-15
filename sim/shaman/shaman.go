@@ -37,6 +37,13 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 
+	if shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit) {
+		shaman.SpiritWolves = &SpiritWolves{
+			SpiritWolf1: shaman.NewSpiritWolf(1),
+			SpiritWolf2: shaman.NewSpiritWolf(2),
+		}
+	}
+
 	return shaman
 }
 
@@ -66,7 +73,8 @@ const (
 	SpellCode_ShamanLavaBurst
 
 	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFlameShock
+	SpellCode_ShamanFlameShockDirect
+	SpellCode_ShamanFlameShockDot
 	SpellCode_ShamanFrostShock
 
 	SpellCode_ShamanMoltenBlast
@@ -148,6 +156,9 @@ type Shaman struct {
 	MoltenBlast       *core.Spell
 	RollingThunder    *core.Spell
 	WaterShield       *core.Spell
+
+	FeralSpirit  *core.Spell
+	SpiritWolves *SpiritWolves
 
 	MaelstromWeaponAura *core.Aura
 	PowerSurgeAura      *core.Aura

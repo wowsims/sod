@@ -252,6 +252,7 @@ export class ActionId {
 			case 'Fireball':
 			case 'Frostfire Bolt':
 			case 'Pyroblast':
+			case 'Flame Shock':
 				if (this.tag == 1) name = `${name} (DoT)`;
 				break;
 			// Channeled Tick Spells
@@ -589,8 +590,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Eye of the Void': ActionId.fromSpellId(402789),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
-	'Spirit Wolf 1': ActionId.fromSpellId(51533),
-	'Spirit Wolf 2': ActionId.fromSpellId(51533),
+	'Spirit Wolf 1': ActionId.fromSpellId(440580),
+	'Spirit Wolf 2': ActionId.fromSpellId(440580),
 };
 
 // https://wowhead.com/classic/hunter-pets

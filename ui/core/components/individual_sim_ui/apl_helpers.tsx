@@ -193,7 +193,8 @@ const actionIdSets: Record<
 				.filter(spell => spell.data.hasDot)
 				.map(actionId => {
 					const baseActionName = actionId.id.name.replace(/ \(Rank \d+\)/g, '');
-					const rankedNameRegex = new RegExp(`${baseActionName} \\(Rank [0-9]+\\)`);
+					// Escape "("" and ")" used to denote (DoT)
+					const rankedNameRegex = new RegExp(`${baseActionName.replace('(', '\\(').replace(')', '\\)')} \\(Rank [0-9]+\\)`);
 					const hasRanks = metadata.getSpells().filter(spell => !!spell.id.name.match(rankedNameRegex)).length > 1;
 					return {
 						value: actionId.id,
