@@ -715,10 +715,6 @@ func (c *Character) ApplyRingRunes() {
 		c.PseudoStats.SwordsSkill += 5
 	}
 
-	if c.HasRuneById(int32(proto.RingRune_RuneRingFeralCombatSpecialization)) {
-		c.PseudoStats.FeralCombatSkill += 5
-	}
-
 	// Other Specializations
 	if c.HasRuneById(int32(proto.RingRune_RuneRingDefenseSpecialization)) {
 		c.AddStat(stats.Defense, 25)
