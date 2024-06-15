@@ -13,6 +13,10 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyGaleWinds()
 	druid.applyGore()
 
+	// Cloak
+	druid.registerStarfallCD()
+	druid.registerSwipeCatSpell()
+
 	// Chest
 	druid.applyFuryOfStormRage()
 	druid.applyWildStrikes()
