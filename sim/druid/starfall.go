@@ -28,6 +28,27 @@ func (druid *Druid) registerStarfallCD() {
 	tickLength := time.Second
 	cooldown := time.Second * 90
 
+	starfallSplashSpell := druid.RegisterSpell(Any, core.SpellConfig{
+		SpellCode:   SpellCode_DruidStarfallSplash,
+		ActionID:    actionID.WithTag(2),
+		SpellSchool: core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoefSplash,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				if aoeTarget != target {
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
+				}
+			}
+		},
+	})
+
 	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		SpellCode:   SpellCode_DruidStarfallTick,
 		ActionID:    actionID.WithTag(1),
@@ -43,6 +64,7 @@ func (druid *Druid) registerStarfallCD() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			starfallSplashSpell.Cast(sim, target)
 		},
 	})
 
@@ -51,7 +73,7 @@ func (druid *Druid) registerStarfallCD() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagNoMetrics | SpellFlagOmen,
+		Flags:       core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.39,
@@ -83,43 +105,7 @@ func (druid *Druid) registerStarfallCD() {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
-				druid.StarfallSplash.Dot(target).Apply(sim)
 			}
-		},
-	})
-
-	starfallSplashTickSpell := druid.RegisterSpell(Any, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfallSplash,
-		ActionID:    actionID.WithTag(2),
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		BonusCoefficient: spellCoefSplash,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if aoeTarget != target {
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
-				}
-			}
-		},
-	})
-
-	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 53190},
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "StarfallSplash",
-			},
-			NumberOfTicks: numberOfTicks,
-			TickLength:    tickLength,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				starfallSplashTickSpell.Cast(sim, target)
-			},
 		},
 	})
 
