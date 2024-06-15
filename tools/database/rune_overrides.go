@@ -79,9 +79,6 @@ var UnimplementedRuneOverrides = []int32{
 	436564, // Cloak - Blunderbuss
 
 	// Shaman
-	// 415096, // Cloak - Coherence
-	// 440569, // Cloak - Storm, Earth, and Fire
-	// 440580, // Cloak - Feral Spirit
 
 	// Warlock
 	440870, // Cloak - Decimation
