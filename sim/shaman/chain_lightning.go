@@ -10,9 +10,6 @@ import (
 const ChainLightningRanks = 4
 const ChainLightningTargetCount = 3
 
-// 30% reduction per bounce
-const ChainLightningBounceCoeff = .7
-
 var ChainLightningSpellId = [ChainLightningRanks + 1]int32{0, 421, 930, 2860, 10605}
 var ChainLightningBaseDamage = [ChainLightningRanks + 1][]float64{{0}, {200, 227}, {288, 323}, {383, 430}, {505, 564}}
 var ChainLightningSpellCoef = [ChainLightningRanks + 1]float64{0, .714, .714, .714, .714}
@@ -55,10 +52,14 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	cooldown := time.Second * 6
 	castTime := time.Millisecond * 2500
 
+	// 30% reduction per bounce or 20% with Coherence
+	ChainLightningBounceCoeff := core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneCloakCoherence), .8, .7)
+
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	overloadChance := .1667
 
 	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
+	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -72,7 +73,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	spell.Rank = rank
 	spell.BonusCoefficient = spellCoeff
 
-	if !isOverload {
+	if !isOverload && !hasStormEarthAndFireRune {
 		spell.Cast.CD = core.Cooldown{
 			Timer:    cdTimer,
 			Duration: cooldown,

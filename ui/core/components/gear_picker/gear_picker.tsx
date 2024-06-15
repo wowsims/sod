@@ -227,9 +227,19 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Items);
 			};
+			const openEnchantSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Enchants);
+			};
+			const openRuneSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Runes);
+			};
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
+			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
+			this.itemElem.runeElem.addEventListener('click', openRuneSelector);
 		});
 
 		player.gearChangeEmitter.on(() => {
