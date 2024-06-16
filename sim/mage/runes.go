@@ -13,6 +13,11 @@ func (mage *Mage) ApplyRunes() {
 	// Helm
 	mage.registerDeepFreezeSpell()
 
+	// CLoak
+	mage.registerArcaneBarrageSpell()
+	// mage.applyOverheat()
+	mage.registerFrozenOrbCD()
+
 	// Chest
 	mage.applyBurnout()
 	mage.applyEnlightenment()
@@ -137,7 +142,7 @@ func (mage *Mage) applyFingersOfFrost() {
 	procChance := 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
-	procAura := mage.RegisterAura(core.Aura{
+	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
 		Duration:  time.Second * 15,
@@ -174,16 +179,16 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
-		Label:    "Fingers of Frost Rune",
+	mage.RegisterAura(core.Aura{
+		Label:    "Fingers of Frost Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < procChance {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, 2)
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}
 		},
 	})
@@ -261,12 +266,12 @@ func (mage *Mage) applyMissileBarrage() {
 		return
 	}
 
+	procChance := .20
 	procChanceArcaneBlast := .40
-	procChanceFireballFrostbolt := .20
 	buffDuration := time.Second * 15
 
 	arcaneMissilesSpells := []*core.Spell{}
-	affectedSpellCodes := []int32{SpellCode_MageArcaneBlast, SpellCode_MageFireball, SpellCode_MageFrostbolt}
+	affectedSpellCodes := []int32{SpellCode_MageArcaneBarrage, SpellCode_MageArcaneBlast, SpellCode_MageFireball, SpellCode_MageFrostbolt}
 
 	mage.MissileBarrageAura = mage.RegisterAura(core.Aura{
 		Label:    "Missile Barrage",
@@ -304,7 +309,7 @@ func (mage *Mage) applyMissileBarrage() {
 				return
 			}
 
-			procChance := procChanceFireballFrostbolt
+			procChance := procChance
 			if spell.SpellCode == SpellCode_MageArcaneBlast {
 				procChance = procChanceArcaneBlast
 			}

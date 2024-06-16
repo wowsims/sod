@@ -53,9 +53,6 @@ var UnimplementedRuneOverrides = []int32{
 	440533, // Cloak - Hit and Run
 
 	// Mage
-	400610, // Cloak - Arcane Barrage
-	400615, // Cloak - Overheat
-	440802, // Cloak - Frozen Orb
 
 	// Paladin
 	440658, // Cloak - Shield of Righteousness
