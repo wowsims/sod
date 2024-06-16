@@ -171,7 +171,6 @@ func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	}
 }
 
-// TODO: Update cut to the chase to refresh
 func (rogue *Rogue) registerBladeDance() {
 	if !rogue.HasRune(proto.RogueRune_RuneBladeDance) {
 		return
@@ -250,7 +249,7 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	rogue.PseudoStats.ReducedCritTakenChance += 6
 
 	// Replace Feint with Tease
-	// Warrior sim from wrath did not implement it. May implement later
+	// TODO: Warrior sim from wrath did not implement it. May implement later
 
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
 	// Implemented in the relevant files
