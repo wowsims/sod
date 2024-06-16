@@ -152,9 +152,22 @@ func (rogue *Rogue) tryHonorAmongThievesProc(sim *core.Simulation, icd core.Cool
 // Apply the effects of the Cut to the Chase talent
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	// Rune check is done in envenom.go and eviscerate.go
-	if rogue.SliceAndDiceAura.IsActive() {
+	refreshSlice := rogue.SliceAndDiceAura.IsActive()
+	refreshBladeDance := rogue.BladeDanceAura.IsActive()
+	// Refresh the lowest duration of SnD or Blade Dance
+	if refreshBladeDance && refreshSlice {
+		if rogue.SliceAndDiceAura.RemainingDuration(sim) < rogue.BladeDanceAura.RemainingDuration(sim) {
+			refreshSlice = false
+		} else {
+			refreshBladeDance = false
+		}
+	}
+	if refreshSlice {
 		rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 		rogue.SliceAndDiceAura.Activate(sim)
+	} else if refreshBladeDance {
+		rogue.BladeDanceAura.Duration = rogue.bladeDanceDurations[5]
+		rogue.BladeDanceAura.Activate(sim)
 	}
 }
 
