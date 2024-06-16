@@ -95,6 +95,7 @@
 		@include horizontal-right;
 		display: flex;
 		justify-content: center;
+		pointer-events: none;
 
 		.item-picker-rune-icon {
 			width: 1.75rem;

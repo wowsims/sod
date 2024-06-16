@@ -40,7 +40,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagFocusable | core.SpellFlagAPL,
+		Flags:       SpellFlagShaman | SpellFlagFocusable | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

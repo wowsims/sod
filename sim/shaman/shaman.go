@@ -11,7 +11,7 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagElectric  = core.SpellFlagAgentReserved1
+	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagFocusable = core.SpellFlagAgentReserved3
 	SpellFlagMaelstrom = core.SpellFlagAgentReserved4

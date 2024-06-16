@@ -22,6 +22,7 @@ func (shaman *Shaman) registerFeralSpiritCD() {
 
 	shaman.FeralSpirit = shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
+		Flags:    SpellFlagShaman,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,

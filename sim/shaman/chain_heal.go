@@ -41,8 +41,8 @@ func (shaman *Shaman) registerChainHealSpell() {
 
 func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	spellId := ChainHealSpellId[rank]
-	baseHealingLow := ChainHealBaseHealing[rank][0]
-	baseHealingHigh := ChainHealBaseHealing[rank][1]
+	baseHealingLow := ChainHealBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := ChainHealBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := ChainHealSpellCoef[rank]
 	castTime := ChainHealCastTime[rank]
 	manaCost := ChainHealManaCost[rank]
@@ -71,8 +71,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -90,7 +88,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 

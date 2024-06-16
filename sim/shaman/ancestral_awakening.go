@@ -17,13 +17,13 @@ func (shaman *Shaman) applyAncestralAwakening() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+		Flags:       SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL,
 
-		DamageMultiplier: 1 * (1 + .02*float64(shaman.Talents.Purification)),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealHealing(sim, target, shaman.ancestralHealingAmount, spell.OutcomeHealing)
+			spell.CalcAndDealHealing(sim, target, shaman.ancestralHealingAmount*(1+shaman.purificationHealingModifier()), spell.OutcomeHealing)
 		},
 	})
 }
