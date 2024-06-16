@@ -1,6 +1,7 @@
 {
   "type": "TypeAPL",
   "prepullActions": [
+    {"action":{"activateAura":{"auraId":{"spellId":768}}},"doAtValue":{"const":{"val":"-10s"}}},
     {"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-8s"}}}
   ],
   "priorityList": [

@@ -42,10 +42,17 @@ var rakeSpells = []RakeRankInfo{
 	},
 }
 
-// SoD balance passive EFFECT1 and EFFECT2 mod for Rake
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
 // Mod Eff# should be base value only.
-var baseDmgMultiplier = 1.5
+// Modifies Effect #1's Value +126%:
+// Modifies Effect #2's Value +126%:
+const RakeBaseDmgMultiplier = 2.25
+
+// See https://www.wowhead.com/classic/news/development-notes-for-phase-4-ptr-season-of-discovery-new-runes-class-changes-342896
+// - Rake and Rip damage contributions from attack power increased by roughly 50%.
+// PTR testing comes out to .0993377 AP scaling
+// damageCoef := .04
+const RakeDamageCoef = 0.0993377
 
 func (druid *Druid) registerRakeSpell() {
 	// Add highest available rake rank for level.
@@ -59,8 +66,8 @@ func (druid *Druid) registerRakeSpell() {
 }
 
 func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
-	damageInitial := rakeRank.initialDamage * baseDmgMultiplier
-	damageDotTick := rakeRank.dotTickDamage * baseDmgMultiplier
+	damageInitial := rakeRank.initialDamage * RakeBaseDmgMultiplier
+	damageDotTick := rakeRank.dotTickDamage * RakeBaseDmgMultiplier
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: rakeRank.id},
@@ -82,6 +89,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 
 		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
 		ThreatMultiplier: 1,
+		BonusCoefficient: RakeDamageCoef,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -90,7 +98,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
+				damage := damageDotTick
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

@@ -13,6 +13,10 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyGaleWinds()
 	druid.applyGore()
 
+	// Cloak
+	druid.registerStarfallCD()
+	druid.registerSwipeCatSpell()
+
 	// Chest
 	druid.applyFuryOfStormRage()
 	druid.applyWildStrikes()
@@ -69,7 +73,7 @@ func (druid *Druid) applyGore() {
 
 const (
 	Gore_BearResetProcChance = .15
-	Gore_CatResetProcChance  = .05
+	Gore_CatResetProcChance  = .15
 )
 
 // TODO: Bear spells not implemented: MangleBear, Swipe, Maul

@@ -71,6 +71,8 @@ func (druid *Druid) registerMangleCatSpell() {
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
+	weaponMulti := 2.7
+
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409828},
@@ -90,7 +92,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 2.7,
+		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * weaponMulti,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

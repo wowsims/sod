@@ -7,15 +7,21 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
+// Modifies Effect #1's Value -24%:
+// Modifies Effect #2's Value +76:
+const ShredBonusDmgMultiplier = 1.75 // multiplier +75%
+const ShredFlatDmgMultiplier = .075  // multiplier -25%
+
 func (druid *Druid) registerShredSpell() {
-	damageMultiplier := 2.25
+	damageMultiplier := 2.25 + ShredBonusDmgMultiplier
 
 	flatDamageBonus := map[int32]float64{
 		25: 24,
 		40: 44,
 		50: 64,
 		60: 80,
-	}[druid.Level]
+	}[druid.Level] * ShredFlatDmgMultiplier
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
@@ -24,10 +30,6 @@ func (druid *Druid) registerShredSpell() {
 		damageMultiplier *= 1.02
 		flatDamageBonus *= 1.02
 	}
-
-	// cp. https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
-	damageMultiplier += 0.75 // multiplier +75%
-	flatDamageBonus *= 0.75  // base damage -25%
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		SpellCode: SpellCode_DruidShred,

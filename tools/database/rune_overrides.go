@@ -17,8 +17,6 @@ var RuneOverrides = []*proto.UIRune{
 	{Id: 442887, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassHunter, proto.Class_ClassRogue, proto.Class_ClassPriest, proto.Class_ClassShaman, proto.Class_ClassMage, proto.Class_ClassWarlock, proto.Class_ClassDruid}},
 	// Ring - Defense Specialization
 	{Id: 459312, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassPaladin, proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassWarlock, proto.Class_ClassDruid}},
-	// Ring - Feral Combat Specialization
-	{Id: 453622, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
 	// Ring - Fire Specialization
 	{Id: 442894, ClassAllowlist: []proto.Class{proto.Class_ClassShaman, proto.Class_ClassMage, proto.Class_ClassWarlock}},
 	// Ring - Fist Weapon Specialization
@@ -48,10 +46,6 @@ var RuneOverrides = []*proto.UIRune{
 // Remove runes as you implement them.
 var UnimplementedRuneOverrides = []int32{
 	// Druid
-	453622, // Ring - Feral Combat
-	439510, // Cloak - Improved Swipe
-	439733, // Cloak - Tree of Life
-	439748, // Cloak - Starfall
 
 	// Hunter
 	440520, // Cloak - Improved Volley
