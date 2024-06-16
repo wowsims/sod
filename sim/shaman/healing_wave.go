@@ -40,8 +40,8 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 
 func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	spellId := HealingWaveSpellId[rank]
-	baseHealingLow := HealingWaveBaseHealing[rank][0]
-	baseHealingHigh := HealingWaveBaseHealing[rank][1]
+	baseHealingLow := HealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := HealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := HealingWaveSpellCoef[rank]
 	castTime := HealingWaveCastTime[rank]
 	manaCost := HealingWaveManaCost[rank]
@@ -67,8 +67,6 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -90,7 +88,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 		CritDamageBonus: shaman.elementalFury(),
 
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		BonusCoefficient: spellCoeff,
 

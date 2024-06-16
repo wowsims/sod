@@ -36,7 +36,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
+		Flags:       SpellFlagShaman | core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: .063,

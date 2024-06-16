@@ -27,7 +27,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	cooldown := time.Second * 8
 	manaCost := .10
 
-	flags := SpellFlagFocusable | SpellFlagMaelstrom
+	flags := SpellFlagShaman | SpellFlagFocusable | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}

@@ -49,13 +49,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatStrength,
 		Stat.StatAttackPower,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		return {
-			talents: stats,
-		};
-	},
+	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
+	// },
 
 	defaults: {
 		race: Race.RaceTroll,

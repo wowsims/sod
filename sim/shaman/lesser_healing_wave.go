@@ -30,8 +30,8 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 
 func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig {
 	spellId := LesserHealingWaveSpellId[rank]
-	baseHealingLow := LesserHealingWaveBaseHealing[rank][0]
-	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1]
+	baseHealingLow := LesserHealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := LesserHealingWaveSpellCoef[rank]
 	castTime := LesserHealingWaveCastTime[rank]
 	manaCost := LesserHealingWaveManaCost[rank]
@@ -50,8 +50,6 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -69,7 +67,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		BonusCoefficient: spellCoeff,
 
