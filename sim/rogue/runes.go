@@ -208,18 +208,19 @@ func (rogue *Rogue) registerBladeDance() {
 	rogue.BladeDance = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
 		SpellSchool:  core.SpellSchoolPhysical,
-		Flags:        core.SpellFlagAPL, // TODO: Add all flags
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 25,
+			Cost:   25,
+			Refund: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},
 			IgnoreHaste: true,
-			ModifyCast: func(s1 *core.Simulation, spell *core.Spell, cast *core.Cast) {
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				spell.SetMetricsSplit(spell.Unit.ComboPoints())
 			},
 		},
