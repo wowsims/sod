@@ -8,8 +8,17 @@ import (
 )
 
 func (druid *Druid) ApplyTalents() {
+	// Balance
+	druid.registerMoonkinFormSpell()
+	druid.applyNaturesGrace()
+	druid.applyOmenOfClarity()
+
 	// SoD tuning made this all damage, not just physical damage
 	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
+
+	// Feral
+	druid.applyBloodFrenzy()
+
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
 	if druid.Talents.HeartOfTheWild > 0 {
@@ -17,11 +26,10 @@ func (druid *Druid) ApplyTalents() {
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
 	}
 
-	druid.setupNaturesGrace()
-	druid.registerMoonkinFormSpell()
-	druid.applyOmenOfClarity()
-	druid.applyBloodFrenzy()
+	// Restoration
 	druid.applyFuror()
+
+	druid.PseudoStats.SpiritRegenRateCasting *= 1 - .05*float64(druid.Talents.Reflection)
 }
 
 func (druid *Druid) ThickHideMultiplier() float64 {
@@ -39,7 +47,7 @@ func (druid *Druid) BearArmorMultiplier() float64 {
 	return 4.7 * sotfMulti
 }
 
-func (druid *Druid) setupNaturesGrace() {
+func (druid *Druid) applyNaturesGrace() {
 	if !druid.Talents.NaturesGrace {
 		return
 	}

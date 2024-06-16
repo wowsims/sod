@@ -72,5 +72,7 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 				aura.AddStack(sim)
 			}
 		},
+
+		RelatedAuras: []core.AuraArray{mage.ImprovedScorchAuras},
 	}
 }
