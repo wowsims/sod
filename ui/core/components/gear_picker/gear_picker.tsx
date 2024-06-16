@@ -3,7 +3,6 @@ import { ref } from 'tsx-vanilla';
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { ItemSlot } from '../../proto/common';
-import { UIRune } from '../../proto/ui.js';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription } from '../../proto_utils/enchants';
 import { EquippedItem } from '../../proto_utils/equipped_item';
@@ -15,6 +14,8 @@ import { Component } from '../component';
 import { GearData } from './item_list';
 import SelectorModal, { SelectorModalTabs } from './selector_modal';
 import { getEmptySlotIconUrl } from './utils';
+
+const emptyRuneImageURL = 'https://wow.zamimg.com/images/wow/icons/medium/inventoryslot_empty.jpg';
 
 export default class GearPicker extends Component {
 	// ItemSlot is used as the index
@@ -65,6 +66,7 @@ export class ItemRenderer extends Component {
 	private readonly player: Player<any>;
 
 	readonly iconElem: HTMLAnchorElement;
+	readonly runeIconElem: HTMLImageElement;
 	readonly nameElem: HTMLAnchorElement;
 	readonly ilvlElem: HTMLSpanElement;
 	readonly enchantElem: HTMLAnchorElement;
@@ -75,17 +77,19 @@ export class ItemRenderer extends Component {
 		this.player = player;
 
 		const iconElem = ref<HTMLAnchorElement>();
+		const runeIconElem = ref<HTMLImageElement>();
 		const nameElem = ref<HTMLAnchorElement>();
 		const ilvlElem = ref<HTMLSpanElement>();
 		const enchantElem = ref<HTMLAnchorElement>();
 		const runeElem = ref<HTMLAnchorElement>();
-		const sce = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<>
 				<div className="item-picker-icon-wrapper">
 					<span className="item-picker-ilvl" ref={ilvlElem} />
 					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<div ref={sce} className="item-picker-sockets-container"></div>
+					<div className="item-picker-rune-container">
+						<img ref={runeIconElem} className="item-picker-rune-icon hide" />
+					</div>
 				</div>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
@@ -96,6 +100,7 @@ export class ItemRenderer extends Component {
 		);
 
 		this.iconElem = iconElem.value!;
+		this.runeIconElem = runeIconElem.value!;
 		this.nameElem = nameElem.value!;
 		this.ilvlElem = ilvlElem.value!;
 		this.enchantElem = enchantElem.value!;
@@ -115,8 +120,10 @@ export class ItemRenderer extends Component {
 		this.runeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
+		this.runeIconElem.src = emptyRuneImageURL;
 
 		this.nameElem.innerText = '';
+		this.ilvlElem.innerText = '';
 		this.enchantElem.innerText = '';
 		this.runeElem.innerText = '';
 	}
@@ -165,36 +172,24 @@ export class ItemRenderer extends Component {
 
 		const isRuneSlot = itemTypeToSlotsMap[newItem._item.type]?.some(slot => this.player.sim.db.hasRuneBySlot(slot, this.player.getClass()));
 		if (isRuneSlot) {
-			this.iconElem.appendChild(this.createRuneContainer(newItem.rune));
+			this.runeIconElem.classList.remove('hide');
+
+			console.log(isRuneSlot, newItem.rune);
 
 			if (newItem.rune) {
+				ActionId.fromSpellId(newItem.rune.id)
+					.fill()
+					.then(filledId => (this.runeIconElem.src = filledId.iconUrl));
 				this.runeElem.classList.remove('hide');
 				this.runeElem.textContent = newItem.rune.name;
 				this.runeElem.href = ActionId.makeSpellUrl(newItem.rune.id);
 				this.runeElem.dataset.wowhead = `domain=classic&spell=${newItem.rune.id}`;
 				this.runeElem.dataset.whtticon = 'false';
+			} else {
+				this.runeIconElem.src = emptyRuneImageURL;
 			}
 		}
 	}
-
-	private createRuneContainer = (rune: UIRune | null) => {
-		const runeIconElem = ref<HTMLImageElement>();
-		const runeContainer = (
-			<div className="item-picker-rune-container">
-				<img ref={runeIconElem} className="item-picker-rune-icon" />
-			</div>
-		);
-
-		if (rune) {
-			ActionId.fromSpellId(rune.id)
-				.fill()
-				.then(filledId => (runeIconElem.value!.src = filledId.iconUrl));
-		} else {
-			runeIconElem.value!.src = 'https://wow.zamimg.com/images/wow/icons/medium/inventoryslot_empty.jpg';
-		}
-
-		return runeContainer;
-	};
 }
 
 export class ItemPicker extends Component {

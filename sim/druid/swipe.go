@@ -7,64 +7,68 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// const SwipeRanks = 5
+const SwipeRanks = 5
 
-// var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
-// var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
-// var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
+var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
+var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
+var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 
-// func (druid *Druid) registerSwipeBearSpell() {
-// 	druid.SwipeBear = make([]*DruidSpell, SwipeRanks+1)
+// See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
+// Modifies Threat +101%:
+const SwipeThreatMultiplier = 2.0
 
-// 	for rank := 1; rank <= SwipeRanks; rank++ {
-// 		level := SwipeLevel[rank]
+func (druid *Druid) registerSwipeBearSpell() {
+	druid.SwipeBear = make([]*DruidSpell, SwipeRanks+1)
 
-// 		if int32(level) <= druid.Level {
-// 			spellID := SwipeSpellId[rank]
-// 			baseDamage := SwipeBaseDamage[rank]
+	for rank := 1; rank <= SwipeRanks; rank++ {
+		level := SwipeLevel[rank]
 
-// 			targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 6, 3)
-// 			numHits := min(targetCount, druid.Env.GetNumTargets())
-// 			results := make([]*core.SpellResult, numHits)
+		if int32(level) <= druid.Level {
+			spellID := SwipeSpellId[rank]
+			baseDamage := SwipeBaseDamage[rank]
 
-// 			druid.SwipeBear[rank] = druid.RegisterSpell(Bear, core.SpellConfig{
-// 				ActionID:    core.ActionID{SpellID: spellID},
-// 				SpellSchool: core.SpellSchoolPhysical,
-// 				DefenseType: core.DefenseTypeMelee,
-// 				ProcMask:    core.ProcMaskMeleeMHSpecial,
-// 				Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 6, 3)
+			numHits := min(targetCount, druid.Env.GetNumTargets())
+			results := make([]*core.SpellResult, numHits)
 
-// 				Rank:          rank,
-// 				RequiredLevel: level,
+			druid.SwipeBear[rank] = druid.RegisterSpell(Bear, core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: spellID},
+				SpellSchool: core.SpellSchoolPhysical,
+				DefenseType: core.DefenseTypeMelee,
+				ProcMask:    core.ProcMaskMeleeMHSpecial,
+				Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
-// 				RageCost: core.RageCostOptions{
-// 					Cost: 20 - float64(druid.Talents.Ferocity),
-// 				},
+				Rank:          rank,
+				RequiredLevel: level,
 
-// 				Cast: core.CastConfig{
-// 					DefaultCast: core.Cast{
-// 						GCD: core.GCDDefault,
-// 					},
-// 					IgnoreHaste: true,
-// 				},
+				RageCost: core.RageCostOptions{
+					Cost: 20 - float64(druid.Talents.Ferocity),
+				},
 
-// 				DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-// 				ThreatMultiplier: 1,
+				Cast: core.CastConfig{
+					DefaultCast: core.Cast{
+						GCD: core.GCDDefault,
+					},
+					IgnoreHaste: true,
+				},
 
-// 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 					for idx := range results {
-// 						results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-// 						target = sim.Environment.NextTargetUnit(target)
-// 					}
+				DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
+				ThreatMultiplier: SwipeThreatMultiplier,
 
-// 					for _, result := range results {
-// 						spell.DealDamage(sim, result)
-// 					}
-// 				},
-// 			})
-// 		}
-// 	}
-// }
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					for idx := range results {
+						results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+						target = sim.Environment.NextTargetUnit(target)
+					}
+
+					for _, result := range results {
+						spell.DealDamage(sim, result)
+					}
+				},
+			})
+		}
+	}
+}
 
 func (druid *Druid) registerSwipeCatSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe) {

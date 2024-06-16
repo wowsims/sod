@@ -73,7 +73,7 @@ func (druid *Druid) applyGore() {
 
 const (
 	Gore_BearResetProcChance = .15
-	Gore_CatResetProcChance  = .05
+	Gore_CatResetProcChance  = .15
 )
 
 // TODO: Bear spells not implemented: MangleBear, Swipe, Maul
