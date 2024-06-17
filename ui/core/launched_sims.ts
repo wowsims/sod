@@ -9,6 +9,7 @@ export enum LaunchStatus {
 	Unlaunched,
 	Alpha,
 	Beta,
+	Launched,
 }
 
 export type SimStatus = {
@@ -24,11 +25,11 @@ export const raidSimStatus: SimStatus = {
 // This list controls which links are shown in the top-left dropdown menu.
 export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	[Spec.SpecBalanceDruid]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecFeralDruid]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecFeralTankDruid]: {
@@ -40,11 +41,11 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecElementalShaman]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecEnhancementShaman]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecRestorationShaman]: {
@@ -53,15 +54,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	[Spec.SpecHunter]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecMage]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecRogue]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecTankRogue]: {
 		phase: Phase.Phase3,
@@ -77,7 +78,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	[Spec.SpecRetributionPaladin]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecHealingPriest]: {
 		phase: Phase.Phase1,
@@ -85,19 +86,19 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	[Spec.SpecShadowPriest]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecWarlock]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecTankWarlock]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecWarrior]: {
 		phase: Phase.Phase3,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecProtectionWarrior]: {
 		phase: Phase.Phase1,
