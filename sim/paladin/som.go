@@ -14,10 +14,6 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
-	if !paladin.hasRune(proto.PaladinRune_RuneUtilitySealOfMartyrdom) {
-		return
-	}
-
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802}) // SoM's mana restore
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
