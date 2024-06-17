@@ -93,8 +93,7 @@ export const TalentPresets = {
 	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultTalents = TalentPresets[Phase.Phase3][0];
+export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

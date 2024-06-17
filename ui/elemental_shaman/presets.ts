@@ -94,7 +94,7 @@ export const TalentPresets = {
 	[Phase.Phase5]: [],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase3][0];
+export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

@@ -217,17 +217,17 @@ export const TalentPresets = {
 	[Phase.Phase5]: [],
 };
 
-export const DefaultTalentsArcane = TalentPresets[Phase.Phase3][0];
-export const DefaultTalentsFire = TalentPresets[Phase.Phase3][1];
-export const DefaultTalentsFrost = TalentPresets[Phase.Phase3][2];
-// export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase3][2];
+export const DefaultTalentsArcane = TalentPresets[Phase.Phase4][0];
+export const DefaultTalentsFire = TalentPresets[Phase.Phase4][1];
+export const DefaultTalentsFrost = TalentPresets[Phase.Phase4][2];
+export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase4][3];
 
 export const DefaultTalents = DefaultTalentsFire;
 
 // export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', DefaultGearArcane, DefaultTalentsArcane, DefaultAPLs[50][0]);
-export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', DefaultGearFire, DefaultTalentsFire, DefaultAPLs[50][1]);
-export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost FFB', DefaultGearFrost, DefaultTalentsFrost, DefaultAPLs[50][2]);
-export const PresetBuildFrostfire = PresetUtils.makePresetBuild('Fire FFB', DefaultGearFrostfire, DefaultTalentsFire, DefaultAPLs[50][1]);
+export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', DefaultGearFire, DefaultTalentsFire, DefaultAPLs[60][1]);
+export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost FFB', DefaultGearFrost, DefaultTalentsFrost, DefaultAPLs[60][2]);
+export const PresetBuildFrostfire = PresetUtils.makePresetBuild('Fire FFB', DefaultGearFrostfire, DefaultTalentsFrostfire, DefaultAPLs[60][3]);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
