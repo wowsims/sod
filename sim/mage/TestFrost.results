@@ -104,16 +104,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 1.20505
+  weights: 0
+  weights: 1.07683
+  weights: 0.12822
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 10.81177
   weights: 0
   weights: 0
   weights: 0
@@ -153,15 +153,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 1.1981
+  weights: 0
+  weights: 1.10725
+  weights: 0.09085
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: -15.26222
   weights: 0
   weights: 0
   weights: 0
