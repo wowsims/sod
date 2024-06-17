@@ -13,6 +13,11 @@ func (mage *Mage) ApplyRunes() {
 	// Helm
 	mage.registerDeepFreezeSpell()
 
+	// CLoak
+	mage.registerArcaneBarrageSpell()
+	// mage.applyOverheat()
+	mage.registerFrozenOrbCD()
+
 	// Chest
 	mage.applyBurnout()
 	mage.applyEnlightenment()
@@ -137,7 +142,7 @@ func (mage *Mage) applyFingersOfFrost() {
 	procChance := 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
-	procAura := mage.RegisterAura(core.Aura{
+	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
 		Duration:  time.Second * 15,
@@ -154,7 +159,7 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || !spell.SpellSchool.Matches(core.SpellSchoolFrost) {
 				return
 			}
 
@@ -174,16 +179,16 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
-		Label:    "Fingers of Frost Rune",
+	mage.RegisterAura(core.Aura{
+		Label:    "Fingers of Frost Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < procChance {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, 2)
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}
 		},
 	})
@@ -205,7 +210,7 @@ func (mage *Mage) applyHotStreak() {
 	actionID := core.ActionID{SpellID: 48108}
 
 	pyroblastSpells := []*core.Spell{}
-	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBomb}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBombExplosion}
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
@@ -222,11 +227,10 @@ func (mage *Mage) applyHotStreak() {
 		},
 	})
 
-	procAura := mage.RegisterAura(core.Aura{
-		Label:     "Heating Up",
-		ActionID:  actionID.WithTag(1),
-		MaxStacks: 2,
-		Duration:  time.Hour,
+	heatingUpAura := mage.RegisterAura(core.Aura{
+		Label:    "Heating Up",
+		ActionID: actionID.WithTag(1),
+		Duration: time.Hour,
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -241,16 +245,32 @@ func (mage *Mage) applyHotStreak() {
 			}
 
 			if !result.DidCrit() {
-				procAura.Deactivate(sim)
+				if heatingUpAura.IsActive() {
+					heatingUpAura.Deactivate(sim)
+				}
+
 				return
 			}
 
-			if procAura.GetStacks() == 1 {
-				procAura.Deactivate(sim)
+			if heatingUpAura.IsActive() {
+				heatingUpAura.Deactivate(sim)
 				mage.HotStreakAura.Activate(sim)
+			} else if mage.HotStreakAura.IsActive() {
+				// When batching a Scorch crit into an instant Pyro, the Pyro consumes Hot Streak before the Scorch hits, so the Scorch re-applies Heating Up
+				// We can replicate this by adding a 1ms delay then checking the state of the auras again.
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Millisecond*1,
+					OnAction: func(sim *core.Simulation) {
+						if heatingUpAura.IsActive() {
+							heatingUpAura.Deactivate(sim)
+							mage.HotStreakAura.Activate(sim)
+						} else {
+							heatingUpAura.Activate(sim)
+						}
+					},
+				})
 			} else {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				heatingUpAura.Activate(sim)
 			}
 		},
 	})
@@ -261,12 +281,12 @@ func (mage *Mage) applyMissileBarrage() {
 		return
 	}
 
+	procChance := .20
 	procChanceArcaneBlast := .40
-	procChanceFireballFrostbolt := .20
 	buffDuration := time.Second * 15
 
 	arcaneMissilesSpells := []*core.Spell{}
-	affectedSpellCodes := []int32{SpellCode_MageArcaneBlast, SpellCode_MageFireball, SpellCode_MageFrostbolt}
+	affectedSpellCodes := []int32{SpellCode_MageArcaneBarrage, SpellCode_MageArcaneBlast, SpellCode_MageFireball, SpellCode_MageFrostbolt}
 
 	mage.MissileBarrageAura = mage.RegisterAura(core.Aura{
 		Label:    "Missile Barrage",
@@ -304,7 +324,7 @@ func (mage *Mage) applyMissileBarrage() {
 				return
 			}
 
-			procChance := procChanceFireballFrostbolt
+			procChance := procChance
 			if spell.SpellCode == SpellCode_MageArcaneBlast {
 				procChance = procChanceArcaneBlast
 			}

@@ -825,8 +825,8 @@ export class Timeline extends ResultComponent {
 				<div className="timeline-tooltip">
 					<span>
 						{castLog.actionId!.name} from {castLog.timestamp.toFixed(2)}s to {(castLog.timestamp + castLog.castTime).toFixed(2)}s (
-						{castLog.castTime > 0 && `${castLog.castTime.toFixed(2)}s, `} {castLog.effectiveTime.toFixed(2)}s GCD Time)
-						{travelTimeStr.length > 0 && travelTimeStr}
+						{castLog.castTime > 0 && `${castLog.castTime.toFixed(2)}s, `}
+						{castLog.effectiveTime > 0 && `${castLog.effectiveTime.toFixed(2)}s GCD Time`}){travelTimeStr.length > 0 && travelTimeStr}
 					</span>
 					{castLog.damageDealtLogs.length > 0 && (
 						<ul className="rotation-timeline-cast-damage-list">

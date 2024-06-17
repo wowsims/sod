@@ -602,6 +602,7 @@ export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/
 
 const petNameToActionId: Record<string, ActionId> = {
 	'Eye of the Void': ActionId.fromSpellId(402789),
+	'Frozen Orb': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
 	'Spirit Wolf 1': ActionId.fromSpellId(440580),

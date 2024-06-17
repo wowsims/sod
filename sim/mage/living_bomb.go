@@ -28,7 +28,7 @@ func (mage *Mage) registerLivingBombSpell() {
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID.WithTag(1),
-		SpellCode:   SpellCode_MageLivingBomb,
+		SpellCode:   SpellCode_MageLivingBombExplosion,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -39,9 +39,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		BonusCoefficient: explosionCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseExplosionDamage, spell.OutcomeMagicCrit)
-			}
+			spell.CalcAndDealDamage(sim, target, baseExplosionDamage, spell.OutcomeMagicCrit)
 		},
 	})
 
@@ -67,7 +65,9 @@ func (mage *Mage) registerLivingBombSpell() {
 			Aura: core.Aura{
 				Label: "Living Bomb (DoT)",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					livingBombExplosionSpell.Cast(sim, aura.Unit)
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						livingBombExplosionSpell.Cast(sim, aoeTarget)
+					}
 				},
 			},
 
