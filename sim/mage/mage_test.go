@@ -143,6 +143,23 @@ func TestFrostFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase4TalentsFireFFB,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_ffb"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 

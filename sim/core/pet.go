@@ -241,7 +241,7 @@ func (pet *Pet) Disable(sim *Simulation) {
 	pet.enabled = false
 
 	// If a pet is immediately re-summoned it might try to use GCD, so we need to clear it.
-	pet.Hardcast = &Hardcast{}
+	pet.Hardcast = Hardcast{}
 
 	if pet.timeoutAction != nil {
 		pet.timeoutAction.Cancel(sim)

@@ -138,7 +138,7 @@ type Unit struct {
 	// Used for applying the effect of a hardcast spell when casting finishes.
 	// For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.
-	Hardcast *Hardcast
+	Hardcast Hardcast
 
 	// GCD-related PendingActions.
 	gcdAction              *PendingAction
@@ -505,7 +505,7 @@ func (unit *Unit) finalize() {
 func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.enabled = true
 	unit.resetCDs(sim)
-	if unit.Hardcast != nil {
+	if &unit.Hardcast != nil {
 		unit.Hardcast.Expires = startingCDTime
 	}
 	unit.ChanneledDot = nil
@@ -553,7 +553,7 @@ func (unit *Unit) startPull(sim *Simulation) {
 }
 
 func (unit *Unit) doneIteration(sim *Simulation) {
-	unit.Hardcast = &Hardcast{}
+	unit.Hardcast = Hardcast{}
 
 	unit.manaBar.doneIteration(sim)
 	unit.rageBar.doneIteration()
