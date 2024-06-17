@@ -212,7 +212,7 @@ func TestFrost(t *testing.T) {
 // 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_ffb"),
 // 			Buffs:       core.FullBuffsPhase3,
 // 			Consumes:    Phase3Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+// 			SpecOptions: core.SpecOptionsCombo{Label: "Frostfire", SpecOptions: PlayerOptionsFrostFire},
 
 // 			ItemFilter:      ItemFilters,
 // 			EPReferenceStat: proto.Stat_StatSpellPower,
