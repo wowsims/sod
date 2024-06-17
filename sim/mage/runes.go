@@ -210,7 +210,7 @@ func (mage *Mage) applyHotStreak() {
 	actionID := core.ActionID{SpellID: 48108}
 
 	pyroblastSpells := []*core.Spell{}
-	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBomb}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBombExplosion}
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
@@ -240,7 +240,7 @@ func (mage *Mage) applyHotStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(triggerSpellCodes, spell.SpellCode) || mage.HotStreakAura.IsActive() {
+			if !slices.Contains(triggerSpellCodes, spell.SpellCode) {
 				return
 			}
 
@@ -255,6 +255,20 @@ func (mage *Mage) applyHotStreak() {
 			if heatingUpAura.IsActive() {
 				heatingUpAura.Deactivate(sim)
 				mage.HotStreakAura.Activate(sim)
+			} else if mage.HotStreakAura.IsActive() {
+				// When batching a Scorch crit into an instant Pyro, the Pyro consumes Hot Streak before the Scorch hits, so the Scorch re-applies Heating Up
+				// We can replicate this by adding a 1ms delay then checking the state of the auras again.
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Millisecond*1,
+					OnAction: func(sim *core.Simulation) {
+						if heatingUpAura.IsActive() {
+							heatingUpAura.Deactivate(sim)
+							mage.HotStreakAura.Activate(sim)
+						} else {
+							heatingUpAura.Activate(sim)
+						}
+					},
+				})
 			} else {
 				heatingUpAura.Activate(sim)
 			}

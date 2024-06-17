@@ -44,6 +44,7 @@ const (
 	SpellCode_MageFrostfireBolt
 	SpellCode_MageFrozenOrb
 	SpellCode_MageLivingBomb
+	SpellCode_MageLivingBombExplosion
 	SpellCode_MageLivingFlame
 	SpellCode_MageScorch
 	SpellCode_MageSpellfrostBolt
