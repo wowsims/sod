@@ -67,6 +67,10 @@ enum MageRune {
 	RuneHelmDeepFreeze			= 428739;
 	RuneHelmTemporalAnomaly		= 429305;
 
+	RuneCloakArcaneBarrage		= 400610;
+	RuneCloakOverheat			= 400615;
+	RuneCloakFrozenOrb			= 440802;
+
 	RuneChestBurnout			= 412286;
 	RuneChestEnlightenment		= 412324;
 	RuneChestFingersOfFrost		= 400647;

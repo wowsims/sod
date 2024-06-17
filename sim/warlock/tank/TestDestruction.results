@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.88189
   final_stats: 0
   final_stats: 10
-  final_stats: 219.5
+  final_stats: 153.5
   final_stats: 1
   final_stats: 8.09959
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.40636
   final_stats: 0
   final_stats: 0
-  final_stats: 400.7
+  final_stats: 298.7
   final_stats: 2
   final_stats: 8.76222
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 20.03174
   final_stats: 0
   final_stats: 0
-  final_stats: 577.724
+  final_stats: 439.724
   final_stats: 5
   final_stats: 22.84086
   final_stats: 0
@@ -151,9 +151,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.6542
+  weights: -0.65565
   weights: 0
-  weights: 1.21852
+  weights: 1.22413
   weights: 0
   weights: 0
   weights: 0
@@ -200,7 +200,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.73409
+  weights: 0.73574
   weights: 0
   weights: 0.67582
   weights: 0
@@ -210,7 +210,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.57227
+  weights: 2.57788
   weights: 2.91556
   weights: 0
   weights: 0
@@ -249,9 +249,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.30401
+  weights: 3.2713
   weights: 0
-  weights: 1.32834
+  weights: 1.31357
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 165.18748
-  tps: 257.64347
+  dps: 164.34457
+  tps: 256.3791
  }
 }
 dps_results: {
@@ -344,15 +344,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 162.49659
-  tps: 255.50188
+  dps: 161.9284
+  tps: 254.6496
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 510.02629
-  tps: 1111.73712
+  dps: 506.92293
+  tps: 1107.08208
  }
 }
 dps_results: {
@@ -400,15 +400,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 504.7985
-  tps: 1102.63798
+  dps: 502.60053
+  tps: 1099.34103
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1359.17083
-  tps: 2233.17516
+  dps: 1353.16862
+  tps: 2224.17184
   hps: 19.5789
  }
 }
@@ -463,8 +463,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1334.01117
-  tps: 2183.55535
+  dps: 1329.91304
+  tps: 2177.40815
   hps: 19.98753
  }
 }

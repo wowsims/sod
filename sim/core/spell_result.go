@@ -154,6 +154,7 @@ func (spell *Spell) BonusDamage() float64 {
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
 	hitRating := spell.Unit.stats[stats.SpellHit] +
 		spell.BonusHitRating +
+		spell.Unit.GetSchoolBonusHitChance(spell) +
 		target.PseudoStats.BonusSpellHitRatingTaken
 
 	return hitRating / (SpellHitRatingPerHitChance * 100)

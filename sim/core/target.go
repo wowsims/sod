@@ -189,6 +189,10 @@ func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 		return 0
 	}
 
+	if unit.PseudoStats.FeralCombatSkill != 0 {
+		return unit.PseudoStats.FeralCombatSkill
+	}
+
 	if weapon.HandType == proto.HandType_HandTypeTwoHand {
 		switch weapon.WeaponType {
 		case proto.WeaponType_WeaponTypeAxe:

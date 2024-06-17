@@ -311,6 +311,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 
 	agent.ApplyTalents()
 	agent.ApplyRunes()
+	character.ApplyRingRunes()
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 
@@ -653,6 +654,71 @@ func (character *Character) SetShapeshift(aura *Aura) {
 		panic("Tried to set shapeshift while already shapeshifted!")
 	}
 	character.ActiveShapeShift = aura
+}
+
+func (c *Character) ApplyRingRunes() {
+	// Spell School Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingArcaneSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexArcane] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFireSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFire] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFrostSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFrost] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingHolySpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingNatureSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingShadowSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow] += 6
+	}
+
+	// Weapon Skill Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
+		c.PseudoStats.AxesSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingDaggerSpecialization)) {
+		c.PseudoStats.DaggersSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFistWeaponSpecialization)) {
+		c.PseudoStats.UnarmedSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingMaceSpecialization)) {
+		c.PseudoStats.MacesSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingPoleWeaponSpecialization)) {
+		c.PseudoStats.StavesSkill += 5
+		c.PseudoStats.PolearmsSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingRangedWeaponSpecialization)) {
+		c.PseudoStats.BowsSkill += 5
+		c.PseudoStats.CrossbowsSkill += 5
+		c.PseudoStats.GunsSkill += 5
+		c.PseudoStats.ThrownSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
+		c.PseudoStats.SwordsSkill += 5
+	}
+
+	// Other Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingDefenseSpecialization)) {
+		c.AddStat(stats.Defense, 25)
+	}
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.

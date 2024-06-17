@@ -31,7 +31,7 @@ func (shaman *Shaman) registerHealingStreamTotemSpell() {
 func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfig {
 	spellId := HealingStreamTotemSpellId[rank]
 	healId := HealingStreamTotemHealId[rank]
-	baseHealing := HealingStreamTotemBaseHealing[rank]
+	baseHealing := HealingStreamTotemBaseHealing[rank]*shaman.purificationHealingModifier() + shaman.restorativeTotemsModifier()
 	spellCoeff := HealingStreamTotemSpellCoeff[rank]
 	manaCost := HealingStreamTotemManaCost[rank]
 	level := HealingStreamTotemLevel[rank]
@@ -49,7 +49,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
-		DamageMultiplier: 1 + (.02 * float64(shaman.Talents.Purification)) + 0.05*float64(shaman.Talents.RestorativeTotems),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		BonusCoefficient: spellCoeff,
 

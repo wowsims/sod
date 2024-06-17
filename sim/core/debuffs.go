@@ -1,11 +1,12 @@
 package core
 
 import (
-	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 	"math"
 	"strconv"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 type DebuffName int32
@@ -196,7 +197,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
-		MakePermanent(InsectSwarmAura(target))
+		MakePermanent(InsectSwarmAura(target, level))
 	}
 	if debuffs.ScorpidSting && targetIdx == 0 {
 		MakePermanent(ScorpidStingAura(target))
@@ -1117,7 +1118,7 @@ func AtkSpeedReductionEffect(aura *Aura, speedMultiplier float64) *ExclusiveEffe
 	})
 }
 
-func InsectSwarmAura(target *Unit) *Aura {
+func InsectSwarmAura(target *Unit, level int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "InsectSwarmMiss",
 		ActionID: ActionID{SpellID: 24977},

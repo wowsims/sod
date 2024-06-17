@@ -64,30 +64,50 @@ message RogueTalents {
 
 enum RogueRune {
 	RogueRuneNone = 0;
-	RuneDeadlyBrew = 399965;
-	RuneJustAFleshWound = 400014;
-	RuneQuickDraw = 398196;
-	RuneSlaughterFromTheShadows = 424925;
-	RuneBetweenTheEyes = 400009;
-	RuneBladeDance = 400012;
-	RuneEnvenom = 399963;
-	RuneMainGauche = 424919;
-	RuneMutilate = 399956;
-	RuneSaberSlash = 424785;
-	RuneShadowstrike = 399985;
-	RuneShiv = 424799;
-	RuneMasterOfSubtlety = 425096;
-	RuneWaylay = 408700;
-	RuneRollingWithThePunches = 400093;
-	RuneShadowstep = 400101;
-	RuneShurikenToss = 399986;
-	RunePoisonedKnife = 425012;
-	RuneCutToTheChase = 432271;
-	RuneHonorAmongThieves = 432264;
-	RuneCombatPotency = 432259;
-	RuneFocusedAttacks = 432256;
-	RuneCarnage = 432276;
-	RuneUnfairAdvantage = 432273;
+
+	// Helm
+	RuneFocusedAttacks			= 432256;
+	RuneCombatPotency			= 432259;
+	RuneHonorAmongThieves		= 432264;
+
+	// Cloak
+	RuneFanOfKnives				= 409240;
+	RuneCrimsonTempest			= 412096;
+	RuneBlunderbuss				= 436564;
+
+	// Chest
+	RuneQuickDraw				= 398196;
+	RuneDeadlyBrew				= 399965;
+	RuneJustAFleshWound			= 400014;
+	RuneSlaughterFromTheShadows	= 424925;
+
+	// Bracers
+	RuneCutToTheChase			= 432271;
+	RuneUnfairAdvantage			= 432273;
+	RuneCarnage					= 432276;
+
+	// Gloves
+	RuneMutilate				= 399956;
+	RuneShadowstrike			= 399985;
+	RuneSaberSlash				= 424785;
+	RuneShiv					= 424799;
+	RuneMainGauche				= 424919;
+
+	// Waist
+	RuneShurikenToss			= 399986;
+	RuneShadowstep				= 400101;
+	RunePoisonedKnife			= 425012;
+
+	// Legs
+	RuneEnvenom					= 399963;
+	RuneBetweenTheEyes			= 400009;
+	RuneBladeDance				= 400012;
+	
+	// Boots
+	RuneRollingWithThePunches	= 400093;
+	RuneWaylay					= 408700;
+	RuneMasterOfSubtlety		= 425096;
+	
 }
 
 message RogueOptions {

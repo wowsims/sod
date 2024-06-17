@@ -67,6 +67,10 @@ enum DruidRune {
 	RuneHelmGore					= 417145;
 	RuneHelmImprovedBarkskin		= 431388;
 
+	RuneCloakImprovedSwipe			= 439510;
+	RuneCloakTreeofLife				= 439733;
+	RuneCloakStarfall				= 439748;
+
 	RuneChestFuryOfStormrage		= 414799;
 	RuneChestLivingSeed				= 414677;
 	RuneChestSurvivalOfTheFittest	= 411115;

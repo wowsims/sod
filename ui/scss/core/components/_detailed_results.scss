@@ -80,8 +80,8 @@
 	margin-right: calc(-1 * var(--container-padding));
 	display: flex;
 	transition: background-color 0.15s ease-in-out;
-	// This needs to be less than --header-z-index otherwise the toolbar overlaps the import/export dropdowns
-	z-index: var(--header-z-index) - 1;
+	// This needs to be less than var(--header-z-index) otherwise the toolbar overlaps the import/export dropdowns
+	z-index: calc(var(--header-z-index) - 1);
 
 	&::after {
 		content: ' ';

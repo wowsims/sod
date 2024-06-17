@@ -21,6 +21,9 @@ const (
 	SpellCode_DruidStarfire
 	SpellCode_DruidStarsurge
 	SpellCode_DruidWrath
+	SpellCode_DruidStarfall
+	SpellCode_DruidStarfallTick
+	SpellCode_DruidStarfallSplash
 )
 
 type Druid struct {
@@ -43,9 +46,9 @@ type Druid struct {
 	FerociousBite        *DruidSpell
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
-	Hurricane            []*DruidSpell
-	InsectSwarm          *DruidSpell
 	GiftOfTheWild        *DruidSpell
+	Hurricane            []*DruidSpell
+	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
@@ -61,12 +64,11 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
-	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
 	SurvivalInstincts    *DruidSpell
-	SwipeBear            *DruidSpell
+	SwipeBear            []*DruidSpell
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
@@ -191,7 +193,7 @@ func (druid *Druid) Initialize() {
 
 func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerHurricaneSpell()
-	// druid.registerInsectSwarmSpell()
+	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
@@ -210,7 +212,6 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerRipSpell()
 	druid.registerShredSpell()
 	// druid.registerSwipeBearSpell()
-	// druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
 }
 

@@ -8,6 +8,20 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	// Elemental Talents
+	shaman.applyElementalFocus()
+	shaman.applyElementalDevastation()
+	shaman.registerElementalMasteryCD()
+
+	// Enhancement Talents
+	shaman.applyFlurry()
+
+	if shaman.Talents.AncestralKnowledge > 0 {
+		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
+	}
+
+	shaman.AddStat(stats.Block, 1*float64(shaman.Talents.ShieldSpecialization))
+
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
@@ -17,30 +31,36 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.AddStat(stats.Parry, 5)
 	}
 
-	shaman.AddStat(stats.Block, 1*float64(shaman.Talents.ShieldSpecialization))
-
 	// TODO: Check whether this does what it should.
 	// From all I've seen this appears to not actually be a school modifier at all, but instead simply applies
 	// to all attacks done with a weapon. The weaponmask seems to take precedence and the school mask is actually ignored.
 	// Will also be the case for similar talents like the one for retribution.
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
-	if shaman.Talents.AncestralKnowledge > 0 {
-		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
-	}
-
-	// Ele Talents
-	shaman.applyElementalFocus()
-	shaman.applyElementalDevastation()
-	shaman.registerElementalMasteryCD()
-
-	// Enh Talents
-	shaman.applyFlurry()
-
-	// Resto Talents
-	shaman.applyNaturesGuidance()
+	// Restoration Talents
+	// TODO: Healing Way
+	// TODO: Ancestral Healing
 	shaman.registerNaturesSwiftnessCD()
 	// shaman.registerManaTideTotemCD()
+
+	if shaman.Talents.TidalFocus > 0 {
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+				spell.CostMultiplier *= 1 - .05*float64(shaman.Talents.TidalFocus)
+			}
+		})
+	}
+
+	shaman.AddStat(stats.MeleeHit, float64(shaman.Talents.NaturesGuidance))
+	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
+
+	if shaman.Talents.HealingGrace > 0 {
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+				spell.ThreatMultiplier *= 1 - .05*float64(shaman.Talents.HealingGrace)
+			}
+		})
+	}
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -188,15 +208,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 }
 
-func (shaman *Shaman) applyNaturesGuidance() {
-	if shaman.Talents.NaturesGuidance == 0 {
-		return
-	}
-
-	shaman.AddStat(stats.MeleeHit, float64(shaman.Talents.NaturesGuidance))
-	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
-}
-
 func (shaman *Shaman) registerNaturesSwiftnessCD() {
 	if !shaman.Talents.NaturesSwiftness {
 		return
@@ -322,6 +333,16 @@ func (shaman *Shaman) concussionMultiplier() float64 {
 
 func (shaman *Shaman) totemManaMultiplier() float64 {
 	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+}
+
+// Restorative Totems uses Mod Spell Effectiveness (Base Value)
+func (shaman *Shaman) restorativeTotemsModifier() float64 {
+	return 0.05 * float64(shaman.Talents.RestorativeTotems)
+}
+
+// Purification uses Mod Spell Effectiveness (Base Healing)
+func (shaman *Shaman) purificationHealingModifier() float64 {
+	return .02 * float64(shaman.Talents.Purification)
 }
 
 // func (shaman *Shaman) registerManaTideTotemCD() {

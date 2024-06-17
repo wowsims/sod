@@ -410,6 +410,7 @@ type PseudoStats struct {
 	TwoHandedAxesSkill   float64
 	PolearmsSkill        float64
 	StavesSkill          float64
+	FeralCombatSkill     float64
 
 	// Ranged Skills
 	BowsSkill      float64
@@ -439,6 +440,7 @@ type PseudoStats struct {
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusDamageTaken      [SchoolLen]float64 // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusHitChance        [SchoolLen]float64 // Spell school-specific hit bonuses such as ring runes
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
@@ -490,10 +492,12 @@ func NewPseudoStats() PseudoStats {
 		TwoHandedAxesSkill:     0,
 		PolearmsSkill:          0,
 		StavesSkill:            0,
-		BowsSkill:              0,
-		GunsSkill:              0,
-		CrossbowsSkill:         0,
-		ThrownSkill:            0,
+		FeralCombatSkill:       0,
+
+		BowsSkill:      0,
+		GunsSkill:      0,
+		CrossbowsSkill: 0,
+		ThrownSkill:    0,
 	}
 }
 

@@ -9,10 +9,6 @@ import (
 )
 
 func (paladin *Paladin) ApplyRunes() {
-	if paladin.hasRune(proto.PaladinRune_RuneWaistEnlightenedJudgements) {
-		paladin.AddStat(stats.SpellHit, 17*core.SpellHitRatingPerHitChance)
-	}
-
 	paladin.registerTheArtOfWar()
 	paladin.registerSheathOfLight()
 	paladin.registerGuardedByTheLight()
