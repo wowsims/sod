@@ -174,8 +174,6 @@ export class ItemRenderer extends Component {
 		if (isRuneSlot) {
 			this.runeIconElem.classList.remove('hide');
 
-			console.log(isRuneSlot, newItem.rune);
-
 			if (newItem.rune) {
 				ActionId.fromSpellId(newItem.rune.id)
 					.fill()

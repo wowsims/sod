@@ -38,6 +38,10 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	manaCost := FireBlastManaCost[rank]
 	level := FireBlastLevel[rank]
 
+	flags := SpellFlagMage | core.SpellFlagAPL
+	if hasOverheatRune {
+		flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
+	}
 	gcd := core.TernaryDuration(hasOverheatRune, 0, core.GCDDefault)
 
 	return core.SpellConfig{
@@ -46,7 +50,7 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		Flags:       flags,
 
 		Rank:          rank,
 		RequiredLevel: level,

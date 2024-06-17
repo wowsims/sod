@@ -227,11 +227,10 @@ func (mage *Mage) applyHotStreak() {
 		},
 	})
 
-	procAura := mage.RegisterAura(core.Aura{
-		Label:     "Heating Up",
-		ActionID:  actionID.WithTag(1),
-		MaxStacks: 2,
-		Duration:  time.Hour,
+	heatingUpAura := mage.RegisterAura(core.Aura{
+		Label:    "Heating Up",
+		ActionID: actionID.WithTag(1),
+		Duration: time.Hour,
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -241,21 +240,23 @@ func (mage *Mage) applyHotStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(triggerSpellCodes, spell.SpellCode) {
+			if !slices.Contains(triggerSpellCodes, spell.SpellCode) || mage.HotStreakAura.IsActive() {
 				return
 			}
 
 			if !result.DidCrit() {
-				procAura.Deactivate(sim)
+				if heatingUpAura.IsActive() {
+					heatingUpAura.Deactivate(sim)
+				}
+
 				return
 			}
 
-			if procAura.GetStacks() == 1 {
-				procAura.Deactivate(sim)
+			if heatingUpAura.IsActive() {
+				heatingUpAura.Deactivate(sim)
 				mage.HotStreakAura.Activate(sim)
 			} else {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				heatingUpAura.Activate(sim)
 			}
 		},
 	})

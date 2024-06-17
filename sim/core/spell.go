@@ -35,8 +35,6 @@ type SpellConfig struct {
 
 	Cast               CastConfig
 	ExtraCastCondition CanCastCondition
-	// Can the spell be casted while casting another spell? Only applies to Mage's Fire Blast when using the Overheat rune
-	UsableWhileCasting bool
 
 	BonusHitRating  float64
 	BonusCritRating float64
@@ -105,8 +103,6 @@ type Spell struct {
 	CD                 Cooldown
 	SharedCD           Cooldown
 	ExtraCastCondition CanCastCondition
-	// Can the spell be casted while casting another spell? Only applies to Mage's Fire Blast when using the Overheat rune
-	UsableWhileCasting bool
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
 
@@ -227,7 +223,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		CD:                 config.Cast.CD,
 		SharedCD:           config.Cast.SharedCD,
 		ExtraCastCondition: config.ExtraCastCondition,
-		UsableWhileCasting: config.UsableWhileCasting,
 
 		castTimeFn: config.Cast.CastTime,
 

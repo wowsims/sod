@@ -136,13 +136,14 @@ type Unit struct {
 	GCD *Timer
 
 	// Used for applying the effect of a hardcast spell when casting finishes.
-	//  For channeled spells, only Expires is set.
+	// For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.
-	Hardcast Hardcast
+	Hardcast *Hardcast
 
 	// GCD-related PendingActions.
-	gcdAction      *PendingAction
-	hardcastAction *PendingAction
+	gcdAction              *PendingAction
+	hardcastAction         *PendingAction
+	castWhileCastingAction *PendingAction
 
 	// Cached mana return values per tick.
 	manaTickWhileCasting    float64
@@ -504,7 +505,9 @@ func (unit *Unit) finalize() {
 func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.enabled = true
 	unit.resetCDs(sim)
-	unit.Hardcast.Expires = startingCDTime
+	if unit.Hardcast != nil {
+		unit.Hardcast.Expires = startingCDTime
+	}
 	unit.ChanneledDot = nil
 	unit.Metrics.reset()
 	unit.ResetStatDeps()
@@ -550,7 +553,7 @@ func (unit *Unit) startPull(sim *Simulation) {
 }
 
 func (unit *Unit) doneIteration(sim *Simulation) {
-	unit.Hardcast = Hardcast{}
+	unit.Hardcast = &Hardcast{}
 
 	unit.manaBar.doneIteration(sim)
 	unit.rageBar.doneIteration()
