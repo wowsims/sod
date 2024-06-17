@@ -157,9 +157,10 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase3][2],
 	},
 	60: {
-		0: APLPresets[Phase.Phase3][0],
-		1: APLPresets[Phase.Phase3][1],
-		2: APLPresets[Phase.Phase3][2],
+		0: APLPresets[Phase.Phase4][0],
+		1: APLPresets[Phase.Phase4][1],
+		2: APLPresets[Phase.Phase4][2],
+		3: APLPresets[Phase.Phase4][3],
 	},
 };
 
@@ -196,7 +197,7 @@ export const TalentsFrostPhase3 = PresetUtils.makePresetTalents('50 Frost', Save
 export const TalentsArcanePhase4 = TalentsArcanePhase2;
 export const TalentsFireHotStreakPhase4 = PresetUtils.makePresetTalents(
 	'60 Fire Hot Streak',
-	SavedTalents.create({ talentsString: '230005-5052322123033151-003' }),
+	SavedTalents.create({ talentsString: '230205001-5052320123033051-003' }),
 	{
 		customCondition: player => player.getLevel() >= 60,
 	},
@@ -204,7 +205,7 @@ export const TalentsFireHotStreakPhase4 = PresetUtils.makePresetTalents(
 export const TalentsFireFFBPhase4 = PresetUtils.makePresetTalents('60 Fire FFB', SavedTalents.create({ talentsString: '-5050320123033051-203501031003' }), {
 	customCondition: player => player.getLevel() >= 60,
 });
-export const TalentsFrostPhase4 = PresetUtils.makePresetTalents('60 Frost', SavedTalents.create({ talentsString: '-055102002302-20350203100351051' }), {
+export const TalentsFrostPhase4 = PresetUtils.makePresetTalents('60 Frost', SavedTalents.create({ talentsString: '-0550320003021-2035020310035105' }), {
 	customCondition: player => player.getLevel() >= 60,
 });
 

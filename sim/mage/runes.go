@@ -159,7 +159,7 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || !spell.SpellSchool.Matches(core.SpellSchoolFrost) {
 				return
 			}
 

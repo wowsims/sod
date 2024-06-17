@@ -93,7 +93,7 @@ func (unit *Unit) applySpellPushback() {
 				return
 			}
 
-			if hc := &aura.Unit.Hardcast; hc.Expires > sim.CurrentTime {
+			if hc := aura.Unit.Hardcast; hc.Expires > sim.CurrentTime {
 				// Do spell pushback
 				pushback := DurationFromSeconds(max(0.2, hc.Pushback))
 				aura.Unit.Hardcast.Pushback -= 0.2
@@ -186,7 +186,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			return spell.castFailureHelper(sim, "GCD on cooldown for %s, curTime = %s", spell.Unit.GCD.TimeToReady(sim), sim.CurrentTime)
 		}
 
-		if hc := &spell.Unit.Hardcast; hc.Expires > sim.CurrentTime {
+		if hc := spell.Unit.Hardcast; hc.Expires > sim.CurrentTime {
 			// Attempt to use a queued cast-while-casting spell mid-hard cast
 			if cwc := spell.Unit.castWhileCastingAction; cwc != nil {
 				cwc.OnAction(sim)

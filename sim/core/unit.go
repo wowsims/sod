@@ -505,9 +505,7 @@ func (unit *Unit) finalize() {
 func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.enabled = true
 	unit.resetCDs(sim)
-	if &unit.Hardcast != nil {
-		unit.Hardcast.Expires = startingCDTime
-	}
+	unit.Hardcast.Expires = startingCDTime
 	unit.ChanneledDot = nil
 	unit.Metrics.reset()
 	unit.ResetStatDeps()

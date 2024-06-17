@@ -2,7 +2,8 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { MageRune } from '../core/proto/mage.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
@@ -118,7 +119,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	autoRotation: player => {
 		const specNumber = player.getTalentTree();
-		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		const level = player.getLevel();
+
+		if (level === 60 && specNumber === 1 && player.hasRune(ItemSlot.ItemSlotWaist, MageRune.RuneBeltFrostfireBolt)) {
+			// Phase 4 Fire FFB
+			return Presets.DefaultAPLs[level][3].rotation.rotation!;
+		}
+
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

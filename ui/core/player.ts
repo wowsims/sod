@@ -427,6 +427,10 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getRunes(slot, this.getClass());
 	}
 
+	hasRune(slot: ItemSlot, runeId: number): boolean {
+		return this.getEquippedItem(slot)?.rune?.id === runeId;
+	}
+
 	getEpWeights(): Stats {
 		return this.epWeights;
 	}

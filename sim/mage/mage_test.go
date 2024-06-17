@@ -104,6 +104,23 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase4TalentsFire,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_hot_streak"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -149,7 +166,7 @@ func TestFrostFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsFireFFB,
+			Talents:     Phase4TalentsFire,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_ffb"),
 			Buffs:       core.FullBuffsPhase3,
@@ -182,6 +199,23 @@ func TestFrost(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase4TalentsFrost,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -194,6 +228,9 @@ var Phase2TalentsFrostfire = Phase2TalentsFire
 
 var Phase3TalentsFire = "-0550020123033151-2035"
 var Phase3TalentsFrost = "-055-20350203100351051"
+
+var Phase4TalentsFire = "-0550020123033151-2035"
+var Phase4TalentsFrost = "-055-20350203100351051"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
