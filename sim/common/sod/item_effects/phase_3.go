@@ -485,9 +485,11 @@ func init() {
 			BonusCoefficient: 0.05,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 50, spell.OutcomeMagicHitAndCrit)
+				if target.Level <= 55 {
+					spell.CalcAndDealDamage(sim, target, 50, spell.OutcomeMagicHitAndCrit)
 
-				procAuras.Get(target).Activate(sim)
+					procAuras.Get(target).Activate(sim)
+				}
 			},
 		})
 	}
