@@ -63,36 +63,41 @@ message WarlockTalents {
 
 enum WarlockRune {
 	WarlockRuneNone = 0;
-	RuneChestSoulSiphon       	  = 403511;
-	RuneChestLakeOfFire       	  = 403666;
-	RuneChestMasterChanneler  	  = 403668;
-	RuneChestDemonicTactics   	  = 412727;
 
-	RuneHandsHaunt	          	  = 403501;
-	RuneHandsChaosBolt        	  = 403629;
-	RuneHandsShadowBoltVolley 	  = 403628;
-	RuneHandsMetamorphosis    	  = 403789;
+	RuneHelmVengeance				= 426195;
+	RuneHelmPandemic				= 427712;
+	RuneHelmBackdraft				= 427713;
 
-	RuneLegsEverlastingAffliction = 412689;
-	RuneLegsIncinerate			  = 412758;
-	RuneLegsDemonicGrace      	  = 425463;
-	RuneLegsDemonicPact       	  = 425464;
+	RuneCloakDecimation				= 440870;
+	RuneCloakInfernalArmor			= 440882;
+	RuneCloakMarkOfChaos			= 440892;
 
-	RuneBeltInvocation			  = 426243;
-	RuneBeltGrimoireOfSynergy	  = 426301;
-	RuneBeltShadowAndFlame		  = 426316;
+	RuneChestSoulSiphon				= 403511;
+	RuneChestLakeOfFire				= 403666;
+	RuneChestMasterChanneler		= 403668;
+	RuneChestDemonicTactics			= 412727;
 
-	RuneBootsDemonicKnowledge	  = 412732;
-	RuneBootsDanceOfTheWicked	  = 412798;
-	RuneBootsShadowflame		  = 426320;
+	RuneBracerUnstableAffliction  	= 427717;
+	RuneBracerImmolationAura		= 427726;
+	RuneBracerSummonFelguard		= 427733;
 
-	RuneHelmVengeance			  = 426195;
-	RuneHelmPandemic			  = 427712;
-	RuneHelmBackdraft			  = 427713;
+	RuneHandsHaunt	   				= 403501;
+	RuneHandsChaosBolt 				= 403629;
+	RuneHandsShadowBoltVolley		= 403628;
+	RuneHandsMetamorphosis			= 403789;
 
-	RuneBracerUnstableAffliction  = 427717;
-	RuneBracerImmolationAura	  = 427726;
-	RuneBracerSummonFelguard	  = 427733;
+	RuneBeltInvocation				= 426243;
+	RuneBeltGrimoireOfSynergy		= 426301;
+	RuneBeltShadowAndFlame			= 426316;
+
+	RuneLegsEverlastingAffliction	= 412689;
+	RuneLegsIncinerate				= 412758;
+	RuneLegsDemonicGrace			= 425463;
+	RuneLegsDemonicPact				= 425464;
+
+	RuneBootsDemonicKnowledge		= 412732;
+	RuneBootsDanceOfTheWicked		= 412798;
+	RuneBootsShadowflame			= 426320;
 }
 
 message WarlockRotation {

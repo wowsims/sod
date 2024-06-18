@@ -143,11 +143,11 @@ export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'blessingOfMight',
 			showWhen: player => player.getFaction() == Faction.Alliance,
 		}),
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromSpellId(425600),
-			fieldName: 'hornOfLordaeron',
-			showWhen: player => player.getFaction() == Faction.Alliance,
-		}),
+		// makeBooleanRaidBuffInput({
+		// 	actionId: () => ActionId.fromSpellId(425600),
+		// 	fieldName: 'hornOfLordaeron',
+		// 	showWhen: player => player.getFaction() == Faction.Alliance,
+		// }),
 	],
 	'Paladin Physical',
 );

@@ -11,7 +11,7 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagElectric  = core.SpellFlagAgentReserved1
+	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagFocusable = core.SpellFlagAgentReserved3
 	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
@@ -36,6 +36,13 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
 	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
+
+	if shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit) {
+		shaman.SpiritWolves = &SpiritWolves{
+			SpiritWolf1: shaman.NewSpiritWolf(1),
+			SpiritWolf2: shaman.NewSpiritWolf(2),
+		}
+	}
 
 	return shaman
 }
@@ -66,7 +73,8 @@ const (
 	SpellCode_ShamanLavaBurst
 
 	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFlameShock
+	SpellCode_ShamanFlameShockDirect
+	SpellCode_ShamanFlameShockDot
 	SpellCode_ShamanFrostShock
 
 	SpellCode_ShamanMoltenBlast
@@ -149,6 +157,9 @@ type Shaman struct {
 	RollingThunder    *core.Spell
 	WaterShield       *core.Spell
 
+	FeralSpirit  *core.Spell
+	SpiritWolves *SpiritWolves
+
 	MaelstromWeaponAura *core.Aura
 	PowerSurgeAura      *core.Aura
 
@@ -210,6 +221,9 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerManaSpringTotemSpell()
 	shaman.registerWindfuryTotemSpell()
 	shaman.registerGraceOfAirTotemSpell()
+
+	// Other Abilities
+	shaman.registerShamanisticRageCD()
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()

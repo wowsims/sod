@@ -104,36 +104,43 @@ message HunterPetTalents {
 
 enum HunterRune {
 	HunterRuneNone 						= 0;
+
+	RuneHelmRapidKilling				= 415405;
+	RuneHelmLockAndLoad					= 415413;
+	RuneHelmCatlikeReflexes				= 415428;
+
+	RuneCloakImprovedVolley				= 440520;
+	RuneCloakResourcefulness			= 440529;
+	RuneCloakHitAndRun					= 440533;
+
+	RuneChestCobraSlayer				= 458393;
 	RuneChestMasterMarksman 			= 409428;
-	RuneChestHeartOfTheLion 			= 409580;
 	RuneChestLoneWolf					= 415370;
 	RuneChestCobraStrikes   			= 425713;
+
+	RuneBracersRaptorFury				= 415358;
+	RuneBracersFocusFire				= 428726;
+	RuneBracersTNT						= 428717;
 
 	RuneHandsBeastmastery   			= 409368;
 	RuneHandsChimeraShot    			= 409433;
 	RuneHandsExplosiveShot  			= 409552;
 	RuneHandsCarve						= 425711;
 	
-	RuneLegsKillCommand     			= 409379;
+	RuneBeltExposeWeakness 				= 409504;
+	RuneBeltMeleeSpecialist 			= 415352;
+	RuneBeltSteadyShot 					= 437123;
+	
+	RuneLegsKillShot     				= 409593;
 	RuneLegsFlankingStrike 				= 415320;
 	RuneLegsSniperTraining 				= 415399;
 	RuneLegsSerpentSpread 				= 425738;
 
-	RuneBeltExposeWeakness 				= 409504;
-	RuneBeltMeleeSpecialist 			= 415352;
-	RuneBeltSteadyShot 					= 437123;
-
 	RuneBootsTrapLauncher 				= 409541;
 	RuneBootsDualWieldSpecialization 	= 409687;
-	RuneBootsInvigoration				= 437997;
+	RuneBootsWyvernStrike				= 458479;
 
-	RuneHelmRapidKilling				= 415405;
-	RuneHelmLockAndLoad					= 415413;
-	RuneHelmCatlikeReflexes				= 415428;
-
-	RuneBracersRaptorFury				= 415358;
-	RuneBracersFocusFire				= 428726;
-	RuneBracersTNT						= 428717;
+	RuneUtilityHeartOfTheLion 			= 409580;
 }
 
 message Hunter {

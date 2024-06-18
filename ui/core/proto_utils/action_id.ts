@@ -53,9 +53,9 @@ export class ActionId {
 			case OtherAction.OtherActionManaRegen:
 				name = 'Mana Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeMana];
-				if (tag == 1) {
+				if (tag === 1) {
 					name += ' (Casting)';
-				} else if (tag == 2) {
+				} else if (tag === 2) {
 					name += ' (Not Casting)';
 				}
 				break;
@@ -82,11 +82,11 @@ export class ActionId {
 			case OtherAction.OtherActionAttack:
 				name = 'Melee';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
-				if (tag == 1) {
+				if (tag === 1) {
 					name += ' (Main Hand)';
-				} else if (tag == 2) {
+				} else if (tag === 2) {
 					name += ' (Off Hand)';
-				} else if (tag == 3) {
+				} else if (tag === 3) {
 					name += ' (Extra Attack)';
 				}
 				break;
@@ -128,11 +128,11 @@ export class ActionId {
 	}
 
 	equals(other: ActionId): boolean {
-		return this.equalsIgnoringTag(other) && this.tag == other.tag;
+		return this.equalsIgnoringTag(other) && this.tag === other.tag;
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return this.itemId == other.itemId && this.randomSuffixId == other.randomSuffixId && this.spellId == other.spellId && this.otherId == other.otherId;
+		return this.itemId === other.itemId && this.randomSuffixId === other.randomSuffixId && this.spellId === other.spellId && this.otherId === other.otherId;
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -218,9 +218,9 @@ export class ActionId {
 		let name = baseName;
 		switch (baseName) {
 			case 'Arcane Blast':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (No Stacks)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ` (1 Stack)`;
 				} else if (this.tag > 2) {
 					name += ` (${this.tag - 1} Stacks)`;
@@ -232,10 +232,10 @@ export class ActionId {
 			case 'Balefire Bolt':
 				break;
 			case 'Berserking':
-				if (this.tag != 0) name = `${name} (${this.tag * 5}%)`;
+				if (this.tag !== 0) name = `${name} (${this.tag * 5}%)`;
 				break;
 			case 'Explosive Trap':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Weaving)';
 				}
 				break;
@@ -245,14 +245,15 @@ export class ActionId {
 			// DoT then Explode Spells
 			case 'Living Bomb':
 			case 'Seed of Corruption':
-				if (this.tag == 0) name = `${name} (DoT)`;
-				else if (this.tag == 1) name = `${name} (Explosion)`;
+				if (this.tag === 0) name = `${name} (DoT)`;
+				else if (this.tag === 1) name = `${name} (Explosion)`;
 				break;
 			// Burn Spells
 			case 'Fireball':
 			case 'Frostfire Bolt':
 			case 'Pyroblast':
-				if (this.tag == 1) name = `${name} (DoT)`;
+			case 'Flame Shock':
+				if (this.tag === 1) name = `${name} (DoT)`;
 				break;
 			// Channeled Tick Spells
 			case 'Evocation':
@@ -285,25 +286,25 @@ export class ActionId {
 			case 'Instant Poison V':
 			case 'Instant Poison VI':
 			case 'Wound Poison':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Shiv)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (Deadly Brew)';
-				} else if (this.tag == 100) {
+				} else if (this.tag === 100) {
 					name += ' (Tick)';
 				}
 				break;
 			case 'Saber Slash':
-				if (this.tag == 100) {
+				if (this.tag === 100) {
 					name += ' (Tick)';
 				}
 				break;
 			// Dual-hit MH/OH spells
 			case 'Mutilate':
 			case 'Stormstrike':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name = `${name} (Main Hand)`;
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name = `${name} (Off Hand)`;
 				}
 				break;
@@ -311,28 +312,28 @@ export class ActionId {
 			case 'Chain Lightning':
 			case 'Lava Burst':
 			case 'Lightning Bolt':
-				if (this.tag == 6) {
+				if (this.tag === 6) {
 					name = `${name} (Overload)`;
 				} else if (this.tag) {
 					name = `${name} (${this.tag} MW)`;
 				}
 				break;
 			case 'Holy Shield':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Proc)';
 				}
 				break;
 			case 'Righteous Vengeance':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Application)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (DoT)';
 				}
 				break;
 			case 'Holy Vengeance':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Application)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (DoT)';
 				}
 				break;
@@ -343,8 +344,8 @@ export class ActionId {
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
 			case 'Power Infusion':
-				if (this.tag != -1) {
-					if (this.tag === playerIndex || playerIndex == undefined) {
+				if (this.tag !== -1) {
+					if (this.tag === playerIndex || playerIndex === undefined) {
 						name += ` (self)`;
 					} else {
 						name += ` (from #${this.tag + 1})`;
@@ -354,59 +355,73 @@ export class ActionId {
 				}
 				break;
 			case 'Darkmoon Card: Crusade':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Melee)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (Spell)';
 				}
 				break;
 			case 'Lightning Speed':
 			case 'Windfury Weapon':
 			case 'Berserk':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (Off Hand)';
 				}
 				break;
 			case 'Battle Shout':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Snapshot)';
 				}
 				break;
 			case 'Heroic Strike':
 			case 'Cleave':
 			case 'Maul':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (Queue)';
 				}
 				break;
 			case 'Raptor Strike':
-				if (this.tag == 0) {
+				if (this.tag === 0) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 1) {
+				} else if (this.tag === 1) {
 					name += ' (Queue)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (Off Hand)';
 				}
 				break;
 			case 'Carve':
 			case 'Whirlwind':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (OH)';
 				}
 				break;
 			case 'Thunderfury':
-				if (this.tag == 1) {
+				if (this.tag === 1) {
 					name += ' (ST)';
-				} else if (this.tag == 2) {
+				} else if (this.tag === 2) {
 					name += ' (MT)';
 				}
 				break;
 			case 'Sunfire':
-				if (this.spellId == 414689) {
+				if (this.spellId === 414689) {
 					name = `${name} (Cat)`;
 				}
+				break;
+			case 'Mangle':
+				name = this.spellId === 409828 ? `${name} (Cat)` : `${name} (Bear)`;
+				break;
+			case 'Swipe':
+				name = this.spellId === 411128 ? `${name} (Cat)` : `${name} (Bear)`;
+				break;
+			case 'Starfall':
+				if (this.tag === 1) {
+					name = `${name} (Tick)`;
+				} else if (this.tag === 2) {
+					name = `${name} (Splash)`;
+				}
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -505,11 +520,11 @@ export class ActionId {
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {
-		if (protoId.rawId.oneofKind == 'spellId') {
+		if (protoId.rawId.oneofKind === 'spellId') {
 			return ActionId.fromSpellId(protoId.rawId.spellId, protoId.rank, protoId.tag);
-		} else if (protoId.rawId.oneofKind == 'itemId') {
+		} else if (protoId.rawId.oneofKind === 'itemId') {
 			return ActionId.fromItemId(protoId.rawId.itemId, protoId.tag);
-		} else if (protoId.rawId.oneofKind == 'otherId') {
+		} else if (protoId.rawId.oneofKind === 'otherId') {
 			return ActionId.fromOtherId(protoId.rawId.otherId, protoId.tag);
 		} else {
 			return ActionId.fromEmpty();
@@ -522,9 +537,9 @@ export class ActionId {
 		const idType = match[1];
 		const id = parseInt(match[5]);
 		return new ActionId(
-			idType == 'ItemID' ? id : 0,
-			idType == 'SpellID' ? id : 0,
-			idType == 'OtherID' ? id : 0,
+			idType === 'ItemID' ? id : 0,
+			idType === 'SpellID' ? id : 0,
+			idType === 'OtherID' ? id : 0,
 			match[7] ? parseInt(match[7]) : 0,
 			'',
 			'',
@@ -587,10 +602,11 @@ export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/
 
 const petNameToActionId: Record<string, ActionId> = {
 	'Eye of the Void': ActionId.fromSpellId(402789),
+	'Frozen Orb': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
-	'Spirit Wolf 1': ActionId.fromSpellId(51533),
-	'Spirit Wolf 2': ActionId.fromSpellId(51533),
+	'Spirit Wolf 1': ActionId.fromSpellId(440580),
+	'Spirit Wolf 2': ActionId.fromSpellId(440580),
 };
 
 // https://wowhead.com/classic/hunter-pets

@@ -517,6 +517,9 @@ enum SaygesFortune {
 // Buffs that affect the entire raid.
 // NextIndex: 40
 message RaidBuffs {
+	reserved 33;
+	reserved "horn_of_lordaeron";
+
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -579,7 +582,6 @@ message RaidBuffs {
 
 	// SoD Runes
 	int32 demonic_pact = 32;
-	bool horn_of_lordaeron = 33;
 	bool aspect_of_the_lion = 34;
 	bool commanding_shout = 38;
 }
@@ -977,4 +979,24 @@ message ItemSwap {
 
 message Duration {
 	double ms = 1;
+}
+
+enum RingRune {
+	RuneRingNone = 0;
+
+	RuneRingArcaneSpecialization		= 442893;
+	RuneRingAxeSpecialization			= 442876;
+	RuneRingDaggerSpecialization		= 442887;
+	RuneRingDefenseSpecialization		= 459312;
+	RuneRingFeralCombatSpecialization	= 453622;
+	RuneRingFireSpecialization			= 442894;
+	RuneRingFistWeaponSpecialization	= 442890;
+	RuneRingFrostSpecialization			= 442895;
+	RuneRingHolySpecialization			= 442898;
+	RuneRingMaceSpecialization			= 442881;
+	RuneRingNatureSpecialization		= 442896;
+	RuneRingPoleWeaponSpecialization	= 442892;
+	RuneRingRangedWeaponSpecialization	= 442891;
+	RuneRingShadowSpecialization		= 442897;
+	RuneRingSwordSpecialization			= 442813;
 }

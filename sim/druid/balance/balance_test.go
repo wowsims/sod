@@ -65,12 +65,30 @@ func TestBalance(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassDruid,
+			Level:      60,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_3"),
+			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
 var Phase1Talents = "50005003021"
 var Phase2Talents = "5000500302541051"
 var Phase3Talents = "5000550012551351--3"
+var Phase4Talents = "5000550012551251--5005031"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",

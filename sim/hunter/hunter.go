@@ -89,9 +89,11 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.TrueshotAura = true
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-		raidBuffs.AspectOfTheLion = true
-	}
+	// TODO: 2024-06-13 - Heart of the Lion replaced with Cobra Slayer
+	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
+	// raidBuffs.AspectOfTheLion = true
+	// }
+	raidBuffs.AspectOfTheLion = true
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
@@ -124,7 +126,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerImmolationTrapSpell(fireTraps)
 	hunter.registerFrostTrapSpell(frostTraps)
 
-	hunter.registerKillCommand()
+	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
 	hunter.registerFocusFireSpell()
 }

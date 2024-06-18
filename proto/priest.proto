@@ -67,10 +67,13 @@ enum PriestRune {
 	RuneHelmEyeOfTheVoid 		= 402789;
 	RuneHelmPainAndSuffering 	= 413251;
 
+	RuneCloakBindingHeal		= 401937;
+	RuneCloakSoulWarding		= 402000;
+	RuneCloakVampiricTouch		= 402668;
+
 	RuneChestSerendipity	 	= 413248;
 	RuneChestStrengthOfSoul		= 415739;
 	RuneChestTwistedFaith    	= 425198;
-	RuneChestVoidPlague			= 425204;
 
 	RuneBracersDespair 			= 431670;
 	RuneBracersSurgeOfLight 	= 431664;
@@ -93,6 +96,7 @@ enum PriestRune {
 	RuneFeetDispersion			= 425294;
 	RuneFeetPainSuppression		= 402004;
 	RuneFeetSpiritOfTheRedeemer	= 425284;
+	RuneFeetVoidPlague			= 425204;
 }
 
 message ShadowPriest {

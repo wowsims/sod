@@ -191,7 +191,7 @@ export const DefaultConsumes = {
 };
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	aspectOfTheLion: true,
+	// aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectRegular,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,

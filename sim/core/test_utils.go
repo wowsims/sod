@@ -60,9 +60,23 @@ var DefaultTargetProtoLvl40 = &proto.Target{
 	DamageSpread:  0.3333,
 }
 
-// TODO: Update
 var DefaultTargetProtoLvl50 = &proto.Target{
 	Level: 52,
+	Stats: stats.Stats{
+		stats.Armor:       1104,
+		stats.AttackPower: 320,
+	}.ToFloatArray(),
+	MobType: proto.MobType_MobTypeDemon,
+
+	SwingSpeed:    2,
+	MinBaseDamage: 4192.05,
+	ParryHaste:    true,
+	DamageSpread:  0.3333,
+}
+
+// TODO: Update
+var DefaultTargetProtoLvl60 = &proto.Target{
+	Level: 63,
 	Stats: stats.Stats{
 		stats.Armor:       1104,
 		stats.AttackPower: 320,
@@ -288,6 +302,8 @@ func NewDefaultTarget(playerLevel int32) *proto.Target {
 		return DefaultTargetProtoLvl40
 	case 50:
 		return DefaultTargetProtoLvl50
+	case 60:
+		return DefaultTargetProtoLvl60
 	default:
 		return DefaultTargetProtoLvl25
 	}

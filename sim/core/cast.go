@@ -187,6 +187,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if hc := spell.Unit.Hardcast; hc.Expires > sim.CurrentTime {
+			// Attempt to use a queued cast-while-casting spell mid-hard cast
+			if cwc := spell.Unit.castWhileCastingAction; cwc != nil {
+				cwc.OnAction(sim)
+			}
+
 			return spell.castFailureHelper(sim, "casting/channeling %v for %s, curTime = %s", hc.ActionID, hc.Expires-sim.CurrentTime, sim.CurrentTime)
 		}
 
@@ -206,6 +211,34 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.enabled {
 			restartMeleeAt := sim.CurrentTime + spell.CurCast.CastTime
 			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartMeleeAt, false)
+		}
+
+		// Castable-while-casting spells
+		if spell.Flags.Matches(SpellFlagCastWhileCasting) {
+			// Queue cast-while-casting spells to cast 750 ms into the next hard-cast
+			pa := &PendingAction{
+				NextActionAt: sim.CurrentTime + GCDDefault/2,
+				OnAction: func(sim *Simulation) {
+					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
+						spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
+							spell.ActionID, max(0, spell.CurCast.Cost), spell.CurCast.CastTime, spell.CurCast.EffectiveTime())
+						spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
+					}
+
+					if spell.Cost != nil {
+						spell.Cost.SpendCost(sim, spell)
+					}
+
+					spell.applyEffects(sim, target)
+
+					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+						spell.Unit.OnCastComplete(sim, spell)
+					}
+				},
+			}
+			spell.Unit.castWhileCastingAction = pa
+			sim.AddPendingAction(pa)
+			return true
 		}
 
 		// Hardcasts
