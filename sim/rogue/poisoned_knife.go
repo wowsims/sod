@@ -13,6 +13,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 	}
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
+	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	// Poisoned Knife /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=425013/poisoned-knife
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
@@ -44,7 +45,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		CritDamageBonus: rogue.lethality(),
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
-		ThreatMultiplier: 1,
+		ThreatMultiplier: core.TernaryFloat64(hasJustAFleshWound, 1.5, 1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
