@@ -48,10 +48,12 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 	spellCoeff := 0.063
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -68,10 +70,8 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 			},
 		},
 
-		BonusHitRating: priest.shadowHitModifier(),
-
 		DamageMultiplier: 1,
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

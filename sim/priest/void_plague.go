@@ -15,6 +15,8 @@ func (priest *Priest) registerVoidPlagueSpell() {
 		return
 	}
 
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
+
 	ticks := int32(6)
 	tickLength := time.Second * 3
 
@@ -24,14 +26,12 @@ func (priest *Priest) registerVoidPlagueSpell() {
 	manaCost := .13
 	cooldown := time.Second * 6
 
-	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
-
 	priest.VoidPlague = priest.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneFeetVoidPlague)},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -46,13 +46,8 @@ func (priest *Priest) registerVoidPlagueSpell() {
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: priest.darknessDamageModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

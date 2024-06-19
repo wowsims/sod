@@ -28,7 +28,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	manaCost := .28
 
 	numTicks := tickIdx
-	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
+	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagNoMetrics
 	if tickIdx == 0 {
 		numTicks = 5
 		flags |= core.SpellFlagAPL
@@ -52,10 +52,6 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 		},
-
-		BonusHitRating: priest.shadowHitModifier(),
-
-		DamageMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -97,11 +93,10 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc,
 
-		BonusHitRating:  1, // Not an independent hit once initial lands
-		BonusCritRating: priest.forceOfWillCritRating(),
+		BonusHitRating: 1, // Not an independent hit once initial lands
 
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

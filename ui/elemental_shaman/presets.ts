@@ -78,9 +78,6 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 //                                 Talent Presets
 ///////////////////////////////////////////////////////////////////////////
 
-// Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/classic/talent-calc and copy the numbers in the url.
-
 export const TalentsPhase1 = PresetUtils.makePresetTalents('Level 25', SavedTalents.create({ talentsString: '25003105' }));
 export const TalentsPhase2 = PresetUtils.makePresetTalents('Level 40', SavedTalents.create({ talentsString: '550031550000151' }));
 export const TalentsPhase3 = PresetUtils.makePresetTalents('Level 50', SavedTalents.create({ talentsString: '550031550000151-500203' }));

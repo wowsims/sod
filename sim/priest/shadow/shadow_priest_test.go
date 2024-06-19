@@ -65,12 +65,30 @@ func TestShadow(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPriest,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_3"),
+			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase3,
+			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
 var Phase1Talents = "-20535000001"
 var Phase2Talents = "--5022204002501251"
 var Phase3Talents = "-0055-5022204002501251"
+var Phase4Talents = "0512301302--5002504103501251"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",

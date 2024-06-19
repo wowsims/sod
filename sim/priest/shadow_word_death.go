@@ -24,7 +24,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagBinary | core.SpellFlagAPL,
+		Flags:       SpellFlagPriest | core.SpellFlagBinary | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -39,12 +39,10 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			},
 		},
 
-		BonusHitRating:  priest.shadowHitModifier(),
-		BonusCritRating: priest.forceOfWillCritRating(),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
 		BonusCoefficient: spellCoeff,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)

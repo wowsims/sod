@@ -60,9 +60,6 @@ var UnimplementedRuneOverrides = []int32{
 	440672, // Cloak - Righteous Vengeance
 
 	// Priest
-	401937, // Cloak - Binding Heal
-	402000, // Cloak - Soul Warding
-	402668, // Cloak - Vampiric Touch
 
 	// Rogue
 	409240, // Cloak - Fan of Knives

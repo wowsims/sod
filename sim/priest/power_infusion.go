@@ -19,7 +19,7 @@ func (priest *Priest) registerPowerInfusionCD() {
 
 	// piSpell := priest.RegisterSpell(core.SpellConfig{
 	// 	ActionID: actionID,
-	// 	Flags:    core.SpellFlagHelpful,
+	// 	Flags:    SpellFlagPriest | core.SpellFlagHelpful,
 
 	// 	ManaCost: core.ManaCostOptions{
 	// 		BaseCost: 0.16,

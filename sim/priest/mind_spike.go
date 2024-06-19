@@ -32,7 +32,9 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+		// TODO: Verify missile speed
+		MissileSpeed: 20,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -45,11 +47,8 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 			},
 		},
 
-		BonusHitRating:  priest.shadowHitModifier(),
-		BonusCritRating: priest.forceOfWillCritRating(),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: priest.darknessDamageModifier(),
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
@@ -60,16 +59,17 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				priest.AddShadowWeavingStack(sim, target)
-				priest.MindSpikeAuras.Get(target).Activate(sim)
-				priest.MindSpikeAuras.Get(target).AddStack(sim)
-			}
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
 
-			spell.DealDamage(sim, result)
+				if result.Landed() {
+					priest.AddShadowWeavingStack(sim, target)
+					priest.MindSpikeAuras.Get(target).Activate(sim)
+					priest.MindSpikeAuras.Get(target).AddStack(sim)
+				}
+			})
 		},
 	}
 }
