@@ -1103,6 +1103,13 @@ export class Player<SpecType extends Spec> {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
 
+		if (filters.minIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+		}
+		if (filters.maxIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
+
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
 				itemData,
