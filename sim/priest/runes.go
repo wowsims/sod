@@ -11,6 +11,9 @@ func (priest *Priest) ApplyRunes() {
 	// Head
 	priest.registerEyeOfTheVoidCD()
 
+	// Cloak
+	priest.registerVampiricTouchSpell()
+
 	// Chest
 	priest.registerVoidPlagueSpell()
 

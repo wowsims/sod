@@ -45,7 +45,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -65,11 +65,8 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

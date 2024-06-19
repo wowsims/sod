@@ -33,6 +33,7 @@ import {
 } from './proto/common.js';
 import {
 	DungeonFilterOption,
+	ExcludedZones,
 	RaidFilterOption,
 	SourceFilterOption,
 	UIEnchant as Enchant,
@@ -1152,6 +1153,17 @@ export class Player<SpecType extends Spec> {
 						item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
 					);
 				}
+			}
+		}
+
+		for (const zoneName in ExcludedZones) {
+			const zoneId = ExcludedZones[zoneName];
+
+			if (typeof zoneId == 'number') {
+				itemData = filterItems(
+					itemData,
+					item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
+				);
 			}
 		}
 

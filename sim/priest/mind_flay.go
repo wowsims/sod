@@ -40,7 +40,7 @@ func (priest *Priest) registerMindFlay() {
 
 func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.SpellConfig {
 	ticks := tickIdx
-	flags := core.SpellFlagChanneled
+	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagBinary
 	if tickIdx == 0 {
 		ticks = 3
 		flags |= core.SpellFlagAPL
@@ -62,7 +62,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags | core.SpellFlagBinary,
+		Flags:       flags,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -77,13 +77,8 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
-
 		DamageMultiplier: 1,
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

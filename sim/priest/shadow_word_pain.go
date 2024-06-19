@@ -46,7 +46,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagPureDot,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -60,13 +60,8 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: priest.darknessDamageModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

@@ -236,12 +236,17 @@ enum RaidFilterOption {
 	RaidBlackfathomDeeps = 719;
 	RaidGnomeregan = 721;
 	RaidSunkenTemple = 1477;
-	RaidZulGurub = 1977;
-	RaidBlackwingLair = 2677;
 	RaidMoltenCore = 2717;
-	RaidRuinsOfAQ = 3428;
-	RaidTempleOfAQ = 3429;
-	RaidNaxxramas = 3456;
+}
+
+// Zones not yet available to players
+enum ExcludedZones {
+	ZoneUnknown = 0;
+	ZoneZulGurub = 1977;
+	ZoneBlackwingLair = 2677;
+	ZoneRuinsOfAQ = 3428;
+	ZoneTempleOfAQ = 3429;
+	ZoneNaxxramas = 3456;
 }
 
 // Next tag: 24

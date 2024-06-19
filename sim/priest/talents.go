@@ -9,15 +9,30 @@ import (
 )
 
 func (priest *Priest) ApplyTalents() {
-	priest.applyInspiration()
-	priest.applyShadowWeaving()
+	// Discipline
 	priest.registerInnerFocus()
-	priest.registerShadowform()
+	priest.applyMentalAgility()
+	priest.applyForceOfWill()
 
-	// Meditation
+	if priest.Talents.SilentResolve > 0 {
+		priest.PseudoStats.ThreatMultiplier *= 1 - (.04 * float64(priest.Talents.SilentResolve))
+	}
+
+	if priest.Talents.ImprovedPowerWordFortitude > 0 {
+		priest.MultiplyStat(stats.Stamina, 1.0+.15*float64(priest.Talents.ImprovedPowerWordFortitude))
+	}
+
 	priest.PseudoStats.SpiritRegenRateCasting = []float64{0.0, 0.17, 0.33, 0.5}[priest.Talents.Meditation]
 
-	// Spell Warding
+	if priest.Talents.MentalStrength > 0 {
+		priest.MultiplyStat(stats.Intellect, 1.0+0.02*float64(priest.Talents.MentalStrength))
+	}
+
+	// Holy
+	priest.applyInspiration()
+	priest.applyHolySpecialization()
+	priest.applySearingLight()
+
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 1 - .02*float64(priest.Talents.SpellWarding)
 	priest.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 - .02*float64(priest.Talents.SpellWarding)
@@ -29,44 +44,52 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStatDependency(stats.Spirit, stats.SpellPower, 0.05*float64(priest.Talents.SpiritualGuidance))
 	}
 
-	if priest.Talents.MentalStrength > 0 {
-		priest.MultiplyStat(stats.Intellect, 1.0+0.02*float64(priest.Talents.MentalStrength))
-	}
-
-	if priest.Talents.ImprovedPowerWordFortitude > 0 {
-		priest.MultiplyStat(stats.Stamina, 1.0+.15*float64(priest.Talents.ImprovedPowerWordFortitude))
-	}
-
-	if priest.Talents.SilentResolve > 0 {
-		priest.PseudoStats.ThreatMultiplier *= 1 - (.04 * float64(priest.Talents.SilentResolve))
-	}
-}
-
-func (priest *Priest) forceOfWillDamageModifier() float64 {
-	return 1 + .01*float64(priest.Talents.ForceOfWill)
+	// Shadow
+	priest.registerShadowform()
+	priest.applyShadowAffinity()
+	priest.applyShadowFocus()
+	priest.applyShadowWeaving()
 }
 
 func (priest *Priest) darknessDamageModifier() float64 {
 	return 1 + .02*float64(priest.Talents.Darkness)
 }
 
-func (priest *Priest) forceOfWillCritRating() float64 {
-	return 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
+func (priest *Priest) applyMentalAgility() {
+	if priest.Talents.MentalAgility == 0 {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) && spell.DefaultCast.CastTime == 0 {
+			spell.CostMultiplier *= 1 - .02*float64(priest.Talents.MentalAgility)
+		}
+	})
 }
 
-func (priest *Priest) searingLightDamageModifier() float64 {
-	return 1 + 0.05*float64(priest.Talents.SearingLight)
-}
-func (priest *Priest) holySpecCritRating() float64 {
-	return 1 * float64(priest.Talents.HolySpecialization) * core.CritRatingPerCritChance
+func (priest *Priest) applyForceOfWill() {
+	if priest.Talents.ForceOfWill == 0 {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) {
+			spell.DamageMultiplier *= .01 * float64(priest.Talents.ForceOfWill)
+			spell.BonusCritRating += 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
+		}
+	})
 }
 
-func (priest *Priest) shadowHitModifier() float64 {
-	return 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
-}
+func (priest *Priest) applyHolySpecialization() {
+	if priest.Talents.HolySpecialization == 0 {
+		return
+	}
 
-func (priest *Priest) shadowThreatModifier() float64 {
-	return 1 - 0.08*float64(priest.Talents.ShadowAffinity)
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) && spell.SpellSchool.Matches(core.SpellSchoolHoly) {
+			spell.BonusCritRating += 1 * float64(priest.Talents.HolySpecialization) * core.CritRatingPerCritChance
+		}
+	})
 }
 
 func (priest *Priest) applyInspiration() {
@@ -96,6 +119,42 @@ func (priest *Priest) applyInspiration() {
 	})
 }
 
+func (priest *Priest) applySearingLight() {
+	if priest.Talents.SearingLight == 0 {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PriestSmite || spell.SpellCode == SpellCode_PriestHolyFire {
+			spell.DamageMultiplier *= 0.05 * float64(priest.Talents.SearingLight)
+		}
+	})
+}
+
+func (priest *Priest) applyShadowAffinity() {
+	if priest.Talents.ShadowAffinity == 0 {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+			spell.ThreatMultiplier *= 1 - 0.08*float64(priest.Talents.ShadowAffinity)
+		}
+	})
+}
+
+func (priest *Priest) applyShadowFocus() {
+	if priest.Talents.ShadowFocus == 0 {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+			spell.BonusHitRating += 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
+		}
+	})
+}
+
 func (priest *Priest) applyShadowWeaving() {
 	if priest.Talents.ShadowWeaving == 0 {
 		return
@@ -111,8 +170,6 @@ func (priest *Priest) applyShadowWeaving() {
 		ActionID:    core.ActionID{SpellID: 15258},
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagNoMetrics,
 		SpellSchool: core.SpellSchoolShadow,
-
-		BonusHitRating: priest.shadowHitModifier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
@@ -177,6 +234,11 @@ func (priest *Priest) registerInnerFocus() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			priest.InnerFocusAura.Activate(sim)
 		},
+	})
+
+	priest.AddMajorCooldown(core.MajorCooldown{
+		Spell: priest.InnerFocus,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 
