@@ -8,7 +8,7 @@ import (
 )
 
 const ChainHealRanks = 3
-const ChainHealTargetCount = 3
+const ChainHealTargetCount = int32(3)
 
 var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622, 10623}
 var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {416, 477}, {567, 646}}
@@ -40,6 +40,9 @@ func (shaman *Shaman) registerChainHealSpell() {
 }
 
 func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.SpellConfig {
+	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
+
 	spellId := ChainHealSpellId[rank]
 	baseHealingLow := ChainHealBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
 	baseHealingHigh := ChainHealBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
@@ -53,10 +56,14 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 		flags |= core.SpellFlagAPL
 	}
 
-	// 50% reduction per bounce or 35% with Coherence
-	ChainHealBounceCoeff := core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneCloakCoherence), .65, .5)
+	bounceCoef := .5 // 50% reduction per bounce
+	targetCount := ChainHealTargetCount
+	if hasCoherenceRune {
+		bounceCoef = .65 // 35% reduction per bounce
+		targetCount += 2
+	}
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	canOverload := !isOverload && hasOverloadRune
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -93,7 +100,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(ChainHealTargetCount)
+			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(targetCount)
 			curTarget := targets[0]
 			origMult := spell.DamageMultiplier
 			// TODO: This bounces to most hurt friendly...
@@ -106,7 +113,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 
-				spell.DamageMultiplier *= ChainHealBounceCoeff
+				spell.DamageMultiplier *= bounceCoef
 				curTarget = targets[hitIndex]
 			}
 			spell.DamageMultiplier = origMult
