@@ -9,7 +9,7 @@ import { getSpecIcon } from '../core/proto_utils/utils';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
-	cssClass: 'rogue-sim-ui',
+	cssClass: 'tank-rogue-sim-ui',
 	cssScheme: 'rogue',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
