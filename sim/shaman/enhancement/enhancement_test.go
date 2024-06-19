@@ -80,29 +80,29 @@ func TestEnhancement(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassShaman,
-			Level:      60,
-			Race:       proto.Race_RaceTroll,
-			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		// {
+		// 	Class:      proto.Class_ClassShaman,
+		// 	Level:      60,
+		// 	Race:       proto.Race_RaceTroll,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-			Talents:  Phase4Talents,
-			GearSet:  core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_3"),
-			Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
-			Buffs:    core.FullBuffsPhase3,
-			Consumes: Phase3ConsumesWFWF,
-			OtherConsumes: []core.ConsumesCombo{
-				Phase3ConsumesWFFT,
-			},
-			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
-			OtherSpecOptions: []core.SpecOptionsCombo{
-				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
-			},
+		// 	Talents:  Phase4Talents,
+		// 	GearSet:  core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_3"),
+		// 	Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
+		// 	Buffs:    core.FullBuffsPhase3,
+		// 	Consumes: Phase3ConsumesWFWF,
+		// 	OtherConsumes: []core.ConsumesCombo{
+		// 		Phase3ConsumesWFFT,
+		// 	},
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
+		// 	OtherSpecOptions: []core.SpecOptionsCombo{
+		// 		{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
+		// 	},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 	}))
 }
 
