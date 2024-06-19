@@ -12,6 +12,8 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 		return
 	}
 
+	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
+
 	results := make([]*core.SpellResult, min(5, rogue.Env.GetNumTargets()))
 
 	rogue.ShurikenToss = rogue.RegisterSpell(core.SpellConfig{
@@ -33,7 +35,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: core.TernaryFloat64(hasJustAFleshWound, 1.5, 1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

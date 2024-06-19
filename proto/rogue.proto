@@ -107,7 +107,6 @@ enum RogueRune {
 	RuneRollingWithThePunches	= 400093;
 	RuneWaylay					= 408700;
 	RuneMasterOfSubtlety		= 425096;
-	
 }
 
 message RogueOptions {
