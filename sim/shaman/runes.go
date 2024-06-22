@@ -110,8 +110,8 @@ func (shaman *Shaman) applyDualWieldSpec() {
 
 	shaman.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
 
-	meleeHit := float64(core.MeleeHitRatingPerHitChance * 10)
-	spellHit := float64(core.SpellHitRatingPerHitChance * 10)
+	meleeHit := float64(core.MeleeHitRatingPerHitChance * 5)
+	spellHit := float64(core.SpellHitRatingPerHitChance * 5)
 
 	shaman.AddStat(stats.MeleeHit, meleeHit)
 	shaman.AddStat(stats.SpellHit, spellHit)
@@ -156,14 +156,28 @@ func (shaman *Shaman) applyShieldMastery() {
 	shaman.PseudoStats.BlockValueMultiplier = 1.15
 
 	actionId := core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestShieldMastery)}
-	procId := core.ActionID{SpellID: 408525}
 	manaMetrics := shaman.NewManaMetrics(actionId)
 	procManaReturn := 0.08
 	armorPerStack := shaman.Equipment.OffHand().Stats[stats.Armor] * 0.3
 
-	procAura := shaman.RegisterAura(core.Aura{
-		Label:     "Shield Mastery Proc",
-		ActionID:  procId,
+	cachedBonusAP := 0.0
+	apProcAura := shaman.RegisterAura(core.Aura{
+		Label: "Shield Mastery AP",
+		// TODO: Verify ID. I couldn't find a separate one at the moment
+		ActionID: core.ActionID{SpellID: 408525},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense)-float64(5*shaman.Level), 0)
+			shaman.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+		},
+	})
+
+	blockProcAura := shaman.RegisterAura(core.Aura{
+		Label:     "Shield Mastery Block",
+		ActionID:  core.ActionID{SpellID: 408525},
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -177,8 +191,13 @@ func (shaman *Shaman) applyShieldMastery() {
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeBlock) {
 				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				blockProcAura.Activate(sim)
+				blockProcAura.AddStack(sim)
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.SpellCode == SpellCode_ShamanFlameShock {
+				apProcAura.Activate(sim)
 			}
 		},
 	}))
@@ -192,7 +211,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	procSpellId := int32(436365)
 
 	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
-	attackSpeedMultiplier := 1.3
+	attackSpeedMultiplier := 1.5
 	apMultiplier := 1.1
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
@@ -279,7 +298,15 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		return
 	}
 
-	ppm := core.TernaryFloat64(shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon, 15, 10)
+	// Chance increased by 50% while your main hand weapon is enchanted with Windfury Weapon and by another 50% if wielding a two-handed weapon.
+	// Base PPM is 10
+	ppm := 10.0
+	if shaman.GetCharacter().Consumes.MainHandImbue == proto.WeaponImbue_WindfuryWeapon {
+		ppm += 5
+	}
+	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		ppm += 5
+	}
 
 	var affectedSpells []*core.Spell
 	shaman.OnSpellRegistered(func(spell *core.Spell) {

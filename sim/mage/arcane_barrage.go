@@ -12,11 +12,8 @@ func (mage *Mage) registerArcaneBarrageSpell() {
 		return
 	}
 
-	// TODO: Missing rune ability scaling in-game?
-	// baseDamageLow := mage.baseRuneAbilityDamage()
-	// baseDamageHigh := mage.baseRuneAbilityDamage()
-	baseDamageLow := 25.0
-	baseDamageHigh := 31.0
+	baseDamageLow := mage.baseRuneAbilityDamage() * 3.58
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 4.38
 	damageCoef := 0.429
 	manaCost := 0.08
 	cooldown := time.Second * 3

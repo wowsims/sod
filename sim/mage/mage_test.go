@@ -112,7 +112,7 @@ func TestFire(t *testing.T) {
 
 			Talents:     Phase4TalentsFire,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_hot_streak"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -163,64 +163,6 @@ func TestFrost(t *testing.T) {
 	}))
 }
 
-// TODO: For some reason the tests break when running frostfire and frost together
-// Whichever one is run second generates with no stat weights
-// func TestFrostFire(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-// 		{
-// 			Class:      proto.Class_ClassMage,
-// 			Level:      40,
-// 			Race:       proto.Race_RaceTroll,
-// 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-// 			Talents:     Phase2TalentsFrostfire,
-// 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_frost"),
-// 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_fire"),
-// 			Buffs:       core.FullBuffsPhase2,
-// 			Consumes:    Phase2Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Frostfire", SpecOptions: PlayerOptionsFrostFire},
-
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatSpellPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 		{
-// 			Class:      proto.Class_ClassMage,
-// 			Level:      50,
-// 			Race:       proto.Race_RaceTroll,
-// 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-// 			Talents:     Phase3TalentsFire,
-// 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
-// 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_fire"),
-// 			Buffs:       core.FullBuffsPhase3,
-// 			Consumes:    Phase3Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Frostfire", SpecOptions: PlayerOptionsFrostFire},
-
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatSpellPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 		{
-// 			Class:      proto.Class_ClassMage,
-// 			Level:      60,
-// 			Race:       proto.Race_RaceTroll,
-// 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-// 			Talents:     Phase4TalentsFire,
-// 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire_ffb"),
-// 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire_ffb"),
-// 			Buffs:       core.FullBuffsPhase3,
-// 			Consumes:    Phase3Consumes,
-// 			SpecOptions: core.SpecOptionsCombo{Label: "Frostfire", SpecOptions: PlayerOptionsFrostFire},
-
-// 			ItemFilter:      ItemFilters,
-// 			EPReferenceStat: proto.Stat_StatSpellPower,
-// 			StatsToWeigh:    Stats,
-// 		},
-// 	}))
-// }
-
 var Phase1TalentsArcane = "22500502"
 var Phase1TalentsFire = "-5050020121"
 
@@ -231,8 +173,8 @@ var Phase2TalentsFrostfire = Phase2TalentsFire
 var Phase3TalentsFire = "-0550020123033151-2035"
 var Phase3TalentsFrost = "-055-20350203100351051"
 
-var Phase4TalentsFire = "-0550020123033151-2035"
-var Phase4TalentsFrost = "-055-20350203100351051"
+var Phase4TalentsFire = "-5050320123033051-203501031003"
+var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{

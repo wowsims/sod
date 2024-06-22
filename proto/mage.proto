@@ -65,6 +65,7 @@ enum MageRune {
 
 	RuneHelmAdvancedWarding		= 428738;
 	RuneHelmDeepFreeze			= 428739;
+	RuneHelmHotStreak			= 400624;
 	RuneHelmTemporalAnomaly		= 429305;
 
 	RuneCloakArcaneBarrage		= 400610;
@@ -79,14 +80,13 @@ enum MageRune {
 	RuneBracersMoltenArmor 		= 428741;
 	RuneBracersDisplacement		= 428863;
 	RuneBracersBalefireBolt 	= 428878;
+	RuneBracersRewindTime		= 401462;
 
 	RuneHandsArcaneBlast		= 400574;
 	RuneHandsIceLance			= 400640;
 	RuneHandsLivingBomb			= 400613;
-	RuneHandsRewindTime			= 401462;
 
 	RuneBeltFrostfireBolt		= 401502;
-	RuneBeltHotStreak			= 400624;
 	RuneBeltMissileBarrage		= 400588;
 	RuneBeltSpellfrostBolt		= 412532;
 

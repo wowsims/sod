@@ -55,6 +55,9 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	level := ChainLightningLevel[rank]
 
 	cooldown := time.Second * 6
+	if hasStormEarthAndFireRune {
+		cooldown /= 2
+	}
 	castTime := time.Millisecond * 2500
 
 	bounceCoef := .7 // 30% reduction per bounce
@@ -79,7 +82,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	spell.Rank = rank
 	spell.BonusCoefficient = spellCoeff
 
-	if !isOverload && !hasStormEarthAndFireRune {
+	if !isOverload {
 		spell.Cast.CD = core.Cooldown{
 			Timer:    cdTimer,
 			Duration: cooldown,

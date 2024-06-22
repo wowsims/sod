@@ -633,6 +633,7 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
+
 	itemProto := &proto.UIItem{
 		Id:   item.ID,
 		Name: item.GetName(),

@@ -19,7 +19,10 @@ func (shaman *Shaman) applyMoltenBlast() {
 	apCoef := .05
 	cooldown := time.Second * 6
 	manaCost := .18
-	targetCount := 4
+	targetCount := int32(10)
+
+	numHits := min(targetCount, shaman.Env.GetNumTargets())
+	results := make([]*core.SpellResult, numHits)
 
 	shaman.MoltenBlast = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
@@ -50,11 +53,15 @@ func (shaman *Shaman) applyMoltenBlast() {
 		ThreatMultiplier: 2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				if i < targetCount {
-					baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				}
+			for idx := range results {
+				// Molten Blast is a magic ability but scales off of Attack Power
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
+				results[idx] = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

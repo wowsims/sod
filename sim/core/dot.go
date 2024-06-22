@@ -35,8 +35,9 @@ type Dot struct {
 	// Embed Aura, so we can use IsActive/Refresh/etc directly.
 	*Aura
 
-	NumberOfTicks int32         // number of ticks over the whole duration
-	TickLength    time.Duration // time between each tick
+	OriginalNumberOfTicks int32         // base number of ticks of the original dot
+	NumberOfTicks         int32         // number of ticks over the whole duration
+	TickLength            time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
 	AffectedByCastSpeed bool
@@ -307,9 +308,10 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 	dot := Dot{
 		Spell: config.Spell,
 
-		NumberOfTicks:       config.NumberOfTicks,
-		TickLength:          config.TickLength,
-		AffectedByCastSpeed: config.AffectedByCastSpeed,
+		OriginalNumberOfTicks: config.NumberOfTicks,
+		NumberOfTicks:         config.NumberOfTicks,
+		TickLength:            config.TickLength,
+		AffectedByCastSpeed:   config.AffectedByCastSpeed,
 
 		OnSnapshot: config.OnSnapshot,
 		OnTick:     config.OnTick,
