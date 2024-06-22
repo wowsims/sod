@@ -436,6 +436,11 @@ func (druid *Druid) manageCooldownsEnabled() {
 	}
 }
 
+// https://www.wowhead.com/classic/spell=24858/moonkin-form
+// - Moonfire costs 50% less mana and deals 50% more damage over time
+// - Sunfire costs 50% less mana and deals 50% more damage over time
+// - Your periodic damage spells can deal critical periodic damage (handled in individual dot snapshots)
+// - You gain (2 * Level) spell damage
 func (druid *Druid) registerMoonkinFormSpell() {
 	if !druid.Talents.MoonkinForm {
 		return
@@ -453,16 +458,14 @@ func (druid *Druid) registerMoonkinFormSpell() {
 			}
 			druid.form = Moonkin
 
-			// 2024-02-27 Tuning:
-			// While in Moonkin form, Moonfire/Sunfire cost reduced by 50%,
-			// periodic damage increase by 50%
+			druid.AddStatDynamic(sim, stats.SpellDamage, float64(2*druid.Level))
+
+			druid.MoonfireDotMultiplier *= 1.5
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
 					spell.Spell.CostMultiplier -= .5
 				}
 			})
-
-			druid.MoonfireDotMultiplier *= 1.5
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
 				druid.Sunfire.CostMultiplier -= .5
@@ -471,6 +474,8 @@ func (druid *Druid) registerMoonkinFormSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
+
+			druid.AddStatDynamic(sim, stats.SpellDamage, float64(-2*druid.Level))
 
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
