@@ -47,7 +47,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 	dotCoeff := .15
 	castTime := time.Second * 6
 
-	hasHotStreakRune := mage.HasRune(proto.MageRune_RuneBeltHotStreak)
+	hasHotStreakRune := mage.HasRune(proto.MageRune_RuneHelmHotStreak)
 
 	actionID := core.ActionID{SpellID: spellId}
 

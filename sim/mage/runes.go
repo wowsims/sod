@@ -203,14 +203,14 @@ func (mage *Mage) applyMoltenArmor() {
 }
 
 func (mage *Mage) applyHotStreak() {
-	if !mage.HasRune(proto.MageRune_RuneBeltHotStreak) {
+	if !mage.HasRune(proto.MageRune_RuneHelmHotStreak) {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 48108}
 
 	pyroblastSpells := []*core.Spell{}
-	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBombExplosion}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFrostfireBolt, SpellCode_MageFireBlast, SpellCode_MageScorch, SpellCode_MageLivingBombExplosion}
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",

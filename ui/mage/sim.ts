@@ -112,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		builds: [
 			// Presets.PresetBuildArcane,
 			Presets.PresetBuildFire,
-			Presets.PresetBuildFrostfire,
 			Presets.PresetBuildFrost,
 		],
 	},
@@ -120,11 +119,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	autoRotation: player => {
 		const specNumber = player.getTalentTree();
 		const level = player.getLevel();
-
-		if (level === 60 && specNumber === 1 && player.hasRune(ItemSlot.ItemSlotWaist, MageRune.RuneBeltFrostfireBolt)) {
-			// Phase 4 Fire FFB
-			return Presets.DefaultAPLs[level][3].rotation.rotation!;
-		}
 
 		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
