@@ -20,7 +20,6 @@ var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52,
 
 func (druid *Druid) registerMoonfireSpell() {
 	druid.Moonfire = make([]*DruidSpell, MoonfireRanks+1)
-
 	druid.MoonfireDotMultiplier = 1
 
 	for rank := 1; rank <= MoonfireRanks; rank++ {
@@ -80,19 +79,21 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDotDamage, isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.MoonfireDotMultiplier
+				if !druid.form.Matches(Moonkin) {
+					dot.SnapshotCritChance = 0
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
 			},
 		},
 
-		BonusCritRating: druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: druid.vengeance(),
+		BonusCoefficient: spellCoeff,
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		CritDamageBonus:  druid.vengeance(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
