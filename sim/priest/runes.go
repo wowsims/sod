@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -10,6 +11,7 @@ import (
 func (priest *Priest) ApplyRunes() {
 	// Head
 	priest.registerEyeOfTheVoidCD()
+	priest.applyPainAndSuffering()
 
 	// Cloak
 	priest.registerVampiricTouchSpell()
@@ -37,6 +39,47 @@ func (priest *Priest) ApplyRunes() {
 
 	// Skill Books
 	priest.registerShadowfiendSpell()
+}
+
+func (priest *Priest) applyPainAndSuffering() {
+	if !priest.HasRune(proto.PriestRune_RuneHelmPainAndSuffering) {
+		return
+	}
+
+	affectedSpellcodes := []int32{SpellCode_PriestMindBlast, SpellCode_PriestMindFlay, SpellCode_PriestMindSpike}
+	priest.RegisterAura(core.Aura{
+		Label:    "Pain and Suffering Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if slices.Contains(affectedSpellcodes, spell.SpellCode) && result.Landed() {
+				target := result.Target
+
+				var dotToRollover *core.Dot
+				dotSpells := core.FilterSlice(
+					core.Flatten([][]*core.Spell{priest.ShadowWordPain, {priest.VoidPlague, priest.VampiricTouch}}),
+					func(spell *core.Spell) bool {
+						return spell != nil && spell.Dot(target).IsActive()
+					},
+				)
+
+				if len(dotSpells) > 0 {
+					dotToRollover = dotSpells[0].Dot(target)
+					for _, spell := range dotSpells {
+						dot := spell.Dot(target)
+						if dot.RemainingDuration(sim) < dotToRollover.RemainingDuration(sim) {
+							dotToRollover = dot
+						}
+					}
+
+					dotToRollover.NumberOfTicks = dotToRollover.OriginalNumberOfTicks
+					dotToRollover.Rollover(sim)
+				}
+			}
+		},
+	})
 }
 
 func (priest *Priest) applySurgeOfLight() {

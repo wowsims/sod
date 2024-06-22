@@ -17,6 +17,9 @@ const (
 	SpellCode_PriestFlashHeal
 	SpellCode_PriestGreaterHeal
 	SpellCode_PriestHeal
+	SpellCode_PriestMindBlast
+	SpellCode_PriestMindFlay
+	SpellCode_PriestMindSpike
 	SpellCode_PriestHolyFire
 	SpellCode_PriestSmite
 )
@@ -56,6 +59,7 @@ type Priest struct {
 	ShadowWordDeath   *core.Spell
 	ShadowWordPain    []*core.Spell
 	Smite             []*core.Spell
+	VampiricEmbrace   *core.Spell
 	VampiricTouch     *core.Spell
 	VoidPlague        *core.Spell
 
@@ -67,9 +71,10 @@ type Priest struct {
 	ShadowformAura   *core.Aura
 	SurgeOfLightAura *core.Aura
 
-	MindSpikeAuras     core.AuraArray
-	ShadowWeavingAuras core.AuraArray
-	WeakenedSouls      core.AuraArray
+	MindSpikeAuras       core.AuraArray
+	ShadowWeavingAuras   core.AuraArray
+	VampiricEmbraceAuras core.AuraArray
+	WeakenedSouls        core.AuraArray
 
 	EyeOfTheVoidPet *EyeOfTheVoid
 	HomunculiPets   []*Homunculus

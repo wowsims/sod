@@ -173,6 +173,10 @@ func (aura *Aura) Refresh(sim *Simulation) {
 			sim.rescheduleTracker(aura.expires)
 		}
 	}
+
+	if sim.Log != nil && aura.IsActive() && !aura.ActionID.IsEmptyAction() {
+		aura.Unit.Log(sim, "Aura refreshed: %s", aura.ActionID)
+	}
 }
 
 func (aura *Aura) GetStacks() int32 {
@@ -549,9 +553,6 @@ restart:
 func (aura *Aura) Activate(sim *Simulation) {
 	aura.metrics.Procs++
 	if aura.IsActive() {
-		if sim.Log != nil && !aura.ActionID.IsEmptyAction() {
-			aura.Unit.Log(sim, "Aura refreshed: %s", aura.ActionID)
-		}
 		aura.Refresh(sim)
 		return
 	}
@@ -575,9 +576,9 @@ func (aura *Aura) Activate(sim *Simulation) {
 		}
 	}
 
-	aura.active = true
 	aura.startTime = sim.CurrentTime
 	aura.Refresh(sim)
+	aura.active = true
 
 	if aura.Duration != NeverExpires {
 		aura.activeIndex = int32(len(aura.Unit.activeAuras))
