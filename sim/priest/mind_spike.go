@@ -28,6 +28,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	})
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestMindSpike,
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
 		DefenseType: core.DefenseTypeMagic,

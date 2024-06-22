@@ -58,6 +58,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestMindFlay,
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,

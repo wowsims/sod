@@ -77,6 +77,9 @@ func (priest *Priest) registerVampiricTouchSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseTickDamage, isRollover)
+				if priest.VampiricEmbraceAuras != nil {
+					priest.VampiricEmbraceAuras.Get(target).Activate(sim)
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {

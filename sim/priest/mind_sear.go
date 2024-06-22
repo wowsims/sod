@@ -62,10 +62,8 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					if aoeTarget != target {
-						mindSearTickSpell.Cast(sim, aoeTarget)
-						mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
-					}
+					mindSearTickSpell.Cast(sim, aoeTarget)
+					mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
 				}
 			},
 		},

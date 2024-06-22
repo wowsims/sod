@@ -45,6 +45,7 @@ func (priest *Priest) ApplyTalents() {
 	}
 
 	// Shadow
+	priest.registerVampiricEmbraceSpell()
 	priest.registerShadowform()
 	priest.applyShadowAffinity()
 	priest.applyShadowFocus()
