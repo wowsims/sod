@@ -26,7 +26,7 @@ func init() {
 		shaman := agent.(ShamanAgent).GetShaman()
 
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanFlameShockDirect {
+			if spell.SpellCode == SpellCode_ShamanFlameShock {
 				spell.DefaultCast.Cost -= 10
 			}
 		})
@@ -78,7 +78,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_ShamanFlameShockDirect {
+				if spell.SpellCode == SpellCode_ShamanFlameShock {
 					procAura.Activate(sim)
 				}
 			},

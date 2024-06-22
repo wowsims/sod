@@ -18,6 +18,8 @@ var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 const SwipeThreatMultiplier = 2.0
 
 func (druid *Druid) registerSwipeBearSpell() {
+	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
+
 	druid.SwipeBear = make([]*DruidSpell, SwipeRanks+1)
 
 	for rank := 1; rank <= SwipeRanks; rank++ {
@@ -27,7 +29,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 			spellID := SwipeSpellId[rank]
 			baseDamage := SwipeBaseDamage[rank]
 
-			targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 6, 3)
+			targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
 			numHits := min(targetCount, druid.Env.GetNumTargets())
 			results := make([]*core.SpellResult, numHits)
 
