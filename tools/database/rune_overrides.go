@@ -41,6 +41,10 @@ var RuneOverrides = []*proto.UIRune{
 	// Hunter
 	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
 	{Id: 458393, Name: "Engrave Chest - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeChest, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
+
+	// Mage
+	// As of 2024-06-21 Hot Streak's tooltip still shows "Requires Belt" after the move to Helm
+	{Id: 400624, Type: proto.ItemType_ItemTypeHead},
 }
 
 // Remove runes as you implement them.

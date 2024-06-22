@@ -186,6 +186,7 @@ func (db *WowDatabase) AddRune(id int32, tooltip WowheadItemResponse) {
 	if runeOverrideNames[tooltip.GetName()] != nil {
 		return
 	}
+
 	db.Runes[id] = &proto.UIRune{
 		Id:             id,
 		Name:           tooltip.GetName(),
