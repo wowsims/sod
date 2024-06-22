@@ -73,8 +73,7 @@ const (
 	SpellCode_ShamanLavaBurst
 
 	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFlameShockDirect
-	SpellCode_ShamanFlameShockDot
+	SpellCode_ShamanFlameShock
 	SpellCode_ShamanFrostShock
 
 	SpellCode_ShamanMoltenBlast
@@ -114,10 +113,9 @@ type Shaman struct {
 	// The damage component of lightning shield is a separate spell
 	LightningShieldProcs []*core.Spell
 
-	EarthShock     []*core.Spell
-	FlameShock     []*core.Spell
-	FlameShockDots []*core.Spell
-	FrostShock     []*core.Spell
+	EarthShock []*core.Spell
+	FlameShock []*core.Spell
+	FrostShock []*core.Spell
 
 	// Totems
 	ActiveTotems [4]*core.Spell
