@@ -685,6 +685,7 @@ func (c *Character) ApplyRingRunes() {
 	// Weapon Skill Specializations
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
 		c.PseudoStats.AxesSkill += 5
+		c.PseudoStats.TwoHandedAxesSkill += 5
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingDaggerSpecialization)) {
@@ -697,6 +698,7 @@ func (c *Character) ApplyRingRunes() {
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingMaceSpecialization)) {
 		c.PseudoStats.MacesSkill += 5
+		c.PseudoStats.TwoHandedMacesSkill += 5
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingPoleWeaponSpecialization)) {
@@ -713,6 +715,7 @@ func (c *Character) ApplyRingRunes() {
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
 		c.PseudoStats.SwordsSkill += 5
+		c.PseudoStats.TwoHandedSwordsSkill += 5
 	}
 
 	// Other Specializations
