@@ -206,12 +206,20 @@ func (priest *Priest) registerInnerFocus() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 25*core.CritRatingPerCritChance)
 			aura.Unit.PseudoStats.CostMultiplier -= 1
+			for _, spell := range priest.Spellbook {
+				if spell != nil && spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot) {
+					spell.BonusCritRating += 25 * core.CritRatingPerCritChance
+				}
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -25*core.CritRatingPerCritChance)
 			aura.Unit.PseudoStats.CostMultiplier += 1
+			for _, spell := range priest.Spellbook {
+				if spell != nil && spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot) {
+					spell.BonusCritRating -= 25 * core.CritRatingPerCritChance
+				}
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Remove the buff and put skill on CD
