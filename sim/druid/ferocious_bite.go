@@ -73,7 +73,10 @@ func (druid *Druid) registerFerociousBiteSpell() {
 }
 
 func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core.SpellConfig {
+	has6PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 6)
+
 	return core.SpellConfig{
+		SpellCode:   SpellCode_FerociousBite,
 		ActionID:    core.ActionID{SpellID: rank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -83,7 +86,6 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,
 			Refund: 0,
-			//RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -112,6 +114,10 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
+				if has6PCenarionCunning && druid.SavageRoarAura != nil && druid.SavageRoarAura.IsActive() && sim.Proc(.2*float64(druid.ComboPoints()), "S03 - Item - T1 - Druid - Feral 6P Bonus") {
+					druid.SavageRoarAura.Refresh(sim)
+				}
+
 				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {

@@ -14,7 +14,6 @@ func (druid *Druid) registerInnervateCD() {
 	innervateTargetChar := druid.Env.Raid.GetPlayerFromUnit(innervateTarget).GetCharacter()
 
 	actionID := core.ActionID{SpellID: 29166, Tag: druid.Index}
-	var innervateSpell *DruidSpell
 
 	innervateCD := core.InnervateCD
 
@@ -26,7 +25,7 @@ func (druid *Druid) registerInnervateCD() {
 			if druid.StartingForm.Matches(Cat) {
 				// double shift + innervate cost.
 				// Prevents not having enough mana to shift back into form if more powershift are executed
-				innervateManaThreshold = druid.CatForm.DefaultCast.Cost*2 + innervateSpell.DefaultCast.Cost
+				innervateManaThreshold = druid.CatForm.DefaultCast.Cost*2 + druid.Innervate.DefaultCast.Cost
 			} else {
 				// Threshold can be lower when casting on self because its never mid-cast.
 				innervateManaThreshold = 500
@@ -36,7 +35,7 @@ func (druid *Druid) registerInnervateCD() {
 		}
 	})
 
-	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
+	druid.Innervate = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
 		ActionID: actionID,
 
 		ManaCost: core.ManaCostOptions{
@@ -64,7 +63,7 @@ func (druid *Druid) registerInnervateCD() {
 	})
 
 	druid.AddMajorCooldown(core.MajorCooldown{
-		Spell: innervateSpell.Spell,
+		Spell: druid.Innervate.Spell,
 		Type:  core.CooldownTypeMana,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			// Innervate needs to be activated as late as possible to maximize DPS. The issue is that

@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var WildheartRaiment = core.NewItemSet(core.ItemSet{
+var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Wildheart Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -74,7 +74,7 @@ var WildheartRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var BeaststalkerArmor = core.NewItemSet(core.ItemSet{
+var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	Name: "Beaststalker Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -117,7 +117,7 @@ var BeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var MagistersRegalia = core.NewItemSet(core.ItemSet{
+var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Magister's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -157,7 +157,7 @@ var MagistersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var LightforgeArmor = core.NewItemSet(core.ItemSet{
+var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 	Name: "Lightforge Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -211,7 +211,7 @@ var LightforgeArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var VestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
+var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Devout",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -251,7 +251,7 @@ var VestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ShadowcraftArmor = core.NewItemSet(core.ItemSet{
+var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	Name: "Shadowcraft Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -294,7 +294,7 @@ var ShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var TheElements = core.NewItemSet(core.ItemSet{
+var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 	Name: "The Elements",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -349,7 +349,7 @@ var TheElements = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var DreadmistRaiment = core.NewItemSet(core.ItemSet{
+var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Dreadmist Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -399,7 +399,7 @@ var DreadmistRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var BattlegearOfValor = core.NewItemSet(core.ItemSet{
+var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Valor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {

@@ -79,11 +79,14 @@ func main() {
 
 	for _, response := range itemTooltips {
 		if response.IsEquippable() {
-			// Only included items that are in wowheads gearplanner db
-			// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
-			item := response.ToItemProto()
-			if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
-				db.MergeItem(item)
+			// Item is not part of an item set OR the item set is not in the deny list
+			if itemSetID := response.GetItemSetID(); itemSetID == 0 || !slices.Contains(database.DenyItemSetIds, itemSetID) {
+				// Only included items that are in wowheads gearplanner db
+				// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
+				item := response.ToItemProto()
+				if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
+					db.MergeItem(item)
+				}
 			}
 		}
 	}
@@ -167,10 +170,6 @@ func main() {
 	db.MergeFactions(atlasDBProto.Factions)
 
 	db.WriteBinaryAndJson(fmt.Sprintf("%s/db.bin", dbDir), fmt.Sprintf("%s/db.json", dbDir))
-}
-
-func loadFactions(db *database.WowDatabase) {
-
 }
 
 // Filters out entities which shouldn't be included anywhere.
