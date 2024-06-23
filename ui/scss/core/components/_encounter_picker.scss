@@ -20,44 +20,33 @@
 }
 
 .advanced-encounter-picker-modal {
+	.modal-body {
+		overflow: auto;
+	}
+
 	.encounter-picker {
 		width: 33.33%;
+
+		@include media-breakpoint-down(sm) {
+			width: 50%;
+		}
 	}
 
 	.execute-group {
 		flex-direction: row;
 	}
 
-	.encounter-header {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-
-		.picker-group {
-			&:first-child {
-				width: 66%;
-			}
-
-			&:last-child {
-				width: 100%;
-			}
-		}
-	}
-
 	.target-picker-root {
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		gap: var(--spacer-3);
+		grid-template-columns: 1fr;
+		@include media-breakpoint-up(xl) {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
 
-		.target-picker-section {
-			width: 33.33%;
-
-			&:not(:last-child) {
-				margin-right: map.get($spacers, 3);
-			}
-
-			&.target-picker-section2 {
-				padding-top: 1.2rem;
-			}
+		.input-root:is(:only-child),
+		.input-root:is(:last-child) {
+			margin-bottom: 0;
 		}
 	}
 }
