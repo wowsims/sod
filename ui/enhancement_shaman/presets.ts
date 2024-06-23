@@ -138,7 +138,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElementsNew: TristateEffect.TristateEffectRegular,
 	curseOfRecklessness: true,
-	faerieFire: true,
+	faerieFireImproved: TristateEffect.TristateEffectRegular,
 	homunculi: 70, // 70% average uptime default
 	improvedScorch: true,
 	serpentsStrikerFistDebuff: true,
