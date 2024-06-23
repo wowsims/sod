@@ -500,3 +500,65 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Test`),
 	regexp.MustCompile(`zOLD`),
 }
+
+// Data can easily be found here:
+// https://www.wowhead.com/classic/item-sets#item-sets
+var DenyItemSetIds = []int{
+	// Dungeon Set 1
+	181, // Magister's Regalia
+	182, // Vestments of the Devout
+	183, // Dreadmist Raiment
+	184, // Shadowcraft Armor
+	185, // Wildheart Raiment
+	186, // Beaststalker Armor
+	187, // The Elements
+	188, // Lightforge Armor
+	189, // Battlegear of Valor
+	// Tier 1 Raid Set
+	201, // Arcanist Regalia
+	202, // Vestments of Prophecy
+	203, // Felheart Raiment
+	204, // Nightslayer Armor
+	205, // Cenarion Raiment
+	206, // Giantstalker Armor
+	207, // The Earthfury
+	208, // Lawbringer Armor
+	209, // Battlegear of Might
+	// Tier 2 Raid Set
+	210, // Netherwind Regalia
+	211, // Vestments of Transcendence
+	212, // Nemesis Raiment
+	213, // Bloodfang Armor
+	214, // Stormrage Raiment
+	215, // Dragonstalker Armor
+	216, // The Ten Storms
+	217, // Judgement Armor
+	218, // Battlegear of Wrath
+	// Dungeon Set 2
+	511, // Battlegear of Heroism
+	512, // Darkmantle Armor
+	513, // Feralheart Raiment
+	514, // Vestments of the Virtuous
+	515, // Beastmaster Armor
+	516, // Soulforge Armor
+	517, // Sorcerer's Regalia
+	518, // Deathmist Raiment
+	519, // The Five Thunders
+	// Level 60 PVP Set Rare
+	522, // Champion's Guard
+	537, // Champion's Battlearmor
+	538, // Champion's Stormcaller
+	539, // Champion's Refuge
+	540, // Champion's Investiture
+	541, // Champion's Dreadgear
+	542, // Champion's Arcanum
+	543, // Champion's Pursuance
+	544, // Lieutenant Commander's Redoubt
+	545, // Lieutenant Commander's Battlearmor
+	546, // Lieutenant Commander's Arcanum
+	547, // Lieutenant Commander's Dreadgear
+	548, // Lieutenant Commander's Guard
+	549, // Lieutenant Commander's Investiture
+	550, // Lieutenant Commander's Pursuance
+	551, // Lieutenant Commander's Refuge
+}

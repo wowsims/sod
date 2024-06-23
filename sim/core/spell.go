@@ -329,6 +329,9 @@ func (unit *Unit) GetOrRegisterSpell(config SpellConfig) *Spell {
 	}
 }
 
+func (spell *Spell) Dots() []*Dot {
+	return spell.dots
+}
 func (spell *Spell) Dot(target *Unit) *Dot {
 	return spell.dots.Get(target)
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var WildheartRaiment = core.NewItemSet(core.ItemSet{
+var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Wildheart Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -37,7 +37,9 @@ var WildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.02,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -47,7 +49,9 @@ var WildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddEnergy(sim, 40, energyMetrics)
+					if c.HasEnergyBar() {
+						c.AddEnergy(sim, 40, energyMetrics)
+					}
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -57,7 +61,9 @@ var WildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMelee,
 				ProcChance: 0.03,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddRage(sim, 10, rageMetrics)
+					if c.HasRageBar() {
+						c.AddRage(sim, 10, rageMetrics)
+					}
 				},
 			})
 		},
@@ -74,7 +80,7 @@ var WildheartRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var BeaststalkerArmor = core.NewItemSet(core.ItemSet{
+var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	Name: "Beaststalker Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -100,7 +106,9 @@ var BeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -117,7 +125,7 @@ var BeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var MagistersRegalia = core.NewItemSet(core.ItemSet{
+var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Magister's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -140,7 +148,9 @@ var MagistersRegalia = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -157,7 +167,7 @@ var MagistersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var LightforgeArmor = core.NewItemSet(core.ItemSet{
+var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 	Name: "Lightforge Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -211,7 +221,7 @@ var LightforgeArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var VestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
+var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Devout",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -234,7 +244,9 @@ var VestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -251,7 +263,7 @@ var VestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ShadowcraftArmor = core.NewItemSet(core.ItemSet{
+var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	Name: "Shadowcraft Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -277,7 +289,9 @@ var ShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				ProcMask: core.ProcMaskMelee,
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddEnergy(sim, 35, energyMetrics)
+					if c.HasEnergyBar() {
+						c.AddEnergy(sim, 35, energyMetrics)
+					}
 				},
 			})
 		},
@@ -294,7 +308,7 @@ var ShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var TheElements = core.NewItemSet(core.ItemSet{
+var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 	Name: "The Elements",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -349,7 +363,7 @@ var TheElements = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var DreadmistRaiment = core.NewItemSet(core.ItemSet{
+var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Dreadmist Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -366,7 +380,9 @@ var DreadmistRaiment = core.NewItemSet(core.ItemSet{
 			manaMetrics := c.NewManaMetrics(core.ActionID{SpellID: 450583})
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				c.AddMana(sim, sim.Roll(270, 300), manaMetrics)
+				if c.HasManaBar() {
+					c.AddMana(sim, sim.Roll(270, 300), manaMetrics)
+				}
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -399,7 +415,7 @@ var DreadmistRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var BattlegearOfValor = core.NewItemSet(core.ItemSet{
+var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Valor",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
@@ -427,7 +443,9 @@ var BattlegearOfValor = core.NewItemSet(core.ItemSet{
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					c.GainHealth(sim, sim.Roll(88, 132), healthMetrics)
-					c.AddRage(sim, 10, rageMetrics)
+					if c.HasRageBar() {
+						c.AddRage(sim, 10, rageMetrics)
+					}
 				},
 			})
 		},

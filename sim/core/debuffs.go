@@ -169,8 +169,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfRecklessnessAura(target, level))
 	}
 
-	if debuffs.FaerieFire {
-		MakePermanent(FaerieFireAura(target, level))
+	// if debuffs.FaerieFire {
+	// 	MakePermanent(FaerieFireAura(target, level))
+	// }
+
+	if debuffs.FaerieFireImproved != proto.TristateEffect_TristateEffectMissing {
+		MakePermanent(FaerieFireAura(target, level, debuffs.FaerieFireImproved == proto.TristateEffect_TristateEffectImproved))
 	}
 
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
@@ -921,7 +925,9 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 	return aura
 }
 
-func FaerieFireAura(target *Unit, playerLevel int32) *Aura {
+// Decreases the armor of the target by X for 40 sec.
+// Improved: Your Faerie Fire and Faerie Fire (Feral) also increase the chance for all attacks to hit that target by 1% for 40 sec.
+func FaerieFireAura(target *Unit, playerLevel int32, improved bool) *Aura {
 	spellID := map[int32]int32{
 		25: 770,
 		40: 778,
@@ -942,9 +948,17 @@ func FaerieFireAura(target *Unit, playerLevel int32) *Aura {
 		Duration: time.Second * 40,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
+			if improved {
+				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * SpellHitRatingPerHitChance
+				aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * SpellHitRatingPerHitChance
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, arpen)
+			if improved {
+				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * SpellHitRatingPerHitChance
+				aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
+			}
 		},
 	})
 	return aura

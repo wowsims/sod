@@ -134,7 +134,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	faerieFire: true,
+	faerieFireImproved: TristateEffect.TristateEffectRegular,
 });
 
 export const OtherDefaults = {

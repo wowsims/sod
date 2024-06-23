@@ -29,7 +29,7 @@ export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
 export const GearDaggersP1 = PresetUtils.makePresetGear('P1 Daggers', P1DaggersGear, { customCondition: player => player.getLevel() == 25 });
 export const GearDaggersP2 = PresetUtils.makePresetGear('P2 Daggers', P2DaggersGear, { customCondition: player => player.getLevel() == 40 });
 export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear, { customCondition: player => player.getLevel() == 25 });
-export const GearDaggersP3 = PresetUtils.makePresetGear("P3 Daggers", P3DaggersGear, { customCondition: player => player.getLevel() >= 50 });
+export const GearDaggersP3 = PresetUtils.makePresetGear('P3 Daggers', P3DaggersGear, { customCondition: player => player.getLevel() >= 50 });
 export const GearSaberP3 = PresetUtils.makePresetGear('P3 Saber', P3SaberGear, { customCondition: player => player.getLevel() >= 50 });
 
 export const GearPresets = {
@@ -47,11 +47,19 @@ export const DefaultGear = GearPresets[Phase.Phase3][0];
 ///////////////////////////////////////////////////////////////////////////
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Mutilate', MutilateApl, { customCondition: player => player.getLevel() <= 40 });
-export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, { customCondition: player => player.getLevel() <= 40 });
-export const ROTATION_PRESET_MUTILATE_P3 = PresetUtils.makePresetAPLRotation('P3 Mutilate', P3MutilateApl, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_MUTILATE_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Mutilate', P3ExposeMutilateApl, {customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_MUTILATE_IEA = PresetUtils.makePresetAPLRotation('Mutilate IEA', MutilateIEAApl, {
+	customCondition: player => player.getLevel() <= 40,
+});
+export const ROTATION_PRESET_MUTILATE_P3 = PresetUtils.makePresetAPLRotation('P3 Mutilate', P3MutilateApl, {
+	customCondition: player => player.getLevel() >= 50,
+});
+export const ROTATION_PRESET_MUTILATE_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Mutilate', P3ExposeMutilateApl, {
+	customCondition: player => player.getLevel() >= 50,
+});
 export const ROTATION_PRESET_SABER_P3 = PresetUtils.makePresetAPLRotation('P3 Saber', P3SaberApl, { customCondition: player => player.getLevel() >= 50 });
-export const ROTATION_PRESET_SABER_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Saber', P3SaberIEAApl, {customCondition: player => player.getLevel() >= 50 });
+export const ROTATION_PRESET_SABER_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Saber', P3SaberIEAApl, {
+	customCondition: player => player.getLevel() >= 50,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
@@ -86,7 +94,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-
 export const CombatDagger25Talents = PresetUtils.makePresetTalents('P1 Combat Dagger', SavedTalents.create({ talentsString: '-023305002001' }), {
 	customCondition: player => player.getLevel() == 25,
 });
@@ -103,17 +110,21 @@ export const CombatMutilate40Talents = PresetUtils.makePresetTalents('P2 AR/BF M
 	customCondition: player => player.getLevel() == 40,
 });
 
-export const TankMutilate50Talents = PresetUtils.makePresetTalents('P3 HAT/CttC Mutilate', SavedTalents.create({ talentsString: '00532012-00532500004501001-02' }), {
-	customCondition: player => player.getLevel() >= 50,
-});
+export const TankMutilate50Talents = PresetUtils.makePresetTalents(
+	'P3 HAT/CttC Mutilate',
+	SavedTalents.create({ talentsString: '00532012-00532500004501001-02' }),
+	{
+		customCondition: player => player.getLevel() >= 50,
+	},
+);
 
 export const TankSaber50Talents = PresetUtils.makePresetTalents('P3 Saber Carnage', SavedTalents.create({ talentsString: '0053221-02505501000501031' }), {
 	customCondition: player => player.getLevel() >= 50,
 });
 
-export const TankBladeFlurry50Talents = PresetUtils.makePresetTalents("P3 BF Poison", SavedTalents.create({ talentsString: '0053221205-02330520000501'}), {
+export const TankBladeFlurry50Talents = PresetUtils.makePresetTalents('P3 BF Poison', SavedTalents.create({ talentsString: '0053221205-02330520000501' }), {
 	customCondition: player => player.getLevel() >= 50,
-})
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
@@ -163,7 +174,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	dreamstate: true,
-	faerieFire: true,
+	faerieFireImproved: TristateEffect.TristateEffectRegular,
 	sunderArmor: true,
 	mangle: true,
 });

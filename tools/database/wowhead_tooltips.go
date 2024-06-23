@@ -70,6 +70,7 @@ type ItemResponse interface {
 	GetRangedWeaponType() proto.RangedWeaponType
 	GetWeaponDamage() (float64, float64)
 	GetWeaponSpeed() float64
+	GetItemSetID() string
 	GetItemSetName() string
 	IsHeroic() bool
 	GetRequiredProfession() proto.Profession
@@ -678,6 +679,22 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 }
 
 var itemSetNameRegex = regexp.MustCompile(`<a href="/classic/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
+
+func (item WowheadItemResponse) GetItemSetID() int {
+	idStr := item.GetTooltipRegexString(itemSetNameRegex, 1)
+	id, _ := strconv.Atoi(idStr)
+	return id
+
+	// // Strip out the 10/25 man prefixes from set names
+	// withoutTier := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(original, "Heroes' "), "Valorous "), "Conqueror's "), "Triumphant "), "Sanctified ")
+	// if original != withoutTier { // if we found a tier prefix, return now.
+	// 	return withoutTier
+	// }
+
+	// // Now strip out the season prefix from any pvp set names
+	// withoutPvp := strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(original, "Savage Glad", "Glad", 1), "Hateful Glad", "Glad", 1), "Deadly Glad", "Glad", 1), "Furious Glad", "Glad", 1), "Relentless Glad", "Glad", 1), "Wrathful Glad", "Glad", 1)
+	// return withoutPvp
+}
 
 func (item WowheadItemResponse) GetItemSetName() string {
 	return item.GetTooltipRegexString(itemSetNameRegex, 3)

@@ -658,12 +658,13 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 35
+// NextIndex: 36
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
+	TristateEffect faerie_fire_improved = 36;
 
 	// Bonus spell damage
 	bool curse_of_elements = 4 [deprecated=true];

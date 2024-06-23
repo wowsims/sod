@@ -77,9 +77,14 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
+	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
+	has6PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 6)
+
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidRip,
 		ActionID:    core.ActionID{SpellID: ripRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
@@ -115,7 +120,11 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				if has4PCenarionCunning {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
@@ -127,6 +136,11 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				dot.NumberOfTicks = RipTicks
 				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
+
+				if has6PCenarionCunning && druid.SavageRoarAura != nil && druid.SavageRoarAura.IsActive() && sim.Proc(.2*float64(druid.ComboPoints()), "S03 - Item - T1 - Druid - Feral 6P Bonus") {
+					druid.SavageRoarAura.Refresh(sim)
+				}
+
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)

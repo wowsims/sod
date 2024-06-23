@@ -2,18 +2,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat, 	TristateEffect,
-} from '../core/proto/common.js';
+import { Class, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as ProtectionPaladinInputs from './inputs.js';
@@ -23,8 +12,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssClass: 'protection-paladin-sim-ui',
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -51,9 +39,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -87,27 +73,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatArmor]: 0.07,
-			[Stat.StatBonusArmor]: 0.06,
-			[Stat.StatStamina]: 1.14,
-			[Stat.StatStrength]: 1.00,
-			[Stat.StatAgility]: 0.62,
-			[Stat.StatAttackPower]: 0.26,
-			[Stat.StatExpertise]: 0.69,
-			[Stat.StatMeleeHit]: 0.79,
-			[Stat.StatMeleeCrit]: 0.30,
-			[Stat.StatMeleeHaste]: 0.17,
-			[Stat.StatArmorPenetration]: 0.04,
-			[Stat.StatSpellPower]: 0.13,
-			[Stat.StatBlock]: 0.52,
-			[Stat.StatBlockValue]: 0.28,
-			[Stat.StatDodge]: 0.46,
-			[Stat.StatParry]: 0.61,
-			[Stat.StatDefense]: 0.54,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 3.33,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatArmor]: 0.07,
+				[Stat.StatBonusArmor]: 0.06,
+				[Stat.StatStamina]: 1.14,
+				[Stat.StatStrength]: 1.0,
+				[Stat.StatAgility]: 0.62,
+				[Stat.StatAttackPower]: 0.26,
+				[Stat.StatExpertise]: 0.69,
+				[Stat.StatMeleeHit]: 0.79,
+				[Stat.StatMeleeCrit]: 0.3,
+				[Stat.StatMeleeHaste]: 0.17,
+				[Stat.StatArmorPenetration]: 0.04,
+				[Stat.StatSpellPower]: 0.13,
+				[Stat.StatBlock]: 0.52,
+				[Stat.StatBlockValue]: 0.28,
+				[Stat.StatDodge]: 0.46,
+				[Stat.StatParry]: 0.61,
+				[Stat.StatDefense]: 0.54,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 3.33,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -126,8 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			devotionAura: TristateEffect.TristateEffectImproved,
 			shadowProtection: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfSanctuary: true,
@@ -137,7 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		debuffs: Debuffs.create({
 			judgementOfWisdom: true,
 			judgementOfLight: true,
-			faerieFire: true,
+			faerieFireImproved: TristateEffect.TristateEffectRegular,
 			exposeArmor: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
 			thunderClap: TristateEffect.TristateEffectImproved,
@@ -146,13 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -175,20 +160,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {

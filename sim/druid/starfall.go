@@ -13,6 +13,8 @@ func (druid *Druid) registerStarfallCD() {
 		return
 	}
 
+	has6pCenarionEclipse := druid.HasSetBonus(ItemSetCenarionEclipse, 6)
+
 	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneCloakStarfall)}
 
 	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
@@ -27,6 +29,9 @@ func (druid *Druid) registerStarfallCD() {
 	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
 	tickLength := time.Second
 	cooldown := time.Second * 90
+	if has6pCenarionEclipse {
+		cooldown /= 2
+	}
 
 	starfallSplashSpell := druid.RegisterSpell(Any, core.SpellConfig{
 		SpellCode:   SpellCode_DruidStarfallSplash,

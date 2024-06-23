@@ -66,7 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			blessingOfWisdom: 2,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: true,
+			faerieFireImproved: TristateEffect.TristateEffectRegular,
 			judgementOfWisdom: true,
 			curseOfElementsNew: TristateEffect.TristateEffectRegular,
 		}),

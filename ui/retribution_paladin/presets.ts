@@ -111,7 +111,7 @@ export const P3RetTalents = {
 	data: SavedTalents.create({
 		talentsString: '500501--53230051200315',
 	}),
-}
+};
 
 export const TalentPresets = {
 	[Phase.Phase1]: [P1RetTalents],
@@ -170,7 +170,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
-	faerieFire: true,
+	faerieFireImproved: TristateEffect.TristateEffectRegular,
 	homunculi: 70, // 70% average uptime default
 	sunderArmor: true,
 	judgementOfWisdom: true,

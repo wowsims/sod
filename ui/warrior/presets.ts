@@ -26,7 +26,6 @@ import Phase2APLFury from './apls/phase_2_fury.apl.json';
 import Phase3APLArms from './apls/phase_3_arms.apl.json';
 import Phase3APLFury from './apls/phase_3_fury.apl.json';
 import Phase3APLGlad from './apls/phase_3_glad.apl.json';
-
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 import Phase22HGear from './gear_sets/phase_2_2h.gear.json';
@@ -199,7 +198,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
-	faerieFire: true,
+	faerieFireImproved: TristateEffect.TristateEffectRegular,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
 	mangle: true,

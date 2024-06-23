@@ -661,6 +661,20 @@ export const FaerieFire = withLabel(
 	}),
 	'Faerie Fire',
 );
+export const ImprovedFaerieFire = withLabel(
+	makeTristateDebuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 770, minLevel: 18, maxLevel: 29 },
+				{ id: 778, minLevel: 30, maxLevel: 41 },
+				{ id: 9749, minLevel: 42, maxLevel: 53 },
+				{ id: 9907, minLevel: 54 },
+			]),
+		impId: ActionId.fromSpellId(455864),
+		fieldName: 'faerieFireImproved',
+	}),
+	'Faerie Fire',
+);
 
 export const curseOfWeaknessDebuff = withLabel(
 	makeTristateDebuffInput({
@@ -1167,8 +1181,13 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower],
 	},
+	// {
+	// 	config: FaerieFire,
+	// 	picker: IconPicker,
+	// 	stats: [Stat.StatAttackPower],
+	// },
 	{
-		config: FaerieFire,
+		config: ImprovedFaerieFire,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower],
 	},
