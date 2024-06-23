@@ -37,7 +37,9 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.02,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -47,7 +49,9 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddEnergy(sim, 40, energyMetrics)
+					if c.HasEnergyBar() {
+						c.AddEnergy(sim, 40, energyMetrics)
+					}
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -57,7 +61,9 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMelee,
 				ProcChance: 0.03,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddRage(sim, 10, rageMetrics)
+					if c.HasRageBar() {
+						c.AddRage(sim, 10, rageMetrics)
+					}
 				},
 			})
 		},
@@ -100,7 +106,9 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -140,7 +148,9 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -234,7 +244,9 @@ var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddMana(sim, 300, manaMetrics)
+					if c.HasManaBar() {
+						c.AddMana(sim, 300, manaMetrics)
+					}
 				},
 			})
 		},
@@ -277,7 +289,9 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				ProcMask: core.ProcMaskMelee,
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddEnergy(sim, 35, energyMetrics)
+					if c.HasEnergyBar() {
+						c.AddEnergy(sim, 35, energyMetrics)
+					}
 				},
 			})
 		},
@@ -366,7 +380,9 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 			manaMetrics := c.NewManaMetrics(core.ActionID{SpellID: 450583})
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				c.AddMana(sim, sim.Roll(270, 300), manaMetrics)
+				if c.HasManaBar() {
+					c.AddMana(sim, sim.Roll(270, 300), manaMetrics)
+				}
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -427,7 +443,9 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					c.GainHealth(sim, sim.Roll(88, 132), healthMetrics)
-					c.AddRage(sim, 10, rageMetrics)
+					if c.HasRageBar() {
+						c.AddRage(sim, 10, rageMetrics)
+					}
 				},
 			})
 		},

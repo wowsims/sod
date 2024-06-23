@@ -391,6 +391,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl25-AllItems-FeralheartRaiment"
+ value: {
+  dps: 149.47558
+  tps: 153.29033
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl25-Average-Default"
  value: {
   dps: 179.31628
@@ -489,6 +496,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl40-AllItems-FeralheartRaiment"
+ value: {
+  dps: 219.92224
+  tps: 228.29649
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
   dps: 650.69544
@@ -584,6 +598,13 @@ dps_results: {
  value: {
   dps: 645.18236
   tps: 655.69788
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl50-AllItems-FeralheartRaiment"
+ value: {
+  dps: 469.62547
+  tps: 484.36381
  }
 }
 dps_results: {
@@ -706,6 +727,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl60-AllItems-Champion'sSanctuary"
+ value: {
+  dps: 529.21204
+  tps: 544.40014
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 657.53648
@@ -741,6 +769,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-Lvl60-AllItems-FeralheartRaiment"
+ value: {
+  dps: 477.26204
+  tps: 493.29805
+ }
+}
+dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
   dps: 547.14883
@@ -759,6 +794,13 @@ dps_results: {
  value: {
   dps: 496.47065
   tps: 511.61449
+ }
+}
+dps_results: {
+ key: "TestBalance-Lvl60-AllItems-LieutenantCommander'sSanctuary"
+ value: {
+  dps: 529.21204
+  tps: 544.40014
  }
 }
 dps_results: {

@@ -173,7 +173,9 @@ var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddEnergy(sim, 40, energyMetrics)
+					if c.HasEnergyBar() {
+						c.AddEnergy(sim, 40, energyMetrics)
+					}
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
@@ -183,7 +185,9 @@ var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
 				ProcMask:   core.ProcMaskMelee,
 				ProcChance: 0.03,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					c.AddRage(sim, 10, rageMetrics)
+					if c.HasRageBar() {
+						c.AddRage(sim, 10, rageMetrics)
+					}
 				},
 			})
 		},
