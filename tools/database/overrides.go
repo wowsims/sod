@@ -514,6 +514,7 @@ var DenyItemSetIds = []int{
 	187, // The Elements
 	188, // Lightforge Armor
 	189, // Battlegear of Valor
+
 	// Tier 1 Raid Set
 	201, // Arcanist Regalia
 	202, // Vestments of Prophecy
@@ -524,6 +525,7 @@ var DenyItemSetIds = []int{
 	207, // The Earthfury
 	208, // Lawbringer Armor
 	209, // Battlegear of Might
+
 	// Tier 2 Raid Set
 	210, // Netherwind Regalia
 	211, // Vestments of Transcendence
@@ -534,6 +536,56 @@ var DenyItemSetIds = []int{
 	216, // The Ten Storms
 	217, // Judgement Armor
 	218, // Battlegear of Wrath
+
+	// Level 60 PVP Epic Set
+	383, // Warlord's Battlegear
+	384, // Field Marshal's Battlegear
+	386, // Warlord's Earthshaker
+	387, // Warlord's Regalia
+	388, // Field Marshal's Regalia
+	389, // Field Marshal's Raiment
+	390, // Warlord's Raiment
+	391, // Warlord's Threads
+	392, // Field Marshal's Threads
+	393, // Warlord's Vestments
+	394, // Field Marshal's Vestments
+	395, // Field Marshal's Pursuit
+	396, // Warlord's Pursuit
+	397, // Field Marshal's Sanctuary
+	398, // Warlord's Sanctuary
+	402, // Field Marshal's Aegis
+
+	// Zul'Gurub Set
+	474, // Vindicator's Battlegear
+	475, // Freethinker's Armor
+	476, // Augur's Regalia
+	477, // Predator's Armor
+	478, // Madcap's Outfit
+	479, // Haruspex's Garb
+	480, // Confessor's Raiment
+	481, // Demoniac's Threads
+	482, // Illusionist's Attire
+
+	// Temple of Ahn'Qiraj Raid Set / Ruins of Ahn'Qiraj Set
+	493, // Genesis Raiment
+	494, // Symbols of Unending Life
+	495, // Battlegear of Unyielding Strength
+	496, // Conqueror's Battlegear
+	497, // Deathdealer's Embrace
+	498, // Emblems of Veiled Shadows
+	499, // Doomcaller's Attire
+	500, // Implements of Unspoken Names
+	501, // Stormcaller's Garb
+	502, // Gift of the Gathering Storm
+	503, // Enigma Vestments
+	504, // Trappings of Vaulted Secrets
+	505, // Avenger's Battlegear
+	506, // Battlegear of Eternal Justice
+	507, // Garments of the Oracle
+	508, // Finery of Infinite Wisdom
+	509, // Striker's Garb
+	510, // Trappings of the Unseen Path
+
 	// Dungeon Set 2
 	511, // Battlegear of Heroism
 	512, // Darkmantle Armor
@@ -544,7 +596,19 @@ var DenyItemSetIds = []int{
 	517, // Sorcerer's Regalia
 	518, // Deathmist Raiment
 	519, // The Five Thunders
-	// Level 60 PVP Set Rare
+
+	// Tier 3 Raid Set
+	521, // Dreamwalker Raiment
+	523, // Dreadnaught's Battlegear
+	524, // Bonescythe Armor
+	525, // Vestments of Faith
+	526, // Frostfire Regalia
+	527, // The Earthshatterer
+	528, // Redemption Armor
+	529, // Plagueheart Raiment
+	530, // Cryptstalker Armor
+
+	// Level 60 PVP Rare Set
 	522, // Champion's Guard
 	537, // Champion's Battlearmor
 	538, // Champion's Stormcaller
