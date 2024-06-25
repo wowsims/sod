@@ -44,8 +44,8 @@ type Priest struct {
 	Homunculi         *core.Spell
 	InnerFocus        *core.Spell
 	MindBlast         []*core.Spell
-	MindFlay          [][]*core.Spell
-	MindSear          []*core.Spell // 1 entry for each tick
+	MindFlay          [][]*core.Spell // 1 entry for each tick for each rank
+	MindSear          []*core.Spell   // 1 entry for each tick
 	MindSpike         *core.Spell
 	Penance           *core.Spell
 	PenanceHeal       *core.Spell

@@ -92,3 +92,103 @@ var ItemSetVestmentsOfTheVirtuous = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetDawnProphecy = core.NewItemSet(core.ItemSet{
+	Name: "Dawn Prophecy",
+	Bonuses: map[int32]core.ApplyEffect{
+		// -0.1 sec to the casting time of Flash Heal and -0.1 sec to the casting time of Greater Heal.
+		2: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases your critical strike chance with spells and attacks by 2%.
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
+			})
+		},
+		// Increases your critical strike chance with Prayer of Healing and Circle of Healing by 25%.
+		6: func(agent core.Agent) {
+			// Nothing to do
+		},
+	},
+})
+
+var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
+	Name: "Twilight Prophecy",
+	Bonuses: map[int32]core.ApplyEffect{
+		// You may cast Flash Heal while in Shadowform.
+		2: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases your critical strike chance with spells and attacks by 2%.
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
+			})
+		},
+		// Mind Blast critical strikes reduce the duration of your next Mind Flay by 50% while increasing its total damage by 100%.
+		6: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+
+			damageMultiplier := 2.0
+			durationDivisor := time.Duration(2)
+
+			buffAura := priest.GetOrRegisterAura(core.Aura{
+				Label:    "Melting Faces",
+				ActionID: core.ActionID{SpellID: 456549},
+				Duration: core.NeverExpires,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spells := range priest.MindFlay {
+						for _, spell := range spells {
+							if spell != nil {
+								spell.DamageMultiplier *= damageMultiplier
+								for _, dot := range spell.Dots() {
+									if dot != nil {
+										dot.TickLength /= durationDivisor
+									}
+								}
+							}
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spells := range priest.MindFlay {
+						for _, spell := range spells {
+							if spell != nil {
+								spell.DamageMultiplier /= damageMultiplier
+								for _, dot := range spell.Dots() {
+									if dot != nil {
+										dot.TickLength *= durationDivisor
+									}
+								}
+							}
+						}
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_PriestMindFlay {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			priest.GetOrRegisterAura(core.Aura{
+				Label:    "S03 - Item - T1 - Priest - Shadow 6P Bonus",
+				ActionID: core.ActionID{SpellID: 457325},
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_PriestMindBlast && result.DidCrit() {
+						buffAura.Activate(sim)
+					}
+				},
+			})
+		},
+	},
+})
