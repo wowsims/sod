@@ -377,12 +377,10 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450585}
-			manaMetrics := c.NewManaMetrics(core.ActionID{SpellID: 450583})
+			healthMetrics := c.NewHealthMetrics(core.ActionID{SpellID: 450583})
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				if c.HasManaBar() {
-					c.AddMana(sim, sim.Roll(270, 300), manaMetrics)
-				}
+				c.GainHealth(sim, sim.Roll(270, 300), healthMetrics)
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
