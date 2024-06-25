@@ -149,8 +149,13 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[mage.Class][int(mage.Level)]*core.SpellCritRatingPerCritChance)
 
-	if mage.Options.Armor == proto.Mage_Options_MageArmor {
-		mage.PseudoStats.SpiritRegenRateCasting += .3
+	switch mage.Options.Armor {
+	case proto.Mage_Options_IceArmor:
+		mage.applyFrostIceArmor()
+	case proto.Mage_Options_MageArmor:
+		mage.applyMageArmor()
+	case proto.Mage_Options_MoltenArmor:
+		mage.applyMoltenArmor()
 	}
 
 	// Set mana regen to 12.5 + Spirit/4 each 2s tick

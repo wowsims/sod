@@ -216,7 +216,7 @@ export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost FFB', Default
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = MageOptions.create({
-	armor: ArmorType.MageArmor,
+	armor: ArmorType.MoltenArmor,
 });
 
 export const DefaultConsumes = Consumes.create({

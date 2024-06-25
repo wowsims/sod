@@ -187,7 +187,7 @@ var PlayerOptionsArcane = &proto.Player_Mage{
 var PlayerOptionsFire = &proto.Player_Mage{
 	Mage: &proto.Mage{
 		Options: &proto.Mage_Options{
-			Armor: proto.Mage_Options_MageArmor,
+			Armor: proto.Mage_Options_MoltenArmor,
 		},
 	},
 }
@@ -195,15 +195,7 @@ var PlayerOptionsFire = &proto.Player_Mage{
 var PlayerOptionsFrost = &proto.Player_Mage{
 	Mage: &proto.Mage{
 		Options: &proto.Mage_Options{
-			Armor: proto.Mage_Options_MageArmor,
-		},
-	},
-}
-
-var PlayerOptionsFrostFire = &proto.Player_Mage{
-	Mage: &proto.Mage{
-		Options: &proto.Mage_Options{
-			Armor: proto.Mage_Options_MageArmor,
+			Armor: proto.Mage_Options_MoltenArmor,
 		},
 	},
 }

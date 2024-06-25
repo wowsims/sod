@@ -109,6 +109,7 @@ message Mage {
 			NoArmor = 0;
 			IceArmor = 1;
 			MageArmor = 2;
+			MoltenArmor = 3;
 		}
 		ArmorType armor = 1;
 	}
