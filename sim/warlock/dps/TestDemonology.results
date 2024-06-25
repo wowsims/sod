@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
+ value: {
+  dps: 170.27751
+  tps: 65.33881
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
   dps: 653.28282

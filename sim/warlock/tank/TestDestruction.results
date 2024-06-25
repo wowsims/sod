@@ -293,6 +293,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-DeathmistRaiment"
+ value: {
+  dps: 92.60009
+  tps: 57.88416
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
   dps: 164.34457
@@ -349,6 +356,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-DeathmistRaiment"
+ value: {
+  dps: 130.24917
+  tps: 81.43686
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
   dps: 506.92293
@@ -402,6 +416,14 @@ dps_results: {
  value: {
   dps: 502.60053
   tps: 1099.34103
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
+ value: {
+  dps: 309.35045
+  tps: 208.89269
+  hps: 10.51554
  }
 }
 dps_results: {

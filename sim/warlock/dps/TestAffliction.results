@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl40-AllItems-DeathmistRaiment"
+ value: {
+  dps: 183.09204
+  tps: 143.70224
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
   dps: 589.22603
@@ -248,6 +255,13 @@ dps_results: {
  value: {
   dps: 589.7996
   tps: 558.61846
+ }
+}
+dps_results: {
+ key: "TestAffliction-Lvl50-AllItems-DeathmistRaiment"
+ value: {
+  dps: 329.96172
+  tps: 213.87578
  }
 }
 dps_results: {

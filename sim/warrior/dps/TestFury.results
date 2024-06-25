@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestFury-Lvl40-AllItems-BattlegearofHeroism"
+ value: {
+  dps: 514.14166
+  tps: 458.68842
+ }
+}
+dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
   dps: 754.12055

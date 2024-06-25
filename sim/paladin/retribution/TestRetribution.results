@@ -293,6 +293,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-SoulforgeArmor"
+ value: {
+  dps: 181.31984
+  tps: 183.05934
+ }
+}
+dps_results: {
  key: "TestRetribution-Lvl25-Average-Default"
  value: {
   dps: 225.33857
@@ -391,6 +398,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-SoulforgeArmor"
+ value: {
+  dps: 316.1068
+  tps: 323.08629
+ }
+}
+dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
   dps: 572.85219
@@ -486,6 +500,13 @@ dps_results: {
  value: {
   dps: 541.03198
   tps: 554.88224
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl50-AllItems-SoulforgeArmor"
+ value: {
+  dps: 703.40664
+  tps: 737.76436
  }
 }
 dps_results: {

@@ -727,13 +727,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-Lvl60-AllItems-Champion'sEarthshaker"
- value: {
-  dps: 734.84766
-  tps: 789.06082
- }
-}
-dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldChainmail"
  value: {
   dps: 735.86692

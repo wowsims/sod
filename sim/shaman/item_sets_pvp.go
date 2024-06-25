@@ -71,9 +71,19 @@ var ItemSetChampionsWartide = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 22804},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
 						if spell != nil {
 							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
+						if spell != nil {
+							spell.BonusCritRating -= 2 * core.CritRatingPerCritChance
 						}
 					}
 				},
@@ -103,9 +113,19 @@ var ItemSetChampionsThunderfist = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 22804},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
 						if spell != nil {
 							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
+						if spell != nil {
+							spell.BonusCritRating -= 2 * core.CritRatingPerCritChance
 						}
 					}
 				},
@@ -138,9 +158,19 @@ var ItemSetChampionsEarthshaker = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 22804},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
 						if spell != nil {
 							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
+						if spell != nil {
+							spell.BonusCritRating -= 2 * core.CritRatingPerCritChance
 						}
 					}
 				},

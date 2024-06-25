@@ -1273,14 +1273,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-Lvl60-AllItems-Champion'sSanctuary"
- value: {
-  dps: 995.64413
-  tps: 737.70804
-  hps: 14.10629
- }
-}
-dps_results: {
  key: "TestFeral-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 1335.40198
@@ -1350,14 +1342,6 @@ dps_results: {
   dps: 874.39312
   tps: 651.49272
   hps: 14.10425
- }
-}
-dps_results: {
- key: "TestFeral-Lvl60-AllItems-LieutenantCommander'sSanctuary"
- value: {
-  dps: 995.64413
-  tps: 737.70804
-  hps: 14.10629
  }
 }
 dps_results: {
