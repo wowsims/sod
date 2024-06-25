@@ -611,6 +611,24 @@ var DenyItemSetIds = []int{
 	529, // Plagueheart Raiment
 	530, // Cryptstalker Armor
 
+	// Level 60 PVP Rare Set (Old)
+	281, // Champion's Battlegear
+	282, // Lieutenant Commander's Battlegear
+	301, // Champion's Earthshaker
+	341, // Champion's Regalia
+	342, // Champion's Raiment
+	343, // Lieutenant Commander's Regalia
+	344, // Lieutenant Commander's Raiment
+	345, // Champion's Threads
+	346, // Lieutenant Commander's Threads
+	347, // Champion's Vestments
+	348, // Lieutenant Commander's Vestments
+	361, // Champion's Pursuit
+	362, // Lieutenant Commander's Pursuit
+	381, // Lieutenant Commander's Sanctuary
+	382, // Champion's Sanctuary
+	401, // Lieutenant Commander's Aegis
+
 	// Level 60 PVP Rare Set
 	522, // Champion's Guard
 	537, // Champion's Battlearmor
@@ -635,55 +653,37 @@ var DenyItemSetIds = []int{
 
 	// Hunter
 	1669, // Beastmaster Armor
-	1702,
+	1702, // Giantstalker Pursuit
 	1703, // Giantstalker Prowess
-	1751, // Champion's Prowess
-	1752, // Champion's Pursuit
-	1765, // Lieutenant Commander's Prowess
-	1766, // Lieutenant Commander's Pursuit
 
 	// Mage
 	1671, // Sorcerer's Regalia
 	1704, // Arcanist Insight
 	1705, // Arcanist Moment
-	1753, // Champion's Regalia
-	1767, // Lieutenant Commander's Regalia
 
 	// Paladin
 	1673, // Soulforge Armor
 	1706, // Lawbringer Mercy
 	1707, // Lawbringer Radiance
 	1708, // Lawbringer Will
-	1776, // Lieutenant Commander's Redemption
-	1777, // Lieutenant Commander's Vindication
 
 	// Priest
 	1675, // Vestments of the Virtuous
 	1709, // Dawn Prophecy
 	1710, // Twilight Prophecy
-	1754, // Champion's Raiment
-	1755, // Champion's Investiture
-	1768, // Lieutenant Commander's Raiment
-	1769, // Lieutenant Commander's Investiture
 
 	// Rogue
 	1676, // Darkmantle Armor
 	1711, // Nightslayer Thrill
 	1712, // Nightslayer Battlearmor
-	1756, // Champion's Vestments
-	1770, // Lieutenant Commander's Vestments
 
 	// Warlock
 	1681, // Deathmist Raiment
 	1717, // Corrupted Felheart
 	1718, // Wicked Felheart
-	1760, // Champion's Threads
-	1774, // Lieutenant Commander's Threads
 
 	// Warrior
 	1719, // Immoveable Might
 	1720, // Unstoppable Might
-	1761, // Champion's Battlegear
-	1775, // Lieutenant Commander's Battlegear
 	1778, // Battlegear of Heroism
 }
