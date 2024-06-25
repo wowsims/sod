@@ -652,38 +652,31 @@ var DenyItemSetIds = []int{
 	////////////////////////////////////////////////////////
 
 	// Hunter
-	1669, // Beastmaster Armor
 	1702, // Giantstalker Pursuit
 	1703, // Giantstalker Prowess
 
 	// Mage
-	1671, // Sorcerer's Regalia
 	1704, // Arcanist Insight
 	1705, // Arcanist Moment
 
 	// Paladin
-	1673, // Soulforge Armor
 	1706, // Lawbringer Mercy
 	1707, // Lawbringer Radiance
 	1708, // Lawbringer Will
 
 	// Priest
-	1675, // Vestments of the Virtuous
 	1709, // Dawn Prophecy
 	1710, // Twilight Prophecy
 
 	// Rogue
-	1676, // Darkmantle Armor
 	1711, // Nightslayer Thrill
 	1712, // Nightslayer Battlearmor
 
 	// Warlock
-	1681, // Deathmist Raiment
 	1717, // Corrupted Felheart
 	1718, // Wicked Felheart
 
 	// Warrior
 	1719, // Immoveable Might
 	1720, // Unstoppable Might
-	1778, // Battlegear of Heroism
 }

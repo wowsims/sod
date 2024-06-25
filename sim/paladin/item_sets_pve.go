@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -40,3 +42,61 @@ var _ = core.NewItemSet(core.ItemSet{
 ///////////////////////////////////////////////////////////////////////////
 //                            SoD Phase 4 Item Sets
 ///////////////////////////////////////////////////////////////////////////
+
+var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
+	Name: "Soulforge Armor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +40 Attack Power and up to 40 increased healing from spells.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
+				stats.HealingPower:      40,
+			})
+		},
+		// 6% chance on melee autoattack and 4% chance on spellcast to increase your damage and healing done by magical spells and effects by up to 95 for 10 sec.
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 450625}
+
+			procAura := c.NewTemporaryStatsAura("Crusader's Wrath", core.ActionID{SpellID: 27499}, stats.Stats{stats.SpellPower: 95}, time.Second*10)
+			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				procAura.Activate(sim)
+			}
+
+			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
+				ActionID:   actionID,
+				Name:       "Item - Crusader's Wrath Proc - Lightforge Armor (Melee Auto)",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeWhiteHit,
+				ProcChance: 0.06,
+				Handler:    handler,
+			})
+			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
+				ActionID:   actionID,
+				Name:       "Item - Crusader's Wrath Proc - Lightforge Armor (Spell Cast)",
+				Callback:   core.CallbackOnCastComplete,
+				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+				ProcChance: 0.04,
+				Handler:    handler,
+			})
+		},
+		// +8 All Resistances.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.ArcaneResistance: 8,
+				stats.FireResistance:   8,
+				stats.FrostResistance:  8,
+				stats.NatureResistance: 8,
+				stats.ShadowResistance: 8,
+			})
+		},
+		// +200 Armor.
+		8: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Armor, 200)
+		},
+	},
+})
