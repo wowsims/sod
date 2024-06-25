@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-Lvl25-AllItems-DarkmantleArmor"
+ value: {
+  dps: 245.40628
+  tps: 174.23846
+ }
+}
+dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
   dps: 192.32846
@@ -290,6 +297,13 @@ dps_results: {
  value: {
   dps: 180.84912
   tps: 128.40288
+ }
+}
+dps_results: {
+ key: "TestCombat-Lvl40-AllItems-DarkmantleArmor"
+ value: {
+  dps: 251.83451
+  tps: 178.8025
  }
 }
 dps_results: {

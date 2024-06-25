@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestSV-Lvl25-AllItems-BeastmasterArmor"
+ value: {
+  dps: 283.13205
+  tps: 159.82171
+ }
+}
+dps_results: {
  key: "TestSV-Lvl25-Average-Default"
  value: {
   dps: 196.54538
@@ -290,6 +297,13 @@ dps_results: {
  value: {
   dps: 193.78604
   tps: 97.98074
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-BeastmasterArmor"
+ value: {
+  dps: 401.48622
+  tps: 235.57609
  }
 }
 dps_results: {

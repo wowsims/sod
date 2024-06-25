@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestShockadin-Lvl40-AllItems-SoulforgeArmor"
+ value: {
+  dps: 357.70518
+  tps: 375.84056
+ }
+}
+dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
   dps: 532.05789

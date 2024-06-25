@@ -727,13 +727,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-Lvl60-AllItems-Champion'sSanctuary"
- value: {
-  dps: 529.21204
-  tps: 544.40014
- }
-}
-dps_results: {
  key: "TestBalance-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 657.53648
@@ -794,13 +787,6 @@ dps_results: {
  value: {
   dps: 496.47065
   tps: 511.61449
- }
-}
-dps_results: {
- key: "TestBalance-Lvl60-AllItems-LieutenantCommander'sSanctuary"
- value: {
-  dps: 529.21204
-  tps: 544.40014
  }
 }
 dps_results: {

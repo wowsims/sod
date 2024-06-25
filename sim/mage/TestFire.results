@@ -391,6 +391,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Lvl25-AllItems-Sorcerer'sRegalia"
+ value: {
+  dps: 173.26556
+  tps: 127.69351
+ }
+}
+dps_results: {
  key: "TestFire-Lvl25-Average-Default"
  value: {
   dps: 150.35765
@@ -489,6 +496,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Lvl40-AllItems-Sorcerer'sRegalia"
+ value: {
+  dps: 376.73334
+  tps: 282.07378
+ }
+}
+dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
   dps: 466.88155
@@ -584,6 +598,13 @@ dps_results: {
  value: {
   dps: 467.01183
   tps: 339.56295
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl50-AllItems-Sorcerer'sRegalia"
+ value: {
+  dps: 558.70588
+  tps: 416.75227
  }
 }
 dps_results: {
@@ -731,6 +752,13 @@ dps_results: {
  value: {
   dps: 1210.29641
   tps: 738.84487
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-AllItems-Sorcerer'sRegalia"
+ value: {
+  dps: 591.23198
+  tps: 438.52772
  }
 }
 dps_results: {

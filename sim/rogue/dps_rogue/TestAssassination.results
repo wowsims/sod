@@ -195,6 +195,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-Lvl25-AllItems-DarkmantleArmor"
+ value: {
+  dps: 131.69383
+  tps: 93.50262
+ }
+}
+dps_results: {
  key: "TestAssassination-Lvl25-Average-Default"
  value: {
   dps: 272.32219
@@ -290,6 +297,13 @@ dps_results: {
  value: {
   dps: 258.32176
   tps: 183.40845
+ }
+}
+dps_results: {
+ key: "TestAssassination-Lvl40-AllItems-DarkmantleArmor"
+ value: {
+  dps: 196.83295
+  tps: 139.7514
  }
 }
 dps_results: {

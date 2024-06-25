@@ -391,6 +391,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-Lvl25-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 53.64806
+  tps: 59.24998
+ }
+}
+dps_results: {
  key: "TestShadow-Lvl25-Average-Default"
  value: {
   dps: 111.22091
@@ -489,6 +496,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-Lvl40-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 172.92058
+  tps: 147.49801
+ }
+}
+dps_results: {
  key: "TestShadow-Lvl40-Average-Default"
  value: {
   dps: 628.17667
@@ -584,6 +598,14 @@ dps_results: {
  value: {
   dps: 628.27277
   tps: 496.91445
+ }
+}
+dps_results: {
+ key: "TestShadow-Lvl50-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 292.9432
+  tps: 239.22104
+  hps: 4.74586
  }
 }
 dps_results: {
@@ -760,6 +782,14 @@ dps_results: {
   dps: 1038.85985
   tps: 996.77966
   hps: 15.85987
+ }
+}
+dps_results: {
+ key: "TestShadow-Lvl60-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 322.42721
+  tps: 302.94574
+  hps: 4.60788
  }
 }
 dps_results: {
