@@ -169,12 +169,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfRecklessnessAura(target, level))
 	}
 
-	// if debuffs.FaerieFire {
-	// 	MakePermanent(FaerieFireAura(target, level))
-	// }
-
-	if debuffs.FaerieFireImproved != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(FaerieFireAura(target, level, debuffs.FaerieFireImproved == proto.TristateEffect_TristateEffectImproved))
+	if debuffs.FaerieFire {
+		MakePermanent(FaerieFireAura(target, level, debuffs.ImprovedFaerieFire))
 	}
 
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
@@ -973,10 +969,10 @@ func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
 	}[playerLevel]
 
 	modDmgReduction := map[int32]float64{
-		25: 10,
-		40: 15,
-		50: 22,
-		60: 31,
+		25: -10,
+		40: -15,
+		50: -22,
+		60: -31,
 	}[playerLevel]
 
 	modDmgReduction *= []float64{1, 1.06, 1.13, 1.20}[points]

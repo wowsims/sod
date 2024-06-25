@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerFaerieFireSpell() {
-	has2pCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 2)
+	has2PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 2)
 
 	actionID := core.ActionID{SpellID: map[int32]int32{
 		25: 770,
@@ -54,7 +54,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 	flags |= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
 
 	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return core.FaerieFireAura(target, level, has2pCenarionCunning)
+		return core.FaerieFireAura(target, level, has2PCenarionCunning)
 	})
 
 	druid.FaerieFire = druid.RegisterSpell(formMask, core.SpellConfig{

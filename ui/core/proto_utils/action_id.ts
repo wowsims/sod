@@ -416,11 +416,11 @@ export class ActionId {
 				name = this.spellId === 411128 ? `${name} (Cat)` : `${name} (Bear)`;
 				break;
 			case 'Starfall':
-				if (this.tag === 1) {
-					name = `${name} (Tick)`;
-				} else if (this.tag === 2) {
-					name = `${name} (Splash)`;
-				}
+				if (this.tag === 1) name = `${name} (Tick)`;
+				else if (this.tag === 2) name = `${name} (Splash)`;
+				break;
+			// Don't do anything for these but avoid adding "(??)"
+			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
 				break;
 			default:
 				if (this.tag) {
@@ -430,7 +430,17 @@ export class ActionId {
 		}
 
 		const idString = this.toProtoString();
-		const iconOverrideId = idOverrides[idString] || null;
+		let iconOverrideId = idOverrides[idString] || null;
+
+		// Icon Overrides based on tags
+		switch (this.spellId) {
+			// https://www.wowhead.com/classic/spell=457544/s03-item-t1-shaman-tank-6p-bonus
+			case 457544: {
+				// Show Stoneskin / Windwall respectively
+				if (this.tag === 1) iconOverrideId = ActionId.fromSpellId(10408);
+				else if (this.tag === 2) iconOverrideId = ActionId.fromSpellId(15112);
+			}
+		}
 
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
 		if (iconOverrideId) {
@@ -597,6 +607,8 @@ export class ActionId {
 // Some items/spells have weird icons, so use this to show a different icon instead.
 const idOverrides: Record<string, ActionId> = {};
 idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(221309); // Darkmoon Card: Sandstorm
+idOverrides[ActionId.fromSpellId(455864).toProtoString()] = ActionId.fromSpellId(9907); // Tier 1 Balance Druid "Improved Faerie Fire"
+idOverrides[ActionId.fromSpellId(457544).toProtoString()] = ActionId.fromSpellId(10408); // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 

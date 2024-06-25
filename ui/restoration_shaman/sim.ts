@@ -1,5 +1,4 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
@@ -66,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			blessingOfWisdom: 2,
 		}),
 		debuffs: Debuffs.create({
-			faerieFireImproved: TristateEffect.TristateEffectRegular,
+			faerieFire: true,
 			judgementOfWisdom: true,
 			curseOfElementsNew: TristateEffect.TristateEffectRegular,
 		}),

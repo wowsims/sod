@@ -209,9 +209,11 @@ func (spell *Spell) HealingCritCheck(sim *Simulation) bool {
 }
 
 func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *SpellResult) {
+	attackTable := spell.Unit.AttackTables[result.Target.UnitIndex][spell.CastType]
 	for i := range result.Target.DynamicDamageTakenModifiers {
 		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result)
 	}
+	result.Damage += spell.TargetBonusDamageTakenAfterModifiers(attackTable)
 	result.Damage = max(0, result.Damage)
 }
 
@@ -506,6 +508,8 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 }
 
 func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *AttackTable, isPeriodic bool) {
+	result.Damage += spell.TargetBonusDamageTakenBeforeModifiers(attackTable)
+
 	if isPeriodic {
 		if dot := spell.DotOrAOEDot(attackTable.Defender); dot.BonusCoefficient > 0 {
 			result.Damage += attackTable.Defender.GetSchoolBonusDamageTaken(spell) * dot.BonusCoefficient
@@ -517,6 +521,26 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 	}
 
 	result.Damage *= spell.TargetDamageMultiplier(attackTable, isPeriodic)
+}
+
+// Apply flat bonus damage taken before modifiers
+// e.g. Blessing of Sanctuary
+func (spell *Spell) TargetBonusDamageTakenBeforeModifiers(attackTable *AttackTable) float64 {
+	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
+		return 0
+	}
+
+	return attackTable.Defender.PseudoStats.BonusDamageTakenBeforeModifiers[spell.DefenseType]
+}
+
+// Apply flat bonus damage taken after modifiers
+// e.g. Stoneskin Totem, Windwall Totem
+func (spell *Spell) TargetBonusDamageTakenAfterModifiers(attackTable *AttackTable) float64 {
+	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
+		return 0
+	}
+
+	return attackTable.Defender.PseudoStats.BonusDamageTakenAfterModifiers[spell.DefenseType]
 }
 func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic bool) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {

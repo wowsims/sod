@@ -241,6 +241,7 @@ export class SettingsTab extends SimTab {
 
 	private buildBuffsSettings() {
 		const buffOptions = relevantStatOptions(BuffDebuffInputs.RAID_BUFFS_CONFIG, this.simUI);
+		const miscBuffOptions = relevantStatOptions(BuffDebuffInputs.MISC_BUFFS_CONFIG, this.simUI);
 
 		const contentBlock = new ContentBlock(this.column3, 'buffs-settings', {
 			header: { title: 'Raid Buffs', tooltip: Tooltips.BUFFS_SECTION },
@@ -250,6 +251,18 @@ export class SettingsTab extends SimTab {
 			contentBlock.bodyElement,
 			buffOptions.map(options => options.picker && new options.picker(contentBlock.bodyElement, this.simUI.player, options.config as any, this.simUI)),
 		);
+
+		if (miscBuffOptions.length) {
+			new MultiIconPicker(
+				contentBlock.bodyElement,
+				this.simUI.player,
+				{
+					inputs: miscBuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,
+					label: 'Misc Buffs',
+				},
+				this.simUI,
+			);
+		}
 	}
 
 	private buildWorldBuffsSettings() {
@@ -271,7 +284,7 @@ export class SettingsTab extends SimTab {
 
 	private buildDebuffsSettings() {
 		const debuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_CONFIG, this.simUI);
-		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI);
+		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.MISC_DEBUFFS_CONFIG, this.simUI);
 
 		if (!debuffOptions.length && !miscDebuffOptions.length) return;
 

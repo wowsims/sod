@@ -47,4 +47,6 @@ const (
 	DefenseTypeMagic
 	DefenseTypeMelee
 	DefenseTypeRanged
+
+	DefenseTypeLen
 )

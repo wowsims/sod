@@ -152,6 +152,8 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
+	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
+
 	shaman.AddStat(stats.Block, 10)
 	shaman.PseudoStats.BlockValueMultiplier = 1.15
 
@@ -189,7 +191,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		Label:    "Shield Mastery",
 		ActionID: actionId,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.Outcome.Matches(core.OutcomeBlock) || (has4PEarthfuryResolve && (result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge))) {
 				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
 				blockProcAura.Activate(sim)
 				blockProcAura.AddStack(sim)
@@ -276,7 +278,7 @@ func (shaman *Shaman) applyRollingThunder() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield.SpellCode != SpellCode_LightningShield {
+			if shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
 				return
 			}
 
@@ -288,7 +290,7 @@ func (shaman *Shaman) applyRollingThunder() {
 }
 
 func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
-	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_LightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
+	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
 		shaman.ActiveShieldAura.AddStack(sim)
 	}
 }

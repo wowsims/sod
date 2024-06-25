@@ -515,7 +515,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 40
+// NextIndex: 41
 message RaidBuffs {
 	reserved 33;
 	reserved "horn_of_lordaeron";
@@ -564,14 +564,6 @@ message RaidBuffs {
 	bool fire_resistance_totem = 21;
 	bool fire_resistance_aura = 35;
 
-	// Miscellaneous
-	TristateEffect thorns = 22;
-	TristateEffect devotion_aura = 23;
-	TristateEffect stoneskin_totem = 24;
-	TristateEffect retribution_aura = 25;
-	bool sanctity_aura = 36;
-	int32 battle_squawk = 37;
-
 	// Scroll
 	bool scroll_of_protection = 26;
 	bool scroll_of_stamina = 27;
@@ -584,6 +576,15 @@ message RaidBuffs {
 	int32 demonic_pact = 32;
 	bool aspect_of_the_lion = 34;
 	bool commanding_shout = 38;
+
+	// Miscellaneous
+	TristateEffect thorns = 22;
+	TristateEffect devotion_aura = 23;
+	TristateEffect stoneskin_totem = 24;
+	TristateEffect retribution_aura = 25;
+	bool sanctity_aura = 36;
+	int32 battle_squawk = 37;
+	bool improved_stoneskin_windwall = 40;
 }
 
 // Buffs that affect a single party.
@@ -658,13 +659,12 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 36
+// NextIndex: 37
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
-	TristateEffect faerie_fire_improved = 36;
 
 	// Bonus spell damage
 	bool curse_of_elements = 4 [deprecated=true];
@@ -681,10 +681,6 @@ message Debuffs {
 	bool shadow_weaving = 26;
 	bool stormstrike = 27;
 	bool dreamstate = 28;
-
-	// Bonus physical damage
-	bool gift_of_arthas = 9;
-	bool curse_of_vulnerability = 23;
 
 	// Major armor
 	TristateEffect expose_armor = 10;
@@ -707,14 +703,18 @@ message Debuffs {
 	TristateEffect hunters_mark = 20;
 
 	// ArP items
-	bool crystal_yield = 21;
-	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 
 	// Bleed
 	bool mangle = 25;
 
+	// Misc Debuffs
+	bool gift_of_arthas = 9;
+	bool curse_of_vulnerability = 23;
+	bool crystal_yield = 21;
+	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
+	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
 }
 
 enum MobType {

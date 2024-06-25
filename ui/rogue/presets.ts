@@ -204,7 +204,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	dreamstate: true,
-	faerieFireImproved: TristateEffect.TristateEffectRegular,
+	faerieFire: true,
 	sunderArmor: true,
 	mangle: true,
 });

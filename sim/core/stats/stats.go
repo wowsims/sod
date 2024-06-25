@@ -99,7 +99,7 @@ var UnitStatsLen = int(Len) + PseudoStatsLen
 type SchoolIndex byte
 
 // If you add a new multi-school you also need to update
-// core/spell_school.go acordingly!
+// core/spell_school.go accordingly!
 
 const (
 	SchoolIndexNone     SchoolIndex = 0
@@ -128,6 +128,20 @@ func NewSchoolFloatArray(defaultVal float64) [SchoolLen]float64 {
 		d, d, d, d, d, d, d, d,
 	}
 }
+
+// If you add a new defense type you also need to update
+// core/constants.go accordingly!
+
+type DefenseTypeIndex byte
+
+const (
+	DefenseTypeIndexNone  DefenseTypeIndex = 0
+	DefenseTypeIndexMagic DefenseTypeIndex = iota
+	DefenseTypeIndexMelee
+	DefenseTypeIndexRanged
+
+	DefenseTypeLen
+)
 
 func ProtoArrayToStatsList(protoStats []proto.Stat) []Stat {
 	stats := make([]Stat, len(protoStats))
@@ -435,6 +449,9 @@ type PseudoStats struct {
 	BonusSpellHitRatingTaken    float64 // Imp FF
 
 	BonusHealingTaken float64 // Talisman of Troll Divinity
+
+	BonusDamageTakenBeforeModifiers [DefenseTypeLen]float64 // Flat damage reduction values BEFORE Modifiers like Blessing of Sanctuary
+	BonusDamageTakenAfterModifiers  [DefenseTypeLen]float64 // Flat damage reduction values AFTER Modifiers like Stoneskin Totem, Windwall Totem, etc.
 
 	DamageTakenMultiplier       float64            // All damage
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!

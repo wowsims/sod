@@ -222,7 +222,7 @@ export const DefaultDebuffs = Debuffs.create({
 	curseOfShadowNew: TristateEffect.TristateEffectRegular,
 	curseOfRecklessness: true,
 	demoralizingShout: TristateEffect.TristateEffectImproved,
-	faerieFireImproved: TristateEffect.TristateEffectRegular,
+	faerieFire: true,
 	homunculi: 100,
 	improvedScorch: true,
 	shadowWeaving: true,

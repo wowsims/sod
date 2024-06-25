@@ -276,18 +276,23 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
-	bonus := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[shaman.Talents.Flurry]
+	has6PEarthfuryImpact := shaman.HasSetBonus(ItemSetEarthfuryImpact, 6)
 
-	procAura := shaman.RegisterAura(core.Aura{
+	attackSpeed := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[shaman.Talents.Flurry]
+	if has6PEarthfuryImpact {
+		attackSpeed += .10
+	}
+
+	shaman.FlurryAura = shaman.RegisterAura(core.Aura{
 		Label:     "Flurry Proc",
 		ActionID:  core.ActionID{SpellID: 16280},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, bonus)
+			shaman.MultiplyMeleeSpeed(sim, attackSpeed)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/bonus)
+			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
 		},
 	})
 
@@ -297,7 +302,7 @@ func (shaman *Shaman) applyFlurry() {
 	}
 
 	shaman.RegisterAura(core.Aura{
-		Label:    "Flurry",
+		Label:    "Flurry Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -308,16 +313,16 @@ func (shaman *Shaman) applyFlurry() {
 			}
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, 3)
+				shaman.FlurryAura.Activate(sim)
+				shaman.FlurryAura.SetStacks(sim, 3)
 				icd.Reset() // the "charge protection" ICD isn't up yet
 				return
 			}
 
 			// Remove a stack.
-			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
+			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
 				icd.Use(sim)
-				procAura.RemoveStack(sim)
+				shaman.FlurryAura.RemoveStack(sim)
 			}
 		},
 	})

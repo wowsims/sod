@@ -130,7 +130,7 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 
 	shaman.LightningShield[rank] = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:  core.ActionID{SpellID: spellId},
-		SpellCode: SpellCode_LightningShield,
+		SpellCode: SpellCode_ShamanLightningShield,
 		ProcMask:  core.ProcMaskEmpty,
 		Flags:     core.SpellFlagAPL,
 
