@@ -664,10 +664,6 @@ var DenyItemSetIds = []int{
 	1707, // Lawbringer Radiance
 	1708, // Lawbringer Will
 
-	// Priest
-	1709, // Dawn Prophecy
-	1710, // Twilight Prophecy
-
 	// Rogue
 	1711, // Nightslayer Thrill
 	1712, // Nightslayer Battlearmor
