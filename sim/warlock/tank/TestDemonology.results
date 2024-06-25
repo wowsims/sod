@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.02945
+  weights: -0.02337
   weights: 0
-  weights: 1.21606
-  weights: 0
-  weights: 0
+  weights: 1.21375
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.72024
+  weights: 0
+  weights: 0
+  weights: 6.70247
   weights: 1.41855
   weights: 0
   weights: 0
@@ -99,56 +99,56 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 593.06158
-  tps: 1114.7098
+  dps: 591.24259
+  tps: 1111.9813
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 559.50126
-  tps: 1569.34423
+  dps: 557.69692
+  tps: 1566.63773
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 559.50126
-  tps: 1057.08505
+  dps: 557.69692
+  tps: 1054.37855
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 586.40175
-  tps: 1108.27323
+  dps: 584.61008
+  tps: 1105.58573
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 340.04961
-  tps: 1248.87521
+  dps: 338.24094
+  tps: 1246.16221
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 340.04961
-  tps: 693.33061
+  dps: 338.24094
+  tps: 690.61761
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 364.01449
-  tps: 733.24739
+  dps: 362.22283
+  tps: 730.55989
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 589.07591
-  tps: 1105.79254
+  dps: 587.22025
+  tps: 1103.00904
  }
 }
