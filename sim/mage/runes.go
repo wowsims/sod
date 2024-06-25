@@ -24,7 +24,6 @@ func (mage *Mage) ApplyRunes() {
 	mage.applyFingersOfFrost()
 
 	// Bracers
-	mage.applyMoltenArmor()
 	mage.registerBalefireBoltSpell()
 
 	// Hands
@@ -192,14 +191,6 @@ func (mage *Mage) applyFingersOfFrost() {
 			}
 		},
 	})
-}
-
-func (mage *Mage) applyMoltenArmor() {
-	if !mage.HasRune(proto.MageRune_RuneBracersMoltenArmor) {
-		return
-	}
-
-	mage.AddStat(stats.SpellCrit, 5*core.CritRatingPerCritChance)
 }
 
 func (mage *Mage) applyHotStreak() {
@@ -374,7 +365,17 @@ func (mage *Mage) applyBrainFreeze() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+
 			if slices.Contains(triggerSpellCodes, spell.SpellCode) {
+				// Don't consume the proc if the spell started being cast before the proc procced
+				if aura.StartedAt() > sim.CurrentTime-spell.CurCast.CastTime-spell.TravelTime() {
+					return
+				}
+
 				aura.Deactivate(sim)
 			}
 		},

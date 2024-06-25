@@ -27,7 +27,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	additiveDamageAffectedSpells := []*core.Spell{}
 	// Purposefully excluded living flame and arcane missiles ticks because we manually disable the arcane blast aura after the final tick
 	affectedSpellCodes := []int32{
-		SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageSpellfrostBolt, SpellCode_MageBalefireBolt,
+		SpellCode_MageArcaneBarrage, SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageBalefireBolt, SpellCode_MageSpellfrostBolt,
 	}
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
