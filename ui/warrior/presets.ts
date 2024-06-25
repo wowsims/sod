@@ -198,7 +198,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
-	faerieFireImproved: TristateEffect.TristateEffectRegular,
+	faerieFire: true,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
 	mangle: true,

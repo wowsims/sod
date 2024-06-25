@@ -88,3 +88,47 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 	}
 	return spell
 }
+
+const WindwallTotemRanks = 3
+
+var WindwallTotemSpellId = [WindwallTotemRanks + 1]int32{0, 15107, 15111, 15112}
+var WindwallTotemManaCost = [WindwallTotemRanks + 1]float64{0, 115, 170, 225}
+var WindwallTotemLevel = [WindwallTotemRanks + 1]int{0, 36, 46, 56}
+
+func (shaman *Shaman) registerWindwallTotemSpell() {
+	shaman.WindwallTotem = make([]*core.Spell, WindwallTotemRanks+1)
+
+	for rank := 1; rank <= WindwallTotemRanks; rank++ {
+		config := shaman.newWindwallTotemSpellConfig(rank)
+
+		if config.RequiredLevel <= int(shaman.Level) {
+			shaman.WindwallTotem[rank] = shaman.RegisterSpell(config)
+		}
+	}
+}
+
+func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
+	has6PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 6)
+
+	spellId := WindwallTotemSpellId[rank]
+	manaCost := WindwallTotemManaCost[rank]
+	level := WindwallTotemLevel[rank]
+
+	duration := time.Second * 120
+
+	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell.RequiredLevel = level
+	spell.Rank = rank
+	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + duration
+		shaman.ActiveTotems[AirTotem] = spell
+
+		// We don't have a separation of Melee vs Ranged bonus physical damage at the moment
+		// but it's probably fine because bosses generally don't have ranged physical attacks.
+		// core.WindwallTotemAura(&shaman.Unit, shaman.Level, shaman.Talents.GuardianTotems).Activate(sim)
+		if has6PEarthfuryResolve {
+			core.ImprovedWindwallTotemAura(&shaman.Unit).Activate(sim)
+		}
+	}
+	return spell
+}

@@ -109,7 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			faerieFireImproved: TristateEffect.TristateEffectRegular,
+			faerieFire: true,
 			exposeArmor: TristateEffect.TristateEffectImproved,
 		}),
 	},

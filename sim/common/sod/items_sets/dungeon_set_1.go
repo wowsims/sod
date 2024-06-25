@@ -10,10 +10,12 @@ import (
 var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Wildheart Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power, up to 23 increased damage from spells, and up to 44 increased healing from spells.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -23,6 +25,7 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				stats.HealingPower:      44,
 			})
 		},
+		// 2% chance on spellcast to energize you for 300 mana, 6% chance on dealing a melee autoattack to energize you for 40 Energy, and 3% chance on being hit by a melee attack to energize you for 10 Rage.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450608}
@@ -67,6 +70,7 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -83,10 +87,12 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	Name: "Beaststalker Armor",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -94,6 +100,7 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 40,
 			})
 		},
+		// Your melee and ranged autoattacks have a 6% chance to energize you for 300 mana.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450577}
@@ -112,6 +119,7 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -128,14 +136,17 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Magister's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 23)
 		},
+		// Your spellcasts have a 6% chance to energize you for 300 mana.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450527}
@@ -154,6 +165,7 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -170,10 +182,12 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 	Name: "Lightforge Armor",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power and up to 40 increased healing from spells.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -182,6 +196,7 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 				stats.HealingPower:      40,
 			})
 		},
+		// 6% chance on melee autoattack and 4% chance on spellcast to increase your damage and healing done by magical spells and effects by up to 95 for 10 sec.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450625}
@@ -208,6 +223,7 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -224,14 +240,17 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Devout",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 23)
 		},
+		// Your spellcasts have a 6% chance to energize you for 300 mana.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450576}
@@ -250,6 +269,7 @@ var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -266,10 +286,12 @@ var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	Name: "Shadowcraft Armor",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -277,6 +299,7 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 40,
 			})
 		},
+		// Chance on melee attack to restore 35 energy.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 27787}
@@ -295,6 +318,7 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -311,10 +335,12 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 	Name: "The Elements",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power, up to 23 increased damage from spells, and up to 44 increased healing from spells.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -324,6 +350,7 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 				stats.HealingPower:      44,
 			})
 		},
+		// 6% chance on mainhand autoattack and 4% chance on spellcast to increase your damage and healing done by magical spells and effects by up to 95 for 10 sec.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450626}
@@ -350,6 +377,8 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 		},
+
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -366,14 +395,17 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Dreadmist Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.SpellPower, 23)
 		},
+		// Your melee autoattacks and spellcasts have a 6% chance to heal you for 270 to 330 health.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450585}
@@ -400,6 +432,7 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -416,10 +449,12 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Valor",
 	Bonuses: map[int32]core.ApplyEffect{
+		// +200 Armor.
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
 		},
+		// +40 Attack Power.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -427,6 +462,7 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 40,
 			})
 		},
+		// Chance on melee attack to heal you for 88 to 132 and energize you for 10 Rage
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 450587}
@@ -447,6 +483,7 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{

@@ -59,7 +59,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: totemSpellId},
-		SpellCode:   SpellCode_SearingTotem,
+		SpellCode:   SpellCode_ShamanSearingTotem,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -160,7 +160,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_MagmaTotem,
+		SpellCode:   SpellCode_ShamanMagmaTotem,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -267,7 +267,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		SpellCode:   SpellCode_FireNovaTotem,
+		SpellCode:   SpellCode_ShamanFireNovaTotem,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 

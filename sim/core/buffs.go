@@ -675,12 +675,22 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 			BlessingOfSanctuaryAura(character)
 		}
 	*/
-	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing {
-		updateStats := BuffSpellByLevel[DevotionAura][level]
-		if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.25)
-		}
-		character.AddStats(updateStats)
+
+	if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectImproved {
+		MakePermanent(DevotionAuraAura(&character.Unit, 2))
+	} else if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectRegular {
+		MakePermanent(DevotionAuraAura(&character.Unit, 0))
+	}
+
+	if raidBuffs.StoneskinTotem == proto.TristateEffect_TristateEffectImproved {
+		MakePermanent(StoneskinTotemAura(&character.Unit, 2))
+	} else if raidBuffs.StoneskinTotem == proto.TristateEffect_TristateEffectRegular {
+		MakePermanent(StoneskinTotemAura(&character.Unit, 0))
+	}
+
+	if raidBuffs.ImprovedStoneskinWindwall {
+		MakePermanent(ImprovedStoneskinTotemAura(&character.Unit))
+		MakePermanent(ImprovedWindwallTotemAura(&character.Unit))
 	}
 
 	if raidBuffs.RetributionAura == proto.TristateEffect_TristateEffectImproved {
@@ -931,6 +941,102 @@ func ApplyInspiration(character *Character, uptime float64) {
 	ApplyFixedUptimeAura(inspirationAura, uptime, time.Millisecond*2500, 1)
 }
 
+func DevotionAuraAura(unit *Unit, points int32) *Aura {
+	level := unit.Level
+	spellID := map[int32]int32{
+		25: 643,
+		40: 1032,
+		50: 10292,
+		60: 10293,
+	}[level]
+
+	updateStats := BuffSpellByLevel[DevotionAura][level]
+	updateStats = updateStats.Multiply(1 + .125*float64(points))
+
+	return unit.RegisterAura(Aura{
+		Label:    "Devotion Aura",
+		ActionID: ActionID{SpellID: spellID},
+		Duration: NeverExpires,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+}
+
+func StoneskinTotemAura(unit *Unit, points int32) *Aura {
+	level := unit.Level
+	spellID := map[int32]int32{
+		25: 8155,
+		40: 10406,
+		50: 10407,
+		60: 10408,
+	}[level]
+	meleeDamageReduction := map[int32]float64{
+		25: -11,
+		40: -16,
+		50: -22,
+		60: -30,
+	}[level]
+	meleeDamageReduction *= 1 + .1*float64(points)
+	meleeDamageReduction = math.Floor(meleeDamageReduction)
+
+	return unit.GetOrRegisterAura(Aura{
+		Label:    "Stoneskin",
+		ActionID: ActionID{SpellID: spellID},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[DefenseTypeMelee] += meleeDamageReduction
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[DefenseTypeMelee] += meleeDamageReduction
+		},
+	})
+}
+
+// https://www.wowhead.com/classic/spell=457544/s03-item-t1-shaman-tank-6p-bonus
+// Your Stoneskin Totem also reduces Physical damage taken by 5% and your Windwall Totem also reduces Magical damage taken by 5%.
+// Restricting to level 60 only
+func ImprovedStoneskinTotemAura(unit *Unit) *Aura {
+	return unit.GetOrRegisterAura(Aura{
+		Label:    "Improved Stoneskin",
+		ActionID: ActionID{SpellID: 457544}.WithTag(1),
+		Duration: time.Minute * 2,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= .95
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= .95
+		},
+	})
+}
+func ImprovedWindwallTotemAura(unit *Unit) *Aura {
+	return unit.GetOrRegisterAura(Aura{
+		Label:    "Improved Windwall",
+		ActionID: ActionID{SpellID: 457544}.WithTag(2),
+		Duration: time.Minute * 2,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= .95
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= .95
+		},
+	})
+}
+
 func RetributionAura(character *Character, points int32) *Aura {
 	level := character.Level
 	spellID := map[int32]int32{
@@ -1024,30 +1130,45 @@ func ThornsAura(character *Character, points int32) *Aura {
 	}))
 }
 
-//TODO: Classic
-/*
-func BlessingOfSanctuaryAura(character *Character) {
-	if !character.HasManaBar() {
-		return
-	}
-	actionID := ActionID{SpellID: 20914}
-	manaMetrics := character.NewManaMetrics(actionID)
+// func BlessingOfSanctuaryAura(character *Character, level int32) {
+// 	if character.Level < 30 {
+// 		return
+// 	}
 
-	character.RegisterAura(Aura{
-		Label:    "Blessing of Sanctuary",
-		ActionID: actionID,
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Outcome.Matches(OutcomeBlock | OutcomeDodge | OutcomeParry) {
-				character.AddMana(sim, 0.02*character.MaxMana(), manaMetrics)
-			}
-		},
-	})
-}
-*/
+// 	spellID := map[int32]int32{
+// 		40: 20912,
+// 		50: 20913,
+// 		60: 20914,
+// 	}[level]
+
+// 	physReduction := map[int32]int32{
+// 		40: 14,
+// 		50: 19,
+// 		60: 24,
+// 	}[level]
+
+// 	blockDamage := map[int32]int32{
+// 		40: 21,
+// 		50: 28,
+// 		60: 35,
+// 	}
+
+// 	actionID := ActionID{SpellID: spellID}
+
+// 	character.RegisterAura(Aura{
+// 		Label:    "Blessing of Sanctuary",
+// 		ActionID: actionID,
+// 		Duration: NeverExpires,
+// 		OnReset: func(aura *Aura, sim *Simulation) {
+// 			aura.Activate(sim)
+// 		},
+// 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+// 			if result.Outcome.Matches(OutcomeBlock | OutcomeDodge | OutcomeParry) {
+// 			}
+// 		},
+// 	})
+// }
+
 // Used for approximating cooldowns applied by other players to you, such as
 // bloodlust, innervate, power infusion, etc. This is specifically for buffs
 // which can be consecutively applied multiple times to a single player.

@@ -504,6 +504,9 @@ var DenyListNameRegexes = []*regexp.Regexp{
 // Data can easily be found here:
 // https://www.wowhead.com/classic/item-sets#item-sets
 var DenyItemSetIds = []int{
+	// Misc Sets
+	1, // The Gladiator
+
 	// Dungeon Set 1
 	181, // Magister's Regalia
 	182, // Vestments of the Devout
@@ -625,4 +628,62 @@ var DenyItemSetIds = []int{
 	549, // Lieutenant Commander's Investiture
 	550, // Lieutenant Commander's Pursuance
 	551, // Lieutenant Commander's Refuge
+
+	////////////////////////////////////////////////////////
+	// SoD Phase 4 sets that still need to be implemented //
+	////////////////////////////////////////////////////////
+
+	// Hunter
+	1669, // Beastmaster Armor
+	1702,
+	1703, // Giantstalker Prowess
+	1751, // Champion's Prowess
+	1752, // Champion's Pursuit
+	1765, // Lieutenant Commander's Prowess
+	1766, // Lieutenant Commander's Pursuit
+
+	// Mage
+	1671, // Sorcerer's Regalia
+	1704, // Arcanist Insight
+	1705, // Arcanist Moment
+	1753, // Champion's Regalia
+	1767, // Lieutenant Commander's Regalia
+
+	// Paladin
+	1673, // Soulforge Armor
+	1706, // Lawbringer Mercy
+	1707, // Lawbringer Radiance
+	1708, // Lawbringer Will
+	1776, // Lieutenant Commander's Redemption
+	1777, // Lieutenant Commander's Vindication
+
+	// Priest
+	1675, // Vestments of the Virtuous
+	1709, // Dawn Prophecy
+	1710, // Twilight Prophecy
+	1754, // Champion's Raiment
+	1755, // Champion's Investiture
+	1768, // Lieutenant Commander's Raiment
+	1769, // Lieutenant Commander's Investiture
+
+	// Rogue
+	1676, // Darkmantle Armor
+	1711, // Nightslayer Thrill
+	1712, // Nightslayer Battlearmor
+	1756, // Champion's Vestments
+	1770, // Lieutenant Commander's Vestments
+
+	// Warlock
+	1681, // Deathmist Raiment
+	1717, // Corrupted Felheart
+	1718, // Wicked Felheart
+	1760, // Champion's Threads
+	1774, // Lieutenant Commander's Threads
+
+	// Warrior
+	1719, // Immoveable Might
+	1720, // Unstoppable Might
+	1761, // Champion's Battlegear
+	1775, // Lieutenant Commander's Battlegear
+	1778, // Battlegear of Heroism
 }

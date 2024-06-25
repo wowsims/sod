@@ -147,7 +147,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
-	faerieFireImproved: TristateEffect.TristateEffectRegular,
+	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
 	sunderArmor: true,
 });
