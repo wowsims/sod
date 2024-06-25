@@ -873,7 +873,7 @@ export const JudgementOfTheCrusader = withLabel(
 
 // Misc Debuffs
 export const ImprovedFaerieFire = makeBooleanDebuffInput({
-	actionId: player => player.getMatchingItemActionId([{ id: 455864, minLevel: 60 }]),
+	actionId: player => player.getMatchingSpellActionId([{ id: 455864, minLevel: 60 }]),
 	fieldName: 'improvedFaerieFire',
 });
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
