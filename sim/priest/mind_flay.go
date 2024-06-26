@@ -78,6 +78,8 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 		},
 
+		CritDamageBonus: priest.periodicCritBonus(),
+
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

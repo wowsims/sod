@@ -100,8 +100,6 @@ func (dot *Dot) NumTicksRemaining(sim *Simulation) int {
 // This keeps the snapshot crit and %dmg modifiers.
 // However, sp and haste are recalculated.
 func (dot *Dot) Rollover(sim *Simulation) {
-	dot.TakeSnapshot(sim, true)
-
 	dot.RecomputeAuraDuration() // recalculate haste
 	dot.Aura.Refresh(sim)       // update aura's duration
 

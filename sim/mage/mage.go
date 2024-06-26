@@ -92,8 +92,13 @@ type Mage struct {
 	CombustionAura      *core.Aura
 	FingersOfFrostAura  *core.Aura
 	HotStreakAura       *core.Aura
+	IceArmorAura        *core.Aura
 	ImprovedScorchAuras core.AuraArray
+	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
+	MoltenArmorAura     *core.Aura
+
+	FingersOfFrostProcChance float64
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
