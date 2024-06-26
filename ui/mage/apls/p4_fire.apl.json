@@ -1,7 +1,7 @@
 {
   "type": "TypeAPL",
   "prepullActions": [
-    {"action":{"castSpell":{"spellId":{"spellId":18809,"rank":8}}},"doAtValue":{"const":{"val":"-5s"}}}
+    {"action":{"castSpell":{"spellId":{"spellId":18809,"rank":8}}},"doAtValue":{"const":{"val":"-6s"}}}
   ],
   "priorityList": [
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"15%"}}}},"castSpell":{"spellId":{"spellId":12051}}}},

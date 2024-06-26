@@ -31,7 +31,7 @@ func (mage *Mage) applyFrostIceArmor() {
 	mage.AddStat(stats.Armor, armor)
 	mage.AddStat(stats.FrostResistance, frostRes)
 
-	mage.GetOrRegisterAura(core.Aura{
+	mage.IceArmorAura = mage.GetOrRegisterAura(core.Aura{
 		Label:    "Ice Armor",
 		ActionID: core.ActionID{SpellID: spellID},
 		Duration: core.NeverExpires,
@@ -67,7 +67,7 @@ func (mage *Mage) applyMageArmor() {
 		stats.ShadowResistance: spellRes,
 	})
 
-	mage.GetOrRegisterAura(core.Aura{
+	mage.MageArmorAura = mage.GetOrRegisterAura(core.Aura{
 		Label:    "Mage Armor",
 		ActionID: core.ActionID{SpellID: spellID},
 		Duration: core.NeverExpires,
@@ -84,7 +84,7 @@ func (mage *Mage) applyMoltenArmor() {
 
 	mage.AddStat(stats.SpellCrit, 5*core.CritRatingPerCritChance)
 
-	mage.GetOrRegisterAura(core.Aura{
+	mage.MoltenArmorAura = mage.GetOrRegisterAura(core.Aura{
 		Label:    "Molten Armor",
 		ActionID: core.ActionID{SpellID: int32(proto.MageRune_RuneBracersMoltenArmor)},
 		Duration: core.NeverExpires,

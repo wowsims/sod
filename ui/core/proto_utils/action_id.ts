@@ -419,6 +419,15 @@ export class ActionId {
 				if (this.tag === 1) name = `${name} (Tick)`;
 				else if (this.tag === 2) name = `${name} (Splash)`;
 				break;
+			case 'S03 - Item - T1 - Mage - Damage 4P Bonus':
+				// Tags correspond to each non-physical spell school
+				if (this.tag === 2) name = `${name} (Arcane)`;
+				if (this.tag === 3) name = `${name} (Fire)`;
+				if (this.tag === 4) name = `${name} (Frost)`;
+				if (this.tag === 5) name = `${name} (Holy)`;
+				if (this.tag === 6) name = `${name} (Nature)`;
+				if (this.tag === 7) name = `${name} (Shadow)`;
+				break;
 			// Don't do anything for these but avoid adding "(??)"
 			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
 				break;

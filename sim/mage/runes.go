@@ -138,7 +138,7 @@ func (mage *Mage) applyFingersOfFrost() {
 		return
 	}
 
-	procChance := 0.15
+	mage.FingersOfFrostProcChance = 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
@@ -185,7 +185,7 @@ func (mage *Mage) applyFingersOfFrost() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < procChance {
+			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}

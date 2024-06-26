@@ -656,8 +656,6 @@ var DenyItemSetIds = []int{
 	1703, // Giantstalker Prowess
 
 	// Mage
-	1704, // Arcanist Insight
-	1705, // Arcanist Moment
 
 	// Paladin
 	1706, // Lawbringer Mercy

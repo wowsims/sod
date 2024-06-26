@@ -91,7 +91,8 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc,
 
-		BonusHitRating: 1, // Not an independent hit once initial lands
+		CritDamageBonus: priest.periodicCritBonus(),
+		BonusHitRating:  1, // Not an independent hit once initial lands
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
