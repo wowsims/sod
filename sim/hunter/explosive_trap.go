@@ -70,6 +70,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := sim.Roll(minDamage, maxDamage)
+					baseDamage += hunter.tntDamageFlatBonus()
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
