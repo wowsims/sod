@@ -32,7 +32,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 15,
+				Duration: time.Second * time.Duration(15 * hunter.resourcefulnessCooldownModifier()),
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
