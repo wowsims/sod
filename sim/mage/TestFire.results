@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.87255
+  weights: 0.80419
   weights: 0
-  weights: 0.55372
+  weights: 0.51756
   weights: 0
-  weights: 0.55372
-  weights: 0
-  weights: 0
+  weights: 0.51756
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.66354
-  weights: 3.17678
+  weights: 0
+  weights: 0
+  weights: 5.26498
+  weights: 2.92591
   weights: 0
   weights: 0
   weights: 0
@@ -498,36 +498,36 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 355.20007
-  tps: 266.34455
+  dps: 331.99732
+  tps: 250.10263
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
-  dps: 414.12093
-  tps: 301.54379
+  dps: 387.07563
+  tps: 282.61208
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1374.38053
-  tps: 1181.41895
+  dps: 1289.29417
+  tps: 1121.8585
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 403.15165
-  tps: 294.1218
+  dps: 376.59203
+  tps: 275.53007
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Gnome-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 649.6899
-  tps: 476.65671
+  dps: 607.0648
+  tps: 446.81913
  }
 }
 dps_results: {
@@ -554,22 +554,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1358.44107
-  tps: 1169.11789
+  dps: 1274.41331
+  tps: 1110.29846
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 384.47379
-  tps: 280.67096
+  dps: 359.22016
+  tps: 262.99342
  }
 }
 dps_results: {
  key: "TestFire-Lvl40-Settings-Troll-p2_fire-Fire-p2_fire-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 649.53437
-  tps: 476.41005
+  dps: 606.77078
+  tps: 446.47553
  }
 }
 dps_results: {
@@ -596,8 +596,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 409.2427
-  tps: 298.01922
+  dps: 382.60565
+  tps: 279.37328
  }
 }
 dps_results: {
@@ -715,8 +715,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1037.59061
-  tps: 577.358
+  dps: 1036.73979
+  tps: 576.82921
  }
 }
 dps_results: {
@@ -729,8 +729,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1036.67339
-  tps: 577.62106
+  dps: 1035.82216
+  tps: 577.09118
  }
 }
 dps_results: {
@@ -743,8 +743,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1037.59061
-  tps: 577.358
+  dps: 1036.73979
+  tps: 576.82921
  }
 }
 dps_results: {

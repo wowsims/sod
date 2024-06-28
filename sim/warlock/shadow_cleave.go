@@ -14,7 +14,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	manaCost := [11]float64{0, 12, 20, 35, 55, 80, 105, 132, 157, 185, 190}[rank]
 	level := [11]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
 
-	results := make([]*core.SpellResult, min(3, warlock.Env.GetNumTargets()))
+	results := make([]*core.SpellResult, min(10, warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},

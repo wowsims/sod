@@ -241,8 +241,8 @@ var FullDebuffsPhase2 = &proto.Debuffs{
 }
 
 var FullDebuffsPhase3 = &proto.Debuffs{
-	CurseOfElementsNew:     proto.TristateEffect_TristateEffectRegular,
-	CurseOfShadowNew:       proto.TristateEffect_TristateEffectRegular,
+	CurseOfElements:        true,
+	CurseOfShadow:          true,
 	CurseOfRecklessness:    true,
 	CurseOfVulnerability:   true,
 	CurseOfWeakness:        proto.TristateEffect_TristateEffectImproved,

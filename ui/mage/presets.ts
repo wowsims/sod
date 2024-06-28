@@ -248,7 +248,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectRegular,
+	curseOfElements: true,
 });
 
 export const OtherDefaults = {

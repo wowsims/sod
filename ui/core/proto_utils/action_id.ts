@@ -150,7 +150,12 @@ export class ActionId {
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+		const showBuff = spellIDsToShowBuffs.has(id);
+
+		let url = `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+		if (showBuff) url = `${url}?buff=1`;
+
+		return url;
 	}
 	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
 		return buildWowheadTooltipDataset({ itemId: id, ...params });
@@ -618,6 +623,25 @@ const idOverrides: Record<string, ActionId> = {};
 idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(221309); // Darkmoon Card: Sandstorm
 idOverrides[ActionId.fromSpellId(455864).toProtoString()] = ActionId.fromSpellId(9907); // Tier 1 Balance Druid "Improved Faerie Fire"
 idOverrides[ActionId.fromSpellId(457544).toProtoString()] = ActionId.fromSpellId(10408); // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
+
+const spellIDsToShowBuffs = new Set([
+	770, // https://www.wowhead.com/classic/spell=770/faerie-fire
+	778, // https://www.wowhead.com/classic/spell=778/faerie-fire
+	9749, // https://www.wowhead.com/classic/spell=9749/faerie-fire
+	9907, // https://www.wowhead.com/classic/spell=9907/faerie-fire
+	704, // https://www.wowhead.com/classic/spell=704/curse-of-recklessness
+	7658, // https://www.wowhead.com/classic/spell=7658/curse-of-recklessness
+	7659, // https://www.wowhead.com/classic/spell=7659/curse-of-recklessness
+	11717, // https://www.wowhead.com/classic/spell=11717/curse-of-recklessness
+	1490, // https://www.wowhead.com/classic/spell=1490/curse-of-the-elements
+	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
+	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
+	17862, // https://www.wowhead.com/classic/spell=17862/curse-of-shadow
+	17937, // https://www.wowhead.com/classic/spell=17937/curse-of-shadow
+	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
+	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
+	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
+]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
