@@ -38,8 +38,10 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	manaCost := FireBlastManaCost[rank]
 	level := FireBlastLevel[rank]
 
+	cooldown := time.Second * 8
 	flags := SpellFlagMage | core.SpellFlagAPL
 	if hasOverheatRune {
+		cooldown = time.Second * 15
 		flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
 	}
 	gcd := core.TernaryDuration(hasOverheatRune, 0, core.GCDDefault)
@@ -64,7 +66,7 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 			},
 			CD: core.Cooldown{
 				Timer:    cdTimer,
-				Duration: time.Second*8 - time.Millisecond*500*time.Duration(mage.Talents.ImprovedFireBlast),
+				Duration: cooldown - time.Millisecond*500*time.Duration(mage.Talents.ImprovedFireBlast),
 			},
 		},
 
