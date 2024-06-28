@@ -10,7 +10,6 @@ import (
 
 func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	masterChanneler := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
-	hasSoulSiphon := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
 
 	spellId := [7]int32{0, 689, 699, 709, 7651, 11699, 11700}[rank]
 	spellCoeff := [7]float64{0, .078, .1, .1, .1, .1, .1}[rank]
@@ -65,39 +64,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
-
-				if hasSoulSiphon {
-					isExecute := sim.IsExecutePhase20()
-					perDoTMultiplier := core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplier, SoulSiphonDoTMultiplierExecute)
-					maxMultiplier := 1 + core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplierMax, SoulSiphonDoTMultiplierMaxExecute)
-					multiplier := 1.0
-
-					hasAura := func(target *core.Unit, label string, rank int) bool {
-						for i := 1; i <= rank; i++ {
-							if target.HasActiveAura(label + strconv.Itoa(rank)) {
-								return true
-							}
-						}
-						return false
-					}
-					if hasAura(target, "Corruption-"+warlock.Label, 7) {
-						multiplier += perDoTMultiplier
-					}
-					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
-						multiplier += perDoTMultiplier
-					}
-					if hasAura(target, "SiphonLife-"+warlock.Label, 3) {
-						multiplier += perDoTMultiplier
-					}
-					if target.HasActiveAura("UnstableAffliction-" + warlock.Label) {
-						multiplier += perDoTMultiplier
-					}
-					if target.HasActiveAura("Haunt-" + warlock.Label) {
-						multiplier += perDoTMultiplier
-					}
-
-					dot.SnapshotAttackerMultiplier *= max(multiplier, maxMultiplier)
-				}
 
 				// Drain Life heals so it snapshots target modifiers
 				dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)

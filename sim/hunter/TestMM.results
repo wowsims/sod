@@ -166,7 +166,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.11594
-  weights: 3.69801
+  weights: 3.69387
   weights: 4.31062
   weights: 0
   weights: 0
@@ -302,43 +302,43 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 308.90492
-  tps: 159.5114
+  dps: 308.54445
+  tps: 159.15094
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 314.66596
-  tps: 168.49338
+  dps: 314.28788
+  tps: 168.11306
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Average-Default"
  value: {
-  dps: 318.29453
-  tps: 171.3676
+  dps: 317.90135
+  tps: 170.97139
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 724.33062
-  tps: 917.81334
+  dps: 723.07622
+  tps: 916.54947
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 629.93281
-  tps: 510.44748
+  dps: 628.66221
+  tps: 509.1675
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 652.49801
-  tps: 533.43971
+  dps: 651.28513
+  tps: 532.17995
  }
 }
 dps_results: {
@@ -365,22 +365,22 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 730.98351
-  tps: 918.93994
+  dps: 729.71723
+  tps: 917.6642
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 636.28567
-  tps: 508.8151
+  dps: 635.03681
+  tps: 507.55687
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 659.05839
-  tps: 532.63482
+  dps: 657.84551
+  tps: 531.37506
  }
 }
 dps_results: {
@@ -407,7 +407,7 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 303.3473
-  tps: 157.47321
+  dps: 302.98854
+  tps: 157.11161
  }
 }
