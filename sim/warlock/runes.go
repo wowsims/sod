@@ -347,10 +347,10 @@ func (warlock *Warlock) applyShadowAndFlame() {
 // https://www.wowhead.com/classic/spell=403511/soul-siphon
 // Increases the amount drained by your Drain Life and Drain Soul spells by an additional 6% for each of your Warlock Shadow effects afflicting the target,
 // up to a maximum of 18% additional effect. When Drain Soul is cast on a target below 20% health, it instead gains 100% per effect, up to a maximum of 300%.
-const SoulSiphonDoTMultiplier = .06
-const SoulSiphonDoTMultiplierExecute = 1.0
-const SoulSiphonDoTMultiplierMax = .18
-const SoulSiphonDoTMultiplierMaxExecute = 3.0
+const SoulSiphonDoTMultiplier = 0.06
+const SoulSiphonDoTMultiplierExecute = 0.50
+const SoulSiphonDoTMultiplierMax = 0.18
+const SoulSiphonDoTMultiplierMaxExecute = 1.50
 
 func (warlock *Warlock) applyDemonicTactics() {
 	if !warlock.HasRune(proto.WarlockRune_RuneChestDemonicTactics) {
