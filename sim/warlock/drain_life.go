@@ -10,7 +10,7 @@ import (
 
 func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	masterChanneler := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
-	soulSiphon := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+	hasSoulSiphon := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
 
 	spellId := [7]int32{0, 689, 699, 709, 7651, 11699, 11700}[rank]
 	spellCoeff := [7]float64{0, .078, .1, .1, .1, .1, .1}[rank]
@@ -66,8 +66,11 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
 
-				if soulSiphon {
-					modifier := 1.0
+				if hasSoulSiphon {
+					isExecute := sim.IsExecutePhase20()
+					perDoTMultiplier := core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplier, SoulSiphonDoTMultiplierExecute)
+					maxMultiplier := 1 + core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplierMax, SoulSiphonDoTMultiplierMaxExecute)
+					multiplier := 1.0
 
 					hasAura := func(target *core.Unit, label string, rank int) bool {
 						for i := 1; i <= rank; i++ {
@@ -78,22 +81,22 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 						return false
 					}
 					if hasAura(target, "Corruption-"+warlock.Label, 7) {
-						modifier += .06
+						multiplier += perDoTMultiplier
 					}
 					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
-						modifier += .06
+						multiplier += perDoTMultiplier
 					}
 					if hasAura(target, "SiphonLife-"+warlock.Label, 3) {
-						modifier += .06
+						multiplier += perDoTMultiplier
 					}
 					if target.HasActiveAura("UnstableAffliction-" + warlock.Label) {
-						modifier += .06
+						multiplier += perDoTMultiplier
 					}
 					if target.HasActiveAura("Haunt-" + warlock.Label) {
-						modifier += .06
+						multiplier += perDoTMultiplier
 					}
 
-					dot.SnapshotAttackerMultiplier *= max(modifier, 1.18)
+					dot.SnapshotAttackerMultiplier *= max(multiplier, maxMultiplier)
 				}
 
 				// Drain Life heals so it snapshots target modifiers

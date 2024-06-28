@@ -17,11 +17,11 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 0.61
 
+	// TODO: Probably merge this into the base spell now
 	warlock.ShadowflameDot = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},
-		SpellSchool: core.SpellSchoolFire,
+		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagLoF,
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
@@ -52,7 +52,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426320},
-		SpellSchool: core.SpellSchoolShadow,
+		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
@@ -81,11 +81,9 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		BonusCoefficient:         baseSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				if result.Landed() {
-					warlock.ShadowflameDot.Cast(sim, aoeTarget)
-				}
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				warlock.ShadowflameDot.Cast(sim, target)
 			}
 		},
 	})

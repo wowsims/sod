@@ -29,11 +29,12 @@ func (warlock *Warlock) registerIncinerateSpell() {
 	})
 
 	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_WarlockIncinerate,
 		ActionID:     core.ActionID{SpellID: 412758},
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | SpellFlagLoF,
+		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{

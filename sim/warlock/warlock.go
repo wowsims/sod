@@ -11,13 +11,16 @@ import (
 var TalentTreeSizes = [3]int{17, 17, 16}
 
 const SpellFlagHaunt = core.SpellFlagAgentReserved1
-const SpellFlagLoF = core.SpellFlagAgentReserved2 // Spell is affected by Lake of Fire debuff
 
 const (
 	SpellCode_WarlockNone int32 = iota
-	SpellCode_WarlockShadowCleave
+
 	SpellCode_Corruption
 	SpellCode_DrainLife
+	SpellCode_WarlockIncinerate
+	SpellCode_WarlockShadowCleave
+	SpellCode_WarlockShadowBolt
+	SpellCode_WarlockSoulFire
 )
 
 type Warlock struct {
@@ -40,7 +43,7 @@ type Warlock struct {
 	ShadowBolt         *core.Spell
 	ShadowCleave       []*core.Spell
 	Shadowburn         *core.Spell
-	SoulFire           *core.Spell
+	SoulFire           []*core.Spell
 	DemonicGrace       *core.Spell
 	DrainLife          *core.Spell
 	RainOfFire         *core.Spell
@@ -74,8 +77,8 @@ type Warlock struct {
 	PyroclasmAura           *core.Aura
 	DemonicGraceAura        *core.Aura
 	AmplifyCurseAura        *core.Aura
+	BackdraftAura           *core.Aura
 	ImprovedShadowBoltAuras core.AuraArray
-	LakeOfFireAuras         core.AuraArray
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64

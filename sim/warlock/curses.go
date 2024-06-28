@@ -22,6 +22,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 	snapshotBaseDmgNoBonus := 0.0
 
+	markOfChaosAuras := warlock.NewEnemyAuraArray(core.MarkOfChaosDebuffAura)
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
@@ -97,6 +99,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 				if hasInvocationRune && spell.Dot(target).IsActive() {
 					warlock.InvocationRefresh(sim, spell.Dot(target))
 				}
+
+				markOfChaosAuras.Get(target).Activate(sim)
 
 				//warlock.CurseOfDoom.Dot(target).Cancel(sim)
 				spell.Dot(target).Apply(sim)
