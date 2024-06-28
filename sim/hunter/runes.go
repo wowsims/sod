@@ -271,3 +271,24 @@ func (hunter *Hunter) tntDamageMultiplier() float64 {
 	}
 	return 1.0
 }
+
+func (hunter *Hunter) tntDamageFlatBonus() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return hunter.GetStat(stats.AttackPower) * 0.5
+	}
+	return 0.0
+}
+
+func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.0
+	}
+	return 1.0
+}
+
+func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.6
+	}
+	return 1.0
+}
