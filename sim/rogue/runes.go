@@ -261,22 +261,23 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		return
 	}
 
-	statDep := rogue.NewDynamicMultiplyStat(stats.Health, 1+0.06*float64(rogue.RollingWithThePunchesProcAura.GetStacks()))
+	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero condition
+	for i := 1; i < 6; i++ {
+		statDeps[i] = rogue.NewDynamicMultiplyStat(stats.Health, 1.0+.06*float64(i))
+	}
 
 	rogue.RollingWithThePunchesProcAura = rogue.RegisterAura(core.Aura{
 		Label:     "Rolling with the Punches Proc",
 		ActionID:  core.ActionID{SpellID: 400015},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, statDep)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, statDep)
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.DisableDynamicStatDep(sim, statDep)
-			aura.Unit.EnableDynamicStatDep(sim, statDep)
+			if oldStacks != 0 {
+				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			}
+			if newStacks != 0 {
+				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
+			}
 		},
 	})
 

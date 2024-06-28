@@ -659,19 +659,20 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 37
+// NextIndex: 39
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
 
-	// Bonus spell damage
-	bool curse_of_elements = 4 [deprecated=true];
-	bool curse_of_shadow = 5 [deprecated=true];
+	// Warlock Spell DamageCurses
+	bool curse_of_elements = 4;
+	bool curse_of_shadow = 5;
+	bool mark_of_chaos = 37;
 
-	TristateEffect curse_of_elements_new = 31;
-	TristateEffect curse_of_shadow_new = 32;
+	// Bonus Spell Damage
+	bool occult_poison = 38;
 
 	bool winters_chill = 6;
 	
@@ -715,6 +716,9 @@ message Debuffs {
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
+
+	TristateEffect curse_of_elements_new = 31 [deprecated=true];
+	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
 }
 
 enum MobType {

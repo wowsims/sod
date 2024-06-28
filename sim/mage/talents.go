@@ -513,7 +513,7 @@ func (mage *Mage) applyWintersChill() {
 	procChance := float64(mage.Talents.WintersChill) * 0.2
 
 	wcAuras := mage.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return core.WintersChillAura(target, 0)
+		return core.WintersChillAura(target)
 	})
 	mage.Env.RegisterPreFinalizeEffect(func() {
 		for _, spell := range mage.GetSpellsMatchingSchool(core.SpellSchoolFrost) {

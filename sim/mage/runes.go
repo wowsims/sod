@@ -332,7 +332,7 @@ func (mage *Mage) applyBrainFreeze() {
 		return
 	}
 
-	procChance := .15
+	procChance := .20
 	buffDuration := time.Second * 15
 
 	affectedSpells := []*core.Spell{}

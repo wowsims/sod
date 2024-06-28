@@ -75,11 +75,11 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 60:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  70,
-				stats.Agility:   29,
-				stats.Stamina:   67,
-				stats.Intellect: 163,
-				stats.Spirit:    163,
+				stats.Strength:  122,
+				stats.Agility:   35,
+				stats.Stamina:   86,
+				stats.Intellect: 264,
+				stats.Spirit:    260,
 				stats.Mana:      318,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
@@ -144,6 +144,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
+					// Not updated
 					BaseDamageMin: 41,
 					BaseDamageMax: 61,
 					SwingSpeed:    2,
@@ -152,11 +153,11 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 60:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  74,
-				stats.Agility:   58,
-				stats.Stamina:   148,
-				stats.Intellect: 49,
-				stats.Spirit:    97,
+				stats.Strength:  129,
+				stats.Agility:   85,
+				stats.Stamina:   234,
+				stats.Intellect: 70,
+				stats.Spirit:    150,
 				stats.Mana:      521,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
@@ -164,8 +165,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 41,
-					BaseDamageMax: 61,
+					BaseDamageMin: 95,
+					BaseDamageMax: 131,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
@@ -229,6 +230,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
+					// Not updated
 					BaseDamageMin: 5,
 					BaseDamageMax: 15,
 					SwingSpeed:    2,
@@ -237,11 +239,11 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 60:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  74,
-				stats.Agility:   58,
-				stats.Stamina:   148,
-				stats.Intellect: 49,
-				stats.Spirit:    97,
+				stats.Strength:  129,
+				stats.Agility:   85,
+				stats.Stamina:   234,
+				stats.Intellect: 70,
+				stats.Spirit:    150,
 				stats.Mana:      637,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
@@ -249,8 +251,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 5,
-					BaseDamageMax: 15,
+					BaseDamageMin: 31,
+					BaseDamageMax: 46,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
@@ -314,6 +316,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
+					// Not updated
 					BaseDamageMin: 24,
 					BaseDamageMax: 40,
 					SwingSpeed:    2,
@@ -322,11 +325,11 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 60:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  74,
-				stats.Agility:   58,
-				stats.Stamina:   148,
-				stats.Intellect: 49,
-				stats.Spirit:    97,
+				stats.Strength:  129,
+				stats.Agility:   85,
+				stats.Stamina:   234,
+				stats.Intellect: 70,
+				stats.Spirit:    150,
 				stats.Mana:      653,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
@@ -334,8 +337,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 24,
-					BaseDamageMax: 40,
+					BaseDamageMin: 70,
+					BaseDamageMax: 97,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
@@ -407,11 +410,11 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 		case 60:
 			cfg.Stats = stats.Stats{
-				stats.Strength:  107,
-				stats.Agility:   71,
-				stats.Stamina:   190,
-				stats.Intellect: 59,
-				stats.Spirit:    123,
+				stats.Strength:  129,
+				stats.Agility:   85,
+				stats.Stamina:   234,
+				stats.Intellect: 70,
+				stats.Spirit:    150,
 				stats.Mana:      717,
 				stats.MP5:       0,
 				stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
@@ -419,8 +422,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 55,
-					BaseDamageMax: 83,
+					BaseDamageMin: 90,
+					BaseDamageMax: 124,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
@@ -477,13 +480,14 @@ func (wp *WarlockPet) GetPet() *core.Pet {
 func (wp *WarlockPet) Initialize() {
 	switch wp.owner.Options.Summon {
 	case proto.WarlockOptions_Succubus:
-		wp.registerLashOfPainSpell()
+		wp.registerSuccubusLashOfPainSpell()
 	case proto.WarlockOptions_Felhunter:
 		// wp.registerShadowBiteSpell()
 	case proto.WarlockOptions_Imp:
-		wp.registerFireboltSpell()
+		wp.registerImpFireboltSpell()
 	case proto.WarlockOptions_Felguard:
-		wp.registerCleaveSpell()
+		wp.registerFelguardCleaveSpell()
+		wp.registerFelguardDemonicFrenzyAura()
 	}
 }
 

@@ -27,24 +27,19 @@ import {
 	WarlockOptions_WeaponImbue as WarlockWeaponImbue,
 } from '../core/proto/warlock.js';
 // apls
-// P1
 import DestroP1APL from './apls/p1/destruction.apl.json';
-// P2
 import AfflictionAPL from './apls/p2/affliction.apl.json';
 import DemonologyAPL from './apls/p2/demonology.apl.json';
 import DestroConflagAPL from './apls/p2/fire.conflag.apl.json';
 import DestroMgiAPL from './apls/p2/fire.imp.apl.json';
-// P3
-import BackdraftAPL from './apls/p3/backdraft.apl.json';
+import BackdraftAPLP3 from './apls/p3/backdraft.apl.json';
 import NFRuinAPL from './apls/p3/nf.ruin.apl.json';
+import BackdraftAPLP4 from './apls/p4/backdraft.apl.json';
 // gear
-// P1
 import DestructionGear from './gear_sets/p1/destruction.gear.json';
-// P2
 import FireImpGear from './gear_sets/p2/fire.imp.gear.json';
 import FireSuccubusGear from './gear_sets/p2/fire.succubus.gear.json';
 import ShadowGear from './gear_sets/p2/shadow.gear.json';
-// P3
 import BackdraftGear from './gear_sets/p3/backdraft.gear.json';
 import NFRuinGear from './gear_sets/p3/nf.ruin.gear.json';
 
@@ -96,18 +91,23 @@ export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Af
 });
 
 // P3
-export const BackdraftRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 Backdraft', BackdraftAPL, {
+export const BackdraftRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 Backdraft', BackdraftAPLP3, {
 	customCondition: player => player.getLevel() == 50,
 });
 export const NFRuinRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 NF/Ruin', NFRuinAPL, {
 	customCondition: player => player.getLevel() == 50,
 });
 
+// P4
+export const BackdraftRotationPhase4 = PresetUtils.makePresetAPLRotation('P4 Backdraft (WIP)', BackdraftAPLP4, {
+	customCondition: player => player.getLevel() == 60,
+});
+
 export const APLPresets = {
 	[Phase.Phase1]: [RotationDestructionPhase1],
 	[Phase.Phase2]: [DestroMgiRotationPhase2, DestroConflagRotationPhase2, DemonologyRotationPhase2, AfflictionRotationPhase2],
 	[Phase.Phase3]: [NFRuinRotationPhase3, BackdraftRotationPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [BackdraftRotationPhase4],
 	[Phase.Phase5]: [],
 };
 
@@ -125,6 +125,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	50: {
 		0: NFRuinRotationPhase3,
 		2: BackdraftRotationPhase3,
+	},
+	60: {
+		2: BackdraftRotationPhase4,
 	},
 };
 
@@ -224,8 +227,8 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectImproved,
-	curseOfShadowNew: TristateEffect.TristateEffectImproved,
+	curseOfElements: true,
+	curseOfShadow: true,
 	faerieFire: true,
 	homunculi: 100,
 	improvedScorch: true,

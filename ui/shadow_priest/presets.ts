@@ -133,7 +133,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfShadowNew: TristateEffect.TristateEffectRegular,
+	curseOfShadow: true,
 	improvedShadowBolt: true,
 });
 

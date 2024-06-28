@@ -5,9 +5,11 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
-func (wp *WarlockPet) registerFireboltSpell() {
+// Imp
+func (wp *WarlockPet) registerImpFireboltSpell() {
 	warlockLevel := wp.owner.Level
 	// assuming max rank available
 	rank := map[int32]int{25: 3, 40: 5, 50: 6, 60: 7}[warlockLevel]
@@ -37,7 +39,6 @@ func (wp *WarlockPet) registerFireboltSpell() {
 		ProcMask:      core.ProcMaskSpellDamage,
 		Rank:          rank,
 		RequiredLevel: level,
-		Flags:         SpellFlagLoF,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -46,6 +47,11 @@ func (wp *WarlockPet) registerFireboltSpell() {
 			DefaultCast: core.Cast{
 				GCD:      time.Millisecond * 1000,
 				CastTime: time.Millisecond * (2000 - time.Duration(500*wp.owner.Talents.ImprovedFirebolt)),
+			},
+			// Adding an artificial CD to account for real delay in imp casts in-game
+			CD: core.Cooldown{
+				Timer:    wp.NewTimer(),
+				Duration: time.Millisecond * 200,
 			},
 		},
 
@@ -58,19 +64,13 @@ func (wp *WarlockPet) registerFireboltSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				if wp.owner.LakeOfFireAuras != nil && wp.owner.LakeOfFireAuras.Get(target).IsActive() {
-					result.Damage *= getLakeOfFireMultiplier()
-					result.Threat *= getLakeOfFireMultiplier()
-				}
-			}
-
 			spell.DealDamage(sim, result)
 		},
 	})
 }
 
-func (wp *WarlockPet) registerLashOfPainSpell() {
+// Succubus
+func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 	warlockLevel := wp.owner.Level
 	// assuming max rank available
 	rank := map[int32]int{25: 1, 40: 3, 50: 4, 60: 6}[warlockLevel]
@@ -117,7 +117,8 @@ func (wp *WarlockPet) registerLashOfPainSpell() {
 	})
 }
 
-func (wp *WarlockPet) registerCleaveSpell() {
+// Felguard
+func (wp *WarlockPet) registerFelguardCleaveSpell() {
 	results := make([]*core.SpellResult, min(2, wp.Env.GetNumTargets()))
 
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
@@ -153,6 +154,42 @@ func (wp *WarlockPet) registerCleaveSpell() {
 			}
 			for _, result := range results {
 				spell.DealDamage(sim, result)
+			}
+		},
+	})
+}
+
+func (wp *WarlockPet) registerFelguardDemonicFrenzyAura() {
+	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero condition
+	for i := 1; i < 11; i++ {
+		statDeps[i] = wp.NewDynamicMultiplyStat(stats.AttackPower, 1.0+.05*float64(i))
+	}
+
+	demonicFrenzyAura := wp.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 460907},
+		Label:     "Demonic Frenzy",
+		Duration:  time.Second * 10,
+		MaxStacks: 10,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			if oldStacks != 0 {
+				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			}
+			if newStacks != 0 {
+				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
+			}
+		},
+	})
+
+	wp.RegisterAura(core.Aura{
+		Label:    "Demonic Frenzy Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() {
+				demonicFrenzyAura.Activate(sim)
+				demonicFrenzyAura.AddStack(sim)
 			}
 		},
 	})
