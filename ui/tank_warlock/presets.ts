@@ -197,7 +197,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
-	// aspectOfTheLion: true,
+	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	bloodPact: TristateEffect.TristateEffectImproved,
 	devotionAura: TristateEffect.TristateEffectImproved,

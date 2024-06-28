@@ -598,7 +598,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 19
+// NextIndex: 20
 message IndividualBuffs {
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
@@ -613,6 +613,7 @@ message IndividualBuffs {
 	bool spirit_of_zandalar = 9;
 	bool songflower_serenade = 10;
 	bool warchiefs_blessing = 11;
+	bool might_of_stormwind = 19;
 
 	// Dire Maul Buffs
 	bool fengus_ferocity = 12;

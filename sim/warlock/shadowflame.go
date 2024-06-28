@@ -12,6 +12,8 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		return
 	}
 
+	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
 	baseSpellCoeff := 0.107
 	dotSpellCoeff := 0.107
 	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
@@ -40,7 +42,16 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				var result *core.SpellResult
+				if hasPandemicRune {
+					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
+					dot.Spell.CritDamageBonus += 1
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					dot.Spell.CritDamageBonus -= 1
+				} else {
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				}
+				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
 
@@ -63,7 +74,8 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:      core.GCDDefault,
+				CastTime: time.Second * 2,
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),

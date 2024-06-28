@@ -113,7 +113,7 @@ func TestFire(t *testing.T) {
 			Talents:     Phase4TalentsFire,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 
@@ -152,7 +152,7 @@ func TestFrost(t *testing.T) {
 			Talents:     Phase4TalentsFrost,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFire},
 

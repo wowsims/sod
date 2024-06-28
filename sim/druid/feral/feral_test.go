@@ -86,7 +86,7 @@ func TestFeral(t *testing.T) {
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
 			OtherSpecOptions: []core.SpecOptionsCombo{
