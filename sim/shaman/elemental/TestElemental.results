@@ -393,8 +393,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-Lvl25-AllItems-TheFiveThunders"
  value: {
-  dps: 152.24276
-  tps: 142.22164
+  dps: 152.38262
+  tps: 142.40752
  }
 }
 dps_results: {
@@ -498,8 +498,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-AllItems-TheFiveThunders"
  value: {
-  dps: 455.01265
-  tps: 455.47427
+  dps: 457.78949
+  tps: 458.81529
  }
 }
 dps_results: {
@@ -603,8 +603,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-TheFiveThunders"
  value: {
-  dps: 608.16918
-  tps: 599.30238
+  dps: 608.67642
+  tps: 599.87857
  }
 }
 dps_results: {
@@ -764,8 +764,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 655.57612
-  tps: 656.63165
+  dps: 655.09884
+  tps: 656.29125
  }
 }
 dps_results: {
