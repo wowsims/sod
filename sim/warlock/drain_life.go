@@ -9,7 +9,8 @@ import (
 )
 
 func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
-	masterChanneler := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
+	hasMasterChannelerRune := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
 
 	spellId := [7]int32{0, 689, 699, 709, 7651, 11699, 11700}[rank]
 	spellCoeff := [7]float64{0, .078, .1, .1, .1, .1, .1}[rank]
@@ -17,9 +18,9 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	manaCost := [7]float64{0, 55, 85, 135, 185, 240, 300}[rank]
 	level := [7]int{0, 14, 22, 30, 38, 46, 54}[rank]
 
-	ticks := core.TernaryInt32(masterChanneler, 15, 5)
+	ticks := core.TernaryInt32(hasMasterChannelerRune, 15, 5)
 
-	if masterChanneler {
+	if hasMasterChannelerRune {
 		manaCost *= 2
 	}
 
@@ -65,6 +66,36 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
 
+				if hasSoulSiphonRune {
+					multiplier := 1.0
+
+					hasAura := func(target *core.Unit, label string, rank int) bool {
+						for i := 1; i <= rank; i++ {
+							if target.HasActiveAura(label + strconv.Itoa(rank)) {
+								return true
+							}
+						}
+						return false
+					}
+					if hasAura(target, "Corruption-"+warlock.Label, 7) {
+						multiplier += SoulSiphonDoTMultiplier
+					}
+					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
+						multiplier += SoulSiphonDoTMultiplier
+					}
+					if hasAura(target, "SiphonLife-"+warlock.Label, 3) {
+						multiplier += SoulSiphonDoTMultiplier
+					}
+					if target.HasActiveAura("UnstableAffliction-" + warlock.Label) {
+						multiplier += SoulSiphonDoTMultiplier
+					}
+					if target.HasActiveAura("Haunt-" + warlock.Label) {
+						multiplier += SoulSiphonDoTMultiplier
+					}
+
+					dot.SnapshotAttackerMultiplier *= max(multiplier, SoulSiphonDoTMultiplierMax)
+				}
+
 				// Drain Life heals so it snapshots target modifiers
 				dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)
 			},
@@ -81,7 +112,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				//dot.Spell.Flags |= core.SpellFlagBinary
 
 				health := result.Damage
-				if masterChanneler {
+				if hasMasterChannelerRune {
 					health *= 1.5
 				}
 				warlock.GainHealth(sim, health, healthMetrics)
@@ -109,7 +140,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		},
 	}
 
-	if masterChanneler {
+	if hasMasterChannelerRune {
 		spellConfig.Cast.CD = core.Cooldown{
 			Timer:    warlock.NewTimer(),
 			Duration: 15 * time.Second,
