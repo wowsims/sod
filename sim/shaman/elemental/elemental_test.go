@@ -75,7 +75,7 @@ func TestElemental(t *testing.T) {
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 

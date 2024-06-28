@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -723,105 +722,56 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 
 	// World Buffs
 	if individualBuffs.RallyingCryOfTheDragonslayer {
-		character.AddStat(stats.SpellCrit, 10*SpellCritRatingPerCritChance)
-		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-		// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
-		character.AddStat(stats.AttackPower, 140)
-		character.AddStat(stats.RangedAttackPower, 140)
+		ApplyRallyingCryOfTheDragonslayer(character)
 	}
 
 	if individualBuffs.SpiritOfZandalar {
-		character.MultiplyStat(stats.Stamina, 1.15)
-		character.MultiplyStat(stats.Agility, 1.15)
-		character.MultiplyStat(stats.Strength, 1.15)
-		character.MultiplyStat(stats.Intellect, 1.15)
-		character.MultiplyStat(stats.Spirit, 1.15)
+		ApplySpiritOfZandalar(character)
 	}
 
 	if individualBuffs.SongflowerSerenade {
-		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-		// TODO: character.AddStat(stats.RangedCrit, 1.05)
-		character.AddStat(stats.SpellCrit, 5*SpellCritRatingPerCritChance)
-		character.AddStat(stats.Stamina, 15)
-		character.AddStat(stats.Agility, 15)
-		character.AddStat(stats.Strength, 15)
-		character.AddStat(stats.Intellect, 15)
-		character.AddStat(stats.Spirit, 15)
+		ApplySongflowerSerenate(character)
 	}
 
 	if individualBuffs.WarchiefsBlessing {
-		character.AddStat(stats.Health, 300)
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.15
-		character.AddStat(stats.MP5, 10)
+		ApplyWarchiefsBlessing(character)
+	} else if individualBuffs.MightOfStormwind {
+		ApplyMightOfStormwind(character)
 	}
 
 	// Dire Maul Buffs
 	if individualBuffs.FengusFerocity {
-		character.AddStat(stats.AttackPower, 200)
-		character.AddStat(stats.RangedAttackPower, 200)
+		ApplyFengusFerocity(character)
 	}
 
 	if individualBuffs.MoldarsMoxie {
-		character.MultiplyStat(stats.Stamina, 1.15)
+		ApplyMoldarsMoxie(character)
 	}
 
 	if individualBuffs.SlipkiksSavvy {
-		character.AddStat(stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+		ApplySlipkiksSavvy(character)
 	}
 
 	// Darkmoon Faire Buffs
-	if individualBuffs.SaygesFortune == proto.SaygesFortune_SaygesDamage {
-		character.PseudoStats.DamageDealtMultiplier *= 1.10
-	}
-
-	if individualBuffs.SaygesFortune == proto.SaygesFortune_SaygesAgility {
-		character.MultiplyStat(stats.Agility, 1.10)
-	}
-
-	if individualBuffs.SaygesFortune == proto.SaygesFortune_SaygesIntellect {
-		character.MultiplyStat(stats.Intellect, 1.10)
-	}
-
-	if individualBuffs.SaygesFortune == proto.SaygesFortune_SaygesSpirit {
-		character.MultiplyStat(stats.Spirit, 1.10)
-	}
-
-	if individualBuffs.SaygesFortune == proto.SaygesFortune_SaygesStamina {
-		character.MultiplyStat(stats.Stamina, 1.10)
+	if individualBuffs.SaygesFortune != proto.SaygesFortune_SaygesUnknown {
+		ApplySaygesFortunes(character, individualBuffs.SaygesFortune)
 	}
 
 	// SoD World Buffs
 	if individualBuffs.FervorOfTheTempleExplorer {
-		character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-		// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
-		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
-		character.AddStat(stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
-		character.MultiplyStat(stats.Strength, 1.08)
-		character.MultiplyStat(stats.Stamina, 1.08)
-		character.MultiplyStat(stats.Agility, 1.08)
-		character.MultiplyStat(stats.Intellect, 1.08)
-		character.MultiplyStat(stats.Spirit, 1.08)
+		ApplyFervorOfTheTempleExplorer(character)
 	}
 
 	if individualBuffs.SparkOfInspiration {
-		character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
-		character.AddStat(stats.SpellPower, 42)
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.1
-		character.PseudoStats.RangedSpeedMultiplier *= 1.1
+		ApplySparkOfInspiration(character)
 	}
 
 	if individualBuffs.BoonOfBlackfathom {
-		character.AddStat(stats.MeleeCrit, 2*CritRatingPerCritChance)
-		// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
-		character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
-		character.AddStat(stats.AttackPower, 20)
-		character.AddStat(stats.RangedAttackPower, 20)
-		character.AddStat(stats.SpellPower, 25)
+		ApplyBoonOfBlackfathom(character)
 	}
 
 	if individualBuffs.AshenvalePvpBuff {
-		character.PseudoStats.DamageDealtMultiplier *= 1.05
-		//TODO: healing dealt multiplier?
+		ApplyAshenvaleRallyingCry(character)
 	}
 
 	// TODO: Classic provide in APL?
@@ -880,6 +830,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SongflowerSerenade = false
 	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.WarchiefsBlessing = false
+	individualBuffs.MightOfStormwind = false
 	individualBuffs.SpiritOfZandalar = false
 	individualBuffs.FengusFerocity = false
 	individualBuffs.MoldarsMoxie = false
@@ -1224,81 +1175,81 @@ func registerExternalConsecutiveCDApproximation(agent Agent, config externalCons
 	})
 }
 
-var BloodlustActionID = ActionID{SpellID: 2825}
+// var BloodlustActionID = ActionID{SpellID: 2825}
 
-const SatedAuraLabel = "Sated"
-const BloodlustAuraTag = "Bloodlust"
-const BloodlustDuration = time.Second * 40
-const BloodlustCD = time.Minute * 10
+// const SatedAuraLabel = "Sated"
+// const BloodlustAuraTag = "Bloodlust"
+// const BloodlustDuration = time.Second * 40
+// const BloodlustCD = time.Minute * 10
 
-func registerBloodlustCD(agent Agent) {
-	character := agent.GetCharacter()
-	bloodlustAura := BloodlustAura(character, -1)
+// func registerBloodlustCD(agent Agent) {
+// 	character := agent.GetCharacter()
+// 	bloodlustAura := BloodlustAura(character, -1)
 
-	spell := character.RegisterSpell(SpellConfig{
-		ActionID: bloodlustAura.ActionID,
-		Flags:    SpellFlagNoOnCastComplete | SpellFlagNoMetrics | SpellFlagNoLogs,
+// 	spell := character.RegisterSpell(SpellConfig{
+// 		ActionID: bloodlustAura.ActionID,
+// 		Flags:    SpellFlagNoOnCastComplete | SpellFlagNoMetrics | SpellFlagNoLogs,
 
-		Cast: CastConfig{
-			CD: Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: BloodlustCD,
-			},
-		},
+// 		Cast: CastConfig{
+// 			CD: Cooldown{
+// 				Timer:    character.NewTimer(),
+// 				Duration: BloodlustCD,
+// 			},
+// 		},
 
-		ApplyEffects: func(sim *Simulation, target *Unit, _ *Spell) {
-			if !target.HasActiveAura(SatedAuraLabel) {
-				bloodlustAura.Activate(sim)
-			}
-		},
-	})
+// 		ApplyEffects: func(sim *Simulation, target *Unit, _ *Spell) {
+// 			if !target.HasActiveAura(SatedAuraLabel) {
+// 				bloodlustAura.Activate(sim)
+// 			}
+// 		},
+// 	})
 
-	character.AddMajorCooldown(MajorCooldown{
-		Spell:    spell,
-		Priority: CooldownPriorityBloodlust,
-		Type:     CooldownTypeDPS,
-		ShouldActivate: func(sim *Simulation, character *Character) bool {
-			// Haste portion doesn't stack with Power Infusion, so prefer to wait.
-			return !character.HasActiveAuraWithTag(PowerInfusionAuraTag) && !character.HasActiveAura(SatedAuraLabel)
-		},
-	})
-}
+// 	character.AddMajorCooldown(MajorCooldown{
+// 		Spell:    spell,
+// 		Priority: CooldownPriorityBloodlust,
+// 		Type:     CooldownTypeDPS,
+// 		ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 			// Haste portion doesn't stack with Power Infusion, so prefer to wait.
+// 			return !character.HasActiveAuraWithTag(PowerInfusionAuraTag) && !character.HasActiveAura(SatedAuraLabel)
+// 		},
+// 	})
+// }
 
-func BloodlustAura(character *Character, actionTag int32) *Aura {
-	actionID := BloodlustActionID.WithTag(actionTag)
+// func BloodlustAura(character *Character, actionTag int32) *Aura {
+// 	actionID := BloodlustActionID.WithTag(actionTag)
 
-	sated := character.GetOrRegisterAura(Aura{
-		Label:    SatedAuraLabel,
-		ActionID: ActionID{SpellID: 57724},
-		Duration: time.Minute * 10,
-	})
+// 	sated := character.GetOrRegisterAura(Aura{
+// 		Label:    SatedAuraLabel,
+// 		ActionID: ActionID{SpellID: 57724},
+// 		Duration: time.Minute * 10,
+// 	})
 
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "Bloodlust-" + actionID.String(),
-		Tag:      BloodlustAuraTag,
-		ActionID: actionID,
-		Duration: BloodlustDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.MultiplyAttackSpeed(sim, 1.3)
-			for _, pet := range character.Pets {
-				if pet.IsEnabled() && !pet.IsGuardian() {
-					BloodlustAura(&pet.Character, actionTag).Activate(sim)
-				}
-			}
+// 	aura := character.GetOrRegisterAura(Aura{
+// 		Label:    "Bloodlust-" + actionID.String(),
+// 		Tag:      BloodlustAuraTag,
+// 		ActionID: actionID,
+// 		Duration: BloodlustDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			character.MultiplyAttackSpeed(sim, 1.3)
+// 			for _, pet := range character.Pets {
+// 				if pet.IsEnabled() && !pet.IsGuardian() {
+// 					BloodlustAura(&pet.Character, actionTag).Activate(sim)
+// 				}
+// 			}
 
-			if character.HasActiveAura(SatedAuraLabel) {
-				aura.Deactivate(sim) // immediately remove it person already has sated.
-				return
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.MultiplyAttackSpeed(sim, 1.0/1.3)
-			sated.Activate(sim)
-		},
-	})
-	multiplyCastSpeedEffect(aura, 1.3)
-	return aura
-}
+// 			if character.HasActiveAura(SatedAuraLabel) {
+// 				aura.Deactivate(sim) // immediately remove it person already has sated.
+// 				return
+// 			}
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			character.MultiplyAttackSpeed(sim, 1.0/1.3)
+// 			sated.Activate(sim)
+// 		},
+// 	})
+// 	multiplyCastSpeedEffect(aura, 1.3)
+// 	return aura
+// }
 
 var PowerInfusionActionID = ActionID{SpellID: 10060}
 var PowerInfusionAuraTag = "PowerInfusion"
@@ -1357,71 +1308,66 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 	return aura
 }
 
-func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
-		Priority: multiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
-		},
-	})
-}
+// func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
+// 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
+// 		Priority: multiplier,
+// 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+// 		},
+// 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+// 		},
+// 	})
+// }
 
-var TricksOfTheTradeAuraTag = "TricksOfTheTrade"
+// var TricksOfTheTradeAuraTag = "TricksOfTheTrade"
 
-const TricksOfTheTradeCD = time.Second * 3600 // CD is 30s from the time buff ends (so 40s with glyph) but that's in order to be able to set the number of TotT you'll have during the fight
+// const TricksOfTheTradeCD = time.Second * 3600 // CD is 30s from the time buff ends (so 40s with glyph) but that's in order to be able to set the number of TotT you'll have during the fight
 
-func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
-	if numTricksOfTheTrades == 0 {
-		return
-	}
+// func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
+// 	if numTricksOfTheTrades == 0 {
+// 		return
+// 	}
 
-	TotTAura := TricksOfTheTradeAura(&agent.GetCharacter().Unit, -1)
+// 	TotTAura := TricksOfTheTradeAura(&agent.GetCharacter().Unit, -1)
 
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 57933, Tag: -1},
-			AuraTag:          TricksOfTheTradeAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     TotTAura.Duration,
-			AuraCD:           TricksOfTheTradeCD,
-			Type:             CooldownTypeDPS,
+// 	registerExternalConsecutiveCDApproximation(
+// 		agent,
+// 		externalConsecutiveCDApproximation{
+// 			ActionID:         ActionID{SpellID: 57933, Tag: -1},
+// 			AuraTag:          TricksOfTheTradeAuraTag,
+// 			CooldownPriority: CooldownPriorityDefault,
+// 			AuraDuration:     TotTAura.Duration,
+// 			AuraCD:           TricksOfTheTradeCD,
+// 			Type:             CooldownTypeDPS,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return !agent.GetCharacter().GetExclusiveEffectCategory("PercentDamageModifier").AnyActive()
-			},
-			AddAura: func(sim *Simulation, character *Character) { TotTAura.Activate(sim) },
-		},
-		numTricksOfTheTrades)
-}
+// 			ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 				return !agent.GetCharacter().GetExclusiveEffectCategory("PercentDamageModifier").AnyActive()
+// 			},
+// 			AddAura: func(sim *Simulation, character *Character) { TotTAura.Activate(sim) },
+// 		},
+// 		numTricksOfTheTrades)
+// }
 
-func TricksOfTheTradeAura(character *Unit, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 57933, Tag: actionTag}
+// func TricksOfTheTradeAura(character *Unit, actionTag int32) *Aura {
+// 	actionID := ActionID{SpellID: 57933, Tag: actionTag}
 
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "TricksOfTheTrade-" + actionID.String(),
-		Tag:      TricksOfTheTradeAuraTag,
-		ActionID: actionID,
-		Duration: time.Second * 6,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+// 	aura := character.GetOrRegisterAura(Aura{
+// 		Label:    "TricksOfTheTrade-" + actionID.String(),
+// 		Tag:      TricksOfTheTradeAuraTag,
+// 		ActionID: actionID,
+// 		Duration: time.Second * 6,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageDealtMultiplier *= 1.15
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageDealtMultiplier /= 1.15
+// 		},
+// 	})
 
-	RegisterPercentDamageModifierEffect(aura, 1.15)
-	return aura
-}
-
-var UnholyFrenzyAuraTag = "UnholyFrenzy"
-
-const UnholyFrenzyDuration = time.Second * 30
-const UnholyFrenzyCD = time.Minute * 3
+// 	RegisterPercentDamageModifierEffect(aura, 1.15)
+// 	return aura
+// }
 
 func RegisterPercentDamageModifierEffect(aura *Aura, percentDamageModifier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("PercentDamageModifier", true, ExclusiveEffect{
@@ -1429,209 +1375,209 @@ func RegisterPercentDamageModifierEffect(aura *Aura, percentDamageModifier float
 	})
 }
 
-var DivineGuardianAuraTag = "DivineGuardian"
+// var DivineGuardianAuraTag = "DivineGuardian"
 
-const DivineGuardianDuration = time.Second * 6
-const DivineGuardianCD = time.Minute * 2
+// const DivineGuardianDuration = time.Second * 6
+// const DivineGuardianCD = time.Minute * 2
 
-var HandOfSacrificeAuraTag = "HandOfSacrifice"
+// var HandOfSacrificeAuraTag = "HandOfSacrifice"
 
-const HandOfSacrificeDuration = time.Millisecond * 10500 // subtract Divine Shield GCD
-const HandOfSacrificeCD = time.Minute * 5                // use Divine Shield CD here
+// const HandOfSacrificeDuration = time.Millisecond * 10500 // subtract Divine Shield GCD
+// const HandOfSacrificeCD = time.Minute * 5                // use Divine Shield CD here
 
-func registerHandOfSacrificeCD(agent Agent, numSacs int32) {
-	if numSacs == 0 {
-		return
-	}
+// func registerHandOfSacrificeCD(agent Agent, numSacs int32) {
+// 	if numSacs == 0 {
+// 		return
+// 	}
 
-	hosAura := HandOfSacrificeAura(agent.GetCharacter(), -1)
+// 	hosAura := HandOfSacrificeAura(agent.GetCharacter(), -1)
 
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 6940, Tag: -1},
-			AuraTag:          HandOfSacrificeAuraTag,
-			CooldownPriority: CooldownPriorityLow,
-			AuraDuration:     HandOfSacrificeDuration,
-			AuraCD:           HandOfSacrificeCD,
-			Type:             CooldownTypeSurvival,
+// 	registerExternalConsecutiveCDApproximation(
+// 		agent,
+// 		externalConsecutiveCDApproximation{
+// 			ActionID:         ActionID{SpellID: 6940, Tag: -1},
+// 			AuraTag:          HandOfSacrificeAuraTag,
+// 			CooldownPriority: CooldownPriorityLow,
+// 			AuraDuration:     HandOfSacrificeDuration,
+// 			AuraCD:           HandOfSacrificeCD,
+// 			Type:             CooldownTypeSurvival,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return true
-			},
-			AddAura: func(sim *Simulation, character *Character) {
-				hosAura.Activate(sim)
-			},
-		},
-		numSacs)
-}
+// 			ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 				return true
+// 			},
+// 			AddAura: func(sim *Simulation, character *Character) {
+// 				hosAura.Activate(sim)
+// 			},
+// 		},
+// 		numSacs)
+// }
 
-func HandOfSacrificeAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 6940, Tag: actionTag}
+// func HandOfSacrificeAura(character *Character, actionTag int32) *Aura {
+// 	actionID := ActionID{SpellID: 6940, Tag: actionTag}
 
-	return character.GetOrRegisterAura(Aura{
-		Label:    "HandOfSacrifice-" + actionID.String(),
-		Tag:      HandOfSacrificeAuraTag,
-		ActionID: actionID,
-		Duration: HandOfSacrificeDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier *= 0.7
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier /= 0.7
-		},
-	})
-}
+// 	return character.GetOrRegisterAura(Aura{
+// 		Label:    "HandOfSacrifice-" + actionID.String(),
+// 		Tag:      HandOfSacrificeAuraTag,
+// 		ActionID: actionID,
+// 		Duration: HandOfSacrificeDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageTakenMultiplier *= 0.7
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageTakenMultiplier /= 0.7
+// 		},
+// 	})
+// }
 
-var PainSuppressionAuraTag = "PainSuppression"
+// var PainSuppressionAuraTag = "PainSuppression"
 
-const PainSuppressionDuration = time.Second * 8
-const PainSuppressionCD = time.Minute * 3
+// const PainSuppressionDuration = time.Second * 8
+// const PainSuppressionCD = time.Minute * 3
 
-func registerPainSuppressionCD(agent Agent, numPainSuppressions int32) {
-	if numPainSuppressions == 0 {
-		return
-	}
+// func registerPainSuppressionCD(agent Agent, numPainSuppressions int32) {
+// 	if numPainSuppressions == 0 {
+// 		return
+// 	}
 
-	psAura := PainSuppressionAura(agent.GetCharacter(), -1)
+// 	psAura := PainSuppressionAura(agent.GetCharacter(), -1)
 
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 33206, Tag: -1},
-			AuraTag:          PainSuppressionAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     PainSuppressionDuration,
-			AuraCD:           PainSuppressionCD,
-			Type:             CooldownTypeSurvival,
+// 	registerExternalConsecutiveCDApproximation(
+// 		agent,
+// 		externalConsecutiveCDApproximation{
+// 			ActionID:         ActionID{SpellID: 33206, Tag: -1},
+// 			AuraTag:          PainSuppressionAuraTag,
+// 			CooldownPriority: CooldownPriorityDefault,
+// 			AuraDuration:     PainSuppressionDuration,
+// 			AuraCD:           PainSuppressionCD,
+// 			Type:             CooldownTypeSurvival,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return true
-			},
-			AddAura: func(sim *Simulation, character *Character) { psAura.Activate(sim) },
-		},
-		numPainSuppressions)
-}
+// 			ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 				return true
+// 			},
+// 			AddAura: func(sim *Simulation, character *Character) { psAura.Activate(sim) },
+// 		},
+// 		numPainSuppressions)
+// }
 
-func PainSuppressionAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 33206, Tag: actionTag}
+// func PainSuppressionAura(character *Character, actionTag int32) *Aura {
+// 	actionID := ActionID{SpellID: 33206, Tag: actionTag}
 
-	return character.GetOrRegisterAura(Aura{
-		Label:    "PainSuppression-" + actionID.String(),
-		Tag:      PainSuppressionAuraTag,
-		ActionID: actionID,
-		Duration: PainSuppressionDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier *= 0.6
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier /= 0.6
-		},
-	})
-}
+// 	return character.GetOrRegisterAura(Aura{
+// 		Label:    "PainSuppression-" + actionID.String(),
+// 		Tag:      PainSuppressionAuraTag,
+// 		ActionID: actionID,
+// 		Duration: PainSuppressionDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageTakenMultiplier *= 0.6
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.DamageTakenMultiplier /= 0.6
+// 		},
+// 	})
+// }
 
-var GuardianSpiritAuraTag = "GuardianSpirit"
+// var GuardianSpiritAuraTag = "GuardianSpirit"
 
-const GuardianSpiritDuration = time.Second * 10
-const GuardianSpiritCD = time.Minute * 3
+// const GuardianSpiritDuration = time.Second * 10
+// const GuardianSpiritCD = time.Minute * 3
 
-func registerGuardianSpiritCD(agent Agent, numGuardianSpirits int32) {
-	if numGuardianSpirits == 0 {
-		return
-	}
+// func registerGuardianSpiritCD(agent Agent, numGuardianSpirits int32) {
+// 	if numGuardianSpirits == 0 {
+// 		return
+// 	}
 
-	character := agent.GetCharacter()
-	gsAura := GuardianSpiritAura(character, -1)
-	healthMetrics := character.NewHealthMetrics(ActionID{SpellID: 47788})
+// 	character := agent.GetCharacter()
+// 	gsAura := GuardianSpiritAura(character, -1)
+// 	healthMetrics := character.NewHealthMetrics(ActionID{SpellID: 47788})
 
-	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult) {
-		if (result.Damage >= character.CurrentHealth()) && gsAura.IsActive() {
-			result.Damage = character.CurrentHealth()
-			character.GainHealth(sim, 0.5*character.MaxHealth(), healthMetrics)
-			gsAura.Deactivate(sim)
-		}
-	})
+// 	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult) {
+// 		if (result.Damage >= character.CurrentHealth()) && gsAura.IsActive() {
+// 			result.Damage = character.CurrentHealth()
+// 			character.GainHealth(sim, 0.5*character.MaxHealth(), healthMetrics)
+// 			gsAura.Deactivate(sim)
+// 		}
+// 	})
 
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 47788, Tag: -1},
-			AuraTag:          GuardianSpiritAuraTag,
-			CooldownPriority: CooldownPriorityLow,
-			AuraDuration:     GuardianSpiritDuration,
-			AuraCD:           GuardianSpiritCD,
-			Type:             CooldownTypeSurvival,
+// 	registerExternalConsecutiveCDApproximation(
+// 		agent,
+// 		externalConsecutiveCDApproximation{
+// 			ActionID:         ActionID{SpellID: 47788, Tag: -1},
+// 			AuraTag:          GuardianSpiritAuraTag,
+// 			CooldownPriority: CooldownPriorityLow,
+// 			AuraDuration:     GuardianSpiritDuration,
+// 			AuraCD:           GuardianSpiritCD,
+// 			Type:             CooldownTypeSurvival,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return true
-			},
-			AddAura: func(sim *Simulation, character *Character) {
-				gsAura.Activate(sim)
-			},
-		},
-		numGuardianSpirits)
-}
+// 			ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 				return true
+// 			},
+// 			AddAura: func(sim *Simulation, character *Character) {
+// 				gsAura.Activate(sim)
+// 			},
+// 		},
+// 		numGuardianSpirits)
+// }
 
-func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 47788, Tag: actionTag}
+// func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
+// 	actionID := ActionID{SpellID: 47788, Tag: actionTag}
 
-	return character.GetOrRegisterAura(Aura{
-		Label:    "GuardianSpirit-" + actionID.String(),
-		Tag:      GuardianSpiritAuraTag,
-		ActionID: actionID,
-		Duration: GuardianSpiritDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.HealingTakenMultiplier *= 1.4
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.HealingTakenMultiplier /= 1.4
-		},
-	})
-}
+// 	return character.GetOrRegisterAura(Aura{
+// 		Label:    "GuardianSpirit-" + actionID.String(),
+// 		Tag:      GuardianSpiritAuraTag,
+// 		ActionID: actionID,
+// 		Duration: GuardianSpiritDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.HealingTakenMultiplier *= 1.4
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			character.PseudoStats.HealingTakenMultiplier /= 1.4
+// 		},
+// 	})
+// }
 
-func registerRevitalizeHotCD(agent Agent, label string, hotID ActionID, ticks int, tickPeriod time.Duration, uptimeCount int32) {
-	if uptimeCount == 0 {
-		return
-	}
+// func registerRevitalizeHotCD(agent Agent, label string, hotID ActionID, ticks int, tickPeriod time.Duration, uptimeCount int32) {
+// 	if uptimeCount == 0 {
+// 		return
+// 	}
 
-	character := agent.GetCharacter()
-	revActionID := ActionID{SpellID: 48545}
+// 	character := agent.GetCharacter()
+// 	revActionID := ActionID{SpellID: 48545}
 
-	manaMetrics := character.NewManaMetrics(revActionID)
-	energyMetrics := character.NewEnergyMetrics(revActionID)
-	rageMetrics := character.NewRageMetrics(revActionID)
+// 	manaMetrics := character.NewManaMetrics(revActionID)
+// 	energyMetrics := character.NewEnergyMetrics(revActionID)
+// 	rageMetrics := character.NewRageMetrics(revActionID)
 
-	// Calculate desired downtime based on selected uptimeCount (1 count = 10% uptime, 0%-100%)
-	totalDuration := time.Duration(ticks) * tickPeriod
-	uptimePercent := float64(uptimeCount) / 100.0
+// 	// Calculate desired downtime based on selected uptimeCount (1 count = 10% uptime, 0%-100%)
+// 	totalDuration := time.Duration(ticks) * tickPeriod
+// 	uptimePercent := float64(uptimeCount) / 100.0
 
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "Revitalize-" + label,
-		ActionID: hotID,
-		Duration: totalDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			pa := NewPeriodicAction(sim, PeriodicActionOptions{
-				Period:   tickPeriod,
-				NumTicks: ticks,
-				OnAction: func(s *Simulation) {
-					if s.RandomFloat("Revitalize Proc") < 0.15 {
-						cpb := aura.Unit.GetCurrentPowerBar()
-						if cpb == ManaBar {
-							aura.Unit.AddMana(s, 0.01*aura.Unit.MaxMana(), manaMetrics)
-						} else if cpb == EnergyBar {
-							aura.Unit.AddEnergy(s, 8, energyMetrics)
-						} else if cpb == RageBar {
-							aura.Unit.AddRage(s, 4, rageMetrics)
-						}
-					}
-				},
-			})
-			sim.AddPendingAction(pa)
-		},
-	})
+// 	aura := character.GetOrRegisterAura(Aura{
+// 		Label:    "Revitalize-" + label,
+// 		ActionID: hotID,
+// 		Duration: totalDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			pa := NewPeriodicAction(sim, PeriodicActionOptions{
+// 				Period:   tickPeriod,
+// 				NumTicks: ticks,
+// 				OnAction: func(s *Simulation) {
+// 					if s.RandomFloat("Revitalize Proc") < 0.15 {
+// 						cpb := aura.Unit.GetCurrentPowerBar()
+// 						if cpb == ManaBar {
+// 							aura.Unit.AddMana(s, 0.01*aura.Unit.MaxMana(), manaMetrics)
+// 						} else if cpb == EnergyBar {
+// 							aura.Unit.AddEnergy(s, 8, energyMetrics)
+// 						} else if cpb == RageBar {
+// 							aura.Unit.AddRage(s, 4, rageMetrics)
+// 						}
+// 					}
+// 				},
+// 			})
+// 			sim.AddPendingAction(pa)
+// 		},
+// 	})
 
-	ApplyFixedUptimeAura(aura, uptimePercent, totalDuration, 1)
-}
+// 	ApplyFixedUptimeAura(aura, uptimePercent, totalDuration, 1)
+// }
 
 const ShatteringThrowCD = time.Minute * 5
 
@@ -1787,27 +1733,27 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 const ReplenishmentAuraDuration = time.Second * 15
 
 // Creates the actual replenishment aura for a unit.
-func replenishmentAura(unit *Unit, _ ActionID) *Aura {
-	if unit.ReplenishmentAura != nil {
-		return unit.ReplenishmentAura
-	}
+// func replenishmentAura(unit *Unit, _ ActionID) *Aura {
+// 	if unit.ReplenishmentAura != nil {
+// 		return unit.ReplenishmentAura
+// 	}
 
-	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.01)
+// 	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.01)
 
-	unit.ReplenishmentAura = unit.RegisterAura(Aura{
-		Label:    "Replenishment",
-		ActionID: ActionID{SpellID: 57669},
-		Duration: ReplenishmentAuraDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, replenishmentDep)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, replenishmentDep)
-		},
-	})
+// 	unit.ReplenishmentAura = unit.RegisterAura(Aura{
+// 		Label:    "Replenishment",
+// 		ActionID: ActionID{SpellID: 57669},
+// 		Duration: ReplenishmentAuraDuration,
+// 		OnGain: func(aura *Aura, sim *Simulation) {
+// 			aura.Unit.EnableDynamicStatDep(sim, replenishmentDep)
+// 		},
+// 		OnExpire: func(aura *Aura, sim *Simulation) {
+// 			aura.Unit.DisableDynamicStatDep(sim, replenishmentDep)
+// 		},
+// 	})
 
-	return unit.ReplenishmentAura
-}
+// 	return unit.ReplenishmentAura
+// }
 
 func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPhase) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
@@ -1896,7 +1842,7 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	baseAP := BattleShoutBaseAP[rank]
 
 	return unit.GetOrRegisterAura(Aura{
-		Label:      fmt.Sprintf("Battle Shout"),
+		Label:      "Battle Shout",
 		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
@@ -1944,23 +1890,23 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 }
 
 // TODO: Are there exclusive AP buffs in SoD?
-func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("AttackPowerBonus", false, ExclusiveEffect{
-		Priority: apBonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower:       ee.Priority,
-				stats.RangedAttackPower: ee.Priority,
-			})
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower:       -ee.Priority,
-				stats.RangedAttackPower: -ee.Priority,
-			})
-		},
-	})
-}
+// func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
+// 	return aura.NewExclusiveEffect("AttackPowerBonus", false, ExclusiveEffect{
+// 		Priority: apBonus,
+// 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+// 				stats.AttackPower:       ee.Priority,
+// 				stats.RangedAttackPower: ee.Priority,
+// 			})
+// 		},
+// 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+// 				stats.AttackPower:       -ee.Priority,
+// 				stats.RangedAttackPower: -ee.Priority,
+// 			})
+// 		},
+// 	})
+// }
 
 func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
@@ -1985,21 +1931,21 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 	return aura
 }
 
-func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{
-		Priority: healthBonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.Health: ee.Priority,
-			})
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.Health: -ee.Priority,
-			})
-		},
-	})
-}
+// func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
+// 	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{
+// 		Priority: healthBonus,
+// 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+// 				stats.Health: ee.Priority,
+// 			})
+// 		},
+// 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+// 				stats.Health: -ee.Priority,
+// 			})
+// 		},
+// 	})
+// }
 
 func ApplyWildStrikes(character *Character) *Aura {
 	buffActionID := ActionID{SpellID: 407975}
@@ -2120,4 +2066,245 @@ func ApplyWindfury(character *Character) *Aura {
 	}))
 
 	return windfuryBuffAura
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                            World Buffs
+///////////////////////////////////////////////////////////////////////////
+
+func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
+	character.AddStat(stats.SpellCrit, 10*SpellCritRatingPerCritChance)
+	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+	// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
+	character.AddStat(stats.AttackPower, 140)
+	character.AddStat(stats.RangedAttackPower, 140)
+
+	return character.RegisterAura(Aura{
+		Label:    "Rallying Cry of the Dragonslayer",
+		ActionID: ActionID{SpellID: 24425},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplySpiritOfZandalar(character *Character) *Aura {
+	character.MultiplyStat(stats.Stamina, 1.15)
+	character.MultiplyStat(stats.Agility, 1.15)
+	character.MultiplyStat(stats.Strength, 1.15)
+	character.MultiplyStat(stats.Intellect, 1.15)
+	character.MultiplyStat(stats.Spirit, 1.15)
+
+	return character.RegisterAura(Aura{
+		Label:    "Spirit of Zandalar",
+		ActionID: ActionID{SpellID: 24425},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplySongflowerSerenate(character *Character) *Aura {
+	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+	// TODO: character.AddStat(stats.RangedCrit, 1.05)
+	character.AddStat(stats.SpellCrit, 5*SpellCritRatingPerCritChance)
+	character.AddStat(stats.Stamina, 15)
+	character.AddStat(stats.Agility, 15)
+	character.AddStat(stats.Strength, 15)
+	character.AddStat(stats.Intellect, 15)
+	character.AddStat(stats.Spirit, 15)
+
+	return character.RegisterAura(Aura{
+		Label:    "Songflower Serenade",
+		ActionID: ActionID{SpellID: 15366},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyWarchiefsBlessing(character *Character) *Aura {
+	character.AddStat(stats.Health, 300)
+	character.PseudoStats.MeleeSpeedMultiplier *= 1.15
+	character.AddStat(stats.MP5, 10)
+
+	return character.RegisterAura(Aura{
+		Label:    "Warchief's Blessing",
+		ActionID: ActionID{SpellID: 16609},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyMightOfStormwind(character *Character) *Aura {
+	character.AddStat(stats.Health, 300)
+	character.PseudoStats.MeleeSpeedMultiplier *= 1.15
+	character.AddStat(stats.MP5, 10)
+
+	return character.RegisterAura(Aura{
+		Label:    "Might of Stormwind",
+		ActionID: ActionID{SpellID: 460940},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyFengusFerocity(character *Character) *Aura {
+	character.AddStat(stats.AttackPower, 200)
+	character.AddStat(stats.RangedAttackPower, 200)
+
+	return character.RegisterAura(Aura{
+		Label:    "Fengus' Ferocity",
+		ActionID: ActionID{SpellID: 22817},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyMoldarsMoxie(character *Character) *Aura {
+	character.MultiplyStat(stats.Stamina, 1.15)
+
+	return character.RegisterAura(Aura{
+		Label:    "Moldar's Moxie",
+		ActionID: ActionID{SpellID: 22818},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplySlipkiksSavvy(character *Character) *Aura {
+	character.AddStat(stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+
+	return character.RegisterAura(Aura{
+		Label:    "Slip'kik's Savvy",
+		ActionID: ActionID{SpellID: 22820},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) *Aura {
+	var label string
+	var spellID int32
+
+	if fortune == proto.SaygesFortune_SaygesDamage {
+		character.PseudoStats.DamageDealtMultiplier *= 1.10
+		label = "Sayge's Dark Fortune of Damage"
+		spellID = 23768
+	}
+
+	if fortune == proto.SaygesFortune_SaygesAgility {
+		character.MultiplyStat(stats.Agility, 1.10)
+		label = "Sayge's Dark Fortune of Agility"
+		spellID = 23736
+	}
+
+	if fortune == proto.SaygesFortune_SaygesIntellect {
+		character.MultiplyStat(stats.Intellect, 1.10)
+		label = "Sayge's Dark Fortune of Intellect"
+		spellID = 23766
+	}
+
+	if fortune == proto.SaygesFortune_SaygesSpirit {
+		character.MultiplyStat(stats.Spirit, 1.10)
+		label = "Sayge's Dark Fortune of Spirit"
+		spellID = 23738
+	}
+
+	if fortune == proto.SaygesFortune_SaygesStamina {
+		character.MultiplyStat(stats.Stamina, 1.10)
+		label = "Sayge's Dark Fortune of Stamina"
+		spellID = 23737
+	}
+
+	return character.RegisterAura(Aura{
+		Label:    label,
+		ActionID: ActionID{SpellID: spellID},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
+	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+	// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
+	character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
+	character.AddStat(stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
+	character.MultiplyStat(stats.Strength, 1.08)
+	character.MultiplyStat(stats.Stamina, 1.08)
+	character.MultiplyStat(stats.Agility, 1.08)
+	character.MultiplyStat(stats.Intellect, 1.08)
+	character.MultiplyStat(stats.Spirit, 1.08)
+
+	return character.RegisterAura(Aura{
+		Label:    "Fervor of the Temple Explorer",
+		ActionID: ActionID{SpellID: 446695},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplySparkOfInspiration(character *Character) *Aura {
+	character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
+	character.AddStat(stats.SpellPower, 42)
+	character.PseudoStats.MeleeSpeedMultiplier *= 1.1
+	character.PseudoStats.RangedSpeedMultiplier *= 1.1
+
+	return character.RegisterAura(Aura{
+		Label:    "Spark of Inspiration",
+		ActionID: ActionID{SpellID: 438536},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyBoonOfBlackfathom(character *Character) *Aura {
+	character.AddStat(stats.MeleeCrit, 2*CritRatingPerCritChance)
+	// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
+	character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
+	character.AddStat(stats.AttackPower, 20)
+	character.AddStat(stats.RangedAttackPower, 20)
+	character.AddStat(stats.SpellPower, 25)
+
+	return character.RegisterAura(Aura{
+		Label:    "Boon of Blackfathom",
+		ActionID: ActionID{SpellID: 430947},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyAshenvaleRallyingCry(character *Character) *Aura {
+	character.PseudoStats.DamageDealtMultiplier *= 1.05
+	//TODO: healing dealt multiplier?
+
+	return character.RegisterAura(Aura{
+		Label:    "Ashenvale Rallying Cry",
+		ActionID: ActionID{SpellID: 430352},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
 }

@@ -74,7 +74,7 @@ func TestShadow(t *testing.T) {
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 

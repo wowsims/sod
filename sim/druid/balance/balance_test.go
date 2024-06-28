@@ -74,7 +74,7 @@ func TestBalance(t *testing.T) {
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase3,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
 

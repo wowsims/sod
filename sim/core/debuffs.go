@@ -583,7 +583,7 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 
 // Mark of Chaos does not stack with Curse of Shadows and Elements
 func MarkOfChaosDebuffAura(target *Unit, level int32) *Aura {
-	dmgMod := 1.10
+	dmgMod := 1.11
 	resistance := 75.0
 
 	aura := target.GetOrRegisterAura(Aura{
