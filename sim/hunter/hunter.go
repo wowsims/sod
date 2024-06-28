@@ -119,12 +119,21 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
 
-	fireTraps := hunter.NewTimer()
-	frostTraps := hunter.NewTimer()
+	// Trap Launcher rune also splits the cooldowns between frost traps and fire traps, without the rune all traps share a cd
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		fireTraps := hunter.NewTimer()
+		frostTraps := hunter.NewTimer()
+	
+		hunter.registerExplosiveTrapSpell(fireTraps)
+		hunter.registerImmolationTrapSpell(fireTraps)
+		hunter.registerFrostTrapSpell(frostTraps)
+	} else {
+		traps := hunter.NewTimer()
 
-	hunter.registerExplosiveTrapSpell(fireTraps)
-	hunter.registerImmolationTrapSpell(fireTraps)
-	hunter.registerFrostTrapSpell(frostTraps)
+		hunter.registerExplosiveTrapSpell(traps)
+		hunter.registerImmolationTrapSpell(traps)
+		hunter.registerFrostTrapSpell(traps)
+	}
 
 	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
