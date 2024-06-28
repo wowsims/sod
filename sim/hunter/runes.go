@@ -279,6 +279,13 @@ func (hunter *Hunter) tntDamageFlatBonus() float64 {
 	return 0.0
 }
 
+func (hunter *Hunter) trapRange() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		return 35;
+	}
+	return 5;
+}
+
 func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
 	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
 		return 0.0

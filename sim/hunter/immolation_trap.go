@@ -27,7 +27,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost: manaCost * hunter.resourcefulnessManacostModifier(),
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -38,6 +38,9 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
 		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
@@ -78,10 +81,6 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 }
 
 func (hunter *Hunter) registerImmolationTrapSpell(timer *core.Timer) {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
-		return
-	}
-
 	maxRank := 5
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getImmolationTrapConfig(i, timer)
