@@ -49,7 +49,6 @@ var UnimplementedRuneOverrides = []int32{
 
 	// Hunter
 	440520, // Cloak - Improved Volley
-	440529, // Cloak - Resourcefulness
 	440533, // Cloak - Hit and Run
 
 	// Mage
