@@ -12,9 +12,10 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		return
 	}
 
-	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
-
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
+	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
 	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerUnstableAffliction)},
@@ -66,6 +67,10 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
+
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
 
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {

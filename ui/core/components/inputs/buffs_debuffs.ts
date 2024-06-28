@@ -774,7 +774,7 @@ export const SpellScorchDebuff = withLabel(
 
 export const SpellWintersChillDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 12579, minLevel: 40 }]),
+		actionId: player => player.getMatchingSpellActionId([{ id: 28595, minLevel: 40 }]),
 		fieldName: 'wintersChill',
 	}),
 	'Frost Damage',
@@ -802,31 +802,38 @@ export const SpellShadowWeavingDebuff = withLabel(
 	'Shadow Weaving',
 );
 
-export const CurseOfElements = withLabel(
-	makeTristateDebuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 1490, minLevel: 32, maxLevel: 45 },
-				{ id: 11721, minLevel: 46, maxLevel: 59 },
-				{ id: 11722, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(402792),
-		fieldName: 'curseOfElementsNew',
-	}),
-	'Curse of Elements',
-);
+export const MarkOfChaos = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 461615 }]),
+	fieldName: 'markOfChaos',
+});
 
-export const CurseOfShadow = withLabel(
-	makeTristateDebuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 17862, minLevel: 44, maxLevel: 59 },
-				{ id: 17937, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(402791),
-		fieldName: 'curseOfShadowNew',
+export const CurseOfElements = makeBooleanDebuffInput({
+	actionId: player =>
+		player.getMatchingSpellActionId([
+			{ id: 1490, minLevel: 32, maxLevel: 45 },
+			{ id: 11721, minLevel: 46, maxLevel: 59 },
+			{ id: 11722, minLevel: 60 },
+		]),
+	fieldName: 'curseOfElements',
+});
+
+export const CurseOfShadow = makeBooleanDebuffInput({
+	actionId: player =>
+		player.getMatchingSpellActionId([
+			{ id: 17862, minLevel: 44, maxLevel: 59 },
+			{ id: 17937, minLevel: 60 },
+		]),
+	fieldName: 'curseOfShadowNew',
+});
+
+export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos, CurseOfElements, CurseOfShadow], 'Warlock Curses');
+
+export const OccultPoison = withLabel(
+	makeBooleanDebuffInput({
+		actionId: () => ActionId.fromItemId(226374),
+		fieldName: 'occultPoison',
 	}),
-	'Curse of Shadow',
+	'Occult Poison',
 );
 
 export const HuntersMark = withLabel(
@@ -1217,14 +1224,14 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatShadowPower],
 	},
 	{
-		config: CurseOfElements,
-		picker: IconPicker,
-		stats: [Stat.StatFirePower, Stat.StatFrostPower],
+		config: WarlockCursesConfig,
+		picker: MultiIconPicker,
+		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: CurseOfShadow,
+		config: OccultPoison,
 		picker: IconPicker,
-		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
+		stats: [Stat.StatSpellPower],
 	},
 
 	// Defensive

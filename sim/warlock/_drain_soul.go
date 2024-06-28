@@ -1,12 +1,16 @@
 package warlock
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warlock *Warlock) registerDrainSoulSpell() {
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+
 	soulSiphonMultiplier := 0.03 * float64(warlock.Talents.SoulSiphon)
 
 	calcSoulSiphonMult := func(target *core.Unit) float64 {
@@ -67,8 +71,40 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseDmg := 142 + 0.429*dot.Spell.SpellDamage()
-				dot.SnapshotBaseDamage = baseDmg * calcSoulSiphonMult(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, baseDmg*calcSoulSiphonMult(target), isRollover)
+
+				if hasSoulSiphonRune {
+					isExecute := sim.IsExecutePhase20()
+					perDoTMultiplier := core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplier, SoulSiphonDoTMultiplierExecute)
+					maxMultiplier := 1 + core.TernaryFloat64(isExecute, SoulSiphonDoTMultiplierMax, SoulSiphonDoTMultiplierMaxExecute)
+					multiplier := 1.0
+
+					hasAura := func(target *core.Unit, label string, rank int) bool {
+						for i := 1; i <= rank; i++ {
+							if target.HasActiveAura(label + strconv.Itoa(rank)) {
+								return true
+							}
+						}
+						return false
+					}
+					if hasAura(target, "Corruption-"+warlock.Label, 7) {
+						multiplier += perDoTMultiplier
+					}
+					if hasAura(target, "CurseofAgony-"+warlock.Label, 6) {
+						multiplier += perDoTMultiplier
+					}
+					if hasAura(target, "SiphonLife-"+warlock.Label, 3) {
+						multiplier += perDoTMultiplier
+					}
+					if target.HasActiveAura("UnstableAffliction-" + warlock.Label) {
+						multiplier += perDoTMultiplier
+					}
+					if target.HasActiveAura("Haunt-" + warlock.Label) {
+						multiplier += perDoTMultiplier
+					}
+
+					dot.SnapshotAttackerMultiplier *= max(multiplier, maxMultiplier)
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)

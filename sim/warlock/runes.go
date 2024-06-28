@@ -2,6 +2,7 @@ package warlock
 
 import (
 	"math"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -10,34 +11,19 @@ import (
 )
 
 func (warlock *Warlock) ApplyRunes() {
+	// Helm runes
+	warlock.applyVengeance()
+	warlock.applyBackdraft()
+
+	// Cloak Runes
+	warlock.applyDecimation()
+
 	warlock.applyDemonicTactics()
 	warlock.applyDemonicPact()
 	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
 	warlock.applyDemonicKnowledge()
 	warlock.applyDanceOfTheWicked()
-	warlock.applyVengeance()
-}
-
-func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
-	if dot.RemainingDuration(sim) < time.Second*6 {
-		ticksLeft := dot.NumberOfTicks - dot.TickCount
-		for i := int32(0); i < ticksLeft; i++ {
-			dot.TickOnce(sim)
-		}
-	}
-}
-
-func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
-	if !warlock.HasRune(proto.WarlockRune_RuneLegsEverlastingAffliction) {
-		return
-	}
-
-	for _, spell := range warlock.Corruption {
-		if spell.Dot(target).IsActive() {
-			spell.Dot(target).Rollover(sim)
-		}
-	}
 }
 
 func (warlock *Warlock) applyVengeance() {
@@ -92,6 +78,91 @@ func (warlock *Warlock) applyVengeance() {
 			return character.CurrentHealthPercent() < 0.5
 		},
 	})
+}
+
+func (warlock *Warlock) applyBackdraft() {
+	if !warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft) {
+		return
+	}
+
+	warlock.BackdraftAura = warlock.RegisterAura(core.Aura{
+		Label:    "Backdraft",
+		ActionID: core.ActionID{SpellID: 427714},
+		Duration: time.Second * 15,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.MultiplyCastSpeed(1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.MultiplyCastSpeed(1 / 1.3)
+		},
+	})
+}
+
+func (warlock *Warlock) applyDecimation() {
+	if !warlock.HasRune(proto.WarlockRune_RuneCloakDecimation) {
+		return
+	}
+
+	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockIncinerate, SpellCode_WarlockSoulFire}
+
+	decimationAura := warlock.RegisterAura(core.Aura{
+		Label:    "Decimation",
+		ActionID: core.ActionID{SpellID: 440873},
+		Duration: time.Second * 10,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.SoulFire {
+				if spell != nil {
+					spell.CastTimeMultiplier *= .6
+				}
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.SoulFire {
+				if spell != nil {
+					spell.CastTimeMultiplier /= .6
+				}
+			}
+		},
+	})
+
+	// Hidden trigger aura
+	warlock.RegisterAura(core.Aura{
+		Label:    "Decimation Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && sim.IsExecutePhase35() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				decimationAura.Activate(sim)
+			}
+		},
+	})
+}
+
+func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
+	if dot.RemainingDuration(sim) < time.Second*6 {
+		ticksLeft := dot.NumberOfTicks - dot.TickCount
+		for i := int32(0); i < ticksLeft; i++ {
+			dot.TickOnce(sim)
+		}
+	}
+}
+
+func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
+	if !warlock.HasRune(proto.WarlockRune_RuneLegsEverlastingAffliction) {
+		return
+	}
+
+	for _, spell := range warlock.Corruption {
+		if spell.Dot(target).IsActive() {
+			spell.Dot(target).Rollover(sim)
+		}
+	}
 }
 
 func (warlock *Warlock) applyDanceOfTheWicked() {
@@ -272,6 +343,15 @@ func (warlock *Warlock) applyShadowAndFlame() {
 		OnPeriodicDamageDealt: procHandler,
 	}))
 }
+
+// https://www.wowhead.com/classic/spell=403511/soul-siphon
+// Causes your Drain Soul to to deal damage 3 times faster and increases the amount drained by your Drain Life and Drain Soul spells by an additional
+// 6% for each of your Warlock Shadow effects afflicting the target, up to a maximum of 18% additional effect.
+// When Drain Soul is cast on a target below 20% health, it instead gains 50% per effect, up to a maximum of 150%.
+const SoulSiphonDoTMultiplier = 0.06
+const SoulSiphonDoTMultiplierExecute = 0.50
+const SoulSiphonDoTMultiplierMax = 0.18
+const SoulSiphonDoTMultiplierMaxExecute = 1.50
 
 func (warlock *Warlock) applyDemonicTactics() {
 	if !warlock.HasRune(proto.WarlockRune_RuneChestDemonicTactics) {

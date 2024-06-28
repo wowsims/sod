@@ -136,7 +136,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectRegular,
+	curseOfElements: true,
 	curseOfRecklessness: true,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
