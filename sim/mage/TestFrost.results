@@ -195,13 +195,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestFrost-Lvl50-AllItems-Sorcerer'sRegalia"
- value: {
-  dps: 371.66962
-  tps: 277.13299
- }
-}
-dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
   dps: 1234.64884

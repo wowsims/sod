@@ -195,10 +195,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestArcane-Lvl25-AllItems-Sorcerer'sRegalia"
- value: {}
-}
-dps_results: {
  key: "TestArcane-Lvl25-Average-Default"
  value: {
   dps: 127.42295
@@ -294,13 +290,6 @@ dps_results: {
  value: {
   dps: 128.18301
   tps: 80.18685
- }
-}
-dps_results: {
- key: "TestArcane-Lvl40-AllItems-Sorcerer'sRegalia"
- value: {
-  dps: 227.12812
-  tps: 141.28775
  }
 }
 dps_results: {
