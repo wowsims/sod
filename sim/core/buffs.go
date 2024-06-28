@@ -29,7 +29,6 @@ const (
 	PowerWordFortitude
 	StrengthOfEarth
 	TrueshotAura
-	// HornOfLordaeron
 	Windfury
 	SanctityAura
 	BattleSquawk
@@ -121,7 +120,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.NatureResistance: 60,
 		},
 	},
-	// TODO: Class Melee specific AP?
 	BattleShout: {
 		25: stats.Stats{
 			stats.AttackPower: 57,
@@ -136,7 +134,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.AttackPower: 193,
 		},
 	},
-	// TODO: Class use melee AP?
 	BlessingOfMight: {
 		25: stats.Stats{
 			stats.AttackPower: 55,
@@ -277,24 +274,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.FrostResistance: 60,
 		},
 	},
-	// HornOfLordaeron: {
-	// 	25: stats.Stats{
-	// 		stats.Strength: 17,
-	// 		stats.Agility:  17,
-	// 	},
-	// 	40: stats.Stats{
-	// 		stats.Strength: 26,
-	// 		stats.Agility:  26,
-	// 	},
-	// 	50: stats.Stats{
-	// 		stats.Strength: 45,
-	// 		stats.Agility:  45,
-	// 	},
-	// 	60: stats.Stats{
-	// 		stats.Strength: 89,
-	// 		stats.Agility:  89,
-	// 	},
-	// },
 	ManaSpring: {
 		25: stats.Stats{
 			stats.MP5: 0,
@@ -702,12 +681,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
-
-	// if raidBuffs.HornOfLordaeron {
-	// 	character.AddStats(BuffSpellByLevel[HornOfLordaeron][level])
-	// } else if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing {
-	// 	MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
-	// }
+	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing {
+		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
+	}
 
 	if raidBuffs.DemonicPact > 0 {
 		power := float64(raidBuffs.DemonicPact)

@@ -44,9 +44,6 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 		Flags:    core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
 				Duration: time.Second * 20,
