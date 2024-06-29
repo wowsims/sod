@@ -376,7 +376,12 @@ func (warlock *Warlock) applyNightfall() {
 		return
 	}
 
+	has6PCorruptedFelheart := warlock.HasSetBonus(ItemSetCorruptedFelheart, 6)
+
 	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)
+	if has6PCorruptedFelheart {
+		nightfallProcChance += .04
+	}
 
 	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
@@ -403,7 +408,7 @@ func (warlock *Warlock) applyNightfall() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_Corruption || spell.SpellCode == SpellCode_DrainLife {
+			if spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife {
 				if sim.Proc(nightfallProcChance, "Nightfall") {
 					warlock.NightfallProcAura.Activate(sim)
 

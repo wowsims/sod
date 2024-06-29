@@ -169,7 +169,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			...Presets.APLPresets[Phase.Phase4],
@@ -179,7 +184,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
+		// Preset builds (gear, talents, APL) that the user can quickly select.
+		builds: [Presets.PresetBuildAff, Presets.PresetBuildDestro],
 	},
 
 	autoRotation: player => {
@@ -188,9 +200,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 		}
 
-		const hasBackdraft = player.getEquippedItem(ItemSlot.ItemSlotHead)?.rune?.id == WarlockRune.RuneHelmBackdraft;
-		const specNumber = hasBackdraft ? 2 : 0;
-		return Presets.DefaultAPLs[50][specNumber].rotation.rotation!;
+		const hasIncinerate = player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == WarlockRune.RuneLegsIncinerate;
+		const specNumber = hasIncinerate ? 2 : 0;
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -830,7 +830,7 @@ export const CurseOfShadow = makeBooleanDebuffInput({
 			{ id: 17862, minLevel: 44, maxLevel: 59 },
 			{ id: 17937, minLevel: 60 },
 		]),
-	fieldName: 'curseOfShadowNew',
+	fieldName: 'curseOfShadow',
 });
 
 export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos, CurseOfElements, CurseOfShadow], 'Warlock Curses');

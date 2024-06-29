@@ -32,7 +32,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	spellConfig := core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
-		SpellCode:     SpellCode_DrainLife,
+		SpellCode:     SpellCode_WarlockDrainLife,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         SpellFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 		RequiredLevel: level,

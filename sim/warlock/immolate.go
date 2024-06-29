@@ -22,6 +22,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	hasUnstableAffliction := warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction)
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_WarlockImmolate,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,

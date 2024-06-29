@@ -694,8 +694,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1196.78143
-  tps: 672.44572
+  dps: 1198.21311
+  tps: 673.03914
  }
 }
 dps_results: {
@@ -722,8 +722,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1196.78143
-  tps: 672.44572
+  dps: 1198.21311
+  tps: 673.03914
  }
 }
 dps_results: {

@@ -709,8 +709,6 @@ var DenyItemSetIds = []int{
 	1712, // Nightslayer Battlearmor
 
 	// Warlock
-	1717, // Corrupted Felheart
-	1718, // Wicked Felheart
 
 	// Warrior
 	1719, // Immoveable Might
