@@ -10,22 +10,6 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	// TODO: 2024-06-13 - Heart of the Lion replaced with QoL rune
-	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-	// 	statMultiply := 1.1
-	// 	hunter.MultiplyStat(stats.Strength, statMultiply)
-	// 	hunter.MultiplyStat(stats.Stamina, statMultiply)
-	// 	hunter.MultiplyStat(stats.Agility, statMultiply)
-	// 	hunter.MultiplyStat(stats.Intellect, statMultiply)
-	// 	hunter.MultiplyStat(stats.Spirit, statMultiply)
-	// }
-	statMultiply := 1.1
-	hunter.MultiplyStat(stats.Strength, statMultiply)
-	hunter.MultiplyStat(stats.Stamina, statMultiply)
-	hunter.MultiplyStat(stats.Agility, statMultiply)
-	hunter.MultiplyStat(stats.Intellect, statMultiply)
-	hunter.MultiplyStat(stats.Spirit, statMultiply)
-
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
 		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)

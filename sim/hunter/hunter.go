@@ -89,11 +89,14 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.TrueshotAura = true
 	}
 
-	// TODO: 2024-06-13 - Heart of the Lion replaced with Cobra Slayer
-	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-	// raidBuffs.AspectOfTheLion = true
-	// }
 	raidBuffs.AspectOfTheLion = true
+	// Hunter gains an additional 10% stats from Aspect of the Lion
+	statMultiply := 1.1
+	hunter.MultiplyStat(stats.Strength, statMultiply)
+	hunter.MultiplyStat(stats.Stamina, statMultiply)
+	hunter.MultiplyStat(stats.Agility, statMultiply)
+	hunter.MultiplyStat(stats.Intellect, statMultiply)
+	hunter.MultiplyStat(stats.Spirit, statMultiply)
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }

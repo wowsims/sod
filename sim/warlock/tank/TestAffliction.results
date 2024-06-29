@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.88189
   final_stats: 0
   final_stats: 10
-  final_stats: 219.5
+  final_stats: 279.5
   final_stats: 1
   final_stats: 8.09959
   final_stats: 0
@@ -99,15 +99,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 103.21638
-  tps: 85.90189
+  dps: 104.61962
+  tps: 87.30513
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
-  dps: 191.72047
-  tps: 361.82331
+  dps: 191.73137
+  tps: 361.83965
  }
 }
 dps_results: {
@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 192.27765
-  tps: 362.57745
+  dps: 192.28557
+  tps: 362.58933
  }
 }

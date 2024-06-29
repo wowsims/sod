@@ -399,19 +399,15 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	},
 	TrueshotAura: {
 		25: stats.Stats{
-			stats.AttackPower:       0,
 			stats.RangedAttackPower: 0,
 		},
 		40: stats.Stats{
-			stats.AttackPower:       100,
 			stats.RangedAttackPower: 200,
 		},
 		50: stats.Stats{
-			stats.AttackPower:       150,
 			stats.RangedAttackPower: 300,
 		},
 		60: stats.Stats{
-			stats.AttackPower:       200,
 			stats.RangedAttackPower: 400,
 		},
 	},
@@ -624,23 +620,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStats(BuffSpellByLevel[ScrollOfSpirit][level])
 	}
 
-	kingsAgiIntSpiAmount := 1.0
-	kingsStrStamAmount := 1.0
-	if individualBuffs.BlessingOfKings {
-		kingsAgiIntSpiAmount = 1.1
-		kingsStrStamAmount = 1.1
-	} else if raidBuffs.AspectOfTheLion {
-		kingsAgiIntSpiAmount = 1.1
-		kingsStrStamAmount = 1.1
-	}
-	if kingsStrStamAmount > 0 {
-		character.MultiplyStat(stats.Strength, kingsStrStamAmount)
-		character.MultiplyStat(stats.Stamina, kingsStrStamAmount)
-	}
-	if kingsAgiIntSpiAmount > 0 {
-		character.MultiplyStat(stats.Agility, kingsAgiIntSpiAmount)
-		character.MultiplyStat(stats.Intellect, kingsAgiIntSpiAmount)
-		character.MultiplyStat(stats.Spirit, kingsAgiIntSpiAmount)
+	// Heart of the Lion grants bonus Melee AP as well so give it priority over kings
+	if raidBuffs.AspectOfTheLion {
+		HeartOfTheLionAura(character)
+	} else if individualBuffs.BlessingOfKings {
+		MakePermanent(BlessingOfKingsAura(character))
 	}
 
 	if raidBuffs.SanctityAura {
@@ -838,6 +822,41 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
+}
+
+func BlessingOfKingsAura(character *Character) *Aura {
+	character.MultiplyStat(stats.Strength, 1.1)
+	character.MultiplyStat(stats.Stamina, 1.1)
+	character.MultiplyStat(stats.Agility, 1.1)
+	character.MultiplyStat(stats.Intellect, 1.1)
+	character.MultiplyStat(stats.Spirit, 1.1)
+
+	return character.RegisterAura(Aura{
+		Label:    "Blessing of Kings",
+		ActionID: ActionID{SpellID: 20217},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func HeartOfTheLionAura(character *Character) *Aura {
+	character.AddStat(stats.AttackPower, float64(40+4*(character.Level-20)))
+	character.MultiplyStat(stats.Strength, 1.1)
+	character.MultiplyStat(stats.Stamina, 1.1)
+	character.MultiplyStat(stats.Agility, 1.1)
+	character.MultiplyStat(stats.Intellect, 1.1)
+	character.MultiplyStat(stats.Spirit, 1.1)
+
+	return character.RegisterAura(Aura{
+		Label:    "Heart of the Lion",
+		ActionID: ActionID{SpellID: 409583},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
 }
 
 // TODO: Classic
