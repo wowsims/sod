@@ -45,11 +45,6 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	manaCost := LightningShieldManaCost[rank]
 	level := LightningShieldLevel[rank]
 
-	staticShockProcChance := .06
-	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-		staticShockProcChance = .12
-	}
-
 	baseCharges := int32(3)
 	maxCharges := int32(3)
 	if hasRollingThunderRune {
@@ -95,9 +90,12 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 				return
 			}
 
-			if hasStaticShockRune && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Static Shock") < staticShockProcChance {
-				aura.RemoveStack(sim)
-				shaman.LightningShieldProcs[rank].Cast(sim, result.Target)
+			if hasStaticShockRune && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				staticShockProcChance := core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, .12, .06)
+				if sim.RandomFloat("Static Shock") < staticShockProcChance {
+					aura.RemoveStack(sim)
+					shaman.LightningShieldProcs[rank].Cast(sim, result.Target)
+				}
 			}
 
 			if hasRollingThunderRune && spell.SpellCode == SpellCode_ShamanEarthShock && aura.GetStacks() > 3 {
