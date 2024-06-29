@@ -35,12 +35,15 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15 * hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * time.Duration(15*hunter.resourcefulnessCooldownModifier()),
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
 		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
@@ -60,7 +63,10 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+					// Since ExplosiveTrap is coded as a buff, we ignore any targets that have had ImmolationTrap applied after last ExplosiveTrap cast
+					if !aoeTarget.HasActiveAuraWithTag("ImmolationTrap") {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+					}
 				}
 			},
 		},
@@ -73,6 +79,12 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 					baseDamage += hunter.tntDamageFlatBonus()
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+					// Immolation Trap and Explosive Trap DoTs ovveride eachother
+					if curTarget.HasActiveAuraWithTag("ImmolationTrap") {
+						curTarget.GetActiveAuraWithTag("ImmolationTrap").Deactivate(sim)
+					}
+
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 				spell.AOEDot().ApplyOrReset(sim)
@@ -86,10 +98,6 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 }
 
 func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
-		return
-	}
-
 	maxRank := 3
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getExplosiveTrapConfig(i, timer)
