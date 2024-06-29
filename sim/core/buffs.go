@@ -399,19 +399,15 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	},
 	TrueshotAura: {
 		25: stats.Stats{
-			stats.AttackPower:       0,
 			stats.RangedAttackPower: 0,
 		},
 		40: stats.Stats{
-			stats.AttackPower:       100,
 			stats.RangedAttackPower: 200,
 		},
 		50: stats.Stats{
-			stats.AttackPower:       150,
 			stats.RangedAttackPower: 300,
 		},
 		60: stats.Stats{
-			stats.AttackPower:       200,
 			stats.RangedAttackPower: 400,
 		},
 	},
@@ -630,6 +626,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		kingsAgiIntSpiAmount = 1.1
 		kingsStrStamAmount = 1.1
 	} else if raidBuffs.AspectOfTheLion {
+		character.AddStat(stats.AttackPower, float64(40+4*(character.Level-20)))
 		kingsAgiIntSpiAmount = 1.1
 		kingsStrStamAmount = 1.1
 	}

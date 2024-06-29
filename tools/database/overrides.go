@@ -176,7 +176,6 @@ var ItemDenyList = map[int32]struct{}{
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
-	18203:  {}, // Eskhandar's Right Claw
 	18406:  {}, // Onyxia Blood Talisman
 	18534:  {}, // Rod of the Ogre Magi
 	18820:  {}, // Talisman of Ephemeral Power
@@ -542,7 +541,13 @@ var DenyListNameRegexes = []*regexp.Regexp{
 // https://www.wowhead.com/classic/item-sets#item-sets
 var DenyItemSetIds = []int{
 	// Misc Sets
-	1, // The Gladiator
+	1,   // The Gladiator
+	41,  // Dal'Rend's Arms
+	65,  // Spider's Kiss
+	81,  // The Postmaster
+	122, // Necropile Raiment
+	124, // Deathbone Guardian
+	261, // Spirit of Eskhandar
 
 	// Dungeon Set 1
 	181, // Magister's Regalia
