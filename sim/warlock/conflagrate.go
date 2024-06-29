@@ -23,13 +23,12 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | WarlockFlagDestruction,
 		Rank:          rank,
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -44,14 +43,9 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)

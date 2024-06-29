@@ -22,7 +22,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 		SpellCode:     SpellCode_WarlockShadowCleave,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -42,14 +42,9 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 			return warlock.MetamorphosisAura.IsActive()
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
@@ -60,16 +55,6 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
-
-				if result.Landed() {
-					warlock.EverlastingAfflictionRefresh(sim, result.Target)
-
-					if warlock.Talents.ImprovedShadowBolt > 0 && result.DidCrit() {
-						impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
-						impShadowBoltAura.Activate(sim)
-						impShadowBoltAura.SetStacks(sim, 4)
-					}
-				}
 			}
 		},
 	}

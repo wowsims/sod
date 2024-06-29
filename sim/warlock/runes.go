@@ -18,10 +18,18 @@ func (warlock *Warlock) ApplyRunes() {
 	// Cloak Runes
 	warlock.applyDecimation()
 
+	// Chest Runes
 	warlock.applyDemonicTactics()
-	warlock.applyDemonicPact()
+
+	// Belt Runes
 	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
+
+	// Pants Runes
+	warlock.applyEverlastingAffliction()
+	warlock.applyDemonicPact()
+
+	// Boots Runes
 	warlock.applyDemonicKnowledge()
 	warlock.applyDanceOfTheWicked()
 }
@@ -153,16 +161,28 @@ func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
 	}
 }
 
-func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
+func (warlock *Warlock) applyEverlastingAffliction() {
 	if !warlock.HasRune(proto.WarlockRune_RuneLegsEverlastingAffliction) {
 		return
 	}
 
-	for _, spell := range warlock.Corruption {
-		if spell.Dot(target).IsActive() {
-			spell.Dot(target).Rollover(sim)
-		}
-	}
+	affectedSpellCodes := []int32{SpellCode_WarlockDrainLife, SpellCode_WarlockDrainSoul, SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockSearingPain, SpellCode_WarlockIncinerate, SpellCode_WarlockHaunt}
+	warlock.RegisterAura(core.Aura{
+		Label:    "Everlasting Affliction Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				for _, spell := range warlock.Corruption {
+					if spell.Dot(result.Target).IsActive() {
+						spell.Dot(result.Target).Rollover(sim)
+					}
+				}
+			}
+		},
+	})
 }
 
 func (warlock *Warlock) applyDanceOfTheWicked() {

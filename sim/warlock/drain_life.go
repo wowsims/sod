@@ -24,7 +24,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		manaCost *= 2
 	}
 
-	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery) + 0.02*float64(warlock.Talents.ImprovedDrainLife)
+	baseDamage *= 1 + warlock.shadowMasteryBonus() + 0.02*float64(warlock.Talents.ImprovedDrainLife)
 
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
@@ -34,7 +34,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolShadow,
 		SpellCode:     SpellCode_WarlockDrainLife,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         SpellFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagHauntSE | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -47,8 +47,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				// ChannelTime: channelTime,
 			},
 		},
-
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
@@ -126,8 +124,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 
 				dot := spell.Dot(target)
 				dot.Apply(sim)
-
-				warlock.EverlastingAfflictionRefresh(sim, target)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {

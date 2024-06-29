@@ -19,7 +19,7 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -36,14 +36,9 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 			},
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamage[0], baseDamage[1])

@@ -13,14 +13,14 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 42, 50, 58}[rank]
 	spellCoeff := 0.214
 
-	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery)
+	baseDamage *= 1 + warlock.shadowMasteryBonus()
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
 		RequiredLevel: level,
 		Rank:          rank,
 		MissileSpeed:  24,
@@ -37,8 +37,6 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 				Duration: time.Minute * 2,
 			},
 		},
-
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,

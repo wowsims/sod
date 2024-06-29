@@ -39,14 +39,14 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 	}
 
 	warlock.DrainSoul = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockDrainSoul,
 		ActionID:    core.ActionID{SpellID: 47855},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagChanneled | SpellFlagHaunt | core.SpellFlagAPL,
+		Flags:       core.SpellFlagChanneled | core.SpellFlagHauntSE | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.14,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			BaseCost: 0.14,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -55,9 +55,6 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			warlock.GrandSpellstoneBonus() +
-			0.03*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
 
@@ -118,8 +115,6 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 				dot := spell.Dot(target)
 				dot.Apply(sim)
 				dot.UpdateExpires(dot.ExpiresAt())
-
-				warlock.everlastingAfflictionRefresh(sim, target)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {

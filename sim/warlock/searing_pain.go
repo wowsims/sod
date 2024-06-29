@@ -15,17 +15,17 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 	castTime := time.Millisecond * 1500
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_WarlockSearingPain,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -40,23 +40,15 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 				}
 			},
 		},
-		BonusCritRating: 0.0 +
-			float64(warlock.Talents.Devastation)*core.CritRatingPerCritChance +
-			2.0*float64(warlock.Talents.ImprovedSearingPain)*core.CritRatingPerCritChance,
+		BonusCritRating: 2.0 * float64(warlock.Talents.ImprovedSearingPain) * core.CritRatingPerCritChance,
 
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         2,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 2,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamage[0], baseDamage[1])
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-
-			// TODO: does this happen on miss?
-			warlock.EverlastingAfflictionRefresh(sim, target)
 		},
 	}
 }

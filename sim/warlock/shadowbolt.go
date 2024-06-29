@@ -26,32 +26,26 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * time.Duration(castTime-100*warlock.Talents.Bane),
+				CastTime: time.Millisecond * time.Duration(castTime),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warlock.MetamorphosisAura == nil || !warlock.MetamorphosisAura.IsActive()
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         damageMulti,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: damageMulti,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
@@ -62,16 +56,6 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
-
-				if result.Landed() {
-					warlock.EverlastingAfflictionRefresh(sim, result.Target)
-
-					if warlock.Talents.ImprovedShadowBolt > 0 && result.DidCrit() {
-						impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
-						impShadowBoltAura.Activate(sim)
-						impShadowBoltAura.SetStacks(sim, 4)
-					}
-				}
 			}
 		},
 	}

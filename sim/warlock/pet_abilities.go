@@ -80,7 +80,7 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 	}
 
 	spellCoeff := [7]float64{0, .429, .429, .429, .429, .429, .429}[rank]
-	baseDamage := [7]float64{0, 33, 44, 60, 73, 87, 99}[rank]
+	baseDamage := [7]float64{0, 33, 44, 60, 73, 87, 99}[rank] * (1 + .10*float64(wp.owner.Talents.ImprovedSayaad))
 	spellId := [7]int32{0, 7814, 7815, 7816, 11778, 11779, 11780}[rank]
 	manaCost := [7]float64{0, 65, 80, 105, 125, 145, 160}[rank]
 	level := [7]int{0, 20, 28, 36, 44, 52, 60}[rank]
@@ -230,9 +230,7 @@ func (wp *WarlockPet) registerFelguardDemonicFrenzyAura() {
 // 			},
 // 		},
 
-//      BonusCritDamage: wp.owner.ruin(),
-
-// 		DamageMultiplier: 1 + 0.03*float64(wp.owner.Talents.ShadowMastery),
+// 		DamageMultiplier: 1 + warlock.shadowMasteryBonus(),
 // 		ThreatMultiplier: 1,
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -26,7 +26,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		SpellCode:     SpellCode_WarlockCorruption,
 		ProcMask:      core.ProcMaskSpellDamage,
 		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
+		Flags:         core.SpellFlagAPL | core.SpellFlagHauntSE | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -40,13 +40,10 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

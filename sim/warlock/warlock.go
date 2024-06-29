@@ -10,15 +10,22 @@ import (
 
 var TalentTreeSizes = [3]int{17, 17, 16}
 
-const SpellFlagHaunt = core.SpellFlagAgentReserved1
+const (
+	WarlockFlagAffliction  = core.SpellFlagAgentReserved1
+	WarlockFlagDemonology  = core.SpellFlagAgentReserved2
+	WarlockFlagDestruction = core.SpellFlagAgentReserved3
+)
 
 const (
 	SpellCode_WarlockNone int32 = iota
 
 	SpellCode_WarlockCorruption
 	SpellCode_WarlockDrainLife
+	SpellCode_WarlockDrainSoul
+	SpellCode_WarlockHaunt
 	SpellCode_WarlockImmolate
 	SpellCode_WarlockIncinerate
+	SpellCode_WarlockSearingPain
 	SpellCode_WarlockShadowflame
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
@@ -209,4 +216,8 @@ func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {
 // Agent is a generic way to access underlying warlock on any of the agents.
 type WarlockAgent interface {
 	GetWarlock() *Warlock
+}
+
+func isWarlockSpell(spell *core.Spell) bool {
+	return spell.Flags.Matches(WarlockFlagAffliction) || spell.Flags.Matches(WarlockFlagDemonology) || spell.Flags.Matches(WarlockFlagDestruction)
 }

@@ -22,7 +22,7 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
 		RequiredLevel: level,
 		Rank:          rank,
 

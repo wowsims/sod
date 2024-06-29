@@ -17,7 +17,7 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 	manaCost := [5]float64{0, 295, 605, 885, 1185}[rank]
 	level := [5]int{0, 20, 34, 46, 58}[rank]
 
-	flags := core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+	flags := core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction
 	if !hasLakeOfFireRune {
 		flags |= core.SpellFlagChanneled
 	}
@@ -31,17 +31,11 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 		Rank:          rank,
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

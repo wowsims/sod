@@ -18,7 +18,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
-	baseDamage *= 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness) + 0.02*float64(warlock.Talents.ShadowMastery)
+	baseDamage *= 1 + 0.02*float64(warlock.Talents.ImprovedCurseOfWeakness) + warlock.shadowMasteryBonus()
 
 	snapshotBaseDmgNoBonus := 0.0
 
@@ -28,7 +28,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
+		Flags:         core.SpellFlagAPL | core.SpellFlagHauntSE | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
 		ProcMask:      core.ProcMaskSpellDamage,
 		RequiredLevel: level,
 		Rank:          rank,
@@ -41,8 +41,6 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 		},
-
-		BonusHitRating: 2 * float64(warlock.Talents.Suppression) * core.SpellHitRatingPerHitChance,
 
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
@@ -151,7 +149,7 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
 		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
@@ -163,7 +161,6 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 			},
 		},
 
-		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  156,
 
@@ -208,7 +205,7 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
 		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
@@ -220,7 +217,6 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 			},
 		},
 
-		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  156,
 
@@ -262,7 +258,7 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
 		Rank:        rank,
 
 		ManaCost: core.ManaCostOptions{
@@ -274,7 +270,6 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 			},
 		},
 
-		BonusHitRating:   float64(warlock.Talents.Suppression) * 2 * core.CritRatingPerCritChance,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  156,
 
@@ -305,7 +300,7 @@ func (warlock *Warlock) registerAmplifyCurseSpell() {
 	warlock.AmplifyCurse = warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

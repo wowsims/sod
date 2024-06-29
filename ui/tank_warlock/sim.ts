@@ -1,30 +1,21 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as WarlockInputs from '../core/components/inputs/warlock_inputs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { WarlockRune } from '../core/proto/warlock.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	cssClass: 'tank-warlock-sim-ui',
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -113,30 +104,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		WarlockInputs.PetInput,
-		WarlockInputs.ArmorInput,
-		WarlockInputs.WeaponImbueInput,
-	],
-	rotationInputs: WarlockInputs.WarlockRotationConfig,
+	playerIconInputs: [WarlockInputs.PetInput(), WarlockInputs.ArmorInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ResistanceBuff,
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-		BuffDebuffInputs.SpellWintersChillDebuff,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
-	],
-	petConsumeInputs: [
-		ConsumablesInputs.PetScrollOfAgility,
-		ConsumablesInputs.PetScrollOfStrength,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ResistanceBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
+	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			WarlockInputs.PetPoolManaInput,
+			WarlockInputs.PetPoolManaInput(),
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
@@ -157,28 +134,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase3],
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase3],
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase3],
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {
-		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
+		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler;
 		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
 
 		// MC vs LoF

@@ -18,8 +18,7 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			BaseCost: 0.1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -60,8 +59,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.04,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			BaseCost: 0.04,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -91,8 +89,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.15,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			BaseCost: 0.15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -104,8 +101,6 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			0.03*float64(warlock.Talents.ShadowMastery),
 		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
 		FlatThreatBonus:  160,
 
