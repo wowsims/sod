@@ -23,6 +23,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	warlock.ShadowflameDot = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 426325},
 		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
