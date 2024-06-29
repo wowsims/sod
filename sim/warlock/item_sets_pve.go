@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -142,6 +143,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 
 			// Nightfall aspect implemented in talents.go
 
+			affectedSpellCodes := []int32{SpellCode_WarlockImmolate, SpellCode_WarlockShadowflame, SpellCode_WarlockIncinerate}
 			fireTranceAura := warlock.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457558},
 				Label:    "Fire Trance",
@@ -152,6 +154,9 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 							spell.CastTimeMultiplier -= 1
 						}
 					}
+					if warlock.Shadowflame != nil {
+						warlock.Shadowflame.CastTimeMultiplier -= 1
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
@@ -159,9 +164,12 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 							spell.CastTimeMultiplier += 1
 						}
 					}
+					if warlock.Shadowflame != nil {
+						warlock.Shadowflame.CastTimeMultiplier += 1
+					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockIncinerate {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) {
 						aura.Deactivate(sim)
 					}
 				},
@@ -174,7 +182,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarlockImmolate && sim.Proc(.04, "Fire Trance") {
+					if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame && sim.Proc(.04, "Fire Trance") {
 						fireTranceAura.Activate(sim)
 					}
 				},

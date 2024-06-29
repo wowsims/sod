@@ -63,6 +63,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	})
 
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockShadowflame,
 		ActionID:    core.ActionID{SpellID: 426320},
 		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,

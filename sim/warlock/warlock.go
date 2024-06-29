@@ -19,6 +19,7 @@ const (
 	SpellCode_WarlockDrainLife
 	SpellCode_WarlockImmolate
 	SpellCode_WarlockIncinerate
+	SpellCode_WarlockShadowflame
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
 	SpellCode_WarlockSoulFire
