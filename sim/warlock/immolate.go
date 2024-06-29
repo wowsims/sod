@@ -8,14 +8,16 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ImmolateRanks = 8
+
 func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
-	directCoeff := [9]float64{0, .058, .125, .2, .2, .2, .2, .2, .2}[rank]
-	dotCoeff := [9]float64{0, .037, .081, .13, .13, .13, .13, .13, .13}[rank]
-	baseDamage := [9]float64{0, 11, 24, 53, 101, 148, 208, 258, 279}[rank]
-	dotDamage := [9]float64{0, 20, 40, 90, 165, 255, 365, 485, 510}[rank] / 5
-	spellId := [9]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
-	manaCost := [9]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
-	level := [9]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
+	directCoeff := [ImmolateRanks + 1]float64{0, .058, .125, .2, .2, .2, .2, .2, .2}[rank]
+	dotCoeff := [ImmolateRanks + 1]float64{0, .037, .081, .13, .13, .13, .13, .13, .13}[rank]
+	baseDamage := [ImmolateRanks + 1]float64{0, 11, 24, 53, 101, 148, 208, 258, 279}[rank]
+	dotDamage := [ImmolateRanks + 1]float64{0, 20, 40, 90, 165, 255, 365, 485, 510}[rank] / 5
+	spellId := [ImmolateRanks + 1]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
+	manaCost := [ImmolateRanks + 1]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
+	level := [ImmolateRanks + 1]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
@@ -130,11 +132,9 @@ func (warlock *Warlock) getActiveImmolateSpell(target *core.Unit) *core.Spell {
 }
 
 func (warlock *Warlock) registerImmolateSpell() {
-	maxRank := 8
-
 	warlock.Immolate = make([]*core.Spell, 0)
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getImmolateConfig(i)
+	for rank := 1; rank <= ImmolateRanks; rank++ {
+		config := warlock.getImmolateConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
 			warlock.Immolate = append(warlock.Immolate, warlock.GetOrRegisterSpell(config))

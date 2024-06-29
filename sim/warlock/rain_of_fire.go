@@ -8,14 +8,16 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const RainOfFireRanks = 4
+
 func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 	hasLakeOfFireRune := warlock.HasRune(proto.WarlockRune_RuneChestLakeOfFire)
 
-	spellId := [5]int32{0, 5740, 6219, 11677, 11678}[rank]
-	spellCoeff := [5]float64{0, 0.083, 0.083, 0.083, 0.083}[rank]
-	baseDamage := [5]float64{0, 42, 92, 155, 226}[rank]
-	manaCost := [5]float64{0, 295, 605, 885, 1185}[rank]
-	level := [5]int{0, 20, 34, 46, 58}[rank]
+	spellId := [RainOfFireRanks + 1]int32{0, 5740, 6219, 11677, 11678}[rank]
+	spellCoeff := [RainOfFireRanks + 1]float64{0, 0.083, 0.083, 0.083, 0.083}[rank]
+	baseDamage := [RainOfFireRanks + 1]float64{0, 42, 92, 155, 226}[rank]
+	manaCost := [RainOfFireRanks + 1]float64{0, 295, 605, 885, 1185}[rank]
+	level := [RainOfFireRanks + 1]int{0, 20, 34, 46, 58}[rank]
 
 	flags := core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction
 	if !hasLakeOfFireRune {
@@ -78,13 +80,12 @@ func (warlock *Warlock) getRainOfFireBaseConfig(rank int) core.SpellConfig {
 }
 
 func (warlock *Warlock) registerRainOfFireSpell() {
-	maxRank := 4
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getRainOfFireBaseConfig(i)
+	warlock.RainOfFire = make([]*core.Spell, 0)
+	for rank := 1; rank <= RainOfFireRanks; rank++ {
+		config := warlock.getRainOfFireBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.RainOfFire = warlock.GetOrRegisterSpell(config)
+			warlock.RainOfFire = append(warlock.RainOfFire, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

@@ -7,13 +7,15 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ShadowBoltRanks = 10
+
 func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
-	spellCoeff := [11]float64{0, .14, .299, .56, .857, .857, .857, .857, .857, .857, .857}[rank]
-	baseDamage := [11][]float64{{0}, {13, 18}, {26, 32}, {52, 61}, {92, 104}, {150, 170}, {213, 240}, {292, 327}, {373, 415}, {455, 507}, {482, 538}}[rank]
-	spellId := [11]int32{0, 686, 695, 705, 1088, 1106, 7641, 11659, 11660, 11661, 25307}[rank]
-	manaCost := [11]float64{0, 25, 40, 70, 110, 160, 210, 265, 315, 370, 380}[rank]
-	level := [11]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
-	castTime := [11]int32{0, 1700, 2200, 2800, 3000, 3000, 3000, 3000, 3000, 3000, 3000}[rank]
+	spellCoeff := [ShadowBoltRanks + 1]float64{0, .14, .299, .56, .857, .857, .857, .857, .857, .857, .857}[rank]
+	baseDamage := [ShadowBoltRanks + 1][]float64{{0}, {13, 18}, {26, 32}, {52, 61}, {92, 104}, {150, 170}, {213, 240}, {292, 327}, {373, 415}, {455, 507}, {482, 538}}[rank]
+	spellId := [ShadowBoltRanks + 1]int32{0, 686, 695, 705, 1088, 1106, 7641, 11659, 11660, 11661, 25307}[rank]
+	manaCost := [ShadowBoltRanks + 1]float64{0, 25, 40, 70, 110, 160, 210, 265, 315, 370, 380}[rank]
+	level := [ShadowBoltRanks + 1]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
+	castTime := [ShadowBoltRanks + 1]int32{0, 1700, 2200, 2800, 3000, 3000, 3000, 3000, 3000, 3000, 3000}[rank]
 
 	shadowboltVolley := warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley)
 	damageMulti := core.TernaryFloat64(shadowboltVolley, 0.8, 1.0)
@@ -62,13 +64,13 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 }
 
 func (warlock *Warlock) registerShadowBoltSpell() {
-	maxRank := 10
+	warlock.ShadowBolt = make([]*core.Spell, 0)
 
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getShadowBoltBaseConfig(i)
+	for rank := 1; rank <= ShadowBoltRanks; rank++ {
+		config := warlock.getShadowBoltBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.ShadowBolt = warlock.GetOrRegisterSpell(config)
+			warlock.ShadowBolt = append(warlock.ShadowBolt, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

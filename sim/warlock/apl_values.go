@@ -40,17 +40,34 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 	warlock := value.warlock
 
 	// Assert that we're currently channeling Drain Soul.
-	if warlock.ChanneledDot == nil || warlock.ChanneledDot.Spell != warlock.DrainSoul {
+	if warlock.ChanneledDot == nil {
 		return false
 	}
 
+	var activeDrainSoul *core.Spell
+	for _, spell := range warlock.DrainSoul {
+		if spell.CurDot().IsActive() {
+			activeDrainSoul = spell
+		}
+	}
+	if activeDrainSoul == nil {
+		return false
+	}
+
+	var activeCurseOfAgony *core.Spell
+	for _, spell := range warlock.CurseOfAgony {
+		if spell.CurDot().IsActive() {
+			activeCurseOfAgony = spell
+		}
+	}
+
 	curseRefresh := max(
-		warlock.CurseOfAgony.CurDot().RemainingDuration(sim),
+		activeCurseOfAgony.CurDot().RemainingDuration(sim),
 		warlock.CurseOfDoom.CurDot().RemainingDuration(sim),
 		warlock.CurseOfElementsAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		warlock.CurseOfTonguesAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		warlock.CurseOfWeaknessAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-	) - warlock.CurseOfAgony.CastTime()
+		// warlock.CurseOfTonguesAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
+		// warlock.CurseOfWeaknessAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
+	) - activeCurseOfAgony.CastTime()
 
 	hauntRefresh := 1000 * time.Second
 	if warlock.HauntDebuffAuras != nil {
@@ -76,8 +93,8 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 		return false
 	}
 
-	snapshotDmg := warlock.DrainSoul.ExpectedTickDamageFromCurrentSnapshot(sim, warlock.CurrentTarget) * float64(ticksLeft)
-	recastDmg := warlock.DrainSoul.ExpectedTickDamage(sim, warlock.CurrentTarget) * float64(recastTicks)
+	snapshotDmg := activeDrainSoul.ExpectedTickDamageFromCurrentSnapshot(sim, warlock.CurrentTarget) * float64(ticksLeft)
+	recastDmg := activeDrainSoul.ExpectedTickDamage(sim, warlock.CurrentTarget) * float64(recastTicks)
 	snapshotDPS := snapshotDmg / (time.Duration(ticksLeft) * dsDot.TickPeriod()).Seconds()
 	recastDps := recastDmg / (time.Duration(recastTicks)*warlock.ApplyCastSpeed(dsDot.TickLength) + warlock.ChannelClipDelay).Seconds()
 

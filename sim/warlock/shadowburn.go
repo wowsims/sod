@@ -6,11 +6,13 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+const ShadowburnRanks = 6
+
 func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig {
-	spellId := [7]int32{0, 17877, 18867, 18868, 18869, 18870, 18871}[rank]
-	baseDamage := [7][]float64{{0}, {91, 104}, {123, 140}, {196, 221}, {274, 307}, {365, 408}, {462, 514}}[rank]
-	manaCost := [7]float64{0, 105, 130, 190, 245, 305, 365}[rank]
-	level := [7]int{0, 15, 24, 32, 40, 48, 56}[rank]
+	spellId := [ShadowburnRanks + 1]int32{0, 17877, 18867, 18868, 18869, 18870, 18871}[rank]
+	baseDamage := [ShadowburnRanks + 1][]float64{{0}, {91, 104}, {123, 140}, {196, 221}, {274, 307}, {365, 408}, {462, 514}}[rank]
+	manaCost := [ShadowburnRanks + 1]float64{0, 105, 130, 190, 245, 305, 365}[rank]
+	level := [ShadowburnRanks + 1]int{0, 15, 24, 32, 40, 48, 56}[rank]
 
 	spellCoeff := 0.429
 
@@ -52,13 +54,12 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		return
 	}
 
-	maxRank := 6
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.registerShadowBurnBaseConfig(i)
+	warlock.Shadowburn = make([]*core.Spell, 0)
+	for rank := 1; rank <= ShadowburnRanks; rank++ {
+		config := warlock.registerShadowBurnBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.Shadowburn = warlock.GetOrRegisterSpell(config)
+			warlock.Shadowburn = append(warlock.Shadowburn, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

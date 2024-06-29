@@ -23,7 +23,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		DefenseType: core.DefenseTypeMagic,
-		Flags:       core.SpellFlagAPL | core.SpellFlagHauntSE | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
+		Flags:       core.SpellFlagAPL | WarlockFlagHaunt | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.15,

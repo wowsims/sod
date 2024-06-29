@@ -14,12 +14,15 @@ const (
 	WarlockFlagAffliction  = core.SpellFlagAgentReserved1
 	WarlockFlagDemonology  = core.SpellFlagAgentReserved2
 	WarlockFlagDestruction = core.SpellFlagAgentReserved3
+	WarlockFlagHaunt       = core.SpellFlagAgentReserved4
 )
 
 const (
 	SpellCode_WarlockNone int32 = iota
 
 	SpellCode_WarlockCorruption
+	SpellCode_WarlockCurseOfAgony
+	SpellCode_WarlockCurseOfDoom
 	SpellCode_WarlockDrainLife
 	SpellCode_WarlockDrainSoul
 	SpellCode_WarlockHaunt
@@ -40,26 +43,27 @@ type Warlock struct {
 	Pet *WarlockPet
 
 	ChaosBolt          *core.Spell
-	Conflagrate        *core.Spell
+	Conflagrate        []*core.Spell
 	Corruption         []*core.Spell
 	DarkPact           *core.Spell
-	DrainSoul          *core.Spell
+	DrainSoul          []*core.Spell
 	Haunt              *core.Spell
 	Immolate           []*core.Spell
 	Incinerate         *core.Spell
-	LifeTap            *core.Spell
-	SearingPain        *core.Spell
-	ShadowBolt         *core.Spell
+	LifeTap            []*core.Spell
+	SearingPain        []*core.Spell
+	ShadowBolt         []*core.Spell
 	ShadowCleave       []*core.Spell
-	Shadowburn         *core.Spell
+	Shadowburn         []*core.Spell
 	SoulFire           []*core.Spell
 	DemonicGrace       *core.Spell
-	DrainLife          *core.Spell
-	RainOfFire         *core.Spell
-	SiphonLife         *core.Spell
-	DeathCoil          *core.Spell
+	DrainLife          []*core.Spell
+	RainOfFire         []*core.Spell
+	SiphonLife         []*core.Spell
+	DeathCoil          []*core.Spell
 	UnstableAffliction *core.Spell
 
+	ActiveCurseAura          *core.Aura
 	CurseOfElements          *core.Spell
 	CurseOfElementsAuras     core.AuraArray
 	CurseOfShadow            *core.Spell
@@ -70,7 +74,7 @@ type Warlock struct {
 	CurseOfWeaknessAuras     core.AuraArray
 	CurseOfTongues           *core.Spell
 	CurseOfTonguesAuras      core.AuraArray
-	CurseOfAgony             *core.Spell
+	CurseOfAgony             []*core.Spell
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 	Shadowflame              *core.Spell
@@ -88,6 +92,7 @@ type Warlock struct {
 	AmplifyCurseAura        *core.Aura
 	BackdraftAura           *core.Aura
 	ImprovedShadowBoltAuras core.AuraArray
+	MarkOfChaosAuras        core.AuraArray
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64
@@ -119,7 +124,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSoulFireSpell()
 	warlock.registerUnstableAfflictionSpell()
 	// warlock.registerSeedSpell()
-	// warlock.registerDrainSoulSpell()
+	warlock.registerDrainSoulSpell()
 	warlock.registerConflagrateSpell()
 	warlock.registerHauntSpell()
 	warlock.registerSiphonLifeSpell()
@@ -140,7 +145,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfRecklessnessSpell()
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
-	// warlock.registerCurseOfDoomSpell()
+	warlock.registerCurseOfDoomSpell()
 	warlock.registerImmolationAuraSpell()
 }
 

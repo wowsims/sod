@@ -147,6 +147,7 @@ func (warlock *Warlock) applyNightfall() {
 		return
 	}
 
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
 	has6PCorruptedFelheart := warlock.HasSetBonus(ItemSetCorruptedFelheart, 6)
 
 	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)
@@ -159,14 +160,22 @@ func (warlock *Warlock) applyNightfall() {
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier -= 1
+			for _, spell := range warlock.ShadowBolt {
+				spell.CastTimeMultiplier -= 1
+			}
+
+			for _, spell := range warlock.ShadowCleave {
+				spell.CD.Reset()
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier += 1
+			for _, spell := range warlock.ShadowBolt {
+				spell.CastTimeMultiplier += 1
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
-			if spell == warlock.ShadowBolt && spell.CurCast.CastTime == 0 {
+			if spell.SpellCode == SpellCode_WarlockShadowBolt && spell.CurCast.CastTime == 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -179,14 +188,8 @@ func (warlock *Warlock) applyNightfall() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife {
-				if sim.Proc(nightfallProcChance, "Nightfall") {
-					warlock.NightfallProcAura.Activate(sim)
-
-					for _, spell := range warlock.ShadowCleave {
-						spell.CD.Reset()
-					}
-				}
+			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (hasSoulSiphonRune && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(nightfallProcChance, "Nightfall") {
+				warlock.NightfallProcAura.Activate(sim)
 			}
 		},
 	})
@@ -199,7 +202,7 @@ func (warlock *Warlock) applyShadowMastery() {
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		// Shadow Mastery applies a base damage modifier to all dots / channeled spells instead
-		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !spell.Flags.Matches(core.SpellFlagPureDot) && !spell.Flags.Matches(core.SpellFlagHauntSE) {
+		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !spell.Flags.Matches(core.SpellFlagPureDot) && !spell.Flags.Matches(WarlockFlagHaunt) {
 			spell.DamageMultiplierAdditive += warlock.shadowMasteryBonus()
 		}
 	})

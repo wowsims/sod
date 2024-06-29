@@ -4,10 +4,12 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+const LifeTapRanks = 6
+
 func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
-	spellId := [7]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}[rank]
-	baseDamage := [7]float64{0, 30, 75, 140, 220, 310, 424}[rank]
-	level := [7]int{0, 6, 16, 26, 36, 46, 56}[rank]
+	spellId := [LifeTapRanks + 1]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}[rank]
+	baseDamage := [LifeTapRanks + 1]float64{0, 30, 75, 140, 220, 310, 424}[rank]
+	level := [LifeTapRanks + 1]int{0, 6, 16, 26, 36, 46, 56}[rank]
 
 	actionID := core.ActionID{SpellID: spellId}
 	var manaPetMetrics *core.ResourceMetrics
@@ -58,13 +60,12 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 }
 
 func (warlock *Warlock) registerLifeTapSpell() {
-	maxRank := 6
-
-	for i := 1; i <= maxRank; i++ {
+	warlock.LifeTap = make([]*core.Spell, 0)
+	for i := 1; i <= LifeTapRanks; i++ {
 		config := warlock.getLifeTapBaseConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.LifeTap = warlock.GetOrRegisterSpell(config)
+			warlock.LifeTap = append(warlock.LifeTap, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

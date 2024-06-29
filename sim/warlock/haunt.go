@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+func hauntMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
+	return core.TernaryFloat64(spell.Flags.Matches(WarlockFlagHaunt), 1.2, 1)
+}
+
 func (warlock *Warlock) registerHauntSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneHandsHaunt) {
 		return
@@ -24,10 +28,10 @@ func (warlock *Warlock) registerHauntSpell() {
 			ActionID: actionID,
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier *= 1.2
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = hauntMultiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].HauntSEDamageTakenMultiplier /= 1.2
+				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = nil
 			},
 		})
 	})
