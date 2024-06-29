@@ -46,6 +46,9 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	level := LightningShieldLevel[rank]
 
 	staticShockProcChance := .06
+	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		staticShockProcChance = .12
+	}
 
 	baseCharges := int32(3)
 	maxCharges := int32(3)
