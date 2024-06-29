@@ -89,7 +89,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= 1 + 0.05*float64(warlock.Talents.ImprovedImmolate) // TODO should most likely just be done statically (?)
+			// TODO should most likely just be done statically (?)
+			// Would require splitting Immolate into 2 separate spells
+			spell.DamageMultiplier *= 1 + 0.05*float64(warlock.Talents.ImprovedImmolate)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier = oldMultiplier
 

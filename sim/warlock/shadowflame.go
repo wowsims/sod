@@ -26,7 +26,9 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
+		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
+
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery) + 0.02*float64(warlock.Talents.Emberstorm),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
 
@@ -77,7 +79,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 2,
+				CastTime: time.Millisecond * (2000 - 100*time.Duration(warlock.Talents.Bane)),
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
@@ -89,8 +91,8 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 		CritDamageBonus: warlock.ruin(),
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery) + 0.02*float64(warlock.Talents.Emberstorm),
+		DamageMultiplier:         1 + 0.05*float64(warlock.Talents.ImprovedImmolate),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         baseSpellCoeff,
 
