@@ -107,7 +107,7 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: wp.AutoAttacks.MHConfig().DamageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
@@ -142,7 +142,7 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: wp.AutoAttacks.MHConfig().DamageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

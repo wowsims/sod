@@ -341,8 +341,11 @@ export default class ItemList<T extends ItemListType> {
 			return true;
 		});
 
-		if ([ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot)) {
-			// Trinket EP is weird so just sort by ilvl instead.
+		if (
+			[ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) ||
+			(this.slot === ItemSlot.ItemSlotRanged && [Class.ClassShaman, Class.ClassPaladin, Class.ClassDruid].includes(this.player.getClass()))
+		) {
+			// Trinket, Totem, Idol, and Libram EP is weird so just sort by ilvl instead.
 			this.sortBy = ItemListSortBy.ILVL;
 		} else {
 			this.sortBy = ItemListSortBy.EP;
