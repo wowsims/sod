@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1031.97038
-  tps: 816.86204
+  dps: 1031.59337
+  tps: 816.51867
  }
 }
 dps_results: {
@@ -330,8 +330,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1031.97038
-  tps: 816.86204
+  dps: 1031.59337
+  tps: 816.51867
  }
 }
 dps_results: {

@@ -101,16 +101,16 @@ character_stats_results: {
  value: {
   final_stats: 162.756
   final_stats: 149.688
-  final_stats: 327.888
+  final_stats: 344.52
   final_stats: 324.324
   final_stats: 213.84
   final_stats: 284
   final_stats: 23
-  final_stats: 20
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 43
+  final_stats: 0
+  final_stats: 23
   final_stats: 38
   final_stats: 5
   final_stats: 23.44864
@@ -133,7 +133,7 @@ character_stats_results: {
   final_stats: 9.24427
   final_stats: 0
   final_stats: 0
-  final_stats: 4343.724
+  final_stats: 4518.36
   final_stats: 25
   final_stats: 45
   final_stats: 50
@@ -150,16 +150,16 @@ character_stats_results: {
  value: {
   final_stats: 216.7
   final_stats: 194.7
-  final_stats: 392.15
+  final_stats: 409.86
   final_stats: 333.3
   final_stats: 231
   final_stats: 284
   final_stats: 23
-  final_stats: 20
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 43
+  final_stats: 0
+  final_stats: 23
   final_stats: 57.6
   final_stats: 5
   final_stats: 30.36611
@@ -182,7 +182,7 @@ character_stats_results: {
   final_stats: 10.195
   final_stats: 0
   final_stats: 0
-  final_stats: 5800.725
+  final_stats: 5986.68
   final_stats: 32
   final_stats: 75
   final_stats: 65

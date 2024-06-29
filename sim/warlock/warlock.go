@@ -15,8 +15,9 @@ const SpellFlagHaunt = core.SpellFlagAgentReserved1
 const (
 	SpellCode_WarlockNone int32 = iota
 
-	SpellCode_Corruption
-	SpellCode_DrainLife
+	SpellCode_WarlockCorruption
+	SpellCode_WarlockDrainLife
+	SpellCode_WarlockImmolate
 	SpellCode_WarlockIncinerate
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
