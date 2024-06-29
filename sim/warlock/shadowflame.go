@@ -14,7 +14,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
-	baseSpellCoeff := 0.107
+	baseSpellCoeff := 0.20
 	dotSpellCoeff := 0.107
 	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 0.61

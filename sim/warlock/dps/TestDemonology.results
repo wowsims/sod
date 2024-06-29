@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.5087
+  weights: 0.51067
   weights: 0
-  weights: 0.92449
-  weights: 0
-  weights: 0
+  weights: 0.92548
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.60574
+  weights: 0
+  weights: 0
+  weights: 5.65367
   weights: 2.03799
   weights: 0
   weights: 0
@@ -99,63 +99,63 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 176.68054
+  dps: 178.62396
   tps: 61.69125
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 636.17799
+  dps: 638.52266
   tps: 505.0857
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 638.46642
+  dps: 640.8236
   tps: 825.09588
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 638.46642
+  dps: 640.8236
   tps: 508.68105
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 679.14046
+  dps: 681.72216
   tps: 543.59299
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 387.98828
+  dps: 389.73572
   tps: 680.05906
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 387.98828
+  dps: 389.73572
   tps: 336.38272
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 441.72438
+  dps: 443.6328
   tps: 373.24835
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 639.29531
+  dps: 641.62848
   tps: 509.91972
  }
 }

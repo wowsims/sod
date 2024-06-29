@@ -31,7 +31,6 @@ const (
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
 	Ironfoe                  = 11684
-	HandOfJustice            = 11815
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
 	PipsSkinner              = 12709
@@ -359,40 +358,6 @@ func init() {
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 7, dot.OutcomeTick)
 				},
-			},
-		})
-	})
-
-	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if !character.AutoAttacks.AutoSwingMelee {
-			return
-		}
-
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 2,
-		}
-
-		character.RegisterAura(core.Aura{
-			Label:    "Hand of Justice",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-					return
-				}
-
-				if !icd.IsReady(sim) {
-					return
-				}
-
-				if sim.RandomFloat("HandOfJustice") < 0.02 {
-					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
-				}
 			},
 		})
 	})
