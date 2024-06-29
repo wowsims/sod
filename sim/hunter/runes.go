@@ -16,7 +16,7 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.3
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.4
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
@@ -261,6 +261,13 @@ func (hunter *Hunter) tntDamageFlatBonus() float64 {
 		return hunter.GetStat(stats.AttackPower) * 0.5
 	}
 	return 0.0
+}
+
+func (hunter *Hunter) trapRange() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		return 35;
+	}
+	return 5;
 }
 
 func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
