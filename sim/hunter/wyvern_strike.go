@@ -31,6 +31,9 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 8,
@@ -62,7 +65,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			weaponDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
