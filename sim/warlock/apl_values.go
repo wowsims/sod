@@ -48,26 +48,33 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 	for _, spell := range warlock.DrainSoul {
 		if spell.CurDot().IsActive() {
 			activeDrainSoul = spell
+			break
 		}
 	}
 	if activeDrainSoul == nil {
 		return false
 	}
 
-	var activeCurseOfAgony *core.Spell
+	var curseOfAgonyDuration time.Duration = 0
 	for _, spell := range warlock.CurseOfAgony {
 		if spell.CurDot().IsActive() {
-			activeCurseOfAgony = spell
+			curseOfAgonyDuration = spell.CurDot().RemainingDuration(sim)
+			break
 		}
 	}
 
+	var curseOfDoomDuration time.Duration = 0
+	if warlock.CurseOfDoom.CurDot().IsActive() {
+		curseOfDoomDuration = warlock.CurseOfDoom.CurDot().RemainingDuration(sim)
+	}
+
 	curseRefresh := max(
-		activeCurseOfAgony.CurDot().RemainingDuration(sim),
-		warlock.CurseOfDoom.CurDot().RemainingDuration(sim),
+		curseOfAgonyDuration,
+		curseOfDoomDuration,
 		warlock.CurseOfElementsAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
 		// warlock.CurseOfTonguesAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
 		// warlock.CurseOfWeaknessAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-	) - activeCurseOfAgony.CastTime()
+	)
 
 	hauntRefresh := 1000 * time.Second
 	if warlock.HauntDebuffAuras != nil {
