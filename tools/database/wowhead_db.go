@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/tailscale/hujson"
@@ -147,9 +149,10 @@ func (wrs WowheadRandomSuffix) ToProto() *proto.ItemRandomSuffix {
 }
 
 type WowheadItem struct {
-	ID   int32  `json:"id"`
-	Name string `json:"name"`
-	Icon string `json:"icon"`
+	ID      int32  `json:"id"`
+	Name    string `json:"name"`
+	Icon    string `json:"icon"`
+	Version int32  `json:"versionNum"`
 
 	Quality       int32  `json:"quality"`
 	Ilvl          int32  `json:"itemLevel"`
@@ -227,13 +230,37 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 		Name:                wi.Name,
 		Icon:                wi.Icon,
 		Ilvl:                wi.Ilvl,
-		Phase:               wi.Phase,
+		Phase:               wi.getPhase(),
 		RequiresLevel:       wi.RequiresLevel,
 		FactionRestriction:  wi.getFactionRstriction(),
 		ClassAllowlist:      wi.getClassRestriction(),
 		Sources:             sources,
 		RandomSuffixOptions: wi.RandomSuffixOptions,
 	}
+}
+
+var SoDVersionRegex = regexp.MustCompile(`115[0-9]+`)
+
+func (wi WowheadItem) getPhase() int32 {
+	versionNumStr := strconv.Itoa(int(wi.Version))
+	if SoDVersionRegex.MatchString(versionNumStr) && wi.Phase != 0 {
+		return wi.Phase
+	}
+
+	switch wi.Version {
+	case 11500:
+		return 1
+	case 11501:
+		return 2
+	case 11502:
+		return 3
+	case 11503:
+		return 4
+	case 11504:
+		return 5
+	}
+
+	return 1
 }
 
 func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
