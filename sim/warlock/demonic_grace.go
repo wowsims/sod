@@ -41,7 +41,7 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 
 	warlock.DemonicGrace = warlock.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 425463},
-		Flags:    core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:    core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDemonology,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

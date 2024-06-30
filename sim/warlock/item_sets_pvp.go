@@ -31,16 +31,12 @@ var ItemSetChampionsThreads = core.NewItemSet(core.ItemSet{
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.DefaultCast.CastTime -= time.Millisecond * 200
-						}
+						spell.DefaultCast.CastTime -= time.Millisecond * 200
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.DefaultCast.CastTime += time.Millisecond * 200
-						}
+						spell.DefaultCast.CastTime += time.Millisecond * 200
 					}
 				},
 			})
@@ -73,16 +69,12 @@ var ItemSetLieutenantCommandersThreads = core.NewItemSet(core.ItemSet{
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.DefaultCast.CastTime -= time.Millisecond * 200
-						}
+						spell.DefaultCast.CastTime -= time.Millisecond * 200
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.DefaultCast.CastTime += time.Millisecond * 200
-						}
+						spell.DefaultCast.CastTime += time.Millisecond * 200
 					}
 				},
 			})

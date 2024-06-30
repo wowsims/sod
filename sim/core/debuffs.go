@@ -87,7 +87,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.MarkOfChaos {
-		MakePermanent(MarkOfChaosDebuffAura(target, level))
+		MakePermanent(MarkOfChaosDebuffAura(target))
 	} else {
 		if debuffs.CurseOfElements {
 			MakePermanent(CurseOfElementsAura(target, level))
@@ -582,14 +582,14 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 }
 
 // Mark of Chaos does not stack with Curse of Shadows and Elements
-func MarkOfChaosDebuffAura(target *Unit, level int32) *Aura {
+func MarkOfChaosDebuffAura(target *Unit) *Aura {
 	dmgMod := 1.11
 	resistance := 75.0
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Mark of Chaos",
 		ActionID: ActionID{SpellID: 461615},
-		Duration: time.Second * 60,
+		Duration: NeverExpires, // Duration is set by the applying curse
 	})
 
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast

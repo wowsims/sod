@@ -17,11 +17,20 @@ func (warlock *Warlock) ApplyRunes() {
 
 	// Cloak Runes
 	warlock.applyDecimation()
+	warlock.applyMarkOfChaos()
 
+	// Chest Runes
 	warlock.applyDemonicTactics()
-	warlock.applyDemonicPact()
+
+	// Belt Runes
 	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
+
+	// Pants Runes
+	warlock.applyEverlastingAffliction()
+	warlock.applyDemonicPact()
+
+	// Boots Runes
 	warlock.applyDemonicKnowledge()
 	warlock.applyDanceOfTheWicked()
 }
@@ -115,16 +124,12 @@ func (warlock *Warlock) applyDecimation() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SoulFire {
-				if spell != nil {
-					spell.CastTimeMultiplier *= .6
-				}
+				spell.CastTimeMultiplier *= .6
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SoulFire {
-				if spell != nil {
-					spell.CastTimeMultiplier /= .6
-				}
+				spell.CastTimeMultiplier /= .6
 			}
 		},
 	})
@@ -144,6 +149,23 @@ func (warlock *Warlock) applyDecimation() {
 	})
 }
 
+func (warlock *Warlock) applyMarkOfChaos() {
+	if !warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos) {
+		return
+	}
+
+	warlock.MarkOfChaosAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		return core.MarkOfChaosDebuffAura(target)
+	})
+}
+
+func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+	aura := warlock.MarkOfChaosAuras.Get(target)
+	aura.Duration = dot.Duration
+	aura.UpdateExpires(sim, dot.ExpiresAt())
+	aura.Activate(sim)
+}
+
 func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
 	if dot.RemainingDuration(sim) < time.Second*6 {
 		ticksLeft := dot.NumberOfTicks - dot.TickCount
@@ -153,16 +175,28 @@ func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
 	}
 }
 
-func (warlock *Warlock) EverlastingAfflictionRefresh(sim *core.Simulation, target *core.Unit) {
+func (warlock *Warlock) applyEverlastingAffliction() {
 	if !warlock.HasRune(proto.WarlockRune_RuneLegsEverlastingAffliction) {
 		return
 	}
 
-	for _, spell := range warlock.Corruption {
-		if spell.Dot(target).IsActive() {
-			spell.Dot(target).Rollover(sim)
-		}
-	}
+	affectedSpellCodes := []int32{SpellCode_WarlockDrainLife, SpellCode_WarlockDrainSoul, SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockSearingPain, SpellCode_WarlockIncinerate, SpellCode_WarlockHaunt}
+	warlock.RegisterAura(core.Aura{
+		Label:    "Everlasting Affliction Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				for _, spell := range warlock.Corruption {
+					if spell.Dot(result.Target).IsActive() {
+						spell.Dot(result.Target).Rollover(sim)
+					}
+				}
+			}
+		},
+	})
 }
 
 func (warlock *Warlock) applyDanceOfTheWicked() {
@@ -352,6 +386,47 @@ const SoulSiphonDoTMultiplier = 0.06
 const SoulSiphonDoTMultiplierExecute = 0.50
 const SoulSiphonDoTMultiplierMax = 0.18
 const SoulSiphonDoTMultiplierMaxExecute = 1.50
+
+func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus bool) float64 {
+	multiplier := 1.0
+	perDoTMultiplier := core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplier, SoulSiphonDoTMultiplierExecute)
+	maxMultiplier := 1 + core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplierMax, SoulSiphonDoTMultiplierMaxExecute)
+
+	for _, spell := range warlock.Corruption {
+		if spell.Dot(target).IsActive() {
+			multiplier += perDoTMultiplier
+			break
+		}
+	}
+
+	for _, spell := range warlock.CurseOfAgony {
+		if spell.Dot(target).IsActive() {
+			multiplier += perDoTMultiplier
+			break
+		}
+	}
+
+	if warlock.CurseOfDoom != nil && warlock.CurseOfDoom.Dot(target).IsActive() {
+		multiplier += perDoTMultiplier
+	}
+
+	for _, spell := range warlock.SiphonLife {
+		if spell.Dot(target).IsActive() {
+			multiplier += perDoTMultiplier
+			break
+		}
+	}
+
+	if warlock.UnstableAffliction != nil && warlock.UnstableAffliction.Dot(target).IsActive() {
+		multiplier += perDoTMultiplier
+	}
+
+	if warlock.Haunt != nil && warlock.HauntDebuffAuras.Get(target).IsActive() {
+		multiplier += perDoTMultiplier
+	}
+
+	return max(multiplier, maxMultiplier)
+}
 
 func (warlock *Warlock) applyDemonicTactics() {
 	if !warlock.HasRune(proto.WarlockRune_RuneChestDemonicTactics) {
