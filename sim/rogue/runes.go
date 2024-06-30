@@ -2,7 +2,7 @@ package rogue
 
 import (
 	"time"
-
+	"fmt"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -190,15 +190,14 @@ func (rogue *Rogue) registerBladeDance() {
 	cachedBonusAP := 0.0
 	apProcAura := rogue.RegisterAura(core.Aura{
 		Label: "Defender's Resolve",
-		// TODO: Verify ID. I couldn't find a separate one at the moment
 		ActionID: core.ActionID{SpellID: 462230},
 		Duration: rogue.bladeDanceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			cachedBonusAP = 4 * max(rogue.GetStat(stats.Defense)-float64(5*rogue.Level), 0)
+			cachedBonusAP = 4 * max(rogue.GetStat(stats.Defense), 0)
 			rogue.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+			rogue.AddStatDynamic(sim, stats.AttackPower, -cachedBonusAP)
 		},
 	})
 
