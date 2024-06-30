@@ -161,36 +161,12 @@ var ItemAllowList = map[int32]struct{}{
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
-	11815:  {}, // Hand of Justice
-	11819:  {}, // Second Wind
-	11832:  {}, // Burst of Knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
-	13164:  {}, // Heart of the Scale
-	13382:  {}, // Cannonball Runner
-	17064:  {}, // Shard of the Scale
-	17073:  {}, // Earthshaker
-	17082:  {}, // Shard of the Flame
-	17182:  {}, // Sulfuras, Hand of Ragnaros
-	17193:  {}, // Sulfuron Hammer
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
-	18406:  {}, // Onyxia Blood Talisman
-	18534:  {}, // Rod of the Ogre Magi
-	18820:  {}, // Talisman of Ephemeral Power
-	19166:  {}, // Black Amnesty
-	19170:  {}, // Ebon Hand
 	20522:  {}, // Feral Staff
-	21326:  {}, // Defender of the Timbermaw
-	22208:  {}, // Lavastone Hammer
-	22321:  {}, // Heart of Wyrmthalak
-	22333:  {}, // Hammer of Divine Might
-	22395:  {}, // Totem of Rage
-	22400:  {}, // Libram of Truth
-	23200:  {}, // Totem of Sustaining
-	23201:  {}, // Libram of Divinity
-	23202:  {}, // Libram of Divinity
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity
 	34578:  {}, // Battlemaster's Determination

@@ -174,6 +174,7 @@ func main() {
 
 // Filters out entities which shouldn't be included anywhere.
 func ApplyGlobalFilters(db *database.WowDatabase) {
+	itemNameMap := make(map[string]int32, len(db.Items))
 	db.Items = core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
@@ -184,6 +185,24 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+
+		if _, ok := itemNameMap[item.Name]; !ok {
+			itemNameMap[item.Name] = item.Id
+		}
+
+		return true
+	})
+
+	// Try to filter out items reworked in SoD. We do this by storing the max ID for each item name in the map.
+	// This works in most cases because items typically don't share names, however one example of items where this fails is:
+	// https://www.wowhead.com/classic/item=23206/mark-of-the-champion and https://www.wowhead.com/classic/item=23207/mark-of-the-champion
+	// In this case, we can check the icon to see if they're the same or not.
+	// Ultimately we want to get rid of any item with the same name and icon, but a lower ID than another entry
+	db.Items = core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
+		if id, ok := itemNameMap[item.Name]; ok && db.Items[id].Icon == db.Items[item.Id].Icon && id > item.Id {
+			return false
+		}
+
 		return true
 	})
 

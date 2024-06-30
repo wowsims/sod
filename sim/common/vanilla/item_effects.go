@@ -42,8 +42,8 @@ const (
 	FiendishMachete          = 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
-	MarkOfTheChampionPhys    = 23206
-	MarkOfTheChampionSpell   = 23207
+	// MarkOfTheChampionPhys    = 23206
+	// MarkOfTheChampionSpell   = 23207
 )
 
 func init() {
@@ -581,21 +581,21 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 150
-		}
-	})
+	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+	// 		character.PseudoStats.MobTypeAttackPower += 150
+	// 	}
+	// })
 
-	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeSpellPower += 85
-		}
-	})
+	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+	// 		character.PseudoStats.MobTypeSpellPower += 85
+	// 	}
+	// })
 
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
