@@ -1159,7 +1159,7 @@ export class Player<SpecType extends Spec> {
 		for (const zoneName in ExcludedZones) {
 			const zoneId = ExcludedZones[zoneName];
 
-			if (typeof zoneId == 'number') {
+			if (typeof zoneId == 'number' && zoneId != 0) {
 				itemData = filterItems(
 					itemData,
 					item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
