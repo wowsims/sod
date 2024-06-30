@@ -55,26 +55,10 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 		return false
 	}
 
-	var curseOfAgonyDuration time.Duration = 0
-	for _, spell := range warlock.CurseOfAgony {
-		if spell.CurDot().IsActive() {
-			curseOfAgonyDuration = spell.CurDot().RemainingDuration(sim)
-			break
-		}
+	curseRefresh := time.Duration(0)
+	if warlock.ActiveCurseAura != nil {
+		curseRefresh = warlock.ActiveCurseAura.RemainingDuration(sim)
 	}
-
-	var curseOfDoomDuration time.Duration = 0
-	if warlock.CurseOfDoom.CurDot().IsActive() {
-		curseOfDoomDuration = warlock.CurseOfDoom.CurDot().RemainingDuration(sim)
-	}
-
-	curseRefresh := max(
-		curseOfAgonyDuration,
-		curseOfDoomDuration,
-		warlock.CurseOfElementsAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		// warlock.CurseOfTonguesAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		// warlock.CurseOfWeaknessAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-	)
 
 	hauntRefresh := 1000 * time.Second
 	if warlock.HauntDebuffAuras != nil {
@@ -83,16 +67,14 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 			warlock.Haunt.TravelTime()
 	}
 
-	timeUntilRefresh := curseRefresh
-
 	// the amount of ticks we have left, assuming we continue channeling
 	dsDot := warlock.ChanneledDot
-	ticksLeft := int(timeUntilRefresh/dsDot.TickPeriod()) + 1
+	ticksLeft := int(curseRefresh/dsDot.TickPeriod()) + 1
 	ticksLeft = min(ticksLeft, int(hauntRefresh/dsDot.TickPeriod()))
 	ticksLeft = min(ticksLeft, dsDot.NumTicksRemaining(sim))
 
 	// amount of ticks we'd get assuming we recast drain soul
-	recastTicks := int(timeUntilRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)) + 1
+	recastTicks := int(curseRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)) + 1
 	recastTicks = min(recastTicks, int(hauntRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)))
 	recastTicks = min(recastTicks, int(dsDot.NumberOfTicks))
 
