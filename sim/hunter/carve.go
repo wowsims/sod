@@ -60,7 +60,11 @@ func (hunter *Hunter) registerCarveSpell() {
 			curTarget := target
 			for idx := range results {
 				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				results[idx] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				if curTarget == target {
+					results[idx] = spell.CalcDamage(sim, curTarget, baseDamage * 1.5, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				} else {
+					results[idx] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				}
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
@@ -74,7 +78,11 @@ func (hunter *Hunter) registerCarveSpell() {
 				curTarget := target
 				for idx := range results {
 					baseDamage := ohSpell.Unit.OHNormalizedWeaponDamage(sim, ohSpell.MeleeAttackPower())
-					results[idx] = ohSpell.CalcDamage(sim, curTarget, baseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					if curTarget == target {
+						results[idx] = ohSpell.CalcDamage(sim, curTarget, baseDamage * 1.5, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					} else {
+						results[idx] = ohSpell.CalcDamage(sim, curTarget, baseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					}
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 
