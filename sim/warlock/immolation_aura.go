@@ -22,14 +22,9 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1, // + 0.02*float64(warlock.Talents.Emberstorm), Not affected by any talent atm
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -72,7 +67,7 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	warlock.ImmolationAura = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerImmolationAura)},
 		SpellSchool: core.SpellSchoolFire,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete | WarlockFlagDestruction,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

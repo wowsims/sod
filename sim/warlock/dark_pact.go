@@ -17,7 +17,7 @@ func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
 		ProcMask:      core.ProcMaskEmpty,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | WarlockFlagAffliction,
 		Rank:          rank,
 		RequiredLevel: level,
 

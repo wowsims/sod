@@ -837,7 +837,7 @@ export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos,
 
 export const OccultPoison = withLabel(
 	makeBooleanDebuffInput({
-		actionId: () => ActionId.fromItemId(226374),
+		actionId: player => player.getMatchingItemActionId([{ id: 226374, minLevel: 54 }]),
 		fieldName: 'occultPoison',
 	}),
 	'Occult Poison',
