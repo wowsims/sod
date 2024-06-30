@@ -579,5 +579,6 @@ func (spell *Spell) applyTargetHealingModifiers(damage float64, attackTable *Att
 	}
 
 	return damage *
-		attackTable.Defender.PseudoStats.HealingTakenMultiplier
+		attackTable.Defender.PseudoStats.HealingTakenMultiplier *
+		attackTable.HealingDealtMultiplier
 }

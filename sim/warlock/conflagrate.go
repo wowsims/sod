@@ -7,14 +7,16 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ConflagrateRanks = 4
+
 func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	hasBackdraftRune := warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft)
 
-	spellId := [5]int32{0, 17962, 18930, 18931, 18932}[rank]
-	baseDamageMin := [5]float64{0, 249, 319, 395, 447}[rank]
-	baseDamageMax := [5]float64{0, 316, 400, 491, 557}[rank]
-	manaCost := [5]float64{0, 165, 200, 230, 255}[rank]
-	level := [5]int{0, 0, 48, 54, 60}[rank]
+	spellId := [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
+	baseDamageMin := [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
+	baseDamageMax := [ConflagrateRanks + 1]float64{0, 316, 400, 491, 557}[rank]
+	manaCost := [ConflagrateRanks + 1]float64{0, 165, 200, 230, 255}[rank]
+	level := [ConflagrateRanks + 1]int{0, 0, 48, 54, 60}[rank]
 
 	spCoeff := 0.429
 
@@ -23,13 +25,12 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | WarlockFlagDestruction,
 		Rank:          rank,
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -44,14 +45,9 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
@@ -93,13 +89,12 @@ func (warlock *Warlock) registerConflagrateSpell() {
 		return
 	}
 
-	maxRank := 4
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getConflagrateConfig(i)
+	warlock.Conflagrate = make([]*core.Spell, 0)
+	for rank := 1; rank <= ConflagrateRanks; rank++ {
+		config := warlock.getConflagrateConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.Conflagrate = warlock.GetOrRegisterSpell(config)
+			warlock.Conflagrate = append(warlock.Conflagrate, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

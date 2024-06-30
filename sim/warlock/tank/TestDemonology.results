@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.89806
+  weights: -0.87757
   weights: 0
-  weights: 0.50035
-  weights: 0
-  weights: 0
+  weights: 0.48789
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.05802
-  weights: 1.71868
+  weights: 0
+  weights: 0
+  weights: 7.13039
+  weights: 1.69787
   weights: 0
   weights: 0
   weights: 0
@@ -99,63 +99,63 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 254.30666
-  tps: 145.30325
+  dps: 257.32939
+  tps: 145.6665
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 608.96109
-  tps: 1110.02305
+  dps: 612.61109
+  tps: 1110.79772
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 571.32438
-  tps: 1555.10272
+  dps: 575.30968
+  tps: 1556.37388
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 571.32438
-  tps: 1048.37234
+  dps: 575.30968
+  tps: 1049.64351
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 600.89673
-  tps: 1104.69318
+  dps: 607.36437
+  tps: 1109.2252
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 338.06768
+  dps: 340.50081
   tps: 1234.64982
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 338.06768
+  dps: 340.50081
   tps: 682.83019
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 363.89419
+  dps: 366.5883
   tps: 728.53424
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 604.64884
-  tps: 1103.61567
+  dps: 609.0058
+  tps: 1105.3559
  }
 }

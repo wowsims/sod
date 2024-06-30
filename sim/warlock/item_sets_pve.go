@@ -116,15 +116,15 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if warlock.LifeTap != nil {
-						warlock.LifeTap.DamageMultiplier *= 1.5
-						warlock.LifeTap.ThreatMultiplier *= -1
+					for _, spell := range warlock.LifeTap {
+						spell.DamageMultiplier *= 1.5
+						spell.ThreatMultiplier *= -1
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if warlock.LifeTap != nil {
-						warlock.LifeTap.DamageMultiplier /= 1.5
-						warlock.LifeTap.ThreatMultiplier *= -1
+					for _, spell := range warlock.LifeTap {
+						spell.DamageMultiplier /= 1.5
+						spell.ThreatMultiplier *= -1
 					}
 				},
 			})
@@ -150,9 +150,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.CastTimeMultiplier -= 1
-						}
+						spell.CastTimeMultiplier -= 1
 					}
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier -= 1
@@ -160,9 +158,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						if spell != nil {
-							spell.CastTimeMultiplier += 1
-						}
+						spell.CastTimeMultiplier += 1
 					}
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier += 1
@@ -238,16 +234,12 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.SoulFire {
-						if spell != nil {
-							spell.CastTimeMultiplier -= 1
-						}
+						spell.CastTimeMultiplier -= 1
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.SoulFire {
-						if spell != nil {
-							spell.CastTimeMultiplier += 1
-						}
+						spell.CastTimeMultiplier += 1
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

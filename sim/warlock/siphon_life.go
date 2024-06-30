@@ -8,17 +8,19 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const SiphonLifeRanks = 4
+
 func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
-	spellId := [5]int32{0, 18265, 18879, 18880, 18881}[rank]
-	baseDamage := [5]float64{0, 15, 22, 33, 45}[rank]
-	manaCost := [5]float64{0, 150, 205, 285, 365}[rank]
-	level := [5]int{0, 0, 38, 48, 58}[rank]
+	spellId := [SiphonLifeRanks + 1]int32{0, 18265, 18879, 18880, 18881}[rank]
+	baseDamage := [SiphonLifeRanks + 1]float64{0, 15, 22, 33, 45}[rank]
+	manaCost := [SiphonLifeRanks + 1]float64{0, 150, 205, 285, 365}[rank]
+	level := [SiphonLifeRanks + 1]int{0, 0, 38, 48, 58}[rank]
 
 	spellCoeff := 0.05
 	actionID := core.ActionID{SpellID: spellId}
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 
-	baseDamage *= 1 + 0.02*float64(warlock.Talents.ShadowMastery)
+	baseDamage *= 1 + warlock.shadowMasteryBonus()
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
@@ -28,7 +30,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         SpellFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary,
+		Flags:         WarlockFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -40,8 +42,6 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 		},
-
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
 
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
@@ -114,13 +114,12 @@ func (warlock *Warlock) registerSiphonLifeSpell() {
 		return
 	}
 
-	maxRank := 4
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getSiphonLifeBaseConfig(i)
+	warlock.SiphonLife = make([]*core.Spell, 0)
+	for rank := 1; rank <= SiphonLifeRanks; rank++ {
+		config := warlock.getSiphonLifeBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.SiphonLife = warlock.GetOrRegisterSpell(config)
+			warlock.SiphonLife = append(warlock.SiphonLife, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }
