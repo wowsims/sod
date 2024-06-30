@@ -44,6 +44,8 @@ const (
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	Felstriker				 = 12590
+	EmpyreanDemolisher		 = 228397
 )
 
 func init() {
@@ -521,6 +523,48 @@ func init() {
 			},
 		})
 	})
+	
+
+	core.NewItemEffect(Felstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+	
+		procMask := character.GetProcMaskForItem(12590)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance,stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Felstriker",  
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if ppmm.Proc(sim, spell.ProcMask, "Felstriker") {
+					effectAura.Activate(sim)
+				}
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label:    "Empyrean Demolisher Haste Aura",
+			ActionID: core.ActionID{SpellID: 21165},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.2)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.2)
+			},
+		})
+	})
+
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
