@@ -59,7 +59,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost: manaCost * (1 - 0.02*float64(hunter.Talents.Efficiency)),
 		},
 
 		Cast: core.CastConfig{
