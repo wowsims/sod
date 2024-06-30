@@ -37,7 +37,7 @@ func (hunter *Hunter) registerRapidFire() {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.1)
 			}
 			if hasRapidKilling {
-				aura.Unit.MultiplyMeleeSpeed(sim, 1.4)
+				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.4)
 			}
 		},
 	})
