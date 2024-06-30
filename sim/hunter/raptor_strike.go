@@ -25,7 +25,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
-	flankingStrikeDmgMult := 0.1
 	// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 	raptorFuryDmgMult := 0.1
 
@@ -80,10 +79,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			multiplier := 1.0
-			if stacks := hunter.FlankingStrikeAura.GetStacks(); stacks > 0 {
-				multiplier *= 1 + flankingStrikeDmgMult*float64(stacks)
-			}
-
 			if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
 				multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
 			}
