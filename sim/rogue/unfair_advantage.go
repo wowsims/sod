@@ -11,6 +11,7 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 	if !rogue.HasRune(proto.RogueRune_RuneUnfairAdvantage) {
 		return
 	}
+	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 432274})
 
 	unfairAdvantage := rogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 432274},
@@ -44,8 +45,10 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// need to add parry
 			if result.Outcome == core.OutcomeDodge && icd.IsReady(sim) {
 				unfairAdvantage.Cast(sim, spell.Unit)
+				rogue.AddComboPoints(sim, 1, comboMetrics)
 				icd.Use(sim)
 			}
 		},
