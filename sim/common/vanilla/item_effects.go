@@ -44,8 +44,8 @@ const (
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
-	Felstriker				 = 12590
-	EmpyreanDemolisher		 = 228397
+	Felstriker		 = 12590
+	EmpyreanDemolisher	 = 228397 // 17112
 )
 
 func init() {
