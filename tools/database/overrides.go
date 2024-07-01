@@ -100,63 +100,7 @@ var ItemOverrides = []*proto.UIItem{
 }
 
 // Keep these sorted by item ID.
-var ItemAllowList = map[int32]struct{}{
-	11815: {}, // Hand of Justice
-	12590: {}, // Felstriker
-	15808: {}, // Fine Light Crossbow (for hunter testing).
-	18843: {},
-	18844: {},
-	18847: {},
-	18848: {},
-	19019: {}, // Thunderfury
-	19808: {}, // Rockhide Strongfish
-	20837: {}, // Sunstrider Axe
-	20966: {}, // Jade Pendant of Blasting
-	21625: {}, // Scarab Brooch
-	21685: {}, // Petrified Scarab
-	24114: {}, // Braided Eternium Chain
-	28572: {}, // Blade of the Unrequited
-	28830: {}, // Dragonspine Trophy
-	29383: {}, // Bloodlust Brooch
-	29387: {}, // Gnomeregan Auto-Blocker 600
-	29994: {}, // Thalassian Wildercloak
-	29996: {}, // Rod of the Sun King
-	30032: {}, // Red Belt of Battle
-	30627: {}, // Tsunami Talisman
-	30720: {}, // Serpent-Coil Braid
-	31193: {}, // Blade of Unquenched Thirst
-	32387: {}, // Idol of the Raven Goddess
-	32658: {}, // Badge of Tenacity
-	33135: {}, // Falling Star
-	33140: {}, // Blood of Amber
-	33143: {}, // Stone of Blades
-	33144: {}, // Facet of Eternity
-	33504: {}, // Libram of Divine Purpose
-	33506: {}, // Skycall Totem
-	33507: {}, // Stonebreaker's Totem
-	33508: {}, // Idol of Budding Life
-	33510: {}, // Unseen moon idol
-	33829: {}, // Hex Shrunken Head
-	33831: {}, // Berserkers Call
-	34472: {}, // Shard of Contempt
-	34473: {}, // Commendation of Kael'thas
-	37032: {}, // Edge of the Tuskarr
-	37574: {}, // Libram of Furious Blows
-	38072: {}, // Thunder Capacitor
-	38287: {}, // Empty Mug of Direbrew
-	38289: {}, // Coren's Lucky Coin
-	39208: {}, // Sigil of the Dark Rider
-	41752: {}, // Brunnhildar Axe
-	6360:  {}, // Steelscale Crushfish
-	8345:  {}, // Wolfshead Helm
-	9449:  {}, // Manual Crowd Pummeler
-
-	// SOD
-	211848: {},
-	211845: {},
-	215111: {}, // Gneuro-Linked Arcano-Filament Monocle
-	215114: {}, // Glowing Hyperconductive Scale Coif
-}
+var ItemAllowList = map[int32]struct{}{}
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
