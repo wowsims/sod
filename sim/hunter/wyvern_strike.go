@@ -6,12 +6,11 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 458436, 458481, 458482}[rank]
-	dotDamageCoeff := [4]float64{0, 3, 4, 6}[rank]
+	baseDamage := [4]float64{0, 3, 4, 6}[rank]
 	manaCost := [4]float64{0, 55, 75, 100}[rank]
 	level := [4]int{0, 1, 50, 60}[rank]
 
@@ -48,15 +47,14 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "WyvernStrike" + hunter.Label + strconv.Itoa(rank),
-				Tag:   "WyvernStrike",
+				Label: "WyvernStrike - Bleed" + hunter.Label + strconv.Itoa(rank),
+				Tag:   "WyvernStrike - Bleed",
 			},
 			NumberOfTicks: 8,
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dotDamage := dotDamageCoeff / 100 * 8 * hunter.GetStat(stats.AttackPower)
-				tickDamage := dotDamage / float64(dot.NumberOfTicks)
+				tickDamage := (baseDamage / 100 * 8 * hunter.WyvernStrike.MeleeAttackPower()) / float64(dot.NumberOfTicks)
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -65,7 +63,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
