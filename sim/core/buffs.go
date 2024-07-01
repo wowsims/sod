@@ -2100,7 +2100,7 @@ func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
 
 	return character.RegisterAura(Aura{
 		Label:    "Rallying Cry of the Dragonslayer",
-		ActionID: ActionID{SpellID: 24425},
+		ActionID: ActionID{SpellID: 22888},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
