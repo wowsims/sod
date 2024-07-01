@@ -32,6 +32,10 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 				GCD: time.Second,
 			},
 			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    rogue.NewTimer(),
+				Duration: time.Second * 30,
+			},
 		},
 
 		DamageMultiplier: 1,
@@ -39,7 +43,8 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := spell.MeleeAttackPower() * 0.15
+			baseDamage := spell.MeleeAttackPower() * 0.50
+			var combopoints int32 = 0
 
 			for idx := range results {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
@@ -48,10 +53,11 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
+				combopoints++
 			}
 
 			if results[0].Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, combopoints, spell.ComboPointMetrics())
 			}
 		},
 	})
