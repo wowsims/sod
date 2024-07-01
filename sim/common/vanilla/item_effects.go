@@ -535,10 +535,13 @@ func init() {
 			ActionID: core.ActionID{ItemID: Felstriker},
 			Name:     "Felstriker Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
 			ProcMask: procMask,
 			PPM:      1,
-			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				effectAura.Activate(sim)
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() {
+					effectAura.Activate(sim)
+				}
 			},
 		})
 	})

@@ -44,8 +44,8 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 449931},
 				Name:     "Fiery Strength",
 				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-				ProcMask: core.ProcMaskDirect,
 				Outcome:  core.OutcomeLanded,
+				ProcMask: core.ProcMaskDirect,
 				Handler:  handler,
 			})
 		},
@@ -125,6 +125,7 @@ var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "Item - The Furious Storm Proc (MH Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeMHAuto,
 				ProcChance: 0.06,
 				Handler:    handler,

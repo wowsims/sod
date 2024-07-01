@@ -100,7 +100,7 @@ dps_results: {
  key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
  value: {
   dps: 257.32939
-  tps: 145.6665
+  tps: 145.51741
  }
 }
 dps_results: {
