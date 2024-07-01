@@ -111,6 +111,7 @@ var ItemDenyList = map[int32]struct{}{
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
 	20522:  {}, // Feral Staff
+	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity
 	34578:  {}, // Battlemaster's Determination

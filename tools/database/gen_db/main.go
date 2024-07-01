@@ -85,7 +85,7 @@ func main() {
 	// Ultimately we want to get rid of any item with the same name and icon, but a lower ID than another entry
 	itemNameMap := make(map[string]string, len(wowheadDB.Items))
 	for id, item := range wowheadDB.Items {
-		if _, ok := itemNameMap[item.Name]; !ok {
+		if otherId, ok := itemNameMap[item.Name]; !ok || otherId < id {
 			itemNameMap[item.Name] = id
 		}
 	}
@@ -96,9 +96,9 @@ func main() {
 		// Most new items follow this pattern:
 		// - Higher item ID (this is a given)
 		// - Same icon
-		// - Ilvl either the same or only slightly modified (use a 5 ilvl diff threshold)
+		// - Ilvl either the same or only slightly modified (use a 3 ilvl diff threshold)
 		// - Have a later game version
-		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 5 && otherItem.Version != item.Version {
+		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 3 && otherItem.Version != item.Version {
 			return false
 		}
 
