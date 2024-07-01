@@ -1144,16 +1144,19 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceRaid)) {
+			const zoneIds: Array<number> = [];
 			for (const zoneName in RaidFilterOption) {
 				const zoneId = RaidFilterOption[zoneName];
 
-				if (typeof zoneId == 'number') {
-					itemData = filterItems(
-						itemData,
-						item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
-					);
+				if (typeof zoneId == 'number' && zoneId != 0) {
+					zoneIds.push(zoneId);
 				}
 			}
+
+			itemData = filterItems(
+				itemData,
+				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
+			);
 		}
 
 		for (const zoneName in ExcludedZones) {

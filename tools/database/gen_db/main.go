@@ -77,6 +77,28 @@ func main() {
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
 
+	// Try to filter out items reworked in SoD. We do this by storing the max ID for each item name in the map.
+	// This works in most cases because items typically don't share names, however one example of items where this fails is:
+	// https://www.wowhead.com/classic/item=23206/mark-of-the-champion and https://www.wowhead.com/classic/item=23207/mark-of-the-champion
+	// In this case, we can check the icon to see if they're the same or not.
+	// Ultimately we want to get rid of any item with the same name and icon, but a lower ID than another entry
+	itemNameMap := make(map[string]string, len(wowheadDB.Items))
+	for id, item := range wowheadDB.Items {
+		if _, ok := itemNameMap[item.Name]; !ok {
+			itemNameMap[item.Name] = id
+		}
+	}
+	filteredWHDBItems := core.FilterMap(wowheadDB.Items, func(_ string, item database.WowheadItem) bool {
+		id := itemNameMap[item.Name]
+		otherItem := wowheadDB.Items[id]
+
+		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && otherItem.Ilvl == item.Ilvl && otherItem.Version != item.Version {
+			return false
+		}
+
+		return true
+	})
+
 	for _, response := range itemTooltips {
 		if response.IsEquippable() {
 			// Item is not part of an item set OR the item set is not in the deny list
@@ -84,13 +106,13 @@ func main() {
 				// Only included items that are in wowheads gearplanner db
 				// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
 				item := response.ToItemProto()
-				if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
+				if _, ok := filteredWHDBItems[strconv.Itoa(int(item.Id))]; ok {
 					db.MergeItem(item)
 				}
 			}
 		}
 	}
-	for _, wowheadItem := range wowheadDB.Items {
+	for _, wowheadItem := range filteredWHDBItems {
 		item := wowheadItem.ToProto()
 		if _, ok := db.Items[item.Id]; ok {
 			db.MergeItem(item)
@@ -184,6 +206,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+
 		return true
 	})
 
