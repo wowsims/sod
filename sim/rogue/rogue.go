@@ -55,6 +55,9 @@ type Rogue struct {
 	ShurikenToss   *core.Spell
 	BetweenTheEyes *core.Spell
 	PoisonedKnife  *core.Spell
+	Blunderbuss    *core.Spell
+	FanOfKnives    *core.Spell
+	CrimsonTempest *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
