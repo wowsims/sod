@@ -32,7 +32,7 @@ const (
 	HookfangShanker          = 11635
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
-  Felstriker               = 12590
+  	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
 	JoonhosMercy             = 17054
@@ -45,8 +45,8 @@ const (
 	MarkOfTheChampionSpell   = 23207
 	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
-  FiendishMachete          = 228056 // 18310
-	EmpyreanDemolisher.      = 228397 // 17112
+  	FiendishMachete          = 228056 // 18310
+	EmpyreanDemolisher       = 228397 // 17112
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
 )
 
