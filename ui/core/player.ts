@@ -1229,6 +1229,7 @@ export class Player<SpecType extends Spec> {
 				return true;
 			});
 		}
+
 		return itemData;
 	}
 

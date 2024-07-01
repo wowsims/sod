@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"slices"
 	"strconv"
@@ -92,7 +93,12 @@ func main() {
 		id := itemNameMap[item.Name]
 		otherItem := wowheadDB.Items[id]
 
-		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && otherItem.Ilvl == item.Ilvl && otherItem.Version != item.Version {
+		// Most new items follow this pattern:
+		// - Higher item ID (this is a given)
+		// - Same icon
+		// - Ilvl either the same or only slightly modified (use a 5 ilvl diff threshold)
+		// - Have a later game version
+		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 5 && otherItem.Version != item.Version {
 			return false
 		}
 
