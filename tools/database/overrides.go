@@ -107,9 +107,12 @@ var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
+	17064:  {}, // Shard of the Scale
+	17082:  {}, // Shard of the Flame
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
+	18820:  {}, // Talisman of Ephemeral Power
 	20522:  {}, // Feral Staff
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
