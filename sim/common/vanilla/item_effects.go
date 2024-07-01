@@ -530,7 +530,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
-		procMask := character.GetProcMaskForItem(12590)
+		procMask := character.GetProcMaskForItem(Felstriker)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID: core.ActionID{ItemID: Felstriker},
 			Name:     "Felstriker Trigger",
