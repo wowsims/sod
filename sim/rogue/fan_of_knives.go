@@ -27,6 +27,7 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagColdBlooded,
 
