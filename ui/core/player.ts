@@ -694,7 +694,7 @@ export class Player<SpecType extends Spec> {
 		const meleeHit = (this.currentStats.finalStats?.stats[Stat.StatMeleeHit] || 0.0) / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
 		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertise] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
 		const suppression = 4.8;
-		const glancing = 24.0;
+		const glancing = 40.0;
 
 		const hasOffhandWeapon = this.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed !== undefined;
 		// Due to warrior HS bug, hit cap for crit cap calculation should be 8% instead of 27%
@@ -1144,16 +1144,19 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceRaid)) {
+			const zoneIds: Array<number> = [];
 			for (const zoneName in RaidFilterOption) {
 				const zoneId = RaidFilterOption[zoneName];
 
-				if (typeof zoneId == 'number') {
-					itemData = filterItems(
-						itemData,
-						item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
-					);
+				if (typeof zoneId == 'number' && zoneId != 0) {
+					zoneIds.push(zoneId);
 				}
 			}
+
+			itemData = filterItems(
+				itemData,
+				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
+			);
 		}
 
 		for (const zoneName in ExcludedZones) {
@@ -1226,6 +1229,7 @@ export class Player<SpecType extends Spec> {
 				return true;
 			});
 		}
+
 		return itemData;
 	}
 

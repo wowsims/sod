@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 276.2706
-  tps: 196.15213
+  dps: 270.23264
+  tps: 191.86517
  }
 }
 dps_results: {

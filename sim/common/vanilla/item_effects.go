@@ -30,20 +30,24 @@ const (
 	Firebreather             = 10797
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
-	Ironfoe                  = 11684
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
+	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
-	FiendishMachete          = 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	HandOfJustice            = 227989 // 11815
+	Ironfoe                  = 227991 // 11684
+	FiendishMachete          = 228056 // 18310
+	EmpyreanDemolisher       = 228397 // 17112
+	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
 )
 
 func init() {
@@ -522,9 +526,74 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(Felstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		procMask := character.GetProcMaskForItem(Felstriker)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{ItemID: Felstriker},
+			Name:     "Felstriker Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: procMask,
+			PPM:      1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				effectAura.Activate(sim)
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label:    "Empyrean Demolisher Haste Aura",
+			ActionID: core.ActionID{SpellID: 21165},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.2)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.2)
+			},
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
+
+	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 2,
+		}
+
+		character.RegisterAura(core.Aura{
+			Label:    "Hand of Justice",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.RandomFloat("HandOfJustice") < 0.02 {
+					icd.Use(sim)
+					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
+				}
+			},
+		})
+	})
 
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()

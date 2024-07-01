@@ -319,9 +319,9 @@ export default class ItemList<T extends ItemListType> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			if (listItemData.phase > this.player.sim.getPhase()) {
-				return false;
-			}
+			// if (listItemData.phase > this.player.sim.getPhase()) {
+			// 	return false;
+			// }
 
 			if (!!this.searchInput.value.length) {
 				const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
