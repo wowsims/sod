@@ -57,25 +57,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecHunter>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-
-		// const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
-		// if (rangedWeapon?.enchant?.effectId == 3608) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 40);
-		// }
-		// if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		// }
-		// if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		// }
-
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
 		// Default equipped gear.
