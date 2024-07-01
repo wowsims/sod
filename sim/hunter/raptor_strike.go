@@ -20,12 +20,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	baseDamage := [9]float64{0, 5, 11, 21, 34, 50, 80, 110, 140}[rank]
 	manaCost := [9]float64{0, 15, 25, 35, 45, 55, 70, 80, 100}[rank]
 	level := [9]int{0, 1, 8, 16, 24, 32, 40, 48, 56}[rank]
-	hasFlankingStrike := hunter.HasRune(proto.HunterRune_RuneLegsFlankingStrike)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
-	flankingStrikeDmgMult := 0.1
 	// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 	raptorFuryDmgMult := 0.1
 
@@ -67,7 +65,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * time.Duration(core.TernaryInt(hasMeleeSpecialist, 3, 6)),
+				Duration: time.Second * 6,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -80,10 +78,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			multiplier := 1.0
-			if stacks := hunter.FlankingStrikeAura.GetStacks(); stacks > 0 {
-				multiplier *= 1 + flankingStrikeDmgMult*float64(stacks)
-			}
-
 			if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
 				multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
 			}
@@ -114,10 +108,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 			if hunter.curQueueAura != nil {
 				hunter.curQueueAura.Deactivate(sim)
-			}
-
-			if hasFlankingStrike && sim.RandomFloat("Flanking Strike Refresh") < 0.2 {
-				hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 			}
 
 			if hasMeleeSpecialist && sim.RandomFloat("Raptor Strike Reset") < 0.3 {
