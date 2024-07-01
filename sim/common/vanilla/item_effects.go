@@ -32,7 +32,7 @@ const (
 	HookfangShanker          = 11635
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
-  	Felstriker               = 12590
+	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
 	JoonhosMercy             = 17054
@@ -45,7 +45,7 @@ const (
 	MarkOfTheChampionSpell   = 23207
 	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
-  	FiendishMachete          = 228056 // 18310
+	FiendishMachete          = 228056 // 18310
 	EmpyreanDemolisher       = 228397 // 17112
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
 )
@@ -525,30 +525,20 @@ func init() {
 			},
 		})
 	})
-	
 
 	core.NewItemEffect(Felstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
-	
-		procMask := character.GetProcMaskForItem(12590)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
-		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance,stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Felstriker",  
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-
-				if ppmm.Proc(sim, spell.ProcMask, "Felstriker") {
-					effectAura.Activate(sim)
-				}
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		procMask := character.GetProcMaskForItem(Felstriker)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID: core.ActionID{ItemID: Felstriker},
+			Name:     "Felstriker Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: procMask,
+			PPM:      1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				effectAura.Activate(sim)
 			},
 		})
 	})
@@ -566,7 +556,6 @@ func init() {
 			},
 		})
 	})
-
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
