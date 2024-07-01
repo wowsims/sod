@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestBM-Lvl25-AllItems-BeastmasterArmor"
  value: {
-  dps: 323.0693
-  tps: 165.71436
+  dps: 322.86052
+  tps: 165.63671
  }
 }
 dps_results: {
@@ -303,7 +303,7 @@ dps_results: {
  key: "TestBM-Lvl40-AllItems-BeastmasterArmor"
  value: {
   dps: 534.20293
-  tps: 221.85748
+  tps: 221.59178
  }
 }
 dps_results: {
