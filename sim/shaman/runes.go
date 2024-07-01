@@ -169,7 +169,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		ActionID: core.ActionID{SpellID: 408525},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense)-float64(5*shaman.Level), 0)
+			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense), 0)
 			shaman.AddStatDynamic(sim, stats.SpellPower, cachedBonusAP)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
