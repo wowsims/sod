@@ -30,7 +30,6 @@ const (
 	Firebreather             = 10797
 	VilerendSlicer           = 11603
 	HookfangShanker          = 11635
-	Ironfoe                  = 11684
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
 	PipsSkinner              = 12709
@@ -39,11 +38,14 @@ const (
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
-	FiendishMachete          = 18310
+	FiendishMachete          = 228056 // 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	HandOfJustice            = 227989 // 11815
+	Ironfoe                  = 227991 // 11684
+	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
 )
 
 func init() {
@@ -525,6 +527,40 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
+
+	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 2,
+		}
+
+		character.RegisterAura(core.Aura{
+			Label:    "Hand of Justice",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !icd.IsReady(sim) {
+					return
+				}
+
+				if sim.RandomFloat("HandOfJustice") < 0.02 {
+					icd.Use(sim)
+					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
+				}
+			},
+		})
+	})
 
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()
