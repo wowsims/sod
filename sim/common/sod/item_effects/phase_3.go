@@ -295,6 +295,7 @@ func init() {
 			ActionID: core.ActionID{SpellID: 446392},
 			Name:     "DMC Decay Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
 			PPM:      7.0, // Estimate from log
 			Handler:  handler,
@@ -380,6 +381,7 @@ func init() {
 			ActionID: core.ActionID{SpellID: 446389},
 			Name:     "Sandstorm Spell Hit",
 			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
 			PPM:      10.0, // Estimate from log
 			Handler:  handler,
@@ -568,7 +570,6 @@ func init() {
 			Name:       "Engulfing Shadows",
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellDamage,
-			Outcome:    core.OutcomeLanded,
 			ProcChance: .10,
 			Handler:    handler,
 		})

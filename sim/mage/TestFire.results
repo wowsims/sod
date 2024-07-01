@@ -713,6 +713,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 524.5098
+  tps: 392.18739
+ }
+}
+dps_results: {
  key: "TestFire-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1361.41656
@@ -736,8 +743,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 623.73308
-  tps: 467.31258
+  dps: 624.52617
+  tps: 467.25251
  }
 }
 dps_results: {

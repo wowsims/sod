@@ -138,6 +138,7 @@ func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent, itemId int32) {
 		ActionID: core.ActionID{SpellID: 13049},
 		Name:     "Emerald Dragon Whelp Proc",
 		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
 		ProcMask: procMask,
 		PPM:      1.0, // Reported by armaments discord
 		ICD:      time.Minute * 1,
