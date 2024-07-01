@@ -32,19 +32,21 @@ const (
 	HookfangShanker          = 11635
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
+  	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
-	FiendishMachete          = 228056 // 18310
 	Thunderfury              = 19019
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
 	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
+  	FiendishMachete          = 228056 // 18310
+	EmpyreanDemolisher       = 228397 // 17112
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
 )
 
@@ -523,6 +525,48 @@ func init() {
 			},
 		})
 	})
+	
+
+	core.NewItemEffect(Felstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+	
+		procMask := character.GetProcMaskForItem(12590)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance,stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Felstriker",  
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if ppmm.Proc(sim, spell.ProcMask, "Felstriker") {
+					effectAura.Activate(sim)
+				}
+			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label:    "Empyrean Demolisher Haste Aura",
+			ActionID: core.ActionID{SpellID: 21165},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.2)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.2)
+			},
+		})
+	})
+
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
