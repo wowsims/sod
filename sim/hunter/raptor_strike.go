@@ -23,6 +23,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasDualWieldSpec := hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
+	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
 	// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 	raptorFuryDmgMult := 0.1
@@ -59,7 +60,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost: manaCost * (1 - 0.02*float64(hunter.Talents.Efficiency)),
 		},
 
 		Cast: core.CastConfig{
@@ -90,7 +91,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			}
 
 			damage := multiplier * (weaponDamage + baseDamage)
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			resultMH := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			if hasCobraStrikes && resultMH.DidCrit() {
+				hunter.CobraStrikesAura.Activate(sim)
+				hunter.CobraStrikesAura.SetStacks(sim, 2)
+			}
 
 			if ohSpell != nil {
 				ohSpell.Cast(sim, target)
@@ -103,7 +108,11 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				}
 
 				damage := multiplier * (weaponDamage + baseDamage*0.5)
-				ohSpell.CalcAndDealDamage(sim, target, damage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				resultOH := ohSpell.CalcAndDealDamage(sim, target, damage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				if hasCobraStrikes && resultOH.DidCrit() {
+					hunter.CobraStrikesAura.Activate(sim)
+					hunter.CobraStrikesAura.SetStacks(sim, 2)
+				}
 			}
 
 			if hunter.curQueueAura != nil {

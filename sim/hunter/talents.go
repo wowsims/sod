@@ -50,6 +50,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.AddStat(stats.MeleeCrit, float64(hunter.Talents.KillerInstinct)*1*core.CritRatingPerCritChance)
 
 	if hunter.Talents.LethalShots > 0 {
+		hunter.AddStat(stats.MeleeCrit, 1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance)
 		hunter.AddBonusRangedCritRating(1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance)
 	}
 

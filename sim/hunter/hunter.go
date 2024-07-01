@@ -235,6 +235,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
 
+	hunter.PseudoStats.MeleeCritMultiplier = 1 + hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
