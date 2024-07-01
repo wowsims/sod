@@ -321,6 +321,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 416.30584
+  tps: 310.60515
+ }
+}
+dps_results: {
  key: "TestFrost-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1171.1584
