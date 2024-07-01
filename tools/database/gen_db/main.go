@@ -96,9 +96,10 @@ func main() {
 		// Most new items follow this pattern:
 		// - Higher item ID (this is a given)
 		// - Same icon
+		// - If the items have a ClassMask they should match
 		// - Ilvl either the same or only slightly modified (use a 3 ilvl diff threshold)
 		// - Have a later game version
-		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 3 && otherItem.Version != item.Version {
+		if otherItem.ID > item.ID && otherItem.Icon == item.Icon && (item.ClassMask == 0 || (otherItem.ClassMask&item.ClassMask) != 0) && math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 3 && otherItem.Version != item.Version {
 			return false
 		}
 
