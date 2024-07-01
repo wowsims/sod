@@ -608,6 +608,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 362.25999
+  tps: 198.48983
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 399.4045

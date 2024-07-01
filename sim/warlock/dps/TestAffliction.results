@@ -447,6 +447,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 1013.80267
+  tps: 928.71152
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1276.74579
