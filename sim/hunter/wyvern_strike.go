@@ -10,7 +10,7 @@ import (
 
 func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 458436, 458481, 458482}[rank]
-	baseDamage := [4]float64{0, 3, 4, 6}[rank]
+	bleedAttackPowerCoefficient := [4]float64{0, 3, 4, 6}[rank] / 100 * 8
 	manaCost := [4]float64{0, 55, 75, 100}[rank]
 	level := [4]int{0, 1, 50, 60}[rank]
 
@@ -54,7 +54,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickDamage := (baseDamage / 100 * 8 * hunter.WyvernStrike.MeleeAttackPower()) / float64(dot.NumberOfTicks)
+				tickDamage := (bleedAttackPowerCoefficient * hunter.WyvernStrike.MeleeAttackPower()) / float64(dot.NumberOfTicks)
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
