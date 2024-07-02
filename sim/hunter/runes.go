@@ -41,6 +41,7 @@ func (hunter *Hunter) ApplyRunes() {
 	// hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
 	hunter.applyRaptorFury()
+	hunter.applyCobraSlayer()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -246,6 +247,36 @@ func (hunter *Hunter) applyRaptorFury() {
 		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
+	})
+}
+
+func (hunter *Hunter) applyCobraSlayer() {
+	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+		return
+	}
+
+	hunter.RegisterAura(core.Aura{
+		Label:    "Cobra Slayer",
+		Duration: core.NeverExpires,
+		MaxStacks: 20,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeDodge) {
+				aura.SetStacks(sim, 1);
+				hunter.DefensiveState.Activate(sim)
+			} else if result.Outcome.Matches(core.OutcomeLanded) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
+						aura.SetStacks(sim, 1);
+						hunter.DefensiveState.Activate(sim)
+					} else {
+						aura.AddStack(sim)
+					}
+				}
+			}
+		},
 	})
 }
 
