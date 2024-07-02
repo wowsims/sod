@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
@@ -13,6 +12,10 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	baseDamage := [5]float64{0, 25, 45, 75, 115}[rank]
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
+
+	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer)
+	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
+	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
 	raptorFuryDmgMult := 0.1
 	spellConfig := core.SpellConfig{
@@ -45,16 +48,28 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		CritDamageBonus: hunter.mortalShots(),
 		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			hunter.DefensiveState.Deactivate(sim)
 
+			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
+				hunter.RaptorStrike.CD.Reset()
+			}
+
 			multiplier := 1.0
-			if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
-				multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
+			if hasRaptorFury {
+				if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
+					multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
+				}
 			}
 			
-			damage := multiplier * (baseDamage + (hunter.GetStat(stats.AttackPower) * 0.4))
+			damage := baseDamage
+			if hasCobraSlayer {
+				damage += spell.MeleeAttackPower() * 0.4
+			}
+			damage *= multiplier
+
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	}
@@ -62,45 +77,20 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	return spellConfig
 }
 
-func (hunter *Hunter) registerCobraSlayerAura() {
-	hunter.RegisterAura(core.Aura{
-		Label:    "Cobra Slayer Trigger",
-		Duration: core.NeverExpires,
-		MaxStacks: 20,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
-				aura.SetStacks(sim, 1);
-				hunter.DefensiveState.Activate(sim)
-			} else if result.Outcome.Matches(core.OutcomeLanded) {
-				if spell.ProcMask == core.ProcMaskMeleeMHAuto || spell.ProcMask == core.ProcMaskMeleeOHAuto {
-					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
-						aura.SetStacks(sim, 1);
-						hunter.DefensiveState.Activate(sim)
-					} else {
-						aura.AddStack(sim)
-					}
-				}
-			}
-		},
-	})
-
+func (hunter *Hunter) registerMongooseBiteSpell() {
 	hunter.DefensiveState = hunter.RegisterAura(core.Aura{
 		Label:    "Defensive State",
 		ActionID: core.ActionID{SpellID: 5302},
 		Duration: time.Second * 5,
-	})
-}
 
-func (hunter *Hunter) registerMongooseBiteSpell() {
-	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
-		return
-	}
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeDodge) {
+				aura.Activate(sim)
+			}
+		},
+	})
 	
 	maxRank := 4
-	hunter.registerCobraSlayerAura()
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getMongooseBiteConfig(i)
 		if config.RequiredLevel <= int(hunter.Level) {

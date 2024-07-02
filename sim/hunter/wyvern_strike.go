@@ -45,6 +45,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		CritDamageBonus: hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
