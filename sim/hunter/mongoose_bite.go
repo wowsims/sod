@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"log"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -78,7 +77,6 @@ func (hunter *Hunter) registerCobraSlayerAura() {
 			} else if result.Outcome.Matches(core.OutcomeLanded) {
 				if spell.ProcMask == core.ProcMaskMeleeMHAuto || spell.ProcMask == core.ProcMaskMeleeOHAuto {
 					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
-						log.Println(">>> AUTO PROC <<<")
 						aura.SetStacks(sim, 1);
 						hunter.DefensiveState.Activate(sim)
 					} else {
