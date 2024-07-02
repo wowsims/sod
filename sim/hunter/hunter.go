@@ -58,6 +58,7 @@ type Hunter struct {
 	RaptorStrike   *core.Spell
 	FlankingStrike *core.Spell
 	WyvernStrike   *core.Spell
+	MongooseBite   *core.Spell
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
@@ -71,6 +72,9 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
+
+	// The aura that allows you to cast Mongoose Bite
+	DefensiveState    *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
@@ -121,6 +125,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
 	hunter.registerWyvernStrikeSpell()
+	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
 
@@ -237,7 +242,6 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
 
-	hunter.PseudoStats.MeleeCritMultiplier = 1 + hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
