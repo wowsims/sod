@@ -73,7 +73,7 @@ type Hunter struct {
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
 
-	// The aura that allows you to cast Mongoose Bite, currently only activated by the Cobra Slayer rune
+	// The aura that allows you to cast Mongoose Bite
 	DefensiveState    *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura

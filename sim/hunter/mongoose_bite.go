@@ -78,6 +78,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 }
 
 func (hunter *Hunter) registerMongooseBiteSpell() {
+	// Aura is only used as a pre-requisite for Mongoose Bite
 	hunter.DefensiveState = hunter.RegisterAura(core.Aura{
 		Label:    "Defensive State",
 		ActionID: core.ActionID{SpellID: 5302},
