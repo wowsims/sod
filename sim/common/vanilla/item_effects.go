@@ -539,6 +539,7 @@ func init() {
 		})
 	})
 
+	// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
 	nightfallEffect := func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -577,9 +578,13 @@ func init() {
 			},
 		})
 	}
+	// https://www.wowhead.com/classic/item=19169/nightfall
 	core.NewItemEffect(Nightfall, nightfallEffect)
+	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
 	core.NewItemEffect(ReavingNightfall, nightfallEffect)
 
+	// https://www.wowhead.com/classic/item=12590/felstriker
+	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
 	core.NewItemEffect(Felstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -597,6 +602,8 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228397/empyrean-demolisher
+	// Chance on hit: Increases your attack speed by 20% for 10 sec.
 	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Empyrean Demolisher Haste Aura",
