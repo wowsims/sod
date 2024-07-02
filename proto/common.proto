@@ -515,7 +515,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 41
+// NextIndex: 42
 message RaidBuffs {
 	reserved 33;
 	reserved "horn_of_lordaeron";
@@ -553,6 +553,7 @@ message RaidBuffs {
 	// mp5
 	TristateEffect mana_spring_totem = 14;
 	TristateEffect blessing_of_wisdom = 15;
+	int32 vampiric_touch = 41;
 
 	// Resistances
 	bool shadow_protection = 16;
