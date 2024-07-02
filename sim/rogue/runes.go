@@ -2,7 +2,7 @@ package rogue
 
 import (
 	"time"
-
+	
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -187,6 +187,20 @@ func (rogue *Rogue) registerBladeDance() {
 		time.Duration(time.Second * 30),
 	}
 
+	cachedBonusAP := 0.0
+	apProcAura := rogue.RegisterAura(core.Aura{
+		Label: "Defender's Resolve",
+		ActionID: core.ActionID{SpellID: 462230},
+		Duration: rogue.bladeDanceDurations[5],
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			cachedBonusAP = 4 * max(rogue.GetStat(stats.Defense), 0)
+			rogue.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.AttackPower, -cachedBonusAP)
+		},
+	})
+
 	rogue.BladeDanceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Dance",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
@@ -231,6 +245,7 @@ func (rogue *Rogue) registerBladeDance() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BladeDanceAura.Duration = rogue.bladeDanceDurations[rogue.ComboPoints()]
 			rogue.BladeDanceAura.Activate(sim)
+			apProcAura.Activate(sim)
 			rogue.ApplyFinisher(sim, spell)
 		},
 	})

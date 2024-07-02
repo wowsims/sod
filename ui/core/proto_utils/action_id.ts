@@ -436,6 +436,10 @@ export class ActionId {
 			// Don't do anything for these but avoid adding "(??)"
 			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
 				break;
+			case 'Vampiric Touch':
+				// Vampiric touch provided to the party
+				if (this.tag === 1) name = `${name} (External)`;
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

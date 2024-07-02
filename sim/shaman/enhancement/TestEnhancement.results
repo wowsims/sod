@@ -393,8 +393,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-TheFiveThunders"
  value: {
-  dps: 144.71087
-  tps: 134.71648
+  dps: 143.72925
+  tps: 134.01471
  }
 }
 dps_results: {

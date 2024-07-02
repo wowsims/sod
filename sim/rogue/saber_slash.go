@@ -26,7 +26,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				Label:     "Saber Slash - Bleed",
 				Tag:       RogueBleedTag,
 				Duration:  time.Second * 12,
-				MaxStacks: 5,
+				MaxStacks: 3,
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,
@@ -44,7 +44,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				}
 
 				// each stack snapshots the AP it was applied with
-				dot.SnapshotBaseDamage += 0.03 * dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
@@ -109,5 +109,5 @@ func (rogue *Rogue) saberSlashMultiplier(target *core.Unit) float64 {
 	if rogue.saberSlashTick == nil {
 		return 1
 	}
-	return 1 + 0.2*float64(rogue.saberSlashTick.Dot(target).GetStacks())
+	return 1 + 0.33*float64(rogue.saberSlashTick.Dot(target).GetStacks())
 }

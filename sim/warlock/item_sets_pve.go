@@ -71,6 +71,7 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler:    handler,

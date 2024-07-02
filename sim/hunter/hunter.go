@@ -57,6 +57,7 @@ type Hunter struct {
 	RapidFire      *core.Spell
 	RaptorStrike   *core.Spell
 	FlankingStrike *core.Spell
+	WyvernStrike   *core.Spell
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
@@ -119,6 +120,7 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
+	hunter.registerWyvernStrikeSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
 
@@ -235,6 +237,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
 
+	hunter.PseudoStats.MeleeCritMultiplier = 1 + hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1

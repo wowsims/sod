@@ -761,6 +761,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 377.00913
+  tps: 354.3073
+  hps: 5.14657
+ }
+}
+dps_results: {
  key: "TestShadow-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 971.51161

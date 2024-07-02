@@ -398,7 +398,6 @@ export const BlessingOfWisdom = withLabel(
 	}),
 	'Blessing of Wisdom',
 );
-
 export const ManaSpringTotem = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: player =>
@@ -413,6 +412,10 @@ export const ManaSpringTotem = withLabel(
 		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Mana Spring Totem',
+);
+export const VampiricTouchReplenishment = withLabel(
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402779), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
+	'Vampiric Touch MP5',
 );
 
 export const MeleeCritBuff = withLabel(
@@ -1042,6 +1045,11 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: ManaSpringTotem,
+		picker: IconPicker,
+		stats: [Stat.StatMP5],
+	},
+	{
+		config: VampiricTouchReplenishment,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
 	},
