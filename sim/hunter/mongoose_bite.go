@@ -15,8 +15,6 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
-
-
 	raptorFuryDmgMult := 0.1
 	spellConfig := core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -46,8 +44,8 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+		CritDamageBonus: hunter.mortalShots(),
 		DamageMultiplier: 1,
-		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			hunter.CobraSlayerAura.Deactivate(sim)

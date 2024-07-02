@@ -33,6 +33,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget <= 5
 		},
 
+		CritDamageBonus: hunter.mortalShots(),
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
