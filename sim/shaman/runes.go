@@ -236,8 +236,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	})
 
 	shaman.RegisterAura(core.Aura{
-		Label:    "Two-Handed Mastery",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestTwoHandedMastery)},
+		Label:    "Two-Handed Mastery Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
