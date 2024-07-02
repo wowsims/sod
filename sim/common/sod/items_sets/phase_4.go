@@ -234,3 +234,18 @@ var ItemSetDalRendsArms = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetShardOfTheGods = core.NewItemSet(core.ItemSet{
+	Name: "Shard of the Gods",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases healing done by spells and effects by up to 55.
+		// Increases damage done by magical spells and effects by up to 29.
+		// Your spell casts have a chance to summon Servants of the Scale or Flame.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.HealingPower, 55)
+			character.AddStat(stats.SpellDamage, 29)
+			// TODO: pets [Your spell casts have a chance to summon Servants of the Scale or Flame.]
+		},
+	},
+})
