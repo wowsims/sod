@@ -40,7 +40,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5 && hunter.CobraSlayerAura.IsActive()
+			return hunter.DistanceFromTarget <= 5 && hunter.DefensiveState.IsActive()
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
@@ -48,7 +48,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			hunter.CobraSlayerAura.Deactivate(sim)
+			hunter.DefensiveState.Deactivate(sim)
 
 			multiplier := 1.0
 			if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
@@ -74,13 +74,13 @@ func (hunter *Hunter) registerCobraSlayerAura() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeDodge) {
 				aura.SetStacks(sim, 1);
-				hunter.CobraSlayerAura.Activate(sim)
+				hunter.DefensiveState.Activate(sim)
 			} else if result.Outcome.Matches(core.OutcomeLanded) {
 				if spell.ProcMask == core.ProcMaskMeleeMHAuto || spell.ProcMask == core.ProcMaskMeleeOHAuto {
 					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
 						log.Println(">>> AUTO PROC <<<")
 						aura.SetStacks(sim, 1);
-						hunter.CobraSlayerAura.Activate(sim)
+						hunter.DefensiveState.Activate(sim)
 					} else {
 						aura.AddStack(sim)
 					}
@@ -89,9 +89,10 @@ func (hunter *Hunter) registerCobraSlayerAura() {
 		},
 	})
 
-	hunter.CobraSlayerAura = hunter.RegisterAura(core.Aura{
-		Label:    "Cobra Slayer Aura",
-		Duration: time.Second * 30,
+	hunter.DefensiveState = hunter.RegisterAura(core.Aura{
+		Label:    "Defensive State",
+		ActionID: core.ActionID{SpellID: 5302},
+		Duration: time.Second * 5,
 	})
 }
 
