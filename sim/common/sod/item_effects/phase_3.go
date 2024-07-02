@@ -78,7 +78,7 @@ func init() {
 	core.NewItemEffect(AtalaiBloodRitualMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 446289}
+		actionID := core.ActionID{ItemID: AtalaiBloodRitualMedallion}
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Relentless Strength",
@@ -125,7 +125,7 @@ func init() {
 	core.NewItemEffect(AtalaiBloodRitualBadge, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 446310}
+		actionID := core.ActionID{ItemID: AtalaiBloodRitualBadge}
 		bonusPerStack := stats.Stats{
 			stats.Armor:   100,
 			stats.Defense: 2,
@@ -178,7 +178,7 @@ func init() {
 	core.NewItemEffect(AtalaiBloodRitualCharm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 446297}
+		actionID := core.ActionID{ItemID: AtalaiBloodRitualCharm}
 		bonusPerStack := stats.Stats{
 			stats.SpellDamage:  8,
 			stats.HealingPower: 16,
