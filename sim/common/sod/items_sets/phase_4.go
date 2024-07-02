@@ -90,6 +90,38 @@ var ItemSetIronweaveBattlesuit = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetTheHighlandersIntent = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Intent",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Spells.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersIntent = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Intent",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Spells.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 1)
+		},
+	},
+})
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Leather
 ///////////////////////////////////////////////////////////////////////////
@@ -121,6 +153,70 @@ var ItemSetCadaverousGarb = core.NewItemSet(core.ItemSet{
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.MeleeHit, 2)
+		},
+	},
+})
+
+var ItemSetTheHighlandersWill = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Will",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Spells.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheHighlandersPurpose = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Purpose",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersPurpose = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Purpose",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersWill = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Will",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Spells.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 1)
 		},
 	},
 })
@@ -160,6 +256,70 @@ var ItemSetBloodmailRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetTheHighlandersFortitude = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Fortitude",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Spells.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheHighlandersDetermination = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Determination",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersDetermination = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Determination",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersFortitude = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Fortitude",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Plate
 ///////////////////////////////////////////////////////////////////////////
@@ -191,6 +351,54 @@ var ItemSetDeathboneGuardian = core.NewItemSet(core.ItemSet{
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.Parry, 1)
+		},
+	},
+})
+
+var ItemSetTheHighlandersResolve = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Resolve",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheHighlandersResolution = core.NewItemSet(core.ItemSet{
+	Name: "The Highlander's Resolution",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
+		},
+	},
+})
+
+var ItemSetTheDefilersResolution = core.NewItemSet(core.ItemSet{
+	Name: "The Defiler's Resolution",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increase Stamina +5
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Stamina, 5)
+		},
+		// +1 Crit with Melee
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1)
 		},
 	},
 })
@@ -231,6 +439,21 @@ var ItemSetDalRendsArms = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 			character.AddStat(stats.AttackPower, 50)
 			character.AddStat(stats.RangedAttackPower, 50)
+		},
+	},
+})
+
+var ItemSetShardOfTheGods = core.NewItemSet(core.ItemSet{
+	Name: "Shard of the Gods",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases healing done by spells and effects by up to 55.
+		// Increases damage done by magical spells and effects by up to 29.
+		// Your spell casts have a chance to summon Servants of the Scale or Flame.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.HealingPower, 55)
+			character.AddStat(stats.SpellDamage, 29)
+			// TODO: pets [Your spell casts have a chance to summon Servants of the Scale or Flame.]
 		},
 	},
 })

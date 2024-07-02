@@ -35,19 +35,32 @@ const (
 	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
+	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
 	Thunderfury              = 19019
+	Nightfall                = 19169
+	DarkmoonCardHeroism      = 19287
+	DarkmoonCardBlueDragon   = 19288
+	DarkmoonCardMaelstrom    = 19289
+	RuneOfTheDawn            = 19812
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	ReavingNightfall         = 227843
+	BurstOfKnowledge         = 227972
 	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
 	FiendishMachete          = 228056 // 18310
+	TalismanOfEphemeralPower = 228255 // 18820
+	EssenceOfThePureFlame    = 228293 // 18815
 	EmpyreanDemolisher       = 228397 // 17112
+	DraconicInfusedEmblem    = 228678 // 22268
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
+
+	// SulfurasHandOfRagnaros = 17182
 )
 
 func init() {
@@ -450,7 +463,7 @@ func init() {
 	core.NewItemEffect(Thunderfury, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(19019)
+		procMask := character.GetProcMaskForItem(Thunderfury)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
 		procActionID := core.ActionID{SpellID: 21992}
@@ -526,26 +539,71 @@ func init() {
 		})
 	})
 
+	// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
+	nightfallEffect := func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+			return target.GetOrRegisterAura(core.Aura{
+				Label:    "Spell Vulnerability (Nightfall)",
+				ActionID: core.ActionID{SpellID: 23605},
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] *= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] *= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] *= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] *= 1.15
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] /= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] /= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] /= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] /= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] /= 1.15
+					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] /= 1.15
+				},
+			})
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Nightfall Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee,
+			PPM:      2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procAuras.Get(result.Target).Activate(sim)
+			},
+		})
+	}
+	// https://www.wowhead.com/classic/item=19169/nightfall
+	core.NewItemEffect(Nightfall, nightfallEffect)
+	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
+	core.NewItemEffect(ReavingNightfall, nightfallEffect)
+
+	// https://www.wowhead.com/classic/item=12590/felstriker
+	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
 	core.NewItemEffect(Felstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
 		procMask := character.GetProcMaskForItem(Felstriker)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID: core.ActionID{ItemID: Felstriker},
 			Name:     "Felstriker Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: procMask,
 			PPM:      1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() {
-					effectAura.Activate(sim)
-				}
+				effectAura.Activate(sim)
 			},
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228397/empyrean-demolisher
+	// Chance on hit: Increases your attack speed by 20% for 10 sec.
 	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Empyrean Demolisher Haste Aura",
@@ -560,9 +618,110 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=17182/sulfuras-hand-of-ragnaros
+	// Chance on hit: Hurls a fiery ball that causes 273 to 333 Fire damage and an additional 75 damage over 10 sec.
+	// Equip: Deals 5 Fire damage to anyone who strikes you with a melee attack.
+	// core.NewItemEffect(SulfurasHandOfRagnaros, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+
+	// 	immolationActionID := core.ActionID{SpellID: 21142}
+
+	// 	immolationSpell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    immolationActionID,
+	// 		SpellSchool: core.SpellSchoolFire,
+	// 		ProcMask:    core.ProcMaskEmpty,
+
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 1,
+
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			spell.CalcAndDealDamage(sim, target, 5, spell.OutcomeMagicHit)
+	// 		},
+	// 	})
+
+	// 	character.RegisterAura(core.Aura{
+	// 		ActionID: immolationActionID,
+	// 		Label:    "Immolation (Hand of Ragnaros)",
+	// 		Duration: core.NeverExpires,
+	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	// 			aura.Activate(sim)
+	// 		},
+	// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+	// 				immolationSpell.Cast(sim, spell.Unit)
+	// 			}
+	// 		},
+	// 	})
+
+	// 	fireballSpell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    core.ActionID{SpellID: 21162},
+	// 		SpellSchool: core.SpellSchoolFire,
+	// 		DefenseType: core.DefenseTypeMagic,
+	// 		ProcMask:    core.ProcMaskEmpty,
+
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 1,
+
+	// 		Dot: core.DotConfig{
+	// 			Aura: core.Aura{
+	// 				Label: "Fireball (Hand of Ragnaros)",
+	// 			},
+	// 			TickLength:    2 * time.Second,
+	// 			NumberOfTicks: 5,
+
+	// 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+	// 				dot.Snapshot(target, 15, isRollover)
+	// 			},
+
+	// 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+	// 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+	// 			},
+	// 		},
+
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			result := spell.CalcAndDealDamage(sim, target, sim.Roll(273, 333), spell.OutcomeMagicHitAndCrit)
+	// 			if result.Landed() {
+	// 				spell.Dot(target).Apply(sim)
+	// 			}
+	// 		},
+	// 	})
+
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:     "Hand of Ragnaros Trigger",
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		Outcome:  core.OutcomeLanded,
+	// 		ProcMask: core.ProcMaskMelee,
+	// 		PPM:      1, // Estimated based on data from WoW Armaments Discord
+	// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 			fireballSpell.Cast(sim, result.Target)
+	// 		},
+	// 	})
+	// })
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=13209/seal-of-the-dawn
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewItemEffect(SealOfTheDawn, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.AddStat(stats.AttackPower, 81)
+			character.AddStat(stats.AttackPower, 81)
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=19812/rune-of-the-dawn
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewItemEffect(RuneOfTheDawn, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.AddStat(stats.SpellDamage, 48)
+		}
+	})
 
 	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -598,6 +757,176 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=19287/darkmoon-card-heroism
+	// Equip: Sometimes heals bearer of 120 to 180 damage when damaging an enemy in melee.
+	core.NewItemEffect(DarkmoonCardHeroism, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{SpellID: 23689}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolHoly,
+			ProcMask:    core.ProcMaskEmpty,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.GainHealth(sim, sim.Roll(120, 180), healthMetrics)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Heroism Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee,
+			PPM:      2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
+	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec. (Proc chance: 2%)
+	core.NewItemEffect(DarkmoonCardBlueDragon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{SpellID: 23684}
+
+		procAura := character.RegisterAura(core.Aura{
+			Label:    "Aura of the Blue Dragon",
+			ActionID: actionID,
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SpiritRegenRateCasting += 1
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SpiritRegenRateCasting -= 1
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Aura of the Blue Dragon Trigger",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+			ProcChance: .02,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procAura.Activate(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=19289/darkmoon-card-maelstrom
+	// Equip: Chance to strike your melee target with lightning for 200 to 300 Nature damage.
+	core.NewItemEffect(DarkmoonCardMaelstrom, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{SpellID: 23687}
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(200, 300), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Lightning Strike Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee,
+			PPM:      1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=227972/burst-of-knowledge
+	// Use: Reduces mana cost of all spells by 100 for 10 sec. (5 Min Cooldown)
+	core.NewItemEffect(BurstOfKnowledge, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: BurstOfKnowledge},
+			Label:    "Burst of Knowledge",
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.CostMultiplier -= 1
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.CostMultiplier += 1
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: BurstOfKnowledge},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 5,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeMana,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
+	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(TalismanOfEphemeralPower, stats.Stats{stats.SpellPower: 184}, time.Second*15, time.Second*90)
+
+	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
+	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
+	core.NewItemEffect(EssenceOfThePureFlame, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 461694},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 50, spell.OutcomeAlwaysHit)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Fiery Aura Proc",
+			Callback: core.CallbackOnSpellHitTaken,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee, // TODO: Unsure if this means melee attacks or all attacks
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=228678/draconic-infused-emblem
+	// Use: Increases your spell damage by up to 100 and your healing by up to 190 for 15 sec. (1 Min, 30 Sec Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 100, stats.HealingPower: 190}, time.Second*15, time.Second*75)
+
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: ScarabBrooch}
@@ -621,7 +950,6 @@ func init() {
 
 		activeAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Persistent Shield",
-			ActionID: core.ActionID{SpellID: 26467},
 			Callback: core.CallbackOnHealDealt,
 			Duration: time.Second * 30,
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {

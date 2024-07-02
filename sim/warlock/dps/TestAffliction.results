@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -4.13015
+  weights: 2.56337
   weights: 0
-  weights: -0.30344
-  weights: 0
-  weights: 0
+  weights: 2.77839
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.22013
-  weights: 7.12227
+  weights: 0
+  weights: 0
+  weights: 11.77802
+  weights: 9.3396
   weights: 0
   weights: 0
   weights: 0
@@ -358,64 +358,64 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 319.62246
-  tps: 215.91733
+  dps: 315.28673
+  tps: 212.93263
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1367.43583
-  tps: 1179.28906
+  dps: 1353.09933
+  tps: 1167.07169
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1987.45447
-  tps: 2769.95871
+  dps: 1965.62836
+  tps: 2753.01285
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1355.62134
-  tps: 1165.77627
+  dps: 1336.8133
+  tps: 1150.30157
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1414.13198
-  tps: 1212.74271
+  dps: 1388.84623
+  tps: 1191.02212
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1235.41222
-  tps: 2150.12625
+  dps: 1220.19434
+  tps: 2133.4075
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 767.07977
-  tps: 656.68081
+  dps: 756.61881
+  tps: 647.74548
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Destruction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 764.25182
-  tps: 663.79369
+  dps: 748.35376
+  tps: 650.25888
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1350.64039
-  tps: 1161.6244
+  dps: 1340.59057
+  tps: 1152.99161
  }
 }
 dps_results: {
