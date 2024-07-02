@@ -58,6 +58,7 @@ type Hunter struct {
 	RaptorStrike   *core.Spell
 	FlankingStrike *core.Spell
 	WyvernStrike   *core.Spell
+	MongooseBite   *core.Spell
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
@@ -71,6 +72,7 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
+	CobraSlayerAura    *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
@@ -121,6 +123,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
 	hunter.registerWyvernStrikeSpell()
+	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
 
