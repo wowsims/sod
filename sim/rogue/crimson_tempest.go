@@ -27,7 +27,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 				Label: "Crimson Tempest",
 				Tag:   RogueBleedTag,
 			},
-			NumberOfTicks: 1 + rogue.ComboPoints(),
+			NumberOfTicks: 0,
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -46,6 +46,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 				dot.NumberOfTicks = rogue.ComboPoints() + 1
 				dot.Apply(sim)
 			}
+			spell.DealOutcome(sim, result)
 		},
 	})
 }
@@ -56,14 +57,13 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 	}
 
 	// Must be updated to match combo points spent
-	// TODO: array of combo values
-	hitSpell := rogue.makeCrimsonTempestHitSpell()
+	rogue.CrimsonTempestBleed = rogue.makeCrimsonTempestHitSpell()
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 412096},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial, // No multiple Relentless procs
+		ProcMask:     core.ProcMaskMeleeMHSpecial,
 		Flags:        rogue.finisherFlags(),
 		MetricSplits: 6,
 
@@ -81,8 +81,8 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 
-			for i := range sim.Encounter.TargetUnits {
-				hitSpell.Cast(sim, sim.Encounter.TargetUnits[i])
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				rogue.CrimsonTempestBleed.Cast(sim, aoeTarget)
 			}
 
 			rogue.ApplyFinisher(sim, spell)
