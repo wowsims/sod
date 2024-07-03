@@ -94,6 +94,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			return hunter.DistanceFromTarget <= 5
 		},
 
+		CritDamageBonus: hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 

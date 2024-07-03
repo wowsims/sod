@@ -49,13 +49,8 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			mAP := spell.MeleeAttackPower() + bonusAP
-
-			baseDamage1 := weaponDamageFunc(sim, mAP)
-			baseDamage2 := weaponDamageFunc(sim, mAP)
-			result1 := spell.CalcDamage(sim, target, baseDamage1, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			result2 := spell.CalcDamage(sim, target, baseDamage2, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			spell.DealDamage(sim, result1)
-			spell.DealDamage(sim, result2)
+			baseDamage := weaponDamageFunc(sim, mAP)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	}
 
@@ -113,7 +108,9 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 				if spell.IsMH() {
 					mhSpell.Cast(sim, result.Target)
+					mhSpell.Cast(sim, result.Target)
 				} else {
+					ohSpell.Cast(sim, result.Target)
 					ohSpell.Cast(sim, result.Target)
 				}
 			}

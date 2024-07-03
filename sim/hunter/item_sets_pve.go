@@ -19,7 +19,7 @@ var ItemSetDreadHuntersChain = core.NewItemSet(core.ItemSet{
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddBonusRangedCritRating(2)
+			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
 	},
 })
