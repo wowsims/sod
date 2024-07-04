@@ -23,6 +23,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -61,7 +62,10 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-				/** Currently does not apply to bosses due to being a slow
+				if hasCutthroatRune {
+					rogue.rollCutthroat(sim)
+				}
+					/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
 				} */

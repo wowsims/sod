@@ -23,6 +23,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -32,7 +33,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
+			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 30, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -42,11 +43,13 @@ func (rogue *Rogue) registerAmbushSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() && rogue.HasDagger(core.MainHand)	 {
+				return true
+			}
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand) && rogue.IsStealthed()
 		},
 
 		BonusCritRating: 15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
-
 		DamageMultiplier: 2.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
@@ -56,7 +59,9 @@ func (rogue *Rogue) registerAmbushSpell() {
 			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-
+			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() {
+				rogue.CutthroatProcAura.Deactivate(sim)
+			}
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				/** Currently does not apply to bosses due to being a slow
