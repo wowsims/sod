@@ -192,7 +192,7 @@ type APLValueWarlockCurrentPetManaPercent struct {
 
 func (warlock *Warlock) newValueWarlockCurrentPetManaPercent(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetManaPercent) core.APLValue {
 	pet := warlock.Pet
-	if pet.GetPet() == nil {
+	if pet == nil {
 		return nil
 	}
 	if !pet.GetPet().HasManaBar() {
