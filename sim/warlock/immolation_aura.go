@@ -73,7 +73,6 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
 		Name:     "Immolation Aura Trigger",
 		Callback: core.CallbackOnSpellHitTaken,
-		Outcome:  core.OutcomeLanded,
 		ProcMask: core.ProcMaskSpellDamage,
 		ICD:      time.Second * 1,
 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
