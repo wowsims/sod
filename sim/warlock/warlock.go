@@ -114,30 +114,22 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) Initialize() {
-	warlock.registerChaosBoltSpell()
 	warlock.registerCorruptionSpell()
 	warlock.registerImmolateSpell()
-	warlock.registerIncinerateSpell()
 	warlock.registerShadowBoltSpell()
-	warlock.registerShadowCleaveSpell()
 	warlock.registerLifeTapSpell()
 	warlock.registerSoulFireSpell()
-	warlock.registerUnstableAfflictionSpell()
+	warlock.registerShadowBurnSpell()
 	// warlock.registerSeedSpell()
 	warlock.registerDrainSoulSpell()
 	warlock.registerConflagrateSpell()
-	warlock.registerHauntSpell()
 	warlock.registerSiphonLifeSpell()
-	warlock.registerMetamorphosisSpell()
 	warlock.registerDarkPactSpell()
-	warlock.registerShadowBurnSpell()
 	warlock.registerSearingPainSpell()
 	// warlock.registerInfernoSpell()
 	// warlock.registerBlackBook()
-	warlock.registerDemonicGraceSpell()
 	warlock.registerDrainLifeSpell()
 	warlock.registerRainOfFireSpell()
-	warlock.registerShadowflameSpell()
 	warlock.registerDeathCoilSpell()
 
 	warlock.registerCurseOfElementsSpell()
@@ -146,7 +138,6 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
 	warlock.registerCurseOfDoomSpell()
-	warlock.registerImmolationAuraSpell()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

@@ -200,7 +200,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 		}
 
-		const hasIncinerate = player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == WarlockRune.RuneLegsIncinerate;
+		const hasIncinerate = player.getEquippedItem(ItemSlot.ItemSlotWrist)?.rune?.id == WarlockRune.RuneBracerIncinerate;
 		const specNumber = hasIncinerate ? 2 : 0;
 		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},

@@ -22,7 +22,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
 
 	baseDamage *= 1 + warlock.shadowMasteryBonus()
 	snapshotBaseDmgNoBonus := 0.0
@@ -133,7 +133,7 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 }
 
 func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
 
 	playerLevel := warlock.Level
 
@@ -352,7 +352,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 	}
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
 
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_WarlockCurseOfDoom,

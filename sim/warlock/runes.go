@@ -17,10 +17,20 @@ func (warlock *Warlock) ApplyRunes() {
 
 	// Cloak Runes
 	warlock.applyDecimation()
-	warlock.applyMarkOfChaos()
 
 	// Chest Runes
 	warlock.applyDemonicTactics()
+
+	// Bracer Runes
+	warlock.registerIncinerateSpell()
+	warlock.registerUnstableAfflictionSpell()
+	warlock.registerImmolationAuraSpell()
+
+	// Glove Runes
+	warlock.registerHauntSpell()
+	warlock.registerChaosBoltSpell()
+	warlock.registerMetamorphosisSpell()
+	warlock.registerShadowCleaveSpell()
 
 	// Belt Runes
 	warlock.applyGrimoireOfSynergy()
@@ -29,10 +39,13 @@ func (warlock *Warlock) ApplyRunes() {
 	// Pants Runes
 	warlock.applyEverlastingAffliction()
 	warlock.applyDemonicPact()
+	warlock.registerDemonicGraceSpell()
 
 	// Boots Runes
 	warlock.applyDemonicKnowledge()
 	warlock.applyDanceOfTheWicked()
+	warlock.registerShadowflameSpell()
+	warlock.applyMarkOfChaos()
 }
 
 func (warlock *Warlock) applyVengeance() {
@@ -150,7 +163,7 @@ func (warlock *Warlock) applyDecimation() {
 }
 
 func (warlock *Warlock) applyMarkOfChaos() {
-	if !warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos) {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos) {
 		return
 	}
 
