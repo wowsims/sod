@@ -116,6 +116,7 @@ message WarlockOptions {
 	enum Armor {
 		NoArmor = 0;
 		DemonArmor = 1;
+		FelArmor = 2;
 	}
 
 	enum WeaponImbue {

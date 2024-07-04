@@ -113,7 +113,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 23.08334
+  weights: 21.14758
   weights: 0
   weights: 0
   weights: 0
@@ -153,16 +153,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.52736
+  weights: 1.41058
   weights: 0
-  weights: 1.42726
-  weights: 0.1001
-  weights: 0
-  weights: 0
+  weights: 1.30381
+  weights: 0.10678
   weights: 0
   weights: 0
-  weights: 53.69011
   weights: 0
+  weights: 0
+  weights: 64.24085
+  weights: 13.66738
   weights: 0
   weights: 0
   weights: 0
@@ -197,127 +197,127 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
-  dps: 1234.64884
-  tps: 971.98927
+  dps: 1142.33165
+  tps: 899.85856
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1220.94449
-  tps: 1236.54383
+  dps: 1129.4656
+  tps: 1165.06544
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1220.94449
-  tps: 961.08494
+  dps: 1129.4656
+  tps: 889.60655
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1286.85395
-  tps: 998.29411
+  dps: 1191.92467
+  tps: 924.54819
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 652.34339
-  tps: 699.82083
+  dps: 601.06777
+  tps: 661.15351
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 652.34339
-  tps: 499.26975
+  dps: 601.06777
+  tps: 460.60243
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Gnome-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 710.52376
-  tps: 537.7251
+  dps: 655.78373
+  tps: 496.67807
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1219.1135
-  tps: 1242.53316
+  dps: 1127.77574
+  tps: 1171.19612
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1219.1135
-  tps: 959.66873
+  dps: 1127.77574
+  tps: 888.33168
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1303.57104
-  tps: 1012.37356
+  dps: 1207.39451
+  tps: 937.57108
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 655.59042
-  tps: 700.82927
+  dps: 604.12171
+  tps: 662.04231
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 655.59042
-  tps: 501.34022
+  dps: 604.12171
+  tps: 462.55326
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-Settings-Troll-p3_frost_ffb-Frost-p3_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 718.24174
-  tps: 543.66816
+  dps: 662.88926
+  tps: 502.15223
  }
 }
 dps_results: {
  key: "TestFrost-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1221.85179
-  tps: 961.7226
+  dps: 1130.2638
+  tps: 890.19541
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1171.1584
-  tps: 929.50269
+  dps: 992.75096
+  tps: 790.41067
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1031.59337
-  tps: 816.51867
+  dps: 860.80985
+  tps: 683.70559
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1161.38276
-  tps: 921.69
+  dps: 983.27749
+  tps: 782.77874
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1031.12311
-  tps: 816.81684
+  dps: 860.40961
+  tps: 684.26989
  }
 }
 dps_results: {
@@ -330,22 +330,22 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1171.1584
-  tps: 929.50269
+  dps: 992.75096
+  tps: 790.41067
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1031.59337
-  tps: 816.51867
+  dps: 860.80985
+  tps: 683.70559
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1215.87142
-  tps: 1003.49489
+  dps: 1045.85627
+  tps: 870.1805
  }
 }
 dps_results: {
@@ -358,98 +358,98 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-Average-Default"
  value: {
-  dps: 1640.06199
-  tps: 1345.10531
+  dps: 1421.64285
+  tps: 1171.33388
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2953.74598
-  tps: 3029.01178
+  dps: 2719.06458
+  tps: 2828.91263
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1611.41973
-  tps: 1322.36225
+  dps: 1409.94561
+  tps: 1163.02045
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1643.06413
-  tps: 1337.36808
+  dps: 1436.04891
+  tps: 1175.63239
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1237.22853
-  tps: 1394.92462
+  dps: 1193.12413
+  tps: 1366.0254
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 671.24962
-  tps: 550.6222
+  dps: 581.22053
+  tps: 481.70261
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Gnome-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 867.34612
-  tps: 707.52693
+  dps: 751.75376
+  tps: 618.8942
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2937.57354
-  tps: 3003.84587
+  dps: 2708.82651
+  tps: 2802.661
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1616.82326
-  tps: 1325.987
+  dps: 1391.51144
+  tps: 1146.50612
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1716.47475
-  tps: 1394.58618
+  dps: 1474.48
+  tps: 1204.90872
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1237.11134
-  tps: 1394.53286
+  dps: 1149.14799
+  tps: 1324.39052
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 652.82409
-  tps: 534.84601
+  dps: 581.11137
+  tps: 480.94966
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-Settings-Troll-p3_frost_ffb-Frost-p4_frost-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 875.49163
-  tps: 713.58859
+  dps: 765.76086
+  tps: 629.92691
  }
 }
 dps_results: {
  key: "TestFrost-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1617.06541
-  tps: 1325.63131
+  dps: 1392.54224
+  tps: 1146.30054
  }
 }
