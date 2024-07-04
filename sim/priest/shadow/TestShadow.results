@@ -619,9 +619,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1150.4835
-  tps: 1211.91367
-  hps: 16.23085
+  dps: 1680.46249
+  tps: 1729.56739
+  hps: 14.62557
  }
 }
 dps_results: {
@@ -643,9 +643,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 768.71491
-  tps: 836.18106
-  hps: 11.70067
+  dps: 852.89272
+  tps: 908.76618
+  hps: 8.31692
  }
 }
 dps_results: {
@@ -667,9 +667,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1149.96646
-  tps: 1211.29385
-  hps: 16.21036
+  dps: 1671.24903
+  tps: 1718.43914
+  hps: 14.45935
  }
 }
 dps_results: {
@@ -691,9 +691,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 763.14769
-  tps: 830.97746
-  hps: 11.60483
+  dps: 843.13846
+  tps: 898.13829
+  hps: 8.24683
  }
 }
 dps_results: {
@@ -811,9 +811,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1500.69033
-  tps: 1565.45469
-  hps: 18.01963
+  dps: 2395.46849
+  tps: 2572.34356
+  hps: 17.03382
  }
 }
 dps_results: {
@@ -835,9 +835,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_3-Basic-phase_4-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 954.09124
-  tps: 1066.67557
-  hps: 12.19775
+  dps: 1143.56081
+  tps: 1302.49157
+  hps: 10.44392
  }
 }
 dps_results: {
@@ -859,9 +859,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1500.68027
-  tps: 1566.68245
-  hps: 18.01205
+  dps: 2395.45287
+  tps: 2572.59136
+  hps: 17.19858
  }
 }
 dps_results: {
@@ -883,9 +883,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_3-Basic-phase_4-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 945.5185
-  tps: 1056.95846
-  hps: 12.33192
+  dps: 1138.53723
+  tps: 1295.11148
+  hps: 10.38192
  }
 }
 dps_results: {
