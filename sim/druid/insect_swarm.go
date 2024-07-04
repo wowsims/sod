@@ -46,7 +46,6 @@ func (druid *Druid) registerInsectSwarmSpell() {
 					},
 				},
 
-				BonusCoefficient: spellCoef,
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 
@@ -61,8 +60,9 @@ func (druid *Druid) registerInsectSwarmSpell() {
 						},
 					},
 
-					NumberOfTicks: numTicks,
-					TickLength:    tickLength,
+					NumberOfTicks:    numTicks,
+					TickLength:       tickLength,
+					BonusCoefficient: spellCoef,
 
 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 						dot.Snapshot(target, baseDamage, isRollover)
@@ -79,6 +79,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 					if result.Landed() {
 						spell.Dot(target).Apply(sim)
+						spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					}
 					spell.DealOutcome(sim, result)
 				},
