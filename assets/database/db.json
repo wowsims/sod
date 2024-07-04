@@ -9965,7 +9965,8 @@
 {"id":458393,"name":"Engrave Chest - Cobra Slayer","icon":"spell_nature_guardianward","type":5,"classAllowlist":[2]},
 {"id":458479,"name":"Engrave Boots - Wyvern Strike","icon":"inv_spear_02","type":10,"requiresLevel":1,"classAllowlist":[2]},
 {"id":458856,"name":"Engrave Cloak - Divine Light","icon":"spell_holy_surgeoflight","type":4,"requiresLevel":1,"classAllowlist":[4]},
-{"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]}
+{"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]},
+{"id":462708,"name":"Engrave Gloves - Cutthroat","icon":"inv_misc_desecrated_leatherglove","type":7,"classAllowlist":[6]}
 ],
 "zones":[
 {"id":209,"name":"Shadowfang Keep","expansion":1},
@@ -10889,6 +10890,7 @@
 {"id":5234,"name":"Mark of the Wild","icon":"spell_nature_regeneration","rank":4,"requiresLevel":30,"hasBuff":true},
 {"id":5242,"name":"Battle Shout","icon":"ability_warrior_battleshout","rank":2,"requiresLevel":12,"hasBuff":true},
 {"id":5246,"name":"Intimidating Shout","icon":"ability_golemthunderclap","requiresLevel":22,"hasBuff":true},
+{"id":5302,"name":"Defensive State","icon":"ability_defend"},
 {"id":5308,"name":"Execute","icon":"inv_sword_48","rank":1,"requiresLevel":24},
 {"id":5384,"name":"Feign Death","icon":"ability_rogue_feigndeath","requiresLevel":30,"hasBuff":true},
 {"id":5394,"name":"Healing Stream Totem","icon":"inv_spear_04","rank":1,"requiresLevel":20},
@@ -14444,7 +14446,10 @@
 {"id":453694,"name":"Engrave Ring - Pole Weapon Specialization","icon":"inv_jewelry_ring_31","requiresLevel":1},
 {"id":453695,"name":"Engrave Ring - Arcane Specialization","icon":"inv_jewelry_ring_31","requiresLevel":1},
 {"id":453696,"name":"Engrave Ring - Fire Specialization","icon":"inv_jewelry_ring_31","requiresLevel":1},
-{"id":453697,"name":"Engrave Ring - Frost Specialization","icon":"inv_jewelry_ring_31","requiresLevel":1}
+{"id":453697,"name":"Engrave Ring - Frost Specialization","icon":"inv_jewelry_ring_31","requiresLevel":1},
+{"id":458436,"name":"Wyvern Strike","icon":"inv_spear_02","requiresLevel":1,"hasBuff":true},
+{"id":458481,"name":"Wyvern Strike","icon":"inv_spear_02","requiresLevel":1,"hasBuff":true},
+{"id":458482,"name":"Wyvern Strike","icon":"inv_spear_02","requiresLevel":1,"hasBuff":true}
 ],
 "encounters":[
 {"path":"SoD/Level 25","targets":[{"path":"SoD/Level 25","target":{"id":213334,"name":"Level 25","level":27,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,0,0,0,0,0,0,0,0,1104,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],"minBaseDamage":400,"damageSpread":0.3333,"swingSpeed":2,"parryHaste":true}}]},
