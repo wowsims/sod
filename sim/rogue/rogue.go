@@ -86,7 +86,7 @@ type Rogue struct {
 	WaylayAuras                   core.AuraArray
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura
-	CutthroatProcAura	*core.Aura
+	CutthroatProcAura             *core.Aura
 
 	HonorAmongThieves *core.Aura
 
