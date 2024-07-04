@@ -40,7 +40,7 @@ func TestAffliction(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p3", "nf.ruin"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -56,7 +56,7 @@ func TestAffliction(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p4", "affliction"),
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,

@@ -12,7 +12,7 @@ const DrainLifeRanks = 6
 
 func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	hasMasterChannelerRune := warlock.HasRune(proto.WarlockRune_RuneChestMasterChanneler)
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
 
 	numTicks := core.TernaryInt32(hasMasterChannelerRune, 15, 5)
 

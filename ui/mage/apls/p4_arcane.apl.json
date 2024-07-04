@@ -1,0 +1,16 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":400574}}},"doAtValue":{"const":{"val":"-2.5s"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"15%"}}}},"castSpell":{"spellId":{"spellId":12051}}}},
+    {"action":{"condition":{"not":{"val":{"spellIsReady":{"spellId":{"spellId":425121}}}}},"castSpell":{"spellId":{"spellId":12472}}}},
+    {"action":{"condition":{"runeIsEquipped":{"runeId":{"spellId":400615}}},"castSpell":{"spellId":{"spellId":10199,"rank":7}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":401556}}}},
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"8"}}}},"castSpell":{"spellId":{"spellId":428878}}}},
+    {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":400589}}},"castSpell":{"spellId":{"spellId":10212,"rank":7}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":400574}}}}
+  ]
+}

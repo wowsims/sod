@@ -4,7 +4,6 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -14,9 +13,6 @@ var ItemOverrides = []*proto.UIItem{
 	// {Id: 51804, Phase: 2},
 
 	// SOD Items
-	{Id: 211848, Name: "Blackfathom Mana Oil", Icon: "inv_potion_99", Stats: stats.Stats{stats.MP5: 12, stats.SpellHit: 2}.ToFloatArray()},
-	{Id: 211845, Name: "Blackfathom Sharpening Stone", Icon: "inv_misc_rune_04", Stats: stats.Stats{stats.MeleeHit: 2}.ToFloatArray()},
-
 	{Id: 10019, Sources: []*proto.UIItemSource{{
 		Source: &proto.UIItemSource_Crafted{
 			Crafted: &proto.CraftedSource{
@@ -114,6 +110,7 @@ var ItemDenyList = map[int32]struct{}{
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
 	18820:  {}, // Talisman of Ephemeral Power
+	19147:  {}, // Ring of Spell Power
 	20522:  {}, // Feral Staff
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
@@ -449,6 +446,10 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`zOLD`),
 
 	// TODO: Possibly add these back later. These are later phase items
+	// PVP Gear
+	regexp.MustCompile(`Grand Marshal's`),
+	regexp.MustCompile(`High Warlord's`),
+
 	// ZG
 	regexp.MustCompile(`Zandalarian`),
 

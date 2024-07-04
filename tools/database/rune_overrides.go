@@ -38,9 +38,16 @@ var RuneOverrides = []*proto.UIRune{
 	// Ring - Sword Specialization
 	{Id: 442813, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassPaladin, proto.Class_ClassHunter, proto.Class_ClassRogue, proto.Class_ClassMage, proto.Class_ClassWarlock}},
 
-	// Hunter
-	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
-	{Id: 458393, Name: "Engrave Chest - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeChest, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
+	// Warlock
+	// TODO: These runes haven't been updated by wowhead yet but were updated on 2024-07-03
+	// Cloak - Soul Siphon
+	{Id: 403511, Name: "Engrave Cloak - Soul Siphon", Type: proto.ItemType_ItemTypeBack},
+
+	// Bracers - Incinerate
+	{Id: 412758, Name: "Engrave Bracers - Incinerate", Type: proto.ItemType_ItemTypeWrist},
+
+	// Boots - Mark of Chaos
+	{Id: 440892, Name: "Engrave Boots - Mark of Chaos", Type: proto.ItemType_ItemTypeFeet},
 }
 
 // Remove runes as you implement them.
@@ -64,6 +71,7 @@ var UnimplementedRuneOverrides = []int32{
 	409240, // Cloak - Fan of Knives
 	412096, // Cloak - Crimson Tempest
 	436564, // Cloak - Blunderbuss
+	462708, // Gloves - Cutthroat
 
 	// Shaman
 
