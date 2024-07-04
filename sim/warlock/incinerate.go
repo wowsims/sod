@@ -9,7 +9,7 @@ import (
 )
 
 func (warlock *Warlock) registerIncinerateSpell() {
-	if !warlock.HasRune(proto.WarlockRune_RuneLegsIncinerate) {
+	if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) {
 		return
 	}
 	spellCoeff := 0.714
@@ -18,7 +18,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 
 	warlock.IncinerateAura = warlock.RegisterAura(core.Aura{
 		Label:    "Incinerate Aura",
-		ActionID: core.ActionID{SpellID: 412758},
+		ActionID: core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerIncinerate)},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.25

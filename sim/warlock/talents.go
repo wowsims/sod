@@ -148,7 +148,7 @@ func (warlock *Warlock) applyNightfall() {
 		return
 	}
 
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
 	has6PCorruptedFelheart := warlock.HasSetBonus(ItemSetCorruptedFelheart, 6)
 
 	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)

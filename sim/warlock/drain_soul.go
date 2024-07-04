@@ -11,7 +11,7 @@ import (
 const DrainSoulRanks = 4
 
 func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
 
 	numTicks := core.TernaryInt32(hasSoulSiphonRune, 15, 5)
 	tickLength := time.Second * time.Duration(core.TernaryInt32(hasSoulSiphonRune, 1, 3))
