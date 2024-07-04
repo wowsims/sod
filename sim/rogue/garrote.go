@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (rogue *Rogue) registerGarrote() {
@@ -20,6 +21,8 @@ func (rogue *Rogue) registerGarrote() {
 		50: 11289,
 		60: 11290,
 	}[rogue.Level]
+
+	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -39,6 +42,9 @@ func (rogue *Rogue) registerGarrote() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if hasCutthroatRune && rogue.IsStealthed() {
+				return true
+			}
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 

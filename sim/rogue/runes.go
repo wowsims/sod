@@ -329,7 +329,7 @@ func (rogue *Rogue) registerCutthroat() {
 		return
 	}
 
-	CutthroatProcAura := rogue.RegisterAura(core.Aura{
+	rogue.CutthroatProcAura = rogue.RegisterAura(core.Aura{
 		Label: "Cutthroat",
 		ActionID: core.ActionID{SpellID: 462707},
 		Duration: time.Second * 10,

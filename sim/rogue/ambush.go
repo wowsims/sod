@@ -46,6 +46,9 @@ func (rogue *Rogue) registerAmbushSpell() {
 			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() && rogue.HasDagger(core.MainHand)	 {
 				return true
 			}
+			if hasCutthroatRune && rogue.HasDagger(core.MainHand) && rogue.IsStealthed() {
+				return true
+			}
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand) && rogue.IsStealthed()
 		},
 
@@ -56,7 +59,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 1.6, 1)
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() {

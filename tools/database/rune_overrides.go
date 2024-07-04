@@ -41,6 +41,9 @@ var RuneOverrides = []*proto.UIRune{
 	// Hunter
 	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
 	{Id: 458393, Name: "Engrave Chest - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeChest, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
+	//Rogue
+	// As of 2024-07-03 Cutthroat is being missed by the scraper because ??? 
+	{Id: 462708, Name: "Engrave Chest - Cutthroat", Icon: "inv_misc_desecrated_leatherglove", Type: proto.ItemType_ItemTypeHands, ClassAllowlist: []proto.Class{proto.Class_ClassRogue}},
 }
 
 // Remove runes as you implement them.
