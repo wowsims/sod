@@ -16,7 +16,6 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
-	ZanzaBuff,
 } from '../core/proto/common';
 import { Mage_Options as MageOptions, Mage_Options_ArmorType as ArmorType } from '../core/proto/mage';
 import { SavedTalents } from '../core/proto/ui';
@@ -36,6 +35,8 @@ import Phase2GearFire from './gear_sets/p2_fire.gear.json';
 import Phase2GearFrost from './gear_sets/p2_frost.gear.json';
 import Phase3GearFire from './gear_sets/p3_fire.gear.json';
 import Phase3GearFrostFFB from './gear_sets/p3_frost_ffb.gear.json';
+import Phase4GearFire from './gear_sets/p4_fire.gear.json';
+import Phase4GearFrost from './gear_sets/p4_frost.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
@@ -64,23 +65,32 @@ export const GearFrostPhase2 = PresetUtils.makePresetGear('P2 Frost', Phase2Gear
 // No new Phase 3 Arcane presets at the moment
 export const GearArcanePhase3 = GearArcanePhase2;
 export const GearFirePhase3 = PresetUtils.makePresetGear('P3 Fire', Phase3GearFire, {
-	customCondition: player => player.getLevel() >= 50,
+	customCondition: player => player.getLevel() === 50,
 });
 export const GearFrostPhase3 = PresetUtils.makePresetGear('P3 Frost', Phase3GearFrostFFB, {
-	customCondition: player => player.getLevel() >= 50,
+	customCondition: player => player.getLevel() === 50,
+});
+
+// No new Phase 4 Arcane presets at the moment
+// export const GearArcanePhase3 = GearArcanePhase2;
+export const GearFirePhase4 = PresetUtils.makePresetGear('P4 Fire (WIP)', Phase4GearFire, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const GearFrostPhase4 = PresetUtils.makePresetGear('P4 Frost (WIP)', Phase4GearFrost, {
+	customCondition: player => player.getLevel() === 60,
 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostPhase2],
 	[Phase.Phase3]: [GearArcanePhase3, GearFirePhase3, GearFrostPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [GearFirePhase4, GearFirePhase4, GearFrostPhase4],
 	[Phase.Phase5]: [],
 };
 
 export const DefaultGearArcane = GearPresets[Phase.Phase3][0];
-export const DefaultGearFire = GearPresets[Phase.Phase3][1];
-export const DefaultGearFrost = GearPresets[Phase.Phase3][2];
+export const DefaultGearFire = GearPresets[Phase.Phase4][1];
+export const DefaultGearFrost = GearPresets[Phase.Phase4][2];
 
 export const DefaultGear = DefaultGearFire;
 
@@ -220,16 +230,15 @@ export const DefaultOptions = MageOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.GreaterManaPotion,
+	defaultPotion: Potions.MajorManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
-	flask: Flask.FlaskOfRestlessDreams,
-	food: Food.FoodSagefishDelight,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	flask: Flask.FlaskOfSupremePower,
+	food: Food.FoodRunnTumTuberSurprise,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
+	mainHandImbue: WeaponImbue.BrillianWizardOil,
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -237,18 +246,21 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
+	occultPoison: true,
 });
 
 export const OtherDefaults = {

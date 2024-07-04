@@ -111,10 +111,10 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:     Phase4TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_fire"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
 			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase3Consumes,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 
 			ItemFilter:      ItemFilters,
@@ -136,7 +136,7 @@ func TestFrost(t *testing.T) {
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_frost"),
 			Buffs:       core.FullBuffsPhase3,
-			Consumes:    Phase3Consumes,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
 
 			ItemFilter:      ItemFilters,
@@ -150,11 +150,11 @@ func TestFrost(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:     Phase4TalentsFrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase3Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFire},
+			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -231,6 +231,19 @@ var Phase3Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodNightfinSoup,
 		MainHandImbue:  proto.WeaponImbue_WizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 3 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_BrillianWizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 
