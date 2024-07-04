@@ -8,7 +8,7 @@ import (
 )
 
 func hauntMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagHaunt), 1.2, 1)
+	return core.TernaryFloat64(spell.Flags.Matches(WarlockFlagHaunt), 1.2, 1)
 }
 
 func (warlock *Warlock) registerHauntSpell() {
@@ -37,6 +37,7 @@ func (warlock *Warlock) registerHauntSpell() {
 	})
 
 	warlock.Haunt = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_WarlockHaunt,
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolShadow,
 		DefenseType:  core.DefenseTypeMagic,
@@ -57,9 +58,9 @@ func (warlock *Warlock) registerHauntSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
@@ -68,7 +69,6 @@ func (warlock *Warlock) registerHauntSpell() {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
 					warlock.HauntDebuffAuras.Get(result.Target).Activate(sim)
-					warlock.EverlastingAfflictionRefresh(sim, target)
 				}
 			})
 		},

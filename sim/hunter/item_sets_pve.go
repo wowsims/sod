@@ -19,7 +19,7 @@ var ItemSetDreadHuntersChain = core.NewItemSet(core.ItemSet{
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddBonusRangedCritRating(2)
+			c.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
 	},
 })
@@ -49,6 +49,7 @@ var ItemSetBeastmasterArmor = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Beaststalker Armor",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {

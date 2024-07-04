@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 889.37473
-  tps: 764.55093
+  dps: 890.63446
+  tps: 762.91666
  }
 }
 dps_results: {

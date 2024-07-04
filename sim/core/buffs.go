@@ -699,6 +699,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStats(updateStats)
 	}
 
+	if raidBuffs.VampiricTouch > 0 {
+		mp5 := float64(raidBuffs.VampiricTouch)
+		MakePermanent(VampiricTouchMP5Aura(&character.Unit, mp5))
+	}
+
 	if raidBuffs.BattleSquawk > 0 {
 		numBattleSquawks := raidBuffs.BattleSquawk
 		BattleSquawkAura(&character.Unit, numBattleSquawks)
@@ -1927,6 +1932,30 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 // 	})
 // }
 
+func VampiricTouchMP5Aura(unit *Unit, mp5 float64) *Aura {
+	actionID := ActionID{SpellID: 402779}.WithTag(1)
+	mps := mp5 / 5
+
+	manaMetrics := unit.NewManaMetrics(actionID)
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Vampiric Touch Replenishment",
+		ActionID:   actionID,
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			StartPeriodicAction(sim, PeriodicActionOptions{
+				Period:   time.Second * 1,
+				Priority: ActionPriorityDOT, // High prio
+				OnAction: func(sim *Simulation) {
+					unit.AddMana(sim, mps, manaMetrics)
+				},
+			})
+		},
+	})
+
+	return aura
+}
+
 func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Battle Squawk",
@@ -2100,7 +2129,7 @@ func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
 
 	return character.RegisterAura(Aura{
 		Label:    "Rallying Cry of the Dragonslayer",
-		ActionID: ActionID{SpellID: 24425},
+		ActionID: ActionID{SpellID: 22888},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)

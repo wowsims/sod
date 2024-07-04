@@ -29,6 +29,7 @@ var ItemSetSorcerersRegalia = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Magister's Regalia",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {

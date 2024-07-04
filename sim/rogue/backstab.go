@@ -32,7 +32,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
+			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 30, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -55,7 +55,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 1.6, 1)
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 

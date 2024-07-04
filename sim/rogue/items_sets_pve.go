@@ -92,7 +92,8 @@ var ItemSetDarkmantleArmor = core.NewItemSet(core.ItemSet{
 				ActionID: actionID,
 				Name:     "Rogue Armor Energize",
 				Callback: core.CallbackOnSpellHitDealt,
-				ProcMask: core.ProcMaskMelee,
+				Outcome:  core.OutcomeLanded,
+				ProcMask: core.ProcMaskMeleeWhiteHit,
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					if c.HasEnergyBar() {

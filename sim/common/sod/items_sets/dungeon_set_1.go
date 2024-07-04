@@ -49,6 +49,7 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Druid Energize Trigger - Wildheart Raiment (Energy)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -110,6 +111,7 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Beaststalker Armor",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -156,6 +158,7 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Magister's Regalia",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -210,6 +213,7 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "Item - Crusader's Wrath Proc - Lightforge Armor (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler:    handler,
@@ -309,6 +313,7 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				ActionID: actionID,
 				Name:     "Rogue Armor Energize",
 				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
 				ProcMask: core.ProcMaskMelee,
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -364,6 +369,7 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "Item - The Furious Storm Proc (MH Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeMHAuto,
 				ProcChance: 0.06,
 				Handler:    handler,
@@ -419,6 +425,7 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskWhiteHit,
 				ProcChance: 0.06,
 				Handler:    handler,
@@ -473,6 +480,7 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 				ActionID: actionID,
 				Name:     "S03 - Warrior Armor Heal Trigger - Battlegear of Valor",
 				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
 				ProcMask: core.ProcMaskMelee,
 				PPM:      1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {

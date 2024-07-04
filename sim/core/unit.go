@@ -380,13 +380,6 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 		}
 	})
 }
-func (unit *Unit) AddBonusRangedCritRating(amount float64) {
-	unit.OnSpellRegistered(func(spell *Spell) {
-		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusCritRating += amount
-		}
-	})
-}
 
 func (unit *Unit) initMovement() {
 	unit.moveAura = unit.GetOrRegisterAura(Aura{

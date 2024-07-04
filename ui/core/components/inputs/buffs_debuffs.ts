@@ -398,7 +398,6 @@ export const BlessingOfWisdom = withLabel(
 	}),
 	'Blessing of Wisdom',
 );
-
 export const ManaSpringTotem = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: player =>
@@ -413,6 +412,10 @@ export const ManaSpringTotem = withLabel(
 		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Mana Spring Totem',
+);
+export const VampiricTouchReplenishment = withLabel(
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402779), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
+	'Vampiric Touch MP5',
 );
 
 export const MeleeCritBuff = withLabel(
@@ -830,14 +833,14 @@ export const CurseOfShadow = makeBooleanDebuffInput({
 			{ id: 17862, minLevel: 44, maxLevel: 59 },
 			{ id: 17937, minLevel: 60 },
 		]),
-	fieldName: 'curseOfShadowNew',
+	fieldName: 'curseOfShadow',
 });
 
 export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos, CurseOfElements, CurseOfShadow], 'Warlock Curses');
 
 export const OccultPoison = withLabel(
 	makeBooleanDebuffInput({
-		actionId: () => ActionId.fromItemId(226374),
+		actionId: player => player.getMatchingItemActionId([{ id: 226374, minLevel: 54 }]),
 		fieldName: 'occultPoison',
 	}),
 	'Occult Poison',
@@ -1042,6 +1045,11 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: ManaSpringTotem,
+		picker: IconPicker,
+		stats: [Stat.StatMP5],
+	},
+	{
+		config: VampiricTouchReplenishment,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
 	},

@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1031.97038
-  tps: 816.86204
+  dps: 1031.59337
+  tps: 816.51867
  }
 }
 dps_results: {
@@ -321,6 +321,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 416.30584
+  tps: 310.60515
+ }
+}
+dps_results: {
  key: "TestFrost-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1171.1584
@@ -330,8 +337,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1031.97038
-  tps: 816.86204
+  dps: 1031.59337
+  tps: 816.51867
  }
 }
 dps_results: {

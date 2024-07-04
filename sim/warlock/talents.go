@@ -9,25 +9,229 @@ import (
 )
 
 func (warlock *Warlock) ApplyTalents() {
-	// Demonic Embrace
-	if warlock.Talents.DemonicEmbrace > 0 {
-		warlock.MultiplyStat(stats.Stamina, 1+.03*(float64(warlock.Talents.DemonicEmbrace)))
-		warlock.MultiplyStat(stats.Spirit, 1-.01*(float64(warlock.Talents.DemonicEmbrace)))
-	}
-
-	if warlock.Pet != nil && warlock.Talents.FelIntellect > 0 {
-		warlock.Pet.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
-	}
-
-	if warlock.Talents.ImprovedShadowBolt > 0 {
-		warlock.applyImprovedShadowBolt()
-	}
-
 	warlock.applyWeaponImbue()
+
+	// Affliction
+	warlock.applySuppression()
 	warlock.applyNightfall()
+	warlock.applyShadowMastery()
+
+	// Demonology
+	warlock.applyDemonicEmbrace()
+	warlock.applyFelIntellect()
 	warlock.applyMasterDemonologist()
 	warlock.applyDemonicSacrifice()
 	warlock.applySoulLink()
+
+	// Destruction
+	warlock.applyImprovedShadowBolt()
+	warlock.applyCataclysm()
+	warlock.applyBane()
+	warlock.applyDevastation()
+	warlock.applyRuin()
+	warlock.applyEmberstorm()
+}
+
+func (warlock *Warlock) applyWeaponImbue() {
+	if warlock.GetCharacter().Equipment.OffHand().Type != proto.ItemType_ItemTypeUnknown {
+		return
+	}
+
+	level := warlock.Level
+	if warlock.Options.WeaponImbue == proto.WarlockOptions_Firestone {
+		warlock.applyFirestone()
+	}
+	if warlock.Options.WeaponImbue == proto.WarlockOptions_Spellstone {
+		if level >= 55 {
+			warlock.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+		}
+	}
+}
+
+func (warlock *Warlock) applyFirestone() {
+	level := warlock.Level
+
+	damageMin := 0.0
+	damageMax := 0.0
+
+	// TODO: Test for spell scaling
+	spellCoeff := 0.0
+	spellId := int32(0)
+
+	// TODO: Test PPM
+	ppm := warlock.AutoAttacks.NewPPMManager(8, core.ProcMaskMelee)
+
+	firestoneMulti := 1.0 + float64(warlock.Talents.ImprovedFirestone)*0.15
+
+	if level >= 56 {
+		warlock.AddStat(stats.FirePower, 21*firestoneMulti)
+		damageMin = 80.0
+		damageMax = 120.0
+		spellId = 17949
+	} else if level >= 46 {
+		warlock.AddStat(stats.FirePower, 17*firestoneMulti)
+		damageMin = 60.0
+		damageMax = 90.0
+		spellId = 17947
+	} else if level >= 36 {
+		warlock.AddStat(stats.FirePower, 14*firestoneMulti)
+		damageMin = 40.0
+		damageMax = 60.0
+		spellId = 17945
+	} else if level >= 28 {
+		warlock.AddStat(stats.FirePower, 10*firestoneMulti)
+		damageMin = 25.0
+		damageMax = 35.0
+		spellId = 758
+	}
+
+	if level >= 28 && warlock.Consumes.MainHandImbue == proto.WeaponImbue_WeaponImbueUnknown {
+		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: spellId},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			DamageMultiplier:         firestoneMulti,
+			ThreatMultiplier:         1,
+			DamageMultiplierAdditive: 1,
+			BonusCoefficient:         spellCoeff,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := sim.Roll(damageMin, damageMax)
+
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+			},
+		})
+
+		core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+			Label: "Firestone Proc",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+
+				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+					return
+				}
+
+				if !ppm.Proc(sim, core.ProcMaskMelee, "Firestone Proc") {
+					return
+				}
+
+				fireProcSpell.Cast(sim, result.Target)
+			},
+		}))
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                            Affliction
+///////////////////////////////////////////////////////////////////////////
+
+func (warlock *Warlock) applySuppression() {
+	if warlock.Talents.Suppression == 0 {
+		return
+	}
+
+	points := float64(warlock.Talents.Suppression)
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(WarlockFlagAffliction) {
+			spell.BonusHitRating += 2 * points * core.CritRatingPerCritChance
+		}
+	})
+}
+
+func (warlock *Warlock) applyNightfall() {
+	if warlock.Talents.Nightfall <= 0 {
+		return
+	}
+
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneChestSoulSiphon)
+	has6PCorruptedFelheart := warlock.HasSetBonus(ItemSetCorruptedFelheart, 6)
+
+	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)
+	if has6PCorruptedFelheart {
+		nightfallProcChance += .04
+	}
+
+	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
+		Label:    "Nightfall Shadow Trance",
+		ActionID: core.ActionID{SpellID: 17941},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.ShadowBolt {
+				spell.CastTimeMultiplier -= 1
+			}
+
+			for _, spell := range warlock.ShadowCleave {
+				spell.CD.Reset()
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.ShadowBolt {
+				spell.CastTimeMultiplier += 1
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// Check if the shadowbolt was instant cast and not a normal one
+			if spell.SpellCode == SpellCode_WarlockShadowBolt && spell.CurCast.CastTime == 0 {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	warlock.RegisterAura(core.Aura{
+		Label:    "Nightfall Hidden Aura",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (hasSoulSiphonRune && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(nightfallProcChance, "Nightfall") {
+				warlock.NightfallProcAura.Activate(sim)
+			}
+		},
+	})
+}
+
+func (warlock *Warlock) applyShadowMastery() {
+	if warlock.Talents.ShadowMastery == 0 {
+		return
+	}
+
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		// Shadow Mastery applies a base damage modifier to all dots / channeled spells instead
+		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !spell.Flags.Matches(core.SpellFlagPureDot) && !spell.Flags.Matches(WarlockFlagHaunt) {
+			spell.DamageMultiplierAdditive += warlock.shadowMasteryBonus()
+		}
+	})
+}
+
+func (warlock *Warlock) shadowMasteryBonus() float64 {
+	return .02 * float64(warlock.Talents.ShadowMastery)
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                            Demonology Talents
+///////////////////////////////////////////////////////////////////////////
+
+func (warlock *Warlock) applyDemonicEmbrace() {
+	if warlock.Talents.DemonicEmbrace == 0 {
+		return
+	}
+
+	points := float64(warlock.Talents.DemonicEmbrace)
+	warlock.MultiplyStat(stats.Stamina, 1+.03*(points))
+	warlock.MultiplyStat(stats.Spirit, 1-.01*(points))
+}
+
+func (warlock *Warlock) applyFelIntellect() {
+	if warlock.Talents.FelIntellect == 0 || warlock.Pet == nil {
+		return
+	}
+
+	warlock.Pet.MultiplyStat(stats.Mana, 1+0.03*float64(warlock.Talents.FelIntellect))
 }
 
 func (warlock *Warlock) applyMasterDemonologist() {
@@ -272,185 +476,100 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	})
 }
 
+///////////////////////////////////////////////////////////////////////////
+//                            Destruction Talents
+///////////////////////////////////////////////////////////////////////////
+
 func (warlock *Warlock) applyImprovedShadowBolt() {
+	if warlock.Talents.ImprovedShadowBolt == 0 {
+		return
+	}
+
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
 	})
-}
-
-func (warlock *Warlock) applyWeaponImbue() {
-	if warlock.GetCharacter().Equipment.OffHand().Type != proto.ItemType_ItemTypeUnknown {
-		return
-	}
-
-	level := warlock.Level
-	if warlock.Options.WeaponImbue == proto.WarlockOptions_Firestone {
-		warlock.applyFirestone()
-	}
-	if warlock.Options.WeaponImbue == proto.WarlockOptions_Spellstone {
-		if level >= 55 {
-			warlock.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
-		}
-	}
-}
-
-func (warlock *Warlock) applyFirestone() {
-	level := warlock.Level
-
-	damageMin := 0.0
-	damageMax := 0.0
-
-	// TODO: Test for spell scaling
-	spellCoeff := 0.0
-	spellId := int32(0)
-
-	// TODO: Test PPM
-	ppm := warlock.AutoAttacks.NewPPMManager(8, core.ProcMaskMelee)
-
-	firestoneMulti := 1.0 + float64(warlock.Talents.ImprovedFirestone)*0.15
-
-	if level >= 56 {
-		warlock.AddStat(stats.FirePower, 21*firestoneMulti)
-		damageMin = 80.0
-		damageMax = 120.0
-		spellId = 17949
-	} else if level >= 46 {
-		warlock.AddStat(stats.FirePower, 17*firestoneMulti)
-		damageMin = 60.0
-		damageMax = 90.0
-		spellId = 17947
-	} else if level >= 36 {
-		warlock.AddStat(stats.FirePower, 14*firestoneMulti)
-		damageMin = 40.0
-		damageMax = 60.0
-		spellId = 17945
-	} else if level >= 28 {
-		warlock.AddStat(stats.FirePower, 10*firestoneMulti)
-		damageMin = 25.0
-		damageMax = 35.0
-		spellId = 758
-	}
-
-	if level >= 28 && warlock.Consumes.MainHandImbue == proto.WeaponImbue_WeaponImbueUnknown {
-		fireProcSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: spellId},
-			SpellSchool: core.SpellSchoolFire,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier:         firestoneMulti,
-			ThreatMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			BonusCoefficient:         spellCoeff,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(damageMin, damageMax)
-
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-			},
-		})
-
-		core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-			Label: "Firestone Proc",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-
-				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-					return
-				}
-
-				if !ppm.Proc(sim, core.ProcMaskMelee, "Firestone Proc") {
-					return
-				}
-
-				fireProcSpell.Cast(sim, result.Target)
-			},
-		}))
-	}
-}
-
-func (warlock *Warlock) applyNightfall() {
-	if warlock.Talents.Nightfall <= 0 {
-		return
-	}
-
-	nightfallProcChance := 0.02 * float64(warlock.Talents.Nightfall)
-
-	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
-		Label:    "Nightfall Shadow Trance",
-		ActionID: core.ActionID{SpellID: 17941},
-		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier -= 1
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier += 1
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			// Check if the shadowbolt was instant cast and not a normal one
-			if spell == warlock.ShadowBolt && spell.CurCast.CastTime == 0 {
-				aura.Deactivate(sim)
-			}
-		},
-	})
 
 	warlock.RegisterAura(core.Aura{
-		Label:    "Nightfall Hidden Aura",
+		Label:    "ISB Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_Corruption || spell.SpellCode == SpellCode_DrainLife {
-				if sim.Proc(nightfallProcChance, "Nightfall") {
-					warlock.NightfallProcAura.Activate(sim)
-
-					for _, spell := range warlock.ShadowCleave {
-						spell.CD.Reset()
-					}
-				}
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && result.DidCrit() && (spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockShadowCleave) {
+				impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
+				impShadowBoltAura.Activate(sim)
+				impShadowBoltAura.SetStacks(sim, 4)
 			}
 		},
 	})
 }
 
-func (warlock *Warlock) ruin() float64 {
-	return core.TernaryFloat64(warlock.Talents.Ruin, 1, 0)
+func (warlock *Warlock) applyCataclysm() {
+	if warlock.Talents.Cataclysm == 0 {
+		return
+	}
+
+	points := float64(warlock.Talents.Cataclysm)
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(WarlockFlagDestruction) {
+			spell.CostMultiplier *= 1 - .01*points
+		}
+	})
 }
 
-// func (warlock *Warlock) setupPyroclasm() {
-// 	if warlock.Talents.Pyroclasm <= 0 {
-// 		return
-// 	}
+func (warlock *Warlock) applyBane() {
+	if warlock.Talents.Bane == 0 {
+		return
+	}
 
-// 	pyroclasmDamageBonus := 1 + 0.02*float64(warlock.Talents.Pyroclasm)
+	points := time.Duration(warlock.Talents.Bane)
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockImmolate {
+			spell.DefaultCast.CastTime -= time.Millisecond * 100 * points
+		} else if spell.SpellCode == SpellCode_WarlockSoulFire {
+			spell.DefaultCast.CastTime -= time.Millisecond * 400 * points
+		}
+	})
+}
 
-// 	warlock.PyroclasmAura = warlock.RegisterAura(core.Aura{
-// 		Label:    "Pyroclasm",
-// 		ActionID: core.ActionID{SpellID: 63244},
-// 		Duration: time.Second * 10,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= pyroclasmDamageBonus
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= pyroclasmDamageBonus
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= pyroclasmDamageBonus
-// 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= pyroclasmDamageBonus
-// 		},
-// 	})
+func (warlock *Warlock) applyDevastation() {
+	if warlock.Talents.Devastation == 0 {
+		return
+	}
 
-// 	warlock.RegisterAura(core.Aura{
-// 		Label:    "Pyroclasm Talent Hidden Aura",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if (spell == warlock.Conflagrate || spell == warlock.SearingPain) && result.DidCrit() {
-// 				warlock.PyroclasmAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+	points := float64(warlock.Talents.Devastation)
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(WarlockFlagDestruction) {
+			spell.BonusCritRating += points * core.CritRatingPerCritChance
+		}
+	})
+}
+
+func (warlock *Warlock) improvedImmolateBonus() float64 {
+	return 0.05 * float64(warlock.Talents.ImprovedImmolate)
+}
+
+func (warlock *Warlock) applyRuin() {
+	if !warlock.Talents.Ruin {
+		return
+	}
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(WarlockFlagDestruction) {
+			spell.CritDamageBonus += 1
+		}
+	})
+}
+
+func (warlock *Warlock) applyEmberstorm() {
+	if warlock.Talents.Emberstorm == 0 {
+		return
+	}
+
+	points := float64(warlock.Talents.Emberstorm)
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellSchool.Matches(core.SpellSchoolFire) && isWarlockSpell(spell) {
+			spell.DamageMultiplierAdditive += 0.02 * points
+		}
+	})
+}
