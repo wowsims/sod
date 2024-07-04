@@ -98,7 +98,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
 					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
 				}
-				if hasShadowflameRune && warlock.Shadowflame.Dot(target).IsActive() {
+				if hasShadowflameRune && warlock.ShadowflameDot.Dot(target).IsActive() {
 					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 

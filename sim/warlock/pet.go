@@ -402,8 +402,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 55,
-					BaseDamageMax: 83,
+					BaseDamageMin: 67,
+					BaseDamageMax: 101,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,
@@ -412,7 +412,7 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			cfg.Stats = stats.Stats{
 				stats.Strength:  129,
 				stats.Agility:   85,
-				stats.Stamina:   234,
+				stats.Stamina:   290,
 				stats.Intellect: 70,
 				stats.Spirit:    150,
 				stats.Mana:      1066,
@@ -422,8 +422,8 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 			}
 			cfg.AutoAttacks = core.AutoAttackOptions{
 				MainHand: core.Weapon{
-					BaseDamageMin: 90,
-					BaseDamageMax: 124,
+					BaseDamageMin: 87,
+					BaseDamageMax: 128,
 					SwingSpeed:    2,
 				},
 				AutoSwingMelee: true,

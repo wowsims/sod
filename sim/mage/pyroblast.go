@@ -33,6 +33,8 @@ func (mage *Mage) registerPyroblastSpell() {
 }
 
 func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
+	hasHotStreakRune := mage.HasRune(proto.MageRune_RuneHelmHotStreak)
+
 	numTicks := int32(4)
 	tickLength := time.Second * 3
 
@@ -46,8 +48,6 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 	spellCoeff := 1.0
 	dotCoeff := .15
 	castTime := time.Second * 6
-
-	hasHotStreakRune := mage.HasRune(proto.MageRune_RuneHelmHotStreak)
 
 	actionID := core.ActionID{SpellID: spellId}
 

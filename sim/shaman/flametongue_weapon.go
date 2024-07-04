@@ -31,8 +31,6 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		CritDamageBonus: shaman.elementalFury(),
-
 		DamageMultiplier: []float64{1, 1.05, 1.1, 1.15}[shaman.Talents.ElementalWeapons],
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,

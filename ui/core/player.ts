@@ -244,9 +244,10 @@ export class Player<SpecType extends Spec> {
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
-	private isbSbFrequency = 0.0;
-	private isbCrit = 0.0;
-	private isbWarlocks = 0;
+	private isbUsingShadowflame = true;
+	private isbSbFrequency = 3.0;
+	private isbCrit = 25.0;
+	private isbWarlocks = 1.0;
 	private isbSpriests = 0;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
@@ -953,6 +954,17 @@ export class Player<SpecType extends Spec> {
 		this.healingModelChangeEmitter.emit(eventID);
 	}
 
+	getIsbUsingShadowflame(): boolean {
+		return this.isbUsingShadowflame;
+	}
+
+	setIsbUsingShadowflame(eventID: EventID, newValue: boolean) {
+		if (newValue == this.isbUsingShadowflame) return;
+
+		this.isbUsingShadowflame = newValue;
+		this.changeEmitter.emit(eventID);
+	}
+
 	getIsbSbFrequency(): number {
 		return this.isbSbFrequency;
 	}
@@ -1311,6 +1323,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				isbUsingShadowflame: this.getIsbUsingShadowflame(),
 				isbSbFrequency: this.getIsbSbFrequency(),
 				isbCrit: this.getIsbCrit(),
 				isbWarlocks: this.getIsbWarlocks(),

@@ -113,7 +113,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 					warlock.ActiveCurseAura = dot.Aura
 
 					if hasMarkOfChaosRune {
-						warlock.applyMarkOfChaosDebuff(sim, target, dot)
+						warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
 					}
 				}
 			}
@@ -133,6 +133,8 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 }
 
 func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
+
 	playerLevel := warlock.Level
 
 	warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(core.CurseOfRecklessnessAura)
@@ -185,6 +187,10 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 				}
 				warlock.ActiveCurseAura = warlock.CurseOfRecklessnessAuras.Get(target)
 				warlock.ActiveCurseAura.Activate(sim)
+
+				if hasMarkOfChaosRune {
+					warlock.applyMarkOfChaosDebuff(sim, target, time.Minute*2)
+				}
 			}
 		},
 
@@ -406,7 +412,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 				warlock.ActiveCurseAura = dot.Aura
 
 				if hasMarkOfChaosRune {
-					warlock.applyMarkOfChaosDebuff(sim, target, dot)
+					warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
 				}
 			}
 		},
