@@ -12,7 +12,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		return
 	}
 
-	baseDamage := 113 / 100 * 100 / 100 * (2.976264 + 0.641066 * float64(hunter.Level) + 0.022519 * float64(hunter.Level) * float64(hunter.Level)) // taken from wowhead
+	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage()
 
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
@@ -23,7 +23,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 	}
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 409593},
+		ActionID:     core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
