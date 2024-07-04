@@ -77,7 +77,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2044.2
-  final_stats: 398
+  final_stats: 298
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -126,7 +126,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2769.424
-  final_stats: 511
+  final_stats: 361
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -175,7 +175,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2901
-  final_stats: 951
+  final_stats: 751
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -393,8 +393,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-AllItems-TheFiveThunders"
  value: {
-  dps: 143.72925
-  tps: 134.01471
+  dps: 141.88771
+  tps: 132.17318
  }
 }
 dps_results: {
@@ -582,8 +582,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-AllItems-TheFiveThunders"
  value: {
-  dps: 242.76677
-  tps: 269.19268
+  dps: 241.69619
+  tps: 268.1221
  }
 }
 dps_results: {
@@ -771,8 +771,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-AllItems-TheFiveThunders"
  value: {
-  dps: 335.09214
-  tps: 360.41525
+  dps: 333.7755
+  tps: 359.09861
  }
 }
 dps_results: {
@@ -1016,8 +1016,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 416.59593
-  tps: 440.55922
+  dps: 415.38639
+  tps: 439.34968
  }
 }
 dps_results: {

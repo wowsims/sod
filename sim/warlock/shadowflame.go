@@ -14,7 +14,6 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasUnstableAffliction := warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction)
 
 	// https://www.wowhead.com/classic/spell=18275/shadow-mastery
 	// The Shadowflame periodic damage is NOT buffed by Shadow Mastery as it's not affected by haunt
@@ -28,7 +27,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       WarlockFlagAffliction | WarlockFlagDestruction,
+		Flags:       WarlockFlagHaunt | WarlockFlagAffliction | WarlockFlagDestruction,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -71,7 +70,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagDestruction,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagHaunt | WarlockFlagAffliction | WarlockFlagDestruction,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.27,
@@ -79,7 +78,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				CastTime: time.Second * 2,
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
@@ -94,10 +93,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				// UA, Immo, Shadowflame exclusivity
-				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
-					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
-				}
+				// Shadowflame and Immolate are exclusive
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)

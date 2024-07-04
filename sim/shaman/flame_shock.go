@@ -96,7 +96,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 
 			if hasMoltenBlastRune && sim.Proc(ShamanMoltenBlastResetChance, "Molten Blast Reset") {
 				shaman.MoltenBlast.CD.Reset()

@@ -308,9 +308,18 @@ export class ActionId {
 			case 'Mutilate':
 			case 'Stormstrike':
 				if (this.tag === 1) {
-					name = `${name} (Main Hand)`;
+					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
-					name = `${name} (Off Hand)`;
+					name = `${name} (Off-Hand)`;
+				}
+				break;
+			// Weapon enchants with auras
+			case 'Windfury Weapon':
+			case 'Holy Strength':
+				if (this.tag === 1) {
+					name += ' (Main-Hand)';
+				} else if (this.tag === 2) {
+					name += ' (Off-Hand)';
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
@@ -364,15 +373,6 @@ export class ActionId {
 					name += ' (Melee)';
 				} else if (this.tag === 2) {
 					name += ' (Spell)';
-				}
-				break;
-			case 'Lightning Speed':
-			case 'Windfury Weapon':
-			case 'Berserk':
-				if (this.tag === 1) {
-					name += ' (Main Hand)';
-				} else if (this.tag === 2) {
-					name += ' (Off Hand)';
 				}
 				break;
 			case 'Battle Shout':

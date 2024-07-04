@@ -402,13 +402,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.RangedAttackPower: 0,
 		},
 		40: stats.Stats{
-			stats.RangedAttackPower: 200,
+			stats.RangedAttackPower: 100,
 		},
 		50: stats.Stats{
-			stats.RangedAttackPower: 300,
+			stats.RangedAttackPower: 150,
 		},
 		60: stats.Stats{
-			stats.RangedAttackPower: 400,
+			stats.RangedAttackPower: 200,
 		},
 	},
 	StrengthOfEarth: {
@@ -2289,6 +2289,10 @@ func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) *Aur
 }
 
 func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
+	if character.Level > 59 {
+		return nil
+	}
+
 	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
 	// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
 	character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
@@ -2310,6 +2314,10 @@ func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
 }
 
 func ApplySparkOfInspiration(character *Character) *Aura {
+	if character.Level > 49 {
+		return nil
+	}
+
 	character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
 	character.AddStat(stats.SpellPower, 42)
 	character.PseudoStats.MeleeSpeedMultiplier *= 1.1
@@ -2326,6 +2334,10 @@ func ApplySparkOfInspiration(character *Character) *Aura {
 }
 
 func ApplyBoonOfBlackfathom(character *Character) *Aura {
+	if character.Level > 39 {
+		return nil
+	}
+
 	character.AddStat(stats.MeleeCrit, 2*CritRatingPerCritChance)
 	// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
 	character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
@@ -2344,6 +2356,10 @@ func ApplyBoonOfBlackfathom(character *Character) *Aura {
 }
 
 func ApplyAshenvaleRallyingCry(character *Character) *Aura {
+	if character.Level > 39 {
+		return nil
+	}
+
 	character.PseudoStats.DamageDealtMultiplier *= 1.05
 	//TODO: healing dealt multiplier?
 
