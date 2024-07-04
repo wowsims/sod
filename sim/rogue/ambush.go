@@ -24,6 +24,10 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
+	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
+
+	RuneDamageModifier := core.TernaryFloat64(hasSlaughterRune, 1.6, 1)
+	RuneCostModifier := core.TernaryFloat64(hasSlaughterRune, 30, 0)
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -33,7 +37,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 30, 0),
+			Cost:   60 - RuneCostModifier,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -43,13 +47,13 @@ func (rogue *Rogue) registerAmbushSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() && rogue.HasDagger(core.MainHand)	 {
-				return true
-			}
-			if hasCutthroatRune && rogue.HasDagger(core.MainHand) && rogue.IsStealthed() {
-				return true
-			}
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand) && rogue.IsStealthed()
+			if !rogue.HasDagger(core.MainHand) {
+				return false
+			  }
+					if hasCutthroatRune && (rogue.CutthroatProcAura.IsActive() || rogue.IsStealthed()) {
+						return true
+					}
+					return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()		
 		},
 
 		BonusCritRating: 15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
@@ -59,7 +63,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 1.6, 1)
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() {

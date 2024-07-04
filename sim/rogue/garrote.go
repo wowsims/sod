@@ -42,10 +42,10 @@ func (rogue *Rogue) registerGarrote() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			if hasCutthroatRune && rogue.IsStealthed() {
-				return true
+			if !rogue.IsStealthed() {
+				return false
 			}
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
+			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget
 		},
 
 		DamageMultiplier: 1 +

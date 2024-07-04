@@ -333,10 +333,5 @@ func (rogue *Rogue) registerCutthroat() {
 		Label: "Cutthroat",
 		ActionID: core.ActionID{SpellID: 462707},
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-		
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-		},
 	})
 }
