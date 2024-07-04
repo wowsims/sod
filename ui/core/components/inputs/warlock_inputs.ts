@@ -26,6 +26,10 @@ export const ArmorInput = <SpecType extends WarlockSpecs>() =>
 					]),
 				value: Armor.DemonArmor,
 			},
+			{
+				actionId: () => ActionId.fromSpellId(403619),
+				value: Armor.FelArmor,
+			},
 		],
 	});
 

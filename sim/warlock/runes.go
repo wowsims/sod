@@ -159,10 +159,10 @@ func (warlock *Warlock) applyMarkOfChaos() {
 	})
 }
 
-func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *core.Unit, duration time.Duration) {
 	aura := warlock.MarkOfChaosAuras.Get(target)
-	aura.Duration = dot.Duration
-	aura.UpdateExpires(sim, dot.ExpiresAt())
+	aura.Duration = duration
+	aura.UpdateExpires(sim, sim.CurrentTime+duration)
 	aura.Activate(sim)
 }
 
@@ -279,7 +279,7 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		Duration: core.NeverExpires,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * 0.12
+			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * .03
 			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -294,8 +294,8 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 	}
 
 	actionID := core.ActionID{SpellID: 426303}
-	dmgMod := 1.25
-	procChance := 0.05
+	dmgMod := 1.10
+	procChance := 0.10
 
 	procAuraConfig := core.Aura{
 		Label:    "Grimoire of Synergy Proc",

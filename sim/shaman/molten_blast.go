@@ -16,7 +16,9 @@ func (shaman *Shaman) applyMoltenBlast() {
 
 	baseDamageLow := shaman.baseRuneAbilityDamage() * .72
 	baseDamageHigh := shaman.baseRuneAbilityDamage() * 1.08
+	// TODO: 2024-07-03 added 14% SP coefficient but unsure if the AP coefficient was also removed
 	apCoef := .05
+	spCoef := .14
 	cooldown := time.Second * 6
 	manaCost := .18
 	targetCount := int32(10)
@@ -47,8 +49,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
+		BonusCoefficient: spCoef,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 2,
 
