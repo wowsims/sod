@@ -11,6 +11,7 @@ func (shaman *Shaman) ApplyTalents() {
 	// Elemental Talents
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
+	shaman.applyElementalFury()
 	shaman.registerElementalMasteryCD()
 
 	// Enhancement Talents
@@ -61,6 +62,10 @@ func (shaman *Shaman) ApplyTalents() {
 			}
 		})
 	}
+}
+
+func (shaman *Shaman) callOfFlameMultiplier() float64 {
+	return 1 + .05*float64(shaman.Talents.CallOfFlame)
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -133,6 +138,18 @@ func (shaman *Shaman) applyElementalDevastation() {
 				procAura.Activate(sim)
 			}
 		},
+	})
+}
+
+func (shaman *Shaman) applyElementalFury() {
+	if !shaman.Talents.ElementalFury {
+		return
+	}
+
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem) {
+			spell.CritDamageBonus = 1
+		}
 	})
 }
 
@@ -326,10 +343,6 @@ func (shaman *Shaman) applyFlurry() {
 			}
 		},
 	})
-}
-
-func (shaman *Shaman) elementalFury() float64 {
-	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
 }
 
 func (shaman *Shaman) concussionMultiplier() float64 {

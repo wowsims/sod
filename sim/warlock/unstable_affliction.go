@@ -14,7 +14,6 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
 	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
@@ -66,13 +65,13 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 
-				// UA, Immo, Shadowflame exclusivity
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
+
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
-				}
-				if hasShadowflameRune && warlock.Shadowflame.Dot(target).IsActive() {
-					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 
 				if hasInvocationRune && spell.Dot(target).IsActive() {

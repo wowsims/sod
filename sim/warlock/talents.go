@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -485,10 +486,12 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 		return
 	}
 
+	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
+		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt, core.TernaryInt32(hasShadowflameRune, 10, 4))
 	})
 
+	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
 	warlock.RegisterAura(core.Aura{
 		Label:    "ISB Trigger",
 		Duration: core.NeverExpires,
@@ -496,7 +499,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && result.DidCrit() && (spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockShadowCleave) {
+			if result.Landed() && result.DidCrit() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				impShadowBoltAura.Activate(sim)
 				impShadowBoltAura.SetStacks(sim, 4)

@@ -59,9 +59,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + .05*float64(shaman.Talents.CallOfFlame),
+		DamageMultiplier: shaman.callOfFlameMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 

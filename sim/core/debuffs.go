@@ -266,7 +266,8 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 
 func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
-	isbAura := ImprovedShadowBoltAura(target, 5)
+	baseStacks := TernaryInt32(isbConfig.hasShadowflameRune, 10, 4)
+	isbAura := ImprovedShadowBoltAura(target, 5, baseStacks)
 	isbCrit := isbConfig.casterCrit / 100.0
 	var pa *PendingAction
 	MakePermanent(target.GetOrRegisterAura(Aura{
@@ -278,7 +279,7 @@ func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 					for i := 0; i < int(isbConfig.isbWarlocks); i++ {
 						if sim.Proc(isbCrit, "External Isb Crit") {
 							isbAura.Activate(sim)
-							isbAura.SetStacks(sim, 4)
+							isbAura.SetStacks(sim, baseStacks)
 						} else if isbAura.IsActive() {
 							isbAura.RemoveStack(sim)
 						}
@@ -294,6 +295,7 @@ func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 }
 
 type IsbConfig struct {
+	hasShadowflameRune  bool
 	shadowBoltFrequency float64
 	casterCrit          float64
 	isbWarlocks         int32
@@ -302,6 +304,7 @@ type IsbConfig struct {
 
 func (character *Character) createIsbConfig(player *proto.Player) {
 	character.IsbConfig = IsbConfig{
+		hasShadowflameRune:  player.IsbUsingShadowflame,
 		shadowBoltFrequency: player.IsbSbFrequency,
 		casterCrit:          player.IsbCrit,
 		isbWarlocks:         player.IsbWarlocks,
@@ -319,7 +322,7 @@ func (character *Character) createIsbConfig(player *proto.Player) {
 	}
 }
 
-func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
+func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	isbLabel := "Improved Shadow Bolt"
 	if unit.GetAura(isbLabel) != nil {
 		return unit.GetAura(isbLabel)
@@ -337,7 +340,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,
-		MaxStacks: 4,
+		MaxStacks: stackCount,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			// External shadow priests simulation
 			if externalShadowPriests > 0 {
