@@ -14087,6 +14087,7 @@
 {"id":409554,"name":"Explosive Shot","icon":"ability_hunter_explosiveshot","requiresLevel":1,"hasBuff":true},
 {"id":409580,"name":"Heart of the Lion","icon":"ability_hunter_pet_cat","requiresLevel":1,"hasBuff":true},
 {"id":409583,"name":"Heart of the Lion","icon":"ability_hunter_pet_cat","requiresLevel":1,"hasBuff":true},
+{"id":409593,"name":"Kill Shot","icon":"ability_hunter_assassinate2","requiresLevel":1},
 {"id":409691,"name":"Raptor Strike","icon":"ability_meleedamage","requiresLevel":1},
 {"id":409693,"name":"Raptor Strike","icon":"ability_meleedamage","requiresLevel":8},
 {"id":409748,"name":"Raptor Strike","icon":"ability_meleedamage","requiresLevel":16},

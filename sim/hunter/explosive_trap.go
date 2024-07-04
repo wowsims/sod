@@ -63,7 +63,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					// Since ExplosiveTrap is coded as a buff, we ignore any targets that have had ImmolationTrap applied after last ExplosiveTrap cast
+					// Explosive Trap DoT only does damage if the target does not have an immolation trap ticking on them
 					if !aoeTarget.HasActiveAuraWithTag("ImmolationTrap") {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 					}
@@ -79,12 +79,6 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 					baseDamage += hunter.tntDamageFlatBonus()
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-					// Immolation Trap and Explosive Trap DoTs ovveride eachother
-					if curTarget.HasActiveAuraWithTag("ImmolationTrap") {
-						curTarget.GetActiveAuraWithTag("ImmolationTrap").Deactivate(sim)
-					}
-
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 				spell.AOEDot().ApplyOrReset(sim)
