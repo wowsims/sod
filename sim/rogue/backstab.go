@@ -49,8 +49,8 @@ func (rogue *Rogue) registerBackstabSpell() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			if !rogue.HasDagger(core.MainHand) {
 				return false
-			  }
-					return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget			
+			}
+			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget			
 		},
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
