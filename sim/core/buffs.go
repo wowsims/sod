@@ -402,13 +402,13 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.RangedAttackPower: 0,
 		},
 		40: stats.Stats{
-			stats.RangedAttackPower: 200,
+			stats.RangedAttackPower: 100,
 		},
 		50: stats.Stats{
-			stats.RangedAttackPower: 300,
+			stats.RangedAttackPower: 150,
 		},
 		60: stats.Stats{
-			stats.RangedAttackPower: 400,
+			stats.RangedAttackPower: 200,
 		},
 	},
 	StrengthOfEarth: {

@@ -39,9 +39,9 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage float64
 			if isMH {
-				baseDamage = flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus * 0.8 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
 			} else {
-				baseDamage = flatDamageBonus + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage = flatDamageBonus * 0.8 + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
 			}
 
 			// TODO: Add support for all poison effects (such as chipped bite proc), if they apply ;)
