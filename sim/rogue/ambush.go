@@ -49,11 +49,11 @@ func (rogue *Rogue) registerAmbushSpell() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			if !rogue.HasDagger(core.MainHand) {
 				return false
-			  }
-					if hasCutthroatRune && (rogue.CutthroatProcAura.IsActive() || rogue.IsStealthed()) {
-						return true
-					}
-					return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()		
+			}
+			if hasCutthroatRune && (rogue.CutthroatProcAura.IsActive() || rogue.IsStealthed()) {
+				return true
+			}
+			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()		
 		},
 
 		BonusCritRating: 15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
