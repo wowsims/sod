@@ -48,6 +48,23 @@ func TestArcane(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase4TalentsArcane,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_arcane"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_arcane"),
+			Buffs:       core.FullBuffsPhase2,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -173,6 +190,7 @@ var Phase2TalentsFrostfire = Phase2TalentsFire
 var Phase3TalentsFire = "-0550020123033151-2035"
 var Phase3TalentsFrost = "-055-20350203100351051"
 
+var Phase4TalentsArcane = "0550050210031531-054-203500001"
 var Phase4TalentsFire = "-5050320123033051-203501031003"
 var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 
