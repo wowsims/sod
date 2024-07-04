@@ -43,7 +43,9 @@ func (druid *Druid) GetCatWeapon(level int32) core.Weapon {
 
 	switch level {
 	case 60:
-		// TODO: Level 60 values
+		// Avg: 54.8
+		claws.BaseDamageMin = 43.84
+		claws.BaseDamageMax = 65.76
 	case 50:
 		// TODO: Not entirely verified. Value from Balor (Feral mod)
 		// Avg: 46.6
@@ -107,8 +109,6 @@ func (druid *Druid) GetDynamicPredStrikeStats() stats.Stats {
 
 // TODO: Classic feral and bear
 func (druid *Druid) registerCatFormSpell() {
-	hasFeralCombatSpec := druid.HasRune(proto.DruidRune(proto.RingRune_RuneRingFeralCombatSpecialization))
-
 	actionID := core.ActionID{SpellID: 768}
 
 	srm := druid.getSavageRoarMultiplier()
@@ -142,10 +142,6 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.SetCurrentPowerBar(core.EnergyBar)
 
 			druid.AutoAttacks.SetMH(clawWeapon)
-
-			if hasFeralCombatSpec {
-				druid.PseudoStats.FeralCombatSkill += 5
-			}
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
@@ -184,9 +180,6 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
-			if hasFeralCombatSpec {
-				druid.PseudoStats.FeralCombatSkill -= 5
-			}
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(nil)

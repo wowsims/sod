@@ -219,7 +219,7 @@ export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', DefaultGe
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = WarlockOptions.create({
-	armor: Armor.DemonArmor,
+	armor: Armor.FelArmor,
 	summon: Summon.Imp,
 	weaponImbue: WarlockWeaponImbue.NoWeaponImbue,
 });

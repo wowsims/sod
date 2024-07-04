@@ -68,8 +68,6 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,

@@ -125,6 +125,22 @@ export const DistanceFromTarget = {
 	},
 };
 
+export const IsbUsingShadowflame = {
+	id: 'isb-using-shadowflame',
+	type: 'boolean' as const,
+	label: 'Has Shadowflame Rune',
+	labelTooltip: 'Whether or not the Warlock is using the Shadowflame rune (4 stacks of ISB vs. 10)',
+	float: true,
+	defaultValue: true,
+	inline: true,
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.changeEmitter, player.getRaid()!.debuffsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getIsbUsingShadowflame(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: boolean) => {
+		player.setIsbUsingShadowflame(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => player.getRaid()?.getDebuffs().improvedShadowBolt == true,
+};
+
 export const IsbSbFrequencey = {
 	id: 'isb-sb-frequency',
 	type: 'number' as const,
@@ -189,7 +205,7 @@ export const IsbSpriests = {
 
 export const IsbConfig = {
 	tooltip: 'Improved Shadow Bolt debuff configuration',
-	inputs: [IsbSbFrequencey, IsbCrit, IsbWarlocks, IsbSpriests],
+	inputs: [IsbUsingShadowflame, IsbSbFrequencey, IsbCrit, IsbWarlocks, IsbSpriests],
 };
 
 export const TankAssignment = {

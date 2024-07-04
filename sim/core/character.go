@@ -398,7 +398,6 @@ func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-
 	switch character.MainHand().ID {
 	case ItemIDAtieshMage:
 		partyBuffs.AtieshMage += 1
@@ -716,6 +715,10 @@ func (c *Character) ApplyRingRunes() {
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
 		c.PseudoStats.SwordsSkill += 5
 		c.PseudoStats.TwoHandedSwordsSkill += 5
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFeralCombatSpecialization)) {
+		c.PseudoStats.FeralCombatSkill += 5
 	}
 
 	// Other Specializations

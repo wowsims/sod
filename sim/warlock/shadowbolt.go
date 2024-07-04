@@ -18,7 +18,7 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 	castTime := [ShadowBoltRanks + 1]int32{0, 1700, 2200, 2800, 3000, 3000, 3000, 3000, 3000, 3000, 3000}[rank]
 
 	shadowboltVolley := warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley)
-	damageMulti := core.TernaryFloat64(shadowboltVolley, 0.8, 1.0)
+	damageMulti := core.TernaryFloat64(shadowboltVolley, 0.95, 1.0)
 
 	results := make([]*core.SpellResult, min(core.TernaryInt32(shadowboltVolley, 5, 1), warlock.Env.GetNumTargets()))
 

@@ -211,10 +211,16 @@ func (mage *Mage) applyHotStreak() {
 			pyroblastSpells = core.FilterSlice(mage.Pyroblast, func(spell *core.Spell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(pyroblastSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+			core.Each(pyroblastSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier -= 1
+				spell.CostMultiplier -= 1
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(pyroblastSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+			core.Each(pyroblastSpells, func(spell *core.Spell) {
+				spell.CastTimeMultiplier += 1
+				spell.CostMultiplier += 1
+			})
 		},
 	})
 
@@ -255,7 +261,7 @@ func (mage *Mage) applyHotStreak() {
 						if heatingUpAura.IsActive() {
 							heatingUpAura.Deactivate(sim)
 							mage.HotStreakAura.Activate(sim)
-						} else {
+						} else if !mage.HotStreakAura.IsActive() {
 							heatingUpAura.Activate(sim)
 						}
 					},
@@ -336,7 +342,7 @@ func (mage *Mage) applyBrainFreeze() {
 	buffDuration := time.Second * 15
 
 	affectedSpells := []*core.Spell{}
-	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFrostfireBolt, SpellCode_MageSpellfrostBolt}
+	triggerSpellCodes := []int32{SpellCode_MageFireball, SpellCode_MageFrostfireBolt, SpellCode_MageSpellfrostBolt, SpellCode_MageBalefireBolt}
 
 	procAura := mage.RegisterAura(core.Aura{
 		Label:    "Brain Freeze",
