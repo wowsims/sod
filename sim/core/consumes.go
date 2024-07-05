@@ -313,6 +313,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.MP5: 6,
 			})
+		case proto.Food_FoodTenderWolfSteak:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 12,
+				stats.Spirit:  12,
+			})
 		case proto.Food_FoodGrilledSquid:
 			character.AddStats(stats.Stats{
 				stats.Agility: 10,

@@ -114,7 +114,7 @@ export class ConsumesPicker extends Component {
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));
-		const alcoholOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
+		const alcoholOptions = ConsumablesInputs.makeAlcoholInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
 
 		const pickers = [
 			buildIconInput(foodsElem, this.simUI.player, foodOptions),

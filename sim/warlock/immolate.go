@@ -87,8 +87,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			oldMultiplier := spell.DamageMultiplier
-			// TODO should most likely just be done statically (?)
-			// Would require splitting Immolate into 2 separate spells
 			spell.DamageMultiplier *= 1 + warlock.improvedImmolateBonus()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier = oldMultiplier
@@ -98,7 +96,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
 					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
 				}
-				if hasShadowflameRune && warlock.ShadowflameDot.Dot(target).IsActive() {
+				if hasShadowflameRune && warlock.Shadowflame.Dot(target).IsActive() {
 					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 
