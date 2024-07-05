@@ -156,3 +156,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 func (hunter *Hunter) mortalShots() float64 {
 	return 0.06 * float64(hunter.Talents.MortalShots)
 }
+
+func (hunter *Hunter) trapMastery() float64 {
+	return 5 * float64(hunter.Talents.TrapMastery) * core.SpellHitRatingPerHitChance
+}
