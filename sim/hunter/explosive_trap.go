@@ -46,6 +46,8 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
+		BonusHitRating: hunter.trapMastery(),
+
 		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
 		ThreatMultiplier: 1,
 
