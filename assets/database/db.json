@@ -9920,6 +9920,7 @@
 {"id":458479,"name":"Engrave Boots - Wyvern Strike","icon":"inv_spear_02","type":10,"requiresLevel":1,"classAllowlist":[2]},
 {"id":458856,"name":"Engrave Cloak - Divine Light","icon":"spell_holy_surgeoflight","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]},
+{"id":462708,"name":"Engrave Gloves - Cutthroat","icon":"ability_rogue_slaughterfromtheshadows","type":7,"requiresLevel":1,"classAllowlist":[6]},
 {"id":462834,"name":"Engrave Cloak - Shock and Awe","icon":"ability_vehicle_sonicshockwave","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":462853,"name":"Engrave Pants - Hand of Sacrifice","icon":"spell_holy_sealofsacrifice","type":9,"requiresLevel":1,"classAllowlist":[4]}
 ],
