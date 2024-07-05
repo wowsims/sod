@@ -37,6 +37,8 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
+		BonusHitRating: hunter.trapMastery(),
+
 		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.CleverTraps),
 		ThreatMultiplier: 1,
 
