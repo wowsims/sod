@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -243,9 +244,9 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.disabledMCDs = []*core.MajorCooldown{}
 }
 
-func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
+func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character:    *char,
+		Character:    *character,
 		SelfBuffs:    selfBuffs,
 		Talents:      &proto.DruidTalents{},
 		StartingForm: form,
@@ -257,16 +258,18 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// TODO: Class druid physical stats
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[char.Class][int(druid.Level)]*core.CritRatingPerCritChance)
-	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[char.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
+	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(druid.Level)]*core.CritRatingPerCritChance)
+	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
 	// TODO: Update DodgePerAgiAtLevel with the appropriate value for each level
-	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[char.Class][int(druid.Level)])
+	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(druid.Level)])
 
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
 	// Switch to using AddStat as PseudoStat is being removed
 	// druid.PseudoStats.BaseDodge += 0.056097
+
+	guardians.ConstructGuardians(&druid.Character)
 
 	return druid
 }

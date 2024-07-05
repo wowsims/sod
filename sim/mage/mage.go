@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -171,6 +172,8 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
 		mage.frozenOrb = mage.NewFrozenOrb()
 	}
+
+	guardians.ConstructGuardians(&mage.Character)
 
 	return mage
 }

@@ -3,6 +3,7 @@ package warlock
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -181,6 +182,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
 		warlock.Pet = warlock.NewWarlockPet()
 	}
+
+	guardians.ConstructGuardians(&warlock.Character)
 
 	return warlock
 }

@@ -3,7 +3,7 @@ package hunter
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -74,7 +74,7 @@ type Hunter struct {
 	CobraStrikesAura   *core.Aura
 
 	// The aura that allows you to cast Mongoose Bite
-	DefensiveState    *core.Aura
+	DefensiveState *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
@@ -134,7 +134,7 @@ func (hunter *Hunter) Initialize() {
 	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
 		fireTraps := hunter.NewTimer()
 		frostTraps := hunter.NewTimer()
-	
+
 		hunter.registerExplosiveTrapSpell(fireTraps)
 		hunter.registerImmolationTrapSpell(fireTraps)
 		hunter.registerFrostTrapSpell(frostTraps)
@@ -266,7 +266,8 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(character.Level)]*core.CritRatingPerCritChance)
 	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(character.Level)]*core.SpellCritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&hunter.Character)
+	guardians.ConstructGuardians(&hunter.Character)
+
 	return hunter
 }
 

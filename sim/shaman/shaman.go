@@ -3,6 +3,7 @@ package shaman
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -43,6 +44,8 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 			SpiritWolf2: shaman.NewSpiritWolf(2),
 		}
 	}
+
+	guardians.ConstructGuardians(&shaman.Character)
 
 	return shaman
 }

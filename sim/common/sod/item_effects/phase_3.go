@@ -3,8 +3,8 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/common/itemhelpers"
-	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -442,7 +442,26 @@ func init() {
 	})
 
 	core.NewItemEffect(DragonsCry, func(agent core.Agent) {
-		vanilla.MakeEmeraldDragonWhelpTriggerAura(agent, DragonsCry)
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(DragonsCry)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Emerald Dragon Whelp Proc",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: procMask,
+			PPM:      1.0, // Reported by armaments discord
+			ICD:      time.Minute * 1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				for _, petAgent := range character.PetAgents {
+					if whelp, ok := petAgent.(*guardians.EmeraldDragonWhelp); ok {
+						whelp.EnableWithTimeout(sim, whelp, time.Second*15)
+						break
+					}
+				}
+			},
+		})
 	})
 
 	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
