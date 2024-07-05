@@ -74,7 +74,6 @@ var UnimplementedRuneOverrides = []int32{
 	409240, // Cloak - Fan of Knives
 	412096, // Cloak - Crimson Tempest
 	436564, // Cloak - Blunderbuss
-	462708, // Gloves - Cutthroat
 
 	// Shaman
 
