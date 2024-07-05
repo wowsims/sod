@@ -3,6 +3,7 @@ package item_sets
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -454,6 +455,96 @@ var ItemSetShardOfTheGods = core.NewItemSet(core.ItemSet{
 			character.AddStat(stats.HealingPower, 55)
 			character.AddStat(stats.SpellDamage, 29)
 			// TODO: pets [Your spell casts have a chance to summon Servants of the Scale or Flame.]
+		},
+	},
+})
+
+var ItemSetSpiritOfEskhandar = core.NewItemSet(core.ItemSet{
+	Name: "Spirit of Eskhandar",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Improves your chance to hit with all spells and attacks by 1%.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeHit, 1)
+			character.AddStat(stats.SpellHit, 1)
+		},
+		// Improves your chance to get a critical strike with all spells and attacks by 1%.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+		},
+		// 1% chance on a melee hit to call forth the spirit of Eskhandar to protect you in battle for 2 min.
+		4: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Call of Eskhandar Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMelee,
+				ProcChance: 1,
+				ICD:        time.Minute * 1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					for _, petAgent := range character.PetAgents {
+						if eskhandar, ok := petAgent.(*guardians.Eskhandar); ok {
+							eskhandar.EnableWithTimeout(sim, eskhandar, time.Minute*2)
+							break
+						}
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetCoreHoundsCall = core.NewItemSet(core.ItemSet{
+	Name: "Core Hound's Call",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Small chance on melee hit to call forth a Core Hound for 1 min.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Core Hound's Call Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMelee,
+				ProcChance: 1,
+				ICD:        time.Minute * 1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					for _, petAgent := range character.PetAgents {
+						if coreHound, ok := petAgent.(*guardians.CoreHound); ok {
+							coreHound.EnableWithTimeout(sim, coreHound, time.Minute*1)
+							break
+						}
+					}
+				},
+			})
+		},
+		// Small chance on melee hit to call forth the Spirit of Magmadar to assist you in battle. Increasing your attack speed by 10% for 20 sec.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			procAura := character.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 461270},
+				Label:    "Magmadar's Return",
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1.1)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1/1.1)
+				},
+			})
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Magmadar's Return Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMelee,
+				ProcChance: 1,
+				ICD:        time.Minute * 1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAura.Activate(sim)
+				},
+			})
 		},
 	},
 })

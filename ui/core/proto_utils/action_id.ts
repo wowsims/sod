@@ -664,6 +664,7 @@ const spellIDsToShowBuffs = new Set([
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	402808, // https://www.wowhead.com/classic/spell=402808/cripple
+	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
 ]);
 
@@ -674,8 +675,6 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Frozen Orb': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
-	'Spirit Wolf 1': ActionId.fromSpellId(440580),
-	'Spirit Wolf 2': ActionId.fromSpellId(440580),
 };
 
 // https://wowhead.com/classic/hunter-pets
@@ -693,8 +692,11 @@ const petNameToIcon: Record<string, string> = {
 	Devilsaur: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
 	Dragonhawk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
 	'Emerald Dragon Whelp': 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_green.jpg',
+	Eskhandar: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tiger_01.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
+	'Spirit Wolf 1': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
+	'Spirit Wolf 2': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',

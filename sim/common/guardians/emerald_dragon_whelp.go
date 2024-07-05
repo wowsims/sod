@@ -1,4 +1,4 @@
-package vanilla
+package guardians
 
 import (
 	"time"
@@ -129,32 +129,7 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 	})
 }
 
-func MakeEmeraldDragonWhelpTriggerAura(agent core.Agent, itemId int32) {
-	character := agent.GetCharacter()
-
-	procMask := character.GetProcMaskForItem(itemId)
-
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID: core.ActionID{SpellID: 13049},
-		Name:     "Emerald Dragon Whelp Proc",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: procMask,
-		PPM:      1.0, // Reported by armaments discord
-		ICD:      time.Minute * 1,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			for _, petAgent := range character.PetAgents {
-				if whelp, ok := petAgent.(*EmeraldDragonWhelp); ok {
-					whelp.EnableWithTimeout(sim, whelp, time.Second*15)
-					whelp.disabledAt = sim.CurrentTime + time.Second*15
-					break
-				}
-			}
-		},
-	})
-}
-
-func ConstructEmeralDragonWhelpPets(character *core.Character) {
+func constructEmeralDragonWhelps(character *core.Character) {
 	if character.HasMHWeapon() && character.GetMHWeapon().ID == DragonsCry ||
 		character.HasOHWeapon() && character.GetOHWeapon().ID == DragonsCry {
 		// Original could have up to 3 whelps active at a time however the SoD version seems to only summon 1 whelp on a 1 minute cooldown

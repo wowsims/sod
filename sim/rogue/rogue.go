@@ -3,7 +3,7 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -185,7 +185,8 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&rogue.Character)
+	guardians.ConstructGuardians(&rogue.Character)
+
 	return rogue
 }
 
