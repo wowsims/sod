@@ -329,17 +329,16 @@ func (shaman *Shaman) applyFlurry() {
 				return
 			}
 
-			if result.Outcome.Matches(core.OutcomeCrit) {
-				shaman.FlurryAura.Activate(sim)
-				shaman.FlurryAura.SetStacks(sim, 3)
-				icd.Reset() // the "charge protection" ICD isn't up yet
-				return
-			}
-
 			// Remove a stack.
 			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
 				icd.Use(sim)
 				shaman.FlurryAura.RemoveStack(sim)
+			}
+
+			if result.Outcome.Matches(core.OutcomeCrit) {
+				shaman.FlurryAura.Activate(sim)
+				shaman.FlurryAura.SetStacks(sim, 3)
+				return
 			}
 		},
 	})
