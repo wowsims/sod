@@ -36,6 +36,7 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerBladeDance()
 	rogue.applyJustAFleshWound()
 	rogue.applyRollingWithThePunches()
+	rogue.registerCutthroat()
 }
 
 func (rogue *Rogue) applyCombatPotency() {
@@ -313,5 +314,24 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 				}
 			}
 		},
+	})
+}
+
+
+func (rogue *Rogue) rollCutthroat(sim *core.Simulation) {
+	if sim.RandomFloat("Cutthroat") < 0.15 {
+		rogue.CutthroatProcAura.Activate(sim)
+	}
+}
+
+func (rogue *Rogue) registerCutthroat() {
+	if !rogue.HasRune(proto.RogueRune_RuneCutthroat) {
+		return
+	}
+
+	rogue.CutthroatProcAura = rogue.RegisterAura(core.Aura{
+		Label: "Cutthroat",
+		ActionID: core.ActionID{SpellID: 462707},
+		Duration: time.Second * 10,
 	})
 }

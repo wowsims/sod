@@ -26,6 +26,7 @@ import Phase2APLFire from './apls/p2_fire.apl.json';
 // import Phase3APLArcane from './apls/p3_arcane.apl.json';
 import Phase3APLFire from './apls/p3_fire.apl.json';
 import Phase3APLFrost from './apls/p3_frost.apl.json';
+import Phase4APLArcane from './apls/p4_arcane.apl.json';
 import Phase4APLFire from './apls/p4_fire.apl.json';
 import Phase4APLFrost from './apls/p4_frost.apl.json';
 import Phase1GearFire from './gear_sets/p1_fire.gear.json';
@@ -35,6 +36,7 @@ import Phase2GearFire from './gear_sets/p2_fire.gear.json';
 import Phase2GearFrost from './gear_sets/p2_frost.gear.json';
 import Phase3GearFire from './gear_sets/p3_fire.gear.json';
 import Phase3GearFrostFFB from './gear_sets/p3_frost_ffb.gear.json';
+import Phase4GearArcane from './gear_sets/p4_arcane.gear.json';
 import Phase4GearFire from './gear_sets/p4_fire.gear.json';
 import Phase4GearFrost from './gear_sets/p4_frost.gear.json';
 
@@ -72,7 +74,9 @@ export const GearFrostPhase3 = PresetUtils.makePresetGear('P3 Frost', Phase3Gear
 });
 
 // No new Phase 4 Arcane presets at the moment
-// export const GearArcanePhase3 = GearArcanePhase2;
+export const GearArcanePhase4 = PresetUtils.makePresetGear('P4 Arcane (WIP)', Phase4GearArcane, {
+	customCondition: player => player.getLevel() === 60,
+});
 export const GearFirePhase4 = PresetUtils.makePresetGear('P4 Fire (WIP)', Phase4GearFire, {
 	customCondition: player => player.getLevel() === 60,
 });
@@ -84,11 +88,11 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostPhase2],
 	[Phase.Phase3]: [GearArcanePhase3, GearFirePhase3, GearFrostPhase3],
-	[Phase.Phase4]: [GearFirePhase4, GearFirePhase4, GearFrostPhase4],
+	[Phase.Phase4]: [GearArcanePhase4, GearFirePhase4, GearFrostPhase4],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGearArcane = GearPresets[Phase.Phase3][0];
+export const DefaultGearArcane = GearPresets[Phase.Phase4][0];
 export const DefaultGearFire = GearPresets[Phase.Phase4][1];
 export const DefaultGearFrost = GearPresets[Phase.Phase4][2];
 
@@ -122,7 +126,9 @@ export const APLFrostPhase3 = PresetUtils.makePresetAPLRotation('P3 Frost', Phas
 });
 
 // No new Phase 3 Arcane presets at the moment
-export const APLArcanePhase4 = APLArcanePhase2;
+export const APLArcanePhase4 = PresetUtils.makePresetAPLRotation('P4 Arcane', Phase4APLArcane, {
+	customCondition: player => player.getLevel() >= 60,
+});
 export const APLFirePhase4 = PresetUtils.makePresetAPLRotation('P4 Fire', Phase4APLFire, {
 	customCondition: player => player.getLevel() >= 60,
 });
@@ -161,7 +167,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		0: APLPresets[Phase.Phase4][0],
 		1: APLPresets[Phase.Phase4][1],
 		2: APLPresets[Phase.Phase4][2],
-		3: APLPresets[Phase.Phase4][3],
 	},
 };
 
@@ -195,12 +200,14 @@ export const TalentsFrostPhase3 = PresetUtils.makePresetTalents('50 Frost', Save
 	customCondition: player => player.getLevel() === 50,
 });
 
-export const TalentsArcanePhase4 = TalentsArcanePhase2;
+export const TalentsArcanePhase4 = PresetUtils.makePresetTalents('60 Arcane', SavedTalents.create({ talentsString: '0550050210031531-054-203500001' }), {
+	customCondition: player => player.getLevel() === 60,
+});
 export const TalentsFirePhase4 = PresetUtils.makePresetTalents('60 Fire', SavedTalents.create({ talentsString: '-5050320123033051-203501031003' }), {
-	customCondition: player => player.getLevel() >= 60,
+	customCondition: player => player.getLevel() === 60,
 });
 export const TalentsFrostPhase4 = PresetUtils.makePresetTalents('60 Frost', SavedTalents.create({ talentsString: '-0550320003021-2035020310035105' }), {
-	customCondition: player => player.getLevel() >= 60,
+	customCondition: player => player.getLevel() === 60,
 });
 
 export const TalentPresets = {
@@ -217,16 +224,16 @@ export const DefaultTalentsFrost = TalentPresets[Phase.Phase4][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 
-// export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', DefaultGearArcane, DefaultTalentsArcane, DefaultAPLs[50][0]);
+export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', DefaultGearArcane, DefaultTalentsArcane, DefaultAPLs[60][0]);
 export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', DefaultGearFire, DefaultTalentsFire, DefaultAPLs[60][1]);
-export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost FFB', DefaultGearFrost, DefaultTalentsFrost, DefaultAPLs[60][2]);
+export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', DefaultGearFrost, DefaultTalentsFrost, DefaultAPLs[60][2]);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = MageOptions.create({
-	armor: ArmorType.MoltenArmor,
+	armor: ArmorType.IceArmor,
 });
 
 export const DefaultConsumes = Consumes.create({
