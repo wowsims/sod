@@ -72,6 +72,12 @@ func (druid *Druid) registerMangleCatSpell() {
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	weaponMulti := 2.7
+	energyCost := 40 - float64(druid.Talents.Ferocity)
+
+	switch druid.Ranged().ID {
+	case IdolOfFerocity:
+		energyCost -= 3
+	}
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -82,7 +88,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   40 - float64(druid.Talents.Ferocity),
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

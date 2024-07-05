@@ -11,20 +11,58 @@ import (
 // Totem Item IDs
 const (
 	WolfsheadHelm             = 8345
+	IdolOfFerocity            = 22397
+	IdolOfTheMoon             = 23197
+	IdolOfBrutality           = 23198
 	IdolMindExpandingMushroom = 209576
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
 	RitualistsHammer          = 221446
 	IdolOfTheDream            = 220606
+	IdolOfExsanguinationCat   = 228181
+	IdolOfExsanguinationBear  = 228182
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
+	// https://www.wowhead.com/classic/item=22397/idol-of-ferocity
+	// Equip: Reduces the energy cost of Claw and Rake by 3.
+	core.NewItemEffect(IdolOfFerocity, func(agent core.Agent) {
+		// Implemented in rake.go and mangle.go
+	})
+
+	// https://www.wowhead.com/classic/item=23197/idol-of-the-moon
+	// Equip: Increases the damage of your Moonfire spell by up to 17%.
+	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		for _, spell := range druid.Moonfire {
+			spell.DamageMultiplier *= 1.17
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
+	// Equip: Reduces the rage cost of Maul and Swipe by 3.
+	core.NewItemEffect(IdolOfBrutality, func(agent core.Agent) {
+		// Implemented in maul.go and swipe.go
+	})
+
 	core.NewItemEffect(IdolMindExpandingMushroom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.Spirit, 5)
+	})
+
+	// https://www.wowhead.com/classic/item=228181/idol-of-exsanguination-cat
+	// Equip: The energy cost of your Rake and Rip spells is reduced by 5.
+	core.NewItemEffect(IdolOfExsanguinationCat, func(agent core.Agent) {
+		// Implemented in rake.go and rip.go
+	})
+
+	// https://www.wowhead.com/classic/item=228182/idol-of-exsanguination-bear
+	// Equip: Your Lacerate ticks energize you for 3 rage.
+	core.NewItemEffect(IdolOfExsanguinationBear, func(agent core.Agent) {
+		// TODO: Not yet implemented
 	})
 
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {

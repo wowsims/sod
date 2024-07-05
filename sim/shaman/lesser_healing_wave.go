@@ -37,6 +37,12 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 	manaCost := LesserHealingWaveManaCost[rank]
 	level := LesserHealingWaveLevel[rank]
 
+	switch shaman.Ranged().ID {
+	case TotemOfTheStorm:
+		baseHealingLow += 53
+		baseHealingHigh += 53
+	}
+
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_ShamanLesserHealingWave,

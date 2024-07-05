@@ -227,13 +227,11 @@ const (
 )
 
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
-	for _, moonfire := range druid.Moonfire {
-		if moonfire != nil {
-			if dot := moonfire.Dot(unit); dot.IsActive() {
-				dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusMoonfireTicks, dot.OriginalNumberOfTicks)
-				dot.RecomputeAuraDuration()
-				dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickPeriod())
-			}
+	for _, spell := range druid.Moonfire {
+		if dot := spell.Dot(unit); dot.IsActive() {
+			dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusMoonfireTicks, dot.OriginalNumberOfTicks)
+			dot.RecomputeAuraDuration()
+			dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickPeriod())
 		}
 	}
 }

@@ -20,56 +20,62 @@ const SwipeThreatMultiplier = 2.0
 func (druid *Druid) registerSwipeBearSpell() {
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
 
-	druid.SwipeBear = make([]*DruidSpell, SwipeRanks+1)
+	rank := map[int32]int{
+		25: 2,
+		40: 3,
+		50: 4,
+		60: 6,
+	}[druid.Level]
 
-	for rank := 1; rank <= SwipeRanks; rank++ {
-		level := SwipeLevel[rank]
+	level := SwipeLevel[rank]
+	spellID := SwipeSpellId[rank]
+	baseDamage := SwipeBaseDamage[rank]
 
-		if int32(level) <= druid.Level {
-			spellID := SwipeSpellId[rank]
-			baseDamage := SwipeBaseDamage[rank]
+	rageCost := 20 - float64(druid.Talents.Ferocity)
+	targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
+	numHits := min(targetCount, druid.Env.GetNumTargets())
+	results := make([]*core.SpellResult, numHits)
 
-			targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
-			numHits := min(targetCount, druid.Env.GetNumTargets())
-			results := make([]*core.SpellResult, numHits)
-
-			druid.SwipeBear[rank] = druid.RegisterSpell(Bear, core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: spellID},
-				SpellSchool: core.SpellSchoolPhysical,
-				DefenseType: core.DefenseTypeMelee,
-				ProcMask:    core.ProcMaskMeleeMHSpecial,
-				Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
-				Rank:          rank,
-				RequiredLevel: level,
-
-				RageCost: core.RageCostOptions{
-					Cost: 20 - float64(druid.Talents.Ferocity),
-				},
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						GCD: core.GCDDefault,
-					},
-					IgnoreHaste: true,
-				},
-
-				DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-				ThreatMultiplier: SwipeThreatMultiplier,
-
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					for idx := range results {
-						results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-						target = sim.Environment.NextTargetUnit(target)
-					}
-
-					for _, result := range results {
-						spell.DealDamage(sim, result)
-					}
-				},
-			})
-		}
+	switch druid.Ranged().ID {
+	case IdolOfBrutality:
+		rageCost -= 3
 	}
+
+	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+		Rank:          rank,
+		RequiredLevel: level,
+
+		RageCost: core.RageCostOptions{
+			Cost: 20 - float64(druid.Talents.Ferocity),
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier: SwipeThreatMultiplier,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+
+			for _, result := range results {
+				spell.DealDamage(sim, result)
+			}
+		},
+	})
 }
 
 func (druid *Druid) registerSwipeCatSpell() {
