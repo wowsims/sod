@@ -351,26 +351,26 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 
 	if consumes.Alcohol != proto.Alcohol_AlcoholUnknown {
 		switch consumes.Alcohol {
-		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
+		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
 			character.AddStats(stats.Stats{
-				stats.Stamina:   25,
-				stats.Intellect: -5,
-			})
-		case proto.Alcohol_AlcoholRumseyRumLight:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 5,
-			})
-		case proto.Alcohol_AlcoholRumseyRumDark:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 10,
+				stats.Stamina: 15,
 			})
 		case proto.Alcohol_AlcoholGordokGreenGrog:
 			character.AddStats(stats.Stats{
 				stats.Stamina: 10,
 			})
-		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
+		case proto.Alcohol_AlcoholRumseyRumDark:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 15,
+				stats.Stamina: 10,
+			})
+		case proto.Alcohol_AlcoholRumseyRumLight:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 5,
+			})
+		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
+			character.AddStats(stats.Stats{
+				stats.Spirit:    25,
+				stats.Intellect: -5,
 			})
 		}
 	}
