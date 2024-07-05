@@ -396,9 +396,9 @@ func (warlock *Warlock) applyShadowAndFlame() {
 // 6% for each of your Warlock Shadow effects afflicting the target, up to a maximum of 18% additional effect.
 // When Drain Soul is cast on a target below 20% health, it instead gains 50% per effect, up to a maximum of 150%.
 const SoulSiphonDoTMultiplier = 0.06
-const SoulSiphonDoTMultiplierExecute = 0.50
+const SoulSiphonDoTMultiplierExecute = 1.00
 const SoulSiphonDoTMultiplierMax = 0.18
-const SoulSiphonDoTMultiplierMaxExecute = 1.50
+const SoulSiphonDoTMultiplierMaxExecute = 3.00
 
 func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus bool) float64 {
 	multiplier := 1.0

@@ -284,6 +284,7 @@ func (character *Character) applyWeaponSkills() {
 		character.PseudoStats.BowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillBows)]
 		character.PseudoStats.CrossbowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillCrossbows)]
 		character.PseudoStats.GunsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillGuns)]
+		character.PseudoStats.FeralCombatSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillFeralCombat)]
 	}
 }
 

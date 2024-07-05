@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	CraftOfTheShadows      = 227280
 	SulfurasHandOfRagnaros = 227683 // 17182
 	DukesDomain            = 227915
 	AccursedChalice        = 228078
@@ -220,6 +221,20 @@ func init() {
 				})
 			},
 		})
+	})
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Other
+	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=227280/craft-of-the-shadows
+	// Equip: Increases your maximum Energy by 10.
+	core.NewItemEffect(CraftOfTheShadows, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if character.HasEnergyBar() {
+			character.EnableEnergyBar(character.MaxEnergy() + 10)
+		}
 	})
 
 	core.AddEffectsToTest = true

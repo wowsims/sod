@@ -56,6 +56,14 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		castTime -= 100
 	}
 
+	switch shaman.Ranged().ID {
+	case TotemOfTheStorm:
+		baseDamageLow += 33
+		baseDamageHigh += 33
+	case TotemOfThunder:
+		castTime -= 100
+	}
+
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
 		manaCost,

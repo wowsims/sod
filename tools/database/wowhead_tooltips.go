@@ -10,6 +10,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 type WowheadTooltipManager struct {
@@ -41,8 +42,8 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	}
 }
 
-type Stats [46]float64
-type WeaponSkills [15]float64
+type Stats [stats.Len]float64
+type WeaponSkills [stats.WeaponSkillLen]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -222,6 +223,8 @@ var bowsSkill = regexp.MustCompile(`Increased Bows \+([0-9]+)\.`)
 var crossbowsSkill = regexp.MustCompile(`Increased Crossbows \+([0-9]+)\.`)
 var gunsSkill = regexp.MustCompile(`Increased Guns \+([0-9]+)\.`)
 
+var feralCombatSkill = regexp.MustCompile(`Increased Feral Combat \+([0-9]+)\.`)
+
 var defenseRegex = regexp.MustCompile(`Increased Defense \+([0-9]+)\.`)
 var blockRegex = regexp.MustCompile(`Increases your shield block rating by <!--rtg15-->([0-9]+)\.`)
 var blockRegex2 = regexp.MustCompile(`Increases your shield block rating by ([0-9]+)\.`)
@@ -311,6 +314,7 @@ func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
 		float64(item.GetIntValue(bowsSkill)),
 		float64(item.GetIntValue(crossbowsSkill)),
 		float64(item.GetIntValue(gunsSkill)),
+		float64(item.GetIntValue(feralCombatSkill)),
 	}
 }
 

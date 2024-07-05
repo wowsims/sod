@@ -126,6 +126,10 @@ func (eb *energyBar) CurrentEnergy() float64 {
 	return eb.currentEnergy
 }
 
+func (eb *energyBar) MaxEnergy() float64 {
+	return eb.maxEnergy
+}
+
 func (eb *energyBar) NextEnergyTickAt() time.Duration {
 	return eb.nextEnergyTick
 }

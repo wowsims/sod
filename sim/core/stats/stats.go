@@ -89,6 +89,7 @@ const (
 	WeaponSkillBows
 	WeaponSkillCrossbows
 	WeaponSkillGuns
+	WeaponSkillFeralCombat
 
 	WeaponSkillLen
 )
@@ -424,13 +425,15 @@ type PseudoStats struct {
 	TwoHandedAxesSkill   float64
 	PolearmsSkill        float64
 	StavesSkill          float64
-	FeralCombatSkill     float64
 
 	// Ranged Skills
 	BowsSkill      float64
 	CrossbowsSkill float64
 	GunsSkill      float64
 	ThrownSkill    float64
+
+	// Special Feral Weapon Skill
+	FeralCombatSkill float64
 
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
@@ -509,12 +512,13 @@ func NewPseudoStats() PseudoStats {
 		TwoHandedAxesSkill:     0,
 		PolearmsSkill:          0,
 		StavesSkill:            0,
-		FeralCombatSkill:       0,
 
 		BowsSkill:      0,
 		GunsSkill:      0,
 		CrossbowsSkill: 0,
 		ThrownSkill:    0,
+
+		FeralCombatSkill: 0,
 	}
 }
 

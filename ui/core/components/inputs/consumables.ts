@@ -329,25 +329,21 @@ export const RumseyRumBlackLabel: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21151, minLevel: 1 }]),
 	value: Alcohol.AlcoholRumseyRumLight,
 };
-
 export const GordokGreenGrog: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18269, minLevel: 56 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholGordokGreenGrog,
 };
-
 export const RumseyRumDark: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21114, minLevel: 1 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholRumseyRumDark,
 };
-
 export const RumseyRumLight: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20709, minLevel: 1 }]),
 	value: Alcohol.AlcoholRumseyRumLight,
 };
-
 export const KreegsStoutBeatdown: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18284, minLevel: 56 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholKreegsStoutBeatdown,
 };
 
 export const ALCOHOL_CONFIG: ConsumableStatOption<Alcohol>[] = [

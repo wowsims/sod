@@ -84,6 +84,7 @@ const (
 	SpellCode_ShamanMagmaTotem
 	SpellCode_ShamanMoltenBlast
 	SpellCode_ShamanSearingTotem
+	SpellCode_ShamanStormstrike
 )
 
 // Shaman represents a shaman character.

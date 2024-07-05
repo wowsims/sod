@@ -196,6 +196,7 @@ enum WeaponType {
 	WeaponTypeSword = 9;
 }
 
+// NextIndex: 16
 enum WeaponSkill {
 	WeaponSkillUnknown = 0;
 	WeaponSkillAxes = 1;
@@ -212,6 +213,7 @@ enum WeaponSkill {
 	WeaponSkillBows = 12;
 	WeaponSkillCrossbows = 13;
 	WeaponSkillGuns = 14;
+	WeaponSkillFeralCombat = 15;
 }
 
 enum HandType {

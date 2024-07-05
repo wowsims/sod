@@ -72,7 +72,7 @@ type Druid struct {
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
 	SurvivalInstincts    *DruidSpell
-	SwipeBear            []*DruidSpell
+	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell

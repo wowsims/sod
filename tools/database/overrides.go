@@ -131,6 +131,7 @@ var ItemDenyList = map[int32]struct{}{
 	213513: {}, // Libram of Deliverance
 	213594: {}, // Idol of the Heckler
 	220915: {}, // Idol of the Raging Shambler
+	227444: {}, // Idol of the Huntress
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

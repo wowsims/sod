@@ -440,6 +440,10 @@ export class ActionId {
 				// Vampiric touch provided to the party
 				if (this.tag === 1) name = `${name} (External)`;
 				break;
+			case 'Totem of Raging Fire':
+				if (this.tag === 1) name = `${name} (1H)`;
+				else if (this.tag === 2) name = `${name} (2H)`;
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

@@ -512,22 +512,22 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1068.47429
-  tps: 2188.29001
+  dps: 1075.74169
+  tps: 2195.55742
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1068.47429
-  tps: 979.32511
+  dps: 1075.74169
+  tps: 986.59251
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1091.61116
-  tps: 991.65889
+  dps: 1099.60413
+  tps: 999.65186
  }
 }
 dps_results: {
