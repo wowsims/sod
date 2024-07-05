@@ -402,8 +402,8 @@ const SoulSiphonDoTMultiplierMaxExecute = 1.50
 
 func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus bool) float64 {
 	multiplier := 1.0
-	perDoTMultiplier := core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplier, SoulSiphonDoTMultiplierExecute)
-	maxMultiplier := 1 + core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplierMax, SoulSiphonDoTMultiplierMaxExecute)
+	perDoTMultiplier := core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplierExecute, SoulSiphonDoTMultiplier)
+	maxMultiplier := 1 + core.TernaryFloat64(executeBonus, SoulSiphonDoTMultiplierMaxExecute, SoulSiphonDoTMultiplierMax)
 
 	for _, spell := range warlock.Corruption {
 		if spell.Dot(target).IsActive() {
@@ -438,7 +438,7 @@ func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus
 		multiplier += perDoTMultiplier
 	}
 
-	return max(multiplier, maxMultiplier)
+	return min(multiplier, maxMultiplier)
 }
 
 func (warlock *Warlock) applyDemonicTactics() {

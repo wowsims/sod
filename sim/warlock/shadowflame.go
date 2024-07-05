@@ -15,54 +15,13 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
-	// https://www.wowhead.com/classic/spell=18275/shadow-mastery
-	// The Shadowflame periodic damage is NOT buffed by Shadow Mastery as it's not affected by haunt
 	baseSpellCoeff := 0.20
-	dotSpellCoeff := 0.107
+	dotSpellCoeff := 0.13
 	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 0.61
 
-	warlock.ShadowflameDot = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 426325},
-		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       WarlockFlagHaunt | WarlockFlagAffliction | WarlockFlagDestruction,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Shadowflame" + warlock.Label,
-			},
-
-			NumberOfTicks:    4,
-			TickLength:       time.Second * 2,
-			BonusCoefficient: dotSpellCoeff,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, dotDamage, isRollover)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				var result *core.SpellResult
-				if hasPandemicRune {
-					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
-					dot.Spell.CritDamageBonus += 1
-					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
-					dot.Spell.CritDamageBonus -= 1
-				} else {
-					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
-				}
-				dot.Spell.DealPeriodicDamage(sim, result)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-			spell.Dot(target).Apply(sim)
-		},
-	})
+	numTicks := int32(5)
+	tickLength := time.Second * 3
 
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_WarlockShadowflame,
@@ -86,12 +45,42 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + warlock.improvedImmolateBonus(),
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Shadowflame" + warlock.Label,
+			},
+
+			NumberOfTicks:    numTicks,
+			TickLength:       tickLength,
+			BonusCoefficient: dotSpellCoeff,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, dotDamage, isRollover)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				var result *core.SpellResult
+				if hasPandemicRune {
+					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
+					dot.Spell.CritDamageBonus += 1
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					dot.Spell.CritDamageBonus -= 1
+				} else {
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				}
+				dot.Spell.DealPeriodicDamage(sim, result)
+			},
+		},
+
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: baseSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			oldMultiplier := spell.DamageMultiplier
+			spell.DamageMultiplier *= 1 + warlock.improvedImmolateBonus()
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier = oldMultiplier
+
 			if result.Landed() {
 				// Shadowflame and Immolate are exclusive
 				immoDot := warlock.getActiveImmolateSpell(target)
@@ -103,8 +92,10 @@ func (warlock *Warlock) registerShadowflameSpell() {
 					warlock.InvocationRefresh(sim, spell.Dot(target))
 				}
 
-				warlock.ShadowflameDot.Cast(sim, target)
+				spell.Dot(target).Apply(sim)
 			}
+
+			spell.DealDamage(sim, result)
 		},
 	})
 }

@@ -11,6 +11,7 @@ const ConflagrateRanks = 4
 
 func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	hasBackdraftRune := warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft)
+	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
 	spellId := [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
 	baseDamageMin := [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
@@ -42,7 +43,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
+			return warlock.getActiveImmolateSpell(target) != nil || (hasShadowflameRune && warlock.Shadowflame.Dot(target).IsActive())
 		},
 
 		DamageMultiplier: 1,
@@ -69,15 +70,15 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 					immoTime = core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
 				}
 
-				if warlock.Shadowflame != nil {
-					sfDot := warlock.ShadowflameDot.Dot(target)
+				if hasShadowflameRune {
+					sfDot := warlock.Shadowflame.Dot(target)
 					shadowflameTime = core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)
 				}
 
 				if immoTime < shadowflameTime {
 					immoSpell.Dot(target).Deactivate(sim)
 				} else {
-					warlock.ShadowflameDot.Dot(target).Deactivate(sim)
+					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 			}
 		},
