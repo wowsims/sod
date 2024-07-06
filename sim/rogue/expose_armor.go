@@ -75,7 +75,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			if result.Landed() {
 				eaAura.ExclusiveEffects[0].Priority = arpen
 				eaAura.Activate(sim)
-				rogue.ApplyFinisher(sim, spell)
+				rogue.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}

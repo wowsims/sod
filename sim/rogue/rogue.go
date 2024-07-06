@@ -91,8 +91,6 @@ type Rogue struct {
 	HonorAmongThieves *core.Aura
 
 	woundPoisonDebuffAuras core.AuraArray
-
-	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -114,13 +112,6 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL
 }
 
-// Apply the effect of successfully casting a finisher to combo points
-func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
-	numPoints := rogue.ComboPoints()
-	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
-	rogue.finishingMoveEffectApplier(sim, numPoints)
-}
-
 func (rogue *Rogue) Initialize() {
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
@@ -140,8 +131,6 @@ func (rogue *Rogue) Initialize() {
 	// Stealth
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
-
-	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {

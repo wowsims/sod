@@ -62,7 +62,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			if result.Landed() {
-				rogue.ApplyFinisher(sim, spell)
+				rogue.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}
