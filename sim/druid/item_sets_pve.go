@@ -244,7 +244,17 @@ var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
 		},
 		// Your Rip and Ferocious Bite have a 20% chance per combo point spent to refresh the duration of Savage Roar back to its initial value.
 		6: func(agent core.Agent) {
-			// Implemented in rip.go and ferocious_bite.go
+			druid := agent.(DruidAgent).GetDruid()
+			hasSavageRoar := druid.HasRune(proto.DruidRune_RuneLegsSavageRoar)
+			druid.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+				if !hasSavageRoar || spell == druid.SavageRoar.Spell || !druid.SavageRoarAura.IsActive() {
+					return
+				}
+
+				if sim.Proc(.2*float64(comboPoints), "S03 - Item - T1 - Druid - Feral 6P Bonus") {
+					druid.SavageRoarAura.Refresh(sim)
+				}
+			})
 		},
 	},
 })

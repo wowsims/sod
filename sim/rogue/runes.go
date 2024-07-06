@@ -2,7 +2,7 @@ package rogue
 
 import (
 	"time"
-	
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -190,7 +190,7 @@ func (rogue *Rogue) registerBladeDance() {
 
 	cachedBonusAP := 0.0
 	apProcAura := rogue.RegisterAura(core.Aura{
-		Label: "Defender's Resolve",
+		Label:    "Defender's Resolve",
 		ActionID: core.ActionID{SpellID: 462230},
 		Duration: rogue.bladeDanceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -247,7 +247,7 @@ func (rogue *Rogue) registerBladeDance() {
 			rogue.BladeDanceAura.Duration = rogue.bladeDanceDurations[rogue.ComboPoints()]
 			rogue.BladeDanceAura.Activate(sim)
 			apProcAura.Activate(sim)
-			rogue.ApplyFinisher(sim, spell)
+			rogue.SpendComboPoints(sim, spell)
 		},
 	})
 }
@@ -317,7 +317,6 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 	})
 }
 
-
 func (rogue *Rogue) rollCutthroat(sim *core.Simulation) {
 	if sim.RandomFloat("Cutthroat") < 0.15 {
 		rogue.CutthroatProcAura.Activate(sim)
@@ -330,7 +329,7 @@ func (rogue *Rogue) registerCutthroat() {
 	}
 
 	rogue.CutthroatProcAura = rogue.RegisterAura(core.Aura{
-		Label: "Cutthroat",
+		Label:    "Cutthroat",
 		ActionID: core.ActionID{SpellID: 462707},
 		Duration: time.Second * 10,
 	})

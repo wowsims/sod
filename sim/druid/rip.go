@@ -78,7 +78,6 @@ func (druid *Druid) registerRipSpell() {
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
-	has6PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 6)
 	energyCost := 30.0
 
 	switch druid.Ranged().ID {
@@ -143,12 +142,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				dot.NumberOfTicks = RipTicks
 				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
-
-				if has6PCenarionCunning && druid.SavageRoarAura != nil && druid.SavageRoarAura.IsActive() && sim.Proc(.2*float64(druid.ComboPoints()), "S03 - Item - T1 - Druid - Feral 6P Bonus") {
-					druid.SavageRoarAura.Refresh(sim)
-				}
-
-				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
+				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}

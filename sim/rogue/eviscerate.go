@@ -81,7 +81,7 @@ func (rogue *Rogue) registerEviscerate() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				rogue.ApplyFinisher(sim, spell)
+				rogue.SpendComboPoints(sim, spell)
 				if cutToTheChase {
 					rogue.ApplyCutToTheChase(sim)
 				}

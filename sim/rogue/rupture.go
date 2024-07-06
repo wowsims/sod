@@ -66,7 +66,7 @@ func (rogue *Rogue) registerRupture() {
 				dot.Spell = spell
 				dot.NumberOfTicks = rogue.RuptureTicks(rogue.ComboPoints())
 				dot.Apply(sim)
-				rogue.ApplyFinisher(sim, spell)
+				rogue.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}
