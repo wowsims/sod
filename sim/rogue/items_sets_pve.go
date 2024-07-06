@@ -142,7 +142,7 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 			rogue := agent.(RogueAgent).GetRogue()			
 				
 			aura := rogue.RegisterAura(core.Aura{
-				Label:    "Clearcasting",
+				Label:    "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)",
 				ActionID: core.ActionID{SpellID: 457342},
 				Duration: time.Second * 15,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -163,7 +163,7 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 			})
 
 			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-				if sim.Proc(.05*float64(comboPoints), "Clearcasting") {
+				if sim.Proc(.05*float64(comboPoints), "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)") {
 					aura.Activate(sim)
 				}
 			})
