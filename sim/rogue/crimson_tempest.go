@@ -51,6 +51,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 	})
 }
 
+// TODO: Currently bugged and creates "infite loop detected" warning
 func (rogue *Rogue) registerCrimsonTempestSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneCrimsonTempest) {
 		return
@@ -64,7 +65,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags(),
+		Flags:        SpellFlagCarnage, // TODO: Placeholder to prevent use in APL while broken. Replace with rogue.finisherFlags()
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
