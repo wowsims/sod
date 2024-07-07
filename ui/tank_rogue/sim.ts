@@ -6,6 +6,7 @@ import { Player } from '../core/player';
 import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon } from '../core/proto_utils/utils';
+import { HonorOfThievesCritRate } from './inputs';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
@@ -119,6 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
+			HonorOfThievesCritRate,
 		],
 	},
 	encounterPicker: {
