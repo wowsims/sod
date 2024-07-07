@@ -163,7 +163,7 @@ type APLValueWarlockCurrentPetMana struct {
 }
 
 func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
-	pet := warlock.Pet
+	pet := warlock.ActivePet
 	if pet.GetPet() == nil {
 		return nil
 	}
@@ -191,7 +191,7 @@ type APLValueWarlockCurrentPetManaPercent struct {
 }
 
 func (warlock *Warlock) newValueWarlockCurrentPetManaPercent(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetManaPercent) core.APLValue {
-	pet := warlock.Pet
+	pet := warlock.ActivePet
 	if pet == nil {
 		return nil
 	}

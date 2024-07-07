@@ -41,7 +41,16 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	Pet *WarlockPet
+	BasePets   []*WarlockPet
+	ActivePet  *WarlockPet
+	Felhunter  *WarlockPet
+	Felguard   *WarlockPet
+	Imp        *WarlockPet
+	Succubus   *WarlockPet
+	Voidwalker *WarlockPet
+
+	// Doomguard *DoomguardPet
+	// Infernal  *InfernalPet
 
 	ChaosBolt          *core.Spell
 	Conflagrate        []*core.Spell
@@ -80,6 +89,8 @@ type Warlock struct {
 	AmplifyCurse             *core.Spell
 	Shadowflame              *core.Spell
 
+	SummonDemonSpells []*core.Spell
+
 	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
 	ImmolationAura          *core.Spell
@@ -93,16 +104,16 @@ type Warlock struct {
 	BackdraftAura           *core.Aura
 	ImprovedShadowBoltAuras core.AuraArray
 	MarkOfChaosAuras        core.AuraArray
+	SoulLinkAura            *core.Aura
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64
 	PreviousTime  time.Duration
 
-	petStmBonusSP         float64
-	demonicKnowledgeSp    float64
-	demonicSacrificeAuras []*core.Aura
-	zilaGularAura         *core.Aura
-	shadowSparkAura       *core.Aura
+	petStmBonusSP      float64
+	demonicKnowledgeSp float64
+	zilaGularAura      *core.Aura
+	shadowSparkAura    *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -138,6 +149,9 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfAgonySpell()
 	warlock.registerAmplifyCurseSpell()
 	warlock.registerCurseOfDoomSpell()
+	warlock.registerSummonDemon()
+
+	warlock.registerPetAbilities()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
@@ -179,8 +193,19 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		warlock.applyFelArmor()
 	}
 
-	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
-		warlock.Pet = warlock.NewWarlockPet()
+	warlock.registerPets()
+
+	switch warlock.Options.Summon {
+	case proto.WarlockOptions_Imp:
+		warlock.ActivePet = warlock.Imp
+	case proto.WarlockOptions_Felguard:
+		warlock.ActivePet = warlock.Felguard
+	case proto.WarlockOptions_Felhunter:
+		warlock.ActivePet = warlock.Felhunter
+	case proto.WarlockOptions_Succubus:
+		warlock.ActivePet = warlock.Succubus
+	case proto.WarlockOptions_Voidwalker:
+		warlock.ActivePet = warlock.Voidwalker
 	}
 
 	guardians.ConstructGuardians(&warlock.Character)
