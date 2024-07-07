@@ -32,7 +32,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute*3 - (time.Second * 20),
+				Duration: time.Minute*3,
 			},
 			
 		},
@@ -44,10 +44,6 @@ func (paladin *Paladin) registerAvengingWrath() {
 	paladin.AddMajorCooldown(core.MajorCooldown{
 		Spell: AvengingWrath,
 		Type:  core.CooldownTypeDPS,
-		// modify this logic if it should ever not be spammed on CD / maybe should synced with other CDs
-		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			
-			return true
-		},
+		
 	})
 }

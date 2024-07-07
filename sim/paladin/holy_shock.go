@@ -11,16 +11,16 @@ import (
 func (paladin *Paladin) registerHolyShock() {
 
 	hasInfusionOfLight := paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
-	var cdTime time.Duration
-	cdTime = 30
+	
+	cdTime := time.Second * 30
 	if hasInfusionOfLight {
-		cdTime = 6
+		cdTime = time.Second * 6
 	}
 
 
 	paladin.holyShockCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
-		Duration: time.Second * cdTime,
+		Duration: cdTime,
 	}
 
 	if !paladin.Talents.HolyShock {
