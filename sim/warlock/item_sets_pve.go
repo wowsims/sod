@@ -204,9 +204,8 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: time.Millisecond * 3500,
 			}
 			manaMetrics := warlock.NewManaMetrics(actionID)
-			var petManaMetrics *core.ResourceMetrics
-			if warlock.Pet != nil {
-				petManaMetrics = warlock.Pet.NewManaMetrics(actionID)
+			for _, pet := range warlock.BasePets {
+				pet.T1Tank4PManaMetrics = pet.NewManaMetrics(actionID)
 			}
 			warlock.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Warlock - Tank 4P Bonus",
@@ -218,8 +217,8 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 					if icd.IsReady(sim) {
 						restoreAmount := min(result.Damage, 420)
 						warlock.AddMana(sim, restoreAmount, manaMetrics)
-						if warlock.Pet != nil && warlock.Pet.IsActive() {
-							warlock.Pet.AddMana(sim, restoreAmount, petManaMetrics)
+						if warlock.ActivePet != nil {
+							warlock.ActivePet.AddMana(sim, restoreAmount, warlock.ActivePet.T1Tank4PManaMetrics)
 						}
 					}
 				},

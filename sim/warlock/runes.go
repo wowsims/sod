@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"fmt"
 	"math"
 	"slices"
 	"time"
@@ -234,10 +235,8 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 	})
 
 	manaMetric := warlock.NewManaMetrics(actionId)
-
-	var petMetric *core.ResourceMetrics
-	if warlock.Pet != nil {
-		petMetric = warlock.Pet.NewManaMetrics(actionId)
+	for _, pet := range warlock.BasePets {
+		pet.DanceOfTheWickedManaMetrics = pet.NewManaMetrics(actionId)
 	}
 
 	handler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -252,8 +251,8 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 		dotwAura.Activate(sim)
 
 		warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
-		if warlock.Pet != nil && warlock.Pet.IsActive() {
-			warlock.Pet.AddMana(sim, warlock.Pet.MaxMana()*0.02, petMetric)
+		if warlock.ActivePet != nil {
+			warlock.ActivePet.AddMana(sim, warlock.ActivePet.MaxMana()*0.02, warlock.ActivePet.DanceOfTheWickedManaMetrics)
 		}
 	}
 
@@ -265,44 +264,41 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 }
 
 func (warlock *Warlock) applyDemonicKnowledge() {
-	if !warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) || warlock.Pet == nil {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsDemonicKnowledge) {
 		return
 	}
 
-	wp := warlock.Pet
-	oldPetEnable := wp.OnPetEnable
-	wp.OnPetEnable = func(sim *core.Simulation) {
-		if oldPetEnable != nil {
-			oldPetEnable(sim)
+	for _, pet := range warlock.BasePets {
+		oldOnPetEnable := pet.OnPetEnable
+		pet.OnPetEnable = func(sim *core.Simulation) {
+			oldOnPetEnable(sim)
+			warlock.DemonicKnowledgeAura.Activate(sim)
 		}
-		warlock.DemonicKnowledgeAura.Activate(sim)
-	}
 
-	oldPetDisable := wp.OnPetDisable
-	wp.OnPetDisable = func(sim *core.Simulation) {
-		if oldPetDisable != nil {
-			oldPetDisable(sim)
+		oldOnPetDisable := pet.OnPetDisable
+		pet.OnPetDisable = func(sim *core.Simulation) {
+			oldOnPetDisable(sim)
+			warlock.DemonicKnowledgeAura.Deactivate(sim)
 		}
-		warlock.DemonicKnowledgeAura.Deactivate(sim)
 	}
 
 	warlock.DemonicKnowledgeAura = warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Demonic Knowledge",
 		ActionID: core.ActionID{SpellID: int32(proto.WarlockRune_RuneBootsDemonicKnowledge)},
 		Duration: core.NeverExpires,
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.demonicKnowledgeSp = (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) * .03
+			warlock.demonicKnowledgeSp = (warlock.ActivePet.GetStat(stats.Stamina) + warlock.ActivePet.GetStat(stats.Intellect)) * .03
 			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.AddStatDynamic(sim, stats.SpellPower, -warlock.demonicKnowledgeSp)
+			warlock.demonicKnowledgeSp = 0
 		},
 	})
 }
 
 func (warlock *Warlock) applyGrimoireOfSynergy() {
-	if !warlock.HasRune(proto.WarlockRune_RuneBeltGrimoireOfSynergy) || warlock.Pet == nil {
+	if !warlock.HasRune(proto.WarlockRune_RuneBeltGrimoireOfSynergy) {
 		return
 	}
 
@@ -322,9 +318,6 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 		},
 	}
 
-	warlockProcAura := warlock.GetOrRegisterAura(procAuraConfig)
-	petProcAura := warlock.Pet.GetOrRegisterAura(procAuraConfig)
-
 	handlerFunc := func(procAura *core.Aura) func(*core.Aura, *core.Simulation, *core.Spell, *core.SpellResult) {
 		return func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.ProcMask.Matches(core.ProcMaskDirect) {
@@ -338,18 +331,20 @@ func (warlock *Warlock) applyGrimoireOfSynergy() {
 			procAura.Activate(sim)
 		}
 	}
-
-	core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
-		Label:                 "Grimoire of Synergy",
-		OnSpellHitDealt:       handlerFunc(petProcAura),
-		OnPeriodicDamageDealt: handlerFunc(petProcAura),
-	}))
-
-	core.MakePermanent(warlock.Pet.GetOrRegisterAura(core.Aura{
-		Label:                 "Grimoire of Synergy",
-		OnSpellHitDealt:       handlerFunc(warlockProcAura),
-		OnPeriodicDamageDealt: handlerFunc(warlockProcAura),
-	}))
+	warlockProcAura := warlock.GetOrRegisterAura(procAuraConfig)
+	for _, pet := range warlock.BasePets {
+		petProcAura := pet.GetOrRegisterAura(procAuraConfig)
+		core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
+			Label:                 fmt.Sprintf("Grimoire of Synergy Trigger (%s)", pet.Name),
+			OnSpellHitDealt:       handlerFunc(petProcAura),
+			OnPeriodicDamageDealt: handlerFunc(petProcAura),
+		}))
+		core.MakePermanent(pet.GetOrRegisterAura(core.Aura{
+			Label:                 "Grimoire of Synergy Trigger",
+			OnSpellHitDealt:       handlerFunc(warlockProcAura),
+			OnPeriodicDamageDealt: handlerFunc(warlockProcAura),
+		}))
+	}
 }
 
 func (warlock *Warlock) applyShadowAndFlame() {
@@ -441,6 +436,7 @@ func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus
 	return min(multiplier, maxMultiplier)
 }
 
+// Increases the melee and spell critical strike chance of you and your pet by 10%.
 func (warlock *Warlock) applyDemonicTactics() {
 	if !warlock.HasRune(proto.WarlockRune_RuneChestDemonicTactics) {
 		return
@@ -449,8 +445,7 @@ func (warlock *Warlock) applyDemonicTactics() {
 	warlock.AddStat(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 	warlock.AddStat(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 
-	if warlock.Pet != nil {
-		pet := warlock.Pet.GetPet()
+	for _, pet := range warlock.BasePets {
 		pet.AddStat(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 		pet.AddStat(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 	}
@@ -479,8 +474,8 @@ func (warlock *Warlock) applyDemonicPact() {
 		return core.DemonicPactAura(u, spellPower, core.CharacterBuildPhaseNone)
 	})
 
-	warlock.Pet.RegisterAura(core.Aura{
-		Label:    "Demonic Pact Hidden Aura",
+	dpTriggerConfig := core.Aura{
+		Label:    "Demonic Pact Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.PreviousTime = 0
@@ -512,5 +507,9 @@ func (warlock *Warlock) applyDemonicPact() {
 				}
 			}
 		},
-	})
+	}
+
+	for _, pet := range warlock.BasePets {
+		pet.RegisterAura(dpTriggerConfig)
+	}
 }
