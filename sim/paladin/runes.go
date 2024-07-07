@@ -42,7 +42,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 				return
 			}
 			//paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Set(max(0, paladin.exorcismCooldown.TimeToReady(sim) - time.Second * 2))
+			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim) - (time.Second * 2)))
 		},
 	})
 }
