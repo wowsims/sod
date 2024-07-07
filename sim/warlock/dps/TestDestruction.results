@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.12814
+  weights: 0.01419
   weights: 0
-  weights: 1.1931
-  weights: 0
-  weights: 0
+  weights: 1.3026
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.34892
+  weights: 0
+  weights: 0
+  weights: 19.3361
   weights: 0
   weights: 0
   weights: 0
@@ -603,8 +603,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2134.96492
-  tps: 1925.81734
+  dps: 2168.51833
+  tps: 1953.19857
  }
 }
 dps_results: {
@@ -638,63 +638,63 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2117.67471
-  tps: 1909.19201
+  dps: 2159.51804
+  tps: 1946.7226
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Average-Default"
  value: {
-  dps: 2165.39963
-  tps: 1951.05797
+  dps: 2197.94642
+  tps: 1978.94143
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2155.15945
-  tps: 2896.87772
+  dps: 2176.84519
+  tps: 2927.51641
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2155.15945
-  tps: 1941.54268
+  dps: 2176.84519
+  tps: 1957.04813
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2297.02813
-  tps: 2096.01651
+  dps: 2347.44479
+  tps: 2162.08161
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1122.03675
-  tps: 2029.14975
+  dps: 1163.76806
+  tps: 2088.44031
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1122.03675
-  tps: 994.15047
+  dps: 1163.76806
+  tps: 1035.0556
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1204.25213
-  tps: 1082.59104
+  dps: 1215.12344
+  tps: 1097.91527
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2148.0516
-  tps: 1934.08921
+  dps: 2163.3791
+  tps: 1943.29844
  }
 }
