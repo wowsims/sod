@@ -130,6 +130,18 @@ var ClassBaseCrit = map[proto.Class]stats.Stats{
 	},
 }
 
+var APPerStrength = map[proto.Class]float64{
+	proto.Class_ClassWarrior: 2,
+	proto.Class_ClassPaladin: 2,
+	proto.Class_ClassHunter:  1,
+	proto.Class_ClassRogue:   1,
+	proto.Class_ClassPriest:  1,
+	proto.Class_ClassShaman:  2,
+	proto.Class_ClassMage:    1,
+	proto.Class_ClassWarlock: 1,
+	proto.Class_ClassDruid:   2,
+}
+
 // Melee/Ranged crit agi scaling
 var CritPerAgiAtLevel = map[proto.Class]map[int]float64{
 	proto.Class_ClassUnknown: {25: 0.0, 40: 0.0, 50: 0.0, 60: 0.0},

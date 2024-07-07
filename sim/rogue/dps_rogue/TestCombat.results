@@ -358,43 +358,43 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 223.44004
-  tps: 158.64243
+  dps: 221.66081
+  tps: 157.37918
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 193.33138
-  tps: 137.26528
+  dps: 192.32796
+  tps: 136.55285
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 255.18255
-  tps: 181.17961
+  dps: 252.34822
+  tps: 179.16724
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 117.49761
-  tps: 83.4233
+  dps: 116.66216
+  tps: 82.83013
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 102.13979
-  tps: 72.51925
+  dps: 101.66278
+  tps: 72.18058
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 134.24229
-  tps: 95.31203
+  dps: 132.8841
+  tps: 94.34771
  }
 }
 dps_results: {

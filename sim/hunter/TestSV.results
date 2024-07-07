@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.35631
-  weights: 0.43666
-  weights: 6.71901
+  weights: 0.36455
+  weights: 6.70309
   weights: 0
   weights: 0
   weights: 0
@@ -302,22 +302,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 435.22146
-  tps: 272.1554
+  dps: 434.39369
+  tps: 271.32762
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 792.67024
-  tps: 356.36949
+  dps: 790.46674
+  tps: 355.09957
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 801.81039
-  tps: 362.65002
+  dps: 799.53008
+  tps: 361.30319
  }
 }
 dps_results: {
@@ -365,49 +365,49 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1622.39123
-  tps: 1026.15453
+  dps: 1617.31294
+  tps: 1023.9301
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 663.99075
-  tps: 245.00558
+  dps: 662.87964
+  tps: 244.83736
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 682.32512
-  tps: 258.2862
+  dps: 680.75712
+  tps: 258.06929
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 859.13143
-  tps: 636.55664
+  dps: 856.99433
+  tps: 635.62351
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 338.27763
-  tps: 134.99062
+  dps: 337.85046
+  tps: 134.93215
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 360.65389
-  tps: 138.63798
+  dps: 359.98879
+  tps: 138.54583
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 758.75605
-  tps: 337.89003
+  dps: 756.63543
+  tps: 336.64431
  }
 }

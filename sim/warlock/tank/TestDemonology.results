@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.23519
+  weights: 0.23486
   weights: 0
-  weights: 0.72341
-  weights: 0
-  weights: 0
+  weights: 0.72345
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.96036
+  weights: 0
+  weights: 0
+  weights: 5.95994
   weights: 1.47474
   weights: 0
   weights: 0
@@ -99,15 +99,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 257.32939
-  tps: 146.08926
+  dps: 257.18706
+  tps: 145.94692
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 545.64793
-  tps: 986.91034
+  dps: 545.54
+  tps: 986.74844
  }
 }
 dps_results: {
@@ -155,7 +155,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 539.17506
-  tps: 976.57408
+  dps: 539.0973
+  tps: 976.45744
  }
 }
