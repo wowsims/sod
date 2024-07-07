@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.3089
+  weights: 1.5419
   weights: 0
-  weights: 0.61862
+  weights: 0.61986
   weights: 0
-  weights: 0.61862
-  weights: 0
-  weights: 0
+  weights: 0.61986
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.63235
-  weights: 6.50589
+  weights: 0
+  weights: 0
+  weights: 5.89445
+  weights: 6.30392
   weights: 0
   weights: 0
   weights: 0
@@ -211,7 +211,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.02781
+  weights: 11.90025
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.74166
+  weights: 5.35686
   weights: 0
-  weights: 2.12682
+  weights: 2.11895
   weights: 0
-  weights: 2.12682
-  weights: 0
-  weights: 0
+  weights: 2.11895
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.98325
+  weights: 0
+  weights: 0
+  weights: 3.09406
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestFire-Lvl40-Average-Default"
  value: {
-  dps: 450.4571
-  tps: 327.41637
+  dps: 450.63511
+  tps: 327.54089
  }
 }
 dps_results: {
@@ -386,15 +386,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 449.46436
-  tps: 326.79714
+  dps: 449.99404
+  tps: 327.16792
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Average-Default"
  value: {
-  dps: 1272.85317
-  tps: 908.65304
+  dps: 1273.38005
+  tps: 909.02474
  }
 }
 dps_results: {
@@ -491,29 +491,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1943.13062
-  tps: 1124.47945
+  dps: 1941.10733
+  tps: 1123.4156
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1734.49039
-  tps: 1004.36451
+  dps: 1736.04614
+  tps: 1005.35095
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1922.26676
-  tps: 1112.39097
+  dps: 1921.46169
+  tps: 1112.20907
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1706.35664
-  tps: 987.29994
+  dps: 1704.837
+  tps: 986.6085
  }
 }
 dps_results: {
@@ -526,22 +526,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1943.13062
-  tps: 1124.47945
+  dps: 1941.10733
+  tps: 1123.4156
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1734.49039
-  tps: 1004.36451
+  dps: 1736.04614
+  tps: 1005.35095
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2274.7345
-  tps: 1401.29368
+  dps: 2278.16228
+  tps: 1403.37223
  }
 }
 dps_results: {
@@ -554,8 +554,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-Average-Default"
  value: {
-  dps: 2975.32014
-  tps: 1848.76402
+  dps: 2977.11754
+  tps: 1849.88183
  }
 }
 dps_results: {
@@ -645,7 +645,7 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2974.81982
-  tps: 1845.92946
+  dps: 2969.51906
+  tps: 1843.64853
  }
 }

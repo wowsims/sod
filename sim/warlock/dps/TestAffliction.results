@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03084
+  weights: 0.27528
   weights: 0
-  weights: 1.29073
-  weights: 0
-  weights: 0
+  weights: 1.34064
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.71761
-  weights: 1.53791
+  weights: 0
+  weights: 0
+  weights: 3.75613
+  weights: 1.51493
   weights: 0
   weights: 0
   weights: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -2.01877
+  weights: 0.15915
   weights: 0
-  weights: 0.78592
-  weights: 0
-  weights: 0
+  weights: 0.83029
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.76552
-  weights: 8.49773
+  weights: 0
+  weights: 0
+  weights: 4.92288
+  weights: 6.88164
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.97751
+  weights: 5.58752
   weights: 0
-  weights: 1.893
-  weights: 0
-  weights: 0
+  weights: 3.40014
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 15.96845
-  weights: 15.89471
+  weights: 0
+  weights: 0
+  weights: 15.91498
+  weights: 12.63863
   weights: 0
   weights: 0
   weights: 0
@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 509.31394
-  tps: 495.24453
+  dps: 509.16563
+  tps: 495.06688
  }
 }
 dps_results: {
@@ -351,8 +351,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 511.04372
-  tps: 497.0408
+  dps: 510.95502
+  tps: 496.88046
  }
 }
 dps_results: {
@@ -365,8 +365,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1189.35413
-  tps: 1039.05945
+  dps: 1190.07584
+  tps: 1039.75403
  }
 }
 dps_results: {
@@ -414,8 +414,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1183.82315
-  tps: 1033.74368
+  dps: 1181.34046
+  tps: 1031.58379
  }
 }
 dps_results: {
@@ -442,8 +442,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2058.1844
-  tps: 1903.18656
+  dps: 2057.9889
+  tps: 1902.21652
  }
 }
 dps_results: {
@@ -463,29 +463,29 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1630.70754
-  tps: 1525.96604
+  dps: 1628.7369
+  tps: 1524.16016
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1601.85343
-  tps: 1497.73317
+  dps: 1602.87783
+  tps: 1499.1007
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2042.09457
-  tps: 1885.68575
+  dps: 2059.40887
+  tps: 1903.70458
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Average-Default"
  value: {
-  dps: 2121.57534
-  tps: 1961.06149
+  dps: 2121.45479
+  tps: 1961.03258
  }
 }
 dps_results: {
@@ -533,7 +533,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2107.58657
-  tps: 1947.22715
+  dps: 2109.77208
+  tps: 1949.05154
  }
 }

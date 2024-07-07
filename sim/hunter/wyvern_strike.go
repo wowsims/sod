@@ -39,7 +39,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= 1
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

@@ -450,7 +450,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 				Rotation:      config.Rotation.Rotation,
 
 				InFrontOfTarget:    config.InFrontOfTarget,
-				DistanceFromTarget: 5,
+				DistanceFromTarget: 1,
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			},
