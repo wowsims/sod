@@ -14,6 +14,7 @@ const (
 	SpellFlagColdBlooded  = core.SpellFlagAgentReserved2
 	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved3
 	SpellFlagCarnage      = core.SpellFlagAgentReserved4 // for Carnage
+	SpellFlagRoguePoison  = core.SpellFlagAgentReserved5 // RogueT1
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}

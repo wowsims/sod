@@ -192,6 +192,7 @@ const (
 	SpellFlagAgentReserved2
 	SpellFlagAgentReserved3
 	SpellFlagAgentReserved4
+	SpellFlagAgentReserved5
 
 	SpellFlagIgnoreModifiers = SpellFlagIgnoreAttackerModifiers | SpellFlagIgnoreTargetModifiers
 )
