@@ -602,7 +602,7 @@ func (warlock *Warlock) applyBane() {
 
 	points := time.Duration(warlock.Talents.Bane)
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockImmolate {
+		if spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame {
 			spell.DefaultCast.CastTime -= time.Millisecond * 100 * points
 		} else if spell.SpellCode == SpellCode_WarlockSoulFire {
 			spell.DefaultCast.CastTime -= time.Millisecond * 400 * points

@@ -39,10 +39,6 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				GCD:      core.GCDDefault,
 				CastTime: time.Second * 2,
 			},
-			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
-				Duration: 15 * time.Second,
-			},
 		},
 
 		Dot: core.DotConfig{
