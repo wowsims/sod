@@ -41,10 +41,16 @@ var RuneOverrides = []*proto.UIRune{
 	// Hunter
 	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
 	{Id: 458393, Name: "Engrave Chest - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeChest, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
+	// Warlock
+	// TODO: These runes haven't been updated by wowhead yet but were updated on 2024-07-03
+	// Cloak - Soul Siphon
+	{Id: 403511, Name: "Engrave Cloak - Soul Siphon", Type: proto.ItemType_ItemTypeBack},
 
-	// Mage
-	// As of 2024-06-21 Hot Streak's tooltip still shows "Requires Belt" after the move to Helm
-	{Id: 400624, Type: proto.ItemType_ItemTypeHead},
+	// Bracers - Incinerate
+	{Id: 412758, Name: "Engrave Bracers - Incinerate", Type: proto.ItemType_ItemTypeWrist},
+
+	// Boots - Mark of Chaos
+	{Id: 440892, Name: "Engrave Boots - Mark of Chaos", Type: proto.ItemType_ItemTypeFeet},
 }
 
 // Remove runes as you implement them.
@@ -53,7 +59,6 @@ var UnimplementedRuneOverrides = []int32{
 
 	// Hunter
 	440520, // Cloak - Improved Volley
-	440529, // Cloak - Resourcefulness
 	440533, // Cloak - Hit and Run
 
 	// Mage
@@ -68,9 +73,7 @@ var UnimplementedRuneOverrides = []int32{
 	// Shaman
 
 	// Warlock
-	440870, // Cloak - Decimation
 	440882, // Cloak - Infernal Armor
-	440892, // Cloak - Mark of Chaos
 
 	// Warrior
 	440113, // Cloak - Sudden Death

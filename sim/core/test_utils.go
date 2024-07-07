@@ -157,6 +157,32 @@ var FullRaidBuffsPhase3 = &proto.RaidBuffs{
 	SanctityAura:          true,
 }
 
+var FullRaidBuffsPhase4 = &proto.RaidBuffs{
+	ArcaneBrilliance:      true,
+	AspectOfTheLion:       true,
+	BattleShout:           proto.TristateEffect_TristateEffectImproved,
+	BloodPact:             proto.TristateEffect_TristateEffectImproved,
+	DevotionAura:          proto.TristateEffect_TristateEffectImproved,
+	DivineSpirit:          true,
+	FireResistanceAura:    true,
+	FireResistanceTotem:   true,
+	FrostResistanceAura:   true,
+	FrostResistanceTotem:  true,
+	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
+	GraceOfAirTotem:       proto.TristateEffect_TristateEffectImproved,
+	LeaderOfThePack:       true,
+	ManaSpringTotem:       proto.TristateEffect_TristateEffectImproved,
+	MoonkinAura:           true,
+	NatureResistanceTotem: true,
+	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
+	RetributionAura:       proto.TristateEffect_TristateEffectImproved,
+	ShadowProtection:      true,
+	StrengthOfEarthTotem:  proto.TristateEffect_TristateEffectImproved,
+	Thorns:                proto.TristateEffect_TristateEffectImproved,
+	TrueshotAura:          true,
+	SanctityAura:          true,
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Party Buffs
 ///////////////////////////////////////////////////////////////////////////
@@ -193,6 +219,21 @@ var FullIndividualBuffsPhase3 = &proto.IndividualBuffs{
 	FervorOfTheTempleExplorer: true,
 	SaygesFortune:             proto.SaygesFortune_SaygesDamage,
 	SongflowerSerenade:        true,
+}
+
+var FullIndividualBuffsPhase4 = &proto.IndividualBuffs{
+	BlessingOfKings:              true,
+	BlessingOfMight:              proto.TristateEffect_TristateEffectImproved,
+	BlessingOfSanctuary:          true,
+	BlessingOfWisdom:             proto.TristateEffect_TristateEffectImproved,
+	FengusFerocity:               true,
+	MightOfStormwind:             true,
+	MoldarsMoxie:                 true,
+	RallyingCryOfTheDragonslayer: true,
+	SaygesFortune:                proto.SaygesFortune_SaygesDamage,
+	SlipkiksSavvy:                true,
+	SongflowerSerenade:           true,
+	WarchiefsBlessing:            true,
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -241,8 +282,8 @@ var FullDebuffsPhase2 = &proto.Debuffs{
 }
 
 var FullDebuffsPhase3 = &proto.Debuffs{
-	CurseOfElementsNew:     proto.TristateEffect_TristateEffectRegular,
-	CurseOfShadowNew:       proto.TristateEffect_TristateEffectRegular,
+	CurseOfElements:        true,
+	CurseOfShadow:          true,
 	CurseOfRecklessness:    true,
 	CurseOfVulnerability:   true,
 	CurseOfWeakness:        proto.TristateEffect_TristateEffectImproved,
@@ -257,6 +298,34 @@ var FullDebuffsPhase3 = &proto.Debuffs{
 	JudgementOfLight:       true,
 	JudgementOfWisdom:      true,
 	JudgementOfTheCrusader: proto.TristateEffect_TristateEffectImproved,
+	ScorpidSting:           true,
+	ShadowWeaving:          true,
+	Stormstrike:            true,
+	SunderArmor:            true,
+	ThunderClap:            proto.TristateEffect_TristateEffectImproved,
+	WintersChill:           true,
+}
+
+var FullDebuffsPhase4 = &proto.Debuffs{
+	CurseOfElements:        true,
+	CurseOfShadow:          true,
+	CurseOfRecklessness:    true,
+	CurseOfVulnerability:   true,
+	CurseOfWeakness:        proto.TristateEffect_TristateEffectImproved,
+	DemoralizingRoar:       proto.TristateEffect_TristateEffectImproved,
+	DemoralizingShout:      proto.TristateEffect_TristateEffectImproved,
+	Dreamstate:             true,
+	ExposeArmor:            proto.TristateEffect_TristateEffectImproved,
+	FaerieFire:             true,
+	ImprovedFaerieFire:     true,
+	ImprovedScorch:         true,
+	ImprovedShadowBolt:     true,
+	InsectSwarm:            true,
+	JudgementOfLight:       true,
+	JudgementOfWisdom:      true,
+	JudgementOfTheCrusader: proto.TristateEffect_TristateEffectImproved,
+	OccultPoison:           true,
+	MarkOfChaos:            true,
 	ScorpidSting:           true,
 	ShadowWeaving:          true,
 	Stormstrike:            true,
@@ -294,6 +363,15 @@ var FullBuffsPhase3 = BuffsCombo{
 	Party:   FullPartyBuffs,
 	Player:  FullIndividualBuffsPhase3,
 	Raid:    FullRaidBuffsPhase3,
+}
+
+var FullBuffsPhase4 = BuffsCombo{
+	Label: "Phase 4 Buffs",
+
+	Debuffs: FullDebuffsPhase4,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase4,
+	Raid:    FullRaidBuffsPhase4,
 }
 
 func NewDefaultTarget(playerLevel int32) *proto.Target {

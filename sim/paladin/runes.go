@@ -12,6 +12,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerTheArtOfWar()
 	paladin.registerSheathOfLight()
 	paladin.registerGuardedByTheLight()
+	paladin.registerShockAndAwe()
 
 	// "RuneHeadFanaticism" is handled in Exorcism, Holy Shock, SoC, and SoR
 	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)
@@ -32,8 +33,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 
 	paladin.RegisterAura(core.Aura{
 		Label:    "The Art of War",
-		Duration: core.NeverExpires,
-		ActionID: core.ActionID{SpellID: 426157},
+		Duration: core.NeverExpires,		
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -41,8 +41,8 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-			paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Reset()
+			//paladin.holyShockCooldown.Reset()
+			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim) - (time.Second * 2)))
 		},
 	})
 }
@@ -70,8 +70,7 @@ func (paladin *Paladin) registerSheathOfLight() {
 	})
 	paladin.RegisterAura(core.Aura{
 		Label:    "Sheath of Light (rune)",
-		Duration: core.NeverExpires,
-		ActionID: core.ActionID{SpellID: 426158},
+		Duration: core.NeverExpires,		
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -80,6 +79,42 @@ func (paladin *Paladin) registerSheathOfLight() {
 				return
 			}
 			sheathAura.Activate(sim)
+		},
+	})
+}
+
+func (paladin *Paladin) registerShockAndAwe() {
+
+	if !paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe) {
+		return
+	}
+
+	dep := paladin.NewDynamicStatDependency(
+		stats.Intellect, stats.SpellDamage, 1.0,
+	)
+
+	shockAndAweAura := paladin.RegisterAura(core.Aura{
+		Label:    "Shock and Awe",
+		Duration: time.Second * 60,
+		ActionID: core.ActionID{SpellID: 462834},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.EnableDynamicStatDep(sim, dep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.DisableDynamicStatDep(sim, dep)
+		},
+	})
+	paladin.RegisterAura(core.Aura{
+		Label:    "Shock and Awe (rune)",
+		Duration: core.NeverExpires,		
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode != SpellCode_PaladinHolyShock {
+				return
+			}
+			shockAndAweAura.Activate(sim)
 		},
 	})
 }

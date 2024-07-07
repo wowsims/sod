@@ -900,7 +900,7 @@ func (caster *Unit) NewPartyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
 	party := caster.Env.Raid.GetPlayerParty(caster)
 
 	auras := make([]*Aura, len(party.Players))
-	for partyIndex, player := range party.Players {
+	for partyIndex, player := range party.PlayersAndPets {
 		target := &player.GetCharacter().Unit
 		if target.Type != EnemyUnit {
 			auras[partyIndex] = makeAura(target)

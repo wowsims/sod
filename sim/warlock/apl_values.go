@@ -40,17 +40,25 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 	warlock := value.warlock
 
 	// Assert that we're currently channeling Drain Soul.
-	if warlock.ChanneledDot == nil || warlock.ChanneledDot.Spell != warlock.DrainSoul {
+	if warlock.ChanneledDot == nil {
 		return false
 	}
 
-	curseRefresh := max(
-		warlock.CurseOfAgony.CurDot().RemainingDuration(sim),
-		warlock.CurseOfDoom.CurDot().RemainingDuration(sim),
-		warlock.CurseOfElementsAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		warlock.CurseOfTonguesAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-		warlock.CurseOfWeaknessAuras.Get(warlock.CurrentTarget).RemainingDuration(sim),
-	) - warlock.CurseOfAgony.CastTime()
+	var activeDrainSoul *core.Spell
+	for _, spell := range warlock.DrainSoul {
+		if spell.CurDot().IsActive() {
+			activeDrainSoul = spell
+			break
+		}
+	}
+	if activeDrainSoul == nil {
+		return false
+	}
+
+	curseRefresh := time.Duration(0)
+	if warlock.ActiveCurseAura != nil {
+		curseRefresh = warlock.ActiveCurseAura.RemainingDuration(sim)
+	}
 
 	hauntRefresh := 1000 * time.Second
 	if warlock.HauntDebuffAuras != nil {
@@ -59,16 +67,14 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 			warlock.Haunt.TravelTime()
 	}
 
-	timeUntilRefresh := curseRefresh
-
 	// the amount of ticks we have left, assuming we continue channeling
 	dsDot := warlock.ChanneledDot
-	ticksLeft := int(timeUntilRefresh/dsDot.TickPeriod()) + 1
+	ticksLeft := int(curseRefresh/dsDot.TickPeriod()) + 1
 	ticksLeft = min(ticksLeft, int(hauntRefresh/dsDot.TickPeriod()))
 	ticksLeft = min(ticksLeft, dsDot.NumTicksRemaining(sim))
 
 	// amount of ticks we'd get assuming we recast drain soul
-	recastTicks := int(timeUntilRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)) + 1
+	recastTicks := int(curseRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)) + 1
 	recastTicks = min(recastTicks, int(hauntRefresh/warlock.ApplyCastSpeed(dsDot.TickLength)))
 	recastTicks = min(recastTicks, int(dsDot.NumberOfTicks))
 
@@ -76,8 +82,8 @@ func (value *APLValueWarlockShouldRecastDrainSoul) GetBool(sim *core.Simulation)
 		return false
 	}
 
-	snapshotDmg := warlock.DrainSoul.ExpectedTickDamageFromCurrentSnapshot(sim, warlock.CurrentTarget) * float64(ticksLeft)
-	recastDmg := warlock.DrainSoul.ExpectedTickDamage(sim, warlock.CurrentTarget) * float64(recastTicks)
+	snapshotDmg := activeDrainSoul.ExpectedTickDamageFromCurrentSnapshot(sim, warlock.CurrentTarget) * float64(ticksLeft)
+	recastDmg := activeDrainSoul.ExpectedTickDamage(sim, warlock.CurrentTarget) * float64(recastTicks)
 	snapshotDPS := snapshotDmg / (time.Duration(ticksLeft) * dsDot.TickPeriod()).Seconds()
 	recastDps := recastDmg / (time.Duration(recastTicks)*warlock.ApplyCastSpeed(dsDot.TickLength) + warlock.ChannelClipDelay).Seconds()
 
@@ -157,7 +163,7 @@ type APLValueWarlockCurrentPetMana struct {
 }
 
 func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
-	pet := warlock.Pet
+	pet := warlock.ActivePet
 	if pet.GetPet() == nil {
 		return nil
 	}
@@ -185,8 +191,8 @@ type APLValueWarlockCurrentPetManaPercent struct {
 }
 
 func (warlock *Warlock) newValueWarlockCurrentPetManaPercent(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetManaPercent) core.APLValue {
-	pet := warlock.Pet
-	if pet.GetPet() == nil {
+	pet := warlock.ActivePet
+	if pet == nil {
 		return nil
 	}
 	if !pet.GetPet().HasManaBar() {

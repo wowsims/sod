@@ -4,7 +4,6 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -14,9 +13,6 @@ var ItemOverrides = []*proto.UIItem{
 	// {Id: 51804, Phase: 2},
 
 	// SOD Items
-	{Id: 211848, Name: "Blackfathom Mana Oil", Icon: "inv_potion_99", Stats: stats.Stats{stats.MP5: 12, stats.SpellHit: 2}.ToFloatArray()},
-	{Id: 211845, Name: "Blackfathom Sharpening Stone", Icon: "inv_misc_rune_04", Stats: stats.Stats{stats.MeleeHit: 2}.ToFloatArray()},
-
 	{Id: 10019, Sources: []*proto.UIItemSource{{
 		Source: &proto.UIItemSource_Crafted{
 			Crafted: &proto.CraftedSource{
@@ -100,74 +96,26 @@ var ItemOverrides = []*proto.UIItem{
 }
 
 // Keep these sorted by item ID.
-var ItemAllowList = map[int32]struct{}{
-	11815: {}, // Hand of Justice
-	12590: {}, // Felstriker
-	15808: {}, // Fine Light Crossbow (for hunter testing).
-	18843: {},
-	18844: {},
-	18847: {},
-	18848: {},
-	19019: {}, // Thunderfury
-	19808: {}, // Rockhide Strongfish
-	20837: {}, // Sunstrider Axe
-	20966: {}, // Jade Pendant of Blasting
-	21625: {}, // Scarab Brooch
-	21685: {}, // Petrified Scarab
-	24114: {}, // Braided Eternium Chain
-	28572: {}, // Blade of the Unrequited
-	28830: {}, // Dragonspine Trophy
-	29383: {}, // Bloodlust Brooch
-	29387: {}, // Gnomeregan Auto-Blocker 600
-	29994: {}, // Thalassian Wildercloak
-	29996: {}, // Rod of the Sun King
-	30032: {}, // Red Belt of Battle
-	30627: {}, // Tsunami Talisman
-	30720: {}, // Serpent-Coil Braid
-	31193: {}, // Blade of Unquenched Thirst
-	32387: {}, // Idol of the Raven Goddess
-	32658: {}, // Badge of Tenacity
-	33135: {}, // Falling Star
-	33140: {}, // Blood of Amber
-	33143: {}, // Stone of Blades
-	33144: {}, // Facet of Eternity
-	33504: {}, // Libram of Divine Purpose
-	33506: {}, // Skycall Totem
-	33507: {}, // Stonebreaker's Totem
-	33508: {}, // Idol of Budding Life
-	33510: {}, // Unseen moon idol
-	33829: {}, // Hex Shrunken Head
-	33831: {}, // Berserkers Call
-	34472: {}, // Shard of Contempt
-	34473: {}, // Commendation of Kael'thas
-	37032: {}, // Edge of the Tuskarr
-	37574: {}, // Libram of Furious Blows
-	38072: {}, // Thunder Capacitor
-	38287: {}, // Empty Mug of Direbrew
-	38289: {}, // Coren's Lucky Coin
-	39208: {}, // Sigil of the Dark Rider
-	41752: {}, // Brunnhildar Axe
-	6360:  {}, // Steelscale Crushfish
-	8345:  {}, // Wolfshead Helm
-	9449:  {}, // Manual Crowd Pummeler
-
-	// SOD
-	211848: {},
-	211845: {},
-	215111: {}, // Gneuro-Linked Arcano-Filament Monocle
-	215114: {}, // Glowing Hyperconductive Scale Coif
-}
+var ItemAllowList = map[int32]struct{}{}
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
+	11832:  {}, // https://www.wowhead.com/classic/item=11832/burst-of-knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
+	17064:  {}, // Shard of the Scale
+	17082:  {}, // Shard of the Flame
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
+	18820:  {}, // Talisman of Ephemeral Power
+	19147:  {}, // Ring of Spell Power
+	19166:  {}, // Black Amnesty (replaced by Tempered Black Amnesty)
+	19169:  {}, // Nightfall (replaced by Reaving Nightfall
+	19170:  {}, // Ebon Hand (replaced by Ebon Fist)
 	20522:  {}, // Feral Staff
-	33350:  {},
+	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity
 	34578:  {}, // Battlemaster's Determination
@@ -186,6 +134,7 @@ var ItemDenyList = map[int32]struct{}{
 	213513: {}, // Libram of Deliverance
 	213594: {}, // Idol of the Heckler
 	220915: {}, // Idol of the Raging Shambler
+	227444: {}, // Idol of the Huntress
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -499,13 +448,36 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`TEST`),
 	regexp.MustCompile(`Test`),
 	regexp.MustCompile(`zOLD`),
+
+	// TODO: Possibly add these back later. These are later phase items
+	// PVP Gear
+	regexp.MustCompile(`Grand Marshal's`),
+	regexp.MustCompile(`High Warlord's`),
+
+	// ZG
+	regexp.MustCompile(`Zandalarian`),
+
+	// AQ
+	regexp.MustCompile(`Qiraji`),
+
+	// Naxx
+	regexp.MustCompile(`Icebane`),
+	regexp.MustCompile(`Icy Scale`),
+	regexp.MustCompile(`Polar`),
+	regexp.MustCompile(`Glacial`),
 }
 
 // Data can easily be found here:
 // https://www.wowhead.com/classic/item-sets#item-sets
 var DenyItemSetIds = []int{
 	// Misc Sets
-	1, // The Gladiator
+	1,   // The Gladiator
+	41,  // Dal'Rend's Arms
+	65,  // Spider's Kiss
+	81,  // The Postmaster
+	122, // Necropile Raiment
+	124, // Deathbone Guardian
+	261, // Spirit of Eskhandar
 
 	// Dungeon Set 1
 	181, // Magister's Regalia
@@ -663,12 +635,9 @@ var DenyItemSetIds = []int{
 	1708, // Lawbringer Will
 
 	// Rogue
-	1711, // Nightslayer Thrill
 	1712, // Nightslayer Battlearmor
 
 	// Warlock
-	1717, // Corrupted Felheart
-	1718, // Wicked Felheart
 
 	// Warrior
 	1719, // Immoveable Might

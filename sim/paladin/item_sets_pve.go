@@ -69,6 +69,7 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "Item - Crusader's Wrath Proc - Lightforge Armor (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
 				ProcChance: 0.06,
 				Handler:    handler,

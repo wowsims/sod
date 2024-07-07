@@ -1,9 +1,13 @@
 {
-	"editor.tabSize": 4,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"eslint.validate": ["javascript", "typescript"],
 	"eslint.nodePath": "./node_modules",
 	"eslint.workingDirectories": ["."],
-	"[javascript][javascriptreact][typescript][typescriptreact][html][scss]": {
+	"javascript.preferences.importModuleSpecifier": "relative",
+	"javascript.preferences.importModuleSpecifierEnding": "minimal",
+	"typescript.preferences.importModuleSpecifier": "relative",
+	"typescript.preferences.importModuleSpecifierEnding": "minimal",
+	"[javascript][javascriptreact][typescript][typescriptreact][scss][html]": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "always"
 		}
@@ -94,5 +98,5 @@
 		"strbyte",
 		"tinsert",
 		"UIParent"
-	]
+	],
 }

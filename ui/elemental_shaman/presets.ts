@@ -128,7 +128,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectRegular,
+	curseOfElements: true,
 	improvedScorch: true,
 	serpentsStrikerFistDebuff: true,
 	stormstrike: true,

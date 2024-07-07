@@ -3,6 +3,7 @@ package shaman
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -27,7 +28,7 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.EnableManaBar()
 
 	// Add Shaman stat dependencies
-	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	shaman.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
@@ -43,6 +44,8 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 			SpiritWolf2: shaman.NewSpiritWolf(2),
 		}
 	}
+
+	guardians.ConstructGuardians(&shaman.Character)
 
 	return shaman
 }
@@ -84,6 +87,7 @@ const (
 	SpellCode_ShamanMagmaTotem
 	SpellCode_ShamanMoltenBlast
 	SpellCode_ShamanSearingTotem
+	SpellCode_ShamanStormstrike
 )
 
 // Shaman represents a shaman character.

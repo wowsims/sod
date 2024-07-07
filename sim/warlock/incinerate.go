@@ -9,7 +9,7 @@ import (
 )
 
 func (warlock *Warlock) registerIncinerateSpell() {
-	if !warlock.HasRune(proto.WarlockRune_RuneLegsIncinerate) {
+	if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) {
 		return
 	}
 	spellCoeff := 0.714
@@ -18,7 +18,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 
 	warlock.IncinerateAura = warlock.RegisterAura(core.Aura{
 		Label:    "Incinerate Aura",
-		ActionID: core.ActionID{SpellID: 412758},
+		ActionID: core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerIncinerate)},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.25
@@ -29,16 +29,16 @@ func (warlock *Warlock) registerIncinerateSpell() {
 	})
 
 	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_WarlockIncinerate,
 		ActionID:     core.ActionID{SpellID: 412758},
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | SpellFlagLoF,
+		Flags:        core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.14,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			BaseCost: 0.14,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -47,14 +47,9 @@ func (warlock *Warlock) registerIncinerateSpell() {
 			},
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage = sim.Roll(baseLowDamage, baseHighDamage)

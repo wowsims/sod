@@ -398,7 +398,6 @@ export const BlessingOfWisdom = withLabel(
 	}),
 	'Blessing of Wisdom',
 );
-
 export const ManaSpringTotem = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: player =>
@@ -413,6 +412,10 @@ export const ManaSpringTotem = withLabel(
 		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Mana Spring Totem',
+);
+export const VampiricTouchReplenishment = withLabel(
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402779), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
+	'Vampiric Touch MP5',
 );
 
 export const MeleeCritBuff = withLabel(
@@ -493,31 +496,40 @@ export const BattleSquawkBuff = makeMultistateRaidBuffInput({
 
 export const RallyingCryOfTheDragonslayer = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 22888, minLevel: 51 }]),
+		actionId: () => ActionId.fromSpellId(22888),
 		fieldName: 'rallyingCryOfTheDragonslayer',
 	}),
 	'Rallying Cry of the Dragonslayer',
 );
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 24425, minLevel: 51 }]),
+		actionId: () => ActionId.fromSpellId(24425),
 		fieldName: 'spiritOfZandalar',
 	}),
 	'Spirit of Zandalar',
 );
 export const SongflowerSerenade = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 15366, minLevel: 50 }]),
+		actionId: () => ActionId.fromSpellId(15366),
 		fieldName: 'songflowerSerenade',
 	}),
 	'Songflower Serenade',
 );
 export const WarchiefsBlessing = withLabel(
 	makeBooleanIndividualBuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 16609, minLevel: 51 }]),
+		actionId: () => ActionId.fromSpellId(16609),
 		fieldName: 'warchiefsBlessing',
+		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	`Warchief's Blessing`,
+);
+export const MightOfStormwind = withLabel(
+	makeBooleanIndividualBuffInput({
+		actionId: () => ActionId.fromSpellId(460940),
+		fieldName: 'mightOfStormwind',
+		showWhen: player => player.getFaction() === Faction.Alliance,
+	}),
+	`Might Of Stormwind`,
 );
 
 export const SaygesDarkFortune = (inputs: ItemStatOption<SaygesFortune>[]) =>
@@ -667,7 +679,6 @@ export const curseOfWeaknessDebuff = withLabel(
 				{ id: 702, minLevel: 4, maxLevel: 11 },
 				{ id: 1108, minLevel: 12, maxLevel: 21 },
 				{ id: 6205, minLevel: 22, maxLevel: 31 },
-				{ id: 6205, minLevel: 22, maxLevel: 31 },
 				{ id: 7646, minLevel: 32, maxLevel: 41 },
 				{ id: 11707, minLevel: 42, maxLevel: 51 },
 				{ id: 11708, minLevel: 52 },
@@ -755,7 +766,6 @@ export const MeleeHitDebuff = withLabel(
 	'Insect Swarm',
 );
 
-// TODO: Classic
 export const SpellISBDebuff = withLabel(
 	makeBooleanDebuffInput({
 		actionId: player => player.getMatchingSpellActionId([{ id: 17803, minLevel: 10 }]),
@@ -774,7 +784,7 @@ export const SpellScorchDebuff = withLabel(
 
 export const SpellWintersChillDebuff = withLabel(
 	makeBooleanDebuffInput({
-		actionId: player => player.getMatchingSpellActionId([{ id: 12579, minLevel: 40 }]),
+		actionId: player => player.getMatchingSpellActionId([{ id: 28595, minLevel: 40 }]),
 		fieldName: 'wintersChill',
 	}),
 	'Frost Damage',
@@ -802,31 +812,38 @@ export const SpellShadowWeavingDebuff = withLabel(
 	'Shadow Weaving',
 );
 
-export const CurseOfElements = withLabel(
-	makeTristateDebuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 1490, minLevel: 32, maxLevel: 45 },
-				{ id: 11721, minLevel: 46, maxLevel: 59 },
-				{ id: 11722, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(402792),
-		fieldName: 'curseOfElementsNew',
-	}),
-	'Curse of Elements',
-);
+export const MarkOfChaos = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 461615 }]),
+	fieldName: 'markOfChaos',
+});
 
-export const CurseOfShadow = withLabel(
-	makeTristateDebuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 17862, minLevel: 44, maxLevel: 59 },
-				{ id: 17937, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(402791),
-		fieldName: 'curseOfShadowNew',
+export const CurseOfElements = makeBooleanDebuffInput({
+	actionId: player =>
+		player.getMatchingSpellActionId([
+			{ id: 1490, minLevel: 32, maxLevel: 45 },
+			{ id: 11721, minLevel: 46, maxLevel: 59 },
+			{ id: 11722, minLevel: 60 },
+		]),
+	fieldName: 'curseOfElements',
+});
+
+export const CurseOfShadow = makeBooleanDebuffInput({
+	actionId: player =>
+		player.getMatchingSpellActionId([
+			{ id: 17862, minLevel: 44, maxLevel: 59 },
+			{ id: 17937, minLevel: 60 },
+		]),
+	fieldName: 'curseOfShadow',
+});
+
+export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos, CurseOfElements, CurseOfShadow], 'Warlock Curses');
+
+export const OccultPoison = withLabel(
+	makeBooleanDebuffInput({
+		actionId: player => player.getMatchingItemActionId([{ id: 226374, minLevel: 54 }]),
+		fieldName: 'occultPoison',
 	}),
-	'Curse of Shadow',
+	'Occult Poison',
 );
 
 export const HuntersMark = withLabel(
@@ -946,21 +963,6 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatStamina],
 	},
 	{
-		config: PaladinPhysicalBuff,
-		picker: IconPicker,
-		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower],
-	},
-	{
-		config: StrengthBuffHorde,
-		picker: IconPicker,
-		stats: [Stat.StatStrength],
-	},
-	{
-		config: GraceOfAir,
-		picker: IconPicker,
-		stats: [Stat.StatAgility],
-	},
-	{
 		config: IntellectBuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatIntellect],
@@ -995,9 +997,24 @@ export const RAID_BUFFS_CONFIG = [
 
 	// Physical Damage Buffs
 	{
+		config: PaladinPhysicalBuff,
+		picker: IconPicker,
+		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower],
+	},
+	{
+		config: StrengthBuffHorde,
+		picker: IconPicker,
+		stats: [Stat.StatStrength],
+	},
+	{
 		config: BattleShoutBuff,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower],
+	},
+	{
+		config: GraceOfAir,
+		picker: IconPicker,
+		stats: [Stat.StatAgility],
 	},
 	{
 		config: TrueshotAuraBuff,
@@ -1028,6 +1045,11 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: ManaSpringTotem,
+		picker: IconPicker,
+		stats: [Stat.StatMP5],
+	},
+	{
+		config: VampiricTouchReplenishment,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
 	},
@@ -1073,6 +1095,36 @@ export const MISC_BUFFS_CONFIG = [
 
 export const WORLD_BUFFS_CONFIG = [
 	{
+		config: RallyingCryOfTheDragonslayer,
+		picker: IconPicker,
+		stats: [
+			Stat.StatMeleeCrit,
+			// TODO: Stat.StatRangedCrit,
+			Stat.StatSpellCrit,
+			Stat.StatAttackPower,
+		],
+	},
+	{
+		config: SongflowerSerenade,
+		picker: IconPicker,
+		stats: [],
+	},
+	// {
+	// 	config: SpiritOfZandalar,
+	// 	picker: IconPicker,
+	// 	stats: [],
+	// },
+	{
+		config: WarchiefsBlessing,
+		picker: IconPicker,
+		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5],
+	},
+	{
+		config: MightOfStormwind,
+		picker: IconPicker,
+		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5],
+	},
+	{
 		config: FervorOfTheTempleExplorer,
 		picker: IconPicker,
 		stats: [Stat.StatSpellPower, Stat.StatAttackPower],
@@ -1111,31 +1163,6 @@ export const WORLD_BUFFS_CONFIG = [
 		config: SlipKiksSavvy,
 		picker: IconPicker,
 		stats: [Stat.StatSpellCrit],
-	},
-	{
-		config: RallyingCryOfTheDragonslayer,
-		picker: IconPicker,
-		stats: [
-			Stat.StatMeleeCrit,
-			// TODO: Stat.StatRangedCrit,
-			Stat.StatSpellCrit,
-			Stat.StatAttackPower,
-		],
-	},
-	{
-		config: SongflowerSerenade,
-		picker: IconPicker,
-		stats: [],
-	},
-	{
-		config: SpiritOfZandalar,
-		picker: IconPicker,
-		stats: [],
-	},
-	{
-		config: WarchiefsBlessing,
-		picker: IconPicker,
-		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5],
 	},
 ] as PickerStatOptions[];
 
@@ -1217,14 +1244,14 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatShadowPower],
 	},
 	{
-		config: CurseOfElements,
-		picker: IconPicker,
-		stats: [Stat.StatFirePower, Stat.StatFrostPower],
+		config: WarlockCursesConfig,
+		picker: MultiIconPicker,
+		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: CurseOfShadow,
+		config: OccultPoison,
 		picker: IconPicker,
-		stats: [Stat.StatShadowPower, Stat.StatArcanePower],
+		stats: [Stat.StatSpellPower],
 	},
 
 	// Defensive

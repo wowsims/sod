@@ -329,25 +329,21 @@ export const RumseyRumBlackLabel: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21151, minLevel: 1 }]),
 	value: Alcohol.AlcoholRumseyRumLight,
 };
-
 export const GordokGreenGrog: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18269, minLevel: 56 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholGordokGreenGrog,
 };
-
 export const RumseyRumDark: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21114, minLevel: 1 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholRumseyRumDark,
 };
-
 export const RumseyRumLight: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20709, minLevel: 1 }]),
 	value: Alcohol.AlcoholRumseyRumLight,
 };
-
 export const KreegsStoutBeatdown: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18284, minLevel: 56 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholKreegsStoutBeatdown,
 };
 
 export const ALCOHOL_CONFIG: ConsumableStatOption<Alcohol>[] = [
@@ -825,13 +821,9 @@ export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 };
 
 // Sharpening Stones
-// Original lvl 50 but not obtainable in Phase 3
-export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
-	return {
-		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 51 }]),
-		value: WeaponImbue.ElementalSharpeningStone,
-		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
-	};
+export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
+	value: WeaponImbue.ElementalSharpeningStone,
 };
 export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
@@ -905,7 +897,7 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: MinorManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil, stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
-	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
+	{ config: ElementalSharpeningStone, stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomSharpeningStone(slot), stats: [Stat.StatMeleeHit] },

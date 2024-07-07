@@ -1,0 +1,27 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"activateAura":{"auraId":{"spellId":18288}}},"doAtValue":{"const":{"val":"-5s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":11661,"rank":9}}},"doAtValue":{"const":{"val":"-2.5"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"75%"}}}}]}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"65%"}}}}]}},"castSpell":{"spellId":{"itemId":12662}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11713,"rank":6}}}}},"multidot":{"spellId":{"spellId":11713,"rank":6},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"hide":true,"action":{"condition":{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11717,"rank":4}}}}},"castSpell":{"spellId":{"spellId":11717,"rank":4}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"1.5"}}}},"castSpell":{"spellId":{"spellId":18871,"rank":6}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"3.5"}}}},"castSpell":{"spellId":{"spellId":17923,"rank":6}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"warlockCurrentPetMana":{}},"rhs":{"const":{"val":"800"}}}},{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"10s"}}}}]}},"castSpell":{"spellId":{"spellId":11689,"rank":6}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":403501}}}},
+    {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":426320},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":11672,"rank":6},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"hide":true,"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":11700,"rank":6},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":427717},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":403501}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}}]}},"multidot":{"spellId":{"spellId":18881,"rank":4},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
+    {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":17941}}},"castSpell":{"spellId":{"spellId":11661,"rank":9}}}},
+    {"hide":true,"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":403511}}},{"warlockShouldRecastDrainSoul":{}}]}},"channelSpell":{"spellId":{"spellId":11675,"rank":4},"interruptIf":{}}}},
+    {"hide":true,"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":403511}}},{"isExecutePhase":{"threshold":"E20"}}]}},"channelSpell":{"spellId":{"spellId":11675,"rank":4},"interruptIf":{"const":{"val":"true"}}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":11661,"rank":9}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":11689,"rank":6}}}}
+  ]
+}

@@ -19,14 +19,14 @@ var MoonfireManaCost = [MoonfireRanks + 1]float64{0, 25, 50, 75, 105, 150, 190, 
 var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52, 58}
 
 func (druid *Druid) registerMoonfireSpell() {
-	druid.Moonfire = make([]*DruidSpell, MoonfireRanks+1)
+	druid.Moonfire = make([]*DruidSpell, 0)
 	druid.MoonfireDotMultiplier = 1
 
 	for rank := 1; rank <= MoonfireRanks; rank++ {
 		config := druid.getMoonfireBaseConfig(rank)
 
 		if config.RequiredLevel <= int(druid.Level) {
-			druid.Moonfire[rank] = druid.RegisterSpell(Humanoid|Moonkin, config)
+			druid.Moonfire = append(druid.Moonfire, druid.RegisterSpell(Humanoid|Moonkin, config))
 		}
 	}
 }
@@ -84,7 +84,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
 			},
 		},
 

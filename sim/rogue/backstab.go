@@ -23,6 +23,11 @@ func (rogue *Rogue) registerBackstabSpell() {
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
+	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
+
+	RuneDamageModifier := core.TernaryFloat64(hasSlaughterRune, 1.6, 1)
+	RuneCostModifier := core.TernaryFloat64(hasSlaughterRune, 30, 0)
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -32,7 +37,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
+			Cost:   60 - RuneCostModifier,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -42,7 +47,10 @@ func (rogue *Rogue) registerBackstabSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand)
+			if !rogue.HasDagger(core.MainHand) {
+				return false
+			}
+			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget			
 		},
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
@@ -55,13 +63,16 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-				/** Currently does not apply to bosses due to being a slow
+				if hasCutthroatRune {
+					rogue.rollCutthroat(sim)
+				}
+					/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
 				} */

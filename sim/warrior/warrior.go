@@ -3,7 +3,7 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -157,13 +157,14 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 
 	warrior.PseudoStats.CanParry = true
 
+	warrior.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
+	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .05) // 20 str = 1 block
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(warrior.Level)]*core.CritRatingPerCritChance)
 	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(warrior.Level)])
-	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .05) // 20 str = 1 block
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&warrior.Character)
+	guardians.ConstructGuardians(&warrior.Character)
+
 	return warrior
 }
 

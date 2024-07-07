@@ -8,6 +8,8 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+// Immolation Aura now triggers from being attacked rather than as a periodic effect. This cannot occur more than once per second, and does not require the attack to hit.
+// Immolation Aura now also increases fire damage by 10%.
 func (warlock *Warlock) registerImmolationAuraSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneBracerImmolationAura) {
 		return
@@ -21,16 +23,10 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagLoF,
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1, // + 0.02*float64(warlock.Talents.Emberstorm), Not affected by any talent atm
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -60,6 +56,8 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 			for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
 				warlock.PseudoStats.SchoolDamageTakenMultiplier[si] *= 0.9
 			}
+
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.10
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			pa.Cancel(sim)
@@ -67,13 +65,25 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 			for si := stats.SchoolIndexArcane; si < stats.SchoolLen; si++ {
 				warlock.PseudoStats.SchoolDamageTakenMultiplier[si] /= 0.9
 			}
+
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.10
+		},
+	})
+
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:     "Immolation Aura Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		ProcMask: core.ProcMaskSpellDamage,
+		ICD:      time.Second * 1,
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			immoAura.Activate(sim)
 		},
 	})
 
 	warlock.ImmolationAura = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerImmolationAura)},
 		SpellSchool: core.SpellSchoolFire,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete | WarlockFlagDestruction,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

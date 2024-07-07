@@ -36,6 +36,7 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerBladeDance()
 	rogue.applyJustAFleshWound()
 	rogue.applyRollingWithThePunches()
+	rogue.registerCutthroat()
 	rogue.registerBlunderbussSpell()
 	rogue.registerFanOfKnives()
 	rogue.registerCrimsonTempestSpell()
@@ -190,6 +191,20 @@ func (rogue *Rogue) registerBladeDance() {
 		time.Duration(time.Second * 30),
 	}
 
+	cachedBonusAP := 0.0
+	apProcAura := rogue.RegisterAura(core.Aura{
+		Label:    "Defender's Resolve",
+		ActionID: core.ActionID{SpellID: 462230},
+		Duration: rogue.bladeDanceDurations[5],
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			cachedBonusAP = 4 * max(rogue.GetStat(stats.Defense), 0)
+			rogue.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AddStatDynamic(sim, stats.AttackPower, -cachedBonusAP)
+		},
+	})
+
 	rogue.BladeDanceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Dance",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
@@ -234,7 +249,8 @@ func (rogue *Rogue) registerBladeDance() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BladeDanceAura.Duration = rogue.bladeDanceDurations[rogue.ComboPoints()]
 			rogue.BladeDanceAura.Activate(sim)
-			rogue.ApplyFinisher(sim, spell)
+			apProcAura.Activate(sim)
+			rogue.SpendComboPoints(sim, spell)
 		},
 	})
 }
@@ -264,22 +280,23 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		return
 	}
 
-	statDep := rogue.NewDynamicMultiplyStat(stats.Health, 1+0.06*float64(rogue.RollingWithThePunchesProcAura.GetStacks()))
+	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero condition
+	for i := 1; i < 6; i++ {
+		statDeps[i] = rogue.NewDynamicMultiplyStat(stats.Health, 1.0+.06*float64(i))
+	}
 
 	rogue.RollingWithThePunchesProcAura = rogue.RegisterAura(core.Aura{
 		Label:     "Rolling with the Punches Proc",
 		ActionID:  core.ActionID{SpellID: 400015},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, statDep)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, statDep)
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.DisableDynamicStatDep(sim, statDep)
-			aura.Unit.EnableDynamicStatDep(sim, statDep)
+			if oldStacks != 0 {
+				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			}
+			if newStacks != 0 {
+				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
+			}
 		},
 	})
 
@@ -300,5 +317,23 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 				}
 			}
 		},
+	})
+}
+
+func (rogue *Rogue) rollCutthroat(sim *core.Simulation) {
+	if sim.RandomFloat("Cutthroat") < 0.15 {
+		rogue.CutthroatProcAura.Activate(sim)
+	}
+}
+
+func (rogue *Rogue) registerCutthroat() {
+	if !rogue.HasRune(proto.RogueRune_RuneCutthroat) {
+		return
+	}
+
+	rogue.CutthroatProcAura = rogue.RegisterAura(core.Aura{
+		Label:    "Cutthroat",
+		ActionID: core.ActionID{SpellID: 462707},
+		Duration: time.Second * 10,
 	})
 }

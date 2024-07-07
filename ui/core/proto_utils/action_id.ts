@@ -150,7 +150,12 @@ export class ActionId {
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+		const showBuff = spellIDsToShowBuffs.has(id);
+
+		let url = `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+		if (showBuff) url = `${url}?buff=1`;
+
+		return url;
 	}
 	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
 		return buildWowheadTooltipDataset({ itemId: id, ...params });
@@ -303,9 +308,18 @@ export class ActionId {
 			case 'Mutilate':
 			case 'Stormstrike':
 				if (this.tag === 1) {
-					name = `${name} (Main Hand)`;
+					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
-					name = `${name} (Off Hand)`;
+					name = `${name} (Off-Hand)`;
+				}
+				break;
+			// Weapon enchants with auras
+			case 'Windfury Weapon':
+			case 'Holy Strength':
+				if (this.tag === 1) {
+					name += ' (Main-Hand)';
+				} else if (this.tag === 2) {
+					name += ' (Off-Hand)';
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
@@ -359,15 +373,6 @@ export class ActionId {
 					name += ' (Melee)';
 				} else if (this.tag === 2) {
 					name += ' (Spell)';
-				}
-				break;
-			case 'Lightning Speed':
-			case 'Windfury Weapon':
-			case 'Berserk':
-				if (this.tag === 1) {
-					name += ' (Main Hand)';
-				} else if (this.tag === 2) {
-					name += ' (Off Hand)';
 				}
 				break;
 			case 'Battle Shout':
@@ -430,6 +435,14 @@ export class ActionId {
 				break;
 			// Don't do anything for these but avoid adding "(??)"
 			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
+				break;
+			case 'Vampiric Touch':
+				// Vampiric touch provided to the party
+				if (this.tag === 1) name = `${name} (External)`;
+				break;
+			case 'Totem of Raging Fire':
+				if (this.tag === 1) name = `${name} (1H)`;
+				else if (this.tag === 2) name = `${name} (2H)`;
 				break;
 			default:
 				if (this.tag) {
@@ -619,6 +632,42 @@ idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(
 idOverrides[ActionId.fromSpellId(455864).toProtoString()] = ActionId.fromSpellId(9907); // Tier 1 Balance Druid "Improved Faerie Fire"
 idOverrides[ActionId.fromSpellId(457544).toProtoString()] = ActionId.fromSpellId(10408); // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
 
+const spellIDsToShowBuffs = new Set([
+	770, // https://www.wowhead.com/classic/spell=770/faerie-fire
+	778, // https://www.wowhead.com/classic/spell=778/faerie-fire
+	9749, // https://www.wowhead.com/classic/spell=9749/faerie-fire
+	9907, // https://www.wowhead.com/classic/spell=9907/faerie-fire
+	702, // https://www.wowhead.com/classic/spell=702/curse-of-weakness
+	1108, // https://www.wowhead.com/classic/spell=1108/curse-of-weakness
+	6205, // https://www.wowhead.com/classic/spell=6205/curse-of-weakness
+	7646, // https://www.wowhead.com/classic/spell=7646/curse-of-weakness
+	11707, // https://www.wowhead.com/classic/spell=11707/curse-of-weakness
+	11708, // https://www.wowhead.com/classic/spell=11708/curse-of-weakness
+	704, // https://www.wowhead.com/classic/spell=704/curse-of-recklessness
+	7658, // https://www.wowhead.com/classic/spell=7658/curse-of-recklessness
+	7659, // https://www.wowhead.com/classic/spell=7659/curse-of-recklessness
+	11717, // https://www.wowhead.com/classic/spell=11717/curse-of-recklessness
+	1490, // https://www.wowhead.com/classic/spell=1490/curse-of-the-elements
+	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
+	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
+	17862, // https://www.wowhead.com/classic/spell=17862/curse-of-shadow
+	17937, // https://www.wowhead.com/classic/spell=17937/curse-of-shadow
+	20300, // https://www.wowhead.com/classic/spell=20300/judgement-of-the-crusader
+	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
+	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
+	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
+	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
+	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
+	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
+	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
+	23766, // https://www.wowhead.com/classic/spell=23766/sayges-dark-fortune-of-intelligence
+	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
+	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
+	402808, // https://www.wowhead.com/classic/spell=402808/cripple
+	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
+	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
+]);
+
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
@@ -626,8 +675,6 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Frozen Orb': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
-	'Spirit Wolf 1': ActionId.fromSpellId(440580),
-	'Spirit Wolf 2': ActionId.fromSpellId(440580),
 };
 
 // https://wowhead.com/classic/hunter-pets
@@ -645,8 +692,11 @@ const petNameToIcon: Record<string, string> = {
 	Devilsaur: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
 	Dragonhawk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
 	'Emerald Dragon Whelp': 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_green.jpg',
+	Eskhandar: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tiger_01.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
+	'Spirit Wolf 1': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
+	'Spirit Wolf 2': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',

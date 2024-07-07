@@ -196,6 +196,7 @@ enum WeaponType {
 	WeaponTypeSword = 9;
 }
 
+// NextIndex: 16
 enum WeaponSkill {
 	WeaponSkillUnknown = 0;
 	WeaponSkillAxes = 1;
@@ -212,6 +213,7 @@ enum WeaponSkill {
 	WeaponSkillBows = 12;
 	WeaponSkillCrossbows = 13;
 	WeaponSkillGuns = 14;
+	WeaponSkillFeralCombat = 15;
 }
 
 enum HandType {
@@ -469,6 +471,10 @@ enum WeaponImbue {
 	SolidWeightstone = 18;
 	DenseWeightstone = 19;
 
+	// Spell Oils
+	ShadowOil = 21;
+	FrostOil = 22;
+
 	// Windfury Imbues
 	WildStrikes = 7;
 	Windfury = 8;
@@ -478,10 +484,6 @@ enum WeaponImbue {
 	FlametongueWeapon = 10;
 	FrostbrandWeapon = 11;
 	WindfuryWeapon = 12;
-
-	// Spell Oils
-	ShadowOil = 21;
-	FrostOil = 22;
 
 	// Rogue imbues
 	InstantPoison = 23;
@@ -515,7 +517,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 41
+// NextIndex: 42
 message RaidBuffs {
 	reserved 33;
 	reserved "horn_of_lordaeron";
@@ -553,6 +555,7 @@ message RaidBuffs {
 	// mp5
 	TristateEffect mana_spring_totem = 14;
 	TristateEffect blessing_of_wisdom = 15;
+	int32 vampiric_touch = 41;
 
 	// Resistances
 	bool shadow_protection = 16;
@@ -598,7 +601,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 19
+// NextIndex: 20
 message IndividualBuffs {
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
@@ -613,6 +616,7 @@ message IndividualBuffs {
 	bool spirit_of_zandalar = 9;
 	bool songflower_serenade = 10;
 	bool warchiefs_blessing = 11;
+	bool might_of_stormwind = 19;
 
 	// Dire Maul Buffs
 	bool fengus_ferocity = 12;
@@ -659,19 +663,20 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 37
+// NextIndex: 39
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
 
-	// Bonus spell damage
-	bool curse_of_elements = 4 [deprecated=true];
-	bool curse_of_shadow = 5 [deprecated=true];
+	// Warlock Spell DamageCurses
+	bool curse_of_elements = 4;
+	bool curse_of_shadow = 5;
+	bool mark_of_chaos = 37;
 
-	TristateEffect curse_of_elements_new = 31;
-	TristateEffect curse_of_shadow_new = 32;
+	// Bonus Spell Damage
+	bool occult_poison = 38;
 
 	bool winters_chill = 6;
 	
@@ -715,6 +720,9 @@ message Debuffs {
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
+
+	TristateEffect curse_of_elements_new = 31 [deprecated=true];
+	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
 }
 
 enum MobType {

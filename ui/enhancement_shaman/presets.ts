@@ -120,7 +120,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
-	// aspectOfTheLion: true,
+	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -136,7 +136,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectRegular,
+	curseOfElements: true,
 	curseOfRecklessness: true,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default

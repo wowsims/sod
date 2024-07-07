@@ -3,7 +3,7 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -14,6 +14,7 @@ const (
 	SpellFlagColdBlooded  = core.SpellFlagAgentReserved2
 	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved3
 	SpellFlagCarnage      = core.SpellFlagAgentReserved4 // for Carnage
+	SpellFlagRoguePoison  = core.SpellFlagAgentReserved5 // RogueT1
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -90,12 +91,11 @@ type Rogue struct {
 	WaylayAuras                   core.AuraArray
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura
+	CutthroatProcAura             *core.Aura
 
 	HonorAmongThieves *core.Aura
 
 	woundPoisonDebuffAuras core.AuraArray
-
-	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -117,13 +117,6 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL
 }
 
-// Apply the effect of successfully casting a finisher to combo points
-func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
-	numPoints := rogue.ComboPoints()
-	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
-	rogue.finishingMoveEffectApplier(sim, numPoints)
-}
-
 func (rogue *Rogue) Initialize() {
 	rogue.registerBackstabSpell()
 	rogue.registerDeadlyPoisonSpell()
@@ -143,8 +136,6 @@ func (rogue *Rogue) Initialize() {
 	// Stealth
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
-
-	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -183,12 +174,13 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	})
 	rogue.applyPoisons()
 
-	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	rogue.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&rogue.Character)
+	guardians.ConstructGuardians(&rogue.Character)
+
 	return rogue
 }
 

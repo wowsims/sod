@@ -388,6 +388,7 @@ export class DamageDealtLog extends SimLog {
 				{this.target?.toHTML() || ''}
 				{!this.miss && !this.dodge && !this.parry ? (
 					<>
+						{` `}
 						for <strong className="text-danger">{this.amount.toFixed(2)} damage</strong>
 						{this.partialResist1_4 ? (
 							<> (25% Resist)</>

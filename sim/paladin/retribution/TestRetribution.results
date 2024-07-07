@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 5.58131
   final_stats: 0
   final_stats: 0
-  final_stats: 562
+  final_stats: 688
   final_stats: 0
   final_stats: 19.64325
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.69186
   final_stats: 0
   final_stats: 0
-  final_stats: 1000
+  final_stats: 1122
   final_stats: 2
   final_stats: 23.33405
   final_stats: 3
@@ -77,7 +77,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 2299
-  final_stats: 274
+  final_stats: 174
   final_stats: 0
   final_stats: 0
   final_stats: 15.25
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 22.16112
   final_stats: 0
   final_stats: 0
-  final_stats: 1609.5968
+  final_stats: 1757.5968
   final_stats: 4
   final_stats: 39.48412
   final_stats: 3
@@ -126,7 +126,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 4220.928
-  final_stats: 449
+  final_stats: 299
   final_stats: 0
   final_stats: 0
   final_stats: 24.33992
@@ -148,12 +148,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.44437
-  weights: 0.22736
+  weights: 0.45643
+  weights: 0.25634
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13219
+  weights: 0.13576
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44699
+  weights: 0.49331
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.20199
-  weights: 1.21644
-  weights: 1.96472
+  weights: 0.20747
+  weights: 1.40292
+  weights: 2.23139
   weights: 0
   weights: 0
   weights: 0
@@ -197,12 +197,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.67802
-  weights: 0.55733
+  weights: 0.66485
+  weights: 0.57659
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.27734
+  weights: 0.23304
   weights: 0
   weights: 0
   weights: 0
@@ -210,13 +210,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.15203
-  weights: 0.06564
+  weights: 1.51742
+  weights: 0.11162
   weights: 0
   weights: 0
-  weights: 0.30819
-  weights: 6.06002
-  weights: 6.88157
+  weights: 0.3022
+  weights: 5.84228
+  weights: 4.88324
   weights: 0
   weights: 0
   weights: 0
@@ -246,12 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.14332
-  weights: 0.78349
+  weights: 1.04322
+  weights: 1.79414
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44193
+  weights: 0.31582
   weights: 0
   weights: 0
   weights: 0
@@ -259,13 +259,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.77181
-  weights: 0.43307
+  weights: 2.77618
+  weights: 0.58401
   weights: 0
   weights: 0
-  weights: 0.43745
-  weights: 6.78799
-  weights: 5.12412
+  weights: 0.36323
+  weights: 15.17741
+  weights: 9.11836
   weights: 0
   weights: 0
   weights: 0
@@ -295,315 +295,315 @@ stat_weights_results: {
 dps_results: {
  key: "TestRetribution-Lvl25-AllItems-SoulforgeArmor"
  value: {
-  dps: 181.31984
-  tps: 183.05934
+  dps: 201.0554
+  tps: 202.7949
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Average-Default"
  value: {
-  dps: 225.33857
-  tps: 231.58516
+  dps: 255.06965
+  tps: 261.88319
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 158.58682
-  tps: 281.75315
+  dps: 178.91614
+  tps: 318.10113
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 84.65913
-  tps: 90.81744
+  dps: 94.46404
+  tps: 101.42328
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 91.8664
-  tps: 96.56431
+  dps: 107.16608
+  tps: 116.22147
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 95.68327
-  tps: 200.95995
+  dps: 96.90556
+  tps: 202.09185
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 49.98351
-  tps: 55.24734
+  dps: 50.7845
+  tps: 56.04381
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Dwarf-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 59.19972
-  tps: 67.19293
+  dps: 63.1924
+  tps: 71.18118
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 159.89222
-  tps: 284.23065
+  dps: 180.45432
+  tps: 320.71241
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 85.45253
-  tps: 91.66946
+  dps: 95.353
+  tps: 102.36591
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 92.41575
-  tps: 97.17555
+  dps: 107.7788
+  tps: 116.88888
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 96.76214
-  tps: 202.73391
+  dps: 97.93417
+  tps: 204.22265
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 50.35161
-  tps: 55.6502
+  dps: 51.1797
+  tps: 56.49412
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-Settings-Human-p1ret-P1 Seal of Command Ret-p1ret-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 59.37786
-  tps: 67.43357
+  dps: 63.3497
+  tps: 71.39219
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 211.65196
-  tps: 217.86888
+  dps: 239.48638
+  tps: 246.49929
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 316.1068
-  tps: 323.08629
+  dps: 339.33932
+  tps: 346.32483
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Average-Default"
  value: {
-  dps: 572.85219
-  tps: 586.75703
+  dps: 573.23614
+  tps: 586.48727
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 366.55977
-  tps: 617.2124
+  dps: 374.71716
+  tps: 619.00123
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 205.58359
-  tps: 217.79989
+  dps: 207.35619
+  tps: 219.23196
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 218.80615
-  tps: 230.80421
+  dps: 230.23541
+  tps: 241.9534
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 203.18803
-  tps: 367.93449
+  dps: 201.66489
+  tps: 364.25761
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 107.82413
-  tps: 115.88333
+  dps: 105.88523
+  tps: 113.91097
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 126.06416
-  tps: 136.6733
+  dps: 129.08361
+  tps: 139.80772
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 365.7129
-  tps: 615.64605
+  dps: 374.37825
+  tps: 618.02471
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 205.82802
-  tps: 217.92973
+  dps: 207.29434
+  tps: 219.14243
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 219.68517
-  tps: 231.72294
+  dps: 231.14567
+  tps: 242.86397
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 203.99603
-  tps: 371.03548
+  dps: 200.88112
+  tps: 361.7774
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 108.09974
-  tps: 116.04617
+  dps: 106.00914
+  tps: 114.10304
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 126.25589
-  tps: 136.90979
+  dps: 129.3688
+  tps: 140.1492
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 541.03198
-  tps: 554.88224
+  dps: 541.83406
+  tps: 554.98077
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-AllItems-SoulforgeArmor"
  value: {
-  dps: 703.40664
-  tps: 737.76436
+  dps: 761.90011
+  tps: 796.75547
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Average-Default"
  value: {
-  dps: 1264.67695
-  tps: 1297.13998
+  dps: 1193.28664
+  tps: 1232.29722
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1294.25127
-  tps: 1845.56143
+  dps: 1355.78224
+  tps: 1901.51578
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 346.49528
-  tps: 374.12607
+  dps: 337.31289
+  tps: 364.58807
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 401.57338
-  tps: 432.53888
+  dps: 403.65778
+  tps: 431.41418
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 446.5218
-  tps: 720.29695
+  dps: 469.97354
+  tps: 743.85142
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 134.88055
-  tps: 148.56931
+  dps: 131.15389
+  tps: 144.84778
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Dwarf-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 186.34123
-  tps: 204.07747
+  dps: 186.6835
+  tps: 204.48484
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1300.57163
-  tps: 1853.24179
+  dps: 1361.08895
+  tps: 1909.62289
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 349.15584
-  tps: 376.82809
+  dps: 341.68087
+  tps: 369.07226
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 404.25274
-  tps: 435.38679
+  dps: 406.8862
+  tps: 434.73159
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 419.2515
-  tps: 693.89363
+  dps: 458.78293
+  tps: 733.82615
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 141.8012
-  tps: 155.53331
+  dps: 134.81793
+  tps: 148.57009
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-Settings-Human-p3retsom-P3 Seal of Martyrdom Ret-p3ret-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 186.9483
-  tps: 204.77703
+  dps: 187.03007
+  tps: 204.91934
  }
 }
 dps_results: {
  key: "TestRetribution-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1186.71636
-  tps: 1219.26198
+  dps: 1132.19417
+  tps: 1170.69885
  }
 }

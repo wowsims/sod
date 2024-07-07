@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -123,15 +124,16 @@ func (priest *Priest) Reset(_ *core.Simulation) {
 	priest.MindBlastModifier = 1
 }
 
-func New(char *core.Character, talents string) *Priest {
+func New(character *core.Character, talents string) *Priest {
 	priest := &Priest{
-		Character: *char,
+		Character: *character,
 		Talents:   &proto.PriestTalents{},
 	}
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	priest.EnableManaBar()
 
+	priest.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	priest.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[priest.Class][int(priest.Level)]*core.SpellCritRatingPerCritChance)
 
 	// Set mana regen to 12.5 + Spirit/4 each 2s tick
@@ -151,6 +153,8 @@ func New(char *core.Character, talents string) *Priest {
 		priest.HomunculiPets[1] = priest.NewHomunculus(2, 202392)
 		priest.HomunculiPets[2] = priest.NewHomunculus(3, 202391)
 	}
+
+	guardians.ConstructGuardians(&priest.Character)
 
 	return priest
 }

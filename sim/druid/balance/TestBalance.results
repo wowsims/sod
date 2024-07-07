@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 10.76519
   final_stats: 0
   final_stats: 10
-  final_stats: 224.8
+  final_stats: 350.8
   final_stats: 1
   final_stats: 6.84625
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.0052
   final_stats: 0
   final_stats: 0
-  final_stats: 427.6
+  final_stats: 549.6
   final_stats: 3
   final_stats: 7.93359
   final_stats: 0
@@ -77,7 +77,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 1139.2
-  final_stats: 200
+  final_stats: 100
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -101,22 +101,22 @@ character_stats_results: {
  value: {
   final_stats: 162.756
   final_stats: 149.688
-  final_stats: 327.888
+  final_stats: 344.52
   final_stats: 324.324
   final_stats: 213.84
   final_stats: 284
   final_stats: 23
-  final_stats: 20
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 43
+  final_stats: 0
+  final_stats: 23
   final_stats: 38
   final_stats: 5
   final_stats: 23.44864
   final_stats: 0
   final_stats: 0
-  final_stats: 612.096
+  final_stats: 760.096
   final_stats: 5
   final_stats: 24.24427
   final_stats: 0
@@ -126,14 +126,14 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 1351.952
-  final_stats: 300
+  final_stats: 150
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 9.24427
   final_stats: 0
   final_stats: 0
-  final_stats: 4343.724
+  final_stats: 4518.36
   final_stats: 25
   final_stats: 45
   final_stats: 50
@@ -148,41 +148,41 @@ character_stats_results: {
 character_stats_results: {
  key: "TestBalance-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 234.036
-  final_stats: 210.276
-  final_stats: 368.28
-  final_stats: 359.964
-  final_stats: 249.48
+  final_stats: 216.7
+  final_stats: 194.7
+  final_stats: 409.86
+  final_stats: 333.3
+  final_stats: 231
   final_stats: 284
   final_stats: 23
-  final_stats: 20
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 43
-  final_stats: 47.6
+  final_stats: 0
+  final_stats: 23
+  final_stats: 57.6
   final_stats: 5
-  final_stats: 22.8114
+  final_stats: 30.36611
   final_stats: 0
   final_stats: 0
-  final_stats: 904.984
+  final_stats: 1447.8
   final_stats: 5
-  final_stats: 25.5866
+  final_stats: 25.195
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 6363.46
+  final_stats: 5963.5
   final_stats: 0
   final_stats: 0
-  final_stats: 1518.464
-  final_stats: 400
+  final_stats: 1502.8
+  final_stats: 540
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 10.5866
+  final_stats: 10.195
   final_stats: 0
   final_stats: 0
-  final_stats: 5235.09
+  final_stats: 5986.68
   final_stats: 32
   final_stats: 75
   final_stats: 65
@@ -190,7 +190,7 @@ character_stats_results: {
   final_stats: 65
   final_stats: 384
   final_stats: 0
-  final_stats: 85
+  final_stats: 20
   final_stats: 0
  }
 }
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00431
+  weights: -0.00888
   weights: 0
-  weights: 0.80858
-  weights: 0
-  weights: 0
+  weights: 0.80631
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.88757
-  weights: 4.87397
+  weights: 0
+  weights: 0
+  weights: 6.6818
+  weights: 5.19571
   weights: 0
   weights: 0
   weights: 0
@@ -300,7 +300,7 @@ stat_weights_results: {
   weights: 0
   weights: -0.51158
   weights: 0
-  weights: 1.24525
+  weights: 1.24515
   weights: 0
   weights: 0
   weights: 0
@@ -309,7 +309,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.55468
+  weights: 10.78021
   weights: 0
   weights: 0
   weights: 0
@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4135
+  weights: 0.44078
   weights: 0
-  weights: 1.09638
-  weights: 0
-  weights: 0
+  weights: 1.35698
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.99228
-  weights: 7.20408
+  weights: 0
+  weights: 0
+  weights: 10.76147
+  weights: 12.6853
   weights: 0
   weights: 0
   weights: 0
@@ -393,15 +393,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestBalance-Lvl25-AllItems-FeralheartRaiment"
  value: {
-  dps: 149.47558
-  tps: 153.29033
+  dps: 151.8927
+  tps: 155.70745
  }
 }
 dps_results: {
  key: "TestBalance-Lvl25-Average-Default"
  value: {
-  dps: 179.31628
-  tps: 181.53952
+  dps: 179.42249
+  tps: 181.64573
  }
 }
 dps_results: {
@@ -491,141 +491,141 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 178.39036
-  tps: 180.64991
+  dps: 178.49177
+  tps: 180.75132
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-AllItems-FeralheartRaiment"
  value: {
-  dps: 219.92224
-  tps: 228.29649
+  dps: 221.87766
+  tps: 230.27941
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Average-Default"
  value: {
-  dps: 650.69544
-  tps: 661.26416
+  dps: 653.96376
+  tps: 664.5731
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 624.30057
-  tps: 806.87044
+  dps: 623.92247
+  tps: 806.76734
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 624.30057
-  tps: 633.42907
+  dps: 623.92247
+  tps: 633.06472
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 630.62932
-  tps: 642.74714
+  dps: 626.88118
+  tps: 638.98524
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 472.80452
-  tps: 552.97048
+  dps: 472.63788
+  tps: 552.80384
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 472.80452
-  tps: 476.81282
+  dps: 472.63788
+  tps: 476.64618
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-NightElf-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 514.87261
-  tps: 521.58011
+  dps: 505.1607
+  tps: 511.8682
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 625.04117
-  tps: 807.66687
+  dps: 624.87081
+  tps: 807.77151
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 625.04117
-  tps: 634.17246
+  dps: 624.87081
+  tps: 634.01584
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 630.62932
-  tps: 642.74714
+  dps: 626.88118
+  tps: 638.98524
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 471.52783
-  tps: 551.6938
+  dps: 471.77928
+  tps: 551.94524
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 471.52783
-  tps: 475.53613
+  dps: 471.77928
+  tps: 475.78757
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-Settings-Tauren-phase_2-Default-phase_2-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 512.48984
-  tps: 519.19734
+  dps: 503.34937
+  tps: 510.05687
  }
 }
 dps_results: {
  key: "TestBalance-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 645.18236
-  tps: 655.69788
+  dps: 647.65654
+  tps: 658.21605
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-AllItems-FeralheartRaiment"
  value: {
-  dps: 469.62547
-  tps: 484.36381
+  dps: 472.4627
+  tps: 487.22404
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Average-Default"
  value: {
-  dps: 1284.94812
-  tps: 1298.72248
+  dps: 1284.89777
+  tps: 1298.67282
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1272.24782
-  tps: 1548.65847
+  dps: 1271.96979
+  tps: 1548.38043
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1272.24782
-  tps: 1286.06836
+  dps: 1271.96979
+  tps: 1285.79032
  }
 }
 dps_results: {
@@ -638,15 +638,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 908.83444
-  tps: 1084.78654
+  dps: 909.17703
+  tps: 1079.48912
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-NightElf-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 908.83444
-  tps: 917.63205
+  dps: 909.17703
+  tps: 917.69263
  }
 }
 dps_results: {
@@ -659,15 +659,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1273.10643
-  tps: 1549.44041
+  dps: 1272.92523
+  tps: 1549.25921
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1273.10643
-  tps: 1286.92313
+  dps: 1272.92523
+  tps: 1286.74193
  }
 }
 dps_results: {
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 909.66878
-  tps: 1084.29583
+  dps: 909.24203
+  tps: 1083.37847
  }
 }
 dps_results: {
  key: "TestBalance-Lvl50-Settings-Tauren-phase_3-Default-phase_3-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 909.66878
-  tps: 918.40013
+  dps: 909.24203
+  tps: 917.94885
  }
 }
 dps_results: {
@@ -701,196 +701,196 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1277.09353
-  tps: 1290.93323
+  dps: 1277.18098
+  tps: 1291.02068
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sCracklingLeather"
  value: {
-  dps: 547.14883
-  tps: 562.63192
+  dps: 640.69644
+  tps: 656.83837
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sLeather"
  value: {
-  dps: 505.97216
-  tps: 521.74042
+  dps: 599.25376
+  tps: 615.70543
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sRestoredLeather"
  value: {
-  dps: 496.47065
-  tps: 511.61449
+  dps: 574.03196
+  tps: 589.80514
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 657.53648
-  tps: 673.52599
+  dps: 781.10916
+  tps: 797.76733
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldDreamkeeperGarb"
  value: {
-  dps: 494.25775
-  tps: 509.46551
+  dps: 574.14996
+  tps: 589.99197
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldLeathers"
  value: {
-  dps: 505.34775
-  tps: 521.11601
+  dps: 598.50352
+  tps: 614.95519
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldWatcherVestments"
  value: {
-  dps: 525.24138
-  tps: 540.47373
+  dps: 614.49619
+  tps: 630.40703
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 660.30876
-  tps: 675.99835
+  dps: 783.78965
+  tps: 800.09382
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-FeralheartRaiment"
  value: {
-  dps: 477.26204
-  tps: 493.29805
+  dps: 553.86355
+  tps: 570.56455
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
-  dps: 547.14883
-  tps: 562.63192
+  dps: 640.69644
+  tps: 656.83837
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sLeather"
  value: {
-  dps: 505.97216
-  tps: 521.74042
+  dps: 599.25376
+  tps: 615.70543
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
  value: {
-  dps: 496.47065
-  tps: 511.61449
+  dps: 574.03196
+  tps: 589.80514
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 708.52768
-  tps: 724.54669
+  dps: 841.37602
+  tps: 858.00469
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Average-Default"
  value: {
-  dps: 1339.271
-  tps: 1354.27506
+  dps: 1565.5451
+  tps: 1580.55388
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1333.89173
-  tps: 1633.50265
+  dps: 1547.2409
+  tps: 1849.60516
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1333.89173
-  tps: 1348.87227
+  dps: 1547.2409
+  tps: 1562.35912
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1285.195
-  tps: 1296.31491
+  dps: 1476.28913
+  tps: 1486.39164
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 881.52113
-  tps: 1059.4446
+  dps: 881.58627
+  tps: 1059.50974
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 881.52113
-  tps: 890.4173
+  dps: 881.58627
+  tps: 890.48244
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 932.8946
-  tps: 948.07836
+  dps: 931.90241
+  tps: 947.08617
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1332.81198
-  tps: 1632.4229
+  dps: 1544.40279
+  tps: 1846.76705
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1332.81198
-  tps: 1347.79252
+  dps: 1544.40279
+  tps: 1559.52101
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1284.87
-  tps: 1295.98991
+  dps: 1480.688
+  tps: 1490.79051
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 884.51799
-  tps: 1061.87558
+  dps: 884.64993
+  tps: 1062.00752
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 884.51799
-  tps: 893.38587
+  dps: 884.64993
+  tps: 893.51781
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_3-Default-phase_4-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 932.63782
-  tps: 947.82158
+  dps: 931.64563
+  tps: 946.82939
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1332.86425
-  tps: 1347.85954
+  dps: 1552.42412
+  tps: 1567.42498
  }
 }

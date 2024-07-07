@@ -1,30 +1,21 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as WarlockInputs from '../core/components/inputs/warlock_inputs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { WarlockRune } from '../core/proto/warlock';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	cssClass: 'warlock-sim-ui',
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -144,12 +135,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		WarlockInputs.PetInput,
-		WarlockInputs.ImpFireboltRank,
-		WarlockInputs.ArmorInput,
-		WarlockInputs.WeaponImbueInput,
-	],
+	playerIconInputs: [WarlockInputs.PetInput(), WarlockInputs.ImpFireboltRank(), WarlockInputs.ArmorInput(), WarlockInputs.WeaponImbueInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
@@ -167,22 +153,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.CrystalYield,
 		BuffDebuffInputs.AncientCorrosivePoison,
 	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-		BuffDebuffInputs.SpellWintersChillDebuff,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
-	],
-	petConsumeInputs: [
-		ConsumablesInputs.PetScrollOfAgility,
-		ConsumablesInputs.PetScrollOfStrength,
-	],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
+	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			WarlockInputs.PetPoolManaInput,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.ChannelClipDelay,
-		],
+		inputs: [WarlockInputs.PetPoolManaInput(), OtherInputs.DistanceFromTarget, OtherInputs.ChannelClipDelay],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
@@ -195,12 +170,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
@@ -208,21 +185,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		// Preset builds (gear, talents, APL) that the user can quickly select.
+		builds: [Presets.PresetBuildAff, Presets.PresetBuildDestro],
 	},
 
 	autoRotation: player => {
-		const level = player.getLevel()
+		const level = player.getLevel();
 		if (level < 50) {
 			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 		}
 
-		const hasBackdraft = player.getEquippedItem(ItemSlot.ItemSlotHead)?.rune?.id == WarlockRune.RuneHelmBackdraft;
-		const specNumber = hasBackdraft ? 2 : 0;
-		return Presets.DefaultAPLs[50][specNumber].rotation.rotation!;
+		const hasIncinerate = player.getEquippedItem(ItemSlot.ItemSlotWrist)?.rune?.id == WarlockRune.RuneBracerIncinerate;
+		const specNumber = hasIncinerate ? 2 : 0;
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

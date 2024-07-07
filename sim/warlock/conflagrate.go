@@ -7,12 +7,17 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) core.SpellConfig {
-	spellId := [5]int32{0, 17962, 18930, 18931, 18932}[rank]
-	baseDamageMin := [5]float64{0, 249, 319, 395, 447}[rank]
-	baseDamageMax := [5]float64{0, 316, 400, 491, 557}[rank]
-	manaCost := [5]float64{0, 165, 200, 230, 255}[rank]
-	level := [5]int{0, 0, 48, 54, 60}[rank]
+const ConflagrateRanks = 4
+
+func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
+	hasBackdraftRune := warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft)
+	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
+
+	spellId := [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
+	baseDamageMin := [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
+	baseDamageMax := [ConflagrateRanks + 1]float64{0, 316, 400, 491, 557}[rank]
+	manaCost := [ConflagrateRanks + 1]float64{0, 165, 200, 230, 255}[rank]
+	level := [ConflagrateRanks + 1]int{0, 0, 48, 54, 60}[rank]
 
 	spCoeff := 0.429
 
@@ -21,13 +26,12 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | SpellFlagLoF,
+		Flags:         core.SpellFlagAPL | WarlockFlagDestruction,
 		Rank:          rank,
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -39,45 +43,43 @@ func (warlock *Warlock) getConflagrateConfig(rank int, backdraft *core.Aura) cor
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.getActiveImmolateSpell(target) != nil || (warlock.ShadowflameDot != nil && warlock.ShadowflameDot.Dot(target).IsActive())
+			return warlock.getActiveImmolateSpell(target) != nil || (hasShadowflameRune && warlock.Shadowflame.Dot(target).IsActive())
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.CritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax)
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() && backdraft != nil {
-				backdraft.Activate(sim)
+			if result.Landed() && hasBackdraftRune {
+				warlock.BackdraftAura.Activate(sim)
 			}
 
-			immoTime := core.NeverExpires
-			shadowflameTime := core.NeverExpires
+			// Conflag now doesn't consume Immo or Shadowflame when using Backdraft
+			if !hasBackdraftRune {
+				immoTime := core.NeverExpires
+				shadowflameTime := core.NeverExpires
 
-			immoSpell := warlock.getActiveImmolateSpell(target)
-			if immoSpell != nil {
-				immoDot := immoSpell.Dot(target)
-				immoTime = core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
-			}
+				immoSpell := warlock.getActiveImmolateSpell(target)
+				if immoSpell != nil {
+					immoDot := immoSpell.Dot(target)
+					immoTime = core.TernaryDuration(immoDot.IsActive(), immoDot.RemainingDuration(sim), core.NeverExpires)
+				}
 
-			if warlock.Shadowflame != nil {
-				sfDot := warlock.ShadowflameDot.Dot(target)
-				shadowflameTime = core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)
-			}
+				if hasShadowflameRune {
+					sfDot := warlock.Shadowflame.Dot(target)
+					shadowflameTime = core.TernaryDuration(sfDot.IsActive(), sfDot.RemainingDuration(sim), core.NeverExpires)
+				}
 
-			if immoTime < shadowflameTime {
-				immoSpell.Dot(target).Deactivate(sim)
-			} else {
-				warlock.ShadowflameDot.Dot(target).Deactivate(sim)
+				if immoTime < shadowflameTime {
+					immoSpell.Dot(target).Deactivate(sim)
+				} else {
+					warlock.Shadowflame.Dot(target).Deactivate(sim)
+				}
 			}
 		},
 	}
@@ -88,29 +90,12 @@ func (warlock *Warlock) registerConflagrateSpell() {
 		return
 	}
 
-	maxRank := 4
-
-	var backdraft *core.Aura
-	if warlock.HasRune(proto.WarlockRune_RuneHelmBackdraft) {
-		backdraft = warlock.RegisterAura(core.Aura{
-			Label:    "Backdraft",
-			ActionID: core.ActionID{SpellID: 427714},
-			Duration: time.Second * 10,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.MultiplyCastSpeed(1.3)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.MultiplyCastSpeed(1 / 1.3)
-			},
-		})
-	}
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getConflagrateConfig(i, backdraft)
+	warlock.Conflagrate = make([]*core.Spell, 0)
+	for rank := 1; rank <= ConflagrateRanks; rank++ {
+		config := warlock.getConflagrateConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.Conflagrate = warlock.GetOrRegisterSpell(config)
+			warlock.Conflagrate = append(warlock.Conflagrate, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

@@ -22,11 +22,10 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.07,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			BaseCost: 0.07,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -39,14 +38,9 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 			},
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)

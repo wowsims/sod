@@ -10,29 +10,13 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	// TODO: 2024-06-13 - Heart of the Lion replaced with QoL rune
-	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-	// 	statMultiply := 1.1
-	// 	hunter.MultiplyStat(stats.Strength, statMultiply)
-	// 	hunter.MultiplyStat(stats.Stamina, statMultiply)
-	// 	hunter.MultiplyStat(stats.Agility, statMultiply)
-	// 	hunter.MultiplyStat(stats.Intellect, statMultiply)
-	// 	hunter.MultiplyStat(stats.Spirit, statMultiply)
-	// }
-	statMultiply := 1.1
-	hunter.MultiplyStat(stats.Strength, statMultiply)
-	hunter.MultiplyStat(stats.Stamina, statMultiply)
-	hunter.MultiplyStat(stats.Agility, statMultiply)
-	hunter.MultiplyStat(stats.Intellect, statMultiply)
-	hunter.MultiplyStat(stats.Spirit, statMultiply)
-
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
 		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.3
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.4
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
@@ -57,6 +41,7 @@ func (hunter *Hunter) ApplyRunes() {
 	// hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
 	hunter.applyRaptorFury()
+	hunter.applyCobraSlayer()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -265,9 +250,67 @@ func (hunter *Hunter) applyRaptorFury() {
 	})
 }
 
+func (hunter *Hunter) applyCobraSlayer() {
+	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+		return
+	}
+
+	hunter.RegisterAura(core.Aura{
+		Label:    "Cobra Slayer",
+		Duration: core.NeverExpires,
+		MaxStacks: 20,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Outcome.Matches(core.OutcomeDodge) {
+				aura.SetStacks(sim, 1);
+				hunter.DefensiveState.Activate(sim)
+			} else if result.Outcome.Matches(core.OutcomeLanded) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
+						aura.SetStacks(sim, 1);
+						hunter.DefensiveState.Activate(sim)
+					} else {
+						aura.AddStack(sim)
+					}
+				}
+			}
+		},
+	})
+}
+
 func (hunter *Hunter) tntDamageMultiplier() float64 {
 	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
 		return 1.1
+	}
+	return 1.0
+}
+
+func (hunter *Hunter) tntDamageFlatBonus() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return hunter.GetStat(stats.AttackPower) * 0.5
+	}
+	return 0.0
+}
+
+func (hunter *Hunter) trapRange() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		return 35;
+	}
+	return 5;
+}
+
+func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.0
+	}
+	return 1.0
+}
+
+func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.6
 	}
 	return 1.0
 }

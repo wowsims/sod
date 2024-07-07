@@ -48,11 +48,27 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	if debuffs.ShadowWeaving {
 		aura := ShadowWeavingAura(target, 5)
-		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio so it comes before actual warrior sunders.
+			Priority:        ActionPriorityDOT, // High prio
+			OnAction: func(sim *Simulation) {
+				aura.Activate(sim)
+				if aura.IsActive() {
+					aura.AddStack(sim)
+				}
+			},
+		}, raid)
+	}
+
+	if debuffs.OccultPoison {
+		aura := OccultPoisonDebuffAura(target, level)
+		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
+			Period:          time.Millisecond * 1500,
+			NumTicks:        5,
+			TickImmediately: true,
+			Priority:        ActionPriorityDOT, // High prio
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -70,21 +86,25 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(SerpentsStrikerFistDebuffAura(target, level))
 	}
 
-	if debuffs.CurseOfElementsNew != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(CurseOfElementsAura(target, TernaryInt32(debuffs.CurseOfElementsNew == proto.TristateEffect_TristateEffectImproved, 60, level)))
-	}
+	if debuffs.MarkOfChaos {
+		MakePermanent(MarkOfChaosDebuffAura(target))
+	} else {
+		if debuffs.CurseOfElements {
+			MakePermanent(CurseOfElementsAura(target, level))
+		}
 
-	if debuffs.CurseOfShadowNew != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(CurseOfShadowAura(target, TernaryInt32(debuffs.CurseOfShadowNew == proto.TristateEffect_TristateEffectImproved, 60, level)))
+		if debuffs.CurseOfShadow {
+			MakePermanent(CurseOfShadowAura(target, level))
+		}
 	}
 
 	if debuffs.ImprovedScorch && targetIdx == 0 {
 		aura := ImprovedScorchAura(target)
-		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio so it comes before actual mage scorches
+			Priority:        ActionPriorityDOT, // High prio
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -95,7 +115,19 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.WintersChill && targetIdx == 0 {
-		MakePermanent(WintersChillAura(target, 5))
+		aura := WintersChillAura(target)
+		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
+			Period:          time.Millisecond * 1500,
+			NumTicks:        5,
+			TickImmediately: true,
+			Priority:        ActionPriorityDOT, // High prio
+			OnAction: func(sim *Simulation) {
+				aura.Activate(sim)
+				if aura.IsActive() {
+					aura.AddStack(sim)
+				}
+			},
+		}, raid)
 	}
 
 	if debuffs.Stormstrike {
@@ -129,7 +161,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		if debuffs.ExposeArmor != proto.TristateEffect_TristateEffectMissing {
 			// Improved EA
 			aura := ExposeArmorAura(target, TernaryInt32(debuffs.ExposeArmor == proto.TristateEffect_TristateEffectRegular, 0, 2), level)
-			ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 1,
 				OnAction: func(sim *Simulation) {
@@ -141,7 +173,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		if debuffs.SunderArmor {
 			// Sunder Armor
 			aura := SunderArmorAura(target, level)
-			ScheduledMajorArmorAura(aura, PeriodicActionOptions{
+			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:          time.Millisecond * 1500,
 				NumTicks:        5,
 				TickImmediately: true,
@@ -234,7 +266,8 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 
 func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
-	isbAura := ImprovedShadowBoltAura(target, 5)
+	baseStacks := TernaryInt32(isbConfig.hasShadowflameRune, 10, 4)
+	isbAura := ImprovedShadowBoltAura(target, 5, baseStacks)
 	isbCrit := isbConfig.casterCrit / 100.0
 	var pa *PendingAction
 	MakePermanent(target.GetOrRegisterAura(Aura{
@@ -246,7 +279,7 @@ func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 					for i := 0; i < int(isbConfig.isbWarlocks); i++ {
 						if sim.Proc(isbCrit, "External Isb Crit") {
 							isbAura.Activate(sim)
-							isbAura.SetStacks(sim, 4)
+							isbAura.SetStacks(sim, baseStacks)
 						} else if isbAura.IsActive() {
 							isbAura.RemoveStack(sim)
 						}
@@ -262,6 +295,7 @@ func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 }
 
 type IsbConfig struct {
+	hasShadowflameRune  bool
 	shadowBoltFrequency float64
 	casterCrit          float64
 	isbWarlocks         int32
@@ -270,6 +304,7 @@ type IsbConfig struct {
 
 func (character *Character) createIsbConfig(player *proto.Player) {
 	character.IsbConfig = IsbConfig{
+		hasShadowflameRune:  player.IsbUsingShadowflame,
 		shadowBoltFrequency: player.IsbSbFrequency,
 		casterCrit:          player.IsbCrit,
 		isbWarlocks:         player.IsbWarlocks,
@@ -287,7 +322,7 @@ func (character *Character) createIsbConfig(player *proto.Player) {
 	}
 }
 
-func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
+func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	isbLabel := "Improved Shadow Bolt"
 	if unit.GetAura(isbLabel) != nil {
 		return unit.GetAura(isbLabel)
@@ -305,7 +340,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,
-		MaxStacks: 4,
+		MaxStacks: stackCount,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			// External shadow priests simulation
 			if externalShadowPriests > 0 {
@@ -359,7 +394,7 @@ func ShadowWeavingAura(unit *Unit, rank int) *Aura {
 	})
 }
 
-func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, _ *proto.Raid) {
+func SchedulePeriodicDebuffApplication(aura *Aura, options PeriodicActionOptions, _ *proto.Raid) {
 	aura.OnReset = func(aura *Aura, sim *Simulation) {
 		aura.Duration = NeverExpires
 		StartPeriodicAction(sim, options)
@@ -484,6 +519,38 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 	})
 }
 
+// TODO: We don't know if this is intended to stack with other effects like Warlocks curses or not.
+// For now it IS stacking on PTR so we'll make it stack here.
+func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
+	if playerLevel < 54 {
+		panic("Occult Poison requires level 54+")
+	}
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:     "Occult Poison I",
+		ActionID:  ActionID{SpellID: 462286},
+		Duration:  time.Second * 12,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 1 + .02*float64(oldStacks)
+
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 + .02*float64(newStacks)
+		},
+	})
+
+	return aura
+}
+
 func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 40 {
 		panic("Mekkatorque's Arcano-Shredder requires level 40+")
@@ -497,33 +564,52 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Label:    "Mekkatorque Debuff",
 		ActionID: ActionID{SpellID: int32(spellID)},
 		Duration: time.Second * 20,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.FireResistance:   -resistance,
-				stats.FrostResistance:  -resistance,
-				stats.ArcaneResistance: -resistance,
-				stats.NatureResistance: -resistance,
-				stats.ShadowResistance: -resistance,
-			})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.FireResistance:   resistance,
-				stats.FrostResistance:  resistance,
-				stats.ArcaneResistance: resistance,
-				stats.NatureResistance: resistance,
-				stats.ShadowResistance: resistance,
-			})
-		},
 	})
 
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
+	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.01, true)
-	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.01, true)
+
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexArcane, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFire, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFrost, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexHoly, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexNature, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexShadow, resistance, 0.01, true)
+
+	return aura
+}
+
+// Mark of Chaos does not stack with Curse of Shadows and Elements
+func MarkOfChaosDebuffAura(target *Unit) *Aura {
+	dmgMod := 1.11
+	resistance := 75.0
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Mark of Chaos",
+		ActionID: ActionID{SpellID: 461615},
+		Duration: NeverExpires, // Duration is set by the applying curse
+	})
+
+	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
+	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
+	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.01, true)
+
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexArcane, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFire, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFrost, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexHoly, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexNature, resistance, 0.01, true)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexShadow, resistance, 0.01, true)
+
 	return aura
 }
 
@@ -554,15 +640,13 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 		Label:    "Curse of Elements",
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: -resistance, stats.FrostResistance: -resistance})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.FireResistance: resistance, stats.FrostResistance: resistance})
-		},
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.0, false)
+
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFire, resistance, 0.0, false)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexFrost, resistance, 0.0, false)
+
 	return aura
 }
 
@@ -590,15 +674,13 @@ func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 		Label:    "Curse of Shadow",
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -resistance, stats.ShadowResistance: -resistance})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: resistance, stats.ShadowResistance: resistance})
-		},
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.0, false)
+
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexArcane, resistance, 0.0, false)
+	spellSchoolResistanceEffect(aura, stats.SchoolIndexShadow, resistance, 0.0, false)
+
 	return aura
 }
 
@@ -610,6 +692,30 @@ func spellSchoolDamageEffect(aura *Aura, school stats.SchoolIndex, multiplier fl
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[school] /= multiplier
+		},
+	})
+}
+
+func spellSchoolResistanceEffect(aura *Aura, school stats.SchoolIndex, amount float64, extraPriority float64, exclusive bool) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("resistance"+strconv.Itoa(int(school)), exclusive, ExclusiveEffect{
+		Priority: amount + extraPriority,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.FireResistance:   -amount,
+				stats.FrostResistance:  -amount,
+				stats.ArcaneResistance: -amount,
+				stats.NatureResistance: -amount,
+				stats.ShadowResistance: -amount,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.FireResistance:   amount,
+				stats.FrostResistance:  amount,
+				stats.ArcaneResistance: amount,
+				stats.NatureResistance: amount,
+				stats.ShadowResistance: amount,
+			})
 		},
 	})
 }
@@ -727,21 +833,15 @@ func ImprovedScorchAura(target *Unit) *Aura {
 
 const SpellCritEffectCategory = "spellcritdebuff"
 
-func WintersChillAura(target *Unit, startingStacks int32) *Aura {
+func WintersChillAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Winter's Chill",
 		ActionID:  ActionID{SpellID: 28593},
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.SetStacks(sim, startingStacks)
-		},
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
 			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexFrost] -= 0.02 * float64(oldStacks)
 			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexFrost] += 0.02 * float64(newStacks)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexFrost] -= 0.02 * float64(aura.stacks)
 		},
 	})
 

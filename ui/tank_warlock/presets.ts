@@ -197,7 +197,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
-	// aspectOfTheLion: true,
+	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	bloodPact: TristateEffect.TristateEffectImproved,
 	devotionAura: TristateEffect.TristateEffectImproved,
@@ -218,8 +218,8 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElementsNew: TristateEffect.TristateEffectRegular,
-	curseOfShadowNew: TristateEffect.TristateEffectRegular,
+	curseOfElements: true,
+	curseOfShadow: true,
 	curseOfRecklessness: true,
 	demoralizingShout: TristateEffect.TristateEffectImproved,
 	faerieFire: true,

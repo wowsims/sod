@@ -169,11 +169,11 @@ func (shaman *Shaman) applyShieldMastery() {
 		ActionID: core.ActionID{SpellID: 408525},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense)-float64(5*shaman.Level), 0)
-			shaman.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense), 0)
+			shaman.AddStatDynamic(sim, stats.SpellPower, cachedBonusAP)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
+			shaman.AddStatDynamic(sim, stats.SpellPower, cachedBonusAP)
 		},
 	})
 
@@ -187,6 +187,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 	})
 
+	affectedSpellcodes := []int32{SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:    "Shield Mastery",
 		ActionID: actionId,
@@ -198,7 +199,7 @@ func (shaman *Shaman) applyShieldMastery() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_ShamanFlameShock {
+			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
 				apProcAura.Activate(sim)
 			}
 		},
@@ -235,8 +236,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	})
 
 	shaman.RegisterAura(core.Aura{
-		Label:    "Two-Handed Mastery",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneChestTwoHandedMastery)},
+		Label:    "Two-Handed Mastery Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -431,13 +431,13 @@ func (shaman *Shaman) applyWayOfEarth() {
 			shaman.EnableDynamicStatDep(sim, healthDep)
 			shaman.PseudoStats.DamageTakenMultiplier *= .9
 			shaman.PseudoStats.ReducedCritTakenChance += 6
-			shaman.PseudoStats.ThreatMultiplier *= 1.5
+			shaman.PseudoStats.ThreatMultiplier *= 1.65
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.DisableDynamicStatDep(sim, healthDep)
 			shaman.PseudoStats.DamageTakenMultiplier /= .9
 			shaman.PseudoStats.ReducedCritTakenChance -= 6
-			shaman.PseudoStats.ThreatMultiplier /= 1.5
+			shaman.PseudoStats.ThreatMultiplier /= 1.65
 		},
 	})
 }

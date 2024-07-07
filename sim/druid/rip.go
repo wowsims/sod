@@ -63,7 +63,7 @@ const RipBaseDamageMultiplier = 1.5
 // - Rake and Rip damage contributions from attack power increased by roughly 50%.
 // PTR testing comes out to .0165563 AP scaling per CP
 // damageCoefPerCP := 0.01
-const RipDamageCoefPerCP = 0.0165563
+const RipDamageCoefPerAPPerCP = 0.015
 
 func (druid *Druid) registerRipSpell() {
 	// Add highest available Rip rank for level.
@@ -78,7 +78,12 @@ func (druid *Druid) registerRipSpell() {
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
-	has6PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 6)
+	energyCost := 30.0
+
+	switch druid.Ranged().ID {
+	case IdolOfExsanguinationCat:
+		energyCost -= 5
+	}
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_DruidRip,
@@ -89,7 +94,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   30,
+			Cost:   energyCost,
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -109,14 +114,15 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 			Aura: core.Aura{
 				Label: "Rip",
 			},
-			NumberOfTicks:    RipTicks,
-			TickLength:       time.Second * 2,
-			BonusCoefficient: RipDamageCoefPerCP,
+			NumberOfTicks: RipTicks,
+			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				cp := float64(druid.ComboPoints())
-				dot.Spell.BonusCoefficient = RipDamageCoefPerCP * cp
-				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp) * RipBaseDamageMultiplier
+				ap := dot.Spell.MeleeAttackPower()
+
+				cpScaling := core.TernaryFloat64(cp == 5, 4, cp)
+				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + RipDamageCoefPerAPPerCP*ap*cpScaling)
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -136,12 +142,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				dot.NumberOfTicks = RipTicks
 				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
-
-				if has6PCenarionCunning && druid.SavageRoarAura != nil && druid.SavageRoarAura.IsActive() && sim.Proc(.2*float64(druid.ComboPoints()), "S03 - Item - T1 - Druid - Feral 6P Bonus") {
-					druid.SavageRoarAura.Refresh(sim)
-				}
-
-				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
+				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}

@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -76,6 +76,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerDivineFavor()
 	paladin.registerHammerOfWrath()
 	paladin.registerHolyWrath()
+	paladin.registerAvengingWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -91,7 +92,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
-	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
+	paladin.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
@@ -109,7 +110,8 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
 
-	vanilla.ConstructEmeralDragonWhelpPets(&paladin.Character)
+	guardians.ConstructGuardians(&paladin.Character)
+
 	return paladin
 }
 

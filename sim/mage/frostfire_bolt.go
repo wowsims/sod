@@ -13,9 +13,10 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneBeltFrostfireBolt)}
-	// 2024-03-05 tuning SFB +50% base damage and same spell coeff as max rank Fireball
-	baseDamageLow := mage.baseRuneAbilityDamage() * 3.87
-	baseDamageHigh := mage.baseRuneAbilityDamage() * 4.5
+	// TODO: Tuning 2024-07-03 FFB base damage reduced by 16%
+	// Need to update values once wowhead data is updated
+	baseDamageLow := mage.baseRuneAbilityDamage() * 3.25
+	baseDamageHigh := mage.baseRuneAbilityDamage() * 3.79
 	baseDotDamage := mage.baseRuneAbilityDamage() * .08
 	spellCoeff := 1.0
 	castTime := time.Second * 3

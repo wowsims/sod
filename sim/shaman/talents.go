@@ -11,6 +11,7 @@ func (shaman *Shaman) ApplyTalents() {
 	// Elemental Talents
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
+	shaman.applyElementalFury()
 	shaman.registerElementalMasteryCD()
 
 	// Enhancement Talents
@@ -61,6 +62,10 @@ func (shaman *Shaman) ApplyTalents() {
 			}
 		})
 	}
+}
+
+func (shaman *Shaman) callOfFlameMultiplier() float64 {
+	return 1 + .05*float64(shaman.Talents.CallOfFlame)
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -133,6 +138,18 @@ func (shaman *Shaman) applyElementalDevastation() {
 				procAura.Activate(sim)
 			}
 		},
+	})
+}
+
+func (shaman *Shaman) applyElementalFury() {
+	if !shaman.Talents.ElementalFury {
+		return
+	}
+
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem) {
+			spell.CritDamageBonus = 1
+		}
 	})
 }
 
@@ -312,24 +329,19 @@ func (shaman *Shaman) applyFlurry() {
 				return
 			}
 
-			if result.Outcome.Matches(core.OutcomeCrit) {
-				shaman.FlurryAura.Activate(sim)
-				shaman.FlurryAura.SetStacks(sim, 3)
-				icd.Reset() // the "charge protection" ICD isn't up yet
-				return
-			}
-
 			// Remove a stack.
 			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
 				icd.Use(sim)
 				shaman.FlurryAura.RemoveStack(sim)
 			}
+
+			if result.Outcome.Matches(core.OutcomeCrit) {
+				shaman.FlurryAura.Activate(sim)
+				shaman.FlurryAura.SetStacks(sim, 3)
+				return
+			}
 		},
 	})
-}
-
-func (shaman *Shaman) elementalFury() float64 {
-	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
 }
 
 func (shaman *Shaman) concussionMultiplier() float64 {

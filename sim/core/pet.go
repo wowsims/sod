@@ -70,6 +70,8 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 			PartyIndex: owner.PartyIndex,
 			baseStats:  baseStats,
 		},
+		OnPetEnable:     func(sim *Simulation) {},
+		OnPetDisable:    func(sim *Simulation) {},
 		Owner:           owner,
 		statInheritance: statInheritance,
 		enabledOnStart:  enabledOnStart,
@@ -151,9 +153,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	// to not have to reorder PAs multiple times
 	pet.enabled = true
 
-	if pet.OnPetEnable != nil {
-		pet.OnPetEnable(sim)
-	}
+	pet.OnPetEnable(sim)
 
 	pet.SetGCDTimer(sim, max(0, sim.CurrentTime))
 	if sim.CurrentTime >= 0 {

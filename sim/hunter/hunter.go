@@ -3,7 +3,7 @@ package hunter
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -57,6 +57,8 @@ type Hunter struct {
 	RapidFire      *core.Spell
 	RaptorStrike   *core.Spell
 	FlankingStrike *core.Spell
+	WyvernStrike   *core.Spell
+	MongooseBite   *core.Spell
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
@@ -70,6 +72,9 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
+
+	// The aura that allows you to cast Mongoose Bite
+	DefensiveState *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
@@ -89,11 +94,14 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.TrueshotAura = true
 	}
 
-	// TODO: 2024-06-13 - Heart of the Lion replaced with Cobra Slayer
-	// if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-	// raidBuffs.AspectOfTheLion = true
-	// }
 	raidBuffs.AspectOfTheLion = true
+	// Hunter gains an additional 10% stats from Aspect of the Lion
+	statMultiply := 1.1
+	hunter.MultiplyStat(stats.Strength, statMultiply)
+	hunter.MultiplyStat(stats.Stamina, statMultiply)
+	hunter.MultiplyStat(stats.Agility, statMultiply)
+	hunter.MultiplyStat(stats.Intellect, statMultiply)
+	hunter.MultiplyStat(stats.Spirit, statMultiply)
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
@@ -113,18 +121,30 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerMultiShotSpell(multiShotTimer)
 	hunter.registerChimeraShotSpell()
 	hunter.registerSteadyShotSpell()
+	hunter.registerKillShotSpell()
 
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
+	hunter.registerWyvernStrikeSpell()
+	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
 
-	fireTraps := hunter.NewTimer()
-	frostTraps := hunter.NewTimer()
+	// Trap Launcher rune also splits the cooldowns between frost traps and fire traps, without the rune all traps share a cd
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		fireTraps := hunter.NewTimer()
+		frostTraps := hunter.NewTimer()
 
-	hunter.registerExplosiveTrapSpell(fireTraps)
-	hunter.registerImmolationTrapSpell(fireTraps)
-	hunter.registerFrostTrapSpell(frostTraps)
+		hunter.registerExplosiveTrapSpell(fireTraps)
+		hunter.registerImmolationTrapSpell(fireTraps)
+		hunter.registerFrostTrapSpell(frostTraps)
+	} else {
+		traps := hunter.NewTimer()
+
+		hunter.registerExplosiveTrapSpell(traps)
+		hunter.registerImmolationTrapSpell(traps)
+		hunter.registerFrostTrapSpell(traps)
+	}
 
 	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
@@ -240,13 +260,14 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 
 	hunter.pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	hunter.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(character.Level)]*core.CritRatingPerCritChance)
 	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(character.Level)]*core.SpellCritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&hunter.Character)
+	guardians.ConstructGuardians(&hunter.Character)
+
 	return hunter
 }
 

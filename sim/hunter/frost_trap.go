@@ -21,18 +21,23 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 60,
+			FlatCost: 60 * hunter.resourcefulnessManacostModifier(),
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 15,
+				Duration: time.Second * time.Duration(15 * hunter.resourcefulnessCooldownModifier()),
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.DistanceFromTarget <= hunter.trapRange()
+		},
+
+		BonusHitRating: hunter.trapMastery(),
 
 		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.CleverTraps),
 		ThreatMultiplier: 1,
@@ -48,10 +53,6 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 }
 
 func (hunter *Hunter) registerFrostTrapSpell(timer *core.Timer) {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
-		return
-	}
-
 	config := hunter.getFrostTrapConfig(timer)
 
 	if config.RequiredLevel <= int(hunter.Level) {

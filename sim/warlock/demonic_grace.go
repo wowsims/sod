@@ -22,8 +22,8 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 			warlock.AddStatDynamic(sim, stats.MeleeCrit, 30*core.CritRatingPerCritChance)
 			warlock.AddStatDynamic(sim, stats.SpellCrit, 30*core.SpellCritRatingPerCritChance)
 
-			if warlock.Pet != nil {
-				pet := warlock.Pet.GetPet()
+			if warlock.ActivePet != nil {
+				pet := warlock.ActivePet.GetPet()
 				pet.AddStatDynamic(sim, stats.Dodge, 30*core.DodgeRatingPerDodgeChance)
 			}
 		},
@@ -32,8 +32,8 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 			warlock.AddStatDynamic(sim, stats.MeleeCrit, -30*core.CritRatingPerCritChance)
 			warlock.AddStatDynamic(sim, stats.SpellCrit, -30*core.SpellCritRatingPerCritChance)
 
-			if warlock.Pet != nil {
-				pet := warlock.Pet.GetPet()
+			if warlock.ActivePet != nil {
+				pet := warlock.ActivePet.GetPet()
 				pet.AddStatDynamic(sim, stats.Dodge, -30*core.DodgeRatingPerDodgeChance)
 			}
 		},
@@ -41,12 +41,9 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 
 	warlock.DemonicGrace = warlock.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 425463},
-		Flags:    core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:    core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDemonology,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
 				Duration: time.Second * 20,

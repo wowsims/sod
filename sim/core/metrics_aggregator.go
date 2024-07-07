@@ -265,6 +265,16 @@ func (unit *Unit) NewHealthMetrics(actionID ActionID) *ResourceMetrics {
 func (unit *Unit) NewManaMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeMana)
 }
+func (unit *Unit) NewPartyManaMetrics(actionID ActionID) map[int32]*ResourceMetrics {
+	party := unit.Env.Raid.GetPlayerParty(unit)
+	metrics := make(map[int32]*ResourceMetrics, 0)
+	for _, agent := range party.PlayersAndPets {
+		if c := agent.GetCharacter(); c.HasManaBar() {
+			metrics[c.UnitIndex] = c.NewManaMetrics(actionID)
+		}
+	}
+	return metrics
+}
 func (unit *Unit) NewRageMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeRage)
 }

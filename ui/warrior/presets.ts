@@ -180,7 +180,7 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	// aspectOfTheLion: true,
+	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,

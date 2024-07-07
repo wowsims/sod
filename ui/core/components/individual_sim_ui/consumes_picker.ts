@@ -114,7 +114,7 @@ export class ConsumesPicker extends Component {
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));
-		const alcoholOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
+		const alcoholOptions = ConsumablesInputs.makeAlcoholInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
 
 		const pickers = [
 			buildIconInput(foodsElem, this.simUI.player, foodOptions),
@@ -175,15 +175,9 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const defensiveConsumesElem = this.rootElem.querySelector('.consumes-defensive') as HTMLElement;
 
-		const healthBuffOptions = ConsumablesInputs.makeHealthConsumeInput(
-			relevantStatOptions(ConsumablesInputs.HEALTH_CONSUMES_CONFIG, this.simUI), 
-			'Health'
-		);
+		const healthBuffOptions = ConsumablesInputs.makeHealthConsumeInput(relevantStatOptions(ConsumablesInputs.HEALTH_CONSUMES_CONFIG, this.simUI), 'Health');
 
-		const armorBuffOptions = ConsumablesInputs.makeArmorConsumeInput(
-			relevantStatOptions(ConsumablesInputs.ARMOR_CONSUMES_CONFIG, this.simUI), 
-			'Armor'
-		);
+		const armorBuffOptions = ConsumablesInputs.makeArmorConsumeInput(relevantStatOptions(ConsumablesInputs.ARMOR_CONSUMES_CONFIG, this.simUI), 'Armor');
 
 		const pickers = [
 			buildIconInput(defensiveConsumesElem, this.simUI.player, healthBuffOptions),
@@ -248,7 +242,10 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const miscConsumesElem = this.rootElem.querySelector('.consumes-misc') as HTMLElement;
 
-		const zanzaBuffOptions = ConsumablesInputs.makeZanzaBuffConsumesInput(relevantStatOptions(ConsumablesInputs.ZANZA_BUFF_CONSUMES_CONFIG, this.simUI));
+		const zanzaBuffOptions = ConsumablesInputs.makeZanzaBuffConsumesInput(
+			relevantStatOptions(ConsumablesInputs.ZANZA_BUFF_CONSUMES_CONFIG, this.simUI),
+			'Zanza Buffs',
+		);
 		const miscConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_CONSUMES_CONFIG, this.simUI);
 
 		const pickers = [
