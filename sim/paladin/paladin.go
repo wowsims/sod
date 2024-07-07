@@ -76,6 +76,8 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerDivineFavor()
 	paladin.registerHammerOfWrath()
 	paladin.registerHolyWrath()
+	paladin.registerAvengingWrath()
+	paladin.registerAuraMastery()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {

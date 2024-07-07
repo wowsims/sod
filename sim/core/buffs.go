@@ -627,8 +627,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
-	if raidBuffs.SanctityAura {
-		character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+	if raidBuffs.SanctityAura {	
+		MakePermanent(SanctityAuraAura(character))
 	}
 
 	// TODO: Classic
@@ -827,6 +827,19 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
+}
+
+func SanctityAuraAura(character *Character) *Aura {
+	character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+
+	return character.RegisterAura(Aura{
+		Label:    "Sanctity Aura",
+		ActionID: ActionID{SpellID: 20218},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
 }
 
 func BlessingOfKingsAura(character *Character) *Aura {

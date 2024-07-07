@@ -41,8 +41,8 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-			paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Reset()
+			// paladin.holyShockCooldown.Reset() - removed in P4
+			paladin.exorcismCooldown.Set(max(0, paladin.exorcismCooldown.TimeToReady(sim) - time.Second * 2))
 		},
 	})
 }
