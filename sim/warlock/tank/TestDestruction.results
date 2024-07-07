@@ -200,7 +200,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.24876
+  weights: -0.24874
   weights: 0
   weights: 0.63064
   weights: 0
@@ -210,7 +210,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.76186
+  weights: 5.76182
   weights: 2.61946
   weights: 0
   weights: 0
@@ -249,9 +249,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.75862
+  weights: -0.76078
   weights: 0
-  weights: 2.1923
+  weights: 2.19305
   weights: 0
   weights: 0
   weights: 0
@@ -358,15 +358,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 128.8589
-  tps: 86.32779
+  dps: 128.73751
+  tps: 86.2064
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 411.30694
-  tps: 963.92204
+  dps: 411.22147
+  tps: 963.79384
  }
 }
 dps_results: {
@@ -414,23 +414,23 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 404.67862
-  tps: 953.12491
+  dps: 404.61652
+  tps: 953.03176
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 303.64877
-  tps: 211.60178
+  dps: 303.50094
+  tps: 211.45395
   hps: 9.8368
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1176.57707
-  tps: 2032.13683
+  dps: 1176.36583
+  tps: 2031.81997
   hps: 18.3079
  }
 }
@@ -485,8 +485,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1149.32382
-  tps: 1985.98969
+  dps: 1149.17696
+  tps: 1985.7694
   hps: 18.35945
  }
 }

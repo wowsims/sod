@@ -180,9 +180,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	warlock.EnableManaBar()
 
-	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	warlock.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	warlock.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
 	warlock.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[warlock.Class][int(warlock.Level)]*core.SpellCritRatingPerCritChance)
 	warlock.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[warlock.Class][int(warlock.Level)]*core.CritRatingPerCritChance)
 

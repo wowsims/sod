@@ -260,7 +260,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 
 	hunter.pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	hunter.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(character.Level)]*core.CritRatingPerCritChance)
