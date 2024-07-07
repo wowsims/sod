@@ -3,18 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	Spec,
-	Stat,
-	Target,
-	WeaponType
-} from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, Target, WeaponType } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { HonorOfThievesCritRate } from './inputs';
@@ -24,15 +13,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	cssClass: 'rogue-sim-ui',
 	cssScheme: 'rogue',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-		'Rotations are not fully optimized, especially for non-standard setups.',
-	],
+	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
 	warnings: [
 		(simUI: IndividualSimUI<Spec.SpecRogue>) => {
 			return {
 				updateOn: simUI.sim.encounter.changeEmitter,
 				getContent: () => {
-					const hasNoArmor = !!(simUI.sim.encounter.targets ?? []).find((target: Target) => new Stats(target.stats).getStat(Stat.StatArmor) <= 0)
+					const hasNoArmor = !!(simUI.sim.encounter.targets ?? []).find((target: Target) => new Stats(target.stats).getStat(Stat.StatArmor) <= 0);
 					if (hasNoArmor) {
 						return 'One or more targets have no armor. Check advanced encounter settings.';
 					} else {
@@ -46,8 +33,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 				updateOn: simUI.player.changeEmitter,
 				getContent: () => {
 					if (simUI.player.getTalents().maceSpecialization) {
-						if (simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeMace ||
-							simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeMace) {
+						if (
+							simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeMace ||
+							simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeMace
+						) {
 							return '';
 						} else {
 							return '"Mace Specialization" talent selected, but maces not equipped.';
@@ -74,10 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -99,25 +85,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatAgility]: 1.69,
-			[Stat.StatStrength]: 1.10,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellDamage]: .68,
-			[Stat.StatNaturePower]: .68,
-			[Stat.StatSpellCrit]: 2.0,
-			[Stat.StatSpellHit]: 5.54,
-			[Stat.StatMeleeHit]: 14.2,
-			[Stat.StatMeleeCrit]: 8.64,
-			[Stat.StatMeleeHaste]: 6.51,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 2.94,
-			[PseudoStat.PseudoStatOffHandDps]: 2.45,
-		}),
-
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatAgility]: 1.23,
+				[Stat.StatStrength]: 1.64,
+				[Stat.StatAttackPower]: 1.0,
+				[Stat.StatSpellDamage]: 1.09,
+				[Stat.StatNaturePower]: 0.81,
+				[Stat.StatSpellCrit]: 4.93,
+				[Stat.StatSpellHit]: 11.94,
+				[Stat.StatMeleeHit]: 14.11,
+				[Stat.StatMeleeCrit]: 25.97,
+				[Stat.StatMeleeHaste]: 14.51,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 4.05,
+				[PseudoStat.PseudoStatOffHandDps]: 2.74,
+			},
+		),
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes[Phase.Phase3],
+		consumes: Presets.DefaultConsumes[Phase.Phase4],
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
@@ -131,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	},
 
 	playerInputs: {
-		inputs: []
+		inputs: [],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
@@ -142,17 +130,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		BuffDebuffInputs.NatureSpellDamageDebuff,
 		BuffDebuffInputs.MekkatorqueFistDebuff,
 		BuffDebuffInputs.SpellScorchDebuff,
-		BuffDebuffInputs.PowerInfusion
+		BuffDebuffInputs.PowerInfusion,
 	],
-	excludeBuffDebuffInputs: [
-	],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-			HonorOfThievesCritRate,
-		],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, HonorOfThievesCritRate],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -162,18 +145,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
