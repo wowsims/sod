@@ -15,11 +15,11 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	var actionID core.ActionID
 	if isMH {
 		actionID = core.ActionID{SpellID: FanOfKnivesSpellID}.WithTag(1)
-		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 1.05, 0.7)
+		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 0.75, 0.5)
 		procMask = core.ProcMaskMeleeMHSpecial
 	} else {
 		actionID = core.ActionID{SpellID: FanOfKnivesSpellID}.WithTag(2)
-		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.OffHand), 1.05, 0.7)
+		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.OffHand), 0.75, 0.5)
 		weaponMultiplier *= rogue.dwsMultiplier()
 		procMask = core.ProcMaskMeleeOHSpecial
 	}

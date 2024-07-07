@@ -42,11 +42,10 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := rogue.baseRuneAbilityDamage() + spell.MeleeAttackPower()*0.48
-			baseDamageVariable := sim.Roll(baseDamage*192, baseDamage*288)
+			baseApDamage := spell.MeleeAttackPower() * 0.48
 
 			for idx := range results {
-				results[idx] = spell.CalcDamage(sim, target, baseDamageVariable, spell.OutcomeRangedHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, rogue.rollBlunderbussDamage(sim)+baseApDamage, spell.OutcomeRangedHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
@@ -55,4 +54,9 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 			}
 		},
 	})
+}
+
+func (rogue *Rogue) rollBlunderbussDamage(sim *core.Simulation) float64 {
+	baseDamage := rogue.baseRuneAbilityDamage()
+	return sim.Roll(baseDamage*1.92, baseDamage*2.88)
 }
