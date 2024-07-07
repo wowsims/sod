@@ -86,7 +86,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 				rogue.CrimsonTempestBleed.Cast(sim, aoeTarget)
 			}
 
-			rogue.ApplyFinisher(sim, spell)
+			rogue.SpendComboPoints(sim, spell)
 		},
 	})
 }
