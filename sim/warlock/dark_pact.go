@@ -11,7 +11,7 @@ func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 
 	actionID := core.ActionID{SpellID: spellId}
 	manaMetrics := warlock.NewManaMetrics(actionID)
-	petManaMetrics := warlock.Pet.NewManaMetrics(actionID)
+	petManaMetrics := warlock.ActivePet.NewManaMetrics(actionID)
 
 	return core.SpellConfig{
 		ActionID:      actionID,
@@ -31,9 +31,9 @@ func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			maxDrain := manaRestore
-			actualDrain := min(maxDrain, warlock.Pet.CurrentMana())
+			actualDrain := min(maxDrain, warlock.ActivePet.CurrentMana())
 
-			warlock.Pet.SpendMana(sim, actualDrain, petManaMetrics)
+			warlock.ActivePet.SpendMana(sim, actualDrain, petManaMetrics)
 			warlock.AddMana(sim, actualDrain, manaMetrics)
 		},
 	}

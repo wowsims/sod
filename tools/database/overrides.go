@@ -632,7 +632,6 @@ var DenyItemSetIds = []int{
 	1708, // Lawbringer Will
 
 	// Rogue
-	1711, // Nightslayer Thrill
 	1712, // Nightslayer Battlearmor
 
 	// Warlock
