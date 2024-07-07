@@ -111,6 +111,9 @@ var ItemDenyList = map[int32]struct{}{
 	17802:  {}, // Deprecated version of Thunderfury
 	18820:  {}, // Talisman of Ephemeral Power
 	19147:  {}, // Ring of Spell Power
+	19166:  {}, // Black Amnesty (replaced by Tempered Black Amnesty)
+	19169:  {}, // Nightfall (replaced by Reaving Nightfall
+	19170:  {}, // Ebon Hand (replaced by Ebon Fist)
 	20522:  {}, // Feral Staff
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty

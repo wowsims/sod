@@ -8,14 +8,13 @@ import (
 )
 
 const (
-	CraftOfTheShadows      = 227280
-	SulfurasHandOfRagnaros = 227683 // 17182
-	DukesDomain            = 227915
-	AccursedChalice        = 228078
-	GerminatingPoisonseed  = 228081
-	GloamingTreeheart      = 228083
-	WoodcarvedMoonstalker  = 228089
-	TheMoltenCore          = 228122
+	CraftOfTheShadows     = 227280
+	DukesDomain           = 227915
+	AccursedChalice       = 228078
+	GerminatingPoisonseed = 228081
+	GloamingTreeheart     = 228083
+	WoodcarvedMoonstalker = 228089
+	TheMoltenCore         = 228122
 )
 
 func init() {
@@ -24,102 +23,6 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
-
-	// https://www.wowhead.com/classic/item=227683/sulfuras-hand-of-ragnaros
-	// Chance on hit: Hurls a fiery ball that causes 273 to 333 Fire damage and purges the target's soul, increasing Fire and Holy damage taken by up to 30 and dealing an additional 75 damage over 10 sec.
-	// Equip: 20% chance to deal 25 Fire damage to all nearby enemies when you are struck by a melee attack. (Proc chance: 20%)
-	core.NewItemEffect(SulfurasHandOfRagnaros, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		immolationSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 460335},
-			SpellSchool: core.SpellSchoolFire,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-
-			BonusCoefficient: .025,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 25, spell.OutcomeAlwaysHit)
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Immolation (Hand of Ragnaros)",
-			Callback:   core.CallbackOnSpellHitTaken,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskMelee,
-			ProcChance: .20,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					immolationSpell.Cast(sim, aoeTarget)
-				}
-			},
-		})
-
-		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
-			return unit.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 460338},
-				Label:    "Purged by Fire",
-				Duration: time.Second * 10,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] += 30
-					unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += 30
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] -= 30
-					unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= 30
-				},
-			})
-		})
-
-		purgedByFireSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 460338},
-			SpellSchool: core.SpellSchoolFire,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-
-			Dot: core.DotConfig{
-				Aura: core.Aura{
-					Label: "Purged By Fire",
-				},
-				TickLength:    2 * time.Second,
-				NumberOfTicks: 5,
-
-				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 15, isRollover)
-					debuffAuras.Get(target).Activate(sim)
-				},
-
-				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(273, 333), spell.OutcomeMagicHitAndCrit)
-				if result.Landed() {
-					spell.Dot(target).Apply(sim)
-				}
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Purged by Fire Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				purgedByFireSpell.Cast(sim, result.Target)
-			},
-		})
-	})
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
