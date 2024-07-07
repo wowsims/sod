@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22873
+  weights: 0.21119
   weights: 0
-  weights: 0.69429
-  weights: 0
-  weights: 0
+  weights: 0.69427
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.69429
+  weights: 0
+  weights: 0
+  weights: 0.69427
   weights: 0
   weights: 0.1009
-  weights: 1.31069
+  weights: 1.31029
   weights: 0
   weights: 0
   weights: 0
@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.21239
+  weights: 0.2179
   weights: 0
-  weights: 0.87979
-  weights: 0
-  weights: 0
+  weights: 0.87908
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.87979
+  weights: 0
+  weights: 0
+  weights: 0.87908
   weights: 0
   weights: 0.19439
-  weights: 4.67976
+  weights: 4.68382
   weights: 0
   weights: 0
   weights: 0
@@ -349,16 +349,16 @@ stat_weights_results: {
   weights: 0
   weights: 0.20385
   weights: 0
-  weights: 0.98563
+  weights: 0.98445
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.98563
+  weights: 0.98445
   weights: 0
-  weights: 9.74801
-  weights: 6.3897
+  weights: 9.7897
+  weights: 6.4058
   weights: 0
   weights: 0
   weights: 0
@@ -505,8 +505,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-Average-Default"
  value: {
-  dps: 628.49535
-  tps: 497.30172
+  dps: 628.08447
+  tps: 496.95151
  }
 }
 dps_results: {
@@ -596,8 +596,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 627.8407
-  tps: 496.53501
+  dps: 628.09576
+  tps: 496.76576
  }
 }
 dps_results: {
@@ -611,9 +611,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-Average-Default"
  value: {
-  dps: 1155.42544
-  tps: 926.33839
-  hps: 15.63644
+  dps: 1154.4957
+  tps: 925.54638
+  hps: 15.62465
  }
 }
 dps_results: {
@@ -715,49 +715,49 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1153.54839
-  tps: 924.4674
-  hps: 16.32649
+  dps: 1153.21218
+  tps: 924.18498
+  hps: 16.31738
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
-  dps: 1102.56025
-  tps: 1057.58182
-  hps: 17.84118
+  dps: 1102.22409
+  tps: 1057.25164
+  hps: 17.83603
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 971.74011
-  tps: 934.03933
-  hps: 18.56141
+  dps: 971.51161
+  tps: 933.81193
+  hps: 18.55627
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 878.23041
-  tps: 844.67311
-  hps: 18.28105
+  dps: 878.01448
+  tps: 844.45763
+  hps: 18.27333
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 965.22013
-  tps: 927.65766
-  hps: 18.56141
+  dps: 964.99288
+  tps: 927.42934
+  hps: 18.55627
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 877.99921
-  tps: 844.10287
-  hps: 18.28105
+  dps: 877.78328
+  tps: 843.88771
+  hps: 18.27333
  }
 }
 dps_results: {
@@ -771,25 +771,25 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 971.74011
-  tps: 934.03933
-  hps: 18.56141
+  dps: 971.51161
+  tps: 933.81193
+  hps: 18.55627
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 878.23041
-  tps: 844.67311
-  hps: 18.28105
+  dps: 878.01448
+  tps: 844.45763
+  hps: 18.27333
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1172.82945
-  tps: 1124.65867
-  hps: 17.84118
+  dps: 1172.47321
+  tps: 1124.31667
+  hps: 17.83603
  }
 }
 dps_results: {
@@ -803,9 +803,9 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Average-Default"
  value: {
-  dps: 1504.90553
-  tps: 1384.54526
-  hps: 17.31158
+  dps: 1504.02543
+  tps: 1383.65955
+  hps: 17.30445
  }
 }
 dps_results: {
@@ -907,8 +907,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1507.11836
-  tps: 1385.90005
-  hps: 18.11502
+  dps: 1505.62159
+  tps: 1384.41647
+  hps: 18.10987
  }
 }

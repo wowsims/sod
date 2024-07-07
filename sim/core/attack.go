@@ -517,14 +517,14 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 
 	aa.enabled = true
 
-	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= 1 {
+	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= 5 {
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		if aa.IsDualWielding {
 			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
 		}
 	}
 
-	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= 8 {
+	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= 12 {
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }
@@ -566,7 +566,7 @@ func (aa *AutoAttacks) EnableAutoSwing(sim *Simulation) {
 
 	aa.enabled = true
 
-	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= 1 {
+	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= 5 {
 		aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		if aa.IsDualWielding {
@@ -575,7 +575,7 @@ func (aa *AutoAttacks) EnableAutoSwing(sim *Simulation) {
 		}
 	}
 
-	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= 8 {
+	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= 12 {
 		aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}

@@ -70,7 +70,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 1
+			return hunter.DistanceFromTarget <= 5
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
@@ -172,7 +172,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= srcSpell.DefaultCast.Cost &&
 				sim.CurrentTime >= hunter.Hardcast.Expires &&
-				hunter.DistanceFromTarget <= 1 &&
+				hunter.DistanceFromTarget <= 5 &&
 				srcSpell.IsReady(sim)
 		},
 

@@ -46,7 +46,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= 12
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

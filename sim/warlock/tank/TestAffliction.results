@@ -55,7 +55,7 @@ stat_weights_results: {
   weights: 0
   weights: 0.04835
   weights: 0
-  weights: 0.54254
+  weights: 0.54536
   weights: 0
   weights: 0
   weights: 0
@@ -64,7 +64,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47102
+  weights: 0.47249
   weights: 0
   weights: 0
   weights: 0
@@ -106,8 +106,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
-  dps: 172.96599
-  tps: 329.73664
+  dps: 173.87316
+  tps: 331.0974
  }
 }
 dps_results: {
@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 173.15399
-  tps: 330.00898
+  dps: 174.03296
+  tps: 331.32744
  }
 }

@@ -153,16 +153,16 @@ stat_weights_results: {
   weights: 0
   weights: 8.69663
   weights: 0
-  weights: 0.5502
+  weights: 0.549
   weights: 0
   weights: 0.14992
-  weights: 0.40028
+  weights: 0.39908
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: -5.40459
-  weights: 12.51764
+  weights: 13.00086
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestFrost-Lvl50-Average-Default"
  value: {
-  dps: 1084.18285
-  tps: 850.9319
+  dps: 1083.76616
+  tps: 850.60304
  }
 }
 dps_results: {
@@ -358,8 +358,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-Average-Default"
  value: {
-  dps: 741.02807
-  tps: 623.11274
+  dps: 741.00989
+  tps: 623.10628
  }
 }
 dps_results: {
@@ -449,7 +449,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 729.70121
-  tps: 614.5989
+  dps: 728.95233
+  tps: 614.11532
  }
 }

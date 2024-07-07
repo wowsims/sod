@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.43976
+  weights: 0.15653
   weights: 0
-  weights: 0.41267
-  weights: 0
-  weights: 0
+  weights: 0.87801
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.78914
-  weights: 2.27937
+  weights: 0
+  weights: 0
+  weights: 6.47631
+  weights: 2.13801
   weights: 0
   weights: 0
   weights: 0
@@ -106,8 +106,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 583.29945
-  tps: 452.83628
+  dps: 585.42885
+  tps: 454.96704
  }
 }
 dps_results: {
@@ -155,7 +155,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 584.04074
-  tps: 454.92867
+  dps: 586.60324
+  tps: 457.12106
  }
 }

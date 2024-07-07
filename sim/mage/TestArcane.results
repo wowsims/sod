@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.13634
+  weights: 0.02138
   weights: 0
-  weights: 0.47304
-  weights: 0.47304
-  weights: 0
-  weights: 0
+  weights: 0.4711
+  weights: 0.4711
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.40811
+  weights: 0
+  weights: 0
+  weights: 2.43921
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -3.86388
+  weights: -2.51567
   weights: 0
-  weights: 1.22232
-  weights: 0.38245
-  weights: 0.83988
-  weights: 0
-  weights: 0
+  weights: 1.21932
+  weights: 0.38206
+  weights: 0.83726
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.75083
+  weights: 0
+  weights: 0
+  weights: 11.39667
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 410.79058
-  tps: 254.39627
+  dps: 409.15278
+  tps: 253.40576
  }
 }
 dps_results: {
@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 420.06121
-  tps: 259.98801
+  dps: 417.26839
+  tps: 258.28982
  }
 }
 dps_results: {
@@ -323,8 +323,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 653.75316
-  tps: 665.87557
+  dps: 646.29768
+  tps: 658.42209
  }
 }
 dps_results: {
@@ -344,22 +344,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1516.76579
-  tps: 1534.79788
+  dps: 1500.95278
+  tps: 1518.92408
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 685.42829
-  tps: 697.99665
+  dps: 682.83219
+  tps: 695.65426
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Average-Default"
  value: {
-  dps: 1830.89617
-  tps: 1849.35556
+  dps: 1825.74544
+  tps: 1844.20129
  }
 }
 dps_results: {
@@ -449,7 +449,7 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1815.59215
-  tps: 1833.65146
+  dps: 1820.64422
+  tps: 1838.75488
  }
 }

@@ -264,8 +264,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.45928
-  weights: 5.61896
-  weights: 8.3496
+  weights: 5.6103
+  weights: 8.56827
   weights: 0
   weights: 0
   weights: 0
@@ -295,16 +295,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.46192
-  weights: 0.60158
+  weights: 1.46297
+  weights: 0.00953
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.48435
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.48662
   weights: 0
   weights: 0
   weights: 0
@@ -312,9 +308,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.61529
-  weights: 10.02538
-  weights: 8.47181
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.61573
+  weights: 10.30677
+  weights: 8.12082
   weights: 0
   weights: 0
   weights: 0
@@ -344,16 +344,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.41252
-  weights: 0.39359
+  weights: 1.41194
+  weights: 0.35295
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.5391
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.53846
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +357,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.64205
-  weights: 26.55773
-  weights: 9.35804
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.64179
+  weights: 28.38052
+  weights: 9.4819
   weights: 0
   weights: 0
   weights: 0
@@ -589,8 +589,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
-  dps: 861.3905
-  tps: 911.98143
+  dps: 861.41978
+  tps: 912.02242
  }
 }
 dps_results: {
@@ -778,8 +778,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-Average-Default"
  value: {
-  dps: 1668.14542
-  tps: 1227.5522
+  dps: 1668.66663
+  tps: 1226.66831
  }
 }
 dps_results: {
@@ -953,78 +953,78 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1543.51332
-  tps: 1135.35572
+  dps: 1543.62974
+  tps: 1134.56854
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1179.1499
-  tps: 1247.56925
+  dps: 1174.95172
+  tps: 1242.42105
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1231.89236
-  tps: 1300.33067
+  dps: 1227.44773
+  tps: 1294.86499
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1288.29358
-  tps: 1358.32652
+  dps: 1285.15026
+  tps: 1355.16976
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1212.03683
-  tps: 1280.13201
+  dps: 1207.55273
+  tps: 1274.74026
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1179.12904
-  tps: 1247.47353
+  dps: 1174.86116
+  tps: 1242.35095
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1215.11354
-  tps: 1283.45802
+  dps: 1210.7251
+  tps: 1278.21489
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1678.69917
-  tps: 1761.45989
+  dps: 1673.69664
+  tps: 1753.97246
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 1642.26976
-  tps: 1726.29358
+  dps: 1636.51902
+  tps: 1719.77285
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 415.28404
-  tps: 439.24959
+  dps: 415.38639
+  tps: 439.34968
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-Average-Default"
  value: {
-  dps: 2285.006
-  tps: 1682.95369
+  dps: 2284.75957
+  tps: 1681.64373
  }
 }
 dps_results: {
@@ -1198,7 +1198,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1758.88489
-  tps: 1301.68703
+  dps: 1756.75986
+  tps: 1300.46574
  }
 }

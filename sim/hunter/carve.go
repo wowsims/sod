@@ -50,7 +50,7 @@ func (hunter *Hunter) registerCarveSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 1
+			return hunter.DistanceFromTarget <= 5
 		},
 
 		DamageMultiplier: 0.65,
