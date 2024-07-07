@@ -821,13 +821,9 @@ export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
 };
 
 // Sharpening Stones
-// Original lvl 50 but not obtainable in Phase 3
-export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
-	return {
-		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 51 }]),
-		value: WeaponImbue.ElementalSharpeningStone,
-		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
-	};
+export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
+	value: WeaponImbue.ElementalSharpeningStone,
 };
 export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
@@ -901,7 +897,7 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: MinorManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil, stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
-	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
+	{ config: ElementalSharpeningStone, stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomSharpeningStone(slot), stats: [Stat.StatMeleeHit] },

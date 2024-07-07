@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestBM-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.8085
+  weights: 0.8079
   weights: 0
   weights: 0
   weights: 0
@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.31124
-  weights: 8.46821
-  weights: 7.64026
+  weights: 8.44271
+  weights: 7.62158
   weights: 0
   weights: 0
   weights: 0
@@ -302,22 +302,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 527.83604
-  tps: 239.75095
+  dps: 527.06296
+  tps: 238.97786
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 838.59889
-  tps: 321.29786
+  dps: 836.59954
+  tps: 320.1109
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Average-Default"
  value: {
-  dps: 849.12016
-  tps: 328.13556
+  dps: 847.09336
+  tps: 326.90583
  }
 }
 dps_results: {
@@ -491,43 +491,43 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1635.24911
-  tps: 992.4943
+  dps: 1630.77885
+  tps: 990.55107
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 745.63236
-  tps: 236.04306
+  dps: 744.69965
+  tps: 235.90031
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 788.82445
-  tps: 249.1845
+  dps: 787.53742
+  tps: 249.04312
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 865.15225
-  tps: 634.09869
+  dps: 863.26146
+  tps: 633.2562
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 373.97251
-  tps: 129.19582
+  dps: 373.62562
+  tps: 129.14291
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 407.26555
-  tps: 135.24739
+  dps: 406.77043
+  tps: 135.17851
  }
 }
 dps_results: {
@@ -659,7 +659,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 805.77815
-  tps: 300.9746
+  dps: 803.96822
+  tps: 299.90694
  }
 }
