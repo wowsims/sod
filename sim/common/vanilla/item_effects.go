@@ -55,7 +55,6 @@ const (
 	EbonFist                 = 227842 // 19170
 	ReavingNightfall         = 227843 // 19169
 	BurstOfKnowledge         = 227972
-	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
 	FiendishMachete          = 228056 // 18310
 	TalismanOfEphemeralPower = 228255 // 18820
@@ -74,7 +73,7 @@ const (
 	BlackbladeOfShahram      = 228606 // 12592
 	SeepingWillow            = 228666 // 12969
 	DraconicInfusedEmblem    = 228678 // 22268
-	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
+	HandOfJustice            = 228722 // 11815
 )
 
 func init() {
