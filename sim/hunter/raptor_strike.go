@@ -68,7 +68,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				hunter.curQueueAura.Deactivate(sim)
 			}
 
-			if hasMeleeSpecialist && sim.RandomFloat("Raptor Strike Reset") < 0.3 {
+			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
 				spell.CD.Reset()
 			}
 
