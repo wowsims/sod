@@ -64,6 +64,7 @@ enum PaladinRune {
 
 	RuneCloakShieldOfRighteousness	= 440658;
 	RuneCloakVindicator				= 440666;
+	RuneCloakShockAndAwe   		    = 462834;
 	RuneCloakRighteousVengeance		= 440672;
 
 	RuneChestDivineStorm			= 407778;

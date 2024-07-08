@@ -37,7 +37,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),

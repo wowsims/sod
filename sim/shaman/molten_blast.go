@@ -57,12 +57,14 @@ func (shaman *Shaman) applyMoltenBlast() {
 			for idx := range results {
 				// Molten Blast is a magic ability but scales off of Attack Power
 				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
-				results[idx] = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
 			for _, result := range results {
-				spell.DealDamage(sim, result)
+				if result.Landed() {
+					spell.DealDamage(sim, result)
+				}
 			}
 		},
 	})
