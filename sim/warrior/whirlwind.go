@@ -4,21 +4,52 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
+
+func (warrior *Warrior) newWhirlwindSpell(isMH bool) *core.Spell {
+	actionID := core.ActionID{SpellID: 1680}
+	procMask := core.ProcMaskMeleeSpecial
+	if !isMH {
+		procMask = core.ProcMaskMeleeOHSpecial
+	}
+
+	return warrior.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    procMask,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		CritDamageBonus: warrior.impale(),
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1.25,
+		BonusCoefficient: 1,
+	})
+}
 
 func (warrior *Warrior) registerWhirlwindSpell() {
 	if warrior.Level < 36 {
 		return
 	}
 
+	hasConsumedByRageRune := warrior.HasRune(proto.WarriorRune_RuneConsumedByRage)
+
+	warrior.WhirlwindMH = warrior.newWhirlwindSpell(true)
+	if hasConsumedByRageRune {
+		warrior.WhirlwindOH = warrior.newWhirlwindSpell(false)
+	}
+
+	actionID := core.ActionID{SpellID: 1680}
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
 	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1680},
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagAPL | SpellFlagBloodSurge,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25 - warrior.FocusedRageDiscount,
@@ -37,21 +68,33 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
-		CritDamageBonus: warrior.impale(),
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			doOHAttack := hasConsumedByRageRune && warrior.AutoAttacks.IsDualWielding && warrior.IsEnraged()
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1.25,
-		BonusCoefficient: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			aoeTarget := target
 			for idx := range results {
-				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				target = sim.Environment.NextTargetUnit(target)
+				warrior.WhirlwindMH.Cast(sim, aoeTarget)
+				baseDamage := warrior.WhirlwindMH.Unit.MHNormalizedWeaponDamage(sim, warrior.WhirlwindMH.MeleeAttackPower())
+				results[idx] = warrior.WhirlwindMH.CalcDamage(sim, aoeTarget, baseDamage, warrior.WhirlwindMH.OutcomeMeleeWeaponSpecialHitAndCrit)
+				aoeTarget = sim.Environment.NextTargetUnit(aoeTarget)
 			}
 
 			for _, result := range results {
-				spell.DealDamage(sim, result)
+				warrior.WhirlwindMH.DealDamage(sim, result)
+			}
+
+			if doOHAttack {
+				aoeTarget := target
+				for idx := range results {
+					warrior.WhirlwindOH.Cast(sim, aoeTarget)
+					baseDamage := warrior.WhirlwindOH.Unit.OHNormalizedWeaponDamage(sim, warrior.WhirlwindOH.MeleeAttackPower())
+					results[idx] = warrior.WhirlwindOH.CalcDamage(sim, aoeTarget, baseDamage, warrior.WhirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
+					aoeTarget = sim.Environment.NextTargetUnit(aoeTarget)
+				}
+
+				for _, result := range results {
+					warrior.WhirlwindOH.DealDamage(sim, result)
+				}
 			}
 		},
 	})

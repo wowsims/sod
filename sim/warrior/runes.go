@@ -9,10 +9,6 @@ import (
 )
 
 func (warrior *Warrior) ApplyRunes() {
-	if warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) && warrior.HasMHWeapon() && warrior.HasOHWeapon() {
-		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
-	}
-
 	if warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault) && warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 		warrior.PseudoStats.MeleeSpeedMultiplier *= 1.2
 	}
@@ -21,139 +17,92 @@ func (warrior *Warrior) ApplyRunes() {
 		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 	}
 
-	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
-
-	warrior.applyBloodFrenzy()
+	// Chest
 	warrior.applyFlagellation()
-	warrior.applyConsumedByRage()
-	warrior.registerQuickStrike()
 	warrior.registerRagingBlow()
-	warrior.applyBloodSurge()
+	warrior.applyBloodFrenzy()
+
+	// Bracers
 	warrior.registerRampage()
-	warrior.applyTasteForBlood()
-	warrior.applyWreckingCrew()
 	warrior.applySwordAndBoard()
+	warrior.applyWreckingCrew()
+
+	// Gloves
+	warrior.applySingleMindedFury()
+	warrior.registerQuickStrike()
+
+	// Belt
+	warrior.applyFocusedRage()
+	// Precise Timing is implemented on slam.go
+	warrior.applyBloodSurge()
+
+	// Pants
+	warrior.applyConsumedByRage()
+
+	warrior.applyTasteForBlood()
 
 	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
-	// Precise Timing is implemented on slam.go
+
 	// Gladiator implemented on stances.go
-
 }
 
-func (warrior *Warrior) applyBloodFrenzy() {
-	if !warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy) {
-		return
-	}
-
-	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 412507})
-
-	warrior.RegisterAura(core.Aura{
-		Label:    "Blood Frenzy",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagBleed) {
-				return
-			}
-
-			warrior.AddRage(sim, 3, rageMetrics)
-		},
-	})
-}
-
+// You gain Rage from Physical damage taken as if you were wearing no armor.
 func (warrior *Warrior) applyFlagellation() {
 	if !warrior.HasRune(proto.WarriorRune_RuneFlagellation) {
 		return
 	}
 
-	flagellationAura := warrior.RegisterAura(core.Aura{
-		Label:    "Flagellation",
-		ActionID: core.ActionID{SpellID: 402877},
-		Duration: time.Second * 12,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.25
-		},
-	})
-
-	warrior.RegisterAura(core.Aura{
-		Label:    "Flagellation Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell != warrior.Bloodrage && spell != warrior.BerserkerRage {
-				return
-			}
-
-			flagellationAura.Activate(sim)
-		},
-	})
+	// TODO: Rage gain from hits
 }
 
+// Rend can now be used in Berserker stance, Rend's damage is increased by 100%, and Rend deals additional damage equal to 3% of your Attack Power each time it deals damage.
+func (warrior *Warrior) applyBloodFrenzy() {
+	if !warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy) {
+		return
+	}
+
+	originalRendCastCondition := warrior.Rend.ExtraCastCondition
+	warrior.Rend.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+		return originalRendCastCondition(sim, target) || warrior.StanceMatches(BerserkerStance)
+	}
+
+	// Rend AP scaling implemented in rend.go
+}
+
+// Enrages you (activating abilities which require being Enraged) for 12 sec  after you exceed 60 Rage.
+// In addition, Whirlwind also strikes with off-hand melee weapons while you are Enraged
 func (warrior *Warrior) applyConsumedByRage() {
 	if !warrior.HasRune(proto.WarriorRune_RuneConsumedByRage) {
 		return
 	}
 
 	warrior.ConsumedByRageAura = warrior.GetOrRegisterAura(core.Aura{
-		Label:     "Enrage 10%",
-		ActionID:  core.ActionID{SpellID: 425415},
-		Duration:  time.Second * 12,
-		MaxStacks: 12,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
-			warrior.Above80RageCBRActive = true
-		},
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Above80RageCBRActive = true
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
-			warrior.Above80RageCBRActive = false
-		},
+		Label:    "Enrage (Consumed by Rage)",
+		ActionID: core.ActionID{SpellID: 425415},
+		Duration: time.Second * 12,
 	})
 
-	warrior.ConsumedByRageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: 10})
+	warrior.ConsumedByRageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: 0})
 
 	warrior.RegisterAura(core.Aura{
 		Label:    "Consumed By Rage Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Above80RageCBRActive = false
 			aura.Activate(sim)
 		},
 		OnRageChange: func(aura *core.Aura, sim *core.Simulation, metrics *core.ResourceMetrics) {
 			// Refunding rage should not enable CBR
-			if warrior.CurrentRage() < 80 || metrics.ActionID.OtherID == proto.OtherAction_OtherActionRefund {
-				warrior.Above80RageCBRActive = false
-				return
-			}
-
-			if warrior.Above80RageCBRActive {
+			if warrior.CurrentRage() < 60 || metrics.ActionID.OtherID == proto.OtherAction_OtherActionRefund {
 				return
 			}
 
 			warrior.ConsumedByRageAura.Activate(sim)
-			if warrior.ConsumedByRageAura.IsActive() {
-				warrior.ConsumedByRageAura.SetStacks(sim, 12)
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !warrior.ConsumedByRageAura.IsActive() {
-				return
-			}
-
-			if spell.ProcMask.Matches(core.ProcMaskMelee) {
-				warrior.ConsumedByRageAura.RemoveStack(sim)
-			}
 		},
 	})
+}
+
+func (warrior *Warrior) applyFocusedRage() {
+	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
 }
 
 func (warrior *Warrior) applyBloodSurge() {
@@ -241,17 +190,25 @@ func (warrior *Warrior) applyTasteForBlood() {
 	})
 }
 
+// Your melee critical hits Enrage you (activating abilities which require being Enraged), and increase Mortal Strike, Bloodthirst, and Shield Slam damage by 10% for 12 sec.
 func (warrior *Warrior) applyWreckingCrew() {
 	if !warrior.HasRune(proto.WarriorRune_RuneWreckingCrew) {
 		return
 	}
 
+	affectedSpells := core.FilterSlice(
+		[]*core.Spell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
+		func(spell *core.Spell) bool { return spell != nil },
+	)
+
 	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
-		Label:    "Enrage Wrecking Crew",
+		Label:    "Enrage (Wrecking Crew)",
 		ActionID: core.ActionID{SpellID: 427066},
 		Duration: time.Second * 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.MeleeCritMultiplier *= 1.1
+			for _, spell := range affectedSpells {
+				spell.DamageMultiplier *= 1.1
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.MeleeCritMultiplier /= 1.1
@@ -259,17 +216,13 @@ func (warrior *Warrior) applyWreckingCrew() {
 	})
 
 	warrior.RegisterAura(core.Aura{
-		Label:    "Wrecking Crew",
+		Label:    "Wrecking Crew Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if !result.Outcome.Matches(core.OutcomeCrit) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
 
@@ -317,4 +270,14 @@ func (warrior *Warrior) applySwordAndBoard() {
 			}
 		},
 	}))
+}
+
+func (warrior *Warrior) applySingleMindedFury() {
+	if !warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) {
+		return
+	}
+
+	if warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) && warrior.HasMHWeapon() && warrior.HasOHWeapon() {
+		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
+	}
 }

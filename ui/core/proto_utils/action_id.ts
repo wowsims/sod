@@ -83,9 +83,9 @@ export class ActionId {
 				name = 'Melee';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
 				if (tag === 1) {
-					name += ' (Main Hand)';
+					name += ' (Main-Hand)';
 				} else if (tag === 2) {
-					name += ' (Off Hand)';
+					name += ' (Off-Hand)';
 				} else if (tag === 3) {
 					name += ' (Extra Attack)';
 				}
@@ -304,22 +304,17 @@ export class ActionId {
 					name += ' (Tick)';
 				}
 				break;
-			// Dual-hit MH/OH spells
+			// Dual-hit MH/OH spells and weapon imbues
 			case 'Mutilate':
 			case 'Stormstrike':
+			case 'Carve':
+			case 'Whirlwind':
+			case 'Slam':
+			case 'Windfury Weapon':
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
 					name = `${name} (Off-Hand)`;
-				}
-				break;
-			// Weapon enchants with auras
-			case 'Windfury Weapon':
-			case 'Holy Strength':
-				if (this.tag === 1) {
-					name += ' (Main-Hand)';
-				} else if (this.tag === 2) {
-					name += ' (Off-Hand)';
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
@@ -329,7 +324,7 @@ export class ActionId {
 				if (this.tag === 6) {
 					name = `${name} (Overload)`;
 				} else if (this.tag) {
-					name = `${name} (${this.tag} MW)`;
+					name = `${name} (${this.tag} MSW)`;
 				}
 				break;
 			case 'Holy Shield':
@@ -388,19 +383,9 @@ export class ActionId {
 				}
 				break;
 			case 'Raptor Strike':
-				if (this.tag === 0) {
-					name += ' (Main Hand)';
-				} else if (this.tag === 1) {
-					name += ' (Queue)';
-				} else if (this.tag === 2) {
-					name += ' (Off Hand)';
-				}
-				break;
-			case 'Carve':
-			case 'Whirlwind':
-				if (this.tag === 1) {
-					name += ' (OH)';
-				}
+				if (this.tag === 1) name = `${name} (Main-Hand)`;
+				else if (this.tag === 2) name = `${name} (Off-Hand)`;
+				else if (this.tag === 3) name = `${name} (Queue)`;
 				break;
 			case 'Thunderfury':
 				if (this.tag === 1) {
@@ -658,10 +643,10 @@ const spellIDsToShowBuffs = new Set([
 	18792, // https://www.wowhead.com/classic/spell=18792/fel-energy
 	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
 	20300, // https://www.wowhead.com/classic/spell=20300/judgement-of-the-crusader
+	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
-	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit

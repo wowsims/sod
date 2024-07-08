@@ -212,26 +212,17 @@ func init() {
 
 		// -4 str per level over 60
 		strBonus := 100.0 - 4.0*float64(character.Level-60)
-		mhAura := character.NewTemporaryStatsAura("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
-		ohAura := character.NewTemporaryStatsAura("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
+		procAura := character.NewTemporaryStatsAura("Crusader Enchant", core.ActionID{SpellID: 20007}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 
 		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Crusader Enchant",
+			Label:    "Crusader Enchant Trigger",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-
-				if ppmm.Proc(sim, spell.ProcMask, "Crusader") {
-					if spell.IsMH() {
-						mhAura.Activate(sim)
-					} else {
-						ohAura.Activate(sim)
-					}
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Crusader") {
+					procAura.Activate(sim)
 				}
 			},
 		})

@@ -7,6 +7,38 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+func (warrior *Warrior) newSlamSpell(isMH bool) *core.Spell {
+	requiredLevel := map[int32]float64{
+		40: 38,
+		50: 46,
+		60: 54,
+	}[warrior.Level]
+
+	spellID := map[int32]int32{
+		40: 8820,
+		50: 11604,
+		60: 11605,
+	}[warrior.Level]
+
+	procMask := core.ProcMaskMeleeMHSpecial
+	if !isMH {
+		procMask = core.ProcMaskMeleeOHSpecial
+	}
+
+	return warrior.RegisterSpell(core.SpellConfig{
+		ActionID:        core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool:     core.SpellSchoolPhysical,
+		DefenseType:     core.DefenseTypeMelee,
+		ProcMask:        procMask,
+		Flags:           core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		CritDamageBonus: warrior.impale(),
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		FlatThreatBonus:  1 * requiredLevel,
+		BonusCoefficient: 1,
+	})
+}
 func (warrior *Warrior) registerSlamSpell() {
 	if warrior.Level < 30 {
 		return

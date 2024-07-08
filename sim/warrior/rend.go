@@ -4,9 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warrior *Warrior) registerRendSpell() {
+	hasBloodFrenzyRune := warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy)
+
 	rend := map[int32]struct {
 		ticks   int32
 		damage  float64
@@ -50,7 +54,12 @@ func (warrior *Warrior) registerRendSpell() {
 			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, rend.damage, isRollover)
+				damage := rend.damage
+				if hasBloodFrenzyRune {
+					damage *= 1 + .03*warrior.GetStat(stats.AttackPower)
+				}
+
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

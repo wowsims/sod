@@ -43,7 +43,6 @@ type Warrior struct {
 	Above80RageCBRActive   bool
 	BloodSurgeAura         *core.Aura
 	RampageAura            *core.Aura
-	rampageValidAura       *core.Aura
 	WreckingCrewEnrageAura *core.Aura
 	EnrageAura             *core.Aura
 
@@ -78,6 +77,8 @@ type Warrior struct {
 	Devastate         *core.Spell
 	ThunderClap       *core.Spell
 	Whirlwind         *core.Spell
+	WhirlwindMH       *core.Spell
+	WhirlwindOH       *core.Spell
 	DeepWounds        *core.Spell
 	ConcussionBlow    *core.Spell
 	RagingBlow        *core.Spell
@@ -175,4 +176,8 @@ type WarriorAgent interface {
 
 func (warrior *Warrior) HasRune(rune proto.WarriorRune) bool {
 	return warrior.HasRuneById(int32(rune))
+}
+
+func (warrior *Warrior) IsEnraged() bool {
+	return warrior.ConsumedByRageAura.IsActive() || warrior.BloodrageAura.IsActive() || warrior.BerserkerRageAura.IsActive()
 }

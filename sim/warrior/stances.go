@@ -133,13 +133,13 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 			aura.Unit.PseudoStats.ArmorMultiplier *= 0.7
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
 			aura.Unit.PseudoStats.BlockValueMultiplier *= 1.1
-			aura.Unit.PseudoStats.ThreatMultiplier *= 0.9
+			aura.Unit.PseudoStats.ThreatMultiplier *= 0.7
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ArmorMultiplier /= 0.7
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
 			aura.Unit.PseudoStats.BlockValueMultiplier /= 1.1
-			aura.Unit.PseudoStats.ThreatMultiplier /= 0.9
+			aura.Unit.PseudoStats.ThreatMultiplier /= 0.7
 		},
 	})
 	warrior.GladiatorStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
