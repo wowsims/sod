@@ -16,6 +16,9 @@ type OnRageChange func(aura *Aura, sim *Simulation, metrics *ResourceMetrics)
 type rageBar struct {
 	unit *Unit
 
+	damageDealtMultiplier float64 // Multiplier for rage generation from damage dealt
+	damageTakenMultiplier float64 // Multiplier for rage generation from damage taken
+
 	startingRage float64
 	currentRage  float64
 
@@ -23,8 +26,9 @@ type rageBar struct {
 }
 
 type RageBarOptions struct {
-	StartingRage   float64
-	RageMultiplier float64
+	StartingRage          float64
+	DamageDealtMultiplier float64
+	DamageTakenMultiplier float64
 }
 
 func GetRageConversion(attacker_level int32) float64 {
@@ -44,8 +48,8 @@ func GetRageConversion(attacker_level int32) float64 {
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	rageFromDamageTakenMetrics := unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDamageTaken})
-
 	rageConversion := GetRageConversion(unit.Level)
+
 	unit.SetCurrentPowerBar(RageBar)
 	unit.RegisterAura(Aura{
 		Label:    "RageBar",
@@ -71,8 +75,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			}
 
 			generatedRage := damage * 7.5 / rageConversion
-
-			generatedRage *= options.RageMultiplier
+			generatedRage *= unit.rageBar.damageDealtMultiplier
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
@@ -91,6 +94,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			}
 			rageConversionDamageTaken := GetRageConversion(spell.Unit.Level)
 			generatedRage := result.Damage * 2.5 / rageConversionDamageTaken
+			generatedRage *= unit.rageBar.damageTakenMultiplier
 			unit.AddRage(sim, generatedRage, rageFromDamageTakenMetrics)
 		},
 	})
@@ -101,14 +105,24 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	})
 
 	unit.rageBar = rageBar{
-		unit:              unit,
-		startingRage:      max(0, min(options.StartingRage, MaxRage)),
-		RageRefundMetrics: unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		unit:                  unit,
+		damageDealtMultiplier: options.DamageDealtMultiplier,
+		damageTakenMultiplier: options.DamageTakenMultiplier,
+		startingRage:          max(0, min(options.StartingRage, MaxRage)),
+		RageRefundMetrics:     unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
 func (unit *Unit) HasRageBar() bool {
 	return unit.rageBar.unit != nil
+}
+
+func (unit *Unit) MultiplyDamageDealtRageGeneration(multi float64) {
+	unit.rageBar.damageDealtMultiplier *= multi
+}
+
+func (unit *Unit) MultiplyDamageTakenRageGeneration(multi float64) {
+	unit.rageBar.damageTakenMultiplier *= multi
 }
 
 func (rb *rageBar) CurrentRage() float64 {

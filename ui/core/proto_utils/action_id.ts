@@ -382,6 +382,13 @@ export class ActionId {
 					name += ' (Queue)';
 				}
 				break;
+			// There are many different types of enrages. Try to give clarity to users.
+			case 'Enrage':
+				if (this.spellId === 13048) name = `${name} (Talent)`;
+				else if (this.spellId === 14201) name = `${name} (Fresh Meat)`;
+				else if (this.spellId === 425415) name = `${name} (Consumed by Rage)`;
+				else if (this.spellId === 427066) name = `${name} (Wrecking Crew)`;
+				break;
 			case 'Raptor Strike':
 				if (this.tag === 1) name = `${name} (Main-Hand)`;
 				else if (this.tag === 2) name = `${name} (Off-Hand)`;
@@ -635,6 +642,7 @@ const spellIDsToShowBuffs = new Set([
 	11717, // https://www.wowhead.com/classic/spell=11717/curse-of-recklessness
 	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
 	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
+	14201, // https://www.wowhead.com/classic/spell=14201/enrage
 	17862, // https://www.wowhead.com/classic/spell=17862/curse-of-shadow
 	17937, // https://www.wowhead.com/classic/spell=17937/curse-of-shadow
 	18789, // https://www.wowhead.com/classic/spell=18789/burning-wish
@@ -653,6 +661,8 @@ const spellIDsToShowBuffs = new Set([
 	23766, // https://www.wowhead.com/classic/spell=23766/sayges-dark-fortune-of-intelligence
 	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
 	402808, // https://www.wowhead.com/classic/spell=402808/cripple
+	426969, // https://www.wowhead.com/classic/spell=426969/taste-for-blood
+	440114, // https://www.wowhead.com/classic/spell=440114/sudden-death
 	446393, // https://www.wowhead.com/classic/spell=446393/decay
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos

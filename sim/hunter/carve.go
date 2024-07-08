@@ -41,10 +41,7 @@ func (hunter *Hunter) registerCarveSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				hunter.CarveMH.Cast(sim, aoeTarget)
-			}
-
-			if hunter.AutoAttacks.IsDualWielding {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				if hunter.AutoAttacks.IsDualWielding {
 					hunter.CarveOH.Cast(sim, aoeTarget)
 				}
 			}

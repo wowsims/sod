@@ -12,8 +12,10 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		return
 	}
 
+	hasDualWieldSpecRune := shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec)
+
 	shaman.StormstrikeMH = shaman.newStormstrikeHitSpell(true)
-	if shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec) {
+	if hasDualWieldSpecRune {
 		shaman.StormstrikeOH = shaman.newStormstrikeHitSpell(false)
 	}
 
@@ -40,7 +42,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// offhand always swings first
-			if shaman.StormstrikeOH != nil && shaman.AutoAttacks.IsDualWielding {
+			if shaman.AutoAttacks.IsDualWielding && shaman.StormstrikeOH != nil {
 				shaman.StormstrikeOH.Cast(sim, target)
 			}
 			shaman.StormstrikeMH.Cast(sim, target)
@@ -66,7 +68,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: float64(damageMultiplier),
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

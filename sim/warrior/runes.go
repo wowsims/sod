@@ -9,18 +9,20 @@ import (
 )
 
 func (warrior *Warrior) ApplyRunes() {
-	if warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault) && warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-		warrior.PseudoStats.MeleeSpeedMultiplier *= 1.2
-	}
+	// Head
+	warrior.applyEndlessRage()
+	warrior.applyShieldMastery()
+	warrior.applyTasteForBlood()
 
-	if warrior.HasRune(proto.WarriorRune_RuneShieldMastery) && warrior.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
-		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
-	}
+	// Cloak
+	warrior.applySuddenDeath()
+	warrior.applyFreshMeat()
+	warrior.registerShockwaveSpell()
 
 	// Chest
 	warrior.applyFlagellation()
 	warrior.registerRagingBlow()
-	warrior.applyBloodFrenzy()
+	// Blood Frenzy implemented in rend.go
 
 	// Bracers
 	warrior.registerRampage()
@@ -31,19 +33,60 @@ func (warrior *Warrior) ApplyRunes() {
 	warrior.applySingleMindedFury()
 	warrior.registerQuickStrike()
 
-	// Belt
+	// Waist
 	warrior.applyFocusedRage()
-	// Precise Timing is implemented on slam.go
 	warrior.applyBloodSurge()
 
 	// Pants
+	warrior.applyFrenziedAssault()
 	warrior.applyConsumedByRage()
 
-	warrior.applyTasteForBlood()
-
-	// Endless Rage implemented on dps_warrior.go and protection_warrior.go
-
+	// Boots
 	// Gladiator implemented on stances.go
+}
+
+func (warrior *Warrior) applyEndlessRage() {
+	if !warrior.HasRune(proto.WarriorRune_RuneEndlessRage) {
+		return
+	}
+
+	warrior.MultiplyDamageDealtRageGeneration(1.25)
+}
+
+func (warrior *Warrior) applyShieldMastery() {
+	if !warrior.HasRune(proto.WarriorRune_RuneShieldMastery) {
+		return
+	}
+
+	buffAura := warrior.RegisterAura(core.Aura{
+		Label:    "Shield Mastery Buff",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
+		},
+	})
+
+	// Use a hidden aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
+	warrior.RegisterAura(core.Aura{
+		Label:    "Shield Mastery Dummy",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 2,
+				OnAction: func(sim *core.Simulation) {
+					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+						buffAura.Deactivate(sim)
+						return
+					}
+
+					buffAura.Activate(sim)
+				},
+			})
+		},
+	})
 }
 
 // You gain Rage from Physical damage taken as if you were wearing no armor.
@@ -55,18 +98,41 @@ func (warrior *Warrior) applyFlagellation() {
 	// TODO: Rage gain from hits
 }
 
-// Rend can now be used in Berserker stance, Rend's damage is increased by 100%, and Rend deals additional damage equal to 3% of your Attack Power each time it deals damage.
-func (warrior *Warrior) applyBloodFrenzy() {
-	if !warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy) {
+func (warrior *Warrior) applyFrenziedAssault() {
+	if !warrior.HasRune(proto.WarriorRune_RuneFrenziedAssault) {
 		return
 	}
 
-	originalRendCastCondition := warrior.Rend.ExtraCastCondition
-	warrior.Rend.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return originalRendCastCondition(sim, target) || warrior.StanceMatches(BerserkerStance)
-	}
+	buffAura := warrior.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 431046},
+		Label:    "Frenzied Assault",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.MultiplyMeleeSpeed(sim, 1.2)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.MultiplyMeleeSpeed(sim, 1/1.2)
+		},
+	})
 
-	// Rend AP scaling implemented in rend.go
+	// Use a dummy aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
+	warrior.RegisterAura(core.Aura{
+		Label:    "Frenzied Assault Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 2,
+				OnAction: func(sim *core.Simulation) {
+					if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+						buffAura.Deactivate(sim)
+						return
+					}
+
+					buffAura.Activate(sim)
+				},
+			})
+		},
+	})
 }
 
 // Enrages you (activating abilities which require being Enraged) for 12 sec  after you exceed 60 Rage.
@@ -127,7 +193,7 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell == warrior.Slam { // removed even if slam doesn't land
+			if warrior.Slam != nil && spell == warrior.SlamOH { // removed even if slam doesn't land
 				aura.Deactivate(sim)
 			}
 		},
@@ -148,11 +214,9 @@ func (warrior *Warrior) applyBloodSurge() {
 				return
 			}
 
-			if sim.RandomFloat("Blood Surge") > 0.3 {
-				return
+			if sim.Proc(0.3, "Blood Surge") {
+				warrior.BloodSurgeAura.Activate(sim)
 			}
-
-			warrior.BloodSurgeAura.Activate(sim)
 		},
 	})
 }
@@ -168,17 +232,14 @@ func (warrior *Warrior) applyTasteForBlood() {
 	}
 
 	warrior.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 426969},
 		Label:    "Taste for Blood",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != warrior.Rend {
-				return
-			}
-
-			if !icd.IsReady(sim) {
+			if spell != warrior.Rend || !icd.IsReady(sim) {
 				return
 			}
 
@@ -186,6 +247,98 @@ func (warrior *Warrior) applyTasteForBlood() {
 			warrior.OverpowerAura.Duration = time.Second * 9
 			warrior.OverpowerAura.Activate(sim)
 			warrior.OverpowerAura.Duration = time.Second * 5
+		},
+	})
+}
+
+// Your melee hits have a 10% chance to grant Sudden Death. Sudden Death allows one use of Execute regardless of the target's health state.
+// When Execute is enabled by Sudden Death, you will retain 10 rage after using Execute.
+func (warrior *Warrior) applySuddenDeath() {
+	if !warrior.HasRune(proto.WarriorRune_RuneSuddenDeath) {
+		return
+	}
+
+	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: int32(proto.WarriorRune_RuneSuddenDeath)})
+
+	minRageKept := 10.0
+	procChance := 0.10
+
+	warrior.SuddenDeathAura = warrior.RegisterAura(core.Aura{
+		Label:    "Sudden Death",
+		ActionID: core.ActionID{SpellID: 440114},
+		Duration: time.Second * 10,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || spell != warrior.Execute { // removed only when landed
+				return
+			}
+
+			warrior.AddRage(sim, minRageKept, rageMetrics)
+			aura.Deactivate(sim)
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Sudden Death Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if sim.Proc(procChance, "Sudden Death") {
+				warrior.SuddenDeathAura.Activate(sim)
+			}
+		},
+	})
+}
+
+// Damaging a target with Bloodthirst has a 100% chance the first time and a 10% chance each subsequent time to
+// Enrage you (activating abilities which requiring being Enraged), and cause you to deal 10% increased Physical damage for 12 sec.
+func (warrior *Warrior) applyFreshMeat() {
+	if !warrior.HasRune(proto.WarriorRune_RuneFreshMeat) {
+		return
+	}
+
+	hasBloodthirstTalent := warrior.Talents.Bloodthirst
+
+	damagedUnits := make(map[int32]bool)
+
+	warrior.FreshMeatEnrageAura = warrior.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 14201},
+		Label:    "Enrage (Fresh Meat)",
+		Duration: time.Second * 12,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Fresh Meat Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			damagedUnits = make(map[int32]bool)
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !hasBloodthirstTalent || spell != warrior.Bloodthirst {
+				return
+			}
+
+			procChance := 0.10
+			if !damagedUnits[result.Target.UnitIndex] {
+				procChance = 1.00
+				damagedUnits[result.Target.UnitIndex] = true
+			}
+
+			if sim.Proc(procChance, "Fresh Meat") {
+				warrior.FreshMeatEnrageAura.Activate(sim)
+			}
 		},
 	})
 }
@@ -211,7 +364,9 @@ func (warrior *Warrior) applyWreckingCrew() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.MeleeCritMultiplier /= 1.1
+			for _, spell := range affectedSpells {
+				spell.DamageMultiplier /= 1.1
+			}
 		},
 	})
 
@@ -272,12 +427,43 @@ func (warrior *Warrior) applySwordAndBoard() {
 	}))
 }
 
+// While dual-wielding, your movement speed is increased by 10% and you gain 2% attack speed each time your melee auto-attack strikes the same target as your previous auto-attack, stacking up to 5 times.
+// Lasts 10 sec or until your auto-attack strikes a different target.
 func (warrior *Warrior) applySingleMindedFury() {
 	if !warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) {
 		return
 	}
 
-	if warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) && warrior.HasMHWeapon() && warrior.HasOHWeapon() {
-		warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
-	}
+	buffAura := warrior.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 461470},
+		Label:     "Single-Minded Fury Attack Speed",
+		Duration:  time.Second * 10,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			warrior.MultiplyAttackSpeed(sim, 1/(1+.02*float64(oldStacks)))
+			warrior.MultiplyAttackSpeed(sim, 1+.02*float64(newStacks))
+		},
+	})
+
+	warrior.RegisterAura(core.Aura{
+		Label:    "Single-Minded Fury Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !warrior.AutoAttacks.IsDualWielding || !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+				return
+			}
+
+			if warrior.lastMeleeAutoTarget == nil || warrior.lastMeleeAutoTarget != result.Target {
+				warrior.lastMeleeAutoTarget = result.Target
+				buffAura.Deactivate(sim)
+				return
+			}
+
+			buffAura.Activate(sim)
+			buffAura.AddStack(sim)
+		},
+	})
 }

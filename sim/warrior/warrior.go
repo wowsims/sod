@@ -34,25 +34,29 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance                 Stance
-	revengeProcAura        *core.Aura
-	OverpowerAura          *core.Aura
-	BerserkerRageAura      *core.Aura
-	BloodrageAura          *core.Aura
-	ConsumedByRageAura     *core.Aura
-	Above80RageCBRActive   bool
+	Stance          Stance
+	revengeProcAura *core.Aura
+	OverpowerAura   *core.Aura
+
 	BloodSurgeAura         *core.Aura
 	RampageAura            *core.Aura
 	WreckingCrewEnrageAura *core.Aura
-	EnrageAura             *core.Aura
+	SuddenDeathAura        *core.Aura
+	lastMeleeAutoTarget    *core.Unit
+
+	// Enrage Auras
+	BerserkerRageAura   *core.Aura
+	BloodrageAura       *core.Aura
+	ConsumedByRageAura  *core.Aura
+	EnrageAura          *core.Aura
+	FreshMeatEnrageAura *core.Aura
 
 	// Rune passive
 	FocusedRageDiscount float64
 
 	// Reaction time values
-	reactionTime       time.Duration
-	lastBloodsurgeProc time.Duration
-	LastAMTick         time.Duration
+	reactionTime time.Duration
+	LastAMTick   time.Duration
 
 	BattleShout *core.Spell
 
@@ -73,6 +77,8 @@ type Warrior struct {
 	ShieldBlock       *core.Spell
 	ShieldSlam        *core.Spell
 	Slam              *core.Spell
+	SlamMH            *core.Spell
+	SlamOH            *core.Spell
 	SunderArmor       *core.Spell
 	Devastate         *core.Spell
 	ThunderClap       *core.Spell
@@ -84,6 +90,7 @@ type Warrior struct {
 	RagingBlow        *core.Spell
 	Hamstring         *core.Spell
 	Rampage           *core.Spell
+	Shockwave         *core.Spell
 
 	HeroicStrike       *core.Spell
 	QuickStrike        *core.Spell
@@ -179,5 +186,9 @@ func (warrior *Warrior) HasRune(rune proto.WarriorRune) bool {
 }
 
 func (warrior *Warrior) IsEnraged() bool {
-	return warrior.ConsumedByRageAura.IsActive() || warrior.BloodrageAura.IsActive() || warrior.BerserkerRageAura.IsActive()
+	return warrior.BloodrageAura.IsActive() ||
+		warrior.BerserkerRageAura.IsActive() ||
+		(warrior.EnrageAura != nil && warrior.EnrageAura.IsActive()) ||
+		(warrior.ConsumedByRageAura != nil && warrior.ConsumedByRageAura.IsActive()) ||
+		(warrior.FreshMeatEnrageAura != nil && warrior.FreshMeatEnrageAura.IsActive())
 }

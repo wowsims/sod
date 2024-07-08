@@ -76,7 +76,4 @@ var UnimplementedRuneOverrides = []int32{
 	440882, // Cloak - Infernal Armor
 
 	// Warrior
-	440113, // Cloak - Sudden Death
-	440484, // Cloak - Fresh Meat
-	440488, // Cloak - Shockwave
 }
