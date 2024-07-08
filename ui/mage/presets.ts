@@ -3,6 +3,7 @@ import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
@@ -259,7 +260,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	mightOfStormwind: true,
-	rallyingCryOfTheDragonslayer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
 	warchiefsBlessing: true,

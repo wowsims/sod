@@ -78,7 +78,8 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 	maxRank := 7
 
-	for i := 1; i <= maxRank; i++ {
+	// TODO: AQ <=
+	for i := 1; i < maxRank; i++ {
 		config := hunter.getAspectOfTheHawkSpellConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {

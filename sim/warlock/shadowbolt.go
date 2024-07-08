@@ -66,7 +66,8 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 func (warlock *Warlock) registerShadowBoltSpell() {
 	warlock.ShadowBolt = make([]*core.Spell, 0)
 
-	for rank := 1; rank <= ShadowBoltRanks; rank++ {
+	// TODO: AQ <=
+	for rank := 1; rank < ShadowBoltRanks; rank++ {
 		config := warlock.getShadowBoltBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {

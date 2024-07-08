@@ -237,6 +237,17 @@ func (hunter *Hunter) applyLockAndLoad() {
 	})
 }
 
+const RaptorFuryPerStackDamageMultiplier = 0.1
+
+func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
+	stacks := hunter.RaptorFuryAura.GetStacks()
+	if stacks == 0 {
+		return 1
+	}
+
+	return 1 + RaptorFuryPerStackDamageMultiplier*float64(stacks)
+}
+
 func (hunter *Hunter) applyRaptorFury() {
 	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
@@ -256,20 +267,20 @@ func (hunter *Hunter) applyCobraSlayer() {
 	}
 
 	hunter.RegisterAura(core.Aura{
-		Label:    "Cobra Slayer",
-		Duration: core.NeverExpires,
+		Label:     "Cobra Slayer",
+		Duration:  core.NeverExpires,
 		MaxStacks: 20,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeDodge) {
-				aura.SetStacks(sim, 1);
+				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 			} else if result.Outcome.Matches(core.OutcomeLanded) {
 				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
-						aura.SetStacks(sim, 1);
+						aura.SetStacks(sim, 1)
 						hunter.DefensiveState.Activate(sim)
 					} else {
 						aura.AddStack(sim)
@@ -296,9 +307,9 @@ func (hunter *Hunter) tntDamageFlatBonus() float64 {
 
 func (hunter *Hunter) trapRange() float64 {
 	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
-		return 35;
+		return 35
 	}
-	return 5;
+	return 5
 }
 
 func (hunter *Hunter) resourcefulnessManacostModifier() float64 {

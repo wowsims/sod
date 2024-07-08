@@ -5,11 +5,13 @@ import (
 )
 
 func (warrior *Warrior) registerHeroicStrikeSpell() {
-	damage := map[int32]float64{
+	flatDamageBonus := map[int32]float64{
 		25: 44,
 		40: 80,
 		50: 111,
+		// TODO: AQ
 		60: 138,
+		// 60: 157
 	}[warrior.Level]
 
 	spellID := map[int32]int32{
@@ -47,9 +49,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := damage +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
+			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if !result.Landed() {
@@ -131,7 +131,7 @@ func (warrior *Warrior) registerCleaveSpell() {
 func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
 	queueAura := warrior.RegisterAura(core.Aura{
 		Label:    "HS/Cleave Queue Aura-" + srcSpell.ActionID.String(),
-		ActionID: srcSpell.ActionID,
+		ActionID: srcSpell.ActionID.WithTag(1),
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.curQueueAura != nil {
@@ -149,11 +149,11 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell
 	})
 
 	queueSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID: srcSpell.WithTag(1),
+		ActionID: srcSpell.ActionID.WithTag(1),
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.curQueueAura != queueAura &&
+			return warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
 				sim.CurrentTime >= warrior.Hardcast.Expires
 		},
