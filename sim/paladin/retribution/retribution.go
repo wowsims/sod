@@ -56,5 +56,6 @@ func (ret *RetributionPaladin) Initialize() {
 }
 
 func (ret *RetributionPaladin) Reset(_ *core.Simulation) {
+	ret.Paladin.ResetCurrentPaladinAura()
 	ret.Paladin.ResetPrimarySeal(ret.primarySeal)
 }

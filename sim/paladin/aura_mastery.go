@@ -21,21 +21,21 @@ func (paladin *Paladin) registerAuraMastery() {
 
 	aura := paladin.RegisterAura(core.Aura{
 		Label:    "Aura Mastery",
-		ActionID: core.ActionID{SpellID: 415756},
+		ActionID: core.ActionID{SpellID: int32(proto.PaladinRune_RuneLegsAuraMastery)},
 		Duration: time.Second * 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-		    if paladin.currentPaladinAura != nil {
-                        if paladin.currentPaladinAura.Label == "Sanctity Aura" {
-                            paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.2 / 1.1)
-                        }
-                    }
+			if paladin.currentPaladinAura != nil {
+				if paladin.currentPaladinAura.Label == "Sanctity Aura" {
+					paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.2 / 1.1)
+				}
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-                    if paladin.currentPaladinAura != nil {
-                        if paladin.currentPaladinAura.Label == "Sanctity Aura" {
-                            paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
-                        }
-                    }
+			if paladin.currentPaladinAura != nil {
+				if paladin.currentPaladinAura.Label == "Sanctity Aura" {
+ 					paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
+				}
+			}
 		},
 	})
 

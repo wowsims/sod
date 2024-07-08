@@ -12,7 +12,7 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-        SpellFlag_RV = core.SpellFlagAgentReserved1
+	SpellFlag_RV = core.SpellFlagAgentReserved1
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
@@ -83,9 +83,9 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
 
-        if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-            paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
-        }
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -99,9 +99,9 @@ func NewPaladin(character *core.Character, options *proto.Player, pallyAura prot
 	}
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
-        if pallyAura == proto.PaladinAura_SanctityAura {
-            paladin.primaryPaladinAura = pallyAura
-        }
+	if pallyAura == proto.PaladinAura_SanctityAura {
+		paladin.primaryPaladinAura = pallyAura
+	}
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
@@ -139,6 +139,13 @@ func (paladin *Paladin) has2hEquipped() bool {
 func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.currentSeal = nil
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
+}
+
+func (paladin *Paladin) ResetCurrentPaladinAura() {
+	paladin.currentPaladinAura = nil
+	if paladin.primaryPaladinAura == proto.PaladinAura_SacntityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 }
 
 func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {

@@ -31,9 +31,12 @@ func (paladin *Paladin) registerRV() {
 	paladin.rv = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 440675},
 		SpellSchool: core.SpellSchoolHoly,
-		//DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,  //Not sure
-		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreResists,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreAttackerModifiers,
+
+		// SpellFlagIgnoreTargetModifiers was thought to be used based on wowhead flags
+		// WCL parses show that this is not the case
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
