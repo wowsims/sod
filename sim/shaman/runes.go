@@ -152,6 +152,8 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
+	shaman.defendersResolveAura = core.DefendersResolveSpellDamage(shaman.GetCharacter())
+
 	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
 
 	shaman.AddStat(stats.Block, 10)
@@ -161,21 +163,6 @@ func (shaman *Shaman) applyShieldMastery() {
 	manaMetrics := shaman.NewManaMetrics(actionId)
 	procManaReturn := 0.08
 	armorPerStack := shaman.Equipment.OffHand().Stats[stats.Armor] * 0.3
-
-	cachedBonusAP := 0.0
-	apProcAura := shaman.RegisterAura(core.Aura{
-		Label: "Shield Mastery AP",
-		// TODO: Verify ID. I couldn't find a separate one at the moment
-		ActionID: core.ActionID{SpellID: 408525},
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			cachedBonusAP = 4 * max(shaman.GetStat(stats.Defense), 0)
-			shaman.AddStatDynamic(sim, stats.SpellPower, cachedBonusAP)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.SpellPower, cachedBonusAP)
-		},
-	})
 
 	blockProcAura := shaman.RegisterAura(core.Aura{
 		Label:     "Shield Mastery Block",
@@ -189,8 +176,7 @@ func (shaman *Shaman) applyShieldMastery() {
 
 	affectedSpellcodes := []int32{SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label:    "Shield Mastery",
-		ActionID: actionId,
+		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeBlock) || (has4PEarthfuryResolve && (result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge))) {
 				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
@@ -200,7 +186,15 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
-				apProcAura.Activate(sim)
+				if stacks := int32(2*max(shaman.GetStat(stats.Defense), 0)) / 2; stacks > 0 {
+					if !shaman.defendersResolveAura.IsActive() {
+						shaman.defendersResolveAura.Activate(sim)
+					}
+
+					if shaman.defendersResolveAura.GetStacks() < stacks {
+						shaman.defendersResolveAura.SetStacks(sim, stacks)
+					}
+				}
 			}
 		},
 	}))

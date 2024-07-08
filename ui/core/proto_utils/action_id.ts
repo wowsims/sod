@@ -633,36 +633,40 @@ idOverrides[ActionId.fromSpellId(455864).toProtoString()] = ActionId.fromSpellId
 idOverrides[ActionId.fromSpellId(457544).toProtoString()] = ActionId.fromSpellId(10408); // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
 
 const spellIDsToShowBuffs = new Set([
+	702, // https://www.wowhead.com/classic/spell=702/curse-of-weakness
+	704, // https://www.wowhead.com/classic/spell=704/curse-of-recklessness
 	770, // https://www.wowhead.com/classic/spell=770/faerie-fire
 	778, // https://www.wowhead.com/classic/spell=778/faerie-fire
-	9749, // https://www.wowhead.com/classic/spell=9749/faerie-fire
-	9907, // https://www.wowhead.com/classic/spell=9907/faerie-fire
-	702, // https://www.wowhead.com/classic/spell=702/curse-of-weakness
 	1108, // https://www.wowhead.com/classic/spell=1108/curse-of-weakness
+	1490, // https://www.wowhead.com/classic/spell=1490/curse-of-the-elements
 	6205, // https://www.wowhead.com/classic/spell=6205/curse-of-weakness
 	7646, // https://www.wowhead.com/classic/spell=7646/curse-of-weakness
-	11707, // https://www.wowhead.com/classic/spell=11707/curse-of-weakness
-	11708, // https://www.wowhead.com/classic/spell=11708/curse-of-weakness
-	704, // https://www.wowhead.com/classic/spell=704/curse-of-recklessness
 	7658, // https://www.wowhead.com/classic/spell=7658/curse-of-recklessness
 	7659, // https://www.wowhead.com/classic/spell=7659/curse-of-recklessness
+	9749, // https://www.wowhead.com/classic/spell=9749/faerie-fire
+	9907, // https://www.wowhead.com/classic/spell=9907/faerie-fire
+	11707, // https://www.wowhead.com/classic/spell=11707/curse-of-weakness
+	11708, // https://www.wowhead.com/classic/spell=11708/curse-of-weakness
 	11717, // https://www.wowhead.com/classic/spell=11717/curse-of-recklessness
-	1490, // https://www.wowhead.com/classic/spell=1490/curse-of-the-elements
 	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
 	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
 	17862, // https://www.wowhead.com/classic/spell=17862/curse-of-shadow
 	17937, // https://www.wowhead.com/classic/spell=17937/curse-of-shadow
+	18789, // https://www.wowhead.com/classic/spell=18789/burning-wish
+	18790, // https://www.wowhead.com/classic/spell=18790/fel-stamina
+	18791, // https://www.wowhead.com/classic/spell=18791/touch-of-shadow
+	18792, // https://www.wowhead.com/classic/spell=18792/fel-energy
+	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
 	20300, // https://www.wowhead.com/classic/spell=20300/judgement-of-the-crusader
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
-	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
 	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
-	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
-	23766, // https://www.wowhead.com/classic/spell=23766/sayges-dark-fortune-of-intelligence
-	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
+	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
+	23766, // https://www.wowhead.com/classic/spell=23766/sayges-dark-fortune-of-intelligence
+	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
 	402808, // https://www.wowhead.com/classic/spell=402808/cripple
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
@@ -717,6 +721,7 @@ const petNameToIcon: Record<string, string> = {
 	Succubus: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
 	Tallstrider: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_tallstrider.jpg',
 	Turtle: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_turtle.jpg',
+	Voidwalker: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonvoidwalker.jpg',
 	'Warp Stalker': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_warpstalker.jpg',
 	Wasp: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wasp.jpg',
 	'Wind Serpent': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_windserpent.jpg',

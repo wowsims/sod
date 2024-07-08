@@ -33,7 +33,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 
 	paladin.RegisterAura(core.Aura{
 		Label:    "The Art of War",
-		Duration: core.NeverExpires,		
+		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -42,7 +42,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 				return
 			}
 			//paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim) - (time.Second * 2)))
+			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim)-(time.Second*2)))
 		},
 	})
 }
@@ -70,7 +70,7 @@ func (paladin *Paladin) registerSheathOfLight() {
 	})
 	paladin.RegisterAura(core.Aura{
 		Label:    "Sheath of Light (rune)",
-		Duration: core.NeverExpires,		
+		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -106,7 +106,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 	})
 	paladin.RegisterAura(core.Aura{
 		Label:    "Shock and Awe (rune)",
-		Duration: core.NeverExpires,		
+		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
