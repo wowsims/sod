@@ -62,7 +62,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 38
+  final_stats: 44
   final_stats: 0
   final_stats: 42.9179
   final_stats: 0
@@ -99,8 +99,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestFire-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 168.3
-  final_stats: 174.9
+  final_stats: 148.5
+  final_stats: 162.8
   final_stats: 407.33
   final_stats: 420.2
   final_stats: 271.7
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 50.25936
   final_stats: 0
   final_stats: 0
-  final_stats: 1201.5
+  final_stats: 1098.5
   final_stats: 2
   final_stats: 18.2
   final_stats: 0
@@ -125,7 +125,7 @@ character_stats_results: {
   final_stats: 7236
   final_stats: 0
   final_stats: 0
-  final_stats: 961.2
+  final_stats: 939.2
   final_stats: 540
   final_stats: 0
   final_stats: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.91814
+  weights: 2.07597
   weights: 0
-  weights: 1.34225
+  weights: 1.34227
   weights: 0
-  weights: 1.34225
-  weights: 0
-  weights: 0
+  weights: 1.34227
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.02781
+  weights: 0
+  weights: 0
+  weights: 14.27305
   weights: 0
   weights: 0
   weights: 0
@@ -393,29 +393,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-Average-Default"
  value: {
-  dps: 1272.85317
-  tps: 908.65304
+  dps: 1274.78923
+  tps: 909.981
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2713.78398
-  tps: 2256.68898
+  dps: 2705.44791
+  tps: 2259.65062
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1274.8797
-  tps: 910.80822
+  dps: 1279.43836
+  tps: 913.60008
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1313.41346
-  tps: 943.05346
+  dps: 1313.60688
+  tps: 942.48458
  }
 }
 dps_results: {
@@ -442,22 +442,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2680.77505
-  tps: 2239.64916
+  dps: 2676.58695
+  tps: 2230.52117
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1277.35579
-  tps: 911.88602
+  dps: 1278.70837
+  tps: 912.81988
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1351.99358
-  tps: 964.84724
+  dps: 1351.90043
+  tps: 964.49277
  }
 }
 dps_results: {
@@ -484,8 +484,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1278.61832
-  tps: 913.06458
+  dps: 1279.20185
+  tps: 913.22904
  }
 }
 dps_results: {

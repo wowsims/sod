@@ -61,29 +61,29 @@ var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
-	Name: "Bloodvine Garb",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Improves your chance to get a critical strike with spells by 2%.
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
-		},
-	},
-})
+// var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
+// 	Name: "Bloodvine Garb",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		// Improves your chance to get a critical strike with spells by 2%.
+// 		2: func(agent core.Agent) {
+// 			character := agent.GetCharacter()
+// 			character.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
+// 		},
+// 	},
+// })
 
-var ItemSetBloodTigerHarness = core.NewItemSet(core.ItemSet{
-	Name: "Blood Tiger Harness",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Improves your chance to get a critical strike by 1%.
-		// Improves your chance to get a critical strike with spells by 1%.
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
-		},
-	},
-})
+// var ItemSetBloodTigerHarness = core.NewItemSet(core.ItemSet{
+// 	Name: "Blood Tiger Harness",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		// Improves your chance to get a critical strike by 1%.
+// 		// Improves your chance to get a critical strike with spells by 1%.
+// 		2: func(agent core.Agent) {
+// 			character := agent.GetCharacter()
+// 			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+// 			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+// 		},
+// 	},
+// })
 
 var ItemSetDevilsaurArmor = core.NewItemSet(core.ItemSet{
 	Name: "Devilsaur Armor",

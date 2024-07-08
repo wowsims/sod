@@ -111,7 +111,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 23
   final_stats: 0
-  final_stats: 68
+  final_stats: 74
   final_stats: 5
   final_stats: 27.4776
   final_stats: 0
@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 256.3
-  final_stats: 196.9
+  final_stats: 236.5
+  final_stats: 184.8
   final_stats: 419.98
   final_stats: 305.8
   final_stats: 212.3
@@ -165,16 +165,16 @@ character_stats_results: {
   final_stats: 34.46802
   final_stats: 0
   final_stats: 0
-  final_stats: 1647
+  final_stats: 1526
   final_stats: 8
-  final_stats: 30.25548
+  final_stats: 29.69668
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 5827
   final_stats: 0
   final_stats: 0
-  final_stats: 2177.2
+  final_stats: 2155.2
   final_stats: 540
   final_stats: 0
   final_stats: 0
@@ -357,7 +357,7 @@ stat_weights_results: {
   weights: 0.77032
   weights: 0
   weights: 0
-  weights: 15.0715
+  weights: 15.07287
   weights: 3.20448
   weights: 0
   weights: 0
@@ -604,35 +604,35 @@ dps_results: {
  key: "TestElemental-Lvl50-AllItems-TheFiveThunders"
  value: {
   dps: 541.25153
-  tps: 536.99711
+  tps: 536.55993
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1061.82504
-  tps: 953.58932
+  dps: 1061.82503
+  tps: 953.15382
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2035.92455
-  tps: 1998.18428
+  dps: 2040.27474
+  tps: 2012.86539
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
   dps: 1023.72186
-  tps: 919.83933
+  tps: 919.32867
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Orc-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
   dps: 1081.93766
-  tps: 1001.34715
+  tps: 1001.1751
  }
 }
 dps_results: {
@@ -659,22 +659,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2000.41254
-  tps: 1997.20065
+  dps: 2018.98365
+  tps: 2004.64448
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
   dps: 1035.52476
-  tps: 928.47464
+  tps: 928.0593
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Settings-Troll-phase_3-Adaptive-phase_3-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
   dps: 1093.29752
-  tps: 1012.0433
+  tps: 1012.1223
  }
 }
 dps_results: {
@@ -702,77 +702,77 @@ dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
   dps: 1057.50975
-  tps: 948.10372
+  tps: 947.52223
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 712.73207
-  tps: 767.85787
+  dps: 712.32146
+  tps: 767.44727
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 712.9767
-  tps: 768.00483
+  dps: 712.56222
+  tps: 767.59036
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 805.05608
-  tps: 856.74591
+  dps: 804.68119
+  tps: 856.37101
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 767.63811
-  tps: 821.1338
+  dps: 767.22933
+  tps: 820.72502
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 711.85571
-  tps: 766.97537
+  dps: 711.44693
+  tps: 766.5666
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 712.18945
-  tps: 767.30911
+  dps: 711.77803
+  tps: 766.89769
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1011.90761
-  tps: 1057.39482
+  dps: 1011.49108
+  tps: 1056.96217
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 1088.23843
-  tps: 1132.86206
+  dps: 1087.86987
+  tps: 1132.47737
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 668.38436
-  tps: 671.24556
+  dps: 668.02874
+  tps: 670.88994
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Average-Default"
  value: {
-  dps: 1317.82559
-  tps: 1219.68328
+  dps: 1317.38575
+  tps: 1219.22688
  }
 }
 dps_results: {
@@ -862,7 +862,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1305.75336
-  tps: 1207.75132
+  dps: 1305.30305
+  tps: 1207.28872
  }
 }

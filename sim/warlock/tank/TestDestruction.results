@@ -111,7 +111,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 40
-  final_stats: 36
+  final_stats: 42
   final_stats: 5
   final_stats: 20.03174
   final_stats: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.76078
+  weights: 1.77917
   weights: 0
-  weights: 2.19305
-  weights: 0
-  weights: 0
+  weights: 0.49825
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.05544
+  weights: 0
+  weights: 0
+  weights: 6.54502
   weights: 0
   weights: 0
   weights: 0
@@ -421,41 +421,41 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 303.50094
-  tps: 211.45395
-  hps: 9.8368
+  dps: 304.59262
+  tps: 211.48921
+  hps: 9.73115
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1176.36583
-  tps: 2031.81997
-  hps: 18.3079
+  dps: 1177.47513
+  tps: 2033.19396
+  hps: 18.30614
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1707.84887
-  tps: 3774.08246
-  hps: 14.63869
+  dps: 1701.25438
+  tps: 3739.47515
+  hps: 14.61992
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1102.11457
-  tps: 1892.16183
-  hps: 14.74689
+  dps: 1107.79477
+  tps: 1911.66517
+  hps: 14.79698
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1105.05539
-  tps: 1884.76438
-  hps: 14.85851
+  dps: 1106.5148
+  tps: 1889.10009
+  hps: 14.86398
  }
 }
 dps_results: {
@@ -485,8 +485,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1149.17696
-  tps: 1985.7694
-  hps: 18.35945
+  dps: 1155.78676
+  tps: 1994.91681
+  hps: 18.52813
  }
 }
