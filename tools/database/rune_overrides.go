@@ -51,6 +51,7 @@ var RuneOverrides = []*proto.UIRune{
 
 	// Boots - Mark of Chaos
 	{Id: 440892, Name: "Engrave Boots - Mark of Chaos", Type: proto.ItemType_ItemTypeFeet},
+
 }
 
 // Remove runes as you implement them.
@@ -66,7 +67,6 @@ var UnimplementedRuneOverrides = []int32{
 	// Paladin
 	440658, // Cloak - Shield of Righteousness
 	440666, // Cloak - Vindicator
-	440672, // Cloak - Righteous Vengeance
 
 	// Priest
 

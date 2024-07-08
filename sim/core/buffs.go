@@ -830,14 +830,18 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 }
 
 func SanctityAuraAura(character *Character) *Aura {
-	character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
-
-	return character.RegisterAura(Aura{
+	return character.GetOrRegisterAura(Aura{
 		Label:    "Sanctity Aura",
 		ActionID: ActionID{SpellID: 20218},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+                    character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+                    character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
 		},
 	})
 }

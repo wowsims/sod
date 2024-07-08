@@ -26,7 +26,7 @@ func RegisterRetributionPaladin() {
 func NewRetributionPaladin(character *core.Character, options *proto.Player) *RetributionPaladin {
 	retOptions := options.GetRetributionPaladin()
 
-	pal := paladin.NewPaladin(character, options.TalentsString)
+	pal := paladin.NewPaladin(character, options, retOptions.Options.Aura)
 
 	ret := &RetributionPaladin{
 		Paladin:     pal,
