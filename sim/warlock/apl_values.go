@@ -164,7 +164,7 @@ type APLValueWarlockCurrentPetMana struct {
 
 func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
 	pet := warlock.ActivePet
-	if pet.GetPet() == nil {
+	if pet == nil {
 		return nil
 	}
 	if !pet.GetPet().HasManaBar() {
@@ -179,7 +179,7 @@ func (value *APLValueWarlockCurrentPetMana) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
 func (value *APLValueWarlockCurrentPetMana) GetFloat(sim *core.Simulation) float64 {
-	return value.pet.GetPet().CurrentMana()
+	return value.pet.CurrentMana()
 }
 func (value *APLValueWarlockCurrentPetMana) String() string {
 	return "Current Pet Mana"

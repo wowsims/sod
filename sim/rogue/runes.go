@@ -37,6 +37,9 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.applyJustAFleshWound()
 	rogue.applyRollingWithThePunches()
 	rogue.registerCutthroat()
+	rogue.registerBlunderbussSpell()
+	rogue.registerFanOfKnives()
+	rogue.registerCrimsonTempestSpell()
 }
 
 func (rogue *Rogue) applyCombatPotency() {

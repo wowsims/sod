@@ -34,6 +34,21 @@ type PetConfig struct {
 	AutoAttacks   core.AutoAttackOptions
 }
 
+func (warlock *Warlock) setDefaultActivePet() {
+	switch warlock.Options.Summon {
+	case proto.WarlockOptions_Imp:
+		warlock.ActivePet = warlock.Imp
+	case proto.WarlockOptions_Felguard:
+		warlock.ActivePet = warlock.Felguard
+	case proto.WarlockOptions_Felhunter:
+		warlock.ActivePet = warlock.Felhunter
+	case proto.WarlockOptions_Succubus:
+		warlock.ActivePet = warlock.Succubus
+	case proto.WarlockOptions_Voidwalker:
+		warlock.ActivePet = warlock.Voidwalker
+	}
+}
+
 func (warlock *Warlock) registerPets() {
 	warlock.Felhunter = warlock.makeFelhunter()
 	warlock.Imp = warlock.makeImp()

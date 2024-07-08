@@ -11,12 +11,11 @@ import (
 func (paladin *Paladin) registerHolyShock() {
 
 	hasInfusionOfLight := paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight)
-	
+
 	cdTime := time.Second * 30
 	if hasInfusionOfLight {
 		cdTime = time.Second * 6
 	}
-
 
 	paladin.holyShockCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
@@ -39,11 +38,10 @@ func (paladin *Paladin) registerHolyShock() {
 		{level: 56, spellID: 20930, manaCost: 325, minDamage: 365, maxDamage: 395},
 	}
 
-	
 	damageMultiplier := core.TernaryFloat64(hasInfusionOfLight, 1.5, 1.0)
 
 	//hasArtOfWar := paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
-	manaCostMultiplier := 1.0//core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
+	manaCostMultiplier := 1.0 //core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
 
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 

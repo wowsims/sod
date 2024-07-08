@@ -197,6 +197,10 @@
 	padding-left: 20px;
 }
 
+.expand-toggle {
+	margin-left: var(--spacer-1);
+}
+
 tr:not(.parent-metric) .expand-toggle {
 	display: none;
 }

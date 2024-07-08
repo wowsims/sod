@@ -71,6 +71,7 @@ type Warlock struct {
 	RainOfFire         []*core.Spell
 	SiphonLife         []*core.Spell
 	DeathCoil          []*core.Spell
+	Shadowflame        *core.Spell
 	UnstableAffliction *core.Spell
 
 	ActiveCurseAura          *core.Aura
@@ -87,7 +88,6 @@ type Warlock struct {
 	CurseOfAgony             []*core.Spell
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
-	Shadowflame              *core.Spell
 
 	SummonDemonSpells []*core.Spell
 
@@ -110,10 +110,10 @@ type Warlock struct {
 	DPSPAggregate float64
 	PreviousTime  time.Duration
 
-	petStmBonusSP      float64
-	demonicKnowledgeSp float64
-	zilaGularAura      *core.Aura
-	shadowSparkAura    *core.Aura
+	demonicKnowledgeSp   float64
+	zilaGularAura        *core.Aura
+	shadowSparkAura      *core.Aura
+	defendersResolveAura *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -162,9 +162,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
-	if sim.CurrentTime == 0 {
-		warlock.petStmBonusSP = 0
-	}
+	warlock.setDefaultActivePet()
 
 	// warlock.ItemSwap.SwapItems(sim, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
 	// 	proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, false)
@@ -193,19 +191,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 
 	warlock.registerPets()
-
-	switch warlock.Options.Summon {
-	case proto.WarlockOptions_Imp:
-		warlock.ActivePet = warlock.Imp
-	case proto.WarlockOptions_Felguard:
-		warlock.ActivePet = warlock.Felguard
-	case proto.WarlockOptions_Felhunter:
-		warlock.ActivePet = warlock.Felhunter
-	case proto.WarlockOptions_Succubus:
-		warlock.ActivePet = warlock.Succubus
-	case proto.WarlockOptions_Voidwalker:
-		warlock.ActivePet = warlock.Voidwalker
-	}
+	warlock.setDefaultActivePet()
 
 	guardians.ConstructGuardians(&warlock.Character)
 

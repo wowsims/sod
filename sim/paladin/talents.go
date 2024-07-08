@@ -189,20 +189,19 @@ func (paladin *Paladin) applyVengeance() {
 	})
 }
 
- func (paladin *Paladin) applyVindication() {
- 	if paladin.Talents.Vindication == 0 {
- 		return
- 	}
-	 //vindicationMultiplier := []float64{1, 1.05, 1.10, 1.15}[paladin.Talents.Vengeance]
-	 vindicationMultiplier := []*stats.StatDependency{
+func (paladin *Paladin) applyVindication() {
+	if paladin.Talents.Vindication == 0 {
+		return
+	}
+	//vindicationMultiplier := []float64{1, 1.05, 1.10, 1.15}[paladin.Talents.Vengeance]
+	vindicationMultiplier := []*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.00),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.05),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.10),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.15),
-		
 	}
 
-	 vindicationAura := paladin.RegisterAura(core.Aura{
+	vindicationAura := paladin.RegisterAura(core.Aura{
 		Label:    "Vindication Proc",
 		ActionID: core.ActionID{SpellID: 26021},
 		Duration: time.Second * 30,
@@ -210,26 +209,26 @@ func (paladin *Paladin) applyVengeance() {
 			paladin.EnableDynamicStatDep(sim, vindicationMultiplier[0])
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.EnableDynamicStatDep(sim, vindicationMultiplier[paladin.Talents.Vindication])		
+			paladin.EnableDynamicStatDep(sim, vindicationMultiplier[paladin.Talents.Vindication])
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.DisableDynamicStatDep(sim, vindicationMultiplier[paladin.Talents.Vindication])		
+			paladin.DisableDynamicStatDep(sim, vindicationMultiplier[paladin.Talents.Vindication])
 		},
 	})
-// 	vindicationAuras := paladin.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-// 		return core.VindicationAura(target, paladin.Talents.Vindication)
-// 	})
- 	paladin.RegisterAura(core.Aura{
- 		Label:    "Vindication Talent",
- 		Duration: core.NeverExpires,
- 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
- 			aura.Activate(sim)
- 		},
- 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
- 			// TODO: Replace with actual proc mask / proc chance
+	// 	vindicationAuras := paladin.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	// 		return core.VindicationAura(target, paladin.Talents.Vindication)
+	// 	})
+	paladin.RegisterAura(core.Aura{
+		Label:    "Vindication Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// TODO: Replace with actual proc mask / proc chance
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
- 				vindicationAura.Activate(sim)
+				vindicationAura.Activate(sim)
 			}
- 		},
- 	})
- }
+		},
+	})
+}

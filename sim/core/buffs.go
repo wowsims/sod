@@ -2372,3 +2372,21 @@ func ApplyAshenvaleRallyingCry(character *Character) *Aura {
 		},
 	})
 }
+
+///////////////////////////////////////////////////////////////////////////
+//                            Misc Other Buffs
+///////////////////////////////////////////////////////////////////////////
+
+func DefendersResolveSpellDamage(character *Character) *Aura {
+	return character.GetOrRegisterAura(Aura{
+		ActionID: ActionID{SpellID: 460200},
+		Label:    "Defender's Resolve (Spell Damage)",
+		Duration: time.Second * 15,
+		// Each stack corresponds to 2 SP. Handles a max of 500 Defense
+		MaxStacks: 200,
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(-2*oldStacks))
+			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(2*newStacks))
+		},
+	})
+}
