@@ -9,12 +9,12 @@ import (
 
 func (rogue *Rogue) registerBackstabSpell() {
 	flatDamageBonus := map[int32]float64{
-		25: 48,
-		40: 90,
-		50: 135,
+		25: 32,
+		40: 60,
+		50: 90,
 		// TODO: AQ
-		60: 210,
-		// 60: 225,
+		60: 140,
+		// 60: 150,
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
@@ -30,8 +30,13 @@ func (rogue *Rogue) registerBackstabSpell() {
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
 
-	RuneDamageModifier := core.TernaryFloat64(hasSlaughterRune, 1.6, 1)
-	RuneCostModifier := core.TernaryFloat64(hasSlaughterRune, 30, 0)
+	damageMultiplier := 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
+	energyCost := 60.0
+
+	if hasSlaughterRune {
+		damageMultiplier *= SlaughterFromTheShadowsDamageMultiplier
+		energyCost -= SlaughterFromTheShadowsCostReduction
+	}
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -41,7 +46,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - RuneCostModifier,
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -61,13 +66,13 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
