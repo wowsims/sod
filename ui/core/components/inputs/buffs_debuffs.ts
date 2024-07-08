@@ -1,5 +1,6 @@
-import { Faction, SaygesFortune, Stat } from '../../proto/common';
+import { DragonslayerBuff, Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
+import { IconEnumPicker } from '../icon_enum_picker';
 import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
@@ -494,13 +495,22 @@ export const BattleSquawkBuff = makeMultistateRaidBuffInput({
 //                                 WORLD BUFFS
 ///////////////////////////////////////////////////////////////////////////
 
-export const RallyingCryOfTheDragonslayer = withLabel(
-	makeBooleanIndividualBuffInput({
-		actionId: () => ActionId.fromSpellId(22888),
-		fieldName: 'rallyingCryOfTheDragonslayer',
-	}),
-	'Rallying Cry of the Dragonslayer',
-);
+// export const RallyingCryOfTheDragonslayer = withLabel(
+// 	makeBooleanIndividualBuffInput({
+// 		actionId: () => ActionId.fromSpellId(22888),
+// 		fieldName: 'rallyingCryOfTheDragonslayer',
+// 	}),
+// 	'Rallying Cry of the Dragonslayer',
+// );
+export const DragonslayerBuffInput = makeEnumIndividualBuffInput({
+	direction: IconPickerDirection.Horizontal,
+	values: [
+		{ value: DragonslayerBuff.DragonslayerBuffUnknown, text: 'Dragonslayer Buff' },
+		{ value: DragonslayerBuff.RallyingCryofTheDragonslayer, actionId: () => ActionId.fromSpellId(22888), text: 'Rallying Cry of the Dragonslayer' },
+		{ value: DragonslayerBuff.ValorOfAzeroth, actionId: () => ActionId.fromSpellId(461475), text: 'Valor of Azeroth' },
+	],
+	fieldName: 'dragonslayerBuff',
+});
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(24425),
@@ -1094,15 +1104,20 @@ export const MISC_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const WORLD_BUFFS_CONFIG = [
+	// {
+	// 	config: RallyingCryOfTheDragonslayer,
+	// 	picker: IconPicker,
+	// 	stats: [
+	// 		Stat.StatMeleeCrit,
+	// 		// TODO: Stat.StatRangedCrit,
+	// 		Stat.StatSpellCrit,
+	// 		Stat.StatAttackPower,
+	// 	],
+	// },
 	{
-		config: RallyingCryOfTheDragonslayer,
-		picker: IconPicker,
-		stats: [
-			Stat.StatMeleeCrit,
-			// TODO: Stat.StatRangedCrit,
-			Stat.StatSpellCrit,
-			Stat.StatAttackPower,
-		],
+		config: DragonslayerBuffInput,
+		picker: IconEnumPicker,
+		stats: [],
 	},
 	{
 		config: SongflowerSerenade,

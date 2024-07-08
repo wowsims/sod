@@ -710,8 +710,14 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// World Buffs
-	if individualBuffs.RallyingCryOfTheDragonslayer {
+	// if individualBuffs.RallyingCryOfTheDragonslayer {
+	// 	ApplyRallyingCryOfTheDragonslayer(character)
+	// }
+	switch individualBuffs.DragonslayerBuff {
+	case proto.DragonslayerBuff_RallyingCryofTheDragonslayer:
 		ApplyRallyingCryOfTheDragonslayer(character)
+	case proto.DragonslayerBuff_ValorOfAzeroth:
+		ApplyValorOfAzeroth(character)
 	}
 
 	if individualBuffs.SpiritOfZandalar {
@@ -818,6 +824,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.AshenvalePvpBuff = false
 	individualBuffs.SongflowerSerenade = false
 	individualBuffs.RallyingCryOfTheDragonslayer = false
+	individualBuffs.DragonslayerBuff = proto.DragonslayerBuff_DragonslayerBuffUnknown
 	individualBuffs.WarchiefsBlessing = false
 	individualBuffs.MightOfStormwind = false
 	individualBuffs.SpiritOfZandalar = false
@@ -2130,6 +2137,23 @@ func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
 	return character.RegisterAura(Aura{
 		Label:    "Rallying Cry of the Dragonslayer",
 		ActionID: ActionID{SpellID: 22888},
+		Duration: NeverExpires,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+}
+
+func ApplyValorOfAzeroth(character *Character) *Aura {
+	character.AddStat(stats.SpellCrit, 5*SpellCritRatingPerCritChance)
+	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
+	// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
+	character.AddStat(stats.AttackPower, float64(character.Level)*1.5)
+	character.AddStat(stats.RangedAttackPower, float64(character.Level)*1.5)
+
+	return character.RegisterAura(Aura{
+		Label:    "Valor of Azeroth",
+		ActionID: ActionID{SpellID: 461475},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)

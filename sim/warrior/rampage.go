@@ -14,11 +14,12 @@ func (warrior *Warrior) registerRampage() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: int32(proto.WarriorRune_RuneRampage)}
 	statDep := warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.10)
 
 	warrior.RampageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Rampage",
-		ActionID: core.ActionID{SpellID: 426942},
+		ActionID: actionID,
 		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.EnableDynamicStatDep(sim, statDep)
@@ -29,7 +30,7 @@ func (warrior *Warrior) registerRampage() {
 	})
 
 	warrior.Rampage = warrior.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: int32(proto.WarriorRune_RuneRampage)},
+		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
