@@ -51,12 +51,10 @@ func (hunter *Hunter) registerCarveSpell() {
 
 func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
 	procMask := core.ProcMaskMeleeMHSpecial
-	damageMultiplier := 0.65
 	damageFunc := hunter.MHWeaponDamage
 
 	if !isMH {
 		procMask = core.ProcMaskMeleeOHSpecial
-		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier * 0.65
 		damageFunc = hunter.OHWeaponDamage
 	}
 
@@ -67,7 +65,7 @@ func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: damageMultiplier,
+		DamageMultiplier: 0.65,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -98,12 +98,10 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *core.Spell {
 	}[warrior.Level]
 
 	procMask := core.ProcMaskMeleeMHSpecial
-	damageMultiplier := 1.0
 	damageFunc := warrior.MHWeaponDamage
 	if !isMH {
 		flatDamageBonus /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
-		damageMultiplier = warrior.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = warrior.OHWeaponDamage
 	}
 
@@ -117,7 +115,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *core.Spell {
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,
 
-		DamageMultiplier: damageMultiplier,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
