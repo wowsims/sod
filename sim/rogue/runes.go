@@ -168,7 +168,7 @@ func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	refreshBladeDance := rogue.BladeDanceAura.IsActive()
 	// Refresh the lowest duration of SnD or Blade Dance
 	if refreshBladeDance && refreshSlice {
-		if rogue.SliceAndDiceAura.RemainingDuration(sim) < rogue.BladeDanceAura.RemainingDuration(sim) {
+		if rogue.SliceAndDiceAura.RemainingDuration(sim) > rogue.BladeDanceAura.RemainingDuration(sim) {
 			refreshSlice = false
 		} else {
 			refreshBladeDance = false
