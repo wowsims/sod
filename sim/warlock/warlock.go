@@ -162,18 +162,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
-	switch warlock.Options.Summon {
-	case proto.WarlockOptions_Imp:
-		warlock.ActivePet = warlock.Imp
-	case proto.WarlockOptions_Felguard:
-		warlock.ActivePet = warlock.Felguard
-	case proto.WarlockOptions_Felhunter:
-		warlock.ActivePet = warlock.Felhunter
-	case proto.WarlockOptions_Succubus:
-		warlock.ActivePet = warlock.Succubus
-	case proto.WarlockOptions_Voidwalker:
-		warlock.ActivePet = warlock.Voidwalker
-	}
+	warlock.setDefaultActivePet()
 
 	// warlock.ItemSwap.SwapItems(sim, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
 	// 	proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, false)
@@ -202,6 +191,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 
 	warlock.registerPets()
+	warlock.setDefaultActivePet()
 
 	guardians.ConstructGuardians(&warlock.Character)
 
