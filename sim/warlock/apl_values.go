@@ -164,7 +164,7 @@ type APLValueWarlockCurrentPetMana struct {
 
 func (warlock *Warlock) newValueWarlockCurrentPetMana(rot *core.APLRotation, config *proto.APLValueWarlockCurrentPetMana) core.APLValue {
 	pet := warlock.ActivePet
-	if pet.GetPet() == nil {
+	if pet == nil {
 		return nil
 	}
 	if !pet.GetPet().HasManaBar() {
