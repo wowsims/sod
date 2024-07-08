@@ -17,7 +17,26 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       rogue.finisherFlags(),
+		MetricSplits: 6,
+
+		EnergyCost: core.EnergyCostOptions{
+			Cost:   35,
+			Refund: 0,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			IgnoreHaste: true,
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return rogue.ComboPoints() > 0
+		},
+
 
 		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
 		ThreatMultiplier: 1,
@@ -45,13 +64,15 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 				dot.Spell = spell
 				dot.NumberOfTicks = rogue.ComboPoints() + 1
 				dot.Apply(sim)
+				rogue.SpendComboPoints(sim, spell)
+			} else {
+				spell.IssueRefund(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},
 	})
 }
 
-// TODO: Currently bugged and creates "infite loop detected" warning
 func (rogue *Rogue) registerCrimsonTempestSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneCrimsonTempest) {
 		return
@@ -65,19 +86,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        SpellFlagCarnage, // TODO: Placeholder to prevent use in APL while broken. Replace with rogue.finisherFlags()
-		MetricSplits: 6,
-
-		EnergyCost: core.EnergyCostOptions{
-			Cost:   35,
-			Refund: 0,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: time.Second,
-			},
-			IgnoreHaste: true,
-		},
+		Flags:        rogue.finisherFlags(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -85,12 +94,12 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				rogue.CrimsonTempestBleed.Cast(sim, aoeTarget)
 			}
-
-			rogue.SpendComboPoints(sim, spell)
 		},
 	})
 }
 
 func (rogue *Rogue) CrimsonTempestDamage(comboPoints int32) float64 {
-	return []float64{0.15, 0.3, 0.45, 0.6, 0.75, 0.9}[comboPoints] * rogue.GetStat(stats.AttackPower)
+	tickDamageValues := []float64{0, 0.3, 0.45, 0.6, 0.75, 0.9}
+	tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower)/float64(comboPoints+2)
+	return tickDamage
 }
