@@ -75,7 +75,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV,
 
 			BonusCritRating: paladin.holyCrit(), // TODO to be tested
 

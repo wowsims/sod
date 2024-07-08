@@ -24,16 +24,18 @@ func (paladin *Paladin) registerAuraMastery() {
 		ActionID: core.ActionID{SpellID: 415756},
 		Duration: time.Second * 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-		    //_, exists := *paladin.GetCharacter().Unit.auraTracker.aurasByTag["Sanctity Aura"]
-                    //if  exists {
-                    paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.2 / 1.1)
-                    //}
+		    if paladin.currentPaladinAura != nil {
+                        if paladin.currentPaladinAura.Label == "Sanctity Aura" {
+                            paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.2 / 1.1)
+                        }
+                    }
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-		    //_, exists := paladin.GetCharacter().Unit.auraTracker.aurasByTag["Sanctity Aura"]
-		    //if  exists {
-                    paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
-                    //}
+                    if paladin.currentPaladinAura != nil {
+                        if paladin.currentPaladinAura.Label == "Sanctity Aura" {
+                            paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
+                        }
+                    }
 		},
 	})
 

@@ -111,7 +111,7 @@ enum Blessings {
 
 enum PaladinAura {
 	NoPaladinAura = 0;
-	SanctuaryAura = 1;
+	SanctityAura = 1;
 	DevotionAura = 2;
 	RetributionAura = 3;
 	ConcentrationAura = 4;

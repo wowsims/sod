@@ -27,7 +27,7 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	protOptions := options.GetProtectionPaladin()
 
 	prot := &ProtectionPaladin{
-		Paladin: paladin.NewPaladin(character, options.TalentsString),
+		Paladin: paladin.NewPaladin(character, options, protOptions.Options.Aura),
 		Options: protOptions.Options,
 		Seal:    protOptions.Options.Seal,
 	}
