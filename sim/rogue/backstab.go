@@ -9,17 +9,21 @@ import (
 
 func (rogue *Rogue) registerBackstabSpell() {
 	flatDamageBonus := map[int32]float64{
-		25: 32,
-		40: 60,
-		50: 90,
-		60: 140,
+		25: 48,
+		40: 90,
+		50: 135,
+		// TODO: AQ
+		60: 210,
+		// 60: 225,
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
 		25: 2590,
 		40: 8721,
 		50: 11279,
+		// TODO: AQ
 		60: 11281,
+		// 60: 25300
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
@@ -50,21 +54,20 @@ func (rogue *Rogue) registerBackstabSpell() {
 			if !rogue.HasDagger(core.MainHand) {
 				return false
 			}
-			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget			
+			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget
 		},
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
+		DamageMultiplier: []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
-
+			baseDamage := (flatDamageBonus + 1.5*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -72,7 +75,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 				if hasCutthroatRune {
 					rogue.rollCutthroat(sim)
 				}
-					/** Currently does not apply to bosses due to being a slow
+				/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)
 				} */

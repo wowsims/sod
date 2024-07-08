@@ -5,11 +5,13 @@ import (
 )
 
 func (warrior *Warrior) registerHeroicStrikeSpell() {
-	damage := map[int32]float64{
+	flatDamageBonus := map[int32]float64{
 		25: 44,
 		40: 80,
 		50: 111,
+		// TODO: AQ
 		60: 138,
+		// 60: 157
 	}[warrior.Level]
 
 	spellID := map[int32]int32{
@@ -47,9 +49,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := damage +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
+			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if !result.Landed() {

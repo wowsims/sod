@@ -107,7 +107,9 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 
 func (warlock *Warlock) registerCorruptionSpell() {
 	warlock.Corruption = make([]*core.Spell, 0)
-	for i := 1; i <= CorruptionRanks; i++ {
+
+	// TODO: AQ <=
+	for i := 1; i < CorruptionRanks; i++ {
 		config := warlock.getCorruptionConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {
