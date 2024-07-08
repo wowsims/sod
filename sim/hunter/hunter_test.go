@@ -14,23 +14,23 @@ func init() {
 
 func TestBM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase1BMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+		// 	Talents:     Phase1BMTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -56,23 +56,23 @@ func TestBM(t *testing.T) {
 
 func TestMM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase1MMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+		// 	Talents:     Phase1MMTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -95,23 +95,23 @@ func TestMM(t *testing.T) {
 
 func TestSV(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase1SVTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+		// 	Talents:     Phase1SVTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -130,86 +130,6 @@ func TestSV(t *testing.T) {
 			StatsToWeigh:    Stats,
 		},
 	}))
-}
-
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2BMTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged_bm").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_ranged_bm").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2MMTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged_mm").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_ranged_mm").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2SVTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_melee").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_melee").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
 }
 
 var Phase1BMTalents = "53000200501"

@@ -62,7 +62,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 63
-  final_stats: 36
+  final_stats: 42
   final_stats: 3
   final_stats: 24.80091
   final_stats: 0
@@ -99,8 +99,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestAffliction-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 187
-  final_stats: 185.9
+  final_stats: 167.2
+  final_stats: 173.8
   final_stats: 423.775
   final_stats: 359.7
   final_stats: 232.1
@@ -116,16 +116,16 @@ character_stats_results: {
   final_stats: 40.63505
   final_stats: 0
   final_stats: 0
-  final_stats: 1220.2
+  final_stats: 1117.2
   final_stats: 7
-  final_stats: 34.855
+  final_stats: 34.305
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 6488.5
   final_stats: 0
   final_stats: 0
-  final_stats: 1861.2
+  final_stats: 1839.2
   final_stats: 540
   final_stats: 0
   final_stats: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -2.01877
+  weights: 0.3942
   weights: 0
-  weights: 0.78592
-  weights: 0
-  weights: 0
+  weights: 1.11928
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.76552
-  weights: 8.49773
+  weights: 0
+  weights: 0
+  weights: 6.83981
+  weights: 7.93008
   weights: 0
   weights: 0
   weights: 0
@@ -358,36 +358,36 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 306.27681
-  tps: 208.99256
+  dps: 308.04748
+  tps: 209.12025
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1189.35413
-  tps: 1039.05945
+  dps: 1190.98188
+  tps: 1040.10783
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1780.30459
-  tps: 2581.1533
+  dps: 1783.35412
+  tps: 2574.20572
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1180.97179
-  tps: 1030.52018
+  dps: 1189.78669
+  tps: 1039.60171
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1238.28053
-  tps: 1075.12586
+  dps: 1240.73874
+  tps: 1077.08044
  }
 }
 dps_results: {
@@ -414,8 +414,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1183.82315
-  tps: 1033.74368
+  dps: 1180.17926
+  tps: 1028.35888
  }
 }
 dps_results: {

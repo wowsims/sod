@@ -111,7 +111,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 40
-  final_stats: 36
+  final_stats: 42
   final_stats: 4
   final_stats: 35.92209
   final_stats: 0
@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestDestruction-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 187
-  final_stats: 185.9
+  final_stats: 167.2
+  final_stats: 173.8
   final_stats: 507.70775
   final_stats: 353.1
   final_stats: 213.18
@@ -165,16 +165,16 @@ character_stats_results: {
   final_stats: 41.52615
   final_stats: 0
   final_stats: 0
-  final_stats: 1220.2
+  final_stats: 1117.2
   final_stats: 9
-  final_stats: 35.855
+  final_stats: 35.305
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 6389.5
   final_stats: 0
   final_stats: 0
-  final_stats: 1977.2
+  final_stats: 1955.2
   final_stats: 540
   final_stats: 0
   final_stats: 0
@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.70345
+  weights: -13.46384
   weights: 0
-  weights: -2.1209
-  weights: 0
-  weights: 0
+  weights: 0.31422
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 29.0706
-  weights: 12.7386
+  weights: 0
+  weights: 0
+  weights: 18.16657
+  weights: 13.20016
   weights: 0
   weights: 0
   weights: 0
@@ -519,29 +519,29 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 322.49793
-  tps: 223.4878
+  dps: 327.33842
+  tps: 224.32692
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1313.58183
-  tps: 1176.38876
+  dps: 1315.81568
+  tps: 1177.8662
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2042.68549
-  tps: 2527.6366
+  dps: 2037.2597
+  tps: 2516.7884
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1306.4693
-  tps: 1171.2022
+  dps: 1310.53465
+  tps: 1175.94252
  }
 }
 dps_results: {
@@ -575,8 +575,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1298.04286
-  tps: 1162.76084
+  dps: 1305.56511
+  tps: 1167.9825
  }
 }
 dps_results: {

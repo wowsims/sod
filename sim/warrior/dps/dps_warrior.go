@@ -40,8 +40,9 @@ func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior
 	}
 
 	war.EnableRageBar(core.RageBarOptions{
-		StartingRage:   warOptions.Options.StartingRage,
-		RageMultiplier: core.TernaryFloat64(war.HasRune(proto.WarriorRune_RuneEndlessRage), 1.25, 1),
+		StartingRage:          warOptions.Options.StartingRage,
+		DamageDealtMultiplier: 1,
+		DamageTakenMultiplier: 1,
 	})
 
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{

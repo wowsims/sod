@@ -2,9 +2,12 @@ package warrior
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (warrior *Warrior) registerExecuteSpell() {
+	hasSuddenDeathRune := warrior.HasRune(proto.WarriorRune_RuneSuddenDeath)
+
 	flatDamage := map[int32]float64{
 		25: 125,
 		40: 325,
@@ -45,7 +48,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase20()
+			return sim.IsExecutePhase20() || (hasSuddenDeathRune && warrior.SuddenDeathAura.IsActive())
 		},
 
 		CritDamageBonus: warrior.impale(),

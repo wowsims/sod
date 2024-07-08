@@ -26,8 +26,13 @@ func (rogue *Rogue) registerAmbushSpell() {
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
 
-	RuneDamageModifier := core.TernaryFloat64(hasSlaughterRune, 1.6, 1)
-	RuneCostModifier := core.TernaryFloat64(hasSlaughterRune, 30, 0)
+	damageMultiplier := 2.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
+	energyCost := 60.0
+
+	if hasSlaughterRune {
+		damageMultiplier *= SlaughterFromTheShadowsDamageMultiplier
+		energyCost -= SlaughterFromTheShadowsCostReduction
+	}
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -37,7 +42,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - RuneCostModifier,
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -53,17 +58,17 @@ func (rogue *Rogue) registerAmbushSpell() {
 			if hasCutthroatRune && (rogue.CutthroatProcAura.IsActive() || rogue.IsStealthed()) {
 				return true
 			}
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()		
+			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		BonusCritRating: 15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
-		DamageMultiplier: 2.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
+		BonusCritRating:  15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())) * RuneDamageModifier
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if hasCutthroatRune && rogue.CutthroatProcAura.IsActive() {

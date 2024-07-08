@@ -56,6 +56,8 @@ type Hunter struct {
 	FocusFire      *core.Spell
 	RapidFire      *core.Spell
 	RaptorStrike   *core.Spell
+	RaptorStrikeMH *core.Spell
+	RaptorStrikeOH *core.Spell
 	FlankingStrike *core.Spell
 	WyvernStrike   *core.Spell
 	MongooseBite   *core.Spell
@@ -63,7 +65,8 @@ type Hunter struct {
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
 	Volley         *core.Spell
-	CarveMh        *core.Spell
+	CarveMH        *core.Spell
+	CarveOH        *core.Spell
 	WingClip       *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
