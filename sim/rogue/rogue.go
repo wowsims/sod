@@ -30,32 +30,36 @@ type Rogue struct {
 	sliceAndDiceDurations [6]time.Duration
 	bladeDanceDurations   [6]time.Duration
 
-	Backstab       *core.Spell
-	BladeFlurry    *core.Spell
-	Feint          *core.Spell
-	Garrote        *core.Spell
-	Ambush         *core.Spell
-	Hemorrhage     *core.Spell
-	GhostlyStrike  *core.Spell
-	HungerForBlood *core.Spell
-	Mutilate       *core.Spell
-	MutilateMH     *core.Spell
-	MutilateOH     *core.Spell
-	Shiv           *core.Spell
-	SinisterStrike *core.Spell
-	SaberSlash     *core.Spell
-	saberSlashTick *core.Spell
-	MainGauche     *core.Spell
-	Shadowstep     *core.Spell
-	Preparation    *core.Spell
-	Premeditation  *core.Spell
-	ColdBlood      *core.Spell
-	Vanish         *core.Spell
-	Shadowstrike   *core.Spell
-	QuickDraw      *core.Spell
-	ShurikenToss   *core.Spell
-	BetweenTheEyes *core.Spell
-	PoisonedKnife  *core.Spell
+	Backstab            *core.Spell
+	BladeFlurry         *core.Spell
+	Feint               *core.Spell
+	Garrote             *core.Spell
+	Ambush              *core.Spell
+	Hemorrhage          *core.Spell
+	GhostlyStrike       *core.Spell
+	HungerForBlood      *core.Spell
+	Mutilate            *core.Spell
+	MutilateMH          *core.Spell
+	MutilateOH          *core.Spell
+	Shiv                *core.Spell
+	SinisterStrike      *core.Spell
+	SaberSlash          *core.Spell
+	saberSlashTick      *core.Spell
+	MainGauche          *core.Spell
+	Shadowstep          *core.Spell
+	Preparation         *core.Spell
+	Premeditation       *core.Spell
+	ColdBlood           *core.Spell
+	Vanish              *core.Spell
+	Shadowstrike        *core.Spell
+	QuickDraw           *core.Spell
+	ShurikenToss        *core.Spell
+	BetweenTheEyes      *core.Spell
+	PoisonedKnife       *core.Spell
+	Blunderbuss         *core.Spell
+	FanOfKnives         *core.Spell
+	CrimsonTempest      *core.Spell
+	CrimsonTempestBleed *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell

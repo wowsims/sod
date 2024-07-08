@@ -103,7 +103,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskEmpty,
+			ProcMask:    core.ProcMaskMeleeMHSpecial, //changed to ProcMaskMeleeMHSpecial, to fix procs from weapons/oils which do proc from SoR, Idk side effects, does WS proc from SoR?
 			Flags:       core.SpellFlagMeleeMetrics,
 
 			//BonusCritRating: paladin.holyCrit(), // TODO to be tested, but unlikely
