@@ -9,12 +9,12 @@ import (
 
 func (rogue *Rogue) registerBackstabSpell() {
 	flatDamageBonus := map[int32]float64{
-		25: 48,
-		40: 90,
-		50: 135,
+		25: 32,
+		40: 60,
+		50: 90,
 		// TODO: AQ
-		60: 210,
-		// 60: 225,
+		60: 140,
+		// 60: 150,
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
