@@ -55,7 +55,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -168,7 +168,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= hunter.RaptorStrike.DefaultCast.Cost &&
 				sim.CurrentTime >= hunter.Hardcast.Expires &&
-				hunter.DistanceFromTarget <= 5 &&
+				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)
 		},
 

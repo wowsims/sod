@@ -91,10 +91,10 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 

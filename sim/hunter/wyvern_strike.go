@@ -39,10 +39,10 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 		ThreatMultiplier: 1,

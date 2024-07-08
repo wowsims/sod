@@ -35,7 +35,7 @@ func (hunter *Hunter) registerCarveSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
