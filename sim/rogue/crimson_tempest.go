@@ -93,7 +93,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 
 func (rogue *Rogue) CrimsonTempestDamage(comboPoints int32) float64 {
     tickDamageValues := []float64{0, 0.3, 0.45, 0.6, 0.75, 0.9}
-    tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower)/float64(comboPoints+2)
+    tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower)/float64(comboPoints+1)
     return tickDamage
 }
 
