@@ -30,7 +30,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

@@ -428,7 +428,7 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 143,
+		Period:          time.Millisecond * 1000 / 7,
 		NumTicks:        int(moveTicks),
 		TickImmediately: false,
 
