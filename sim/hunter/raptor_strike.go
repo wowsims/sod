@@ -106,6 +106,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	damageFunc := core.Ternary(hasMeleeSpecialist, hunter.MHNormalizedWeaponDamage, hunter.MHWeaponDamage)
 
 	if !isMH {
+		baseDamage /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = core.Ternary(hasMeleeSpecialist, hunter.OHNormalizedWeaponDamage, hunter.OHWeaponDamage)
@@ -130,8 +131,8 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 			}
 
 			weaponDamage := damageFunc(sim, spell.MeleeAttackPower())
-			baseDamage := multiplier * (weaponDamage + baseDamage*0.5)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			damage := multiplier * (weaponDamage + baseDamage)
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if hasCobraStrikes && result.DidCrit() {
 				hunter.CobraStrikesAura.Activate(sim)
 				hunter.CobraStrikesAura.SetStacks(sim, 2)
