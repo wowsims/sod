@@ -240,6 +240,17 @@ var SpellIconoverrides = []*proto.IconData{
 	{Id: 415071, Name: "Exorcism (Rank 4)"},
 	{Id: 415072, Name: "Exorcism (Rank 5)"},
 	{Id: 415073, Name: "Exorcism (Rank 6)"},
+
+	{Id: 403835, Name: "Shadow Cleave (Rank 1)"},
+	{Id: 403839, Name: "Shadow Cleave (Rank 2)"},
+	{Id: 403840, Name: "Shadow Cleave (Rank 3)"},
+	{Id: 403841, Name: "Shadow Cleave (Rank 4)"},
+	{Id: 403842, Name: "Shadow Cleave (Rank 5)"},
+	{Id: 403843, Name: "Shadow Cleave (Rank 6)"},
+	{Id: 403844, Name: "Shadow Cleave (Rank 7)"},
+	{Id: 403848, Name: "Shadow Cleave (Rank 8)"},
+	{Id: 403851, Name: "Shadow Cleave (Rank 9)"},
+	{Id: 403852, Name: "Shadow Cleave (Rank 10)"},
 }
 
 // Raid buffs / debuffs

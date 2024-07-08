@@ -42,7 +42,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5 && hunter.DefensiveState.IsActive()
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance && hunter.DefensiveState.IsActive()
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
@@ -53,8 +54,24 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
+			hasHit := false
 			for _, result := range results {
-				spell.DealDamage(sim, result)
+				if result.Landed() {
+					hasHit = true
+					spell.DealDamage(sim, result)
+				}
+			}
+
+			if hasHit {
+				if stacks := int32(2*max(warlock.GetStat(stats.Defense), 0)) / 2; stacks > 0 {
+					if !warlock.defendersResolveAura.IsActive() {
+						warlock.defendersResolveAura.Activate(sim)
+					}
+
+					if warlock.defendersResolveAura.GetStacks() < stacks {
+						warlock.defendersResolveAura.SetStacks(sim, stacks)
+					}
+				}
 			}
 		},
 	}
@@ -65,11 +82,11 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 		return
 	}
 
-	maxRank := 10
+	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter())
 
 	warlock.ShadowCleave = make([]*core.Spell, 0)
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getShadowCleaveBaseConfig(i)
+	for rank := 1; rank <= ShadowBoltRanks; rank++ {
+		config := warlock.getShadowCleaveBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
 			warlock.ShadowCleave = append(warlock.ShadowCleave, warlock.GetOrRegisterSpell(config))

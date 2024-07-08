@@ -32,9 +32,8 @@ func (paladin *Paladin) registerAvengingWrath() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute*3,
+				Duration: time.Minute * 3,
 			},
-			
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			AvengingWrathAura.Activate(sim)
@@ -44,6 +43,5 @@ func (paladin *Paladin) registerAvengingWrath() {
 	paladin.AddMajorCooldown(core.MajorCooldown{
 		Spell: AvengingWrath,
 		Type:  core.CooldownTypeDPS,
-		
 	})
 }
