@@ -8,10 +8,9 @@ import (
 )
 
 func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
-	actionID := core.ActionID{SpellID: 399960}
+	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneMutilate)}
 	procMask := core.ProcMaskMeleeMHSpecial
 	if !isMH {
-		actionID = core.ActionID{SpellID: 399961}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
 
@@ -39,9 +38,9 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage float64
 			if isMH {
-				baseDamage = flatDamageBonus * 0.8 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
+				baseDamage = flatDamageBonus*0.8 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())*0.8
 			} else {
-				baseDamage = flatDamageBonus * 0.8 + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
+				baseDamage = flatDamageBonus*0.8 + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())*0.8
 			}
 
 			// TODO: Add support for all poison effects (such as chipped bite proc), if they apply ;)

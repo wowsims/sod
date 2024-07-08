@@ -4,9 +4,16 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// Blood Frenzy
+// Rend can now be used in Berserker stance, Rend's damage is increased by 100%,
+// and Rend deals additional damage equal to 3% of your Attack Power each time it deals damage.
+
 func (warrior *Warrior) registerRendSpell() {
+	hasBloodFrenzyRune := warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy)
+
 	rend := map[int32]struct {
 		ticks   int32
 		damage  float64
@@ -17,6 +24,11 @@ func (warrior *Warrior) registerRendSpell() {
 		50: {spellID: 11573, damage: 18, ticks: 7},
 		60: {spellID: 11574, damage: 21, ticks: 7},
 	}[warrior.Level]
+
+	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
+	if hasBloodFrenzyRune {
+		damageMultiplier *= 2
+	}
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: rend.spellID},
@@ -36,10 +48,10 @@ func (warrior *Warrior) registerRendSpell() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
+			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance) || (hasBloodFrenzyRune && warrior.StanceMatches(BerserkerStance))
 		},
 
-		DamageMultiplier: []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend],
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -50,7 +62,12 @@ func (warrior *Warrior) registerRendSpell() {
 			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, rend.damage, isRollover)
+				damage := rend.damage
+				if hasBloodFrenzyRune {
+					damage *= 1 + .03*dot.Spell.MeleeAttackPower()
+				}
+
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -22,6 +22,8 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		60: {spellID: 23925, damageLow: 342, damageHigh: 358, threat: 254},
 	}[warrior.Level]
 
+	apCoef := 0.15
+
 	warrior.ShieldSlam = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: rank.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -55,8 +57,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()*2
-
+			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()*2 + apCoef*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {

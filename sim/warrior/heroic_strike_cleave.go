@@ -131,7 +131,7 @@ func (warrior *Warrior) registerCleaveSpell() {
 func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
 	queueAura := warrior.RegisterAura(core.Aura{
 		Label:    "HS/Cleave Queue Aura-" + srcSpell.ActionID.String(),
-		ActionID: srcSpell.ActionID,
+		ActionID: srcSpell.ActionID.WithTag(1),
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.curQueueAura != nil {
@@ -149,11 +149,11 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell
 	})
 
 	queueSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID: srcSpell.WithTag(1),
+		ActionID: srcSpell.ActionID.WithTag(1),
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.curQueueAura != queueAura &&
+			return warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
 				sim.CurrentTime >= warrior.Hardcast.Expires
 		},
