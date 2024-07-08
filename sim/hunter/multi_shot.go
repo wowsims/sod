@@ -113,7 +113,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 	maxRank := 5
 
-	for i := 1; i <= maxRank; i++ {
+	// TODO: AQ <=
+	for i := 1; i < maxRank; i++ {
 		config := hunter.getMultiShotConfig(i, timer)
 
 		if config.RequiredLevel <= int(hunter.Level) {
