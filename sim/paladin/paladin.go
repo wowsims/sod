@@ -143,7 +143,7 @@ func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 
 func (paladin *Paladin) ResetCurrentPaladinAura() {
 	paladin.currentPaladinAura = nil
-	if paladin.primaryPaladinAura == proto.PaladinAura_SacntityAura {
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
 		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
 	}
 }
