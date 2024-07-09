@@ -1,6 +1,5 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs';
-import * as Mechanics from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
@@ -92,7 +91,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
 	customSections: [
 		// TotemsSection,

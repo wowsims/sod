@@ -3,8 +3,10 @@ import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	FirePowerBuff,
+	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -12,10 +14,8 @@ import {
 	RaidBuffs,
 	SaygesFortune,
 	SpellPowerBuff,
-	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
-	ZanzaBuff,
 } from '../core/proto/common.js';
 import { ElementalShaman_Options as ElementalShamanOptions } from '../core/proto/shaman.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -100,15 +100,14 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 export const DefaultOptions = ElementalShamanOptions.create({});
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.GreaterManaPotion,
+	defaultPotion: Potions.MajorManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodNightfinSoup,
 	mainHandImbue: WeaponImbue.FlametongueWeapon,
-	offHandImbue: WeaponImbue.LesserWizardOil,
-	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
-	strengthBuff: StrengthBuff.ElixirOfGiants,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	offHandImbue: WeaponImbue.WizardOil,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -122,15 +121,17 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElements: true,
 	improvedScorch: true,
-	serpentsStrikerFistDebuff: true,
+	markOfChaos: true,
+	occultPoison: true,
 	stormstrike: true,
 });
 

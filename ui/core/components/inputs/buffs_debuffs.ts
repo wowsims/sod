@@ -430,7 +430,7 @@ export const VampiricTouchReplenishment = withLabel(
 );
 
 export const MeleeCritBuff = withLabel(
-	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 17007, minLevel: 40 }]), fieldName: 'leaderOfThePack' }),
+	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 24932, minLevel: 40 }]), fieldName: 'leaderOfThePack' }),
 	'Leader of the Pack',
 );
 
@@ -1319,7 +1319,7 @@ export const MISC_DEBUFFS_CONFIG = [
 	{
 		config: ImprovedFaerieFire,
 		picker: IconPicker,
-		stats: [Stat.StatMeleeHit, Stat.StatSpellHit],
+		stats: [Stat.StatMeleeHit],
 	},
 	{
 		config: MekkatorqueFistDebuff,

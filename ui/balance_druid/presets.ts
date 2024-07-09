@@ -1,9 +1,9 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
-	Conjured,
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	Flask,
 	Food,
@@ -104,14 +104,13 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultConjured: Conjured.ConjuredDruidCatnip,
 	defaultPotion: Potions.MajorManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	flask: Flask.FlaskOfRestlessDreams,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
+	mainHandImbue: WeaponImbue.WizardOil,
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
 });
 
@@ -126,15 +125,20 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
+	occultPoison: true,
+	markOfChaos: true,
+	stormstrike: true,
 });
 
 export const OtherDefaults = {

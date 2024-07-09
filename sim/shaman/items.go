@@ -106,7 +106,12 @@ func init() {
 	// https://www.wowhead.com/classic/item=228176/totem-of-thunder
 	// Equip: The cast time of your Lightning Bolt spell is reduced by -0.1 sec.
 	core.NewItemEffect(TotemOfThunder, func(agent core.Agent) {
-		// Implemented in lightning_bolt.go
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLightningBolt {
+				spell.DefaultCast.CastTime -= time.Millisecond * 100
+			}
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire

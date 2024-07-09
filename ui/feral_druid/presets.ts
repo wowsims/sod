@@ -2,8 +2,10 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	AttackPowerBuff,
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	Food,
 	IndividualBuffs,
@@ -15,7 +17,6 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
-	ZanzaBuff,
 } from '../core/proto/common.js';
 import { FeralDruid_Options as FeralDruidOptions, FeralDruid_Rotation as FeralDruidRotation } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -116,6 +117,7 @@ export const DefaultOptions = FeralDruidOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
@@ -124,8 +126,7 @@ export const DefaultConsumes = Consumes.create({
 	miscConsumes: {
 		catnip: true,
 	},
-	strengthBuff: StrengthBuff.ElixirOfGiants,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
+	strengthBuff: StrengthBuff.JujuPower,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -140,9 +141,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({

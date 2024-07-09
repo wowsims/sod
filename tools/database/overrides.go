@@ -100,6 +100,7 @@ var ItemAllowList = map[int32]struct{}{}
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
+	9449:   {}, // https://www.wowhead.com/classic/item=9449/manual-crowd-pummeler
 	9653:   {}, // Speedy Racer Goggles
 	11684:  {}, // https://www.wowhead.com/classic/item=11684/ironfoe
 	11815:  {}, // https://www.wowhead.com/classic/item=11815/hand-of-justice

@@ -72,14 +72,8 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 	baseDamageTick := rakeRank.dotTickDamage * RakeBaseDmgMultiplier
 	energyCost := 40 - float64(druid.Talents.Ferocity)
 
-	switch druid.Ranged().ID {
-	case IdolOfFerocity:
-		energyCost -= 3
-	case IdolOfExsanguinationCat:
-		energyCost -= 5
-	}
-
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidRake,
 		ActionID:    core.ActionID{SpellID: rakeRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

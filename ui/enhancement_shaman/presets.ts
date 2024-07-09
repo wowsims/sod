@@ -2,8 +2,10 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	AttackPowerBuff,
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
@@ -17,7 +19,6 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
-	ZanzaBuff,
 } from '../core/proto/common.js';
 import { EnhancementShaman_Options as EnhancementShamanOptions, ShamanSyncType } from '../core/proto/shaman.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -104,18 +105,18 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfFirepower,
-	flask: Flask.FlaskOfEverlastingNightmares,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WindfuryWeapon,
 	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.WindfuryWeapon,
-	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
-	strengthBuff: StrengthBuff.ElixirOfGiants,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	strengthBuff: StrengthBuff.JujuPower,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -125,23 +126,26 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	graceOfAirTotem: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
 	manaSpringTotem: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElements: true,
 	curseOfRecklessness: true,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
 	improvedScorch: true,
-	serpentsStrikerFistDebuff: true,
+	markOfChaos: true,
+	occultPoison: true,
 	stormstrike: true,
 	sunderArmor: true,
 });

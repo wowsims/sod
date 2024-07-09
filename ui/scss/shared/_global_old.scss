@@ -8,36 +8,29 @@
 	--sidebar-highlight-color: Blue;
 }
 
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/sod/assets/fonts/PlusJakartaSans-Regular.woff2);
-}
-
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/sod/assets/fonts/PlusJakartaSans-Bold.woff2);
-	font-weight: bold;
-}
-
 * {
 	font-family: SimDefaultFont;
 	letter-spacing: 1px;
 }
 
-$sim-transitions: .2s ease-in;
+$sim-transitions: 0.2s ease-in;
 
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 1s linear infinite;
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
 .dropdown-root {
@@ -91,9 +84,9 @@ $sim-transitions: .2s ease-in;
 .warning {
 	color: yellow;
 	text-shadow:
-    0 0 map-get($spacers, 2) $danger,
-    0 0 map-get($spacers, 2) $danger,
-    0 0 map-get($spacers, 2) $danger;
+		0 0 map-get($spacers, 2) $danger,
+		0 0 map-get($spacers, 2) $danger,
+		0 0 map-get($spacers, 2) $danger;
 }
 
 .danger {

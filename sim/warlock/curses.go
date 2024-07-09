@@ -16,7 +16,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 	spellId := [CurseOfAgonyRanks + 1]int32{0, 980, 1014, 6217, 11711, 11712, 11713}[rank]
 	spellCoeff := [CurseOfAgonyRanks + 1]float64{0, .046, .077, .083, .083, .083, .083}[rank]
-	baseDamage := [CurseOfAgonyRanks + 1]float64{0, 7, 15, 27, 42, 65, 87}[rank]
+	baseDamage := [CurseOfAgonyRanks + 1]float64{0, 7, 15, 27, 42, 65, 87}[rank] * (1 + .03*float64(warlock.Talents.ImprovedCurseOfAgony))
 	manaCost := [CurseOfAgonyRanks + 1]float64{0, 25, 50, 90, 130, 170, 215}[rank]
 	level := [CurseOfAgonyRanks + 1]int{0, 8, 18, 28, 38, 48, 58}[rank]
 

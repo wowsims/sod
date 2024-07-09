@@ -28,9 +28,10 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			manaCost := InsectSwarmManaCost[rank]
 			spellCoef := .158
 
-			missAuras := druid.NewEnemyAuraArray(core.InsectSwarmAura)
+			druid.InsectSwarmAuras = druid.NewEnemyAuraArray(core.InsectSwarmAura)
 
 			druid.InsectSwarm[rank] = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+				SpellCode:   SpellCode_DruidInsectSwarm,
 				ActionID:    core.ActionID{SpellID: spellID},
 				SpellSchool: core.SpellSchoolNature,
 				DefenseType: core.DefenseTypeMagic,
@@ -53,10 +54,10 @@ func (druid *Druid) registerInsectSwarmSpell() {
 					Aura: core.Aura{
 						Label: fmt.Sprintf("Insect Swarm (Rank %d)", rank),
 						OnGain: func(aura *core.Aura, sim *core.Simulation) {
-							missAuras.Get(aura.Unit).Activate(sim)
+							druid.InsectSwarmAuras.Get(aura.Unit).Activate(sim)
 						},
 						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							missAuras.Get(aura.Unit).Deactivate(sim)
+							druid.InsectSwarmAuras.Get(aura.Unit).Deactivate(sim)
 						},
 					},
 
@@ -84,7 +85,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 					spell.DealOutcome(sim, result)
 				},
 
-				RelatedAuras: []core.AuraArray{missAuras},
+				RelatedAuras: []core.AuraArray{druid.InsectSwarmAuras},
 			})
 		}
 	}

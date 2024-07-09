@@ -80,11 +80,6 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
 	energyCost := 30.0
 
-	switch druid.Ranged().ID {
-	case IdolOfExsanguinationCat:
-		energyCost -= 5
-	}
-
 	return core.SpellConfig{
 		SpellCode:   SpellCode_DruidRip,
 		ActionID:    core.ActionID{SpellID: ripRank.id},

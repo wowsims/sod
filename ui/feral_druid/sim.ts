@@ -111,9 +111,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	// itemSwapConfig: {
-	// 	itemSlots: [ItemSlot.ItemSlotMainHand],
-	// },
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

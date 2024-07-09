@@ -244,7 +244,7 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	mainHandImbue: WeaponImbue.WizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });

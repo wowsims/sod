@@ -45,6 +45,7 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 		func(_ *core.Simulation, _ *core.Spell) {},
 	)
 
+	config.SpellCode = SpellCode_DruidSunfire
 	config.ManaCost = core.ManaCostOptions{
 		BaseCost: 0.21,
 	}

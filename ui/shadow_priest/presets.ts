@@ -3,6 +3,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	Flask,
 	Food,
@@ -15,7 +16,6 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
-	ZanzaBuff,
 } from '../core/proto/common.js';
 import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -105,15 +105,14 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 export const DefaultOptions = Options.create({});
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.GreaterManaPotion,
+	defaultPotion: Potions.MajorManaPotion,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	flask: Flask.FlaskOfRestlessDreams,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodNightfinSoup,
-	mainHandImbue: WeaponImbue.LesserWizardOil,
+	mainHandImbue: WeaponImbue.WizardOil,
 	mildlyIrradiatedRejuvPot: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	spellPowerBuff: SpellPowerBuff.ArcaneElixir,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -127,14 +126,17 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	fervorOfTheTempleExplorer: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfShadow: true,
 	improvedShadowBolt: true,
+	occultPoison: true,
+	markOfChaos: true,
 });
 
 export const OtherDefaults = {

@@ -1046,14 +1046,12 @@ func FaerieFireAura(target *Unit, playerLevel int32, improved bool) *Aura {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
 			if improved {
 				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * SpellHitRatingPerHitChance
-				aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * SpellHitRatingPerHitChance
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, arpen)
 			if improved {
 				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * SpellHitRatingPerHitChance
-				aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
 			}
 		},
 	})

@@ -16,7 +16,7 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.4
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {

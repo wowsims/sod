@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.10628
+  weights: 0.08609
   weights: 0
-  weights: 0.97647
-  weights: 0
-  weights: 0
+  weights: 0.96839
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.97647
   weights: 0
-  weights: 11.42351
-  weights: 5.63605
+  weights: 0
+  weights: 0.96839
+  weights: 0
+  weights: 11.74566
+  weights: 6.37712
   weights: 0
   weights: 0
   weights: 0
@@ -723,113 +723,113 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
-  dps: 1102.22409
-  tps: 1057.25164
-  hps: 17.83603
+  dps: 1087.8527
+  tps: 1043.38308
+  hps: 17.58656
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 971.51161
-  tps: 933.81193
-  hps: 18.55627
+  dps: 960.28836
+  tps: 923.01506
+  hps: 18.27333
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 878.01448
-  tps: 844.45763
-  hps: 18.27333
+  dps: 871.23811
+  tps: 838.03994
+  hps: 18.09617
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 964.99288
-  tps: 927.42934
-  hps: 18.55627
+  dps: 953.82371
+  tps: 916.60943
+  hps: 18.27333
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 877.78328
-  tps: 843.88771
-  hps: 18.27333
+  dps: 871.06092
+  tps: 837.47022
+  hps: 18.09617
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 377.00913
-  tps: 354.3073
-  hps: 5.14657
+  dps: 372.897
+  tps: 350.30124
+  hps: 5.10093
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 971.51161
-  tps: 933.81193
-  hps: 18.55627
+  dps: 960.28836
+  tps: 923.01506
+  hps: 18.27333
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 878.01448
-  tps: 844.45763
-  hps: 18.27333
+  dps: 871.23811
+  tps: 838.03994
+  hps: 18.09617
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1172.47321
-  tps: 1124.31667
-  hps: 17.83603
+  dps: 1158.57169
+  tps: 1110.94888
+  hps: 17.58656
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-VestmentsoftheVirtuous"
  value: {
-  dps: 375.66563
-  tps: 354.06992
-  hps: 5.14657
+  dps: 371.7169
+  tps: 350.29866
+  hps: 5.10093
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Average-Default"
  value: {
-  dps: 1489.4517
-  tps: 1369.7792
-  hps: 17.13992
+  dps: 1479.24564
+  tps: 1359.93269
+  hps: 16.95087
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2371.65123
-  tps: 2555.44419
-  hps: 17.20115
+  dps: 2347.01404
+  tps: 2531.24636
+  hps: 16.9257
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1486.09503
-  tps: 1365.40372
-  hps: 17.73646
+  dps: 1474.41419
+  tps: 1354.09409
+  hps: 17.48933
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1457.98622
-  tps: 1291.33475
-  hps: 17.77389
+  dps: 1452.57215
+  tps: 1286.25101
+  hps: 17.37488
  }
 }
 dps_results: {
@@ -859,25 +859,25 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2357.98191
-  tps: 2540.27237
-  hps: 17.18313
+  dps: 2330.3838
+  tps: 2512.85832
+  hps: 17.01838
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1485.91754
-  tps: 1365.29261
-  hps: 17.72888
+  dps: 1474.05044
+  tps: 1353.81752
+  hps: 17.48175
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_3-Basic-phase_4-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1455.60778
-  tps: 1289.45251
-  hps: 17.74885
+  dps: 1451.14712
+  tps: 1285.2916
+  hps: 17.34984
  }
 }
 dps_results: {
@@ -907,8 +907,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1491.0554
-  tps: 1370.43023
-  hps: 17.82413
+  dps: 1478.7463
+  tps: 1358.59831
+  hps: 17.57442
  }
 }

@@ -153,6 +153,9 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier -= 1
 					}
+					if warlock.Incinerate != nil {
+						warlock.Incinerate.CastTimeMultiplier -= 1
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
@@ -160,6 +163,9 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					}
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier += 1
+					}
+					if warlock.Incinerate != nil {
+						warlock.Incinerate.CastTimeMultiplier += 1
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -176,7 +182,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame && sim.Proc(.04, "Fire Trance") {
+					if (spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame) && sim.Proc(.04, "Fire Trance") {
 						fireTranceAura.Activate(sim)
 					}
 				},

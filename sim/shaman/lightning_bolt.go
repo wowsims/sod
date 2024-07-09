@@ -60,8 +60,6 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	case TotemOfTheStorm:
 		baseDamageLow += 33
 		baseDamageHigh += 33
-	case TotemOfThunder:
-		castTime -= 100
 	}
 
 	spell := shaman.newElectricSpellConfig(
