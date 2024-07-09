@@ -21,13 +21,14 @@ func (warrior *Warrior) registerRagingBlow() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && warrior.IsEnraged() && !warrior.RagingBlow.CD.IsReady(sim) && spell != warrior.RagingBlow {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && warrior.IsEnraged() && !warrior.RagingBlow.CD.IsReady(sim) && spell.SpellCode != SpellCode_WarriorRagingBlow {
 				warrior.RagingBlow.CD.Timer.Set(time.Duration(*warrior.RagingBlow.CD.Timer) - time.Second*1)
 			}
 		},
 	})
 
-	warrior.RagingBlow = warrior.RegisterSpell(core.SpellConfig{
+	warrior.RagingBlow = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorRagingBlow,
 		ActionID:    core.ActionID{SpellID: 402911},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

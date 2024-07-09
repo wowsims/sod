@@ -29,7 +29,7 @@ func (warrior *Warrior) registerRampage() {
 		},
 	})
 
-	warrior.Rampage = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Rampage = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
@@ -54,6 +54,6 @@ func (warrior *Warrior) registerRampage() {
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
 		Type:  core.CooldownTypeDPS,
-		Spell: warrior.Rampage,
+		Spell: warrior.Rampage.Spell,
 	})
 }

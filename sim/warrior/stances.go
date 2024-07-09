@@ -15,22 +15,37 @@ const (
 	DefensiveStance
 	BerserkerStance
 	GladiatorStance
+
+	AnyStance = BattleStance | DefensiveStance | BerserkerStance | GladiatorStance
 )
+
+func (stance Stance) Matches(other Stance) bool {
+	return (stance & other) != 0
+}
+
+var StanceCodes = []int32{SpellCode_WarriorStanceBattle, SpellCode_WarriorStanceDefensive, SpellCode_WarriorStanceBerserker, SpellCode_WarriorStanceGladiator}
 
 const stanceEffectCategory = "Stance"
 
 func (warrior *Warrior) StanceMatches(other Stance) bool {
-	return (warrior.Stance & other) != 0
+	return warrior.Stance.Matches(other)
 }
 
-func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *core.Spell {
-	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
+func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *WarriorSpell {
+	spellCode := map[Stance]int32{
+		BattleStance:    SpellCode_WarriorStanceBattle,
+		DefensiveStance: SpellCode_WarriorStanceDefensive,
+		BerserkerStance: SpellCode_WarriorStanceBerserker,
+		GladiatorStance: SpellCode_WarriorStanceGladiator,
+	}[stance]
 	actionID := aura.ActionID
+	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
-	return warrior.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+	stanceSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode: spellCode,
+		ActionID:  actionID,
+		Flags:     core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -39,7 +54,7 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.Stance != stance
+			return !warrior.StanceMatches(stance)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -58,13 +73,18 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 				aura.Activate(sim)
 			}
 
+			warrior.PreviousStance = warrior.Stance
 			warrior.Stance = stance
 		},
 	})
+
+	warrior.Stances = append(warrior.Stances, stanceSpell)
+
+	return stanceSpell
 }
 
 func (warrior *Warrior) registerBattleStanceAura() {
-	warrior.BattleStanceAura = warrior.GetOrRegisterAura(core.Aura{
+	warrior.BattleStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Battle Stance",
 		ActionID: core.ActionID{SpellID: 2457},
 		Duration: core.NeverExpires,
@@ -79,17 +99,19 @@ func (warrior *Warrior) registerBattleStanceAura() {
 }
 
 func (warrior *Warrior) registerDefensiveStanceAura() {
-	warrior.DefensiveStanceAura = warrior.GetOrRegisterAura(core.Aura{
+	warrior.defensiveStanceThreatMultiplier = 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
+
+	warrior.DefensiveStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Defensive Stance",
 		ActionID: core.ActionID{SpellID: 71},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
+			aura.Unit.PseudoStats.ThreatMultiplier *= warrior.defensiveStanceThreatMultiplier
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.9
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.9
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
+			aura.Unit.PseudoStats.ThreatMultiplier /= warrior.defensiveStanceThreatMultiplier
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.9
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.9
 		},
@@ -98,7 +120,7 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 }
 
 func (warrior *Warrior) registerBerserkerStanceAura() {
-	warrior.BerserkerStanceAura = warrior.GetOrRegisterAura(core.Aura{
+	warrior.BerserkerStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Berserker Stance",
 		ActionID: core.ActionID{SpellID: 2458},
 		Duration: core.NeverExpires,
@@ -124,57 +146,78 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 		return
 	}
 
+	warrior.gladiatorStanceDamageMultiplier = 1.1
 	isTanking := warrior.IsTanking()
 
-	warrior.GladiatorStanceAura = warrior.GetOrRegisterAura(core.Aura{
-		Label:    "Gladiator Stance",
-		ActionID: core.ActionID{SpellID: int32(proto.WarriorRune_RuneGladiatorStance)},
+	gladStanceStatAura := warrior.RegisterAura(core.Aura{
+		Label:    "Gladiator Stance Stats",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ArmorMultiplier *= 0.7
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= warrior.gladiatorStanceDamageMultiplier
 			aura.Unit.PseudoStats.BlockValueMultiplier *= 1.1
 			aura.Unit.PseudoStats.ThreatMultiplier *= 0.7
 
 			if !isTanking {
-				warrior.MultiplyDamageDealtRageGeneration(1.5)
+				warrior.AddDamageDealtRageMultiplier(1.5)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ArmorMultiplier /= 0.7
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= warrior.gladiatorStanceDamageMultiplier
 			aura.Unit.PseudoStats.BlockValueMultiplier /= 1.1
 			aura.Unit.PseudoStats.ThreatMultiplier /= 0.7
 
 			if !isTanking {
-				warrior.MultiplyDamageDealtRageGeneration(1 / 1.5)
+				warrior.AddDamageDealtRageMultiplier(1 / 1.5)
 			}
 		},
 	})
 
-	// Usse a dummy aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
-	warrior.RegisterAura(core.Aura{
-		Label:    "Gladiator Stance Dummy",
+	// Use a pending action to periodically verify that the player is still using a shield mid-sim, for example if Item Swapping
+	var gladStanceValidationPA *core.PendingAction
+	gladStanceValidationAura := warrior.RegisterAura(core.Aura{
+		Label:    "Gladiator Stance Validation",
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
-				OnAction: func(sim *core.Simulation) {
-					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
-						warrior.GladiatorStanceAura.Deactivate(sim)
-						return
-					}
-
-					warrior.GladiatorStanceAura.Activate(sim)
-				},
-			})
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if sim.Log != nil {
+				gladStanceValidationPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period: time.Second * 2,
+					OnAction: func(sim *core.Simulation) {
+						if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+							gladStanceStatAura.Deactivate(sim)
+							return
+						}
+					},
+				})
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if gladStanceValidationPA != nil {
+				gladStanceValidationPA.Cancel(sim)
+			}
 		},
 	})
 
+	warrior.GladiatorStanceAura = warrior.RegisterAura(core.Aura{
+		Label:    "Gladiator Stance",
+		ActionID: core.ActionID{SpellID: int32(proto.WarriorRune_RuneGladiatorStance)},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			gladStanceStatAura.Activate(sim)
+			gladStanceValidationAura.Activate(sim)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			gladStanceStatAura.Deactivate(sim)
+			gladStanceValidationAura.Deactivate(sim)
+		},
+	})
 	warrior.GladiatorStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
+	warrior.newStanceOverrideExclusiveEffect(AnyStance, warrior.GladiatorStanceAura)
 }
 
 func (warrior *Warrior) registerStances() {
+	warrior.Stances = make([]*WarriorSpell, 0)
 	stanceCD := warrior.NewTimer()
 	warrior.registerBattleStanceAura()
 	warrior.registerDefensiveStanceAura()

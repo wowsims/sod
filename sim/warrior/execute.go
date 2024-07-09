@@ -30,7 +30,8 @@ func (warrior *Warrior) registerExecuteSpell() {
 	}[warrior.Level]
 
 	var rageMetrics *core.ResourceMetrics
-	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Execute = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorExecute,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -45,7 +46,6 @@ func (warrior *Warrior) registerExecuteSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return sim.IsExecutePhase20() || (hasSuddenDeathRune && warrior.SuddenDeathAura.IsActive())

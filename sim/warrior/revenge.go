@@ -46,7 +46,8 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		},
 	})
 
-	warrior.Revenge = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Revenge = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorRevenge,
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -68,7 +69,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance)) && warrior.revengeProcAura.IsActive()
+			return warrior.revengeProcAura.IsActive()
 		},
 
 		CritDamageBonus: warrior.impale(),

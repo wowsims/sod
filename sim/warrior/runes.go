@@ -22,7 +22,7 @@ func (warrior *Warrior) ApplyRunes() {
 	// Chest
 	warrior.applyFlagellation()
 	warrior.registerRagingBlow()
-	// Blood Frenzy implemented in rend.go
+	warrior.applyBloodFrenzy()
 
 	// Bracers
 	warrior.registerRampage()
@@ -40,6 +40,7 @@ func (warrior *Warrior) ApplyRunes() {
 	// Pants
 	warrior.applyFrenziedAssault()
 	warrior.applyConsumedByRage()
+	warrior.applyFuriousThunder()
 
 	// Boots
 	// Gladiator implemented on stances.go
@@ -50,7 +51,7 @@ func (warrior *Warrior) applyEndlessRage() {
 		return
 	}
 
-	warrior.MultiplyDamageDealtRageGeneration(1.25)
+	warrior.AddDamageDealtRageMultiplier(1.25)
 }
 
 func (warrior *Warrior) applyShieldMastery() {
@@ -96,6 +97,14 @@ func (warrior *Warrior) applyFlagellation() {
 	}
 
 	// TODO: Rage gain from hits
+}
+
+func (warrior *Warrior) applyBloodFrenzy() {
+	if !warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy) {
+		return
+	}
+
+	warrior.Rend.StanceMask |= BerserkerStance
 }
 
 func (warrior *Warrior) applyFrenziedAssault() {
@@ -167,6 +176,14 @@ func (warrior *Warrior) applyConsumedByRage() {
 	})
 }
 
+func (warrior *Warrior) applyFuriousThunder() {
+	if !warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
+		return
+	}
+
+	warrior.ThunderClap.StanceMask = AnyStance
+}
+
 func (warrior *Warrior) applyFocusedRage() {
 	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
 }
@@ -193,7 +210,7 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell == warrior.SlamOH { // removed even if slam doesn't land
+			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamOH { // removed even if slam doesn't land
 				aura.Deactivate(sim)
 			}
 		},
@@ -239,14 +256,12 @@ func (warrior *Warrior) applyTasteForBlood() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != warrior.Rend || !icd.IsReady(sim) {
-				return
+			if spell.SpellCode == SpellCode_WarriorRend && icd.IsReady(sim) {
+				icd.Use(sim)
+				warrior.OverpowerAura.Duration = time.Second * 9
+				warrior.OverpowerAura.Activate(sim)
+				warrior.OverpowerAura.Duration = time.Second * 5
 			}
-
-			icd.Use(sim)
-			warrior.OverpowerAura.Duration = time.Second * 9
-			warrior.OverpowerAura.Activate(sim)
-			warrior.OverpowerAura.Duration = time.Second * 5
 		},
 	})
 }
@@ -268,12 +283,10 @@ func (warrior *Warrior) applySuddenDeath() {
 		ActionID: core.ActionID{SpellID: 440114},
 		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || spell != warrior.Execute { // removed only when landed
-				return
+			if result.Landed() && spell.SpellCode == SpellCode_WarriorExecute { // removed only when landed
+				warrior.AddRage(sim, minRageKept, rageMetrics)
+				aura.Deactivate(sim)
 			}
-
-			warrior.AddRage(sim, minRageKept, rageMetrics)
-			aura.Deactivate(sim)
 		},
 	})
 
@@ -326,7 +339,7 @@ func (warrior *Warrior) applyFreshMeat() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !hasBloodthirstTalent || spell != warrior.Bloodthirst {
+			if !hasBloodthirstTalent || spell.SpellCode != SpellCode_WarriorBloodthirst {
 				return
 			}
 
@@ -350,8 +363,8 @@ func (warrior *Warrior) applyWreckingCrew() {
 	}
 
 	affectedSpells := core.FilterSlice(
-		[]*core.Spell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
-		func(spell *core.Spell) bool { return spell != nil },
+		[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
+		func(spell *WarriorSpell) bool { return spell != nil },
 	)
 
 	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
@@ -402,7 +415,7 @@ func (warrior *Warrior) applySwordAndBoard() {
 			warrior.ShieldSlam.CostMultiplier += 1
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == warrior.ShieldSlam {
+			if spell.SpellCode == SpellCode_WarriorShieldSlam {
 				aura.Deactivate(sim)
 			}
 		},
@@ -415,11 +428,11 @@ func (warrior *Warrior) applySwordAndBoard() {
 				return
 			}
 
-			if spell != warrior.Revenge && spell != warrior.Devastate {
+			if spell.SpellCode != SpellCode_WarriorRevenge && spell.SpellCode != SpellCode_WarriorDevastate {
 				return
 			}
 
-			if sim.RandomFloat("Sword And Board") < 0.3 {
+			if sim.Proc(0.3, "Sword And Board") {
 				sabAura.Activate(sim)
 				warrior.ShieldSlam.CD.Reset()
 			}

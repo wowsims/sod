@@ -30,11 +30,12 @@ func (warrior *Warrior) registerRendSpell() {
 		damageMultiplier *= 2
 	}
 
-	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorRend,
 		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlagBleed,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10 - warrior.FocusedRageDiscount,
@@ -44,11 +45,6 @@ func (warrior *Warrior) registerRendSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
-		},
-
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance) || (hasBloodFrenzyRune && warrior.StanceMatches(BerserkerStance))
 		},
 
 		DamageMultiplier: damageMultiplier,
