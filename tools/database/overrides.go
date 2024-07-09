@@ -114,6 +114,7 @@ var ItemDenyList = map[int32]struct{}{
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
 	18820:  {}, // Talisman of Ephemeral Power
+	18348:  {}, // https://www.wowhead.com/classic/item=18348/quelserrar
 	19147:  {}, // Ring of Spell Power
 	19166:  {}, // Black Amnesty (replaced by Tempered Black Amnesty)
 	19169:  {}, // Nightfall (replaced by Reaving Nightfall

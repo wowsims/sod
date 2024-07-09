@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -293,8 +292,6 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		baseWeaponSkill := float64(attacker.Level * 5)
 		weaponSkill := baseWeaponSkill + GetWeaponSkill(attacker, weapon)
 		targetDefense := float64(defender.Level * 5)
-
-		fmt.Println(weaponSkill)
 
 		if targetDefense-weaponSkill > 10 {
 			table.HitSuppression = (targetDefense - weaponSkill - 10) * 0.002
