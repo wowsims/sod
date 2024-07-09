@@ -83,9 +83,6 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
 
-	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
-	}
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
