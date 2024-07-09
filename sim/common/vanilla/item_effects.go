@@ -33,7 +33,6 @@ const (
 	HookfangShanker          = 11635
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
-	Felstriker               = 12590
 	PipsSkinner              = 12709
 	SerpentSlicer            = 13035
 	SealOfTheDawn            = 13209
@@ -74,6 +73,7 @@ const (
 	SeepingWillow            = 228666 // 12969
 	DraconicInfusedEmblem    = 228678 // 22268
 	HandOfJustice            = 228722 // 11815
+	Felstriker               = 228757 // 12590
 )
 
 func init() {

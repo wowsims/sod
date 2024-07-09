@@ -391,13 +391,6 @@ stat_weights_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl25-AllItems-TheFiveThunders"
- value: {
-  dps: 141.92547
-  tps: 132.21094
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl25-Average-Default"
  value: {
   dps: 174.81974
@@ -580,13 +573,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl40-AllItems-TheFiveThunders"
- value: {
-  dps: 241.69619
-  tps: 268.1221
- }
-}
-dps_results: {
  key: "TestEnhancement-Lvl40-Average-Default"
  value: {
   dps: 861.41978
@@ -766,13 +752,6 @@ dps_results: {
  value: {
   dps: 792.69296
   tps: 839.28854
- }
-}
-dps_results: {
- key: "TestEnhancement-Lvl50-AllItems-TheFiveThunders"
- value: {
-  dps: 334.48772
-  tps: 359.33326
  }
 }
 dps_results: {
