@@ -2122,7 +2122,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.ProcMask.Matches(ProcMaskSupressExtraAttack) {
 				return
 			}
 
