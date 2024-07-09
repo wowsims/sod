@@ -2075,7 +2075,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 				wsBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.ProcMask.Matches(ProcMaskSupressExtraAttack) {
 				return
 			}
 
@@ -2139,7 +2139,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.ProcMask.Matches(ProcMaskSupressExtraAttack) {
 				return
 			}
 
