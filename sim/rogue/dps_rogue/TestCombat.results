@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.23998
-  weights: 0.42894
+  weights: 0.24387
+  weights: 0.46614
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.21816
-  weights: 1.62372
-  weights: 1.88399
+  weights: 0.2217
+  weights: 1.74047
+  weights: 1.86524
   weights: 0
   weights: 0
   weights: 0
@@ -197,57 +197,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 259.34616
-  tps: 184.13577
+  dps: 265.50898
+  tps: 188.51138
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 216.07421
-  tps: 153.41269
+  dps: 220.35868
+  tps: 156.45466
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 52.62625
-  tps: 37.36463
+  dps: 52.66815
+  tps: 37.39438
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 52.62625
-  tps: 37.36463
+  dps: 52.66815
+  tps: 37.39438
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 55.41973
-  tps: 39.34801
+  dps: 55.60813
+  tps: 39.48177
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 24.54183
-  tps: 17.4247
+  dps: 24.57447
+  tps: 17.44787
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 24.54183
-  tps: 17.4247
+  dps: 24.57447
+  tps: 17.44787
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 26.35962
-  tps: 18.71533
+  dps: 26.45341
+  tps: 18.78192
  }
 }
 dps_results: {
@@ -295,8 +295,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 202.35925
-  tps: 143.67507
+  dps: 207.15368
+  tps: 147.07911
  }
 }
 dps_results: {

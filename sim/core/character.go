@@ -305,6 +305,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 
 	character.applyEquipment()
 	character.applyWeaponSkills()
+	character.ApplyRingRunes()
 	character.applyItemEffects(agent)
 	character.applyItemSetBonusEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseGear)
@@ -312,7 +313,6 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 
 	agent.ApplyTalents()
 	agent.ApplyRunes()
-	character.ApplyRingRunes()
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 

@@ -2165,12 +2165,6 @@ func ApplyWindfury(character *Character) *Aura {
 ///////////////////////////////////////////////////////////////////////////
 
 func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
-	character.AddStat(stats.SpellCrit, 10*SpellCritRatingPerCritChance)
-	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-	// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
-	character.AddStat(stats.AttackPower, 140)
-	character.AddStat(stats.RangedAttackPower, 140)
-
 	return character.RegisterAura(Aura{
 		Label:    "Rallying Cry of the Dragonslayer",
 		ActionID: ActionID{SpellID: 22888},
@@ -2178,16 +2172,17 @@ func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.SpellCrit, 10*SpellCritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
+			// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
+			character.AddStatDynamic(sim, stats.AttackPower, 140)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, 140)
+		},
 	})
 }
 
 func ApplyValorOfAzeroth(character *Character) *Aura {
-	character.AddStat(stats.SpellCrit, 5*SpellCritRatingPerCritChance)
-	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-	// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
-	character.AddStat(stats.AttackPower, float64(character.Level)*1.5)
-	character.AddStat(stats.RangedAttackPower, float64(character.Level)*1.5)
-
 	return character.RegisterAura(Aura{
 		Label:    "Valor of Azeroth",
 		ActionID: ActionID{SpellID: 461475},
@@ -2195,15 +2190,24 @@ func ApplyValorOfAzeroth(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.SpellCrit, 5*SpellCritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
+			// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
+			character.AddStatDynamic(sim, stats.AttackPower, float64(character.Level)*1.5)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, float64(character.Level)*1.5)
+		},
 	})
 }
 
 func ApplySpiritOfZandalar(character *Character) *Aura {
-	character.MultiplyStat(stats.Stamina, 1.15)
-	character.MultiplyStat(stats.Agility, 1.15)
-	character.MultiplyStat(stats.Strength, 1.15)
-	character.MultiplyStat(stats.Intellect, 1.15)
-	character.MultiplyStat(stats.Spirit, 1.15)
+	statDeps := []*stats.StatDependency{
+		character.NewDynamicMultiplyStat(stats.Stamina, 1.15),
+		character.NewDynamicMultiplyStat(stats.Agility, 1.15),
+		character.NewDynamicMultiplyStat(stats.Strength, 1.15),
+		character.NewDynamicMultiplyStat(stats.Intellect, 1.15),
+		character.NewDynamicMultiplyStat(stats.Spirit, 1.15),
+	}
 
 	return character.RegisterAura(Aura{
 		Label:    "Spirit of Zandalar",
@@ -2212,19 +2216,15 @@ func ApplySpiritOfZandalar(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			for _, dep := range statDeps {
+				character.EnableDynamicStatDep(sim, dep)
+			}
+		},
 	})
 }
 
 func ApplySongflowerSerenate(character *Character) *Aura {
-	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-	// TODO: character.AddStat(stats.RangedCrit, 1.05)
-	character.AddStat(stats.SpellCrit, 5*SpellCritRatingPerCritChance)
-	character.AddStat(stats.Stamina, 15)
-	character.AddStat(stats.Agility, 15)
-	character.AddStat(stats.Strength, 15)
-	character.AddStat(stats.Intellect, 15)
-	character.AddStat(stats.Spirit, 15)
-
 	return character.RegisterAura(Aura{
 		Label:    "Songflower Serenade",
 		ActionID: ActionID{SpellID: 15366},
@@ -2232,14 +2232,20 @@ func ApplySongflowerSerenate(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
+			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 1.05)
+			character.AddStatDynamic(sim, stats.SpellCrit, 5*SpellCritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.Stamina, 15)
+			character.AddStatDynamic(sim, stats.Agility, 15)
+			character.AddStatDynamic(sim, stats.Strength, 15)
+			character.AddStatDynamic(sim, stats.Intellect, 15)
+			character.AddStatDynamic(sim, stats.Spirit, 15)
+		},
 	})
 }
 
 func ApplyWarchiefsBlessing(character *Character) *Aura {
-	character.AddStat(stats.Health, 300)
-	character.PseudoStats.MeleeSpeedMultiplier *= 1.15
-	character.AddStat(stats.MP5, 10)
-
 	return character.RegisterAura(Aura{
 		Label:    "Warchief's Blessing",
 		ActionID: ActionID{SpellID: 16609},
@@ -2247,14 +2253,15 @@ func ApplyWarchiefsBlessing(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.Health, 300)
+			character.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			character.AddStatDynamic(sim, stats.MP5, 10)
+		},
 	})
 }
 
 func ApplyMightOfStormwind(character *Character) *Aura {
-	character.AddStat(stats.Health, 300)
-	character.PseudoStats.MeleeSpeedMultiplier *= 1.15
-	character.AddStat(stats.MP5, 10)
-
 	return character.RegisterAura(Aura{
 		Label:    "Might of Stormwind",
 		ActionID: ActionID{SpellID: 460940},
@@ -2262,13 +2269,15 @@ func ApplyMightOfStormwind(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.Health, 300)
+			character.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			character.AddStatDynamic(sim, stats.MP5, 10)
+		},
 	})
 }
 
 func ApplyFengusFerocity(character *Character) *Aura {
-	character.AddStat(stats.AttackPower, 200)
-	character.AddStat(stats.RangedAttackPower, 200)
-
 	return character.RegisterAura(Aura{
 		Label:    "Fengus' Ferocity",
 		ActionID: ActionID{SpellID: 22817},
@@ -2276,11 +2285,15 @@ func ApplyFengusFerocity(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.AttackPower, 200)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, 200)
+		},
 	})
 }
 
 func ApplyMoldarsMoxie(character *Character) *Aura {
-	character.MultiplyStat(stats.Stamina, 1.15)
+	statDep := character.NewDynamicMultiplyStat(stats.Stamina, 1.15)
 
 	return character.RegisterAura(Aura{
 		Label:    "Moldar's Moxie",
@@ -2289,12 +2302,13 @@ func ApplyMoldarsMoxie(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.EnableDynamicStatDep(sim, statDep)
+		},
 	})
 }
 
 func ApplySlipkiksSavvy(character *Character) *Aura {
-	character.AddStat(stats.SpellCrit, 3*SpellCritRatingPerCritChance)
-
 	return character.RegisterAura(Aura{
 		Label:    "Slip'kik's Savvy",
 		ActionID: ActionID{SpellID: 22820},
@@ -2302,41 +2316,37 @@ func ApplySlipkiksSavvy(character *Character) *Aura {
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+		},
 	})
 }
 
 func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) *Aura {
 	var label string
 	var spellID int32
+	var statDep *stats.StatDependency
 
-	if fortune == proto.SaygesFortune_SaygesDamage {
-		character.PseudoStats.DamageDealtMultiplier *= 1.10
+	switch fortune {
+	case proto.SaygesFortune_SaygesDamage:
 		label = "Sayge's Dark Fortune of Damage"
 		spellID = 23768
-	}
-
-	if fortune == proto.SaygesFortune_SaygesAgility {
-		character.MultiplyStat(stats.Agility, 1.10)
+	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"
 		spellID = 23736
-	}
-
-	if fortune == proto.SaygesFortune_SaygesIntellect {
-		character.MultiplyStat(stats.Intellect, 1.10)
+		statDep = character.NewDynamicMultiplyStat(stats.Agility, 1.10)
+	case proto.SaygesFortune_SaygesIntellect:
 		label = "Sayge's Dark Fortune of Intellect"
 		spellID = 23766
-	}
-
-	if fortune == proto.SaygesFortune_SaygesSpirit {
-		character.MultiplyStat(stats.Spirit, 1.10)
+		statDep = character.NewDynamicMultiplyStat(stats.Intellect, 1.10)
+	case proto.SaygesFortune_SaygesSpirit:
 		label = "Sayge's Dark Fortune of Spirit"
 		spellID = 23738
-	}
-
-	if fortune == proto.SaygesFortune_SaygesStamina {
-		character.MultiplyStat(stats.Stamina, 1.10)
+		statDep = character.NewDynamicMultiplyStat(stats.Spirit, 1.10)
+	case proto.SaygesFortune_SaygesStamina:
 		label = "Sayge's Dark Fortune of Stamina"
 		spellID = 23737
+		statDep = character.NewDynamicMultiplyStat(stats.Stamina, 1.10)
 	}
 
 	return character.RegisterAura(Aura{
@@ -2346,6 +2356,13 @@ func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) *Aur
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if fortune == proto.SaygesFortune_SaygesDamage {
+				character.PseudoStats.DamageDealtMultiplier *= 1.10
+			} else {
+				character.EnableDynamicStatDep(sim, statDep)
+			}
+		},
 	})
 }
 
@@ -2354,15 +2371,13 @@ func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
 		return nil
 	}
 
-	character.AddStat(stats.MeleeCrit, 5*CritRatingPerCritChance)
-	// TODO: character.AddStat(stats.RangedCrit, 5 * CritRatingPerCritChance)
-	character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
-	character.AddStat(stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
-	character.MultiplyStat(stats.Strength, 1.08)
-	character.MultiplyStat(stats.Stamina, 1.08)
-	character.MultiplyStat(stats.Agility, 1.08)
-	character.MultiplyStat(stats.Intellect, 1.08)
-	character.MultiplyStat(stats.Spirit, 1.08)
+	statDeps := []*stats.StatDependency{
+		character.NewDynamicMultiplyStat(stats.Strength, 1.08),
+		character.NewDynamicMultiplyStat(stats.Stamina, 1.08),
+		character.NewDynamicMultiplyStat(stats.Agility, 1.08),
+		character.NewDynamicMultiplyStat(stats.Intellect, 1.08),
+		character.NewDynamicMultiplyStat(stats.Spirit, 1.08),
+	}
 
 	return character.RegisterAura(Aura{
 		Label:    "Fervor of the Temple Explorer",
@@ -2370,6 +2385,16 @@ func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
+			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 5 * CritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.SpellCrit, 5*CritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
+
+			for _, dep := range statDeps {
+				character.EnableDynamicStatDep(sim, dep)
+			}
 		},
 	})
 }
@@ -2379,17 +2404,18 @@ func ApplySparkOfInspiration(character *Character) *Aura {
 		return nil
 	}
 
-	character.AddStat(stats.SpellCrit, 4*CritRatingPerCritChance)
-	character.AddStat(stats.SpellPower, 42)
-	character.PseudoStats.MeleeSpeedMultiplier *= 1.1
-	character.PseudoStats.RangedSpeedMultiplier *= 1.1
-
 	return character.RegisterAura(Aura{
 		Label:    "Spark of Inspiration",
 		ActionID: ActionID{SpellID: 438536},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.SpellCrit, 4*CritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.SpellPower, 42)
+			character.PseudoStats.MeleeSpeedMultiplier *= 1.1
+			character.PseudoStats.RangedSpeedMultiplier *= 1.1
 		},
 	})
 }
@@ -2399,19 +2425,20 @@ func ApplyBoonOfBlackfathom(character *Character) *Aura {
 		return nil
 	}
 
-	character.AddStat(stats.MeleeCrit, 2*CritRatingPerCritChance)
-	// TODO: character.AddStat(stats.RangedCrit, 2 * CritRatingPerCritChance)
-	character.AddStat(stats.SpellHit, 3*SpellHitRatingPerHitChance)
-	character.AddStat(stats.AttackPower, 20)
-	character.AddStat(stats.RangedAttackPower, 20)
-	character.AddStat(stats.SpellPower, 25)
-
 	return character.RegisterAura(Aura{
 		Label:    "Boon of Blackfathom",
 		ActionID: ActionID{SpellID: 430947},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.MeleeCrit, 2*CritRatingPerCritChance)
+			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 2 * CritRatingPerCritChance)
+			character.AddStatDynamic(sim, stats.SpellHit, 3*SpellHitRatingPerHitChance)
+			character.AddStatDynamic(sim, stats.AttackPower, 20)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, 20)
+			character.AddStatDynamic(sim, stats.SpellPower, 25)
 		},
 	})
 }
@@ -2421,15 +2448,16 @@ func ApplyAshenvaleRallyingCry(character *Character) *Aura {
 		return nil
 	}
 
-	character.PseudoStats.DamageDealtMultiplier *= 1.05
-	//TODO: healing dealt multiplier?
-
 	return character.RegisterAura(Aura{
 		Label:    "Ashenvale Rallying Cry",
 		ActionID: ActionID{SpellID: 430352},
 		Duration: NeverExpires,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.PseudoStats.DamageDealtMultiplier *= 1.05
+			//TODO: healing dealt multiplier?
 		},
 	})
 }
