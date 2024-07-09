@@ -12,19 +12,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	cssClass: 'warrior-sim-ui',
 	cssScheme: 'warrior',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Auto rotation is disabled until we can get optimized APL rotation',
-				'Wrecking crew assumed as lowest priority of enrage. Overwritten by regular enrage'],
+	knownIssues: [
+		'Auto rotation is disabled until we can get optimized APL rotation',
+		'Wrecking crew assumed as lowest priority of enrage. Overwritten by regular enrage',
+	],
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatStrength, 
-		Stat.StatAgility, 
-		Stat.StatAttackPower, 
-		Stat.StatMeleeHit, 
-		Stat.StatMeleeCrit, 
-		Stat.StatMeleeHaste, 
+		Stat.StatStrength,
+		Stat.StatAgility,
+		Stat.StatAttackPower,
+		Stat.StatMeleeHit,
+		Stat.StatMeleeCrit,
+		Stat.StatMeleeHaste,
 		Stat.StatStamina,
-		Stat.StatArmor],
+		Stat.StatArmor,
+	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
@@ -40,13 +43,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
 	],
-	modifyDisplayStats: (_: Player<Spec.SpecWarrior>) => {
-		const stats = new Stats();
-
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
 		// Default equipped gear.
@@ -57,11 +53,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatStrength]: 2.51,
 				[Stat.StatAgility]: 1.86,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 2.55,
 				[Stat.StatMeleeHit]: 28.67,
-				[Stat.StatMeleeCrit]: 25.10,
+				[Stat.StatMeleeCrit]: 25.1,
 				[Stat.StatMeleeHaste]: 22.08,
-				[Stat.StatArmorPenetration]: 2.17,
 				[Stat.StatArmor]: 0.03,
 				[Stat.StatBonusArmor]: 0.03,
 			},
@@ -100,14 +94,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
 	},
 
-	autoRotation: player => {
+	autoRotation: () => {
 		throw new Error("Auto rotation is disabled until we can get optimized APL rotation, choose 'APL' under Rotation Type dropdown");
 		// return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
 	},
@@ -133,7 +142,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase2][0].gear,
 					3: Presets.GearPresets[Phase.Phase3][0].gear,
-
 				},
 				[Faction.Horde]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,

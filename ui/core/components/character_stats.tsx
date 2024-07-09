@@ -1,12 +1,12 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { Player } from '..//player.js';
-import { Class, PseudoStat, Spec, Stat } from '..//proto/common.js';
-import { getClassStatName, statOrder } from '..//proto_utils/names.js';
-import { Stats } from '..//proto_utils/stats.js';
-import { EventID, TypedEvent } from '..//typed_event.js';
 import * as Mechanics from '../constants/mechanics.js';
+import { Player } from '../player.js';
+import { Class, PseudoStat, Spec, Stat } from '../proto/common.js';
+import { getClassStatName, statOrder } from '../proto_utils/names.js';
+import { Stats } from '../proto_utils/stats.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
@@ -67,8 +67,6 @@ export class CharacterStats extends Component {
 
 			table.appendChild(row);
 			this.meleeCritCapValueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
-		} else {
-			this.meleeCritCapValueElem = undefined;
 		}
 
 		this.updateStats(player);
@@ -84,7 +82,7 @@ export class CharacterStats extends Component {
 			? this.modifyDisplayStats(this.player)
 			: {
 					talents: new Stats(),
-				};
+			  };
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
 		const gearStats = Stats.fromProto(playerStats.gearStats);
@@ -129,45 +127,126 @@ export class CharacterStats extends Component {
 			this.valueElems[idx].prepend(valueElem);
 
 			const tooltipContent = (
-				<div>
-					<div className="character-stats-tooltip-row">
-						<span>Base:</span>
-						<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
-					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Gear:</span>
-						<span>{this.statDisplayString(gearStats, gearDelta, stat)}</span>
-					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Talents:</span>
-						<span>{this.statDisplayString(talentsStats, talentsDelta, stat)}</span>
-					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Buffs:</span>
-						<span>{this.statDisplayString(buffsStats, buffsDelta, stat)}</span>
-					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Consumes:</span>
-						<span>{this.statDisplayString(consumesStats, consumesDelta, stat)}</span>
-					</div>
-					{debuffStats.getStat(stat) != 0 && (
+				<div className="d-flex">
+					<div>
 						<div className="character-stats-tooltip-row">
-							<span>Debuffs:</span>
-							<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
+							<span>Base:</span>
+							<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
 						</div>
-					)}
-					{bonusStatValue != 0 && (
 						<div className="character-stats-tooltip-row">
-							<span>Bonus:</span>
-							<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
+							<span>Gear:</span>
+							<span>{this.statDisplayString(gearStats, gearDelta, stat)}</span>
 						</div>
-					)}
-					<div className="character-stats-tooltip-row">
-						<span>Total:</span>
-						<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+						<div className="character-stats-tooltip-row">
+							<span>Talents:</span>
+							<span>{this.statDisplayString(talentsStats, talentsDelta, stat)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Buffs:</span>
+							<span>{this.statDisplayString(buffsStats, buffsDelta, stat)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Consumes:</span>
+							<span>{this.statDisplayString(consumesStats, consumesDelta, stat)}</span>
+						</div>
+						{debuffStats.getStat(stat) != 0 && (
+							<div className="character-stats-tooltip-row">
+								<span>Debuffs:</span>
+								<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
+							</div>
+						)}
+						{bonusStatValue != 0 && (
+							<div className="character-stats-tooltip-row">
+								<span>Bonus:</span>
+								<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
+							</div>
+						)}
+						<div className="character-stats-tooltip-row">
+							<span>Total:</span>
+							<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+						</div>
 					</div>
 				</div>
 			);
+
+			if (stat === Stat.StatMeleeHit) {
+				tooltipContent.appendChild(
+					<div className="ps-2">
+						<div className="character-stats-tooltip-row">
+							<span>Axes</span>
+							<span>
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatAxesSkill)} /{' '}
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedAxesSkill)}
+							</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Daggers</span>
+							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatDaggersSkill)}</span>
+						</div>
+						{player.spec === Spec.SpecFeralDruid && (
+							<div className="character-stats-tooltip-row">
+								<span>Feral Combat</span>
+								<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
+							</div>
+						)}
+						<div className="character-stats-tooltip-row">
+							<span>Maces</span>
+							<span>
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatMacesSkill)} /{' '}
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedMacesSkill)}
+							</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Polearms</span>
+							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatPolearmsSkill)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Staves</span>
+							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatStavesSkill)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Swords</span>
+							<span>
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatSwordsSkill)} /{' '}
+								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedSwordsSkill)}
+							</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Unarmed</span>
+							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatUnarmedSkill)}</span>
+						</div>
+					</div>,
+				);
+			} else if (stat === Stat.StatSpellHit) {
+				tooltipContent.appendChild(
+					<div className="ps-2">
+						<div className="character-stats-tooltip-row">
+							<span>Arcane</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitArcane)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Fire</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFire)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Frost</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFrost)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Holy</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitHoly)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Nature</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitNature)}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Shadow</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
+						</div>
+					</div>,
+				);
+			}
 
 			tippy(statLinkElem, {
 				content: tooltipContent,
@@ -307,6 +386,14 @@ export class CharacterStats extends Component {
 		return displayStr;
 	}
 
+	private weaponSkillDisplayString(stats: Stats, pseudoStat: PseudoStat): string {
+		return `${300 + stats.getPseudoStat(pseudoStat)}`;
+	}
+
+	private spellSchoolHitDisplayString(stats: Stats, pseudoStat: PseudoStat): string {
+		return `${(stats.getPseudoStat(pseudoStat) + stats.getStat(Stat.StatSpellHit)).toFixed(2)}%`;
+	}
+
 	private getDebuffStats(): Stats {
 		const debuffStats = new Stats();
 
@@ -362,7 +449,7 @@ export class CharacterStats extends Component {
 	}
 
 	private shouldShowMeleeCritCap(player: Player<any>): boolean {
-		return [Spec.SpecEnhancementShaman, Spec.SpecRetributionPaladin, Spec.SpecRogue, Spec.SpecWarrior].includes(player.spec);
+		return [Spec.SpecEnhancementShaman, Spec.SpecRetributionPaladin, Spec.SpecRogue, Spec.SpecWarrior, Spec.SpecHunter].includes(player.spec);
 	}
 
 	private meleeCritCapDisplayString(player: Player<any>, _: Stats): string {

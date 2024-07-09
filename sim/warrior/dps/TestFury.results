@@ -113,15 +113,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 42.2618
-  tps: 77.75729
+  dps: 41.94164
+  tps: 77.42352
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 12.3589
-  tps: 12.74116
+  dps: 12.35452
+  tps: 12.73667
  }
 }
 dps_results: {
@@ -134,15 +134,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 21.13922
-  tps: 57.50799
+  dps: 20.95578
+  tps: 57.3226
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 6.01208
-  tps: 7.51357
+  dps: 6.009
+  tps: 7.5104
  }
 }
 dps_results: {

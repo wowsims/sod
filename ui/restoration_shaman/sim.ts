@@ -31,8 +31,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-	// },
 
 	defaults: {
 		// Default equipped gear.

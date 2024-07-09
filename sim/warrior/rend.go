@@ -64,7 +64,7 @@ func (warrior *Warrior) registerRendSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				damage := rend.damage
 				if hasBloodFrenzyRune {
-					damage *= 1 + .03*dot.Spell.MeleeAttackPower()
+					damage += .03 * dot.Spell.MeleeAttackPower()
 				}
 
 				dot.Snapshot(target, damage, isRollover)

@@ -37,6 +37,10 @@ func (warrior *Warrior) registerRampage() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(),
+				Duration: time.Minute * 2,
+			},
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -46,5 +50,10 @@ func (warrior *Warrior) registerRampage() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			warrior.RampageAura.Activate(sim)
 		},
+	})
+
+	warrior.AddMajorCooldown(core.MajorCooldown{
+		Type:  core.CooldownTypeDPS,
+		Spell: warrior.Rampage,
 	})
 }
