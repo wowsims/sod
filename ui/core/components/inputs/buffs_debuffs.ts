@@ -1039,7 +1039,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: TrueshotAuraBuff,
 		picker: IconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
+		stats: [Stat.StatRangedAttackPower],
 	},
 	{
 		config: MeleeCritBuff,

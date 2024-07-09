@@ -101,12 +101,15 @@ var ItemAllowList = map[int32]struct{}{}
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
+	11684:  {}, // https://www.wowhead.com/classic/item=11684/ironfoe
 	11815:  {}, // https://www.wowhead.com/classic/item=11815/hand-of-justice
 	11832:  {}, // https://www.wowhead.com/classic/item=11832/burst-of-knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
 	17064:  {}, // Shard of the Scale
+	17074:  {}, // https://www.wowhead.com/classic/item=17074/shadowstrike
 	17082:  {}, // Shard of the Flame
+	17223:  {}, // https://www.wowhead.com/classic/item=17223/thunderstrike
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
@@ -130,10 +133,11 @@ var ItemDenyList = map[int32]struct{}{
 	208851: {}, // Libram of Justice
 	210195: {}, // Unbalanced Idol
 	210534: {}, // Idol of the Wild
-	215116: {}, // UNUSED - Hyperconductive Speed Belt
 	211472: {}, // Libram of Banishment
+	211501: {}, // https://www.wowhead.com/classic/item=211501/chestguard-of-might
 	213513: {}, // Libram of Deliverance
 	213594: {}, // Idol of the Heckler
+	215116: {}, // UNUSED - Hyperconductive Speed Belt
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice
@@ -655,6 +659,4 @@ var DenyItemSetIds = []int{
 	// Warlock
 
 	// Warrior
-	1719, // Immoveable Might
-	1720, // Unstoppable Might
 }

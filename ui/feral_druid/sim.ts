@@ -259,9 +259,4 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		return Stats.fromProto(this.player.getCurrentStats().finalStats);
 	}
-
-	detectArpStackConfiguration(arpTarget: number): boolean {
-		const currentArp = Stats.fromProto(this.player.getCurrentStats().finalStats).getStat(Stat.StatArmorPenetration);
-		return arpTarget > 1000 && currentArp > 648 && currentArp + 20 < arpTarget + 11;
-	}
 }

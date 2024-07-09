@@ -314,9 +314,13 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
 		}
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		if dot.Spell.SchoolIndex == stats.SchoolIndexPhysical {
+			dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+		} else {
+			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+		}
 	}
 }
 

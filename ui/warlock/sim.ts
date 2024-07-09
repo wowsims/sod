@@ -30,7 +30,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatSpellPenetration,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -48,7 +47,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 	],
 	// TODO: Figure out a way to get the stat but right now this comes out wrong
@@ -146,7 +144,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.PaladinPhysicalBuff,
 		BuffDebuffInputs.StrengthBuffHorde,
 		BuffDebuffInputs.BattleShoutBuff,
-		BuffDebuffInputs.TrueshotAuraBuff,
 		BuffDebuffInputs.MeleeCritBuff,
 		BuffDebuffInputs.CurseOfVulnerability,
 		BuffDebuffInputs.GiftOfArthas,

@@ -49,8 +49,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatStrength,
 		Stat.StatAttackPower,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-	// },
 
 	defaults: {
 		race: Race.RaceTroll,

@@ -18,21 +18,21 @@ character_stats_results: {
   final_stats: 21
   final_stats: 0
   final_stats: 0
-  final_stats: 1400.656
+  final_stats: 1407.872
   final_stats: 5
-  final_stats: 47.22183
+  final_stats: 47.48486
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 2871.224
+  final_stats: 2879.848
   final_stats: 201
   final_stats: 0
   final_stats: 0
-  final_stats: 18.7414
-  final_stats: 19.22183
+  final_stats: 18.9218
+  final_stats: 19.48486
   final_stats: 0
   final_stats: 0
   final_stats: 5092.64
@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.27881
-  weights: 1.02245
+  weights: 1.19619
+  weights: 0.75802
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4221
-  weights: 15.06461
-  weights: 12.09065
+  weights: 0.37535
+  weights: 16.09794
+  weights: 12.17945
   weights: 0
   weights: 0
   weights: 0
@@ -99,105 +99,105 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 875.94663
-  tps: 751.16639
+  dps: 875.65478
+  tps: 751.55413
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
-  dps: 1199.43274
-  tps: 1017.70788
+  dps: 1200.62167
+  tps: 1018.64886
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 314.12397
-  tps: 427.80341
+  dps: 312.61695
+  tps: 426.64534
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 94.82744
-  tps: 86.54438
+  dps: 93.1775
+  tps: 85.14526
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 168.16374
-  tps: 149.81147
+  dps: 168.64392
+  tps: 150.2093
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 144.65544
-  tps: 268.08133
+  dps: 137.73335
+  tps: 261.49535
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 43.28703
-  tps: 43.92595
+  dps: 40.95841
+  tps: 41.95191
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 85.74076
-  tps: 81.69992
+  dps: 79.78507
+  tps: 76.80898
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 343.52473
-  tps: 456.48236
+  dps: 344.12817
+  tps: 457.05557
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 99.32713
-  tps: 90.34258
+  dps: 99.59237
+  tps: 90.56147
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 176.05336
-  tps: 156.30292
+  dps: 176.52467
+  tps: 156.69366
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 159.09074
-  tps: 281.82048
+  dps: 152.44283
+  tps: 275.43001
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 45.21308
-  tps: 45.55965
+  dps: 43.90282
+  tps: 44.48353
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 90.17645
-  tps: 85.22022
+  dps: 83.62514
+  tps: 79.83959
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1102.75685
-  tps: 936.14181
+  dps: 1107.19173
+  tps: 939.91749
  }
 }

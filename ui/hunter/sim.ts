@@ -29,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -51,7 +50,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -73,7 +71,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 				[Stat.StatMeleeHit]: 3.29,
 				[Stat.StatMeleeCrit]: 4.45,
 				[Stat.StatMeleeHaste]: 1.08,
-				[Stat.StatArmorPenetration]: 1.32,
 				[Stat.StatSpellPower]: 0.03,
 				[Stat.StatNaturePower]: 0.01,
 				[Stat.StatArcanePower]: 0.01,
@@ -126,27 +123,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase3], 
-			...Presets.TalentPresets[Phase.Phase2], 
-			...Presets.TalentPresets[Phase.Phase1]
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase3], 
-			...Presets.APLPresets[Phase.Phase2], 
-			...Presets.APLPresets[Phase.Phase1]
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase3], 
-			...Presets.GearPresets[Phase.Phase2], 
-			...Presets.GearPresets[Phase.Phase1]
-		],
-		builds: [
-			Presets.PresetBuildMeleeBM, 
-			Presets.PresetBuildRangedMM
-		],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		builds: [Presets.PresetBuildMeleeBM, Presets.PresetBuildRangedMM],
 	},
 
 	autoRotation: player => {
@@ -155,7 +137,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization;
 
 		if (isMelee) {
-			return player.getLevel() == 50 ? Presets.APLMeleeBmPhase3.rotation.rotation! : player.getLevel() == 40 ? Presets.APLMeleePhase2.rotation.rotation! : Presets.APLMeleeWeavePhase1.rotation.rotation!;
+			return player.getLevel() == 50
+				? Presets.APLMeleeBmPhase3.rotation.rotation!
+				: player.getLevel() == 40
+				? Presets.APLMeleePhase2.rotation.rotation!
+				: Presets.APLMeleeWeavePhase1.rotation.rotation!;
 		} else {
 			if (player.getLevel() == 50) {
 				return Presets.APLRangedMmPhase3.rotation.rotation!;
@@ -179,7 +165,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// 	tooltip: 'Beast Mastery Hunter',
 		// 	defaultName: 'Beast Mastery',
 		// 	iconUrl: getSpecIcon(Class.ClassHunter, 0),
-
 		// 	talents: Presets.DefaultTalentsBeastMastery.data,
 		// 	specOptions: Presets.BMDefaultOptions,
 		// 	consumes: Presets.DefaultConsumes,
@@ -226,7 +211,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// 	tooltip: 'Survival Hunter',
 		// 	defaultName: 'Survival',
 		// 	iconUrl: getSpecIcon(Class.ClassHunter, 2),
-
 		// 	talents: Presets.DefaultTalentsSurvival.data,
 		// 	specOptions: Presets.DefaultOptions,
 		// 	consumes: Presets.DefaultConsumes,

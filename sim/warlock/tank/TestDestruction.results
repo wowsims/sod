@@ -116,16 +116,16 @@ character_stats_results: {
   final_stats: 20.03174
   final_stats: 0
   final_stats: 0
-  final_stats: 587.724
+  final_stats: 591.332
   final_stats: 5
-  final_stats: 22.84086
+  final_stats: 23.09441
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 4803.4
   final_stats: 0
   final_stats: 0
-  final_stats: 2070.696
+  final_stats: 2079.32
   final_stats: 150
   final_stats: 0
   final_stats: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.77917
+  weights: 1.77941
   weights: 0
-  weights: 0.49825
-  weights: 0
-  weights: 0
+  weights: 0.4983
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.54502
+  weights: 0
+  weights: 0
+  weights: 6.54504
   weights: 0
   weights: 0
   weights: 0
@@ -421,16 +421,16 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 304.59262
-  tps: 211.48921
+  dps: 304.70325
+  tps: 211.59983
   hps: 9.73115
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1177.47513
-  tps: 2033.19396
+  dps: 1177.62451
+  tps: 2033.41802
   hps: 18.30614
  }
 }
@@ -485,8 +485,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1155.78676
-  tps: 1994.91681
+  dps: 1155.88883
+  tps: 1995.06993
   hps: 18.52813
  }
 }

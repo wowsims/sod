@@ -116,16 +116,16 @@ character_stats_results: {
   final_stats: 27.4776
   final_stats: 0
   final_stats: 0
-  final_stats: 933.752
+  final_stats: 940.968
   final_stats: 5
-  final_stats: 31.3424
+  final_stats: 31.60112
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 5701.5
   final_stats: 0
   final_stats: 0
-  final_stats: 2029.08
+  final_stats: 2037.704
   final_stats: 150
   final_stats: 0
   final_stats: 0
@@ -603,15 +603,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-AllItems-TheFiveThunders"
  value: {
-  dps: 541.25153
-  tps: 536.55993
+  dps: 541.25743
+  tps: 536.56583
  }
 }
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1061.82503
-  tps: 953.15382
+  dps: 1061.85028
+  tps: 953.17915
  }
 }
 dps_results: {
@@ -701,8 +701,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1057.50975
-  tps: 947.52223
+  dps: 1057.56269
+  tps: 947.57535
  }
 }
 dps_results: {

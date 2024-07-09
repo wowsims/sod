@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+// Recklessness now increases critical strike chance by 50% (was 100%) and the duration is reduced to 12 seconds, but the cooldown is reduced to 5 minutes.
 func (warrior *Warrior) RegisterRecklessnessCD() {
 	if warrior.Level < 50 {
 		return
@@ -17,14 +18,14 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
-		Duration: time.Second * 15,
+		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, 100)
+			warrior.AddStatDynamic(sim, stats.MeleeCrit, 50*core.CritRatingPerCritChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier /= 1.2
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, -100)
+			warrior.AddStatDynamic(sim, stats.MeleeCrit, -50*core.CritRatingPerCritChance)
 
 		},
 	})
@@ -38,7 +39,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 30,
+				Duration: time.Minute * 5,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
