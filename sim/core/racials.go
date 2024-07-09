@@ -14,7 +14,7 @@ func applyRaceEffects(agent Agent) {
 	switch character.Race {
 	case proto.Race_RaceDwarf:
 		character.AddStat(stats.FrostResistance, 10)
-		MakePermanent(character.GunSpecializationAura())
+		character.GunSpecializationAura()
 
 		actionID := ActionID{SpellID: 20594}
 
@@ -55,14 +55,14 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.05)
-		MakePermanent(character.SwordSpecializationAura())
-		MakePermanent(character.MaceSpecializationAura())
+		character.SwordSpecializationAura()
+		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
 		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
-		MakePermanent(character.AxeSpecializationAura())
+		character.AxeSpecializationAura()
 
 		// Command (Pet damage +5%)
 		for _, pet := range character.Pets {
@@ -112,8 +112,8 @@ func applyRaceEffects(agent Agent) {
 		character.AddStat(stats.NatureResistance, 10)
 		character.MultiplyStat(stats.Health, 1.05)
 	case proto.Race_RaceTroll:
-		MakePermanent(character.BowSpecializationAura())
-		MakePermanent(character.ThrownSpecializationAura())
+		character.BowSpecializationAura()
+		character.ThrownSpecializationAura()
 
 		// Beast Slaying (+5% damage to beasts)
 		character.Env.RegisterPostFinalizeEffect(func() {

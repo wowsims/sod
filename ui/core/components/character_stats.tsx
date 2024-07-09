@@ -175,45 +175,45 @@ export class CharacterStats extends Component {
 						<div className="character-stats-tooltip-row">
 							<span>Axes</span>
 							<span>
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatAxesSkill)} /{' '}
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedAxesSkill)}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatAxesSkill)} /{' '}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatTwoHandedAxesSkill)}
 							</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Daggers</span>
-							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatDaggersSkill)}</span>
+							<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatDaggersSkill)}</span>
 						</div>
 						{player.spec === Spec.SpecFeralDruid && (
 							<div className="character-stats-tooltip-row">
 								<span>Feral Combat</span>
-								<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
+								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
 							<span>Maces</span>
 							<span>
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatMacesSkill)} /{' '}
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedMacesSkill)}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatMacesSkill)} /{' '}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatTwoHandedMacesSkill)}
 							</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Polearms</span>
-							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatPolearmsSkill)}</span>
+							<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatPolearmsSkill)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Staves</span>
-							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatStavesSkill)}</span>
+							<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatStavesSkill)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Swords</span>
 							<span>
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatSwordsSkill)} /{' '}
-								{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatTwoHandedSwordsSkill)}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatSwordsSkill)} /{' '}
+								{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatTwoHandedSwordsSkill)}
 							</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Unarmed</span>
-							<span>{this.weaponSkillDisplayString(finalStats, PseudoStat.PseudoStatUnarmedSkill)}</span>
+							<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatUnarmedSkill)}</span>
 						</div>
 					</div>,
 				);
@@ -222,27 +222,27 @@ export class CharacterStats extends Component {
 					<div className="ps-2">
 						<div className="character-stats-tooltip-row">
 							<span>Arcane</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitArcane)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitArcane)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Fire</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFire)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitFire)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Frost</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFrost)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitFrost)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Holy</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitHoly)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitHoly)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Nature</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitNature)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitNature)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Shadow</span>
-							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
+							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
 						</div>
 					</div>,
 				);

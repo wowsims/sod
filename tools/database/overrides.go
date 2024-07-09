@@ -101,12 +101,15 @@ var ItemAllowList = map[int32]struct{}{}
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
+	11684:  {}, // https://www.wowhead.com/classic/item=11684/ironfoe
 	11815:  {}, // https://www.wowhead.com/classic/item=11815/hand-of-justice
 	11832:  {}, // https://www.wowhead.com/classic/item=11832/burst-of-knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
 	17064:  {}, // Shard of the Scale
+	17074:  {}, // https://www.wowhead.com/classic/item=17074/shadowstrike
 	17082:  {}, // Shard of the Flame
+	17223:  {}, // https://www.wowhead.com/classic/item=17223/thunderstrike
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury

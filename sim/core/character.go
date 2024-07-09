@@ -692,38 +692,38 @@ func (c *Character) ApplyRingRunes() {
 
 	// Weapon Skill Specializations
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
-		MakePermanent(c.AxeSpecializationAura())
+		c.AxeSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingDaggerSpecialization)) {
-		MakePermanent(c.DaggerSpecializationAura())
+		c.DaggerSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingFistWeaponSpecialization)) {
-		MakePermanent(c.FistWeaponSpecializationAura())
+		c.FistWeaponSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingMaceSpecialization)) {
-		MakePermanent(c.MaceSpecializationAura())
+		c.MaceSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingPoleWeaponSpecialization)) {
-		MakePermanent(c.PoleWeaponSpecializationAura())
+		c.PoleWeaponSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingRangedWeaponSpecialization)) {
-		MakePermanent(c.GunSpecializationAura())
-		MakePermanent(c.BowSpecializationAura())
-		MakePermanent(c.CrossbowSpecializationAura())
-		MakePermanent(c.ThrownSpecializationAura())
+		c.GunSpecializationAura()
+		c.BowSpecializationAura()
+		c.CrossbowSpecializationAura()
+		c.ThrownSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
-		MakePermanent(c.SwordSpecializationAura())
+		c.SwordSpecializationAura()
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingFeralCombatSpecialization)) {
-		MakePermanent(c.FeralCombatSpecializationAura())
+		c.FeralCombatSpecializationAura()
 	}
 
 	// Other Specializations

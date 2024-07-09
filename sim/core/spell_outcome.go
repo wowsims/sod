@@ -57,8 +57,8 @@ func (dot *Dot) OutcomeTickSnapshotCritCounted(sim *Simulation, result *SpellRes
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
 	} else {
 		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 	}
-	dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
 
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
