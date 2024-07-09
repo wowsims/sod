@@ -188,7 +188,7 @@ export default class ItemList<T extends ItemListType> {
 			makeShow2hWeaponsSelector(show2hWeaponRef.value!, player.sim);
 		}
 
-		// makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
+		//makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		if (this.label !== SelectorModalTabs.Runes) {
 			makeShowEPValuesSelector(showEpValuesRef.value!, player.sim);

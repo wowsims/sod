@@ -19,10 +19,27 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
+			rogue.AddStatDynamic(sim, stats.Parry, 100*core.ParryRatingPerParryChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
+			rogue.AddStatDynamic(sim, stats.Parry, -100*core.ParryRatingPerParryChance)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeParry) {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	mainGaucheSSAura := rogue.RegisterAura(core.Aura{
+		Label:    "Main Gauche Sinister Strike Discount",
+		ActionID: core.ActionID{SpellID: 462752},
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.SinisterStrike.DefaultCast.Cost -= 20
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.SinisterStrike.DefaultCast.Cost += 20
 		},
 	})
 
@@ -61,9 +78,10 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			mainGaucheAura.Activate(sim)
+			mainGaucheSSAura.Activate(sim)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 3, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

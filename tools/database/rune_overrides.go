@@ -66,7 +66,6 @@ var UnimplementedRuneOverrides = []int32{
 	// Paladin
 	440658, // Cloak - Shield of Righteousness
 	440666, // Cloak - Vindicator
-	440672, // Cloak - Righteous Vengeance
 
 	// Priest
 
