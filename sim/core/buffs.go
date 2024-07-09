@@ -653,7 +653,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
-	if raidBuffs.SanctityAura {	
+	if raidBuffs.SanctityAura {
 		MakePermanent(SanctityAuraAura(character))
 	}
 
@@ -871,10 +871,10 @@ func SanctityAuraAura(character *Character) *Aura {
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *Aura, sim *Simulation) {
-                    character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-                    character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
 		},
 	})
 }

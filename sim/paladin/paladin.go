@@ -12,7 +12,7 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-	SpellFlag_RV = core.SpellFlagAgentReserved1
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
@@ -23,7 +23,7 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
 	primaryPaladinAura proto.PaladinAura
 	currentPaladinAura *core.Aura
 

@@ -25,8 +25,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -51,8 +49,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -82,8 +78,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Stat.StatMeleeHit]: 9.62,
 				[Stat.StatMeleeCrit]: 14.8,
 				[Stat.StatMeleeHaste]: 11.84, //haste is complicated
-				[Stat.StatArmorPenetration]: 0.35,
-				[Stat.StatExpertise]: 1.92, //default EP assumes cap
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 8.15,

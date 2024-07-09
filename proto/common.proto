@@ -150,6 +150,16 @@ enum PseudoStat {
 	PseudoStatCrossbowsSkill = 17;
 	PseudoStatGunsSkill = 18;
 	PseudoStatThrownSkill = 19;
+
+	PseudoStatFeralCombatSkill = 20;
+
+	// Spell School Hit
+	PseudoStatSchoolHitArcane = 21;
+	PseudoStatSchoolHitFire = 22;
+	PseudoStatSchoolHitFrost = 23;
+	PseudoStatSchoolHitHoly = 24;
+	PseudoStatSchoolHitNature = 25;
+	PseudoStatSchoolHitShadow = 26;
 }
 
 message UnitStats {

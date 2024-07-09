@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.27881
-  weights: 1.02245
+  weights: 1.25148
+  weights: 1.0548
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4221
-  weights: 15.06461
-  weights: 12.09065
+  weights: 0.39713
+  weights: 15.40419
+  weights: 12.39846
   weights: 0
   weights: 0
   weights: 0
@@ -99,64 +99,64 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 875.94663
-  tps: 751.16639
+  dps: 868.02898
+  tps: 744.81642
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
-  dps: 1199.43274
-  tps: 1017.70788
+  dps: 1194.1787
+  tps: 1013.31961
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 314.12397
-  tps: 427.80341
+  dps: 311.61881
+  tps: 425.76462
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 94.82744
-  tps: 86.54438
+  dps: 92.4809
+  tps: 84.57987
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 168.16374
-  tps: 149.81147
+  dps: 168.14911
+  tps: 149.79976
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 144.65544
-  tps: 268.08133
+  dps: 138.18841
+  tps: 261.83103
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 43.28703
-  tps: 43.92595
+  dps: 40.93829
+  tps: 41.93477
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 85.74076
-  tps: 81.69992
+  dps: 79.77432
+  tps: 76.80038
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 343.52473
-  tps: 456.48236
+  dps: 342.53018
+  tps: 455.62847
  }
 }
 dps_results: {
@@ -176,28 +176,28 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 159.09074
-  tps: 281.82048
+  dps: 152.44283
+  tps: 275.43001
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 45.21308
-  tps: 45.55965
+  dps: 43.90282
+  tps: 44.48353
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 90.17645
-  tps: 85.22022
+  dps: 83.62514
+  tps: 79.83959
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1102.75685
-  tps: 936.14181
+  dps: 1100.44453
+  tps: 934.29195
  }
 }

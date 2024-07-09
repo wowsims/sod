@@ -26,8 +26,8 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeParry) {
-					aura.Deactivate(sim)
-				}
+				aura.Deactivate(sim)
+			}
 		},
 	})
 

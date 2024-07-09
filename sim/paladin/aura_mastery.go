@@ -33,7 +33,7 @@ func (paladin *Paladin) registerAuraMastery() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if paladin.currentPaladinAura != nil {
 				if paladin.currentPaladinAura.Label == "Sanctity Aura" {
- 					paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
+					paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.2 / 1.1)
 				}
 			}
 		},

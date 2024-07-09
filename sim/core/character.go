@@ -609,6 +609,14 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatBowsSkill:            float64(character.PseudoStats.BowsSkill),
 		proto.PseudoStat_PseudoStatCrossbowsSkill:       float64(character.PseudoStats.CrossbowsSkill),
 		proto.PseudoStat_PseudoStatGunsSkill:            float64(character.PseudoStats.GunsSkill),
+		proto.PseudoStat_PseudoStatFeralCombatSkill:     float64(character.PseudoStats.FeralCombatSkill),
+
+		proto.PseudoStat_PseudoStatSchoolHitArcane: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexArcane]),
+		proto.PseudoStat_PseudoStatSchoolHitFire:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFire]),
+		proto.PseudoStat_PseudoStatSchoolHitFrost:  float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFrost]),
+		proto.PseudoStat_PseudoStatSchoolHitHoly:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly]),
+		proto.PseudoStat_PseudoStatSchoolHitNature: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature]),
+		proto.PseudoStat_PseudoStatSchoolHitShadow: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow]),
 	}
 }
 
@@ -684,42 +692,38 @@ func (c *Character) ApplyRingRunes() {
 
 	// Weapon Skill Specializations
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
-		c.PseudoStats.AxesSkill += 5
-		c.PseudoStats.TwoHandedAxesSkill += 5
+		MakePermanent(c.AxeSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingDaggerSpecialization)) {
-		c.PseudoStats.DaggersSkill += 5
+		MakePermanent(c.DaggerSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingFistWeaponSpecialization)) {
-		c.PseudoStats.UnarmedSkill += 5
+		MakePermanent(c.FistWeaponSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingMaceSpecialization)) {
-		c.PseudoStats.MacesSkill += 5
-		c.PseudoStats.TwoHandedMacesSkill += 5
+		MakePermanent(c.MaceSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingPoleWeaponSpecialization)) {
-		c.PseudoStats.StavesSkill += 5
-		c.PseudoStats.PolearmsSkill += 5
+		MakePermanent(c.PoleWeaponSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingRangedWeaponSpecialization)) {
-		c.PseudoStats.BowsSkill += 5
-		c.PseudoStats.CrossbowsSkill += 5
-		c.PseudoStats.GunsSkill += 5
-		c.PseudoStats.ThrownSkill += 5
+		MakePermanent(c.GunSpecializationAura())
+		MakePermanent(c.BowSpecializationAura())
+		MakePermanent(c.CrossbowSpecializationAura())
+		MakePermanent(c.ThrownSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
-		c.PseudoStats.SwordsSkill += 5
-		c.PseudoStats.TwoHandedSwordsSkill += 5
+		MakePermanent(c.SwordSpecializationAura())
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingFeralCombatSpecialization)) {
-		c.PseudoStats.FeralCombatSkill += 5
+		MakePermanent(c.FeralCombatSpecializationAura())
 	}
 
 	// Other Specializations
