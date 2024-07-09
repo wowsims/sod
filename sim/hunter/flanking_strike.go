@@ -94,7 +94,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 

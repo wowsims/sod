@@ -131,7 +131,9 @@ func (warlock *Warlock) getActiveImmolateSpell(target *core.Unit) *core.Spell {
 
 func (warlock *Warlock) registerImmolateSpell() {
 	warlock.Immolate = make([]*core.Spell, 0)
-	for rank := 1; rank <= ImmolateRanks; rank++ {
+
+	// TODO: AQ <=
+	for rank := 1; rank < ImmolateRanks; rank++ {
 		config := warlock.getImmolateConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {

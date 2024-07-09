@@ -101,6 +101,7 @@ var ItemAllowList = map[int32]struct{}{}
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9653:   {}, // Speedy Racer Goggles
+	11815:  {}, // https://www.wowhead.com/classic/item=11815/hand-of-justice
 	11832:  {}, // https://www.wowhead.com/classic/item=11832/burst-of-knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
@@ -135,6 +136,7 @@ var ItemDenyList = map[int32]struct{}{
 	213594: {}, // Idol of the Heckler
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
+	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -462,11 +464,13 @@ var DenyListNameRegexes = []*regexp.Regexp{
 
 	// TODO: Possibly add these back later. These are later phase items
 	// PVP Gear
-	regexp.MustCompile(`Grand Marshal's`),
-	regexp.MustCompile(`High Warlord's`),
+	regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
+	regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),
 
 	// ZG
 	regexp.MustCompile(`Zandalarian`),
+	regexp.MustCompile(`Bloodvine [a-zA-z]+`),
+	regexp.MustCompile(`Blood Tiger [a-zA-z]+`),
 
 	// AQ
 	regexp.MustCompile(`Qiraji`),

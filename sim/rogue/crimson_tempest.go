@@ -2,14 +2,14 @@ package rogue
 
 import (
 	"time"
-
+	
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
-	actionID := core.ActionID{SpellID: 412096}
+	actionID := core.ActionID{SpellID: 436611}
 	procMask := core.ProcMaskMeleeMHSpecial
 
 	return rogue.RegisterSpell(core.SpellConfig{
@@ -17,7 +17,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | SpellFlagCarnage,
 
 		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
 		ThreatMultiplier: 1,
@@ -65,7 +65,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        SpellFlagCarnage, // TODO: Placeholder to prevent use in APL while broken. Replace with rogue.finisherFlags()
+		Flags:        rogue.finisherFlags(),
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
@@ -92,5 +92,8 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 }
 
 func (rogue *Rogue) CrimsonTempestDamage(comboPoints int32) float64 {
-	return []float64{0.15, 0.3, 0.45, 0.6, 0.75, 0.9}[comboPoints] * rogue.GetStat(stats.AttackPower)
+    tickDamageValues := []float64{0, 0.3, 0.45, 0.6, 0.75, 0.9}
+    tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower)/float64(comboPoints+1)
+    return tickDamage
 }
+

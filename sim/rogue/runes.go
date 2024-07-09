@@ -42,6 +42,9 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerCrimsonTempestSpell()
 }
 
+const SlaughterFromTheShadowsDamageMultiplier = 1.60
+const SlaughterFromTheShadowsCostReduction = 30.0
+
 func (rogue *Rogue) applyCombatPotency() {
 	if !rogue.HasRune(proto.RogueRune_RuneCombatPotency) {
 		return
@@ -83,10 +86,15 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() {
+			isFoKOH := false
+
+			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
+				isFoKOH = true
+			}
+			
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() || isFoKOH {
 				return
 			}
-			// TODO Check whether certain spells don't trigger this
 			rogue.AddEnergy(sim, 3, energyMetrics)
 		},
 	})
@@ -160,7 +168,7 @@ func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	refreshBladeDance := rogue.BladeDanceAura.IsActive()
 	// Refresh the lowest duration of SnD or Blade Dance
 	if refreshBladeDance && refreshSlice {
-		if rogue.SliceAndDiceAura.RemainingDuration(sim) < rogue.BladeDanceAura.RemainingDuration(sim) {
+		if rogue.SliceAndDiceAura.RemainingDuration(sim) > rogue.BladeDanceAura.RemainingDuration(sim) {
 			refreshSlice = false
 		} else {
 			refreshBladeDance = false
