@@ -52,6 +52,8 @@ const (
 	ProcMaskProc
 	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
 	ProcMaskWeaponProc
+	// Mask for Seal of Righteousness, it does not proc Wild Strikes
+	ProcMaskSupressExtraAttack
 )
 
 const (
