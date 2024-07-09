@@ -24,7 +24,8 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 	apCoef := 0.15
 
-	warrior.ShieldSlam = warrior.RegisterSpell(core.SpellConfig{
+	warrior.ShieldSlam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorShieldSlam,
 		ActionID:    core.ActionID{SpellID: rank.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

@@ -14,7 +14,7 @@ func (warrior *Warrior) registerShockwaveSpell() {
 
 	apCoef := 0.50
 
-	warrior.Shockwave = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Shockwave = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneShockwave)},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeRanged,
@@ -32,9 +32,6 @@ func (warrior *Warrior) registerShockwaveSpell() {
 				Timer:    warrior.NewTimer(),
 				Duration: 20 * time.Second,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		CritDamageBonus: warrior.impale(),

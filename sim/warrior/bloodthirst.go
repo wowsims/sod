@@ -11,7 +11,8 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		return
 	}
 
-	warrior.Bloodthirst = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Bloodthirst = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorBloodthirst,
 		ActionID:    core.ActionID{SpellID: 23894},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

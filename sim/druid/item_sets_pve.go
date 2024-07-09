@@ -63,7 +63,6 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 				Name:     "Power Shredder",
-				ActionID: core.ActionID{SpellID: 449924},
 				Callback: core.CallbackOnCastComplete,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.SpellCode == SpellCode_DruidShred {
@@ -91,7 +90,6 @@ var ItemSetExiledProphetsRaiment = core.NewItemSet(core.ItemSet{
 			if druid.HasRune(proto.DruidRune_RuneFeetDreamstate) {
 				core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 					Name:       "Exiled Dreamer",
-					ActionID:   core.ActionID{SpellID: 449929},
 					Callback:   core.CallbackOnHealDealt,
 					ProcMask:   core.ProcMaskSpellHealing,
 					Outcome:    core.OutcomeCrit,
@@ -157,7 +155,6 @@ var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
 			rageMetrics := c.NewRageMetrics(actionID)
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Druid Energize Trigger - Wildheart Raiment (Mana)",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -167,7 +164,6 @@ var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Druid Energize Trigger - Wildheart Raiment (Energy)",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
@@ -180,7 +176,6 @@ var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Druid Energize Trigger - Wildheart Raiment (Rage)",
 				Callback:   core.CallbackOnSpellHitTaken,
 				ProcMask:   core.ProcMaskMelee,

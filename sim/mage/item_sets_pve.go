@@ -26,7 +26,6 @@ var ItemSetSorcerersRegalia = core.NewItemSet(core.ItemSet{
 			manaMetrics := c.NewManaMetrics(actionID)
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Magister's Regalia",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
@@ -166,7 +165,6 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 
 			mage.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus",
-				ActionID: core.ActionID{SpellID: 456398},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)

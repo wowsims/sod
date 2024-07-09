@@ -30,7 +30,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		},
 	})
 
-	Recklessness := warrior.RegisterSpell(core.SpellConfig{
+	Recklessness := warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
 		ActionID: actionID,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
@@ -42,9 +42,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 				Duration: time.Minute * 5,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
-		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			reckAura.Activate(sim)
@@ -52,7 +49,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: Recklessness,
+		Spell: Recklessness.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

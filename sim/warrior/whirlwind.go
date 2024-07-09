@@ -19,7 +19,8 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		warrior.WhirlwindOH = warrior.newWhirlwindHitSpell(false)
 	}
 
-	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Whirlwind = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorWhirlwind,
 		ActionID:    core.ActionID{SpellID: 1680},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -39,9 +40,6 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 				Duration: time.Second * 10,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BerserkerStance) || warrior.StanceMatches(GladiatorStance)
-		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -54,7 +52,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 	})
 }
 
-func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *core.Spell {
+func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 	procMask := core.ProcMaskMeleeSpecial
 	damageFunc := warrior.MHNormalizedWeaponDamage
 	if !isMH {
@@ -62,7 +60,8 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *core.Spell {
 		damageFunc = warrior.OHNormalizedWeaponDamage
 	}
 
-	return warrior.RegisterSpell(core.SpellConfig{
+	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   core.Ternary(isMH, SpellCode_WarriorWhirlwindMH, SpellCode_WarriorWhirlwindOH),
 		ActionID:    core.ActionID{SpellID: 1680}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

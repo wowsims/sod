@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/guardians"
@@ -10,8 +11,33 @@ import (
 )
 
 const (
-	SpellFlagBleed      = core.SpellFlagAgentReserved1
-	SpellFlagBloodSurge = core.SpellFlagAgentReserved2
+	SpellFlagBattleStance    = core.SpellFlagAgentReserved1
+	SpellFlagDefensiveStance = core.SpellFlagAgentReserved1
+	SpellFlagBerserkerStance = core.SpellFlagAgentReserved1
+	SpellFlagBloodSurge      = core.SpellFlagAgentReserved4
+)
+
+const (
+	SpellCode_WarriorNone int32 = iota
+
+	SpellCode_WarriorBloodthirst
+	SpellCode_WarriorDevastate
+	SpellCode_WarriorExecute
+	SpellCode_WarriorMortalStrike
+	SpellCode_WarriorRagingBlow
+	SpellCode_WarriorRend
+	SpellCode_WarriorRevenge
+	SpellCode_WarriorShieldSlam
+	SpellCode_WarriorSlam
+	SpellCode_WarriorSlamMH
+	SpellCode_WarriorSlamOH
+	SpellCode_WarriorStanceBattle
+	SpellCode_WarriorStanceBerserker
+	SpellCode_WarriorStanceGladiator
+	SpellCode_WarriorStanceDefensive
+	SpellCode_WarriorWhirlwind
+	SpellCode_WarriorWhirlwindMH
+	SpellCode_WarriorWhirlwindOH
 )
 
 var TalentTreeSizes = [3]int{18, 17, 17}
@@ -35,6 +61,7 @@ type Warrior struct {
 
 	// Current state
 	Stance          Stance
+	PreviousStance  Stance // Used for Warrior T1 DPS 4P
 	revengeProcAura *core.Aura
 	OverpowerAura   *core.Aura
 
@@ -58,50 +85,58 @@ type Warrior struct {
 	reactionTime time.Duration
 	LastAMTick   time.Duration
 
-	BattleShout *core.Spell
+	BattleShout *WarriorSpell
 
-	BattleStance    *core.Spell
-	DefensiveStance *core.Spell
-	BerserkerStance *core.Spell
-	GladiatorStance *core.Spell
+	BattleStanceSpells    []*WarriorSpell
+	DefensiveStanceSpells []*WarriorSpell
+	BerserkerStanceSpells []*WarriorSpell
 
-	Bloodrage         *core.Spell
-	BerserkerRage     *core.Spell
-	Bloodthirst       *core.Spell
-	DemoralizingShout *core.Spell
-	Execute           *core.Spell
-	MortalStrike      *core.Spell
-	Overpower         *core.Spell
-	Rend              *core.Spell
-	Revenge           *core.Spell
-	ShieldBlock       *core.Spell
-	ShieldSlam        *core.Spell
-	Slam              *core.Spell
-	SlamMH            *core.Spell
-	SlamOH            *core.Spell
-	SunderArmor       *core.Spell
-	Devastate         *core.Spell
-	ThunderClap       *core.Spell
-	Whirlwind         *core.Spell
-	WhirlwindMH       *core.Spell
-	WhirlwindOH       *core.Spell
-	DeepWounds        *core.Spell
-	ConcussionBlow    *core.Spell
-	RagingBlow        *core.Spell
-	Hamstring         *core.Spell
-	Rampage           *core.Spell
-	Shockwave         *core.Spell
+	Stances         []*WarriorSpell
+	BattleStance    *WarriorSpell
+	DefensiveStance *WarriorSpell
+	BerserkerStance *WarriorSpell
+	GladiatorStance *WarriorSpell
 
-	HeroicStrike       *core.Spell
-	QuickStrike        *core.Spell
-	Cleave             *core.Spell
+	Bloodrage         *WarriorSpell
+	BerserkerRage     *WarriorSpell
+	Bloodthirst       *WarriorSpell
+	DemoralizingShout *WarriorSpell
+	Execute           *WarriorSpell
+	MortalStrike      *WarriorSpell
+	Overpower         *WarriorSpell
+	Rend              *WarriorSpell
+	Revenge           *WarriorSpell
+	ShieldBlock       *WarriorSpell
+	ShieldSlam        *WarriorSpell
+	Slam              *WarriorSpell
+	SlamMH            *WarriorSpell
+	SlamOH            *WarriorSpell
+	SunderArmor       *WarriorSpell
+	Devastate         *WarriorSpell
+	ThunderClap       *WarriorSpell
+	Whirlwind         *WarriorSpell
+	WhirlwindMH       *WarriorSpell
+	WhirlwindOH       *WarriorSpell
+	DeepWounds        *WarriorSpell
+	ConcussionBlow    *WarriorSpell
+	RagingBlow        *WarriorSpell
+	Hamstring         *WarriorSpell
+	Rampage           *WarriorSpell
+	Shockwave         *WarriorSpell
+
+	HeroicStrike       *WarriorSpell
+	QuickStrike        *WarriorSpell
+	Cleave             *WarriorSpell
 	curQueueAura       *core.Aura
-	curQueuedAutoSpell *core.Spell
+	curQueuedAutoSpell *WarriorSpell
 
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 	GladiatorStanceAura *core.Aura
+
+	defensiveStanceThreatMultiplier float64
+	gladiatorStanceDamageMultiplier float64
 
 	ShieldBlockAura *core.Aura
 
@@ -118,6 +153,77 @@ func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
+}
+
+func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig) *WarriorSpell {
+	ws := &WarriorSpell{StanceMask: stanceMask}
+
+	castConditionOld := config.ExtraCastCondition
+	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+		// Check if we're in allowed form to cast
+		// Allow 'humanoid' auto unshift casts
+		if stance := ws.GetStanceMask(); stance != AnyStance && !warrior.StanceMatches(stance) {
+			if sim.Log != nil {
+				sim.Log("Failed cast to spell %s, wrong stance", ws.ActionID)
+			}
+			return false
+		}
+		return castConditionOld == nil || castConditionOld(sim, target)
+	}
+
+	ws.Spell = warrior.Unit.RegisterSpell(config)
+
+	if stanceMask.Matches(BattleStance) {
+		warrior.BattleStanceSpells = append(warrior.BattleStanceSpells, ws)
+	}
+	if stanceMask.Matches(DefensiveStance) {
+		warrior.DefensiveStanceSpells = append(warrior.DefensiveStanceSpells, ws)
+	}
+	if stanceMask.Matches(BerserkerStance) {
+		warrior.BerserkerStanceSpells = append(warrior.BerserkerStanceSpells, ws)
+	}
+
+	return ws
+}
+
+func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) {
+	aura.NewExclusiveEffect(fmt.Sprintf("stance-override-%d", stance), true, core.ExclusiveEffect{
+		Priority: float64(aura.Duration),
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			if stance.Matches(BattleStance) {
+				for _, spell := range warrior.BattleStanceSpells {
+					spell.stanceOverride = true
+				}
+			}
+			if stance.Matches(DefensiveStance) {
+				for _, spell := range warrior.DefensiveStanceSpells {
+					spell.stanceOverride = true
+				}
+			}
+			if stance.Matches(BerserkerStance) {
+				for _, spell := range warrior.BerserkerStanceSpells {
+					spell.stanceOverride = true
+				}
+			}
+		},
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			if stance.Matches(BattleStance) {
+				for _, spell := range warrior.BattleStanceSpells {
+					spell.stanceOverride = false
+				}
+			}
+			if stance.Matches(DefensiveStance) {
+				for _, spell := range warrior.DefensiveStanceSpells {
+					spell.stanceOverride = false
+				}
+			}
+			if stance.Matches(BerserkerStance) {
+				for _, spell := range warrior.BerserkerStanceSpells {
+					spell.stanceOverride = false
+				}
+			}
+		},
+	})
 }
 
 func (warrior *Warrior) Initialize() {
@@ -144,7 +250,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
 
-	warrior.SunderArmor = warrior.newSunderArmorSpell()
+	warrior.SunderArmor = warrior.registerSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
 	warrior.RegisterShieldBlockCD()
@@ -190,5 +296,42 @@ func (warrior *Warrior) IsEnraged() bool {
 		warrior.BerserkerRageAura.IsActive() ||
 		(warrior.EnrageAura != nil && warrior.EnrageAura.IsActive()) ||
 		(warrior.ConsumedByRageAura != nil && warrior.ConsumedByRageAura.IsActive()) ||
-		(warrior.FreshMeatEnrageAura != nil && warrior.FreshMeatEnrageAura.IsActive())
+		(warrior.FreshMeatEnrageAura != nil && warrior.FreshMeatEnrageAura.IsActive()) ||
+		(warrior.WreckingCrewEnrageAura != nil && warrior.WreckingCrewEnrageAura.IsActive())
+}
+
+type WarriorSpell struct {
+	*core.Spell
+	StanceMask     Stance
+	stanceOverride bool // Allows the override of the StanceMask so that the spell can be used in any stance
+}
+
+func (ws *WarriorSpell) IsReady(sim *core.Simulation) bool {
+	if ws == nil {
+		return false
+	}
+	return ws.Spell.IsReady(sim)
+}
+
+func (ws *WarriorSpell) CanCast(sim *core.Simulation, target *core.Unit) bool {
+	if ws == nil {
+		return false
+	}
+	return ws.Spell.CanCast(sim, target)
+}
+
+func (ws *WarriorSpell) IsEqual(s *core.Spell) bool {
+	if ws == nil || s == nil {
+		return false
+	}
+	return ws.Spell == s
+}
+
+// Returns the StanceMask accounting for a possible override
+func (ws *WarriorSpell) GetStanceMask() Stance {
+	if ws.stanceOverride {
+		return AnyStance
+	}
+
+	return ws.StanceMask
 }

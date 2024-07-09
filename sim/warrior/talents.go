@@ -327,7 +327,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
 
-	DeathWish := warrior.RegisterSpell(core.SpellConfig{
+	DeathWish := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		RageCost: core.RageCostOptions{
 			Cost: 10,
@@ -349,7 +349,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: DeathWish,
+		Spell: DeathWish.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -377,7 +377,7 @@ func (warrior *Warrior) registerLastStandCD() {
 		},
 	})
 
-	lastStandSpell := warrior.RegisterSpell(core.SpellConfig{
+	lastStandSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
@@ -386,9 +386,6 @@ func (warrior *Warrior) registerLastStandCD() {
 				Duration: time.Minute * 10,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance)
-		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			lastStandAura.Activate(sim)
@@ -396,7 +393,7 @@ func (warrior *Warrior) registerLastStandCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: lastStandSpell,
+		Spell: lastStandSpell.Spell,
 		Type:  core.CooldownTypeSurvival,
 	})
 }

@@ -58,7 +58,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 		// Your melee autoattacks and spellcasts have a 6% chance to heal you for 270 to 330 health.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 450585}
 			manaMetrics := c.NewManaMetrics(core.ActionID{SpellID: 450583})
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -68,7 +67,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
@@ -77,7 +75,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Spell Cast)",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
