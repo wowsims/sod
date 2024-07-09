@@ -169,7 +169,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.CurCast.CastTime == 0 {
 						aura.Deactivate(sim)
 					}
 				},
