@@ -1319,7 +1319,7 @@ export const MISC_DEBUFFS_CONFIG = [
 	{
 		config: ImprovedFaerieFire,
 		picker: IconPicker,
-		stats: [Stat.StatMeleeHit],
+		stats: [],
 	},
 	{
 		config: MekkatorqueFistDebuff,
