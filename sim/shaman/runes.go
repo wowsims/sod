@@ -96,7 +96,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.Stormstrike) {
+			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.StormstrikeMH) {
 				procAura.Activate(sim)
 			}
 		},

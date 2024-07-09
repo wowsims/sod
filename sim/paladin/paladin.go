@@ -12,6 +12,7 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
+	SpellFlag_RV = core.SpellFlagAgentReserved1
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
@@ -23,6 +24,8 @@ type Paladin struct {
 	Talents *proto.PaladinTalents
 
 	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primaryPaladinAura proto.PaladinAura
+	currentPaladinAura *core.Aura
 
 	currentSeal      *core.Aura
 	currentJudgement *core.Spell
@@ -31,6 +34,7 @@ type Paladin struct {
 	exorcismCooldown  *core.Cooldown
 	holyShockCooldown *core.Cooldown
 	judgement         *core.Spell
+	rv                *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -77,18 +81,27 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHammerOfWrath()
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
+	paladin.registerAuraMastery()
+
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 }
 
 // maybe need to add stat dependencies
-func NewPaladin(character *core.Character, talentsStr string) *Paladin {
+func NewPaladin(character *core.Character, options *proto.Player, pallyAura proto.PaladinAura) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
-	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+
+	if pallyAura == proto.PaladinAura_SanctityAura {
+		paladin.primaryPaladinAura = pallyAura
+	}
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
@@ -126,6 +139,13 @@ func (paladin *Paladin) has2hEquipped() bool {
 func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.currentSeal = nil
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
+}
+
+func (paladin *Paladin) ResetCurrentPaladinAura() {
+	paladin.currentPaladinAura = nil
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 }
 
 func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {

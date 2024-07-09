@@ -46,7 +46,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
-		CritDamageBonus: hunter.mortalShots(),
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
@@ -63,7 +63,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 					multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
 				}
 			}
-			
+
 			damage := baseDamage
 			if hasCobraSlayer {
 				damage += spell.MeleeAttackPower() * 0.4
@@ -90,7 +90,7 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 			}
 		},
 	})
-	
+
 	maxRank := 4
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getMongooseBiteConfig(i)

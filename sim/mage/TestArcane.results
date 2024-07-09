@@ -50,8 +50,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestArcane-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 168.3
-  final_stats: 174.9
+  final_stats: 148.5
+  final_stats: 162.8
   final_stats: 403.535
   final_stats: 418
   final_stats: 271.7
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 50.2224
   final_stats: 0
   final_stats: 0
-  final_stats: 1201.5
+  final_stats: 1098.5
   final_stats: 2
   final_stats: 18.2
   final_stats: 0
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 7923.3
   final_stats: 0
   final_stats: 0
-  final_stats: 962.2
+  final_stats: 940.2
   final_stats: 540
   final_stats: 0
   final_stats: 0

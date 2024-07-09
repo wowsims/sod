@@ -26,12 +26,11 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	ewMultiplier := []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
 	bonusAP := WindfuryWeaponBonusAP[rank] * ewMultiplier * ewMultiplier // currently double-dipping
 
-	actionID := core.ActionID{SpellID: 439440}
+	actionID := core.ActionID{SpellID: WindfuryWeaponSpellId[rank]}.WithTag(core.TernaryInt32(isMH, 1, 2))
 	procMask := core.ProcMaskMeleeMHSpecial
 	weaponDamageFunc := shaman.MHWeaponDamage
 	damageMultiplier := shaman.AutoAttacks.MHConfig().DamageMultiplier
 	if !isMH {
-		actionID = core.ActionID{SpellID: 439441}
 		procMask = core.ProcMaskMeleeOHSpecial
 		weaponDamageFunc = shaman.OHWeaponDamage
 		damageMultiplier = shaman.AutoAttacks.OHConfig().DamageMultiplier

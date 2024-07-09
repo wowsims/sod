@@ -126,7 +126,8 @@ type Shaman struct {
 	RollingThunder         *core.Spell
 	SearingTotem           []*core.Spell
 	StoneskinTotem         []*core.Spell
-	Stormstrike            *core.Spell
+	StormstrikeMH          *core.Spell
+	StormstrikeOH          *core.Spell
 	StrengthOfEarthTotem   []*core.Spell
 	TremorTotem            *core.Spell
 	WaterShield            *core.Spell

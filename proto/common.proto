@@ -516,6 +516,12 @@ enum SaygesFortune {
 	SaygesSpirit = 5;
 }
 
+enum DragonslayerBuff {
+	DragonslayerBuffUnknown = 0;
+	RallyingCryofTheDragonslayer = 1;
+	ValorOfAzeroth = 2;
+}
+
 // Buffs that affect the entire raid.
 // NextIndex: 42
 message RaidBuffs {
@@ -601,7 +607,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 20
+// NextIndex: 21
 message IndividualBuffs {
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
@@ -612,6 +618,8 @@ message IndividualBuffs {
 
 	// World Buffs
 	bool rallying_cry_of_the_dragonslayer = 7;
+	DragonslayerBuff dragonslayer_buff = 20;
+
 	SaygesFortune sayges_fortune = 8;
 	bool spirit_of_zandalar = 9;
 	bool songflower_serenade = 10;
