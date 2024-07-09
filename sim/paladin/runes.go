@@ -13,6 +13,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerSheathOfLight()
 	paladin.registerGuardedByTheLight()
 	paladin.registerShockAndAwe()
+	paladin.registerRV()
 
 	// "RuneHeadFanaticism" is handled in Exorcism, Holy Shock, SoC, and SoR
 	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)

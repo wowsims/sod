@@ -70,7 +70,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV,
 
 			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
 
@@ -90,7 +90,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskProc,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV, // RV Worked on PTR
 
 			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
