@@ -43,7 +43,8 @@ func (warrior *Warrior) registerSlamSpell() {
 		warrior.SlamOH = warrior.newSlamHitSpell(false)
 	}
 
-	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorSlam,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -78,7 +79,7 @@ func (warrior *Warrior) registerSlamSpell() {
 	})
 }
 
-func (warrior *Warrior) newSlamHitSpell(isMH bool) *core.Spell {
+func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 	spellID := map[int32]int32{
 		40: 8820,
 		50: 11604,
@@ -105,7 +106,8 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *core.Spell {
 		damageFunc = warrior.OHWeaponDamage
 	}
 
-	return warrior.RegisterSpell(core.SpellConfig{
+	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   core.Ternary(isMH, SpellCode_WarriorSlamMH, SpellCode_WarriorSlamOH),
 		ActionID:    core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

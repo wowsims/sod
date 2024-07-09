@@ -31,7 +31,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		},
 	})
 
-	warrior.ShieldBlock = warrior.RegisterSpell(core.SpellConfig{
+	warrior.ShieldBlock = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 
@@ -46,7 +46,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+			return warrior.PseudoStats.CanBlock
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -55,7 +55,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell:    warrior.ShieldBlock,
+		Spell:    warrior.ShieldBlock.Spell,
 		Priority: core.CooldownPriorityDefault,
 		Type:     core.CooldownTypeSurvival,
 		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {

@@ -13,7 +13,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 
 	// Procs from auto attacks and most abilities https://www.wowhead.com/classic/spell=12723/sweeping-strikes
 	var curDmg float64
-	hitSchoolDamagWithValue := warrior.RegisterSpell(core.SpellConfig{
+	hitSchoolDamagWithValue := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 12723},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -29,7 +29,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 	})
 
 	// Procs from WW, also Execute? https://www.wowhead.com/classic/spell=26654/sweeping-strikes
-	hitSpecialNormalized := warrior.RegisterSpell(core.SpellConfig{
+	hitSpecialNormalized := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 26654},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -60,9 +60,9 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				return
 			}
 
-			var spellToUse *core.Spell
+			var spellToUse *WarriorSpell
 
-			if spell == warrior.Whirlwind || (spell == warrior.Execute && !sim.IsExecutePhase20()) {
+			if spell.SpellCode == SpellCode_WarriorWhirlwindMH || (spell.SpellCode == SpellCode_WarriorExecute && !sim.IsExecutePhase20()) {
 				spellToUse = hitSpecialNormalized
 			} else {
 				curDmg = result.Damage
@@ -78,7 +78,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 	})
 
-	SweepingStrikes := warrior.RegisterSpell(core.SpellConfig{
+	SweepingStrikes := warrior.RegisterSpell(BattleStance, core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 
@@ -91,9 +91,6 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				Duration: time.Second * 30,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
-		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			ssAura.Activate(sim)
@@ -101,7 +98,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: SweepingStrikes,
+		Spell: SweepingStrikes.Spell,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			return sim.GetNumTargets() >= 2

@@ -8,8 +8,8 @@ import (
 
 const ShoutExpirationThreshold = time.Second * 3
 
-func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, allyAuras core.AuraArray) *core.Spell {
-	return warrior.RegisterSpell(core.SpellConfig{
+func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, allyAuras core.AuraArray) *WarriorSpell {
+	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
 

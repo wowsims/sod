@@ -1,6 +1,9 @@
 package warrior
 
 import (
+	"slices"
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -57,6 +60,166 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+		},
+	},
+})
+
+var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
+	Name: "Unstoppable Might",
+	Bonuses: map[int32]core.ApplyEffect{
+		// You gain 10 Rage when you change stances.
+		2: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 457652})
+			core.MakePermanent(warrior.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Warrior - Damage 2P Bonus Trigger",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if slices.Contains(StanceCodes, spell.SpellCode) {
+						warrior.AddRage(sim, 10, rageMetrics)
+					}
+				},
+			}))
+		},
+		// For 5 sec after leaving a stance, you can use abilities requiring that stance as if you were still in that stance.
+		4: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+
+			battleStanceAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457706},
+				Label:    "Echoes of Battle Stance",
+				Duration: time.Second * 5,
+			})
+			warrior.newStanceOverrideExclusiveEffect(BattleStance, battleStanceAura)
+
+			defStanceAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457699},
+				Label:    "Echoes of Defensive Stance",
+				Duration: time.Second * 5,
+			})
+			warrior.newStanceOverrideExclusiveEffect(DefensiveStance, defStanceAura)
+
+			berserkStanceAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457708},
+				Label:    "Echoes of Berserker Stance",
+				Duration: time.Second * 5,
+			})
+			warrior.newStanceOverrideExclusiveEffect(BerserkerStance, berserkStanceAura)
+
+			gladStanceAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457819},
+				Label:    "Echoes of Gladiator Stance",
+				Duration: time.Second * 5,
+			})
+			warrior.newStanceOverrideExclusiveEffect(AnyStance, gladStanceAura)
+
+			core.MakePermanent(warrior.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Warrior - Damage 4P Bonus Trigger",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if slices.Contains(StanceCodes, spell.SpellCode) {
+						switch warrior.PreviousStance {
+						case BattleStance:
+							battleStanceAura.Activate(sim)
+						case DefensiveStance:
+							defStanceAura.Activate(sim)
+						case BerserkerStance:
+							berserkStanceAura.Activate(sim)
+						case GladiatorStance:
+							gladStanceAura.Activate(sim)
+						}
+					}
+				},
+			}))
+		},
+		// For the first 10 sec after activating a stance, you can gain an additional benefit:
+		// Battle Stance/Gladiator Stance: 10% increased damage done.
+		// Berserker Stance: 10% increased critical strike chance.
+		// Defensive Stance: 10% reduced Physical damage taken.
+		6: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+
+			battleAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457816},
+				Label:    "Battle Forecast",
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= 1.10
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= 1.10
+				},
+			})
+
+			defenseAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457814},
+				Label:    "Defense Forecast",
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.PseudoStats.DamageTakenMultiplier *= 0.90
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.PseudoStats.DamageTakenMultiplier /= 0.90
+				},
+			})
+
+			berserkAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 457817},
+				Label:    "Berserker Forecast",
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
+				},
+			})
+
+			core.MakePermanent(warrior.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Warrior - Damage 6P Bonus Trigger",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					switch spell.SpellCode {
+					case SpellCode_WarriorStanceBattle:
+						battleAura.Activate(sim)
+					case SpellCode_WarriorStanceGladiator:
+						battleAura.Activate(sim)
+					case SpellCode_WarriorStanceDefensive:
+						defenseAura.Activate(sim)
+					case SpellCode_WarriorStanceBerserker:
+						berserkAura.Activate(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetImmoveableMight = core.NewItemSet(core.ItemSet{
+	Name: "Immoveable Might",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the block value of your shield by 30.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.BlockValue, 30)
+		},
+		// You gain 1 extra Rage every time you take any damage or deal auto attack damage.
+		4: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.AddDamageDealtRageBonus(1)
+			warrior.AddDamageTakenRageBonus(1)
+		},
+		// Increases all threat you generate in Defensive Stance by an additional 10% and increases all damage you deal in Gladiator Stance by 4%.
+		6: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			core.MakePermanent(warrior.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Warrior - Tank 6P Bonus",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.defensiveStanceThreatMultiplier *= 1.10
+					warrior.gladiatorStanceDamageMultiplier *= 1.04
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warrior.defensiveStanceThreatMultiplier /= 1.10
+					warrior.gladiatorStanceDamageMultiplier *= 1.04
+				},
+			}))
 		},
 	},
 })

@@ -31,7 +31,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 
 	cooldownDur := time.Minute * 30
 
-	swSpell := warrior.RegisterSpell(core.SpellConfig{
+	swSpell := warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
@@ -45,7 +45,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+			return warrior.PseudoStats.CanBlock
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -54,7 +54,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: swSpell,
+		Spell: swSpell.Spell,
 		Type:  core.CooldownTypeSurvival,
 	})
 }

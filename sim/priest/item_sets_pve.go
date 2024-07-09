@@ -32,7 +32,6 @@ var ItemSetBenevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449921},
 				Name:       "Faith and Magic",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage,
@@ -62,7 +61,6 @@ var ItemSetVestmentsOfTheVirtuous = core.NewItemSet(core.ItemSet{
 			manaMetrics := c.NewManaMetrics(actionID)
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Mana Proc on Cast - Vestments of the Devout",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -178,7 +176,6 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 
 			priest.GetOrRegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Priest - Shadow 6P Bonus",
-				ActionID: core.ActionID{SpellID: 457325},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)

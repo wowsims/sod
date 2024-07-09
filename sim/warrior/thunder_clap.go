@@ -30,7 +30,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
-	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
+	warrior.ThunderClap = warrior.RegisterSpell(BattleStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMagic,
@@ -49,9 +49,6 @@ func (warrior *Warrior) registerThunderClapSpell() {
 				Timer:    warrior.NewTimer(),
 				Duration: time.Second * 6,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hasFuriousThunder || warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
 		},
 
 		CritDamageBonus: warrior.impale(),

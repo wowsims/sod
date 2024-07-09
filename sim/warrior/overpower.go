@@ -40,7 +40,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		Duration: time.Second * 5,
 	})
 
-	warrior.Overpower = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Overpower = warrior.RegisterSpell(BattleStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -62,7 +62,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.OverpowerAura.IsActive() && (warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance))
+			return warrior.OverpowerAura.IsActive()
 		},
 
 		BonusCritRating: 25 * core.CritRatingPerCritChance * float64(warrior.Talents.ImprovedOverpower),
