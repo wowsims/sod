@@ -52,7 +52,7 @@ export const GearArmsPhase3 = PresetUtils.makePresetGear('P3 2H', Phase32HGear, 
 export const GearFuryPhase3 = PresetUtils.makePresetGear('P3 DW', Phase3DWGear, { talentTree: 1 });
 export const GearGladPhase3 = PresetUtils.makePresetGear('P3 Glad', Phase3GladGear, { talentTree: 1 });
 export const GearDWPhase4 = PresetUtils.makePresetGear('P4 DW', Phase4DWGear);
-export const GearGladPhase4 = PresetUtils.makePresetGear('P4 Glad', Phase4DWGear);
+export const GearGladPhase4 = PresetUtils.makePresetGear('P4 Glad', Phase4GladGear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
