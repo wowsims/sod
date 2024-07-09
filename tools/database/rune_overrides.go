@@ -44,14 +44,13 @@ var RuneOverrides = []*proto.UIRune{
 	// Warlock
 	// TODO: These runes haven't been updated by wowhead yet but were updated on 2024-07-03
 	// Cloak - Soul Siphon
-	{Id: 403511, Name: "Engrave Cloak - Soul Siphon", Type: proto.ItemType_ItemTypeBack},
+	{Id: 403511, Name: "Engrave Cloak - Soul Siphon", Icon: "spell_shadow_lifedrain02", Type: proto.ItemType_ItemTypeBack, ClassAllowlist: []proto.Class{proto.Class_ClassWarlock}},
 
 	// Bracers - Incinerate
-	{Id: 412758, Name: "Engrave Bracers - Incinerate", Type: proto.ItemType_ItemTypeWrist},
+	{Id: 412758, Name: "Engrave Bracers - Incinerate", Icon: "spell_fire_burnout", Type: proto.ItemType_ItemTypeWrist, ClassAllowlist: []proto.Class{proto.Class_ClassWarlock}},
 
 	// Boots - Mark of Chaos
-	{Id: 440892, Name: "Engrave Boots - Mark of Chaos", Type: proto.ItemType_ItemTypeFeet},
-
+	{Id: 440892, Name: "Engrave Boots - Mark of Chaos", Icon: "spell_shadow_unstableaffliction_1", Type: proto.ItemType_ItemTypeFeet, ClassAllowlist: []proto.Class{proto.Class_ClassWarlock}},
 }
 
 // Remove runes as you implement them.
@@ -67,6 +66,7 @@ var UnimplementedRuneOverrides = []int32{
 	// Paladin
 	440658, // Cloak - Shield of Righteousness
 	440666, // Cloak - Vindicator
+	440672, // Cloak - Righteous Vengeance
 
 	// Priest
 
