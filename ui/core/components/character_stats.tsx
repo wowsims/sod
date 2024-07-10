@@ -222,27 +222,27 @@ export class CharacterStats extends Component {
 					<div className="ps-2">
 						<div className="character-stats-tooltip-row">
 							<span>Arcane</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitArcane)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitArcane)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Fire</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitFire)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFire)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Frost</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitFrost)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitFrost)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Holy</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitHoly)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitHoly)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Nature</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitNature)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitNature)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Shadow</span>
-							<span>{this.spellSchoolHitDisplayString(gearStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
+							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
 						</div>
 					</div>,
 				);
