@@ -45,9 +45,6 @@ func (paladin *Paladin) registerJudgement() {
 			//}
 			// paladin.currentSeal.Deactivate(sim)
 			
-			//paladin.currentJoC.Cast(sim, target)
-			//paladin.currentJoM.Cast(sim, target)
-			
 			// Phase 4 - (Not tied to T1 6pc bonus) - Judge all Seals (2 possible without 6pc, 2 or 3 with 6pc TBD)	
 			for _, sealAura := range paladin.aurasSoC {
 				if sealAura.IsActive() {
