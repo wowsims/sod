@@ -148,49 +148,49 @@ character_stats_results: {
 character_stats_results: {
  key: "TestEnhancement-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 391.6
-  final_stats: 288.2
-  final_stats: 446.545
-  final_stats: 251.9
-  final_stats: 199.1
+  final_stats: 498.3
+  final_stats: 256.3
+  final_stats: 502.205
+  final_stats: 286
+  final_stats: 193.6
+  final_stats: 156
   final_stats: 0
-  final_stats: 0
-  final_stats: 10
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 55.6
-  final_stats: 6
-  final_stats: 30.55711
-  final_stats: 0
-  final_stats: 0
-  final_stats: 2067.2
-  final_stats: 7
-  final_stats: 36.9494
+  final_stats: 40
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 5269.425
+  final_stats: 0
+  final_stats: 49.6
+  final_stats: 14
+  final_stats: 34.1334
   final_stats: 0
   final_stats: 0
-  final_stats: 2879
-  final_stats: 751
+  final_stats: 2278.6
+  final_stats: 14
+  final_stats: 40.32888
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5806.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3286.2
+  final_stats: 729
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 1.7
   final_stats: 0
   final_stats: 0
-  final_stats: 6008.45
+  final_stats: 6565.05
   final_stats: 27
-  final_stats: 60
+  final_stats: 104
   final_stats: 60
   final_stats: 60
   final_stats: 60
   final_stats: 384
-  final_stats: 0
-  final_stats: 14
+  final_stats: 44
+  final_stats: 58
   final_stats: 0
  }
 }
@@ -344,16 +344,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.40805
-  weights: 0.5239
+  weights: 1.63669
+  weights: 0.87505
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.53812
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.73211
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +357,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.64002
-  weights: 25.02031
-  weights: 10.04139
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.74395
+  weights: 17.22343
+  weights: 18.87831
   weights: 0
   weights: 0
   weights: 0
@@ -939,245 +939,280 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1134.71179
-  tps: 1202.2407
+  dps: 1751.56565
+  tps: 1739.33519
+  hps: 26.55899
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1187.08267
-  tps: 1254.49124
+  dps: 1812.51005
+  tps: 1798.32195
+  hps: 26.55899
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1239.8861
-  tps: 1309.3654
+  dps: 1885.61372
+  tps: 1868.55749
+  hps: 27.72111
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1167.10372
-  tps: 1234.26675
+  dps: 1790.1233
+  tps: 1777.84427
+  hps: 26.55899
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1134.55653
-  tps: 1202.01794
+  dps: 1751.16835
+  tps: 1738.85293
+  hps: 26.55899
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1170.38172
-  tps: 1237.84313
+  dps: 1792.90857
+  tps: 1779.26538
+  hps: 26.55899
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1611.27456
-  tps: 1691.4788
+  dps: 2391.28653
+  tps: 2487.55262
+  hps: 29.66737
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 1579.03413
-  tps: 1660.92645
+  dps: 2360.41824
+  tps: 2459.74567
+  hps: 29.59529
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 407.0942
-  tps: 431.0575
+  dps: 552.52017
+  tps: 486.1846
+  hps: 7.82361
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-Average-Default"
  value: {
-  dps: 2200.98933
-  tps: 1622.43024
+  dps: 3353.39632
+  tps: 2439.99071
+  hps: 37.02048
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 1106.82369
-  tps: 802.6025
+  dps: 1190.7998
+  tps: 893.38623
+  hps: 15.61396
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 1113.81044
-  tps: 805.81813
+  dps: 1353.99506
+  tps: 895.22132
+  hps: 15.16479
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 1080.38178
-  tps: 777.31865
+  dps: 1666.94021
+  tps: 1112.68883
+  hps: 16.6946
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 441.74706
-  tps: 339.36882
+  dps: 478.2491
+  tps: 357.19334
+  hps: 7.58
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 471.28523
-  tps: 354.97074
+  dps: 666.82153
+  tps: 458.19755
+  hps: 9.03333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 470.75442
-  tps: 351.76617
+  dps: 843.73348
+  tps: 592.05534
+  hps: 10.06667
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 1106.82369
-  tps: 802.6025
+  dps: 1190.7998
+  tps: 893.38623
+  hps: 15.61396
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 1113.81044
-  tps: 805.81813
+  dps: 1353.99506
+  tps: 895.22132
+  hps: 15.16479
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 1080.38178
-  tps: 777.31865
+  dps: 1666.94021
+  tps: 1112.68883
+  hps: 16.6946
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 441.74706
-  tps: 339.36882
+  dps: 478.2491
+  tps: 357.19334
+  hps: 7.58
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 471.28523
-  tps: 354.97074
+  dps: 666.82153
+  tps: 458.19755
+  hps: 9.03333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Orc-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Orc-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 470.75442
-  tps: 351.76617
+  dps: 843.73348
+  tps: 592.05534
+  hps: 10.06667
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 1094.09798
-  tps: 794.83659
+  dps: 1180.20268
+  tps: 888.60994
+  hps: 15.69015
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 1113.69974
-  tps: 803.67072
+  dps: 1341.91842
+  tps: 895.58094
+  hps: 15.07212
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-FullBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-FullBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 1108.25798
-  tps: 797.2219
+  dps: 1652.3146
+  tps: 1110.37187
+  hps: 16.64311
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 425.27791
-  tps: 326.25911
+  dps: 472.10772
+  tps: 352.53685
+  hps: 7.51333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 464.21896
-  tps: 348.99822
+  dps: 660.12983
+  tps: 456.74015
+  hps: 8.93333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Auto-phase_4-NoBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-NoBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 474.60439
-  tps: 353.13367
+  dps: 836.35381
+  tps: 590.93365
+  hps: 10.03333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 1094.09798
-  tps: 794.83659
+  dps: 1180.20268
+  tps: 888.60994
+  hps: 15.69015
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 1113.69974
-  tps: 803.67072
+  dps: 1341.91842
+  tps: 895.58094
+  hps: 15.07212
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-FullBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-FullBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 1108.25798
-  tps: 797.2219
+  dps: 1652.3146
+  tps: 1110.37187
+  hps: 16.64311
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-LongSingleTarget"
  value: {
-  dps: 425.27791
-  tps: 326.25911
+  dps: 472.10772
+  tps: 352.53685
+  hps: 7.51333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/FT-ShortSingleTarget"
  value: {
-  dps: 464.21896
-  tps: 348.99822
+  dps: 660.12983
+  tps: 456.74015
+  hps: 8.93333
  }
 }
 dps_results: {
- key: "TestEnhancement-Lvl60-Settings-Troll-phase_3-Sync Delay OH-phase_4-NoBuffs-Phase 3 Consumes WF/WF-ShortSingleTarget"
+ key: "TestEnhancement-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-Phase 4 Consumes WF/WF-ShortSingleTarget"
  value: {
-  dps: 474.60439
-  tps: 353.13367
+  dps: 836.35381
+  tps: 590.93365
+  hps: 10.03333
  }
 }
 dps_results: {
  key: "TestEnhancement-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1694.10534
-  tps: 1257.17048
+  dps: 2599.50319
+  tps: 1903.74471
+  hps: 33.0601
  }
 }

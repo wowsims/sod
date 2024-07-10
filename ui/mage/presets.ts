@@ -4,12 +4,12 @@ import {
 	Consumes,
 	Debuffs,
 	DragonslayerBuff,
-	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
 	Food,
 	FrostPowerBuff,
 	IndividualBuffs,
+	ManaRegenElixir,
 	Potions,
 	Profession,
 	RaidBuffs,
@@ -17,6 +17,7 @@ import {
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common';
 import { Mage_Options as MageOptions, Mage_Options_ArmorType as ArmorType } from '../core/proto/mage';
 import { SavedTalents } from '../core/proto/ui';
@@ -75,13 +76,13 @@ export const GearFrostPhase3 = PresetUtils.makePresetGear('P3 Frost', Phase3Gear
 });
 
 // No new Phase 4 Arcane presets at the moment
-export const GearArcanePhase4 = PresetUtils.makePresetGear('P4 Arcane (WIP)', Phase4GearArcane, {
+export const GearArcanePhase4 = PresetUtils.makePresetGear('P4 Arcane', Phase4GearArcane, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const GearFirePhase4 = PresetUtils.makePresetGear('P4 Fire (WIP)', Phase4GearFire, {
+export const GearFirePhase4 = PresetUtils.makePresetGear('P4 Fire', Phase4GearFire, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const GearFrostPhase4 = PresetUtils.makePresetGear('P4 Frost (WIP)', Phase4GearFrost, {
+export const GearFrostPhase4 = PresetUtils.makePresetGear('P4 Frost', Phase4GearFrost, {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -234,45 +235,54 @@ export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', DefaultGear
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = MageOptions.create({
-	armor: ArmorType.IceArmor,
+	armor: ArmorType.MageArmor,
 });
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
 	mainHandImbue: WeaponImbue.WizardOil,
+	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
+	demonicPact: 80,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
+	vampiricTouch: 50,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	mightOfStormwind: true,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	slipkiksSavvy: true,
 	songflowerSerenade: true,
 	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElements: true,
+	improvedFaerieFire: true,
+	improvedScorch: true,
+	judgementOfWisdom: true,
+	markOfChaos: true,
 	occultPoison: true,
+	wintersChill: true,
 });
 
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Alchemy,
-	profession2: Profession.Enchanting,
+	profession2: Profession.Tailoring,
 };

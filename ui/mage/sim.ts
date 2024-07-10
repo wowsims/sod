@@ -19,6 +19,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -28,14 +29,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatMP5,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatSpellDamage,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -49,16 +50,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.2,
+			[Stat.StatIntellect]: 0.49,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatArcanePower]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatFrostPower]: 1,
 			// Aggregated across 3 builds
-			[Stat.StatSpellHit]: 5.0,
-			[Stat.StatSpellCrit]: 6.17,
-			[Stat.StatSpellHaste]: 3.0,
-			[Stat.StatMP5]: 0.09,
+			[Stat.StatSpellHit]: 18.59,
+			[Stat.StatSpellCrit]: 13.91,
+			[Stat.StatSpellHaste]: 6.85,
+			[Stat.StatMP5]: 0.11,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

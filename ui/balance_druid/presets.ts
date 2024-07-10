@@ -8,6 +8,7 @@ import {
 	Flask,
 	Food,
 	IndividualBuffs,
+	ManaRegenElixir,
 	PartyBuffs,
 	Potions,
 	Profession,
@@ -28,6 +29,7 @@ import Phase4APL from './apls/phase_4.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 import Phase3Gear from './gear_sets/phase_3.gear.json';
+import Phase4Gear from './gear_sets/phase_4.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -40,17 +42,17 @@ import Phase3Gear from './gear_sets/phase_3.gear.json';
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
+export const GearPhase4 = PresetUtils.makePresetGear('Phase 4', Phase4Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
 	[Phase.Phase3]: [GearPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [GearPhase4],
 	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase3][0];
+export const DefaultGear = GearPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -109,25 +111,30 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
 	mainHandImbue: WeaponImbue.WizardOil,
+	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
+	demonicPact: 80,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
+	vampiricTouch: 50,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	slipkiksSavvy: true,
 	songflowerSerenade: true,
 	warchiefsBlessing: true,
 });
@@ -136,6 +143,8 @@ export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
+	improvedFaerieFire: true,
+	judgementOfWisdom: true,
 	occultPoison: true,
 	markOfChaos: true,
 	stormstrike: true,

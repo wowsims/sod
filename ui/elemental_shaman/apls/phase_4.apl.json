@@ -11,9 +11,8 @@
     {"action":{"castSpell":{"spellId":{"spellId":15208,"rank":10}}},"doAtValue":{"const":{"val":"-2s"}}}
   ],
   "priorityList": [
-    {"action":{"castSpell":{"spellId":{"spellId":437362}}}},
     {"action":{"castSpell":{"spellId":{"spellId":440580}}}},
-    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":437362}}}}},"autocastOtherCooldowns":{}}},
+    {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"65%"}}}},"castSpell":{"spellId":{"spellId":425336}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":29228,"rank":6}}}}},"castSpell":{"spellId":{"spellId":29228,"rank":6}}}},
     {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"numberTargets":{}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":10605,"rank":4}}}},

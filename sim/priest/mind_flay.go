@@ -99,7 +99,7 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
 				} else {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				}

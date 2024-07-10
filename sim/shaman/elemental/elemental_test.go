@@ -12,7 +12,6 @@ func init() {
 	RegisterElementalShaman()
 }
 
-// TODO: Update test data when phase 3 gear is added
 func TestElemental(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
@@ -73,10 +72,10 @@ func TestElemental(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3"),
+			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase3Consumes,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 
 			ItemFilter:      ItemFilters,
@@ -129,6 +128,19 @@ var Phase3Consumes = core.ConsumesCombo{
 		OffHandImbue:   proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
 		StrengthBuff:   proto.StrengthBuff_ElixirOfGiants,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
+		OffHandImbue:   proto.WeaponImbue_WizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 
