@@ -137,10 +137,10 @@ type Shaman struct {
 	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
 	ActiveShieldAura *core.Aura
 
-	FlurryAura           *core.Aura
-	MaelstromWeaponAura  *core.Aura
-	PowerSurgeAura       *core.Aura
-	defendersResolveAura *core.Aura
+	FlurryAura            *core.Aura
+	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
+	MaelstromWeaponAura   *core.Aura
+	PowerSurgeAura        *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell

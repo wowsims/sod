@@ -62,15 +62,13 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 				}
 			}
 
-			if hasHit {
-				if stacks := int32(2*max(warlock.GetStat(stats.Defense), 0)) / 2; stacks > 0 {
-					if !warlock.defendersResolveAura.IsActive() {
-						warlock.defendersResolveAura.Activate(sim)
-					}
+			if stacks := int32(warlock.GetStat(stats.Defense)); hasHit && stacks > 0 {
+				if !warlock.defendersResolveAura.IsActive() {
+					warlock.defendersResolveAura.Activate(sim)
+				}
 
-					if warlock.defendersResolveAura.GetStacks() < stacks {
-						warlock.defendersResolveAura.SetStacks(sim, stacks)
-					}
+				if warlock.defendersResolveAura.GetStacks() != stacks {
+					warlock.defendersResolveAura.SetStacks(sim, stacks)
 				}
 			}
 		},

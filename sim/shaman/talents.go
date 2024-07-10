@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -293,16 +294,48 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
+	shaman.FlurryAura = shaman.makeFlurryAura(shaman.Talents.Flurry)
+
+	// This must be registered before the below trigger because in-game a crit weapon swing consumes a stack before the refresh, so you end up with:
+	// 3 => 2
+	// refresh
+	// 2 => 3
+	shaman.makeFlurryConsumptionTrigger()
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "Flurry Proc Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
+				shaman.FlurryAura.Activate(sim)
+				shaman.FlurryAura.SetStacks(sim, 3)
+				return
+			}
+		},
+	})
+}
+
+// These are separated out because of the T1 Shaman Tank 2P that can proc Flurry separately from the talent.
+// It triggers the max-rank Flurry aura but with dodge, parry, or block.
+func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
+	if points == 0 {
+		return nil
+	}
+
 	has6PEarthfuryImpact := shaman.HasSetBonus(ItemSetEarthfuryImpact, 6)
 
-	attackSpeed := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[shaman.Talents.Flurry]
+	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
+	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
 	if has6PEarthfuryImpact {
 		attackSpeed += .10
 	}
 
-	shaman.FlurryAura = shaman.RegisterAura(core.Aura{
-		Label:     "Flurry Proc",
-		ActionID:  core.ActionID{SpellID: 16280},
+	return shaman.GetOrRegisterAura(core.Aura{
+		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
+		ActionID:  core.ActionID{SpellID: spellID},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -312,33 +345,24 @@ func (shaman *Shaman) applyFlurry() {
 			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
 		},
 	})
+}
 
+func (shaman *Shaman) makeFlurryConsumptionTrigger() *core.Aura {
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
 		Duration: time.Millisecond * 500,
 	}
-
-	shaman.RegisterAura(core.Aura{
-		Label:    "Flurry Trigger",
+	return shaman.GetOrRegisterAura(core.Aura{
+		Label:    "Flurry Consume Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
 			// Remove a stack.
 			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
 				icd.Use(sim)
 				shaman.FlurryAura.RemoveStack(sim)
-			}
-
-			if result.Outcome.Matches(core.OutcomeCrit) {
-				shaman.FlurryAura.Activate(sim)
-				shaman.FlurryAura.SetStacks(sim, 3)
-				return
 			}
 		},
 	})

@@ -152,7 +152,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
-	shaman.defendersResolveAura = core.DefendersResolveSpellDamage(shaman.GetCharacter())
+	defendersResolveAura := core.DefendersResolveSpellDamage(shaman.GetCharacter())
 
 	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
 
@@ -186,13 +186,13 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
-				if stacks := int32(2*max(shaman.GetStat(stats.Defense), 0)) / 2; stacks > 0 {
-					if !shaman.defendersResolveAura.IsActive() {
-						shaman.defendersResolveAura.Activate(sim)
+				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
+					if !defendersResolveAura.IsActive() {
+						defendersResolveAura.Activate(sim)
 					}
 
-					if shaman.defendersResolveAura.GetStacks() < stacks {
-						shaman.defendersResolveAura.SetStacks(sim, stacks)
+					if defendersResolveAura.GetStacks() != stacks {
+						defendersResolveAura.SetStacks(sim, stacks)
 					}
 				}
 			}
