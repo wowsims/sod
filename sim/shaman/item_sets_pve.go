@@ -250,19 +250,20 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 		// Increases your attack speed by 30% for your next 3 swings after you parry, dodge, or block.
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Shaman - Tank 2P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+
+			flurryAura := shaman.makeFlurryAura(5)
+			// The consumption trigger may not exist if the Shaman doesn't talent into Flurry
+			shaman.makeFlurryConsumptionTrigger()
+
+			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Shaman - Tank 2P Bonus",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if shaman.FlurryAura != nil && result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge) || result.Outcome.Matches(core.OutcomeBlock) {
-						shaman.FlurryAura.Activate(sim)
-						shaman.FlurryAura.SetStacks(sim, 3)
+					if result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge) || result.Outcome.Matches(core.OutcomeBlock) {
+						flurryAura.Activate(sim)
+						flurryAura.SetStacks(sim, 3)
 					}
 				},
-			})
+			}))
 		},
 		// Your parries and dodges also activate your Shield Mastery rune ability.
 		4: func(agent core.Agent) {
