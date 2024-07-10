@@ -36,13 +36,46 @@ func (paladin *Paladin) registerJudgement() {
 			// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
 			// melee special attack crit/hit table, necessitating two discrete spells.
 			// All other judgements are cast directly.
-			if paladin.currentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
-				spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-			} else {
-				paladin.currentJudgement.Cast(sim, target)
+			
+			// Phase 1-3
+			//if paladin.currentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
+			//	spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			//} else {
+			//	paladin.currentJudgement.Cast(sim, target)
+			//}
+			// paladin.currentSeal.Deactivate(sim)
+			
+			//paladin.currentJoC.Cast(sim, target)
+			//paladin.currentJoM.Cast(sim, target)
+			
+			// Phase 4 - (Not tied to T1 6pc bonus) - Judge all Seals (2 possible without 6pc, 2 or 3 with 6pc TBD)	
+			for _, sealAura := range paladin.aurasSoC {
+				if sealAura.IsActive() {
+				        spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+					//paladin.spellsJoC[i].Cast(sim, target)
+					sealAura.Deactivate(sim)
+				}
+			}
+			
+			for i, sealAura := range paladin.aurasSotC {
+				if sealAura.IsActive() {
+					paladin.spellsJotC[i].Cast(sim, target)
+					sealAura.Deactivate(sim)
+				}
 			}
 
-			paladin.currentSeal.Deactivate(sim)
+			for i, sealAura := range paladin.aurasSoR {
+				if sealAura.IsActive() {
+					paladin.spellsJoR[i].Cast(sim, target)
+					sealAura.Deactivate(sim)
+				}
+			}
+			
+			if paladin.auraSoM.IsActive() {
+				paladin.spellJoM.Cast(sim, target)
+				paladin.auraSoM.Deactivate(sim)
+			}
+			
 		},
 	})
 }
