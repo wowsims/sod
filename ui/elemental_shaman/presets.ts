@@ -30,7 +30,7 @@ import Phase4APL from './apls/phase_4.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 import Phase3Gear from './gear_sets/phase_3.gear.json';
-import Phase4GearBurn from './gear_sets/phase_4_burn.gear.json';
+import Phase4Gear from './gear_sets/phase_4.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -43,13 +43,13 @@ import Phase4GearBurn from './gear_sets/phase_4_burn.gear.json';
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
-export const GearPhase4Burn = PresetUtils.makePresetGear('Phase 4 Burn', Phase4GearBurn);
+export const GearPhase4 = PresetUtils.makePresetGear('Phase 4 Burn', Phase4Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
 	[Phase.Phase3]: [GearPhase3],
-	[Phase.Phase4]: [GearPhase4Burn],
+	[Phase.Phase4]: [GearPhase4],
 	[Phase.Phase5]: [],
 };
 
@@ -129,7 +129,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-	vampiricTouch: 50,
+	vampiricTouch: 300,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

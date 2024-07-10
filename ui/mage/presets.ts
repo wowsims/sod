@@ -259,7 +259,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
-	vampiricTouch: 50,
+	vampiricTouch: 300,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

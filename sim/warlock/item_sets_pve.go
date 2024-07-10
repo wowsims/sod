@@ -252,6 +252,11 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				},
 			})
 
+			icd := core.Cooldown{
+				Timer:    warlock.NewTimer(),
+				Duration: time.Millisecond * 100,
+			}
+
 			warlock.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Warlock - Tank 6P Bonus",
 				Duration: core.NeverExpires,
@@ -259,8 +264,9 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave {
+					if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
 						procAura.Activate(sim)
+						icd.Use(sim)
 					}
 				},
 			})

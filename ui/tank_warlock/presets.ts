@@ -36,32 +36,35 @@ import DestructionGearPhase1 from './gear_sets/p1.destro.tank.gear.json';
 import DemonologyGearPhase2 from './gear_sets/p2.demo.tank.gear.json';
 import DestructionGearPhase2 from './gear_sets/p2.destro.tank.gear.json';
 import TankGearPhase3 from './gear_sets/p3.destro.tank.gear.json';
+import DestroTankGearPhase4 from './gear_sets/p4_destro_tank.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Affliction', AfflictionGearPhase1, {
-	customCondition: player => player.getLevel() == 25,
+export const GearAfflictionTankPhase1 = PresetUtils.makePresetGear('P1 Aff', AfflictionGearPhase1, {
+	customCondition: player => player.getLevel() === 25,
 });
-export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destruction', DestructionGearPhase1, {
-	customCondition: player => player.getLevel() == 25,
-});
-
-export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demonology', DemonologyGearPhase2, {
-	customCondition: player => player.getLevel() == 40,
-});
-export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destruction', DestructionGearPhase2, {
-	customCondition: player => player.getLevel() == 40,
+export const GearDestructionTankPhase1 = PresetUtils.makePresetGear('P1 Destro', DestructionGearPhase1, {
+	customCondition: player => player.getLevel() === 25,
 });
 
-export const GearTankPhase3 = PresetUtils.makePresetGear('P3 Destruction', TankGearPhase3, { customCondition: player => player.getLevel() == 50 });
+export const GearDemonologyTankPhase2 = PresetUtils.makePresetGear('P2 Demo', DemonologyGearPhase2, {
+	customCondition: player => player.getLevel() === 40,
+});
+export const GearDestructionTankPhase2 = PresetUtils.makePresetGear('P2 Destro', DestructionGearPhase2, {
+	customCondition: player => player.getLevel() === 40,
+});
+
+export const GearTankPhase3 = PresetUtils.makePresetGear('P3 Destro', TankGearPhase3, { customCondition: player => player.getLevel() === 50 });
+
+export const GearDestroTankPhase3 = PresetUtils.makePresetGear('P4 Destro', DestroTankGearPhase4, { customCondition: player => player.getLevel() === 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearAfflictionTankPhase1, GearDestructionTankPhase1],
 	[Phase.Phase2]: [GearDemonologyTankPhase2, GearDestructionTankPhase2],
 	[Phase.Phase3]: [GearTankPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [GearDestroTankPhase3],
 	[Phase.Phase5]: [],
 };
 
@@ -73,27 +76,29 @@ export const DefaultGear = GearTankPhase3;
 ///////////////////////////////////////////////////////////////////////////
 
 export const APLAfflictionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Affliction', Phase1AfflictionAPL, {
-	customCondition: player => player.getLevel() == 25,
+	customCondition: player => player.getLevel() === 25,
 });
 export const APLDestructionTankPhase1 = PresetUtils.makePresetAPLRotation('P1 Destruction', Phase1DestroTankAPL, {
-	customCondition: player => player.getLevel() == 25,
+	customCondition: player => player.getLevel() === 25,
 });
 
 export const APLDemonologyTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', Phase2DemonologyAPL, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() === 40,
 });
 export const APLDestructionTankPhase2 = PresetUtils.makePresetAPLRotation('P2 Destruction', Phase2DestroTankAPL, {
-	customCondition: player => player.getLevel() == 40,
+	customCondition: player => player.getLevel() === 40,
 });
 
 export const APLTankPhase3 = PresetUtils.makePresetAPLRotation('P3 Destruction', Phase3TankAPL, {
-	customCondition: player => player.getLevel() == 50,
+	customCondition: player => player.getLevel() === 50,
 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLAfflictionTankPhase1, APLDestructionTankPhase1],
 	[Phase.Phase2]: [APLDemonologyTankPhase2, APLDestructionTankPhase2],
 	[Phase.Phase3]: [APLTankPhase3],
+	[Phase.Phase4]: [],
+	[Phase.Phase5]: [],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -123,50 +128,58 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
 export const TalentsAfflictionTankPhase1 = {
-	name: 'P1 Affliction',
+	name: 'Level 25 Aff',
 	data: SavedTalents.create({
 		talentsString: '050025001-003',
 	}),
-	enableWhen: (player: Player<any>) => player.getLevel() == 25,
+	enableWhen: (player: Player<any>) => player.getLevel() === 25,
 };
 
 export const TalentsDestructionTankPhase1 = {
-	name: 'P1 Destruction',
+	name: 'Level 25 Destro',
 	data: SavedTalents.create({
 		talentsString: '-03-0550201',
 	}),
-	enableWhen: (player: Player<any>) => player.getLevel() == 25,
+	enableWhen: (player: Player<any>) => player.getLevel() === 25,
 };
 
 export const TalentsDemonologyTankPhase2 = {
-	name: 'P2 Demonology',
+	name: 'Level 40 Demo',
 	data: SavedTalents.create({
 		talentsString: '-2050033112501251',
 	}),
-	enableWhen: (player: Player<any>) => player.getLevel() == 40,
+	enableWhen: (player: Player<any>) => player.getLevel() === 40,
 };
 
 export const TalentsDestructionTankPhase2 = {
-	name: 'P2 Destruction',
+	name: 'Level 40 Destro',
 	data: SavedTalents.create({
 		talentsString: '-035-05500050025001',
 	}),
-	enableWhen: (player: Player<any>) => player.getLevel() == 40,
+	enableWhen: (player: Player<any>) => player.getLevel() === 40,
 };
 
 export const TalentsTankPhase3 = {
-	name: 'P3 Destruction',
+	name: 'Level 50 Destro',
 	data: SavedTalents.create({
 		talentsString: '05-03-505020500050515',
 	}),
-	enableWhen: (player: Player<any>) => player.getLevel() == 50,
+	enableWhen: (player: Player<any>) => player.getLevel() === 50,
+};
+
+export const TalentsDestroTankPhase4 = {
+	name: 'Level 60 Destro',
+	data: SavedTalents.create({
+		talentsString: '4-035-5350205020505151',
+	}),
+	enableWhen: (player: Player<any>) => player.getLevel() === 60,
 };
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsAfflictionTankPhase1, TalentsDestructionTankPhase1],
 	[Phase.Phase2]: [TalentsDemonologyTankPhase2, TalentsDestructionTankPhase2],
 	[Phase.Phase3]: [TalentsTankPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [TalentsDestroTankPhase4],
 	[Phase.Phase5]: [],
 };
 

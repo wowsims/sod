@@ -126,7 +126,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	vampiricTouch: 50,
+	vampiricTouch: 300,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

@@ -137,7 +137,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: true,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-	vampiricTouch: 50,
+	vampiricTouch: 300,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
