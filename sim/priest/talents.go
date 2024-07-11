@@ -208,24 +208,28 @@ func (priest *Priest) registerInnerFocus() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.CostMultiplier -= 1
 			for _, spell := range priest.Spellbook {
-				if spell != nil && spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot) {
-					spell.BonusCritRating += 25 * core.CritRatingPerCritChance
+				if spell.Flags.Matches(SpellFlagPriest) {
+					spell.CostMultiplier -= 1
+					spell.BonusCritRating += 25 * core.SpellCritRatingPerCritChance
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.CostMultiplier += 1
 			for _, spell := range priest.Spellbook {
-				if spell != nil && spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot) {
-					spell.BonusCritRating -= 25 * core.CritRatingPerCritChance
+				if spell.Flags.Matches(SpellFlagPriest) {
+					spell.CostMultiplier += 1
+					spell.BonusCritRating -= 25 * core.SpellCritRatingPerCritChance
 				}
 			}
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Remove the buff and put skill on CD
-			aura.Deactivate(sim)
-			priest.InnerFocus.CD.Use(sim)
-			priest.UpdateMajorCooldowns()
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagPriest) {
+				// Remove the buff and put skill on CD
+				aura.Deactivate(sim)
+				priest.InnerFocus.CD.Use(sim)
+				priest.UpdateMajorCooldowns()
+			}
 		},
 	})
 

@@ -152,7 +152,7 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	channelClipDelay: 100,
-	distanceFromTarget: 25,
+	distanceFromTarget: 30,
 	profession1: Profession.Alchemy,
 	profession2: Profession.Enchanting,
 };

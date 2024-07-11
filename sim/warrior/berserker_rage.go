@@ -62,6 +62,6 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
 		Spell: warrior.BerserkerRage.Spell,
-		Type:  core.CooldownTypeDPS,
+		Type:  core.CooldownTypeUnknown,
 	})
 }

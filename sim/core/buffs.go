@@ -898,6 +898,7 @@ func BlessingOfKingsAura(character *Character) *Aura {
 
 func HeartOfTheLionAura(character *Character) *Aura {
 	character.AddStat(stats.AttackPower, float64(40+4*(character.Level-20)))
+	character.AddStat(stats.RangedAttackPower, float64(40+4*(character.Level-20)))
 	character.MultiplyStat(stats.Strength, 1.1)
 	character.MultiplyStat(stats.Stamina, 1.1)
 	character.MultiplyStat(stats.Agility, 1.1)

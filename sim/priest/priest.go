@@ -18,11 +18,12 @@ const (
 	SpellCode_PriestFlashHeal
 	SpellCode_PriestGreaterHeal
 	SpellCode_PriestHeal
+	SpellCode_PriestHolyFire
 	SpellCode_PriestMindBlast
 	SpellCode_PriestMindFlay
 	SpellCode_PriestMindSpike
-	SpellCode_PriestHolyFire
 	SpellCode_PriestSmite
+	SpellCode_PriestVampiricTouch
 )
 
 type Priest struct {
