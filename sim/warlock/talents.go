@@ -560,7 +560,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 
 	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
-	stackCount := core.TernaryInt32(hasShadowflameRune, 10, 4)
+	stackCount := core.TernaryInt32(hasShadowflameRune, core.ISBNumStacksShadowflame, core.ISBNumStacksBase)
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt, stackCount)
 	})

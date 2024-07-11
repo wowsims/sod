@@ -266,7 +266,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 
 func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
-	baseStacks := TernaryInt32(isbConfig.hasShadowflameRune, 10, 4)
+	baseStacks := TernaryInt32(isbConfig.hasShadowflameRune, ISBNumStacksShadowflame, ISBNumStacksBase)
 	isbAura := ImprovedShadowBoltAura(target, 5, baseStacks)
 	isbCrit := isbConfig.casterCrit / 100.0
 	var pa *PendingAction
@@ -321,6 +321,11 @@ func (character *Character) createIsbConfig(player *proto.Player) {
 		character.IsbConfig.isbWarlocks = 1
 	}
 }
+
+const (
+	ISBNumStacksBase        = 4
+	ISBNumStacksShadowflame = 30
+)
 
 func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	isbLabel := "Improved Shadow Bolt"

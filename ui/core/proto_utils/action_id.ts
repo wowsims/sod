@@ -311,6 +311,7 @@ export class ActionId {
 			case 'Whirlwind':
 			case 'Slam':
 			case 'Windfury Weapon':
+			case 'Holy Strength': // Crusader Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
