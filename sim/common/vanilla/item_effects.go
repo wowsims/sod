@@ -760,8 +760,8 @@ func init() {
 		character := agent.GetCharacter()
 
 		strengthAura := strengthOfTheChampionAura(character)
-		enrageAura := enrageAura446327(character)
 		procMask := character.GetProcMaskForItem(RefinedArcaniteChampion)
+		enrageAura := enrageAura446327(character)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Refined Arcanite Champion (Strength)",
@@ -1728,6 +1728,7 @@ func init() {
 // Used by:
 // - https://www.wowhead.com/classic/item=220569/blistering-ragehammer and
 // - https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
+// Apply Aura: Mod Attack Speed works like Seal of the Crusader and lowers weapon damage in exchange for attack speed
 func enrageAura446327(character *core.Character) *core.Aura {
 	return character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 446327},
@@ -1736,10 +1737,12 @@ func enrageAura446327(character *core.Character) *core.Aura {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			character.PseudoStats.BonusDamage += 30
 			character.MultiplyAttackSpeed(sim, 1.10)
+			character.AutoAttacks.MHAuto().DamageMultiplier /= 1.10 // Assumes this can only proc from a 2H weapon. If Blizzard ever adds it to a 1H we need to check procmasks
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			character.PseudoStats.BonusDamage -= 30
 			character.MultiplyAttackSpeed(sim, 1/1.10)
+			character.AutoAttacks.MHAuto().DamageMultiplier *= 1.10
 		},
 	})
 }
