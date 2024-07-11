@@ -30,7 +30,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 	}[warrior.Level]
 
 	var rageMetrics *core.ResourceMetrics
-	warrior.Execute = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
+	warrior.Execute = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorExecute,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
