@@ -39,6 +39,8 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24352},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    hunter.NewTimer(),
@@ -102,6 +104,8 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24353},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
 					GCD: core.GCDDefault,

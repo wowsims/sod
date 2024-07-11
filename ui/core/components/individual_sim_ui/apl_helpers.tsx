@@ -104,7 +104,11 @@ const actionIdSets: Record<
 			// Split up non-cooldowns and cooldowns into separate sections for easier browsing.
 			const { spells: spells, cooldowns: cooldowns } = bucket(castableSpells, spell => (spell.data.isMajorCooldown ? 'cooldowns' : 'spells'));
 
-			const placeholders: Array<ActionId> = [ActionId.fromOtherId(OtherAction.OtherActionPotion)];
+			const placeholders: Array<[OtherAction, string]> = [
+				[OtherAction.OtherActionPotion, 'Uses the potion selected in consumables settings.'],
+				[OtherAction.OtherActionOffensiveEquip, 'Use any offensive on-use equipment.'],
+				[OtherAction.OtherActionDefensiveEquip, 'Use any defensive on-use equipment.'],
+			];
 
 			return [
 				[
@@ -159,11 +163,11 @@ const actionIdSets: Record<
 						submenu: ['Placeholders'],
 					},
 				],
-				placeholders.map(actionId => {
+				placeholders.map(([actionId, tooltip]) => {
 					return {
-						value: actionId,
+						value: ActionId.fromOtherId(actionId),
 						submenu: ['Placeholders'],
-						tooltip: 'The Prepull Potion if CurrentTime < 0, or the Combat Potion if combat has started.',
+						tooltip: tooltip,
 					};
 				}),
 			].flat();

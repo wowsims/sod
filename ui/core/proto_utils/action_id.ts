@@ -116,6 +116,18 @@ export class ActionId {
 				baseName = 'Potion';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_04.jpg';
 				break;
+			case OtherAction.OtherActionExplosives:
+				baseName = 'Explosive';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/Inv_misc_bomb_06.jpg';
+				break;
+			case OtherAction.OtherActionOffensiveEquip:
+				baseName = 'Offensive Equipment';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_trinket_naxxramas03.jpg';
+				break;
+			case OtherAction.OtherActionDefensiveEquip:
+				baseName = 'Defensive Equipment';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_trinket_naxxramas05.jpg';
+				break;
 		}
 		this.baseName = baseName;
 		this.name = name || baseName;

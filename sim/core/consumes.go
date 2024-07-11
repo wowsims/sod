@@ -990,7 +990,6 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	defaultMCD := makePotionActivation(defaultPotion, character, potionCD)
 
 	if defaultMCD.Spell != nil {
-		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
 		character.AddMajorCooldown(defaultMCD)
 	}
 }

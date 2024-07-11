@@ -3,10 +3,9 @@
   "prepullActions": [
     {"action":{"castSpell":{"spellId":{"spellId":15473}}},"doAtValue":{"const":{"val":"-10s"}}},
     {"action":{"castSpell":{"spellId":{"spellId":431655}}},"doAtValue":{"const":{"val":"-2.99s"}}},
-    {"action":{"castSpell":{"spellId":{"spellId":431655}}},"doAtValue":{"const":{"val":"-1.48s"}}},
-    {"action":{"castSpell":{"spellId":{"itemId":215162}}},"doAtValue":{"const":{"val":"-1.48s"}},"hide":true},
-    {"action":{"castSpell":{"spellId":{"itemId":228255}}},"doAtValue":{"const":{"val":"-1.48s"}},"hide":true},
-    {"action":{"castSpell":{"spellId":{"spellId":402668}}},"doAtValue":{"const":{"val":"-1.48s"}},"hide":true}
+    {"action":{"castSpell":{"spellId":{"otherId":"OtherActionOffensiveEquip"}}},"doAtValue":{"const":{"val":"-1.48s"}}},
+    {"action":{"castSpell":{"spellId":{"itemId":215162}}},"doAtValue":{"const":{"val":"-1.48s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":402668}}},"doAtValue":{"const":{"val":"-1.48s"}}}
   ],
   "priorityList": [
     {"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"50%"}}}},{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"20s"}}}}]}},"castSpell":{"spellId":{"spellId":401977}}}},
@@ -18,12 +17,12 @@
     {"action":{"castSpell":{"spellId":{"spellId":402799}}}},
     {"action":{"castSpell":{"spellId":{"spellId":402789}}}},
     {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"numberTargets":{}},"rhs":{"const":{"val":"4"}}}},"castSpell":{"spellId":{"spellId":413259}}}},
-    {"action":{"castSpell":{"spellId":{"spellId":19279,"rank":5}}}},
     {"hide":true,"action":{"castSpell":{"spellId":{"spellId":26297}}}},
     {"action":{"castSpell":{"spellId":{"spellId":10947,"rank":9}}}},
+    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":456549}}},{"auraIsActiveWithReactionTime":{"auraId":{"spellId":456549}}}]}},"castSpell":{"spellId":{"spellId":17314,"rank":5}}}},
     {"action":{"castSpell":{"spellId":{"spellId":401955}}}},
     {"action":{"castSpell":{"spellId":{"spellId":431681}}}},
-    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":456549}}},{"auraIsActiveWithReactionTime":{"auraId":{"spellId":456549}}}]}},"castSpell":{"spellId":{"spellId":17314,"rank":5}}}},
+    {"hide":true,"action":{"castSpell":{"spellId":{"spellId":19279,"rank":5}}}},
     {"action":{"castSpell":{"spellId":{"spellId":431655}}}}
   ]
 }

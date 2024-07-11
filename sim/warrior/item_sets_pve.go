@@ -72,7 +72,8 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 			warrior := agent.(WarriorAgent).GetWarrior()
 			rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 457652})
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
-				Label: "S03 - Item - T1 - Warrior - Damage 2P Bonus Trigger",
+				ActionID: core.ActionID{SpellID: 457652}, // Intentionally exposing for stance-dancing APL conditions
+				Label:    "S03 - Item - T1 - Warrior - Damage 2P Bonus Trigger",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if slices.Contains(StanceCodes, spell.SpellCode) {
 						warrior.AddRage(sim, 10, rageMetrics)

@@ -248,27 +248,31 @@ func (warrior *Warrior) applyTasteForBlood() {
 		return
 	}
 
-	icd := core.Cooldown{
-		Timer:    warrior.NewTimer(),
-		Duration: time.Millisecond * 580,
-	}
-
-	warrior.RegisterAura(core.Aura{
+	warrior.TasteForBloodAura = warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 426969},
 		Label:    "Taste for Blood",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorRend && icd.IsReady(sim) {
-				icd.Use(sim)
-				warrior.OverpowerAura.Duration = time.Second * 9
-				warrior.OverpowerAura.Activate(sim)
-				warrior.OverpowerAura.Duration = time.Second * 5
+		Duration: time.Second * 9,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode == SpellCode_WarriorOverpower {
+				aura.Deactivate(sim)
 			}
 		},
 	})
+
+	icd := core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: time.Millisecond * 5800,
+	}
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Taste for Blood Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode == SpellCode_WarriorRend && icd.IsReady(sim) {
+				icd.Use(sim)
+				warrior.TasteForBloodAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 // Your melee hits have a 10% chance to grant Sudden Death. Sudden Death allows one use of Execute regardless of the target's health state.

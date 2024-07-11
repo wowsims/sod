@@ -35,7 +35,7 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagDefensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -84,7 +84,7 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -138,7 +138,7 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

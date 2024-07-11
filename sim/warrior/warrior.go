@@ -24,6 +24,7 @@ const (
 	SpellCode_WarriorDevastate
 	SpellCode_WarriorExecute
 	SpellCode_WarriorMortalStrike
+	SpellCode_WarriorOverpower
 	SpellCode_WarriorRagingBlow
 	SpellCode_WarriorRend
 	SpellCode_WarriorRevenge
@@ -65,18 +66,19 @@ type Warrior struct {
 	revengeProcAura *core.Aura
 	OverpowerAura   *core.Aura
 
-	BloodSurgeAura         *core.Aura
-	RampageAura            *core.Aura
-	WreckingCrewEnrageAura *core.Aura
-	SuddenDeathAura        *core.Aura
-	lastMeleeAutoTarget    *core.Unit
+	BloodSurgeAura      *core.Aura
+	RampageAura         *core.Aura
+	SuddenDeathAura     *core.Aura
+	TasteForBloodAura   *core.Aura
+	lastMeleeAutoTarget *core.Unit
 
 	// Enrage Auras
-	BerserkerRageAura   *core.Aura
-	BloodrageAura       *core.Aura
-	ConsumedByRageAura  *core.Aura
-	EnrageAura          *core.Aura
-	FreshMeatEnrageAura *core.Aura
+	BerserkerRageAura      *core.Aura
+	BloodrageAura          *core.Aura
+	ConsumedByRageAura     *core.Aura
+	EnrageAura             *core.Aura
+	FreshMeatEnrageAura    *core.Aura
+	WreckingCrewEnrageAura *core.Aura
 
 	// Rune passive
 	FocusedRageDiscount float64

@@ -935,7 +935,10 @@ enum OtherAction {
 	OtherActionHealingModel = 12; // Indicates healing received from healing model.
 	OtherActionPotion = 13; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionMove = 14; // Used by movement to be able to show it in timeline
-	OtherActionComboPoints = 15; //Used by APL to generically add Combo Points.
+	OtherActionComboPoints = 15; // Used by APL to generically add Combo Points.
+	OtherActionExplosives = 16; // Used by APL to generically refer to engineering explosives
+	OtherActionOffensiveEquip = 17; // Used by APL to generally refer to offensive on-use equipment
+	OtherActionDefensiveEquip = 18; // Used by APL to generally refer to defensive on-use equipment
 }
 
 message ActionID {

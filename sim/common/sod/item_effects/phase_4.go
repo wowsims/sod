@@ -67,7 +67,7 @@ func init() {
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
 			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

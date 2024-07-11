@@ -188,7 +188,7 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 
 	mainSpell := druid.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{ItemID: itemID},
-		Flags:    core.SpellFlagNoOnCastComplete,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

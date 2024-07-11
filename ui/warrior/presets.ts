@@ -6,6 +6,7 @@ import {
 	Consumes,
 	Debuffs,
 	DragonslayerBuff,
+	EnchantedSigil,
 	Flask,
 	Food,
 	IndividualBuffs,
@@ -26,6 +27,7 @@ import Phase2APLFury from './apls/phase_2_fury.apl.json';
 import Phase3APLArms from './apls/phase_3_arms.apl.json';
 import Phase3APLFury from './apls/phase_3_fury.apl.json';
 import Phase3APLGlad from './apls/phase_3_glad.apl.json';
+import Phase4APLFury from './apls/phase_4_fury.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase1DWGear from './gear_sets/phase_1_dw.gear.json';
 import Phase22HGear from './gear_sets/phase_2_2h.gear.json';
@@ -74,12 +76,13 @@ export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Fury', Phase2
 export const APLPhase3Arms = PresetUtils.makePresetAPLRotation('P3 Arms', Phase3APLArms);
 export const APLPhase3Fury = PresetUtils.makePresetAPLRotation('P3 Fury', Phase3APLFury);
 export const APLPhase3Glad = PresetUtils.makePresetAPLRotation('P3 Glad', Phase3APLGlad);
+export const APLPhase4Fury = PresetUtils.makePresetAPLRotation('P4 Fury', Phase4APLFury);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1Arms],
 	[Phase.Phase2]: [APLPhase2Arms, APLPhase2Fury],
 	[Phase.Phase3]: [APLPhase3Arms, APLPhase3Fury, APLPhase3Glad],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [APLPhase4Fury],
 	[Phase.Phase5]: [],
 };
 
@@ -98,6 +101,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		0: APLPresets[Phase.Phase3][0],
 		1: APLPresets[Phase.Phase3][1],
 		2: APLPresets[Phase.Phase3][0],
+	},
+	60: {
+		1: APLPresets[Phase.Phase4][0],
 	},
 };
 
@@ -182,7 +188,8 @@ export const DefaultConsumes = Consumes.create({
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MightyRagePotion,
 	dragonBreathChili: true,
-	food: Food.FoodGrilledSquid,
+	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	food: Food.FoodSmokedDesertDumpling,
 	flask: Flask.FlaskOfTheTitans,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
@@ -222,5 +229,5 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Blacksmithing,
-	profession2: Profession.Engineering,
+	profession2: Profession.Enchanting,
 };

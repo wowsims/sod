@@ -116,9 +116,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		],
 	},
 
-	autoRotation: () => {
-		throw new Error("Auto rotation is disabled until we can get optimized APL rotation, choose 'APL' under Rotation Type dropdown");
-		// return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+	autoRotation: player => {
+		if (player.getLevel() < 60) {
+			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		}
+
+		if (player.getTalentTree() == 1) {
+			return Presets.DefaultAPLs[60][1].rotation.rotation!;
+		}
+
+		throw new Error('Automatic level 60 Arms / Prot / Gladiator rotations are not supported at this time. Please select an APL in the Rotation tab.');
 	},
 
 	raidSimPresets: [

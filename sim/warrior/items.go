@@ -22,7 +22,7 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24427},
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -51,7 +51,7 @@ func init() {
 			ActionID:    actionId,
 			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
