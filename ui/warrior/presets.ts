@@ -68,12 +68,12 @@ export const DefaultGear = GearPresets[Phase.Phase4][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLPhase1Arms = PresetUtils.makePresetAPLRotation('P1 Preset Arms', Phase1APLArms);
-export const APLPhase2Arms = PresetUtils.makePresetAPLRotation('P2 Preset Arms', Phase2APLArms);
-export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Preset Fury', Phase2APLFury);
-export const APLPhase3Arms = PresetUtils.makePresetAPLRotation('P3 Preset Arms', Phase3APLArms);
-export const APLPhase3Fury = PresetUtils.makePresetAPLRotation('P3 Preset Fury', Phase3APLFury);
-export const APLPhase3Glad = PresetUtils.makePresetAPLRotation('P3 Preset Glad', Phase3APLGlad);
+export const APLPhase1Arms = PresetUtils.makePresetAPLRotation('P1 Arms', Phase1APLArms);
+export const APLPhase2Arms = PresetUtils.makePresetAPLRotation('P2 Arms', Phase2APLArms);
+export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Fury', Phase2APLFury);
+export const APLPhase3Arms = PresetUtils.makePresetAPLRotation('P3 Arms', Phase3APLArms);
+export const APLPhase3Fury = PresetUtils.makePresetAPLRotation('P3 Fury', Phase3APLFury);
+export const APLPhase3Glad = PresetUtils.makePresetAPLRotation('P3 Glad', Phase3APLGlad);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1Arms],
@@ -195,12 +195,14 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
+	fengusFerocity: true,
 	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
@@ -213,6 +215,7 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
+	improvedFaerieFire: true,
 	mangle: true,
 	sunderArmor: true,
 });
