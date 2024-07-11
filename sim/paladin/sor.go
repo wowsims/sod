@@ -134,6 +134,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				}
 			},
 		})
+		
+		paladin.aurasSoR[i] = aura
 
 		paladin.sealOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -157,5 +159,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
+		
+		paladin.spellsJoR[i] = judgeSpell
 	}
 }

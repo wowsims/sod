@@ -27,8 +27,16 @@ type Paladin struct {
 	primaryPaladinAura proto.PaladinAura
 	currentPaladinAura *core.Aura
 
-	currentSeal      *core.Aura
+        currentSeal      *core.Aura
+	auraSoM           *core.Aura
+	aurasSoR       [8]*core.Aura
+	aurasSoC       [5]*core.Aura
+	aurasSotC      [6]*core.Aura
 	currentJudgement *core.Spell
+	spellJoM  *core.Spell
+	spellsJoR  [8]*core.Spell
+	spellsJoC  [5]*core.Spell
+	spellsJotC [6]*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcismCooldown  *core.Cooldown
@@ -169,6 +177,7 @@ func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim
 	paladin.currentSeal = newSeal
 	paladin.currentJudgement = judgement
 	paladin.currentSeal.Activate(sim)
+
 }
 
 func (paladin *Paladin) getLibramSealCostReduction() float64 {
