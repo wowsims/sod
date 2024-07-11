@@ -104,7 +104,12 @@ func (warrior *Warrior) applyBloodFrenzy() {
 		return
 	}
 
-	warrior.Rend.StanceMask |= BerserkerStance
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Blood Frenzy Dummy",
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.Rend.StanceMask |= BerserkerStance
+		},
+	}))
 }
 
 func (warrior *Warrior) applyFrenziedAssault() {

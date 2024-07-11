@@ -90,7 +90,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShadowPriestInputs.ArmorInput],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.BlessingOfWisdom, BuffDebuffInputs.ManaSpringTotem, BuffDebuffInputs.StaminaBuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.BlessingOfWisdom,
+		BuffDebuffInputs.ManaSpringTotem,
+		BuffDebuffInputs.StaminaBuff,
+		BuffDebuffInputs.SpellWintersChillDebuff,
+	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

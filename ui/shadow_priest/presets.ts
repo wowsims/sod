@@ -148,6 +148,7 @@ export const DefaultDebuffs = Debuffs.create({
 	judgementOfWisdom: true,
 	occultPoison: true,
 	markOfChaos: true,
+	wintersChill: true,
 });
 
 export const OtherDefaults = {
