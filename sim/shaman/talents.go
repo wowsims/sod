@@ -149,7 +149,7 @@ func (shaman *Shaman) applyElementalFury() {
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem) {
-			spell.CritDamageBonus = 1
+			spell.CritDamageBonus += 1
 		}
 	})
 }
