@@ -75,6 +75,7 @@ const (
 	SeepingWillow            = 228666 // 12969
 	DraconicInfusedEmblem    = 228678 // 22268
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
+	ViskagTheBloodletter     = 17075
 )
 
 func init() {
@@ -1314,6 +1315,8 @@ func init() {
 	})
 
 	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+
+	itemhelpers.CreateWeaponProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
