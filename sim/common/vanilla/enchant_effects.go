@@ -173,11 +173,11 @@ func init() {
 	})
 
 	// Gloves - Minor Haste
+	// Effect #931 explicitly does NOT affect ranged attack speed
 	core.NewEnchantEffect(931, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
-		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	// Weapon - Striking
@@ -283,6 +283,15 @@ func init() {
 	core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 		character.AddBonusRangedHitRating(3)
+	})
+
+	// Gloves - Libram of Rapidity
+	// Confirmed to mod both melee and ranged speed
+	core.NewEnchantEffect(2543, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	core.AddEffectsToTest = true

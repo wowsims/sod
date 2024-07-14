@@ -6,8 +6,13 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
+// Ordered by ID
+const ()
+
 func init() {
 	core.AddEffectsToTest = false
+
+	// ! Please keep items ordered alphabetically within a given category !
 
 	core.AddEffectsToTest = true
 }

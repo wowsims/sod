@@ -42,7 +42,8 @@ func (warrior *Warrior) registerShockwaveSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := apCoef * spell.MeleeAttackPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				// Shockwave can miss and be blocked, but it can't be dodged or parried
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialNoDodgeParry)
 			}
 		},
 	})

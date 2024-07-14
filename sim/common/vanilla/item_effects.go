@@ -39,6 +39,7 @@ const (
 	SerpentSlicer            = 13035
 	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
+	Deathbringer             = 17068
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
@@ -52,11 +53,13 @@ const (
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	BlisteringRagehammer     = 220569 // 10626
 	SulfurasHandOfRagnaros   = 227683 // 17182
 	SulfuronHammer           = 227684 // 17193
 	TemperedBlackAmnesty     = 227832 // 19166
 	EbonFist                 = 227842
 	ReavingNightfall         = 227843
+	WraithScythe             = 227941
 	BurstOfKnowledge         = 227972
 	Ironfoe                  = 227991 // 11684
 	FiendishMachete          = 228056 // 18310
@@ -277,6 +280,11 @@ func init() {
 	// TODO: Proc rate based on the original item
 	itemhelpers.CreateWeaponProcDamage(BlackhandDoomsaw, "Blackhand Doomsaw", 0.4, 16549, core.SpellSchoolPhysical, 324, 216, 0, core.DefenseTypeMelee)
 
+	// https://www.wowhead.com/classic/item=220569/blistering-ragehammer
+	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, enrageAura446327)
+
 	itemhelpers.CreateWeaponProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
@@ -327,6 +335,10 @@ func init() {
 	// Chance on hit: Blasts a target for 160 to 250 Frost damage.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=17068/deathbringer
+	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
+	itemhelpers.CreateWeaponProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -397,7 +409,7 @@ func init() {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Eskhandar's Rage",
 			ActionID: core.ActionID{SpellID: 22640},
-			Duration: time.Second * 15,
+			Duration: time.Second * 5,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.3)
 			},
@@ -754,7 +766,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
 	// Chance on hit: Heal self for 270 to 450 and Increases Strength by 120 for 30 sec.
-	// Chance on hit: Increases damage done by 30 and attack speed by 10% for 15 sec.
+	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(RefinedArcaniteChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -1350,6 +1362,27 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
+	// https://www.wowhead.com/classic/item=227941/wraith-scythe
+	// Chance on hit: Steals 45 life from target enemy.
+	itemhelpers.CreateWeaponProcSpell(WraithScythe, "Wraith Scythe", 1.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 16414}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 0.3,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, 45, spell.OutcomeAlwaysHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
@@ -1396,7 +1429,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228678/draconic-infused-emblem
 	// Use: Increases your spell damage by up to 100 and your healing by up to 190 for 15 sec. (1 Min, 30 Sec Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 100, stats.HealingPower: 190}, time.Second*15, time.Second*90)
+	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 128, stats.HealingPower: 190}, time.Second*15, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
 	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec. (Proc chance: 2%)
@@ -1728,21 +1761,18 @@ func init() {
 // Used by:
 // - https://www.wowhead.com/classic/item=220569/blistering-ragehammer and
 // - https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
-// Apply Aura: Mod Attack Speed works like Seal of the Crusader and lowers weapon damage in exchange for attack speed
 func enrageAura446327(character *core.Character) *core.Aura {
 	return character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 446327},
 		Label:    "Enrage (446327)",
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage += 30
-			character.MultiplyAttackSpeed(sim, 1.10)
-			character.AutoAttacks.MHAuto().DamageMultiplier /= 1.10 // Assumes this can only proc from a 2H weapon. If Blizzard ever adds it to a 1H we need to check procmasks
+			character.PseudoStats.BonusDamage += 20
+			character.MultiplyAttackSpeed(sim, 1.05)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage -= 30
-			character.MultiplyAttackSpeed(sim, 1/1.10)
-			character.AutoAttacks.MHAuto().DamageMultiplier *= 1.10
+			character.PseudoStats.BonusDamage -= 20
+			character.MultiplyAttackSpeed(sim, 1/1.05)
 		},
 	})
 }
@@ -1753,7 +1783,7 @@ func strengthOfTheChampionAura(character *core.Character) *core.Aura {
 	return character.GetOrRegisterAura(core.Aura{
 		Label:    "Strength of the Champion",
 		ActionID: actionID,
-		Duration: time.Second * 10,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			character.GainHealth(sim, sim.Roll(270, 450), healthMetrics)
 			character.AddStatDynamic(sim, stats.Strength, 120)

@@ -272,7 +272,7 @@ func (shaman *Shaman) applyRollingThunder() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
 				return
 			}
 

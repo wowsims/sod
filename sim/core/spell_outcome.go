@@ -260,6 +260,17 @@ func (spell *Spell) OutcomeMeleeWeaponSpecialNoCrit(sim *Simulation, result *Spe
 	}
 }
 
+func (spell *Spell) OutcomeMeleeSpecialNoDodgeParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	roll := sim.RandomFloat("White Hit Table")
+	chance := 0.0
+
+	if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+		!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+		!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+		result.applyAttackTableHit(spell)
+	}
+}
+
 func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0

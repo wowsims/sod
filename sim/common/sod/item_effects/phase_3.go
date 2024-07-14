@@ -12,7 +12,6 @@ import (
 
 const (
 	// Ordered by ID
-	BlisteringRagehammer       = 220569
 	FistOfTheForsaken          = 220578
 	DragonsCry                 = 220582
 	CobraFangClaw              = 220588
@@ -421,22 +420,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, 39, spell.OutcomeAlwaysHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
-
-	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, func(character *core.Character) *core.Aura {
-		return character.RegisterAura(core.Aura{
-			Label:    "Enrage (Blistering Ragehammer)",
-			ActionID: core.ActionID{SpellID: 446327},
-			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.1)
-				character.PseudoStats.BonusDamage += 30
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.BonusDamage -= 30
-				character.MultiplyAttackSpeed(sim, 1/1.1)
 			},
 		})
 	})
