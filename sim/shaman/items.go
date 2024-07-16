@@ -135,10 +135,10 @@ func init() {
 			Label:    "Totem of Raging Fire (2H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 100)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 200)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -100)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -200)
 			},
 		})
 

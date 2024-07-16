@@ -258,9 +258,13 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterShieldBlockCD()
 }
 
-func (warrior *Warrior) Reset(_ *core.Simulation) {
+func (warrior *Warrior) Reset(sim *core.Simulation) {
 	warrior.curQueueAura = nil
 	warrior.curQueuedAutoSpell = nil
+
+	// Reset stance
+	warrior.Stance = BattleStance
+	warrior.BattleStanceAura.Activate(sim)
 }
 
 func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
