@@ -39,6 +39,7 @@ const (
 	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
 	ThrashBlade              = 17705
+	ViskagTheBloodletter     = 17075
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
 	Thunderfury              = 19019
@@ -75,7 +76,6 @@ const (
 	SeepingWillow            = 228666 // 12969
 	DraconicInfusedEmblem    = 228678 // 22268
 	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
-	ViskagTheBloodletter     = 17075
 )
 
 func init() {
