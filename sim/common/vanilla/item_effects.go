@@ -40,8 +40,8 @@ const (
 	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
 	Deathbringer             = 17068
-	ThrashBlade              = 17705
 	ViskagTheBloodletter     = 17075
+	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
 	Thunderfury              = 19019
