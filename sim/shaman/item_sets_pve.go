@@ -26,26 +26,23 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 				ActionID:  core.ActionID{SpellID: 449932},
 				Duration:  time.Second * 12,
 				MaxStacks: 10,
-
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 					statsDelta := float64(newStacks-oldStacks) * 5.0
 					aura.Unit.AddStatDynamic(sim, stats.AttackPower, statsDelta)
 				},
 			})
 
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
-					procAura.Activate(sim)
-					procAura.AddStack(sim)
-				}
-			}
-
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				Name:     "Fiery Strength",
 				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 				Outcome:  core.OutcomeLanded,
 				ProcMask: core.ProcMaskDirect,
-				Handler:  handler,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+						procAura.Activate(sim)
+						procAura.AddStack(sim)
+					}
+				},
 			})
 		},
 	},

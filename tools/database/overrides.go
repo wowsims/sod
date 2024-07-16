@@ -96,28 +96,19 @@ var ItemOverrides = []*proto.UIItem{
 }
 
 // Keep these sorted by item ID.
-var ItemAllowList = map[int32]struct{}{}
+var ItemAllowList = map[int32]struct{}{
+	14637: {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+}
 
 // Keep these sorted by item ID.
 var ItemDenyList = map[int32]struct{}{
 	9449:   {}, // https://www.wowhead.com/classic/item=9449/manual-crowd-pummeler
 	9653:   {}, // Speedy Racer Goggles
-	11684:  {}, // https://www.wowhead.com/classic/item=11684/ironfoe
-	11815:  {}, // https://www.wowhead.com/classic/item=11815/hand-of-justice
-	11832:  {}, // https://www.wowhead.com/classic/item=11832/burst-of-knowledge
 	12104:  {}, // Brindlethorn Tunic
 	12805:  {}, // Orb of Fire
-	17064:  {}, // Shard of the Scale
-	17074:  {}, // https://www.wowhead.com/classic/item=17074/shadowstrike
-	17082:  {}, // Shard of the Flame
-	17223:  {}, // https://www.wowhead.com/classic/item=17223/thunderstrike
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
-	18820:  {}, // Talisman of Ephemeral Power
-	18348:  {}, // https://www.wowhead.com/classic/item=18348/quelserrar
-	19147:  {}, // Ring of Spell Power
-	19166:  {}, // Black Amnesty (replaced by Tempered Black Amnesty)
 	20522:  {}, // Feral Staff
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
@@ -140,7 +131,8 @@ var ItemDenyList = map[int32]struct{}{
 	215116: {}, // UNUSED - Hyperconductive Speed Belt
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
-	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice
+	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
+	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
