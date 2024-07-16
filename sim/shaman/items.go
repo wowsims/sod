@@ -59,7 +59,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -106,7 +106,12 @@ func init() {
 	// https://www.wowhead.com/classic/item=228176/totem-of-thunder
 	// Equip: The cast time of your Lightning Bolt spell is reduced by -0.1 sec.
 	core.NewItemEffect(TotemOfThunder, func(agent core.Agent) {
-		// Implemented in lightning_bolt.go
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLightningBolt {
+				spell.DefaultCast.CastTime -= time.Millisecond * 100
+			}
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
@@ -130,10 +135,10 @@ func init() {
 			Label:    "Totem of Raging Fire (2H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 100)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 200)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -100)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -200)
 			},
 		})
 

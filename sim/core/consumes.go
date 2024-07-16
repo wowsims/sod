@@ -934,10 +934,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 				dot.Spell.SpellSchool = SpellSchoolNature
 				dot.Spell.SchoolIndex = stats.SchoolIndexNature
 
-				dot.SnapshotBaseDamage = dotDamage
-
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, dotDamage, isRollover)
 
 				// Revert to fire school
 				dot.Spell.SpellSchool = SpellSchoolFire
@@ -993,7 +990,6 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	defaultMCD := makePotionActivation(defaultPotion, character, potionCD)
 
 	if defaultMCD.Spell != nil {
-		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
 		character.AddMajorCooldown(defaultMCD)
 	}
 }

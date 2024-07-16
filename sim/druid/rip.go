@@ -80,18 +80,13 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
 	energyCost := 30.0
 
-	switch druid.Ranged().ID {
-	case IdolOfExsanguinationCat:
-		energyCost -= 5
-	}
-
 	return core.SpellConfig{
 		SpellCode:   SpellCode_DruidRip,
 		ActionID:    core.ActionID{SpellID: ripRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   energyCost,
@@ -137,7 +132,6 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
 				dot.NumberOfTicks = RipTicks
 				dot.RecomputeAuraDuration()

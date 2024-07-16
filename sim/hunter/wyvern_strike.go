@@ -42,7 +42,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 		ThreatMultiplier: 1,

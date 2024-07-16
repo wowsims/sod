@@ -24,7 +24,6 @@ func (druid *Druid) registerShredSpell() {
 	}[druid.Level] * ShredFlatDmgMultiplier
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
-	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	if druid.Ranged().ID == IdolOfTheDream {
 		damageMultiplier *= 1.02
@@ -78,10 +77,6 @@ func (druid *Druid) registerShredSpell() {
 
 				if hasGoreRune {
 					druid.rollGoreCatReset(sim)
-				}
-
-				if hasElunesFires {
-					druid.tryElunesFiresRipExtension(sim, target)
 				}
 			} else {
 				spell.IssueRefund(sim)

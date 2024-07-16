@@ -179,6 +179,7 @@ export function makeTristateDebuffInput<SpecType extends Spec>(
 	return InputHelpers.makeTristateIconInput<any, Debuffs, Player<SpecType>>(
 		{
 			getModObject: (player: Player<SpecType>) => player,
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 			getValue: (player: Player<SpecType>) => player.getRaid()!.getDebuffs(),
 			setValue: (eventID: EventID, player: Player<SpecType>, newVal: Debuffs) => player.getRaid()!.setDebuffs(eventID, newVal),
 			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.debuffsChangeEmitter, player.levelChangeEmitter]),

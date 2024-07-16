@@ -222,18 +222,18 @@ var FullIndividualBuffsPhase3 = &proto.IndividualBuffs{
 }
 
 var FullIndividualBuffsPhase4 = &proto.IndividualBuffs{
-	BlessingOfKings:              true,
-	BlessingOfMight:              proto.TristateEffect_TristateEffectImproved,
-	BlessingOfSanctuary:          true,
-	BlessingOfWisdom:             proto.TristateEffect_TristateEffectImproved,
-	FengusFerocity:               true,
-	MightOfStormwind:             true,
-	MoldarsMoxie:                 true,
-	RallyingCryOfTheDragonslayer: true,
-	SaygesFortune:                proto.SaygesFortune_SaygesDamage,
-	SlipkiksSavvy:                true,
-	SongflowerSerenade:           true,
-	WarchiefsBlessing:            true,
+	BlessingOfKings:     true,
+	BlessingOfMight:     proto.TristateEffect_TristateEffectImproved,
+	BlessingOfSanctuary: true,
+	BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
+	DragonslayerBuff:    proto.DragonslayerBuff_RallyingCryofTheDragonslayer,
+	FengusFerocity:      true,
+	MightOfStormwind:    true,
+	MoldarsMoxie:        true,
+	SaygesFortune:       proto.SaygesFortune_SaygesDamage,
+	SlipkiksSavvy:       true,
+	SongflowerSerenade:  true,
+	WarchiefsBlessing:   true,
 }
 
 ///////////////////////////////////////////////////////////////////////////

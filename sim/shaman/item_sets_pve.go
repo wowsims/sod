@@ -26,27 +26,23 @@ var OstracizedBerserksBattlemail = core.NewItemSet(core.ItemSet{
 				ActionID:  core.ActionID{SpellID: 449932},
 				Duration:  time.Second * 12,
 				MaxStacks: 10,
-
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 					statsDelta := float64(newStacks-oldStacks) * 5.0
 					aura.Unit.AddStatDynamic(sim, stats.AttackPower, statsDelta)
 				},
 			})
 
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
-					procAura.Activate(sim)
-					procAura.AddStack(sim)
-				}
-			}
-
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID: core.ActionID{SpellID: 449931},
 				Name:     "Fiery Strength",
 				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 				Outcome:  core.OutcomeLanded,
 				ProcMask: core.ProcMaskDirect,
-				Handler:  handler,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+						procAura.Activate(sim)
+						procAura.AddStack(sim)
+					}
+				},
 			})
 		},
 	},
@@ -114,7 +110,6 @@ var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
 		// 6% chance on mainhand autoattack and 4% chance on spellcast to increase your damage and healing done by magical spells and effects by up to 95 for 10 sec.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 450626}
 
 			procAura := c.NewTemporaryStatsAura("The Furious Storm", core.ActionID{SpellID: 27775}, stats.Stats{stats.SpellPower: 95}, time.Second*10)
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -122,7 +117,6 @@ var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "Item - The Furious Storm Proc (MH Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
@@ -131,7 +125,6 @@ var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "Item - The Furious Storm Proc (Spell Cast)",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -170,7 +163,6 @@ var ItemSetEarthfuryEruption = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.GetOrRegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Shaman - Elemental 4P Bonus",
-				ActionID: core.ActionID{SpellID: 457520},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
@@ -187,7 +179,6 @@ var ItemSetEarthfuryEruption = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.GetOrRegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Shaman - Elemental 6P Bonus",
-				ActionID: core.ActionID{SpellID: 457524},
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
@@ -256,20 +247,20 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 		// Increases your attack speed by 30% for your next 3 swings after you parry, dodge, or block.
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Shaman - Tank 2P Bonus",
-				ActionID: core.ActionID{SpellID: 457540},
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+
+			flurryAura := shaman.makeFlurryAura(5)
+			// The consumption trigger may not exist if the Shaman doesn't talent into Flurry
+			shaman.makeFlurryConsumptionTrigger()
+
+			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Shaman - Tank 2P Bonus",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if shaman.FlurryAura != nil && result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge) || result.Outcome.Matches(core.OutcomeBlock) {
-						shaman.FlurryAura.Activate(sim)
-						shaman.FlurryAura.SetStacks(sim, 3)
+					if result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge) || result.Outcome.Matches(core.OutcomeBlock) {
+						flurryAura.Activate(sim)
+						flurryAura.SetStacks(sim, 3)
 					}
 				},
-			})
+			}))
 		},
 		// Your parries and dodges also activate your Shield Mastery rune ability.
 		4: func(agent core.Agent) {

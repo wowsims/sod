@@ -77,11 +77,11 @@ func init() {
 			},
 		})
 
-		hiddenTimerAura := character.RegisterSpell(core.SpellConfig{
+		activationSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 11826},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -102,7 +102,7 @@ func init() {
 		})
 
 		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    hiddenTimerAura,
+			Spell:    activationSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
 			ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
@@ -147,7 +147,7 @@ func init() {
 
 		regChannel := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled | core.SpellFlagAPL,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -217,7 +217,7 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 435899},
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -336,6 +336,8 @@ func init() {
 
 		spicy := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
 			Cast: core.CastConfig{
 				IgnoreHaste: true,
 				CD: core.Cooldown{

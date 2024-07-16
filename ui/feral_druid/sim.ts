@@ -111,9 +111,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	// itemSwapConfig: {
-	// 	itemSlots: [ItemSlot.ItemSlotMainHand],
-	// },
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -258,10 +258,5 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		return Stats.fromProto(this.player.getCurrentStats().finalStats);
-	}
-
-	detectArpStackConfiguration(arpTarget: number): boolean {
-		const currentArp = Stats.fromProto(this.player.getCurrentStats().finalStats).getStat(Stat.StatArmorPenetration);
-		return arpTarget > 1000 && currentArp > 648 && currentArp + 20 < arpTarget + 11;
 	}
 }

@@ -96,7 +96,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.Stormstrike) {
+			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.StormstrikeMH) {
 				procAura.Activate(sim)
 			}
 		},
@@ -152,7 +152,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
-	shaman.defendersResolveAura = core.DefendersResolveSpellDamage(shaman.GetCharacter())
+	defendersResolveAura := core.DefendersResolveSpellDamage(shaman.GetCharacter())
 
 	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
 
@@ -186,13 +186,13 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
-				if stacks := int32(2*max(shaman.GetStat(stats.Defense), 0)) / 2; stacks > 0 {
-					if !shaman.defendersResolveAura.IsActive() {
-						shaman.defendersResolveAura.Activate(sim)
+				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
+					if !defendersResolveAura.IsActive() {
+						defendersResolveAura.Activate(sim)
 					}
 
-					if shaman.defendersResolveAura.GetStacks() < stacks {
-						shaman.defendersResolveAura.SetStacks(sim, stacks)
+					if defendersResolveAura.GetStacks() != stacks {
+						defendersResolveAura.SetStacks(sim, stacks)
 					}
 				}
 			}
@@ -272,7 +272,7 @@ func (shaman *Shaman) applyRollingThunder() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
 				return
 			}
 
@@ -355,13 +355,13 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 const ShamanPowerSurgeProcChance = .05
 
 func (shaman *Shaman) applyPowerSurge() {
-	if !shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
-		return
-	}
-
 	// TODO: Figure out how this actually works because the 2024-02-27 tuning notes make it sound like
 	// this is not just a fully passive stat boost
-	shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
+	if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
+		shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
+	}
+
+	// We want to create the power surge aura all the time because it's used by the T1 Ele 4P and can be triggered without the rune
 
 	var affectedSpells []*core.Spell
 	var affectedSpellCodes = []int32{

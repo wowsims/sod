@@ -31,6 +31,23 @@ func TestFury(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents:     P4FuryTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase1Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -88,10 +105,9 @@ func BenchmarkSimulate(b *testing.B) {
 }
 
 var P2ArmsTalents = "303050213525100001"
-
 var P2FuryTalents = "-05050005405010051"
-
 var P3ArmsTalents = "303050213520105001-0505"
+var P4FuryTalents = "20305020302-05050005525010051"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -125,6 +141,20 @@ var Phase3Consumes = core.ConsumesCombo{
 		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
 		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
 		DefaultPotion:     proto.Potions_MightyRagePotion,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultPotion:     proto.Potions_MightyRagePotion,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ElementalSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
 	},
 }
 

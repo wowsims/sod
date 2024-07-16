@@ -1,5 +1,6 @@
-import { Faction, SaygesFortune, Stat } from '../../proto/common';
+import { DragonslayerBuff, Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
+import { IconEnumPicker } from '../icon_enum_picker';
 import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
@@ -255,8 +256,10 @@ export const PaladinPhysicalBuff = withLabel(
 				{ id: 19835, minLevel: 22, maxLevel: 31 },
 				{ id: 19836, minLevel: 32, maxLevel: 41 },
 				{ id: 19837, minLevel: 42, maxLevel: 51 },
-				{ id: 19838, minLevel: 52, maxLevel: 59 },
-				{ id: 25291, minLevel: 60 },
+				// TODO: AQ
+				{ id: 19838, minLevel: 52 },
+				// { id: 19838, minLevel: 52, maxLevel: 59 },
+				// { id: 25291, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(20048),
 		fieldName: 'blessingOfMight',
@@ -272,8 +275,10 @@ export const StrengthBuffHorde = withLabel(
 				{ id: 8075, minLevel: 10, maxLevel: 23 },
 				{ id: 8160, minLevel: 24, maxLevel: 37 },
 				{ id: 8161, minLevel: 38, maxLevel: 51 },
-				{ id: 10442, minLevel: 52, maxLevel: 59 },
-				{ id: 25361, minLevel: 60 },
+				// TODO: AQ
+				{ id: 10442, minLevel: 52 },
+				// { id: 10442, minLevel: 52, maxLevel: 59 },
+				// { id: 25361, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'strengthOfEarthTotem',
@@ -287,8 +292,10 @@ export const GraceOfAir = withLabel(
 		actionId: player =>
 			player.getMatchingSpellActionId([
 				{ id: 8835, minLevel: 42, maxLevel: 55 },
-				{ id: 10627, minLevel: 56, maxLevel: 59 },
-				{ id: 25359, minLevel: 60 },
+				// TODO: AQ
+				{ id: 10627, minLevel: 56 },
+				// { id: 10627, minLevel: 56, maxLevel: 59 },
+				// { id: 25359, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
@@ -359,8 +366,10 @@ export const BattleShoutBuff = withLabel(
 				{ id: 6192, minLevel: 22, maxLevel: 31 },
 				{ id: 11549, minLevel: 32, maxLevel: 41 },
 				{ id: 11550, minLevel: 42, maxLevel: 51 },
-				{ id: 11551, minLevel: 52, maxLevel: 59 },
-				{ id: 25289, minLevel: 60 },
+				// TODO: AQ
+				{ id: 11551, minLevel: 52 },
+				// { id: 11551, minLevel: 52, maxLevel: 59 },
+				// { id: 25289, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(12861),
 		fieldName: 'battleShout',
@@ -389,8 +398,10 @@ export const BlessingOfWisdom = withLabel(
 				{ id: 19850, minLevel: 24, maxLevel: 33 },
 				{ id: 19852, minLevel: 34, maxLevel: 43 },
 				{ id: 19853, minLevel: 44, maxLevel: 53 },
-				{ id: 19854, minLevel: 54, maxLevel: 59 },
-				{ id: 25290, minLevel: 60 },
+				// TODO: AQ
+				{ id: 19854, minLevel: 54 },
+				// { id: 19854, minLevel: 54, maxLevel: 59 },
+				// { id: 25290, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(20245),
 		fieldName: 'blessingOfWisdom',
@@ -419,7 +430,7 @@ export const VampiricTouchReplenishment = withLabel(
 );
 
 export const MeleeCritBuff = withLabel(
-	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 17007, minLevel: 40 }]), fieldName: 'leaderOfThePack' }),
+	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 24932, minLevel: 40 }]), fieldName: 'leaderOfThePack' }),
 	'Leader of the Pack',
 );
 
@@ -494,13 +505,22 @@ export const BattleSquawkBuff = makeMultistateRaidBuffInput({
 //                                 WORLD BUFFS
 ///////////////////////////////////////////////////////////////////////////
 
-export const RallyingCryOfTheDragonslayer = withLabel(
-	makeBooleanIndividualBuffInput({
-		actionId: () => ActionId.fromSpellId(22888),
-		fieldName: 'rallyingCryOfTheDragonslayer',
-	}),
-	'Rallying Cry of the Dragonslayer',
-);
+// export const RallyingCryOfTheDragonslayer = withLabel(
+// 	makeBooleanIndividualBuffInput({
+// 		actionId: () => ActionId.fromSpellId(22888),
+// 		fieldName: 'rallyingCryOfTheDragonslayer',
+// 	}),
+// 	'Rallying Cry of the Dragonslayer',
+// );
+export const DragonslayerBuffInput = makeEnumIndividualBuffInput({
+	direction: IconPickerDirection.Horizontal,
+	values: [
+		{ value: DragonslayerBuff.DragonslayerBuffUnknown, text: 'Dragonslayer Buff' },
+		{ value: DragonslayerBuff.RallyingCryofTheDragonslayer, actionId: () => ActionId.fromSpellId(22888), text: 'Rallying Cry of the Dragonslayer' },
+		{ value: DragonslayerBuff.ValorOfAzeroth, actionId: () => ActionId.fromSpellId(461475), text: 'Valor of Azeroth' },
+	],
+	fieldName: 'dragonslayerBuff',
+});
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(24425),
@@ -1019,7 +1039,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: TrueshotAuraBuff,
 		picker: IconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
+		stats: [Stat.StatRangedAttackPower],
 	},
 	{
 		config: MeleeCritBuff,
@@ -1094,15 +1114,20 @@ export const MISC_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const WORLD_BUFFS_CONFIG = [
+	// {
+	// 	config: RallyingCryOfTheDragonslayer,
+	// 	picker: IconPicker,
+	// 	stats: [
+	// 		Stat.StatMeleeCrit,
+	// 		// TODO: Stat.StatRangedCrit,
+	// 		Stat.StatSpellCrit,
+	// 		Stat.StatAttackPower,
+	// 	],
+	// },
 	{
-		config: RallyingCryOfTheDragonslayer,
-		picker: IconPicker,
-		stats: [
-			Stat.StatMeleeCrit,
-			// TODO: Stat.StatRangedCrit,
-			Stat.StatSpellCrit,
-			Stat.StatAttackPower,
-		],
+		config: DragonslayerBuffInput,
+		picker: IconEnumPicker,
+		stats: [],
 	},
 	{
 		config: SongflowerSerenade,
@@ -1294,7 +1319,7 @@ export const MISC_DEBUFFS_CONFIG = [
 	{
 		config: ImprovedFaerieFire,
 		picker: IconPicker,
-		stats: [Stat.StatMeleeHit, Stat.StatSpellHit],
+		stats: [],
 	},
 	{
 		config: MekkatorqueFistDebuff,

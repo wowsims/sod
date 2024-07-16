@@ -23,7 +23,8 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 		60: 21553,
 	}[warrior.Level]
 
-	warrior.MortalStrike = warrior.RegisterSpell(core.SpellConfig{
+	warrior.MortalStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorMortalStrike,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

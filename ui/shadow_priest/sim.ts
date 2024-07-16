@@ -4,7 +4,7 @@ import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import * as ShadowPriestInputs from './inputs.js';
@@ -27,7 +27,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -44,12 +43,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatHolyPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitShadow, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 
 		return {
 			talents: stats,
@@ -92,7 +90,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShadowPriestInputs.ArmorInput],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.BlessingOfWisdom, BuffDebuffInputs.ManaSpringTotem, BuffDebuffInputs.StaminaBuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.BlessingOfWisdom,
+		BuffDebuffInputs.ManaSpringTotem,
+		BuffDebuffInputs.StaminaBuff,
+		BuffDebuffInputs.SpellWintersChillDebuff,
+	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

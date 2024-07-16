@@ -58,7 +58,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 		// Your melee autoattacks and spellcasts have a 6% chance to heal you for 270 to 330 health.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 450585}
 			manaMetrics := c.NewManaMetrics(core.ActionID{SpellID: 450583})
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -68,7 +67,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Melee Auto)",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
@@ -77,7 +75,6 @@ var ItemSetDeathmistRaiment = core.NewItemSet(core.ItemSet{
 				Handler:    handler,
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
 				Name:       "S03 - Heal Proc on Cast - Dreadmist Raiment (Spell Cast)",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -156,6 +153,9 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier -= 1
 					}
+					if warlock.Incinerate != nil {
+						warlock.Incinerate.CastTimeMultiplier -= 1
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
@@ -164,9 +164,12 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					if warlock.Shadowflame != nil {
 						warlock.Shadowflame.CastTimeMultiplier += 1
 					}
+					if warlock.Incinerate != nil {
+						warlock.Incinerate.CastTimeMultiplier += 1
+					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.CurCast.CastTime == 0 {
 						aura.Deactivate(sim)
 					}
 				},
@@ -179,7 +182,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame && sim.Proc(.04, "Fire Trance") {
+					if (spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame) && sim.Proc(.04, "Fire Trance") {
 						fireTranceAura.Activate(sim)
 					}
 				},
@@ -249,6 +252,11 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				},
 			})
 
+			icd := core.Cooldown{
+				Timer:    warlock.NewTimer(),
+				Duration: time.Millisecond * 100,
+			}
+
 			warlock.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Warlock - Tank 6P Bonus",
 				Duration: core.NeverExpires,
@@ -256,8 +264,9 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave {
+					if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
 						procAura.Activate(sim)
+						icd.Use(sim)
 					}
 				},
 			})

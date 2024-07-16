@@ -52,6 +52,8 @@ const (
 	ProcMaskProc
 	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
 	ProcMaskWeaponProc
+	// Mask for Seal of Righteousness, it does not proc Wild Strikes
+	ProcMaskSupressExtraAttack
 )
 
 const (
@@ -180,8 +182,8 @@ const (
 	SpellFlagPrepullOnly                                   // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
 	SpellFlagEncounterOnly                                 // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
 	SpellFlagPotion                                        // Indicates this spell is a potion spell.
-	SpellFlagPrepullPotion                                 // Indicates this spell is the prepull potion.
-	SpellFlagCombatPotion                                  // Indicates this spell is the combat potion.
+	SpellFlagOffensiveEquipment                            // Indicates this spell is an offensive equippable item activation spell
+	SpellFlagDefensiveEquipment                            // Indicates this spell a defensive equippable item activation spell
 	SpellFlagResetAttackSwing                              // Indicates this spell resets the melee swing timer.
 	SpellFlagCastTimeNoGCD                                 // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
 	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)

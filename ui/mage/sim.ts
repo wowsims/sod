@@ -1,8 +1,9 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
+import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
@@ -18,6 +19,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -27,14 +29,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatMP5,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatSpellDamage,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -48,16 +50,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.2,
+			[Stat.StatIntellect]: 0.49,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatArcanePower]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatFrostPower]: 1,
 			// Aggregated across 3 builds
-			[Stat.StatSpellHit]: 5.0,
-			[Stat.StatSpellCrit]: 6.17,
-			[Stat.StatSpellHaste]: 3.0,
-			[Stat.StatMP5]: 0.09,
+			[Stat.StatSpellHit]: 18.59,
+			[Stat.StatSpellCrit]: 13.91,
+			[Stat.StatSpellHaste]: 6.85,
+			[Stat.StatMP5]: 0.11,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -71,6 +74,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
+	},
+
+	modifyDisplayStats: (player: Player<Spec.SpecMage>) => {
+		let stats = new Stats();
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitArcane, player.getTalents().arcaneFocus * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+
+		return {
+			talents: stats,
+		};
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.

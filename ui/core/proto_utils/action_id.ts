@@ -83,9 +83,9 @@ export class ActionId {
 				name = 'Melee';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
 				if (tag === 1) {
-					name += ' (Main Hand)';
+					name += ' (Main-Hand)';
 				} else if (tag === 2) {
-					name += ' (Off Hand)';
+					name += ' (Off-Hand)';
 				} else if (tag === 3) {
 					name += ' (Extra Attack)';
 				}
@@ -115,6 +115,18 @@ export class ActionId {
 			case OtherAction.OtherActionPotion:
 				baseName = 'Potion';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_04.jpg';
+				break;
+			case OtherAction.OtherActionExplosives:
+				baseName = 'Explosive';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/Inv_misc_bomb_06.jpg';
+				break;
+			case OtherAction.OtherActionOffensiveEquip:
+				baseName = 'Offensive Equipment';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_trinket_naxxramas03.jpg';
+				break;
+			case OtherAction.OtherActionDefensiveEquip:
+				baseName = 'Defensive Equipment';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_trinket_naxxramas05.jpg';
 				break;
 		}
 		this.baseName = baseName;
@@ -304,22 +316,18 @@ export class ActionId {
 					name += ' (Tick)';
 				}
 				break;
-			// Dual-hit MH/OH spells
+			// Dual-hit MH/OH spells and weapon imbues
 			case 'Mutilate':
 			case 'Stormstrike':
+			case 'Carve':
+			case 'Whirlwind':
+			case 'Slam':
+			case 'Windfury Weapon':
+			case 'Holy Strength': // Crusader Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
 					name = `${name} (Off-Hand)`;
-				}
-				break;
-			// Weapon enchants with auras
-			case 'Windfury Weapon':
-			case 'Holy Strength':
-				if (this.tag === 1) {
-					name += ' (Main-Hand)';
-				} else if (this.tag === 2) {
-					name += ' (Off-Hand)';
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
@@ -329,7 +337,7 @@ export class ActionId {
 				if (this.tag === 6) {
 					name = `${name} (Overload)`;
 				} else if (this.tag) {
-					name = `${name} (${this.tag} MW)`;
+					name = `${name} (${this.tag} MSW)`;
 				}
 				break;
 			case 'Holy Shield':
@@ -387,20 +395,17 @@ export class ActionId {
 					name += ' (Queue)';
 				}
 				break;
-			case 'Raptor Strike':
-				if (this.tag === 0) {
-					name += ' (Main Hand)';
-				} else if (this.tag === 1) {
-					name += ' (Queue)';
-				} else if (this.tag === 2) {
-					name += ' (Off Hand)';
-				}
+			// There are many different types of enrages. Try to give clarity to users.
+			case 'Enrage':
+				if (this.spellId === 13048) name = `${name} (Talent)`;
+				else if (this.spellId === 14201) name = `${name} (Fresh Meat)`;
+				else if (this.spellId === 425415) name = `${name} (Consumed by Rage)`;
+				else if (this.spellId === 427066) name = `${name} (Wrecking Crew)`;
 				break;
-			case 'Carve':
-			case 'Whirlwind':
-				if (this.tag === 1) {
-					name += ' (OH)';
-				}
+			case 'Raptor Strike':
+				if (this.tag === 1) name = `${name} (Main-Hand)`;
+				else if (this.tag === 2) name = `${name} (Off-Hand)`;
+				else if (this.tag === 3) name = `${name} (Queue)`;
 				break;
 			case 'Thunderfury':
 				if (this.tag === 1) {
@@ -650,6 +655,12 @@ const spellIDsToShowBuffs = new Set([
 	11717, // https://www.wowhead.com/classic/spell=11717/curse-of-recklessness
 	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
 	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
+	14201, // https://www.wowhead.com/classic/spell=14201/enrage
+	16257, // https://www.wowhead.com/classic/spell=16257/flurry
+	16277, // https://www.wowhead.com/classic/spell=16277/flurry
+	16278, // https://www.wowhead.com/classic/spell=16278/flurry
+	16279, // https://www.wowhead.com/classic/spell=16279/flurry
+	16280, // https://www.wowhead.com/classic/spell=16280/flurry
 	17862, // https://www.wowhead.com/classic/spell=17862/curse-of-shadow
 	17937, // https://www.wowhead.com/classic/spell=17937/curse-of-shadow
 	18789, // https://www.wowhead.com/classic/spell=18789/burning-wish
@@ -658,16 +669,22 @@ const spellIDsToShowBuffs = new Set([
 	18792, // https://www.wowhead.com/classic/spell=18792/fel-energy
 	20186, // https://www.wowhead.com/classic/spell=20186/judgement-of-wisdom
 	20300, // https://www.wowhead.com/classic/spell=20300/judgement-of-the-crusader
+	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
-	20355, // https://www.wowhead.com/classic/spell=20355/judgement-of-wisdom
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
 	23766, // https://www.wowhead.com/classic/spell=23766/sayges-dark-fortune-of-intelligence
 	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
+	24907, // https://www.wowhead.com/classic/spell=24907/moonkin-aura
+	24932, // https://www.wowhead.com/classic/spell=24932/leader-of-the-pack
 	402808, // https://www.wowhead.com/classic/spell=402808/cripple
+	425415, // https://www.wowhead.com/classic/spell=425415/enrage
+	426969, // https://www.wowhead.com/classic/spell=426969/taste-for-blood
+	440114, // https://www.wowhead.com/classic/spell=440114/sudden-death
+	446393, // https://www.wowhead.com/classic/spell=446393/decay
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
 ]);

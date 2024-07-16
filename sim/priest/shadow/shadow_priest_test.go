@@ -72,10 +72,10 @@ func TestShadow(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_3"),
+			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase3Consumes,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 
 			ItemFilter:      ItemFilters,
@@ -116,6 +116,18 @@ var Phase3Consumes = core.ConsumesCombo{
 		Food:            proto.Food_FoodNightfinSoup,
 		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_ArcaneElixir,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfSupremePower,
+		Food:            proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:   proto.WeaponImbue_WizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
 	},
 }

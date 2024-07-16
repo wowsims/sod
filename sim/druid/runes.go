@@ -217,6 +217,23 @@ func (druid *Druid) applyElunesFires() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			switch spell.SpellCode {
+			case SpellCode_DruidWrath:
+				druid.tryElunesFiresSunfireExtension(sim, result.Target)
+			case SpellCode_DruidStarfire:
+				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
+			case SpellCode_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
+				druid.tryElunesFiresSunfireExtension(sim, result.Target)
+				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
+			case SpellCode_DruidShred:
+				druid.tryElunesFiresRipExtension(sim, result.Target)
+			}
+		},
 	})
 }
 

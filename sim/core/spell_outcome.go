@@ -57,8 +57,8 @@ func (dot *Dot) OutcomeTickSnapshotCritCounted(sim *Simulation, result *SpellRes
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
 	} else {
 		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 	}
-	dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
 
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
@@ -257,6 +257,17 @@ func (spell *Spell) OutcomeMeleeWeaponSpecialNoCrit(sim *Simulation, result *Spe
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) {
 			result.applyAttackTableHit(spell)
 		}
+	}
+}
+
+func (spell *Spell) OutcomeMeleeSpecialNoDodgeParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	roll := sim.RandomFloat("White Hit Table")
+	chance := 0.0
+
+	if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+		!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+		!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+		result.applyAttackTableHit(spell)
 	}
 }
 

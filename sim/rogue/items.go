@@ -18,7 +18,7 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

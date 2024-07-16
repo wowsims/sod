@@ -18,11 +18,11 @@ func (warrior *Warrior) applyDeepWounds() {
 		3: 12867,
 	}[warrior.Talents.DeepWounds]
 
-	warrior.DeepWounds = warrior.RegisterSpell(core.SpellConfig{
+	warrior.DeepWounds = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | SpellFlagBleed,
+		Flags:       core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

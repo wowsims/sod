@@ -2,14 +2,17 @@ import { Phase } from '../core/constants/other.js';
 import { Player } from '../core/player.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
+	Alcohol,
 	Conjured,
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
 	Food,
 	IndividualBuffs,
+	ManaRegenElixir,
 	Potions,
 	Profession,
 	RaidBuffs,
@@ -194,7 +197,7 @@ export const AffTalentsPhase3 = {
 };
 export const DestroTalentsPhase3 = {
 	name: 'P4 Destro',
-	data: SavedTalents.create({ talentsString: '05002-035004-5050205102005151' }),
+	data: SavedTalents.create({ talentsString: '05002-035-5250205122005151' }),
 	enableWhen: (player: Player<any>) => player.getLevel() == 60,
 };
 
@@ -225,46 +228,50 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
+	alcohol: Alcohol.AlcoholKreegsStoutBeatdown,
 	defaultPotion: Potions.MajorManaPotion,
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	flask: Flask.FlaskOfSupremePower,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	food: Food.FoodTenderWolfSteak,
-	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	mainHandImbue: WeaponImbue.WizardOil,
+	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfForbiddenMagic,
+	zanzaBuff: ZanzaBuff.GizzardGum,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	battleShout: TristateEffect.TristateEffectImproved,
+	demonicPact: 80,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
+	vampiricTouch: 300,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
-	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
-	rallyingCryOfTheDragonslayer: true,
+	moldarsMoxie: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
+	slipkiksSavvy: true,
 	songflowerSerenade: true,
 	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElements: true,
-	curseOfShadow: true,
 	faerieFire: true,
 	homunculi: 100,
+	improvedFaerieFire: true,
 	improvedScorch: true,
+	judgementOfWisdom: true,
+	markOfChaos: true,
 	occultPoison: true,
 	shadowWeaving: true,
 });

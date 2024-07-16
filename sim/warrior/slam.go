@@ -12,9 +12,10 @@ func (warrior *Warrior) registerSlamSpell() {
 		return
 	}
 
+	hasBloodSurgeRune := warrior.HasRune(proto.WarriorRune_RuneBloodSurge)
+
 	var castTime time.Duration
 	var cooldown core.Cooldown
-
 	if warrior.HasRune(proto.WarriorRune_RunePreciseTiming) {
 		castTime = 0
 		cooldown = core.Cooldown{
@@ -25,13 +26,7 @@ func (warrior *Warrior) registerSlamSpell() {
 		castTime = time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam)
 	}
 
-	flatDamageBonus := map[int32]float64{
-		40: 43,
-		50: 68,
-		60: 87,
-	}[warrior.Level]
-
-	spell_level := map[int32]float64{
+	requiredLevel := map[int32]int{
 		40: 38,
 		50: 46,
 		60: 54,
@@ -43,12 +38,20 @@ func (warrior *Warrior) registerSlamSpell() {
 		60: 11605,
 	}[warrior.Level]
 
-	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
+	warrior.SlamMH = warrior.newSlamHitSpell(true)
+	if hasBloodSurgeRune {
+		warrior.SlamOH = warrior.newSlamHitSpell(false)
+	}
+
+	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorSlam,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+		RequiredLevel: requiredLevel,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - warrior.FocusedRageDiscount,
@@ -59,8 +62,7 @@ func (warrior *Warrior) registerSlamSpell() {
 				GCD:      core.GCDDefault,
 				CastTime: castTime,
 			},
-			CD:          cooldown,
-			IgnoreHaste: true,
+			CD: cooldown,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if cast.CastTime > 0 {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
@@ -68,19 +70,62 @@ func (warrior *Warrior) registerSlamSpell() {
 			},
 		},
 
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			warrior.SlamMH.Cast(sim, target)
+			if hasBloodSurgeRune && warrior.BloodSurgeAura.IsActive() {
+				warrior.SlamOH.Cast(sim, target)
+			}
+		},
+	})
+}
+
+func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
+	spellID := map[int32]int32{
+		40: 8820,
+		50: 11604,
+		60: 11605,
+	}[warrior.Level]
+
+	requiredLevel := map[int32]float64{
+		40: 38,
+		50: 46,
+		60: 54,
+	}[warrior.Level]
+
+	flatDamageBonus := map[int32]float64{
+		40: 43,
+		50: 68,
+		60: 87,
+	}[warrior.Level]
+
+	procMask := core.ProcMaskMeleeMHSpecial
+	damageFunc := warrior.MHWeaponDamage
+	if !isMH {
+		flatDamageBonus /= 2
+		procMask = core.ProcMaskMeleeOHSpecial
+		damageFunc = warrior.OHWeaponDamage
+	}
+
+	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   core.Ternary(isMH, SpellCode_WarriorSlamMH, SpellCode_WarriorSlamOH),
+		ActionID:    core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    procMask,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
 		CritDamageBonus: warrior.impale(),
+		FlatThreatBonus: 1 * requiredLevel,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  1 * spell_level,
-		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
+			baseDamage := flatDamageBonus + damageFunc(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+
+			if isMH && !result.Landed() {
+				warrior.Slam.IssueRefund(sim)
 			}
 		},
 	})

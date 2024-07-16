@@ -5,7 +5,6 @@ import (
 
 	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const StarfireRanks = 7
@@ -18,7 +17,8 @@ var StarfireLevel = [StarfireRanks + 1]int{0, 20, 26, 34, 42, 50, 58, 60}
 func (druid *Druid) registerStarfireSpell() {
 	druid.Starfire = make([]*DruidSpell, StarfireRanks+1)
 
-	for rank := 1; rank <= StarfireRanks; rank++ {
+	// TODO: AQ <=
+	for rank := 1; rank < StarfireRanks; rank++ {
 		config := druid.newStarfireSpellConfig(rank)
 
 		if config.RequiredLevel <= int(druid.Level) {
@@ -35,8 +35,6 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 	level := StarfireLevel[rank]
 
 	castTime := 3500
-
-	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -70,13 +68,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			if result.Landed() {
-				if hasElunesFires {
-					druid.tryElunesFiresMoonfireExtension(sim, target)
-				}
-			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}
 }

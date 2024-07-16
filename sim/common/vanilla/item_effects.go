@@ -1,6 +1,7 @@
 package vanilla
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
@@ -33,36 +34,42 @@ const (
 	HookfangShanker          = 11635
 	LinkensSwordOfMastery    = 11902
 	SearingNeedle            = 12531
-	Felstriker               = 12590
 	PipsSkinner              = 12709
+	ArcaniteChampion         = 12790
 	SerpentSlicer            = 13035
 	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
+	Deathbringer             = 17068
 	ThrashBlade              = 17705
 	ViskagTheBloodletter     = 17075
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
 	Thunderfury              = 19019
+	EbonHand                 = 19170
 	DarkmoonCardHeroism      = 19287
 	DarkmoonCardBlueDragon   = 19288
 	DarkmoonCardMaelstrom    = 19289
+	Nightfall                = 19169
 	RuneOfTheDawn            = 19812
 	ScarabBrooch             = 21625
 	MarkOfTheChampionPhys    = 23206
 	MarkOfTheChampionSpell   = 23207
+	BlisteringRagehammer     = 220569 // 10626
 	SulfurasHandOfRagnaros   = 227683 // 17182
 	SulfuronHammer           = 227684 // 17193
 	TemperedBlackAmnesty     = 227832 // 19166
-	EbonFist                 = 227842 // 19170
-	ReavingNightfall         = 227843 // 19169
+	EbonFist                 = 227842
+	ReavingNightfall         = 227843
+	WraithScythe             = 227941
 	BurstOfKnowledge         = 227972
-	HandOfJustice            = 227989 // 11815
 	Ironfoe                  = 227991 // 11684
 	FiendishMachete          = 228056 // 18310
+	RefinedArcaniteChampion  = 228125
 	TalismanOfEphemeralPower = 228255 // 18820
 	GutgoreRipper            = 228267 // 17071
 	EssenceOfThePureFlame    = 228293 // 18815
 	PerditionsBlade          = 228296 // 18816
+	Typhoon                  = 228347 // 18542
 	EskhandarsLeftClaw       = 228349 // 18202
 	EskhandarsRightClaw      = 228350 // 18203
 	BlazefuryMedallion       = 228354 // 17111
@@ -75,7 +82,8 @@ const (
 	BlackbladeOfShahram      = 228606 // 12592
 	SeepingWillow            = 228666 // 12969
 	DraconicInfusedEmblem    = 228678 // 22268
-	HandOfJustice2           = 228722 // TODO: Unsure why there's a second version of this item
+	HandOfJustice            = 228722 // 11815
+	Felstriker               = 228757 // 12590
 )
 
 func init() {
@@ -86,6 +94,11 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/spell=16916/strength-of-the-champion
+	// Chance on hit: Heal self for 270 to 450 and Increases Strength by 120 for 30 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(ArcaniteChampion, "Arcanite Champion", 1.0, strengthOfTheChampionAura)
 
 	// https://www.wowhead.com/classic/item=228606/blackblade-of-shahram
 	// Chance on hit: Summons the infernal spirit of Shahram.
@@ -268,6 +281,11 @@ func init() {
 	// TODO: Proc rate based on the original item
 	itemhelpers.CreateWeaponProcDamage(BlackhandDoomsaw, "Blackhand Doomsaw", 0.4, 16549, core.SpellSchoolPhysical, 324, 216, 0, core.DefenseTypeMelee)
 
+	// https://www.wowhead.com/classic/item=220569/blistering-ragehammer
+	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, enrageAura446327)
+
 	itemhelpers.CreateWeaponProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
@@ -319,10 +337,19 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=17068/deathbringer
+	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
+	itemhelpers.CreateWeaponProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcDamage(EbonFist, "Ebon Fist", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=19170/ebon-hand
+	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcDamage(EbonHand, "Ebon Hand", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228397/empyrean-demolisher
 	// Chance on hit: Increases your attack speed by 20% for 10 sec.
@@ -383,7 +410,7 @@ func init() {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Eskhandar's Rage",
 			ActionID: core.ActionID{SpellID: 22640},
-			Duration: time.Second * 15,
+			Duration: time.Second * 5,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.3)
 			},
@@ -660,6 +687,11 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=19169/nightfall
+	core.NewItemEffect(Nightfall, func(agent core.Agent) {
+		makeNightfallProc(agent.GetCharacter(), "Nightfall")
+	})
+
 	itemhelpers.CreateWeaponProcDamage(PendulumOfDoom, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
 
 	core.NewItemEffect(PipsSkinner, func(agent core.Agent) {
@@ -733,45 +765,43 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
-	// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
-	core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
+	// https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
+	// Chance on hit: Heal self for 270 to 450 and Increases Strength by 120 for 30 sec.
+	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(RefinedArcaniteChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-			return target.GetOrRegisterAura(core.Aura{
-				Label:    "Spell Vulnerability (Nightfall)",
-				ActionID: core.ActionID{SpellID: 23605},
-				Duration: time.Second * 5,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] *= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] *= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] *= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] *= 1.15
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] /= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] /= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] /= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] /= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] /= 1.15
-					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] /= 1.15
-				},
-			})
+		strengthAura := strengthOfTheChampionAura(character)
+		procMask := character.GetProcMaskForItem(RefinedArcaniteChampion)
+		enrageAura := enrageAura446327(character)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Refined Arcanite Champion (Strength)",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: procMask,
+			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				strengthAura.Activate(sim)
+			},
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Nightfall Trigger",
+			Name:     "Refined Arcanite Champion (Enrage)",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      2,
+			ProcMask: procMask,
+			PPM:      1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAuras.Get(result.Target).Activate(sim)
+				enrageAura.Activate(sim)
 			},
 		})
+	})
+
+	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
+	core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
+		makeNightfallProc(agent.GetCharacter(), "Reaving Nightfall")
 	})
 
 	itemhelpers.CreateWeaponProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
@@ -1114,7 +1144,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
-			PPM:      1, // TODO: Armaments Discord didn't hvae any data on Sulfuron Hammer
+			PPM:      1, // TODO: Armaments Discord didn't have any data on Sulfuron Hammer
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				fireballSpell.Cast(sim, result.Target)
 			},
@@ -1277,6 +1307,23 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228347/typhoon
+	// Chance on hit: Grants an extra attack on your next swing.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Typhoon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Typhoon Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee,
+			PPM:      1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 461985})
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=13183/venomspitter
 	// Chance on hit: Poisons target for 7 Nature damage every 2 sec for 30 sec.
 	// TODO: Proc rate assumed and needs testing
@@ -1316,7 +1363,30 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
+
 	itemhelpers.CreateWeaponProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=227941/wraith-scythe
+	// Chance on hit: Steals 45 life from target enemy.
+	itemhelpers.CreateWeaponProcSpell(WraithScythe, "Wraith Scythe", 1.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 16414}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 0.3,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, 45, spell.OutcomeAlwaysHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -1342,7 +1412,7 @@ func init() {
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: BurstOfKnowledge},
 			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -1364,7 +1434,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228678/draconic-infused-emblem
 	// Use: Increases your spell damage by up to 100 and your healing by up to 190 for 15 sec. (1 Min, 30 Sec Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 100, stats.HealingPower: 190}, time.Second*15, time.Second*90)
+	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 128, stats.HealingPower: 190}, time.Second*15, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
 	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec. (Proc chance: 2%)
@@ -1622,7 +1692,7 @@ func init() {
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -1690,4 +1760,79 @@ func init() {
 	})
 
 	core.AddEffectsToTest = true
+}
+
+// https://www.wowhead.com/classic/spell=446327/enrage
+// Used by:
+// - https://www.wowhead.com/classic/item=220569/blistering-ragehammer and
+// - https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
+func enrageAura446327(character *core.Character) *core.Aura {
+	return character.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 446327},
+		Label:    "Enrage (446327)",
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.PseudoStats.BonusDamage += 20
+			character.MultiplyAttackSpeed(sim, 1.05)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.PseudoStats.BonusDamage -= 20
+			character.MultiplyAttackSpeed(sim, 1/1.05)
+		},
+	})
+}
+
+func strengthOfTheChampionAura(character *core.Character) *core.Aura {
+	actionID := core.ActionID{SpellID: 16916}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	return character.GetOrRegisterAura(core.Aura{
+		Label:    "Strength of the Champion",
+		ActionID: actionID,
+		Duration: time.Second * 30,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.GainHealth(sim, sim.Roll(270, 450), healthMetrics)
+			character.AddStatDynamic(sim, stats.Strength, 120)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Strength, -120)
+		},
+	})
+}
+
+// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
+func makeNightfallProc(character *core.Character, itemName string) {
+	procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    fmt.Sprintf("Spell Vulnerability (%s)", itemName),
+			ActionID: core.ActionID{SpellID: 23605},
+			Duration: time.Second * 5,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] *= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] *= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] *= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] /= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] /= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] /= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] /= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] /= 1.15
+				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] /= 1.15
+			},
+		})
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:     fmt.Sprintf("%s Trigger", itemName),
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		PPM:      2,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAuras.Get(result.Target).Activate(sim)
+		},
+	})
 }

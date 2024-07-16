@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) registerVolleySpell() {
@@ -41,14 +40,11 @@ func (hunter *Hunter) registerVolleySpell() {
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 
-			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
+			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, isRollover bool) {
 				target := hunter.CurrentTarget
-				dot.SnapshotBaseDamage = 353 + 0.0837*dot.Spell.RangedAttackPower(target)
-				dot.SnapshotBaseDamage *= sim.Encounter.AOECapMultiplier()
-
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][proto.CastType_CastTypeRanged]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				baseDamage = 353 + 0.0837*dot.Spell.RangedAttackPower(target)
+				baseDamage *= sim.Encounter.AOECapMultiplier()
+				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {

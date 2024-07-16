@@ -90,8 +90,8 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 			dot.Snapshot(target, baseDotDamage, isRollover)
-			if hasStormEarthAndFireRune {
-				dot.SnapshotAttackerMultiplier *= 1.6
+			if !isRollover && hasStormEarthAndFireRune {
+				dot.SnapshotAttackerMultiplier *= 1.60
 			}
 		},
 

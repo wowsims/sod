@@ -74,7 +74,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 
 func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core.SpellConfig {
 	return core.SpellConfig{
-		SpellCode:   SpellCode_FerociousBite,
+		SpellCode:   SpellCode_DruidFerociousBite,
 		ActionID:    core.ActionID{SpellID: rank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

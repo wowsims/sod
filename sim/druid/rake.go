@@ -72,14 +72,8 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 	baseDamageTick := rakeRank.dotTickDamage * RakeBaseDmgMultiplier
 	energyCost := 40 - float64(druid.Talents.Ferocity)
 
-	switch druid.Ranged().ID {
-	case IdolOfFerocity:
-		energyCost -= 3
-	case IdolOfExsanguinationCat:
-		energyCost -= 5
-	}
-
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidRake,
 		ActionID:    core.ActionID{SpellID: rakeRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -112,16 +106,15 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if has4PCenarionCunning {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := baseDamageInitial + RakeDamageCoef*spell.MeleeAttackPower()
-
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {

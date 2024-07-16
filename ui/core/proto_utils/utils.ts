@@ -94,22 +94,22 @@ export type WarriorSpecs = Spec.SpecWarrior | Spec.SpecProtectionWarrior;
 export type ClassSpecs<T extends Class> = T extends Class.ClassDruid
 	? DruidSpecs
 	: T extends Class.ClassHunter
-		? HunterSpecs
-		: T extends Class.ClassMage
-			? MageSpecs
-			: T extends Class.ClassPaladin
-				? PaladinSpecs
-				: T extends Class.ClassPriest
-					? PriestSpecs
-					: T extends Class.ClassRogue
-						? RogueSpecs
-						: T extends Class.ClassShaman
-							? ShamanSpecs
-							: T extends Class.ClassWarlock
-								? WarlockSpecs
-								: T extends Class.ClassWarrior
-									? WarriorSpecs
-									: ShamanSpecs; // Should never reach this case
+	? HunterSpecs
+	: T extends Class.ClassMage
+	? MageSpecs
+	: T extends Class.ClassPaladin
+	? PaladinSpecs
+	: T extends Class.ClassPriest
+	? PriestSpecs
+	: T extends Class.ClassRogue
+	? RogueSpecs
+	: T extends Class.ClassShaman
+	? ShamanSpecs
+	: T extends Class.ClassWarlock
+	? WarlockSpecs
+	: T extends Class.ClassWarrior
+	? WarriorSpecs
+	: ShamanSpecs; // Should never reach this case
 
 export const NUM_SPECS = getEnumValues(Spec).length;
 
@@ -333,44 +333,44 @@ export type RotationUnion =
 export type SpecRotation<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruidRotation
 	: T extends Spec.SpecFeralDruid
-		? FeralDruidRotation
-		: T extends Spec.SpecFeralTankDruid
-			? FeralTankDruidRotation
-			: T extends Spec.SpecRestorationDruid
-				? RestorationDruidRotation
-				: T extends Spec.SpecElementalShaman
-					? ElementalShamanRotation
-					: T extends Spec.SpecEnhancementShaman
-						? EnhancementShamanRotation
-						: T extends Spec.SpecRestorationShaman
-							? RestorationShamanRotation
-							: T extends Spec.SpecHunter
-								? HunterRotation
-								: T extends Spec.SpecMage
-									? MageRotation
-									: T extends Spec.SpecRogue
-										? RogueRotation
-										: T extends Spec.SpecTankRogue
-											? RogueRotation
-											: T extends Spec.SpecHolyPaladin
-												? HolyPaladinRotation
-												: T extends Spec.SpecProtectionPaladin
-													? ProtectionPaladinRotation
-													: T extends Spec.SpecRetributionPaladin
-														? RetributionPaladinRotation
-														: T extends Spec.SpecHealingPriest
-															? HealingPriestRotation
-															: T extends Spec.SpecShadowPriest
-																? ShadowPriestRotation
-																: T extends Spec.SpecWarlock
-																	? WarlockRotation
-																	: T extends Spec.SpecTankWarlock
-																		? WarlockRotation
-																		: T extends Spec.SpecWarrior
-																			? WarriorRotation
-																			: T extends Spec.SpecProtectionWarrior
-																				? ProtectionWarriorRotation
-																				: ElementalShamanRotation; // Should never reach this case
+	? FeralDruidRotation
+	: T extends Spec.SpecFeralTankDruid
+	? FeralTankDruidRotation
+	: T extends Spec.SpecRestorationDruid
+	? RestorationDruidRotation
+	: T extends Spec.SpecElementalShaman
+	? ElementalShamanRotation
+	: T extends Spec.SpecEnhancementShaman
+	? EnhancementShamanRotation
+	: T extends Spec.SpecRestorationShaman
+	? RestorationShamanRotation
+	: T extends Spec.SpecHunter
+	? HunterRotation
+	: T extends Spec.SpecMage
+	? MageRotation
+	: T extends Spec.SpecRogue
+	? RogueRotation
+	: T extends Spec.SpecTankRogue
+	? RogueRotation
+	: T extends Spec.SpecHolyPaladin
+	? HolyPaladinRotation
+	: T extends Spec.SpecProtectionPaladin
+	? ProtectionPaladinRotation
+	: T extends Spec.SpecRetributionPaladin
+	? RetributionPaladinRotation
+	: T extends Spec.SpecHealingPriest
+	? HealingPriestRotation
+	: T extends Spec.SpecShadowPriest
+	? ShadowPriestRotation
+	: T extends Spec.SpecWarlock
+	? WarlockRotation
+	: T extends Spec.SpecTankWarlock
+	? WarlockRotation
+	: T extends Spec.SpecWarrior
+	? WarriorRotation
+	: T extends Spec.SpecProtectionWarrior
+	? ProtectionWarriorRotation
+	: ElementalShamanRotation; // Should never reach this case
 
 export type TalentsUnion =
 	| DruidTalents
@@ -385,44 +385,44 @@ export type TalentsUnion =
 export type SpecTalents<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? DruidTalents
 	: T extends Spec.SpecFeralDruid
-		? DruidTalents
-		: T extends Spec.SpecFeralTankDruid
-			? DruidTalents
-			: T extends Spec.SpecRestorationDruid
-				? DruidTalents
-				: T extends Spec.SpecElementalShaman
-					? ShamanTalents
-					: T extends Spec.SpecEnhancementShaman
-						? ShamanTalents
-						: T extends Spec.SpecRestorationShaman
-							? ShamanTalents
-							: T extends Spec.SpecHunter
-								? HunterTalents
-								: T extends Spec.SpecMage
-									? MageTalents
-									: T extends Spec.SpecRogue
-										? RogueTalents
-										: T extends Spec.SpecTankRogue
-											? RogueTalents
-											: T extends Spec.SpecHolyPaladin
-												? PaladinTalents
-												: T extends Spec.SpecProtectionPaladin
-													? PaladinTalents
-													: T extends Spec.SpecRetributionPaladin
-														? PaladinTalents
-														: T extends Spec.SpecHealingPriest
-															? PriestTalents
-															: T extends Spec.SpecShadowPriest
-																? PriestTalents
-																: T extends Spec.SpecWarlock
-																	? WarlockTalents
-																	: T extends Spec.SpecTankWarlock
-																		? WarlockTalents
-																		: T extends Spec.SpecWarrior
-																			? WarriorTalents
-																			: T extends Spec.SpecProtectionWarrior
-																				? WarriorTalents
-																				: ShamanTalents; // Should never reach this case
+	? DruidTalents
+	: T extends Spec.SpecFeralTankDruid
+	? DruidTalents
+	: T extends Spec.SpecRestorationDruid
+	? DruidTalents
+	: T extends Spec.SpecElementalShaman
+	? ShamanTalents
+	: T extends Spec.SpecEnhancementShaman
+	? ShamanTalents
+	: T extends Spec.SpecRestorationShaman
+	? ShamanTalents
+	: T extends Spec.SpecHunter
+	? HunterTalents
+	: T extends Spec.SpecMage
+	? MageTalents
+	: T extends Spec.SpecRogue
+	? RogueTalents
+	: T extends Spec.SpecTankRogue
+	? RogueTalents
+	: T extends Spec.SpecHolyPaladin
+	? PaladinTalents
+	: T extends Spec.SpecProtectionPaladin
+	? PaladinTalents
+	: T extends Spec.SpecRetributionPaladin
+	? PaladinTalents
+	: T extends Spec.SpecHealingPriest
+	? PriestTalents
+	: T extends Spec.SpecShadowPriest
+	? PriestTalents
+	: T extends Spec.SpecWarlock
+	? WarlockTalents
+	: T extends Spec.SpecTankWarlock
+	? WarlockTalents
+	: T extends Spec.SpecWarrior
+	? WarriorTalents
+	: T extends Spec.SpecProtectionWarrior
+	? WarriorTalents
+	: ShamanTalents; // Should never reach this case
 
 export type SpecOptionsUnion =
 	| BalanceDruidOptions
@@ -446,44 +446,44 @@ export type SpecOptionsUnion =
 export type SpecOptions<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruidOptions
 	: T extends Spec.SpecFeralDruid
-		? FeralDruidOptions
-		: T extends Spec.SpecFeralTankDruid
-			? FeralTankDruidOptions
-			: T extends Spec.SpecRestorationDruid
-				? RestorationDruidOptions
-				: T extends Spec.SpecElementalShaman
-					? ElementalShamanOptions
-					: T extends Spec.SpecEnhancementShaman
-						? EnhancementShamanOptions
-						: T extends Spec.SpecRestorationShaman
-							? RestorationShamanOptions
-							: T extends Spec.SpecHunter
-								? HunterOptions
-								: T extends Spec.SpecMage
-									? MageOptions
-									: T extends Spec.SpecRogue
-										? RogueOptions
-										: T extends Spec.SpecTankRogue
-											? RogueOptions
-											: T extends Spec.SpecHolyPaladin
-												? HolyPaladinOptions
-												: T extends Spec.SpecProtectionPaladin
-													? ProtectionPaladinOptions
-													: T extends Spec.SpecRetributionPaladin
-														? RetributionPaladinOptions
-														: T extends Spec.SpecHealingPriest
-															? HealingPriestOptions
-															: T extends Spec.SpecShadowPriest
-																? ShadowPriestOptions
-																: T extends Spec.SpecWarlock
-																	? WarlockOptions
-																	: T extends Spec.SpecTankWarlock
-																		? WarlockOptions
-																		: T extends Spec.SpecWarrior
-																			? WarriorOptions
-																			: T extends Spec.SpecProtectionWarrior
-																				? ProtectionWarriorOptions
-																				: ElementalShamanOptions; // Should never reach this case
+	? FeralDruidOptions
+	: T extends Spec.SpecFeralTankDruid
+	? FeralTankDruidOptions
+	: T extends Spec.SpecRestorationDruid
+	? RestorationDruidOptions
+	: T extends Spec.SpecElementalShaman
+	? ElementalShamanOptions
+	: T extends Spec.SpecEnhancementShaman
+	? EnhancementShamanOptions
+	: T extends Spec.SpecRestorationShaman
+	? RestorationShamanOptions
+	: T extends Spec.SpecHunter
+	? HunterOptions
+	: T extends Spec.SpecMage
+	? MageOptions
+	: T extends Spec.SpecRogue
+	? RogueOptions
+	: T extends Spec.SpecTankRogue
+	? RogueOptions
+	: T extends Spec.SpecHolyPaladin
+	? HolyPaladinOptions
+	: T extends Spec.SpecProtectionPaladin
+	? ProtectionPaladinOptions
+	: T extends Spec.SpecRetributionPaladin
+	? RetributionPaladinOptions
+	: T extends Spec.SpecHealingPriest
+	? HealingPriestOptions
+	: T extends Spec.SpecShadowPriest
+	? ShadowPriestOptions
+	: T extends Spec.SpecWarlock
+	? WarlockOptions
+	: T extends Spec.SpecTankWarlock
+	? WarlockOptions
+	: T extends Spec.SpecWarrior
+	? WarriorOptions
+	: T extends Spec.SpecProtectionWarrior
+	? ProtectionWarriorOptions
+	: ElementalShamanOptions; // Should never reach this case
 
 export type SpecProtoUnion =
 	| BalanceDruid
@@ -509,44 +509,44 @@ export type SpecProtoUnion =
 export type SpecProto<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruid
 	: T extends Spec.SpecFeralDruid
-		? FeralDruid
-		: T extends Spec.SpecFeralTankDruid
-			? FeralTankDruid
-			: T extends Spec.SpecRestorationDruid
-				? RestorationDruid
-				: T extends Spec.SpecElementalShaman
-					? ElementalShaman
-					: T extends Spec.SpecEnhancementShaman
-						? EnhancementShaman
-						: T extends Spec.SpecRestorationShaman
-							? RestorationShaman
-							: T extends Spec.SpecHunter
-								? Hunter
-								: T extends Spec.SpecMage
-									? Mage
-									: T extends Spec.SpecRogue
-										? Rogue
-										: T extends Spec.SpecTankRogue
-											? TankRogue
-											: T extends Spec.SpecHolyPaladin
-												? HolyPaladin
-												: T extends Spec.SpecProtectionPaladin
-													? ProtectionPaladin
-													: T extends Spec.SpecRetributionPaladin
-														? RetributionPaladin
-														: T extends Spec.SpecHealingPriest
-															? HealingPriest
-															: T extends Spec.SpecShadowPriest
-																? ShadowPriest
-																: T extends Spec.SpecWarlock
-																	? Warlock
-																	: T extends Spec.SpecTankWarlock
-																		? Warlock
-																		: T extends Spec.SpecWarrior
-																			? Warrior
-																			: T extends Spec.SpecProtectionWarrior
-																				? ProtectionWarrior
-																				: ElementalShaman; // Should never reach this case
+	? FeralDruid
+	: T extends Spec.SpecFeralTankDruid
+	? FeralTankDruid
+	: T extends Spec.SpecRestorationDruid
+	? RestorationDruid
+	: T extends Spec.SpecElementalShaman
+	? ElementalShaman
+	: T extends Spec.SpecEnhancementShaman
+	? EnhancementShaman
+	: T extends Spec.SpecRestorationShaman
+	? RestorationShaman
+	: T extends Spec.SpecHunter
+	? Hunter
+	: T extends Spec.SpecMage
+	? Mage
+	: T extends Spec.SpecRogue
+	? Rogue
+	: T extends Spec.SpecTankRogue
+	? TankRogue
+	: T extends Spec.SpecHolyPaladin
+	? HolyPaladin
+	: T extends Spec.SpecProtectionPaladin
+	? ProtectionPaladin
+	: T extends Spec.SpecRetributionPaladin
+	? RetributionPaladin
+	: T extends Spec.SpecHealingPriest
+	? HealingPriest
+	: T extends Spec.SpecShadowPriest
+	? ShadowPriest
+	: T extends Spec.SpecWarlock
+	? Warlock
+	: T extends Spec.SpecTankWarlock
+	? Warlock
+	: T extends Spec.SpecWarrior
+	? Warrior
+	: T extends Spec.SpecProtectionWarrior
+	? ProtectionWarrior
+	: ElementalShaman; // Should never reach this case
 
 export type SpecTypeFunctions<SpecType extends Spec> = {
 	rotationCreate: () => SpecRotation<SpecType>;
@@ -1363,6 +1363,7 @@ export const classToEligibleWeaponTypes: Record<Class, Array<EligibleWeaponType>
 		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypeOffHand },
 		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
+		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true }, // Added to SoD on 2024-07-10
 	],
 	[Class.ClassHunter]: [
 		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },

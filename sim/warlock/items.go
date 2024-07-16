@@ -36,6 +36,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -72,7 +73,7 @@ func init() {
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 448686},
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

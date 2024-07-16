@@ -376,12 +376,7 @@ func (mage *Mage) applyBrainFreeze() {
 				return
 			}
 
-			if slices.Contains(triggerSpellCodes, spell.SpellCode) {
-				// Don't consume the proc if the spell started being cast before the proc procced
-				if aura.StartedAt() > sim.CurrentTime-spell.CurCast.CastTime-spell.TravelTime() {
-					return
-				}
-
+			if slices.Contains(triggerSpellCodes, spell.SpellCode) && spell.CurCast.CastTime == 0 {
 				aura.Deactivate(sim)
 			}
 		},

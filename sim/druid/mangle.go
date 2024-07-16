@@ -17,6 +17,7 @@ func (druid *Druid) registerMangleBearSpell() {
 	durReduction := (0.5) * float64(druid.Talents.ImprovedMangle)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
+		SpellCode:   SpellCode_DruidMangleBear
 		ActionID:    core.ActionID{SpellID: 48564},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -74,13 +75,9 @@ func (druid *Druid) registerMangleCatSpell() {
 	weaponMulti := 2.7
 	energyCost := 40 - float64(druid.Talents.Ferocity)
 
-	switch druid.Ranged().ID {
-	case IdolOfFerocity:
-		energyCost -= 3
-	}
-
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
+		SpellCode:   SpellCode_DruidMangleCat,
 		ActionID:    core.ActionID{SpellID: 409828},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

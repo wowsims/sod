@@ -12,7 +12,7 @@ func (warrior *Warrior) registerDemoralizingShoutSpell() {
 		return core.DemoralizingShoutAura(target, warrior.Talents.BoomingVoice, warrior.Talents.ImprovedDemoralizingShout, warrior.Level)
 	})
 
-	warrior.DemoralizingShout = warrior.RegisterSpell(core.SpellConfig{
+	warrior.DemoralizingShout = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: actionId},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,

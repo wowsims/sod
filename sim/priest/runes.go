@@ -84,7 +84,7 @@ func (priest *Priest) applyPainAndSuffering() {
 
 // With the addition of despair Blizzard made periodic crits deal 200% damage instead of 150%
 func (priest *Priest) periodicCritBonus() float64 {
-	return .5
+	return 1.0
 }
 
 func (priest *Priest) applySurgeOfLight() {

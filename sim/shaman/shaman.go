@@ -126,7 +126,8 @@ type Shaman struct {
 	RollingThunder         *core.Spell
 	SearingTotem           []*core.Spell
 	StoneskinTotem         []*core.Spell
-	Stormstrike            *core.Spell
+	StormstrikeMH          *core.Spell
+	StormstrikeOH          *core.Spell
 	StrengthOfEarthTotem   []*core.Spell
 	TremorTotem            *core.Spell
 	WaterShield            *core.Spell
@@ -136,10 +137,10 @@ type Shaman struct {
 	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
 	ActiveShieldAura *core.Aura
 
-	FlurryAura           *core.Aura
-	MaelstromWeaponAura  *core.Aura
-	PowerSurgeAura       *core.Aura
-	defendersResolveAura *core.Aura
+	FlurryAura            *core.Aura
+	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
+	MaelstromWeaponAura   *core.Aura
+	PowerSurgeAura        *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
@@ -185,13 +186,6 @@ func (shaman *Shaman) Initialize() {
 	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
 	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
-
-	if shaman.ItemSwap.IsEnabled() {
-		mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-		shaman.ApplyRockbiterImbueToItem(mh)
-		oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-		shaman.ApplyRockbiterImbueToItem(oh)
-	}
 
 	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()

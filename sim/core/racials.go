@@ -14,7 +14,7 @@ func applyRaceEffects(agent Agent) {
 	switch character.Race {
 	case proto.Race_RaceDwarf:
 		character.AddStat(stats.FrostResistance, 10)
-		character.PseudoStats.GunsSkill += 5
+		character.GunSpecializationAura()
 
 		actionID := ActionID{SpellID: 20594}
 
@@ -55,15 +55,15 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.05)
-		character.PseudoStats.MacesSkill += 5
-		character.PseudoStats.TwoHandedMacesSkill += 5
-		character.PseudoStats.SwordsSkill += 5
-		character.PseudoStats.TwoHandedSwordsSkill += 5
+		character.SwordSpecializationAura()
+		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
 		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
+		character.AxeSpecializationAura()
+
 		// Command (Pet damage +5%)
 		for _, pet := range character.Pets {
 			pet.PseudoStats.DamageDealtMultiplier *= 1.05
@@ -108,16 +108,12 @@ func applyRaceEffects(agent Agent) {
 			Spell: spell,
 			Type:  CooldownTypeDPS,
 		})
-
-		// Axe specialization
-		character.PseudoStats.AxesSkill += 5
-		character.PseudoStats.TwoHandedAxesSkill += 5
 	case proto.Race_RaceTauren:
 		character.AddStat(stats.NatureResistance, 10)
 		character.MultiplyStat(stats.Health, 1.05)
 	case proto.Race_RaceTroll:
-		character.PseudoStats.BowsSkill += 5
-		character.PseudoStats.ThrownSkill += 5
+		character.BowSpecializationAura()
+		character.ThrownSpecializationAura()
 
 		// Beast Slaying (+5% damage to beasts)
 		character.Env.RegisterPostFinalizeEffect(func() {

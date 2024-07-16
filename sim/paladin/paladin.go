@@ -12,6 +12,7 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
@@ -22,15 +23,26 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primaryPaladinAura proto.PaladinAura
+	currentPaladinAura *core.Aura
 
-	currentSeal      *core.Aura
+        currentSeal      *core.Aura
+	auraSoM           *core.Aura
+	aurasSoR       [8]*core.Aura
+	aurasSoC       [5]*core.Aura
+	aurasSotC      [6]*core.Aura
 	currentJudgement *core.Spell
+	spellJoM  *core.Spell
+	spellsJoR  [8]*core.Spell
+	spellsJoC  [5]*core.Spell
+	spellsJotC [6]*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcismCooldown  *core.Cooldown
 	holyShockCooldown *core.Cooldown
 	judgement         *core.Spell
+	rv                *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -77,18 +89,24 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHammerOfWrath()
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
+	paladin.registerAuraMastery()
+
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 }
 
 // maybe need to add stat dependencies
-func NewPaladin(character *core.Character, talentsStr string) *Paladin {
+func NewPaladin(character *core.Character, options *proto.Player, pallyAura proto.PaladinAura) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
-	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+
+	if pallyAura == proto.PaladinAura_SanctityAura {
+		paladin.primaryPaladinAura = pallyAura
+	}
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
@@ -128,6 +146,13 @@ func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
 }
 
+func (paladin *Paladin) ResetCurrentPaladinAura() {
+	paladin.currentPaladinAura = nil
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
+}
+
 func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
 	switch primarySeal {
@@ -152,6 +177,7 @@ func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim
 	paladin.currentSeal = newSeal
 	paladin.currentJudgement = judgement
 	paladin.currentSeal.Activate(sim)
+
 }
 
 func (paladin *Paladin) getLibramSealCostReduction() float64 {

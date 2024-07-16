@@ -248,7 +248,7 @@ var Phase4Consumes = core.ConsumesCombo{
 		FirePowerBuff:   proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
 		Food:            proto.Food_FoodTenderWolfSteak,
-		MainHandImbue:   proto.WeaponImbue_BrillianWizardOil,
+		MainHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
