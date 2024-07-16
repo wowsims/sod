@@ -35,6 +35,7 @@ import Phase2DWGear from './gear_sets/phase_2_dw.gear.json';
 import Phase32HGear from './gear_sets/phase_3_2h.gear.json';
 import Phase3DWGear from './gear_sets/phase_3_dw.gear.json';
 import Phase3GladGear from './gear_sets/phase_3_glad.gear.json';
+import Phase42HGear from './gear_sets/phase_4_2h.gear.json';
 import Phase4DWGear from './gear_sets/phase_4_dw.gear.json';
 import Phase4GladGear from './gear_sets/phase_4_glad.gear.json';
 
@@ -53,6 +54,7 @@ export const GearFuryPhase2 = PresetUtils.makePresetGear('P2 DW', Phase2DWGear, 
 export const GearArmsPhase3 = PresetUtils.makePresetGear('P3 2H', Phase32HGear, { talentTree: 0 });
 export const GearFuryPhase3 = PresetUtils.makePresetGear('P3 DW', Phase3DWGear, { talentTree: 1 });
 export const GearGladPhase3 = PresetUtils.makePresetGear('P3 Glad', Phase3GladGear, { talentTree: 1 });
+export const Gear2HPhase4 = PresetUtils.makePresetGear('P4 2H', Phase42HGear);
 export const GearDWPhase4 = PresetUtils.makePresetGear('P4 DW', Phase4DWGear);
 export const GearGladPhase4 = PresetUtils.makePresetGear('P4 Glad', Phase4GladGear);
 
@@ -60,7 +62,7 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
 	[Phase.Phase2]: [GearArmsPhase2, GearFuryPhase2],
 	[Phase.Phase3]: [GearArmsPhase3, GearFuryPhase3, GearGladPhase3],
-	[Phase.Phase4]: [GearDWPhase4, GearGladPhase4],
+	[Phase.Phase4]: [Gear2HPhase4, GearDWPhase4, GearGladPhase4],
 	[Phase.Phase5]: [],
 };
 
@@ -114,62 +116,47 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const TalentsPhase1 = {
-	name: 'Level 25',
-	data: SavedTalents.create({
-		talentsString: '303220203-01',
-	}),
-};
+export const TalentsPhase1 = PresetUtils.makePresetTalents('Level 25', SavedTalents.create({ talentsString: '303220203-01' }), {
+	customCondition: player => player.getLevel() === 25,
+});
 
-export const TalentsPhase2Fury = {
-	name: '40 Fury',
-	data: SavedTalents.create({
-		talentsString: '-05050005405010051',
-	}),
-};
+export const TalentsPhase2Arms = PresetUtils.makePresetTalents('40 Arms', SavedTalents.create({ talentsString: '303050213525100001' }), {
+	customCondition: player => player.getLevel() === 40,
+});
+export const TalentsPhase2Fury = PresetUtils.makePresetTalents('40 Fury', SavedTalents.create({ talentsString: '-05050005405010051' }), {
+	customCondition: player => player.getLevel() === 40,
+});
 
-export const TalentsPhase2Arms = {
-	name: '40 Arms',
-	data: SavedTalents.create({
-		talentsString: '303050213525100001',
-	}),
-};
-
-export const TalentsPhase3Arms = {
-	name: '50 Arms',
-	data: SavedTalents.create({
-		talentsString: '303050213520105001-0505',
-	}),
-};
-
-export const TalentsPhase3Fury = {
-	name: '50 Fury',
-	data: SavedTalents.create({
-		talentsString: '303040003-0505000540501003',
-	}),
-};
-
+export const TalentsPhase3Arms = PresetUtils.makePresetTalents('50 Arms', SavedTalents.create({ talentsString: '303050213520105001-0505' }), {
+	customCondition: player => player.getLevel() === 50,
+});
+export const TalentsPhase3Fury = PresetUtils.makePresetTalents('50 Fury', SavedTalents.create({ talentsString: '303040003-0505000540501003' }), {
+	customCondition: player => player.getLevel() === 50,
+});
 // Glad talents are identical to fury at the moment
 export const TalentsPhase3Glad = TalentsPhase3Fury;
 
-export const TalentsPhase4Fury = {
-	name: 'Level 60',
-	data: SavedTalents.create({
-		talentsString: '20305020302-05050005525010051',
-	}),
-};
+export const TalentsPhase4Arms = PresetUtils.makePresetTalents('60 Arms', SavedTalents.create({ talentsString: '303050213520105001-05050005023' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsPhase4Fury = PresetUtils.makePresetTalents('60 Fury', SavedTalents.create({ talentsString: '20305020302-05050005525010051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsPhase4Prot = PresetUtils.makePresetTalents('60 Prot', SavedTalents.create({ talentsString: '20305020302-03-55200110530201051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
 	[Phase.Phase3]: [TalentsPhase3Arms, TalentsPhase3Fury, TalentsPhase3Glad],
-	[Phase.Phase4]: [TalentsPhase4Fury],
+	[Phase.Phase4]: [TalentsPhase4Arms, TalentsPhase4Fury, TalentsPhase4Prot],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultTalentsFury = TalentPresets[Phase.Phase4][0];
-export const DefaultTalentsArms = DefaultTalentsFury;
-export const DefaultTalentsGlad = DefaultTalentsFury;
+export const DefaultTalentsArms = TalentPresets[Phase.Phase4][0];
+export const DefaultTalentsFury = TalentPresets[Phase.Phase4][1];
+export const DefaultTalentsGlad = TalentPresets[Phase.Phase4][2];
 
 export const DefaultTalents = DefaultTalentsFury;
 
