@@ -40,6 +40,7 @@ const (
 	SealOfTheDawn            = 13209
 	JoonhosMercy             = 17054
 	Deathbringer             = 17068
+	ViskagTheBloodletter     = 17075
 	ThrashBlade              = 17705
 	SatyrsLash               = 17752
 	MarkOfTheChosen          = 17774
@@ -1362,6 +1363,9 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
+
+	itemhelpers.CreateWeaponProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
+
 	// https://www.wowhead.com/classic/item=227941/wraith-scythe
 	// Chance on hit: Steals 45 life from target enemy.
 	itemhelpers.CreateWeaponProcSpell(WraithScythe, "Wraith Scythe", 1.0, func(character *core.Character) *core.Spell {
@@ -1382,6 +1386,7 @@ func init() {
 			},
 		})
 	})
+
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
