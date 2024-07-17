@@ -1456,8 +1456,9 @@
 {"id":223182,"name":"Geomancer's Trousers","icon":"inv_pants_09","type":9,"armorType":1,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"randomSuffixOptions":[409,410,441,442,443,609,610,611,779,780,781,864,865,866,1034,1035,1036,1889,1890,2041,2042],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":3,"quality":2},
 {"id":223183,"name":"Geomancer's Wraps","icon":"inv_chest_cloth_40","type":5,"armorType":1,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"randomSuffixOptions":[333,334,384,385,410,411,782,783,784,867,868,869,1037,1038,1039,1814,1815,1852,1853,1966,1967],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":3,"quality":2},
 {"id":223186,"name":"Supply Expediter","icon":"ability_hunter_pathfinding","type":12,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":3,"quality":3,"sources":[{"rep":{"repFactionId":2586,"repLevel":8}},{"rep":{"repFactionId":2587,"repLevel":8}}]},
-{"id":225838,"name":"Voltaic Icon","icon":"inv_relics_totemoflife","type":14,"rangedWeaponType":7,"requiresLevel":32,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":2,"unique":true,"classAllowlist":[7]},
-{"id":226546,"name":"Desert Sonar","icon":"inv_misc_enggizmos_20","type":12,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":1,"unique":true}
+{"id":225838,"name":"Voltaic Icon","icon":"inv_relics_totemoflife","type":14,"rangedWeaponType":7,"requiresLevel":32,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":2,"unique":true,"classAllowlist":[7],"sources":[{"drop":{"npcId":7158,"zoneId":361}}]},
+{"id":226546,"name":"Desert Sonar","icon":"inv_misc_enggizmos_20","type":12,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":1,"unique":true},
+{"id":227688,"name":"Gorehowl","icon":"inv_axe_116","type":13,"weaponType":1,"handType":4,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":1}
 ],
 "randomSuffixes":[
 ],
@@ -1554,8 +1555,8 @@
 {"effectId":929,"itemId":16217,"spellId":20069,"name":"Enchant Shield - Greater Stamina","type":13,"enchantType":2,"stats":[0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":930,"spellId":13947,"name":"Enchant Gloves - Riding Skill","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":931,"spellId":13948,"name":"Enchant Gloves - Minor Haste","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":943,"spellId":13693,"name":"Enchant Weapon - Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":963,"spellId":13937,"name":"Enchant 2H Weapon - Greater Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":1483,"itemId":11622,"spellId":15340,"name":"Lesser Arcanum of Rumination","type":1,"extraTypes":[9],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1503,"itemId":11642,"spellId":15389,"name":"Lesser Arcanum of Constitution","type":1,"extraTypes":[9],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -1609,7 +1610,8 @@
 {"effectId":7223,"spellId":435903,"name":"Enchant Chest - Retricutioner","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7325,"itemId":221322,"spellId":446459,"name":"Atal'ai Signet of Mojo","type":3,"stats":[0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":7326,"itemId":221323,"spellId":446472,"name":"Atal'ai Signet of Serenity","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0],"quality":3},
-{"effectId":7328,"itemId":221321,"spellId":446451,"name":"Atal'ai Signet of Might","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3}
+{"effectId":7328,"itemId":221321,"spellId":446451,"name":"Atal'ai Signet of Might","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
+{"effectId":7603,"itemId":228982,"spellId":463871,"name":"Enchant Shield - Law of Nature","type":13,"enchantType":2,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,30,0],"quality":2}
 ],
 "runes":[
 {"id":29787,"name":"Engrave Belt - Focused Rage","icon":"ability_warrior_focusedrage","type":8,"requiresLevel":1,"classAllowlist":[9]},

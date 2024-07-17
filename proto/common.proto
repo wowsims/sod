@@ -455,7 +455,7 @@ message MiscConsumes {
 	bool catnip = 3;
 }
 
-// NextIndex: 26
+// NextIndex: 27
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -499,6 +499,9 @@ enum WeaponImbue {
 	InstantPoison = 23;
 	DeadlyPoison = 24;
 	WoundPoison = 25;
+
+	// Shield Oil
+	ConductiveShieldCoating = 26;
 }
 
 // NextIndex: 13

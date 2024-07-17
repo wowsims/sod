@@ -139,7 +139,7 @@ var Phase4Consumes = core.ConsumesCombo{
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
-		OffHandImbue:   proto.WeaponImbue_WizardOil,
+		OffHandImbue:   proto.WeaponImbue_ConductiveShieldCoating,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

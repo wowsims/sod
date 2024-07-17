@@ -28,7 +28,7 @@ import {
 	ZanzaBuff,
 } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
-import { isBluntWeaponType, isSharpWeaponType } from '../../proto_utils/utils';
+import { isBluntWeaponType, isSharpWeaponType, isWeapon } from '../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
 import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
@@ -781,49 +781,73 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 // Other Imbues
 
 // Wizard Oils
-// Original lvl 45 but not obtainable in Phase 3
-export const BrillianWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 51 }]),
-	value: WeaponImbue.BrillianWizardOil,
+export const BrillianWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 45 }]),
+		value: WeaponImbue.BrillianWizardOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-// Original lvl 45 but not obtainable in Phase 3
-export const WizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 51 }]),
-	value: WeaponImbue.WizardOil,
+export const WizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 40 }]),
+		value: WeaponImbue.WizardOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-export const LesserWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20746, minLevel: 30 }]),
-	value: WeaponImbue.LesserWizardOil,
+export const LesserWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20746, minLevel: 30 }]),
+		value: WeaponImbue.LesserWizardOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-export const MinorWizardOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20744, minLevel: 5 }]),
-	value: WeaponImbue.MinorWizardOil,
+export const MinorWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20744, minLevel: 5 }]),
+		value: WeaponImbue.MinorWizardOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
 
 // Mana Oils
 // Original lvl 45 but not obtainable in Phase 3
-export const BrilliantManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20748, minLevel: 51 }]),
-	value: WeaponImbue.BrilliantManaOil,
+export const BrilliantManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20748, minLevel: 45 }]),
+		value: WeaponImbue.BrilliantManaOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-// Original lvl 40 but not obtainable in Phase 3
-export const LesserManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20747, minLevel: 51 }]),
-	value: WeaponImbue.LesserManaOil,
+export const LesserManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20747, minLevel: 40 }]),
+		value: WeaponImbue.LesserManaOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-export const MinorManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20745, minLevel: 20 }]),
-	value: WeaponImbue.MinorManaOil,
+export const MinorManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 20745, minLevel: 20 }]),
+		value: WeaponImbue.MinorManaOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-export const BlackfathomManaOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 211848, minLevel: 25 }]),
-	value: WeaponImbue.BlackfathomManaOil,
+export const BlackfathomManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 211848, minLevel: 25 }]),
+		value: WeaponImbue.BlackfathomManaOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
 
 // Sharpening Stones
-export const ElementalSharpeningStone: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
-	value: WeaponImbue.ElementalSharpeningStone,
+export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
+		value: WeaponImbue.ElementalSharpeningStone,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
 export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
@@ -864,20 +888,35 @@ export const SolidWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 };
 
 // Spell Oils
-export const ShadowOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 3824, minLevel: 25 }]),
-	value: WeaponImbue.ShadowOil,
+export const ShadowOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 3824, minLevel: 25 }]),
+		value: WeaponImbue.ShadowOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
-export const FrostOil: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 3829, minLevel: 40 }]),
-	value: WeaponImbue.FrostOil,
+export const FrostOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 3829, minLevel: 40 }]),
+		value: WeaponImbue.FrostOil,
+		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+	};
 };
 
-const SHAMAN_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
-	{ config: RockbiterWeaponImbue, stats: [] },
-	{ config: FlametongueWeaponImbue, stats: [] },
-	{ config: FrostbrandWeaponImbue, stats: [] },
-	{ config: WindfuryWeaponImbue, stats: [] },
+export const ConductiveShieldCoating = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 228980, minLevel: 40 }]),
+		value: WeaponImbue.ConductiveShieldCoating,
+		showWhen: player =>
+			slot === ItemSlot.ItemSlotOffHand && player.getEquippedItem(ItemSlot.ItemSlotOffHand)?._item?.weaponType === WeaponType.WeaponTypeShield,
+	};
+};
+
+const SHAMAN_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
+	{ config: RockbiterWeaponImbue(slot), stats: [] },
+	{ config: FlametongueWeaponImbue(slot), stats: [] },
+	{ config: FrostbrandWeaponImbue(slot), stats: [] },
+	{ config: WindfuryWeaponImbue(slot), stats: [] },
 ];
 
 const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
@@ -887,17 +926,18 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
-	{ config: BrillianWizardOil, stats: [Stat.StatSpellPower] },
-	{ config: WizardOil, stats: [Stat.StatSpellPower] },
-	{ config: LesserWizardOil, stats: [Stat.StatSpellPower] },
-	{ config: MinorWizardOil, stats: [Stat.StatSpellPower] },
+	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
+	// { config: BrillianWizardOil, stats: [Stat.StatSpellPower] },
+	{ config: WizardOil(slot), stats: [Stat.StatSpellPower] },
+	{ config: LesserWizardOil(slot), stats: [Stat.StatSpellPower] },
+	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower] },
 
-	{ config: BrilliantManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: LesserManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: MinorManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: BlackfathomManaOil, stats: [Stat.StatSpellPower, Stat.StatMP5] },
+	// { config: BrilliantManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: LesserManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
-	{ config: ElementalSharpeningStone, stats: [Stat.StatAttackPower] },
+	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: BlackfathomSharpeningStone(slot), stats: [Stat.StatMeleeHit] },
@@ -905,19 +945,19 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: DenseWeightstone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidWeightstone(slot), stats: [Stat.StatAttackPower] },
 
-	{ config: ShadowOil, stats: [Stat.StatAttackPower] },
-	{ config: FrostOil, stats: [Stat.StatAttackPower] },
+	{ config: ShadowOil(slot), stats: [Stat.StatAttackPower] },
+	{ config: FrostOil(slot), stats: [Stat.StatAttackPower] },
 ];
 
 export const WEAPON_IMBUES_OH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	...ROGUE_IMBUES,
-	...SHAMAN_IMBUES,
+	...SHAMAN_IMBUES(ItemSlot.ItemSlotOffHand),
 	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotOffHand),
 ];
 
 export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	...ROGUE_IMBUES,
-	...SHAMAN_IMBUES,
+	...SHAMAN_IMBUES(ItemSlot.ItemSlotMainHand),
 	{ config: Windfury, stats: [Stat.StatMeleeHit] },
 	{ config: WildStrikes, stats: [Stat.StatMeleeHit] },
 	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotMainHand),
@@ -929,9 +969,5 @@ export const makeMainHandImbuesInput = makeConsumeInputFactory({
 });
 export const makeOffHandImbuesInput = makeConsumeInputFactory({
 	consumesFieldName: 'offHandImbue',
-	showWhen: player => {
-		return ![WeaponType.WeaponTypeUnknown, WeaponType.WeaponTypeOffHand, WeaponType.WeaponTypeShield].includes(
-			player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType ?? WeaponType.WeaponTypeUnknown,
-		);
-	},
+	showWhen: player => !!player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand),
 });

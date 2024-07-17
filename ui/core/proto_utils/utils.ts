@@ -1437,6 +1437,10 @@ export function isBluntWeaponType(weaponType: WeaponType): boolean {
 	return [WeaponType.WeaponTypeFist, WeaponType.WeaponTypeMace, WeaponType.WeaponTypeStaff].includes(weaponType);
 }
 
+export const isWeapon = (weaponType: WeaponType): boolean => {
+	return isBluntWeaponType(weaponType) || isSharpWeaponType(weaponType);
+};
+
 // Returns true if this item may be equipped in at least 1 slot for the given Spec.
 export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, item: Item, slot: ItemSlot | undefined): boolean {
 	const spec = player.spec;

@@ -43,7 +43,7 @@ import Phase4Gear from './gear_sets/phase_4.gear.json';
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
-export const GearPhase4 = PresetUtils.makePresetGear('Phase 4 Burn', Phase4Gear);
+export const GearPhase4 = PresetUtils.makePresetGear('Phase 4', Phase4Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
@@ -114,7 +114,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.FlametongueWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
-	offHandImbue: WeaponImbue.WizardOil,
+	offHandImbue: WeaponImbue.ConductiveShieldCoating,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,

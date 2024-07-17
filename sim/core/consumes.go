@@ -97,7 +97,7 @@ func applyWeaponImbueConsumes(character *Character, consumes *proto.Consumes) {
 	if character.HasMHWeapon() {
 		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
-	if character.HasOHWeapon() {
+	if character.OffHand() != nil {
 		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 }
@@ -143,6 +143,10 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 				stats.MP5:      12,
 				stats.SpellHit: 2 * SpellHitRatingPerHitChance,
 			})
+
+		// Shield Oil
+		case proto.WeaponImbue_ConductiveShieldCoating:
+			character.AddStat(stats.SpellPower, 24)
 
 		// Sharpening Stones
 		case proto.WeaponImbue_SolidSharpeningStone:

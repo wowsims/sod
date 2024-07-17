@@ -214,6 +214,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 926, ItemId: 11224, SpellId: 13934, Name: "Enchant Shield - Frost Resistance", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.FrostResistance: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 929, ItemId: 16217, SpellId: 20069, Name: "Enchant Shield - Greater Stamina", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 1890, ItemId: 16222, SpellId: 20074, Name: "Enchant Shield - Superior Spirit", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Spirit: 9}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
+	{EffectId: 7603, ItemId: 228982, SpellId: 463871, Name: "Enchant Shield - Law of Nature", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.SpellDamage: 30, stats.HealingPower: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 
 	// Ranged Scopes
 	{EffectId: 30, ItemId: 4405, SpellId: 3974, Name: "Crude Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
