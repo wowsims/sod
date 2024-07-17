@@ -30,7 +30,12 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
-	warrior.ThunderClap = warrior.RegisterSpell(BattleStance, core.SpellConfig{
+	stanceMask := BattleStance
+	if hasFuriousThunder {
+		stanceMask = AnyStance
+	}
+
+	warrior.ThunderClap = warrior.RegisterSpell(stanceMask, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMagic,
