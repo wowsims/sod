@@ -48,8 +48,8 @@ type Paladin struct {
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
-	
-	t1SetBonus6Pc bool
+
+	lingerDuration time.Duration
 }
 
 // Implemented by each Paladin spec.
@@ -93,12 +93,11 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
 
-        paladin.t1SetBonus6Pc = false
-        for _, bonus := range paladin.GetCharacter().GetActiveSetBonusNames() {
-        	if bonus == "Lawbringer Radiance (6pc)" {
-        	    paladin.t1SetBonus6Pc = true
-        	}
-        }
+	paladin.lingerDuration = time.Millisecond * 400
+	
+	if paladin.GetCharacter().HasSetBonus(ItemSetLawbringerRadiance, 6) {
+		paladin.lingerDuration = time.Second * 6
+	}
 
 }
 
@@ -175,16 +174,9 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 }
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	const lingerDuration = time.Millisecond * 400
-	const lingerDuration6pcT1 = time.Second * 6
-
 	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		if paladin.t1SetBonus6Pc {
-			if seal.RemainingDuration(sim) >= lingerDuration6pcT1 {
-				seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration6pcT1)
-			}
-		} else if seal.RemainingDuration(sim) >= lingerDuration {
-			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		if seal.RemainingDuration(sim) >= paladin.lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration)
 		}
 	}
 

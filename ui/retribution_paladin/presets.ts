@@ -25,12 +25,12 @@ import { SavedTalents } from '../core/proto/ui.js';
 import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';
 import APLP3RetJson from './apls/p3ret.apl.json';
-import APLP4RetJson from './apls/p3ret.apl.json'; // TODO: Phase 4
+import APLP4RetJson from './apls/p4ret.apl.json';
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2retsom.gear.json';
 import Phase3RetSoMGearJson from './gear_sets/p3retsom.gear.json';
-import Phase4RetGearJson from './gear_sets/p4rettwist.gear.json'; // TODO: Phase 4
+import Phase4RetGearJson from './gear_sets/p4rettwist.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -44,7 +44,7 @@ export const Phase1RetGear = PresetUtils.makePresetGear('P1', Phase1RetGearJson)
 export const Phase2RetSoCGear = PresetUtils.makePresetGear('P2 SoC/DS', Phase2RetSoCGearJson);
 export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSoMGearJson);
 export const Phase3RetSoMGear = PresetUtils.makePresetGear('P3 SoM', Phase3RetSoMGearJson);
-export const Phase4RetGear = PresetUtils.makePresetGear('P4 Placeholder', Phase4RetGearJson);
+export const Phase4RetGear = PresetUtils.makePresetGear('P4 Twist', Phase4RetGearJson);
 
 export const GearPresets = {
 	[Phase.Phase1]: [Phase1RetGear],
@@ -63,7 +63,7 @@ export const DefaultGear = GearPresets[Phase.Phase4][0];
 export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
 export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson);
 export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson);
-export const APLP4Ret = PresetUtils.makePresetAPLRotation('P4 Ret/Placeholder', APLP4RetJson); // TODO: Phase 4
+export const APLP4Ret = PresetUtils.makePresetAPLRotation('P4 Ret-Twisting', APLP4RetJson);
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLP1Ret],
@@ -77,7 +77,7 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
 	50: APLPresets[Phase.Phase3][0],
-	60: APLPresets[Phase.Phase4][0], // TODO: Phase 4
+	60: APLPresets[Phase.Phase4][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -116,9 +116,9 @@ export const P3RetTalents = {
 };
 
 export const P4RetTalents = {
-	name: 'P4 Ret PlaceHolder',
+	name: 'P4 Ret',
 	data: SavedTalents.create({
-		talentsString: '500501--53230051200315',
+		talentsString: '500501-503-52230351200315',
 	}),
 };
 
@@ -131,7 +131,7 @@ export const TalentPresets = {
 };
 
 // TODO: Phase 3
-export const DefaultTalents = TalentPresets[Phase.Phase3][0];
+export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
