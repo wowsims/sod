@@ -63,6 +63,7 @@ type Unit struct {
 	Moving                  bool
 	moveAura                *Aura
 	moveSpell               *Spell
+	MoveSpeed				float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -382,6 +383,7 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 }
 
 func (unit *Unit) initMovement() {
+	unit.MoveSpeed = 7.0
 	unit.moveAura = unit.GetOrRegisterAura(Aura{
 		Label:     "Movement",
 		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
@@ -420,19 +422,22 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 	tickPeriod := 0.5
 
 	moveDistance := moveRange - unit.DistanceFromTarget
-	moveSpeed := 2.0
-	timeToMove := math.Abs(moveDistance) / moveSpeed
+	timeToMove := math.Abs(moveDistance) / unit.MoveSpeed
 	moveTicks := timeToMove / tickPeriod
 	moveInterval := moveDistance / float64(moveTicks)
 
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 1000 / 7,
-		NumTicks:        int(moveTicks),
+		Period:          time.Millisecond * 500,
+		NumTicks:        int(math.Ceil(moveTicks)),
 		TickImmediately: false,
 
 		OnAction: func(sim *Simulation) {
+			remainingDistance := math.Abs(moveRange - unit.DistanceFromTarget)
+			if(remainingDistance < moveInterval) {
+				moveInterval = remainingDistance
+			}
 			unit.DistanceFromTarget += moveInterval
 			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
 

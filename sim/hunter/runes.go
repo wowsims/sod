@@ -42,6 +42,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyLockAndLoad()
 	hunter.applyRaptorFury()
 	hunter.applyCobraSlayer()
+	hunter.applyHitAndRun()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -324,4 +325,27 @@ func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
 		return 0.6
 	}
 	return 1.0
+}
+
+func (hunter *Hunter) applyHitAndRun() {
+	if(hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun)) {
+		hunter.RegisterAura(core.Aura{
+			Label:     "Hit And Run",
+			Duration:  time.Second * 8,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == hunter.RaptorStrike {
+					aura.Activate(sim)
+				}
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Unit.MoveSpeed *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Unit.MoveSpeed *= 1 / 1.15
+			},
+		})
+	}
 }
