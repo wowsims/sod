@@ -132,6 +132,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
+	hunter.registerVolleySpell()
 
 	// Trap Launcher rune also splits the cooldowns between frost traps and fire traps, without the rune all traps share a cd
 	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {

@@ -58,7 +58,6 @@ var UnimplementedRuneOverrides = []int32{
 	// Druid
 
 	// Hunter
-	440520, // Cloak - Improved Volley
 
 	// Mage
 

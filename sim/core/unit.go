@@ -391,6 +391,9 @@ func (unit *Unit) initMovement() {
 		MaxStacks: 30,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
+			if unit.ChanneledDot != nil {
+				unit.ChanneledDot.Cancel(sim)
+			}
 			unit.AutoAttacks.CancelAutoSwing(sim)
 			unit.Moving = true
 		},
