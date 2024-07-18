@@ -12,85 +12,95 @@ import (
 
 // Ordered by ID
 const (
-	ShortswordOfVengeance    = 754
-	FieryWarAxe              = 870
-	Bloodrazor               = 809
-	HammerOfTheNorthernWind  = 810
-	FlurryAxe                = 871
-	Nightblade               = 1982
-	Shadowblade              = 2163
-	GutRipper                = 2164
-	BowOfSearingArrows       = 2825
-	Gutwrencher              = 5616
-	Ravager                  = 7717
-	HanzoSword               = 8190
-	TheJackhammer            = 9423
-	PendulumOfDoom           = 9425
-	BloodletterScalpel       = 9511
-	TheHandOfAntusul         = 9639
-	GryphonRidersStormhammer = 9651
-	Firebreather             = 10797
-	VilerendSlicer           = 11603
-	HookfangShanker          = 11635
-	LinkensSwordOfMastery    = 11902
-	SearingNeedle            = 12531
-	PipsSkinner              = 12709
-	ArcaniteChampion         = 12790
-	SerpentSlicer            = 13035
-	SealOfTheDawn            = 13209
-	JoonhosMercy             = 17054
-	Deathbringer             = 17068
-	ViskagTheBloodletter     = 17075
-	ThrashBlade              = 17705
-	SatyrsLash               = 17752
-	MarkOfTheChosen          = 17774
-	Thunderfury              = 19019
-	EbonHand                 = 19170
-	DarkmoonCardHeroism      = 19287
-	DarkmoonCardBlueDragon   = 19288
-	DarkmoonCardMaelstrom    = 19289
-	Nightfall                = 19169
-	RuneOfTheDawn            = 19812
-	ScarabBrooch             = 21625
-	MarkOfTheChampionPhys    = 23206
-	MarkOfTheChampionSpell   = 23207
-	BlisteringRagehammer     = 220569 // 10626
-	SulfurasHandOfRagnaros   = 227683 // 17182
-	SulfuronHammer           = 227684 // 17193
-	TemperedBlackAmnesty     = 227832 // 19166
-	EbonFist                 = 227842
-	ReavingNightfall         = 227843
-	FlameWrath               = 227934 // 11809
-	WraithScythe             = 227941
-	BurstOfKnowledge         = 227972
-	Ironfoe                  = 227991 // 11684
-	EbonHiltOfMarduk         = 227993 // 14576
-	FrightskullShaft         = 227994 // 14531
-	BarovianFamilySword      = 227997 // 14541
-	Frightalon               = 228015 // 14024
-	HeadmastersCharge        = 228022 // 13937
-	GravestoneWarAxe         = 228029 // 13983
-	FiendishMachete          = 228056 // 18310
-	RefinedArcaniteChampion  = 228125
-	TalismanOfEphemeralPower = 228255 // 18820
-	GutgoreRipper            = 228267 // 17071
-	EssenceOfThePureFlame    = 228293 // 18815
-	PerditionsBlade          = 228296 // 18816
-	Typhoon                  = 228347 // 18542
-	EskhandarsLeftClaw       = 228349 // 18202
-	EskhandarsRightClaw      = 228350 // 18203
-	BlazefuryMedallion       = 228354 // 17111
-	EmpyreanDemolisher       = 228397 // 17112
-	PerditionsBladeMolten    = 228511
-	Venomspitter             = 228573 // 13183
-	Chillpike                = 228586 // 13148
-	FangOfTheCrystalSpider   = 228592 // 13218
-	BlackhandDoomsaw         = 228603 // 12583
-	BlackbladeOfShahram      = 228606 // 12592
-	SeepingWillow            = 228666 // 12969
-	DraconicInfusedEmblem    = 228678 // 22268
-	HandOfJustice            = 228722 // 11815
-	Felstriker               = 228757 // 12590
+	ShortswordOfVengeance          = 754
+	FieryWarAxe                    = 870
+	Bloodrazor                     = 809
+	HammerOfTheNorthernWind        = 810
+	FlurryAxe                      = 871
+	Nightblade                     = 1982
+	Shadowblade                    = 2163
+	GutRipper                      = 2164
+	HandOfEdwardTheOdd             = 2243
+	BowOfSearingArrows             = 2825
+	Gutwrencher                    = 5616
+	Ravager                        = 7717
+	HanzoSword                     = 8190
+	TheJackhammer                  = 9423
+	PendulumOfDoom                 = 9425
+	BloodletterScalpel             = 9511
+	TheHandOfAntusul               = 9639
+	GryphonRidersStormhammer       = 9651
+	Firebreather                   = 10797
+	VilerendSlicer                 = 11603
+	HookfangShanker                = 11635
+	LinkensSwordOfMastery          = 11902
+	SearingNeedle                  = 12531
+	PipsSkinner                    = 12709
+	ArcaniteChampion               = 12790
+	MasterworkStormhammer          = 12794
+	SerpentSlicer                  = 13035
+	SealOfTheDawn                  = 13209
+	JoonhosMercy                   = 17054
+	Deathbringer                   = 17068
+	ViskagTheBloodletter           = 17075
+	ThrashBlade                    = 17705
+	SatyrsLash                     = 17752
+	MarkOfTheChosen                = 17774
+	Thunderfury                    = 19019
+	EbonHand                       = 19170
+	DarkmoonCardHeroism            = 19287
+	DarkmoonCardBlueDragon         = 19288
+	DarkmoonCardMaelstrom          = 19289
+	Nightfall                      = 19169
+	RuneOfTheDawn                  = 19812
+	ScarabBrooch                   = 21625
+	MarkOfTheChampionPhys          = 23206
+	MarkOfTheChampionSpell         = 23207
+	BlisteringRagehammer           = 220569 // 10626
+	SulfurasHandOfRagnaros         = 227683 // 17182
+	SulfuronHammer                 = 227684 // 17193
+	TemperedBlackAmnesty           = 227832 // 19166
+	EbonFist                       = 227842
+	ReavingNightfall               = 227843
+	SkyridersMasterworkStormhammer = 227886
+	FlameWrath                     = 227934 // 11809
+	LordGeneralsSword              = 227940 // 11817
+	WraithScythe                   = 227941
+	BurstOfKnowledge               = 227972
+	Ironfoe                        = 227991 // 11684
+	EbonHiltOfMarduk               = 227993 // 14576
+	FrightskullShaft               = 227994 // 14531
+	BarovianFamilySword            = 227997 // 14541
+	Frightalon                     = 228015 // 14024
+	HeadmastersCharge              = 228022 // 13937
+	GravestoneWarAxe               = 228029 // 13983
+	FiendishMachete                = 228056 // 18310
+	RefinedArcaniteChampion        = 228125
+	TalismanOfEphemeralPower       = 228255 // 18820
+	GutgoreRipper                  = 228267 // 17071
+	BonereaversEdge                = 228288 // 17076
+	BonereaversEdgeMolten          = 228461
+	EssenceOfThePureFlame          = 228293 // 18815
+	PerditionsBlade                = 228296 // 18816
+	Typhoon                        = 228347 // 18542
+	EskhandarsLeftClaw             = 228349 // 18202
+	EskhandarsRightClaw            = 228350 // 18203
+	BlazefuryMedallion             = 228354 // 17111
+	EmpyreanDemolisher             = 228397 // 17112
+	DreadbladeOfTheDestructor      = 228410
+	DreadbladeOfTheDestructor2     = 228498
+	PerditionsBladeMolten          = 228511
+	SkullforgeReaver               = 228542 // 13361
+	RunebladeOfBaronRivendare      = 228543 // 13505
+	Venomspitter                   = 228573 // 13183
+	Chillpike                      = 228586 // 13148
+	FangOfTheCrystalSpider         = 228592 // 13218
+	BlackhandDoomsaw               = 228603 // 12583
+	BlackbladeOfShahram            = 228606 // 12592
+	SeepingWillow                  = 228666 // 12969
+	DraconicInfusedEmblem          = 228678 // 22268
+	HandOfJustice                  = 228722 // 11815
+	Felstriker                     = 228757 // 12590
 )
 
 func init() {
@@ -382,6 +392,12 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228288/bonereavers-edge
+	// https://www.wowhead.com/classic/item=228461/bonereavers-edge
+	// Chance on hit: Your attacks ignore 700 of your enemies' armor for 10 sec. This effect stacks up to 3 times.
+	itemhelpers.CreateWeaponProcSpell(BonereaversEdge, "Bonereaver's Edge", 2.0, makeBonereaversEdgeEffect)
+	itemhelpers.CreateWeaponProcSpell(BonereaversEdgeMolten, "Bonereaver's Edge (Molten)", 2.0, makeBonereaversEdgeEffect)
+
 	itemhelpers.CreateWeaponProcSpell(BowOfSearingArrows, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 29638},
@@ -407,6 +423,12 @@ func init() {
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
 	itemhelpers.CreateWeaponProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=228410/dreadblade-of-the-destructor
+	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
+	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor2, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
 
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -904,6 +926,25 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=2243/hand-of-edward-the-odd
+	// Chance on hit: Next spell cast within 4 sec will cast instantly.
+	itemhelpers.CreateWeaponProcAura(HandOfEdwardTheOdd, "Hand of Edward the Odd", 1.0, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 18803},
+			Label:    "Focus (Hand of Edward the Odd)",
+			Duration: time.Second * 4,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyCastSpeed(100000)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyCastSpeed(1 / 100000.0)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				aura.Deactivate(sim)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcDamage(HanzoSword, "Hanzo Sword", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=228022/headmasters-charge#comments
@@ -997,6 +1038,34 @@ func init() {
 	itemhelpers.CreateWeaponProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=227940/lord-generals-sword
+	// Chance on hit: Increases attack power by 50 for 30 sec.
+	// // TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(LordGeneralsSword, "Lord General's Sword", 1.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 15602},
+			Label:    "Lord General's Sword",
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.AttackPower:       50,
+					stats.RangedAttackPower: 50,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.AttackPower:       -50,
+					stats.RangedAttackPower: -50,
+				})
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
+	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcDamage(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -1113,6 +1182,28 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228543/runeblade-of-baron-rivendare
+	// Equip: Increases movement speed and life regeneration rate.
+	// TODO: Movement speed not implemented
+	core.NewItemEffect(RunebladeOfBaronRivendare, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 17625}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Unholy Aura",
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 5,
+					Priority: core.ActionPriorityAuto,
+					OnAction: func(sim *core.Simulation) {
+						character.GainHealth(sim, 20, healthMetrics)
+					},
+				})
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
 	// Removed from SoD
 	// core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
@@ -1204,8 +1295,11 @@ func init() {
 				Aura: core.Aura{
 					Label: "Poison",
 				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 8, isRollover)
+				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 8, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				},
 			},
 		})
@@ -1214,6 +1308,45 @@ func init() {
 	itemhelpers.CreateWeaponProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=228542/skullforge-reaver
+	// Equip: Drains target for 2 Shadow damage every 1 sec and transfers it to the caster. Lasts for 30 sec.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcSpell(SkullforgeReaver, "Skullforge Reaver", 1.7, func(character *core.Character) *core.Spell {
+		procMask := character.GetProcMaskForItem(SkullforgeReaver)
+		actionID := core.ActionID{SpellID: 17484}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		return character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    procMask,
+			Dot: core.DotConfig{
+				NumberOfTicks: 30,
+				TickLength:    time.Second,
+				Aura: core.Aura{
+					Label: "Skullforge Brand",
+				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 2, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					character.GainHealth(sim, result.Damage, healthMetrics)
+				},
+			},
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
+	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcDamage(SkyridersMasterworkStormhammer, "Skyrider's Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=227683/sulfuras-hand-of-ragnaros
 	// Chance on hit: Hurls a fiery ball that causes 273 to 333 Fire damage and purges the target's soul, increasing Fire and Holy damage taken by up to 30 and dealing an additional 75 damage over 10 sec.
@@ -2097,19 +2230,62 @@ func enrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
-func strengthOfTheChampionAura(character *core.Character) *core.Aura {
-	actionID := core.ActionID{SpellID: 16916}
-	healthMetrics := character.NewHealthMetrics(actionID)
-	return character.GetOrRegisterAura(core.Aura{
-		Label:    "Strength of the Champion",
-		ActionID: actionID,
-		Duration: time.Second * 30,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.GainHealth(sim, sim.Roll(270, 450), healthMetrics)
-			character.AddStatDynamic(sim, stats.Strength, 120)
+// TODO: This is treated as a buff, NOT a debuff in-game
+// We don't have the ability to remove resistances for only one agent at a time right now
+func makeBonereaversEdgeEffect(character *core.Character) *core.Spell {
+	actionID := core.ActionID{SpellID: 21153}
+	buffAura := character.RegisterAura(core.Aura{
+		ActionID:  actionID,
+		Label:     "Bonereaver's Edge",
+		Duration:  time.Second * 10,
+		MaxStacks: 3,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			for _, target := range sim.Encounter.TargetUnits {
+				target.AddStatDynamic(sim, stats.Armor, -700*float64(oldStacks))
+				target.AddStatDynamic(sim, stats.Armor, 700*float64(newStacks))
+			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Strength, -120)
+	})
+	return character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Activate(sim)
+			buffAura.AddStack(sim)
+		},
+	})
+}
+
+// Chance on hit: Reduces an enemy's Strength by 125 and its Stamina by 50 for 2 min.
+// Equip: When struck in combat has a chance of causing the attacker to flee in terror for 2 seconds. (Proc chance: 2%)
+func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
+	actionID := core.ActionID{SpellID: 462178}
+	procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Enfeeble (Dreadblade of the Destructor)",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:  -50,
+					stats.Strength: -125,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{
+					stats.Stamina:  50,
+					stats.Strength: 125,
+				})
+			},
+		})
+	})
+	return character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			procAuras.Get(target).Activate(sim)
 		},
 	})
 }
@@ -2148,6 +2324,23 @@ func makeNightfallProc(character *core.Character, itemName string) {
 		PPM:      2,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAuras.Get(result.Target).Activate(sim)
+		},
+	})
+}
+
+func strengthOfTheChampionAura(character *core.Character) *core.Aura {
+	actionID := core.ActionID{SpellID: 16916}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	return character.GetOrRegisterAura(core.Aura{
+		Label:    "Strength of the Champion",
+		ActionID: actionID,
+		Duration: time.Second * 30,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.GainHealth(sim, sim.Roll(270, 450), healthMetrics)
+			character.AddStatDynamic(sim, stats.Strength, 120)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Strength, -120)
 		},
 	})
 }
