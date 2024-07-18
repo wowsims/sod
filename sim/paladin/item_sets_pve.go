@@ -116,6 +116,13 @@ var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 		},
 		6: func(agent core.Agent) {
 			// Implemented in Paladin.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Paladin - Retribution 6P Bonus",
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					paladin.lingerDuration = time.Second * 6
+				},
+			}))
 		},
 	},
 })
