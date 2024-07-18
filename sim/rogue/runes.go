@@ -19,7 +19,7 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerMasterOfSubtlety()
 	rogue.registerMainGaucheSpell()
 	rogue.registerSaberSlashSpell()
-	rogue.registerShivSpell()
+	// rogue.registerShivSpell()
 	rogue.registerShadowstrikeSpell()
 	rogue.registerMutilateSpell()
 	rogue.registerEnvenom()
@@ -91,7 +91,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
 				isFoKOH = true
 			}
-			
+
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() || isFoKOH {
 				return
 			}

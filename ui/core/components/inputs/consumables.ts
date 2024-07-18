@@ -243,7 +243,7 @@ export const FlaskOfEverlastingNightmares: ConsumableInputConfig<Flask> = {
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
-	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
 	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
@@ -923,6 +923,9 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: InstantPoisonWeaponImbue, stats: [] },
 	{ config: DeadlyPoisonWeaponImbue, stats: [] },
 	{ config: WoundPoisonWeaponImbue, stats: [] },
+	// These are not yet implemented for rogues
+	// { config: OccultPoisonWeaponImbue, stats: [] },
+	// { config: SebaciousPoisonWeaponImbue, stats: [] },
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [

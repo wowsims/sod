@@ -455,7 +455,7 @@ message MiscConsumes {
 	bool catnip = 3;
 }
 
-// NextIndex: 27
+// NextIndex: 29
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -499,6 +499,8 @@ enum WeaponImbue {
 	InstantPoison = 23;
 	DeadlyPoison = 24;
 	WoundPoison = 25;
+	OccultPoison = 27;
+	SebaciousPoison = 28;
 
 	// Shield Oil
 	ConductiveShieldCoating = 26;
@@ -684,7 +686,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 39
+// NextIndex: 40
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -712,6 +714,7 @@ message Debuffs {
 	TristateEffect expose_armor = 10;
 	bool sunder_armor = 11;
 	int32 homunculi = 22; // between 0 and 100, represents average uptime percentage
+	TristateEffect sebacious_poison = 39;
 
 	TristateEffect curse_of_weakness = 12;
 	bool curse_of_recklessness = 13;

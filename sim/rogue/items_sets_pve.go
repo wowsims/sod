@@ -125,8 +125,9 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 	Name: "Nightslayer Thrill",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Feint also grants Avoidance for 6 sec, reducing all damage taken from area of effect attacks from non-players by 50%
-		//2: Not yet implemented
-		//},
+		2: func(agent core.Agent) {
+			// Not yet implemented
+		},
 		// Increases the critical strike damage bonus of your Poisons by 100%.
 		4: func(agent core.Agent) {
 			rogue := agent.GetCharacter()
@@ -138,9 +139,9 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 		},
 		// Your finishing moves have a 5% chance per combo point to make your next ability cost no energy.
 		//https://www.wowhead.com/classic/spell=457342/clearcasting
-		6: 	func(agent core.Agent) {		
-			rogue := agent.(RogueAgent).GetRogue()			
-				
+		6: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+
 			aura := rogue.RegisterAura(core.Aura{
 				Label:    "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)",
 				ActionID: core.ActionID{SpellID: 457342},
@@ -152,10 +153,7 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 					aura.Unit.PseudoStats.CostMultiplier += 1
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if aura.RemainingDuration(sim) == aura.Duration {
-						return
-					}
-					if spell.DefaultCast.Cost == 0 {
+					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {
 						return
 					}
 					aura.Deactivate(sim)

@@ -303,6 +303,7 @@ export class ActionId {
 			case 'Instant Poison V':
 			case 'Instant Poison VI':
 			case 'Wound Poison':
+			case 'Occult Poison':
 				if (this.tag === 1) {
 					name += ' (Shiv)';
 				} else if (this.tag === 2) {
@@ -685,6 +686,7 @@ const spellIDsToShowBuffs = new Set([
 	426969, // https://www.wowhead.com/classic/spell=426969/taste-for-blood
 	440114, // https://www.wowhead.com/classic/spell=440114/sudden-death
 	446393, // https://www.wowhead.com/classic/spell=446393/decay
+	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
 ]);

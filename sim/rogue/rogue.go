@@ -17,6 +17,12 @@ const (
 	SpellFlagRoguePoison  = core.SpellFlagAgentReserved5 // RogueT1
 )
 
+const (
+	SpellCode_RogueNone int32 = iota
+
+	SpellCode_RogueBladeFlurry
+)
+
 var TalentTreeSizes = [3]int{15, 19, 17}
 
 const RogueBleedTag = "RogueBleed"
@@ -74,6 +80,8 @@ type Rogue struct {
 	deadlyPoisonTick *core.Spell
 	InstantPoison    [3]*core.Spell
 	WoundPoison      [2]*core.Spell
+	OccultPoison     *core.Spell
+	occultPoisonTick *core.Spell
 
 	instantPoisonProcChanceBonus float64
 
@@ -119,19 +127,23 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 
 func (rogue *Rogue) Initialize() {
 	rogue.registerBackstabSpell()
-	rogue.registerDeadlyPoisonSpell()
 	rogue.registerEviscerate()
 	rogue.registerExposeArmorSpell()
 	rogue.registerFeintSpell()
 	rogue.registerGarrote()
 	rogue.registerHemorrhageSpell()
-	rogue.registerInstantPoisonSpell()
-	rogue.registerWoundPoisonSpell()
 	rogue.registerRupture()
 	rogue.registerSinisterStrikeSpell()
 	rogue.registerSliceAndDice()
 	rogue.registerThistleTeaCD()
 	rogue.registerAmbushSpell()
+
+	// Poisons
+	rogue.registerInstantPoisonSpell()
+	rogue.registerDeadlyPoisonSpell()
+	rogue.registerOccultPoisonSpell()
+	rogue.registerWoundPoisonSpell()
+	rogue.registerSebaciousPoisonSpell()
 
 	// Stealth
 	rogue.registerStealthAura()

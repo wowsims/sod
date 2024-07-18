@@ -280,9 +280,6 @@ func (rogue *Rogue) applyWeaponExpertise() {
 	}
 }
 
-var BladeFlurryActionID = core.ActionID{SpellID: 13877}
-var BladeFlurryHitID = core.ActionID{SpellID: 22482}
-
 func (rogue *Rogue) registerBladeFlurryCD() {
 	if !rogue.Talents.BladeFlurry {
 		return
@@ -292,7 +289,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	var curDmg float64
 	bfHit := rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    BladeFlurryHitID,
+		ActionID:    core.ActionID{SpellID: 22482},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
@@ -307,7 +304,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
-		ActionID: BladeFlurryActionID,
+		ActionID: core.ActionID{SpellID: 13877},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.MultiplyMeleeSpeed(sim, 1.2)
@@ -333,8 +330,9 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	cooldownDur := time.Minute * 2
 	rogue.BladeFlurry = rogue.RegisterSpell(core.SpellConfig{
-		ActionID: BladeFlurryActionID,
-		Flags:    core.SpellFlagAPL,
+		SpellCode: SpellCode_RogueBladeFlurry,
+		ActionID:  core.ActionID{SpellID: 13877},
+		Flags:     core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 25,

@@ -653,6 +653,11 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 			impId: ActionId.fromSpellId(14169),
 			fieldName: 'exposeArmor',
 		}),
+		makeTristateDebuffInput({
+			actionId: player => player.getMatchingSpellActionId([{ id: 439500, minLevel: 60 }]),
+			impId: ActionId.fromSpellId(14169),
+			fieldName: 'sebaciousPoison',
+		}),
 		makeMultistateMultiplierDebuffInput({
 			actionId: () => ActionId.fromSpellId(402818),
 			numStates: 11,

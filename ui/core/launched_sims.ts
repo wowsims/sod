@@ -61,8 +61,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecRogue]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecTankRogue]: {
 		phase: Phase.Phase3,
