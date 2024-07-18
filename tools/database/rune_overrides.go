@@ -10,7 +10,7 @@ import (
 var RuneOverrides = []*proto.UIRune{
 	// Ring rune tooltips lack the relevant class restrictions so manually override the class allowlists
 	// Ring - Arcane Specialization
-	{Id: 442893, ClassAllowlist: []proto.Class{proto.Class_ClassHunter, proto.Class_ClassDruid, proto.Class_ClassMage}},
+	{Id: 442893, ClassAllowlist: []proto.Class{proto.Class_ClassDruid, proto.Class_ClassMage}},
 	// Ring - Axe Specialization
 	{Id: 442876, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassPaladin, proto.Class_ClassHunter, proto.Class_ClassShaman}},
 	// Ring - Dagger Specialization
@@ -18,11 +18,11 @@ var RuneOverrides = []*proto.UIRune{
 	// Ring - Defense Specialization
 	{Id: 459312, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassPaladin, proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassWarlock, proto.Class_ClassDruid}},
 	// Ring - Fire Specialization
-	{Id: 442894, ClassAllowlist: []proto.Class{proto.Class_ClassHunter, proto.Class_ClassShaman, proto.Class_ClassMage, proto.Class_ClassWarlock}},
+	{Id: 442894, ClassAllowlist: []proto.Class{proto.Class_ClassShaman, proto.Class_ClassMage, proto.Class_ClassWarlock}},
 	// Ring - Fist Weapon Specialization
 	{Id: 442890, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassHunter, proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassDruid}},
 	// Ring - Frost Specialization
-	{Id: 442895, ClassAllowlist: []proto.Class{proto.Class_ClassHunter, proto.Class_ClassShaman, proto.Class_ClassMage}},
+	{Id: 442895, ClassAllowlist: []proto.Class{proto.Class_ClassShaman, proto.Class_ClassMage}},
 	// Ring - Holy Specialization
 	{Id: 442898, ClassAllowlist: []proto.Class{proto.Class_ClassPaladin, proto.Class_ClassPriest}},
 	// Ring - Mace Specialization
