@@ -48,6 +48,8 @@ type Paladin struct {
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
+
+	lingerDuration time.Duration
 }
 
 // Implemented by each Paladin spec.
@@ -90,6 +92,12 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
+
+	paladin.lingerDuration = time.Millisecond * 400
+	
+	if paladin.GetCharacter().HasSetBonus(ItemSetLawbringerRadiance, 6) {
+		paladin.lingerDuration = time.Second * 6
+	}
 
 }
 
@@ -166,11 +174,9 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 }
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	const lingerDuration = time.Millisecond * 400
-
 	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		if seal.RemainingDuration(sim) >= lingerDuration {
-			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		if seal.RemainingDuration(sim) >= paladin.lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration)
 		}
 	}
 
