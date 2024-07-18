@@ -425,7 +425,7 @@ export const ManaSpringTotem = withLabel(
 	'Mana Spring Totem',
 );
 export const VampiricTouchReplenishment = withLabel(
-	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402779), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
 	'Vampiric Touch MP5',
 );
 

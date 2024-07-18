@@ -139,8 +139,6 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			// Nightfall aspect implemented in talents.go
-
 			affectedSpellCodes := []int32{SpellCode_WarlockImmolate, SpellCode_WarlockShadowflame, SpellCode_WarlockIncinerate}
 			fireTranceAura := warlock.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457558},
@@ -148,24 +146,24 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						spell.CastTimeMultiplier -= 1
+						spell.DefaultCast.CastTime = 0
 					}
 					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.CastTimeMultiplier -= 1
+						warlock.Shadowflame.DefaultCast.CastTime = 0
 					}
 					if warlock.Incinerate != nil {
-						warlock.Incinerate.CastTimeMultiplier -= 1
+						warlock.Incinerate.DefaultCast.CastTime = 0
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						spell.CastTimeMultiplier += 1
+						spell.DefaultCast.CastTime = ImmolateCastTime
 					}
 					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.CastTimeMultiplier += 1
+						warlock.Shadowflame.DefaultCast.CastTime = ShadowflameCastTime
 					}
 					if warlock.Incinerate != nil {
-						warlock.Incinerate.CastTimeMultiplier += 1
+						warlock.Incinerate.DefaultCast.CastTime = IncinerateCastTime
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -176,10 +174,16 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 			})
 
 			warlock.RegisterAura(core.Aura{
-				Label:    "Fire Trance Trigger",
+				Label:    "S03 - Item - T1 - Warlock - Damage 6P Bonus",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
+				},
+				OnGain: func(_ *core.Aura, _ *core.Simulation) {
+					warlock.nightfallProcChance += 0.04
+				},
+				OnExpire: func(_ *core.Aura, _ *core.Simulation) {
+					warlock.nightfallProcChance -= 0.04
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if (spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame) && sim.Proc(.04, "Fire Trance") {
@@ -237,12 +241,12 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.SoulFire {
-						spell.CastTimeMultiplier -= 1
+						spell.DefaultCast.CastTime = 0
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.SoulFire {
-						spell.CastTimeMultiplier += 1
+						spell.DefaultCast.CastTime = SoulFireCastTime
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

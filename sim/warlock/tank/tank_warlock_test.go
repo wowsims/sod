@@ -25,9 +25,22 @@ func TestAffliction(t *testing.T) {
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
-			OtherSpecOptions: []core.SpecOptionsCombo{
-				{Label: "AffItemSwap", SpecOptions: afflictionItemSwap},
-			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase4AffTalents,
+			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "p4_destro_aff_tank"),
+			Rotation:    core.GetAplRotation("../../../ui/tank_warlock/apls", "p4_destro_aff_tank"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -48,6 +61,22 @@ func TestDemonology(t *testing.T) {
 			Talents:     Phase2DemonologyTalents,
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase4DemoTalents,
+			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "p4_demo_tank"),
+			Rotation:    core.GetAplRotation("../../../ui/tank_warlock/apls", "p4_demo_tank"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
 
 			ItemFilter:      ItemFilters,
@@ -107,6 +136,22 @@ func TestDestruction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase4DestroTalents,
+			GearSet:     core.GetGearSet("../../../ui/tank_warlock/gear_sets", "p4_destro_aff_tank"),
+			Rotation:    core.GetAplRotation("../../../ui/tank_warlock/apls", "p4_destro_aff_tank"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -118,51 +163,39 @@ var Phase2DestructionTalents = "-035-05500050025001"
 
 var Phase3DestructionTalents = "05-03-505020500050515"
 
-var defaultDestroOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Imp,
-	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
-}
+var Phase4AffTalents = "5500253011201002-03-50502051002001"
+var Phase4DemoTalents = "-205004015250105-50500050005001"
+var Phase4DestroTalents = "45002400102-03-505020510050115"
 
 var DefaultDestroWarlock = &proto.Player_TankWarlock{
 	TankWarlock: &proto.TankWarlock{
-		Options: defaultDestroOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Imp,
+			WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
+		},
 	},
 }
 
-// ---------------------------------------
 var DefaultAfflictionWarlock = &proto.Player_TankWarlock{
 	TankWarlock: &proto.TankWarlock{
-		Options: defaultAfflictionOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Imp,
+			WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
+		},
 	},
 }
 
-var afflictionItemSwap = &proto.Player_TankWarlock{
-	TankWarlock: &proto.TankWarlock{
-		Options: defaultAfflictionOptions,
-	},
-}
-
-var defaultAfflictionOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Imp,
-	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
-}
-
-// ---------------------------------------
 var DefaultDemonologyWarlock = &proto.Player_TankWarlock{
 	TankWarlock: &proto.TankWarlock{
-		Options: defaultDemonologyOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Felguard,
+			WeaponImbue: proto.WarlockOptions_Firestone,
+		},
 	},
 }
-
-var defaultDemonologyOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Succubus,
-	WeaponImbue: proto.WarlockOptions_Firestone,
-}
-
-// ---------------------------------------------------------
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -193,8 +226,21 @@ var Phase3Consumes = core.ConsumesCombo{
 		DefaultPotion:   proto.Potions_SuperiorManaPotion,
 		FirePowerBuff:   proto.FirePowerBuff_ElixirOfFirepower,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
-		Food:            proto.Food_FoodSagefishDelight,
+		Food:            proto.Food_FoodTenderWolfSteak,
 		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:   proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+		Food:            proto.Food_FoodTenderWolfSteak,
+		MainHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

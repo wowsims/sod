@@ -9,6 +9,7 @@ import (
 )
 
 const ImmolateRanks = 8
+const ImmolateCastTime = time.Millisecond * 2000
 
 func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	directCoeff := [ImmolateRanks + 1]float64{0, .058, .125, .2, .2, .2, .2, .2, .2}[rank]
@@ -41,10 +42,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
-			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				cast.CastTime = spell.CastTime()
+				CastTime: ImmolateCastTime,
 			},
 			CastTime: func(spell *core.Spell) time.Duration {
 				durationDecrease := time.Duration(0)

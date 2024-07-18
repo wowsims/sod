@@ -629,26 +629,4 @@ var DenyItemSetIds = []int{
 	549, // Lieutenant Commander's Investiture
 	550, // Lieutenant Commander's Pursuance
 	551, // Lieutenant Commander's Refuge
-
-	////////////////////////////////////////////////////////
-	// SoD Phase 4 sets that still need to be implemented //
-	////////////////////////////////////////////////////////
-
-	// Hunter
-	1702, // Giantstalker Pursuit
-	1703, // Giantstalker Prowess
-
-	// Mage
-
-	// Paladin
-	1706, // Lawbringer Mercy
-	1707, // Lawbringer Radiance
-	1708, // Lawbringer Will
-
-	// Rogue
-	1712, // Nightslayer Battlearmor
-
-	// Warlock
-
-	// Warrior
 }

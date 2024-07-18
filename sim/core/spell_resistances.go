@@ -28,7 +28,7 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 			}
 
 			// Physical resistance (armor).
-			return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
+			return attackTable.GetArmorDamageModifier(), OutcomeEmpty
 		}
 	}
 
@@ -81,7 +81,7 @@ func MultiSchoolShouldUseArmor(spell *Spell, target *Unit) bool {
 	return lowestIsArmor
 }
 
-func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
+func (at *AttackTable) GetArmorDamageModifier() float64 {
 	armorPenRating := at.Attacker.stats[stats.ArmorPenetration]
 	defenderArmor := max(at.Defender.Armor()-armorPenRating, 0.0)
 	return 1 - defenderArmor/(defenderArmor+400+85*float64(at.Attacker.Level))

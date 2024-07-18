@@ -18,6 +18,7 @@ func (warlock *Warlock) ApplyRunes() {
 
 	// Cloak Runes
 	warlock.applyDecimation()
+	warlock.registerInfernalArmorCD()
 
 	// Chest Runes
 	warlock.applyDemonicTactics()

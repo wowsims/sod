@@ -8,6 +8,8 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const IncinerateCastTime = time.Millisecond * 2250
+
 func (warlock *Warlock) registerIncinerateSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) {
 		return
@@ -43,7 +45,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2250,
+				CastTime: IncinerateCastTime,
 			},
 		},
 

@@ -8,6 +8,7 @@ import (
 )
 
 const SoulFireRanks = 2
+const SoulFireCastTime = time.Millisecond * 6000
 
 func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 	hasDecimationRune := warlock.HasRune(proto.WarlockRune_RuneCloakDecimation)
@@ -35,7 +36,7 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 6000,
+				CastTime: SoulFireCastTime,
 			},
 		},
 
