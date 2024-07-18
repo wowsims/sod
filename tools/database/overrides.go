@@ -97,7 +97,8 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
-	14637: {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	14637:  {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	221783: {}, // https://www.wowhead.com/classic/item=221783/lawbringer-spaulders
 }
 
 // Keep these sorted by item ID.
