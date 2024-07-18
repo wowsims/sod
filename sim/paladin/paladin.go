@@ -94,11 +94,6 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 
 	paladin.lingerDuration = time.Millisecond * 400
-
-	if paladin.GetCharacter().HasSetBonus(ItemSetLawbringerRadiance, 6) {
-		paladin.lingerDuration = time.Second * 6
-	}
-
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
