@@ -3,10 +3,12 @@ import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
 	AttackPowerBuff,
+	Conjured,
 	Consumes,
 	Debuffs,
 	DragonslayerBuff,
 	EnchantedSigil,
+	Flask,
 	Food,
 	IndividualBuffs,
 	Potions,
@@ -17,6 +19,7 @@ import {
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { FeralDruid_Options as FeralDruidOptions, FeralDruid_Rotation as FeralDruidRotation } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -27,6 +30,7 @@ import Phase4APL from './apls/phase_4.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 import Phase3Gear from './gear_sets/phase_3.gear.json';
+import Phase4Gear from './gear_sets/phase_4.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -39,16 +43,17 @@ import Phase3Gear from './gear_sets/phase_3.gear.json';
 export const GearPhase1 = PresetUtils.makePresetGear('Phase 1', Phase1Gear);
 export const GearPhase2 = PresetUtils.makePresetGear('Phase 2', Phase2Gear);
 export const GearPhase3 = PresetUtils.makePresetGear('Phase 3', Phase3Gear);
+export const GearPhase4 = PresetUtils.makePresetGear('Phase 4', Phase4Gear);
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
 	[Phase.Phase2]: [GearPhase2],
 	[Phase.Phase3]: [GearPhase3],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [GearPhase4],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase3][0];
+export const DefaultGear = GearPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -118,15 +123,18 @@ export const DefaultOptions = FeralDruidOptions.create({
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
+	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	food: Food.FoodSagefishDelight,
+	flask: Flask.FlaskOfDistilledWisdom,
+	food: Food.FoodSmokedDesertDumpling,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	miscConsumes: {
 		catnip: true,
 	},
 	strengthBuff: StrengthBuff.JujuPower,
+	zanzaBuff: ZanzaBuff.ROIDS,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -136,12 +144,16 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	graceOfAirTotem: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectImproved,
+	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfKings: true,
+	blessingOfMight: TristateEffect.TristateEffectImproved,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	fengusFerocity: true,
 	mightOfStormwind: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,

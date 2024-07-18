@@ -765,9 +765,9 @@ export const makeMp5ConsumeInput = makeConsumeInputFactory({ consumesFieldName: 
 export const Windfury: ConsumableInputConfig<WeaponImbue> = {
 	actionId: player =>
 		player.getMatchingSpellActionId([
-			{ id: 8516, minLevel: 32, maxLevel: 41 },
-			{ id: 10608, minLevel: 42, maxLevel: 51 },
-			{ id: 10610, minLevel: 52 },
+			{ id: 8512, minLevel: 32, maxLevel: 41 },
+			{ id: 10613, minLevel: 42, maxLevel: 51 },
+			{ id: 10614, minLevel: 52 },
 		]),
 	value: WeaponImbue.Windfury,
 };

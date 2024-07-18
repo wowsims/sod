@@ -84,10 +84,10 @@ func TestFeral(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
 			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_3"),
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase3Consumes,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
 			OtherSpecOptions: []core.SpecOptionsCombo{
 				{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
@@ -172,6 +172,24 @@ var Phase3Consumes = core.ConsumesCombo{
 			Catnip: true,
 		},
 		StrengthBuff: proto.StrengthBuff_ElixirOfGiants,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultConjured:   proto.Conjured_ConjuredDemonicRune,
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		DragonBreathChili: true,
+		Flask:             proto.Flask_FlaskOfDistilledWisdom,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		MiscConsumes: &proto.MiscConsumes{
+			Catnip: true,
+		},
+		StrengthBuff: proto.StrengthBuff_JujuPower,
 	},
 }
 

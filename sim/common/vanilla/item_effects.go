@@ -688,9 +688,10 @@ func init() {
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=19169/nightfall
-	core.NewItemEffect(Nightfall, func(agent core.Agent) {
-		makeNightfallProc(agent.GetCharacter(), "Nightfall")
-	})
+	// Removed from SoD
+	// core.NewItemEffect(Nightfall, func(agent core.Agent) {
+	// 	makeNightfallProc(agent.GetCharacter(), "Nightfall")
+	// })
 
 	itemhelpers.CreateWeaponProcDamage(PendulumOfDoom, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
 
@@ -800,9 +801,10 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
-	core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
-		makeNightfallProc(agent.GetCharacter(), "Reaving Nightfall")
-	})
+	// Removed from SoD
+	// core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
+	// 	makeNightfallProc(agent.GetCharacter(), "Reaving Nightfall")
+	// })
 
 	itemhelpers.CreateWeaponProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
 
@@ -1228,84 +1230,85 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(Thunderfury, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// Not yet available
+	// core.NewItemEffect(Thunderfury, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(Thunderfury)
-		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+	// 	procMask := character.GetProcMaskForItem(Thunderfury)
+	// 	ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
-		procActionID := core.ActionID{SpellID: 21992}
+	// 	procActionID := core.ActionID{SpellID: 21992}
 
-		singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    procActionID.WithTag(1),
-			SpellSchool: core.SpellSchoolNature,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
+	// 	singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
+	// 		ActionID:    procActionID.WithTag(1),
+	// 		SpellSchool: core.SpellSchoolNature,
+	// 		DefenseType: core.DefenseTypeMagic,
+	// 		ProcMask:    core.ProcMaskEmpty,
 
-			DamageMultiplier: 1,
-			ThreatMultiplier: 0.5,
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 0.5,
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
+	// 		},
+	// 	})
 
-		debuffAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-			return target.GetOrRegisterAura(core.Aura{
-				Label:    "Thunderfury",
-				ActionID: procActionID,
-				Duration: time.Second * 12,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					target.AddStatDynamic(sim, stats.NatureResistance, -25)
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					target.AddStatDynamic(sim, stats.NatureResistance, 25)
-				},
-			})
-		})
+	// 	debuffAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+	// 		return target.GetOrRegisterAura(core.Aura{
+	// 			Label:    "Thunderfury",
+	// 			ActionID: procActionID,
+	// 			Duration: time.Second * 12,
+	// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	// 				target.AddStatDynamic(sim, stats.NatureResistance, -25)
+	// 			},
+	// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+	// 				target.AddStatDynamic(sim, stats.NatureResistance, 25)
+	// 			},
+	// 		})
+	// 	})
 
-		results := make([]*core.SpellResult, min(5, character.Env.GetNumTargets()))
+	// 	results := make([]*core.SpellResult, min(5, character.Env.GetNumTargets()))
 
-		bounceSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    procActionID.WithTag(2),
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
+	// 	bounceSpell := character.GetOrRegisterSpell(core.SpellConfig{
+	// 		ActionID:    procActionID.WithTag(2),
+	// 		SpellSchool: core.SpellSchoolNature,
+	// 		ProcMask:    core.ProcMaskEmpty,
 
-			ThreatMultiplier: 1,
-			FlatThreatBonus:  63,
+	// 		ThreatMultiplier: 1,
+	// 		FlatThreatBonus:  63,
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for idx := range results {
-					results[idx] = spell.CalcDamage(sim, target, 0, spell.OutcomeMagicHit)
-					target = sim.Environment.NextTargetUnit(target)
-				}
-				for _, result := range results {
-					if result.Landed() {
-						debuffAuras[result.Target.Index].Activate(sim)
-					}
-					spell.DealDamage(sim, result)
-				}
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			for idx := range results {
+	// 				results[idx] = spell.CalcDamage(sim, target, 0, spell.OutcomeMagicHit)
+	// 				target = sim.Environment.NextTargetUnit(target)
+	// 			}
+	// 			for _, result := range results {
+	// 				if result.Landed() {
+	// 					debuffAuras[result.Target.Index].Activate(sim)
+	// 				}
+	// 				spell.DealDamage(sim, result)
+	// 			}
+	// 		},
+	// 	})
 
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Thunderfury",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
+	// 	character.GetOrRegisterAura(core.Aura{
+	// 		Label:    "Thunderfury",
+	// 		Duration: core.NeverExpires,
+	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	// 			aura.Activate(sim)
+	// 		},
+	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 			if !result.Landed() {
+	// 				return
+	// 			}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
-					singleTargetSpell.Cast(sim, result.Target)
-					bounceSpell.Cast(sim, result.Target)
-				}
-			},
-		})
-	})
+	// 			if ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
+	// 				singleTargetSpell.Cast(sim, result.Target)
+	// 				bounceSpell.Cast(sim, result.Target)
+	// 			}
+	// 		},
+	// 	})
+	// })
 
 	// https://www.wowhead.com/classic/item=228347/typhoon
 	// Chance on hit: Grants an extra attack on your next swing.
@@ -1363,7 +1366,6 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
-
 	itemhelpers.CreateWeaponProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=227941/wraith-scythe
@@ -1386,7 +1388,6 @@ func init() {
 			},
 		})
 	})
-
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -1592,21 +1593,22 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// Not yet in SoD
+	// core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 150
-		}
-	})
+	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+	// 		character.PseudoStats.MobTypeAttackPower += 150
+	// 	}
+	// })
 
-	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeSpellPower += 85
-		}
-	})
+	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+	// 		character.PseudoStats.MobTypeSpellPower += 85
+	// 	}
+	// })
 
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
