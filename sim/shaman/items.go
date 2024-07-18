@@ -10,12 +10,12 @@ import (
 
 // Totem Item IDs
 const (
+	TotemOfRage              = 22395
 	TotemOfTheStorm          = 23199
 	TotemOfSustaining        = 23200
 	TotemCarvedDriftwoodIcon = 209575
 	TotemInvigoratingFlame   = 215436
 	TotemTormentedAncestry   = 220607
-	TotemOfRage              = 227977
 	TotemOfThunder           = 228176
 	TotemOfRagingFire        = 228177
 	TotemOfEarthenVitality   = 228178
