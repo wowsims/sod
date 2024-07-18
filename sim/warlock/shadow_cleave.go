@@ -44,7 +44,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 2, // Undocumented 2x multiplier
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

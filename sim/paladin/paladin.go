@@ -27,16 +27,16 @@ type Paladin struct {
 	primaryPaladinAura proto.PaladinAura
 	currentPaladinAura *core.Aura
 
-        currentSeal      *core.Aura
-	auraSoM           *core.Aura
-	aurasSoR       [8]*core.Aura
-	aurasSoC       [5]*core.Aura
-	aurasSotC      [6]*core.Aura
+	currentSeal      *core.Aura
+	auraSoM          *core.Aura
+	aurasSoR         [8]*core.Aura
+	aurasSoC         [5]*core.Aura
+	aurasSotC        [6]*core.Aura
 	currentJudgement *core.Spell
-	spellJoM  *core.Spell
-	spellsJoR  [8]*core.Spell
-	spellsJoC  [5]*core.Spell
-	spellsJotC [6]*core.Spell
+	spellJoM         *core.Spell
+	spellsJoR        [8]*core.Spell
+	spellsJoC        [5]*core.Spell
+	spellsJotC       [6]*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcismCooldown  *core.Cooldown
@@ -48,6 +48,8 @@ type Paladin struct {
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
+
+	lingerDuration time.Duration
 }
 
 // Implemented by each Paladin spec.
@@ -91,6 +93,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
 
+	paladin.lingerDuration = time.Millisecond * 400
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -166,11 +169,9 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 }
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	const lingerDuration = time.Millisecond * 400
-
 	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		if seal.RemainingDuration(sim) >= lingerDuration {
-			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		if seal.RemainingDuration(sim) >= paladin.lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration)
 		}
 	}
 

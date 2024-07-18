@@ -40,7 +40,7 @@ func (warrior *Warrior) ApplyRunes() {
 	// Pants
 	warrior.applyFrenziedAssault()
 	warrior.applyConsumedByRage()
-	warrior.applyFuriousThunder()
+	// Furious Thunder implemented in thunder_clap.go
 
 	// Boots
 	// Gladiator implemented on stances.go
@@ -179,14 +179,6 @@ func (warrior *Warrior) applyConsumedByRage() {
 			warrior.ConsumedByRageAura.Activate(sim)
 		},
 	})
-}
-
-func (warrior *Warrior) applyFuriousThunder() {
-	if !warrior.HasRune(proto.WarriorRune_RuneFuriousThunder) {
-		return
-	}
-
-	warrior.ThunderClap.StanceMask = AnyStance
 }
 
 func (warrior *Warrior) applyFocusedRage() {

@@ -97,7 +97,8 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
-	14637: {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	14637:  {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	221783: {}, // https://www.wowhead.com/classic/item=221783/lawbringer-spaulders
 }
 
 // Keep these sorted by item ID.
@@ -105,10 +106,12 @@ var ItemDenyList = map[int32]struct{}{
 	9449:   {}, // https://www.wowhead.com/classic/item=9449/manual-crowd-pummeler
 	9653:   {}, // Speedy Racer Goggles
 	12104:  {}, // Brindlethorn Tunic
+	12798:  {}, // https://www.wowhead.com/classic/item=12798/annihilator Removed from SoD
 	12805:  {}, // Orb of Fire
 	17782:  {}, // talisman of the binding shard
 	17783:  {}, // talisman of the binding fragment
 	17802:  {}, // Deprecated version of Thunderfury
+	19169:  {}, // https://www.wowhead.com/classic/item=19169/nightfall Removed from SoD
 	20522:  {}, // Feral Staff
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
@@ -131,6 +134,7 @@ var ItemDenyList = map[int32]struct{}{
 	215116: {}, // UNUSED - Hyperconductive Speed Belt
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
+	227843: {}, // https://www.wowhead.com/classic/item=227843/reaving-nightfall Removed from SoD
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
 }
@@ -463,6 +467,9 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
 	regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),
 
+	// BWL
+	regexp.MustCompile(`Thunderfury`),
+
 	// ZG
 	regexp.MustCompile(`Zandalarian`),
 	regexp.MustCompile(`Bloodvine [a-zA-z]+`),
@@ -470,12 +477,17 @@ var DenyListNameRegexes = []*regexp.Regexp{
 
 	// AQ
 	regexp.MustCompile(`Qiraji`),
+	regexp.MustCompile(`[A-Za-z\s]+ of the Bronze Dragonflight`),
+	regexp.MustCompile(`[A-Za-z\s]+ of the Fallen God`),
+	regexp.MustCompile(`Belt of [A-Za-z]+ Heads`),
 
 	// Naxx
 	regexp.MustCompile(`Icebane`),
 	regexp.MustCompile(`Icy Scale`),
 	regexp.MustCompile(`Polar`),
 	regexp.MustCompile(`Glacial`),
+	regexp.MustCompile(`Mark of the Champion`),
+	regexp.MustCompile(`Atiesh`),
 }
 
 // Data can easily be found here:
@@ -629,26 +641,4 @@ var DenyItemSetIds = []int{
 	549, // Lieutenant Commander's Investiture
 	550, // Lieutenant Commander's Pursuance
 	551, // Lieutenant Commander's Refuge
-
-	////////////////////////////////////////////////////////
-	// SoD Phase 4 sets that still need to be implemented //
-	////////////////////////////////////////////////////////
-
-	// Hunter
-	1702, // Giantstalker Pursuit
-	1703, // Giantstalker Prowess
-
-	// Mage
-
-	// Paladin
-	1706, // Lawbringer Mercy
-	1707, // Lawbringer Radiance
-	1708, // Lawbringer Will
-
-	// Rogue
-	1712, // Nightslayer Battlearmor
-
-	// Warlock
-
-	// Warrior
 }

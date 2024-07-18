@@ -154,12 +154,12 @@ func (shaman *Shaman) applyElementalFury() {
 	})
 }
 
-var ElementalMasteryActionId = core.ActionID{SpellID: 16166}
-
 func (shaman *Shaman) registerElementalMasteryCD() {
 	if !shaman.Talents.ElementalMastery {
 		return
 	}
+
+	actionID := core.ActionID{SpellID: 16166}
 
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
@@ -168,7 +168,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
-		ActionID: ElementalMasteryActionId,
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
@@ -207,7 +207,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: ElementalMasteryActionId,
+		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

@@ -37,6 +37,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatAgility,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatDefense,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeHaste,
@@ -62,6 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatAgility,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatDefense,
 	],
 
 	defaults: {
@@ -80,6 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			[Stat.StatSpellCrit]: 0.53,
 			[Stat.StatSpellHaste]: 0.81,
 			[Stat.StatStamina]: 0.01,
+			[Stat.StatDefense]: 1.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -152,15 +155,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [Presets.PresetBuildAff, Presets.PresetBuildDemo, Presets.PresetBuildDestro],
 	},
 
 	autoRotation: player => {
-		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler;
-		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
+		let specNumber = player.getTalentTree();
+		const level = player.getLevel();
 
-		// MC vs LoF
-		const specNumber = hasMasterChanneler ? 0 : 1;
-		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		// Pre-60 had fewer options so it basically came down to master channeler vs no master channeler
+		if (level < 60) {
+			const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler;
+			specNumber = hasMasterChanneler ? 0 : 1;
+			return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
+		}
+
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -90,7 +90,6 @@ enum RogueRune {
 	RuneMutilate				= 399956;
 	RuneShadowstrike			= 399985;
 	RuneSaberSlash				= 424785;
-	RuneShiv					= 424799;
 	RuneMainGauche				= 424919;
 	RuneCutthroat				= 462708;
 

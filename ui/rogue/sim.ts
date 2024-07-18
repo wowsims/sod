@@ -4,6 +4,7 @@ import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, Target, WeaponType } from '../core/proto/common.js';
+import { RogueRune } from '../core/proto/rogue';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { HonorOfThievesCritRate } from './inputs';
@@ -167,7 +168,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	},
 
 	autoRotation: player => {
-		return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		// Try to find a rotation by hand rune
+		const handRuneID = player.getEquippedItem(ItemSlot.ItemSlotHands)?._rune?.id ?? 0;
+		const preset = Presets.DefaultAPLs[player.getLevel()][handRuneID];
+
+		if (preset) return preset.rotation.rotation!;
+
+		throw new Error('Auto rotation is not supported for your level / hand rune combination. Please select an APL manually.');
 	},
 
 	raidSimPresets: [

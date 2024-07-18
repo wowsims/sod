@@ -167,45 +167,35 @@ var Phase3NFRuinTalents = "25002500102-03-50502051020001"
 var Phase4AffTalents = "4500253012201005--50502051020001"
 var Phase4DestroTalents = "05002-035004-5050205102005151"
 
-var defaultDestroOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Imp,
-	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
-}
-
 var DefaultDestroWarlock = &proto.Player_Warlock{
 	Warlock: &proto.Warlock{
-		Options: defaultDestroOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Imp,
+			WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
+		},
 	},
 }
 
-// ---------------------------------------
 var DefaultAfflictionWarlock = &proto.Player_Warlock{
 	Warlock: &proto.Warlock{
-		Options: defaultAfflictionOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Imp,
+			WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
+		},
 	},
 }
 
-var defaultAfflictionOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Imp,
-	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
-}
-
-// ---------------------------------------
 var DefaultDemonologyWarlock = &proto.Player_Warlock{
 	Warlock: &proto.Warlock{
-		Options: defaultDemonologyOptions,
+		Options: &proto.WarlockOptions{
+			Armor:       proto.WarlockOptions_FelArmor,
+			Summon:      proto.WarlockOptions_Felguard,
+			WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
+		},
 	},
 }
-
-var defaultDemonologyOptions = &proto.WarlockOptions{
-	Armor:       proto.WarlockOptions_DemonArmor,
-	Summon:      proto.WarlockOptions_Succubus,
-	WeaponImbue: proto.WarlockOptions_NoWeaponImbue,
-}
-
-// ---------------------------------------------------------
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",

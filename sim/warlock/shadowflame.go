@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const ShadowflameCastTime = time.Second * 2
+
 func (warlock *Warlock) registerShadowflameSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame) {
 		return
@@ -37,7 +39,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 2,
+				CastTime: ShadowflameCastTime,
 			},
 		},
 

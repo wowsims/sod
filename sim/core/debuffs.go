@@ -159,8 +159,18 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	// Major Armor Debuffs
 	if targetIdx == 0 {
 		if debuffs.ExposeArmor != proto.TristateEffect_TristateEffectMissing {
-			// Improved EA
 			aura := ExposeArmorAura(target, TernaryInt32(debuffs.ExposeArmor == proto.TristateEffect_TristateEffectRegular, 0, 2), level)
+			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
+				Period:   time.Second * 3,
+				NumTicks: 1,
+				OnAction: func(sim *Simulation) {
+					aura.Activate(sim)
+				},
+			}, raid)
+		}
+
+		if debuffs.SebaciousPoison != proto.TristateEffect_TristateEffectMissing {
+			aura := SebaciousPoisonAura(target, TernaryInt32(debuffs.SebaciousPoison == proto.TristateEffect_TristateEffectRegular, 0, 2), level)
 			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 1,
@@ -924,6 +934,40 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 		Label:    "ExposeArmor",
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Second * 30,
+	})
+
+	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{
+		Priority: arpen,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Armor, -ee.Priority)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
+		},
+	})
+
+	return aura
+}
+
+func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
+	if playerLevel < 60 {
+		return nil
+	}
+
+	spellID := map[int32]int32{
+		60: 439462,
+	}[playerLevel]
+
+	arpen := map[int32]float64{
+		60: 1700,
+	}[playerLevel]
+
+	arpen *= []float64{1, 1.25, 1.5}[improvedEA]
+
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Sebacious Poison",
+		ActionID: ActionID{SpellID: spellID},
+		Duration: time.Second * 15,
 	})
 
 	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{

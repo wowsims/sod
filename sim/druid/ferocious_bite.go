@@ -48,17 +48,14 @@ var ferociousBiteRanks = []FerociousBiteRankInfo{
 		dmgPerCombo:  128.0,
 		dmgPerEnergy: 2.5,
 	},
-	// Rank 5 learned from the book.
-	// Implement this spell as having multiple ranks available later? Like e.g. Starfire?
-	// Or just uncomment this once the book is available?
-	// {
-	// 	id:           31018,
-	// 	level:        60,
-	// 	dmgBase:      52.0,
-	// 	dmgRange:     60.0,
-	// 	dmgPerCombo:  147.0,
-	// 	dmgPerEnergy: 2.7,
-	// },
+	{
+		id:           31018,
+		level:        60,
+		dmgBase:      52.0,
+		dmgRange:     60.0,
+		dmgPerCombo:  147.0,
+		dmgPerEnergy: 2.7,
+	},
 }
 
 func (druid *Druid) registerFerociousBiteSpell() {

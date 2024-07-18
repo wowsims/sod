@@ -101,3 +101,28 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
+	Name: "Lawbringer Radiance",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// No need to model
+			//(2) Set : Your Judgement of Light and Judgement of Wisdom also grant the effects of Judgement of the Crusader.
+		},
+		4: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 2)
+			character.AddStat(stats.SpellCrit, 2)
+		},
+		6: func(agent core.Agent) {
+			// Implemented in Paladin.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Paladin - Retribution 6P Bonus",
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					paladin.lingerDuration = time.Second * 6
+				},
+			}))
+		},
+	},
+})

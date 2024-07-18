@@ -425,7 +425,7 @@ export const ManaSpringTotem = withLabel(
 	'Mana Spring Totem',
 );
 export const VampiricTouchReplenishment = withLabel(
-	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402779), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
 	'Vampiric Touch MP5',
 );
 
@@ -652,6 +652,11 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 				]),
 			impId: ActionId.fromSpellId(14169),
 			fieldName: 'exposeArmor',
+		}),
+		makeTristateDebuffInput({
+			actionId: player => player.getMatchingSpellActionId([{ id: 439500, minLevel: 60 }]),
+			impId: ActionId.fromSpellId(14169),
+			fieldName: 'sebaciousPoison',
 		}),
 		makeMultistateMultiplierDebuffInput({
 			actionId: () => ActionId.fromSpellId(402818),

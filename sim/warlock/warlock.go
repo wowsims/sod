@@ -111,6 +111,7 @@ type Warlock struct {
 	PreviousTime  time.Duration
 
 	demonicKnowledgeSp   float64
+	nightfallProcChance  float64
 	zilaGularAura        *core.Aura
 	shadowSparkAura      *core.Aura
 	defendersResolveAura *core.Aura
