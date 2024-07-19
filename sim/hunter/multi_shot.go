@@ -28,7 +28,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -118,7 +118,8 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 		config := hunter.getMultiShotConfig(i, timer)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.ArcaneShot = hunter.GetOrRegisterSpell(config)
+			hunter.MultiShot = hunter.GetOrRegisterSpell(config)
+			hunter.Shots = append(hunter.Shots, hunter.MultiShot)
 		}
 	}
 }

@@ -11,6 +11,17 @@ import (
 
 var TalentTreeSizes = [3]int{16, 14, 16}
 
+const (
+	SpellFlagShot = core.SpellFlagAgentReserved1
+)
+
+const (
+	SpellCode_HunterNone int32 = iota
+
+	SpellCode_HunterAimedShot
+	SpellCode_HunterMongooseBite
+)
+
 func RegisterHunter() {
 	core.RegisterAgentFactory(
 		proto.Player_Hunter{},
@@ -64,10 +75,13 @@ type Hunter struct {
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
+	SteadyShot     *core.Spell
 	Volley         *core.Spell
 	CarveMH        *core.Spell
 	CarveOH        *core.Spell
 	WingClip       *core.Spell
+
+	Shots []*core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -279,7 +293,6 @@ func (hunter *Hunter) baseRuneAbilityDamage() float64 {
 }
 
 func (hunter *Hunter) OnGCDReady(_ *core.Simulation) {
-
 }
 
 // Agent is a generic way to access underlying hunter on any of the agents.

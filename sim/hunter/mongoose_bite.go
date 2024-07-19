@@ -19,6 +19,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 
 	raptorFuryDmgMult := 0.1
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterMongooseBite,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,

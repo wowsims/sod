@@ -15,7 +15,7 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 		ActionID:    core.ActionID{SpellID: 34490},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | SpellFlagShot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.06,
@@ -52,4 +52,5 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 			})
 		},
 	})
+	hunter.Shots = append(hunter.Shots, hunter.SilencingShot)
 }
