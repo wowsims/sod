@@ -97,6 +97,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
+	hasHitAndRun := hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun)
 
 	spellID := core.Ternary(hasMeleeSpecialist, RaptorStrikeSpellIdMeleeSpecialist, RaptorStrikeSpellId)[rank]
 	baseDamage := RaptorStrikeBaseDamage[rank]
@@ -125,6 +126,10 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if hasHitAndRun {
+				hunter.HitAndRunAura.Activate(sim)
+			}
+
 			multiplier := 1.0
 			if hasRaptorFury {
 				multiplier *= hunter.raptorFuryDamageMultiplier()
