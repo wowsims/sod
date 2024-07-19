@@ -10,6 +10,7 @@ import (
 
 // Totem Item IDs
 const (
+	TotemOfRage              = 22395
 	TotemOfTheStorm          = 23199
 	TotemOfSustaining        = 23200
 	TotemCarvedDriftwoodIcon = 209575
@@ -101,6 +102,13 @@ func init() {
 				}
 			},
 		})
+	})
+
+	// Totem of Rage
+	// Equip: Increases damage done by Earth Shock, Flame Shock, and Frost Shock by up to 30.
+	// Acts as extra 30 spellpower for shocks.
+	core.NewItemEffect(TotemOfRage, func(agent core.Agent) {
+		// Implemented in earth_shock.go, flame_shock.go, frost_shock.go
 	})
 
 	// https://www.wowhead.com/classic/item=228176/totem-of-thunder
