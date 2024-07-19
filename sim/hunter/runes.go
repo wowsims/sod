@@ -275,19 +275,23 @@ func (hunter *Hunter) applyCobraSlayer() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
 			if result.Outcome.Matches(core.OutcomeDodge) {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
-			} else if result.Outcome.Matches(core.OutcomeLanded) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-					if sim.Proc((float64(aura.GetStacks()) * 0.05), "Cobra Slayer") {
-						aura.SetStacks(sim, 1)
-						hunter.DefensiveState.Activate(sim)
-					} else {
-						aura.AddStack(sim)
-					}
-				}
+				return
 			}
+
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.05), "Cobra Slayer") {
+				aura.SetStacks(sim, 1)
+				hunter.DefensiveState.Activate(sim)
+				return
+			}
+
+			aura.AddStack(sim)
 		},
 	})
 }

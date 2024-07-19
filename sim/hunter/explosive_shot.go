@@ -28,7 +28,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | SpellFlagShot,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -94,4 +94,5 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 			})
 		},
 	})
+	hunter.Shots = append(hunter.Shots, hunter.ExplosiveShot)
 }

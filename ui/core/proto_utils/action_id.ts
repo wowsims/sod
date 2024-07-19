@@ -93,6 +93,9 @@ export class ActionId {
 			case OtherAction.OtherActionShoot:
 				name = 'Shoot';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/ability_marksmanship.jpg';
+				if (tag === 3) {
+					name += ' (Extra Attack)';
+				}
 				break;
 			case OtherAction.OtherActionMove:
 				name = 'Move';

@@ -27,7 +27,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -56,7 +56,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 			if sim.IsExecutePhase20() {
 				spell.CD.Reset()
 			}
-			
+
 			damage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + hunter.AmmoDamageBonus + baseDamage
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
@@ -73,4 +73,5 @@ func (hunter *Hunter) registerKillShotSpell() {
 			})
 		},
 	})
+	hunter.Shots = append(hunter.Shots, hunter.KillShot)
 }

@@ -758,9 +758,9 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 		})
 	case proto.EnchantedSigil_LivingDreamsSigil:
 		character.AddStats(stats.Stats{
-			stats.AttackPower:       50,
-			stats.RangedAttackPower: 50,
-			stats.SpellPower:        50,
+			stats.AttackPower:       30,
+			stats.RangedAttackPower: 30,
+			stats.SpellPower:        30,
 		})
 	}
 }

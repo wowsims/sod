@@ -44,6 +44,10 @@ func (shaman *Shaman) newFrostShockSpellConfig(rank int, shockTimer *core.Timer)
 	spell.Rank = rank
 	spell.BonusCoefficient = spellCoeff
 
+	bonusDamage := core.TernaryFloat64(shaman.Ranged().ID == TotemOfRage, 30*spellCoeff, 0)
+	baseDamageLow += bonusDamage
+	baseDamageHigh += bonusDamage
+
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
