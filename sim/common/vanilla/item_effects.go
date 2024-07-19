@@ -60,9 +60,16 @@ const (
 	TemperedBlackAmnesty     = 227832 // 19166
 	EbonFist                 = 227842
 	ReavingNightfall         = 227843
+	FlameWrath               = 227934 // 11809
 	WraithScythe             = 227941
 	BurstOfKnowledge         = 227972
 	Ironfoe                  = 227991 // 11684
+	EbonHiltOfMarduk         = 227993 // 14576
+	FrightskullShaft         = 227994 // 14531
+	BarovianFamilySword      = 227997 // 14541
+	Frightalon               = 228015 // 14024
+	HeadmastersCharge        = 228022 // 13937
+	GravestoneWarAxe         = 228029 // 13983
 	FiendishMachete          = 228056 // 18310
 	RefinedArcaniteChampion  = 228125
 	TalismanOfEphemeralPower = 228255 // 18820
@@ -99,6 +106,66 @@ func init() {
 	// Chance on hit: Heal self for 270 to 450 and Increases Strength by 120 for 30 sec.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcAura(ArcaniteChampion, "Arcanite Champion", 1.0, strengthOfTheChampionAura)
+
+	// https://www.wowhead.com/classic/item=227997/barovian-family-sword
+	// Chance on hit: Deals 30 Shadow damage every 3 sec for 15 sec. All damage done is then transferred to the caster.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(BarovianFamilySword, "Barovian Family Sword", 0.5, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 18652}
+
+		// Keep track of damage taken by each enemy
+		enemyDamageTaken := map[int32]float64{}
+		for _, target := range character.Env.Encounter.TargetUnits {
+			enemyDamageTaken[target.UnitIndex] = 0
+		}
+
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			Dot: core.DotConfig{
+				NumberOfTicks: 5,
+				TickLength:    time.Second * 3,
+				Aura: core.Aura{
+					Label: "Siphon Health (Barovian Family Sword)",
+				},
+				OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					enemyDamageTaken[target.UnitIndex] = 0
+					dot.Snapshot(target, 30, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					enemyDamageTaken[target.UnitIndex] += result.Damage
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				enemyDamageTaken[target.UnitIndex] = 0
+				spell.Dot(target).Apply(sim)
+			},
+		})
+
+		// The healing is applied at the end of the DoT and can crit according to old comments
+		for _, dot := range spell.Dots() {
+			if dot != nil {
+				unit := dot.Unit
+				dot.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					// TODO: This may not be quite correct but it's close enough
+					result := spell.CalcDamage(sim, unit, enemyDamageTaken[unit.UnitIndex], spell.OutcomeHealingCrit)
+					character.GainHealth(sim, result.Damage, healthMetrics)
+				})
+			}
+		}
+
+		return spell
+	})
 
 	// https://www.wowhead.com/classic/item=228606/blackblade-of-shahram
 	// Chance on hit: Summons the infernal spirit of Shahram.
@@ -351,6 +418,41 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcDamage(EbonHand, "Ebon Hand", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=227993/ebon-hilt-of-marduk
+	// Chance on hit: Corrupts the target, causing 210 damage over 3 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(EbonHiltOfMarduk, "Ebon Hilt of Marduk", 1.0, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18656},
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Corruption (Ebon Hilt of Marduk)",
+				},
+				TickLength:    time.Second,
+				NumberOfTicks: 3,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 70, isRollover)
+				},
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228397/empyrean-demolisher
 	// Chance on hit: Increases your attack speed by 20% for 10 sec.
 	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
@@ -539,6 +641,56 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=227934/flame-wrath
+	// Chance on hit: Envelops the caster with a Fire shield for 15 sec and shoots a ring of fire dealing 130 to 170 damage to all nearby enemies.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcSpell(FlameWrath, "Flame Wrath", 1.0, func(character *core.Character) *core.Spell {
+		shieldActionID := core.ActionID{SpellID: 461152}
+		shieldSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         shieldActionID,
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 1, // Only the shield portion has scaling
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 10, spell.OutcomeAlwaysHit)
+			},
+		})
+		shieldAura := character.RegisterAura(core.Aura{
+			ActionID: shieldActionID,
+			Label:    "Flame Wrath",
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.FireResistance, 30)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.FireResistance, -30)
+			},
+			OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() {
+					shieldSpell.Cast(sim, spell.Unit)
+				}
+			},
+		})
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 461151},
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				shieldAura.Activate(sim)
+
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(130, 170), spell.OutcomeMagicHit)
+				}
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 18797},
@@ -549,6 +701,124 @@ func init() {
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 18797})
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=14024/frightalon
+	// Chance on hit: Lowers all attributes of target by 10 for 1 min.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Frightalon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		procMask := character.GetProcMaskForItem(Frightalon)
+
+		debuffAuraArray := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+			return target.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 19755},
+				Label:    "Frightalon",
+				Duration: time.Minute * 1,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatsDynamic(sim, stats.Stats{
+						stats.Agility:   -10,
+						stats.Intellect: -10,
+						stats.Stamina:   -10,
+						stats.Spirit:    -10,
+						stats.Strength:  -10,
+					})
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatsDynamic(sim, stats.Stats{
+						stats.Agility:   10,
+						stats.Intellect: 10,
+						stats.Stamina:   10,
+						stats.Spirit:    10,
+						stats.Strength:  10,
+					})
+				},
+			})
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Frightalon Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: procMask,
+			PPM:      1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffAuraArray.Get(result.Target).Activate(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=227994/frightskull-shaft
+	// Chance on hit: Deals 8 Shadow damage every 2 sec for 30 sec and lowers their Strength for the duration of the disease.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(FrightskullShaft, "Frightskull Shaft", 0.5, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18633},
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			Dot: core.DotConfig{
+				NumberOfTicks: 15,
+				TickLength:    time.Second * 2,
+				Aura: core.Aura{
+					Label: "Weakening Disease",
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatDynamic(sim, stats.Strength, -50)
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatDynamic(sim, stats.Strength, 50)
+					},
+				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 8, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=228029/gravestone-war-axe
+	// Chance on hit: Diseases target enemy for 55 Nature damage every 3 sec for 15 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(GravestoneWarAxe, "Gravestone War Axe", 0.5, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 18289},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagDisease,
+
+			Dot: core.DotConfig{
+				NumberOfTicks: 15,
+				TickLength:    time.Second * 3,
+				Aura: core.Aura{
+					Label: "Creeping Mold",
+				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 55, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
 			},
 		})
 	})
@@ -620,8 +890,11 @@ func init() {
 				Aura: core.Aura{
 					Label: "Rend",
 				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 8, isRollover)
+				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 8, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
 				},
 			},
 		})
@@ -632,6 +905,46 @@ func init() {
 	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponProcDamage(HanzoSword, "Hanzo Sword", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=228022/headmasters-charge#comments
+	// Use: Gives 20 additional intellect to party members within 30 yards. (10 Min Cooldown)
+	// Originally did not stack with Arcane Intellect, but is reported to stack in SoD
+	core.NewItemEffect(HeadmastersCharge, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 18264}
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Headmaster's Charge",
+			Duration: time.Minute * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Intellect, 25)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Intellect, -25)
+			},
+		})
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
 
 	itemhelpers.CreateWeaponProcSpell(HookfangShanker, "Hookfang Shanker", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
