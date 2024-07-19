@@ -73,6 +73,13 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 
 	hasFeralSpirit := shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit)
 
+	graceOfAirTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 3, 1))
+	graceOfAirTotemAuras[0] = core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, multiplier)
+	if hasFeralSpirit {
+		graceOfAirTotemAuras[1] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier)
+		graceOfAirTotemAuras[2] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier)
+	}
+
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
@@ -80,10 +87,8 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[AirTotem] = spell
 
-		core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, multiplier).Activate(sim)
-		if hasFeralSpirit {
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier).Activate(sim)
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier).Activate(sim)
+		for _, aura := range graceOfAirTotemAuras {
+			aura.Activate(sim)
 		}
 	}
 	return spell
@@ -116,6 +121,8 @@ func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
 
 	duration := time.Second * 120
 
+	windwallTotemAura := core.ImprovedWindwallTotemAura(&shaman.Unit)
+
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
@@ -127,7 +134,7 @@ func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
 		// but it's probably fine because bosses generally don't have ranged physical attacks.
 		// core.WindwallTotemAura(&shaman.Unit, shaman.Level, shaman.Talents.GuardianTotems).Activate(sim)
 		if has6PEarthfuryResolve {
-			core.ImprovedWindwallTotemAura(&shaman.Unit).Activate(sim)
+			windwallTotemAura.Activate(sim)
 		}
 	}
 	return spell

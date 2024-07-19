@@ -366,6 +366,9 @@ func (at *auraTracker) HasActiveAura(label string) bool {
 }
 
 func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Tried to add new aura in a finalized environment!")
+	}
 	if unit == nil {
 		panic("Aura unit is required!")
 	}
