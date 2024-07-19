@@ -63,8 +63,8 @@ export const ShadowGearPhase2 = PresetUtils.makePresetGear('P2 Shadow', ShadowGe
 export const BackdraftGearPhase3 = PresetUtils.makePresetGear('P3 Backdraft', BackdraftGearP3, { customCondition: player => player.getLevel() == 50 });
 export const NFRuinGearPhase3 = PresetUtils.makePresetGear('P3 NF/Ruin', NFRuinGearP3, { customCondition: player => player.getLevel() == 50 });
 
-export const AffGearPhase4 = PresetUtils.makePresetGear('P4 Aff (WIP)', AffGearP4, { customCondition: player => player.getLevel() == 60 });
-export const DestroGearPhase4 = PresetUtils.makePresetGear('P4 Destro (WIP)', DestroGearP4, { customCondition: player => player.getLevel() == 60 });
+export const AffGearPhase4 = PresetUtils.makePresetGear('P4 Aff', AffGearP4, { customCondition: player => player.getLevel() == 60 });
+export const DestroGearPhase4 = PresetUtils.makePresetGear('P4 Destro', DestroGearP4, { customCondition: player => player.getLevel() == 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearDestructionPhase1],

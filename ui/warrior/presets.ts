@@ -2,6 +2,8 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	Alcohol,
+	ArmorElixir,
 	AttackPowerBuff,
 	Consumes,
 	Debuffs,
@@ -9,6 +11,7 @@ import {
 	EnchantedSigil,
 	Flask,
 	Food,
+	HealthElixir,
 	IndividualBuffs,
 	Potions,
 	Profession,
@@ -66,7 +69,7 @@ export const GearPresets = {
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][0];
+export const DefaultGear = GearPresets[Phase.Phase4][1];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -172,12 +175,15 @@ export const DefaultOptions = WarriorOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
+	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MightyRagePotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
 	food: Food.FoodSmokedDesertDumpling,
 	flask: Flask.FlaskOfTheTitans,
+	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
 	strengthBuff: StrengthBuff.JujuPower,
@@ -189,9 +195,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	graceOfAirTotem: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	stoneskinTotem: TristateEffect.TristateEffectRegular,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
@@ -199,6 +207,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	fengusFerocity: true,
 	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
+	moldarsMoxie: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
 	warchiefsBlessing: true,
