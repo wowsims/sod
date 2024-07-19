@@ -282,12 +282,12 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
 		wa.lastSwingAt = sim.CurrentTime
 
-		isExtraAttack := attackSpell.Tag == tagExtraAttack
+		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
 		var originalCastTime time.Duration
 		if isExtraAttack {
-			originalCastTime = attackSpell.DefaultCast.CastTime
-			attackSpell.DefaultCast.CastTime = 0
+			originalCastTime = wa.spell.DefaultCast.CastTime
+			wa.spell.DefaultCast.CastTime = 0
 		}
 
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
@@ -296,7 +296,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 			// Ignore the first extra attack, that was used to speed up next attack
 			for i := int32(1); i < wa.extraAttacks; i++ {
 				// use original attacks for subsequent extra Attacks
-				attackSpell.Cast(sim, wa.unit.CurrentTarget)
+				wa.spell.Cast(sim, wa.unit.CurrentTarget)
 			}
 			wa.extraAttacks = 0
 		}
@@ -304,12 +304,12 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		if isExtraAttack {
 			// For ranged extra attacks, we have to wait for the spell to hit before resettings the cast time and metrics split
 			if originalCastTime > 0 {
-				attackSpell.WaitTravelTime(sim, func(sim *Simulation) {
-					attackSpell.DefaultCast.CastTime = originalCastTime
-					attackSpell.SetMetricsSplit(0)
+				wa.spell.WaitTravelTime(sim, func(sim *Simulation) {
+					wa.spell.DefaultCast.CastTime = originalCastTime
+					wa.spell.SetMetricsSplit(0)
 				})
 			} else {
-				attackSpell.SetMetricsSplit(0)
+				wa.spell.SetMetricsSplit(0)
 			}
 		}
 
@@ -657,6 +657,7 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 }
 
 // ExtraRangedAttack should be used for all "extra ranged attack" procs in Classic Era versions, including Hand of Injustice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the Ranged swing timer.
+// Note that Hand of Injustice doesn't seem to reset the swing timer however.
 func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID) {
 	if sim.Log != nil {
 		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
