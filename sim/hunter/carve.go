@@ -72,7 +72,7 @@ func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := damageFunc(sim, spell.MeleeAttackPower())
-			if target == hunter.CurrentTarget && isMH {
+			if target == hunter.CurrentTarget {
 				baseDamage *= 1.5
 			}
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
