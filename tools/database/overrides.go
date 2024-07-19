@@ -496,7 +496,6 @@ var DenyListNameRegexes = []*regexp.Regexp{
 // https://www.wowhead.com/classic/item-sets#item-sets
 var DenyItemSetIds = []int{
 	// Misc Sets
-	1,   // The Gladiator
 	41,  // Dal'Rend's Arms
 	65,  // Spider's Kiss
 	81,  // The Postmaster

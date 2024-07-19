@@ -139,6 +139,10 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
+			// Store these so that we can have the default cast time after modifiers
+			immolateCastTime := ImmolateCastTime
+			shadowflameCastTime := ShadowflameCastTime
+			incinerateCastTime := IncinerateCastTime
 			affectedSpellCodes := []int32{SpellCode_WarlockImmolate, SpellCode_WarlockShadowflame, SpellCode_WarlockIncinerate}
 			fireTranceAura := warlock.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457558},
@@ -157,13 +161,13 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Immolate {
-						spell.DefaultCast.CastTime = ImmolateCastTime
+						spell.DefaultCast.CastTime = immolateCastTime
 					}
 					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.DefaultCast.CastTime = ShadowflameCastTime
+						warlock.Shadowflame.DefaultCast.CastTime = shadowflameCastTime
 					}
 					if warlock.Incinerate != nil {
-						warlock.Incinerate.DefaultCast.CastTime = IncinerateCastTime
+						warlock.Incinerate.DefaultCast.CastTime = incinerateCastTime
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -178,6 +182,13 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
+					immolateCastTime = warlock.Immolate[0].DefaultCast.CastTime
+					if warlock.Shadowflame != nil {
+						shadowflameCastTime = warlock.Shadowflame.DefaultCast.CastTime
+					}
+					if warlock.Incinerate != nil {
+						incinerateCastTime = warlock.Incinerate.DefaultCast.CastTime
+					}
 				},
 				OnGain: func(_ *core.Aura, _ *core.Simulation) {
 					warlock.nightfallProcChance += 0.04
@@ -235,6 +246,7 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
+			soulFireCastTime := SoulFireCastTime
 			procAura := warlock.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457643},
 				Label:    "Soul Fire!",
@@ -246,7 +258,7 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.SoulFire {
-						spell.DefaultCast.CastTime = SoulFireCastTime
+						spell.DefaultCast.CastTime = soulFireCastTime
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -266,6 +278,7 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
+					soulFireCastTime = warlock.SoulFire[0].DefaultCast.CastTime
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {

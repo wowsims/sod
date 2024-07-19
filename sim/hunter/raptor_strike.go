@@ -103,11 +103,13 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	baseDamage := RaptorStrikeBaseDamage[rank]
 
 	procMask := core.ProcMaskMeleeMHSpecial
+	damageMultiplier := 1.0
 	damageFunc := core.Ternary(hasMeleeSpecialist, hunter.MHNormalizedWeaponDamage, hunter.MHWeaponDamage)
 
 	if !isMH {
 		baseDamage /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
+		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = core.Ternary(hasMeleeSpecialist, hunter.OHNormalizedWeaponDamage, hunter.OHWeaponDamage)
 	}
 
@@ -120,7 +122,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		CritDamageBonus:  hunter.mortalShots(),
-		DamageMultiplier: 1,
+		DamageMultiplier: damageMultiplier,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
