@@ -422,25 +422,18 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 		return
 	}
 
-	tickPeriod := 0.2
-
 	moveDistance := moveRange - unit.DistanceFromTarget
-	timeToMove := math.Abs(moveDistance) / unit.MoveSpeed
-	moveTicks := timeToMove / tickPeriod
+	moveTicks := math.Abs(moveDistance)
 	moveInterval := moveDistance / float64(moveTicks)
 
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 200,
-		NumTicks:        int(math.Ceil(moveTicks)),
+		Period:          time.Millisecond * 1000 / time.Duration(unit.MoveSpeed),
+		NumTicks:        int(moveTicks),
 		TickImmediately: false,
 
 		OnAction: func(sim *Simulation) {
-			remainingDistance := math.Abs(moveRange - unit.DistanceFromTarget)
-			if(remainingDistance < moveInterval) {
-				moveInterval = remainingDistance
-			}
 			unit.DistanceFromTarget += moveInterval
 			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
 
