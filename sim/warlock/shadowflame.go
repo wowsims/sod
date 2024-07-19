@@ -39,7 +39,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: ShadowflameCastTime,
+				CastTime: time.Second * 2,
 			},
 		},
 

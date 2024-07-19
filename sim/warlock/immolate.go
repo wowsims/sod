@@ -44,6 +44,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				GCD:      core.GCDDefault,
 				CastTime: ImmolateCastTime,
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
 			CastTime: func(spell *core.Spell) time.Duration {
 				durationDecrease := time.Duration(0)
 				if warlock.shadowSparkAura.IsActive() {
