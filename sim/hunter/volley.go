@@ -30,13 +30,11 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 
 	hasImprovedVolley := hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley)
 
-	manaCostModifer := 1.0
-	manaCostModifer *= 1 - (0.02 * float64(hunter.Talents.Efficiency))
+	manaCostModifer := 1 - (0.02 * float64(hunter.Talents.Efficiency))
 
 	if hasImprovedVolley {
 		manaCostModifer *= 0.5
 	}
-
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -59,9 +57,6 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 60,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !hunter.Unit.Moving
 		},
 
 		Dot: core.DotConfig{
