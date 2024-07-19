@@ -245,15 +245,11 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
-
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
-
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
-
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
 			hunter.AmmoDamageBonus
-
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {

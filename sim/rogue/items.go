@@ -57,7 +57,8 @@ func init() {
 			return
 		}
 
-		// This is treated as a buff, NOT a debuff in-game
+		// TODO: This is treated as a buff, NOT a debuff in-game
+		// We don't have the ability to remove resistances for only one agent at a time right now
 		procAura := rogue.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 461252},
 			Label:    "Shadowflame Fury",

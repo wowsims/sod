@@ -284,6 +284,12 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 		isExtraAttack := wa.spell.Tag == tagExtraAttack
 
+		var originalCastTime time.Duration
+		if isExtraAttack {
+			originalCastTime = wa.spell.DefaultCast.CastTime
+			wa.spell.DefaultCast.CastTime = 0
+		}
+
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
 		if wa.extraAttacks > 0 {
@@ -296,7 +302,15 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		}
 
 		if isExtraAttack {
-			wa.spell.SetMetricsSplit(0)
+			// For ranged extra attacks, we have to wait for the spell to hit before resettings the cast time and metrics split
+			if originalCastTime > 0 {
+				wa.spell.WaitTravelTime(sim, func(sim *Simulation) {
+					wa.spell.DefaultCast.CastTime = originalCastTime
+					wa.spell.SetMetricsSplit(0)
+				})
+			} else {
+				wa.spell.SetMetricsSplit(0)
+			}
 		}
 
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
@@ -423,13 +437,14 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
+		MetricSplits: 2,
+
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: TernaryFloat64(options.Ranged.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
-
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *Simulation) {
@@ -463,6 +478,7 @@ func (aa *AutoAttacks) finalize() {
 	}
 	if aa.AutoSwingRanged {
 		aa.ranged.spell = aa.ranged.unit.GetOrRegisterSpell(aa.ranged.config)
+		aa.ranged.spell.TagSplitMetric(1, tagExtraAttack)
 	}
 }
 
@@ -638,6 +654,18 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 	aa.mh.extraAttacks += attacks
+}
+
+// ExtraRangedAttack should be used for all "extra ranged attack" procs in Classic Era versions, including Hand of Injustice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the Ranged swing timer.
+// Note that Hand of Injustice doesn't seem to reset the swing timer however.
+func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID) {
+	if sim.Log != nil {
+		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+	}
+	aa.ranged.swingAt = sim.CurrentTime + SpellBatchWindow
+	aa.ranged.spell.SetMetricsSplit(1)
+	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
+	aa.ranged.extraAttacks += attacks
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it

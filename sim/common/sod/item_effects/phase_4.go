@@ -3,7 +3,9 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -15,6 +17,8 @@ const (
 	GloamingTreeheart     = 228083
 	WoodcarvedMoonstalker = 228089
 	TheMoltenCore         = 228122
+	FistOfTheFiresworn    = 228139
+	TreantsBane           = 228486
 )
 
 func init() {
@@ -23,6 +27,20 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=228139/fist-of-the-firesworn
+	// Chance on hit: Blasts the enemy for 70 Fire damage.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=228486/treants-bane
+	// Equip: +75 Attack Power when fighting Elementals.
+	core.NewItemEffect(TreantsBane, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
+			character.PseudoStats.MobTypeAttackPower += 75
+		}
+	})
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
