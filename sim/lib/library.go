@@ -13,6 +13,7 @@ import (
 	"github.com/wowsims/sod/sim"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/simsignals"
 	"google.golang.org/protobuf/encoding/protojson"
 	goproto "google.golang.org/protobuf/proto"
 )
@@ -36,7 +37,7 @@ func runSim(json *C.char) *C.char {
 		log.Fatalf("failed to load input json file: %s", err)
 	}
 	sim.RegisterAll()
-	result := core.RunSim(input, nil)
+	result := core.RunSim(input, nil, simsignals.Signals{})
 	out, err := protojson.Marshal(result)
 	if err != nil {
 		panic(err)
