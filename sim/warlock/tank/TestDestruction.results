@@ -612,8 +612,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2120.17196
-  tps: 3826.99723
+  dps: 2131.1537
+  tps: 3840.75157
  }
 }
 dps_results: {
@@ -647,63 +647,63 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2118.47576
-  tps: 3826.99723
+  dps: 2129.59941
+  tps: 3840.75157
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Average-Default"
  value: {
-  dps: 2135.68973
-  tps: 3853.85367
+  dps: 2145.12431
+  tps: 3874.76426
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4024.8174
-  tps: 9409.25156
+  dps: 4051.49352
+  tps: 9500.28464
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2040.94029
-  tps: 3680.57458
+  dps: 2049.01815
+  tps: 3717.01964
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2045.18118
-  tps: 3692.23017
+  dps: 2089.9695
+  tps: 3773.8389
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2281.68652
-  tps: 5820.95105
+  dps: 2303.24542
+  tps: 5900.74621
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1067.43733
-  tps: 1871.07624
+  dps: 1071.42979
+  tps: 1883.97966
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1062.50118
-  tps: 1872.15682
+  dps: 1071.43712
+  tps: 1924.58529
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2072.89752
-  tps: 3757.23626
+  dps: 2089.3796
+  tps: 3785.58756
  }
 }

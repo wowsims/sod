@@ -67,7 +67,7 @@ export const GearPresets = {
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][1];
+export const DefaultGear = GearPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets[]
