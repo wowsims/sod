@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.26978
-  weights: 0.53658
+  weights: 0.32474
+  weights: 0.60202
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.93153
-  weights: 7.21613
-  weights: 7.66581
+  weights: 0.47129
+  weights: 7.90138
+  weights: 8.72577
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
-  weights: 5.82336
-  weights: 1.13935
+  weights: 0.21821
+  weights: -0.29892
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.88111
-  weights: 4.11179
-  weights: 31.51445
+  weights: 0.29208
+  weights: 3.25477
+  weights: 36.5263
   weights: 0
   weights: 0
   weights: 0
@@ -204,8 +204,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
-  dps: 615.76894
-  tps: 543.39333
+  dps: 616.011
+  tps: 543.68775
  }
 }
 dps_results: {
@@ -295,15 +295,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 575.10694
-  tps: 510.13644
+  dps: 578.92754
+  tps: 512.14208
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2606.88659
-  tps: 2255.1992
+  dps: 2599.78516
+  tps: 2249.92079
  }
 }
 dps_results: {
@@ -337,15 +337,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2856.64762
-  tps: 2460.47037
+  dps: 2837.29654
+  tps: 2447.64524
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Average-Default"
  value: {
-  dps: 3233.08466
-  tps: 2727.90236
+  dps: 3232.0655
+  tps: 2726.85443
  }
 }
 dps_results: {
@@ -435,7 +435,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2619.28466
-  tps: 2207.57899
+  dps: 2613.74907
+  tps: 2200.64255
  }
 }
