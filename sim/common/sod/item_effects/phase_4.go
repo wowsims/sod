@@ -177,6 +177,7 @@ func init() {
 			pet.MultiplyStat(stats.Health, 1.03)
 			pet.MultiplyStat(stats.Armor, 1.10)
 			pet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			pet.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
 		}
 	})
 
