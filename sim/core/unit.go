@@ -63,6 +63,7 @@ type Unit struct {
 	Moving                  bool
 	moveAura                *Aura
 	moveSpell               *Spell
+	MoveSpeed				float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -382,6 +383,7 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 }
 
 func (unit *Unit) initMovement() {
+	unit.MoveSpeed = 7.0
 	unit.moveAura = unit.GetOrRegisterAura(Aura{
 		Label:     "Movement",
 		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
@@ -389,6 +391,9 @@ func (unit *Unit) initMovement() {
 		MaxStacks: 30,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
+			if unit.ChanneledDot != nil {
+				unit.ChanneledDot.Cancel(sim)
+			}
 			unit.AutoAttacks.CancelAutoSwing(sim)
 			unit.Moving = true
 		},
@@ -417,18 +422,14 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 		return
 	}
 
-	tickPeriod := 0.5
-
 	moveDistance := moveRange - unit.DistanceFromTarget
-	moveSpeed := 2.0
-	timeToMove := math.Abs(moveDistance) / moveSpeed
-	moveTicks := timeToMove / tickPeriod
+	moveTicks := math.Abs(moveDistance)
 	moveInterval := moveDistance / float64(moveTicks)
 
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 1000 / 7,
+		Period:          time.Millisecond * 1000 / time.Duration(unit.MoveSpeed),
 		NumTicks:        int(moveTicks),
 		TickImmediately: false,
 

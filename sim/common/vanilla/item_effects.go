@@ -2320,7 +2320,7 @@ func init() {
 			ActionID:         core.ActionID{SpellID: 7712},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ProcMask:         core.ProcMaskTriggerInstant,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

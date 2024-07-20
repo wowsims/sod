@@ -102,7 +102,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 13897},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskSpellDamage | core.ProcMaskTriggerInstant,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
