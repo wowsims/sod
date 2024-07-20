@@ -278,7 +278,7 @@ func init() {
 		// Custom ICD so it can be shared by both proc triggers
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 200,
+			Duration: time.Second * 3,
 		}
 
 		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -364,7 +364,7 @@ func init() {
 		// Custom ICD so it can be shared by both proc triggers
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
-			Duration: time.Second * 5,
+			Duration: time.Second * 8,
 		}
 
 		handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
