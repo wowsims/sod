@@ -19,6 +19,8 @@ const (
 	TheMoltenCore         = 228122
 	FistOfTheFiresworn    = 228139
 	TreantsBane           = 228486
+	BeastmastersBoots	  = 226903
+	WhistleOfTheBeast	  = 228432
 )
 
 func init() {
@@ -155,6 +157,26 @@ func init() {
 
 		if character.HasEnergyBar() {
 			character.EnableEnergyBar(character.MaxEnergy() + 10)
+		}
+	})
+
+
+	core.NewItemEffect(BeastmastersBoots, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		for _, pet := range character.Pets {
+			pet.PseudoStats.DamageDealtMultiplier *= 1.03
+		}
+	})
+
+	core.NewItemEffect(WhistleOfTheBeast, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		for _, pet := range character.Pets {
+			pet.PseudoStats.DamageDealtMultiplier *= 1.03
+			pet.MultiplyStat(stats.Health, 1.03)
+			pet.MultiplyStat(stats.Armor, 1.10)
+			pet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		}
 	})
 
