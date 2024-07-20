@@ -303,21 +303,21 @@ dps_results: {
  key: "TestFury-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
   dps: 2606.88659
-  tps: 2255.1992
+  tps: 2250.95672
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BattlegearofHeroism"
  value: {
   dps: 1962.74619
-  tps: 1756.36386
+  tps: 1731.41411
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
   dps: 2306.35236
-  tps: 2014.84866
+  tps: 1995.97542
  }
 }
 dps_results: {
@@ -331,21 +331,21 @@ dps_results: {
  key: "TestFury-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
   dps: 2306.35236
-  tps: 2014.84866
+  tps: 1995.97542
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
   dps: 2856.64762
-  tps: 2460.47037
+  tps: 2454.71988
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Average-Default"
  value: {
   dps: 3233.08466
-  tps: 2727.90236
+  tps: 2724.27169
  }
 }
 dps_results: {
@@ -436,6 +436,6 @@ dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 2619.28466
-  tps: 2207.57899
+  tps: 2205.76543
  }
 }

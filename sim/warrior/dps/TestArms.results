@@ -100,14 +100,14 @@ dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
   dps: 879.11518
-  tps: 802.18707
+  tps: 758.5153
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
   dps: 1202.76061
-  tps: 1085.70398
+  tps: 1021.64112
  }
 }
 dps_results: {
@@ -198,6 +198,6 @@ dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
   dps: 1109.45199
-  tps: 1006.55678
+  tps: 943.83998
  }
 }
