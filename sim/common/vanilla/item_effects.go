@@ -2316,11 +2316,24 @@ func init() {
 	core.NewItemEffect(BlazefuryMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+		procSpellMH := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 7712},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskTriggerInstant,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 2, spell.OutcomeMagicCrit)
+			},
+		})
+
+		procSpellOH := character.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 7712},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskTriggerInstant,
+			ProcMask:         core.ProcMaskTriggerInstantOH,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -2334,7 +2347,15 @@ func init() {
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, result.Target)
+				if spell.ProcMask.Matches(core.ProcMaskTriggerInstant) {
+					return
+				}
+
+				if spell.IsMH() {
+					procSpellMH.Cast(sim, result.Target)
+				} else {
+					procSpellOH.Cast(sim, result.Target)
+				}
 			},
 		})
 	})

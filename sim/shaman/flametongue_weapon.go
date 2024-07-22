@@ -76,6 +76,13 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
 
+	// Blazefury Medallion procs flametongue
+	if procMask.Matches(core.ProcMaskMeleeMH) {
+		procMask |= core.ProcMaskTriggerInstant
+	} else {
+		procMask |= core.ProcMaskTriggerInstantOH
+	}
+
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Flametongue Imbue",
 		Duration: core.NeverExpires,
@@ -87,7 +94,7 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 				return
 			}
 
-			if spell.IsMH() {
+			if spell.IsMH() || procMask.Matches(core.ProcMaskTriggerInstant) {
 				mhSpell.Cast(sim, result.Target)
 			} else {
 				ohSpell.Cast(sim, result.Target)
