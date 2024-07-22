@@ -1,7 +1,7 @@
 character_stats_results: {
  key: "TestSV-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 148.83
+  final_stats: 154.2871
   final_stats: 308.913
   final_stats: 272.25
   final_stats: 114.95
@@ -13,12 +13,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 30
+  final_stats: 24.75
   final_stats: 6
   final_stats: 14.3703
   final_stats: 0
   final_stats: 0
-  final_stats: 1033.233
+  final_stats: 941.2001
   final_stats: 6
   final_stats: 16.36006
   final_stats: 0
@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.75695
+  weights: 0.76044
   weights: 0
   weights: 0
   weights: 0
@@ -68,8 +68,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.32805
-  weights: 4.82288
-  weights: 7.01523
+  weights: 4.7728
+  weights: 6.60774
   weights: 0
   weights: 0
   weights: 0
@@ -77,7 +77,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03715
+  weights: 0.03876
   weights: 0
   weights: 0
   weights: 0
@@ -99,112 +99,112 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 438.75447
-  tps: 271.32762
+  dps: 425.91525
+  tps: 258.83961
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 758.92644
-  tps: 384.75806
+  dps: 728.85275
+  tps: 364.59556
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 767.81886
-  tps: 391.15842
+  dps: 737.70379
+  tps: 370.98903
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1798.1761
-  tps: 1715.31949
+  dps: 1753.5291
+  tps: 1675.74828
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 757.63063
-  tps: 389.57347
+  dps: 743.04196
+  tps: 379.44323
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 783.84359
-  tps: 407.0731
+  dps: 769.46434
+  tps: 396.47651
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1016.33842
+  dps: 1027.134
   tps: 1099.32586
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 391.82111
+  dps: 402.82192
   tps: 203.68877
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 412.45057
+  dps: 423.47682
   tps: 204.64835
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1793.9118
-  tps: 1700.79183
+  dps: 1704.67651
+  tps: 1626.86336
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 769.52654
-  tps: 390.93101
+  dps: 740.13292
+  tps: 370.66874
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 793.87266
-  tps: 410.50036
+  dps: 763.82531
+  tps: 389.16265
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1008.99206
+  dps: 1020.46071
   tps: 1080.07285
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 396.0579
+  dps: 407.385
   tps: 203.4828
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 421.81469
+  dps: 432.55606
   tps: 211.66996
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 727.47945
-  tps: 363.79328
+  dps: 699.13132
+  tps: 345.069
  }
 }

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -241,4 +242,12 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 		Spell: berserkingSpell,
 		Type:  CooldownTypeDPS,
 	})
+}
+
+func (character *Character) IsAlliance() bool {
+	return slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race)
+}
+
+func (character *Character) IsHorde() bool {
+	return slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race)
 }
