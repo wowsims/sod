@@ -45,6 +45,7 @@ var TalentTreeSizes = [3]int{18, 17, 17}
 
 type WarriorInputs struct {
 	StanceSnapshot bool
+	Stance         proto.WarriorStance
 }
 
 const (
@@ -262,9 +263,36 @@ func (warrior *Warrior) Reset(sim *core.Simulation) {
 	warrior.curQueueAura = nil
 	warrior.curQueuedAutoSpell = nil
 
-	// Reset stance
-	warrior.Stance = BattleStance
-	warrior.BattleStanceAura.Activate(sim)
+	// Reset Stance
+	switch warrior.WarriorInputs.Stance {
+	case proto.WarriorStance_WarriorStanceBattle:
+		warrior.Stance = BattleStance
+		warrior.BattleStanceAura.Activate(sim)
+	case proto.WarriorStance_WarriorStanceDefensive:
+		warrior.Stance = DefensiveStance
+		warrior.DefensiveStanceAura.Activate(sim)
+	case proto.WarriorStance_WarriorStanceBerserker:
+		warrior.Stance = BerserkerStance
+		warrior.BerserkerStanceAura.Activate(sim)
+	case proto.WarriorStance_WarriorStanceGladiator:
+		warrior.Stance = GladiatorStance
+		warrior.GladiatorStanceAura.Activate(sim)
+	default:
+		// Fallback to checking for Glad Stance rune or checking talent tree
+		if warrior.GladiatorStanceAura != nil {
+			warrior.Stance = GladiatorStance
+			warrior.GladiatorStanceAura.Activate(sim)
+		} else if warrior.PrimaryTalentTree == ArmsTree {
+			warrior.Stance = BattleStance
+			warrior.BattleStanceAura.Activate(sim)
+		} else if warrior.PrimaryTalentTree == FuryTree {
+			warrior.Stance = BerserkerStance
+			warrior.BerserkerStanceAura.Activate(sim)
+		} else {
+			warrior.Stance = DefensiveStance
+			warrior.DefensiveStanceAura.Activate(sim)
+		}
+	}
 }
 
 func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {

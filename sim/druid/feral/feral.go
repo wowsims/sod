@@ -59,6 +59,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 			return cat.checkReplaceMaul(sim, mhSwingSpell)
 		}*/
 
+	cat.PseudoStats.FeralCombatEnabled = true
+
 	return cat
 }
 

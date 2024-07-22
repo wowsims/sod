@@ -55,7 +55,7 @@ const (
 	// Mask for Seal of Righteousness, it does not proc Wild Strikes
 	ProcMaskSupressExtraAttack
 	// Mask for Fiery Weapon and Blazefury Medalion that trigger melee procs like Art of War Rune or Vengeance Talent
-	ProcMaskTriggerInstant 
+	ProcMaskTriggerInstant
 )
 
 const (

@@ -14,8 +14,9 @@ func (druid *Druid) applyStarsurge() {
 
 	actionID := core.ActionID{SpellID: 417157}
 
-	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48
-	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
+	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48 * talentBaseMultiplier
+	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04 * talentBaseMultiplier
 	spellCoeff := .429
 
 	starfireAuraMultiplier := 1 + .80
@@ -80,7 +81,7 @@ func (druid *Druid) applyStarsurge() {
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) * druid.MoonfuryDamageMultiplier()
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {

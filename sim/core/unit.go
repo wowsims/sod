@@ -63,7 +63,7 @@ type Unit struct {
 	Moving                  bool
 	moveAura                *Aura
 	moveSpell               *Spell
-	MoveSpeed				float64
+	MoveSpeed               float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.

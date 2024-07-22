@@ -178,22 +178,16 @@ func init() {
 		shaman := agent.(ShamanAgent).GetShaman()
 
 		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 461299})
-		shaman.RegisterAura(core.Aura{
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label:    "Totem of Earthen Vitality Trigger",
 			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
 			OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || !result.Landed() || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 					return
 				}
-
-				if sim.Proc(.02, "Totem of Earthen Vitality") {
-					shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
-				}
+				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
 			},
-		})
+		}))
 	})
 
 	core.AddEffectsToTest = true

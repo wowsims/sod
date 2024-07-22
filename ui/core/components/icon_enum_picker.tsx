@@ -195,6 +195,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			elem.style.backgroundImage = `url(${valueConfig.iconUrl})`;
 			elem.style.filter = 'grayscale(1)';
 		} else {
+			elem.href = '';
 			elem.style.backgroundImage = '';
 			elem.style.filter = '';
 			elem.style.backgroundColor = valueConfig.color!;

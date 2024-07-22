@@ -415,7 +415,7 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			BonusCoefficient: .50,
+			BonusCoefficient: .20,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, 39, spell.OutcomeAlwaysHit)
