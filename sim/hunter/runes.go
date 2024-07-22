@@ -332,11 +332,11 @@ func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
 }
 
 func (hunter *Hunter) applyHitAndRun() {
-	if(hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun)) {
+	if hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun) {
 		hunter.HitAndRunAura = hunter.RegisterAura(core.Aura{
-			Label:     "Hit And Run",
+			Label:    "Hit And Run",
 			ActionID: core.ActionID{SpellID: 440533},
-			Duration:  time.Second * 8,
+			Duration: time.Second * 8,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},

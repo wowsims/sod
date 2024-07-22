@@ -36,7 +36,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 				SpellSchool: core.SpellSchoolNature,
 				DefenseType: core.DefenseTypeMagic,
 				ProcMask:    core.ProcMaskSpellDamage,
-				Flags:       SpellFlagOmen | core.SpellFlagAPL,
+				Flags:       SpellFlagOmen | core.SpellFlagAPL | core.SpellFlagBinary,
 
 				ManaCost: core.ManaCostOptions{
 					FlatCost: manaCost,

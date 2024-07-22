@@ -3,6 +3,7 @@ import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { WarriorStance } from '../core/proto/warrior';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as WarriorInputs from './inputs.js';
@@ -45,6 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	],
 
 	defaults: {
+		race: Presets.OtherDefaults.race,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
@@ -78,8 +80,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		debuffs: Presets.DefaultDebuffs,
 	},
 
+	modifyDisplayStats: (player: Player<Spec.SpecWarrior>) => {
+		let stats = new Stats();
+		const stance = player.getSpecOptions().stance;
+		if (stance === WarriorStance.WarriorStanceBerserker || (stance === WarriorStance.WarriorStanceNone && player.getTalentTree() === 1)) {
+			stats = stats.addStat(Stat.StatMeleeCrit, 3);
+		}
+
+		return {
+			buffs: stats,
+		};
+	},
+
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [WarriorInputs.ShoutPicker],
+	playerIconInputs: [WarriorInputs.ShoutPicker, WarriorInputs.StancePicker],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],

@@ -103,7 +103,7 @@ func main() {
 			otherItem.ID > item.ID &&
 			otherItem.Icon == item.Icon &&
 			(item.ClassMask == 0 || (otherItem.ClassMask&item.ClassMask) != 0) &&
-			math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 7 &&
+			math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 10 &&
 			otherItem.Version != item.Version {
 			return false
 		}

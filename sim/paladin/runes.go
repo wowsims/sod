@@ -39,7 +39,7 @@ func (paladin *Paladin) registerTheArtOfWar() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee | core.ProcMaskTriggerInstant) || !result.Outcome.Matches(core.OutcomeCrit) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskTriggerInstant) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
 			//paladin.holyShockCooldown.Reset()

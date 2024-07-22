@@ -81,6 +81,8 @@ const (
 	RefinedArcaniteChampion        = 228125
 	TalismanOfEphemeralPower       = 228255 // 18820
 	GutgoreRipper                  = 228267 // 17071
+	Shadowstrike                   = 228272 // 17074
+	Thunderstrike                  = 228273 // 17223
 	BonereaversEdge                = 228288 // 17076
 	BonereaversEdgeMolten          = 228461
 	EssenceOfThePureFlame          = 228293 // 18815
@@ -1317,6 +1319,26 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=228272/shadowstrike
+	// Chance on hit: Steals 180 to 220 life from target enemy.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcSpell(Shadowstrike, "Shadowstrike", 2.2, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 461683}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228542/skullforge-reaver
@@ -1766,6 +1788,34 @@ func init() {
 	// 		},
 	// 	})
 	// })
+
+	// https://www.wowhead.com/classic/item=228273/thunderstrike
+	// Chance on hit: Blasts up to 3 targets for 200 to 300 Nature damage. Each target after the first takes less damage.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(Thunderstrike, "Thunderstrike", 1.5, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 461686},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				initialResult := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				// Only the initial hit can be fully resisted according to a wowhead comment
+				if initialResult.Landed() {
+					damageMultiplier := 1.0
+					for numHits := 0; numHits < 3; numHits++ {
+						spell.CalcAndDealDamage(sim, target, sim.Roll(150, 250)*damageMultiplier, spell.OutcomeMagicCrit)
+						numHits++
+						target = character.Env.NextTargetUnit(target)
+						// TODO: Couldn't find information on what the multiplier actually is
+						damageMultiplier *= .65
+					}
+				}
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=228347/typhoon
 	// Chance on hit: Grants an extra attack on your next swing.
