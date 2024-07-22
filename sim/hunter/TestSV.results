@@ -99,7 +99,7 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 444.2082
+  dps: 438.75447
   tps: 271.32762
  }
 }

@@ -36,6 +36,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterRaptorStrike,
 		ActionID:      core.ActionID{SpellID: spellID},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,

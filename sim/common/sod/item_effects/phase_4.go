@@ -18,9 +18,8 @@ const (
 	WoodcarvedMoonstalker = 228089
 	TheMoltenCore         = 228122
 	FistOfTheFiresworn    = 228139
+	WhistleOfTheBeast     = 228432
 	TreantsBane           = 228486
-	BeastmastersBoots	  = 226903
-	WhistleOfTheBeast	  = 228432
 )
 
 func init() {
@@ -158,88 +157,6 @@ func init() {
 		if character.HasEnergyBar() {
 			character.EnableEnergyBar(character.MaxEnergy() + 10)
 		}
-	})
-
-
-	core.NewItemEffect(BeastmastersBoots, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		for _, pet := range character.Pets {
-			pet.PseudoStats.DamageDealtMultiplier *= 1.03
-		}
-	})
-
-	core.NewItemEffect(WhistleOfTheBeast, func(agent core.Agent) {
-		character := agent.GetCharacter()
-	
-		actionID := core.ActionID{ItemID: WhistleOfTheBeast}
-	
-		buffAura := core.Aura{
-			Label:     "Whistle of the Beast",
-			ActionID:  actionID,
-			Duration:  core.NeverExpires,
-			MaxStacks: 1,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.SetStacks(sim, aura.MaxStacks)
-				for _, spell := range aura.Unit.Spellbook {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-						spell.BonusCritRating += 100 * core.CritRatingPerCritChance
-					}
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range aura.Unit.Spellbook {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-						spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
-					}
-				}
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-					aura.RemoveStack(sim)
-				}
-			},
-		}
-	
-		// Apply effects to the first pet (if it exists)
-		if len(character.Pets) > 0 {
-			currentPet := character.Pets[0]
-	
-			currentPet.PseudoStats.DamageDealtMultiplier *= 1.03
-			currentPet.MultiplyStat(stats.Health, 1.03)
-			currentPet.MultiplyStat(stats.Armor, 1.10)
-			currentPet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			currentPet.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
-	
-			// Register the aura for the pet
-			currentPet.GetOrRegisterAura(buffAura)
-		}
-	
-		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-	
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 1,
-				},
-			},
-	
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if len(character.Pets) > 0 {
-					currentPet := character.Pets[0]
-					petAura := currentPet.GetOrRegisterAura(buffAura)
-					petAura.Activate(sim)
-				}
-			},
-		})
-	
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
 	})
 	
 	
