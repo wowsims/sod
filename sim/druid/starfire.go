@@ -28,9 +28,11 @@ func (druid *Druid) registerStarfireSpell() {
 }
 
 func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
+
 	spellId := StarfireSpellId[rank]
-	baseDamageLow := StarfireBaseDamage[rank][0]
-	baseDamageHigh := StarfireBaseDamage[rank][1]
+	baseDamageLow := StarfireBaseDamage[rank][0] * talentBaseMultiplier
+	baseDamageHigh := StarfireBaseDamage[rank][1] * talentBaseMultiplier
 	manaCost := StarfireManaCost[rank]
 	level := StarfireLevel[rank]
 
@@ -67,7 +69,7 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}

@@ -143,6 +143,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
+			druid.PseudoStats.FeralCombatEnabled = true
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(aura)
@@ -180,6 +181,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
+			druid.PseudoStats.FeralCombatEnabled = false
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(nil)
@@ -264,7 +266,6 @@ func (druid *Druid) registerCatFormSpell() {
 }
 
 // func (druid *Druid) registerBearFormSpell() {
-//  hasFeralCombatSpec := druid.HasRune(proto.DruidRune(proto.RingRune_RuneRingFeralCombatSpecialization))
 // 	actionID := core.ActionID{SpellID: 9634}
 // 	healthMetrics := druid.NewHealthMetrics(actionID)
 
@@ -303,9 +304,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 // 			druid.AutoAttacks.SetMH(clawWeapon)
 
-// 			if hasFeralCombatSpec {
-// 				druid.PseudoStats.FeralCombatSkill += 5
-// 			}
+//      druid.PseudoStats.FeralCombatEnabled = true
 // 			druid.PseudoStats.ThreatMultiplier *= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier *= potpdtm
@@ -340,9 +339,7 @@ func (druid *Druid) registerCatFormSpell() {
 // 			druid.form = Humanoid
 // 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
-// 			if hasFeralCombatSpec {
-// 				druid.PseudoStats.FeralCombatSkill += 5
-// 			}
+//      druid.PseudoStats.FeralCombatEnabled = false
 // 			druid.PseudoStats.ThreatMultiplier /= 2.1021
 // 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 // 			druid.PseudoStats.DamageTakenMultiplier /= potpdtm
