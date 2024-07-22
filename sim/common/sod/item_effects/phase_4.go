@@ -18,7 +18,6 @@ const (
 	WoodcarvedMoonstalker = 228089
 	TheMoltenCore         = 228122
 	FistOfTheFiresworn    = 228139
-	WhistleOfTheBeast     = 228432
 	TreantsBane           = 228486
 )
 
@@ -158,8 +157,6 @@ func init() {
 			character.EnableEnergyBar(character.MaxEnergy() + 10)
 		}
 	})
-	
-	
 
 	core.AddEffectsToTest = true
 }
