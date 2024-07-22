@@ -56,6 +56,7 @@ const (
 	ProcMaskSupressExtraAttack
 	// Mask for Fiery Weapon and Blazefury Medalion that trigger melee procs like Art of War Rune or Vengeance Talent
 	ProcMaskTriggerInstant
+	// Mask for Blazefury Medallion triggering on offhand
 	ProcMaskTriggerInstantOH
 )
 

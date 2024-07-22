@@ -2347,10 +2347,6 @@ func init() {
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskTriggerInstant) {
-					return
-				}
-
 				if spell.IsMH() {
 					procSpellMH.Cast(sim, result.Target)
 				} else {
