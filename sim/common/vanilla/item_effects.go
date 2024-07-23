@@ -2369,7 +2369,7 @@ func init() {
 			ActionID:         core.ActionID{SpellID: 7712},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskMelee, // The spell uses ProcTypeMask_0 20, representing a melee white hit + yellow hit
+			ProcMask:         core.ProcMaskTriggerInstant,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -2383,9 +2383,7 @@ func init() {
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell != procSpell {
-					procSpell.Cast(sim, result.Target)
-				}
+				procSpell.Cast(sim, result.Target)
 			},
 		})
 	})
