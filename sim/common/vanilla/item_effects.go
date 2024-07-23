@@ -93,7 +93,6 @@ const (
 	BlazefuryMedallion             = 228354 // 17111
 	EmpyreanDemolisher             = 228397 // 17112
 	DreadbladeOfTheDestructor      = 228410
-	DreadbladeOfTheDestructor2     = 228498
 	PerditionsBladeMolten          = 228511
 	SkullforgeReaver               = 228542 // 13361
 	RunebladeOfBaronRivendare      = 228543 // 13505
@@ -353,6 +352,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
+			ProcMaskExclude: core.ProcMaskSuppressWeaponProcs,
 			PPM:      1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				spellIdx := int32(sim.Roll(0, 6))
@@ -383,6 +383,9 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
+					return
+				}
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 				if result.Landed() {
 					spell.Dot(target).Apply(sim)
@@ -418,6 +421,9 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
+					return
+				}
 				dmg := sim.Roll(18, 26)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedCritOnly)
 			},
@@ -437,7 +443,6 @@ func init() {
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
-	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor2, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
 
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -1407,6 +1412,7 @@ func init() {
 			Callback:   core.CallbackOnSpellHitTaken,
 			Outcome:    core.OutcomeLanded,
 			ProcMask:   core.ProcMaskMelee,
+			ProcMaskExclude: core.ProcMaskSuppressWeaponProcs,
 			ProcChance: .20,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -1458,6 +1464,9 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
+					return
+				}
 				result := spell.CalcAndDealDamage(sim, target, sim.Roll(273, 333), spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.Dot(target).Apply(sim)
@@ -1829,6 +1838,9 @@ func init() {
 			ProcMask: core.ProcMaskMelee,
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
+					return
+				}
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 461985})
 			},
 		})
@@ -2112,6 +2124,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSuppressEquipProcs) {
+					return
+				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfJustice") {
 					icd.Use(sim)
 					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
@@ -2518,6 +2533,19 @@ func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell 
 			},
 		})
 	})
+	
+	character.GetOrRegisterAura(core.Aura{
+		Label:      "Cursed Blade",
+		ActionID:   core.ActionID{SpellID: 462228},
+		Duration:   core.NeverExpires,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
+			character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+		},
+	})
+
 	return character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
@@ -2559,6 +2587,7 @@ func makeNightfallProc(character *core.Character, itemName string) {
 		Callback: core.CallbackOnSpellHitDealt,
 		Outcome:  core.OutcomeLanded,
 		ProcMask: core.ProcMaskMelee,
+		ProcMaskExclude: core.ProcMaskSuppressWeaponProcs,
 		PPM:      2,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAuras.Get(result.Target).Activate(sim)

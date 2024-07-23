@@ -20,7 +20,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ActionID:    core.ActionID{SpellID: 407803},
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskSuppressWeaponProcs,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV,
 
 		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),

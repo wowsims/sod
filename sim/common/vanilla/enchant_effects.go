@@ -43,7 +43,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs){
 					return
 				}
 
@@ -119,10 +119,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
+				if !result.Landed() || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs){
 					return
 				}
-
 				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
 					procSpell.Cast(sim, result.Target)
 				}
@@ -222,10 +221,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
+				if !result.Landed() || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
 					return
 				}
-
 				if ppmm.Proc(sim, spell.ProcMask, "Crusader") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
