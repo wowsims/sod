@@ -2383,7 +2383,9 @@ func init() {
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, result.Target)
+				if spell != procSpell {
+					procSpell.Cast(sim, result.Target)
+				}
 			},
 		})
 	})
