@@ -2195,8 +2195,7 @@ func init() {
 		})
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Mark of the Chosen",
-			ActionID: core.ActionID{SpellID: 21969},
+			Label: "Mark of the Chosen",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
 					procAura.Activate(sim)
@@ -2370,7 +2369,7 @@ func init() {
 			ActionID:         core.ActionID{SpellID: 7712},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskTriggerInstant,
+			ProcMask:         core.ProcMaskMelee, // The spell uses ProcTypeMask_0 20, representing a melee white hit + yellow hit
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
