@@ -247,7 +247,7 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 			_ = tryCast(hp.focusDump) || tryCast(hp.specialAbility)
 		}
 	} else {
-		if hp.specialAbility.IsReady(sim) && !hp.hunterOwner.HasRune(proto.HunterRune_RuneLegsFlankingStrike) {
+		if hp.specialAbility.IsReady(sim) && hp.flankingStrike == nil {
 			if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 				hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 			}
