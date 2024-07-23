@@ -383,9 +383,6 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
-					return
-				}
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 				if result.Landed() {
 					spell.Dot(target).Apply(sim)
@@ -421,9 +418,6 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
-					return
-				}
 				dmg := sim.Roll(18, 26)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeRangedCritOnly)
 			},
@@ -1464,9 +1458,6 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
-					return
-				}
 				result := spell.CalcAndDealDamage(sim, target, sim.Roll(273, 333), spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
 					spell.Dot(target).Apply(sim)
@@ -1479,6 +1470,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
+			ProcMaskExclude: core.ProcMaskSuppressWeaponProcs,
 			PPM:      1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				purgedByFireSpell.Cast(sim, result.Target)
@@ -1836,11 +1828,9 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
+			ProcMaskExclude: core.ProcMaskSuppressWeaponProcs,
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
-					return
-				}
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 461985})
 			},
 		})
@@ -2397,6 +2387,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: core.ProcMaskMelee,
+			ProcMaskExclude: core.ProcMaskSuppressEquipProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
