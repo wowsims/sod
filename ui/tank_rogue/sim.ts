@@ -29,6 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatSpellCrit,
 
 		// Tank stats
+		Stat.StatDefense,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatStamina,
@@ -51,6 +52,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 
 		// Tank stats
 		Stat.StatStamina,
+		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
 		Stat.StatArmor,
@@ -66,6 +68,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 				[Stat.StatAgility]: 1.69,
 				[Stat.StatStrength]: 1.1,
 				[Stat.StatAttackPower]: 1,
+				[Stat.StatDefense]: 4,
 				[Stat.StatSpellDamage]: 0.68,
 				[Stat.StatNaturePower]: 0.68,
 				[Stat.StatSpellCrit]: 2.0,
