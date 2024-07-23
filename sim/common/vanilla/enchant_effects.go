@@ -43,7 +43,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs){
+				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
 					return
 				}
 
@@ -119,7 +119,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs){
+				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
 					return
 				}
 				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
@@ -221,7 +221,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.ProcMask.Matches(core.ProcMaskSuppressWeaponProcs) {
+				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 				if ppmm.Proc(sim, spell.ProcMask, "Crusader") {

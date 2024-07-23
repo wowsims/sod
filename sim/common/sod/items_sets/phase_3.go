@@ -265,15 +265,15 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			}
 			
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449970},
-				Name:       "Extra Attack",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcMaskExclude: core.ProcMaskSuppressEquipProcs,
-				ProcChance: 0.03,
-				ICD:        200 * time.Millisecond,
-				Handler:    handler,
+				ActionID:          core.ActionID{SpellID: 449970},
+				Name:              "Extra Attack",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.03,
+				ICD:               200 * time.Millisecond,
+				Handler:           handler,
 			})
 		},
 	},
