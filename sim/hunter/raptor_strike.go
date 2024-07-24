@@ -168,6 +168,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 	})
 
 	queueSpell := hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_HunterRaptorStrike,
 		ActionID: hunter.RaptorStrike.WithTag(3),
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 

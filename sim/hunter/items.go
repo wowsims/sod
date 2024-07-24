@@ -159,13 +159,15 @@ func init() {
 	core.NewItemEffect(WhistleOfTheBeast, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 
-		if hunter.pet != nil {
-			hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
-			hunter.pet.MultiplyStat(stats.Health, 1.03)
-			hunter.pet.MultiplyStat(stats.Armor, 1.10)
-			hunter.pet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			hunter.pet.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
+		if hunter.pet == nil {
+			return
 		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+		hunter.pet.MultiplyStat(stats.Health, 1.03)
+		hunter.pet.MultiplyStat(stats.Armor, 1.10)
+		hunter.pet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+		hunter.pet.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
 
 		actionID := core.ActionID{ItemID: WhistleOfTheBeast}
 
