@@ -1917,10 +1917,18 @@ func init() {
 			Label:    "Burst of Knowledge",
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier -= 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.CostType == core.CostTypeMana {
+						spell.CostMultiplier -= 1
+					}
+				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier += 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.CostType == core.CostTypeMana {
+						spell.CostMultiplier += 1
+					}
+				}
 			},
 		})
 
