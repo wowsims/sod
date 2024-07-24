@@ -187,9 +187,8 @@ func (shaman *Shaman) applyShieldMastery() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
 				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
-					if !defendersResolveAura.IsActive() {
-						defendersResolveAura.Activate(sim)
-					}
+					//Aura.Activate takes care of refreshing if the aura is already active
+					defendersResolveAura.Activate(sim)
 
 					if defendersResolveAura.GetStacks() != stacks {
 						defendersResolveAura.SetStacks(sim, stacks)

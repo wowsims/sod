@@ -169,6 +169,7 @@ func TestFrost(t *testing.T) {
 			Talents:     Phase4TalentsFrost,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
 
