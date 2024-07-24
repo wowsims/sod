@@ -31,7 +31,7 @@ character_stats_results: {
   final_stats: 322
   final_stats: 0
   final_stats: 0
-  final_stats: 14.6355
+  final_stats: 14.636
   final_stats: 14.258
   final_stats: 0
   final_stats: 0
@@ -69,7 +69,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 2129.4
   final_stats: 10
-  final_stats: 42.6585
+  final_stats: 42.659
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 26.785
-  final_stats: 15.6585
+  final_stats: 15.659
   final_stats: 0
   final_stats: 0
   final_stats: 6982.85
@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.7393
-  weights: 0.5708
+  weights: 0.739
+  weights: 0.571
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4022
-  weights: 7.4319
-  weights: 7.0537
+  weights: 0.402
+  weights: 7.432
+  weights: 7.054
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
   weights: 5.182
-  weights: 1.3351
+  weights: 1.335
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.7525
-  weights: 0.4637
-  weights: 34.3197
+  weights: 1.752
+  weights: 0.464
+  weights: 34.32
   weights: 0
   weights: 0
   weights: 0
@@ -197,7 +197,7 @@ stat_weights_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BattlegearofHeroism"
  value: {
-  dps: 526.5861
+  dps: 526.586
   tps: 470.12
  }
 }
@@ -212,230 +212,230 @@ dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 39.978
-  tps: 75.5612
+  tps: 75.561
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 11.8169
-  tps: 12.3045
+  dps: 11.817
+  tps: 12.305
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 23.5853
-  tps: 22.5507
+  dps: 23.585
+  tps: 22.551
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 21.1392
+  dps: 21.139
   tps: 57.508
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 6.0121
-  tps: 7.5136
+  dps: 6.012
+  tps: 7.514
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
   dps: 10.767
-  tps: 12.1971
+  tps: 12.197
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 44.1791
-  tps: 79.6288
+  dps: 44.179
+  tps: 79.629
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 12.5673
-  tps: 13.0876
+  dps: 12.567
+  tps: 13.088
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 28.8484
-  tps: 28.1173
+  dps: 28.848
+  tps: 28.117
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
   dps: 23.597
-  tps: 59.8981
+  tps: 59.898
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 6.2551
-  tps: 7.7035
+  dps: 6.255
+  tps: 7.703
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 13.2922
-  tps: 14.5681
+  dps: 13.292
+  tps: 14.568
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 546.1524
-  tps: 485.4993
+  dps: 546.152
+  tps: 485.499
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2498.8599
-  tps: 2170.0106
+  dps: 2498.86
+  tps: 2170.011
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1837.7032
-  tps: 1650.6998
+  dps: 1837.703
+  tps: 1650.7
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2187.6963
-  tps: 1899.2095
+  dps: 2187.696
+  tps: 1899.209
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2144.2807
-  tps: 1860.8902
+  dps: 2144.281
+  tps: 1860.89
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2187.6963
-  tps: 1899.2095
+  dps: 2187.696
+  tps: 1899.209
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2743.5488
-  tps: 2373.5208
+  dps: 2743.549
+  tps: 2373.521
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Average-Default"
  value: {
-  dps: 3111.7521
-  tps: 2631.6496
+  dps: 3111.752
+  tps: 2631.65
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 2204.5888
-  tps: 2797.8734
+  dps: 2204.589
+  tps: 2797.873
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 724.0093
+  dps: 724.009
   tps: 631.975
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 897.8257
-  tps: 770.7353
+  dps: 897.826
+  tps: 770.735
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 940.5611
-  tps: 1643.4247
+  dps: 940.561
+  tps: 1643.425
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 334.1463
-  tps: 330.3451
+  dps: 334.146
+  tps: 330.345
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 434.9931
-  tps: 409.8176
+  dps: 434.993
+  tps: 409.818
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 2380.9628
-  tps: 2956.9893
+  dps: 2380.963
+  tps: 2956.989
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
   dps: 751.453
-  tps: 652.5816
+  tps: 652.582
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 954.6486
-  tps: 818.2062
+  dps: 954.649
+  tps: 818.206
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 977.5574
-  tps: 1674.8612
+  dps: 977.557
+  tps: 1674.861
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 336.5455
-  tps: 330.9534
+  dps: 336.545
+  tps: 330.953
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 437.7359
-  tps: 410.6615
+  dps: 437.736
+  tps: 410.661
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2538.5105
+  dps: 2538.511
   tps: 2142.135
  }
 }

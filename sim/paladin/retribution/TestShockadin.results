@@ -20,7 +20,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 1075.86
   final_stats: 2
-  final_stats: 18.9861
+  final_stats: 18.986
   final_stats: 3
   final_stats: 0
   final_stats: 0
@@ -31,7 +31,7 @@ character_stats_results: {
   final_stats: 294
   final_stats: 0
   final_stats: 0
-  final_stats: 14.0965
+  final_stats: 14.097
   final_stats: 0.7
   final_stats: 0
   final_stats: 0
@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.7311
-  weights: -0.0009
+  weights: 0.731
+  weights: -0.001
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.9404
-  weights: 0.1789
+  weights: 1.94
+  weights: 0.179
   weights: 0
   weights: 0
-  weights: 0.3021
+  weights: 0.302
   weights: 6.449
-  weights: 4.5857
+  weights: 4.586
   weights: 0
   weights: 0
   weights: 0
@@ -99,49 +99,49 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 389.7554
-  tps: 409.7039
+  dps: 389.755
+  tps: 409.704
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
-  dps: 520.1318
-  tps: 544.4687
+  dps: 520.132
+  tps: 544.469
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 511.3833
+  dps: 511.383
   tps: 790.278
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 145.2157
-  tps: 159.1412
+  dps: 145.216
+  tps: 159.141
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 171.4878
-  tps: 187.3455
+  dps: 171.488
+  tps: 187.346
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 242.0628
-  tps: 427.0091
+  dps: 242.063
+  tps: 427.009
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 76.0277
+  dps: 76.028
   tps: 85.275
  }
 }
@@ -149,55 +149,55 @@ dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
   dps: 103.559
-  tps: 114.4893
+  tps: 114.489
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 529.9728
-  tps: 809.1576
+  dps: 529.973
+  tps: 809.158
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 144.7508
-  tps: 158.7357
+  dps: 144.751
+  tps: 158.736
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 172.8868
+  dps: 172.887
   tps: 188.773
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 248.9044
-  tps: 435.1817
+  dps: 248.904
+  tps: 435.182
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 76.2015
-  tps: 85.5154
+  dps: 76.202
+  tps: 85.515
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 105.0345
-  tps: 116.0252
+  dps: 105.034
+  tps: 116.025
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 485.466
-  tps: 509.6436
+  tps: 509.644
  }
 }
