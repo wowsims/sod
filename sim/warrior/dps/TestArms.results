@@ -1,8 +1,8 @@
 character_stats_results: {
  key: "TestArms-Lvl50-CharacterStats-Default"
  value: {
-  final_stats: 383.51
-  final_stats: 325.488
+  final_stats: 383.51016
+  final_stats: 325.48824
   final_stats: 419.364
   final_stats: 92.664
   final_stats: 125.928
@@ -18,21 +18,21 @@ character_stats_results: {
   final_stats: 21
   final_stats: 0
   final_stats: 0
-  final_stats: 1273.46
+  final_stats: 1273.46032
   final_stats: 5
-  final_stats: 47.616
+  final_stats: 47.61566
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 2884.136
+  final_stats: 2884.13648
   final_stats: 361
   final_stats: 0
   final_stats: 0
-  final_stats: 19.012
-  final_stats: 19.616
+  final_stats: 19.01151
+  final_stats: 19.61566
   final_stats: 0
   final_stats: 0
   final_stats: 5092.64
@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.226
-  weights: 0.958
+  weights: 1.22566
+  weights: 0.95836
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.245
-  weights: 14.744
-  weights: 11.2
+  weights: 0.2449
+  weights: 14.74413
+  weights: 11.19959
   weights: 0
   weights: 0
   weights: 0
@@ -99,105 +99,105 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 827.222
-  tps: 758.69
+  dps: 827.22164
+  tps: 758.68992
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
-  dps: 1138.338
-  tps: 1031.434
+  dps: 1138.33771
+  tps: 1031.43434
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 293.355
-  tps: 408.607
+  dps: 293.35509
+  tps: 408.60675
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 87.559
-  tps: 80.532
+  dps: 87.55861
+  tps: 80.53177
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 160.05
-  tps: 143.165
+  dps: 160.04964
+  tps: 143.16465
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 137.619
-  tps: 261.377
+  dps: 137.61886
+  tps: 261.37709
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 40.865
-  tps: 41.877
+  dps: 40.86468
+  tps: 41.87702
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 79.813
-  tps: 76.831
+  dps: 79.81318
+  tps: 76.83147
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 329.67
-  tps: 443.353
+  dps: 329.67008
+  tps: 443.35313
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 94.77
-  tps: 86.6
+  dps: 94.76989
+  tps: 86.59967
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 169.572
-  tps: 150.945
+  dps: 169.57192
+  tps: 150.94504
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 154.804
-  tps: 277.71
+  dps: 154.80354
+  tps: 277.70972
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 43.974
+  dps: 43.97428
   tps: 44.511
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 84.668
-  tps: 80.713
+  dps: 84.66826
+  tps: 80.71349
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1045.227
-  tps: 951.547
+  dps: 1045.22706
+  tps: 951.54739
  }
 }
