@@ -17,6 +17,13 @@ import * as Presets from './presets.js';
 import * as PresetUtils from '../core/preset_utils.js';
 
 import APLP4RetExodinJson from './apls/p4ret-exodin.apl.json';
+import APLP4RetExodin6PcT1Json from './apls/p4ret-exodin-6pcT1.apl.json';
+import APLP4RetTwisting6PcT1Json from './apls/p4ret-twisting-6pcT1.apl.json';
+
+import Phase4RetExodinGearJson from './gear_sets/p4ret-exodin.gear.json';
+import Phase4RetExodin6PcT1GearJson from './gear_sets/p4ret-exodin-6pcT1.gear.json';
+import Phase4RetTwisting6PcT1GearJson from './gear_sets/p4ret-twisting-6pcT1.gear.json';
+
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
@@ -144,7 +151,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	presets: {
 		rotations: [
 			...Presets.APLPresets[Phase.Phase4],
+			PresetUtils.makePresetAPLRotation('P4 Ret-Twisting-6pcT1', APLP4RetTwisting6PcT1Json),
 			PresetUtils.makePresetAPLRotation('P4 Ret-Exodin', APLP4RetExodinJson),
+			PresetUtils.makePresetAPLRotation('P4 Ret-Exodin-6pcT1', APLP4RetExodin6PcT1Json),
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
@@ -159,6 +168,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase4],
+			PresetUtils.makePresetGear('P4 Ret-Twisting-6pcT1', Phase4RetTwisting6PcT1GearJson),
+			PresetUtils.makePresetGear('P4 Ret-Exodin', Phase4RetExodinGearJson),
+			PresetUtils.makePresetGear('P4 Ret-Exodin-6pcT1', Phase4RetExodin6PcT1GearJson),
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],

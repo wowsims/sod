@@ -149,6 +149,7 @@ var ItemDenyList = map[int32]struct{}{
 	227977: {}, // https://www.wowhead.com/classic/item=227977/totem-of-rage unused item
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
+	228498: {}, // Unused Dreadblade of the Destructor
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
