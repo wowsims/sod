@@ -6,9 +6,12 @@ import {
 	Conjured,
 	Consumes,
 	Debuffs,
+	DragonslayerBuff,
 	EnchantedSigil,
 	Explosive,
 	Food,
+	Flask,
+	FirePowerBuff,
 	IndividualBuffs,
 	Potions,
 	Profession,
@@ -26,6 +29,7 @@ import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';
 import APLP3RetJson from './apls/p3ret.apl.json';
 import APLP4RetJson from './apls/p4ret.apl.json';
+
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2retsom.gear.json';
@@ -138,7 +142,7 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = RetributionPaladinOptions.create({
-	aura: PaladinAura.RetributionAura,
+	aura: PaladinAura.SanctityAura,
 	primarySeal: PaladinSeal.Martyrdom,
 });
 
@@ -148,13 +152,15 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
-	fillerExplosive: Explosive.ExplosiveEzThroRadiationBomb,
 	food: Food.FoodBlessSunfruit,
+	flask: Flask.FlaskOfSupremePower,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
-	strengthBuff: StrengthBuff.ElixirOfGiants,
-	zanzaBuff: ZanzaBuff.AtalaiMojoOfWar,
-	attackPowerBuff: AttackPowerBuff.WinterfallFirewater,
+	strengthBuff: StrengthBuff.JujuPower,
+	zanzaBuff: ZanzaBuff.ROIDS,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredDemonicRune,
 });
 
@@ -162,9 +168,14 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	saygesFortune: SaygesFortune.SaygesDamage,
-	fervorOfTheTempleExplorer: true,
 	songflowerSerenade: true,
+	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
+	mightOfStormwind: true,
+	saygesFortune: SaygesFortune.SaygesDamage,
+	fengusFerocity: true,
+	slipkiksSavvy: true,
+	moldarsMoxie: true,
+	warchiefsBlessing: true,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -172,17 +183,27 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	sanctityAura: true,
 	leaderOfThePack: true,
+	demonicPact: 80,
+	aspectOfTheLion: true,
+	moonkinAura: true,
+	vampiricTouch: 300,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
-	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
+	faerieFire: true,
+	giftOfArthas: true,
 	sunderArmor: true,
 	judgementOfWisdom: true,
+	judgementOfTheCrusader: TristateEffect.TristateEffectImproved,
+	improvedFaerieFire: true,
+	improvedScorch: true,
+	markOfChaos: true,
+	occultPoison: true,
+	mangle: true,
 });
 
 export const OtherDefaults = {
