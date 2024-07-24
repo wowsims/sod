@@ -98,6 +98,7 @@ var ItemOverrides = []*proto.UIItem{
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
 	14637:  {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	22335:  {}, // https://www.wowhead.com/classic/item=22335/lord-valthalaks-staff-of-command accidentally left in the loot pool for a while. Allowing for compatibility
 	22395:  {}, // https://www.wowhead.com/classic/item=22395/totem-of-rage
 	221783: {}, // https://www.wowhead.com/classic/item=221783/lawbringer-spaulders
 
@@ -146,9 +147,11 @@ var ItemDenyList = map[int32]struct{}{
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
 	227843: {}, // https://www.wowhead.com/classic/item=227843/reaving-nightfall Removed from SoD
+	227966: {}, // https://www.wowhead.com/classic/item=227966/naglering This version is apparently is not available in-game
 	227977: {}, // https://www.wowhead.com/classic/item=227977/totem-of-rage unused item
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
+	228498: {}, // Unused Dreadblade of the Destructor
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

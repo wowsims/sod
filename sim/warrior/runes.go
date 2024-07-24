@@ -463,6 +463,7 @@ func (warrior *Warrior) applySingleMindedFury() {
 		Label:    "Single-Minded Fury Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.lastMeleeAutoTarget = nil
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

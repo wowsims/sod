@@ -263,16 +263,17 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				c.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 449970})
 			}
-
+			
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449970},
-				Name:       "Extra Attack",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 0.03,
-				ICD:        200 * time.Millisecond,
-				Handler:    handler,
+				ActionID:          core.ActionID{SpellID: 449970},
+				Name:              "Extra Attack",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.03,
+				ICD:               200 * time.Millisecond,
+				Handler:           handler,
 			})
 		},
 	},
