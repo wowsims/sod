@@ -15,12 +15,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 36.75
   final_stats: 2
-  final_stats: 26.49282
+  final_stats: 26.4928
   final_stats: 0
   final_stats: 0
   final_stats: 324.01
   final_stats: 2
-  final_stats: 19.76408
+  final_stats: 19.7641
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.26473
+  weights: 0.2647
   weights: 0
-  weights: 0.55933
-  weights: 0
-  weights: 0
+  weights: 0.5593
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.73294
-  weights: 1.32645
+  weights: 0
+  weights: 0
+  weights: 3.7329
+  weights: 1.3264
   weights: 0
   weights: 0
   weights: 0
@@ -100,28 +100,28 @@ dps_results: {
  key: "TestDemonology-Lvl40-AllItems-DeathmistRaiment"
  value: {
   dps: 59.3953
-  tps: 62.48955
+  tps: 62.4895
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 436.73916
-  tps: 456.19442
+  dps: 436.7392
+  tps: 456.1944
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 435.97222
-  tps: 790.19747
+  dps: 435.9722
+  tps: 790.1975
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 435.97222
-  tps: 455.99944
+  dps: 435.9722
+  tps: 455.9994
  }
 }
 dps_results: {
@@ -134,28 +134,28 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 293.60308
-  tps: 665.49415
+  dps: 293.6031
+  tps: 665.4942
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 293.60308
-  tps: 313.49211
+  dps: 293.6031
+  tps: 313.4921
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
   dps: 331.5311
-  tps: 337.00741
+  tps: 337.0074
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 435.97222
-  tps: 455.99944
+  dps: 435.9722
+  tps: 455.9994
  }
 }
