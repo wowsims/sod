@@ -72,7 +72,7 @@ func (warrior *Warrior) registerSlamSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warrior.SlamMH.Cast(sim, target)
-			if hasBloodSurgeRune && warrior.BloodSurgeAura.IsActive() {
+			if hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding && warrior.BloodSurgeAura.IsActive() {
 				warrior.SlamOH.Cast(sim, target)
 			}
 		},

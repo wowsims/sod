@@ -17,12 +17,12 @@ func (druid *Druid) registerStarfallCD() {
 
 	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneCloakStarfall)}
 
-	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
-	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
+	// Moonfury and Improved Moonfire only seem to be applying the crit bonus to starfall at the moment in-game
+	// talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
 
-	baseDamageLow := druid.baseRuneAbilityDamage() * 0.46 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDamageHigh := druid.baseRuneAbilityDamage() * .54 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDamageSplash := druid.baseRuneAbilityDamage() * .08 * moonfuryMultiplier * impMoonfireMultiplier
+	baseDamageLow := druid.baseRuneAbilityDamage() * 0.46   // * talentBaseMultiplier
+	baseDamageHigh := druid.baseRuneAbilityDamage() * .54   // * talentBaseMultiplier
+	baseDamageSplash := druid.baseRuneAbilityDamage() * .08 // * talentBaseMultiplier
 	spellCoefTick := .3
 	spellCoefSplash := .127
 
@@ -40,7 +40,7 @@ func (druid *Druid) registerStarfallCD() {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoefSplash,
@@ -58,8 +58,9 @@ func (druid *Druid) registerStarfallCD() {
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary,
 
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoefTick,

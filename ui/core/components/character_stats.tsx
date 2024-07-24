@@ -10,7 +10,7 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
-export type StatMods = { talents: Stats };
+export type StatMods = { talents?: Stats; buffs?: Stats };
 
 export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
@@ -78,11 +78,9 @@ export class CharacterStats extends Component {
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
 
-		const statMods = this.modifyDisplayStats
-			? this.modifyDisplayStats(this.player)
-			: {
-					talents: new Stats(),
-			  };
+		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
+		if (!statMods.talents) statMods.talents = new Stats();
+		if (!statMods.buffs) statMods.buffs = new Stats();
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
 		const gearStats = Stats.fromProto(playerStats.gearStats);
@@ -95,10 +93,10 @@ export class CharacterStats extends Component {
 		const baseDelta = baseStats;
 		const gearDelta = gearStats.subtract(baseStats).subtract(bonusStats);
 		const talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents);
-		const buffsDelta = buffsStats.subtract(talentsStats);
+		const buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs);
 		const consumesDelta = consumesStats.subtract(buffsStats);
 
-		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
+		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(statMods.buffs).add(debuffStats);
 
 		this.stats.forEach((stat, idx) => {
 			const bonusStatValue = bonusStats.getStat(stat);

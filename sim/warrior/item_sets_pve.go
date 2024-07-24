@@ -224,7 +224,7 @@ var ItemSetImmoveableMight = core.NewItemSet(core.ItemSet{
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.defensiveStanceThreatMultiplier /= 1.10
-					warrior.gladiatorStanceDamageMultiplier *= 1.04
+					warrior.gladiatorStanceDamageMultiplier /= 1.04
 				},
 			}))
 		},

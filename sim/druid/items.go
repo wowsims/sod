@@ -44,12 +44,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	// Equip: Increases the damage of your Moonfire spell by up to 17%.
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
-		druid := agent.(DruidAgent).GetDruid()
-		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_DruidMoonfire || spell.SpellCode == SpellCode_DruidSunfire {
-				spell.DamageMultiplier *= 1.17
-			}
-		})
+		// Implemented in moonfire.go as a base damage mod
 	})
 
 	// https://www.wowhead.com/classic/item=23198/idol-of-brutality

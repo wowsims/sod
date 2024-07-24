@@ -189,7 +189,7 @@ func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 		return 0
 	}
 
-	if unit.PseudoStats.FeralCombatSkill != 0 {
+	if unit.PseudoStats.FeralCombatEnabled && unit.PseudoStats.FeralCombatSkill != 0 {
 		return unit.PseudoStats.FeralCombatSkill
 	}
 
