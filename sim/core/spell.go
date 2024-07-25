@@ -99,7 +99,7 @@ type Spell struct {
 	healthMetrics   []*ResourceMetrics
 
 	Cost SpellCost // Cost for the spell.
-	CostType
+
 	DefaultCast        Cast // Default cast parameters with all static effects applied.
 	CD                 Cooldown
 	SharedCD           Cooldown
@@ -261,16 +261,12 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	// newXXXCost() all update spell.DefaultCast.Cost
 	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
-		spell.CostType = CostTypeMana
 	} else if config.EnergyCost.Cost != 0 {
 		spell.Cost = newEnergyCost(spell, config.EnergyCost)
-		spell.CostType = CostTypeEnergy
 	} else if config.RageCost.Cost != 0 {
 		spell.Cost = newRageCost(spell, config.RageCost)
-		spell.CostType = CostTypeRage
 	} else if config.FocusCost.Cost != 0 {
 		spell.Cost = newFocusCost(spell, config.FocusCost)
-		spell.CostType = CostTypeFocus
 	}
 
 	spell.createDots(config.Dot, false)
@@ -603,6 +599,9 @@ const (
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
 type SpellCost interface {
+	// Get the type of resource used to cast the spell
+	CostType() CostType
+
 	// Whether the Unit associated with the spell meets the resource cost
 	// requirements to cast the spell.
 	MeetsRequirement(*Simulation, *Spell) bool

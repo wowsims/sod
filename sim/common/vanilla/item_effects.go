@@ -1918,14 +1918,14 @@ func init() {
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
-					if spell.CostType == core.CostTypeMana {
+					if spell.Cost.CostType() == core.CostTypeMana {
 						spell.CostMultiplier -= 1
 					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
-					if spell.CostType == core.CostTypeMana {
+					if spell.Cost.CostType() == core.CostTypeMana {
 						spell.CostMultiplier += 1
 					}
 				}
