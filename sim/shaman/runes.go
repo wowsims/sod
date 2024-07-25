@@ -276,7 +276,7 @@ func (shaman *Shaman) applyRollingThunder() {
 			}
 
 			rank := shaman.ActiveShield.Rank
-			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].BonusDamage()
+			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].GetBonusDamage()
 			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
 		},
 	})

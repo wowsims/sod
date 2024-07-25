@@ -44,6 +44,7 @@ type SpellConfig struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
+	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
 	ThreatMultiplier float64
@@ -133,6 +134,7 @@ type Spell struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
+	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
 	CritDamageBonus float64
