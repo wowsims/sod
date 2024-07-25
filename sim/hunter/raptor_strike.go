@@ -114,6 +114,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_HunterRaptorStrike,
 		ActionID:    core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -167,6 +168,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 	})
 
 	queueSpell := hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_HunterRaptorStrike,
 		ActionID: hunter.RaptorStrike.WithTag(3),
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
