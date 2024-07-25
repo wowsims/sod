@@ -33,6 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatStamina,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to caluclate EP.
@@ -80,6 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 				[Stat.StatStamina]: 0.3,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatBonusArmor]: 0.01,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 2.94,

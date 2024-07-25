@@ -27,6 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellDamage,
@@ -62,6 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			[Stat.StatSpellCrit]: 13.91,
 			[Stat.StatSpellHaste]: 6.85,
 			[Stat.StatMP5]: 0.11,
+			[Stat.StatFireResistance]: 0.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

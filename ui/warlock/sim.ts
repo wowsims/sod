@@ -30,6 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -113,6 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			[Stat.StatSpellCrit]: 0.53,
 			[Stat.StatSpellHaste]: 0.81,
 			[Stat.StatStamina]: 0.01,
+			[Stat.StatFireResistance]: 0.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

@@ -28,6 +28,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatStamina,
 		Stat.StatArmor,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -61,6 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatMeleeHaste]: 22.08,
 				[Stat.StatArmor]: 0.03,
 				[Stat.StatBonusArmor]: 0.03,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 11.92,

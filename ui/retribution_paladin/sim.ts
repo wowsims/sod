@@ -55,6 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -97,6 +98,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Stat.StatMeleeHit]: 1.96,
 				[Stat.StatMeleeCrit]: 1.16,
 				[Stat.StatMeleeHaste]: 1.44,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 7.33,
