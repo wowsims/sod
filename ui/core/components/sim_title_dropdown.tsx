@@ -49,7 +49,7 @@ export class SimTitleDropdown extends Component {
 		[Spec.SpecRestorationShaman]: 'Restoration',
 		[Spec.SpecHunter]: 'Hunter',
 		[Spec.SpecMage]: 'Mage',
-		[Spec.SpecRogue]: 'Rogue',
+		[Spec.SpecRogue]: 'DPS',
 		[Spec.SpecTankRogue]: 'Tank',
 		[Spec.SpecHolyPaladin]: 'Holy',
 		[Spec.SpecProtectionPaladin]: 'Protection',
