@@ -2,8 +2,8 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
-import { WarriorStance } from '../core/proto/warrior';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { WarriorRune, WarriorStance } from '../core/proto/warrior';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as WarriorInputs from './inputs.js';
@@ -143,15 +143,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	},
 
 	autoRotation: player => {
-		if (player.getLevel() < 60) {
-			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const level = player.getLevel();
+		const talentTree = player.getTalentTree();
+
+		if (level < 60) {
+			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 		}
 
-		if (player.getTalentTree() == 1) {
-			return Presets.DefaultAPLs[60][1].rotation.rotation!;
+		if (talentTree === 1 && player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance)) {
+			return Presets.DefaultAPLs[60][0].rotation.rotation!;
 		}
 
-		throw new Error('Automatic level 60 Arms / Prot / Gladiator rotations are not supported at this time. Please select an APL in the Rotation tab.');
+		if (Presets.DefaultAPLs[60][talentTree]) {
+			return Presets.DefaultAPLs[60][talentTree].rotation.rotation!;
+		}
+
+		throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
 	},
 
 	raidSimPresets: [

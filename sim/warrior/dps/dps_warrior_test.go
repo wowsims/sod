@@ -73,37 +73,6 @@ func TestArms(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:               proto.Race_RaceOrc,
-					Class:              proto.Class_ClassWarrior,
-					Level:              40,
-					Equipment:          core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_2h").GearSet,
-					Rotation:           core.GetAplRotation("../../../ui/warrior/apls", "phase_2_arms").Rotation,
-					Consumes:           Phase2Consumes.Consumes,
-					Spec:               PlayerOptionsFury,
-					TalentsString:      P2FuryTalents,
-					Buffs:              core.FullIndividualBuffsPhase2,
-					DistanceFromTarget: 0,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
-}
-
 var P2ArmsTalents = "303050213525100001"
 var P2FuryTalents = "-05050005405010051"
 var P3ArmsTalents = "303050213520105001-0505"
