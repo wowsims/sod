@@ -47,6 +47,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatMP5,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {

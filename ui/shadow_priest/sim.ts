@@ -44,6 +44,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();

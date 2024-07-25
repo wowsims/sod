@@ -54,6 +54,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatArmor,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {

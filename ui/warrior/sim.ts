@@ -43,6 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {

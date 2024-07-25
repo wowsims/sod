@@ -44,6 +44,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	defaults: {
 		// Default equipped gear.

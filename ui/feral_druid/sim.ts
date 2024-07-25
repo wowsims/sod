@@ -50,6 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {

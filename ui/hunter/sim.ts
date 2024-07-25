@@ -54,6 +54,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {

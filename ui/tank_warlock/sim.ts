@@ -64,6 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
