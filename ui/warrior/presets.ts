@@ -70,11 +70,16 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearArmsPhase1, GearFuryPhase1, GearArmsDWPhase1],
 	[Phase.Phase2]: [GearArmsPhase2, GearFuryPhase2],
 	[Phase.Phase3]: [GearArmsPhase3, GearFuryPhase3, GearGladPhase3],
-	[Phase.Phase4]: [Gear2HPhase4, GearDWPhase4, GearGladPhase4, GearProtPhase4],
+	[Phase.Phase4]: [Gear2HPhase4, GearDWPhase4, GearProtPhase4, GearGladPhase4],
 	[Phase.Phase5]: [],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][1];
+export const DefaultGearArms = GearPresets[Phase.Phase4][0];
+export const DefaultGearFury = GearPresets[Phase.Phase4][1];
+export const DefaultGearProt = GearPresets[Phase.Phase4][2];
+export const DefaultGearGlad = GearPresets[Phase.Phase4][3];
+
+export const DefaultGear = DefaultGearFury;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -86,15 +91,18 @@ export const APLPhase2Fury = PresetUtils.makePresetAPLRotation('P2 Fury', Phase2
 export const APLPhase3Arms = PresetUtils.makePresetAPLRotation('P3 Arms', Phase3APLArms, { customCondition: player => player.getLevel() === 50 });
 export const APLPhase3Fury = PresetUtils.makePresetAPLRotation('P3 Fury', Phase3APLFury, { customCondition: player => player.getLevel() === 50 });
 export const APLPhase3Glad = PresetUtils.makePresetAPLRotation('P3 Glad', Phase3APLGlad, { customCondition: player => player.getLevel() === 50 });
+
 export const APLPhase4Fury = PresetUtils.makePresetAPLRotation('P4 Fury', Phase4APLFury, { customCondition: player => player.getLevel() === 60 });
 export const APLPhase4Glad = PresetUtils.makePresetAPLRotation('P4 Glad', Phase4APLGlad, { customCondition: player => player.getLevel() === 60 });
 export const APLPhase4Prot = PresetUtils.makePresetAPLRotation('P4 Prot', Phase4APLProt, { customCondition: player => player.getLevel() === 60 });
+// No arms rotation right now
+export const APLPhase4Arms = APLPhase4Fury;
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1Arms],
 	[Phase.Phase2]: [APLPhase2Arms, APLPhase2Fury],
 	[Phase.Phase3]: [APLPhase3Arms, APLPhase3Fury, APLPhase3Glad],
-	[Phase.Phase4]: [APLPhase4Glad, APLPhase4Fury, APLPhase4Prot],
+	[Phase.Phase4]: [APLPhase4Arms, APLPhase4Fury, APLPhase4Prot, APLPhase4Glad],
 	[Phase.Phase5]: [],
 };
 
@@ -115,8 +123,10 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase3][0],
 	},
 	60: {
+		0: APLPresets[Phase.Phase4][0], // Arms
 		1: APLPresets[Phase.Phase4][1], // Fury
 		2: APLPresets[Phase.Phase4][2], // Prot
+		3: APLPresets[Phase.Phase4][3], // Glad
 	},
 };
 
@@ -156,20 +166,28 @@ export const TalentsPhase4Fury = PresetUtils.makePresetTalents('60 Fury', SavedT
 export const TalentsPhase4Prot = PresetUtils.makePresetTalents('60 Prot', SavedTalents.create({ talentsString: '20304300302-03-55200110530201051' }), {
 	customCondition: player => player.getLevel() === 60,
 });
+export const TalentsPhase4Glad = PresetUtils.makePresetTalents('60 Glad', SavedTalents.create({ talentsString: '30305020302-05050005025012251' }), {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
 	[Phase.Phase3]: [TalentsPhase3Arms, TalentsPhase3Fury, TalentsPhase3Glad],
-	[Phase.Phase4]: [TalentsPhase4Arms, TalentsPhase4Fury, TalentsPhase4Prot],
+	[Phase.Phase4]: [TalentsPhase4Arms, TalentsPhase4Fury, TalentsPhase4Prot, TalentsPhase4Glad],
 	[Phase.Phase5]: [],
 };
 
 export const DefaultTalentsArms = TalentPresets[Phase.Phase4][0];
 export const DefaultTalentsFury = TalentPresets[Phase.Phase4][1];
-export const DefaultTalentsGlad = TalentPresets[Phase.Phase4][2];
+export const DefaultTalentsProt = TalentPresets[Phase.Phase4][2];
+export const DefaultTalentsGlad = TalentPresets[Phase.Phase4][3];
 
 export const DefaultTalents = DefaultTalentsFury;
+
+export const PresetBuildFury = PresetUtils.makePresetBuild('Fury', DefaultGearFury, DefaultTalentsFury, DefaultAPLs[60][1]);
+export const PresetBuildProt = PresetUtils.makePresetBuild('Prot', DefaultGearProt, DefaultTalentsProt, DefaultAPLs[60][2]);
+export const PresetBuildGlad = PresetUtils.makePresetBuild('Glad', DefaultGearGlad, DefaultTalentsGlad, DefaultAPLs[60][3]);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options Presets

@@ -142,6 +142,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		// Preset builds that the user can quickly select.
+		builds: [Presets.PresetBuildFury, Presets.PresetBuildGlad, Presets.PresetBuildProt],
 	},
 
 	autoRotation: player => {
@@ -152,15 +154,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 		}
 
-		if (talentTree === 1 && player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance)) {
-			return Presets.DefaultAPLs[60][0].rotation.rotation!;
+		if (talentTree === 0) {
+			throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
 		}
 
-		if (Presets.DefaultAPLs[60][talentTree]) {
-			return Presets.DefaultAPLs[60][talentTree].rotation.rotation!;
+		if (player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance) && talentTree != 2) {
+			return Presets.DefaultAPLs[level][3].rotation.rotation!;
 		}
 
-		throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
+		return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 	},
 
 	raidSimPresets: [
