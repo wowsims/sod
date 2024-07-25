@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/guardians"
@@ -190,8 +189,8 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 }
 
 func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) {
-	aura.NewExclusiveEffect(fmt.Sprintf("stance-override-%d", stance), true, core.ExclusiveEffect{
-		Priority: float64(aura.Duration),
+	aura.NewExclusiveEffect("stance-override", true, core.ExclusiveEffect{
+		Priority: float64(stance),
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if stance.Matches(BattleStance) {
 				for _, spell := range warrior.BattleStanceSpells {

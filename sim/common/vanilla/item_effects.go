@@ -353,7 +353,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				spellIdx := int32(sim.Roll(0, 6))
 				castableSpells[spellIdx].Cast(sim, result.Target)
@@ -576,7 +576,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuras.Get(result.Target).Activate(sim)
 			},
@@ -596,7 +596,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				effectAura.Activate(sim)
 			},
@@ -777,7 +777,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1.0,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuraArray.Get(result.Target).Activate(sim)
 			},
@@ -1179,7 +1179,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				strengthAura.Activate(sim)
 			},
@@ -1191,7 +1191,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				enrageAura.Activate(sim)
 			},
@@ -1412,7 +1412,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			ProcChance: .20,
+			ProcChance:        .20,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					immolationSpell.Cast(sim, aoeTarget)
@@ -1476,7 +1476,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				purgedByFireSpell.Cast(sim, result.Target)
 			},
@@ -1834,7 +1834,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:      1.0,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 461985})
 			},
@@ -1917,10 +1917,18 @@ func init() {
 			Label:    "Burst of Knowledge",
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier -= 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
+						spell.CostMultiplier -= 1
+					}
+				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier += 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
+						spell.CostMultiplier += 1
+					}
+				}
 			},
 		})
 
@@ -2004,7 +2012,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			PPM:      2,
+			PPM:               2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, spell.Unit)
 			},
@@ -2021,8 +2029,8 @@ func init() {
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolNature,
-			DefenseType:       core.DefenseTypeMagic,
-			ProcMask:          core.ProcMaskEmpty,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2038,7 +2046,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			PPM:      1.0,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -2157,7 +2165,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			PPM:      0.4,
+			PPM:               0.4,
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				spell.Cast(sim, result.Target)
 			},
@@ -2535,7 +2543,7 @@ func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell 
 			},
 		})
 	})
-	
+
 	character.GetOrRegisterAura(core.Aura{
 		Label:      "Cursed Blade",
 		ActionID:   core.ActionID{SpellID: 462228},
@@ -2590,7 +2598,7 @@ func makeNightfallProc(character *core.Character, itemName string) {
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,
 		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-		PPM:      2,
+		PPM:               2,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAuras.Get(result.Target).Activate(sim)
 		},

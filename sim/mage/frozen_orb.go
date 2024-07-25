@@ -125,6 +125,9 @@ func (ffo *FrozenOrb) registerFrozenOrbTickSpell() {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 			ffo.TickCount += 1
+			if ffo.TickCount == 15 {
+				ffo.TickCount = 0
+			}
 		},
 	})
 

@@ -1,8 +1,4 @@
 // Set color variables which control the site theme.
 .tank-rogue-sim-ui {
-	@include theme-color(
-		$rogue,
-		.95,
-		'/sod/assets/img/rogue_background.jpg'
-	);
+	@include theme-color($rogue, 0.95, '/sod/assets/img/tank_rogue_background.png');
 }

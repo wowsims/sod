@@ -2,8 +2,8 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
-import { WarriorStance } from '../core/proto/warrior';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { WarriorRune, WarriorStance } from '../core/proto/warrior';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as WarriorInputs from './inputs.js';
@@ -28,6 +28,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatStamina,
 		Stat.StatArmor,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -43,6 +44,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -60,6 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatMeleeHaste]: 22.08,
 				[Stat.StatArmor]: 0.03,
 				[Stat.StatBonusArmor]: 0.03,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 11.92,
@@ -139,18 +142,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		// Preset builds that the user can quickly select.
+		builds: [Presets.PresetBuildFury, Presets.PresetBuildGlad, Presets.PresetBuildProt],
 	},
 
 	autoRotation: player => {
-		if (player.getLevel() < 60) {
-			return Presets.DefaultAPLs[player.getLevel()][player.getTalentTree()].rotation.rotation!;
+		const level = player.getLevel();
+		const talentTree = player.getTalentTree();
+
+		if (level < 60) {
+			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 		}
 
-		if (player.getTalentTree() == 1) {
-			return Presets.DefaultAPLs[60][1].rotation.rotation!;
+		if (talentTree === 0) {
+			throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
 		}
 
-		throw new Error('Automatic level 60 Arms / Prot / Gladiator rotations are not supported at this time. Please select an APL in the Rotation tab.');
+		if (player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance) && talentTree != 2) {
+			return Presets.DefaultAPLs[level][3].rotation.rotation!;
+		}
+
+		return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -33,6 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatStamina,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to caluclate EP.
@@ -57,6 +58,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatParry,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -79,6 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 				[Stat.StatStamina]: 0.3,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatBonusArmor]: 0.01,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 2.94,
@@ -133,20 +136,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase3],
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1]],
+		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			...Presets.APLPresets[Phase.Phase3],
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1]],
+		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase3],
-			...Presets.GearPresets[Phase.Phase2],
-			...Presets.GearPresets[Phase.Phase1]],
+		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {

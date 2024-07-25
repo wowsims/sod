@@ -298,6 +298,10 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions) *EnergyCost {
 	}
 }
 
+func (ec *EnergyCost) CostType() CostType {
+	return CostTypeEnergy
+}
+
 func (ec *EnergyCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
 	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
 	return spell.Unit.CurrentEnergy() >= spell.CurCast.Cost

@@ -20,6 +20,8 @@ const (
 
 	SpellCode_HunterAimedShot
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterRaptorStrike
+	SpellCode_HunterMultiShot
 )
 
 func RegisterHunter() {

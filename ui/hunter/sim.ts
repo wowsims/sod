@@ -34,6 +34,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatArcanePower,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
@@ -54,6 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -75,6 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 				[Stat.StatNaturePower]: 0.01,
 				[Stat.StatArcanePower]: 0.01,
 				[Stat.StatMP5]: 0.05,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 2.11,

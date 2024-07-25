@@ -45,13 +45,6 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 	manaCost := MoonfireManaCost[rank]
 	level := MoonfireLevel[rank]
 
-	switch druid.Ranged().ID {
-	case IdolOfTheMoon:
-		baseDamageLow += MoonfireBaseDamage[rank][0] * .17
-		baseDamageHigh += MoonfireBaseDamage[rank][0] * .17
-		baseDotDamage += MoonfireBaseDotDamage[rank] * .17
-	}
-
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_DruidMoonfire,

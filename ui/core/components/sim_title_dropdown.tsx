@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { getLaunchedSimsForClass, LaunchStatus, raidSimStatus, simLaunchStatuses } from '../launched_sims.js';
 import { Class, Spec } from '../proto/common.js';
 import {
+	classIcons,
 	classNames,
 	getSpecSiteUrl,
 	naturalClassOrder,
@@ -49,7 +50,7 @@ export class SimTitleDropdown extends Component {
 		[Spec.SpecRestorationShaman]: 'Restoration',
 		[Spec.SpecHunter]: 'Hunter',
 		[Spec.SpecMage]: 'Mage',
-		[Spec.SpecRogue]: 'Rogue',
+		[Spec.SpecRogue]: 'DPS',
 		[Spec.SpecTankRogue]: 'Tank',
 		[Spec.SpecHolyPaladin]: 'Holy',
 		[Spec.SpecProtectionPaladin]: 'Protection',
@@ -258,8 +259,7 @@ export class SimTitleDropdown extends Component {
 		if (data.type == 'Raid') {
 			iconPath = raidSimIcon;
 		} else if (data.type == 'Class') {
-			const className = classNames[data.index];
-			iconPath = `/sod/assets/img/${className.toLowerCase().replace(/\s/g, '_')}_icon.png`;
+			iconPath = classIcons[data.index];
 		} else {
 			iconPath = titleIcons[data.index];
 		}

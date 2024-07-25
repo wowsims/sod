@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -42,9 +43,15 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=23197/idol-of-the-moon
-	// Equip: Increases the damage of your Moonfire spell by up to 17%.
+	// Equip: Increases the damage of your Moonfire spell by up to 33.
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
-		// Implemented in moonfire.go as a base damage mod
+		druid := agent.(DruidAgent).GetDruid()
+		affectedSpellCodes := []int32{SpellCode_DruidMoonfire, SpellCode_DruidSunfire, SpellCode_DruidStarfallSplash, SpellCode_DruidStarfallTick}
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				spell.BonusDamage += 33
+			}
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
