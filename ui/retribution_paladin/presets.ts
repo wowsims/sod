@@ -9,9 +9,9 @@ import {
 	DragonslayerBuff,
 	EnchantedSigil,
 	Explosive,
-	Food,
-	Flask,
 	FirePowerBuff,
+	Flask,
+	Food,
 	IndividualBuffs,
 	Potions,
 	Profession,
@@ -29,7 +29,6 @@ import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';
 import APLP3RetJson from './apls/p3ret.apl.json';
 import APLP4RetJson from './apls/p4ret.apl.json';
-
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2retsom.gear.json';
@@ -182,6 +181,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
+	fireResistanceAura: true,
+	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
 	leaderOfThePack: true,

@@ -132,6 +132,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	battleShout: TristateEffect.TristateEffectImproved,
 	demonicPact: 80,
 	divineSpirit: true,
+	fireResistanceAura: true,
+	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	graceOfAirTotem: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: true,
