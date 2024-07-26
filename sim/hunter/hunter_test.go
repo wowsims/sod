@@ -163,23 +163,6 @@ func TestSV(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      60,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
-
-			Talents:     Phase4RangedSVTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "p4_ranged"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p4_ranged"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
 	}))
 }
 
