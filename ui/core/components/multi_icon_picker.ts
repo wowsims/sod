@@ -146,6 +146,11 @@ export class MultiIconPicker<ModObject> extends Component {
 	}
 
 	private getMaxValue(): ActionId | null {
-		return this.pickers.map(picker => picker.getActionId()).filter(id => id != null)[0] || null;
+		return (
+			this.pickers
+				.filter(picker => picker.showWhen())
+				.map(picker => picker.getActionId())
+				.filter(id => id != null)[0] || null
+		);
 	}
 }

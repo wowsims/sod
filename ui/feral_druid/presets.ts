@@ -6,7 +6,6 @@ import {
 	Conjured,
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	EnchantedSigil,
 	Flask,
 	Food,
@@ -154,16 +153,18 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfKings: true,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	fengusFerocity: true,
 	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
+	exposeArmor: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
 	sunderArmor: true,

@@ -34,6 +34,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatArcanePower,
+		Stat.StatSpellCrit,
 		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps],
@@ -55,10 +56,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
+		Stat.StatArcanePower,
+		Stat.StatSpellCrit,
 		Stat.StatFireResistance,
 	],
 
 	defaults: {
+		race: Presets.OtherDefaults.race,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
@@ -76,6 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 				[Stat.StatSpellPower]: 0.03,
 				[Stat.StatNaturePower]: 0.01,
 				[Stat.StatArcanePower]: 0.01,
+				[Stat.StatSpellCrit]: 0.01,
 				[Stat.StatMP5]: 0.05,
 				[Stat.StatFireResistance]: 0.5,
 			},
@@ -105,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	rotationInputs: HunterInputs.HunterRotationConfig,
 	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff, BuffDebuffInputs.StaminaBuff],
+	includeBuffDebuffInputs: [ConsumablesInputs.DragonBreathChili, BuffDebuffInputs.SpellScorchDebuff, BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -126,38 +131,61 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
-		builds: [Presets.PresetBuildMeleeBM, Presets.PresetBuildRangedMM],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
+		builds: [Presets.PresetBuildWeave, Presets.PresetBuildRangedMM, Presets.PresetBuildRangedSV],
 	},
 
 	autoRotation: player => {
+		const level = player.getLevel();
 		const isMelee =
-			player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
-			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization;
+			player.hasRune(ItemSlot.ItemSlotWaist, HunterRune.RuneBeltMeleeSpecialist) ||
+			player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsDualWieldSpecialization) ||
+			player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsWyvernStrike);
 
 		if (isMelee) {
-			return player.getLevel() == 50
-				? Presets.APLMeleeBmPhase3.rotation.rotation!
-				: player.getLevel() == 40
-				? Presets.APLMeleePhase2.rotation.rotation!
-				: Presets.APLMeleeWeavePhase1.rotation.rotation!;
+			switch (level) {
+				case 25:
+					return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+				case 40:
+					return Presets.APLMeleePhase2.rotation.rotation!;
+				case 50:
+					return Presets.APLMeleeBmPhase3.rotation.rotation!;
+				case 60:
+					return Presets.APLWeavePhase4.rotation.rotation!;
+			}
 		} else {
-			if (player.getLevel() == 50) {
-				return Presets.APLRangedMmPhase3.rotation.rotation!;
-			} else if (player.getLevel() == 40) {
-				if (player.getTalentTree() == 1) {
-					return Presets.APLRangedMmPhase2.rotation.rotation!;
-				} else {
-					return Presets.APLRangedBmPhase2.rotation.rotation!;
-				}
-			} else {
-				return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+			switch (level) {
+				case 25:
+					return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+				case 40:
+					return player.getTalentTree() === 1 ? Presets.APLRangedMmPhase2.rotation.rotation! : Presets.APLRangedBmPhase2.rotation.rotation!;
+				case 50:
+					return Presets.APLRangedMmPhase3.rotation.rotation!;
+				case 60:
+					return Presets.APLRangedPhase4.rotation.rotation!;
 			}
 		}
+
+		throw new Error('Auto rotation not supported for your current configuration.');
 	},
 
 	raidSimPresets: [

@@ -7,7 +7,6 @@ import {
 	AttackPowerBuff,
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	EnchantedSigil,
 	Flask,
 	Food,
@@ -232,22 +231,26 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfKings: true,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	fengusFerocity: true,
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
 	moldarsMoxie: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
+	exposeArmor: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
 	improvedFaerieFire: true,
+	improvedScorch: true,
 	mangle: true,
 	sunderArmor: true,
 });

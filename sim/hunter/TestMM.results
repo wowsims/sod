@@ -47,6 +47,55 @@ character_stats_results: {
   final_stats: 0
  }
 }
+character_stats_results: {
+ key: "TestMM-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 247.687
+  final_stats: 710.8387
+  final_stats: 576.081
+  final_stats: 219.01
+  final_stats: 177.87
+  final_stats: 150
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 47.25
+  final_stats: 6
+  final_stats: 40.21367
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1958.5257
+  final_stats: 6
+  final_stats: 50.43485
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4725.15
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3895.6774
+  final_stats: 2357.6774
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7788.6786
+  final_stats: 27
+  final_stats: 139
+  final_stats: 60
+  final_stats: 60
+  final_stats: 60
+  final_stats: 384
+  final_stats: 0
+  final_stats: 35
+  final_stats: 172
+ }
+}
 stat_weights_results: {
  key: "TestMM-Lvl40-StatWeights-Default"
  value: {
@@ -78,6 +127,55 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.03677
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestMM-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0.53023
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.29268
+  weights: 0
+  weights: 5.30481
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
   weights: 0
   weights: 0
   weights: 0
@@ -206,5 +304,205 @@ dps_results: {
  value: {
   dps: 346.77089
   tps: 173.24916
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-BeastmasterArmor"
+ value: {
+  dps: 508.68995
+  tps: 508.80067
+  hps: 9.33849
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-BloodGuard'sChain"
+ value: {
+  dps: 827.10773
+  tps: 827.21818
+  hps: 9.28289
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 807.18613
+  tps: 807.29658
+  hps: 9.28289
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-BloodlashBow-216516"
+ value: {
+  dps: 953.49863
+  tps: 953.60908
+  hps: 12.58016
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-DevilsaurEye-19991"
+ value: {
+  dps: 951.1679
+  tps: 951.27835
+  hps: 12.58016
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-DevilsaurTooth-19992"
+ value: {
+  dps: 942.81681
+  tps: 942.92726
+  hps: 12.58016
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 675.40227
+  tps: 675.52217
+  hps: 8.86045
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 808.68837
+  tps: 808.79882
+  hps: 9.28289
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
+ value: {
+  dps: 955.78937
+  tps: 955.89982
+  hps: 12.58016
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-Knight-Lieutenant'sChain"
+ value: {
+  dps: 827.10773
+  tps: 827.21818
+  hps: 9.28289
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 936.63083
+  tps: 936.74128
+  hps: 12.58016
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Average-Default"
+ value: {
+  dps: 960.48555
+  tps: 960.5928
+  hps: 12.54582
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 7522.39816
+  tps: 8192.58728
+  hps: 17.11074
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 3138.01856
+  tps: 3171.52238
+  hps: 17.10091
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 3155.35373
+  tps: 3190.59308
+  hps: 16.21919
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 3725.30477
+  tps: 4318.07183
+  hps: 10.0459
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 1589.33644
+  tps: 1618.9748
+  hps: 9.74277
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1698.99126
+  tps: 1722.71914
+  hps: 9.6408
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 7679.93869
+  tps: 8332.82915
+  hps: 17.32729
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 3299.40164
+  tps: 3332.0134
+  hps: 17.28657
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 3335.75586
+  tps: 3370.40536
+  hps: 17.01861
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 3737.22596
+  tps: 4314.9049
+  hps: 9.69642
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 1597.68516
+  tps: 1626.5691
+  hps: 9.778
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1715.30621
+  tps: 1738.26009
+  hps: 10.15065
+ }
+}
+dps_results: {
+ key: "TestMM-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 893.26838
+  tps: 893.37883
+  hps: 12.07773
  }
 }

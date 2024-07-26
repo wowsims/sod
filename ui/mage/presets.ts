@@ -3,7 +3,6 @@ import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	FirePowerBuff,
 	Flask,
 	Food,
@@ -266,11 +265,12 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 
