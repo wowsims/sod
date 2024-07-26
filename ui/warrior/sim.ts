@@ -1,3 +1,4 @@
+import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
@@ -98,7 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [WarriorInputs.ShoutPicker, WarriorInputs.StancePicker],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

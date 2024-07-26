@@ -1,6 +1,5 @@
-import { DragonslayerBuff, Faction, SaygesFortune, Stat } from '../../proto/common';
+import { Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
-import { IconEnumPicker } from '../icon_enum_picker';
 import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
@@ -505,22 +504,16 @@ export const BattleSquawkBuff = makeMultistateRaidBuffInput({
 //                                 WORLD BUFFS
 ///////////////////////////////////////////////////////////////////////////
 
-// export const RallyingCryOfTheDragonslayer = withLabel(
-// 	makeBooleanIndividualBuffInput({
-// 		actionId: () => ActionId.fromSpellId(22888),
-// 		fieldName: 'rallyingCryOfTheDragonslayer',
-// 	}),
-// 	'Rallying Cry of the Dragonslayer',
-// );
-export const DragonslayerBuffInput = makeEnumIndividualBuffInput({
-	direction: IconPickerDirection.Horizontal,
-	values: [
-		{ value: DragonslayerBuff.DragonslayerBuffUnknown, text: 'Dragonslayer Buff' },
-		{ value: DragonslayerBuff.RallyingCryofTheDragonslayer, actionId: () => ActionId.fromSpellId(22888), text: 'Rallying Cry of the Dragonslayer' },
-		{ value: DragonslayerBuff.ValorOfAzeroth, actionId: () => ActionId.fromSpellId(461475), text: 'Valor of Azeroth' },
-	],
-	fieldName: 'dragonslayerBuff',
+export const RallyingCryOfTheDragonslayer = makeBooleanIndividualBuffInput({
+	actionId: () => ActionId.fromSpellId(22888),
+	fieldName: 'rallyingCryOfTheDragonslayer',
 });
+export const ValorOfAzeroth = makeBooleanIndividualBuffInput({
+	actionId: () => ActionId.fromSpellId(461475),
+	fieldName: 'valorOfAzeroth',
+});
+export const DragonslayerBuffInput = InputHelpers.makeMultiIconInput([RallyingCryOfTheDragonslayer, ValorOfAzeroth], 'Dragonslayer Buff');
+
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(24425),
@@ -1131,7 +1124,7 @@ export const WORLD_BUFFS_CONFIG = [
 	// },
 	{
 		config: DragonslayerBuffInput,
-		picker: IconEnumPicker,
+		picker: MultiIconPicker,
 		stats: [],
 	},
 	{

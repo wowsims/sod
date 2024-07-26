@@ -6,7 +6,6 @@ import {
 	Conjured,
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	Flask,
 	Food,
 	IndividualBuffs,
@@ -261,12 +260,13 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfKings: true,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	fengusFerocity: true,
 	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 
@@ -276,6 +276,7 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	homunculi: 70,
 	improvedFaerieFire: true,
+	improvedScorch: true,
 	mangle: true,
 	markOfChaos: true,
 	sunderArmor: true,

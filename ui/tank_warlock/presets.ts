@@ -8,7 +8,6 @@ import {
 	Conjured,
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	EnchantedSigil,
 	Explosive,
 	FirePowerBuff,
@@ -256,13 +255,14 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfSanctuary: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	fengusFerocity: true,
 	mightOfStormwind: true,
 	moldarsMoxie: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 
