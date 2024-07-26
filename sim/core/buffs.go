@@ -2565,8 +2565,8 @@ func DefendersResolveAttackPower(character *Character) *Aura {
 		// Each stack corresponds to 4 AP. Handles a max of 500 Defense
 		MaxStacks: 200,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(-4*oldStacks))
-			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(4*newStacks))
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(-4*oldStacks))
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(4*newStacks))
 		},
 	})
 }
