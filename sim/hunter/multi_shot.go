@@ -24,6 +24,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		manaCostMultiplier -= 0.25
 	}
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterMultiShot,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeRanged,

@@ -63,6 +63,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP.
@@ -80,6 +82,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -98,6 +102,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 				[Stat.StatMeleeHit]: 14.11,
 				[Stat.StatMeleeCrit]: 25.97,
 				[Stat.StatMeleeHaste]: 14.51,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 4.05,

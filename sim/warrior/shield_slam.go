@@ -66,10 +66,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 			if result.Landed() {
 				if stacks := int32(warrior.GetStat(stats.Defense)); stacks > 0 {
-					if !defendersResolveAura.IsActive() {
-						defendersResolveAura.Activate(sim)
-					}
-
+					defendersResolveAura.Activate(sim)
 					if defendersResolveAura.GetStacks() != stacks {
 						defendersResolveAura.SetStacks(sim, stacks)
 					}

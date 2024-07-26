@@ -24,7 +24,7 @@ func (priest *Priest) registerMindFlay() {
 
 	priest.MindFlay = make([][]*core.Spell, MindFlayRanks+1)
 
-	for rank := 1; rank < MindFlayRanks; rank++ {
+	for rank := 1; rank <= MindFlayRanks; rank++ {
 		priest.MindFlay[rank] = make([]*core.Spell, MindFlayTicks+1)
 
 		var tick int32

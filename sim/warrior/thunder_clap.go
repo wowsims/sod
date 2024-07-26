@@ -22,18 +22,25 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		60: {spellID: 11581, baseDamage: 103, duration: time.Second * 30},
 	}[warrior.Level]
 
+	damageMultiplier := 1.0
+	threatMultiplier := 2.5
 	apCoef := 0.05
+	attackSpeedReduction := int32(10)
+	stanceMask := BattleStance
+
+	if hasFuriousThunder {
+		damageMultiplier *= 2
+		threatMultiplier *= 1.5
+		apCoef *= 2
+		attackSpeedReduction += 6
+		stanceMask = AnyStance
+	}
 
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, Level int32) *core.Aura {
-		return core.ThunderClapAura(target, info.spellID, info.duration, 10)
+		return core.ThunderClapAura(target, info.spellID, info.duration, attackSpeedReduction)
 	})
 
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
-
-	stanceMask := BattleStance
-	if hasFuriousThunder {
-		stanceMask = AnyStance
-	}
 
 	warrior.ThunderClap = warrior.RegisterSpell(stanceMask, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
@@ -58,8 +65,8 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: core.TernaryFloat64(hasFuriousThunder, 2, 1),
-		ThreatMultiplier: 2.5 * core.TernaryFloat64(hasFuriousThunder, 1.5, 1),
+		DamageMultiplier: damageMultiplier,
+		ThreatMultiplier: threatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {

@@ -20,6 +20,8 @@ const (
 
 	SpellCode_HunterAimedShot
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterRaptorStrike
+	SpellCode_HunterMultiShot
 )
 
 func RegisterHunter() {
@@ -89,7 +91,7 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
-	HitAndRunAura	   *core.Aura
+	HitAndRunAura      *core.Aura
 
 	// The aura that allows you to cast Mongoose Bite
 	DefensiveState *core.Aura

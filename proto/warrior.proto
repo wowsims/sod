@@ -121,6 +121,14 @@ enum WarriorShout {
 	WarriorShoutCommanding = 2;
 }
 
+enum WarriorStance {
+	WarriorStanceNone = 0;
+	WarriorStanceBattle = 1;
+	WarriorStanceDefensive = 2;
+	WarriorStanceBerserker = 3;
+	WarriorStanceGladiator = 4;
+}
+
 message Warrior {
 	message Rotation {
 	}
@@ -128,9 +136,10 @@ message Warrior {
 	message Options {
 		double starting_rage = 1;
 		bool use_recklessness = 2;
-		WarriorShout shout = 3;
 		bool stance_snapshot = 6;
-		bool disable_expertise_gemming = 7;
+
+		WarriorShout shout = 3;
+		WarriorStance stance = 7;
 	}
 	Options options = 3;
 }
@@ -143,6 +152,7 @@ message ProtectionWarrior {
 		double starting_rage = 1;
 
 		WarriorShout shout = 4;
+		WarriorStance stance = 7;
 	}
 	Options options = 3;
 }

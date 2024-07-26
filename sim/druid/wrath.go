@@ -29,9 +29,11 @@ func (druid *Druid) registerWrathSpell() {
 }
 
 func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
+
 	spellId := WrathSpellId[rank]
-	baseDamageLow := WrathBaseDamage[rank][0]
-	baseDamageHigh := WrathBaseDamage[rank][1]
+	baseDamageLow := WrathBaseDamage[rank][0] * talentBaseMultiplier
+	baseDamageHigh := WrathBaseDamage[rank][1] * talentBaseMultiplier
 	spellCoeff := WrathSpellCoeff[rank]
 	manaCost := WrathManaCost[rank]
 	castTime := WrathCastTime[rank]
@@ -69,7 +71,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {

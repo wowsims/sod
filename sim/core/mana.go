@@ -325,6 +325,10 @@ func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
 	}
 }
 
+func (mc *ManaCost) CostType() CostType {
+	return CostTypeMana
+}
+
 func (mc *ManaCost) MeetsRequirement(sim *Simulation, spell *Spell) bool {
 	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
 	meetsRequirement := spell.Unit.CurrentMana() >= spell.CurCast.Cost
