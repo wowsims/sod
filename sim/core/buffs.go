@@ -2331,7 +2331,7 @@ func ApplyValorOfAzeroth(unit *Unit) *Aura {
 func ApplySpiritOfZandalar(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		Label:    "Zandalar Buff",
-		ActionID: ActionID{SpellID: 461475},
+		ActionID: ActionID{SpellID: 24425},
 		Stats: []StatConfig{
 			{stats.Agility, 1.15, true},
 			{stats.Intellect, 1.15, true},
