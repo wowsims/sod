@@ -29,6 +29,8 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 }
 
 func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig {
+	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
+
 	spellId := LesserHealingWaveSpellId[rank]
 	baseHealingLow := LesserHealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
 	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
@@ -44,12 +46,13 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 	}
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_ShamanLesserHealingWave,
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | SpellFlagMaelstrom | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: spellId},
+		SpellCode:    SpellCode_ShamanLesserHealingWave,
+		SpellSchool:  core.SpellSchoolNature,
+		DefenseType:  core.DefenseTypeMagic,
+		ProcMask:     core.ProcMaskSpellHealing,
+		Flags:        core.SpellFlagHelpful | SpellFlagMaelstrom | core.SpellFlagAPL,
+		MetricSplits: 6,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -65,9 +68,16 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				if hasMaelstromWeaponRune {
+					stacks := shaman.MaelstromWeaponAura.GetStacks()
+					spell.SetMetricsSplit(stacks)
+
+					if stacks > 0 {
+						return
+					}
 				}
+
+				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 

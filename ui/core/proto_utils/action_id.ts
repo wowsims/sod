@@ -335,9 +335,12 @@ export class ActionId {
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
+			case 'Lightning Bolt':
 			case 'Chain Lightning':
 			case 'Lava Burst':
-			case 'Lightning Bolt':
+			case 'Healing Wave':
+			case 'Lesser Healing Wave':
+			case 'Chain Heal':
 				if (this.tag === 6) {
 					name = `${name} (Overload)`;
 				} else if (this.tag) {

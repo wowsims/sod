@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.01207
+  weights: 0.86405
   weights: 0
-  weights: 0.82959
+  weights: 0.82954
   weights: 0
-  weights: 0.25396
-  weights: 0
-  weights: 0
-  weights: 0.57563
+  weights: 0.25377
   weights: 0
   weights: 0
-  weights: 6.87212
-  weights: 3.28126
+  weights: 0.57577
+  weights: 0
+  weights: 0
+  weights: 6.89669
+  weights: 3.29486
   weights: 0
   weights: 0
   weights: 0
@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 0.11462
+  weights: 0
+  weights: 1.09524
+  weights: 0
+  weights: 0.34798
   weights: 0
   weights: 0
-  weights: 1.09789
-  weights: 0
-  weights: 0.35036
+  weights: 0.74726
   weights: 0
   weights: 0
-  weights: 0.74753
-  weights: 0
-  weights: 0
-  weights: 13.90659
-  weights: 6.07129
+  weights: 13.09184
+  weights: 6.27871
   weights: 0
   weights: 0
   weights: 0
@@ -349,9 +349,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.568
+  weights: 1.56797
   weights: 0
-  weights: 0.48506
+  weights: 0.48503
   weights: 0
   weights: 0
   weights: 1.08294
@@ -491,8 +491,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl40-Average-Default"
  value: {
-  dps: 592.37691
-  tps: 511.29122
+  dps: 592.42208
+  tps: 511.31642
  }
 }
 dps_results: {
@@ -589,8 +589,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-Average-Default"
  value: {
-  dps: 1236.32487
-  tps: 1107.44575
+  dps: 1234.64905
+  tps: 1106.0841
  }
 }
 dps_results: {
@@ -680,8 +680,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1223.71407
-  tps: 1094.65005
+  dps: 1212.56201
+  tps: 1082.50846
  }
 }
 dps_results: {
@@ -729,15 +729,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1948.89779
-  tps: 1987.83243
+  dps: 1948.89724
+  tps: 1987.86443
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2070.1007
-  tps: 2106.81837
+  dps: 2070.115
+  tps: 2106.83409
  }
 }
 dps_results: {
@@ -750,8 +750,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-Average-Default"
  value: {
-  dps: 2597.69262
-  tps: 1639.18923
+  dps: 2597.69042
+  tps: 1639.18484
  }
 }
 dps_results: {
@@ -841,7 +841,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2550.8795
-  tps: 1604.13715
+  dps: 2550.87477
+  tps: 1604.13384
  }
 }
