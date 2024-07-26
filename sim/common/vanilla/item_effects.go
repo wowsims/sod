@@ -1079,7 +1079,23 @@ func init() {
 	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcDamage(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponProcSpell(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, func(character *core.Character) *core.Spell {
+		maxHits := int(min(3, character.Env.GetNumTargets()))
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463946},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for numHits := 0; numHits < maxHits; numHits++ {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -1383,7 +1399,57 @@ func init() {
 	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcDamage(SkyridersMasterworkStormhammer, "Skyrider's Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
+	core.NewItemEffect(SkyridersMasterworkStormhammer, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		maxHits := int(min(3, character.Env.GetNumTargets()))
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463946},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 0.1,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for numHits := 0; numHits < maxHits; numHits++ {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Chain Lightning (Skyrider's Masterwork Stormhammer Melee)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               0.5,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		})
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Chain Lightning (Skyrider's Masterwork Stormhammer Spell)",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: .1,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				if !icd.IsReady(sim) {
+					return
+				}
+				procSpell.Cast(sim, result.Target)
+				icd.Use(sim)
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=227683/sulfuras-hand-of-ragnaros
 	// Chance on hit: Hurls a fiery ball that causes 273 to 333 Fire damage and purges the target's soul, increasing Fire and Holy damage taken by up to 30 and dealing an additional 75 damage over 10 sec.
@@ -1407,12 +1473,11 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Immolation (Hand of Ragnaros)",
-			Callback:          core.CallbackOnSpellHitTaken,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			ProcChance:        .20,
+			Name:       "Immolation (Hand of Ragnaros)",
+			Callback:   core.CallbackOnSpellHitTaken,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: .20,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					immolationSpell.Cast(sim, aoeTarget)
