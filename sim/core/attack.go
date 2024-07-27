@@ -492,6 +492,14 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 	aa.mh.swingAt = NeverExpires
 	aa.oh.swingAt = NeverExpires
 
+	// Make sure extra attacks are reset
+	aa.mh.extraAttacks = 0
+	aa.mh.spell.SetMetricsSplit(0)
+	if aa.ranged.spell != nil {
+		aa.ranged.extraAttacks = 0
+		aa.ranged.spell.SetMetricsSplit(0)
+	}
+
 	if aa.AutoSwingMelee {
 		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
 		aa.mh.swingAt = 0
