@@ -57,6 +57,18 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	unit.RegisterAura(Aura{
 		Label:    "RageBar",
 		Duration: NeverExpires,
+		OnInit: func(aura *Aura, sim *Simulation) {
+			// Initialize resource metrics for rage gain for auto attacks here to make sure tag is correct.
+			// Extra attacks change the tag from 1 to 3 for mh hits.
+			mhSpell := unit.AutoAttacks.MHAuto()
+			if mhSpell != nil {
+				mhSpell.ResourceMetrics = unit.NewRageMetrics(mhSpell.ActionID)
+			}
+			ohSpell := unit.AutoAttacks.OHAuto()
+			if ohSpell != nil {
+				ohSpell.ResourceMetrics = unit.NewRageMetrics(ohSpell.ActionID)
+			}
+		},
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
@@ -85,8 +97,9 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if spell.Cost != nil {
 				metrics = spell.Cost.(*RageCost).ResourceMetrics
 			} else {
+				// Seems like only auto attacks are using this. See OnInit handler of this aura.
 				if spell.ResourceMetrics == nil {
-					spell.ResourceMetrics = spell.Unit.NewRageMetrics(spell.ActionID)
+					panic(fmt.Sprintf("Spell ResourceMetrics are nil for spell %v", spell.ActionID))
 				}
 				metrics = spell.ResourceMetrics
 			}
