@@ -939,9 +939,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl50-AllItems-FeralheartRaiment"
  value: {
-  dps: 959.87947
-  tps: 701.57772
-  hps: 9.02419
+  dps: 960.49202
+  tps: 701.86332
+  hps: 9.01417
  }
 }
 dps_results: {
@@ -1342,8 +1342,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl60-Average-Default"
  value: {
-  dps: 3710.76268
-  tps: 2659.56239
+  dps: 3710.77938
+  tps: 2659.57648
  }
 }
 dps_results: {
@@ -1601,7 +1601,7 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2666.63792
-  tps: 1897.57406
+  dps: 2666.66011
+  tps: 1897.58073
  }
 }
