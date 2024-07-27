@@ -607,7 +607,7 @@ func MarkOfChaosDebuffAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Mark of Chaos",
 		ActionID: ActionID{SpellID: 461615},
-		Duration: NeverExpires, // Duration is set by the applying curse
+		Duration: time.Second, // Duration is set by the applying curse
 	})
 
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast

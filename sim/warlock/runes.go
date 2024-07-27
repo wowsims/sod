@@ -176,8 +176,11 @@ func (warlock *Warlock) applyMarkOfChaos() {
 
 func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *core.Unit, duration time.Duration) {
 	aura := warlock.MarkOfChaosAuras.Get(target)
-	aura.Duration = duration
-	aura.UpdateExpires(sim, sim.CurrentTime+duration)
+	// Only expire if not set as a permanent raid debuff.
+	if aura.Duration != core.NeverExpires {
+		aura.Duration = duration
+		aura.UpdateExpires(sim, sim.CurrentTime+duration)
+	}
 	aura.Activate(sim)
 }
 
