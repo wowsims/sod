@@ -335,9 +335,12 @@ export class ActionId {
 				}
 				break;
 			// Shaman Overload + Maelstrom Weapon
+			case 'Lightning Bolt':
 			case 'Chain Lightning':
 			case 'Lava Burst':
-			case 'Lightning Bolt':
+			case 'Healing Wave':
+			case 'Lesser Healing Wave':
+			case 'Chain Heal':
 				if (this.tag === 6) {
 					name = `${name} (Overload)`;
 				} else if (this.tag) {
@@ -689,6 +692,13 @@ const spellIDsToShowBuffs = new Set([
 	426969, // https://www.wowhead.com/classic/spell=426969/taste-for-blood
 	440114, // https://www.wowhead.com/classic/spell=440114/sudden-death
 	446393, // https://www.wowhead.com/classic/spell=446393/decay
+	457699, // https://www.wowhead.com/classic/spell=457699/echoes-of-defensive-stance
+	457706, // https://www.wowhead.com/classic/spell=457706/echoes-of-battle-stance
+	457708, // https://www.wowhead.com/classic/spell=457708/echoes-of-berserker-stance
+	457814, // https://www.wowhead.com/classic/spell=457814/defensive-forecast
+	457816, // https://www.wowhead.com/classic/spell=457816/battle-forecast
+	457817, // https://www.wowhead.com/classic/spell=457817/berserker-forecast
+	457819, // https://www.wowhead.com/classic/spell=457819/echoes-of-gladiator-stance
 	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos

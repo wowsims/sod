@@ -4,7 +4,6 @@ import {
 	AttackPowerBuff,
 	Consumes,
 	Debuffs,
-	DragonslayerBuff,
 	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
@@ -125,6 +124,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	demonicPact: 80,
 	divineSpirit: true,
+	fireResistanceAura: true,
+	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
 	moonkinAura: true,
@@ -133,12 +134,13 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	dragonslayerBuff: DragonslayerBuff.RallyingCryofTheDragonslayer,
 	fengusFerocity: true,
 	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
 

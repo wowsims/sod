@@ -1,21 +1,18 @@
-import { ItemSlot, Spec } from '../core/proto/common.js';
-import { ActionId } from '../core/proto_utils/action_id.js';
-import { Player } from '../core/player.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { makePetTypeInputConfig } from '../core/talents/hunter_pet.js';
-
 import * as InputHelpers from '../core/components/input_helpers.js';
-
+import { Player } from '../core/player.js';
+import { ItemSlot, Spec } from '../core/proto/common.js';
 import {
+	Hunter_Options_Ammo as Ammo,
+	Hunter_Options_PetAttackSpeed as PetAttackSpeed,
+	Hunter_Options_PetType,
+	Hunter_Options_QuiverBonus as QuiverBonus,
 	Hunter_Rotation_RotationType as RotationType,
 	Hunter_Rotation_StingType as StingType,
-	Hunter_Options_Ammo as Ammo,
-	Hunter_Options_QuiverBonus as QuiverBonus,
-	Hunter_Options_PetType,
-	Hunter_Options_PetAttackSpeed as PetAttackSpeed,
 	HunterRune,
-	Hunter,
 } from '../core/proto/hunter.js';
+import { ActionId } from '../core/proto_utils/action_id.js';
+import { makePetTypeInputConfig } from '../core/talents/hunter_pet.js';
+import { TypedEvent } from '../core/typed_event.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
@@ -41,9 +38,7 @@ export const WeaponAmmo = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecHun
 });
 
 export const QuiverInput = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecHunter, QuiverBonus>({
-	extraCssClasses: [
-		'quiver-picker',
-	],
+	extraCssClasses: ['quiver-picker'],
 	fieldName: 'quiverBonus',
 	numColumns: 2,
 	values: [
@@ -70,7 +65,7 @@ export const NewRaptorStrike = InputHelpers.makeSpecOptionsBooleanInput<Spec.Spe
 	fieldName: 'newRaptorStrike',
 	label: 'New Raptor Strike',
 	labelTooltip: 'New Raptor Strike with removed same weapon type 30% damage bonus.',
-	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization,
+	showWhen: player => player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
@@ -79,7 +74,7 @@ export const SniperTrainingUptime = InputHelpers.makeSpecOptionsNumberInput<Spec
 	label: 'Sniper Training Uptime (%)',
 	labelTooltip: 'Percent of the fight duration for which you will have the buff.',
 	percent: true,
-	showWhen: (player) => player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == HunterRune.RuneLegsSniperTraining,
+	showWhen: player => player.getEquippedItem(ItemSlot.ItemSlotLegs)?.rune?.id == HunterRune.RuneLegsSniperTraining,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
@@ -99,7 +94,7 @@ export const PetAttackSpeedInput = InputHelpers.makeSpecOptionsEnumInput<Spec.Sp
 		{ name: '2.4', value: PetAttackSpeed.TwoFour },
 		{ name: '2.5', value: PetAttackSpeed.TwoFive },
 	],
-	showWhen: (player) => player.getSpecOptions().petType != Hunter_Options_PetType.PetNone,
+	showWhen: player => player.getSpecOptions().petType != Hunter_Options_PetType.PetNone,
 	changeEmitter: (player: Player<Spec.SpecHunter>) => TypedEvent.onAny([player.specOptionsChangeEmitter]),
 });
 

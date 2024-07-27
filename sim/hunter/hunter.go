@@ -20,6 +20,8 @@ const (
 
 	SpellCode_HunterAimedShot
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterRaptorStrike
+	SpellCode_HunterMultiShot
 )
 
 func RegisterHunter() {
@@ -89,6 +91,7 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
+	HitAndRunAura      *core.Aura
 
 	// The aura that allows you to cast Mongoose Bite
 	DefensiveState *core.Aura
@@ -146,6 +149,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
+	hunter.registerVolleySpell()
 
 	// Trap Launcher rune also splits the cooldowns between frost traps and fire traps, without the rune all traps share a cd
 	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {

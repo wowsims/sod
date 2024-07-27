@@ -85,12 +85,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * time.Duration(castTime),
 			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
-				}
-			},
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,

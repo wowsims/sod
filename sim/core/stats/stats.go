@@ -433,7 +433,8 @@ type PseudoStats struct {
 	ThrownSkill    float64
 
 	// Special Feral Weapon Skill
-	FeralCombatSkill float64
+	FeralCombatEnabled bool
+	FeralCombatSkill   float64
 
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
@@ -518,7 +519,8 @@ func NewPseudoStats() PseudoStats {
 		CrossbowsSkill: 0,
 		ThrownSkill:    0,
 
-		FeralCombatSkill: 0,
+		FeralCombatEnabled: false,
+		FeralCombatSkill:   0,
 	}
 }
 

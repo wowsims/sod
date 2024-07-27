@@ -27,7 +27,6 @@ const (
 	MarkOfTheWild
 	PowerWordFortitude
 	StrengthOfEarth
-	TrueshotAura
 	Windfury
 	SanctityAura
 	BattleSquawk
@@ -419,20 +418,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.ShadowResistance: 60,
 		},
 	},
-	TrueshotAura: {
-		25: stats.Stats{
-			stats.RangedAttackPower: 0,
-		},
-		40: stats.Stats{
-			stats.RangedAttackPower: 100,
-		},
-		50: stats.Stats{
-			stats.RangedAttackPower: 150,
-		},
-		60: stats.Stats{
-			stats.RangedAttackPower: 200,
-		},
-	},
 	StrengthOfEarth: {
 		25: stats.Stats{
 			stats.Strength: 20,
@@ -537,11 +522,110 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	},
 }
 
+type ExtraOnGain func(aura *Aura, sim *Simulation)
+type ExtraOnExpire func(aura *Aura, sim *Simulation)
+
+type BuffConfig struct {
+	Category string
+	Stats    []StatConfig
+	// Hacky way to allow Pseudostat mods
+	ExtraOnGain   ExtraOnGain
+	ExtraOnExpire ExtraOnExpire
+}
+
+type StatConfig struct {
+	Stat             stats.Stat
+	Amount           float64
+	IsMultiplicative bool
+}
+
+func makeExclusiveFlatStatBuff(aura *Aura, category string, config StatConfig) {
+	aura.NewExclusiveEffect(category+config.Stat.StatName()+"Buff", false, ExclusiveEffect{
+		Priority: config.Amount,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(config.Stat, config.Amount)
+			} else {
+				aura.Unit.AddStatDynamic(sim, config.Stat, config.Amount)
+			}
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(config.Stat, -config.Amount)
+			} else {
+				aura.Unit.AddStatDynamic(sim, config.Stat, -config.Amount)
+			}
+		},
+	})
+}
+
+func makeExclusiveMultiplierBuff(aura *Aura, category string, config StatConfig) {
+	dep := aura.Unit.NewDynamicMultiplyStat(config.Stat, config.Amount)
+	aura.NewExclusiveEffect(category+config.Stat.StatName()+"%Buff", false, ExclusiveEffect{
+		Priority: config.Amount,
+		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
+			if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
+				aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
+			} else {
+				ee.Aura.Unit.EnableDynamicStatDep(s, dep)
+			}
+		},
+		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
+			if ee.Aura.Unit.Env.MeasuringStats {
+				aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
+			} else {
+				ee.Aura.Unit.DisableDynamicStatDep(s, dep)
+			}
+		},
+	})
+}
+
+func makeExclusivePseudostatsBuff(aura *Aura, config BuffConfig) {
+	hasOnGain := config.ExtraOnGain != nil
+	hasOnExpire := config.ExtraOnExpire != nil
+
+	if !hasOnGain && !hasOnExpire {
+		return
+	}
+	if hasOnGain && !hasOnExpire {
+		panic("Missing ExtraOnExpire for" + config.Category)
+	}
+	if hasOnExpire && !hasOnGain {
+		panic("Missing ExtraOnGain for " + config.Category)
+	}
+
+	aura.NewExclusiveEffect(config.Category+"PseudostatsBuff", false, ExclusiveEffect{
+		Priority: 1, // TODO: May need a way to add priority to these in the future
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			config.ExtraOnGain(ee.Aura, sim)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			config.ExtraOnExpire(ee.Aura, sim)
+		},
+	})
+}
+
+func makeExclusiveBuff(aura *Aura, config BuffConfig) {
+	aura.BuildPhase = CharacterBuildPhaseBuffs
+
+	for _, statConfig := range config.Stats {
+		if statConfig.IsMultiplicative {
+			makeExclusiveMultiplierBuff(aura, config.Category, statConfig)
+		} else {
+			makeExclusiveFlatStatBuff(aura, config.Category, statConfig)
+		}
+	}
+
+	makeExclusivePseudostatsBuff(aura, config)
+}
+
 // Applies buffs that affect individual players.
 // TODO: Classic Maximum buff based on character level
 func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	character := agent.GetCharacter()
 	level := character.Level
+	isAlliance := character.IsAlliance()
+	isHorde := !isAlliance
 	bonusResist := float64(0)
 
 	if raidBuffs.ArcaneBrilliance {
@@ -589,10 +673,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		character.AddStats(updateStats)
 	}
 
-	if raidBuffs.Thorns == proto.TristateEffect_TristateEffectImproved {
-		ThornsAura(character, 3)
-	} else if raidBuffs.Thorns == proto.TristateEffect_TristateEffectRegular {
-		ThornsAura(character, 0)
+	if raidBuffs.Thorns != proto.TristateEffect_TristateEffectMissing {
+		ThornsAura(character, GetTristateValueInt32(raidBuffs.Thorns, 0, 3))
 	}
 
 	if raidBuffs.MoonkinAura {
@@ -606,7 +688,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	if raidBuffs.TrueshotAura {
-		character.AddStats(BuffSpellByLevel[TrueshotAura][level])
+		TrueshotAura(&character.Unit)
 	}
 
 	if raidBuffs.PowerWordFortitude > 0 {
@@ -649,11 +731,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// Heart of the Lion grants bonus Melee AP as well so give it priority over kings
 	if raidBuffs.AspectOfTheLion {
 		HeartOfTheLionAura(character)
-	} else if individualBuffs.BlessingOfKings {
+	} else if individualBuffs.BlessingOfKings && isAlliance {
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
-	if raidBuffs.SanctityAura {
+	if raidBuffs.SanctityAura && isAlliance {
 		MakePermanent(SanctityAuraAura(character))
 	}
 
@@ -664,33 +746,27 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		}
 	*/
 
-	if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectImproved {
-		MakePermanent(DevotionAuraAura(&character.Unit, 2))
-	} else if raidBuffs.DevotionAura == proto.TristateEffect_TristateEffectRegular {
-		MakePermanent(DevotionAuraAura(&character.Unit, 0))
+	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2)))
 	}
 
-	if raidBuffs.StoneskinTotem == proto.TristateEffect_TristateEffectImproved {
-		MakePermanent(StoneskinTotemAura(&character.Unit, 2))
-	} else if raidBuffs.StoneskinTotem == proto.TristateEffect_TristateEffectRegular {
-		MakePermanent(StoneskinTotemAura(&character.Unit, 0))
+	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+		MakePermanent(StoneskinTotemAura(&character.Unit, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2)))
 	}
 
-	if raidBuffs.ImprovedStoneskinWindwall {
+	if raidBuffs.ImprovedStoneskinWindwall && isHorde {
 		MakePermanent(ImprovedStoneskinTotemAura(&character.Unit))
 		MakePermanent(ImprovedWindwallTotemAura(&character.Unit))
 	}
 
-	if raidBuffs.RetributionAura == proto.TristateEffect_TristateEffectImproved {
-		RetributionAura(character, 2)
-	} else if raidBuffs.RetributionAura == proto.TristateEffect_TristateEffectRegular {
-		RetributionAura(character, 0)
+	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2))
 	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
-	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing {
+	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
 	}
 
@@ -701,23 +777,23 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		MakePermanent(dpAura)
 	}
 
-	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing {
-		multiplier := TernaryFloat64(raidBuffs.StrengthOfEarthTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.15)
 		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if raidBuffs.GraceOfAirTotem > 0 {
-		multiplier := TernaryFloat64(raidBuffs.GraceOfAirTotem == proto.TristateEffect_TristateEffectImproved, 1.15, 1)
+	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
+		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.15)
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if individualBuffs.BlessingOfWisdom > 0 {
+	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
 		updateStats := BuffSpellByLevel[BlessingOfWisdom][level]
 		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ManaSpringTotem > 0 {
+	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
 		updateStats := BuffSpellByLevel[ManaSpring][level]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
@@ -736,63 +812,51 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// World Buffs
-	// if individualBuffs.RallyingCryOfTheDragonslayer {
-	// 	ApplyRallyingCryOfTheDragonslayer(character)
-	// }
-	switch individualBuffs.DragonslayerBuff {
-	case proto.DragonslayerBuff_RallyingCryofTheDragonslayer:
-		ApplyRallyingCryOfTheDragonslayer(character)
-	case proto.DragonslayerBuff_ValorOfAzeroth:
-		ApplyValorOfAzeroth(character)
-	}
+	ApplyDragonslayerBuffs(&character.Unit, individualBuffs)
 
 	if individualBuffs.SpiritOfZandalar {
-		ApplySpiritOfZandalar(character)
+		ApplySpiritOfZandalar(&character.Unit)
 	}
 
 	if individualBuffs.SongflowerSerenade {
-		ApplySongflowerSerenate(character)
+		ApplySongflowerSerenate(&character.Unit)
 	}
 
-	if individualBuffs.WarchiefsBlessing {
-		ApplyWarchiefsBlessing(character)
-	} else if individualBuffs.MightOfStormwind {
-		ApplyMightOfStormwind(character)
-	}
+	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, isAlliance)
 
 	// Dire Maul Buffs
 	if individualBuffs.FengusFerocity {
-		ApplyFengusFerocity(character)
+		ApplyFengusFerocity(&character.Unit)
 	}
 
 	if individualBuffs.MoldarsMoxie {
-		ApplyMoldarsMoxie(character)
+		ApplyMoldarsMoxie(&character.Unit)
 	}
 
 	if individualBuffs.SlipkiksSavvy {
-		ApplySlipkiksSavvy(character)
+		ApplySlipkiksSavvy(&character.Unit)
 	}
 
 	// Darkmoon Faire Buffs
 	if individualBuffs.SaygesFortune != proto.SaygesFortune_SaygesUnknown {
-		ApplySaygesFortunes(character, individualBuffs.SaygesFortune)
+		ApplySaygesFortunes(&character.Unit, individualBuffs.SaygesFortune)
 	}
 
 	// SoD World Buffs
 	if individualBuffs.FervorOfTheTempleExplorer {
-		ApplyFervorOfTheTempleExplorer(character)
+		ApplyFervorOfTheTempleExplorer(&character.Unit)
 	}
 
 	if individualBuffs.SparkOfInspiration {
-		ApplySparkOfInspiration(character)
+		ApplySparkOfInspiration(&character.Unit)
 	}
 
 	if individualBuffs.BoonOfBlackfathom {
-		ApplyBoonOfBlackfathom(character)
+		ApplyBoonOfBlackfathom(&character.Unit)
 	}
 
 	if individualBuffs.AshenvalePvpBuff {
-		ApplyAshenvaleRallyingCry(character)
+		ApplyAshenvaleRallyingCry(&character.Unit)
 	}
 
 	// TODO: Classic provide in APL?
@@ -844,20 +908,22 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	}
 
 	// Pets no longer get world buffs
-	individualBuffs.BoonOfBlackfathom = false
-	individualBuffs.SparkOfInspiration = false
-	individualBuffs.FervorOfTheTempleExplorer = false
 	individualBuffs.AshenvalePvpBuff = false
-	individualBuffs.SongflowerSerenade = false
-	individualBuffs.RallyingCryOfTheDragonslayer = false
-	individualBuffs.DragonslayerBuff = proto.DragonslayerBuff_DragonslayerBuffUnknown
-	individualBuffs.WarchiefsBlessing = false
-	individualBuffs.MightOfStormwind = false
-	individualBuffs.SpiritOfZandalar = false
+	individualBuffs.BoonOfBlackfathom = false
 	individualBuffs.FengusFerocity = false
+	individualBuffs.FervorOfTheTempleExplorer = false
+	individualBuffs.MightOfStormwind = false
 	individualBuffs.MoldarsMoxie = false
-	individualBuffs.SlipkiksSavvy = false
+	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
+	individualBuffs.SongflowerSerenade = false
+	individualBuffs.SlipkiksSavvy = false
+	individualBuffs.SparkOfInspiration = false
+	individualBuffs.SpiritOfZandalar = false
+	individualBuffs.WarchiefsBlessing = false
+
+	// Except they do benefit from Valor of Azeroth apparently
+	individualBuffs.ValorOfAzeroth = true
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }
@@ -880,39 +946,86 @@ func SanctityAuraAura(character *Character) *Aura {
 }
 
 func BlessingOfKingsAura(character *Character) *Aura {
-	character.MultiplyStat(stats.Strength, 1.1)
-	character.MultiplyStat(stats.Stamina, 1.1)
-	character.MultiplyStat(stats.Agility, 1.1)
-	character.MultiplyStat(stats.Intellect, 1.1)
-	character.MultiplyStat(stats.Spirit, 1.1)
+	statDeps := []*stats.StatDependency{
+		character.NewDynamicMultiplyStat(stats.Stamina, 1.10),
+		character.NewDynamicMultiplyStat(stats.Agility, 1.10),
+		character.NewDynamicMultiplyStat(stats.Strength, 1.10),
+		character.NewDynamicMultiplyStat(stats.Intellect, 1.10),
+		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
+	}
 
-	return character.RegisterAura(Aura{
-		Label:    "Blessing of Kings",
-		ActionID: ActionID{SpellID: 20217},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	return MakePermanent(character.RegisterAura(Aura{
+		Label:      "Blessing of Kings",
+		ActionID:   ActionID{SpellID: 20217},
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				for _, dep := range statDeps {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
+				}
+			} else {
+				for _, dep := range statDeps {
+					aura.Unit.EnableDynamicStatDep(sim, dep)
+				}
+			}
 		},
-	})
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				for _, dep := range statDeps {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
+				}
+			} else {
+				for _, dep := range statDeps {
+					aura.Unit.DisableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+	}))
 }
 
 func HeartOfTheLionAura(character *Character) *Aura {
-	character.AddStat(stats.AttackPower, float64(40+4*(character.Level-20)))
-	character.AddStat(stats.RangedAttackPower, float64(40+4*(character.Level-20)))
-	character.MultiplyStat(stats.Strength, 1.1)
-	character.MultiplyStat(stats.Stamina, 1.1)
-	character.MultiplyStat(stats.Agility, 1.1)
-	character.MultiplyStat(stats.Intellect, 1.1)
-	character.MultiplyStat(stats.Spirit, 1.1)
+	modAP := float64(40 + 4*(character.Level-20))
+	statDeps := []*stats.StatDependency{
+		character.NewDynamicMultiplyStat(stats.Stamina, 1.10),
+		character.NewDynamicMultiplyStat(stats.Agility, 1.10),
+		character.NewDynamicMultiplyStat(stats.Strength, 1.10),
+		character.NewDynamicMultiplyStat(stats.Intellect, 1.10),
+		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
+	}
 
-	return character.RegisterAura(Aura{
-		Label:    "Heart of the Lion",
-		ActionID: ActionID{SpellID: 409583},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	return MakePermanent(character.RegisterAura(Aura{
+		Label:      "Heart of the Lion",
+		ActionID:   ActionID{SpellID: 409583},
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.AttackPower, modAP)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, modAP)
+
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				for _, dep := range statDeps {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
+				}
+			} else {
+				for _, dep := range statDeps {
+					aura.Unit.EnableDynamicStatDep(sim, dep)
+				}
+			}
 		},
-	})
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			character.AddStatDynamic(sim, stats.AttackPower, -modAP)
+			character.AddStatDynamic(sim, stats.RangedAttackPower, -modAP)
+
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				for _, dep := range statDeps {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
+				}
+			} else {
+				for _, dep := range statDeps {
+					aura.Unit.DisableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+	}))
 }
 
 // TODO: Classic
@@ -1368,7 +1481,6 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.2
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.2
-			//character.PseudoStats.DamageDealtMultiplier *= 1.2
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.2
@@ -1377,7 +1489,6 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.2
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.2
 			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.2
-			//character.PseudoStats.DamageDealtMultiplier /= 1.2
 		},
 	})
 	return aura
@@ -1928,6 +2039,38 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	})
 }
 
+func TrueshotAura(unit *Unit) *Aura {
+	if unit.Level < 40 {
+		return nil
+	}
+
+	level := unit.Level
+	spellID := map[int32]int32{
+		40: 19506,
+		50: 20905,
+		60: 20906,
+	}[level]
+	rangedAP := map[int32]float64{
+		40: 100,
+		50: 150,
+		60: 200,
+	}[level]
+
+	aura := MakePermanent(unit.RegisterAura(Aura{
+		Label:    "Trueshot Aura",
+		ActionID: ActionID{SpellID: spellID},
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "TrueshotAura",
+		Stats: []StatConfig{
+			{stats.RangedAttackPower, rangedAP, false},
+		},
+	})
+
+	return aura
+}
+
 func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 	spellID := map[int32]int32{
 		25: 19835,
@@ -2076,7 +2219,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 				wsBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.ProcMask.Matches(ProcMaskSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
 				return
 			}
 
@@ -2140,7 +2283,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.ProcMask.Matches(ProcMaskSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
 				return
 			}
 
@@ -2165,300 +2308,333 @@ func ApplyWindfury(character *Character) *Aura {
 //                            World Buffs
 ///////////////////////////////////////////////////////////////////////////
 
-func ApplyRallyingCryOfTheDragonslayer(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplyDragonslayerBuffs(unit *Unit, buffs *proto.IndividualBuffs) {
+	eeCategory := "DragonslayerBuff"
+	if buffs.RallyingCryOfTheDragonslayer {
+		ApplyRallyingCryOfTheDragonslayer(unit, eeCategory)
+	}
+	if buffs.ValorOfAzeroth {
+		ApplyValorOfAzeroth(unit, eeCategory)
+	}
+}
+
+func ApplyRallyingCryOfTheDragonslayer(unit *Unit, category string) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Rallying Cry of the Dragonslayer",
 		ActionID: ActionID{SpellID: 22888},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.SpellCrit, 10*SpellCritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
-			// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
-			character.AddStatDynamic(sim, stats.AttackPower, 140)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, 140)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: category,
+		Stats: []StatConfig{
+			{stats.SpellCrit, 10 * SpellCritRatingPerCritChance, false},
+			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
+			// TODO: {stats.RangedCrit, 5*CritRatingPerCritChance, false},
+			{stats.AttackPower, 140, false},
+			{stats.RangedAttackPower, 140, false},
 		},
 	})
 }
 
-func ApplyValorOfAzeroth(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplyValorOfAzeroth(unit *Unit, category string) {
+	bonusAP := float64(unit.Level) * 1.5
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Valor of Azeroth",
 		ActionID: ActionID{SpellID: 461475},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.SpellCrit, 5*SpellCritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
-			// TODO: character.MultiplyStat(stats.RangedCrit, 1.05)
-			character.AddStatDynamic(sim, stats.AttackPower, float64(character.Level)*1.5)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, float64(character.Level)*1.5)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: category,
+		Stats: []StatConfig{
+			{stats.SpellCrit, 5 * SpellCritRatingPerCritChance, false},
+			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
+			// TODO: {stats.RangedCrit, 5*CritRatingPerCritChance, false},
+			{stats.AttackPower, bonusAP, false},
+			{stats.RangedAttackPower, bonusAP, false},
 		},
 	})
 }
 
-func ApplySpiritOfZandalar(character *Character) *Aura {
-	statDeps := []*stats.StatDependency{
-		character.NewDynamicMultiplyStat(stats.Stamina, 1.15),
-		character.NewDynamicMultiplyStat(stats.Agility, 1.15),
-		character.NewDynamicMultiplyStat(stats.Strength, 1.15),
-		character.NewDynamicMultiplyStat(stats.Intellect, 1.15),
-		character.NewDynamicMultiplyStat(stats.Spirit, 1.15),
-	}
-
-	return character.RegisterAura(Aura{
+func ApplySpiritOfZandalar(unit *Unit) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Spirit of Zandalar",
 		ActionID: ActionID{SpellID: 24425},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			for _, dep := range statDeps {
-				character.EnableDynamicStatDep(sim, dep)
-			}
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "ZandalarBuff",
+		Stats: []StatConfig{
+			{stats.Agility, 1.15, true},
+			{stats.Intellect, 1.15, true},
+			{stats.Spirit, 1.15, true},
+			{stats.Stamina, 1.15, true},
+			{stats.Strength, 1.15, true},
 		},
 	})
 }
 
-func ApplySongflowerSerenate(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplySongflowerSerenate(unit *Unit) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Songflower Serenade",
 		ActionID: ActionID{SpellID: 15366},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
-			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 1.05)
-			character.AddStatDynamic(sim, stats.SpellCrit, 5*SpellCritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.Stamina, 15)
-			character.AddStatDynamic(sim, stats.Agility, 15)
-			character.AddStatDynamic(sim, stats.Strength, 15)
-			character.AddStatDynamic(sim, stats.Intellect, 15)
-			character.AddStatDynamic(sim, stats.Spirit, 15)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "SongflowerSerenade",
+		Stats: []StatConfig{
+			{stats.Agility, 15, false},
+			{stats.Intellect, 15, false},
+			{stats.Spirit, 15, false},
+			{stats.Stamina, 15, false},
+			{stats.Strength, 15, false},
+			{stats.MeleeCrit, 5, false},
+			// TODO: {stats.RangedCrit, 5, false},
+			{stats.SpellCrit, 5, false},
 		},
 	})
 }
 
-func ApplyWarchiefsBlessing(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, isAlliance bool) {
+	if buffs.WarchiefsBlessing && !isAlliance {
+		ApplyWarchiefsBlessing(unit, "WarchiefsBuff")
+	}
+	if buffs.MightOfStormwind && isAlliance {
+		ApplyMightOfStormwind(unit, "WarchiefsBuff")
+	}
+}
+
+func ApplyWarchiefsBlessing(unit *Unit, category string) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Warchief's Blessing",
-		ActionID: ActionID{SpellID: 16609},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+		ActionID: ActionID{SpellID: 461475},
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: category,
+		Stats: []StatConfig{
+			{stats.Health, 300, false},
+			{stats.MP5, 10, false},
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.Health, 300)
-			character.PseudoStats.MeleeSpeedMultiplier *= 1.15
-			character.AddStatDynamic(sim, stats.MP5, 10)
+		ExtraOnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+		},
+		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
 		},
 	})
 }
 
-func ApplyMightOfStormwind(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplyMightOfStormwind(unit *Unit, category string) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Might of Stormwind",
 		ActionID: ActionID{SpellID: 460940},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: category,
+		Stats: []StatConfig{
+			{stats.Health, 300, false},
+			{stats.MP5, 10, false},
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.Health, 300)
-			character.PseudoStats.MeleeSpeedMultiplier *= 1.15
-			character.AddStatDynamic(sim, stats.MP5, 10)
+		ExtraOnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+		},
+		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
 		},
 	})
 }
 
-func ApplyFengusFerocity(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplyFengusFerocity(unit *Unit) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Fengus' Ferocity",
 		ActionID: ActionID{SpellID: 22817},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.AttackPower, 200)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, 200)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "FengusFerocity",
+		Stats: []StatConfig{
+			{stats.AttackPower, 200, false},
+			{stats.RangedAttackPower, 200, false},
 		},
 	})
 }
 
-func ApplyMoldarsMoxie(character *Character) *Aura {
-	statDep := character.NewDynamicMultiplyStat(stats.Stamina, 1.15)
-
-	return character.RegisterAura(Aura{
+func ApplyMoldarsMoxie(unit *Unit) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Moldar's Moxie",
 		ActionID: ActionID{SpellID: 22818},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.EnableDynamicStatDep(sim, statDep)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "MoldarsMoxie",
+		Stats: []StatConfig{
+			{stats.Stamina, 1.15, true},
 		},
 	})
 }
 
-func ApplySlipkiksSavvy(character *Character) *Aura {
-	return character.RegisterAura(Aura{
+func ApplySlipkiksSavvy(unit *Unit) {
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Slip'kik's Savvy",
 		ActionID: ActionID{SpellID: 22820},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "SlipkiksSavvy",
+		Stats: []StatConfig{
+			{stats.SpellCrit, 3 * SpellCritRatingPerCritChance, false},
 		},
 	})
 }
 
-func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) *Aura {
+func ApplySaygesFortunes(unit *Unit, fortune proto.SaygesFortune) {
 	var label string
 	var spellID int32
-	var statDep *stats.StatDependency
+
+	config := BuffConfig{
+		Category: "SaygesFortune",
+	}
 
 	switch fortune {
 	case proto.SaygesFortune_SaygesDamage:
 		label = "Sayge's Dark Fortune of Damage"
 		spellID = 23768
+		config.ExtraOnGain = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.10
+		}
+		config.ExtraOnExpire = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.10
+		}
 	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"
 		spellID = 23736
-		statDep = character.NewDynamicMultiplyStat(stats.Agility, 1.10)
+		config.Stats = []StatConfig{
+			{stats.Agility, 1.10, true},
+		}
 	case proto.SaygesFortune_SaygesIntellect:
 		label = "Sayge's Dark Fortune of Intellect"
 		spellID = 23766
-		statDep = character.NewDynamicMultiplyStat(stats.Intellect, 1.10)
+		config.Stats = []StatConfig{
+			{stats.Intellect, 1.10, true},
+		}
 	case proto.SaygesFortune_SaygesSpirit:
 		label = "Sayge's Dark Fortune of Spirit"
 		spellID = 23738
-		statDep = character.NewDynamicMultiplyStat(stats.Spirit, 1.10)
+		config.Stats = []StatConfig{
+			{stats.Spirit, 1.10, true},
+		}
 	case proto.SaygesFortune_SaygesStamina:
 		label = "Sayge's Dark Fortune of Stamina"
 		spellID = 23737
-		statDep = character.NewDynamicMultiplyStat(stats.Stamina, 1.10)
+		config.Stats = []StatConfig{
+			{stats.Stamina, 1.10, true},
+		}
 	}
 
-	return character.RegisterAura(Aura{
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    label,
 		ActionID: ActionID{SpellID: spellID},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if fortune == proto.SaygesFortune_SaygesDamage {
-				character.PseudoStats.DamageDealtMultiplier *= 1.10
-			} else {
-				character.EnableDynamicStatDep(sim, statDep)
-			}
-		},
-	})
+	}))
+
+	makeExclusiveBuff(aura, config)
 }
 
-func ApplyFervorOfTheTempleExplorer(character *Character) *Aura {
-	if character.Level > 59 {
-		return nil
+func ApplyFervorOfTheTempleExplorer(unit *Unit) {
+	if unit.Level > 59 {
+		return
 	}
 
-	statDeps := []*stats.StatDependency{
-		character.NewDynamicMultiplyStat(stats.Strength, 1.08),
-		character.NewDynamicMultiplyStat(stats.Stamina, 1.08),
-		character.NewDynamicMultiplyStat(stats.Agility, 1.08),
-		character.NewDynamicMultiplyStat(stats.Intellect, 1.08),
-		character.NewDynamicMultiplyStat(stats.Spirit, 1.08),
-	}
-
-	return character.RegisterAura(Aura{
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Fervor of the Temple Explorer",
 		ActionID: ActionID{SpellID: 446695},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.MeleeCrit, 5*CritRatingPerCritChance)
-			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 5 * CritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.SpellCrit, 5*CritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.SpellDamage, 65) // TODO: confirm if spellpower or spelldamage
+	}))
 
-			for _, dep := range statDeps {
-				character.EnableDynamicStatDep(sim, dep)
-			}
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "FervorOfTheTempleExplorer",
+		Stats: []StatConfig{
+			{stats.Agility, 1.08, true},
+			{stats.Intellect, 1.08, true},
+			{stats.Spirit, 1.08, true},
+			{stats.Stamina, 1.08, true},
+			{stats.Strength, 1.08, true},
+			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
+			// TODO: {stats.RangedCrit, 5*CritRatingPerCritChance, false},
+			{stats.SpellCrit, 5 * SpellCritRatingPerCritChance, false},
+			{stats.SpellDamage, 65, false},
 		},
 	})
 }
 
-func ApplySparkOfInspiration(character *Character) *Aura {
-	if character.Level > 49 {
-		return nil
+func ApplySparkOfInspiration(unit *Unit) {
+	if unit.Level > 49 {
+		return
 	}
 
-	return character.RegisterAura(Aura{
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Spark of Inspiration",
 		ActionID: ActionID{SpellID: 438536},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "SparkOfInspiration",
+		Stats: []StatConfig{
+			{stats.SpellCrit, 4 * SpellCritRatingPerCritChance, false},
+			{stats.SpellPower, 42, false},
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.SpellCrit, 4*CritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.SpellPower, 42)
-			character.PseudoStats.MeleeSpeedMultiplier *= 1.1
-			character.PseudoStats.RangedSpeedMultiplier *= 1.1
+		ExtraOnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.1
+			aura.Unit.PseudoStats.RangedSpeedMultiplier *= 1.1
+		},
+		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.1
+			aura.Unit.PseudoStats.RangedSpeedMultiplier /= 1.1
 		},
 	})
 }
 
-func ApplyBoonOfBlackfathom(character *Character) *Aura {
-	if character.Level > 39 {
-		return nil
+func ApplyBoonOfBlackfathom(unit *Unit) {
+	if unit.Level > 39 {
+		return
 	}
 
-	return character.RegisterAura(Aura{
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Boon of Blackfathom",
 		ActionID: ActionID{SpellID: 430947},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.MeleeCrit, 2*CritRatingPerCritChance)
-			// TODO: character.AddStatDynamic(sim, stats.RangedCrit, 2 * CritRatingPerCritChance)
-			character.AddStatDynamic(sim, stats.SpellHit, 3*SpellHitRatingPerHitChance)
-			character.AddStatDynamic(sim, stats.AttackPower, 20)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, 20)
-			character.AddStatDynamic(sim, stats.SpellPower, 25)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "BoonOfBlackfathom",
+		Stats: []StatConfig{
+			{stats.MeleeCrit, 2 * CritRatingPerCritChance, false},
+			// TODO: {stats.RangedCrit, 2 * CritRatingPerCritChance, false},
+			{stats.SpellHit, 3 * SpellHitRatingPerHitChance, false},
+			{stats.AttackPower, 20, false},
+			{stats.RangedAttackPower, 20, false},
+			{stats.SpellPower, 25, false},
 		},
 	})
 }
 
-func ApplyAshenvaleRallyingCry(character *Character) *Aura {
-	if character.Level > 39 {
-		return nil
+func ApplyAshenvaleRallyingCry(unit *Unit) {
+	if unit.Level > 39 {
+		return
 	}
 
-	return character.RegisterAura(Aura{
+	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Ashenvale Rallying Cry",
 		ActionID: ActionID{SpellID: 430352},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "AshenvaleRallyingCry",
+		ExtraOnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05
+			// TODO: healing dealt multiplier?
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier *= 1.05
-			//TODO: healing dealt multiplier?
+		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
+			// TODO: healing dealt multiplier?
 		},
 	})
 }
@@ -2475,8 +2651,8 @@ func DefendersResolveAttackPower(character *Character) *Aura {
 		// Each stack corresponds to 4 AP. Handles a max of 500 Defense
 		MaxStacks: 200,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(-4*oldStacks))
-			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(4*newStacks))
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(-4*oldStacks))
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(4*newStacks))
 		},
 	})
 }

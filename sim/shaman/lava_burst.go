@@ -20,6 +20,8 @@ func (shaman *Shaman) registerLavaBurstSpell() {
 }
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig {
+	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
+
 	baseDamageLow := shaman.baseRuneAbilityDamage() * 4.69
 	baseDamageHigh := shaman.baseRuneAbilityDamage() * 6.05
 	spellCoeff := .571
@@ -42,6 +44,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        flags,
 		MissileSpeed: 20,
+		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -61,10 +64,16 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
+				if hasMaelstromWeaponRune {
+					stacks := shaman.MaelstromWeaponAura.GetStacks()
+					spell.SetMetricsSplit(stacks)
 
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+					if stacks > 0 {
+						return
+					}
 				}
+
+				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 

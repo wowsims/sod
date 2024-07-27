@@ -4,7 +4,6 @@ import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, Target, WeaponType } from '../core/proto/common.js';
-import { RogueRune } from '../core/proto/rogue';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import { HonorOfThievesCritRate } from './inputs';
@@ -63,6 +62,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP.
@@ -80,6 +81,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -98,6 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 				[Stat.StatMeleeHit]: 14.11,
 				[Stat.StatMeleeCrit]: 25.97,
 				[Stat.StatMeleeHaste]: 14.51,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 4.05,

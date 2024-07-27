@@ -32,12 +32,13 @@ func (SpiritWolves *SpiritWolves) CancelGCDTimer(sim *core.Simulation) {
 }
 
 var spiritWolfBaseStats = stats.Stats{
-	stats.Strength:    136,
-	stats.Agility:     100,
-	stats.Stamina:     265,
-	stats.Intellect:   50,
-	stats.Spirit:      80,
-	stats.AttackPower: -20,
+	stats.Strength:  136,
+	stats.Agility:   100,
+	stats.Stamina:   265,
+	stats.Intellect: 50,
+	stats.Spirit:    80,
+	// Base AP 265 - (136 * 2) - (100 * 0.2)
+	stats.AttackPower: -27,
 
 	// Add 1.8% because pets aren't affected by that component of crit suppression.
 	stats.MeleeCrit: (1.1515 + 1.8) * core.CritRatingPerCritChance,
@@ -51,14 +52,18 @@ func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 
 	spiritWolf.EnableAutoAttacks(spiritWolf, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin: 78,
-			BaseDamageMax: 105,
+			BaseDamageMin: 55.5,
+			BaseDamageMax: 71.5,
 			SwingSpeed:    1.5,
 		},
 		AutoSwingMelee: true,
 	})
 
+	// Testing found that wolves gained 2 AP per Str, and ~1 AP per 5 Agi
+	// Tested using different ranks of Strength of Earth and Grace of Air Totems
 	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	spiritWolf.AddStatDependency(stats.Agility, stats.AttackPower, 0.2)
+
 	// Warrior crit scaling
 	spiritWolf.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(spiritWolf.Level)]*core.CritRatingPerCritChance)
 	core.ApplyPetConsumeEffects(&spiritWolf.Character, shaman.Consumes)

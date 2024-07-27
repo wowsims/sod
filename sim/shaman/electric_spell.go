@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 // Totem Item IDs
@@ -25,6 +26,8 @@ const (
 
 // Shared precomputation logic for LB and CL.
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
+	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
+
 	flags := SpellFlagShaman | SpellFlagFocusable | SpellFlagMaelstrom
 	if !isOverload {
 		flags |= core.SpellFlagAPL
@@ -49,17 +52,22 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(shaman.MaelstromWeaponAura.GetStacks())
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
+				if hasMaelstromWeaponRune {
+					stacks := shaman.MaelstromWeaponAura.GetStacks()
+					spell.SetMetricsSplit(stacks)
 
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+					if stacks > 0 {
+						return
+					}
 				}
+
+				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
-			float64(shaman.Talents.CallOfThunder)*core.CritRatingPerCritChance,
+			[]float64{0, 1, 2, 3, 4, 6}[shaman.Talents.CallOfThunder]*core.CritRatingPerCritChance,
 
 		DamageMultiplier: shaman.concussionMultiplier(),
 		ThreatMultiplier: 1,

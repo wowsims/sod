@@ -81,6 +81,8 @@ const (
 	RefinedArcaniteChampion        = 228125
 	TalismanOfEphemeralPower       = 228255 // 18820
 	GutgoreRipper                  = 228267 // 17071
+	Shadowstrike                   = 228272 // 17074
+	Thunderstrike                  = 228273 // 17223
 	BonereaversEdge                = 228288 // 17076
 	BonereaversEdgeMolten          = 228461
 	EssenceOfThePureFlame          = 228293 // 18815
@@ -91,7 +93,6 @@ const (
 	BlazefuryMedallion             = 228354 // 17111
 	EmpyreanDemolisher             = 228397 // 17112
 	DreadbladeOfTheDestructor      = 228410
-	DreadbladeOfTheDestructor2     = 228498
 	PerditionsBladeMolten          = 228511
 	SkullforgeReaver               = 228542 // 13361
 	RunebladeOfBaronRivendare      = 228543 // 13505
@@ -347,11 +348,12 @@ func init() {
 
 		castableSpells := []*core.Spell{curseOfShahram, mightOfShahram, fistOfShahram, blessingOfShahram, willOfShahram, flamesOfShahram}
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Summon Shahram",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1,
+			Name:              "Summon Shahram",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				spellIdx := int32(sim.Roll(0, 6))
 				castableSpells[spellIdx].Cast(sim, result.Target)
@@ -435,7 +437,6 @@ func init() {
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
-	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor2, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
 
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -570,11 +571,12 @@ func init() {
 
 		procMask := character.GetProcMaskForItem(FangOfTheCrystalSpider)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Fang of the Crystal Spider Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1,
+			Name:              "Fang of the Crystal Spider Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuras.Get(result.Target).Activate(sim)
 			},
@@ -589,11 +591,12 @@ func init() {
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
 		procMask := character.GetProcMaskForItem(Felstriker)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Felstriker Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1,
+			Name:              "Felstriker Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				effectAura.Activate(sim)
 			},
@@ -769,11 +772,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Frightalon Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1.0,
+			Name:              "Frightalon Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuraArray.Get(result.Target).Activate(sim)
 			},
@@ -1075,7 +1079,23 @@ func init() {
 	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcDamage(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponProcSpell(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, func(character *core.Character) *core.Spell {
+		maxHits := int(min(3, character.Env.GetNumTargets()))
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463946},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for numHits := 0; numHits < maxHits; numHits++ {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -1170,22 +1190,24 @@ func init() {
 		enrageAura := enrageAura446327(character)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Refined Arcanite Champion (Strength)",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			Name:              "Refined Arcanite Champion (Strength)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				strengthAura.Activate(sim)
 			},
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Refined Arcanite Champion (Enrage)",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			Name:              "Refined Arcanite Champion (Enrage)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				enrageAura.Activate(sim)
 			},
@@ -1317,6 +1339,26 @@ func init() {
 
 	itemhelpers.CreateWeaponProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
+	// https://www.wowhead.com/classic/item=228272/shadowstrike
+	// Chance on hit: Steals 180 to 220 life from target enemy.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcSpell(Shadowstrike, "Shadowstrike", 2.2, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 461683}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
 	itemhelpers.CreateWeaponProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228542/skullforge-reaver
@@ -1357,7 +1399,57 @@ func init() {
 	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcDamage(SkyridersMasterworkStormhammer, "Skyrider's Masterwork Stormhammer", 0.5, 463946, core.SpellSchoolNature, 105, 40, 0.1, core.DefenseTypeMagic)
+	core.NewItemEffect(SkyridersMasterworkStormhammer, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		maxHits := int(min(3, character.Env.GetNumTargets()))
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463946},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 0.1,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for numHits := 0; numHits < maxHits; numHits++ {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Chain Lightning (Skyrider's Masterwork Stormhammer Melee)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               0.5,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		})
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Chain Lightning (Skyrider's Masterwork Stormhammer Spell)",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: .1,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				if !icd.IsReady(sim) {
+					return
+				}
+				procSpell.Cast(sim, result.Target)
+				icd.Use(sim)
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=227683/sulfuras-hand-of-ragnaros
 	// Chance on hit: Hurls a fiery ball that causes 273 to 333 Fire damage and purges the target's soul, increasing Fire and Holy damage taken by up to 30 and dealing an additional 75 damage over 10 sec.
@@ -1444,11 +1536,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Purged by Fire Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1, // Estimated based on data from WoW Armaments Discord
+			Name:              "Purged by Fire Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				purgedByFireSpell.Cast(sim, result.Target)
 			},
@@ -1767,17 +1860,46 @@ func init() {
 	// 	})
 	// })
 
+	// https://www.wowhead.com/classic/item=228273/thunderstrike
+	// Chance on hit: Blasts up to 3 targets for 200 to 300 Nature damage. Each target after the first takes less damage.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcSpell(Thunderstrike, "Thunderstrike", 1.5, func(character *core.Character) *core.Spell {
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 461686},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				initialResult := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				// Only the initial hit can be fully resisted according to a wowhead comment
+				if initialResult.Landed() {
+					damageMultiplier := 1.0
+					for numHits := 0; numHits < 3; numHits++ {
+						spell.CalcAndDealDamage(sim, target, sim.Roll(150, 250)*damageMultiplier, spell.OutcomeMagicCrit)
+						numHits++
+						target = character.Env.NextTargetUnit(target)
+						// TODO: Couldn't find information on what the multiplier actually is
+						damageMultiplier *= .65
+					}
+				}
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228347/typhoon
 	// Chance on hit: Grants an extra attack on your next swing.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Typhoon, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Typhoon Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1.0,
+			Name:              "Typhoon Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 461985})
 			},
@@ -1860,10 +1982,18 @@ func init() {
 			Label:    "Burst of Knowledge",
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier -= 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
+						spell.CostMultiplier -= 1
+					}
+				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.CostMultiplier += 1
+				for _, spell := range aura.Unit.Spellbook {
+					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
+						spell.CostMultiplier += 1
+					}
+				}
 			},
 		})
 
@@ -1942,11 +2072,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Heroism Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      2,
+			Name:              "Heroism Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, spell.Unit)
 			},
@@ -1975,11 +2106,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Lightning Strike Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1.0,
+			Name:              "Lightning Strike Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -2036,6 +2168,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
+					return
+				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfInjustice") {
 					icd.Use(sim)
 					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
@@ -2062,6 +2197,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
+					return
+				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfJustice") {
 					icd.Use(sim)
 					aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 15600})
@@ -2087,11 +2225,12 @@ func init() {
 			},
 		})
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Heart of Wyrmthalak Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      0.4,
+			Name:              "Heart of Wyrmthalak Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               0.4,
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				spell.Cast(sim, result.Target)
 			},
@@ -2145,8 +2284,7 @@ func init() {
 		})
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Mark of the Chosen",
-			ActionID: core.ActionID{SpellID: 21969},
+			Label: "Mark of the Chosen",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
 					procAura.Activate(sim)
@@ -2320,7 +2458,7 @@ func init() {
 			ActionID:         core.ActionID{SpellID: 7712},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ProcMask:         core.ProcMaskTriggerInstant,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -2329,10 +2467,11 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Blazefury Medallion Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
+			Name:              "Blazefury Medallion Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -2469,6 +2608,19 @@ func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell 
 			},
 		})
 	})
+
+	character.GetOrRegisterAura(core.Aura{
+		Label:      "Cursed Blade",
+		ActionID:   core.ActionID{SpellID: 462228},
+		Duration:   core.NeverExpires,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
+			character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+		},
+	})
+
 	return character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
@@ -2506,11 +2658,12 @@ func makeNightfallProc(character *core.Character, itemName string) {
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:     fmt.Sprintf("%s Trigger", itemName),
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: core.ProcMaskMelee,
-		PPM:      2,
+		Name:              fmt.Sprintf("%s Trigger", itemName),
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               2,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAuras.Get(result.Target).Activate(sim)
 		},

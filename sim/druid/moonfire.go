@@ -32,18 +32,16 @@ func (druid *Druid) registerMoonfireSpell() {
 }
 
 func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
-	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
-	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
-
 	ticks := MoonfireDotTicks[rank]
 	tickLength := time.Second * 3
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
 
 	spellId := MoonfireSpellId[rank]
 	spellCoeff := MoonfiresSpellCoeff[rank]
 	spellDotCoeff := MoonfiresSellDotCoeff[rank]
-	baseDamageLow := MoonfireBaseDamage[rank][0] * moonfuryMultiplier * impMoonfireMultiplier
-	baseDamageHigh := MoonfireBaseDamage[rank][1] * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := (MoonfireBaseDotDamage[rank] / float64(ticks)) * moonfuryMultiplier * impMoonfireMultiplier
+	baseDamageLow := MoonfireBaseDamage[rank][0] * talentBaseMultiplier
+	baseDamageHigh := MoonfireBaseDamage[rank][1] * talentBaseMultiplier
+	baseDotDamage := (MoonfireBaseDotDamage[rank] / float64(ticks)) * talentBaseMultiplier
 	manaCost := MoonfireManaCost[rank]
 	level := MoonfireLevel[rank]
 
@@ -89,7 +87,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCoefficient: spellCoeff,
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
 		CritDamageBonus:  druid.vengeance(),
 
 		DamageMultiplier: 1,

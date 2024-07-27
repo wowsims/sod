@@ -70,6 +70,11 @@ func init() {
 
 		character.PseudoStats.BonusDamage += 4
 
+		// Woodcarved Moonstalker isn't unique, but presumably the on-use has a shared CD
+		if character.HasAura("Woodcarved Moonstalker") {
+			return
+		}
+
 		aura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
 			Label:    "Woodcarved Moonstalker",

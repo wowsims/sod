@@ -475,6 +475,7 @@ function makeWrappedEnumIconInput<SpecType extends Spec, ModObject, T>(
 		type: 'iconEnum',
 		numColumns: config.numColumns,
 		direction: config.direction,
+		tooltip: config.tooltip,
 		values: config.values.map(value => {
 			if (value.showWhen) {
 				const showWhen = value.showWhen;
@@ -498,12 +499,14 @@ export function makeEnumIconInput<SpecType extends Spec, Message, ModObject, T>(
 	values: Array<IconEnumValueConfig<ModObject, T>>,
 	numColumns?: number,
 	direction?: IconPickerDirection,
+	tooltip?: string,
 ): TypedIconEnumPickerConfig<Player<SpecType>, T> {
 	return makeWrappedEnumIconInput<SpecType, ModObject, T>({
-		direction: direction || IconPickerDirection.Vertical,
-		numColumns: numColumns,
 		values: values,
 		zeroValue: 0 as unknown as T,
+		numColumns: numColumns,
+		direction: direction || IconPickerDirection.Vertical,
+		tooltip: tooltip,
 		equals: (a: T, b: T) => a == b,
 		getModObject: config.getModObject,
 		changedEvent: config.changeEmitter,
@@ -521,6 +524,8 @@ export interface PlayerEnumIconInputConfig<SpecType extends Spec, Message, T> ex
 	fieldName: keyof Message;
 	values: Array<IconEnumValueConfig<Player<SpecType>, T>>;
 	numColumns?: number;
+	direction?: IconPickerDirection;
+	tooltip?: string;
 }
 export function makeSpecOptionsEnumIconInput<SpecType extends Spec, T>(
 	config: PlayerEnumIconInputConfig<SpecType, SpecOptions<SpecType>, T>,
@@ -539,6 +544,8 @@ export function makeSpecOptionsEnumIconInput<SpecType extends Spec, T>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
+		config.direction,
+		config.tooltip,
 	);
 }
 export function makeRotationEnumIconInput<SpecType extends Spec, T>(
@@ -558,5 +565,7 @@ export function makeRotationEnumIconInput<SpecType extends Spec, T>(
 		config.fieldName,
 		config.values,
 		config.numColumns,
+		config.direction,
+		config.tooltip,
 	);
 }
