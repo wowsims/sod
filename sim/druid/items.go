@@ -87,12 +87,10 @@ func init() {
 	core.NewItemEffect(IdolOfTheSwarm, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 
-		var originalAuraArray core.AuraArray
+		bonusDuration := time.Second * 12
+
 		core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
 			Label: "Idol of the Swarm",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				originalAuraArray = druid.InsectSwarmAuras
-			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range druid.InsectSwarm {
 					if spell != nil {
@@ -105,11 +103,11 @@ func init() {
 					}
 				}
 
-				druid.InsectSwarmAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-					aura := core.InsectSwarmAura(target, level)
-					aura.Duration += time.Second * 12
-					return aura
-				})
+				for _, aura := range druid.InsectSwarmAuras {
+					if aura != nil && !aura.IsPermanent() {
+						aura.Duration += bonusDuration
+					}
+				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range druid.InsectSwarm {
@@ -123,7 +121,11 @@ func init() {
 					}
 				}
 
-				druid.InsectSwarmAuras = originalAuraArray
+				for _, aura := range druid.InsectSwarmAuras {
+					if aura != nil && !aura.IsPermanent() {
+						aura.Duration -= bonusDuration
+					}
+				}
 			},
 		}))
 	})
