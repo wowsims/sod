@@ -63,9 +63,6 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 	spell.DamageMultiplier += shaman.burnFlameShockDamageMultiplier()
 	spell.BonusCoefficient = baseSpellCoeff
 
-	baseDamage += core.TernaryFloat64(shaman.Ranged().ID == TotemOfRage, 30*baseSpellCoeff, 0)
-	baseDotDamage += core.TernaryFloat64(shaman.Ranged().ID == TotemOfRage, 30*dotSpellCoeff, 0)
-
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
 			Label: fmt.Sprintf("Flame Shock (Rank %d)", rank),
