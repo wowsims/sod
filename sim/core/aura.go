@@ -249,6 +249,10 @@ func (aura *Aura) RemainingDuration(sim *Simulation) time.Duration {
 	}
 }
 
+func (aura *Aura) IsPermanent() bool {
+	return aura.Duration == NeverExpires
+}
+
 func (aura *Aura) StartedAt() time.Duration {
 	return aura.startTime
 }
