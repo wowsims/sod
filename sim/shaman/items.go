@@ -27,13 +27,23 @@ func init() {
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
-		// Implemented in lightning_bolt.go and chain_lightning.go
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
+				spell.BonusDamage += 33
+			}
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=23200/totem-of-sustaining
 	// Equip: Increases healing done by Lesser Healing Wave by up to 53.
 	core.NewItemEffect(TotemOfSustaining, func(agent core.Agent) {
-		// Implemented in lesser_healing_wave.go
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLesserHealingWave {
+				spell.BonusDamage += 53
+			}
+		})
 	})
 
 	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
