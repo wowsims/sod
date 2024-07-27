@@ -202,6 +202,8 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions, signals simsi
 
 		isTest:    simOptions.IsTest || simOptions.UseLabeledRands,
 		testRands: make(map[string]Rand),
+
+		Signals: signals,
 	}
 }
 

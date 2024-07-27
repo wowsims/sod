@@ -212,7 +212,7 @@ func (b *bulkSimRunner) Run(signals simsignals.Signals, progress chan *proto.Pro
 	if baseResult == nil {
 		return &proto.BulkSimResult{
 			Error: &proto.ErrorOutcome{
-				Message: fmt.Sprintf("no base result for equipped gear found in bulk sim"),
+				Message: "no base result for equipped gear found in bulk sim",
 			},
 		}
 	}

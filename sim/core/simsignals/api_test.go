@@ -15,9 +15,10 @@ func TestAbort(t *testing.T) {
 
 	player := &proto.Player{
 		Name:      "John",
+		Level:     60,
 		Race:      proto.Race_RaceOrc,
 		Class:     proto.Class_ClassWarrior,
-		Equipment: core.GetGearSet("../../../ui/warrior/gear_sets", "p1_arms_bis").GearSet,
+		Equipment: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_2h").GearSet,
 		Rotation:  &proto.APLRotation{},
 		Consumes:  &proto.Consumes{},
 		Spec: &proto.Player_Warrior{
@@ -175,7 +176,7 @@ func TestAbort(t *testing.T) {
 			BaseSettings: rsr,
 			BulkSettings: &proto.BulkSettings{
 				Combinations:       true,
-				Items:              []*proto.ItemSpec{{Id: 77949}, {Id: 55068}},
+				Items:              []*proto.ItemSpec{{Id: 19168}, {Id: 228757}},
 				IterationsPerCombo: 9999,
 				FastMode:           false,
 			},
