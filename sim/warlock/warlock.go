@@ -164,6 +164,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
 	warlock.setDefaultActivePet()
+	warlock.ActiveCurseAura = nil
 
 	// warlock.ItemSwap.SwapItems(sim, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
 	// 	proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, false)

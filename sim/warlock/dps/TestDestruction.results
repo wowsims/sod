@@ -603,8 +603,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2666.61465
-  tps: 2407.93287
+  dps: 2678.43346
+  tps: 2419.33617
  }
 }
 dps_results: {
@@ -638,36 +638,36 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2649.00186
-  tps: 2392.35294
+  dps: 2661.81745
+  tps: 2404.73916
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Average-Default"
  value: {
-  dps: 2685.52016
-  tps: 2426.52961
+  dps: 2698.55647
+  tps: 2439.25518
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2660.45725
-  tps: 3456.07127
+  dps: 2673.10031
+  tps: 3468.29249
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2660.45725
-  tps: 2405.10042
+  dps: 2673.10031
+  tps: 2417.32164
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2776.4559
-  tps: 2521.17516
+  dps: 2785.14999
+  tps: 2529.86925
  }
 }
 dps_results: {
@@ -694,7 +694,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2649.00186
-  tps: 2392.35294
+  dps: 2661.81745
+  tps: 2404.73916
  }
 }

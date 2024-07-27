@@ -70,12 +70,6 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	canOverload := !isOverload && hasOverloadRune
 	overloadChance := .1667
 
-	switch shaman.Ranged().ID {
-	case TotemOfTheStorm:
-		baseDamageLow += 33
-		baseDamageHigh += 33
-	}
-
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
 		manaCost,

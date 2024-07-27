@@ -204,8 +204,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 215.24205
-  tps: 152.82186
+  dps: 215.24493
+  tps: 152.8239
  }
 }
 dps_results: {

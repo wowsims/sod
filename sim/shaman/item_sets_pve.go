@@ -8,6 +8,28 @@ import (
 )
 
 ///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 2 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetElectromanticStormbringer = core.NewItemSet(core.ItemSet{
+	Name: "Electromantic Stormbringer's Chain",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 12)
+		},
+		3: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_ShamanLightningBolt {
+					spell.DefaultCast.CastTime -= time.Millisecond * 100
+				}
+			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
 //                            SoD Phase 3 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
