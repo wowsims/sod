@@ -99,7 +99,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.61096
+  weights: 1.73729
   weights: 1.61573
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.68273
-  weights: 7.28172
-  weights: 8.59079
+  weights: 0.76581
+  weights: 7.18595
+  weights: 8.60141
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.70323
-  weights: 3.55909
+  weights: 2.43689
+  weights: 3.21766
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.85935
-  weights: 4.48378
-  weights: 32.35009
+  weights: 1.59243
+  weights: 4.43424
+  weights: 34.04931
   weights: 0
   weights: 0
   weights: 0
@@ -337,8 +337,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2834.7986
-  tps: 2494.28592
+  dps: 2833.25907
+  tps: 2493.00086
  }
 }
 dps_results: {
@@ -435,7 +435,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2514.07705
-  tps: 2203.58386
+  dps: 2518.84401
+  tps: 2207.63259
  }
 }
