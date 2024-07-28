@@ -204,6 +204,7 @@ var armorPenetrationRegex2 = regexp.MustCompile(`Increases your armor penetratio
 var expertiseRegex = regexp.MustCompile(`Increases your expertise rating by <!--rtg37-->([0-9]+)\.`)
 var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
+var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
 
 var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
@@ -602,27 +603,49 @@ func (item WowheadItemResponse) GetRangedWeaponType() proto.RangedWeaponType {
 // Returns min/max of weapon damage
 func (item WowheadItemResponse) GetWeaponDamage() (float64, float64) {
 	noCommas := strings.ReplaceAll(item.Tooltip, ",", "")
+	min, max := 0.0, 0.0
+
+	// Base damage
 	if matches := weaponDamageRegex.FindStringSubmatch(noCommas); len(matches) > 0 {
-		min, err := strconv.ParseFloat(matches[1], 64)
+		minVal, err := strconv.ParseFloat(matches[1], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		max, err := strconv.ParseFloat(matches[2], 64)
+		maxVal, err := strconv.ParseFloat(matches[2], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		if min > max {
+		if minVal > maxVal {
 			log.Fatalf("Invalid weapon damage for item %s: min = %0.1f, max = %0.1f", item.Name, min, max)
 		}
-		return min, max
+		min, max = minVal, maxVal
 	} else if matches := weaponDamageRegex2.FindStringSubmatch(noCommas); len(matches) > 0 {
 		val, err := strconv.ParseFloat(matches[1], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		return val, val
+		min, max = val, val
 	}
-	return 0, 0
+
+	// Add effects like Thunderfury + 16 - 30 Nature Damage that were intended for bonus school damage on top of the base weapon damage
+	if matches := weaponDamageBonusSchoolRegex.FindStringSubmatch(noCommas); len(matches) > 0 {
+		minVal, err := strconv.ParseFloat(matches[1], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		maxVal, err := strconv.ParseFloat(matches[2], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		if minVal > maxVal {
+			log.Fatalf("Invalid bonus school weapon damage for item %s: min = %0.1f, max = %0.1f", item.Name, min, max)
+		}
+
+		min += minVal
+		max += maxVal
+	}
+
+	return min, max
 }
 
 func (item WowheadItemResponse) GetWeaponSpeed() float64 {

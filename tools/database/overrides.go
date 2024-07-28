@@ -482,9 +482,6 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
 	regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),
 
-	// BWL
-	regexp.MustCompile(`Thunderfury`),
-
 	// ZG
 	regexp.MustCompile(`Zandalarian`),
 	regexp.MustCompile(`Bloodvine [a-zA-z]+`),
