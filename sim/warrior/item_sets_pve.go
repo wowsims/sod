@@ -112,11 +112,6 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 			warrior.newStanceOverrideExclusiveEffect(BerserkerStance, berserkStanceAura)
 			warrior.newStanceOverrideExclusiveEffect(AnyStance, gladStanceAura)
 
-			battleStanceAura.NewExclusiveEffect("t1-dps-echoes", true, core.ExclusiveEffect{})
-			defStanceAura.NewExclusiveEffect("t1-dps-echoes", true, core.ExclusiveEffect{})
-			berserkStanceAura.NewExclusiveEffect("t1-dps-echoes", true, core.ExclusiveEffect{})
-			gladStanceAura.NewExclusiveEffect("t1-dps-echoes", true, core.ExclusiveEffect{})
-
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Warrior - Damage 4P Bonus Trigger",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -175,10 +170,6 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 					warrior.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
 				},
 			})
-
-			battleAura.NewExclusiveEffect("t1-dps-forecast", true, core.ExclusiveEffect{})
-			defenseAura.NewExclusiveEffect("t1-dps-forecast", true, core.ExclusiveEffect{})
-			berserkAura.NewExclusiveEffect("t1-dps-forecast", true, core.ExclusiveEffect{})
 
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Warrior - Damage 6P Bonus Trigger",
