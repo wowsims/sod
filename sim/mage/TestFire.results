@@ -415,7 +415,7 @@ dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
   dps: 1313.60688
-  tps: 942.48458
+  tps: 942.24667
  }
 }
 dps_results: {
@@ -457,7 +457,7 @@ dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
   dps: 1352.02758
-  tps: 964.85751
+  tps: 964.71076
  }
 }
 dps_results: {

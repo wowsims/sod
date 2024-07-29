@@ -107,28 +107,28 @@ dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
   dps: 796.45325
-  tps: 338.7694
+  tps: 338.76861
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Average-Default"
  value: {
   dps: 805.79752
-  tps: 347.0136
+  tps: 347.01359
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
   dps: 1889.27938
-  tps: 1719.11306
+  tps: 1719.07109
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
   dps: 819.53461
-  tps: 362.32968
+  tps: 362.32616
  }
 }
 dps_results: {
@@ -218,8 +218,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 520.55476
-  tps: 251.7659
+  dps: 520.67896
+  tps: 251.86912
  }
 }
 dps_results: {
@@ -239,8 +239,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 274.28261
-  tps: 130.60731
+  dps: 274.34428
+  tps: 130.66898
  }
 }
 dps_results: {
@@ -296,14 +296,14 @@ dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
   dps: 800.44815
-  tps: 341.40731
+  tps: 341.40653
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
   dps: 837.69367
-  tps: 346.27997
+  tps: 346.26623
  }
 }
 dps_results: {
@@ -386,8 +386,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 528.01998
-  tps: 242.58537
+  dps: 528.14418
+  tps: 242.68742
  }
 }
 dps_results: {
@@ -407,8 +407,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 289.22191
-  tps: 131.21654
+  dps: 289.28358
+  tps: 131.2782
  }
 }
 dps_results: {
@@ -457,6 +457,6 @@ dps_results: {
  key: "TestBM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
   dps: 767.02106
-  tps: 319.26048
+  tps: 319.25697
  }
 }

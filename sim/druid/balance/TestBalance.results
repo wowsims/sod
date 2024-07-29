@@ -821,7 +821,7 @@ dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2404.33845
-  tps: 2419.38687
+  tps: 2419.06317
  }
 }
 dps_results: {
@@ -863,7 +863,7 @@ dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2404.14516
-  tps: 2419.19357
+  tps: 2418.86987
  }
 }
 dps_results: {

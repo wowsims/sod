@@ -116,6 +116,7 @@ func (pet *Pet) reset(sim *Simulation, agent PetAgent) {
 }
 func (pet *Pet) doneIteration(sim *Simulation) {
 	pet.Character.doneIteration(sim)
+	pet.Disable(sim)
 	pet.isReset = false
 }
 

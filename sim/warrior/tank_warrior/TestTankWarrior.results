@@ -155,15 +155,15 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 117.15273
-  tps: 359.92109
+  dps: 117.14752
+  tps: 359.91252
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 169.72035
-  tps: 523.78793
+  dps: 169.69429
+  tps: 523.74506
  }
 }
 dps_results: {
@@ -176,15 +176,15 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 51.59362
-  tps: 198.67883
+  dps: 51.59137
+  tps: 198.67513
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 73.97894
-  tps: 289.9279
+  dps: 73.96769
+  tps: 289.9094
  }
 }
 dps_results: {
@@ -197,15 +197,15 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 122.1547
-  tps: 372.28298
+  dps: 122.14949
+  tps: 372.27441
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 178.21862
-  tps: 542.27404
+  dps: 178.19256
+  tps: 542.23118
  }
 }
 dps_results: {
@@ -218,15 +218,15 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 51.62132
-  tps: 198.82579
+  dps: 51.61907
+  tps: 198.82209
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 73.70056
-  tps: 289.62028
+  dps: 73.68931
+  tps: 289.60178
  }
 }
 dps_results: {
