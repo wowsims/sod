@@ -350,9 +350,9 @@ export class CharacterStats extends Component {
 			displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
 		} else if (stat == Stat.StatMeleeHaste) {
 			if ([Class.ClassDruid, Class.ClassShaman, Class.ClassPaladin].includes(this.player.getClass())) {
-				displayStr += ` (${(rawValue / Mechanics.SPECIAL_MELEE_HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+				displayStr = `${(rawValue / Mechanics.SPECIAL_MELEE_HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
 			} else {
-				displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+				displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
 			}
 		} else if (stat == Stat.StatSpellHaste) {
 			displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
@@ -364,19 +364,11 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatDefense) {
 			displayStr += ` (${(Mechanics.MAX_CHARACTER_LEVEL * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)})`;
 		} else if (stat == Stat.StatBlock) {
-			// TODO: Figure out how to display these differently for the components than the final value
-			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(
-				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
-				Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) +
-				5.0
-			).toFixed(2)}%)`;
+			displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%`;
 		} else if (stat == Stat.StatDodge) {
-			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr = `${deltaStats.getStat(Stat.StatDodge).toFixed(2)}%`;
+			displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
 		} else if (stat == Stat.StatParry) {
-			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr = `${stats.getStat(Stat.StatParry).toFixed(2)}%`;
+			displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
 		}

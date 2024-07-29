@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestArcane-Lvl40-Average-Default"
  value: {
-  dps: 406.32322
-  tps: 251.69372
+  dps: 406.32196
+  tps: 251.69294
  }
 }
 dps_results: {

@@ -94,8 +94,8 @@ export const TalentPresets = {
 
 export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
-export const PresetBuildDamage = PresetUtils.makePresetBuild('Damage', DefaultGearDamage, TalentsPhase4Prot, DefaultAPLs[60]);
-export const PresetBuildTanky = PresetUtils.makePresetBuild('Tanky', DefaultGearTanky, TalentsPhase4Fury, DefaultAPLs[60]);
+export const PresetBuildTanky = PresetUtils.makePresetBuild('Tanky', DefaultGearTanky, TalentsPhase4Prot, DefaultAPLs[60]);
+export const PresetBuildDamage = PresetUtils.makePresetBuild('Damage', DefaultGearDamage, TalentsPhase4Fury, DefaultAPLs[60]);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options Presets
