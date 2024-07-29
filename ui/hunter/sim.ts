@@ -37,7 +37,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellCrit,
 		Stat.StatFireResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatRangedDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatRangedAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,6 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatMeleeHaste,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -86,6 +92,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 				[PseudoStat.PseudoStatMainHandDps]: 2.11,
 				[PseudoStat.PseudoStatOffHandDps]: 1.39,
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 1.39,
 			},
 		),
 		// Default consumes settings.
