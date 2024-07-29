@@ -1,0 +1,238 @@
+character_stats_results: {
+ key: "TestTankWarrior-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 403.7
+  final_stats: 265.87
+  final_stats: 759
+  final_stats: 102.3
+  final_stats: 135.3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 41.25
+  final_stats: 5
+  final_stats: 22
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1822.4
+  final_stats: 6
+  final_stats: 33.2935
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7573.74
+  final_stats: 774
+  final_stats: 165
+  final_stats: 16.6
+  final_stats: 178.185
+  final_stats: 19.8935
+  final_stats: 11.6
+  final_stats: 0
+  final_stats: 10599
+  final_stats: 32
+  final_stats: 251
+  final_stats: 60
+  final_stats: 60
+  final_stats: 65
+  final_stats: 524
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestTankWarrior-Lvl60-StatWeights-Default"
+ value: {
+  weights: 2.80822
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.44575
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 2.75216
+  weights: 0
+  weights: 0.51275
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-BanishedMartyr'sFullPlate"
+ value: {
+  dps: 1618.00827
+  tps: 3268.66774
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-BattlegearofHeroism"
+ value: {
+  dps: 929.25922
+  tps: 1867.74646
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-BloodGuard'sPlate"
+ value: {
+  dps: 922.90297
+  tps: 1893.71698
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-EmeraldDreamPlate"
+ value: {
+  dps: 915.58627
+  tps: 1876.08362
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-Knight-Lieutenant'sPlate"
+ value: {
+  dps: 922.90297
+  tps: 1893.71698
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-AllItems-WailingBerserker'sPlateArmor"
+ value: {
+  dps: 1729.31397
+  tps: 3438.73615
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Average-Default"
+ value: {
+  dps: 1571.54329
+  tps: 3772.48212
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 441.64596
+  tps: 1204.43508
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 117.14752
+  tps: 359.91252
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 169.69429
+  tps: 523.74506
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 145.4241
+  tps: 552.8629
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 51.59137
+  tps: 198.67513
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 73.96769
+  tps: 289.9094
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 459.52149
+  tps: 1236.36817
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 122.14949
+  tps: 372.27441
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 178.19256
+  tps: 542.23118
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 145.69217
+  tps: 553.62132
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 51.61907
+  tps: 198.82209
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 73.68931
+  tps: 289.60178
+ }
+}
+dps_results: {
+ key: "TestTankWarrior-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 1432.67737
+  tps: 3471.72809
+ }
+}

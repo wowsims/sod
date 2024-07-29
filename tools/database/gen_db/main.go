@@ -445,11 +445,11 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment: &proto.EquipmentSpec{},
 		}, &proto.Player_Warrior{Warrior: &proto.Warrior{Options: &proto.Warrior_Options{}}}), nil, nil, nil)},
 		// TODO: Warrior Tank Sim
-		// {Name: "warrior tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-		// 	Class:     proto.Class_ClassWarrior,
-		// 	Level:     60,
-		// 	Equipment: &proto.EquipmentSpec{},
-		// }, &proto.Player_ProtectionWarrior{ProtectionWarrior: &proto.ProtectionWarrior{Options: &proto.ProtectionWarrior_Options{}}}), nil, nil, nil)},
+		{Name: "warrior tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassWarrior,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_TankWarrior{TankWarrior: &proto.TankWarrior{Options: &proto.TankWarrior_Options{}}}), nil, nil, nil)},
 		{Name: "ret", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:     proto.Class_ClassPaladin,
 			Level:     60,

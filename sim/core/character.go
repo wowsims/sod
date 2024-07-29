@@ -299,6 +299,18 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 		}
 	}
 
+	character.AddStatDependency(stats.Defense, stats.Dodge, MissDodgeParryBlockCritChancePerDefense)
+	character.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
+	character.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
+
+	if character.PseudoStats.CanParry {
+		character.AddStat(stats.Parry, 5)
+	}
+
+	if character.PseudoStats.CanBlock && character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
+		character.AddStat(stats.Block, 5)
+	}
+
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)
 	playerStats.BaseStats = measureStats()
@@ -617,6 +629,9 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatSchoolHitHoly:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly]),
 		proto.PseudoStat_PseudoStatSchoolHitNature: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature]),
 		proto.PseudoStat_PseudoStatSchoolHitShadow: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow]),
+
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 	}
 }
 

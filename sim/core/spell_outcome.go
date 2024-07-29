@@ -531,8 +531,7 @@ func (result *SpellResult) applyEnemyAttackTableBlock(spell *Spell, attackTable 
 	}
 
 	blockChance := attackTable.BaseBlockChance +
-		result.Target.stats[stats.Block]/BlockRatingPerBlockChance/100 +
-		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
+		result.Target.stats[stats.Block]/BlockRatingPerBlockChance/100
 	*chance += max(0, blockChance)
 
 	if roll < *chance {
@@ -550,8 +549,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 	}
 
 	dodgeChance := attackTable.BaseDodgeChance +
-		result.Target.GetStat(stats.Dodge)/100 +
-		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
+		result.Target.GetStat(stats.Dodge)/100
 	*chance += max(0, dodgeChance)
 
 	if roll < *chance {
@@ -569,8 +567,7 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 	}
 
 	parryChance := attackTable.BaseParryChance +
-		result.Target.GetStat(stats.Parry)/100 +
-		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
+		result.Target.GetStat(stats.Parry)/100
 	*chance += max(0, parryChance)
 
 	if roll < *chance {

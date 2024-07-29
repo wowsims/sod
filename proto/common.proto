@@ -23,7 +23,7 @@ enum Spec {
 	SpecWarlock = 5;
 	SpecTankWarlock = 21;
 	SpecWarrior = 6;
-	SpecProtectionWarrior = 11;
+	SpecTankWarrior = 11;
 }
 
 enum Race {
@@ -160,6 +160,9 @@ enum PseudoStat {
 	PseudoStatSchoolHitHoly = 24;
 	PseudoStatSchoolHitNature = 25;
 	PseudoStatSchoolHitShadow = 26;
+
+	PseudoStatMeleeSpeedMultiplier = 27;
+	PseudoStatRangedSpeedMultiplier = 28;
 }
 
 message UnitStats {

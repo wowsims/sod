@@ -1,6 +1,0 @@
-{
-    "type": "TypeAPL",
-    "priorityList": [
-	{"action":{"autocastOtherCooldowns":{}}}
-    ]
-}

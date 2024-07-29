@@ -134,8 +134,10 @@ message Warrior {
 	}
 
 	message Options {
+		reserved 2;
+		reserved "use_recklessness";
+
 		double starting_rage = 1;
-		bool use_recklessness = 2;
 		bool stance_snapshot = 6;
 
 		WarriorShout shout = 3;
@@ -144,14 +146,15 @@ message Warrior {
 	Options options = 3;
 }
 
-message ProtectionWarrior {
+message TankWarrior {
 	message Rotation {
 	}
 
 	message Options {
 		double starting_rage = 1;
+		bool stance_snapshot = 6;
 
-		WarriorShout shout = 4;
+		WarriorShout shout = 3;
 		WarriorStance stance = 7;
 	}
 	Options options = 3;

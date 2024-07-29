@@ -1,0 +1,4 @@
+// Set color variables which control the site theme.
+.tank-warrior-sim-ui {
+	@include theme-color($warrior, 0.95, '/sod/assets/img/tank_warrior_background.jpg');
+}

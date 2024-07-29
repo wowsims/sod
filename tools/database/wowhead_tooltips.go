@@ -227,14 +227,11 @@ var gunsSkill = regexp.MustCompile(`Increased Guns \+([0-9]+)\.`)
 var feralCombatSkill = regexp.MustCompile(`Increased Feral Combat \+([0-9]+)\.`)
 
 var defenseRegex = regexp.MustCompile(`Increased Defense \+([0-9]+)\.`)
-var blockRegex = regexp.MustCompile(`Increases your shield block rating by <!--rtg15-->([0-9]+)\.`)
-var blockRegex2 = regexp.MustCompile(`Increases your shield block rating by ([0-9]+)\.`)
+var blockRegex = regexp.MustCompile(`Increases your chance to block attacks with a shield by ([0-9]+)%\.`)
 var blockValueRegex = regexp.MustCompile(`Increases the block value of your shield by ([0-9]+)\.`)
 var blockValueRegex2 = regexp.MustCompile(`<br>([0-9]+) Block<br>`)
-var dodgeRegex = regexp.MustCompile(`Increases your dodge rating by <!--rtg13-->([0-9]+)\.`)
-var dodgeRegex2 = regexp.MustCompile(`Increases your dodge rating by ([0-9]+)\.`)
-var parryRegex = regexp.MustCompile(`Increases your parry rating by <!--rtg14-->([0-9]+)\.`)
-var parryRegex2 = regexp.MustCompile(`Increases your parry rating by ([0-9]+)\.`)
+var dodgeRegex = regexp.MustCompile(`Increases your chance to dodge an attack by ([0-9]+)%\.`)
+var parryRegex = regexp.MustCompile(`Increases your chance to parry an attack by ([0-9]+)%\.`)
 var resilienceRegex = regexp.MustCompile(`Improves your resilience rating by <!--rtg35-->([0-9]+)\.`)
 var arcaneResistanceRegex = regexp.MustCompile(`\+([0-9]+) Arcane Resistance`)
 var fireResistanceRegex = regexp.MustCompile(`\+([0-9]+) Fire Resistance`)
@@ -283,10 +280,10 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatArmorPenetration:  float64(item.GetIntValue(armorPenetrationRegex) + item.GetIntValue(armorPenetrationRegex2)),
 		proto.Stat_StatExpertise:         float64(item.GetIntValue(expertiseRegex)),
 		proto.Stat_StatDefense:           float64(item.GetIntValue(defenseRegex)),
-		proto.Stat_StatBlock:             float64(item.GetIntValue(blockRegex) + item.GetIntValue(blockRegex2)),
+		proto.Stat_StatBlock:             float64(item.GetIntValue(blockRegex)),
 		proto.Stat_StatBlockValue:        float64(item.GetIntValue(blockValueRegex) + item.GetIntValue(blockValueRegex2)),
-		proto.Stat_StatDodge:             float64(item.GetIntValue(dodgeRegex) + item.GetIntValue(dodgeRegex2)),
-		proto.Stat_StatParry:             float64(item.GetIntValue(parryRegex) + item.GetIntValue(parryRegex2)),
+		proto.Stat_StatDodge:             float64(item.GetIntValue(dodgeRegex)),
+		proto.Stat_StatParry:             float64(item.GetIntValue(parryRegex)),
 		proto.Stat_StatResilience:        float64(item.GetIntValue(resilienceRegex)),
 		proto.Stat_StatArcaneResistance:  float64(item.GetIntValue(arcaneResistanceRegex)),
 		proto.Stat_StatFireResistance:    float64(item.GetIntValue(fireResistanceRegex)),

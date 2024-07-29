@@ -30,10 +30,10 @@ character_stats_results: {
   final_stats: 1541.2
   final_stats: 98
   final_stats: 8
-  final_stats: 0
+  final_stats: 0.32
   final_stats: 8.8
-  final_stats: 0.7
-  final_stats: 0
+  final_stats: 1.02
+  final_stats: 5.32
   final_stats: 0
   final_stats: 1593
   final_stats: 0
@@ -82,7 +82,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 13.2
   final_stats: 0.7
-  final_stats: 0
+  final_stats: 5
   final_stats: 0
   final_stats: 3378
   final_stats: 18
@@ -131,7 +131,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 22.08492
   final_stats: 0.7
-  final_stats: 0
+  final_stats: 5
   final_stats: 0
   final_stats: 4718.28
   final_stats: 20

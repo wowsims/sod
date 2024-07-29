@@ -1107,7 +1107,7 @@ export const MISC_BUFFS_CONFIG = [
 	{
 		config: BattleSquawkBuff,
 		picker: IconPicker,
-		stats: [Stat.StatMeleeHaste],
+		stats: [Stat.StatMeleeHit],
 	},
 ] as PickerStatOptions[];
 
@@ -1140,22 +1140,22 @@ export const WORLD_BUFFS_CONFIG = [
 	{
 		config: WarchiefsBlessing,
 		picker: IconPicker,
-		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5],
+		stats: [],
 	},
 	{
 		config: MightOfStormwind,
 		picker: IconPicker,
-		stats: [Stat.StatHealth, Stat.StatMeleeHaste, Stat.StatMP5],
+		stats: [],
 	},
 	{
 		config: FervorOfTheTempleExplorer,
 		picker: IconPicker,
-		stats: [Stat.StatSpellPower, Stat.StatAttackPower],
+		stats: [],
 	},
 	{
 		config: SparkOfInspiration,
 		picker: IconPicker,
-		stats: [Stat.StatSpellPower, Stat.StatMeleeHaste, Stat.StatRangedAttackPower],
+		stats: [],
 	},
 	{
 		config: BoonOfBlackfathom,

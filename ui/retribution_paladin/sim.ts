@@ -3,16 +3,9 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import * as PresetUtils from '../core/preset_utils.js';
 import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import APLP4RetExodinJson from './apls/p4ret-exodin.apl.json';
-import APLP4RetExodin6PcT1Json from './apls/p4ret-exodin-6pcT1.apl.json';
-import APLP4RetTwisting6PcT1Json from './apls/p4ret-twisting-6pcT1.apl.json';
-import Phase4RetExodinGearJson from './gear_sets/p4ret-exodin.gear.json';
-import Phase4RetExodin6PcT1GearJson from './gear_sets/p4ret-exodin-6pcT1.gear.json';
-import Phase4RetTwisting6PcT1GearJson from './gear_sets/p4ret-twisting-6pcT1.gear.json';
 import * as RetributionPaladinInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -50,7 +43,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatSpellPower,
 		Stat.StatHolyPower,
 		Stat.StatSpellCrit,
@@ -58,7 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatSpellHaste,
 		Stat.StatFireResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -98,11 +90,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatMeleeHit]: 1.96,
 				[Stat.StatMeleeCrit]: 1.16,
-				[Stat.StatMeleeHaste]: 1.44,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 7.33,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 7.33,
 			},
 		),
 		// Default consumes settings.
@@ -137,9 +129,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	presets: {
 		rotations: [
 			...Presets.APLPresets[Phase.Phase4],
-			PresetUtils.makePresetAPLRotation('P4 Ret-Twisting-6pcT1', APLP4RetTwisting6PcT1Json),
-			PresetUtils.makePresetAPLRotation('P4 Ret-Exodin', APLP4RetExodinJson),
-			PresetUtils.makePresetAPLRotation('P4 Ret-Exodin-6pcT1', APLP4RetExodin6PcT1Json),
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
@@ -154,9 +143,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase4],
-			PresetUtils.makePresetGear('P4 Ret-Twisting-6pcT1', Phase4RetTwisting6PcT1GearJson),
-			PresetUtils.makePresetGear('P4 Ret-Exodin', Phase4RetExodinGearJson),
-			PresetUtils.makePresetGear('P4 Ret-Exodin-6pcT1', Phase4RetExodin6PcT1GearJson),
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
