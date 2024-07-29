@@ -1780,85 +1780,80 @@ func init() {
 		})
 	})
 
-	// Not yet available
-	// core.NewItemEffect(Thunderfury, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	// https://www.wowhead.com/classic/item=19019/thunderfury-blessed-blade-of-the-windseeker
+	// Chance on hit: Blasts your enemy with lightning, dealing 300 Nature damage and then jumping to additional nearby enemies.
+	// Each jump reduces that victim's Nature resistance by 25. Affects 5 targets.
+	// Your primary target is also consumed by a cyclone, slowing its attack speed by 20% for 12 sec.
+	core.NewItemEffect(Thunderfury, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	procMask := character.GetProcMaskForItem(Thunderfury)
-	// 	ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+		procMask := character.GetProcMaskForItem(Thunderfury)
+		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
-	// 	procActionID := core.ActionID{SpellID: 21992}
+		procActionID := core.ActionID{SpellID: 21992}
 
-	// 	singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
-	// 		ActionID:    procActionID.WithTag(1),
-	// 		SpellSchool: core.SpellSchoolNature,
-	// 		DefenseType: core.DefenseTypeMagic,
-	// 		ProcMask:    core.ProcMaskEmpty,
+		singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    procActionID.WithTag(1),
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
 
-	// 		DamageMultiplier: 1,
-	// 		ThreatMultiplier: 0.5,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
-	// 		},
-	// 	})
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
+			},
+		})
 
-	// 	debuffAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-	// 		return target.GetOrRegisterAura(core.Aura{
-	// 			Label:    "Thunderfury",
-	// 			ActionID: procActionID,
-	// 			Duration: time.Second * 12,
-	// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-	// 				target.AddStatDynamic(sim, stats.NatureResistance, -25)
-	// 			},
-	// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-	// 				target.AddStatDynamic(sim, stats.NatureResistance, 25)
-	// 			},
-	// 		})
-	// 	})
+		debuffAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+			return target.GetOrRegisterAura(core.Aura{
+				Label:    "Thunderfury",
+				ActionID: procActionID,
+				Duration: time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					target.AddStatDynamic(sim, stats.NatureResistance, -25)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					target.AddStatDynamic(sim, stats.NatureResistance, 25)
+				},
+			})
+		})
 
-	// 	results := make([]*core.SpellResult, min(5, character.Env.GetNumTargets()))
+		results := make([]*core.SpellResult, min(5, character.Env.GetNumTargets()))
 
-	// 	bounceSpell := character.GetOrRegisterSpell(core.SpellConfig{
-	// 		ActionID:    procActionID.WithTag(2),
-	// 		SpellSchool: core.SpellSchoolNature,
-	// 		ProcMask:    core.ProcMaskEmpty,
+		bounceSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    procActionID.WithTag(2),
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
 
-	// 		ThreatMultiplier: 1,
-	// 		FlatThreatBonus:  63,
+			ThreatMultiplier: 1,
+			FlatThreatBonus:  126,
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			for idx := range results {
-	// 				results[idx] = spell.CalcDamage(sim, target, 0, spell.OutcomeMagicHit)
-	// 				target = sim.Environment.NextTargetUnit(target)
-	// 			}
-	// 			for _, result := range results {
-	// 				if result.Landed() {
-	// 					debuffAuras[result.Target.Index].Activate(sim)
-	// 				}
-	// 				spell.DealDamage(sim, result)
-	// 			}
-	// 		},
-	// 	})
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for idx := range results {
+					results[idx] = spell.CalcDamage(sim, target, 0, spell.OutcomeMagicHit)
+					target = sim.Environment.NextTargetUnit(target)
+				}
+				for _, result := range results {
+					if result.Landed() {
+						debuffAuras[result.Target.Index].Activate(sim)
+					}
+					spell.DealDamage(sim, result)
+				}
+			},
+		})
 
-	// 	character.GetOrRegisterAura(core.Aura{
-	// 		Label:    "Thunderfury",
-	// 		Duration: core.NeverExpires,
-	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 			aura.Activate(sim)
-	// 		},
-	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if !result.Landed() {
-	// 				return
-	// 			}
-
-	// 			if ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
-	// 				singleTargetSpell.Cast(sim, result.Target)
-	// 				bounceSpell.Cast(sim, result.Target)
-	// 			}
-	// 		},
-	// 	})
-	// })
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Thunderfury Trigger",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
+					singleTargetSpell.Cast(sim, result.Target)
+					bounceSpell.Cast(sim, result.Target)
+				}
+			},
+		}))
+	})
 
 	// https://www.wowhead.com/classic/item=228273/thunderstrike
 	// Chance on hit: Blasts up to 3 targets for 200 to 300 Nature damage. Each target after the first takes less damage.

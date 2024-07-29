@@ -57,7 +57,7 @@ func (druid *Druid) registerStarfallCD() {
 		ActionID:    actionID.WithTag(1),
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskSpellDamage, // Shown to proc things in-game
 		Flags:       core.SpellFlagBinary,
 
 		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),

@@ -416,9 +416,9 @@ export class ActionId {
 				break;
 			case 'Thunderfury':
 				if (this.tag === 1) {
-					name += ' (ST)';
+					name += ' (Main)';
 				} else if (this.tag === 2) {
-					name += ' (MT)';
+					name += ' (Bounce)';
 				}
 				break;
 			case 'Sunfire':

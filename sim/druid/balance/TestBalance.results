@@ -708,189 +708,189 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sCracklingLeather"
  value: {
-  dps: 1014.07085
-  tps: 1031.70744
+  dps: 1025.21784
+  tps: 1044.29993
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sLeather"
  value: {
-  dps: 952.9916
-  tps: 971.05102
+  dps: 964.40863
+  tps: 983.90373
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-BloodGuard'sRestoredLeather"
  value: {
-  dps: 925.49029
-  tps: 942.83188
+  dps: 937.21872
+  tps: 956.03039
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 1273.27377
-  tps: 1291.99695
+  dps: 1288.40234
+  tps: 1308.80701
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldDreamkeeperGarb"
  value: {
-  dps: 922.8811
-  tps: 940.28169
+  dps: 939.26289
+  tps: 958.22206
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldLeathers"
  value: {
-  dps: 952.03022
-  tps: 970.08964
+  dps: 963.49574
+  tps: 982.99083
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-EmeraldWatcherVestments"
  value: {
-  dps: 972.84416
-  tps: 990.29884
+  dps: 984.2863
+  tps: 1003.14223
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 1279.43687
-  tps: 1297.84538
+  dps: 1302.81564
+  tps: 1322.94498
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-FeralheartRaiment"
  value: {
-  dps: 937.50561
-  tps: 956.23941
+  dps: 967.61456
+  tps: 988.15136
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
-  dps: 1014.07085
-  tps: 1031.70744
+  dps: 1025.21784
+  tps: 1044.29993
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sLeather"
  value: {
-  dps: 952.9916
-  tps: 971.05102
+  dps: 964.40863
+  tps: 983.90373
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
  value: {
-  dps: 925.49029
-  tps: 942.83188
+  dps: 937.21872
+  tps: 956.03039
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 1355.11401
-  tps: 1373.84702
+  dps: 1367.33627
+  tps: 1387.68194
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Average-Default"
  value: {
-  dps: 2597.94607
-  tps: 2616.83981
+  dps: 2598.06228
+  tps: 2620.02746
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4341.79372
-  tps: 4665.50866
+  dps: 4364.03331
+  tps: 4802.62089
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2512.81518
-  tps: 2529.13859
+  dps: 2519.51211
+  tps: 2538.63244
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2404.33845
-  tps: 2424.68539
+  tps: 2419.06317
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2339.83214
-  tps: 2518.28878
+  dps: 2352.4179
+  tps: 2530.87454
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1431.72551
-  tps: 1440.76285
+  dps: 1434.93019
+  tps: 1443.96753
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-NightElf-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1569.66743
-  tps: 1584.85119
+  dps: 1574.53417
+  tps: 1589.71793
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4336.97155
-  tps: 4670.76785
+  dps: 4362.64756
+  tps: 4801.23514
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2509.62208
-  tps: 2526.11177
+  dps: 2513.0911
+  tps: 2532.19177
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2404.14516
-  tps: 2427.35237
+  tps: 2418.86987
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2332.68082
-  tps: 2510.20909
+  dps: 2349.54812
+  tps: 2530.29494
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1433.01662
-  tps: 1441.8845
+  dps: 1436.29328
+  tps: 1445.16116
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-Settings-Tauren-phase_4-Default-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1566.53344
-  tps: 1581.7172
+  dps: 1571.43885
+  tps: 1586.62261
  }
 }
 dps_results: {
  key: "TestBalance-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 2562.32203
-  tps: 2581.43317
+  tps: 2584.15805
  }
 }
