@@ -442,7 +442,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl25-Settings-NightElf-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 98.65435
+  dps: 99.84051
   tps: 79.72751
  }
 }
@@ -484,7 +484,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl25-Settings-Troll-phase_1-Basic-phase_1-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 95.65083
+  dps: 96.54095
   tps: 76.36982
  }
 }
