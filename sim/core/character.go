@@ -629,6 +629,9 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatSchoolHitHoly:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly]),
 		proto.PseudoStat_PseudoStatSchoolHitNature: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature]),
 		proto.PseudoStat_PseudoStatSchoolHitShadow: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow]),
+
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 	}
 }
 

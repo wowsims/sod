@@ -23,7 +23,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatFireResistance,
 
 		// Tank Stats
@@ -37,7 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatParry,
 		Stat.StatDodge,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -77,7 +76,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 				[Stat.StatAttackPower]: 0.32,
 				[Stat.StatMeleeHit]: 1.432,
 				[Stat.StatMeleeCrit]: 0.925,
-				[Stat.StatMeleeHaste]: 0.431,
 				[Stat.StatBlock]: 1.32,
 				[Stat.StatBlockValue]: 1.373,
 				[Stat.StatDodge]: 2.606,
@@ -85,7 +83,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 				[Stat.StatDefense]: 3.305,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 6.081,
+				[PseudoStat.PseudoStatMainHandDps]: 11.92,
+				[PseudoStat.PseudoStatOffHandDps]: 4.69,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 4.69,
 			},
 		),
 		// Default consumes settings.

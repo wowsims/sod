@@ -17,8 +17,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatMeleeHaste, Stat.StatFireResistance],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epStats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatFireResistance],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -46,12 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatMeleeHit]: 28.67,
 				[Stat.StatMeleeCrit]: 25.1,
-				[Stat.StatMeleeHaste]: 22.08,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 11.92,
 				[PseudoStat.PseudoStatOffHandDps]: 4.69,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 4.69,
 			},
 		),
 		// Default consumes settings.

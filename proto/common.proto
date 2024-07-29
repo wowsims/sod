@@ -160,6 +160,9 @@ enum PseudoStat {
 	PseudoStatSchoolHitHoly = 24;
 	PseudoStatSchoolHitNature = 25;
 	PseudoStatSchoolHitShadow = 26;
+
+	PseudoStatMeleeSpeedMultiplier = 27;
+	PseudoStatRangedSpeedMultiplier = 28;
 }
 
 message UnitStats {
