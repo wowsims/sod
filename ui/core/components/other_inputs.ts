@@ -242,7 +242,7 @@ export const IncomingHps = {
 	label: 'Incoming HPS',
 	labelTooltip: `
 		<p>Average amount of healing received per second. Used for calculating chance of death.</p>
-		<p>If set to 0, defaults to 17.5% of the primary target's base DPS.</p>
+		<p class="mb-0>If set to 0, defaults to 17.5% of the primary target's base DPS.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().hps,
@@ -262,7 +262,7 @@ export const HealingCadence = {
 	labelTooltip: `
 		<p>How often the incoming heal 'ticks', in seconds. Generally, longer durations favor Effective Hit Points (EHP) for minimizing Chance of Death, while shorter durations favor avoidance.</p>
 		<p>Example: if Incoming HPS is set to 1000 and this is set to 1s, then every 1s a heal will be received for 1000. If this is instead set to 2s, then every 2s a heal will be recieved for 2000.</p>
-		<p>If set to 0, defaults to 1.5 times the primary target's base swing timer, and half that for dual wielding targets.</p>
+		<p class="mb-0">If set to 0, defaults to 1.5 times the primary target's base swing timer, and half that for dual wielding targets.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().cadenceSeconds,
@@ -282,7 +282,7 @@ export const HealingCadenceVariation = {
 	labelTooltip: `
 		<p>Magnitude of random variation in healing intervals, in seconds.</p>
 		<p>Example: if Healing Cadence is set to 1s with 0.5s variation, then the interval between successive heals will vary uniformly between 0.5 and 1.5s. If the variation is instead set to 2s, then 50% of healing intervals will fall between 0s and 1s, and the other 50% will fall between 1s and 3s.</p>
-		<p>The amount of healing per 'tick' is automatically scaled up or down based on the randomized time since the last tick, so as to keep HPS constant.</p>
+		<p class="mb-0">The amount of healing per 'tick' is automatically scaled up or down based on the randomized time since the last tick, so as to keep HPS constant.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().cadenceVariation,
@@ -320,7 +320,7 @@ export const HpPercentForDefensives = {
 	label: 'HP % for Defensive CDs',
 	labelTooltip: `
 		<p>% of Maximum Health, below which defensive cooldowns are allowed to be used.</p>
-		<p>If set to 0, this restriction is disabled.</p>
+		<p class="mb-0">If set to 0, this restriction is disabled.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 	getValue: (player: Player<any>) => player.getSimpleCooldowns().hpPercentForDefensives * 100,
@@ -338,7 +338,7 @@ export const InspirationUptime = {
 	label: 'Inspiration % Uptime',
 	labelTooltip: `
 		<p>% average of Encounter Duration, during which you have the Inspiration buff.</p>
-		<p>If set to 0, the buff isn't applied.</p>
+		<p class="mb-0">If set to 0, the buff isn't applied.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.healingModelChangeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().inspirationUptime * 100,

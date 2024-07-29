@@ -71,9 +71,9 @@ import {
 import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIItem as Item } from '../proto/ui.js';
 import { TankWarlock, Warlock, WarlockOptions, WarlockRotation, WarlockTalents } from '../proto/warlock.js';
 import {
-	ProtectionWarrior,
-	ProtectionWarrior_Options as ProtectionWarriorOptions,
-	ProtectionWarrior_Rotation as ProtectionWarriorRotation,
+	TankWarrior,
+	TankWarrior_Options as TankWarriorOptions,
+	TankWarrior_Rotation as TankWarriorRotation,
 	Warrior,
 	Warrior_Options as WarriorOptions,
 	Warrior_Rotation as WarriorRotation,
@@ -89,7 +89,7 @@ export type PriestSpecs = Spec.SpecHealingPriest | Spec.SpecShadowPriest;
 export type RogueSpecs = Spec.SpecRogue | Spec.SpecTankRogue;
 export type ShamanSpecs = Spec.SpecElementalShaman | Spec.SpecEnhancementShaman | Spec.SpecRestorationShaman;
 export type WarlockSpecs = Spec.SpecWarlock | Spec.SpecTankWarlock;
-export type WarriorSpecs = Spec.SpecWarrior | Spec.SpecProtectionWarrior;
+export type WarriorSpecs = Spec.SpecWarrior | Spec.SpecTankWarrior;
 
 export type ClassSpecs<T extends Class> = T extends Class.ClassDruid
 	? DruidSpecs
@@ -135,7 +135,7 @@ export const naturalSpecOrder: Array<Spec> = [
 	Spec.SpecWarlock,
 	Spec.SpecTankWarlock,
 	Spec.SpecWarrior,
-	Spec.SpecProtectionWarrior,
+	Spec.SpecTankWarrior,
 ];
 
 export const naturalClassOrder: Array<Class> = [
@@ -170,7 +170,7 @@ export const specNames: Record<Spec, string> = {
 	[Spec.SpecWarlock]: 'DPS Warlock',
 	[Spec.SpecTankWarlock]: 'Tank Warlock',
 	[Spec.SpecWarrior]: 'DPS Warrior',
-	[Spec.SpecProtectionWarrior]: 'Protection Warrior',
+	[Spec.SpecTankWarrior]: 'Tank Warrior',
 };
 
 export const classNames: Record<Class, string> = {
@@ -253,7 +253,7 @@ export const titleIcons: Record<Spec, string> = {
 	[Spec.SpecWarlock]: 'https://wow.zamimg.com/images/wow/icons/large/class_warlock.jpg',
 	[Spec.SpecTankWarlock]: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonform.jpg',
 	[Spec.SpecWarrior]: 'https://wow.zamimg.com/images/wow/icons/large/class_warrior.jpg',
-	[Spec.SpecProtectionWarrior]: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg',
+	[Spec.SpecTankWarrior]: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg',
 };
 
 export const raidSimIcon = '/sod/assets/img/raid_icon.png';
@@ -342,7 +342,7 @@ export type RotationUnion =
 	| ShadowPriestRotation
 	| WarlockRotation
 	| WarriorRotation
-	| ProtectionWarriorRotation;
+	| TankWarriorRotation;
 export type SpecRotation<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruidRotation
 	: T extends Spec.SpecFeralDruid
@@ -381,8 +381,8 @@ export type SpecRotation<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? WarlockRotation
 	: T extends Spec.SpecWarrior
 	? WarriorRotation
-	: T extends Spec.SpecProtectionWarrior
-	? ProtectionWarriorRotation
+	: T extends Spec.SpecTankWarrior
+	? TankWarriorRotation
 	: ElementalShamanRotation; // Should never reach this case
 
 export type TalentsUnion =
@@ -433,7 +433,7 @@ export type SpecTalents<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? WarlockTalents
 	: T extends Spec.SpecWarrior
 	? WarriorTalents
-	: T extends Spec.SpecProtectionWarrior
+	: T extends Spec.SpecTankWarrior
 	? WarriorTalents
 	: ShamanTalents; // Should never reach this case
 
@@ -455,7 +455,7 @@ export type SpecOptionsUnion =
 	| ShadowPriestOptions
 	| WarlockOptions
 	| WarriorOptions
-	| ProtectionWarriorOptions;
+	| TankWarriorOptions;
 export type SpecOptions<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruidOptions
 	: T extends Spec.SpecFeralDruid
@@ -494,8 +494,8 @@ export type SpecOptions<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? WarlockOptions
 	: T extends Spec.SpecWarrior
 	? WarriorOptions
-	: T extends Spec.SpecProtectionWarrior
-	? ProtectionWarriorOptions
+	: T extends Spec.SpecTankWarrior
+	? TankWarriorOptions
 	: ElementalShamanOptions; // Should never reach this case
 
 export type SpecProtoUnion =
@@ -518,7 +518,7 @@ export type SpecProtoUnion =
 	| Warlock
 	| TankWarlock
 	| Warrior
-	| ProtectionWarrior;
+	| TankWarrior;
 export type SpecProto<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? BalanceDruid
 	: T extends Spec.SpecFeralDruid
@@ -557,8 +557,8 @@ export type SpecProto<T extends Spec> = T extends Spec.SpecBalanceDruid
 	? Warlock
 	: T extends Spec.SpecWarrior
 	? Warrior
-	: T extends Spec.SpecProtectionWarrior
-	? ProtectionWarrior
+	: T extends Spec.SpecTankWarrior
+	? TankWarrior
 	: ElementalShaman; // Should never reach this case
 
 export type SpecTypeFunctions<SpecType extends Spec> = {
@@ -989,12 +989,12 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromJson: obj => WarriorOptions.fromJson(obj),
 		optionsFromPlayer: player => (player.spec.oneofKind == 'warrior' ? player.spec.warrior.options || WarriorOptions.create() : WarriorOptions.create()),
 	},
-	[Spec.SpecProtectionWarrior]: {
-		rotationCreate: () => ProtectionWarriorRotation.create(),
-		rotationEquals: (a, b) => ProtectionWarriorRotation.equals(a as ProtectionWarriorRotation, b as ProtectionWarriorRotation),
-		rotationCopy: a => ProtectionWarriorRotation.clone(a as ProtectionWarriorRotation),
-		rotationToJson: a => ProtectionWarriorRotation.toJson(a as ProtectionWarriorRotation),
-		rotationFromJson: obj => ProtectionWarriorRotation.fromJson(obj),
+	[Spec.SpecTankWarrior]: {
+		rotationCreate: () => TankWarriorRotation.create(),
+		rotationEquals: (a, b) => TankWarriorRotation.equals(a as TankWarriorRotation, b as TankWarriorRotation),
+		rotationCopy: a => TankWarriorRotation.clone(a as TankWarriorRotation),
+		rotationToJson: a => TankWarriorRotation.toJson(a as TankWarriorRotation),
+		rotationFromJson: obj => TankWarriorRotation.fromJson(obj),
 
 		talentsCreate: () => WarriorTalents.create(),
 		talentsEquals: (a, b) => WarriorTalents.equals(a as WarriorTalents, b as WarriorTalents),
@@ -1002,15 +1002,13 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => WarriorTalents.toJson(a as WarriorTalents),
 		talentsFromJson: obj => WarriorTalents.fromJson(obj),
 
-		optionsCreate: () => ProtectionWarriorOptions.create(),
-		optionsEquals: (a, b) => ProtectionWarriorOptions.equals(a as ProtectionWarriorOptions, b as ProtectionWarriorOptions),
-		optionsCopy: a => ProtectionWarriorOptions.clone(a as ProtectionWarriorOptions),
-		optionsToJson: a => ProtectionWarriorOptions.toJson(a as ProtectionWarriorOptions),
-		optionsFromJson: obj => ProtectionWarriorOptions.fromJson(obj),
+		optionsCreate: () => TankWarriorOptions.create(),
+		optionsEquals: (a, b) => TankWarriorOptions.equals(a as TankWarriorOptions, b as TankWarriorOptions),
+		optionsCopy: a => TankWarriorOptions.clone(a as TankWarriorOptions),
+		optionsToJson: a => TankWarriorOptions.toJson(a as TankWarriorOptions),
+		optionsFromJson: obj => TankWarriorOptions.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'protectionWarrior'
-				? player.spec.protectionWarrior.options || ProtectionWarriorOptions.create()
-				: ProtectionWarriorOptions.create(),
+			player.spec.oneofKind == 'tankWarrior' ? player.spec.tankWarrior.options || TankWarriorOptions.create() : TankWarriorOptions.create(),
 	},
 };
 
@@ -1056,7 +1054,7 @@ export const specToClass: Record<Spec, Class> = {
 	[Spec.SpecWarlock]: Class.ClassWarlock,
 	[Spec.SpecTankWarlock]: Class.ClassWarlock,
 	[Spec.SpecWarrior]: Class.ClassWarrior,
-	[Spec.SpecProtectionWarrior]: Class.ClassWarrior,
+	[Spec.SpecTankWarrior]: Class.ClassWarrior,
 };
 
 const druidRaces = [Race.RaceTauren, Race.RaceNightElf];
@@ -1089,7 +1087,7 @@ export const specToEligibleRaces: Record<Spec, Array<Race>> = {
 	[Spec.SpecWarlock]: warlockRaces,
 	[Spec.SpecTankWarlock]: warlockRaces,
 	[Spec.SpecWarrior]: warriorRaces,
-	[Spec.SpecProtectionWarrior]: warriorRaces,
+	[Spec.SpecTankWarrior]: warriorRaces,
 };
 
 // Specs that can dual wield. This could be based on class, except that
@@ -1100,7 +1098,7 @@ export function canDualWield(player: Player<Spec>): boolean {
 	return dualWieldClasses.includes(player.getClass());
 }
 
-const tankSpecs: Array<Spec> = [Spec.SpecFeralTankDruid, Spec.SpecProtectionPaladin, Spec.SpecProtectionWarrior, Spec.SpecTankWarlock, Spec.SpecTankRogue];
+const tankSpecs: Array<Spec> = [Spec.SpecFeralTankDruid, Spec.SpecProtectionPaladin, Spec.SpecTankWarrior, Spec.SpecTankWarlock, Spec.SpecTankRogue];
 export function isTankSpec(spec: Spec): boolean {
 	return tankSpecs.includes(spec);
 }
@@ -1140,7 +1138,7 @@ export const specToLocalStorageKey: Record<Spec, string> = {
 	[Spec.SpecWarlock]: '__sod_warlock',
 	[Spec.SpecTankWarlock]: '__sod_tank_warlock',
 	[Spec.SpecWarrior]: '__sod_warrior',
-	[Spec.SpecProtectionWarrior]: '__sod_protection_warrior',
+	[Spec.SpecTankWarrior]: '__sod_tank_warrior',
 };
 
 // Returns a copy of playerOptions, with the class field set.
@@ -1300,11 +1298,11 @@ export function withSpecProto<SpecType extends Spec>(spec: Spec, player: PlayerP
 				}),
 			};
 			return copy;
-		case Spec.SpecProtectionWarrior:
+		case Spec.SpecTankWarrior:
 			copy.spec = {
-				oneofKind: 'protectionWarrior',
-				protectionWarrior: ProtectionWarrior.create({
-					options: specOptions as ProtectionWarriorOptions,
+				oneofKind: 'tankWarrior',
+				tankWarrior: TankWarrior.create({
+					options: specOptions as TankWarriorOptions,
 				}),
 			};
 			return copy;
@@ -1709,7 +1707,7 @@ export function makeDefaultBlessings(numPaladins: number): BlessingsAssignments 
 		{ spec: Spec.SpecWarlock, blessings: [Blessings.BlessingOfWisdom, Blessings.BlessingOfKings] },
 		{ spec: Spec.SpecTankWarlock, blessings: [Blessings.BlessingOfWisdom, Blessings.BlessingOfMight, Blessings.BlessingOfKings] },
 		{ spec: Spec.SpecWarrior, blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight] },
-		{ spec: Spec.SpecProtectionWarrior, blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfSanctuary] },
+		{ spec: Spec.SpecTankWarrior, blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfSanctuary] },
 	]);
 }
 

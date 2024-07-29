@@ -373,7 +373,7 @@ export class CharacterStats extends Component {
 			).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr = `${stats.getStat(Stat.StatDodge).toFixed(2)}%`;
+			displayStr = `${deltaStats.getStat(Stat.StatDodge).toFixed(2)}%`;
 		} else if (stat == Stat.StatParry) {
 			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
 			displayStr = `${stats.getStat(Stat.StatParry).toFixed(2)}%`;
