@@ -205,14 +205,14 @@ dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
   dps: 773.33962
-  tps: 376.54586
+  tps: 376.54162
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
   dps: 782.83578
-  tps: 383.78353
+  tps: 383.78349
  }
 }
 dps_results: {
@@ -226,7 +226,7 @@ dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
   dps: 789.98524
-  tps: 389.72275
+  tps: 389.72166
  }
 }
 dps_results: {
@@ -261,14 +261,14 @@ dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
   dps: 1914.91103
-  tps: 1799.20682
+  tps: 1799.16723
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
   dps: 782.12653
-  tps: 380.85327
+  tps: 380.84903
  }
 }
 dps_results: {
@@ -318,7 +318,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-BloodGuard'sChain"
  value: {
   dps: 1540.1546
-  tps: 1298.21695
+  tps: 1298.21343
   hps: 13.44102
  }
 }
@@ -326,7 +326,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-BloodGuard'sMail"
  value: {
   dps: 1457.68772
-  tps: 1225.3766
+  tps: 1225.37217
   hps: 13.44102
  }
 }
@@ -342,7 +342,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
   dps: 3599.79039
-  tps: 3219.47342
+  tps: 3219.4699
   hps: 19.89862
  }
 }
@@ -350,7 +350,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
   dps: 3568.74133
-  tps: 3191.47468
+  tps: 3191.47116
   hps: 19.89862
  }
 }
@@ -358,7 +358,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-DreadHunter'sChain"
  value: {
   dps: 2156.3985
-  tps: 1897.1972
+  tps: 1897.19368
   hps: 14.24293
  }
 }
@@ -366,7 +366,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-EmeraldScalemail"
  value: {
   dps: 1472.33676
-  tps: 1239.70203
+  tps: 1239.69852
   hps: 13.44102
  }
 }
@@ -382,7 +382,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
   dps: 1540.1546
-  tps: 1298.21695
+  tps: 1298.21343
   hps: 13.44102
  }
 }
@@ -390,7 +390,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
   dps: 3532.92434
-  tps: 3155.67924
+  tps: 3155.67572
   hps: 19.65676
  }
 }
@@ -398,7 +398,7 @@ dps_results: {
  key: "TestSV-Lvl60-Average-Default"
  value: {
   dps: 3617.54033
-  tps: 3229.86818
+  tps: 3229.86813
   hps: 19.68639
  }
 }
@@ -406,7 +406,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 9709.07986
-  tps: 9794.16491
+  tps: 9794.08012
   hps: 20.29481
  }
 }
@@ -414,7 +414,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3641.90333
-  tps: 3262.7117
+  tps: 3262.70727
   hps: 19.98446
  }
 }
@@ -454,7 +454,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 10193.04241
-  tps: 10264.96154
+  tps: 10264.89117
   hps: 20.19748
  }
 }
@@ -462,7 +462,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3855.23192
-  tps: 3469.29012
+  tps: 3469.2866
   hps: 19.73965
  }
 }
@@ -502,7 +502,7 @@ dps_results: {
  key: "TestSV-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3501.69933
-  tps: 3153.80442
+  tps: 3153.80091
   hps: 19.87436
  }
 }
