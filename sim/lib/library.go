@@ -23,7 +23,7 @@ var _default_rsr = proto.RaidSimRequest{
 	Encounter:  &proto.Encounter{},
 	SimOptions: &proto.SimOptions{},
 }
-var _active_sim = core.NewSim(&_default_rsr)
+var _active_sim = core.NewSim(&_default_rsr, simsignals.Signals{})
 var _active_seed int64 = 1
 var _aura_labels = []string{}
 var _target_aura_labels = []string{}
@@ -143,7 +143,7 @@ func new(json *C.char) {
 		log.Fatalf("failed to load input json file: %s", err)
 	}
 	sim.RegisterAll()
-	_active_sim = core.NewSim(input)
+	_active_sim = core.NewSim(input, simsignals.Signals{})
 	_active_sim.Reseed(_active_seed)
 	_active_seed += 1
 	_active_sim.Reset()
