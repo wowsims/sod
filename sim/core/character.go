@@ -303,13 +303,8 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
 	character.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
 
-	if character.PseudoStats.CanParry {
-		character.AddStat(stats.Parry, 5)
-	}
-
-	if character.PseudoStats.CanBlock && character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
-		character.AddStat(stats.Block, 5)
-	}
+	character.AddStat(stats.Parry, 5)
+	character.AddStat(stats.Block, 5)
 
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)

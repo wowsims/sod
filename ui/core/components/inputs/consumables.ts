@@ -747,9 +747,9 @@ export const SHADOW_POWER_CONFIG: ConsumableStatOption<ShadowPowerBuff>[] = [{ c
 export const makeShadowPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'shadowPowerBuff' });
 
 // MP5
-// Original lvl 40 but not obtainable in Phase 3
+// Original lvl 40 but not obtainable until ZG
 export const MagebloodPotion: ConsumableInputConfig<ManaRegenElixir> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20007, minLevel: 51 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 20007, minLevel: 61 }]),
 	value: ManaRegenElixir.MagebloodPotion,
 };
 

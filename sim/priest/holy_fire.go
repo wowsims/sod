@@ -102,14 +102,5 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 			}
 			spell.DealDamage(sim, result)
 		},
-
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
-			} else {
-				return spell.CalcPeriodicDamage(sim, target, dotDamage, spell.OutcomeExpectedMagicAlwaysHit)
-			}
-		},
 	}
 }

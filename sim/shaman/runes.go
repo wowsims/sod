@@ -189,7 +189,6 @@ func (shaman *Shaman) applyShieldMastery() {
 				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
 					//Aura.Activate takes care of refreshing if the aura is already active
 					defendersResolveAura.Activate(sim)
-
 					if defendersResolveAura.GetStacks() != stacks {
 						defendersResolveAura.SetStacks(sim, stacks)
 					}
