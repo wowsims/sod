@@ -47,7 +47,9 @@ func NewItemSet(set ItemSet) *ItemSet {
 		}
 		foundID = foundID || (item.SetID > 0 && item.SetID == set.ID)
 		foundName = foundName || item.SetName == set.Name
-		if foundName && foundAlternativeName {
+		foundAlternativeName = foundAlternativeName || item.SetName == set.AlternativeName
+		if foundID && foundName && foundAlternativeName {
+			fmt.Println(item)
 			break
 		}
 	}
@@ -82,7 +84,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		if item.SetName == "" {
 			continue
 		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName {
+		if item.SetName == set.Name || item.SetName == set.AlternativeName || (item.SetID > 0 && item.SetID == set.ID) {
 			count++
 			if count >= numItems {
 				return true

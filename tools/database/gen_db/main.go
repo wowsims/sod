@@ -24,6 +24,7 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-spells -maxid=31000
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
+// go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // python3 tools/scrape_runes.py assets/db_inputs/wowhead_rune_tooltips.csv
 
 // Lastly run the following to generate db.json (ensure to delete cached versions and/or rebuild for copying of assets during local development)
@@ -63,6 +64,9 @@ func main() {
 		return
 	} else if *genAsset == "wowhead-gearplannerdb" {
 		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/classic/data/gear-planner?dv=100"))
+		return
+	} else if *genAsset == "wago-db2-items" {
+		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=1.15.3.55646"))
 		return
 	} else if *genAsset != "db" {
 		panic("Invalid gen value")
