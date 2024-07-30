@@ -34,8 +34,9 @@ func applyConsumeEffects(agent Agent) {
 }
 
 func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
-	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
-	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
+	pet.AddStat(stats.AttackPower, []float64{0, 40}[ownerConsumes.PetAttackPowerConsumable])
+	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetAgilityConsumable])
+	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17, 30}[ownerConsumes.PetStrengthConsumable])
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -588,8 +588,16 @@ export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumes
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
+export const PetAttackPowerConsumable = makeEnumConsumeInput({
+	direction: IconPickerDirection.Vertical,
+	values: [
+		{ value: 0, tooltip: 'None' },
+		{ actionId: () => ActionId.fromItemId(12460), value: 1, showWhen: player => player.getLevel() >= 55 },
+	],
+	fieldName: 'petAttackPowerConsumable',
+});
 
-export const PetScrollOfAgility = makeEnumConsumeInput({
+export const PetAgilityConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
@@ -598,10 +606,10 @@ export const PetScrollOfAgility = makeEnumConsumeInput({
 		{ actionId: () => ActionId.fromItemId(4425), value: 3, showWhen: player => player.getLevel() >= 40 },
 		{ actionId: () => ActionId.fromItemId(10309), value: 4, showWhen: player => player.getLevel() >= 55 },
 	],
-	fieldName: 'petScrollOfAgility',
+	fieldName: 'petAgilityConsumable',
 });
 
-export const PetScrollOfStrength = makeEnumConsumeInput({
+export const PetStrengthConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
@@ -609,8 +617,9 @@ export const PetScrollOfStrength = makeEnumConsumeInput({
 		{ actionId: () => ActionId.fromItemId(2289), value: 2, showWhen: player => player.getLevel() >= 25 },
 		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: player => player.getLevel() >= 40 },
 		{ actionId: () => ActionId.fromItemId(10310), value: 4, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(12451), value: 5, showWhen: player => player.getLevel() >= 55 },
 	],
-	fieldName: 'petScrollOfStrength',
+	fieldName: 'petStrengthConsumable',
 });
 
 ///////////////////////////////////////////////////////////////////////////

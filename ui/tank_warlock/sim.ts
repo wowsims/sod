@@ -112,7 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.ResistanceBuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
-	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
+	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
