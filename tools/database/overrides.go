@@ -485,6 +485,7 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	// ZG
 	regexp.MustCompile(`Zandalarian`),
 	regexp.MustCompile(`Bloodvine [a-zA-z]+`),
+	regexp.MustCompile(`Bloodsoul [a-zA-z]+`),
 	regexp.MustCompile(`Blood Tiger [a-zA-z]+`),
 
 	// AQ
