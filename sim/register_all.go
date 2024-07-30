@@ -8,6 +8,7 @@ import (
 	tankrogue "github.com/wowsims/sod/sim/rogue/tank_rogue"
 	"github.com/wowsims/sod/sim/shaman/elemental"
 	"github.com/wowsims/sod/sim/shaman/enhancement"
+	"github.com/wowsims/sod/sim/shaman/warden"
 
 	"github.com/wowsims/sod/sim/druid/feral"
 	// restoDruid "github.com/wowsims/sod/sim/druid/restoration"
@@ -43,6 +44,7 @@ func RegisterAll() {
 	// restoDruid.RegisterRestorationDruid()
 	elemental.RegisterElementalShaman()
 	enhancement.RegisterEnhancementShaman()
+	warden.RegisterWardenShaman()
 	// restoShaman.RegisterRestorationShaman()
 	hunter.RegisterHunter()
 	mage.RegisterMage()

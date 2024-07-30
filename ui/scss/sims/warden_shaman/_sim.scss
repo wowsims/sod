@@ -1,0 +1,4 @@
+// Set color variables which control the site theme.
+.warden-shaman-sim-ui {
+	@include theme-color($shaman, 0.95, '/sod/assets/img/warden_shaman_background.png');
+}

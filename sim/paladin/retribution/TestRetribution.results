@@ -30,7 +30,7 @@ character_stats_results: {
   final_stats: 1541.2
   final_stats: 98
   final_stats: 8
-  final_stats: 0.32
+  final_stats: 5.32
   final_stats: 8.8
   final_stats: 1.02
   final_stats: 5.32
@@ -79,7 +79,7 @@ character_stats_results: {
   final_stats: 2299
   final_stats: 294
   final_stats: 0
-  final_stats: 0
+  final_stats: 5
   final_stats: 13.2
   final_stats: 0.7
   final_stats: 5
@@ -128,7 +128,7 @@ character_stats_results: {
   final_stats: 4122.928
   final_stats: 459
   final_stats: 0
-  final_stats: 0
+  final_stats: 5
   final_stats: 22.08492
   final_stats: 0.7
   final_stats: 5

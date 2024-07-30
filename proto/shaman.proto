@@ -205,3 +205,12 @@ message RestorationShaman {
 	}
 	Options options = 3;
 }
+
+message WardenShaman {
+	message Rotation {
+	}
+
+	message Options {
+	}
+	Options options = 1;
+}
