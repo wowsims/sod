@@ -7,11 +7,11 @@ import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/simsignals"
-	"github.com/wowsims/sod/sim/warrior/dps"
+	dpswarrior "github.com/wowsims/sod/sim/warrior/dps_warrior"
 )
 
 func TestAbort(t *testing.T) {
-	dps.RegisterDpsWarrior()
+	dpswarrior.RegisterDpsWarrior()
 
 	player := &proto.Player{
 		Name:      "John",
@@ -25,7 +25,6 @@ func TestAbort(t *testing.T) {
 			Warrior: &proto.Warrior{
 				Options: &proto.Warrior_Options{
 					StartingRage:    50,
-					UseRecklessness: true,
 					Shout:           proto.WarriorShout_WarriorShoutBattle,
 				},
 			},
