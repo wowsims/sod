@@ -163,19 +163,22 @@ func (warlock *Warlock) applyNightfall() {
 			for _, spell := range warlock.ShadowBolt {
 				spell.CastTimeMultiplier -= 1
 			}
-
 			for _, spell := range warlock.ShadowCleave {
 				spell.CD.Reset()
+				spell.DamageMultiplier *= 2
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.ShadowBolt {
 				spell.CastTimeMultiplier += 1
 			}
+			for _, spell := range warlock.ShadowCleave {
+				spell.DamageMultiplier /= 2
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
-			if spell.SpellCode == SpellCode_WarlockShadowBolt && spell.CurCast.CastTime == 0 {
+			if (spell.SpellCode == SpellCode_WarlockShadowBolt && spell.CurCast.CastTime == 0) || spell.SpellCode == SpellCode_WarlockShadowCleave {
 				aura.Deactivate(sim)
 			}
 		},
