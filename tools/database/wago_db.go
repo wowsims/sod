@@ -81,6 +81,7 @@ func ParseWagoDB(dbContents string) map[int32]WagoDbItem {
 		if err != nil {
 			log.Fatalf("Cannot parse ItemSet from row %v: %v", row, err)
 		}
+
 		result[int32(itemID)] = WagoDbItem{
 			FactionRestriction: flags1ToFactionRestriction(flags1),
 			ItemSetID:          int32(itemSet),
