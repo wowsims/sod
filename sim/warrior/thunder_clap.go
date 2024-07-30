@@ -31,7 +31,6 @@ func (warrior *Warrior) registerThunderClapSpell() {
 	if hasFuriousThunder {
 		damageMultiplier *= 2
 		threatMultiplier *= 1.5
-		apCoef *= 2
 		attackSpeedReduction += 6
 		stanceMask = AnyStance
 	}
@@ -77,7 +76,6 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			for _, result := range results {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
-					// TODO: Thunder Clap now increases the time between attacks by an additional 6%
 					warrior.ThunderClapAuras.Get(result.Target).Activate(sim)
 				}
 			}

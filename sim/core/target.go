@@ -137,6 +137,10 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 		target.Level = defaultRaidBossLevel
 	}
 
+	target.AddStatDependency(stats.Defense, stats.Dodge, MissDodgeParryBlockCritChancePerDefense)
+	target.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
+	target.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
+
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
 	target.PseudoStats.ParryHaste = options.ParryHaste
@@ -336,19 +340,19 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		// Apply base Parry
 		if defender.PseudoStats.CanParry {
-			table.BaseParryChance = 0.05 + levelDelta
+			table.BaseParryChance = levelDelta // + 0.05 applied as stats in character.go
 		} else {
 			table.BaseParryChance = 0
 		}
 		// Apply base Block
 		if defender.PseudoStats.CanBlock {
-			table.BaseBlockChance = 0.05 + levelDelta
+			table.BaseBlockChance = levelDelta // + 0.05 applied as stats in character.go
 		} else {
 			table.BaseBlockChance = 0
 		}
 
 		table.BaseMissChance = 0.05 + levelDelta
-		table.BaseDodgeChance = 0.05 + levelDelta
+		table.BaseDodgeChance = levelDelta // base dodge applied with class base stats
 		table.BaseCritChance = 0.05 - levelDelta
 	}
 

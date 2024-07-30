@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28051
+  weights: 0.63062
   weights: 0
-  weights: 0.60569
+  weights: 0.60126
   weights: 0
-  weights: 0.60569
-  weights: 0
-  weights: 0
+  weights: 0.60126
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.5723
-  weights: 6.70516
+  weights: 0
+  weights: 0
+  weights: 6.69894
+  weights: 6.36352
   weights: 0
   weights: 0
   weights: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.21912
+  weights: 0.32563
   weights: 0
-  weights: 1.33693
+  weights: 1.33457
   weights: 0
-  weights: 1.33693
-  weights: 0
-  weights: 0
+  weights: 1.33457
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.77912
+  weights: 0
+  weights: 0
+  weights: 10.90705
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.31794
+  weights: 0.45724
   weights: 0
-  weights: 2.09712
+  weights: 2.07598
   weights: 0
-  weights: 2.09712
-  weights: 0
-  weights: 0
+  weights: 2.07598
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 21.62491
+  weights: 0
+  weights: 0
+  weights: 34.45229
   weights: 0
   weights: 0
   weights: 0

@@ -60,7 +60,7 @@ export class SimTitleDropdown extends Component {
 		[Spec.SpecWarlock]: 'DPS',
 		[Spec.SpecTankWarlock]: 'Tank',
 		[Spec.SpecWarrior]: 'DPS',
-		[Spec.SpecProtectionWarrior]: 'Protection',
+		[Spec.SpecTankWarrior]: 'Tank',
 	};
 
 	constructor(parent: HTMLElement, currentSpecIndex: Spec | null, config: SimTitleDropdownConfig = {}) {

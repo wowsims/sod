@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.96713
-  weights: 0.94876
+  weights: 0.96881
+  weights: 0.83
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.42272
-  weights: 4.46907
-  weights: 5.48845
+  weights: 0.42346
+  weights: 4.38383
+  weights: 5.59726
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.60836
-  weights: 1.64236
+  weights: 1.61676
+  weights: 1.73808
   weights: 0
   weights: 0
   weights: 0
@@ -312,9 +312,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.67692
-  weights: 21.3866
-  weights: 14.06096
+  weights: 0.68046
+  weights: 17.50305
+  weights: 12.66293
   weights: 0
   weights: 0
   weights: 0
@@ -344,8 +344,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.97442
-  weights: 2.03086
+  weights: 1.96998
+  weights: 2.14399
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +361,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.74789
-  weights: 36.11606
-  weights: 23.59989
+  weights: 0.74621
+  weights: 28.39404
+  weights: 24.36576
   weights: 0
   weights: 0
   weights: 0

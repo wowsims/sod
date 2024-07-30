@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.49748
+  weights: 0.52008
   weights: 0
-  weights: 0.84541
-  weights: 0
-  weights: 0
+  weights: 0.85669
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.4869
-  weights: 2.30298
+  weights: 0
+  weights: 0
+  weights: 4.4657
+  weights: 2.29791
   weights: 0
   weights: 0
   weights: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.32874
+  weights: 2.33606
   weights: 0
-  weights: 2.75656
-  weights: 0
-  weights: 0
+  weights: 1.43009
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.60882
-  weights: 7.83946
+  weights: 0
+  weights: 0
+  weights: 9.59363
+  weights: 8.16755
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -3.96921
+  weights: -0.93451
   weights: 0
-  weights: 1.18941
-  weights: 0
-  weights: 0
+  weights: 0.69589
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.88971
-  weights: 15.2653
+  weights: 0
+  weights: 0
+  weights: 11.51423
+  weights: 16.38825
   weights: 0
   weights: 0
   weights: 0
@@ -295,127 +295,127 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 206.99852
+  dps: 205.87502
   tps: 169.06089
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 626.90542
+  dps: 625.58194
   tps: 606.08073
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 620.04262
+  dps: 618.65106
   tps: 1272.46573
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 620.04262
+  dps: 618.65106
   tps: 599.36886
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 608.75117
+  dps: 607.47771
   tps: 576.64757
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 408.44744
+  dps: 407.34635
   tps: 1074.2334
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 408.44744
+  dps: 407.34635
   tps: 399.55818
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 412.42073
+  dps: 411.04073
   tps: 388.26395
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 627.46146
+  dps: 626.21313
   tps: 607.25548
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 351.84004
+  dps: 348.91877
   tps: 239.83286
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1411.89297
-  tps: 1230.79147
+  dps: 1405.27057
+  tps: 1230.0938
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2119.17452
-  tps: 2928.73394
+  dps: 2112.85361
+  tps: 2927.47805
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1405.23573
-  tps: 1224.33474
+  dps: 1400.6796
+  tps: 1225.60024
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1453.17388
-  tps: 1258.87683
+  dps: 1444.36128
+  tps: 1256.62895
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1313.97425
-  tps: 2234.11143
+  dps: 1303.20836
+  tps: 2230.48862
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 785.65432
-  tps: 682.4993
+  dps: 776.01926
+  tps: 678.38562
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 782.32175
-  tps: 683.55872
+  dps: 772.21994
+  tps: 679.67409
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1401.46583
-  tps: 1220.16858
+  dps: 1395.33583
+  tps: 1219.8823
  }
 }
 dps_results: {
@@ -505,21 +505,21 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1449.7363
+  dps: 1446.69999
   tps: 2885.16444
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1449.7363
+  dps: 1446.69999
   tps: 1399.97138
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1386.7315
+  dps: 1384.02019
   tps: 1311.80926
  }
 }

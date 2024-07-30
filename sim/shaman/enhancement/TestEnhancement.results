@@ -197,16 +197,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.01043
-  weights: 0.94665
+  weights: 1.01347
+  weights: 0.81904
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4254
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.43049
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +210,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.45929
-  weights: 5.29001
-  weights: 7.89167
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.46067
+  weights: 3.93698
+  weights: 7.17558
   weights: 0
   weights: 0
   weights: 0
@@ -246,16 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.46609
-  weights: 0.61486
+  weights: 1.47639
+  weights: 0.67556
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4862
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.48975
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +259,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.61704
-  weights: 9.56078
-  weights: 7.9568
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.62138
+  weights: 8.55418
+  weights: 9.50481
   weights: 0
   weights: 0
   weights: 0

@@ -78,9 +78,9 @@ message Player {
 		EnhancementShaman enhancement_shaman = 34;
 		RestorationShaman restoration_shaman = 35;
 		Warlock warlock = 36;
-		Warrior warrior = 37;
-		ProtectionWarrior protection_warrior = 38;
 		TankWarlock tank_warlock = 39;
+		Warrior warrior = 37;
+		TankWarrior tank_warrior = 38;
 	}
 }
 

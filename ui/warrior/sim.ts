@@ -1,37 +1,24 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../core/components/other_inputs.js';
-import { Phase } from '../core/constants/other.js';
-import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
-import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import * as WarriorInputs from '../core/components/inputs/warrior_inputs';
+import * as OtherInputs from '../core/components/other_inputs';
+import { Phase } from '../core/constants/other';
+import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
+import { Player } from '../core/player';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { WarriorRune, WarriorStance } from '../core/proto/warrior';
-import { Stats } from '../core/proto_utils/stats.js';
-import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as WarriorInputs from './inputs.js';
-import * as Presets from './presets.js';
+import { Stats } from '../core/proto_utils/stats';
+import { getSpecIcon } from '../core/proto_utils/utils';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	cssClass: 'warrior-sim-ui',
 	cssScheme: 'warrior',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-		'Auto rotation is disabled until we can get optimized APL rotation',
-		'Wrecking crew assumed as lowest priority of enrage. Overwritten by regular enrage',
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatStamina,
-		Stat.StatArmor,
-		Stat.StatFireResistance,
-	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epStats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatFireResistance],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -44,7 +31,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmor,
 		Stat.StatFireResistance,
 	],
 
@@ -60,14 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatMeleeHit]: 28.67,
 				[Stat.StatMeleeCrit]: 25.1,
-				[Stat.StatMeleeHaste]: 22.08,
-				[Stat.StatArmor]: 0.03,
-				[Stat.StatBonusArmor]: 0.03,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 11.92,
 				[PseudoStat.PseudoStatOffHandDps]: 4.69,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 4.69,
 			},
 		),
 		// Default consumes settings.
@@ -97,15 +81,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [WarriorInputs.ShoutPicker, WarriorInputs.StancePicker],
+	playerIconInputs: [WarriorInputs.ShoutPicker<Spec.SpecWarrior>(), WarriorInputs.StancePicker<Spec.SpecWarrior>()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			WarriorInputs.StartingRage,
-			WarriorInputs.StanceSnapshot,
+			WarriorInputs.StartingRage<Spec.SpecWarrior>(),
+			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
@@ -144,12 +128,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			...Presets.GearPresets[Phase.Phase1],
 		],
 		// Preset builds that the user can quickly select.
-		builds: [Presets.PresetBuildFury, Presets.PresetBuildGlad, Presets.PresetBuildProt],
+		builds: [Presets.PresetBuildFury, Presets.PresetBuildGlad],
 	},
 
 	autoRotation: player => {
 		const level = player.getLevel();
-		const talentTree = player.getTalentTree();
+		let talentTree = player.getTalentTree();
 
 		if (level < 60) {
 			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
@@ -159,8 +143,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
 		}
 
-		if (player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance) && talentTree != 2) {
-			return Presets.DefaultAPLs[level][3].rotation.rotation!;
+		if (player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance)) {
+			talentTree += 1;
 		}
 
 		return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;

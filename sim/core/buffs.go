@@ -922,9 +922,6 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SpiritOfZandalar = false
 	individualBuffs.WarchiefsBlessing = false
 
-	// Except they do benefit from Valor of Azeroth apparently
-	individualBuffs.ValorOfAzeroth = true
-
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }
 

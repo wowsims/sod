@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 0.2137
+  weights: 0
+  weights: 1.17675
+  weights: 0
+  weights: 1.04417
+  weights: 0.13258
   weights: 0
   weights: 0
-  weights: 1.15906
-  weights: 0
-  weights: 1.03231
-  weights: 0.12675
   weights: 0
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 11.84774
+  weights: 11.59607
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.434
+  weights: 5.8778
   weights: 0
-  weights: 1.84556
+  weights: 1.77287
   weights: 0
-  weights: 1.70511
-  weights: 0.14044
-  weights: 0
-  weights: 0
+  weights: 1.62311
+  weights: 0.14976
   weights: 0
   weights: 0
   weights: 0
-  weights: 19.78502
+  weights: 0
+  weights: 0
+  weights: 23.29331
   weights: 0
   weights: 0
   weights: 0
