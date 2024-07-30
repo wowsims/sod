@@ -540,6 +540,10 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 		})
 
 		if len(config.StatsToWeigh) > 0 {
+			// Make a copy because the options are halved with each iteration
+			testOptions := *StatWeightsDefaultSimTestOptions
+			testOptionsPtr := &testOptions
+
 			generator.subgenerators = append(generator.subgenerators, SubGenerator{
 				name: makeGeneratorName("StatWeights", config.Level),
 				generator: &SingleStatWeightsTestGenerator{
@@ -550,7 +554,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 						PartyBuffs: config.Buffs.Party,
 						Debuffs:    config.Buffs.Debuffs,
 						Encounter:  MakeSingleTargetEncounter(config.Level, 0),
-						SimOptions: StatWeightsDefaultSimTestOptions,
+						SimOptions: testOptionsPtr,
 						Tanks:      defaultRaid.Tanks,
 
 						StatsToWeigh:    config.StatsToWeigh,

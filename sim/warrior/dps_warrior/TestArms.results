@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.22566
-  weights: 0.95836
+  weights: 1.2915
+  weights: 0.85106
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2449
-  weights: 14.74413
-  weights: 11.19959
+  weights: 0.31396
+  weights: 15.07069
+  weights: 10.55004
   weights: 0
   weights: 0
   weights: 0

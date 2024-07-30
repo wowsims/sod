@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.82997
-  weights: 0.36659
+  weights: 2.33726
+  weights: 1.83116
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.51339
-  weights: 6.55998
-  weights: 34.44335
+  weights: 0.50164
+  weights: 6.19096
+  weights: 35.04294
   weights: 0
   weights: 0
   weights: 0

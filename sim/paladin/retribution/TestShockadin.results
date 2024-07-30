@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.73113
-  weights: -0.00086
+  weights: 0.73205
+  weights: 0.15191
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.20397
+  weights: 0.20517
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.94039
-  weights: 0.17895
+  weights: 1.8287
+  weights: 0.22554
   weights: 0
   weights: 0
-  weights: 0.30212
-  weights: 6.44903
-  weights: 4.58572
+  weights: 0.3025
+  weights: 5.30697
+  weights: 4.55753
   weights: 0
   weights: 0
   weights: 0

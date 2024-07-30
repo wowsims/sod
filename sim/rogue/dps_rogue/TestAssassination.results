@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.30947
-  weights: 0.55016
+  weights: 0.30995
+  weights: 0.53153
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28133
-  weights: 2.88129
-  weights: 2.14916
+  weights: 0.28177
+  weights: 2.58008
+  weights: 2.24294
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.38066
-  weights: 0.57697
+  weights: 0.37896
+  weights: 0.6348
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34605
-  weights: 7.17444
-  weights: 3.88852
+  weights: 0.34451
+  weights: 5.37716
+  weights: 4.31576
   weights: 0
   weights: 0
   weights: 0

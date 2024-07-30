@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.66388
+  weights: 0.83914
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35636
-  weights: 5.26627
-  weights: 6.81153
+  weights: 0.35638
+  weights: 5.54493
+  weights: 6.7131
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03739
+  weights: 0.03721
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestSV-Lvl60-StatWeights-Default"
  value: {
   weights: 0
-  weights: 2.86655
+  weights: 3.01112
   weights: 0
   weights: 0
   weights: 0
@@ -165,17 +165,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.54043
+  weights: 0.54343
   weights: 0
-  weights: 21.70598
-  weights: 0
-  weights: 0
+  weights: 21.3011
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44597
+  weights: 0
+  weights: 0
+  weights: 0.43845
   weights: 0
   weights: 0
   weights: 0
