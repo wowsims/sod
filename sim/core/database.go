@@ -65,6 +65,7 @@ type Item struct {
 	Stats        stats.Stats // Stats applied to wearer
 	Quality      proto.ItemQuality
 	SetName      string // Empty string if not part of a set.
+	SetID        int32  // 0 if not part of a set.
 	WeaponSkills stats.WeaponSkills
 
 	// Modified for each instance of the item.
@@ -92,6 +93,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SwingSpeed:       pData.WeaponSpeed,
 		Stats:            stats.FromFloatArray(pData.Stats),
 		SetName:          pData.SetName,
+		SetID:            pData.SetId,
 		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
 	}
 }

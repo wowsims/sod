@@ -7,8 +7,10 @@ import (
 
 // Keep these in alphabetical order.
 
+// https://www.wowhead.com/classic/item-set=489/black-dragon-mail
 var ItemSetBlackDragonMail = core.NewItemSet(core.ItemSet{
 	Name: "Black Dragon Mail",
+	ID:   489,
 	Bonuses: map[int32]core.ApplyEffect{
 		// Improves your chance to hit by 1%.
 		2: func(agent core.Agent) {
@@ -28,8 +30,10 @@ var ItemSetBlackDragonMail = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// https://www.wowhead.com/classic/item-set=491/blue-dragon-mail
 var ItemSetBlueDragonMail = core.NewItemSet(core.ItemSet{
 	Name: "Blue Dragon Mail",
+	ID:   491,
 	Bonuses: map[int32]core.ApplyEffect{
 		// +4 All Resistances.
 		2: func(agent core.Agent) {
@@ -50,16 +54,16 @@ var ItemSetBlueDragonMail = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
-	Name: "Bloodsoul Embrace",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Restores 12 mana per 5 sec.
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStat(stats.MP5, 12)
-		},
-	},
-})
+// var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
+// 	Name: "Bloodsoul Embrace",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		// Restores 12 mana per 5 sec.
+// 		2: func(agent core.Agent) {
+// 			character := agent.GetCharacter()
+// 			character.AddStat(stats.MP5, 12)
+// 		},
+// 	},
+// })
 
 // var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
 // 	Name: "Bloodvine Garb",
@@ -85,19 +89,22 @@ var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
 // 	},
 // })
 
+// https://www.wowhead.com/classic/item-set=143/devilsaur-armor
 var ItemSetDevilsaurArmor = core.NewItemSet(core.ItemSet{
 	Name: "Devilsaur Armor",
+	ID:   143,
 	Bonuses: map[int32]core.ApplyEffect{
 		// Improves your chance to hit by 2%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeHit, 2)
+			character.AddStat(stats.MeleeHit, 2*core.MeleeHitRatingPerHitChance)
 		},
 	},
 })
 
 var ItemSetGreenDragonMail = core.NewItemSet(core.ItemSet{
 	Name: "Green Dragon Mail",
+	ID:   490,
 	Bonuses: map[int32]core.ApplyEffect{
 		// Restores 3 mana per 5 sec.
 		2: func(agent core.Agent) {
@@ -232,11 +239,13 @@ var ItemSetTheDarksoul = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// https://www.wowhead.com/classic/item-set=141/volcanic-armor
 var ItemSetVolcanicArmor = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Armor",
+	ID:   141,
 	Bonuses: map[int32]core.ApplyEffect{
 		// 5% chance of dealing 15 to 25 Fire damage on a successful melee attack.
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			procSpell := character.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 9057},

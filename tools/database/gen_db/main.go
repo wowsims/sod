@@ -73,7 +73,7 @@ func main() {
 	runeTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_rune_tooltips.csv", inputsDir)).Read()
 	wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
-	// factionRestrictions := database.ParseItemFactionRestrictionsFromWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
+	wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
@@ -146,7 +146,8 @@ func main() {
 	db.MergeEnchants(database.EnchantOverrides)
 	db.MergeRunes(database.RuneOverrides)
 	ApplyGlobalFilters(db)
-	// AttachFactionInformation(db, factionRestrictions)
+	AttachFactionInformation(db, wagoItems)
+	AttachItemSetIDs(db, wagoItems)
 
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
@@ -244,12 +245,21 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 }
 
-// AttachFactionInformation attaches faction information (faction restrictions) to the DB items.
-// func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]proto.UIItem_FactionRestriction) {
-// 	for _, item := range db.Items {
-// 		item.FactionRestriction = factionRestrictions[item.Id]
-// 	}
-// }
+// // AttachFactionInformation attaches faction information (faction restrictions) to the DB items.
+func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]database.WagoDbItem) {
+	for _, item := range db.Items {
+		if item.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
+			item.FactionRestriction = factionRestrictions[item.Id].FactionRestriction
+		}
+	}
+}
+
+// AttachItemSetIDs attaches item set ids to the DB items.
+func AttachItemSetIDs(db *database.WowDatabase, wagoItems map[int32]database.WagoDbItem) {
+	for _, item := range db.Items {
+		item.SetId = wagoItems[item.Id].ItemSetID
+	}
+}
 
 // Filters out entities which shouldn't be included in the sim.
 func ApplySimmableFilters(db *database.WowDatabase) {
