@@ -22,8 +22,10 @@ export const DeadlyPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
 			{ id: 2892, minLevel: 30, maxLevel: 37 },
 			{ id: 2893, minLevel: 38, maxLevel: 45 },
 			{ id: 8984, minLevel: 46, maxLevel: 53 },
-			{ id: 8985, minLevel: 54, maxLevel: 59 },
-			{ id: 20844, minLevel: 60, maxLevel: 60 },
+			// TODO: AQ
+			{ id: 8985, minLevel: 54 },
+			// { id: 8985, minLevel: 54, maxLevel: 59 },
+			// { id: 20844, minLevel: 60, maxLevel: 60 },
 		]),
 	value: WeaponImbue.DeadlyPoison,
 	showWhen: player => player.getClass() == Class.ClassRogue,
