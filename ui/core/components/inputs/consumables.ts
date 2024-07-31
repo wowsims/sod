@@ -588,29 +588,38 @@ export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumes
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
-
-export const PetScrollOfAgility = makeEnumConsumeInput({
+export const PetAttackPowerConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
-		{ actionId: () => ActionId.fromItemId(3012), value: 1, showWhen: player => player.getLevel() >= 10 },
-		{ actionId: () => ActionId.fromItemId(1477), value: 2, showWhen: player => player.getLevel() >= 25 },
-		{ actionId: () => ActionId.fromItemId(4425), value: 3, showWhen: player => player.getLevel() >= 40 },
-		{ actionId: () => ActionId.fromItemId(10309), value: 4, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(12460), value: 1, showWhen: player => player.getLevel() >= 55 },
 	],
-	fieldName: 'petScrollOfAgility',
+	fieldName: 'petAttackPowerConsumable',
 });
 
-export const PetScrollOfStrength = makeEnumConsumeInput({
+export const PetAgilityConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [
 		{ value: 0, tooltip: 'None' },
-		{ actionId: () => ActionId.fromItemId(954), value: 1, showWhen: player => player.getLevel() >= 10 },
-		{ actionId: () => ActionId.fromItemId(2289), value: 2, showWhen: player => player.getLevel() >= 25 },
-		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: player => player.getLevel() >= 40 },
-		{ actionId: () => ActionId.fromItemId(10310), value: 4, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(10309), value: 1, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(4425), value: 2, showWhen: player => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(1477), value: 3, showWhen: player => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(3012), value: 4, showWhen: player => player.getLevel() >= 10 },
 	],
-	fieldName: 'petScrollOfStrength',
+	fieldName: 'petAgilityConsumable',
+});
+
+export const PetStrengthConsumable = makeEnumConsumeInput({
+	direction: IconPickerDirection.Vertical,
+	values: [
+		{ value: 0, tooltip: 'None' },
+		{ actionId: () => ActionId.fromItemId(12451), value: 1, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(10310), value: 2, showWhen: player => player.getLevel() >= 55 },
+		{ actionId: () => ActionId.fromItemId(4426), value: 3, showWhen: player => player.getLevel() >= 40 },
+		{ actionId: () => ActionId.fromItemId(2289), value: 4, showWhen: player => player.getLevel() >= 25 },
+		{ actionId: () => ActionId.fromItemId(954), value: 5, showWhen: player => player.getLevel() >= 10 },
+	],
+	fieldName: 'petStrengthConsumable',
 });
 
 ///////////////////////////////////////////////////////////////////////////
