@@ -160,7 +160,6 @@ func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
-
 	return func(ownerStats stats.Stats) stats.Stats {
 		// based on testing for WotLK Classic the following is true:
 		// - pets are meele hit capped if and only if the warlock has 210 (8%) spell hit rating or more
@@ -199,6 +198,9 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
 			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
 			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+			stats.MeleeCrit:        ownerStats[stats.MeleeCrit],
+			stats.SpellCrit:        ownerStats[stats.SpellCrit],
+			stats.Dodge:            ownerStats[stats.MeleeCrit],
 		}
 	}
 }
