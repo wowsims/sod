@@ -21,21 +21,11 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 			warlock.AddStatDynamic(sim, stats.Dodge, 30*core.DodgeRatingPerDodgeChance)
 			warlock.AddStatDynamic(sim, stats.MeleeCrit, 30*core.CritRatingPerCritChance)
 			warlock.AddStatDynamic(sim, stats.SpellCrit, 30*core.SpellCritRatingPerCritChance)
-
-			if warlock.ActivePet != nil {
-				pet := warlock.ActivePet.GetPet()
-				pet.AddStatDynamic(sim, stats.Dodge, 30*core.DodgeRatingPerDodgeChance)
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.AddStatDynamic(sim, stats.Dodge, -30*core.DodgeRatingPerDodgeChance)
 			warlock.AddStatDynamic(sim, stats.MeleeCrit, -30*core.CritRatingPerCritChance)
 			warlock.AddStatDynamic(sim, stats.SpellCrit, -30*core.SpellCritRatingPerCritChance)
-
-			if warlock.ActivePet != nil {
-				pet := warlock.ActivePet.GetPet()
-				pet.AddStatDynamic(sim, stats.Dodge, -30*core.DodgeRatingPerDodgeChance)
-			}
 		},
 	})
 

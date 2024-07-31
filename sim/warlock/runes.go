@@ -448,11 +448,6 @@ func (warlock *Warlock) applyDemonicTactics() {
 
 	warlock.AddStat(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 	warlock.AddStat(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
-
-	for _, pet := range warlock.BasePets {
-		pet.AddStat(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
-		pet.AddStat(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
-	}
 }
 
 func (warlock *Warlock) getHighestSP() float64 {
