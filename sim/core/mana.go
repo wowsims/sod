@@ -135,7 +135,7 @@ func (mb *manaBar) doneIteration(sim *Simulation) {
 		}
 
 		manaGainSpell.SpellMetrics[0].Casts += resourceMetrics.EventsForCurrentIteration()
-		manaGainSpell.ApplyAOEThreatIgnoreMultipliers(resourceMetrics.ActualGainForCurrentIteration() * ThreatPerManaGained)
+		manaGainSpell.ApplyAOEThreatIgnoreMultipliers(resourceMetrics.ActualGainForCurrentIteration() * ThreatPerManaGained * mb.unit.PseudoStats.ThreatMultiplier)
 	}
 }
 

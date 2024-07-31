@@ -724,167 +724,167 @@ dps_results: {
  key: "TestShadow-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
   dps: 1692.5422
-  tps: 1630.41029
+  tps: 1629.50049
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
   dps: 1346.34889
-  tps: 1296.50804
+  tps: 1295.62084
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
   dps: 1246.46408
-  tps: 1201.80271
+  tps: 1200.93814
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
   dps: 1339.13806
-  tps: 1289.60606
+  tps: 1288.72248
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
   dps: 1245.66148
-  tps: 1200.93434
+  tps: 1200.07368
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
   dps: 581.72407
-  tps: 549.99438
+  tps: 549.61484
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1346.34889
-  tps: 1296.50804
+  tps: 1295.62084
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
   dps: 1246.46408
-  tps: 1201.80271
+  tps: 1200.93814
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 1788.34777
-  tps: 1721.6456
+  tps: 1720.72854
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-AllItems-VestmentsoftheVirtuous"
  value: {
   dps: 577.98889
-  tps: 547.44077
+  tps: 547.03123
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Average-Default"
  value: {
   dps: 3106.12632
-  tps: 2930.12578
+  tps: 2929.13736
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 3630.24256
-  tps: 3949.38582
+  tps: 3927.90896
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3077.99592
-  tps: 2898.61381
+  tps: 2897.77408
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2911.72795
-  tps: 2679.84005
+  tps: 2678.95157
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 1815.24737
-  tps: 2062.54961
+  tps: 2047.1235
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 1848.58758
-  tps: 1725.00601
+  tps: 1724.19619
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 1771.01569
-  tps: 1604.14473
+  tps: 1603.28307
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 3646.20638
-  tps: 3964.27965
+  tps: 3942.8125
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3079.01987
-  tps: 2899.92854
+  tps: 2899.07695
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 2925.75286
-  tps: 2693.59253
+  tps: 2692.66608
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 1819.974
-  tps: 2070.72499
+  tps: 2055.17351
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 1837.68305
-  tps: 1714.74067
+  tps: 1713.92756
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 1766.88385
-  tps: 1600.7938
+  tps: 1599.90071
  }
 }
 dps_results: {
  key: "TestShadow-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3084.11211
-  tps: 2908.08613
+  tps: 2907.10529
  }
 }

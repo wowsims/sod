@@ -907,20 +907,17 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 		individualBuffs.BlessingOfWisdom = 0
 	}
 
-	// Pets no longer get world buffs
+	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
+	// SoD versions were removed from pets though
 	individualBuffs.AshenvalePvpBuff = false
 	individualBuffs.BoonOfBlackfathom = false
 	individualBuffs.FengusFerocity = false
 	individualBuffs.FervorOfTheTempleExplorer = false
-	individualBuffs.MightOfStormwind = false
 	individualBuffs.MoldarsMoxie = false
-	individualBuffs.RallyingCryOfTheDragonslayer = false
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
 	individualBuffs.SongflowerSerenade = false
 	individualBuffs.SlipkiksSavvy = false
 	individualBuffs.SparkOfInspiration = false
-	individualBuffs.SpiritOfZandalar = false
-	individualBuffs.WarchiefsBlessing = false
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }
