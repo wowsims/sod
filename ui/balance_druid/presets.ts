@@ -106,7 +106,7 @@ export const DefaultOptions = BalanceDruidOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
 	mainHandImbue: WeaponImbue.WizardOil,

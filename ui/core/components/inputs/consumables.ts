@@ -130,22 +130,25 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'd
 export const EnchantedSigilInnovation: ConsumableInputConfig<EnchantedSigil> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 217308, minLevel: 40 }]),
 	value: EnchantedSigil.InnovationSigil,
+	showWhen: player => player.hasProfession(Profession.Enchanting),
 };
-
 export const EnchantedSigilLivingDreams: ConsumableInputConfig<EnchantedSigil> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 221028, minLevel: 50 }]),
 	value: EnchantedSigil.LivingDreamsSigil,
+	showWhen: player => player.hasProfession(Profession.Enchanting),
+};
+export const EnchantedSigilFlowingWaters: ConsumableInputConfig<EnchantedSigil> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 228978, minLevel: 50 }]),
+	value: EnchantedSigil.FlowingWatersSigil,
 };
 
 export const ENCHANTED_SIGIL_CONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+	{ config: EnchantedSigilFlowingWaters, stats: [] },
 	{ config: EnchantedSigilLivingDreams, stats: [] },
 	{ config: EnchantedSigilInnovation, stats: [] },
 ];
 
-export const makeEncanthedSigilInput = makeConsumeInputFactory({
-	consumesFieldName: 'enchantedSigil',
-	showWhen: player => player.hasProfession(Profession.Enchanting),
-});
+export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldName: 'enchantedSigil' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 EXPLOSIVES

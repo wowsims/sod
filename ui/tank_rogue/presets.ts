@@ -1,7 +1,18 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import { Player } from '../core/proto/api';
-import { AgilityElixir, Consumes, Debuffs, IndividualBuffs, Profession, RaidBuffs, StrengthBuff, TristateEffect, WeaponImbue } from '../core/proto/common.js';
+import {
+	AgilityElixir,
+	Consumes,
+	Debuffs,
+	EnchantedSigil,
+	IndividualBuffs,
+	Profession,
+	RaidBuffs,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
+} from '../core/proto/common.js';
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import { playerPresets } from '../raid/presets';
@@ -65,7 +76,9 @@ export const ROTATION_PRESET_SABER_P3 = PresetUtils.makePresetAPLRotation('P3 Sa
 export const ROTATION_PRESET_SABER_IEA_P3 = PresetUtils.makePresetAPLRotation('P3 Expose Saber', P3SaberIEAApl, {
 	customCondition: player => player.getLevel() === 50,
 });
-export const ROTATION_PRESET_SABER_WEAVE_P4 = PresetUtils.makePresetAPLRotation('P4 Saber Weave', P4SaberWeaveApl, { customCondition: player => player.getLevel() === 60 });
+export const ROTATION_PRESET_SABER_WEAVE_P4 = PresetUtils.makePresetAPLRotation('P4 Saber Weave', P4SaberWeaveApl, {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
@@ -95,7 +108,7 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		0: APLPresets[Phase.Phase4][0],
 		1: APLPresets[Phase.Phase4][0],
 		2: APLPresets[Phase.Phase4][0],
-	}
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -170,6 +183,7 @@ export const DefaultOptions = RogueOptions.create({
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfAgility,
 	dragonBreathChili: false,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DeadlyPoison,

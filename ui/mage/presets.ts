@@ -3,6 +3,7 @@ import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
+	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
 	Food,
@@ -239,6 +240,7 @@ export const DefaultOptions = MageOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,

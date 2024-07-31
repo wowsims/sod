@@ -746,10 +746,6 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
-	if !character.HasProfession(proto.Profession_Enchanting) || consumes.EnchantedSigil == proto.EnchantedSigil_UnknownSigil {
-		return
-	}
-
 	switch consumes.EnchantedSigil {
 	case proto.EnchantedSigil_InnovationSigil:
 		character.AddStats(stats.Stats{
@@ -763,6 +759,14 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 			stats.RangedAttackPower: 30,
 			stats.SpellPower:        30,
 		})
+	case proto.EnchantedSigil_FlowingWatersSigil:
+		for _, player := range character.Env.Raid.AllPlayerUnits {
+			player.AddStats(stats.Stats{
+				stats.AttackPower:       30,
+				stats.RangedAttackPower: 30,
+				stats.SpellPower:        30,
+			})
+		}
 	}
 }
 
