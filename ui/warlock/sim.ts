@@ -154,7 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.AncientCorrosivePoison,
 	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
-	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
+	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [WarlockInputs.PetPoolManaInput(), OtherInputs.DistanceFromTarget, OtherInputs.ChannelClipDelay],
