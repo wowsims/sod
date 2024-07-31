@@ -10,32 +10,34 @@ import (
 const ManaGemRanks = 4
 
 var ManaGemItemId = [ManaGemRanks + 1]int32{0, 5514, 5513, 8007, 8008}
-var ManaGemManaRestored = [ManaGemRanks + 1][]float64{{0}, {375, 425}, {550, 650}, {775, 925}, {1000, 1200}}
+var ManaGemManaRestored = [ManaGemRanks + 1][]float64{{0, 0}, {375, 425}, {550, 650}, {775, 925}, {1000, 1200}}
 var ManaGemLevel = [ManaGemRanks + 1]int{0, 23, 38, 48, 58}
 
 func (mage *Mage) registerManaGemCD() {
 	mage.ManaGem = make([]*core.Spell, ManaGemRanks+1)
-	cdTimer := mage.NewTimer()
 
 	for rank := 1; rank <= ManaGemRanks; rank++ {
-		config := mage.newManaGemCooldown(rank, cdTimer)
+		config := mage.newManaGemCooldown(rank)
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.ManaGem[rank] = mage.RegisterSpell(config)
+			minMana, maxMana := ManaGemManaRestored[rank][0], ManaGemManaRestored[rank][1]
 
 			mage.AddMajorCooldown(core.MajorCooldown{
 				Spell:    mage.ManaGem[rank],
-				Priority: int32(ManaGemManaRestored[rank][0]),
+				Priority: int32(minMana),
 				Type:     core.CooldownTypeMana,
 				ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-					return character.CurrentManaPercent() < .6
+					// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
+					totalRegen := character.ManaRegenPerSecondWhileCasting() * 2
+					return (character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxMana)
 				},
 			})
 		}
 	}
 }
 
-func (mage *Mage) newManaGemCooldown(rank int, cdTimer *core.Timer) core.SpellConfig {
+func (mage *Mage) newManaGemCooldown(rank int) core.SpellConfig {
 	itemID := ManaGemItemId[rank]
 	manaRestoredLow := ManaGemManaRestored[rank][0]
 	manaRestoredHigh := ManaGemManaRestored[rank][1]
@@ -56,7 +58,7 @@ func (mage *Mage) newManaGemCooldown(rank int, cdTimer *core.Timer) core.SpellCo
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    cdTimer,
+				Timer:    mage.GetConjuredCD(),
 				Duration: time.Minute * 2,
 			},
 		},
