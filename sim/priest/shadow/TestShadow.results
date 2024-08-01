@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.20648
+  weights: 0.19838
   weights: 0
-  weights: 0.68344
-  weights: 0
-  weights: 0
+  weights: 0.6834
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.68344
   weights: 0
-  weights: 0.05491
-  weights: 1.31793
+  weights: 0
+  weights: 0.6834
+  weights: 0
+  weights: 0.0589
+  weights: 1.31696
   weights: 0
   weights: 0
   weights: 0
@@ -505,8 +505,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Lvl40-Average-Default"
  value: {
-  dps: 617.82712
-  tps: 491.94401
+  dps: 617.82873
+  tps: 491.94457
  }
 }
 dps_results: {

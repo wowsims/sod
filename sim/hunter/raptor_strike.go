@@ -174,8 +174,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
-				// TODO manafix: this should probably be current cost?
-				hunter.CurrentMana() >= hunter.RaptorStrike.DefaultCast.Cost &&
+				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
 				sim.CurrentTime >= hunter.Hardcast.Expires &&
 				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)

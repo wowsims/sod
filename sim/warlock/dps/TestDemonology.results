@@ -134,15 +134,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 293.60308
-  tps: 665.49415
+  dps: 293.1177
+  tps: 665.49955
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 293.60308
-  tps: 313.49211
+  dps: 293.1177
+  tps: 313.02666
  }
 }
 dps_results: {
