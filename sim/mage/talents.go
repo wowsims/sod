@@ -150,9 +150,7 @@ func (mage *Mage) applyFrostTalents() {
 		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				// TODO manafix: this needs to be a mod
-				//spell.CostValues.Multiplier -= manaCostMultiplier
-				spell.Cost.BaseCost *= (100 - float64(manaCostMultiplier)) / 100
+				spell.Cost.Multiplier -= manaCostMultiplier
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -379,8 +377,7 @@ func (mage *Mage) applyMasterOfElements() {
 				return
 			}
 			if result.DidCrit() {
-				// TODO manafix: this should be base mana
-				mage.AddMana(sim, spell.DefaultCast.Cost*refundCoeff, manaMetrics)
+				mage.AddMana(sim, spell.Cost.BaseCost*refundCoeff, manaMetrics)
 			}
 		},
 	})
