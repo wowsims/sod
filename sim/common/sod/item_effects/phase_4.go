@@ -10,15 +10,16 @@ import (
 )
 
 const (
-	CraftOfTheShadows     = 227280
-	DukesDomain           = 227915
-	AccursedChalice       = 228078
-	GerminatingPoisonseed = 228081
-	GloamingTreeheart     = 228083
-	WoodcarvedMoonstalker = 228089
-	TheMoltenCore         = 228122
-	FistOfTheFiresworn    = 228139
-	TreantsBane           = 228486
+	CraftOfTheShadows        = 227280
+	DukesDomain              = 227915
+	AccursedChalice          = 228078
+	GerminatingPoisonseed    = 228081
+	GloamingTreeheart        = 228083
+	WoodcarvedMoonstalker    = 228089
+	TheMoltenCore            = 228122
+	FistOfTheFiresworn       = 228139
+	TreantsBane              = 228486
+	FistOfTheFireswornMolten = 229374
 )
 
 func init() {
@@ -32,6 +33,7 @@ func init() {
 	// Chance on hit: Blasts the enemy for 70 Fire damage.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponProcDamage(FistOfTheFireswornMolten, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228486/treants-bane
 	// Equip: +75 Attack Power when fighting Elementals.
