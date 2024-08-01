@@ -150,8 +150,9 @@ func (mage *Mage) applyFrostTalents() {
 		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+				// TODO manafix: this needs to be a mod
 				//spell.CostValues.Multiplier -= manaCostMultiplier
-				spell.CostValues.BaseCost *= (100 - float64(manaCostMultiplier)) / 100
+				spell.Cost.BaseCost *= (100 - float64(manaCostMultiplier)) / 100
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -314,13 +315,17 @@ func (mage *Mage) registerArcanePowerCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.3
-				spell.CostValues.Multiplier += 30
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 30
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive -= 0.3
-				spell.CostValues.Multiplier -= 30
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 30
+				}
 			}
 		},
 	})

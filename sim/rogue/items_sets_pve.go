@@ -157,10 +157,10 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 					)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					core.Each(affectedSpells, func(spell *core.Spell) { spell.CostValues.Multiplier -= 100 })
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier -= 100 })
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					core.Each(affectedSpells, func(spell *core.Spell) { spell.CostValues.Multiplier += 100 })
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier += 100 })
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {

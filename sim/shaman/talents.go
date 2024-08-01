@@ -48,7 +48,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.CostValues.Multiplier -= shaman.Talents.TidalFocus
+				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
 			}
 		})
 	}
@@ -89,10 +89,18 @@ func (shaman *Shaman) applyElementalFocus() {
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostValues.Multiplier -= 100 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 100
+				}
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostValues.Multiplier += 100 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 100
+				}
+			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
@@ -179,13 +187,17 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating += core.CritRatingPerCritChance * 100
-				spell.CostValues.Multiplier -= 100
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 100
+				}
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
-				spell.CostValues.Multiplier += 100
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 100
+				}
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

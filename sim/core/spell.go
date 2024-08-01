@@ -99,8 +99,7 @@ type Spell struct {
 	ResourceMetrics *ResourceMetrics
 	healthMetrics   []*ResourceMetrics
 
-	Cost       SpellCost       // Cost for the spell.
-	CostValues SpellCostValues // Cost values for the spell
+	Cost *SpellCost // Cost for the spell.
 
 	DefaultCast        Cast // Default cast parameters with all static effects applied.
 	CD                 Cooldown
@@ -237,9 +236,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		BonusHitRating:     config.BonusHitRating,
 		BonusCritRating:    config.BonusCritRating,
 		CastTimeMultiplier: 1,
-		CostValues: SpellCostValues{
-			Multiplier: 100,
-		},
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
@@ -262,7 +258,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	spell.CdSpell = spell
 
-	// newXXXCost() all update spell.DefaultCast.Cost
 	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
 	} else if config.EnergyCost.Cost != 0 {
@@ -271,6 +266,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.Cost = newRageCost(spell, config.RageCost)
 	} else if config.FocusCost.Cost != 0 {
 		spell.Cost = newFocusCost(spell, config.FocusCost)
+	}
+
+	if spell.Cost != nil {
+		spell.DefaultCast.Cost = spell.Cost.BaseCost
 	}
 
 	spell.createDots(config.Dot, false)
@@ -408,7 +407,9 @@ func (spell *Spell) finalize() {
 	spell.SpellMetrics = spell.splitSpellMetrics[0]
 
 	// Set the "static" "default" cost here
-	spell.DefaultCast.Cost = spell.GetCurrentCost()
+	if spell.Cost != nil {
+		spell.DefaultCast.Cost = spell.Cost.GetCurrentCost()
+	}
 }
 
 func (spell *Spell) reset(_ *Simulation) {
@@ -603,7 +604,7 @@ const (
 
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
-type SpellCost interface {
+type SpellCostFunctions interface {
 	// Get the type of resource used to cast the spell
 	CostType() CostType
 
@@ -621,20 +622,24 @@ type SpellCost interface {
 	IssueRefund(*Simulation, *Spell)
 }
 
-type SpellCostValues struct {
+type SpellCost struct {
 	BaseCost     float64 // The base power cost before all modifiers.
 	FlatModifier int32   // Flat value added to base cost before pct mods
-	Multiplier   int32   // Multiplier stored as an int, e.g. 0.5 is stored as 50
+	Multiplier   int32   // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	spell        *Spell
+	SpellCostFunctions
 }
 
-func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
-	cost = max(0, cost+float64(spell.CostValues.FlatModifier))
+func (sc *SpellCost) ApplyCostModifiers(cost float64) float64 {
+	spell := sc.spell
+	cost = max(0, cost+float64(sc.FlatModifier))
 	cost = max(0, cost*float64(spell.Unit.GetSchoolCostModifier(spell))/100)
-	return max(0, cost*float64(spell.CostValues.Multiplier)/100)
+	return max(0, cost*float64(sc.Multiplier)/100)
 }
 
-func (spell *Spell) GetCurrentCost() float64 {
-	return spell.ApplyCostModifiers(spell.CostValues.BaseCost)
+// Get power cost after all modifiers.
+func (sc *SpellCost) GetCurrentCost() float64 {
+	return sc.ApplyCostModifiers(sc.BaseCost)
 }
 
 func (spell *Spell) IssueRefund(sim *Simulation) {

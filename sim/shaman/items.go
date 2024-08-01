@@ -57,7 +57,7 @@ func init() {
 
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_ShamanFlameShock {
-				spell.CostValues.FlatModifier -= 10
+				spell.Cost.FlatModifier -= 10
 			}
 		})
 	})

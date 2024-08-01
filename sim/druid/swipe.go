@@ -116,5 +116,5 @@ func (druid *Druid) registerSwipeCatSpell() {
 }
 
 func (druid *Druid) CurrentSwipeCatCost() float64 {
-	return druid.SwipeCat.GetCurrentCost()
+	return druid.SwipeCat.Cost.GetCurrentCost()
 }

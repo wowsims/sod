@@ -269,13 +269,13 @@ func (warlock *Warlock) applyMasterSummoner() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime -= castTimeReduction
-				spell.CostValues.Multiplier -= costReduction
+				spell.Cost.Multiplier -= costReduction
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime += castTimeReduction
-				spell.CostValues.Multiplier += costReduction
+				spell.Cost.Multiplier += costReduction
 			}
 		},
 	})
@@ -588,7 +588,7 @@ func (warlock *Warlock) applyCataclysm() {
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(WarlockFlagDestruction) {
-			spell.CostValues.Multiplier -= warlock.Talents.Cataclysm
+			spell.Cost.Multiplier -= warlock.Talents.Cataclysm
 		}
 	})
 }

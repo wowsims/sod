@@ -310,13 +310,14 @@ type ManaCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
-	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana)
-	spell.DefaultCast.Cost = baseCost
-	spell.CostValues.BaseCost = baseCost
-	spell.CostValues.Multiplier = TernaryInt32(options.Multiplier == 0, 100, options.Multiplier)
-	return &ManaCost{
-		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
+func newManaCost(spell *Spell, options ManaCostOptions) *SpellCost {
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana),
+		Multiplier: TernaryInt32(options.Multiplier == 0, 100, options.Multiplier),
+		SpellCostFunctions: &ManaCost{
+			ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
+		},
 	}
 }
 
@@ -325,7 +326,7 @@ func (mc *ManaCost) CostType() CostType {
 }
 
 func (mc *ManaCost) MeetsRequirement(sim *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.GetCurrentCost()
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	meetsRequirement := spell.Unit.CurrentMana() >= spell.CurCast.Cost
 
 	if spell.CurCast.Cost > 0 {

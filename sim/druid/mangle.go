@@ -121,7 +121,7 @@ func (druid *Druid) registerMangleCatSpell() {
 }
 
 func (druid *Druid) CurrentMangleCatCost() float64 {
-	return druid.MangleCat.GetCurrentCost()
+	return druid.MangleCat.Cost.GetCurrentCost()
 }
 
 func (druid *Druid) IsMangle(spell *core.Spell) bool {

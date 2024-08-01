@@ -197,13 +197,13 @@ func (warrior *Warrior) applyBloodSurge() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.Slam != nil {
 				warrior.Slam.DefaultCast.CastTime = 0
-				warrior.Slam.CostValues.Multiplier -= 100
+				warrior.Slam.Cost.Multiplier -= 100
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.Slam != nil {
 				warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
-				warrior.Slam.CostValues.Multiplier += 100
+				warrior.Slam.Cost.Multiplier += 100
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -410,10 +410,10 @@ func (warrior *Warrior) applySwordAndBoard() {
 		ActionID: core.ActionID{SpellID: int32(proto.WarriorRune_RuneSwordAndBoard)},
 		Duration: 5 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.CostValues.Multiplier -= 100
+			warrior.ShieldSlam.Cost.Multiplier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.CostValues.Multiplier += 100
+			warrior.ShieldSlam.Cost.Multiplier += 100
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellCode == SpellCode_WarriorShieldSlam {

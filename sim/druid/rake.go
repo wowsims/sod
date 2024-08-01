@@ -144,5 +144,5 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 }
 
 func (druid *Druid) CurrentRakeCost() float64 {
-	return druid.Rake.GetCurrentCost()
+	return druid.Rake.Cost.GetCurrentCost()
 }

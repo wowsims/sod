@@ -36,10 +36,10 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		ActionID: core.ActionID{SpellID: 462752},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.SinisterStrike.CostValues.FlatModifier -= 20
+			rogue.SinisterStrike.Cost.FlatModifier -= 20
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.SinisterStrike.CostValues.FlatModifier += 20
+			rogue.SinisterStrike.Cost.FlatModifier += 20
 		},
 	})
 

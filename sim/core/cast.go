@@ -253,6 +253,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				ActionID: spell.ActionID,
 				Pushback: 1.0,
 				OnComplete: func(sim *Simulation, target *Unit) {
+					// TODO manafix: should check cost requirenments here again?
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
 					}

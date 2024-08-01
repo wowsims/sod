@@ -1931,14 +1931,14 @@ func init() {
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
 					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
-						spell.CostValues.Multiplier -= 100
+						spell.Cost.Multiplier -= 100
 					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
 					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
-						spell.CostValues.Multiplier += 100
+						spell.Cost.Multiplier += 100
 					}
 				}
 			},
