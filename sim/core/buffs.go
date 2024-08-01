@@ -889,22 +889,12 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.PowerInfusions = 0
 
 	if !petAgent.GetPet().enabledOnStart {
-		raidBuffs.ArcaneBrilliance = false
-		raidBuffs.DivineSpirit = false
-		raidBuffs.GiftOfTheWild = 0
-		raidBuffs.PowerWordFortitude = 0
-		raidBuffs.Thorns = 0
-		raidBuffs.ShadowProtection = false
 		raidBuffs.ScrollOfProtection = false
 		raidBuffs.ScrollOfStamina = false
 		raidBuffs.ScrollOfStrength = false
 		raidBuffs.ScrollOfAgility = false
 		raidBuffs.ScrollOfIntellect = false
 		raidBuffs.ScrollOfSpirit = false
-		individualBuffs.BlessingOfKings = false
-		individualBuffs.BlessingOfSanctuary = false
-		individualBuffs.BlessingOfMight = 0
-		individualBuffs.BlessingOfWisdom = 0
 	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones

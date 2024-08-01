@@ -539,7 +539,9 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
 	// Chance on hit: Increases your attack speed by 30% for 5 sec.
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 1.0, func(character *core.Character) *core.Aura {
+	// Uptime measured in SoD exceeds what was measured with the Vanilla version.
+	// Lines up closely with a 2.0 PPM
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 2.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Eskhandar's Rage",
 			ActionID: core.ActionID{SpellID: 22640},
