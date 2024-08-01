@@ -368,10 +368,10 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 
 const highestMult int = 5
 
-func SchoolMultiplierArrayHelper[T int | float64](t *testing.T, caster *Unit, target *Unit, multArray *[stats.SchoolLen]T,
+func SchoolMultiplierArrayHelper[T stats.SchoolValueArrayValues](t *testing.T, caster *Unit, target *Unit, multArray *stats.SchoolValueArray[T],
 	testFunc func(spell *Spell, schoolMask SpellSchool, highest T) (bool, string)) {
 
-	highest := T(highestMult)
+	var highest T = T(highestMult)
 
 	spell := &Spell{
 		DamageMultiplier:         1,
@@ -456,7 +456,7 @@ func Test_MultiSchoolModifiers(t *testing.T) {
 
 	t.Run("CostMultiplier", func(t *testing.T) {
 		SchoolMultiplierArrayHelper(t, caster, target, &caster.PseudoStats.SchoolCostMultiplier,
-			func(spell *Spell, schoolMask SpellSchool, highest int) (bool, string) {
+			func(spell *Spell, schoolMask SpellSchool, highest int32) (bool, string) {
 				costMod := spell.Unit.GetSchoolCostModifier(spell)
 				if costMod != highest {
 					return false, fmt.Sprintf("Cost mod for school %d returned %d, expected %d!", schoolMask, costMod, highest)

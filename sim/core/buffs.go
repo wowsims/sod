@@ -1120,18 +1120,10 @@ func ImprovedWindwallTotemAura(unit *Unit) *Aura {
 		ActionID: ActionID{SpellID: 457544}.WithTag(2),
 		Duration: time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.95)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= .95
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= .95
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / 0.95)
 		},
 	})
 }
@@ -1459,20 +1451,11 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.2)
+
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.2
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.2)
 		},
 	})
 	return aura

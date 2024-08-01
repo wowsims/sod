@@ -130,7 +130,7 @@ type Spell struct {
 	BonusHitRating           float64
 	BonusCritRating          float64
 	CastTimeMultiplier       float64
-	CostMultiplier           int32
+	CostMultiplier           int32 // Multiplier stored as an int
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 

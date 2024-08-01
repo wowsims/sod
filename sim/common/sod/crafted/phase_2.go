@@ -25,21 +25,11 @@ func init() {
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.SpellPower, 50)
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexArcane] -= 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFire] -= 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFrost] -= 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexHoly] -= 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexNature] -= 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] -= 50
+				character.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(-50)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.SpellPower, -50)
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexArcane] += 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFire] += 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFrost] += 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexHoly] += 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexNature] += 50
-				character.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] += 50
+				character.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(50)
 			},
 		})
 
