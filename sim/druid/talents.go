@@ -318,8 +318,8 @@ func (druid *Druid) MoonfuryDamageMultiplier() float64 {
 	return 0.02 * float64(druid.Talents.Moonfury)
 }
 
-func (druid *Druid) MoonglowManaCostMultiplier() float64 {
-	return 1 - 0.03*float64(druid.Talents.Moonglow)
+func (druid *Druid) MoonglowManaCostMultiplier() int32 {
+	return 100 - 3*druid.Talents.Moonglow
 }
 
 func (druid *Druid) vengeance() float64 {

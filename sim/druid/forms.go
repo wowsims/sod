@@ -226,8 +226,8 @@ func (druid *Druid) registerCatFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.55,
-			Multiplier: 1.0 - 0.1*float64(druid.Talents.NaturalShapeshifter),
+			BaseCost: 0.55,
+			Multiplier: 100 - 10*druid.Talents.NaturalShapeshifter,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -482,8 +482,8 @@ func (druid *Druid) registerMoonkinFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: 1.0 - 0.1*float64(druid.Talents.NaturalShapeshifter),
+			BaseCost: 0.35,
+			Multiplier: 100 - 10*druid.Talents.NaturalShapeshifter,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

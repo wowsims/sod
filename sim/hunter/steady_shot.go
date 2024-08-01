@@ -14,9 +14,9 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
-	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
+	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 0.25
+		manaCostMultiplier -= 25
 	}
 
 	hunter.SteadyShot = hunter.GetOrRegisterSpell(core.SpellConfig{
@@ -29,7 +29,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.05,
+			BaseCost: 0.05,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{

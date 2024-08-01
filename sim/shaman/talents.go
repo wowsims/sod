@@ -48,7 +48,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.CostMultiplier -= 5 * shaman.Talents.TidalFocus
+				spell.CostMultiplier -= shaman.Talents.TidalFocus
 			}
 		})
 	}
@@ -372,8 +372,8 @@ func (shaman *Shaman) concussionMultiplier() float64 {
 	return 1 + 0.01*float64(shaman.Talents.Concussion)
 }
 
-func (shaman *Shaman) totemManaMultiplier() float64 {
-	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+func (shaman *Shaman) totemManaMultiplier() int32 {
+	return 100 - 5*shaman.Talents.TotemicFocus
 }
 
 // Restorative Totems uses Mod Spell Effectiveness (Base Value)

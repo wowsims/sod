@@ -18,9 +18,9 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		ssProcSpell[i] = hunter.chimeraShotSerpentStingSpell(i)
 	}
 
-	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
+	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 0.25
+		manaCostMultiplier -= 25
 	}
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 409433},
@@ -32,7 +32,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.06,
+			BaseCost: 0.06,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{

@@ -302,9 +302,9 @@ func (mb *manaBar) EndOOMEvent(sim *Simulation) {
 }
 
 type ManaCostOptions struct {
-	BaseCost   float64
-	FlatCost   float64 // Alternative to BaseCost for giving a flat value.
-	Multiplier float64 // It's OK to leave this at 0, will default to 1.
+	BaseCost float64
+	FlatCost float64 // Alternative to BaseCost for giving a flat value.
+	Multiplier int32 // Will default to 100. Multiplier stored as an int, e.g. 0.6 is 60.
 }
 type ManaCost struct {
 	ResourceMetrics *ResourceMetrics
@@ -312,14 +312,8 @@ type ManaCost struct {
 
 func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
 	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana)
-	if player := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit); player != nil {
-		if player.GetCharacter().HasTrinketEquipped(45703) { // Spark of Hope
-			baseCost = max(0, baseCost-44)
-		}
-	}
-
-	spell.DefaultCast.Cost = baseCost * TernaryFloat64(options.Multiplier == 0, 1, options.Multiplier)
-
+	spell.DefaultCast.Cost = baseCost
+	spell.CostMultiplier = TernaryInt32(options.Multiplier == 0, 100, options.Multiplier)
 	return &ManaCost{
 		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
 	}

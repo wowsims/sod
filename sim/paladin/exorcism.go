@@ -61,8 +61,8 @@ func (paladin *Paladin) registerExorcism() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost,
-				Multiplier: core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 0.2, 1.0),
+				FlatCost: rank.manaCost,
+				Multiplier: core.TernaryInt32(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 20, 100),
 			},
 
 			Cast: core.CastConfig{

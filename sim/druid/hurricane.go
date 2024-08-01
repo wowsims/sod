@@ -24,12 +24,12 @@ func (druid *Druid) registerHurricaneSpell() {
 
 	// assuming Gale Winds is in use, to save creating an unused timer
 	damageMultiplier := 2.0
-	costMultiplier := 0.4
+	costMultiplier := int32(40)
 	cd := core.Cooldown{}
 
 	if !druid.HasRune(proto.DruidRune_RuneHelmGaleWinds) {
 		damageMultiplier = 1.0
-		costMultiplier = 1.0
+		costMultiplier = 100
 		cd = core.Cooldown{
 			Timer:    druid.NewTimer(),
 			Duration: time.Second * 60,
@@ -53,7 +53,7 @@ func (druid *Druid) registerHurricaneSpell() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost,
+				FlatCost: rank.manaCost,
 				Multiplier: costMultiplier,
 			},
 			Cast: core.CastConfig{

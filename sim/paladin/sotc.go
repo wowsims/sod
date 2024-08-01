@@ -1,10 +1,11 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/stats"
 	"strconv"
 	"time"
+
+	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (paladin *Paladin) registerSealOfTheCrusader() {
@@ -78,7 +79,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
 			},
 		})
-		
+
 		paladin.aurasSotC[i] = aura
 
 		paladin.RegisterSpell(core.SpellConfig{
@@ -90,7 +91,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost: rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{
@@ -103,7 +104,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
-		
+
 		paladin.spellsJotC[i] = judgeSpell
 	}
 }
