@@ -99,7 +99,8 @@ type Spell struct {
 	ResourceMetrics *ResourceMetrics
 	healthMetrics   []*ResourceMetrics
 
-	Cost SpellCost // Cost for the spell.
+	Cost       SpellCost       // Cost for the spell.
+	CostValues SpellCostValues // Cost values for the spell
 
 	DefaultCast        Cast // Default cast parameters with all static effects applied.
 	CD                 Cooldown
@@ -130,7 +131,6 @@ type Spell struct {
 	BonusHitRating           float64
 	BonusCritRating          float64
 	CastTimeMultiplier       float64
-	CostMultiplier           int32 // Multiplier stored as an int
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
@@ -237,7 +237,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		BonusHitRating:     config.BonusHitRating,
 		BonusCritRating:    config.BonusCritRating,
 		CastTimeMultiplier: 1,
-		CostMultiplier:     100,
+		CostValues: SpellCostValues{
+			Multiplier: 100,
+		},
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
@@ -404,6 +406,9 @@ func (spell *Spell) finalize() {
 	}
 
 	spell.SpellMetrics = spell.splitSpellMetrics[0]
+
+	// Set the "static" "default" cost here
+	spell.DefaultCast.Cost = spell.GetCurrentCost()
 }
 
 func (spell *Spell) reset(_ *Simulation) {
@@ -504,8 +509,6 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	}
 
 	if spell.Cost != nil {
-		// temp hack
-		spell.CurCast.Cost = spell.DefaultCast.Cost
 		if !spell.Cost.MeetsRequirement(sim, spell) {
 			//if sim.Log != nil {
 			//	sim.Log("Cant cast because of resource cost")
@@ -616,6 +619,22 @@ type SpellCost interface {
 
 	// Space for handling refund mechanics. Not all spells provide refunds.
 	IssueRefund(*Simulation, *Spell)
+}
+
+type SpellCostValues struct {
+	BaseCost     float64 // The base power cost before all modifiers.
+	FlatModifier int32   // Flat value added to base cost before pct mods
+	Multiplier   int32   // Multiplier stored as an int, e.g. 0.5 is stored as 50
+}
+
+func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
+	cost = max(0, cost+float64(spell.CostValues.FlatModifier))
+	cost = max(0, cost*float64(spell.Unit.GetSchoolCostModifier(spell))/100)
+	return max(0, cost*float64(spell.CostValues.Multiplier)/100)
+}
+
+func (spell *Spell) GetCurrentCost() float64 {
+	return spell.ApplyCostModifiers(spell.CostValues.BaseCost)
 }
 
 func (spell *Spell) IssueRefund(sim *Simulation) {

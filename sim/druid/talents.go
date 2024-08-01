@@ -260,12 +260,12 @@ func (druid *Druid) applyOmenOfClarity() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 100
+				spell.CostValues.Multiplier -= 100
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier += 100
+				spell.CostValues.Multiplier += 100
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

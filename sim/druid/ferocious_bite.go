@@ -119,5 +119,5 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 }
 
 func (druid *Druid) CurrentFerociousBiteCost() float64 {
-	return druid.FerociousBite.ApplyCostModifiers(druid.FerociousBite.DefaultCast.Cost)
+	return druid.FerociousBite.GetCurrentCost()
 }

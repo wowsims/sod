@@ -360,8 +360,3 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 		return true
 	}
 }
-
-func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
-	cost = max(0, cost*float64(spell.Unit.GetSchoolCostModifier(spell))/100)
-	return max(0, cost*float64(spell.CostMultiplier)/100)
-}

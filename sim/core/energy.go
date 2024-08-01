@@ -286,6 +286,7 @@ type EnergyCost struct {
 
 func newEnergyCost(spell *Spell, options EnergyCostOptions) *EnergyCost {
 	spell.DefaultCast.Cost = options.Cost
+	spell.CostValues.BaseCost = options.Cost
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.EnergyRefundMetrics
 	}
@@ -303,7 +304,7 @@ func (ec *EnergyCost) CostType() CostType {
 }
 
 func (ec *EnergyCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.GetCurrentCost()
 	return spell.Unit.CurrentEnergy() >= spell.CurCast.Cost
 }
 func (ec *EnergyCost) CostFailureReason(_ *Simulation, spell *Spell) string {

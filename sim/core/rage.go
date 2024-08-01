@@ -252,6 +252,7 @@ type RageCost struct {
 
 func newRageCost(spell *Spell, options RageCostOptions) *RageCost {
 	spell.DefaultCast.Cost = options.Cost
+	spell.CostValues.BaseCost = options.Cost
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.RageRefundMetrics
 	}
@@ -268,7 +269,7 @@ func (rc *RageCost) CostType() CostType {
 }
 
 func (rc *RageCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.GetCurrentCost()
 	return spell.Unit.CurrentRage() >= spell.CurCast.Cost
 }
 func (rc *RageCost) CostFailureReason(sim *Simulation, spell *Spell) string {

@@ -146,11 +146,12 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		manaCostMultiplier := 1 - .05*float64(mage.Talents.FrostChanneling)
+		manaCostMultiplier := 5 * mage.Talents.FrostChanneling
 		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.DefaultCast.Cost *= manaCostMultiplier
+				//spell.CostValues.Multiplier -= manaCostMultiplier
+				spell.CostValues.BaseCost *= (100 - float64(manaCostMultiplier)) / 100
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -313,13 +314,13 @@ func (mage *Mage) registerArcanePowerCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.3
-				spell.CostMultiplier += 30
+				spell.CostValues.Multiplier += 30
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive -= 0.3
-				spell.CostMultiplier -= 30
+				spell.CostValues.Multiplier -= 30
 			}
 		},
 	})
@@ -373,6 +374,7 @@ func (mage *Mage) applyMasterOfElements() {
 				return
 			}
 			if result.DidCrit() {
+				// TODO manafix: this should be base mana
 				mage.AddMana(sim, spell.DefaultCast.Cost*refundCoeff, manaMetrics)
 			}
 		},

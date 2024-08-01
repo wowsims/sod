@@ -302,9 +302,9 @@ func (mb *manaBar) EndOOMEvent(sim *Simulation) {
 }
 
 type ManaCostOptions struct {
-	BaseCost float64
-	FlatCost float64 // Alternative to BaseCost for giving a flat value.
-	Multiplier int32 // Will default to 100. Multiplier stored as an int, e.g. 0.6 is 60.
+	BaseCost   float64
+	FlatCost   float64 // Alternative to BaseCost for giving a flat value.
+	Multiplier int32   // Will default to 100. Multiplier stored as an int, e.g. 0.6 is 60.
 }
 type ManaCost struct {
 	ResourceMetrics *ResourceMetrics
@@ -313,7 +313,8 @@ type ManaCost struct {
 func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
 	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana)
 	spell.DefaultCast.Cost = baseCost
-	spell.CostMultiplier = TernaryInt32(options.Multiplier == 0, 100, options.Multiplier)
+	spell.CostValues.BaseCost = baseCost
+	spell.CostValues.Multiplier = TernaryInt32(options.Multiplier == 0, 100, options.Multiplier)
 	return &ManaCost{
 		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
 	}
@@ -324,7 +325,7 @@ func (mc *ManaCost) CostType() CostType {
 }
 
 func (mc *ManaCost) MeetsRequirement(sim *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.GetCurrentCost()
 	meetsRequirement := spell.Unit.CurrentMana() >= spell.CurCast.Cost
 
 	if spell.CurCast.Cost > 0 {

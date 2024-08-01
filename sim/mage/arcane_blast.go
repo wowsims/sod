@@ -48,8 +48,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.ArcaneBlast.CostMultiplier -= 175 * oldStacks
-			mage.ArcaneBlast.CostMultiplier += 175 * newStacks
+			mage.ArcaneBlast.CostValues.Multiplier -= 175 * oldStacks
+			mage.ArcaneBlast.CostValues.Multiplier += 175 * newStacks
 
 			oldMultiplier := .15 * float64(oldStacks)
 			newMultiplier := .15 * float64(newStacks)

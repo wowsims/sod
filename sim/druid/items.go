@@ -37,7 +37,7 @@ func init() {
 		// TODO: Claw is not implemented
 		druid.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidMangleCat {
-				spell.DefaultCast.Cost -= 3
+				spell.CostValues.FlatModifier -= 3
 			}
 		})
 	})
@@ -71,7 +71,7 @@ func init() {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidRip {
-				spell.DefaultCast.Cost -= 5
+				spell.CostValues.FlatModifier -= 5
 			}
 		})
 	})

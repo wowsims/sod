@@ -73,5 +73,5 @@ func (druid *Druid) applySavageRoar() {
 }
 
 func (druid *Druid) CurrentSavageRoarCost() float64 {
-	return druid.SavageRoar.ApplyCostModifiers(druid.SavageRoar.DefaultCast.Cost)
+	return druid.SavageRoar.GetCurrentCost()
 }

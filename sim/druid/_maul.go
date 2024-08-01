@@ -72,6 +72,7 @@ func (druid *Druid) registerMaulSpell() {
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return !druid.MaulQueueAura.IsActive() &&
+				// TODO manafix: this should probably be current and not defaultcast cost?
 				druid.CurrentRage() >= druid.Maul.DefaultCast.Cost &&
 				sim.CurrentTime >= druid.Hardcast.Expires
 		},

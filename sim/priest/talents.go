@@ -58,7 +58,7 @@ func (priest *Priest) applyMentalAgility() {
 
 	priest.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagPriest) && spell.DefaultCast.CastTime == 0 {
-			spell.CostMultiplier -= 2 * priest.Talents.MentalAgility
+			spell.CostValues.Multiplier -= 2 * priest.Talents.MentalAgility
 		}
 	})
 }
@@ -203,7 +203,7 @@ func (priest *Priest) registerInnerFocus() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range priest.Spellbook {
 				if spell.Flags.Matches(SpellFlagPriest) {
-					spell.CostMultiplier -= 100
+					spell.CostValues.Multiplier -= 100
 					spell.BonusCritRating += 25 * core.SpellCritRatingPerCritChance
 				}
 			}
@@ -211,7 +211,7 @@ func (priest *Priest) registerInnerFocus() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range priest.Spellbook {
 				if spell.Flags.Matches(SpellFlagPriest) {
-					spell.CostMultiplier += 100
+					spell.CostValues.Multiplier += 100
 					spell.BonusCritRating -= 25 * core.SpellCritRatingPerCritChance
 				}
 			}
