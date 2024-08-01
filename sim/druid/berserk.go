@@ -37,12 +37,12 @@ func (druid *Druid) applyBerserk() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 0.5
+				spell.CostMultiplier -= 50
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier += 0.5
+				spell.CostMultiplier += 50
 			}
 		},
 	})

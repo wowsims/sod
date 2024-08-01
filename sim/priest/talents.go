@@ -63,7 +63,7 @@ func (priest *Priest) applyMentalAgility() {
 
 	priest.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagPriest) && spell.DefaultCast.CastTime == 0 {
-			spell.CostMultiplier *= 1 - .02*float64(priest.Talents.MentalAgility)
+			spell.CostMultiplier -= 2 * priest.Talents.MentalAgility
 		}
 	})
 }
@@ -206,19 +206,17 @@ func (priest *Priest) registerInnerFocus() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier -= 1
 			for _, spell := range priest.Spellbook {
 				if spell.Flags.Matches(SpellFlagPriest) {
-					spell.CostMultiplier -= 1
+					spell.CostMultiplier -= 100
 					spell.BonusCritRating += 25 * core.SpellCritRatingPerCritChance
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier += 1
 			for _, spell := range priest.Spellbook {
 				if spell.Flags.Matches(SpellFlagPriest) {
-					spell.CostMultiplier += 1
+					spell.CostMultiplier += 100
 					spell.BonusCritRating -= 25 * core.SpellCritRatingPerCritChance
 				}
 			}
@@ -268,19 +266,11 @@ func (priest *Priest) registerShadowform() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.25
-			for _, spell := range priest.Spellbook {
-				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-					spell.CostMultiplier *= .5
-				}
-			}
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] -= 50
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.25
-			for _, spell := range priest.Spellbook {
-				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-					spell.CostMultiplier /= .5
-				}
-			}
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] += 50
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolHoly) {

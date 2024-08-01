@@ -130,6 +130,13 @@ func NewSchoolFloatArray(defaultVal float64) [SchoolLen]float64 {
 	}
 }
 
+func NewSchoolIntArray(defaultVal int) [SchoolLen]int {
+	d := defaultVal
+	return [SchoolLen]int{
+		d, d, d, d, d, d, d, d,
+	}
+}
+
 // If you add a new defense type you also need to update
 // core/constants.go accordingly!
 
@@ -369,8 +376,7 @@ type PseudoStats struct {
 	// Effects that apply when this unit is the attacker.
 	///////////////////////////////////////////////////
 
-	CostMultiplier float64 // Multiplies spell cost.
-	CostReduction  float64 // Reduces spell cost.
+	SchoolCostMultiplier [SchoolLen]int // Multiplies spell cost.
 
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
@@ -473,7 +479,7 @@ type PseudoStats struct {
 
 func NewPseudoStats() PseudoStats {
 	return PseudoStats{
-		CostMultiplier: 1,
+		SchoolCostMultiplier: NewSchoolIntArray(100),
 
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,

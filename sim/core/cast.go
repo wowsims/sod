@@ -362,7 +362,6 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 }
 
 func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
-	cost -= spell.Unit.PseudoStats.CostReduction
-	cost = max(0, cost*spell.Unit.PseudoStats.CostMultiplier)
-	return max(0, cost*spell.CostMultiplier)
+	cost = max(0, cost*float64(spell.Unit.GetSchoolCostModifier(spell))/100)
+	return max(0, cost*float64(spell.CostMultiplier)/100)
 }

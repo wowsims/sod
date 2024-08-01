@@ -213,13 +213,13 @@ func (mage *Mage) applyHotStreak() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(pyroblastSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier -= 1
-				spell.CostMultiplier -= 1
+				spell.CostMultiplier -= 100
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(pyroblastSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier += 1
-				spell.CostMultiplier += 1
+				spell.CostMultiplier += 100
 			})
 		},
 	})
@@ -294,7 +294,7 @@ func (mage *Mage) applyMissileBarrage() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
-				spell.CostMultiplier -= 100
+				spell.CostMultiplier -= 10000
 				for _, target := range sim.Encounter.TargetUnits {
 					spell.Dot(target).TickLength /= 2
 				}
@@ -302,7 +302,7 @@ func (mage *Mage) applyMissileBarrage() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(arcaneMissilesSpells, func(spell *core.Spell) {
-				spell.CostMultiplier += 100
+				spell.CostMultiplier += 10000
 				for _, target := range sim.Encounter.TargetUnits {
 					spell.Dot(target).TickLength *= 2
 				}
@@ -361,13 +361,13 @@ func (mage *Mage) applyBrainFreeze() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier -= 1
-				spell.CostMultiplier -= 1
+				spell.CostMultiplier -= 100
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier += 1
-				spell.CostMultiplier += 1
+				spell.CostMultiplier += 100
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

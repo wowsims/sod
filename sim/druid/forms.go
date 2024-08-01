@@ -237,7 +237,7 @@ func (druid *Druid) registerCatFormSpell() {
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if druid.CatFormAura.IsActive() {
 					cast.GCD = 0
-					spell.CostMultiplier -= 1
+					spell.CostMultiplier -= 100
 				}
 			},
 		},
@@ -245,7 +245,7 @@ func (druid *Druid) registerCatFormSpell() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if druid.CatFormAura.IsActive() {
 				druid.CancelShapeshift(sim)
-				spell.CostMultiplier += 1
+				spell.CostMultiplier += 100
 			} else {
 				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
 				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
@@ -449,12 +449,12 @@ func (druid *Druid) registerMoonkinFormSpell() {
 			druid.MoonfireDotMultiplier *= 1.5
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.Spell.CostMultiplier -= .5
+					spell.Spell.CostMultiplier -= 50
 				}
 			})
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
-				druid.Sunfire.CostMultiplier -= .5
+				druid.Sunfire.CostMultiplier -= 50
 				druid.SunfireDotMultiplier *= 1.5
 			}
 		},
@@ -465,13 +465,13 @@ func (druid *Druid) registerMoonkinFormSpell() {
 
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.Spell.CostMultiplier += .5
+					spell.Spell.CostMultiplier += 50
 				}
 			})
 			druid.MoonfireDotMultiplier /= 1.5
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
-				druid.Sunfire.CostMultiplier += .5
+				druid.Sunfire.CostMultiplier += 50
 				druid.SunfireDotMultiplier /= 1.5
 			}
 		},

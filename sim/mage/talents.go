@@ -170,10 +170,20 @@ func (mage *Mage) applyArcaneConcentration() {
 		ActionID: core.ActionID{SpellID: 12577},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier -= 1
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexArcane] -= 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFire] -= 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFrost] -= 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexHoly] -= 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexNature] -= 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier += 1
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexArcane] += 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFire] += 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexFrost] += 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexHoly] += 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexNature] += 100
+			aura.Unit.PseudoStats.SchoolCostMultiplier[stats.SchoolIndexShadow] += 100
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagMage) {
@@ -313,13 +323,13 @@ func (mage *Mage) registerArcanePowerCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.3
-				spell.CostMultiplier += 0.3
+				spell.CostMultiplier += 30
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive -= 0.3
-				spell.CostMultiplier -= 0.3
+				spell.CostMultiplier -= 30
 			}
 		},
 	})

@@ -21,13 +21,13 @@ func (warlock *Warlock) registerFelDominationCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime -= time.Millisecond * 5500
-				spell.CostMultiplier /= 2
+				spell.CostMultiplier -= 50
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime += time.Millisecond * 5500
-				spell.CostMultiplier *= 2
+				spell.CostMultiplier += 50
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

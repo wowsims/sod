@@ -142,15 +142,25 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 
+			var affectedSpells []*core.Spell
+
 			aura := rogue.RegisterAura(core.Aura{
 				Label:    "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)",
 				ActionID: core.ActionID{SpellID: 457342},
 				Duration: time.Second * 15,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(
+						rogue.Spellbook,
+						func(spell *core.Spell) bool {
+							return spell != nil && spell.Cost != nil && spell.Cost.CostType() == core.CostTypeEnergy
+						},
+					)
+				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.CostMultiplier -= 1
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= 100 })
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.PseudoStats.CostMultiplier += 1
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier += 100 })
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {

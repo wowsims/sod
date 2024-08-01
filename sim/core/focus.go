@@ -149,7 +149,7 @@ func (fc *FocusCost) CostType() CostType {
 }
 
 func (fc *FocusCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = max(0, spell.CurCast.Cost*spell.Unit.PseudoStats.CostMultiplier)
+	spell.CurCast.Cost = max(0, spell.CurCast.Cost*float64(spell.Unit.GetSchoolCostModifier(spell))/100)
 	return spell.Unit.CurrentFocus() >= spell.CurCast.Cost
 }
 func (fc *FocusCost) CostFailureReason(_ *Simulation, spell *Spell) string {
