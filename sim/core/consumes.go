@@ -1009,7 +1009,7 @@ func makePotionActivation(potionType proto.Potions, character *Character, potion
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
 		// placeholder action instead of specific potion spells, in APL prepull. This
 		// prevents a mismatch between Consumes and Rotation settings.
-		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion
+		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion | SpellFlagCastTimeNoGCD
 		oldApplyEffects := mcd.Spell.ApplyEffects
 		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 			oldApplyEffects(sim, target, spell)
