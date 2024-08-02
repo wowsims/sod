@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.51483
+  weights: 0.51744
   weights: 0
-  weights: 1.55897
+  weights: 1.55143
   weights: 0
-  weights: 0.47335
+  weights: 0.46581
   weights: 0
   weights: 0
   weights: 1.08562
   weights: 0
   weights: 0
-  weights: 34.65857
-  weights: 9.79899
+  weights: 34.56342
+  weights: 9.75047
   weights: 0
   weights: 0
   weights: 0
@@ -687,161 +687,161 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1325.26454
+  dps: 1317.10889
   tps: 1387.12701
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1324.48896
+  dps: 1316.33686
   tps: 1386.67665
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1442.86308
+  dps: 1433.84359
   tps: 1501.4513
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1398.89892
+  dps: 1390.26349
   tps: 1459.83987
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1323.63276
+  dps: 1315.48491
   tps: 1385.95503
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1323.86947
+  dps: 1315.72162
   tps: 1386.19175
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1878.20799
+  dps: 1868.44241
   tps: 1918.4066
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2001.72761
+  dps: 1991.41349
   tps: 2040.65915
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1232.30593
+  dps: 1223.66348
   tps: 1219.58081
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Average-Default"
  value: {
-  dps: 2475.771
+  dps: 2465.23205
   tps: 1551.29671
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 3883.91476
+  dps: 3733.5356
   tps: 2482.37299
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2404.3414
+  dps: 2393.84966
   tps: 1500.21092
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2523.02774
+  dps: 2512.67766
   tps: 1590.23654
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1737.24912
+  dps: 1663.07725
   tps: 1328.0611
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1348.52858
+  dps: 1342.41881
   tps: 859.68358
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Orc-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1405.72476
+  dps: 1399.76644
   tps: 900.10178
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 3836.99247
+  dps: 3688.72393
   tps: 2459.9849
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2433.31925
+  dps: 2422.72958
   tps: 1521.83325
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2516.68437
+  dps: 2506.28773
   tps: 1597.24444
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1718.94476
+  dps: 1644.32743
   tps: 1306.04267
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1349.29372
+  dps: 1343.13976
   tps: 859.32813
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Settings-Troll-phase_4-Adaptive-phase_4-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1422.27336
+  dps: 1416.21799
   tps: 915.19991
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2469.92979
+  dps: 2459.42942
   tps: 1543.35476
  }
 }
