@@ -127,53 +127,12 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			holyAura := mage.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Holy)",
-				ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexHoly)),
-				Duration: auraDuration,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-				},
-			})
-
-			natureAura := mage.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Nature)",
-				ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexNature)),
-				Duration: auraDuration,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-				},
-			})
-
-			shadowAura := mage.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Shadow)",
-				ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexShadow)),
-				Duration: auraDuration,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-				},
-			})
-
-			mage.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+			core.MakePermanent(mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Mage - Damage 4P Bonus",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 						return
 					}
-
 					if spell.SpellSchool.Matches(core.SpellSchoolArcane) {
 						arcaneAura.Activate(sim)
 					}
@@ -183,17 +142,8 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 					if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
 						frostAura.Activate(sim)
 					}
-					if spell.SpellSchool.Matches(core.SpellSchoolHoly) {
-						holyAura.Activate(sim)
-					}
-					if spell.SpellSchool.Matches(core.SpellSchoolNature) {
-						natureAura.Activate(sim)
-					}
-					if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-						shadowAura.Activate(sim)
-					}
 				},
-			})
+			}))
 		},
 		// Mage Armor increases your mana regeneration while casting by an additional 15%. Molten Armor increases your spell damage and healing by 18. Ice Armor grants 20% increased chance to trigger Fingers of Frost.
 		6: func(agent core.Agent) {
@@ -203,13 +153,9 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 			bonusSpiritRegenRateCasting := .15
 			bonusSpellPower := 18.0
 
-			mage.RegisterAura(core.Aura{
+			core.MakePermanent(mage.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Mage - Damage 6P Bonus",
 				ActionID: core.ActionID{SpellID: 456402},
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.IceArmorAura != nil {
 						mage.FingersOfFrostProcChance += bonusFoFProcChance
@@ -228,7 +174,7 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 						mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
 					}
 				},
-			})
+			}))
 		},
 	},
 })
