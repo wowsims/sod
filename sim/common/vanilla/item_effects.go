@@ -38,6 +38,7 @@ const (
 	PipsSkinner                    = 12709
 	ArcaniteChampion               = 12790
 	MasterworkStormhammer          = 12794
+	Frostguard                     = 12797
 	SerpentSlicer                  = 13035
 	SealOfTheDawn                  = 13209
 	JoonhosMercy                   = 17054
@@ -63,6 +64,7 @@ const (
 	EbonFist                       = 227842
 	ReavingNightfall               = 227843
 	SkyridersMasterworkStormhammer = 227886
+	HardenedFrostguard             = 227887
 	FlameWrath                     = 227934 // 11809
 	LordGeneralsSword              = 227940 // 11817
 	WraithScythe                   = 227941
@@ -816,6 +818,40 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=12797/frostguard#comments
+	// Chance on hit: Target's movement slowed by 30% and increasing the time between attacks by 25% for 5 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Frostguard, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			aura := unit.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16927},
+				Label:    "Chilled (Frostguard)",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed *= .70
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed /= .70
+				},
+			})
+			core.AtkSpeedReductionEffect(aura, 1.25)
+			return aura
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffAuras.Get(result.Target).Activate(sim)
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228029/gravestone-war-axe
 	// Chance on hit: Diseases target enemy for 55 Nature damage every 3 sec for 15 sec.
 	// TODO: Proc rate assumed and needs testing
@@ -950,6 +986,68 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=227887/hardened-frostguard
+	// Chance on hit: Target's movement slowed by 30% and increasing the time between attacks by 25% for 5 sec.
+	// Chance on hit: Inflicts Frost damage to nearby enemies, immobilizing them for up to 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(HardenedFrostguard, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			aura := unit.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16927},
+				Label:    "Chilled (Hardened Frostguard)",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed *= .70
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed /= .70
+				},
+			})
+			core.AtkSpeedReductionEffect(aura, 1.25)
+			return aura
+		})
+
+		novaSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463448},
+			SpellSchool:      core.SpellSchoolFrost,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 1,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 28, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hardened Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.5, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffAuras.Get(result.Target).Activate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hardened Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.5, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				novaSpell.Cast(sim, result.Target)
+			},
 		})
 	})
 
@@ -1377,7 +1475,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               0.5,
+			PPM:               4, // Someone in the armemnts Discord tested it out to 4 PPM
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
