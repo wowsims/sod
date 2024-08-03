@@ -219,7 +219,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		}
 
 		for _, pattern := range database.DenyListNameRegexes {
-			if pattern.MatchString(item.Name) {
+			if _, ok := database.ItemAllowList[item.Id]; !ok && pattern.MatchString(item.Name) {
 				return false
 			}
 		}
