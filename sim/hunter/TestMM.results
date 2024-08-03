@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestMM-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.39826
+  weights: 0.40167
   weights: 0
   weights: 0
   weights: 0
@@ -117,8 +117,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.12423
-  weights: 4.01125
-  weights: 3.81063
+  weights: 4.15438
+  weights: 3.94133
   weights: 0
   weights: 0
   weights: 0
@@ -197,42 +197,42 @@ stat_weights_results: {
 dps_results: {
  key: "TestMM-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 332.09444
+  dps: 348.50355
   tps: 172.18928
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 340.99007
+  dps: 357.40653
   tps: 183.63928
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Average-Default"
  value: {
-  dps: 344.86996
+  dps: 361.23312
   tps: 187.11172
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 740.49668
+  dps: 756.03461
   tps: 924.28268
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 645.99622
+  dps: 661.53088
   tps: 515.98974
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 668.69233
+  dps: 685.01338
   tps: 538.86824
  }
 }
@@ -260,21 +260,21 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 744.39271
+  dps: 760.95767
   tps: 929.09639
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 651.47974
+  dps: 667.84535
   tps: 513.95419
  }
 }
 dps_results: {
  key: "TestMM-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 675.78153
+  dps: 692.91864
   tps: 538.08983
  }
 }
@@ -302,7 +302,7 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 330.14758
+  dps: 346.39317
   tps: 173.24916
  }
 }

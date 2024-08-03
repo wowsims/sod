@@ -98,6 +98,7 @@ var ItemOverrides = []*proto.UIItem{
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
 	14637:  {}, // https://www.wowhead.com/classic/item=14637/cadaverous-armor
+	19099:  {}, // https://www.wowhead.com/classic/item=19099/glacial-blade filtered by temp naxx Glacial gear filters
 	22335:  {}, // https://www.wowhead.com/classic/item=22335/lord-valthalaks-staff-of-command accidentally left in the loot pool for a while. Allowing for compatibility
 	22395:  {}, // https://www.wowhead.com/classic/item=22395/totem-of-rage
 	221783: {}, // https://www.wowhead.com/classic/item=221783/lawbringer-spaulders

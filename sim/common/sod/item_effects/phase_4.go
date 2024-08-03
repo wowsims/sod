@@ -77,10 +77,12 @@ func init() {
 			return
 		}
 
+		duration := time.Second * 15
+
 		aura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
 			Label:    "Woodcarved Moonstalker",
-			Duration: time.Second * 15,
+			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.Strength, 60)
 			},
@@ -96,8 +98,12 @@ func init() {
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
+					Timer:    character.NewTimer(),
 					Duration: time.Second * 90,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 
