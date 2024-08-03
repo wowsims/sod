@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.51744
+  weights: 1.13554
   weights: 0
-  weights: 1.55143
+  weights: 1.54921
   weights: 0
-  weights: 0.46581
-  weights: 0
-  weights: 0
-  weights: 1.08562
+  weights: 0.46438
   weights: 0
   weights: 0
-  weights: 34.56342
-  weights: 9.75047
+  weights: 1.08482
+  weights: 0
+  weights: 0
+  weights: 35.17139
+  weights: 10.57551
   weights: 0
   weights: 0
   weights: 0
@@ -687,71 +687,71 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1317.10889
-  tps: 1387.12701
+  dps: 1318.83025
+  tps: 1388.51375
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1316.33686
-  tps: 1386.67665
+  dps: 1318.05323
+  tps: 1387.94876
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1433.84359
-  tps: 1501.4513
+  dps: 1439.43777
+  tps: 1505.82234
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1390.26349
-  tps: 1459.83987
+  dps: 1391.83695
+  tps: 1460.87356
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1315.48491
-  tps: 1385.95503
+  dps: 1316.96277
+  tps: 1386.91344
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1315.72162
-  tps: 1386.19175
+  dps: 1317.19608
+  tps: 1387.14675
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1868.44241
-  tps: 1918.4066
+  dps: 1876.22186
+  tps: 1925.56658
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 1991.41349
-  tps: 2040.65915
+  dps: 1985.60315
+  tps: 2033.26221
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1223.66348
-  tps: 1219.58081
+  dps: 1220.61135
+  tps: 1216.29992
  }
 }
 dps_results: {
  key: "TestElemental-Lvl60-Average-Default"
  value: {
-  dps: 2465.23205
-  tps: 1551.29671
+  dps: 2464.64398
+  tps: 1550.9993
  }
 }
 dps_results: {
@@ -841,7 +841,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2459.42942
-  tps: 1543.35476
+  dps: 2456.35985
+  tps: 1539.68056
  }
 }
