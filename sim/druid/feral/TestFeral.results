@@ -1273,7 +1273,7 @@ dps_results: {
  key: "TestFeral-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 2198.57004
-  tps: 1582.96056
+  tps: 1579.31023
  }
 }
 dps_results: {

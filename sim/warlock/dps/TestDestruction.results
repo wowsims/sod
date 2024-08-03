@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.53046
+  weights: 0.00803
   weights: 0
-  weights: 0.4809
-  weights: 0
-  weights: 0
+  weights: 1.07801
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.12115
-  weights: 5.10009
+  weights: 0
+  weights: 0
+  weights: 7.38123
+  weights: 5.14684
   weights: 0
   weights: 0
   weights: 0
@@ -463,22 +463,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
-  dps: 696.37351
-  tps: 600.37368
+  dps: 697.05946
+  tps: 600.71124
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 696.69588
-  tps: 936.44685
+  dps: 696.28561
+  tps: 933.2356
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 696.69588
-  tps: 600.11567
+  dps: 696.28561
+  tps: 599.04666
  }
 }
 dps_results: {
@@ -512,8 +512,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 693.26979
-  tps: 597.18513
+  dps: 698.01945
+  tps: 601.52693
  }
 }
 dps_results: {
