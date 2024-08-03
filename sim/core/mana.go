@@ -135,7 +135,7 @@ func (mb *manaBar) doneIteration(sim *Simulation) {
 		}
 
 		manaGainSpell.SpellMetrics[0].Casts += resourceMetrics.EventsForCurrentIteration()
-		manaGainSpell.ApplyAOEThreatIgnoreMultipliers(resourceMetrics.ActualGainForCurrentIteration() * ThreatPerManaGained)
+		manaGainSpell.ApplyAOEThreatIgnoreMultipliers(resourceMetrics.ActualGainForCurrentIteration() * ThreatPerManaGained * mb.unit.PseudoStats.ThreatMultiplier)
 	}
 }
 
@@ -323,6 +323,10 @@ func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
 	return &ManaCost{
 		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
 	}
+}
+
+func (mc *ManaCost) CostType() CostType {
+	return CostTypeMana
 }
 
 func (mc *ManaCost) MeetsRequirement(sim *Simulation, spell *Spell) bool {

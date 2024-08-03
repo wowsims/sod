@@ -1,8 +1,9 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
+import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
@@ -18,6 +19,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	epStats: [
 		Stat.StatIntellect,
 		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -25,16 +27,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatSpellDamage,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpellPower,
+		Stat.StatSpellDamage,
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
@@ -42,22 +45,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.2,
+			[Stat.StatIntellect]: 0.49,
 			[Stat.StatSpellPower]: 1,
+			[Stat.StatSpellDamage]: 1,
 			[Stat.StatArcanePower]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatFrostPower]: 1,
 			// Aggregated across 3 builds
-			[Stat.StatSpellHit]: 5.0,
-			[Stat.StatSpellCrit]: 6.17,
-			[Stat.StatSpellHaste]: 3.0,
-			[Stat.StatMP5]: 0.09,
+			[Stat.StatSpellHit]: 18.59,
+			[Stat.StatSpellCrit]: 13.91,
+			[Stat.StatSpellHaste]: 6.85,
+			[Stat.StatMP5]: 0.11,
+			[Stat.StatFireResistance]: 0.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -71,6 +77,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
+	},
+
+	modifyDisplayStats: (player: Player<Spec.SpecMage>) => {
+		let stats = new Stats();
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitArcane, player.getTalents().arcaneFocus * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+
+		return {
+			talents: stats,
+		};
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -90,23 +107,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	},
 
 	presets: {
-		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
-		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
-		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
-		builds: [
-			// Presets.PresetBuildArcane,
-			Presets.PresetBuildFire,
-			Presets.PresetBuildFrostfire,
-			Presets.PresetBuildFrost,
+		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
 		],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
+		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrost],
 	},
 
 	autoRotation: player => {
 		const specNumber = player.getTalentTree();
-		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		const level = player.getLevel();
+
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

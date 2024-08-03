@@ -137,6 +137,10 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 		target.Level = defaultRaidBossLevel
 	}
 
+	target.AddStatDependency(stats.Defense, stats.Dodge, MissDodgeParryBlockCritChancePerDefense)
+	target.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
+	target.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
+
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
 	target.PseudoStats.ParryHaste = options.ParryHaste
@@ -187,6 +191,10 @@ func (character *Character) IsTanking() bool {
 func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 	if weapon == nil {
 		return 0
+	}
+
+	if unit.PseudoStats.FeralCombatEnabled && unit.PseudoStats.FeralCombatSkill != 0 {
+		return unit.PseudoStats.FeralCombatSkill
 	}
 
 	if weapon.HandType == proto.HandType_HandTypeTwoHand {
@@ -261,8 +269,9 @@ type AttackTable struct {
 	//  Explicitly for hunters' "Monster Slaying" and "Humanoid Slaying", but likewise for rogues' "Murder", or trolls' "Beastslaying".
 	CritMultiplier float64
 
-	DamageDealtMultiplier float64 // attacker buff, applied in applyAttackerModifiers()
-	DamageTakenMultiplier float64 // defender debuff, applied in applyTargetModifiers()
+	DamageDealtMultiplier  float64 // attacker buff, applied in applyAttackerModifiers()
+	DamageTakenMultiplier  float64 // defender debuff, applied in applyTargetModifiers()
+	HealingDealtMultiplier float64
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
@@ -278,8 +287,9 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		CritMultiplier: 1,
 
-		DamageDealtMultiplier: 1,
-		DamageTakenMultiplier: 1,
+		DamageDealtMultiplier:  1,
+		DamageTakenMultiplier:  1,
+		HealingDealtMultiplier: 1,
 	}
 
 	if defender.Type == EnemyUnit {
@@ -330,19 +340,19 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		// Apply base Parry
 		if defender.PseudoStats.CanParry {
-			table.BaseParryChance = 0.05 + levelDelta
+			table.BaseParryChance = levelDelta // + 0.05 applied as stats in character.go
 		} else {
 			table.BaseParryChance = 0
 		}
 		// Apply base Block
 		if defender.PseudoStats.CanBlock {
-			table.BaseBlockChance = 0.05 + levelDelta
+			table.BaseBlockChance = levelDelta // + 0.05 applied as stats in character.go
 		} else {
 			table.BaseBlockChance = 0
 		}
 
 		table.BaseMissChance = 0.05 + levelDelta
-		table.BaseDodgeChance = 0.05 + levelDelta
+		table.BaseDodgeChance = levelDelta // base dodge applied with class base stats
 		table.BaseCritChance = 0.05 - levelDelta
 	}
 

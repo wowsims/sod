@@ -17,7 +17,7 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 		SpellSchool: spellSchool,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagFocusable,
+		Flags:       SpellFlagShaman | core.SpellFlagAPL | SpellFlagFocusable,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   baseCost,
@@ -32,8 +32,6 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 				Duration: shaman.ShockCD(),
 			},
 		},
-
-		CritDamageBonus: shaman.elementalFury(),
 
 		DamageMultiplier: shaman.concussionMultiplier(),
 		ThreatMultiplier: 1,

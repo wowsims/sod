@@ -28,16 +28,13 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 
 		if config.RequiredLevel <= int(priest.Level) {
 			priest.DevouringPlague[rank] = priest.GetOrRegisterSpell(config)
-			priest.AddMajorCooldown(core.MajorCooldown{
-				Spell:    priest.DevouringPlague[rank],
-				Priority: int32(rank),
-				Type:     core.CooldownTypeDPS,
-			})
 		}
 	}
 }
 
 func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
+	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
+
 	var ticks int32 = 8
 
 	spellId := DevouringPlagueSpellId[rank]
@@ -48,10 +45,12 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 	spellCoeff := 0.063
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -68,10 +67,10 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 			},
 		},
 
-		BonusHitRating: priest.shadowHitModifier(),
+		CritDamageBonus: priest.periodicCritBonus(),
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -86,7 +85,11 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 				dot.Snapshot(target, baseDotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				if hasDespairRune {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
@@ -98,15 +101,6 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
-		},
-
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
-			} else {
-				return spell.CalcPeriodicDamage(sim, target, baseDotDamage, spell.OutcomeExpectedMagicAlwaysHit)
-			}
 		},
 	}
 }

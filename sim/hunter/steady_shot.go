@@ -19,12 +19,12 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		manaCostMultiplier -= 0.25
 	}
 
-	hunter.GetOrRegisterSpell(core.SpellConfig{
+	hunter.SteadyShot = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 437123},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -46,7 +46,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),
@@ -69,4 +69,5 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			})
 		},
 	})
+	hunter.Shots = append(hunter.Shots, hunter.SteadyShot)
 }

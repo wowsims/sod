@@ -34,6 +34,7 @@ func (priest *Priest) registerDispersionSpell() {
 
 	priest.Dispersion = priest.RegisterSpell(core.SpellConfig{
 		ActionID: actionId,
+		Flags:    SpellFlagPriest,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

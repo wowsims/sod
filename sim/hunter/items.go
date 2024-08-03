@@ -13,6 +13,11 @@ const (
 	SignetOfBeasts          = 209823
 	BloodlashBow            = 216516
 	GurubashiPitFightersBow = 221450
+	BloodChainVices         = 227075
+	KnightChainVices        = 227077
+	BloodChainGrips         = 227081
+	KnightChainGrips        = 227087
+	WhistleOfTheBeast       = 228432
 )
 
 func init() {
@@ -39,6 +44,8 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24352},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    hunter.NewTimer(),
@@ -102,6 +109,8 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24353},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
 					GCD: core.GCDDefault,
@@ -143,6 +152,126 @@ func init() {
 	core.NewItemEffect(GurubashiPitFightersBow, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		hunter.newBloodlashProcItem(75, 446723)
+	})
+
+	// https://www.wowhead.com/classic/item=228432/whistle-of-the-beast
+	// Use: Your pet's next attack is guaranteed to critically strike if that attack is capable of striking critically. (1 Min Cooldown)
+	core.NewItemEffect(WhistleOfTheBeast, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+		hunter.pet.MultiplyStat(stats.Health, 1.03)
+		hunter.pet.MultiplyStat(stats.Armor, 1.10)
+		hunter.pet.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+		hunter.pet.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
+
+		actionID := core.ActionID{ItemID: WhistleOfTheBeast}
+
+		trackingAura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Whistle of the Beast Hunter",
+			ActionID: actionID,
+			Duration: core.NeverExpires,
+		})
+
+		aura := hunter.pet.GetOrRegisterAura(core.Aura{
+			Label:    "Whistle of the Beast",
+			ActionID: actionID,
+			Duration: core.NeverExpires,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet.focusDump != nil {
+					hunter.pet.focusDump.BonusCritRating += 100
+				}
+				if hunter.pet.specialAbility != nil {
+					hunter.pet.specialAbility.BonusCritRating += 100
+				}
+				trackingAura.Activate(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet.focusDump != nil {
+					hunter.pet.focusDump.BonusCritRating -= 100
+				}
+				if hunter.pet.specialAbility != nil {
+					hunter.pet.specialAbility.BonusCritRating -= 100
+				}
+				trackingAura.Deactivate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == hunter.pet.focusDump || spell == hunter.pet.specialAbility {
+					aura.Deactivate(sim)
+				}
+			},
+		})
+
+		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    hunter.NewTimer(),
+					Duration: time.Minute * 1,
+				},
+			},
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return hunter.pet.IsEnabled()
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		hunter.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+				return hunter.pet != nil && hunter.pet.IsEnabled()
+			},
+		})
+	})
+
+	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(BloodChainVices, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterMultiShot {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(KnightChainVices, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterMultiShot {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
 	})
 }
 

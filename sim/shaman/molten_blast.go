@@ -16,10 +16,15 @@ func (shaman *Shaman) applyMoltenBlast() {
 
 	baseDamageLow := shaman.baseRuneAbilityDamage() * .72
 	baseDamageHigh := shaman.baseRuneAbilityDamage() * 1.08
+	// TODO: 2024-07-03 added 14% SP coefficient but unsure if the AP coefficient was also removed
 	apCoef := .05
+	spCoef := .14
 	cooldown := time.Second * 6
 	manaCost := .18
-	targetCount := 4
+	targetCount := int32(10)
+
+	numHits := min(targetCount, shaman.Env.GetNumTargets())
+	results := make([]*core.SpellResult, numHits)
 
 	shaman.MoltenBlast = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
@@ -27,7 +32,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagFocusable,
+		Flags:       SpellFlagShaman | core.SpellFlagAPL | SpellFlagFocusable,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -44,16 +49,21 @@ func (shaman *Shaman) applyMoltenBlast() {
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
+		BonusCoefficient: spCoef,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				if i < targetCount {
-					baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for idx := range results {
+				// Molten Blast is a magic ability but scales off of Attack Power
+				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+
+			for _, result := range results {
+				if result.Landed() {
+					spell.DealDamage(sim, result)
 				}
 			}
 		},

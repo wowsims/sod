@@ -22,16 +22,21 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	shaman.FlameShock = make([]*core.Spell, FlameShockRanks+1)
 
 	for rank := 1; rank <= FlameShockRanks; rank++ {
-		config := shaman.newFlameShockSpellConfig(rank, shockTimer)
-
-		if config.RequiredLevel <= int(shaman.Level) {
-			shaman.FlameShock[rank] = shaman.RegisterSpell(config)
+		if FlameShockLevel[rank] <= int(shaman.Level) {
+			shaman.FlameShock[rank] = shaman.RegisterSpell(shaman.newFlameShockSpell(rank, shockTimer))
 		}
 	}
 }
 
-func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer) core.SpellConfig {
-	numTicks := 4
+func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.SpellConfig {
+	hasBurnRune := shaman.HasRune(proto.ShamanRune_RuneHelmBurn)
+	hasLavaBurstRune := shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst)
+	hasPowerSurgeRune := shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge)
+	hasMoltenBlastRune := shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast)
+	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
+
+	numTicks := 4 + core.TernaryInt32(hasBurnRune, BurnFlameShockBonusTicks, 0)
 	tickDuration := time.Second * 3
 
 	spellId := FlameShockSpellId[rank]
@@ -42,12 +47,6 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 	manaCost := FlameShockManaCost[rank]
 	level := FlameShockLevel[rank]
 
-	hasBurnRune := shaman.HasRune(proto.ShamanRune_RuneHelmBurn)
-	hasPowerSurgeRune := shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge)
-	hasLavaBurstRune := shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst)
-	hasMoltenBlastRune := shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast)
-	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-
 	spell := shaman.newShockSpellConfig(
 		core.ActionID{SpellID: spellId},
 		core.SpellSchoolFire,
@@ -55,16 +54,14 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		shockTimer,
 	)
 
-	if hasBurnRune {
-		spell.DamageMultiplier += BurnFlameShockDamageBonus
-		numTicks += BurnFlameShockBonusTicks
-	}
-
 	spell.SpellCode = SpellCode_ShamanFlameShock
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
 	spell.Cast.IgnoreHaste = true
+
+	spell.DamageMultiplier += shaman.burnFlameShockDamageMultiplier()
+	spell.BonusCoefficient = baseSpellCoeff
 
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
@@ -93,12 +90,15 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 			dot.Snapshot(target, baseDotDamage, isRollover)
+			if !isRollover && hasStormEarthAndFireRune {
+				dot.SnapshotAttackerMultiplier *= 1.60
+			}
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 
-			if hasMoltenBlastRune && result.Landed() && sim.Proc(ShamanMoltenBlastResetChance, "Molten Blast Reset") {
+			if hasMoltenBlastRune && sim.Proc(ShamanMoltenBlastResetChance, "Molten Blast Reset") {
 				shaman.MoltenBlast.CD.Reset()
 			}
 
@@ -108,10 +108,7 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		},
 	}
 
-	spell.BonusCoefficient = baseSpellCoeff
-
 	results := make([]*core.SpellResult, min(core.TernaryInt32(hasBurnRune, BurnFlameShockTargetCount, 1), shaman.Env.GetNumTargets()))
-
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		for idx := range results {
 			results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -121,7 +118,8 @@ func (shaman *Shaman) newFlameShockSpellConfig(rank int, shockTimer *core.Timer)
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 			if result.Landed() {
-				spell.Dot(result.Target).Apply(sim)
+				spell.Dot(target).Apply(sim)
+				// shaman.FlameShockDots[rank].Cast(sim, target)
 
 				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 					shaman.lastFlameShockTarget = target

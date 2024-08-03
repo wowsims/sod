@@ -24,7 +24,7 @@ func (priest *Priest) registerMindFlay() {
 
 	priest.MindFlay = make([][]*core.Spell, MindFlayRanks+1)
 
-	for rank := 1; rank < MindFlayRanks; rank++ {
+	for rank := 1; rank <= MindFlayRanks; rank++ {
 		priest.MindFlay[rank] = make([]*core.Spell, MindFlayTicks+1)
 
 		var tick int32
@@ -40,7 +40,7 @@ func (priest *Priest) registerMindFlay() {
 
 func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.SpellConfig {
 	ticks := tickIdx
-	flags := core.SpellFlagChanneled
+	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagBinary
 	if tickIdx == 0 {
 		ticks = 3
 		flags |= core.SpellFlagAPL
@@ -58,11 +58,12 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestMindFlay,
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags | core.SpellFlagBinary,
+		Flags:       flags,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -77,13 +78,10 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
+		CritDamageBonus: priest.periodicCritBonus(),
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

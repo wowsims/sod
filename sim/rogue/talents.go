@@ -9,7 +9,9 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
+	rogue.applyRuthlessness()
 	rogue.applyMurder()
+	rogue.applyRelentlessStrikes()
 	rogue.applySealFate()
 	rogue.applyWeaponSpecializations()
 	rogue.applyWeaponExpertise()
@@ -41,22 +43,18 @@ func (rogue *Rogue) dwsMultiplier() float64 {
 	return 1 + 0.1*float64(rogue.Talents.DualWieldSpecialization)
 }
 
-func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, numPoints int32) {
-	ruthlessnessMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 14161})
-	relentlessStrikesMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 14179})
-
-	return func(sim *core.Simulation, numPoints int32) {
-		if t := rogue.Talents.Ruthlessness; t > 0 {
-			if sim.RandomFloat("Ruthlessness") < 0.2*float64(t) {
-				rogue.AddComboPoints(sim, 1, ruthlessnessMetrics)
-			}
-		}
-		if t := rogue.Talents.RelentlessStrikes; t {
-			if sim.RandomFloat("RelentlessStrikes") < 0.2*float64(numPoints) {
-				rogue.AddEnergy(sim, 25, relentlessStrikesMetrics)
-			}
-		}
+func (rogue *Rogue) applyRuthlessness() {
+	if rogue.Talents.Ruthlessness == 0 {
+		return
 	}
+
+	procChance := 0.2 * float64(rogue.Talents.Ruthlessness)
+	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 14161})
+	rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+		if sim.Proc(procChance, "Ruthlessness") {
+			rogue.AddComboPoints(sim, 1, cpMetrics)
+		}
+	})
 }
 
 // Murder talent
@@ -76,6 +74,19 @@ func (rogue *Rogue) applyMurder() {
 					at.CritMultiplier *= multiplier
 				}
 			}
+		}
+	})
+}
+
+func (rogue *Rogue) applyRelentlessStrikes() {
+	if !rogue.Talents.RelentlessStrikes {
+		return
+	}
+
+	cpMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 14179})
+	rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+		if sim.Proc(0.2*float64(comboPoints), "RelentlessStrikes") {
+			rogue.AddEnergy(sim, 25, cpMetrics)
 		}
 	})
 }
@@ -269,9 +280,6 @@ func (rogue *Rogue) applyWeaponExpertise() {
 	}
 }
 
-var BladeFlurryActionID = core.ActionID{SpellID: 13877}
-var BladeFlurryHitID = core.ActionID{SpellID: 22482}
-
 func (rogue *Rogue) registerBladeFlurryCD() {
 	if !rogue.Talents.BladeFlurry {
 		return
@@ -281,7 +289,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	var curDmg float64
 	bfHit := rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    BladeFlurryHitID,
+		ActionID:    core.ActionID{SpellID: 22482},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
@@ -296,7 +304,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
-		ActionID: BladeFlurryActionID,
+		ActionID: core.ActionID{SpellID: 13877},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.MultiplyMeleeSpeed(sim, 1.2)
@@ -322,8 +330,9 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	cooldownDur := time.Minute * 2
 	rogue.BladeFlurry = rogue.RegisterSpell(core.SpellConfig{
-		ActionID: BladeFlurryActionID,
-		Flags:    core.SpellFlagAPL,
+		SpellCode: SpellCode_RogueBladeFlurry,
+		ActionID:  core.ActionID{SpellID: 13877},
+		Flags:     core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 25,

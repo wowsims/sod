@@ -50,7 +50,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.AddStat(stats.MeleeCrit, float64(hunter.Talents.KillerInstinct)*1*core.CritRatingPerCritChance)
 
 	if hunter.Talents.LethalShots > 0 {
-		hunter.AddBonusRangedCritRating(1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance)
+		hunter.AddStat(stats.MeleeCrit, 1*float64(hunter.Talents.LethalShots)*core.CritRatingPerCritChance)
 	}
 
 	if hunter.Talents.RangedWeaponSpecialization > 0 {
@@ -155,4 +155,8 @@ func (hunter *Hunter) registerBestialWrathCD() {
 
 func (hunter *Hunter) mortalShots() float64 {
 	return 0.06 * float64(hunter.Talents.MortalShots)
+}
+
+func (hunter *Hunter) trapMastery() float64 {
+	return 5 * float64(hunter.Talents.TrapMastery) * core.SpellHitRatingPerHitChance
 }

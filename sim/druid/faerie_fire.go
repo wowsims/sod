@@ -7,6 +7,7 @@ import (
 )
 
 func (druid *Druid) registerFaerieFireSpell() {
+	spellCode := SpellCode_DruidFaerieFire
 	actionID := core.ActionID{SpellID: map[int32]int32{
 		25: 770,
 		40: 778,
@@ -33,9 +34,13 @@ func (druid *Druid) registerFaerieFireSpell() {
 	flags := core.SpellFlagNone
 	formMask := Humanoid | Moonkin
 
+	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		return core.FaerieFireAura(target, level)
+	})
+
 	if druid.InForm(Cat|Bear) && druid.Talents.FaerieFireFeral {
+		spellCode = SpellCode_DruidFaerieFireFeral
 		actionID = core.ActionID{SpellID: map[int32]int32{
-			25: 16857,
 			40: 17390,
 			50: 17391,
 			60: 17392,
@@ -48,14 +53,14 @@ func (druid *Druid) registerFaerieFireSpell() {
 			Timer:    druid.NewTimer(),
 			Duration: time.Second * 6,
 		}
+		druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+			return core.FaerieFireFeralAura(target, level)
+		})
 	}
 	flags |= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
 
-	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return core.FaerieFireAura(target, level)
-	})
-
 	druid.FaerieFire = druid.RegisterSpell(formMask, core.SpellConfig{
+		SpellCode:   spellCode,
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,

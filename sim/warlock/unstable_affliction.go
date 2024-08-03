@@ -12,16 +12,17 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		return
 	}
 
-	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
-
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
+	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
 	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerUnstableAffliction)},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		DefenseType: core.DefenseTypeMagic,
-		Flags:       core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
+		Flags:       core.SpellFlagAPL | WarlockFlagHaunt | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.15,
@@ -33,13 +34,10 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			},
 		},
 
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -67,9 +65,17 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
+				}
+
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
+				}
+
+				if hasInvocationRune && spell.Dot(target).IsActive() {
+					warlock.InvocationRefresh(sim, spell.Dot(target))
 				}
 
 				spell.Dot(target).Apply(sim)

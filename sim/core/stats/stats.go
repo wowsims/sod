@@ -89,6 +89,7 @@ const (
 	WeaponSkillBows
 	WeaponSkillCrossbows
 	WeaponSkillGuns
+	WeaponSkillFeralCombat
 
 	WeaponSkillLen
 )
@@ -99,7 +100,7 @@ var UnitStatsLen = int(Len) + PseudoStatsLen
 type SchoolIndex byte
 
 // If you add a new multi-school you also need to update
-// core/spell_school.go acordingly!
+// core/spell_school.go accordingly!
 
 const (
 	SchoolIndexNone     SchoolIndex = 0
@@ -128,6 +129,20 @@ func NewSchoolFloatArray(defaultVal float64) [SchoolLen]float64 {
 		d, d, d, d, d, d, d, d,
 	}
 }
+
+// If you add a new defense type you also need to update
+// core/constants.go accordingly!
+
+type DefenseTypeIndex byte
+
+const (
+	DefenseTypeIndexNone  DefenseTypeIndex = 0
+	DefenseTypeIndexMagic DefenseTypeIndex = iota
+	DefenseTypeIndexMelee
+	DefenseTypeIndexRanged
+
+	DefenseTypeLen
+)
 
 func ProtoArrayToStatsList(protoStats []proto.Stat) []Stat {
 	stats := make([]Stat, len(protoStats))
@@ -417,6 +432,10 @@ type PseudoStats struct {
 	GunsSkill      float64
 	ThrownSkill    float64
 
+	// Special Feral Weapon Skill
+	FeralCombatEnabled bool
+	FeralCombatSkill   float64
+
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
 	///////////////////////////////////////////////////
@@ -435,10 +454,14 @@ type PseudoStats struct {
 
 	BonusHealingTaken float64 // Talisman of Troll Divinity
 
+	BonusDamageTakenBeforeModifiers [DefenseTypeLen]float64 // Flat damage reduction values BEFORE Modifiers like Blessing of Sanctuary
+	BonusDamageTakenAfterModifiers  [DefenseTypeLen]float64 // Flat damage reduction values AFTER Modifiers like Stoneskin Totem, Windwall Totem, etc.
+
 	DamageTakenMultiplier       float64            // All damage
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusDamageTaken      [SchoolLen]float64 // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusHitChance        [SchoolLen]float64 // Spell school-specific hit bonuses such as ring runes
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
@@ -490,10 +513,14 @@ func NewPseudoStats() PseudoStats {
 		TwoHandedAxesSkill:     0,
 		PolearmsSkill:          0,
 		StavesSkill:            0,
-		BowsSkill:              0,
-		GunsSkill:              0,
-		CrossbowsSkill:         0,
-		ThrownSkill:            0,
+
+		BowsSkill:      0,
+		GunsSkill:      0,
+		CrossbowsSkill: 0,
+		ThrownSkill:    0,
+
+		FeralCombatEnabled: false,
+		FeralCombatSkill:   0,
 	}
 }
 

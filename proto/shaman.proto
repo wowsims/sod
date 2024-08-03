@@ -64,6 +64,10 @@ enum ShamanRune {
 	RuneHelmMentalDexterity		= 415140;
 	RuneHelmTidalWaves			= 432042;
 
+	RuneCloakCoherence			= 415096;
+	RuneCloakStormEarthAndFire	= 440569;
+	RuneCloakFeralSpirit		= 440580;
+
 	RuneChestDualWieldSpec		= 408496;
 	RuneChestHealingRain		= 415236;
 	RuneChestOverload			= 408438;
@@ -86,12 +90,14 @@ enum ShamanRune {
 
 	RuneLegsAncestralGuidance 	= 409324;
 	RuneLegsEarthShield			= 408514;
-	RuneLegsShamanisticRage		= 425336;
 	RuneLegsWayOfEarth			= 408531;
+	RuneLegsGreaterGhostWolf 	= 415813;
 
 	RuneFeetAncestralAwakening 	= 425858;
 	RuneFeetDecoyTotem			= 425874;
 	RuneFeetSpiritOfTheAlpha	= 408696;
+
+	RuneUtilityShamnisticRage	= 425336;
 }
 
 enum EarthTotem {
@@ -198,4 +204,13 @@ message RestorationShaman {
 		ShamanTotems totems = 6 [deprecated=true];
 	}
 	Options options = 3;
+}
+
+message WardenShaman {
+	message Rotation {
+	}
+
+	message Options {
+	}
+	Options options = 1;
 }

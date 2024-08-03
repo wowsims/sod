@@ -6,10 +6,11 @@ import { Player } from '../core/player';
 import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon } from '../core/proto_utils/utils';
+import { HonorOfThievesCritRate } from './inputs';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
-	cssClass: 'rogue-sim-ui',
+	cssClass: 'tank-rogue-sim-ui',
 	cssScheme: 'rogue',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
@@ -20,7 +21,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatSpellDamage,
 		Stat.StatSpellPower,
 		Stat.StatNaturePower,
@@ -28,9 +28,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatSpellCrit,
 
 		// Tank stats
+		Stat.StatDefense,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatStamina,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to caluclate EP.
@@ -50,10 +52,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 
 		// Tank stats
 		Stat.StatStamina,
+		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -65,16 +69,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 				[Stat.StatAgility]: 1.69,
 				[Stat.StatStrength]: 1.1,
 				[Stat.StatAttackPower]: 1,
+				[Stat.StatDefense]: 4,
 				[Stat.StatSpellDamage]: 0.68,
 				[Stat.StatNaturePower]: 0.68,
 				[Stat.StatSpellCrit]: 2.0,
 				[Stat.StatSpellHit]: 5.54,
 				[Stat.StatMeleeHit]: 14.2,
 				[Stat.StatMeleeCrit]: 8.64,
-				[Stat.StatMeleeHaste]: 6.51,
 				[Stat.StatStamina]: 0.3,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatBonusArmor]: 0.01,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 2.94,
@@ -85,7 +90,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.CombatMutilate40Talents.data,
+		talents: Presets.DefaultTalentsAssassin.data,
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
@@ -119,6 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
+			HonorOfThievesCritRate,
 		],
 	},
 	encounterPicker: {
@@ -128,11 +134,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [...Presets.TalentPresets[Phase.Phase4], ...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [...Presets.APLPresets[Phase.Phase4], ...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [...Presets.GearPresets[Phase.Phase4], ...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
 	},
 
 	autoRotation: player => {

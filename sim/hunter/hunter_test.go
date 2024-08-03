@@ -14,23 +14,23 @@ func init() {
 
 func TestBM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase1BMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+		// 	Talents:     Phase1BMTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -56,23 +56,23 @@ func TestBM(t *testing.T) {
 
 func TestMM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
-			Class:      proto.Class_ClassHunter,
-			Level:      25,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase1MMTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+		// 	Talents:     Phase1MMTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -90,28 +90,45 @@ func TestMM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-	}))
-}
-
-func TestSV(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassHunter,
-			Level:      25,
+			Level:      60,
 			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase1SVTalents,
-			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
-			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+			Talents:     Phase4RangedMMTalents,
+			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "p4_ranged"),
+			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p4_ranged"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+	}))
+}
+
+func TestSV(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		// {
+		// 	Class:      proto.Class_ClassHunter,
+		// 	Level:      25,
+		// 	Race:       proto.Race_RaceOrc,
+		// 	OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+		// 	Talents:     Phase1SVTalents,
+		// 	GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "phase1"),
+		// 	Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p1_weave"),
+		// 	Buffs:       core.FullBuffsPhase1,
+		// 	Consumes:    Phase1Consumes,
+		// 	SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase1PlayerOptions},
+
+		// 	ItemFilter:      ItemFilters,
+		// 	EPReferenceStat: proto.Stat_StatAttackPower,
+		// 	StatsToWeigh:    Stats,
+		// },
 		{
 			Class:      proto.Class_ClassHunter,
 			Level:      40,
@@ -129,87 +146,24 @@ func TestSV(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-	}))
-}
+		{
+			Class:      proto.Class_ClassHunter,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2BMTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged_bm").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_ranged_bm").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
+			Talents:     Phase4WeaveTalents,
+			GearSet:     core.GetGearSet("../../ui/hunter/gear_sets", "p4_weave"),
+			Rotation:    core.GetAplRotation("../../ui/hunter/apls", "p4_weave"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
 		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2MMTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_ranged_mm").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_ranged_mm").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceOrc,
-					Class:         proto.Class_ClassHunter,
-					Level:         40,
-					TalentsString: Phase2SVTalents,
-					Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p2_melee").GearSet,
-					Rotation:      core.GetAplRotation("../../ui/hunter/apls", "p2_melee").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          Phase2PlayerOptions,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
+	}))
 }
 
 var Phase1BMTalents = "53000200501"
@@ -219,6 +173,10 @@ var Phase1SVTalents = "--33502001101"
 var Phase2BMTalents = "5300021150501251"
 var Phase2MMTalents = "-05551001503051"
 var Phase2SVTalents = "--335020051030315"
+
+var Phase4WeaveTalents = "-055500005-3305202202303051"
+var Phase4RangedMMTalents = "-05451002503051-33400023023"
+var Phase4RangedSVTalents = "1-054510005-334000250230305"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -246,6 +204,22 @@ var Phase2Consumes = core.ConsumesCombo{
 	},
 }
 
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultPotion:     proto.Potions_ManaPotion,
+		DragonBreathChili: true,
+		Flask:             proto.Flask_FlaskOfSupremePower,
+		Food:              proto.Food_FoodSagefishDelight,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ElementalSharpeningStone,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+	},
+}
+
 var Phase1PlayerOptions = &proto.Player_Hunter{
 	Hunter: &proto.Hunter{
 		Options: &proto.Hunter_Options{
@@ -264,6 +238,18 @@ var Phase2PlayerOptions = &proto.Player_Hunter{
 			PetType:        proto.Hunter_Options_Cat,
 			PetUptime:      1,
 			PetAttackSpeed: 2.0,
+		},
+	},
+}
+
+var Phase4PlayerOptions = &proto.Player_Hunter{
+	Hunter: &proto.Hunter{
+		Options: &proto.Hunter_Options{
+			Ammo:                 proto.Hunter_Options_JaggedArrow,
+			PetType:              proto.Hunter_Options_PetNone,
+			PetUptime:            1,
+			PetAttackSpeed:       2.0,
+			SniperTrainingUptime: 1.0,
 		},
 	},
 }

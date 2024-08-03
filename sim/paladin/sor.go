@@ -75,7 +75,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV,
 
 			BonusCritRating: paladin.holyCrit(), // TODO to be tested
 
@@ -103,8 +103,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagMeleeMetrics,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,                                                                      //changed to ProcMaskMeleeMHSpecial, to allow procs from weapons/oils which do proc from SoR,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagSupressExtraAttack | core.SpellFlagSuppressEquipProcs, // but Wild Strikes does not proc, nor equip procs
 
 			//BonusCritRating: paladin.holyCrit(), // TODO to be tested, but unlikely
 
@@ -115,7 +115,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// effectively scales with coeff x 2, and damage dealt multipliers affect half the damage taken bonus
-				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spell.BonusDamage()+target.GetSchoolBonusDamageTaken(spell))
+				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spell.GetBonusDamage()+target.GetSchoolBonusDamageTaken(spell))
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 			},
 		})
@@ -134,6 +134,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				}
 			},
 		})
+
+		paladin.aurasSoR[i] = aura
 
 		paladin.sealOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -157,5 +159,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
+
+		paladin.spellsJoR[i] = judgeSpell
 	}
 }

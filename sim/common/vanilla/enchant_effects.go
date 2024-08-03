@@ -43,7 +43,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
 					return
 				}
 
@@ -102,7 +102,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 13897},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ProcMask:    core.ProcMaskSpellDamage | core.ProcMaskTriggerInstant,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -119,10 +119,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
+				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
 					return
 				}
-
 				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
 					procSpell.Cast(sim, result.Target)
 				}
@@ -173,11 +172,11 @@ func init() {
 	})
 
 	// Gloves - Minor Haste
+	// Effect #931 explicitly does NOT affect ranged attack speed
 	core.NewEnchantEffect(931, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
-		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	// Weapon - Striking
@@ -222,10 +221,9 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
+				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
-
 				if ppmm.Proc(sim, spell.ProcMask, "Crusader") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
@@ -283,6 +281,15 @@ func init() {
 	core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 		character.AddBonusRangedHitRating(3)
+	})
+
+	// Gloves - Libram of Rapidity
+	// Confirmed to mod both melee and ranged speed
+	core.NewEnchantEffect(2543, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	core.AddEffectsToTest = true

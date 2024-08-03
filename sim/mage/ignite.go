@@ -50,6 +50,10 @@ func (mage *Mage) applyIgnite() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
+		Cast: core.CastConfig{
+			IgnoreHaste: true,
+		},
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Ignite",

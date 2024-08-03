@@ -41,8 +41,8 @@
 		--bs-btn-border-color: #{$base-color};
 		--bs-btn-color: #{$base-color};
 
-		--bs-btn-hover-bg: #{$hover-color};
-		--bs-btn-hover-border-color: #{$hover-color};
+		--bs-btn-hover-bg: #{$base-color};
+		--bs-btn-hover-border-color: #{$base-color};
 		--bs-btn-hover-color: #{$text-color};
 
 		--bs-btn-active-bg: #{$interact-color};

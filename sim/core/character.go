@@ -284,6 +284,7 @@ func (character *Character) applyWeaponSkills() {
 		character.PseudoStats.BowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillBows)]
 		character.PseudoStats.CrossbowsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillCrossbows)]
 		character.PseudoStats.GunsSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillGuns)]
+		character.PseudoStats.FeralCombatSkill += item.WeaponSkills[int32(proto.WeaponSkill_WeaponSkillFeralCombat)]
 	}
 }
 
@@ -298,12 +299,20 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 		}
 	}
 
+	character.AddStatDependency(stats.Defense, stats.Dodge, MissDodgeParryBlockCritChancePerDefense)
+	character.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
+	character.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
+
+	character.AddStat(stats.Parry, 5)
+	character.AddStat(stats.Block, 5)
+
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)
 	playerStats.BaseStats = measureStats()
 
 	character.applyEquipment()
 	character.applyWeaponSkills()
+	character.ApplyRingRunes()
 	character.applyItemEffects(agent)
 	character.applyItemSetBonusEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseGear)
@@ -314,7 +323,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 
-	applyBuffEffects(agent, raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(agent, true, raidBuffs, partyBuffs, individualBuffs)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
 
@@ -397,7 +406,6 @@ func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-
 	switch character.MainHand().ID {
 	case ItemIDAtieshMage:
 		partyBuffs.AtieshMage += 1
@@ -608,6 +616,17 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatBowsSkill:            float64(character.PseudoStats.BowsSkill),
 		proto.PseudoStat_PseudoStatCrossbowsSkill:       float64(character.PseudoStats.CrossbowsSkill),
 		proto.PseudoStat_PseudoStatGunsSkill:            float64(character.PseudoStats.GunsSkill),
+		proto.PseudoStat_PseudoStatFeralCombatSkill:     float64(character.PseudoStats.FeralCombatSkill),
+
+		proto.PseudoStat_PseudoStatSchoolHitArcane: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexArcane]),
+		proto.PseudoStat_PseudoStatSchoolHitFire:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFire]),
+		proto.PseudoStat_PseudoStatSchoolHitFrost:  float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFrost]),
+		proto.PseudoStat_PseudoStatSchoolHitHoly:   float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly]),
+		proto.PseudoStat_PseudoStatSchoolHitNature: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature]),
+		proto.PseudoStat_PseudoStatSchoolHitShadow: float64(character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow]),
+
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 	}
 }
 
@@ -653,6 +672,74 @@ func (character *Character) SetShapeshift(aura *Aura) {
 		panic("Tried to set shapeshift while already shapeshifted!")
 	}
 	character.ActiveShapeShift = aura
+}
+
+func (c *Character) ApplyRingRunes() {
+	// Spell School Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingArcaneSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexArcane] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFireSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFire] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFrostSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexFrost] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingHolySpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingNatureSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexNature] += 6
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingShadowSpecialization)) {
+		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow] += 6
+	}
+
+	// Weapon Skill Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
+		c.AxeSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingDaggerSpecialization)) {
+		c.DaggerSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFistWeaponSpecialization)) {
+		c.FistWeaponSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingMaceSpecialization)) {
+		c.MaceSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingPoleWeaponSpecialization)) {
+		c.PoleWeaponSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingRangedWeaponSpecialization)) {
+		c.GunSpecializationAura()
+		c.BowSpecializationAura()
+		c.CrossbowSpecializationAura()
+		c.ThrownSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {
+		c.SwordSpecializationAura()
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingFeralCombatSpecialization)) {
+		c.FeralCombatSpecializationAura()
+	}
+
+	// Other Specializations
+	if c.HasRuneById(int32(proto.RingRune_RuneRingDefenseSpecialization)) {
+		c.AddStat(stats.Defense, 25)
+	}
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.

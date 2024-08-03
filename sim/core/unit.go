@@ -63,6 +63,7 @@ type Unit struct {
 	Moving                  bool
 	moveAura                *Aura
 	moveSpell               *Spell
+	MoveSpeed               float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -136,13 +137,14 @@ type Unit struct {
 	GCD *Timer
 
 	// Used for applying the effect of a hardcast spell when casting finishes.
-	//  For channeled spells, only Expires is set.
+	// For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.
 	Hardcast Hardcast
 
 	// GCD-related PendingActions.
-	gcdAction      *PendingAction
-	hardcastAction *PendingAction
+	gcdAction              *PendingAction
+	hardcastAction         *PendingAction
+	castWhileCastingAction *PendingAction
 
 	// Cached mana return values per tick.
 	manaTickWhileCasting    float64
@@ -379,15 +381,9 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 		}
 	})
 }
-func (unit *Unit) AddBonusRangedCritRating(amount float64) {
-	unit.OnSpellRegistered(func(spell *Spell) {
-		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusCritRating += amount
-		}
-	})
-}
 
 func (unit *Unit) initMovement() {
+	unit.MoveSpeed = 7.0
 	unit.moveAura = unit.GetOrRegisterAura(Aura{
 		Label:     "Movement",
 		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
@@ -395,6 +391,9 @@ func (unit *Unit) initMovement() {
 		MaxStacks: 30,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
+			if unit.ChanneledDot != nil {
+				unit.ChanneledDot.Cancel(sim)
+			}
 			unit.AutoAttacks.CancelAutoSwing(sim)
 			unit.Moving = true
 		},
@@ -423,18 +422,14 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 		return
 	}
 
-	tickPeriod := 0.5
-
 	moveDistance := moveRange - unit.DistanceFromTarget
-	moveSpeed := 2.0
-	timeToMove := math.Abs(moveDistance) / moveSpeed
-	moveTicks := timeToMove / tickPeriod
+	moveTicks := math.Abs(moveDistance)
 	moveInterval := moveDistance / float64(moveTicks)
 
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 500,
+		Period:          time.Millisecond * 1000 / time.Duration(unit.MoveSpeed),
 		NumTicks:        int(moveTicks),
 		TickImmediately: false,
 

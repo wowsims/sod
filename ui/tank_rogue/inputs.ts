@@ -11,5 +11,4 @@ export const HonorOfThievesCritRate = InputHelpers.makeSpecOptionsNumberInput<Sp
 	fieldName: 'honorAmongThievesCritRate',
 	label: 'Honor Among Thieves Crit Rate',
 	labelTooltip: 'Number of crits other group members generate within 100 seconds',
-	showWhen: (player: Player<Spec.SpecRogue>) => player.getEquippedItem(ItemSlot.ItemSlotHead)?.rune?.id == RogueRune.RuneHonorAmongThieves,
 });

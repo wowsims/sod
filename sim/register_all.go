@@ -8,6 +8,7 @@ import (
 	tankrogue "github.com/wowsims/sod/sim/rogue/tank_rogue"
 	"github.com/wowsims/sod/sim/shaman/elemental"
 	"github.com/wowsims/sod/sim/shaman/enhancement"
+	"github.com/wowsims/sod/sim/shaman/warden"
 
 	"github.com/wowsims/sod/sim/druid/feral"
 	// restoDruid "github.com/wowsims/sod/sim/druid/restoration"
@@ -25,8 +26,8 @@ import (
 	// restoShaman "github.com/wowsims/sod/sim/shaman/restoration"
 	dpsWarlock "github.com/wowsims/sod/sim/warlock/dps"
 	tankWarlock "github.com/wowsims/sod/sim/warlock/tank"
-	dpsWarrior "github.com/wowsims/sod/sim/warrior/dps"
-	// protectionWarrior "github.com/wowsims/sod/sim/warrior/protection"
+	dpsWarrior "github.com/wowsims/sod/sim/warrior/dps_warrior"
+	tankWarrior "github.com/wowsims/sod/sim/warrior/tank_warrior"
 )
 
 var registered = false
@@ -43,6 +44,7 @@ func RegisterAll() {
 	// restoDruid.RegisterRestorationDruid()
 	elemental.RegisterElementalShaman()
 	enhancement.RegisterEnhancementShaman()
+	warden.RegisterWardenShaman()
 	// restoShaman.RegisterRestorationShaman()
 	hunter.RegisterHunter()
 	mage.RegisterMage()
@@ -51,7 +53,7 @@ func RegisterAll() {
 	dpsrogue.RegisterDpsRogue()
 	tankrogue.RegisterTankRogue()
 	dpsWarrior.RegisterDpsWarrior()
-	// protectionWarrior.RegisterProtectionWarrior()
+	tankWarrior.RegisterTankWarrior()
 	// holyPaladin.RegisterHolyPaladin()
 	// protectionPaladin.RegisterProtectionPaladin()
 	retribution.RegisterRetributionPaladin()

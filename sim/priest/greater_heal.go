@@ -8,7 +8,7 @@ package priest
 // 		SpellSchool: core.SpellSchoolHoly,
 //      DefenseType: core.DefenseTypeMagic,
 // 		ProcMask:    core.ProcMaskSpellHealing,
-// 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+// 		Flags:       SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL,
 
 // 		ManaCost: core.ManaCostOptions{
 // 			BaseCost:   0.32,

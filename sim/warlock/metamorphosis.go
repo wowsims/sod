@@ -34,7 +34,7 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 
 	warlock.Metamorphosis = warlock.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagAPL | WarlockFlagDemonology,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

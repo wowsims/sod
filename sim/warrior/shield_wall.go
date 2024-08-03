@@ -12,7 +12,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
-	duration := time.Duration(10+[]float64{3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
+	duration := time.Duration(10+[]float64{0, 3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
 	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
 	damageTaken := 0.25
 
@@ -31,7 +31,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 
 	cooldownDur := time.Minute * 30
 
-	swSpell := warrior.RegisterSpell(core.SpellConfig{
+	swSpell := warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
@@ -45,7 +45,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+			return warrior.PseudoStats.CanBlock
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -54,7 +54,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: swSpell,
+		Spell: swSpell.Spell,
 		Type:  core.CooldownTypeSurvival,
 	})
 }

@@ -7,12 +7,28 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// A ferocious strike that deals 100% weapon damage, but can only be used while Enrage, Berserker Rage, or Bloodrage is active.
+// Raging blow cooldown is reduced by 1 second when you use another melee ability while enraged.
 func (warrior *Warrior) registerRagingBlow() {
 	if !warrior.HasRune(proto.WarriorRune_RuneRagingBlow) {
 		return
 	}
 
-	warrior.RagingBlow = warrior.RegisterSpell(core.SpellConfig{
+	warrior.RegisterAura(core.Aura{
+		Label:    "Raging Blow CDR",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && warrior.IsEnraged() && !warrior.RagingBlow.CD.IsReady(sim) && spell.SpellCode != SpellCode_WarriorRagingBlow {
+				warrior.RagingBlow.CD.Timer.Set(time.Duration(*warrior.RagingBlow.CD.Timer) - time.Second*1)
+			}
+		},
+	})
+
+	warrior.RagingBlow = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorRagingBlow,
 		ActionID:    core.ActionID{SpellID: 402911},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -33,7 +49,7 @@ func (warrior *Warrior) registerRagingBlow() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.ConsumedByRageAura.IsActive() || warrior.BloodrageAura.IsActive() || warrior.BerserkerRageAura.IsActive()
+			return warrior.IsEnraged()
 		},
 
 		CritDamageBonus: warrior.impale(),
@@ -42,9 +58,8 @@ func (warrior *Warrior) registerRagingBlow() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 0.8
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
 		},
 	})
 }

@@ -24,9 +24,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -35,8 +32,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,13 +49,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatArmor,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -81,13 +80,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Stat.StatAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 9.62,
 				[Stat.StatMeleeCrit]: 14.8,
-				[Stat.StatMeleeHaste]: 11.84, //haste is complicated
-				[Stat.StatArmorPenetration]: 0.35,
-				[Stat.StatExpertise]: 1.92, //default EP assumes cap
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 8.15,
 				[PseudoStat.PseudoStatOffHandDps]: 5.81,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 5.81,
 			},
 		),
 		// Default consumes settings.
@@ -115,7 +113,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
 	customSections: [],
 	encounterPicker: {
@@ -124,12 +121,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	presets: {
-		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
-		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
-		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
+		],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
 	},
 
 	autoRotation: (player): APLRotation => {

@@ -15,6 +15,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
+// NextIndex: 49
 message Player {
 	// Label used for logging.
 	string name = 1;
@@ -49,6 +50,7 @@ message Player {
 	double distance_from_target = 17;
 
 	// ISB Info
+	bool isb_using_shadowflame = 47;
 	double isb_sb_frequency = 41;
 	double isb_crit = 42;
 	int32 isb_warlocks = 43;
@@ -75,10 +77,11 @@ message Player {
 		ElementalShaman elemental_shaman = 33;
 		EnhancementShaman enhancement_shaman = 34;
 		RestorationShaman restoration_shaman = 35;
+		WardenShaman warden_shaman = 48;
 		Warlock warlock = 36;
-		Warrior warrior = 37;
-		ProtectionWarrior protection_warrior = 38;
 		TankWarlock tank_warlock = 39;
+		Warrior warrior = 37;
+		TankWarrior tank_warrior = 38;
 	}
 }
 

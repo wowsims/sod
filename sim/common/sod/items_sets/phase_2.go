@@ -160,17 +160,6 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetElectromanticStormbringer = core.NewItemSet(core.ItemSet{
-	Name: "Electromantic Stormbringer's Chain",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 12)
-		},
-		3: func(agent core.Agent) {},
-	},
-})
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Plate
 ///////////////////////////////////////////////////////////////////////////

@@ -64,33 +64,55 @@ message WarriorTalents {
 }
 
 enum WarriorRune {
-	WarriorRuneNone = 0;
-	RuneBloodFrenzy = 412507;
-	RuneFlagellation = 402877;
-	RuneRagingBlow = 402911;
-	RuneWarbringer = 425421;
-	RuneVictoryRush = 402927;
-	RuneDevastate = 403195;
-	RuneEndlessRage = 403218;
-	RuneSingleMindedFury = 413404;
-	RuneQuickStrike = 429765;
-	RuneFuriousThunder = 403219;
-	RuneConsumedByRage = 425418;
-	RuneFrenziedAssault = 425412;
-	RuneBloodSurge = 413380;
-	RuneFocusedRage = 29787;
-	RunePreciseTiming = 402922;
-	RuneEnragedRegeneration = 403467;
-	RuneIntervene = 403472;
-	RuneRallyingCry = 426491;
-	RuneCommandingShout = 403446;
-	RuneRampage = 426940;
-	RuneSwordAndBoard = 426978;
-	RuneWreckingCrew = 427065;
-	RuneShieldMastery = 426980;
-	RuneTasteForBlood = 426953;
-	RuneVigilance = 426972;
-	RuneGladiatorStance = 412513;
+	WarriorRuneNone					= 0;
+
+	// Helm
+	RuneEndlessRage					= 403218;
+	RuneTasteForBlood				= 426953;
+	RuneVigilance						= 426972;
+	RuneShieldMastery				= 426980;
+
+	// Cloak
+	RuneSuddenDeath					= 440113;
+	RuneFreshMeat						= 440484;
+	RuneShockwave						= 440488;
+
+	// Chest
+	RuneFlagellation				= 402877;
+	RuneRagingBlow					= 402911;
+	RuneBloodFrenzy					= 412507;
+	RuneWarbringer					= 425421;
+
+	// Bracers
+	RuneRampage							= 426940;
+	RuneSwordAndBoard				= 426978;
+	RuneWreckingCrew				= 427065;
+
+	// Hands
+	RuneVictoryRush					= 402927;
+	RuneDevastate						= 403195;
+	
+	RuneSingleMindedFury		= 413404;
+	RuneQuickStrike					= 429765;
+
+	// Waist
+	RuneFocusedRage					= 29787;
+	RunePreciseTiming				= 402922;
+	RuneBloodSurge					= 413380;
+
+	// Legs
+	RuneFuriousThunder			= 403219;
+	RuneFrenziedAssault			= 425412;
+	RuneConsumedByRage			= 425418;
+	
+	// Feet
+	RuneEnragedRegeneration	= 403467;
+	RuneIntervene						= 403472;
+	RuneRallyingCry					= 426491;
+	RuneGladiatorStance			= 412513;
+
+	// Utility
+	RuneCommandingShout			= 403446;
 }
 
 enum WarriorShout {
@@ -99,28 +121,41 @@ enum WarriorShout {
 	WarriorShoutCommanding = 2;
 }
 
+enum WarriorStance {
+	WarriorStanceNone = 0;
+	WarriorStanceBattle = 1;
+	WarriorStanceDefensive = 2;
+	WarriorStanceBerserker = 3;
+	WarriorStanceGladiator = 4;
+}
+
 message Warrior {
 	message Rotation {
 	}
 
 	message Options {
+		reserved 2;
+		reserved "use_recklessness";
+
 		double starting_rage = 1;
-		bool use_recklessness = 2;
-		WarriorShout shout = 3;
 		bool stance_snapshot = 6;
-		bool disable_expertise_gemming = 7;
+
+		WarriorShout shout = 3;
+		WarriorStance stance = 7;
 	}
 	Options options = 3;
 }
 
-message ProtectionWarrior {
+message TankWarrior {
 	message Rotation {
 	}
 
 	message Options {
 		double starting_rage = 1;
+		bool stance_snapshot = 6;
 
-		WarriorShout shout = 4;
+		WarriorShout shout = 3;
+		WarriorStance stance = 7;
 	}
 	Options options = 3;
 }

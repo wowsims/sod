@@ -10,6 +10,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 type WowheadTooltipManager struct {
@@ -41,8 +42,8 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	}
 }
 
-type Stats [46]float64
-type WeaponSkills [15]float64
+type Stats [stats.Len]float64
+type WeaponSkills [stats.WeaponSkillLen]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -70,6 +71,7 @@ type ItemResponse interface {
 	GetRangedWeaponType() proto.RangedWeaponType
 	GetWeaponDamage() (float64, float64)
 	GetWeaponSpeed() float64
+	GetItemSetID() string
 	GetItemSetName() string
 	IsHeroic() bool
 	GetRequiredProfession() proto.Profession
@@ -202,6 +204,7 @@ var armorPenetrationRegex2 = regexp.MustCompile(`Increases your armor penetratio
 var expertiseRegex = regexp.MustCompile(`Increases your expertise rating by <!--rtg37-->([0-9]+)\.`)
 var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
+var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
 
 var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
@@ -221,15 +224,14 @@ var bowsSkill = regexp.MustCompile(`Increased Bows \+([0-9]+)\.`)
 var crossbowsSkill = regexp.MustCompile(`Increased Crossbows \+([0-9]+)\.`)
 var gunsSkill = regexp.MustCompile(`Increased Guns \+([0-9]+)\.`)
 
+var feralCombatSkill = regexp.MustCompile(`Increased Feral Combat \+([0-9]+)\.`)
+
 var defenseRegex = regexp.MustCompile(`Increased Defense \+([0-9]+)\.`)
-var blockRegex = regexp.MustCompile(`Increases your shield block rating by <!--rtg15-->([0-9]+)\.`)
-var blockRegex2 = regexp.MustCompile(`Increases your shield block rating by ([0-9]+)\.`)
+var blockRegex = regexp.MustCompile(`Increases your chance to block attacks with a shield by ([0-9]+)%\.`)
 var blockValueRegex = regexp.MustCompile(`Increases the block value of your shield by ([0-9]+)\.`)
 var blockValueRegex2 = regexp.MustCompile(`<br>([0-9]+) Block<br>`)
-var dodgeRegex = regexp.MustCompile(`Increases your dodge rating by <!--rtg13-->([0-9]+)\.`)
-var dodgeRegex2 = regexp.MustCompile(`Increases your dodge rating by ([0-9]+)\.`)
-var parryRegex = regexp.MustCompile(`Increases your parry rating by <!--rtg14-->([0-9]+)\.`)
-var parryRegex2 = regexp.MustCompile(`Increases your parry rating by ([0-9]+)\.`)
+var dodgeRegex = regexp.MustCompile(`Increases your chance to dodge an attack by ([0-9]+)%\.`)
+var parryRegex = regexp.MustCompile(`Increases your chance to parry an attack by ([0-9]+)%\.`)
 var resilienceRegex = regexp.MustCompile(`Improves your resilience rating by <!--rtg35-->([0-9]+)\.`)
 var arcaneResistanceRegex = regexp.MustCompile(`\+([0-9]+) Arcane Resistance`)
 var fireResistanceRegex = regexp.MustCompile(`\+([0-9]+) Fire Resistance`)
@@ -278,10 +280,10 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatArmorPenetration:  float64(item.GetIntValue(armorPenetrationRegex) + item.GetIntValue(armorPenetrationRegex2)),
 		proto.Stat_StatExpertise:         float64(item.GetIntValue(expertiseRegex)),
 		proto.Stat_StatDefense:           float64(item.GetIntValue(defenseRegex)),
-		proto.Stat_StatBlock:             float64(item.GetIntValue(blockRegex) + item.GetIntValue(blockRegex2)),
+		proto.Stat_StatBlock:             float64(item.GetIntValue(blockRegex)),
 		proto.Stat_StatBlockValue:        float64(item.GetIntValue(blockValueRegex) + item.GetIntValue(blockValueRegex2)),
-		proto.Stat_StatDodge:             float64(item.GetIntValue(dodgeRegex) + item.GetIntValue(dodgeRegex2)),
-		proto.Stat_StatParry:             float64(item.GetIntValue(parryRegex) + item.GetIntValue(parryRegex2)),
+		proto.Stat_StatDodge:             float64(item.GetIntValue(dodgeRegex)),
+		proto.Stat_StatParry:             float64(item.GetIntValue(parryRegex)),
 		proto.Stat_StatResilience:        float64(item.GetIntValue(resilienceRegex)),
 		proto.Stat_StatArcaneResistance:  float64(item.GetIntValue(arcaneResistanceRegex)),
 		proto.Stat_StatFireResistance:    float64(item.GetIntValue(fireResistanceRegex)),
@@ -310,6 +312,7 @@ func (item WowheadItemResponse) GetWeaponSkills() WeaponSkills {
 		float64(item.GetIntValue(bowsSkill)),
 		float64(item.GetIntValue(crossbowsSkill)),
 		float64(item.GetIntValue(gunsSkill)),
+		float64(item.GetIntValue(feralCombatSkill)),
 	}
 }
 
@@ -597,27 +600,49 @@ func (item WowheadItemResponse) GetRangedWeaponType() proto.RangedWeaponType {
 // Returns min/max of weapon damage
 func (item WowheadItemResponse) GetWeaponDamage() (float64, float64) {
 	noCommas := strings.ReplaceAll(item.Tooltip, ",", "")
+	min, max := 0.0, 0.0
+
+	// Base damage
 	if matches := weaponDamageRegex.FindStringSubmatch(noCommas); len(matches) > 0 {
-		min, err := strconv.ParseFloat(matches[1], 64)
+		minVal, err := strconv.ParseFloat(matches[1], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		max, err := strconv.ParseFloat(matches[2], 64)
+		maxVal, err := strconv.ParseFloat(matches[2], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		if min > max {
+		if minVal > maxVal {
 			log.Fatalf("Invalid weapon damage for item %s: min = %0.1f, max = %0.1f", item.Name, min, max)
 		}
-		return min, max
+		min, max = minVal, maxVal
 	} else if matches := weaponDamageRegex2.FindStringSubmatch(noCommas); len(matches) > 0 {
 		val, err := strconv.ParseFloat(matches[1], 64)
 		if err != nil {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
-		return val, val
+		min, max = val, val
 	}
-	return 0, 0
+
+	// Add effects like Thunderfury + 16 - 30 Nature Damage that were intended for bonus school damage on top of the base weapon damage
+	if matches := weaponDamageBonusSchoolRegex.FindStringSubmatch(noCommas); len(matches) > 0 {
+		minVal, err := strconv.ParseFloat(matches[1], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		maxVal, err := strconv.ParseFloat(matches[2], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		if minVal > maxVal {
+			log.Fatalf("Invalid bonus school weapon damage for item %s: min = %0.1f, max = %0.1f", item.Name, min, max)
+		}
+
+		min += minVal
+		max += maxVal
+	}
+
+	return min, max
 }
 
 func (item WowheadItemResponse) GetWeaponSpeed() float64 {
@@ -633,6 +658,7 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
+
 	itemProto := &proto.UIItem{
 		Id:   item.ID,
 		Name: item.GetName(),
@@ -677,6 +703,22 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 }
 
 var itemSetNameRegex = regexp.MustCompile(`<a href="/classic/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
+
+func (item WowheadItemResponse) GetItemSetID() int {
+	idStr := item.GetTooltipRegexString(itemSetNameRegex, 1)
+	id, _ := strconv.Atoi(idStr)
+	return id
+
+	// // Strip out the 10/25 man prefixes from set names
+	// withoutTier := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(original, "Heroes' "), "Valorous "), "Conqueror's "), "Triumphant "), "Sanctified ")
+	// if original != withoutTier { // if we found a tier prefix, return now.
+	// 	return withoutTier
+	// }
+
+	// // Now strip out the season prefix from any pvp set names
+	// withoutPvp := strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(original, "Savage Glad", "Glad", 1), "Hateful Glad", "Glad", 1), "Deadly Glad", "Glad", 1), "Furious Glad", "Glad", 1), "Relentless Glad", "Glad", 1), "Wrathful Glad", "Glad", 1)
+	// return withoutPvp
+}
 
 func (item WowheadItemResponse) GetItemSetName() string {
 	return item.GetTooltipRegexString(itemSetNameRegex, 3)

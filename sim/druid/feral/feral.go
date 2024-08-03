@@ -47,8 +47,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	cat.maxRipTicks = druid.RipTicks
 
 	cat.EnableEnergyBar(100.0)
-
-	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1})
+	cat.EnableRageBar(core.RageBarOptions{DamageDealtMultiplier: 1, DamageTakenMultiplier: 1})
 
 	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
 		// Base paw weapon.
@@ -59,6 +58,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 			return cat.checkReplaceMaul(sim, mhSwingSpell)
 		}*/
+
+	cat.PseudoStats.FeralCombatEnabled = true
 
 	return cat
 }

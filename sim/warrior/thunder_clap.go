@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+// Thunder Clap now increases the time between attacks by an additional 6%, can be used in any stance, deals 100% increased damage, and deals 50% increased threat.
 func (warrior *Warrior) registerThunderClapSpell() {
 	hasFuriousThunder := warrior.HasRune(proto.WarriorRune_RuneFuriousThunder)
 
@@ -21,13 +22,26 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		60: {spellID: 11581, baseDamage: 103, duration: time.Second * 30},
 	}[warrior.Level]
 
+	damageMultiplier := 1.0
+	threatMultiplier := 2.5
+	apCoef := 0.05
+	attackSpeedReduction := int32(10)
+	stanceMask := BattleStance
+
+	if hasFuriousThunder {
+		damageMultiplier *= 2
+		threatMultiplier *= 1.5
+		attackSpeedReduction += 6
+		stanceMask = AnyStance
+	}
+
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, Level int32) *core.Aura {
-		return core.ThunderClapAura(target, info.spellID, info.duration, core.TernaryInt32(hasFuriousThunder, 16, 10))
+		return core.ThunderClapAura(target, info.spellID, info.duration, attackSpeedReduction)
 	})
 
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
-	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
+	warrior.ThunderClap = warrior.RegisterSpell(stanceMask, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMagic,
@@ -47,18 +61,15 @@ func (warrior *Warrior) registerThunderClapSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hasFuriousThunder || warrior.StanceMatches(BattleStance) || warrior.StanceMatches(GladiatorStance)
-		},
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: core.TernaryFloat64(hasFuriousThunder, 2, 1),
-		ThreatMultiplier: core.TernaryFloat64(hasFuriousThunder, 2.5*1.5, 2.5),
+		DamageMultiplier: damageMultiplier,
+		ThreatMultiplier: threatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				results[idx] = spell.CalcDamage(sim, target, info.baseDamage, spell.OutcomeMagicHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, info.baseDamage+apCoef*spell.MeleeAttackPower(), spell.OutcomeMagicHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 

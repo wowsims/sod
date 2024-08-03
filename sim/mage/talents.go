@@ -21,7 +21,7 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
-		threatMultiplier := .20 * float64(mage.Talents.ArcaneSubtlety)
+		threatMultiplier := 1 - .20*float64(mage.Talents.ArcaneSubtlety)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
 				spell.ThreatMultiplier *= threatMultiplier
@@ -118,7 +118,7 @@ func (mage *Mage) applyFrostTalents() {
 	if mage.Talents.ElementalPrecision > 0 {
 		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+			if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
 				spell.BonusHitRating += bonusHit
 			}
 		})
@@ -508,7 +508,7 @@ func (mage *Mage) applyWintersChill() {
 	procChance := float64(mage.Talents.WintersChill) * 0.2
 
 	wcAuras := mage.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return core.WintersChillAura(target, 0)
+		return core.WintersChillAura(target)
 	})
 	mage.Env.RegisterPreFinalizeEffect(func() {
 		for _, spell := range mage.GetSpellsMatchingSchool(core.SpellSchoolFrost) {

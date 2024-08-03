@@ -12,7 +12,6 @@ func init() {
 	RegisterElementalShaman()
 }
 
-// TODO: Update test data when phase 3 gear is added
 func TestElemental(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
@@ -66,92 +65,30 @@ func TestElemental(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-	}))
-}
+		{
+			Class:      proto.Class_ClassShaman,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceTroll,
-					Class:         proto.Class_ClassShaman,
-					Level:         25,
-					TalentsString: Phase1Talents,
-					Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1").Rotation,
-					Buffs:         core.FullIndividualBuffsPhase1,
-					Consumes:      Phase1Consumes.Consumes,
-					Spec:          PlayerOptionsAdaptive,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(25),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
+			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceTroll,
-					Class:         proto.Class_ClassShaman,
-					Level:         40,
-					TalentsString: Phase2Talents,
-					Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2").Rotation,
-					Buffs:         core.FullIndividualBuffsPhase2,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          PlayerOptionsAdaptive,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceTroll,
-					Class:         proto.Class_ClassShaman,
-					Level:         50,
-					TalentsString: Phase3Talents,
-					Equipment:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_3").Rotation,
-					Buffs:         core.FullIndividualBuffsPhase3,
-					Consumes:      Phase3Consumes.Consumes,
-					Spec:          PlayerOptionsAdaptive,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase3,
-				core.FullDebuffsPhase3,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(50),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
+	}))
 }
 
 var Phase1Talents = "25003105"
 var Phase2Talents = "550031550000151"
 var Phase3Talents = "550031550000151-500203"
+var Phase4Talents = "550301550000151--50205300005"
 
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
@@ -191,6 +128,19 @@ var Phase3Consumes = core.ConsumesCombo{
 		OffHandImbue:   proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_ArcaneElixir,
 		StrengthBuff:   proto.StrengthBuff_ElixirOfGiants,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
+		OffHandImbue:   proto.WeaponImbue_ConductiveShieldCoating,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
 

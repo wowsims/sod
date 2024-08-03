@@ -7,16 +7,12 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (shaman *Shaman) applyShamanisticRage() {
-	if !shaman.HasRune(proto.ShamanRune_RuneLegsShamanisticRage) {
-		return
-	}
-
+func (shaman *Shaman) registerShamanisticRageCD() {
 	damageTakenMultiplier := .8
 	duration := time.Second * 15
 	cooldown := time.Minute * 1
 
-	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsShamanisticRage)}
+	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneUtilityShamnisticRage)}
 	manaMetrics := shaman.NewManaMetrics(actionID)
 	srAura := shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
@@ -44,7 +40,7 @@ func (shaman *Shaman) applyShamanisticRage() {
 
 	srSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		Flags:    SpellFlagShaman | core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
 			CD: core.Cooldown{

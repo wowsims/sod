@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -14,7 +15,7 @@ func applyRaceEffects(agent Agent) {
 	switch character.Race {
 	case proto.Race_RaceDwarf:
 		character.AddStat(stats.FrostResistance, 10)
-		character.PseudoStats.GunsSkill += 5
+		character.GunSpecializationAura()
 
 		actionID := ActionID{SpellID: 20594}
 
@@ -55,15 +56,15 @@ func applyRaceEffects(agent Agent) {
 		character.MultiplyStat(stats.Intellect, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.05)
-		character.PseudoStats.MacesSkill += 5
-		character.PseudoStats.TwoHandedMacesSkill += 5
-		character.PseudoStats.SwordsSkill += 5
-		character.PseudoStats.TwoHandedSwordsSkill += 5
+		character.SwordSpecializationAura()
+		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
 		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
+		character.AxeSpecializationAura()
+
 		// Command (Pet damage +5%)
 		for _, pet := range character.Pets {
 			pet.PseudoStats.DamageDealtMultiplier *= 1.05
@@ -78,7 +79,7 @@ func applyRaceEffects(agent Agent) {
 			Duration: time.Second * 15,
 			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
 			OnGain: func(aura *Aura, sim *Simulation) {
-				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * 2)) * 0.25
+				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * APPerStrength[character.Class]) + (character.GetStat(stats.Agility) * APPerAgility[character.Class])) * 0.25
 				character.AddStatDynamic(sim, stats.AttackPower, bloodFuryAP)
 			},
 
@@ -108,16 +109,12 @@ func applyRaceEffects(agent Agent) {
 			Spell: spell,
 			Type:  CooldownTypeDPS,
 		})
-
-		// Axe specialization
-		character.PseudoStats.AxesSkill += 5
-		character.PseudoStats.TwoHandedAxesSkill += 5
 	case proto.Race_RaceTauren:
 		character.AddStat(stats.NatureResistance, 10)
 		character.MultiplyStat(stats.Health, 1.05)
 	case proto.Race_RaceTroll:
-		character.PseudoStats.BowsSkill += 5
-		character.PseudoStats.ThrownSkill += 5
+		character.BowSpecializationAura()
+		character.ThrownSpecializationAura()
 
 		// Beast Slaying (+5% damage to beasts)
 		character.Env.RegisterPostFinalizeEffect(func() {
@@ -245,4 +242,12 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 		Spell: berserkingSpell,
 		Type:  CooldownTypeDPS,
 	})
+}
+
+func (character *Character) IsAlliance() bool {
+	return slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race)
+}
+
+func (character *Character) IsHorde() bool {
+	return slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race)
 }

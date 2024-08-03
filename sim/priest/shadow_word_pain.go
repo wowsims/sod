@@ -46,7 +46,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagPureDot,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -60,13 +60,10 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
+		CritDamageBonus: priest.periodicCritBonus(),
 
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier() * priest.darknessDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: priest.darknessDamageModifier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -111,15 +108,6 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 					spell.Dot(result.Target).Apply(sim)
 				}
 				spell.DealOutcome(sim, result)
-			}
-		},
-
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
-			} else {
-				return spell.CalcPeriodicDamage(sim, target, baseDotDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
 	}

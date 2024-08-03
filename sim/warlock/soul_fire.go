@@ -4,48 +4,45 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const SoulFireRanks = 2
+const SoulFireCastTime = time.Millisecond * 6000
+
 func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
-	spellId := [3]int32{0, 6353, 17924}[rank]
-	baseDamage := [3][]float64{{0, 0}, {628, 789}, {715, 894}}[rank]
-	manaCost := [3]float64{0, 305, 335}[rank]
-	level := [3]int{0, 48, 56}[rank]
+	hasDecimationRune := warlock.HasRune(proto.WarlockRune_RuneCloakDecimation)
+
+	spellId := [SoulFireRanks + 1]int32{0, 6353, 17924}[rank]
+	baseDamage := [SoulFireRanks + 1][]float64{{0, 0}, {628, 789}, {715, 894}}[rank]
+	manaCost := [SoulFireRanks + 1]float64{0, 305, 335}[rank]
+	level := [SoulFireRanks + 1]int{0, 48, 56}[rank]
 	spellCoeff := 1.0
 
-	return core.SpellConfig{
+	config := core.SpellConfig{
+		SpellCode:     SpellCode_WarlockSoulFire,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | SpellFlagLoF,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - float64(warlock.Talents.Cataclysm)*0.01,
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * (6000 - 400*time.Duration(warlock.Talents.Bane)),
-			},
-			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
-				Duration: time.Minute,
+				CastTime: SoulFireCastTime,
 			},
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.Emberstorm),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamage[0], baseDamage[1])
@@ -55,16 +52,24 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 			})
 		},
 	}
+
+	if !hasDecimationRune {
+		config.Cast.CD = core.Cooldown{
+			Timer:    warlock.NewTimer(),
+			Duration: time.Minute,
+		}
+	}
+
+	return config
 }
 
 func (warlock *Warlock) registerSoulFireSpell() {
-	maxRank := 2
-
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getSoulFireBaseConfig(i)
+	warlock.SoulFire = make([]*core.Spell, 0)
+	for rank := 1; rank <= SoulFireRanks; rank++ {
+		config := warlock.getSoulFireBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
-			warlock.SoulFire = warlock.GetOrRegisterSpell(config)
+			warlock.SoulFire = append(warlock.SoulFire, warlock.GetOrRegisterSpell(config))
 		}
 	}
 }

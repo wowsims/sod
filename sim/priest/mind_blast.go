@@ -37,15 +37,15 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 	manaCost := MindBlastManaCost[rank]
 	level := MindBlastLevel[rank]
 
-	hasPainAndSuffering := priest.HasRune(proto.PriestRune_RuneHelmPainAndSuffering)
 	hasMindSpike := priest.HasRune(proto.PriestRune_RuneWaistMindSpike)
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestMindBlast,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -65,24 +65,21 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			},
 		},
 
-		BonusCritRating: priest.forceOfWillCritRating(),
-		BonusHitRating:  priest.shadowHitModifier(),
-
-		DamageMultiplier: priest.forceOfWillDamageModifier(),
-		ThreatMultiplier: priest.shadowThreatModifier(),
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			var mindSpike *core.Aura
+			var mindSpikeAura *core.Aura
 			if hasMindSpike {
-				mindSpike = priest.MindSpikeAuras.Get(target)
+				mindSpikeAura = priest.MindSpikeAuras.Get(target)
 			}
 
 			oldBonusCrit := spell.BonusCritRating
 			oldMultiplier := spell.DamageMultiplier
-			spell.BonusCritRating += float64(mindSpike.GetStacks()) * 30 * core.CritRatingPerCritChance
+			spell.BonusCritRating += float64(mindSpikeAura.GetStacks()) * 30 * core.CritRatingPerCritChance
 			spell.DamageMultiplier *= priest.MindBlastModifier
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -92,16 +89,8 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
-				if mindSpike != nil {
-					mindSpike.Deactivate(sim)
-				}
-
-				if hasPainAndSuffering {
-					for _, spell := range priest.ShadowWordPain {
-						if spell != nil && spell.Dot(target).IsActive() {
-							spell.Dot(target).Rollover(sim)
-						}
-					}
+				if mindSpikeAura != nil {
+					mindSpikeAura.Deactivate(sim)
 				}
 			}
 

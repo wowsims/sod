@@ -46,11 +46,13 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolHoly,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		SpellCode:   SpellCode_PriestHolyFire,
+		ActionID:    core.ActionID{SpellID: spellId},
+		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -65,24 +67,24 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating: priest.holySpecCritRating() + priest.forceOfWillCritRating(),
-
-		CritDamageBonus: core.TernaryFloat64(hasDespairRune, 1, 0),
-
-		DamageMultiplier: priest.searingLightDamageModifier() * priest.forceOfWillDamageModifier(),
-		ThreatMultiplier: 1,
 		BonusCoefficient: directCoeff,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Holy Fire (Rank %d)", rank),
 			},
+
 			NumberOfTicks:    ticks,
 			TickLength:       time.Second * 2,
 			BonusCoefficient: dotCoeff,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, dotDamage, isRollover)
 			},
+
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
@@ -99,15 +101,6 @@ func (priest *Priest) getHolyFireConfig(rank int) core.SpellConfig {
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealDamage(sim, result)
-		},
-
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeExpectedMagicAlwaysHit)
-			} else {
-				return spell.CalcPeriodicDamage(sim, target, dotDamage, spell.OutcomeExpectedMagicAlwaysHit)
-			}
 		},
 	}
 }

@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -14,12 +15,12 @@ func (druid *Druid) registerSunfireSpell() {
 		return
 	}
 
-	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
-	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
+	druid.SunfireDotMultiplier = 1
 
-	baseDamageLow := druid.baseRuneAbilityDamage() * 1.3 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDamageHigh := druid.baseRuneAbilityDamage() * 1.52 * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := druid.baseRuneAbilityDamage() * 0.65 * moonfuryMultiplier * impMoonfireMultiplier
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
+	baseDamageLow := druid.baseRuneAbilityDamage() * 1.3 * talentBaseMultiplier
+	baseDamageHigh := druid.baseRuneAbilityDamage() * 1.52 * talentBaseMultiplier
+	baseDotDamage := druid.baseRuneAbilityDamage() * 0.65 * talentBaseMultiplier
 
 	druid.registerSunfireHumanoidSpell(baseDamageLow, baseDamageHigh, baseDotDamage)
 	druid.registerSunfireCatSpell(baseDamageLow, baseDamageHigh, baseDotDamage)
@@ -29,8 +30,6 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneHandsSunfire)}
 	spellCoeff := .15
 	dotCoeff := .13
-
-	druid.SunfireDotMultiplier = 1
 
 	config := druid.getSunfireBaseSpellConfig(
 		actionID,
@@ -44,6 +43,7 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 		func(_ *core.Simulation, _ *core.Spell) {},
 	)
 
+	config.SpellCode = SpellCode_DruidSunfire
 	config.ManaCost = core.ManaCostOptions{
 		BaseCost: 0.21,
 	}
@@ -108,23 +108,24 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:    "Sunfire",
+				Label:    fmt.Sprintf("Sunfire %d", actionID.SpellID),
 				ActionID: actionID,
 			},
 			NumberOfTicks: SunfireTicks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := getBaseDotDamage(dot.Spell)
-				dot.Snapshot(target, baseDamage, isRollover)
+				dot.Snapshot(target, getBaseDotDamage(dot.Spell), isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.SunfireDotMultiplier
+				if !druid.form.Matches(Moonkin) {
+					dot.SnapshotCritChance = 0
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
 			},
 		},
 
-		BonusCritRating: druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
-
+		BonusCritRating: druid.ImprovedMoonfireCritBonus(),
 		CritDamageBonus: druid.vengeance(),
 
 		DamageMultiplier: 1,

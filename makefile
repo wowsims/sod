@@ -14,6 +14,7 @@ HTML_INDECIES := ui/balance_druid/index.html \
 				 ui/elemental_shaman/index.html \
 				 ui/enhancement_shaman/index.html \
 				 ui/restoration_shaman/index.html \
+				 ui/warden_shaman/index.html \
 				 ui/hunter/index.html \
 				 ui/mage/index.html \
 				 ui/rogue/index.html \
@@ -26,7 +27,7 @@ HTML_INDECIES := ui/balance_druid/index.html \
 				 ui/warlock/index.html \
 				 ui/tank_warlock/index.html \
 				 ui/warrior/index.html \
-				 ui/protection_warrior/index.html \
+				 ui/tank_warrior/index.html \
 				 ui/raid/index.html \
 				 ui/detailed_results/index.html
 

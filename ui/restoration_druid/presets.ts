@@ -1,17 +1,6 @@
 import * as PresetUtils from '../core/preset_utils.js';
-import {
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	IndividualBuffs,
-	PartyBuffs,
-	RaidBuffs,
-	TristateEffect,
-	UnitReference} from '../core/proto/common.js';
-import {
-	RestorationDruid_Options as RestorationDruidOptions,
-} from '../core/proto/druid.js';
+import { Consumes, Debuffs, Flask, Food, IndividualBuffs, PartyBuffs, RaidBuffs, TristateEffect, UnitReference } from '../core/proto/common.js';
+import { RestorationDruid_Options as RestorationDruidOptions } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import BlankGear from './gear_sets/blank.gear.json';
 
@@ -60,8 +49,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 });
 
-export const DefaultPartyBuffs = PartyBuffs.create({
-});
+export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,

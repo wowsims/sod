@@ -42,10 +42,17 @@ var rakeSpells = []RakeRankInfo{
 	},
 }
 
-// SoD balance passive EFFECT1 and EFFECT2 mod for Rake
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
 // Mod Eff# should be base value only.
-var baseDmgMultiplier = 1.5
+// Modifies Effect #1's Value +126%:
+// Modifies Effect #2's Value +126%:
+const RakeBaseDmgMultiplier = 2.25
+
+// See https://www.wowhead.com/classic/news/development-notes-for-phase-4-ptr-season-of-discovery-new-runes-class-changes-342896
+// - Rake and Rip damage contributions from attack power increased by roughly 50%.
+// PTR testing comes out to .0993377 AP scaling
+// damageCoef := .04
+const RakeDamageCoef = 0.09
 
 func (druid *Druid) registerRakeSpell() {
 	// Add highest available rake rank for level.
@@ -59,10 +66,14 @@ func (druid *Druid) registerRakeSpell() {
 }
 
 func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
-	damageInitial := rakeRank.initialDamage * baseDmgMultiplier
-	damageDotTick := rakeRank.dotTickDamage * baseDmgMultiplier
+	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
+
+	baseDamageInitial := rakeRank.initialDamage * RakeBaseDmgMultiplier
+	baseDamageTick := rakeRank.dotTickDamage * RakeBaseDmgMultiplier
+	energyCost := 40 - float64(druid.Talents.Ferocity)
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidRake,
 		ActionID:    core.ActionID{SpellID: rakeRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -70,7 +81,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   40 - float64(druid.Talents.Ferocity),
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -90,20 +101,20 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := damageDotTick + 0.04*dot.Spell.MeleeAttackPower()
+				damage := baseDamageTick + RakeDamageCoef*dot.Spell.MeleeAttackPower()
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				if has4PCenarionCunning {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := damageInitial + 0.04*spell.MeleeAttackPower()
-			if druid.BleedCategories.Get(target).AnyActive() {
-				baseDamage *= 1.3
-			}
-
+			baseDamage := baseDamageInitial + RakeDamageCoef*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -115,7 +126,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := damageInitial + 0.04*spell.MeleeAttackPower()
+			baseDamage := baseDamageInitial + RakeDamageCoef*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
@@ -125,7 +136,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := damageDotTick + 0.04*spell.MeleeAttackPower()
+			tickBase := baseDamageTick + RakeDamageCoef*spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 			return ticks
 		},

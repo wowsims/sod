@@ -13,6 +13,10 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyGaleWinds()
 	druid.applyGore()
 
+	// Cloak
+	druid.registerStarfallCD()
+	druid.registerSwipeCatSpell()
+
 	// Chest
 	druid.applyFuryOfStormRage()
 	druid.applyWildStrikes()
@@ -69,7 +73,7 @@ func (druid *Druid) applyGore() {
 
 const (
 	Gore_BearResetProcChance = .15
-	Gore_CatResetProcChance  = .05
+	Gore_CatResetProcChance  = .15
 )
 
 // TODO: Bear spells not implemented: MangleBear, Swipe, Maul
@@ -213,29 +217,38 @@ func (druid *Druid) applyElunesFires() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			switch spell.SpellCode {
+			case SpellCode_DruidWrath:
+				druid.tryElunesFiresSunfireExtension(sim, result.Target)
+			case SpellCode_DruidStarfire:
+				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
+			case SpellCode_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
+				druid.tryElunesFiresSunfireExtension(sim, result.Target)
+				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
+			case SpellCode_DruidShred:
+				druid.tryElunesFiresRipExtension(sim, result.Target)
+			}
+		},
 	})
 }
 
 const (
-	ElunesFires_MaxExtensions = 3
-
 	ElunesFires_BonusMoonfireTicks = int32(2)
 	ElunesFires_BonusSunfireTicks  = int32(1)
 	ElunesFires_BonusRipTicks      = int32(1)
-
-	ElunesFires_MaxBonusMoonfireTicks = ElunesFires_BonusMoonfireTicks * ElunesFires_MaxExtensions
-	ElunesFires_MaxSunfireTicks       = SunfireTicks + ElunesFires_BonusSunfireTicks*ElunesFires_MaxExtensions
-	ElunesFires_MaxRipTicks           = RipTicks + ElunesFires_BonusRipTicks*ElunesFires_MaxExtensions
 )
 
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
-	for _, moonfire := range druid.Moonfire {
-		if moonfire != nil {
-			if dot := moonfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < MoonfireDotTicks[moonfire.Rank]+ElunesFires_MaxBonusMoonfireTicks {
-				dot.NumberOfTicks += ElunesFires_BonusMoonfireTicks
-				dot.RecomputeAuraDuration()
-				dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickPeriod())
-			}
+	for _, spell := range druid.Moonfire {
+		if dot := spell.Dot(unit); dot.IsActive() {
+			dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusMoonfireTicks, dot.OriginalNumberOfTicks)
+			dot.RecomputeAuraDuration()
+			dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
 		}
 	}
 }
@@ -244,18 +257,18 @@ func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *c
 	if druid.Sunfire == nil {
 		return
 	}
-	if dot := druid.Sunfire.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxSunfireTicks {
-		dot.NumberOfTicks += ElunesFires_BonusSunfireTicks
+	if dot := druid.Sunfire.Dot(unit); dot.IsActive() {
+		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusSunfireTicks, dot.OriginalNumberOfTicks)
 		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickPeriod())
+		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
 	}
 }
 
 func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.Unit) {
-	if dot := druid.Rip.Dot(unit); dot.IsActive() && dot.NumberOfTicks < ElunesFires_MaxRipTicks {
-		dot.NumberOfTicks += ElunesFires_BonusRipTicks
+	if dot := druid.Rip.Dot(unit); dot.IsActive() {
+		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusRipTicks, dot.OriginalNumberOfTicks)
 		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, dot.ExpiresAt()+time.Duration(ElunesFires_BonusRipTicks)*dot.TickPeriod())
+		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
 	}
 }
 

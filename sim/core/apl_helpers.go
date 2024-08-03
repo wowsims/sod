@@ -132,19 +132,24 @@ func (rot *APLRotation) GetAPLSpell(spellId *proto.ActionID) *Spell {
 	var spell *Spell
 
 	if actionID.IsOtherAction(proto.OtherAction_OtherActionPotion) {
-		if rot.parsingPrepull {
-			for _, s := range rot.unit.Spellbook {
-				if s.Flags.Matches(SpellFlagPrepullPotion) {
-					spell = s
-					break
-				}
+		for _, s := range rot.unit.Spellbook {
+			if s.Flags.Matches(SpellFlagPotion) {
+				spell = s
+				break
 			}
-		} else {
-			for _, s := range rot.unit.Spellbook {
-				if s.Flags.Matches(SpellFlagCombatPotion) {
-					spell = s
-					break
-				}
+		}
+	} else if actionID.IsOtherAction(proto.OtherAction_OtherActionOffensiveEquip) {
+		for _, s := range rot.unit.Spellbook {
+			if s.Flags.Matches(SpellFlagMCD) && s.Flags.Matches(SpellFlagOffensiveEquipment) {
+				spell = s
+				break
+			}
+		}
+	} else if actionID.IsOtherAction(proto.OtherAction_OtherActionDefensiveEquip) {
+		for _, s := range rot.unit.Spellbook {
+			if s.Flags.Matches(SpellFlagMCD) && s.Flags.Matches(SpellFlagDefensiveEquipment) {
+				spell = s
+				break
 			}
 		}
 	} else {

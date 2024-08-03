@@ -33,6 +33,7 @@ import {
 } from './proto/common.js';
 import {
 	DungeonFilterOption,
+	ExcludedZones,
 	RaidFilterOption,
 	SourceFilterOption,
 	UIEnchant as Enchant,
@@ -243,9 +244,10 @@ export class Player<SpecType extends Spec> {
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
-	private isbSbFrequency = 0.0;
-	private isbCrit = 0.0;
-	private isbWarlocks = 0;
+	private isbUsingShadowflame = true;
+	private isbSbFrequency = 3.0;
+	private isbCrit = 25.0;
+	private isbWarlocks = 1.0;
 	private isbSpriests = 0;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
@@ -425,6 +427,10 @@ export class Player<SpecType extends Spec> {
 
 	getRunes(slot: ItemSlot): Array<Rune> {
 		return this.sim.db.getRunes(slot, this.getClass());
+	}
+
+	hasRune(slot: ItemSlot, runeId: number): boolean {
+		return this.getEquippedItem(slot)?.rune?.id === runeId;
 	}
 
 	getEpWeights(): Stats {
@@ -689,7 +695,7 @@ export class Player<SpecType extends Spec> {
 		const meleeHit = (this.currentStats.finalStats?.stats[Stat.StatMeleeHit] || 0.0) / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
 		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertise] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
 		const suppression = 4.8;
-		const glancing = 24.0;
+		const glancing = 40.0;
 
 		const hasOffhandWeapon = this.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed !== undefined;
 		// Due to warrior HS bug, hit cap for crit cap calculation should be 8% instead of 27%
@@ -948,6 +954,17 @@ export class Player<SpecType extends Spec> {
 		this.healingModelChangeEmitter.emit(eventID);
 	}
 
+	getIsbUsingShadowflame(): boolean {
+		return this.isbUsingShadowflame;
+	}
+
+	setIsbUsingShadowflame(eventID: EventID, newValue: boolean) {
+		if (newValue == this.isbUsingShadowflame) return;
+
+		this.isbUsingShadowflame = newValue;
+		this.changeEmitter.emit(eventID);
+	}
+
 	getIsbSbFrequency(): number {
 		return this.isbSbFrequency;
 	}
@@ -1099,6 +1116,13 @@ export class Player<SpecType extends Spec> {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
 
+		if (filters.minIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+		}
+		if (filters.maxIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
+
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
 				itemData,
@@ -1132,15 +1156,29 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceRaid)) {
+			const zoneIds: Array<number> = [];
 			for (const zoneName in RaidFilterOption) {
 				const zoneId = RaidFilterOption[zoneName];
 
-				if (typeof zoneId == 'number') {
-					itemData = filterItems(
-						itemData,
-						item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
-					);
+				if (typeof zoneId == 'number' && zoneId != 0) {
+					zoneIds.push(zoneId);
 				}
+			}
+
+			itemData = filterItems(
+				itemData,
+				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
+			);
+		}
+
+		for (const zoneName in ExcludedZones) {
+			const zoneId = ExcludedZones[zoneName];
+
+			if (typeof zoneId == 'number' && zoneId != 0) {
+				itemData = filterItems(
+					itemData,
+					item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
+				);
 			}
 		}
 
@@ -1203,6 +1241,7 @@ export class Player<SpecType extends Spec> {
 				return true;
 			});
 		}
+
 		return itemData;
 	}
 
@@ -1284,6 +1323,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				isbUsingShadowflame: this.getIsbUsingShadowflame(),
 				isbSbFrequency: this.getIsbSbFrequency(),
 				isbCrit: this.getIsbCrit(),
 				isbWarlocks: this.getIsbWarlocks(),

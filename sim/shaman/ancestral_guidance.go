@@ -25,7 +25,7 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagIgnoreResists,
+		Flags:       SpellFlagShaman | core.SpellFlagIgnoreResists,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -35,7 +35,7 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		ActionID:    core.ActionID{SpellID: 409333}, // AG Damage has its own Spell ID
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful,
+		Flags:       SpellFlagShaman | core.SpellFlagHelpful,
 	})
 
 	agAura := shaman.RegisterAura(core.Aura{
@@ -68,8 +68,8 @@ func (shaman *Shaman) applyAncestralGuidance() {
 
 	agCDSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolFire,
-		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
+		SpellSchool: core.SpellSchoolNature,
+		Flags:       SpellFlagShaman | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

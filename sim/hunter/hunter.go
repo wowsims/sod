@@ -3,13 +3,26 @@ package hunter
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{16, 14, 16}
+
+const (
+	SpellFlagShot = core.SpellFlagAgentReserved1
+)
+
+const (
+	SpellCode_HunterNone int32 = iota
+
+	SpellCode_HunterAimedShot
+	SpellCode_HunterMongooseBite
+	SpellCode_HunterRaptorStrike
+	SpellCode_HunterMultiShot
+)
 
 func RegisterHunter() {
 	core.RegisterAgentFactory(
@@ -56,13 +69,21 @@ type Hunter struct {
 	FocusFire      *core.Spell
 	RapidFire      *core.Spell
 	RaptorStrike   *core.Spell
+	RaptorStrikeMH *core.Spell
+	RaptorStrikeOH *core.Spell
 	FlankingStrike *core.Spell
+	WyvernStrike   *core.Spell
+	MongooseBite   *core.Spell
 	ScorpidSting   *core.Spell
 	SerpentSting   *core.Spell
 	SilencingShot  *core.Spell
+	SteadyShot     *core.Spell
 	Volley         *core.Spell
-	CarveMh        *core.Spell
+	CarveMH        *core.Spell
+	CarveOH        *core.Spell
 	WingClip       *core.Spell
+
+	Shots []*core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -70,6 +91,10 @@ type Hunter struct {
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
+	HitAndRunAura      *core.Aura
+
+	// The aura that allows you to cast Mongoose Bite
+	DefensiveState *core.Aura
 
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
@@ -89,9 +114,14 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.TrueshotAura = true
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-		raidBuffs.AspectOfTheLion = true
-	}
+	raidBuffs.AspectOfTheLion = true
+	// Hunter gains an additional 10% stats from Aspect of the Lion
+	statMultiply := 1.1
+	hunter.MultiplyStat(stats.Strength, statMultiply)
+	hunter.MultiplyStat(stats.Stamina, statMultiply)
+	hunter.MultiplyStat(stats.Agility, statMultiply)
+	hunter.MultiplyStat(stats.Intellect, statMultiply)
+	hunter.MultiplyStat(stats.Spirit, statMultiply)
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
@@ -111,20 +141,33 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerMultiShotSpell(multiShotTimer)
 	hunter.registerChimeraShotSpell()
 	hunter.registerSteadyShotSpell()
+	hunter.registerKillShotSpell()
 
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerFlankingStrikeSpell()
+	hunter.registerWyvernStrikeSpell()
+	hunter.registerMongooseBiteSpell()
 	hunter.registerCarveSpell()
 	hunter.registerWingClipSpell()
+	hunter.registerVolleySpell()
 
-	fireTraps := hunter.NewTimer()
-	frostTraps := hunter.NewTimer()
+	// Trap Launcher rune also splits the cooldowns between frost traps and fire traps, without the rune all traps share a cd
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		fireTraps := hunter.NewTimer()
+		frostTraps := hunter.NewTimer()
 
-	hunter.registerExplosiveTrapSpell(fireTraps)
-	hunter.registerImmolationTrapSpell(fireTraps)
-	hunter.registerFrostTrapSpell(frostTraps)
+		hunter.registerExplosiveTrapSpell(fireTraps)
+		hunter.registerImmolationTrapSpell(fireTraps)
+		hunter.registerFrostTrapSpell(frostTraps)
+	} else {
+		traps := hunter.NewTimer()
 
-	hunter.registerKillCommand()
+		hunter.registerExplosiveTrapSpell(traps)
+		hunter.registerImmolationTrapSpell(traps)
+		hunter.registerFrostTrapSpell(traps)
+	}
+
+	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
 	hunter.registerFocusFireSpell()
 }
@@ -220,15 +263,11 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
 		return hunter.Hardcast.Expires < sim.CurrentTime
 	}
-
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
-
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
-
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
 			hunter.AmmoDamageBonus
-
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -238,13 +277,14 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 
 	hunter.pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	hunter.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(character.Level)]*core.CritRatingPerCritChance)
 	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(character.Level)]*core.SpellCritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&hunter.Character)
+	guardians.ConstructGuardians(&hunter.Character)
+
 	return hunter
 }
 
@@ -257,7 +297,6 @@ func (hunter *Hunter) baseRuneAbilityDamage() float64 {
 }
 
 func (hunter *Hunter) OnGCDReady(_ *core.Simulation) {
-
 }
 
 // Agent is a generic way to access underlying hunter on any of the agents.

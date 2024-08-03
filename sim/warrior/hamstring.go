@@ -26,7 +26,7 @@ func (warrior *Warrior) registerHamstringSpell() {
 		60: 54,
 	}[warrior.Level]
 
-	warrior.Hamstring = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Hamstring = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

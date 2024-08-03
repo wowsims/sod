@@ -44,7 +44,7 @@ message UIFaction {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 28.
+// NextIndex: 30
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -78,6 +78,7 @@ message UIItem {
 
 	// Name of the item set to which this item belongs, if any.
 	string set_name = 23;
+	int32 set_id = 29;
 
 	Expansion expansion = 24;
 	repeated UIItemSource sources = 25;
@@ -177,12 +178,15 @@ message UIEnchant {
 }
 
 message UIRune {
+	reserved 4;
+	reserved "class";
+
 	int32 id = 1; 
 	string name = 2;    
 	string icon = 3;
-	Class class = 4;
 	ItemType type = 5;
 	int32 requires_level = 6;
+	repeated Class class_allowlist = 7;
 }
 
 message IconData {
@@ -233,12 +237,17 @@ enum RaidFilterOption {
 	RaidBlackfathomDeeps = 719;
 	RaidGnomeregan = 721;
 	RaidSunkenTemple = 1477;
-	RaidZulGurub = 1977;
-	RaidBlackwingLair = 2677;
 	RaidMoltenCore = 2717;
-	RaidRuinsOfAQ = 3428;
-	RaidTempleOfAQ = 3429;
-	RaidNaxxramas = 3456;
+}
+
+// Zones not yet available to players
+enum ExcludedZones {
+	ZoneUnknown = 0;
+	ZoneZulGurub = 1977;
+	ZoneBlackwingLair = 2677;
+	ZoneRuinsOfAQ = 3428;
+	ZoneTempleOfAQ = 3429;
+	ZoneNaxxramas = 3456;
 }
 
 // Next tag: 24

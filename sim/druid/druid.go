@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -16,11 +17,24 @@ var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
 	SpellCode_DruidNone int32 = iota
+
+	SpellCode_DruidFaerieFire
+	SpellCode_DruidFaerieFireFeral
+	SpellCode_DruidFerociousBite
+	SpellCode_DruidInsectSwarm
+	SpellCode_DruidMangleCat
+	SpellCode_DruidMangleBear
 	SpellCode_DruidMoonfire
+	SpellCode_DruidRake
+	SpellCode_DruidRip
 	SpellCode_DruidShred
 	SpellCode_DruidStarfire
 	SpellCode_DruidStarsurge
 	SpellCode_DruidWrath
+	SpellCode_DruidStarfall
+	SpellCode_DruidStarfallTick
+	SpellCode_DruidStarfallSplash
+	SpellCode_DruidSunfire
 )
 
 type Druid struct {
@@ -43,9 +57,10 @@ type Druid struct {
 	FerociousBite        *DruidSpell
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
-	Hurricane            []*DruidSpell
-	InsectSwarm          *DruidSpell
 	GiftOfTheWild        *DruidSpell
+	Hurricane            []*DruidSpell
+	Innervate            *DruidSpell
+	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
@@ -61,7 +76,6 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
-	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
@@ -86,9 +100,11 @@ type Druid struct {
 	EnrageAura               *core.Aura
 	EclipseAura              *core.Aura
 	FaerieFireAuras          core.AuraArray
+	ImprovedFaerieFireAuras  core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FurorAura                *core.Aura
 	FuryOfStormrageAura      *core.Aura
+	InsectSwarmAuras         core.AuraArray
 	MaulQueueAura            *core.Aura
 	MoonkinFormAura          *core.Aura
 	NaturesGraceProcAura     *core.Aura
@@ -105,6 +121,7 @@ type Druid struct {
 	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
 	SavageRoarDurationTable        [6]time.Duration
 
+	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	SunfireDotMultiplier  float64
 
@@ -191,7 +208,7 @@ func (druid *Druid) Initialize() {
 
 func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerHurricaneSpell()
-	// druid.registerInsectSwarmSpell()
+	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
@@ -210,7 +227,6 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerRipSpell()
 	druid.registerShredSpell()
 	// druid.registerSwipeBearSpell()
-	// druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
 }
 
@@ -237,9 +253,9 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.disabledMCDs = []*core.MajorCooldown{}
 }
 
-func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
+func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character:    *char,
+		Character:    *character,
 		SelfBuffs:    selfBuffs,
 		Talents:      &proto.DruidTalents{},
 		StartingForm: form,
@@ -249,18 +265,20 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.EnableManaBar()
 
 	// TODO: Class druid physical stats
-	druid.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	druid.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[char.Class][int(druid.Level)]*core.CritRatingPerCritChance)
-	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[char.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
+	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(druid.Level)]*core.CritRatingPerCritChance)
+	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
 	// TODO: Update DodgePerAgiAtLevel with the appropriate value for each level
-	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[char.Class][int(druid.Level)])
+	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(druid.Level)])
 
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
 	// Switch to using AddStat as PseudoStat is being removed
 	// druid.PseudoStats.BaseDodge += 0.056097
+
+	guardians.ConstructGuardians(&druid.Character)
 
 	return druid
 }

@@ -73,6 +73,10 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 			mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
 			manaAura.Activate(sim)
 		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return mage.CurrentMana() > 0
+		},
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{

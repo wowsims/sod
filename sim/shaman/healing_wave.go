@@ -40,14 +40,14 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 
 func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	spellId := HealingWaveSpellId[rank]
-	baseHealingLow := HealingWaveBaseHealing[rank][0]
-	baseHealingHigh := HealingWaveBaseHealing[rank][1]
+	baseHealingLow := HealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := HealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := HealingWaveSpellCoef[rank]
 	castTime := HealingWaveCastTime[rank]
 	manaCost := HealingWaveManaCost[rank]
 	level := HealingWaveLevel[rank]
 
-	flags := core.SpellFlagHelpful | SpellFlagMaelstrom
+	flags := core.SpellFlagHelpful
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -67,8 +67,6 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -78,19 +76,11 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 					castTime-(100*shaman.Talents.ImprovedHealingWave),
 				),
 			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
-				}
-			},
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		BonusCoefficient: spellCoeff,
 

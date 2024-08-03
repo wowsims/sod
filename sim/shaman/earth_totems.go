@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const StrengthOfEarthTotemRanks = 5
@@ -30,6 +31,9 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 	level := StrengthOfEarthTotemLevel[rank]
 
 	duration := time.Second * 120
+	multiplier := []float64{1, 1.08, 1.15}[shaman.Talents.EnhancingTotems]
+
+	hasFeralSpirit := shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit)
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
@@ -38,7 +42,11 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
 
-		core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, []float64{1, 1.08, 1.15}[shaman.Talents.EnhancingTotems]).Activate(sim)
+		core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, multiplier).Activate(sim)
+		if hasFeralSpirit {
+			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier).Activate(sim)
+			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier).Activate(sim)
+		}
 	}
 	return spell
 }
@@ -62,6 +70,8 @@ func (shaman *Shaman) registerStoneskinTotemSpell() {
 }
 
 func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
+	has6PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 6)
+
 	spellId := StoneskinTotemSpellId[rank]
 	manaCost := StoneskinTotemManaCost[rank]
 	level := StoneskinTotemLevel[rank]
@@ -74,6 +84,11 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
+
+		core.StoneskinTotemAura(&shaman.Unit, shaman.Talents.GuardianTotems).Activate(sim)
+		if has6PEarthfuryResolve {
+			core.ImprovedStoneskinTotemAura(&shaman.Unit).Activate(sim)
+		}
 	}
 	return spell
 }

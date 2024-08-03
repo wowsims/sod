@@ -3,6 +3,7 @@ package shaman
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -11,7 +12,7 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagElectric  = core.SpellFlagAgentReserved1
+	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagFocusable = core.SpellFlagAgentReserved3
 	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
@@ -27,7 +28,7 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.EnableManaBar()
 
 	// Add Shaman stat dependencies
-	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	shaman.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
@@ -36,6 +37,15 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
 	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
+
+	if shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit) {
+		shaman.SpiritWolves = &SpiritWolves{
+			SpiritWolf1: shaman.NewSpiritWolf(1),
+			SpiritWolf2: shaman.NewSpiritWolf(2),
+		}
+	}
+
+	guardians.ConstructGuardians(&shaman.Character)
 
 	return shaman
 }
@@ -61,26 +71,23 @@ const (
 
 const (
 	SpellCode_ShamanNone int32 = iota
-	SpellCode_ShamanLightningBolt
-	SpellCode_ShamanChainLightning
-	SpellCode_ShamanLavaBurst
 
+	SpellCode_ShamanChainHeal
+	SpellCode_ShamanChainLightning
 	SpellCode_ShamanEarthShock
+	SpellCode_ShamanFireNova
+	SpellCode_ShamanFireNovaTotem
 	SpellCode_ShamanFlameShock
 	SpellCode_ShamanFrostShock
-
-	SpellCode_ShamanMoltenBlast
-	SpellCode_ShamanFireNova
-
 	SpellCode_ShamanHealingWave
 	SpellCode_ShamanLesserHealingWave
-	SpellCode_ShamanChainHeal
-
-	SpellCode_SearingTotem
-	SpellCode_MagmaTotem
-	SpellCode_FireNovaTotem
-
-	SpellCode_LightningShield
+	SpellCode_ShamanLightningBolt
+	SpellCode_ShamanLightningShield
+	SpellCode_ShamanLavaBurst
+	SpellCode_ShamanMagmaTotem
+	SpellCode_ShamanMoltenBlast
+	SpellCode_ShamanSearingTotem
+	SpellCode_ShamanStormstrike
 )
 
 // Shaman represents a shaman character.
@@ -89,74 +96,62 @@ type Shaman struct {
 
 	Talents *proto.ShamanTalents
 
-	Totems *proto.ShamanTotems
-
-	LightningBolt         []*core.Spell
-	LightningBoltOverload []*core.Spell
-
+	AncestralAwakening     *core.Spell
+	ChainHeal              []*core.Spell
+	ChainHealOverload      []*core.Spell
 	ChainLightning         []*core.Spell
 	ChainLightningOverload []*core.Spell
+	EarthShield            *core.Spell
+	EarthShock             []*core.Spell
+	FeralSpirit            *core.Spell
+	FireNova               *core.Spell
+	FireNovaTotem          []*core.Spell
+	FlameShock             []*core.Spell
+	FrostShock             []*core.Spell
+	GraceOfAirTotem        []*core.Spell
+	HealingStreamTotem     []*core.Spell
+	HealingWave            []*core.Spell
+	HealingWaveOverload    []*core.Spell
+	LavaBurst              *core.Spell
+	LavaBurstOverload      *core.Spell
+	LavaLash               *core.Spell
+	LesserHealingWave      []*core.Spell
+	LightningBolt          []*core.Spell
+	LightningBoltOverload  []*core.Spell
+	LightningShield        []*core.Spell
+	LightningShieldProcs   []*core.Spell // The damage component of lightning shield is a separate spell
+	MagmaTotem             []*core.Spell
+	ManaSpringTotem        []*core.Spell
+	MoltenBlast            *core.Spell
+	RollingThunder         *core.Spell
+	SearingTotem           []*core.Spell
+	StoneskinTotem         []*core.Spell
+	StormstrikeMH          *core.Spell
+	StormstrikeOH          *core.Spell
+	StrengthOfEarthTotem   []*core.Spell
+	TremorTotem            *core.Spell
+	WaterShield            *core.Spell
+	WindfuryTotem          []*core.Spell
+	WindwallTotem          []*core.Spell
 
-	Stormstrike *core.Spell
-
-	ActiveShield     *core.Spell
+	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
 	ActiveShieldAura *core.Aura
 
-	LightningShield []*core.Spell
-	// The damage component of lightning shield is a separate spell
-	LightningShieldProcs []*core.Spell
-
-	EarthShock     []*core.Spell
-	FlameShock     []*core.Spell
-	FlameShockDots []*core.Spell
-	FrostShock     []*core.Spell
+	FlurryAura            *core.Aura
+	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
+	MaelstromWeaponAura   *core.Aura
+	PowerSurgeAura        *core.Aura
 
 	// Totems
-	ActiveTotems [4]*core.Spell
-	// The expiration time of each totem (earth, air, fire, water).
-	TotemExpirations [4]time.Duration
+	ActiveTotems     [4]*core.Spell
+	Totems           *proto.ShamanTotems
+	TotemExpirations [4]time.Duration // The expiration time of each totem (earth, air, fire, water).
 
-	StrengthOfEarthTotem []*core.Spell
-	StoneskinTotem       []*core.Spell
-	TremorTotem          *core.Spell
+	SpiritWolves *SpiritWolves
 
-	SearingTotem  []*core.Spell
-	MagmaTotem    []*core.Spell
-	FireNovaTotem []*core.Spell
+	lastFlameShockTarget *core.Unit // Used by Ancestral Guidance rune
 
-	HealingStreamTotem []*core.Spell
-	ManaSpringTotem    []*core.Spell
-
-	WindfuryTotem   []*core.Spell
-	GraceOfAirTotem []*core.Spell
-
-	// Healing Spells
-	HealingWave         []*core.Spell
-	HealingWaveOverload []*core.Spell
-
-	LesserHealingWave []*core.Spell
-
-	ChainHeal         []*core.Spell
-	ChainHealOverload []*core.Spell
-
-	// Rune Abilities
-	EarthShield       *core.Spell
-	FireNova          *core.Spell
-	LavaBurst         *core.Spell
-	LavaBurstOverload *core.Spell
-	LavaLash          *core.Spell
-	MoltenBlast       *core.Spell
-	RollingThunder    *core.Spell
-	WaterShield       *core.Spell
-
-	MaelstromWeaponAura *core.Aura
-	PowerSurgeAura      *core.Aura
-
-	// Used by Ancestral Guidance rune
-	lastFlameShockTarget *core.Unit
-
-	AncestralAwakening     *core.Spell
-	ancestralHealingAmount float64
+	ancestralHealingAmount float64 // Used by Ancestral Awakening
 }
 
 // Implemented by each Shaman spec.
@@ -192,13 +187,6 @@ func (shaman *Shaman) Initialize() {
 	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
 	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
 
-	if shaman.ItemSwap.IsEnabled() {
-		mh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-		shaman.ApplyRockbiterImbueToItem(mh)
-		oh := shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-		shaman.ApplyRockbiterImbueToItem(oh)
-	}
-
 	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()
 	shaman.registerStoneskinTotemSpell()
@@ -210,6 +198,10 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerManaSpringTotemSpell()
 	shaman.registerWindfuryTotemSpell()
 	shaman.registerGraceOfAirTotemSpell()
+	shaman.registerWindwallTotemSpell()
+
+	// Other Abilities
+	shaman.registerShamanisticRageCD()
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()

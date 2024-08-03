@@ -5,7 +5,6 @@ import (
 
 	item_sets "github.com/wowsims/sod/sim/common/sod/items_sets"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const WrathRanks = 8
@@ -30,15 +29,15 @@ func (druid *Druid) registerWrathSpell() {
 }
 
 func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
+
 	spellId := WrathSpellId[rank]
-	baseDamageLow := WrathBaseDamage[rank][0]
-	baseDamageHigh := WrathBaseDamage[rank][1]
+	baseDamageLow := WrathBaseDamage[rank][0] * talentBaseMultiplier
+	baseDamageHigh := WrathBaseDamage[rank][1] * talentBaseMultiplier
 	spellCoeff := WrathSpellCoeff[rank]
 	manaCost := WrathManaCost[rank]
 	castTime := WrathCastTime[rank]
 	level := WrathLevel[rank]
-
-	hasElunesFires := druid.HasRune(proto.DruidRune_RuneBracersElunesFires)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -72,7 +71,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) * druid.MoonfuryDamageMultiplier()
+			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
@@ -81,10 +80,6 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-
-				if hasElunesFires {
-					druid.tryElunesFiresSunfireExtension(sim, target)
-				}
 			})
 		},
 	}

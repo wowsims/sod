@@ -1,5 +1,4 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
@@ -32,13 +31,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecRestorationShaman>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
 		// Default equipped gear.

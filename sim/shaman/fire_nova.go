@@ -40,7 +40,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagFocusable | core.SpellFlagAPL,
+		Flags:       SpellFlagShaman | SpellFlagFocusable | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -59,9 +59,7 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: shaman.elementalFury(),
-
-		DamageMultiplier: 1 + .05*float64(shaman.Talents.CallOfFlame),
+		DamageMultiplier: shaman.callOfFlameMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 

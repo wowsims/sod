@@ -25,7 +25,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 		SpellSchool:   core.SpellSchoolArcane,
 		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -46,7 +46,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),
@@ -78,6 +78,7 @@ func (hunter *Hunter) registerArcaneShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.ArcaneShot = hunter.GetOrRegisterSpell(config)
+			hunter.Shots = append(hunter.Shots, hunter.ArcaneShot)
 		}
 	}
 }

@@ -29,29 +29,36 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 }
 
 func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig {
+	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
+
 	spellId := LesserHealingWaveSpellId[rank]
-	baseHealingLow := LesserHealingWaveBaseHealing[rank][0]
-	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1]
+	baseHealingLow := LesserHealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := LesserHealingWaveSpellCoef[rank]
 	castTime := LesserHealingWaveCastTime[rank]
 	manaCost := LesserHealingWaveManaCost[rank]
 	level := LesserHealingWaveLevel[rank]
 
+	switch shaman.Ranged().ID {
+	case TotemOfTheStorm:
+		baseHealingLow += 53
+		baseHealingHigh += 53
+	}
+
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_ShamanLesserHealingWave,
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | SpellFlagMaelstrom | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: spellId},
+		SpellCode:    SpellCode_ShamanLesserHealingWave,
+		SpellSchool:  core.SpellSchoolNature,
+		DefenseType:  core.DefenseTypeMagic,
+		ProcMask:     core.ProcMaskSpellHealing,
+		Flags:        core.SpellFlagHelpful | SpellFlagMaelstrom | core.SpellFlagAPL,
+		MetricSplits: 6,
 
 		RequiredLevel: level,
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -61,15 +68,22 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				if hasMaelstromWeaponRune {
+					stacks := shaman.MaelstromWeaponAura.GetStacks()
+					spell.SetMetricsSplit(stacks)
+
+					if stacks > 0 {
+						return
+					}
 				}
+
+				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		BonusCoefficient: spellCoeff,
 

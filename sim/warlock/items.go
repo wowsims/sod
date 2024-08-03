@@ -7,32 +7,28 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const (
+	InfernalPactEssence = 216509
+	ZIlaGular           = 223214
+)
+
 func init() {
-	// core.NewItemEffect(32493, func(agent core.Agent) {
-	// 	warlock := agent.(WarlockAgent).GetWarlock()
-	// 	procAura := warlock.NewTemporaryStatsAura("Ashtongue Talisman Proc", core.ActionID{SpellID: 40478}, stats.Stats{stats.SpellPower: 220}, time.Second*5)
-
-	// 	warlock.RegisterAura(core.Aura{
-	// 		Label:    "Ashtongue Talisman",
-	// 		Duration: core.NeverExpires,
-	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 			aura.Activate(sim)
-	// 		},
-	// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if spell == warlock.Corruption && sim.Proc(0.2, "Ashtongue Talisman of Insight") {
-	// 				procAura.Activate(sim)
-	// 			}
-	// 		},
-	// 	})
-	// })
-
 	// Infernal Pact Essence
-	core.NewItemEffect(216509, func(agent core.Agent) {
+	core.NewItemEffect(InfernalPactEssence, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
 
-		if warlock.Pet != nil {
-			warlock.Pet.AddStat(stats.Stamina, 20)
-			warlock.Pet.AddStat(stats.Intellect, 80)
+		stats := stats.Stats{
+			stats.Stamina:   20,
+			stats.Intellect: 80,
+		}
+
+		// TODO: Does this affect Infernal or Doomguard?
+		warlock.Felhunter.AddStats(stats)
+		warlock.Imp.AddStats(stats)
+		warlock.Succubus.AddStats(stats)
+		warlock.Voidwalker.AddStats(stats)
+		if warlock.Felguard != nil {
+			warlock.Felguard.AddStats(stats)
 		}
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
@@ -40,6 +36,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -65,7 +62,7 @@ func init() {
 	})
 
 	// Zila Gular
-	core.NewItemEffect(223214, func(agent core.Agent) {
+	core.NewItemEffect(ZIlaGular, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
 
 		warlock.zilaGularAura = warlock.GetOrRegisterAura(core.Aura{
@@ -76,7 +73,7 @@ func init() {
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 448686},
-			Flags:    core.SpellFlagNoOnCastComplete,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

@@ -65,12 +65,30 @@ func TestShadow(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPriest,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_4"),
+			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
 var Phase1Talents = "-20535000001"
 var Phase2Talents = "--5022204002501251"
 var Phase3Talents = "-0055-5022204002501251"
+var Phase4Talents = "0512301302--5002504103501251"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "Phase 1 Consumes",
@@ -98,6 +116,18 @@ var Phase3Consumes = core.ConsumesCombo{
 		Food:            proto.Food_FoodNightfinSoup,
 		MainHandImbue:   proto.WeaponImbue_LesserWizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_ArcaneElixir,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfSupremePower,
+		Food:            proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:   proto.WeaponImbue_WizardOil,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
 	},
 }

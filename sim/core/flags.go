@@ -52,6 +52,9 @@ const (
 	ProcMaskProc
 	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
 	ProcMaskWeaponProc
+	// Mask for Fiery Weapon and Blazefury Medalion that trigger melee procs like Art of War Rune or Vengeance Talent
+	ProcMaskTriggerInstant
+
 )
 
 const (
@@ -153,7 +156,7 @@ func (ho HitOutcome) PartialResistString() string {
 }
 
 // Other flags
-type SpellFlag uint32
+type SpellFlag uint64
 
 // Returns whether there is any overlap between the given masks.
 func (se SpellFlag) Matches(other SpellFlag) bool {
@@ -180,17 +183,23 @@ const (
 	SpellFlagPrepullOnly                                   // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
 	SpellFlagEncounterOnly                                 // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
 	SpellFlagPotion                                        // Indicates this spell is a potion spell.
-	SpellFlagPrepullPotion                                 // Indicates this spell is the prepull potion.
-	SpellFlagCombatPotion                                  // Indicates this spell is the combat potion.
+	SpellFlagOffensiveEquipment                            // Indicates this spell is an offensive equippable item activation spell
+	SpellFlagDefensiveEquipment                            // Indicates this spell a defensive equippable item activation spell
 	SpellFlagResetAttackSwing                              // Indicates this spell resets the melee swing timer.
-	SpellFlagCastTimeNoGCD                                 // Indicates this spell is hunters Auto shot spell
+	SpellFlagCastTimeNoGCD                                 // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
+	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
 	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
+
+	SpellFlagSupressExtraAttack // Mask for Seal of Righteousness, it does not proc Wild Strikes
+	SpellFlagSuppressWeaponProcs // Indicates this spell cannot proc weapon chance on hits or enchants                 
+	SpellFlagSuppressEquipProcs // Indicates this spell cannot proc Equip procs   
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
 	SpellFlagAgentReserved2
 	SpellFlagAgentReserved3
 	SpellFlagAgentReserved4
+	SpellFlagAgentReserved5
 
 	SpellFlagIgnoreModifiers = SpellFlagIgnoreAttackerModifiers | SpellFlagIgnoreTargetModifiers
 )

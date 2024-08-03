@@ -1,30 +1,21 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
+import * as WarlockInputs from '../core/components/inputs/warlock_inputs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	Class,
-	Faction,
-	ItemSlot,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { WarlockRune } from '../core/proto/warlock.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	cssClass: 'tank-warlock-sim-ui',
 	cssScheme: 'warlock',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -37,20 +28,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatSpellHaste,
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
-		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 
 		// Tank stats
 		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatAttackPower,
-		Stat.StatArmorPenetration,
 		Stat.StatAgility,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatDefense,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeHaste,
+		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -67,13 +58,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 		// Tank stats
 		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		Stat.StatDefense,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -92,6 +84,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			[Stat.StatSpellCrit]: 0.53,
 			[Stat.StatSpellHaste]: 0.81,
 			[Stat.StatStamina]: 0.01,
+			[Stat.StatDefense]: 1.5,
+			[Stat.StatFireResistance]: 0.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -113,30 +107,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		WarlockInputs.PetInput,
-		WarlockInputs.ArmorInput,
-		WarlockInputs.WeaponImbueInput,
-	],
-	rotationInputs: WarlockInputs.WarlockRotationConfig,
+	playerIconInputs: [WarlockInputs.PetInput(), WarlockInputs.ArmorInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ResistanceBuff,
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-		BuffDebuffInputs.SpellWintersChillDebuff,
-		...ConsumablesInputs.FROST_POWER_CONFIG,
-	],
-	petConsumeInputs: [
-		ConsumablesInputs.PetScrollOfAgility,
-		ConsumablesInputs.PetScrollOfStrength,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ResistanceBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
+	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			WarlockInputs.PetPoolManaInput,
+			WarlockInputs.PetPoolManaInput(),
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
@@ -158,12 +138,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
@@ -171,19 +153,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [Presets.PresetBuildAff, Presets.PresetBuildDemo, Presets.PresetBuildDestro],
 	},
 
 	autoRotation: player => {
-		const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler
-		// const hasLakeOfFire = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestLakeOfFire
+		let specNumber = player.getTalentTree();
+		const level = player.getLevel();
 
-		// MC vs LoF
-		const specNumber = hasMasterChanneler ? 0 : 1;
-		return Presets.DefaultAPLs[player.getLevel()][specNumber].rotation.rotation!;
+		// Pre-60 had fewer options so it basically came down to master channeler vs no master channeler
+		if (level < 60) {
+			const hasMasterChanneler = player.getEquippedItem(ItemSlot.ItemSlotChest)?.rune?.id == WarlockRune.RuneChestMasterChanneler;
+			specNumber = hasMasterChanneler ? 0 : 1;
+			return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
+		}
+
+		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
 	raidSimPresets: [

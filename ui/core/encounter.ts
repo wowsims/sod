@@ -1,18 +1,24 @@
 import * as Mechanics from './constants/mechanics.js';
 import { UnitMetadataList } from './player.js';
-import { Encounter as EncounterProto, PresetEncounter, PresetTarget,Target as TargetProto } from './proto/common.js';
+import { Encounter as EncounterProto, PresetEncounter, PresetTarget, Target as TargetProto } from './proto/common.js';
 import { Sim } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
+
+const DEFAULT_DURATION = 120;
+const DEFAULT_VARIATION = 15;
+const DEFAULT_EXECUTE_20 = 0.2;
+const DEFAULT_EXECUTE_25 = 0.25;
+const DEFAULT_EXECUTE_35 = 0.35;
 
 // Manages all the settings for an Encounter.
 export class Encounter {
 	readonly sim: Sim;
 
-	private duration = 60;
-	private durationVariation = 5;
-	private executeProportion20 = 0.2;
-	private executeProportion25 = 0.25;
-	private executeProportion35 = 0.35;
+	private duration = DEFAULT_DURATION;
+	private durationVariation = DEFAULT_VARIATION;
+	private executeProportion20 = DEFAULT_EXECUTE_20;
+	private executeProportion25 = DEFAULT_EXECUTE_25;
+	private executeProportion35 = DEFAULT_EXECUTE_35;
 	private useHealth = false;
 
 	targets!: Array<TargetProto>;
@@ -150,11 +156,11 @@ export class Encounter {
 		this.fromProto(
 			eventID,
 			EncounterProto.create({
-				duration: 60,
-				durationVariation: 5,
-				executeProportion20: 0.2,
-				executeProportion25: 0.25,
-				executeProportion35: 0.35,
+				duration: DEFAULT_DURATION,
+				durationVariation: DEFAULT_VARIATION,
+				executeProportion20: DEFAULT_EXECUTE_20,
+				executeProportion25: DEFAULT_EXECUTE_25,
+				executeProportion35: DEFAULT_EXECUTE_35,
 				targets: [presetTarget.target!],
 			}),
 		);

@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -8,6 +9,21 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	// Elemental Talents
+	shaman.applyElementalFocus()
+	shaman.applyElementalDevastation()
+	shaman.applyElementalFury()
+	shaman.registerElementalMasteryCD()
+
+	// Enhancement Talents
+	shaman.applyFlurry()
+
+	if shaman.Talents.AncestralKnowledge > 0 {
+		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
+	}
+
+	shaman.AddStat(stats.Block, 1*float64(shaman.Talents.ShieldSpecialization))
+
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
@@ -17,30 +33,40 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.AddStat(stats.Parry, 5)
 	}
 
-	shaman.AddStat(stats.Block, 1*float64(shaman.Talents.ShieldSpecialization))
-
 	// TODO: Check whether this does what it should.
 	// From all I've seen this appears to not actually be a school modifier at all, but instead simply applies
 	// to all attacks done with a weapon. The weaponmask seems to take precedence and the school mask is actually ignored.
 	// Will also be the case for similar talents like the one for retribution.
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + (.02 * float64(shaman.Talents.WeaponMastery))
 
-	if shaman.Talents.AncestralKnowledge > 0 {
-		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
-	}
-
-	// Ele Talents
-	shaman.applyElementalFocus()
-	shaman.applyElementalDevastation()
-	shaman.registerElementalMasteryCD()
-
-	// Enh Talents
-	shaman.applyFlurry()
-
-	// Resto Talents
-	shaman.applyNaturesGuidance()
+	// Restoration Talents
+	// TODO: Healing Way
+	// TODO: Ancestral Healing
 	shaman.registerNaturesSwiftnessCD()
 	// shaman.registerManaTideTotemCD()
+
+	if shaman.Talents.TidalFocus > 0 {
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+				spell.CostMultiplier *= 1 - .05*float64(shaman.Talents.TidalFocus)
+			}
+		})
+	}
+
+	shaman.AddStat(stats.MeleeHit, float64(shaman.Talents.NaturesGuidance))
+	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
+
+	if shaman.Talents.HealingGrace > 0 {
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+				spell.ThreatMultiplier *= 1 - .05*float64(shaman.Talents.HealingGrace)
+			}
+		})
+	}
+}
+
+func (shaman *Shaman) callOfFlameMultiplier() float64 {
+	return 1 + .05*float64(shaman.Talents.CallOfFlame)
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -116,12 +142,24 @@ func (shaman *Shaman) applyElementalDevastation() {
 	})
 }
 
-var ElementalMasteryActionId = core.ActionID{SpellID: 16166}
+func (shaman *Shaman) applyElementalFury() {
+	if !shaman.Talents.ElementalFury {
+		return
+	}
+
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
+			spell.CritDamageBonus += 1
+		}
+	})
+}
 
 func (shaman *Shaman) registerElementalMasteryCD() {
 	if !shaman.Talents.ElementalMastery {
 		return
 	}
+
+	actionID := core.ActionID{SpellID: 16166}
 
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
@@ -130,7 +168,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
-		ActionID: ElementalMasteryActionId,
+		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
@@ -169,7 +207,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: ElementalMasteryActionId,
+		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -186,15 +224,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		Spell: eleMastSpell,
 		Type:  core.CooldownTypeDPS,
 	})
-}
-
-func (shaman *Shaman) applyNaturesGuidance() {
-	if shaman.Talents.NaturesGuidance == 0 {
-		return
-	}
-
-	shaman.AddStat(stats.MeleeHit, float64(shaman.Talents.NaturesGuidance))
-	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 }
 
 func (shaman *Shaman) registerNaturesSwiftnessCD() {
@@ -265,55 +294,78 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
-	bonus := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[shaman.Talents.Flurry]
+	shaman.FlurryAura = shaman.makeFlurryAura(shaman.Talents.Flurry)
 
-	procAura := shaman.RegisterAura(core.Aura{
-		Label:     "Flurry Proc",
-		ActionID:  core.ActionID{SpellID: 16280},
-		Duration:  core.NeverExpires,
-		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, bonus)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/bonus)
-		},
-	})
-
-	icd := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: time.Millisecond * 500,
-	}
+	// This must be registered before the below trigger because in-game a crit weapon swing consumes a stack before the refresh, so you end up with:
+	// 3 => 2
+	// refresh
+	// 2 => 3
+	shaman.makeFlurryConsumptionTrigger()
 
 	shaman.RegisterAura(core.Aura{
-		Label:    "Flurry",
+		Label:    "Flurry Proc Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
+				shaman.FlurryAura.Activate(sim)
+				shaman.FlurryAura.SetStacks(sim, 3)
 				return
-			}
-
-			if result.Outcome.Matches(core.OutcomeCrit) {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, 3)
-				icd.Reset() // the "charge protection" ICD isn't up yet
-				return
-			}
-
-			// Remove a stack.
-			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
-				icd.Use(sim)
-				procAura.RemoveStack(sim)
 			}
 		},
 	})
 }
 
-func (shaman *Shaman) elementalFury() float64 {
-	return core.TernaryFloat64(shaman.Talents.ElementalFury, 1, 0)
+// These are separated out because of the T1 Shaman Tank 2P that can proc Flurry separately from the talent.
+// It triggers the max-rank Flurry aura but with dodge, parry, or block.
+func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
+	if points == 0 {
+		return nil
+	}
+
+	has6PEarthfuryImpact := shaman.HasSetBonus(ItemSetEarthfuryImpact, 6)
+
+	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
+	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	if has6PEarthfuryImpact {
+		attackSpeed += .10
+	}
+
+	return shaman.GetOrRegisterAura(core.Aura{
+		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
+		ActionID:  core.ActionID{SpellID: spellID},
+		Duration:  core.NeverExpires,
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, attackSpeed)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
+		},
+	})
+}
+
+func (shaman *Shaman) makeFlurryConsumptionTrigger() *core.Aura {
+	icd := core.Cooldown{
+		Timer:    shaman.NewTimer(),
+		Duration: time.Millisecond * 500,
+	}
+	return shaman.GetOrRegisterAura(core.Aura{
+		Label:    "Flurry Consume Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// Remove a stack.
+			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
+				icd.Use(sim)
+				shaman.FlurryAura.RemoveStack(sim)
+			}
+		},
+	})
 }
 
 func (shaman *Shaman) concussionMultiplier() float64 {
@@ -322,6 +374,16 @@ func (shaman *Shaman) concussionMultiplier() float64 {
 
 func (shaman *Shaman) totemManaMultiplier() float64 {
 	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+}
+
+// Restorative Totems uses Mod Spell Effectiveness (Base Value)
+func (shaman *Shaman) restorativeTotemsModifier() float64 {
+	return 0.05 * float64(shaman.Talents.RestorativeTotems)
+}
+
+// Purification uses Mod Spell Effectiveness (Base Healing)
+func (shaman *Shaman) purificationHealingModifier() float64 {
+	return .02 * float64(shaman.Talents.Purification)
 }
 
 // func (shaman *Shaman) registerManaTideTotemCD() {

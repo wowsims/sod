@@ -19,7 +19,7 @@ func (warrior *Warrior) registerBloodrageCD() {
 		Duration: time.Second * 10,
 	})
 
-	warrior.Bloodrage = warrior.RegisterSpell(core.SpellConfig{
+	warrior.Bloodrage = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -43,7 +43,7 @@ func (warrior *Warrior) registerBloodrageCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: warrior.Bloodrage,
+		Spell: warrior.Bloodrage.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

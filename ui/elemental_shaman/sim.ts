@@ -1,6 +1,5 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs';
-import * as Mechanics from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
@@ -30,6 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// For Mental Dexterity support
 		Stat.StatStrength,
 		Stat.StatAttackPower,
+		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -48,14 +48,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatMP5,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
+		Stat.StatFireResistance,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
 		race: Race.RaceTroll,
@@ -63,17 +57,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.65,
+			[Stat.StatIntellect]: 0.12,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellDamage]: 1,
 			[Stat.StatFirePower]: 0.3,
 			[Stat.StatNaturePower]: 0.7,
-			[Stat.StatSpellHit]: 16.61,
-			[Stat.StatSpellCrit]: 7.91,
-			[Stat.StatSpellHaste]: 7.28,
+			[Stat.StatSpellHit]: 20.08,
+			[Stat.StatSpellCrit]: 9.04,
+			[Stat.StatSpellHaste]: 9.32,
 			[Stat.StatMP5]: 0.02,
 			[Stat.StatStrength]: 0.01,
 			[Stat.StatAttackPower]: 0.01,
+			[Stat.StatFireResistance]: 0.5,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -99,7 +94,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-		note: 'Swap items are given the highest available rank of Rockbiter Weapon',
 	},
 	customSections: [
 		// TotemsSection,
@@ -118,9 +112,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase3], ...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
 	},
 
 	autoRotation: player => {

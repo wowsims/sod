@@ -11,7 +11,7 @@ package priest
 // 		ActionID:    core.ActionID{SpellID: 48066},
 // 		SpellSchool: core.SpellSchoolHoly,
 // 		ProcMask:    core.ProcMaskSpellHealing,
-// 		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+// 		Flags:       SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL,
 
 // 		ManaCost: core.ManaCostOptions{
 // 			BaseCost:   0.23,

@@ -12,24 +12,10 @@ func (hunter *Hunter) registerCarveSpell() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 425711}
+	hunter.CarveMH = hunter.newCarveHitSpell(true)
+	hunter.CarveOH = hunter.newCarveHitSpell(false)
 
-	results := make([]*core.SpellResult, hunter.Env.GetNumTargets())
-
-	var ohSpell *core.Spell
-	if hunter.AutoAttacks.IsDualWielding {
-		ohSpell = hunter.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID.WithTag(1),
-			SpellSchool: core.SpellSchoolPhysical,
-			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeOHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
-
-			DamageMultiplier: hunter.AutoAttacks.OHConfig().DamageMultiplier * 0.65,
-		})
-	}
-
-	hunter.CarveMh = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 425711},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -43,45 +29,53 @@ func (hunter *Hunter) registerCarveSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		DamageMultiplier: 0.65,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				hunter.CarveMH.Cast(sim, aoeTarget)
+				if hunter.AutoAttacks.IsDualWielding {
+					hunter.CarveOH.Cast(sim, aoeTarget)
+				}
+			}
+		},
+	})
+}
+
+func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
+	procMask := core.ProcMaskMeleeMHSpecial
+	damageMultiplier := 0.65
+	damageFunc := hunter.MHWeaponDamage
+
+	if !isMH {
+		procMask = core.ProcMaskMeleeOHSpecial
+		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier * 0.65
+		damageFunc = hunter.OHWeaponDamage
+	}
+
+	return hunter.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 425711}.WithTag(core.TernaryInt32(isMH, 1, 2)),
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    procMask,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-			for idx := range results {
-				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				results[idx] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			baseDamage := damageFunc(sim, spell.MeleeAttackPower())
+			if target == hunter.CurrentTarget {
+				baseDamage *= 1.5
 			}
-
-			for _, result := range results {
-				spell.DealDamage(sim, result)
-			}
-
-			if ohSpell != nil {
-				ohSpell.Cast(sim, target)
-
-				curTarget := target
-				for idx := range results {
-					baseDamage := ohSpell.Unit.OHNormalizedWeaponDamage(sim, ohSpell.MeleeAttackPower())
-					results[idx] = ohSpell.CalcDamage(sim, curTarget, baseDamage, ohSpell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-
-				for _, result := range results {
-					ohSpell.DealDamage(sim, result)
-				}
-			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
 }

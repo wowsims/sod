@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -11,20 +12,122 @@ import (
 // Totem Item IDs
 const (
 	WolfsheadHelm             = 8345
+	IdolOfFerocity            = 22397
+	IdolOfTheMoon             = 23197
+	IdolOfBrutality           = 23198
 	IdolMindExpandingMushroom = 209576
 	Catnip                    = 213407
 	IdolOfWrath               = 216490
 	BloodBarkCrusher          = 216499
 	RitualistsHammer          = 221446
 	IdolOfTheDream            = 220606
+	IdolOfExsanguinationCat   = 228181
+	IdolOfTheSwarm            = 228180
+	IdolOfExsanguinationBear  = 228182
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
+	// https://www.wowhead.com/classic/item=22397/idol-of-ferocity
+	// Equip: Reduces the energy cost of Claw and Rake by 3.
+	core.NewItemEffect(IdolOfFerocity, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+
+		// TODO: Claw is not implemented
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidMangleCat {
+				spell.DefaultCast.Cost -= 3
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=23197/idol-of-the-moon
+	// Equip: Increases the damage of your Moonfire spell by up to 33.
+	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		affectedSpellCodes := []int32{SpellCode_DruidMoonfire, SpellCode_DruidSunfire, SpellCode_DruidStarfallSplash, SpellCode_DruidStarfallTick}
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				spell.BonusDamage += 33
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
+	// Equip: Reduces the rage cost of Maul and Swipe by 3.
+	core.NewItemEffect(IdolOfBrutality, func(agent core.Agent) {
+		// Implemented in maul.go and swipe.go
+	})
+
 	core.NewItemEffect(IdolMindExpandingMushroom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.Spirit, 5)
+	})
+
+	// https://www.wowhead.com/classic/item=228181/idol-of-exsanguination-cat
+	// Equip: The energy cost of your Rake and Rip spells is reduced by 5.
+	core.NewItemEffect(IdolOfExsanguinationCat, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidRip {
+				spell.DefaultCast.Cost -= 5
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=228182/idol-of-exsanguination-bear
+	// Equip: Your Lacerate ticks energize you for 3 rage.
+	core.NewItemEffect(IdolOfExsanguinationBear, func(agent core.Agent) {
+		// TODO: Not yet implemented
+	})
+
+	// https://www.wowhead.com/classic/item=228180/idol-of-the-swarm
+	// Equip: The duration of your Insect Swarm spell is increased by 12 sec.
+	core.NewItemEffect(IdolOfTheSwarm, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+
+		bonusDuration := time.Second * 12
+
+		core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
+			Label: "Idol of the Swarm",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range druid.InsectSwarm {
+					if spell != nil {
+						for _, dot := range spell.Dots() {
+							if dot != nil {
+								dot.NumberOfTicks += 6
+								dot.RecomputeAuraDuration()
+							}
+						}
+					}
+				}
+
+				for _, aura := range druid.InsectSwarmAuras {
+					if aura != nil && !aura.IsPermanent() {
+						aura.Duration += bonusDuration
+					}
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range druid.InsectSwarm {
+					if spell != nil {
+						for _, dot := range spell.Dots() {
+							if dot != nil {
+								dot.NumberOfTicks -= 6
+								dot.RecomputeAuraDuration()
+							}
+						}
+					}
+				}
+
+				for _, aura := range druid.InsectSwarmAuras {
+					if aura != nil && !aura.IsPermanent() {
+						aura.Duration -= bonusDuration
+					}
+				}
+			},
+		}))
 	})
 
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
@@ -89,7 +192,7 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 
 	mainSpell := druid.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{ItemID: itemID},
-		Flags:    core.SpellFlagNoOnCastComplete,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

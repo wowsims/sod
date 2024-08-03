@@ -27,7 +27,9 @@ func (paladin *Paladin) registerExorcism() {
 		{level: 60, spellID: 415073, manaCost: 345, scaleLevel: 60, minDamage: 505, maxDamage: 563, scale: 3.2},
 	}
 
-	hasExorcist := paladin.hasRune(proto.PaladinRune_RuneLegsExorcist)
+	// TODO: 2024-06-13 - Should this become a permanent effect or toggleable?
+	// hasExorcist := paladin.hasRune(proto.PaladinRune_RuneUtilityExorcist)
+	hasExorcist := true
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	paladin.exorcismCooldown = &core.Cooldown{

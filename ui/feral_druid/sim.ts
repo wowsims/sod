@@ -32,6 +32,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 	epPseudoStats: [],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -45,11 +46,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatMana,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatMP5,
+		Stat.StatFireResistance,
 	],
 
 	defaults: {
@@ -64,11 +65,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[Stat.StatFeralAttackPower]: 1,
 				[Stat.StatMeleeHit]: 24.46,
 				[Stat.StatMeleeCrit]: 16.67,
-				[Stat.StatMeleeHaste]: 10.9,
 				[Stat.StatMana]: 0.04,
 				[Stat.StatIntellect]: 0.67,
 				[Stat.StatSpirit]: 0.08,
 				[Stat.StatMP5]: 0.46,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{},
 		),
@@ -111,9 +112,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	// itemSwapConfig: {
-	// 	itemSlots: [ItemSlot.ItemSlotMainHand],
-	// },
+	itemSwapConfig: {
+		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -121,16 +122,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase3], ...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
 		rotations: [
 			// Simple Rotation is broken at the moment
 			// Presets.SIMPLE_ROTATION_DEFAULT,
+			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase3], ...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
 	},
 
 	autoRotation: player => {
@@ -247,10 +259,5 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		return Stats.fromProto(this.player.getCurrentStats().finalStats);
-	}
-
-	detectArpStackConfiguration(arpTarget: number): boolean {
-		const currentArp = Stats.fromProto(this.player.getCurrentStats().finalStats).getStat(Stat.StatArmorPenetration);
-		return arpTarget > 1000 && currentArp > 648 && currentArp + 20 < arpTarget + 11;
 	}
 }

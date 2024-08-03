@@ -19,32 +19,29 @@ var MoonfireManaCost = [MoonfireRanks + 1]float64{0, 25, 50, 75, 105, 150, 190, 
 var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52, 58}
 
 func (druid *Druid) registerMoonfireSpell() {
-	druid.Moonfire = make([]*DruidSpell, MoonfireRanks+1)
-
+	druid.Moonfire = make([]*DruidSpell, 0)
 	druid.MoonfireDotMultiplier = 1
 
 	for rank := 1; rank <= MoonfireRanks; rank++ {
 		config := druid.getMoonfireBaseConfig(rank)
 
 		if config.RequiredLevel <= int(druid.Level) {
-			druid.Moonfire[rank] = druid.RegisterSpell(Humanoid|Moonkin, config)
+			druid.Moonfire = append(druid.Moonfire, druid.RegisterSpell(Humanoid|Moonkin, config))
 		}
 	}
 }
 
 func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
-	moonfuryMultiplier := druid.MoonfuryDamageMultiplier()
-	impMoonfireMultiplier := druid.ImprovedMoonfireDamageMultiplier()
-
 	ticks := MoonfireDotTicks[rank]
 	tickLength := time.Second * 3
+	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
 
 	spellId := MoonfireSpellId[rank]
 	spellCoeff := MoonfiresSpellCoeff[rank]
 	spellDotCoeff := MoonfiresSellDotCoeff[rank]
-	baseDamageLow := MoonfireBaseDamage[rank][0] * moonfuryMultiplier * impMoonfireMultiplier
-	baseDamageHigh := MoonfireBaseDamage[rank][1] * moonfuryMultiplier * impMoonfireMultiplier
-	baseDotDamage := (MoonfireBaseDotDamage[rank] / float64(ticks)) * moonfuryMultiplier * impMoonfireMultiplier
+	baseDamageLow := MoonfireBaseDamage[rank][0] * talentBaseMultiplier
+	baseDamageHigh := MoonfireBaseDamage[rank][1] * talentBaseMultiplier
+	baseDotDamage := (MoonfireBaseDotDamage[rank] / float64(ticks)) * talentBaseMultiplier
 	manaCost := MoonfireManaCost[rank]
 	level := MoonfireLevel[rank]
 
@@ -60,7 +57,8 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * (1 - 0.03*float64(druid.Talents.Moonglow)),
+			FlatCost:   manaCost,
+			Multiplier: druid.MoonglowManaCostMultiplier(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -79,19 +77,21 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDotDamage, isRollover)
 				dot.SnapshotAttackerMultiplier *= druid.MoonfireDotMultiplier
+				if !druid.form.Matches(Moonkin) {
+					dot.SnapshotCritChance = 0
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
 			},
 		},
 
-		BonusCritRating: druid.ImprovedMoonfireCritBonus() * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: druid.vengeance(),
+		BonusCoefficient: spellCoeff,
+		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
+		CritDamageBonus:  druid.vengeance(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)

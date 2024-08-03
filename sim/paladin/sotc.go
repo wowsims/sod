@@ -78,6 +78,8 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
 			},
 		})
+		
+		paladin.aurasSotC[i] = aura
 
 		paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -101,5 +103,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
+		
+		paladin.spellsJotC[i] = judgeSpell
 	}
 }

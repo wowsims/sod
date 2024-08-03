@@ -44,6 +44,7 @@ type SpellConfig struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
+	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
 	ThreatMultiplier float64
@@ -98,8 +99,9 @@ type Spell struct {
 	ResourceMetrics *ResourceMetrics
 	healthMetrics   []*ResourceMetrics
 
-	Cost               SpellCost // Cost for the spell.
-	DefaultCast        Cast      // Default cast parameters with all static effects applied.
+	Cost SpellCost // Cost for the spell.
+
+	DefaultCast        Cast // Default cast parameters with all static effects applied.
 	CD                 Cooldown
 	SharedCD           Cooldown
 	ExtraCastCondition CanCastCondition
@@ -132,6 +134,7 @@ type Spell struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 
+	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
 	CritDamageBonus float64
@@ -329,6 +332,9 @@ func (unit *Unit) GetOrRegisterSpell(config SpellConfig) *Spell {
 	}
 }
 
+func (spell *Spell) Dots() []*Dot {
+	return spell.dots
+}
 func (spell *Spell) Dot(target *Unit) *Dot {
 	return spell.dots.Get(target)
 }
@@ -580,9 +586,24 @@ func (spell *Spell) TravelTime() time.Duration {
 	}
 }
 
+type CostType uint8
+
+const (
+	CostTypeUnknown CostType = iota
+
+	CostTypeMana
+	CostTypeEnergy
+	// CostTypeComboPoints
+	CostTypeRage
+	CostTypeFocus
+)
+
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
 type SpellCost interface {
+	// Get the type of resource used to cast the spell
+	CostType() CostType
+
 	// Whether the Unit associated with the spell meets the resource cost
 	// requirements to cast the spell.
 	MeetsRequirement(*Simulation, *Spell) bool

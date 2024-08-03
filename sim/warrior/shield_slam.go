@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warrior *Warrior) registerShieldSlamSpell() {
@@ -22,7 +23,12 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		60: {spellID: 23925, damageLow: 342, damageHigh: 358, threat: 254},
 	}[warrior.Level]
 
-	warrior.ShieldSlam = warrior.RegisterSpell(core.SpellConfig{
+	apCoef := 0.15
+
+	defendersResolveAura := core.DefendersResolveAttackPower(warrior.GetCharacter())
+
+	warrior.ShieldSlam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorShieldSlam,
 		ActionID:    core.ActionID{SpellID: rank.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -55,11 +61,17 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()*2
-
+			damage := sim.Roll(rank.damageLow, rank.damageHigh) + warrior.BlockValue()*2 + apCoef*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if !result.Landed() {
+			if result.Landed() {
+				if stacks := int32(warrior.GetStat(stats.Defense)); stacks > 0 {
+					defendersResolveAura.Activate(sim)
+					if defendersResolveAura.GetStacks() != stacks {
+						defendersResolveAura.SetStacks(sim, stacks)
+					}
+				}
+			} else {
 				spell.IssueRefund(sim)
 			}
 		},

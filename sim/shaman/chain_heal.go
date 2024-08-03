@@ -8,10 +8,7 @@ import (
 )
 
 const ChainHealRanks = 3
-const ChainHealTargetCount = 3
-
-// 50% reduction per bounce
-const ChainHealBounceCoeff = .5
+const ChainHealTargetCount = int32(3)
 
 var ChainHealSpellId = [ChainHealRanks + 1]int32{0, 1064, 10622, 10623}
 var ChainHealBaseHealing = [ChainHealRanks + 1][]float64{{0}, {332, 381}, {416, 477}, {567, 646}}
@@ -43,20 +40,30 @@ func (shaman *Shaman) registerChainHealSpell() {
 }
 
 func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.SpellConfig {
+	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
+
 	spellId := ChainHealSpellId[rank]
-	baseHealingLow := ChainHealBaseHealing[rank][0]
-	baseHealingHigh := ChainHealBaseHealing[rank][1]
+	baseHealingLow := ChainHealBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
+	baseHealingHigh := ChainHealBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
 	spellCoeff := ChainHealSpellCoef[rank]
 	castTime := ChainHealCastTime[rank]
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
-	flags := core.SpellFlagHelpful | SpellFlagMaelstrom
+	flags := core.SpellFlagHelpful
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	bounceCoef := .5 // 50% reduction per bounce
+	targetCount := ChainHealTargetCount
+	if hasCoherenceRune {
+		bounceCoef = .65 // 35% reduction per bounce
+		targetCount += 2
+	}
+
+	canOverload := !isOverload && hasOverloadRune
 
 	spell := core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -71,8 +78,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: 1 *
-				(1 - .01*float64(shaman.Talents.TidalFocus)),
 		},
 
 		Cast: core.CastConfig{
@@ -80,22 +85,16 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * time.Duration(castTime),
 			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if castTime > 0 {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
-				}
-			},
 		},
 
 		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(ChainHealTargetCount)
+			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(targetCount)
 			curTarget := targets[0]
 			origMult := spell.DamageMultiplier
 			// TODO: This bounces to most hurt friendly...
@@ -108,7 +107,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 
-				spell.DamageMultiplier *= ChainHealBounceCoeff
+				spell.DamageMultiplier *= bounceCoef
 				curTarget = targets[hitIndex]
 			}
 			spell.DamageMultiplier = origMult

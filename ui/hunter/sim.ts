@@ -29,14 +29,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatArcanePower,
+		Stat.StatSpellCrit,
+		Stat.StatFireResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatRangedDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatRangedAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,33 +57,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
+		Stat.StatArcanePower,
+		Stat.StatSpellCrit,
+		Stat.StatFireResistance,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecHunter>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-
-		// const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
-		// if (rangedWeapon?.enchant?.effectId == 3608) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 40);
-		// }
-		// if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		// }
-		// if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
-		// 	stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		// }
-
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
+		race: Presets.OtherDefaults.race,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
@@ -91,17 +81,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 				[Stat.StatRangedAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 3.29,
 				[Stat.StatMeleeCrit]: 4.45,
-				[Stat.StatMeleeHaste]: 1.08,
-				[Stat.StatArmorPenetration]: 1.32,
 				[Stat.StatSpellPower]: 0.03,
 				[Stat.StatNaturePower]: 0.01,
 				[Stat.StatArcanePower]: 0.01,
+				[Stat.StatSpellCrit]: 0.01,
 				[Stat.StatMP5]: 0.05,
+				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 2.11,
 				[PseudoStat.PseudoStatOffHandDps]: 1.39,
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 1.39,
 			},
 		),
 		// Default consumes settings.
@@ -122,9 +113,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	playerIconInputs: [HunterInputs.PetTypeInput, HunterInputs.WeaponAmmo, HunterInputs.QuiverInput],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: HunterInputs.HunterRotationConfig,
-	petConsumeInputs: [ConsumablesInputs.PetScrollOfAgility, ConsumablesInputs.PetScrollOfStrength],
+	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff, BuffDebuffInputs.StaminaBuff],
+	includeBuffDebuffInputs: [ConsumablesInputs.DragonBreathChili, BuffDebuffInputs.SpellScorchDebuff, BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -146,48 +137,60 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			...Presets.TalentPresets[Phase.Phase3], 
-			...Presets.TalentPresets[Phase.Phase2], 
-			...Presets.TalentPresets[Phase.Phase1]
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			...Presets.APLPresets[Phase.Phase3], 
-			...Presets.APLPresets[Phase.Phase2], 
-			...Presets.APLPresets[Phase.Phase1]
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			...Presets.GearPresets[Phase.Phase3], 
-			...Presets.GearPresets[Phase.Phase2], 
-			...Presets.GearPresets[Phase.Phase1]
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [
-			Presets.PresetBuildMeleeBM, 
-			Presets.PresetBuildRangedMM
-		],
+		builds: [Presets.PresetBuildWeave, Presets.PresetBuildRangedMM, Presets.PresetBuildRangedSV],
 	},
 
 	autoRotation: player => {
+		const level = player.getLevel();
 		const isMelee =
-			player.getEquippedItem(ItemSlot.ItemSlotWaist)?.rune?.id == HunterRune.RuneBeltMeleeSpecialist &&
-			player.getEquippedItem(ItemSlot.ItemSlotFeet)?.rune?.id == HunterRune.RuneBootsDualWieldSpecialization;
+			player.hasRune(ItemSlot.ItemSlotWaist, HunterRune.RuneBeltMeleeSpecialist) ||
+			player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsDualWieldSpecialization) ||
+			player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsWyvernStrike);
 
 		if (isMelee) {
-			return player.getLevel() == 50 ? Presets.APLMeleeBmPhase3.rotation.rotation! : player.getLevel() == 40 ? Presets.APLMeleePhase2.rotation.rotation! : Presets.APLMeleeWeavePhase1.rotation.rotation!;
+			switch (level) {
+				case 25:
+					return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+				case 40:
+					return Presets.APLMeleePhase2.rotation.rotation!;
+				case 50:
+					return Presets.APLMeleeBmPhase3.rotation.rotation!;
+				case 60:
+					return Presets.APLWeavePhase4.rotation.rotation!;
+			}
 		} else {
-			if (player.getLevel() == 50) {
-				return Presets.APLRangedMmPhase3.rotation.rotation!;
-			} else if (player.getLevel() == 40) {
-				if (player.getTalentTree() == 1) {
-					return Presets.APLRangedMmPhase2.rotation.rotation!;
-				} else {
-					return Presets.APLRangedBmPhase2.rotation.rotation!;
-				}
-			} else {
-				return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+			switch (level) {
+				case 25:
+					return Presets.APLMeleeWeavePhase1.rotation.rotation!;
+				case 40:
+					return player.getTalentTree() === 1 ? Presets.APLRangedMmPhase2.rotation.rotation! : Presets.APLRangedBmPhase2.rotation.rotation!;
+				case 50:
+					return Presets.APLRangedMmPhase3.rotation.rotation!;
+				case 60:
+					return Presets.APLRangedPhase4.rotation.rotation!;
 			}
 		}
+
+		throw new Error('Auto rotation not supported for your current configuration.');
 	},
 
 	raidSimPresets: [
@@ -198,7 +201,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// 	tooltip: 'Beast Mastery Hunter',
 		// 	defaultName: 'Beast Mastery',
 		// 	iconUrl: getSpecIcon(Class.ClassHunter, 0),
-
 		// 	talents: Presets.DefaultTalentsBeastMastery.data,
 		// 	specOptions: Presets.BMDefaultOptions,
 		// 	consumes: Presets.DefaultConsumes,
@@ -245,7 +247,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// 	tooltip: 'Survival Hunter',
 		// 	defaultName: 'Survival',
 		// 	iconUrl: getSpecIcon(Class.ClassHunter, 2),
-
 		// 	talents: Presets.DefaultTalentsSurvival.data,
 		// 	specOptions: Presets.DefaultOptions,
 		// 	consumes: Presets.DefaultConsumes,

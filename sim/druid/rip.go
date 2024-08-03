@@ -52,7 +52,18 @@ var ripRanks = []RipRankInfo{
 	},
 }
 
-const RipTicks int32 = 6
+// See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
+// Modifies Buff Duration +4001:
+// Modifies Periodic Damage/Healing Done +51%:
+// const RipTicks int32 = 6
+const RipTicks int32 = 8
+const RipBaseDamageMultiplier = 1.5
+
+// See https://www.wowhead.com/classic/news/development-notes-for-phase-4-ptr-season-of-discovery-new-runes-class-changes-342896
+// - Rake and Rip damage contributions from attack power increased by roughly 50%.
+// PTR testing comes out to .0165563 AP scaling per CP
+// damageCoefPerCP := 0.01
+const RipDamageCoefPerAPPerCP = 0.015
 
 func (druid *Druid) registerRipSpell() {
 	// Add highest available Rip rank for level.
@@ -66,16 +77,20 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
+	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
+	energyCost := 30.0
+
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidRip,
 		ActionID:    core.ActionID{SpellID: ripRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   30,
+			Cost:   energyCost,
 			Refund: 0,
-			//RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -102,24 +117,26 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				ap := dot.Spell.MeleeAttackPower()
 
 				cpScaling := core.TernaryFloat64(cp == 5, 4, cp)
-
-				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + 0.01*ap*cpScaling)
+				baseDamage := (ripRank.dmgTickBase + ripRank.dmgTickPerCombo*cp + RipDamageCoefPerAPPerCP*ap*cpScaling)
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				if has4PCenarionCunning {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
 				dot.NumberOfTicks = RipTicks
 				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
-				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
+				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}

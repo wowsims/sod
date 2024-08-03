@@ -5,7 +5,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
+func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 	warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
 
 	spellID := map[int32]int32{
@@ -26,7 +26,8 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 	var canApplySunder bool
 
 	if warrior.HasRune(proto.WarriorRune_RuneDevastate) {
-		warrior.Devastate = warrior.GetOrRegisterSpell(core.SpellConfig{
+		warrior.Devastate = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+			SpellCode:   SpellCode_WarriorDevastate,
 			ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneDevastate)},
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
@@ -39,7 +40,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 			ThreatMultiplier: 1,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return warrior.PseudoStats.CanBlock && (warrior.StanceMatches(DefensiveStance) || warrior.StanceMatches(GladiatorStance))
+				return warrior.PseudoStats.CanBlock
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -51,7 +52,7 @@ func (warrior *Warrior) newSunderArmorSpell() *core.Spell {
 		})
 	}
 
-	return warrior.GetOrRegisterSpell(core.SpellConfig{
+	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

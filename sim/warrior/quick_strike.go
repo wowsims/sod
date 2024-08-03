@@ -10,7 +10,7 @@ func (warrior *Warrior) registerQuickStrike() {
 		return
 	}
 
-	warrior.QuickStrike = warrior.RegisterSpell(core.SpellConfig{
+	warrior.QuickStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 429765},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -33,7 +33,7 @@ func (warrior *Warrior) registerQuickStrike() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(0.10*spell.MeleeAttackPower(), 0.20*spell.MeleeAttackPower())
+			baseDamage := sim.Roll(0.10, 0.20) * spell.MeleeAttackPower()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 

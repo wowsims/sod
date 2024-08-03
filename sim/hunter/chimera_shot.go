@@ -27,7 +27,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeRanged,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | SpellFlagShot,
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
@@ -46,7 +46,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),
@@ -56,7 +56,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				hunter.NormalizedAmmoDamageBonus
+				hunter.AmmoDamageBonus
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
@@ -77,4 +77,5 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			})
 		},
 	})
+	hunter.Shots = append(hunter.Shots, hunter.ChimeraShot)
 }

@@ -3,7 +3,7 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -14,6 +14,13 @@ const (
 	SpellFlagColdBlooded  = core.SpellFlagAgentReserved2
 	SpellFlagDeadlyBrewed = core.SpellFlagAgentReserved3
 	SpellFlagCarnage      = core.SpellFlagAgentReserved4 // for Carnage
+	SpellFlagRoguePoison  = core.SpellFlagAgentReserved5 // RogueT1
+)
+
+const (
+	SpellCode_RogueNone int32 = iota
+
+	SpellCode_RogueBladeFlurry
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -27,33 +34,38 @@ type Rogue struct {
 	Options *proto.RogueOptions
 
 	sliceAndDiceDurations [6]time.Duration
+	bladeDanceDurations   [6]time.Duration
 
-	Backstab       *core.Spell
-	BladeFlurry    *core.Spell
-	Feint          *core.Spell
-	Garrote        *core.Spell
-	Ambush         *core.Spell
-	Hemorrhage     *core.Spell
-	GhostlyStrike  *core.Spell
-	HungerForBlood *core.Spell
-	Mutilate       *core.Spell
-	MutilateMH     *core.Spell
-	MutilateOH     *core.Spell
-	Shiv           *core.Spell
-	SinisterStrike *core.Spell
-	SaberSlash     *core.Spell
-	saberSlashTick *core.Spell
-	MainGauche     *core.Spell
-	Shadowstep     *core.Spell
-	Preparation    *core.Spell
-	Premeditation  *core.Spell
-	ColdBlood      *core.Spell
-	Vanish         *core.Spell
-	Shadowstrike   *core.Spell
-	QuickDraw      *core.Spell
-	ShurikenToss   *core.Spell
-	BetweenTheEyes *core.Spell
-	PoisonedKnife  *core.Spell
+	Backstab            *core.Spell
+	BladeFlurry         *core.Spell
+	Feint               *core.Spell
+	Garrote             *core.Spell
+	Ambush              *core.Spell
+	Hemorrhage          *core.Spell
+	GhostlyStrike       *core.Spell
+	HungerForBlood      *core.Spell
+	Mutilate            *core.Spell
+	MutilateMH          *core.Spell
+	MutilateOH          *core.Spell
+	Shiv                *core.Spell
+	SinisterStrike      *core.Spell
+	SaberSlash          *core.Spell
+	saberSlashTick      *core.Spell
+	MainGauche          *core.Spell
+	Shadowstep          *core.Spell
+	Preparation         *core.Spell
+	Premeditation       *core.Spell
+	ColdBlood           *core.Spell
+	Vanish              *core.Spell
+	Shadowstrike        *core.Spell
+	QuickDraw           *core.Spell
+	ShurikenToss        *core.Spell
+	BetweenTheEyes      *core.Spell
+	PoisonedKnife       *core.Spell
+	Blunderbuss         *core.Spell
+	FanOfKnives         *core.Spell
+	CrimsonTempest      *core.Spell
+	CrimsonTempestBleed *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -61,29 +73,37 @@ type Rogue struct {
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
 
+	Evasion    *core.Spell
+	BladeDance *core.Spell
+
 	DeadlyPoison     [3]*core.Spell
 	deadlyPoisonTick *core.Spell
 	InstantPoison    [3]*core.Spell
 	WoundPoison      [2]*core.Spell
+	OccultPoison     *core.Spell
+	occultPoisonTick *core.Spell
 
 	instantPoisonProcChanceBonus float64
 
-	AdrenalineRushAura   *core.Aura
-	BladeFlurryAura      *core.Aura
-	EnvenomAura          *core.Aura
-	ExposeArmorAuras     core.AuraArray
-	SliceAndDiceAura     *core.Aura
-	MasterOfSubtletyAura *core.Aura
-	ShadowstepAura       *core.Aura
-	ShadowDanceAura      *core.Aura
-	StealthAura          *core.Aura
-	WaylayAuras          core.AuraArray
+	AdrenalineRushAura            *core.Aura
+	BladeFlurryAura               *core.Aura
+	EnvenomAura                   *core.Aura
+	ExposeArmorAuras              core.AuraArray
+	EvasionAura                   *core.Aura
+	BladeDanceAura                *core.Aura
+	SliceAndDiceAura              *core.Aura
+	MasterOfSubtletyAura          *core.Aura
+	ShadowstepAura                *core.Aura
+	ShadowDanceAura               *core.Aura
+	StealthAura                   *core.Aura
+	WaylayAuras                   core.AuraArray
+	RollingWithThePunchesAura     *core.Aura
+	RollingWithThePunchesProcAura *core.Aura
+	CutthroatProcAura             *core.Aura
 
 	HonorAmongThieves *core.Aura
 
 	woundPoisonDebuffAuras core.AuraArray
-
-	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -105,34 +125,29 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 	return SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL
 }
 
-// Apply the effect of successfully casting a finisher to combo points
-func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
-	numPoints := rogue.ComboPoints()
-	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
-	rogue.finishingMoveEffectApplier(sim, numPoints)
-}
-
 func (rogue *Rogue) Initialize() {
 	rogue.registerBackstabSpell()
-	rogue.registerDeadlyPoisonSpell()
 	rogue.registerEviscerate()
 	rogue.registerExposeArmorSpell()
 	rogue.registerFeintSpell()
 	rogue.registerGarrote()
 	rogue.registerHemorrhageSpell()
-	rogue.registerInstantPoisonSpell()
-	rogue.registerWoundPoisonSpell()
 	rogue.registerRupture()
 	rogue.registerSinisterStrikeSpell()
 	rogue.registerSliceAndDice()
 	rogue.registerThistleTeaCD()
 	rogue.registerAmbushSpell()
 
+	// Poisons
+	rogue.registerInstantPoisonSpell()
+	rogue.registerDeadlyPoisonSpell()
+	rogue.registerOccultPoisonSpell()
+	rogue.registerWoundPoisonSpell()
+	rogue.registerSebaciousPoisonSpell()
+
 	// Stealth
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
-
-	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -171,12 +186,13 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	})
 	rogue.applyPoisons()
 
-	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	rogue.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
 
-	vanilla.ConstructEmeralDragonWhelpPets(&rogue.Character)
+	guardians.ConstructGuardians(&rogue.Character)
+
 	return rogue
 }
 

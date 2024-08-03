@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -32,6 +33,7 @@ func RegisterMage() {
 
 const (
 	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneBarrage
 	SpellCode_MageArcaneBlast
 	SpellCode_MageArcaneExplosion
 	SpellCode_MageArcaneMissiles
@@ -41,7 +43,9 @@ const (
 	SpellCode_MageFireBlast
 	SpellCode_MageFrostbolt
 	SpellCode_MageFrostfireBolt
+	SpellCode_MageFrozenOrb
 	SpellCode_MageLivingBomb
+	SpellCode_MageLivingBombExplosion
 	SpellCode_MageLivingFlame
 	SpellCode_MageScorch
 	SpellCode_MageSpellfrostBolt
@@ -53,6 +57,9 @@ type Mage struct {
 	Talents *proto.MageTalents
 	Options *proto.Mage_Options
 
+	frozenOrb *FrozenOrb
+
+	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
 	ArcaneExplosion         []*core.Spell
 	ArcaneMissiles          []*core.Spell
@@ -67,6 +74,7 @@ type Mage struct {
 	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
+	FrozenOrb               *core.Spell
 	IceLance                *core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
@@ -85,8 +93,13 @@ type Mage struct {
 	CombustionAura      *core.Aura
 	FingersOfFrostAura  *core.Aura
 	HotStreakAura       *core.Aura
+	IceArmorAura        *core.Aura
 	ImprovedScorchAuras core.AuraArray
+	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
+	MoltenArmorAura     *core.Aura
+
+	FingersOfFrostProcChance float64
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -140,16 +153,28 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 	mage.EnableManaBar()
 
+	mage.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[mage.Class][int(mage.Level)]*core.SpellCritRatingPerCritChance)
 
-	if mage.Options.Armor == proto.Mage_Options_MageArmor {
-		mage.PseudoStats.SpiritRegenRateCasting += .3
+	switch mage.Options.Armor {
+	case proto.Mage_Options_IceArmor:
+		mage.applyFrostIceArmor()
+	case proto.Mage_Options_MageArmor:
+		mage.applyMageArmor()
+	case proto.Mage_Options_MoltenArmor:
+		mage.applyMoltenArmor()
 	}
 
 	// Set mana regen to 12.5 + Spirit/4 each 2s tick
 	mage.SpiritManaRegenPerSecond = func() float64 {
 		return 6.25 + mage.GetStat(stats.Spirit)/8
 	}
+
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		mage.frozenOrb = mage.NewFrozenOrb()
+	}
+
+	guardians.ConstructGuardians(&mage.Character)
 
 	return mage
 }

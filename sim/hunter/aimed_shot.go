@@ -21,11 +21,12 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 	}
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterAimedShot,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -56,7 +57,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= 8
+			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),
@@ -67,7 +68,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				hunter.NormalizedAmmoDamageBonus +
+				hunter.AmmoDamageBonus +
 				baseDamage
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
@@ -94,7 +95,8 @@ func (hunter *Hunter) registerAimedShotSpell(timer *core.Timer) {
 		config := hunter.getAimedShotConfig(i, timer)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.ArcaneShot = hunter.GetOrRegisterSpell(config)
+			hunter.AimedShot = hunter.GetOrRegisterSpell(config)
+			hunter.Shots = append(hunter.Shots, hunter.AimedShot)
 		}
 	}
 }

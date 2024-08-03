@@ -48,17 +48,14 @@ var ferociousBiteRanks = []FerociousBiteRankInfo{
 		dmgPerCombo:  128.0,
 		dmgPerEnergy: 2.5,
 	},
-	// Rank 5 learned from the book.
-	// Implement this spell as having multiple ranks available later? Like e.g. Starfire?
-	// Or just uncomment this once the book is available?
-	// {
-	// 	id:           31018,
-	// 	level:        60,
-	// 	dmgBase:      52.0,
-	// 	dmgRange:     60.0,
-	// 	dmgPerCombo:  147.0,
-	// 	dmgPerEnergy: 2.7,
-	// },
+	{
+		id:           31018,
+		level:        60,
+		dmgBase:      52.0,
+		dmgRange:     60.0,
+		dmgPerCombo:  147.0,
+		dmgPerEnergy: 2.7,
+	},
 }
 
 func (druid *Druid) registerFerociousBiteSpell() {
@@ -74,6 +71,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 
 func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core.SpellConfig {
 	return core.SpellConfig{
+		SpellCode:   SpellCode_DruidFerociousBite,
 		ActionID:    core.ActionID{SpellID: rank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -83,7 +81,6 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,
 			Refund: 0,
-			//RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -113,7 +110,7 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 
 			if result.Landed() {
 				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
-				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
+				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
 			}

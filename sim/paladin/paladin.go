@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/vanilla"
+	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -12,6 +12,7 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
@@ -22,20 +23,33 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	primarySeal *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primaryPaladinAura proto.PaladinAura
+	currentPaladinAura *core.Aura
 
 	currentSeal      *core.Aura
+	auraSoM          *core.Aura
+	aurasSoR         [8]*core.Aura
+	aurasSoC         [5]*core.Aura
+	aurasSotC        [6]*core.Aura
 	currentJudgement *core.Spell
+	spellJoM         *core.Spell
+	spellsJoR        [8]*core.Spell
+	spellsJoC        [5]*core.Spell
+	spellsJotC       [6]*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcismCooldown  *core.Cooldown
 	holyShockCooldown *core.Cooldown
 	judgement         *core.Spell
+	rv                *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
+
+	lingerDuration time.Duration
 }
 
 // Implemented by each Paladin spec.
@@ -76,22 +90,30 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerDivineFavor()
 	paladin.registerHammerOfWrath()
 	paladin.registerHolyWrath()
+	paladin.registerAvengingWrath()
+	paladin.registerAuraMastery()
+
+	paladin.lingerDuration = time.Millisecond * 400
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 }
 
 // maybe need to add stat dependencies
-func NewPaladin(character *core.Character, talentsStr string) *Paladin {
+func NewPaladin(character *core.Character, options *proto.Player, pallyAura proto.PaladinAura) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
-	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+
+	if pallyAura == proto.PaladinAura_SanctityAura {
+		paladin.primaryPaladinAura = pallyAura
+	}
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
-	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
+	paladin.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
@@ -109,7 +131,8 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
 
-	vanilla.ConstructEmeralDragonWhelpPets(&paladin.Character)
+	guardians.ConstructGuardians(&paladin.Character)
+
 	return paladin
 }
 
@@ -126,6 +149,13 @@ func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
 }
 
+func (paladin *Paladin) ResetCurrentPaladinAura() {
+	paladin.currentPaladinAura = nil
+	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
+}
+
 func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core.Spell {
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
 	switch primarySeal {
@@ -139,17 +169,16 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 }
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	const lingerDuration = time.Millisecond * 400
-
 	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		if seal.RemainingDuration(sim) >= lingerDuration {
-			seal.UpdateExpires(sim, sim.CurrentTime+lingerDuration)
+		if seal.RemainingDuration(sim) >= paladin.lingerDuration {
+			seal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration)
 		}
 	}
 
 	paladin.currentSeal = newSeal
 	paladin.currentJudgement = judgement
 	paladin.currentSeal.Activate(sim)
+
 }
 
 func (paladin *Paladin) getLibramSealCostReduction() float64 {

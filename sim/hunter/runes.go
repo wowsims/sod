@@ -10,22 +10,13 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	if hunter.HasRune(proto.HunterRune_RuneChestHeartOfTheLion) {
-		statMultiply := 1.1
-		hunter.MultiplyStat(stats.Strength, statMultiply)
-		hunter.MultiplyStat(stats.Stamina, statMultiply)
-		hunter.MultiplyStat(stats.Agility, statMultiply)
-		hunter.MultiplyStat(stats.Intellect, statMultiply)
-		hunter.MultiplyStat(stats.Spirit, statMultiply)
-	}
-
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
 		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.3
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
@@ -47,41 +38,44 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
-	hunter.applyInvigoration()
+	// hunter.applyInvigoration()
 	hunter.applyLockAndLoad()
 	hunter.applyRaptorFury()
+	hunter.applyCobraSlayer()
+	hunter.applyHitAndRun()
 }
 
-func (hunter *Hunter) applyInvigoration() {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsInvigoration) || hunter.pet == nil {
-		return
-	}
+// TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
+// func (hunter *Hunter) applyInvigoration() {
+// 	if !hunter.HasRune(proto.HunterRune_RuneBootsInvigoration) || hunter.pet == nil {
+// 		return
+// 	}
 
-	procSpellId := core.ActionID{SpellID: 437999}
-	metrics := hunter.NewManaMetrics(procSpellId)
-	procSpell := hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    procSpellId,
-		SpellSchool: core.SpellSchoolNature,
-		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
-			hunter.AddMana(sim, hunter.MaxMana()*0.05, metrics)
-		},
-	})
+// 	procSpellId := core.ActionID{SpellID: 437999}
+// 	metrics := hunter.NewManaMetrics(procSpellId)
+// 	procSpell := hunter.RegisterSpell(core.SpellConfig{
+// 		ActionID:    procSpellId,
+// 		SpellSchool: core.SpellSchoolNature,
+// 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
+// 			hunter.AddMana(sim, hunter.MaxMana()*0.05, metrics)
+// 		},
+// 	})
 
-	core.MakePermanent(hunter.pet.GetOrRegisterAura(core.Aura{
-		Label: "Invigoration",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-				return
-			}
+// 	core.MakePermanent(hunter.pet.GetOrRegisterAura(core.Aura{
+// 		Label: "Invigoration",
+// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+// 				return
+// 			}
 
-			if !result.DidCrit() {
-				return
-			}
+// 			if !result.DidCrit() {
+// 				return
+// 			}
 
-			procSpell.Cast(sim, result.Target)
-		},
-	}))
-}
+// 			procSpell.Cast(sim, result.Target)
+// 		},
+// 	}))
+// }
 
 func (hunter *Hunter) applyExposeWeakness() {
 	if !hunter.HasRune(proto.HunterRune_RuneBeltExposeWeakness) {
@@ -244,6 +238,17 @@ func (hunter *Hunter) applyLockAndLoad() {
 	})
 }
 
+const RaptorFuryPerStackDamageMultiplier = 0.1
+
+func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
+	stacks := hunter.RaptorFuryAura.GetStacks()
+	if stacks == 0 {
+		return 1
+	}
+
+	return 1 + RaptorFuryPerStackDamageMultiplier*float64(stacks)
+}
+
 func (hunter *Hunter) applyRaptorFury() {
 	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
@@ -257,9 +262,90 @@ func (hunter *Hunter) applyRaptorFury() {
 	})
 }
 
+func (hunter *Hunter) applyCobraSlayer() {
+	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+		return
+	}
+
+	hunter.RegisterAura(core.Aura{
+		Label:     "Cobra Slayer",
+		Duration:  core.NeverExpires,
+		MaxStacks: 20,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if result.Outcome.Matches(core.OutcomeDodge) {
+				aura.SetStacks(sim, 1)
+				hunter.DefensiveState.Activate(sim)
+				return
+			}
+
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.05), "Cobra Slayer") {
+				aura.SetStacks(sim, 1)
+				hunter.DefensiveState.Activate(sim)
+				return
+			}
+
+			aura.AddStack(sim)
+		},
+	})
+}
+
 func (hunter *Hunter) tntDamageMultiplier() float64 {
 	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
 		return 1.1
 	}
 	return 1.0
+}
+
+func (hunter *Hunter) tntDamageFlatBonus() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return hunter.GetStat(stats.AttackPower) * 0.5
+	}
+	return 0.0
+}
+
+func (hunter *Hunter) trapRange() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneBootsTrapLauncher) {
+		return 35
+	}
+	return 5
+}
+
+func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.0
+	}
+	return 1.0
+}
+
+func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
+	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return 0.6
+	}
+	return 1.0
+}
+
+func (hunter *Hunter) applyHitAndRun() {
+	if hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun) {
+		hunter.HitAndRunAura = hunter.RegisterAura(core.Aura{
+			Label:    "Hit And Run",
+			ActionID: core.ActionID{SpellID: 440533},
+			Duration: time.Second * 8,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Unit.MoveSpeed *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Unit.MoveSpeed *= 1 / 1.15
+			},
+		})
+	}
 }

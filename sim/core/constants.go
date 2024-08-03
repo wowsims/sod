@@ -13,6 +13,9 @@ const SpellBatchWindow = time.Millisecond * 10
 const DefaultAttackPowerPerDPS = 14.0
 const ArmorPenPerPercentArmor = 13.99
 
+const MaxMeleeAttackDistance = 5
+const MinRangedAttackDistance = 12
+
 const MissDodgeParryBlockCritChancePerDefense = 0.04
 
 const DefenseRatingToChanceReduction = (1.0 / DefenseRatingPerDefense) * MissDodgeParryBlockCritChancePerDefense / 100
@@ -47,4 +50,6 @@ const (
 	DefenseTypeMagic
 	DefenseTypeMelee
 	DefenseTypeRanged
+
+	DefenseTypeLen
 )

@@ -12,17 +12,31 @@ func (rogue *Rogue) registerBackstabSpell() {
 		25: 32,
 		40: 60,
 		50: 90,
+		// TODO: AQ
 		60: 140,
+		// 60: 150,
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
 		25: 2590,
 		40: 8721,
 		50: 11279,
+		// TODO: AQ
 		60: 11281,
+		// 60: 25300
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
+	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
+	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
+
+	damageMultiplier := 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
+	energyCost := 60.0
+
+	if hasSlaughterRune {
+		damageMultiplier *= SlaughterFromTheShadowsDamageMultiplier
+		energyCost -= SlaughterFromTheShadowsCostReduction
+	}
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -32,7 +46,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows), 20, 0),
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -42,25 +56,30 @@ func (rogue *Rogue) registerBackstabSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand)
+			if !rogue.HasDagger(core.MainHand) {
+				return false
+			}
+			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget
 		},
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
+			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				if hasCutthroatRune {
+					rogue.rollCutthroat(sim)
+				}
 				/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)

@@ -8,10 +8,7 @@ import (
 )
 
 const ChainLightningRanks = 4
-const ChainLightningTargetCount = 3
-
-// 30% reduction per bounce
-const ChainLightningBounceCoeff = .7
+const ChainLightningTargetCount = int32(3)
 
 var ChainLightningSpellId = [ChainLightningRanks + 1]int32{0, 421, 930, 2860, 10605}
 var ChainLightningBaseDamage = [ChainLightningRanks + 1][]float64{{0}, {200, 227}, {288, 323}, {383, 430}, {505, 564}}
@@ -45,6 +42,11 @@ func (shaman *Shaman) registerChainLightningSpell() {
 }
 
 func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer, isOverload bool) core.SpellConfig {
+	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
+	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
+	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
+	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
+
 	spellId := ChainLightningSpellId[rank]
 	baseDamageLow := ChainLightningBaseDamage[rank][0]
 	baseDamageHigh := ChainLightningBaseDamage[rank][1]
@@ -53,12 +55,20 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	level := ChainLightningLevel[rank]
 
 	cooldown := time.Second * 6
+	if hasStormEarthAndFireRune {
+		cooldown /= 2
+	}
 	castTime := time.Millisecond * 2500
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-	overloadChance := .1667
+	bounceCoef := .7 // 30% reduction per bounce
+	targetCount := ChainLightningTargetCount
+	if hasCoherenceRune {
+		bounceCoef = .8 // 20% reduction per bounce
+		targetCount += 2
+	}
 
-	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
+	canOverload := !isOverload && hasOverloadRune
+	overloadChance := .1667
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -79,7 +89,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		}
 	}
 
-	results := make([]*core.SpellResult, min(ChainLightningTargetCount, shaman.Env.GetNumTargets()))
+	results := make([]*core.SpellResult, min(targetCount, shaman.Env.GetNumTargets()))
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		origMult := spell.DamageMultiplier
@@ -87,7 +97,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			target = sim.Environment.NextTargetUnit(target)
-			spell.DamageMultiplier *= ChainLightningBounceCoeff
+			spell.DamageMultiplier *= bounceCoef
 		}
 
 		for _, result := range results {

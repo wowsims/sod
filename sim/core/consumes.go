@@ -34,8 +34,9 @@ func applyConsumeEffects(agent Agent) {
 }
 
 func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
-	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
-	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
+	pet.AddStat(stats.AttackPower, []float64{0, 40}[ownerConsumes.PetAttackPowerConsumable])
+	pet.AddStat(stats.Agility, []float64{0, 17, 13, 9, 5}[ownerConsumes.PetAgilityConsumable])
+	pet.AddStat(stats.Strength, []float64{0, 30, 17, 13, 9, 5}[ownerConsumes.PetStrengthConsumable])
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -97,7 +98,7 @@ func applyWeaponImbueConsumes(character *Character, consumes *proto.Consumes) {
 	if character.HasMHWeapon() {
 		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
-	if character.HasOHWeapon() {
+	if character.OffHand() != nil {
 		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 }
@@ -143,6 +144,10 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 				stats.MP5:      12,
 				stats.SpellHit: 2 * SpellHitRatingPerHitChance,
 			})
+
+		// Shield Oil
+		case proto.WeaponImbue_ConductiveShieldCoating:
+			character.AddStat(stats.SpellPower, 24)
 
 		// Sharpening Stones
 		case proto.WeaponImbue_SolidSharpeningStone:
@@ -313,6 +318,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.MP5: 6,
 			})
+		case proto.Food_FoodTenderWolfSteak:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 12,
+				stats.Spirit:  12,
+			})
 		case proto.Food_FoodGrilledSquid:
 			character.AddStats(stats.Stats{
 				stats.Agility: 10,
@@ -346,26 +356,26 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 
 	if consumes.Alcohol != proto.Alcohol_AlcoholUnknown {
 		switch consumes.Alcohol {
-		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
+		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
 			character.AddStats(stats.Stats{
-				stats.Stamina:   25,
-				stats.Intellect: -5,
-			})
-		case proto.Alcohol_AlcoholRumseyRumLight:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 5,
-			})
-		case proto.Alcohol_AlcoholRumseyRumDark:
-			character.AddStats(stats.Stats{
-				stats.Stamina: 10,
+				stats.Stamina: 15,
 			})
 		case proto.Alcohol_AlcoholGordokGreenGrog:
 			character.AddStats(stats.Stats{
 				stats.Stamina: 10,
 			})
-		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
+		case proto.Alcohol_AlcoholRumseyRumDark:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 15,
+				stats.Stamina: 10,
+			})
+		case proto.Alcohol_AlcoholRumseyRumLight:
+			character.AddStats(stats.Stats{
+				stats.Stamina: 5,
+			})
+		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
+			character.AddStats(stats.Stats{
+				stats.Spirit:    25,
+				stats.Intellect: -5,
 			})
 		}
 	}
@@ -736,10 +746,6 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
-	if !character.HasProfession(proto.Profession_Enchanting) || consumes.EnchantedSigil == proto.EnchantedSigil_UnknownSigil {
-		return
-	}
-
 	switch consumes.EnchantedSigil {
 	case proto.EnchantedSigil_InnovationSigil:
 		character.AddStats(stats.Stats{
@@ -749,10 +755,18 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 		})
 	case proto.EnchantedSigil_LivingDreamsSigil:
 		character.AddStats(stats.Stats{
-			stats.AttackPower:       50,
-			stats.RangedAttackPower: 50,
-			stats.SpellPower:        50,
+			stats.AttackPower:       30,
+			stats.RangedAttackPower: 30,
+			stats.SpellPower:        30,
 		})
+	case proto.EnchantedSigil_FlowingWatersSigil:
+		for _, player := range character.Env.Raid.AllPlayerUnits {
+			player.AddStats(stats.Stats{
+				stats.AttackPower:       30,
+				stats.RangedAttackPower: 30,
+				stats.SpellPower:        30,
+			})
+		}
 	}
 }
 
@@ -929,10 +943,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 				dot.Spell.SpellSchool = SpellSchoolNature
 				dot.Spell.SchoolIndex = stats.SchoolIndexNature
 
-				dot.SnapshotBaseDamage = dotDamage
-
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType])
+				dot.Snapshot(target, dotDamage, isRollover)
 
 				// Revert to fire school
 				dot.Spell.SpellSchool = SpellSchoolFire
@@ -988,7 +999,6 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	defaultMCD := makePotionActivation(defaultPotion, character, potionCD)
 
 	if defaultMCD.Spell != nil {
-		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
 		character.AddMajorCooldown(defaultMCD)
 	}
 }
@@ -999,7 +1009,7 @@ func makePotionActivation(potionType proto.Potions, character *Character, potion
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
 		// placeholder action instead of specific potion spells, in APL prepull. This
 		// prevents a mismatch between Consumes and Rotation settings.
-		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion
+		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion | SpellFlagCastTimeNoGCD
 		oldApplyEffects := mcd.Spell.ApplyEffects
 		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 			oldApplyEffects(sim, target, spell)

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
@@ -14,7 +15,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	manaCost := [11]float64{0, 12, 20, 35, 55, 80, 105, 132, 157, 185, 190}[rank]
 	level := [11]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
 
-	results := make([]*core.SpellResult, min(3, warlock.Env.GetNumTargets()))
+	results := make([]*core.SpellResult, min(10, warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -22,7 +23,7 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 		SpellCode:     SpellCode_WarlockShadowCleave,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -42,14 +43,9 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 			return warlock.MetamorphosisAura.IsActive()
 		},
 
-		BonusCritRating: float64(warlock.Talents.Devastation) * core.SpellCritRatingPerCritChance,
-
-		CritDamageBonus: warlock.ruin(),
-
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 2, // Undocumented 2x multiplier
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
@@ -58,17 +54,18 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
+			hasHit := false
 			for _, result := range results {
-				spell.DealDamage(sim, result)
-
 				if result.Landed() {
-					warlock.EverlastingAfflictionRefresh(sim, result.Target)
+					hasHit = true
+					spell.DealDamage(sim, result)
+				}
+			}
 
-					if warlock.Talents.ImprovedShadowBolt > 0 && result.DidCrit() {
-						impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
-						impShadowBoltAura.Activate(sim)
-						impShadowBoltAura.SetStacks(sim, 4)
-					}
+			if stacks := int32(warlock.GetStat(stats.Defense)); hasHit && stacks > 0 {
+				warlock.defendersResolveAura.Activate(sim)
+				if warlock.defendersResolveAura.GetStacks() != stacks {
+					warlock.defendersResolveAura.SetStacks(sim, stacks)
 				}
 			}
 		},
@@ -80,11 +77,11 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 		return
 	}
 
-	maxRank := 10
+	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter())
 
 	warlock.ShadowCleave = make([]*core.Spell, 0)
-	for i := 1; i <= maxRank; i++ {
-		config := warlock.getShadowCleaveBaseConfig(i)
+	for rank := 1; rank <= ShadowBoltRanks; rank++ {
+		config := warlock.getShadowCleaveBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {
 			warlock.ShadowCleave = append(warlock.ShadowCleave, warlock.GetOrRegisterSpell(config))

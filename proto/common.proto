@@ -3,6 +3,7 @@ package proto;
 
 option go_package = "./proto";
 
+// NextIndex: 24
 enum Spec {
 	SpecBalanceDruid = 0;
 	SpecFeralDruid = 12;
@@ -11,6 +12,7 @@ enum Spec {
 	SpecElementalShaman = 1;
 	SpecEnhancementShaman = 9;
 	SpecRestorationShaman = 19;
+	SpecWardenShaman = 23;
 	SpecHunter = 8;
 	SpecMage = 2;
 	SpecHolyPaladin = 20;
@@ -23,7 +25,7 @@ enum Spec {
 	SpecWarlock = 5;
 	SpecTankWarlock = 21;
 	SpecWarrior = 6;
-	SpecProtectionWarrior = 11;
+	SpecTankWarrior = 11;
 }
 
 enum Race {
@@ -150,6 +152,19 @@ enum PseudoStat {
 	PseudoStatCrossbowsSkill = 17;
 	PseudoStatGunsSkill = 18;
 	PseudoStatThrownSkill = 19;
+
+	PseudoStatFeralCombatSkill = 20;
+
+	// Spell School Hit
+	PseudoStatSchoolHitArcane = 21;
+	PseudoStatSchoolHitFire = 22;
+	PseudoStatSchoolHitFrost = 23;
+	PseudoStatSchoolHitHoly = 24;
+	PseudoStatSchoolHitNature = 25;
+	PseudoStatSchoolHitShadow = 26;
+
+	PseudoStatMeleeSpeedMultiplier = 27;
+	PseudoStatRangedSpeedMultiplier = 28;
 }
 
 message UnitStats {
@@ -196,6 +211,7 @@ enum WeaponType {
 	WeaponTypeSword = 9;
 }
 
+// NextIndex: 16
 enum WeaponSkill {
 	WeaponSkillUnknown = 0;
 	WeaponSkillAxes = 1;
@@ -212,6 +228,7 @@ enum WeaponSkill {
 	WeaponSkillBows = 12;
 	WeaponSkillCrossbows = 13;
 	WeaponSkillGuns = 14;
+	WeaponSkillFeralCombat = 15;
 }
 
 enum HandType {
@@ -328,6 +345,7 @@ enum EnchantedSigil {
 	UnknownSigil = 0;
 	InnovationSigil = 1;
 	LivingDreamsSigil = 2;
+	FlowingWatersSigil = 3;
 }
 
 enum Flask {
@@ -443,7 +461,7 @@ message MiscConsumes {
 	bool catnip = 3;
 }
 
-// NextIndex: 26
+// NextIndex: 29
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -469,6 +487,10 @@ enum WeaponImbue {
 	SolidWeightstone = 18;
 	DenseWeightstone = 19;
 
+	// Spell Oils
+	ShadowOil = 21;
+	FrostOil = 22;
+
 	// Windfury Imbues
 	WildStrikes = 7;
 	Windfury = 8;
@@ -479,14 +501,15 @@ enum WeaponImbue {
 	FrostbrandWeapon = 11;
 	WindfuryWeapon = 12;
 
-	// Spell Oils
-	ShadowOil = 21;
-	FrostOil = 22;
-
 	// Rogue imbues
 	InstantPoison = 23;
 	DeadlyPoison = 24;
 	WoundPoison = 25;
+	OccultPoison = 27;
+	SebaciousPoison = 28;
+
+	// Shield Oil
+	ConductiveShieldCoating = 26;
 }
 
 // NextIndex: 13
@@ -515,8 +538,11 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 40
+// NextIndex: 43
 message RaidBuffs {
+	reserved 33;
+	reserved "horn_of_lordaeron";
+
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -550,6 +576,7 @@ message RaidBuffs {
 	// mp5
 	TristateEffect mana_spring_totem = 14;
 	TristateEffect blessing_of_wisdom = 15;
+	int32 vampiric_touch = 41;
 
 	// Resistances
 	bool shadow_protection = 16;
@@ -561,14 +588,6 @@ message RaidBuffs {
 	bool fire_resistance_totem = 21;
 	bool fire_resistance_aura = 35;
 
-	// Miscellaneous
-	TristateEffect thorns = 22;
-	TristateEffect devotion_aura = 23;
-	TristateEffect stoneskin_totem = 24;
-	TristateEffect retribution_aura = 25;
-	bool sanctity_aura = 36;
-	int32 battle_squawk = 37;
-
 	// Scroll
 	bool scroll_of_protection = 26;
 	bool scroll_of_stamina = 27;
@@ -579,9 +598,18 @@ message RaidBuffs {
 
 	// SoD Runes
 	int32 demonic_pact = 32;
-	bool horn_of_lordaeron = 33;
 	bool aspect_of_the_lion = 34;
 	bool commanding_shout = 38;
+
+	// Miscellaneous
+	TristateEffect thorns = 22;
+	TristateEffect devotion_aura = 23;
+	TristateEffect stoneskin_totem = 24;
+	TristateEffect retribution_aura = 25;
+	bool sanctity_aura = 36;
+	int32 battle_squawk = 37;
+	bool improved_stoneskin_windwall = 40;
+	bool flowing_waters_sigil = 42;
 }
 
 // Buffs that affect a single party.
@@ -595,8 +623,11 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 19
+// NextIndex: 22
 message IndividualBuffs {
+	reserved 20;
+	reserved "dragonslayer_buff";
+
 	bool blessing_of_kings = 1;
 	TristateEffect blessing_of_wisdom = 2;
 	TristateEffect blessing_of_might = 3;
@@ -606,10 +637,13 @@ message IndividualBuffs {
 
 	// World Buffs
 	bool rallying_cry_of_the_dragonslayer = 7;
+	bool valor_of_azeroth = 21;
+
 	SaygesFortune sayges_fortune = 8;
 	bool spirit_of_zandalar = 9;
 	bool songflower_serenade = 10;
 	bool warchiefs_blessing = 11;
+	bool might_of_stormwind = 19;
 
 	// Dire Maul Buffs
 	bool fengus_ferocity = 12;
@@ -643,8 +677,9 @@ message Consumes {
 	Conjured default_conjured = 18;
 	EnchantedSigil enchanted_sigil = 20;
 	bool mildly_irradiated_rejuv_pot = 21;
-	int32 pet_scroll_of_agility = 22;
-	int32 pet_scroll_of_strength = 23;
+	int32 pet_agility_consumable = 22;
+	int32 pet_strength_consumable = 23;
+	int32 pet_attack_power_consumable = 31;
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
 	ZanzaBuff zanza_buff = 27;
@@ -656,19 +691,20 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 35
+// NextIndex: 40
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
 	bool faerie_fire = 3;
 
-	// Bonus spell damage
-	bool curse_of_elements = 4 [deprecated=true];
-	bool curse_of_shadow = 5 [deprecated=true];
+	// Warlock Spell DamageCurses
+	bool curse_of_elements = 4;
+	bool curse_of_shadow = 5;
+	bool mark_of_chaos = 37;
 
-	TristateEffect curse_of_elements_new = 31;
-	TristateEffect curse_of_shadow_new = 32;
+	// Bonus Spell Damage
+	bool occult_poison = 38;
 
 	bool winters_chill = 6;
 	
@@ -679,14 +715,11 @@ message Debuffs {
 	bool stormstrike = 27;
 	bool dreamstate = 28;
 
-	// Bonus physical damage
-	bool gift_of_arthas = 9;
-	bool curse_of_vulnerability = 23;
-
 	// Major armor
 	TristateEffect expose_armor = 10;
 	bool sunder_armor = 11;
 	int32 homunculi = 22; // between 0 and 100, represents average uptime percentage
+	TristateEffect sebacious_poison = 39;
 
 	TristateEffect curse_of_weakness = 12;
 	bool curse_of_recklessness = 13;
@@ -704,14 +737,21 @@ message Debuffs {
 	TristateEffect hunters_mark = 20;
 
 	// ArP items
-	bool crystal_yield = 21;
-	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 
 	// Bleed
 	bool mangle = 25;
 
+	// Misc Debuffs
+	bool gift_of_arthas = 9;
+	bool curse_of_vulnerability = 23;
+	bool crystal_yield = 21;
+	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
+	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
+
+	TristateEffect curse_of_elements_new = 31 [deprecated=true];
+	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
 }
 
 enum MobType {
@@ -824,7 +864,7 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
-// NextIndex: 18
+// NextIndex: 19
 message SimItem {
 	int32 id = 1;
 	int32 requires_level = 16;
@@ -844,6 +884,7 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
+	int32 set_id = 18;
 	repeated double weapon_skills = 15;
 }
 
@@ -906,7 +947,10 @@ enum OtherAction {
 	OtherActionHealingModel = 12; // Indicates healing received from healing model.
 	OtherActionPotion = 13; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionMove = 14; // Used by movement to be able to show it in timeline
-	OtherActionComboPoints = 15; //Used by APL to generically add Combo Points.
+	OtherActionComboPoints = 15; // Used by APL to generically add Combo Points.
+	OtherActionExplosives = 16; // Used by APL to generically refer to engineering explosives
+	OtherActionOffensiveEquip = 17; // Used by APL to generally refer to offensive on-use equipment
+	OtherActionDefensiveEquip = 18; // Used by APL to generally refer to defensive on-use equipment
 }
 
 message ActionID {
@@ -977,4 +1021,24 @@ message ItemSwap {
 
 message Duration {
 	double ms = 1;
+}
+
+enum RingRune {
+	RuneRingNone = 0;
+
+	RuneRingArcaneSpecialization		= 442893;
+	RuneRingAxeSpecialization			= 442876;
+	RuneRingDaggerSpecialization		= 442887;
+	RuneRingDefenseSpecialization		= 459312;
+	RuneRingFeralCombatSpecialization	= 453622;
+	RuneRingFireSpecialization			= 442894;
+	RuneRingFistWeaponSpecialization	= 442890;
+	RuneRingFrostSpecialization			= 442895;
+	RuneRingHolySpecialization			= 442898;
+	RuneRingMaceSpecialization			= 442881;
+	RuneRingNatureSpecialization		= 442896;
+	RuneRingPoleWeaponSpecialization	= 442892;
+	RuneRingRangedWeaponSpecialization	= 442891;
+	RuneRingShadowSpecialization		= 442897;
+	RuneRingSwordSpecialization			= 442813;
 }

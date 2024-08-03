@@ -8,13 +8,15 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+const CorruptionRanks = 7
+
 func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
-	dotTickCoeff := [8]float64{0, .08, .155, .167, .167, .167, .167, .167}[rank] // per tick
-	ticks := [8]int32{0, 4, 5, 6, 6, 6, 6, 6}[rank]
-	baseDamage := [8]float64{0, 40, 90, 222, 324, 486, 666, 822}[rank] / float64(ticks)
-	spellId := [8]int32{0, 172, 6222, 6223, 7648, 11671, 11672, 25311}[rank]
-	manaCost := [8]float64{0, 35, 55, 100, 160, 225, 290, 340}[rank]
-	level := [8]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
+	dotTickCoeff := [CorruptionRanks + 1]float64{0, .08, .155, .167, .167, .167, .167, .167}[rank] // per tick
+	ticks := [CorruptionRanks + 1]int32{0, 4, 5, 6, 6, 6, 6, 6}[rank]
+	baseDamage := [CorruptionRanks + 1]float64{0, 40, 90, 222, 324, 486, 666, 822}[rank] / float64(ticks)
+	spellId := [CorruptionRanks + 1]int32{0, 172, 6222, 6223, 7648, 11671, 11672, 25311}[rank]
+	manaCost := [CorruptionRanks + 1]float64{0, 35, 55, 100, 160, 225, 290, 340}[rank]
+	level := [CorruptionRanks + 1]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
 
 	castTime := time.Millisecond * (2000 - (400 * time.Duration(warlock.Talents.ImprovedCorruption)))
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
@@ -23,10 +25,10 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
-		SpellCode:     SpellCode_Corruption,
+		SpellCode:     SpellCode_WarlockCorruption,
 		ProcMask:      core.ProcMaskSpellDamage,
 		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | SpellFlagHaunt | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot,
+		Flags:         core.SpellFlagAPL | WarlockFlagHaunt | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction,
 		Rank:          rank,
 		RequiredLevel: level,
 
@@ -40,13 +42,10 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusHitRating: float64(warlock.Talents.Suppression) * 2 * core.SpellHitRatingPerHitChance,
-
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
-		DamageMultiplierAdditive: 1 + 0.02*float64(warlock.Talents.ShadowMastery),
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -107,10 +106,10 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 }
 
 func (warlock *Warlock) registerCorruptionSpell() {
-	maxRank := 7
-
 	warlock.Corruption = make([]*core.Spell, 0)
-	for i := 1; i <= maxRank; i++ {
+
+	// TODO: AQ <=
+	for i := 1; i < CorruptionRanks; i++ {
 		config := warlock.getCorruptionConfig(i)
 
 		if config.RequiredLevel <= int(warlock.Level) {

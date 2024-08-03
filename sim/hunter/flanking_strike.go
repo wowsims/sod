@@ -13,6 +13,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	}
 
 	hasCatlikeReflexes := hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes)
+	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
+
 	cooldownModifier := 1.0
 	if hasCatlikeReflexes {
 		cooldownModifier *= 0.5
@@ -23,6 +25,11 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		ActionID:  core.ActionID{SpellID: 415320},
 		MaxStacks: 3,
 		Duration:  time.Second * 10,
+
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.05 * float64(oldStacks))
+			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.05 * float64(newStacks))
+		},
 	})
 
 	if hunter.pet != nil {
@@ -42,7 +49,25 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			},
 		})
+
+		hunter.pet.RegisterAura(core.Aura{
+			Label:    "Flanking Strike Refresh",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskSpellDamage) {
+					if sim.RandomFloat("Flanking Strike Refresh") < 0.33 {
+						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
+					}
+				}
+			},
+		})
 	}
+
+	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
 
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 415320},
@@ -52,7 +77,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.015,
+			BaseCost:   0.015,
+			Multiplier: manaCostMultiplier,
 		},
 
 		Cast: core.CastConfig{
@@ -65,16 +91,22 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= 5
+			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
+		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			if hasCobraStrikes && result.DidCrit() {
+				hunter.CobraStrikesAura.Activate(sim)
+				hunter.CobraStrikesAura.SetStacks(sim, 2)
+			}
 
 			if hunter.pet != nil {
 				hunter.pet.flankingStrike.Cast(sim, hunter.pet.CurrentTarget)

@@ -17,6 +17,7 @@ func (druid *Druid) registerMangleBearSpell() {
 	durReduction := (0.5) * float64(druid.Talents.ImprovedMangle)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
+		SpellCode:   SpellCode_DruidMangleBear
 		ActionID:    core.ActionID{SpellID: 48564},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -71,8 +72,12 @@ func (druid *Druid) registerMangleCatSpell() {
 
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
+	weaponMulti := 2.7
+	energyCost := 40 - float64(druid.Talents.Ferocity)
+
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
+		SpellCode:   SpellCode_DruidMangleCat,
 		ActionID:    core.ActionID{SpellID: 409828},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -80,7 +85,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   40 - float64(druid.Talents.Ferocity),
+			Cost:   energyCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -90,7 +95,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 2.7,
+		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * weaponMulti,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

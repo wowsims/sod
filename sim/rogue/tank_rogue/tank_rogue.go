@@ -49,7 +49,7 @@ func (tank *TankRogue) Initialize() {
 	tank.Rogue.Initialize()
 
 	// Initialize tank related CDs/auras here
-	// Evasion
+	tank.Rogue.RegisterEvasionSpell()
 }
 
 func (tank *TankRogue) Reset(sim *core.Simulation) {

@@ -6,10 +6,11 @@ import (
 
 func (druid *Druid) registerMaulSpell() {
 	flatBaseDamage := 578.0
-	if druid.Ranged().ID == 23198 { // Idol of Brutality
-		flatBaseDamage += 50
-	} else if druid.Ranged().ID == 38365 { // Idol of Perspicacious Attacks
-		flatBaseDamage += 120
+	rageCost := 15 - float64(druid.Talents.Ferocity)
+
+	switch druid.Ranged().ID {
+	case IdolOfBrutality:
+		rageCost -= 3
 	}
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
@@ -20,7 +21,7 @@ func (druid *Druid) registerMaulSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.Ferocity),
+			Cost:   rageCost,
 			Refund: 0.8,
 		},
 
