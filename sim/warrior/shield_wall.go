@@ -12,7 +12,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
-	duration := time.Duration(10+[]float64{3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
+	duration := time.Duration(10+[]float64{0, 3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
 	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
 	damageTaken := 0.25
 

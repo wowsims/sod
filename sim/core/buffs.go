@@ -620,12 +620,11 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 }
 
 // Applies buffs that affect individual players.
-// TODO: Classic Maximum buff based on character level
-func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
+func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	character := agent.GetCharacter()
 	level := character.Level
-	isAlliance := character.IsAlliance()
-	isHorde := !isAlliance
+	useAllianceBuffs := !isCharacter || character.IsAlliance()
+	useHordeBuffs := !isCharacter || !useAllianceBuffs
 	bonusResist := float64(0)
 
 	if raidBuffs.ArcaneBrilliance {
@@ -731,11 +730,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// Heart of the Lion grants bonus Melee AP as well so give it priority over kings
 	if raidBuffs.AspectOfTheLion {
 		HeartOfTheLionAura(character)
-	} else if individualBuffs.BlessingOfKings && isAlliance {
+	} else if individualBuffs.BlessingOfKings && useAllianceBuffs {
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
-	if raidBuffs.SanctityAura && isAlliance {
+	if raidBuffs.SanctityAura && useAllianceBuffs {
 		MakePermanent(SanctityAuraAura(character))
 	}
 
@@ -746,27 +745,27 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		}
 	*/
 
-	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
 		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2)))
 	}
 
-	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && useHordeBuffs {
 		MakePermanent(StoneskinTotemAura(&character.Unit, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2)))
 	}
 
-	if raidBuffs.ImprovedStoneskinWindwall && isHorde {
+	if raidBuffs.ImprovedStoneskinWindwall && useHordeBuffs {
 		MakePermanent(ImprovedStoneskinTotemAura(&character.Unit))
 		MakePermanent(ImprovedWindwallTotemAura(&character.Unit))
 	}
 
-	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
 		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2))
 	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
-	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
 	}
 
@@ -777,23 +776,23 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		MakePermanent(dpAura)
 	}
 
-	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && useHordeBuffs {
 		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.15)
 		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
+	if raidBuffs.GraceOfAirTotem > 0 && useHordeBuffs {
 		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.15)
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
+	if individualBuffs.BlessingOfWisdom > 0 && useAllianceBuffs {
 		updateStats := BuffSpellByLevel[BlessingOfWisdom][level]
 		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
+	} else if raidBuffs.ManaSpringTotem > 0 && useHordeBuffs {
 		updateStats := BuffSpellByLevel[ManaSpring][level]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
@@ -822,7 +821,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		ApplySongflowerSerenate(&character.Unit)
 	}
 
-	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, isAlliance)
+	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, useAllianceBuffs)
 
 	// Dire Maul Buffs
 	if individualBuffs.FengusFerocity {
@@ -909,7 +908,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SlipkiksSavvy = false
 	individualBuffs.SparkOfInspiration = false
 
-	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(petAgent, false, raidBuffs, partyBuffs, individualBuffs)
 }
 
 func SanctityAuraAura(character *Character) *Aura {
@@ -2361,11 +2360,11 @@ func ApplySongflowerSerenate(unit *Unit) {
 	})
 }
 
-func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, isAlliance bool) {
-	if buffs.WarchiefsBlessing && !isAlliance {
+func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, useAllianceBuffs bool) {
+	if buffs.WarchiefsBlessing && !useAllianceBuffs {
 		ApplyWarchiefsBlessing(unit, "WarchiefsBuff")
 	}
-	if buffs.MightOfStormwind && isAlliance {
+	if buffs.MightOfStormwind && useAllianceBuffs {
 		ApplyMightOfStormwind(unit, "WarchiefsBuff")
 	}
 }

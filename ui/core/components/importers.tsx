@@ -436,6 +436,7 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 		const talentsStr = (importJson['talents'] as string) || '';
 
 		const gearJson = importJson['gear'];
+		delete gearJson.version;
 		gearJson.items = (gearJson.items as Array<any>).filter(item => item != null);
 		const equipmentSpec = EquipmentSpec.fromJson(gearJson);
 
