@@ -57,7 +57,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
+			FlatCost: manaCost,
 			Multiplier: druid.MoonglowManaCostMultiplier(),
 		},
 		Cast: core.CastConfig{

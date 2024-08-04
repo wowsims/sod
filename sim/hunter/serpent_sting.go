@@ -27,8 +27,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
-			Multiplier: 1 - 0.02*float64(hunter.Talents.Efficiency),
+			FlatCost: manaCost,
+			Multiplier: 100 - 2*hunter.Talents.Efficiency,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

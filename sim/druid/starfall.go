@@ -80,7 +80,7 @@ func (druid *Druid) registerStarfallCD() {
 		Flags:       core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.39,
+			BaseCost: 0.39,
 			Multiplier: druid.MoonglowManaCostMultiplier(),
 		},
 

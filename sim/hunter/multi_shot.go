@@ -19,9 +19,9 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
-	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
+	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 0.25
+		manaCostMultiplier -= 25
 	}
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterMultiShot,
@@ -36,7 +36,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
+			FlatCost: manaCost,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{

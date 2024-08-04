@@ -315,10 +315,10 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			multDiff := 0.2 * float64(newStacks-oldStacks)
+			multDiff := 20 * (newStacks - oldStacks)
 			for _, spell := range affectedSpells {
-				spell.CastTimeMultiplier -= multDiff
-				spell.CostMultiplier -= multDiff
+				spell.CastTimeMultiplier -= float64(multDiff) / 100
+				spell.Cost.Multiplier -= multDiff
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

@@ -17,9 +17,9 @@ func (hunter *Hunter) registerKillShotSpell() {
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
 	// Efficiency talent doesn't apply to this spell even though it has 'shot' in the name
-	manaCostMultiplier := 1.0
+	manaCostMultiplier := int32(100)
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 0.25
+		manaCostMultiplier -= 25
 	}
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
@@ -32,7 +32,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.03,
+			BaseCost: 0.03,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{

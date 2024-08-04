@@ -42,8 +42,8 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   baseCost,
-			Multiplier: 1 - 0.02*float64(shaman.Talents.Convection),
+			FlatCost: baseCost,
+			Multiplier: 100 - 2*shaman.Talents.Convection,
 		},
 
 		Cast: core.CastConfig{

@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (warlock *Warlock) registerInfernalArmorCD() {
@@ -24,19 +23,10 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			attackTable := warlock.CurrentTarget.AttackTables[warlock.UnitIndex][proto.CastType_CastTypeMainHand]
 			physResistanceMultiplier = 1 - attackTable.GetArmorDamageModifier()
-
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= physResistanceMultiplier
+			warlock.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(physResistanceMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= physResistanceMultiplier
-			warlock.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= physResistanceMultiplier
+			warlock.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / physResistanceMultiplier)
 		},
 	})
 

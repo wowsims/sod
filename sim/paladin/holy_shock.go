@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core/stats"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/stats"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -41,7 +42,7 @@ func (paladin *Paladin) registerHolyShock() {
 	damageMultiplier := core.TernaryFloat64(hasInfusionOfLight, 1.5, 1.0)
 
 	//hasArtOfWar := paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
-	manaCostMultiplier := 1.0 //core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
+	manaCostMultiplier := int32(100) //core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
 
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
@@ -66,7 +67,7 @@ func (paladin *Paladin) registerHolyShock() {
 			SpellCode: SpellCode_PaladinHolyShock,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost,
+				FlatCost: rank.manaCost,
 				Multiplier: manaCostMultiplier,
 			},
 

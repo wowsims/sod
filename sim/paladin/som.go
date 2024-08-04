@@ -67,7 +67,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 			}
 		},
 	})
-	
+
 	paladin.auraSoM = aura
 
 	paladin.sealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
@@ -76,7 +76,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   paladin.BaseMana*0.04 - paladin.getLibramSealCostReduction(),
+			FlatCost: paladin.BaseMana*0.04 - paladin.getLibramSealCostReduction(),
 			Multiplier: paladin.benediction(),
 		},
 		Cast: core.CastConfig{
@@ -89,6 +89,6 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 			paladin.applySeal(aura, judgeSpell, sim)
 		},
 	})
-	
+
 	paladin.spellJoM = judgeSpell
 }

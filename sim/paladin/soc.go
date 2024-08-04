@@ -125,7 +125,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				}
 			},
 		})
-		
+
 		paladin.aurasSoC[i] = aura
 
 		paladin.sealOfCommand = paladin.RegisterSpell(core.SpellConfig{
@@ -137,7 +137,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost: rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{
@@ -150,7 +150,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				paladin.applySeal(aura, judgeSpell, sim)
 			},
 		})
-		
+
 		paladin.spellsJoC[i] = judgeSpell
 	}
 }

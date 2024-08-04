@@ -97,8 +97,8 @@ func (schoolMask SpellSchool) GetBaseIndices() []stats.SchoolIndex {
 	return indexArr
 }
 
-func selectMaxMultInSchoolArray(spell *Spell, array *[stats.SchoolLen]float64) float64 {
-	high := 0.0
+func selectMaxMultInSchoolArray[T stats.SchoolValueArrayValues](spell *Spell, array *stats.SchoolValueArray[T]) T {
+	var high T = 0
 	for _, baseIndex := range spell.SchoolBaseIndices {
 		mult := array[baseIndex]
 		if mult > high {
@@ -149,4 +149,13 @@ func (unit *Unit) GetSchoolBonusHitChance(spell *Spell) float64 {
 		return unit.PseudoStats.SchoolBonusHitChance[spell.SchoolIndex]
 	}
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolBonusHitChance)
+}
+
+// Get cost modifier for school
+// Returns highest mod if spell is multi school.
+func (unit *Unit) GetSchoolCostModifier(spell *Spell) int32 {
+	if !spell.SchoolIndex.IsMultiSchool() {
+		return unit.PseudoStats.SchoolCostMultiplier[spell.SchoolIndex]
+	}
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolCostMultiplier)
 }

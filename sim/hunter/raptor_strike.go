@@ -168,13 +168,13 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 	})
 
 	queueSpell := hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterRaptorStrike,
-		ActionID: hunter.RaptorStrike.WithTag(3),
-		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		SpellCode: SpellCode_HunterRaptorStrike,
+		ActionID:  hunter.RaptorStrike.WithTag(3),
+		Flags:     core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
-				hunter.CurrentMana() >= hunter.RaptorStrike.DefaultCast.Cost &&
+				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
 				sim.CurrentTime >= hunter.Hardcast.Expires &&
 				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)

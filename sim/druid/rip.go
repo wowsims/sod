@@ -146,5 +146,5 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
-	return druid.Rip.ApplyCostModifiers(druid.Rip.DefaultCast.Cost)
+	return druid.Rip.Cost.GetCurrentCost()
 }

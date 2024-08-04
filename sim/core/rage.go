@@ -95,7 +95,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
-				metrics = spell.Cost.(*RageCost).ResourceMetrics
+				metrics = spell.Cost.SpellCostFunctions.(*RageCost).ResourceMetrics
 			} else {
 				// Seems like only auto attacks are using this. See OnInit handler of this aura.
 				if spell.ResourceMetrics == nil {
@@ -250,16 +250,20 @@ type RageCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newRageCost(spell *Spell, options RageCostOptions) *RageCost {
-	spell.DefaultCast.Cost = options.Cost
+func newRageCost(spell *Spell, options RageCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.RageRefundMetrics
 	}
 
-	return &RageCost{
-		Refund:          options.Refund * options.Cost,
-		RefundMetrics:   options.RefundMetrics,
-		ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   options.Cost,
+		Multiplier: 100,
+		SpellCostFunctions: &RageCost{
+			Refund:          options.Refund * options.Cost,
+			RefundMetrics:   options.RefundMetrics,
+			ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
+		},
 	}
 }
 
@@ -268,7 +272,7 @@ func (rc *RageCost) CostType() CostType {
 }
 
 func (rc *RageCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentRage() >= spell.CurCast.Cost
 }
 func (rc *RageCost) CostFailureReason(sim *Simulation, spell *Spell) string {

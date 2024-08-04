@@ -146,11 +146,11 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		manaCostMultiplier := 1 - .05*float64(mage.Talents.FrostChanneling)
+		manaCostMultiplier := 5 * mage.Talents.FrostChanneling
 		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.DefaultCast.Cost *= manaCostMultiplier
+				spell.Cost.Multiplier -= manaCostMultiplier
 				spell.ThreatMultiplier *= threatMultiplier
 			}
 		})
@@ -170,10 +170,10 @@ func (mage *Mage) applyArcaneConcentration() {
 		ActionID: core.ActionID{SpellID: 12577},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier -= 1
+			aura.Unit.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(-100)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier += 1
+			aura.Unit.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(100)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagMage) {
@@ -313,13 +313,17 @@ func (mage *Mage) registerArcanePowerCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.3
-				spell.CostMultiplier += 0.3
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 30
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive -= 0.3
-				spell.CostMultiplier -= 0.3
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 30
+				}
 			}
 		},
 	})
@@ -373,7 +377,7 @@ func (mage *Mage) applyMasterOfElements() {
 				return
 			}
 			if result.DidCrit() {
-				mage.AddMana(sim, spell.DefaultCast.Cost*refundCoeff, manaMetrics)
+				mage.AddMana(sim, spell.Cost.BaseCost*refundCoeff, manaMetrics)
 			}
 		},
 	})

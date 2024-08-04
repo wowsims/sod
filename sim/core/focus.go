@@ -132,15 +132,19 @@ type FocusCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newFocusCost(spell *Spell, options FocusCostOptions) *FocusCost {
-	spell.DefaultCast.Cost = options.Cost
+func newFocusCost(spell *Spell, options FocusCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.refundMetrics
 	}
-	return &FocusCost{
-		Refund:          options.Refund,
-		RefundMetrics:   options.RefundMetrics,
-		ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   options.Cost,
+		Multiplier: 100,
+		SpellCostFunctions: &FocusCost{
+			Refund:          options.Refund,
+			RefundMetrics:   options.RefundMetrics,
+			ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),
+		},
 	}
 }
 
@@ -149,7 +153,7 @@ func (fc *FocusCost) CostType() CostType {
 }
 
 func (fc *FocusCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = max(0, spell.CurCast.Cost*spell.Unit.PseudoStats.CostMultiplier)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentFocus() >= spell.CurCast.Cost
 }
 func (fc *FocusCost) CostFailureReason(_ *Simulation, spell *Spell) string {

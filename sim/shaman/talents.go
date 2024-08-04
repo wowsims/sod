@@ -48,7 +48,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.CostMultiplier *= 1 - .05*float64(shaman.Talents.TidalFocus)
+				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
 			}
 		})
 	}
@@ -89,10 +89,18 @@ func (shaman *Shaman) applyElementalFocus() {
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier -= 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 100
+				}
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CostMultiplier += 1 })
+			core.Each(affectedSpells, func(spell *core.Spell) {
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 100
+				}
+			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
@@ -179,13 +187,17 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating += core.CritRatingPerCritChance * 100
-				spell.CostMultiplier -= 1
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 100
+				}
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
-				spell.CostMultiplier += 1
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 100
+				}
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -372,8 +384,8 @@ func (shaman *Shaman) concussionMultiplier() float64 {
 	return 1 + 0.01*float64(shaman.Talents.Concussion)
 }
 
-func (shaman *Shaman) totemManaMultiplier() float64 {
-	return 1 - 0.05*float64(shaman.Talents.TotemicFocus)
+func (shaman *Shaman) totemManaMultiplier() int32 {
+	return 100 - 5*shaman.Talents.TotemicFocus
 }
 
 // Restorative Totems uses Mod Spell Effectiveness (Base Value)
