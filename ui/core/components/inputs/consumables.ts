@@ -100,6 +100,19 @@ function makeConsumeInputFactory<T extends number>(
 //                                 CONJURED
 ///////////////////////////////////////////////////////////////////////////
 
+export const ConjuredHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 5509, minLevel: 24 }]),
+	value: Conjured.ConjuredHealthstone,
+};
+export const ConjuredGreaterHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 5510, minLevel: 36 }]),
+	value: Conjured.ConjuredGreaterHealthstone,
+};
+export const ConjuredMajorHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 9421, minLevel: 48 }]),
+	value: Conjured.ConjuredMajorHealthstone,
+};
+
 export const ConjuredMinorRecombobulator: ConsumableInputConfig<Conjured> = {
 	actionId: () => ActionId.fromItemId(4381),
 	value: Conjured.ConjuredMinorRecombobulator,
@@ -116,8 +129,13 @@ export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
 };
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
-	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
+	{ config: ConjuredMajorHealthstone, stats: [Stat.StatArmor] },
+	{ config: ConjuredGreaterHealthstone, stats: [Stat.StatArmor] },
+	{ config: ConjuredHealthstone, stats: [Stat.StatArmor] },
+
 	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect] },
+	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
+
 	{ config: ConjuredRogueThistleTea, stats: [] },
 ];
 
@@ -330,7 +348,7 @@ export const DragonBreathChili = makeBooleanConsumeInput({
 
 export const RumseyRumBlackLabel: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21151, minLevel: 1 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholRumseyRumBlackLabel,
 };
 export const GordokGreenGrog: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18269, minLevel: 56 }]),
@@ -641,10 +659,19 @@ export const PetStrengthConsumable = makeEnumConsumeInput({
 //                                 POTIONS
 ///////////////////////////////////////////////////////////////////////////
 
-export const LesserManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(3385),
-	value: Potions.LesserManaPotion,
+export const GreaterHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 1710, minLevel: 21 }]),
+	value: Potions.GreaterHealingPotion,
 };
+export const SuperiorHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 3928, minLevel: 35 }]),
+	value: Potions.SuperiorHealingPotion,
+};
+export const MajorHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 13446, minLevel: 45 }]),
+	value: Potions.MajorHealingPotion,
+};
+
 export const ManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 3827, minLevel: 22 }]),
 	value: Potions.ManaPotion,
@@ -661,6 +688,7 @@ export const MajorManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13444, minLevel: 49 }]),
 	value: Potions.MajorManaPotion,
 };
+
 export const MightRagePotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13442, minLevel: 46 }]),
 	value: Potions.MightyRagePotion,
@@ -676,6 +704,37 @@ export const RagePotion: ConsumableInputConfig<Potions> = {
 	value: Potions.RagePotion,
 	showWhen: player => player.getClass() == Class.ClassWarrior,
 };
+
+export const MagicResistancePotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 9036, minLevel: 32 }]),
+	value: Potions.MagicResistancePotion,
+};
+// TODO: Not yet implemented in the back-end. Missing school shields and shields don't actually absorb damage right now
+// export const GreaterArcaneProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13461, minLevel: 48 }]),
+// 	value: Potions.GreaterArcaneProtectionPotion,
+// };
+// export const GreaterFireProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13457, minLevel: 48 }]),
+// 	value: Potions.GreaterFireProtectionPotion,
+// };
+// export const GreaterFrostProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13456, minLevel: 48 }]),
+// 	value: Potions.GreaterFrostProtectionPotion,
+// };
+// export const GreaterHolyProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13460, minLevel: 48 }]),
+// 	value: Potions.GreaterHolyProtectionPotion,
+// };
+// export const GreaterNatureProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13458, minLevel: 48 }]),
+// 	value: Potions.GreaterNatureProtectionPotion,
+// };
+// export const GreaterShadowProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13459, minLevel: 48 }]),
+// 	value: Potions.GreaterShadowProtectionPotion,
+// };
+
 export const GreaterStoneshieldPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13455, minLevel: 46 }]),
 	value: Potions.GreaterStoneshieldPotion,
@@ -686,14 +745,20 @@ export const LesserStoneshieldPotion: ConsumableInputConfig<Potions> = {
 };
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
+	{ config: MajorHealingPotion, stats: [Stat.StatArmor] },
+	{ config: SuperiorHealingPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterHealingPotion, stats: [Stat.StatArmor] },
+
 	{ config: MajorManaPotion, stats: [Stat.StatIntellect] },
 	{ config: SuperiorManaPotion, stats: [Stat.StatIntellect] },
 	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, stats: [Stat.StatIntellect] },
-	{ config: LesserManaPotion, stats: [Stat.StatIntellect] },
+
 	{ config: MightRagePotion, stats: [] },
 	{ config: GreatRagePotion, stats: [] },
 	{ config: RagePotion, stats: [] },
+
+	{ config: MagicResistancePotion, stats: [] },
 	{ config: GreaterStoneshieldPotion, stats: [Stat.StatArmor] },
 	{ config: LesserStoneshieldPotion, stats: [Stat.StatArmor] },
 ];

@@ -317,19 +317,42 @@ enum Explosive {
 	ExplosiveGoblinLandMine = 6;
 }
 
-// NextIndex: 5
+// NextIndex: 28
 enum Potions {
 	UnknownPotion = 0;
-	LesserManaPotion = 1;
+	
+	// Mana Pots
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
+	
+	// Rage Pots
 	RagePotion = 6;
 	GreatRagePotion = 7;
 	MightyRagePotion = 8;
+	
+	// Armor Pots
 	LesserStoneshieldPotion = 9;
 	GreaterStoneshieldPotion = 10;
+
+	// Healing Pots
+	LesserHealingPotion = 11;
+	HealingPotion = 12;
+	GreaterHealingPotion = 13;
+	SuperiorHealingPotion = 14;
+	MajorHealingPotion = 15;
+
+	// Resistance Pots
+	MagicResistancePotion = 16;
+	GreaterArcaneProtectionPotion = 17;
+	GreaterFireProtectionPotion = 18;
+	GreaterFrostProtectionPotion = 19;
+	GreaterHolyProtectionPotion = 20;
+	GreaterNatureProtectionPotion = 21;
+	GreaterShadowProtectionPotion = 22;
+
+	LesserManaPotion = 1 [deprecated = true];
 }
 
 enum Conjured {
@@ -337,6 +360,10 @@ enum Conjured {
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
 	ConjuredRogueThistleTea = 3;
+
+	ConjuredHealthstone = 7;
+	ConjuredGreaterHealthstone = 8;
+	ConjuredMajorHealthstone = 9;
 
 	ConjuredDruidCatnip = 4 [deprecated = true];
 }

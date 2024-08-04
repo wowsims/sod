@@ -214,6 +214,16 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 	unit.stats[stat] += amount
 }
 
+func (unit *Unit) AddResistances(amount float64) {
+	unit.AddStats(stats.Stats{
+		stats.ArcaneResistance: amount,
+		stats.FireResistance:   amount,
+		stats.FrostResistance:  amount,
+		stats.NatureResistance: amount,
+		stats.ShadowResistance: amount,
+	})
+}
+
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		panic("Already finalized, cannot add dynamic damage taken modifier!")
@@ -244,6 +254,16 @@ func (unit *Unit) AddStatDynamic(sim *Simulation, stat stats.Stat, amount float6
 	bonus := stats.Stats{}
 	bonus[stat] = amount
 	unit.AddStatsDynamic(sim, bonus)
+}
+
+func (unit *Unit) AddResistancesDynamic(sim *Simulation, amount float64) {
+	unit.AddStatsDynamic(sim, stats.Stats{
+		stats.ArcaneResistance: amount,
+		stats.FireResistance:   amount,
+		stats.FrostResistance:  amount,
+		stats.NatureResistance: amount,
+		stats.ShadowResistance: amount,
+	})
 }
 
 func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
