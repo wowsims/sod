@@ -109,7 +109,7 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
+				druid.SpendEnergy(sim, excessEnergy, spell.EnergyMetrics())
 				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
@@ -119,5 +119,5 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 }
 
 func (druid *Druid) CurrentFerociousBiteCost() float64 {
-	return druid.FerociousBite.ApplyCostModifiers(druid.FerociousBite.DefaultCast.Cost)
+	return druid.FerociousBite.Cost.GetCurrentCost()
 }

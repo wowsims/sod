@@ -47,11 +47,11 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 449925},
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					druid.CatForm.CostMultiplier -= 0.3
+					druid.CatForm.Cost.Multiplier -= 30
 					//druid.BearForm.CostMultiplier -= 0.3
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					druid.CatForm.CostMultiplier += 0.3
+					druid.CatForm.Cost.Multiplier += 30
 					//druid.BearForm.CostMultiplier += 0.3
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -231,7 +231,19 @@ var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Your Faerie Fire and Faerie Fire (Feral) also increase the chance for all attacks to hit that target by 1% for 40 sec.
 		2: func(agent core.Agent) {
-			// Implemented in faerie_fire.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.ImprovedFaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+				return core.ImprovedFaerieFireAura(target)
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Druid - Feral 2P Bonus Trigger",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if (spell.SpellCode == SpellCode_DruidFaerieFire || spell.SpellCode == SpellCode_DruidFaerieFireFeral) && result.Landed() {
+						druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
+					}
+				},
+			}))
 		},
 		// Periodic damage from your Rake and Rip can now be critical strikes.
 		4: func(agent core.Agent) {

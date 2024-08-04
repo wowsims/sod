@@ -66,7 +66,7 @@ func (eb *energyBar) setupEnergyThresholds() {
 	// Energy thresholds from spell costs.
 	for _, action := range eb.unit.Rotation.allAPLActions() {
 		for _, spell := range action.GetAllSpells() {
-			if _, ok := spell.Cost.(*EnergyCost); ok {
+			if spell.Cost != nil && spell.Cost.CostType() == CostTypeEnergy {
 				energyThresholds = append(energyThresholds, int(math.Ceil(spell.DefaultCast.Cost)))
 			}
 		}
@@ -284,17 +284,20 @@ type EnergyCost struct {
 	ComboPointMetrics *ResourceMetrics
 }
 
-func newEnergyCost(spell *Spell, options EnergyCostOptions) *EnergyCost {
-	spell.DefaultCast.Cost = options.Cost
+func newEnergyCost(spell *Spell, options EnergyCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.EnergyRefundMetrics
 	}
-
-	return &EnergyCost{
-		Refund:            options.Refund,
-		RefundMetrics:     options.RefundMetrics,
-		ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
-		ComboPointMetrics: spell.Unit.NewComboPointMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   options.Cost,
+		Multiplier: 100,
+		SpellCostFunctions: &EnergyCost{
+			Refund:            options.Refund,
+			RefundMetrics:     options.RefundMetrics,
+			ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
+			ComboPointMetrics: spell.Unit.NewComboPointMetrics(spell.ActionID),
+		},
 	}
 }
 
@@ -303,7 +306,7 @@ func (ec *EnergyCost) CostType() CostType {
 }
 
 func (ec *EnergyCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentEnergy() >= spell.CurCast.Cost
 }
 func (ec *EnergyCost) CostFailureReason(_ *Simulation, spell *Spell) string {
@@ -319,9 +322,9 @@ func (ec *EnergyCost) IssueRefund(sim *Simulation, spell *Spell) {
 }
 
 func (spell *Spell) EnergyMetrics() *ResourceMetrics {
-	return spell.Cost.(*EnergyCost).ComboPointMetrics
+	return spell.Cost.SpellCostFunctions.(*EnergyCost).ResourceMetrics
 }
 
 func (spell *Spell) ComboPointMetrics() *ResourceMetrics {
-	return spell.Cost.(*EnergyCost).ComboPointMetrics
+	return spell.Cost.SpellCostFunctions.(*EnergyCost).ComboPointMetrics
 }

@@ -258,6 +258,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 					}
 
 					if spell.Cost != nil {
+						if !spell.Cost.MeetsRequirement(sim, spell) {
+							spell.castFailureHelper(sim, spell.Cost.CostFailureReason(sim, spell))
+							return
+						}
 						spell.Cost.SpendCost(sim, spell)
 					}
 
@@ -359,10 +363,4 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 
 		return true
 	}
-}
-
-func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
-	cost -= spell.Unit.PseudoStats.CostReduction
-	cost = max(0, cost*spell.Unit.PseudoStats.CostMultiplier)
-	return max(0, cost*spell.CostMultiplier)
 }

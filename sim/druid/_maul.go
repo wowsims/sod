@@ -72,7 +72,7 @@ func (druid *Druid) registerMaulSpell() {
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return !druid.MaulQueueAura.IsActive() &&
-				druid.CurrentRage() >= druid.Maul.DefaultCast.Cost &&
+				druid.CurrentRage() >= druid.Maul.Cost.GetCurrentCost() &&
 				sim.CurrentTime >= druid.Hardcast.Expires
 		},
 

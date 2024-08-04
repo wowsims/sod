@@ -257,7 +257,7 @@ func (warlock *Warlock) applyMasterSummoner() {
 	}
 
 	castTimeReduction := time.Second * 2 * time.Duration(warlock.Talents.MasterSummoner)
-	costReduction := 0.20 * float64(warlock.Talents.MasterSummoner)
+	costReduction := 20 * warlock.Talents.MasterSummoner
 
 	// Use an aura because the summon spells aren't registered by this point
 	warlock.RegisterAura(core.Aura{
@@ -269,13 +269,13 @@ func (warlock *Warlock) applyMasterSummoner() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime -= castTimeReduction
-				spell.CostMultiplier -= costReduction
+				spell.Cost.Multiplier -= costReduction
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime += castTimeReduction
-				spell.CostMultiplier += costReduction
+				spell.Cost.Multiplier += costReduction
 			}
 		},
 	})
@@ -586,10 +586,9 @@ func (warlock *Warlock) applyCataclysm() {
 		return
 	}
 
-	points := float64(warlock.Talents.Cataclysm)
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(WarlockFlagDestruction) {
-			spell.CostMultiplier *= 1 - .01*points
+			spell.Cost.Multiplier -= warlock.Talents.Cataclysm
 		}
 	})
 }

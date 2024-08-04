@@ -16,9 +16,9 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 
 	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
-	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
+	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 0.25
+		manaCostMultiplier -= 25
 	}
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -32,7 +32,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost:   manaCost,
+			FlatCost: manaCost,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{

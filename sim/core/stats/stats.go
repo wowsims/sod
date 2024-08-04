@@ -123,10 +123,37 @@ func (schoolIndex SchoolIndex) IsMultiSchool() bool {
 	return schoolIndex == SchoolIndexMultischool
 }
 
-func NewSchoolFloatArray(defaultVal float64) [SchoolLen]float64 {
+type SchoolValueArrayValues interface{ int32 | float64 }
+type SchoolValueArray[T SchoolValueArrayValues] [SchoolLen]T
+
+func NewSchoolValueArray[T SchoolValueArrayValues](defaultVal T) SchoolValueArray[T] {
 	d := defaultVal
-	return [SchoolLen]float64{
+	return SchoolValueArray[T]{
 		d, d, d, d, d, d, d, d,
+	}
+}
+
+func (sfa *SchoolValueArray[T]) AddToAllSchools(change T) {
+	for idx := SchoolIndexPhysical; idx < SchoolLen; idx++ {
+		sfa[idx] += change
+	}
+}
+
+func (sfa *SchoolValueArray[T]) AddToMagicSchools(change T) {
+	for idx := SchoolIndexArcane; idx < SchoolLen; idx++ {
+		sfa[idx] += change
+	}
+}
+
+func (sfa *SchoolValueArray[T]) MultiplyAllSchools(mult T) {
+	for idx := SchoolIndexPhysical; idx < SchoolLen; idx++ {
+		sfa[idx] *= mult
+	}
+}
+
+func (sfa *SchoolValueArray[T]) MultiplyMagicSchools(mult T) {
+	for idx := SchoolIndexArcane; idx < SchoolLen; idx++ {
+		sfa[idx] *= mult
 	}
 }
 
@@ -369,8 +396,7 @@ type PseudoStats struct {
 	// Effects that apply when this unit is the attacker.
 	///////////////////////////////////////////////////
 
-	CostMultiplier float64 // Multiplies spell cost.
-	CostReduction  float64 // Reduces spell cost.
+	SchoolCostMultiplier SchoolValueArray[int32] // Multipliers for spell costs stored as ints
 
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
@@ -405,8 +431,8 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64            // All damage
-	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageDealtMultiplier       float64                   // All damage
+	SchoolDamageDealtMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
@@ -457,11 +483,11 @@ type PseudoStats struct {
 	BonusDamageTakenBeforeModifiers [DefenseTypeLen]float64 // Flat damage reduction values BEFORE Modifiers like Blessing of Sanctuary
 	BonusDamageTakenAfterModifiers  [DefenseTypeLen]float64 // Flat damage reduction values AFTER Modifiers like Stoneskin Totem, Windwall Totem, etc.
 
-	DamageTakenMultiplier       float64            // All damage
-	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
-	SchoolCritTakenChance       [SchoolLen]float64 // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
-	SchoolBonusDamageTaken      [SchoolLen]float64 // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
-	SchoolBonusHitChance        [SchoolLen]float64 // Spell school-specific hit bonuses such as ring runes
+	DamageTakenMultiplier       float64                   // All damage
+	SchoolDamageTakenMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolCritTakenChance       SchoolValueArray[float64] // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusDamageTaken      SchoolValueArray[float64] // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
+	SchoolBonusHitChance        SchoolValueArray[float64] // Spell school-specific hit bonuses such as ring runes
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
@@ -473,7 +499,7 @@ type PseudoStats struct {
 
 func NewPseudoStats() PseudoStats {
 	return PseudoStats{
-		CostMultiplier: 1,
+		SchoolCostMultiplier: NewSchoolValueArray(int32(100)),
 
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,
@@ -485,7 +511,7 @@ func NewPseudoStats() PseudoStats {
 		ThreatMultiplier: 1,
 
 		DamageDealtMultiplier:       1,
-		SchoolDamageDealtMultiplier: NewSchoolFloatArray(1),
+		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
 
 		BlockValueMultiplier: 1,
 
@@ -493,9 +519,9 @@ func NewPseudoStats() PseudoStats {
 
 		// Target effects.
 		DamageTakenMultiplier:       1,
-		SchoolDamageTakenMultiplier: NewSchoolFloatArray(1),
-		SchoolCritTakenChance:       NewSchoolFloatArray(0),
-		SchoolBonusDamageTaken:      NewSchoolFloatArray(0),
+		SchoolDamageTakenMultiplier: NewSchoolValueArray(1.0),
+		SchoolCritTakenChance:       NewSchoolValueArray(0.0),
+		SchoolBonusDamageTaken:      NewSchoolValueArray(0.0),
 
 		BleedDamageTakenMultiplier:  1,
 		PoisonDamageTakenMultiplier: 1,

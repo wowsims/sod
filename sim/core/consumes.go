@@ -34,8 +34,9 @@ func applyConsumeEffects(agent Agent) {
 }
 
 func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
-	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfAgility])
-	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17}[ownerConsumes.PetScrollOfStrength])
+	pet.AddStat(stats.AttackPower, []float64{0, 40}[ownerConsumes.PetAttackPowerConsumable])
+	pet.AddStat(stats.Agility, []float64{0, 17, 13, 9, 5}[ownerConsumes.PetAgilityConsumable])
+	pet.AddStat(stats.Strength, []float64{0, 30, 17, 13, 9, 5}[ownerConsumes.PetStrengthConsumable])
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -745,10 +746,6 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
-	if !character.HasProfession(proto.Profession_Enchanting) || consumes.EnchantedSigil == proto.EnchantedSigil_UnknownSigil {
-		return
-	}
-
 	switch consumes.EnchantedSigil {
 	case proto.EnchantedSigil_InnovationSigil:
 		character.AddStats(stats.Stats{
@@ -762,6 +759,14 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 			stats.RangedAttackPower: 30,
 			stats.SpellPower:        30,
 		})
+	case proto.EnchantedSigil_FlowingWatersSigil:
+		for _, player := range character.Env.Raid.AllPlayerUnits {
+			player.AddStats(stats.Stats{
+				stats.AttackPower:       30,
+				stats.RangedAttackPower: 30,
+				stats.SpellPower:        30,
+			})
+		}
 	}
 }
 
@@ -1004,7 +1009,7 @@ func makePotionActivation(potionType proto.Potions, character *Character, potion
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
 		// placeholder action instead of specific potion spells, in APL prepull. This
 		// prevents a mismatch between Consumes and Rotation settings.
-		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion
+		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion | SpellFlagCastTimeNoGCD
 		oldApplyEffects := mcd.Spell.ApplyEffects
 		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 			oldApplyEffects(sim, target, spell)

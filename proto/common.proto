@@ -345,6 +345,7 @@ enum EnchantedSigil {
 	UnknownSigil = 0;
 	InnovationSigil = 1;
 	LivingDreamsSigil = 2;
+	FlowingWatersSigil = 3;
 }
 
 enum Flask {
@@ -537,7 +538,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 42
+// NextIndex: 43
 message RaidBuffs {
 	reserved 33;
 	reserved "horn_of_lordaeron";
@@ -608,6 +609,7 @@ message RaidBuffs {
 	bool sanctity_aura = 36;
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
+	bool flowing_waters_sigil = 42;
 }
 
 // Buffs that affect a single party.
@@ -675,8 +677,9 @@ message Consumes {
 	Conjured default_conjured = 18;
 	EnchantedSigil enchanted_sigil = 20;
 	bool mildly_irradiated_rejuv_pot = 21;
-	int32 pet_scroll_of_agility = 22;
-	int32 pet_scroll_of_strength = 23;
+	int32 pet_agility_consumable = 22;
+	int32 pet_strength_consumable = 23;
+	int32 pet_attack_power_consumable = 31;
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
 	ZanzaBuff zanza_buff = 27;

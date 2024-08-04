@@ -88,7 +88,7 @@ func TestElemental(t *testing.T) {
 var Phase1Talents = "25003105"
 var Phase2Talents = "550031550000151"
 var Phase3Talents = "550031550000151-500203"
-var Phase4Talents = "550031550000151--50105301005"
+var Phase4Talents = "550301550000151--50205300005"
 
 var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{

@@ -161,7 +161,7 @@ export const DefaultConsumes = Consumes.create({
 	boglingRoot: false,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	food: Food.FoodBlessSunfruit,
 	flask: Flask.FlaskOfSupremePower,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,

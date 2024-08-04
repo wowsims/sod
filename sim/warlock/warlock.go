@@ -74,7 +74,7 @@ type Warlock struct {
 	Shadowflame        *core.Spell
 	UnstableAffliction *core.Spell
 
-	ActiveCurseAura          *core.Aura
+	ActiveCurseAura          core.AuraArray
 	CurseOfElements          *core.Spell
 	CurseOfElementsAuras     core.AuraArray
 	CurseOfShadow            *core.Spell
@@ -164,7 +164,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
 	warlock.setDefaultActivePet()
-	warlock.ActiveCurseAura = nil
+	warlock.ActiveCurseAura = make([]*core.Aura, len(sim.Environment.AllUnits))
 
 	// warlock.ItemSwap.SwapItems(sim, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
 	// 	proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, false)

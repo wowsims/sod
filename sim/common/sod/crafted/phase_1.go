@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func init() {
@@ -119,19 +118,11 @@ func init() {
 			ActionID: actionID,
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.1)
 				character.PseudoStats.ThreatMultiplier *= 1.2
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.1
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.1
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.1)
 				character.PseudoStats.ThreatMultiplier /= 1.2
 			},
 		})

@@ -211,8 +211,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfRecklessnessAura(target, level))
 	}
 
-	if debuffs.FaerieFire {
-		MakePermanent(FaerieFireAura(target, level, debuffs.ImprovedFaerieFire))
+	if debuffs.FaerieFire || debuffs.ImprovedFaerieFire {
+		MakePermanent(FaerieFireAura(target, level))
+	}
+
+	if debuffs.ImprovedFaerieFire {
+		MakePermanent(ImprovedFaerieFireAura(target))
 	}
 
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
@@ -547,19 +551,8 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 1 + .02*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .02*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 1 + .02*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 1 + .02*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 1 + .02*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 1 + .02*float64(oldStacks)
-
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 + .02*float64(newStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .02*float64(newStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 1 + .02*float64(newStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 1 + .02*float64(newStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 + .02*float64(newStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 + .02*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.02*float64(oldStacks)))
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.02*float64(newStacks))
 		},
 	})
 
@@ -1072,7 +1065,7 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 
 // Decreases the armor of the target by X for 40 sec.
 // Improved: Your Faerie Fire and Faerie Fire (Feral) also increase the chance for all attacks to hit that target by 1% for 40 sec.
-func FaerieFireAura(target *Unit, playerLevel int32, improved bool) *Aura {
+func FaerieFireAura(target *Unit, playerLevel int32) *Aura {
 	spellID := map[int32]int32{
 		25: 770,
 		40: 778,
@@ -1080,7 +1073,21 @@ func FaerieFireAura(target *Unit, playerLevel int32, improved bool) *Aura {
 		60: 9907,
 	}[playerLevel]
 
-	arpen := map[int32]float64{
+	return faerieFireAuraInternal(target, "Faerie Fire", spellID, playerLevel)
+}
+
+func FaerieFireFeralAura(target *Unit, playerLevel int32) *Aura {
+	spellID := map[int32]int32{
+		40: 17390,
+		50: 17391,
+		60: 17392,
+	}[playerLevel]
+
+	return faerieFireAuraInternal(target, "Faerie Fire (Feral)", spellID, playerLevel)
+}
+
+func faerieFireAuraInternal(target *Unit, label string, spellID int32, playerLevel int32) *Aura {
+	arPen := map[int32]float64{
 		25: 175,
 		40: 285,
 		50: 395,
@@ -1088,25 +1095,38 @@ func FaerieFireAura(target *Unit, playerLevel int32, improved bool) *Aura {
 	}[playerLevel]
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Faerie Fire",
+		Label:    label,
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Second * 40,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
-			if improved {
-				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * MeleeHitRatingPerHitChance
-				aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * SpellHitRatingPerHitChance
-			}
+	})
+
+	aura.NewExclusiveEffect("Faerie Fire", true, ExclusiveEffect{
+		Priority: arPen,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, -arPen)
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Armor, arpen)
-			if improved {
-				aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * MeleeHitRatingPerHitChance
-				aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
-			}
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, arPen)
 		},
 	})
+
 	return aura
+}
+
+func ImprovedFaerieFireAura(target *Unit) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "S03 - Item - T1 - Druid - Feral 2P Bonus",
+		ActionID: ActionID{SpellID: 455864},
+		Duration: time.Second * 40,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * MeleeHitRatingPerHitChance
+			aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * SpellHitRatingPerHitChance
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * MeleeHitRatingPerHitChance
+			aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
+		},
+	})
 }
 
 func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {

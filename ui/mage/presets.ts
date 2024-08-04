@@ -3,6 +3,7 @@ import * as PresetUtils from '../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
+	EnchantedSigil,
 	FirePowerBuff,
 	Flask,
 	Food,
@@ -204,7 +205,7 @@ export const TalentsFrostPhase3 = PresetUtils.makePresetTalents('50 Frost', Save
 export const TalentsArcanePhase4 = PresetUtils.makePresetTalents('60 Arcane', SavedTalents.create({ talentsString: '0550050210031531-054-203500001' }), {
 	customCondition: player => player.getLevel() === 60,
 });
-export const TalentsFirePhase4 = PresetUtils.makePresetTalents('60 Fire', SavedTalents.create({ talentsString: '-5050320123033051-203501031003' }), {
+export const TalentsFirePhase4 = PresetUtils.makePresetTalents('60 Fire', SavedTalents.create({ talentsString: '21-0552300123033151-203500031' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 export const TalentsFrostPhase4 = PresetUtils.makePresetTalents('60 Frost', SavedTalents.create({ talentsString: '-0550320003021-2035020310035105' }), {
@@ -239,6 +240,7 @@ export const DefaultOptions = MageOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,

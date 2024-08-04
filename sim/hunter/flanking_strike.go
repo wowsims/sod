@@ -40,7 +40,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics,
 
-			DamageMultiplier: 0.45,
+			DamageMultiplier: 1,
 			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -67,7 +67,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		})
 	}
 
-	manaCostMultiplier := 1 - 0.02*float64(hunter.Talents.Efficiency)
+	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
 
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 415320},
@@ -77,7 +77,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.015,
+			BaseCost: 0.015,
 			Multiplier: manaCostMultiplier,
 		},
 

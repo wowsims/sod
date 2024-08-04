@@ -46,8 +46,8 @@ func (paladin *Paladin) improvedSoR() float64 {
 	return []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.ImprovedSealOfRighteousness]
 }
 
-func (paladin *Paladin) benediction() float64 {
-	return []float64{1, 0.97, 0.94, 0.91, 0.88, 0.85}[paladin.Talents.Benediction]
+func (paladin *Paladin) benediction() int32 {
+	return []int32{100, 97, 94, 91, 88, 85}[paladin.Talents.Benediction]
 }
 
 // func (paladin *Paladin) applyRedoubt() {

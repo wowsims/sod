@@ -39,8 +39,7 @@ func (druid *Druid) registerInnervateCD() {
 		ActionID: actionID,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.05,
-			Multiplier: 1,
+			BaseCost: 0.05,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

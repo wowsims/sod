@@ -1,7 +1,6 @@
 package vanilla
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
@@ -39,6 +38,7 @@ const (
 	PipsSkinner                    = 12709
 	ArcaniteChampion               = 12790
 	MasterworkStormhammer          = 12794
+	Frostguard                     = 12797
 	SerpentSlicer                  = 13035
 	SealOfTheDawn                  = 13209
 	JoonhosMercy                   = 17054
@@ -64,6 +64,7 @@ const (
 	EbonFist                       = 227842
 	ReavingNightfall               = 227843
 	SkyridersMasterworkStormhammer = 227886
+	HardenedFrostguard             = 227887
 	FlameWrath                     = 227934 // 11809
 	LordGeneralsSword              = 227940 // 11817
 	WraithScythe                   = 227941
@@ -107,6 +108,8 @@ const (
 	DraconicInfusedEmblem          = 228678 // 22268
 	HandOfJustice                  = 228722 // 11815
 	Felstriker                     = 228757 // 12590
+	GutgoreRipperMolten            = 229372
+	EskhandarsRightClawMolten      = 229379
 )
 
 func init() {
@@ -404,8 +407,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=228288/bonereavers-edge
 	// https://www.wowhead.com/classic/item=228461/bonereavers-edge
 	// Chance on hit: Your attacks ignore 700 of your enemies' armor for 10 sec. This effect stacks up to 3 times.
-	itemhelpers.CreateWeaponProcSpell(BonereaversEdge, "Bonereaver's Edge", 2.0, makeBonereaversEdgeEffect)
-	itemhelpers.CreateWeaponProcSpell(BonereaversEdgeMolten, "Bonereaver's Edge (Molten)", 2.0, makeBonereaversEdgeEffect)
+	itemhelpers.CreateWeaponProcSpell(BonereaversEdge, "Bonereaver's Edge", 2.0, bonereaversEdgeEffect)
+	itemhelpers.CreateWeaponProcSpell(BonereaversEdgeMolten, "Bonereaver's Edge (Molten)", 2.0, bonereaversEdgeEffect)
 
 	itemhelpers.CreateWeaponProcSpell(BowOfSearingArrows, "Bow of Searing Arrows", 3.35, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -436,7 +439,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=228410/dreadblade-of-the-destructor
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor, "Dreadblade of the Destructor", 1.0, makeDreadbladeOfTheDestructorEffect)
+	itemhelpers.CreateWeaponProcSpell(DreadbladeOfTheDestructor, "Dreadblade of the Destructor", 1.0, dreadbladeOfTheDestructorEffect)
 
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -539,19 +542,10 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
 	// Chance on hit: Increases your attack speed by 30% for 5 sec.
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 1.0, func(character *core.Character) *core.Aura {
-		return character.GetOrRegisterAura(core.Aura{
-			Label:    "Eskhandar's Rage",
-			ActionID: core.ActionID{SpellID: 22640},
-			Duration: time.Second * 5,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.3)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1/1.3)
-			},
-		})
-	})
+	// Uptime measured in SoD exceeds what was measured with the Vanilla version.
+	// Lines up closely with a 2.0 PPM
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 2.0, eskhandarsRightClawAura)
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 2.0, eskhandarsRightClawAura)
 
 	// https://www.wowhead.com/classic/item=13218/fang-of-the-crystal-spider
 	// Chance on hit: Slows target enemy's casting speed and increases the time between melee and ranged attacks by 10% for 10 sec.
@@ -824,6 +818,40 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=12797/frostguard#comments
+	// Chance on hit: Target's movement slowed by 30% and increasing the time between attacks by 25% for 5 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Frostguard, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			aura := unit.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16927},
+				Label:    "Chilled (Frostguard)",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed *= .70
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed /= .70
+				},
+			})
+			core.AtkSpeedReductionEffect(aura, 1.25)
+			return aura
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffAuras.Get(result.Target).Activate(sim)
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228029/gravestone-war-axe
 	// Chance on hit: Diseases target enemy for 55 Nature damage every 3 sec for 15 sec.
 	// TODO: Proc rate assumed and needs testing
@@ -862,48 +890,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228267/gutgore-ripper
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 150 Shadow damage and lowering all stats by 25 for 30 sec.
-	itemhelpers.CreateWeaponProcSpell(GutgoreRipper, "Gutgore Ripper", 1.0, func(character *core.Character) *core.Spell {
-		procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-			return target.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 461682},
-				Label:    "Gutgore Ripper",
-				Duration: time.Second * 30,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.AddStatsDynamic(sim, stats.Stats{
-						stats.Agility:   -25,
-						stats.Intellect: -25,
-						stats.Stamina:   -25,
-						stats.Spirit:    -25,
-						stats.Strength:  -25,
-					})
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.AddStatsDynamic(sim, stats.Stats{
-						stats.Agility:   25,
-						stats.Intellect: 25,
-						stats.Stamina:   25,
-						stats.Spirit:    25,
-						stats.Strength:  25,
-					})
-				},
-			})
-		})
-
-		return character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 461682},
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, 150, spell.OutcomeMagicHitAndCrit)
-				if result.Landed() {
-					procAuras.Get(target).Activate(sim)
-				}
-			},
-		})
-	})
+	itemhelpers.CreateWeaponProcSpell(GutgoreRipper, "Gutgore Ripper", 1.0, gutgoreRipperEffect)
+	itemhelpers.CreateWeaponProcSpell(GutgoreRipperMolten, "Gutgore Ripper (Molten)", 1.0, gutgoreRipperEffect)
 
 	itemhelpers.CreateWeaponProcSpell(Gutwrencher, "Gutwrencher", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -998,6 +986,68 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=227887/hardened-frostguard
+	// Chance on hit: Target's movement slowed by 30% and increasing the time between attacks by 25% for 5 sec.
+	// Chance on hit: Inflicts Frost damage to nearby enemies, immobilizing them for up to 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(HardenedFrostguard, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		debuffAuras := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			aura := unit.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16927},
+				Label:    "Chilled (Hardened Frostguard)",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed *= .70
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MoveSpeed /= .70
+				},
+			})
+			core.AtkSpeedReductionEffect(aura, 1.25)
+			return aura
+		})
+
+		novaSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463448},
+			SpellSchool:      core.SpellSchoolFrost,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 1,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 28, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hardened Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.5, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffAuras.Get(result.Target).Activate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hardened Frostguard",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.5, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				novaSpell.Cast(sim, result.Target)
+			},
 		})
 	})
 
@@ -1425,7 +1475,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               0.5,
+			PPM:               4, // Someone in the armemnts Discord tested it out to 4 PPM
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -1979,14 +2029,14 @@ func init() {
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
 					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
-						spell.CostMultiplier -= 1
+						spell.Cost.Multiplier -= 100
 					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range aura.Unit.Spellbook {
 					if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeMana {
-						spell.CostMultiplier += 1
+						spell.Cost.Multiplier += 100
 					}
 				}
 			},
@@ -2555,7 +2605,7 @@ func enrageAura446327(character *core.Character) *core.Aura {
 
 // TODO: This is treated as a buff, NOT a debuff in-game
 // We don't have the ability to remove resistances for only one agent at a time right now
-func makeBonereaversEdgeEffect(character *core.Character) *core.Spell {
+func bonereaversEdgeEffect(character *core.Character) *core.Spell {
 	actionID := core.ActionID{SpellID: 21153}
 	buffAura := character.RegisterAura(core.Aura{
 		ActionID:  actionID,
@@ -2582,7 +2632,7 @@ func makeBonereaversEdgeEffect(character *core.Character) *core.Spell {
 
 // Chance on hit: Reduces an enemy's Strength by 125 and its Stamina by 50 for 2 min.
 // Equip: When struck in combat has a chance of causing the attacker to flee in terror for 2 seconds. (Proc chance: 2%)
-func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
+func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 	actionID := core.ActionID{SpellID: 462178}
 	procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -2626,44 +2676,101 @@ func makeDreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell 
 	})
 }
 
-// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
-func makeNightfallProc(character *core.Character, itemName string) {
+func eskhandarsRightClawAura(character *core.Character) *core.Aura {
+	return character.GetOrRegisterAura(core.Aura{
+		Label:    "Eskhandar's Rage",
+		ActionID: core.ActionID{SpellID: 22640},
+		Duration: time.Second * 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyAttackSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.MultiplyAttackSpeed(sim, 1/1.3)
+		},
+	})
+}
+
+func gutgoreRipperEffect(character *core.Character) *core.Spell {
 	procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
-			Label:    fmt.Sprintf("Spell Vulnerability (%s)", itemName),
-			ActionID: core.ActionID{SpellID: 23605},
-			Duration: time.Second * 5,
+			ActionID: core.ActionID{SpellID: 461682},
+			Label:    "Gutgore Ripper",
+			Duration: time.Second * 30,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] *= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] *= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] *= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] *= 1.15
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{
+					stats.Agility:   -25,
+					stats.Intellect: -25,
+					stats.Stamina:   -25,
+					stats.Spirit:    -25,
+					stats.Strength:  -25,
+				})
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] /= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] /= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] /= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] /= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] /= 1.15
-				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] /= 1.15
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{
+					stats.Agility:   25,
+					stats.Intellect: 25,
+					stats.Stamina:   25,
+					stats.Spirit:    25,
+					stats.Strength:  25,
+				})
 			},
 		})
 	})
 
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              fmt.Sprintf("%s Trigger", itemName),
-		Callback:          core.CallbackOnSpellHitDealt,
-		Outcome:           core.OutcomeLanded,
-		ProcMask:          core.ProcMaskMelee,
-		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-		PPM:               2,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			procAuras.Get(result.Target).Activate(sim)
+	return character.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 461682},
+		SpellSchool:      core.SpellSchoolShadow,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskEmpty,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealDamage(sim, target, 150, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				procAuras.Get(target).Activate(sim)
+			}
 		},
 	})
 }
+
+// Chance on hit: Spell damage taken by target increased by 15% for 5 sec.
+// func nightfallProc(character *core.Character, itemName string) {
+// 	procAuras := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+// 		return target.GetOrRegisterAura(core.Aura{
+// 			Label:    fmt.Sprintf("Spell Vulnerability (%s)", itemName),
+// 			ActionID: core.ActionID{SpellID: 23605},
+// 			Duration: time.Second * 5,
+// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] *= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] *= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] *= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] *= 1.15
+// 			},
+// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] /= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] /= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFrost] /= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] /= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexNature] /= 1.15
+// 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexShadow] /= 1.15
+// 			},
+// 		})
+// 	})
+
+// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+// 		Name:              fmt.Sprintf("%s Trigger", itemName),
+// 		Callback:          core.CallbackOnSpellHitDealt,
+// 		Outcome:           core.OutcomeLanded,
+// 		ProcMask:          core.ProcMaskMelee,
+// 		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+// 		PPM:               2,
+// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 			procAuras.Get(result.Target).Activate(sim)
+// 		},
+// 	})
+// }
 
 func strengthOfTheChampionAura(character *core.Character) *core.Aura {
 	actionID := core.ActionID{SpellID: 16916}

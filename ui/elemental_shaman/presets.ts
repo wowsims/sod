@@ -85,7 +85,7 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 export const TalentsPhase1 = PresetUtils.makePresetTalents('Level 25', SavedTalents.create({ talentsString: '25003105' }));
 export const TalentsPhase2 = PresetUtils.makePresetTalents('Level 40', SavedTalents.create({ talentsString: '550031550000151' }));
 export const TalentsPhase3 = PresetUtils.makePresetTalents('Level 50', SavedTalents.create({ talentsString: '550031550000151-500203' }));
-export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '550031550000151--50105301005' }));
+export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '550301550000151--50205300005' }));
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
@@ -106,7 +106,7 @@ export const DefaultOptions = ElementalShamanOptions.create({});
 export const DefaultConsumes = Consumes.create({
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.LivingDreamsSigil,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,

@@ -52,7 +52,8 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 		MissileSpeed:  20,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: core.TernaryFloat64(druid.FuryOfStormrageAura != nil, 0, manaCost),
+			FlatCost:   manaCost,
+			Multiplier: core.TernaryInt32(druid.FuryOfStormrageAura != nil, -1, 100),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
