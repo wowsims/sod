@@ -461,6 +461,7 @@ message MiscConsumes {
 	bool catnip = 3;
 	bool juju_ember = 4;
 	bool juju_chill = 5;
+	bool juju_escape = 6;
 }
 
 // NextIndex: 29

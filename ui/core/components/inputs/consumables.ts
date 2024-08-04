@@ -590,6 +590,7 @@ export const MiscDefensiveConsumesConfig = InputHelpers.makeMultiIconInput({
 	values: [
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' }),
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' }),
+		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12459), fieldName: 'jujuEscape' }),
 	],
 	direction: IconPickerDirection.Vertical,
 	tooltip: 'Misc Defensive',

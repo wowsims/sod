@@ -747,6 +747,39 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 	if miscConsumes.JujuChill {
 		character.AddStat(stats.FrostResistance, 15)
 	}
+
+	if miscConsumes.JujuEscape {
+		actionID := ActionID{SpellID: 16321}
+		jujuEscapeAura := character.RegisterAura(Aura{
+			Label:    "Juju Escape",
+			ActionID: actionID,
+			Duration: time.Second * 10,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, 5*DodgeRatingPerDodgeChance)
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, -5*DodgeRatingPerDodgeChance)
+			},
+		})
+		jujuEscapeSpell := character.RegisterSpell(SpellConfig{
+			ActionID: actionID,
+			ProcMask: ProcMaskEmpty,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute,
+				},
+			},
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				jujuEscapeAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    jujuEscapeSpell,
+			Type:     CooldownTypeSurvival,
+			Priority: CooldownPriorityDefault,
+		})
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
