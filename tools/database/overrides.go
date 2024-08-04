@@ -148,7 +148,8 @@ var ItemDenyList = map[int32]struct{}{
 	220915: {}, // Idol of the Raging Shambler
 	227444: {}, // Idol of the Huntress
 	227843: {}, // https://www.wowhead.com/classic/item=227843/reaving-nightfall Removed from SoD
-	227966: {}, // https://www.wowhead.com/classic/item=227966/naglering This version is apparently is not available in-game
+	227954: {}, // https://www.wowhead.com/classic/item=227954/boreal-mantle unused item
+	227966: {}, // https://www.wowhead.com/classic/item=227966/naglering unused item
 	227977: {}, // https://www.wowhead.com/classic/item=227977/totem-of-rage unused item
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
