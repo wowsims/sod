@@ -11,19 +11,21 @@ import (
 
 // Totem Item IDs
 const (
-	WolfsheadHelm             = 8345
-	IdolOfFerocity            = 22397
-	IdolOfTheMoon             = 23197
-	IdolOfBrutality           = 23198
-	IdolMindExpandingMushroom = 209576
-	Catnip                    = 213407
-	IdolOfWrath               = 216490
-	BloodBarkCrusher          = 216499
-	RitualistsHammer          = 221446
-	IdolOfTheDream            = 220606
-	IdolOfExsanguinationCat   = 228181
-	IdolOfTheSwarm            = 228180
-	IdolOfExsanguinationBear  = 228182
+	WolfsheadHelm                    = 8345
+	IdolOfFerocity                   = 22397
+	IdolOfTheMoon                    = 23197
+	IdolOfBrutality                  = 23198
+	IdolMindExpandingMushroom        = 209576
+	Catnip                           = 213407
+	IdolOfWrath                      = 216490
+	BloodBarkCrusher                 = 216499
+	RitualistsHammer                 = 221446
+	IdolOfTheDream                   = 220606
+	IdolOfExsanguinationCat          = 228181
+	IdolOfTheSwarm                   = 228180
+	IdolOfExsanguinationBear         = 228182
+	BloodGuardDragonhideGrips        = 227180
+	KnightLieutenantsDragonhideGrips = 227183
 )
 
 func init() {
@@ -140,6 +142,18 @@ func init() {
 		druid.newBloodbarkCleaveItem(RitualistsHammer)
 	})
 
+	// https://www.wowhead.com/classic/item=227180/blood-guards-dragonhide-grips
+	// Equip: Reduces the mana cost of your shapeshifts by 150.
+	core.NewItemEffect(BloodGuardDragonhideGrips, func(agent core.Agent) {
+		registerDragonHideGripsAura(agent.(DruidAgent).GetDruid())
+	})
+
+	// https://www.wowhead.com/classic/item=227183/knight-lieutenants-dragonhide-grips
+	// Equip: Reduces the mana cost of your shapeshifts by 150.
+	core.NewItemEffect(KnightLieutenantsDragonhideGrips, func(agent core.Agent) {
+		registerDragonHideGripsAura(agent.(DruidAgent).GetDruid())
+	})
+
 	core.AddEffectsToTest = true
 }
 
@@ -210,5 +224,40 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 		Spell:    mainSpell,
 		Priority: core.CooldownPriorityDefault,
 		Type:     core.CooldownTypeDPS,
+	})
+}
+
+func registerDragonHideGripsAura(druid *Druid) {
+	const costReduction int32 = 150
+	var affectedForms []*DruidSpell
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Dragonhide Grips",
+		ActionID: core.ActionID{SpellID: 459594},
+		Duration: core.NeverExpires,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedForms = []*DruidSpell{
+				druid.CatForm,
+				druid.MoonkinForm,
+				druid.BearForm,
+			}
+		},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedForms {
+				if spell != nil {
+					spell.Cost.FlatModifier -= costReduction
+				}
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedForms {
+				if spell != nil {
+					spell.Cost.FlatModifier += costReduction
+				}
+			}
+		},
 	})
 }

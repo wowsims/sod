@@ -20,6 +20,7 @@ const (
 	FistOfTheFiresworn       = 228139
 	TreantsBane              = 228486
 	FistOfTheFireswornMolten = 229374
+	StuddedTimbermawBrawlers = 227809
 )
 
 func init() {
@@ -169,6 +170,13 @@ func init() {
 		if character.HasEnergyBar() {
 			character.EnableEnergyBar(character.MaxEnergy() + 10)
 		}
+	})
+
+	// https://www.wowhead.com/classic/item=227809/studded-timbermaw-brawlers
+	// Equip: +3 Weapon Damage.
+	core.NewItemEffect(StuddedTimbermawBrawlers, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.BonusDamage += 3
 	})
 
 	core.AddEffectsToTest = true
