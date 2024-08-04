@@ -739,6 +739,14 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			stats.Spirit:    1,
 		})
 	}
+
+	if miscConsumes.JujuEmber {
+		character.AddStat(stats.FireResistance, 15)
+	}
+
+	if miscConsumes.JujuChill {
+		character.AddStat(stats.FrostResistance, 15)
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////

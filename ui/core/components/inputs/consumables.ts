@@ -572,8 +572,8 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 ];
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
-export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
-	[
+export const MiscOffensiveConsumesConfig = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanMiscConsumeInput({
 			actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
 			fieldName: 'catnip',
@@ -582,15 +582,26 @@ export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' }),
 		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' }),
 	],
-	'',
-	IconPickerDirection.Vertical,
-);
+	direction: IconPickerDirection.Vertical,
+	tooltip: 'Misc Offensive',
+});
 
-export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumesConfig, picker: MultiIconPicker, stats: [] }];
+export const MiscDefensiveConsumesConfig = InputHelpers.makeMultiIconInput({
+	values: [
+		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' }),
+		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' }),
+	],
+	direction: IconPickerDirection.Vertical,
+	tooltip: 'Misc Defensive',
+});
+
+export const MISC_OFFENSE_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscOffensiveConsumesConfig, picker: MultiIconPicker, stats: [] }];
+export const MISC_DEFENSE_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscDefensiveConsumesConfig, picker: MultiIconPicker, stats: [] }];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
+
 export const PetAttackPowerConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [

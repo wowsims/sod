@@ -224,6 +224,9 @@ export const DefaultConsumes = Consumes.create({
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	sapper: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,

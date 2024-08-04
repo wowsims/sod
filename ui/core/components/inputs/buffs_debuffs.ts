@@ -41,8 +41,8 @@ export const AllStatsBuff = withLabel(
 );
 
 // Separate Strength buffs allow us to use a boolean pickers for Horde specifically
-export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput(
-	[
+export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanIndividualBuffInput({
 			actionId: () => ActionId.fromSpellId(20217),
 			fieldName: 'blessingOfKings',
@@ -53,8 +53,8 @@ export const AllStatsPercentBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'aspectOfTheLion',
 		}),
 	],
-	'Stats %',
-);
+	label: 'Stats %',
+});
 
 export const ArmorBuff = withLabel(
 	makeTristateRaidBuffInput({
@@ -108,8 +108,8 @@ export const DamageReductionPercentBuff = withLabel(
 	'Blessing of Sanctuary',
 );
 
-export const ResistanceBuff = InputHelpers.makeMultiIconInput(
-	[
+export const ResistanceBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		// Shadow
 		makeBooleanRaidBuffInput({
 			actionId: player =>
@@ -191,11 +191,11 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput(
 			showWhen: player => player.getFaction() === Faction.Horde,
 		}),
 	],
-	'Resistances',
-);
+	label: 'Resistances',
+});
 
-export const StaminaBuff = InputHelpers.makeMultiIconInput(
-	[
+export const StaminaBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeTristateRaidBuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -220,11 +220,11 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'scrollOfStamina',
 		}),
 	],
-	'Stamina',
-);
+	label: 'Stamina',
+});
 
-export const BloodPactBuff = InputHelpers.makeMultiIconInput(
-	[
+export const BloodPactBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeTristateRaidBuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -242,8 +242,8 @@ export const BloodPactBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'commandingShout',
 		}),
 	],
-	'Blood Pact',
-);
+	label: 'Blood Pact',
+});
 
 // Separate Strength buffs allow us to use boolean pickers for each
 export const PaladinPhysicalBuff = withLabel(
@@ -303,8 +303,8 @@ export const GraceOfAir = withLabel(
 	'Agility',
 );
 
-export const IntellectBuff = InputHelpers.makeMultiIconInput(
-	[
+export const IntellectBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanRaidBuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -327,11 +327,11 @@ export const IntellectBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'scrollOfIntellect',
 		}),
 	],
-	'Intellect',
-);
+	label: 'Intellect',
+});
 
-export const SpiritBuff = InputHelpers.makeMultiIconInput(
-	[
+export const SpiritBuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanRaidBuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -353,8 +353,8 @@ export const SpiritBuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'scrollOfSpirit',
 		}),
 	],
-	'Spirit',
-);
+	label: 'Spirit',
+});
 
 export const BattleShoutBuff = withLabel(
 	makeTristateRaidBuffInput({
@@ -512,7 +512,7 @@ export const ValorOfAzeroth = makeBooleanIndividualBuffInput({
 	actionId: () => ActionId.fromSpellId(461475),
 	fieldName: 'valorOfAzeroth',
 });
-export const DragonslayerBuffInput = InputHelpers.makeMultiIconInput([RallyingCryOfTheDragonslayer, ValorOfAzeroth], 'Dragonslayer Buff');
+export const DragonslayerBuffInput = InputHelpers.makeMultiIconInput({ values: [RallyingCryOfTheDragonslayer, ValorOfAzeroth], label: 'Dragonslayer Buff' });
 
 export const SpiritOfZandalar = withLabel(
 	makeBooleanIndividualBuffInput({
@@ -621,8 +621,8 @@ export const FervorOfTheTempleExplorer = withLabel(
 //                                 DEBUFFS
 ///////////////////////////////////////////////////////////////////////////
 
-export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
-	[
+export const MajorArmorDebuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanDebuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -659,8 +659,8 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'homunculi',
 		}),
 	],
-	'Major Armor Penetration',
-);
+	label: 'Major Armor Penetration',
+});
 
 export const CurseOfRecklessness = withLabel(
 	makeBooleanDebuffInput({
@@ -707,8 +707,8 @@ export const curseOfWeaknessDebuff = withLabel(
 	'Curse of Weakness',
 );
 
-export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
-	[
+export const AttackPowerDebuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeTristateDebuffInput({
 			actionId: player =>
 				player.getMatchingSpellActionId([
@@ -741,14 +741,14 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'homunculi',
 		}),
 	],
-	'Attack Power',
-);
+	label: 'Attack Power',
+});
 
 // TODO: SoD Mangle
 export const BleedDebuff = withLabel(makeBooleanDebuffInput({ actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle' }), 'Bleed');
 
-export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
-	[
+export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeTristateDebuffInput({
 			actionId: () => ActionId.fromSpellId(6343),
 			impId: ActionId.fromSpellId(12666),
@@ -766,8 +766,8 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'waylay',
 		}),
 	],
-	'Attack Speed',
-);
+	label: 'Attack Speed',
+});
 
 export const MeleeHitDebuff = withLabel(
 	makeBooleanDebuffInput({
@@ -808,8 +808,8 @@ export const SpellWintersChillDebuff = withLabel(
 	'Frost Damage',
 );
 
-export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput(
-	[
+export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput({
+	values: [
 		makeBooleanDebuffInput({
 			actionId: player => player.getMatchingSpellActionId([{ id: 17364, minLevel: 40 }]),
 			fieldName: 'stormstrike',
@@ -819,8 +819,8 @@ export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput(
 			fieldName: 'dreamstate',
 		}),
 	],
-	'Nature Damage',
-);
+	label: 'Nature Damage',
+});
 
 export const SpellShadowWeavingDebuff = withLabel(
 	makeBooleanDebuffInput({
@@ -854,7 +854,7 @@ export const CurseOfShadow = makeBooleanDebuffInput({
 	fieldName: 'curseOfShadow',
 });
 
-export const WarlockCursesConfig = InputHelpers.makeMultiIconInput([MarkOfChaos, CurseOfElements, CurseOfShadow], 'Warlock Curses');
+export const WarlockCursesConfig = InputHelpers.makeMultiIconInput({ values: [MarkOfChaos, CurseOfElements, CurseOfShadow], label: 'Warlock Curses' });
 
 export const OccultPoison = withLabel(
 	makeBooleanDebuffInput({

@@ -459,6 +459,8 @@ message MiscConsumes {
 	bool bogling_root = 1;
 	bool elixir_of_coalesced_regret = 2;
 	bool catnip = 3;
+	bool juju_ember = 4;
+	bool juju_chill = 5;
 }
 
 // NextIndex: 29

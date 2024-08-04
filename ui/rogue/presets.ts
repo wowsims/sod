@@ -234,6 +234,9 @@ export const P4Consumes = Consumes.create({
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	offHandImbue: WeaponImbue.WizardOil,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,

@@ -247,6 +247,9 @@ export const DefaultConsumes = Consumes.create({
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
 	mainHandImbue: WeaponImbue.WizardOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,

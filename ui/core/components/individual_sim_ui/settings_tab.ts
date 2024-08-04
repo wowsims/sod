@@ -257,7 +257,7 @@ export class SettingsTab extends SimTab {
 				contentBlock.bodyElement,
 				this.simUI.player,
 				{
-					inputs: miscBuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,
+					values: miscBuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,
 					label: 'Misc Buffs',
 				},
 				this.simUI,
@@ -302,7 +302,7 @@ export class SettingsTab extends SimTab {
 				contentBlock.bodyElement,
 				this.simUI.player,
 				{
-					inputs: miscDebuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,
+					values: miscDebuffOptions.map(options => options.config) as Array<MultiIconPickerItemConfig<Player<Spec>>>,
 					label: 'Misc Debuffs',
 				},
 				this.simUI,

@@ -11,16 +11,20 @@ import { IconPickerConfig, IconPickerDirection } from './icon_picker.js';
 import { MultiIconPickerConfig } from './multi_icon_picker.js';
 import { NumberPickerConfig } from './number_picker.js';
 
-export function makeMultiIconInput<ModObject>(
-	inputs: Array<IconPickerConfig<ModObject, any>>,
-	label: string,
-	direction?: IconPickerDirection,
-): MultiIconPickerConfig<ModObject> {
+export interface TypedMultiIconPickerConfig<ModObject> extends MultiIconPickerConfig<ModObject> {
+	values: Array<IconPickerConfig<ModObject, any>>;
+	direction?: IconPickerDirection;
+	label?: string;
+	tooltip?: string;
+}
+
+export function makeMultiIconInput<ModObject>(config: TypedMultiIconPickerConfig<ModObject>): MultiIconPickerConfig<ModObject> {
 	return {
-		inputs: inputs,
-		label: label,
-		direction: direction,
-		showWhen: p => inputs.filter(i => !i.showWhen || i.showWhen(p as ModObject)).length > 0,
+		direction: config.direction,
+		values: config.values,
+		label: config.label,
+		tooltip: config.tooltip,
+		showWhen: p => config.values.filter(i => !i.showWhen || i.showWhen(p as ModObject)).length > 0,
 	};
 }
 
@@ -36,6 +40,7 @@ interface BasePlayerConfig<SpecType extends Spec, T> {
 /////////////////////////////////////////////////////////////////////////////////
 //                                    BOOLEAN
 /////////////////////////////////////////////////////////////////////////////////
+
 export interface TypedBooleanPickerConfig<ModObject> extends BooleanPickerConfig<ModObject> {
 	type: 'boolean';
 }
