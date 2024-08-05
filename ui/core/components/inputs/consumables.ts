@@ -1,3 +1,4 @@
+import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import {
 	AgilityElixir,
@@ -15,6 +16,7 @@ import {
 	FrostPowerBuff,
 	HealthElixir,
 	ItemSlot,
+	MageScroll,
 	ManaRegenElixir,
 	Potions,
 	Profession,
@@ -32,12 +34,12 @@ import { isBluntWeaponType, isSharpWeaponType, isWeapon } from '../../proto_util
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
 import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
-import { IconPickerDirection } from '../icon_picker';
+import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
-import { MultiIconPicker } from '../multi_icon_picker';
+import { MultiIconPicker, MultiIconPickerConfig, MultiIconPickerItemConfig } from '../multi_icon_picker';
 import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, WoundPoisonWeaponImbue } from './rogue_imbues';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from './shaman_imbues';
-import { ActionInputConfig, ItemStatOption, PickerStatOptions } from './stat_options';
+import { ActionInputConfig, ItemStatOption, PickerStatOptions, StatOptions } from './stat_options';
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T;
@@ -95,6 +97,20 @@ function makeConsumeInputFactory<T extends number>(
 		};
 	};
 }
+
+type MultiIconConsumeInputFactoryArg<ModObject> = Omit<MultiIconPickerConfig<ModObject>, 'values'>;
+
+export const makeMultiIconConsumesInputFactory = <ModObject>(
+	config: MultiIconConsumeInputFactoryArg<ModObject>,
+): ((parent: HTMLElement, modObj: ModObject, simUI: IndividualSimUI<Spec>, options: StatOptions<any, any>) => MultiIconPicker<any>) => {
+	return (parent: HTMLElement, modObj: ModObject, simUI: IndividualSimUI<Spec>, options: StatOptions<any, any>) => {
+		const pickerConfig = {
+			...config,
+			values: options.map(option => option.config) as Array<MultiIconPickerItemConfig<ModObject>>,
+		};
+		return new MultiIconPicker(parent, modObj, pickerConfig, simUI);
+	};
+};
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONJURED
@@ -590,32 +606,74 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 ];
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
-export const MiscOffensiveConsumesConfig = InputHelpers.makeMultiIconInput({
-	values: [
-		makeBooleanMiscConsumeInput({
-			actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
-			fieldName: 'catnip',
-			showWhen: player => player.getClass() === Class.ClassDruid,
-		}),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' }),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' }),
-	],
+export const Catnip = makeBooleanMiscConsumeInput({
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
+	fieldName: 'catnip',
+	showWhen: player => player.getClass() === Class.ClassDruid,
+});
+export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' });
+export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
+
+export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: Catnip, picker: IconPicker, stats: [] },
+	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },
+	{ config: BoglingRoot, picker: IconPicker, stats: [Stat.StatAttackPower] },
+];
+
+export const makeMiscOffensiveConsumesInput = makeMultiIconConsumesInputFactory({
 	direction: IconPickerDirection.Vertical,
 	tooltip: 'Misc Offensive',
 });
 
-export const MiscDefensiveConsumesConfig = InputHelpers.makeMultiIconInput({
-	values: [
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' }),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' }),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12459), fieldName: 'jujuEscape' }),
-	],
+export const JujuEmber = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' });
+export const JujuChill = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' });
+export const JujuEscape = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12459), fieldName: 'jujuEscape' });
+
+export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: JujuEmber, picker: IconPicker, stats: [] },
+	{ config: JujuChill, picker: IconPicker, stats: [] },
+	{ config: JujuEscape, picker: IconPicker, stats: [Stat.StatDodge] },
+];
+
+export const makeMiscDefensiveConsumesInput = makeMultiIconConsumesInputFactory({
 	direction: IconPickerDirection.Vertical,
 	tooltip: 'Misc Defensive',
 });
 
-export const MISC_OFFENSE_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscOffensiveConsumesConfig, picker: MultiIconPicker, stats: [] }];
-export const MISC_DEFENSE_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscDefensiveConsumesConfig, picker: MultiIconPicker, stats: [] }];
+export const MageScrollArcaneRecovery: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211953),
+	value: MageScroll.MageScrollArcaneRecovery,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollArcaneAccuracy: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211954),
+	value: MageScroll.MageScrollArcaneAccuracy,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollArcanePower: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211957),
+	value: MageScroll.MageScrollArcanePower,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollFireProtection: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211955),
+	value: MageScroll.MageScrollFireProtection,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollFrostProtection: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211956),
+	value: MageScroll.MageScrollFrostProtection,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+
+export const MAGE_SCROLL_CONSUMES_CONFIG: ConsumableStatOption<MageScroll>[] = [
+	{ config: MageScrollArcaneRecovery, stats: [] },
+	{ config: MageScrollArcaneAccuracy, stats: [] },
+	{ config: MageScrollArcanePower, stats: [] },
+	{ config: MageScrollFireProtection, stats: [] },
+	{ config: MageScrollFrostProtection, stats: [] },
+];
+export const makeMageScrollsInput = makeConsumeInputFactory({ consumesFieldName: 'mageScroll' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET

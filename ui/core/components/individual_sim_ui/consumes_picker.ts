@@ -246,17 +246,15 @@ export class ConsumesPicker extends Component {
 			relevantStatOptions(ConsumablesInputs.ZANZA_BUFF_CONSUMES_CONFIG, this.simUI),
 			'Zanza Buffs',
 		);
-		const miscOffensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_OFFENSE_CONSUMES_CONFIG, this.simUI);
-		const miscDefensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_DEFENSE_CONSUMES_CONFIG, this.simUI);
+		const mageScrollOptions = ConsumablesInputs.makeMageScrollsInput(ConsumablesInputs.MAGE_SCROLL_CONSUMES_CONFIG, 'Mage Scrolls');
+		const miscOffensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_OFFENSIVE_CONSUMES_CONFIG, this.simUI);
+		const miscDefensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_DEFENSIVE_CONSUMES_CONFIG, this.simUI);
 
 		const pickers = [
 			buildIconInput(miscConsumesElem, this.simUI.player, zanzaBuffOptions),
-			...miscOffensiveConsumesOptions.map(
-				options => options.picker && new options.picker(miscConsumesElem, this.simUI.player, options.config as any, this.simUI),
-			),
-			...miscDefensiveConsumesOptions.map(
-				options => options.picker && new options.picker(miscConsumesElem, this.simUI.player, options.config as any, this.simUI),
-			),
+			buildIconInput(miscConsumesElem, this.simUI.player, mageScrollOptions),
+			ConsumablesInputs.makeMiscOffensiveConsumesInput(miscConsumesElem, this.simUI.player, this.simUI, miscOffensiveConsumesOptions),
+			ConsumablesInputs.makeMiscDefensiveConsumesInput(miscConsumesElem, this.simUI.player, this.simUI, miscDefensiveConsumesOptions),
 		];
 
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));

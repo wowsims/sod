@@ -491,6 +491,15 @@ message MiscConsumes {
 	bool juju_escape = 6;
 }
 
+enum MageScroll {
+	MageScrollUnknown = 0;
+	MageScrollArcaneRecovery = 1;
+	MageScrollArcaneAccuracy = 2;
+	MageScrollArcanePower = 3;
+	MageScrollFireProtection = 4;
+	MageScrollFrostProtection = 5;
+}
+
 // NextIndex: 29
 enum WeaponImbue {
 	// Weapon Oils
@@ -687,7 +696,7 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 31
+// NextIndex: 32
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -716,6 +725,7 @@ message Consumes {
 	ArmorElixir armor_elixir = 28;
 	HealthElixir health_elixir = 29;
 	Alcohol alcohol = 30;
+	MageScroll mage_scroll = 32;
 
 	AtalaiMojo atalai_mojo = 25 [deprecated=true];
 	bool bogling_root = 19 [deprecated=true];

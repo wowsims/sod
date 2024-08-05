@@ -156,6 +156,19 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	mage.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[mage.Class][int(mage.Level)]*core.SpellCritRatingPerCritChance)
 
+	switch mage.Consumes.MageScroll {
+	case proto.MageScroll_MageScrollArcaneRecovery:
+		mage.AddStat(stats.MP5, 8)
+	case proto.MageScroll_MageScrollArcaneAccuracy:
+		mage.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance)
+	case proto.MageScroll_MageScrollArcanePower:
+		mage.AddStat(stats.SpellCrit, core.SpellCritRatingPerCritChance)
+	case proto.MageScroll_MageScrollFireProtection:
+		mage.AddStat(stats.FireResistance, 20)
+	case proto.MageScroll_MageScrollFrostProtection:
+		mage.AddStat(stats.FrostResistance, 20)
+	}
+
 	switch mage.Options.Armor {
 	case proto.Mage_Options_IceArmor:
 		mage.applyFrostIceArmor()
