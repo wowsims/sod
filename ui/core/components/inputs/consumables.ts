@@ -282,7 +282,7 @@ export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
+	{ config: FlaskOfChromaticResistance, stats: [] },
 	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
 	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
 ];
