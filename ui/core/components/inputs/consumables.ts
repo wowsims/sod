@@ -816,7 +816,7 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: GreatRagePotion, stats: [] },
 	{ config: RagePotion, stats: [] },
 
-	{ config: MagicResistancePotion, stats: [] },
+	// { config: MagicResistancePotion, stats: [] },
 	{ config: GreaterStoneshieldPotion, stats: [Stat.StatArmor] },
 	{ config: LesserStoneshieldPotion, stats: [Stat.StatArmor] },
 ];
