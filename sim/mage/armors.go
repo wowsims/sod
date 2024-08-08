@@ -59,13 +59,7 @@ func (mage *Mage) applyMageArmor() {
 	}[mage.Level]
 
 	mage.PseudoStats.SpiritRegenRateCasting += .3
-	mage.AddStats(stats.Stats{
-		stats.ArcaneResistance: spellRes,
-		stats.FireResistance:   spellRes,
-		stats.FrostResistance:  spellRes,
-		stats.NatureResistance: spellRes,
-		stats.ShadowResistance: spellRes,
-	})
+	mage.AddResistances(spellRes)
 
 	mage.MageArmorAura = mage.GetOrRegisterAura(core.Aura{
 		Label:    "Mage Armor",
