@@ -53,7 +53,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.21627
+  weights: 0.3205
   weights: 0
   weights: 1.17633
   weights: 1.07552
@@ -162,8 +162,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-Average-Default"
  value: {
-  dps: 1949.33075
-  tps: 1967.90124
+  dps: 1949.32434
+  tps: 1967.89471
  }
 }
 dps_results: {

@@ -136,6 +136,7 @@ func (mage *Mage) Initialize() {
 
 	mage.registerEvocationCD()
 	mage.registerManaGemCD()
+	mage.registerCounterspellSpell()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
