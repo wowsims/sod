@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/simsignals"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -244,7 +245,7 @@ func Test_MultiSchoolResistanceArmor(t *testing.T) {
 		SimOptions: &proto.SimOptions{},
 		Encounter:  &proto.Encounter{},
 		Raid:       &proto.Raid{},
-	})
+	}, simsignals.CreateSignals())
 
 	// Armor 100, resistances 0 => should use resistance
 	defender.AddStat(stats.Armor, 100)

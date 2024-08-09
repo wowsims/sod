@@ -35,17 +35,21 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 
 	hasFeralSpirit := shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit)
 
+	strengthOfEarthTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 3, 1))
+	strengthOfEarthTotemAuras[0] = core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, multiplier)
+	if hasFeralSpirit {
+		strengthOfEarthTotemAuras[1] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier)
+		strengthOfEarthTotemAuras[2] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier)
+	}
+
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
-
-		core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, multiplier).Activate(sim)
-		if hasFeralSpirit {
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier).Activate(sim)
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier).Activate(sim)
+		for _, aura := range strengthOfEarthTotemAuras {
+			aura.Activate(sim)
 		}
 	}
 	return spell

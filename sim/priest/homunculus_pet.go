@@ -50,15 +50,6 @@ func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 		Priest: priest,
 	}
 
-	switch homunculus.npcID {
-	case 202390:
-		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusCrippleSpell())
-	case 202392:
-		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusDegradeSpell())
-	case 202391:
-		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusDemoralizeSpell())
-	}
-
 	homunculus.EnableAutoAttacks(homunculus, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			// TODO: Check stats
@@ -84,10 +75,11 @@ func (priest *Priest) homunculusStatInheritance() core.PetStatInheritance {
 }
 
 func (homunculus *Homunculus) newHomunculusCrippleSpell() core.SpellConfig {
+	attackSpeedAuras := homunculus.NewEnemyAuraArray(core.HomunculiAttackSpeedAura)
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 402808},
 		SpellSchool: core.SpellSchoolShadow,
-
 		ProcMask: core.ProcMaskEmpty,
 		Flags:    core.SpellFlagNoLogs,
 
@@ -98,12 +90,14 @@ func (homunculus *Homunculus) newHomunculusCrippleSpell() core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			core.HomunculiAttackSpeedAura(target, homunculus.Priest.Level).Activate(sim)
+			attackSpeedAuras.Get(target).Activate(sim)
 		},
 	}
 }
 
 func (homunculus *Homunculus) newHomunculusDegradeSpell() core.SpellConfig {
+	armorAuras := homunculus.NewEnemyAuraArray(core.HomunculiArmorAura)
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 402818},
 		SpellSchool: core.SpellSchoolShadow,
@@ -117,12 +111,14 @@ func (homunculus *Homunculus) newHomunculusDegradeSpell() core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			core.HomunculiArmorAura(target, homunculus.Priest.Level).Activate(sim)
+			armorAuras.Get(target).Activate(sim)
 		},
 	}
 }
 
 func (homunculus *Homunculus) newHomunculusDemoralizeSpell() core.SpellConfig {
+	attackPowerAuras := homunculus.NewEnemyAuraArray(core.HomunculiAttackPowerAura)
+
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 402811},
 		SpellSchool: core.SpellSchoolShadow,
@@ -136,12 +132,20 @@ func (homunculus *Homunculus) newHomunculusDemoralizeSpell() core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			core.HomunculiAttackPowerAura(target, homunculus.Priest.Level).Activate(sim)
+			attackPowerAuras.Get(target).Activate(sim)
 		},
 	}
 }
 
 func (homunculus *Homunculus) Initialize() {
+	switch homunculus.npcID {
+	case 202390:
+		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusCrippleSpell())
+	case 202392:
+		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusDegradeSpell())
+	case 202391:
+		homunculus.PrimarySpell = homunculus.GetOrRegisterSpell(homunculus.newHomunculusDemoralizeSpell())
+	}
 }
 
 func (homunculus *Homunculus) ExecuteCustomRotation(sim *core.Simulation) {
