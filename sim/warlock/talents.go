@@ -563,7 +563,7 @@ func (warlock *Warlock) applyCataclysm() {
 	}
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(WarlockFlagDestruction) {
+		if spell.Flags.Matches(WarlockFlagDestruction) && spell.Cost != nil {
 			spell.Cost.Multiplier -= warlock.Talents.Cataclysm
 		}
 	})
