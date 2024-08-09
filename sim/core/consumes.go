@@ -62,13 +62,7 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 			stats.Health: 1200,
 		})
 	case proto.Flask_FlaskOfChromaticResistance:
-		character.AddStats(stats.Stats{
-			stats.ArcaneResistance: 25,
-			stats.FireResistance:   25,
-			stats.FrostResistance:  25,
-			stats.NatureResistance: 25,
-			stats.ShadowResistance: 25,
-		})
+		character.AddResistances(25)
 	case proto.Flask_FlaskOfRestlessDreams:
 		character.AddStats(stats.Stats{
 			// +30 Spell Damage, +45 Healing Power, +12 MP5

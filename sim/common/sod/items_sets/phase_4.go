@@ -57,11 +57,7 @@ var ItemSetNecropileRaiment = core.NewItemSet(core.ItemSet{
 		// +15 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.ArcaneResistance, 15)
-			character.AddStat(stats.FireResistance, 15)
-			character.AddStat(stats.FrostResistance, 15)
-			character.AddStat(stats.NatureResistance, 15)
-			character.AddStat(stats.ShadowResistance, 15)
+			character.AddResistances(15)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		5: func(agent core.Agent) {
@@ -144,11 +140,7 @@ var ItemSetCadaverousGarb = core.NewItemSet(core.ItemSet{
 		// +15 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.ArcaneResistance, 15)
-			character.AddStat(stats.FireResistance, 15)
-			character.AddStat(stats.FrostResistance, 15)
-			character.AddStat(stats.NatureResistance, 15)
-			character.AddStat(stats.ShadowResistance, 15)
+			character.AddResistances(15)
 		},
 		// Improves your chance to hit by 2%.
 		5: func(agent core.Agent) {
@@ -243,11 +235,7 @@ var ItemSetBloodmailRegalia = core.NewItemSet(core.ItemSet{
 		// +15 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.ArcaneResistance, 15)
-			character.AddStat(stats.FireResistance, 15)
-			character.AddStat(stats.FrostResistance, 15)
-			character.AddStat(stats.NatureResistance, 15)
-			character.AddStat(stats.ShadowResistance, 15)
+			character.AddResistances(15)
 		},
 		// Increases your chance to parry an attack by 1%.
 		5: func(agent core.Agent) {
@@ -341,11 +329,7 @@ var ItemSetDeathboneGuardian = core.NewItemSet(core.ItemSet{
 		// +15 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.ArcaneResistance, 15)
-			character.AddStat(stats.FireResistance, 15)
-			character.AddStat(stats.FrostResistance, 15)
-			character.AddStat(stats.NatureResistance, 15)
-			character.AddStat(stats.ShadowResistance, 15)
+			character.AddResistances(15)
 		},
 		// Increases run speed by 5%.
 		// +10 Intellect.

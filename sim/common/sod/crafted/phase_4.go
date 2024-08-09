@@ -40,13 +40,7 @@ var ItemSetBlueDragonMail = core.NewItemSet(core.ItemSet{
 		// +4 All Resistances.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStats(stats.Stats{
-				stats.ArcaneResistance: 4,
-				stats.FireResistance:   4,
-				stats.FrostResistance:  4,
-				stats.NatureResistance: 4,
-				stats.ShadowResistance: 4,
-			})
+			character.AddResistances(4)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 28.
 		3: func(agent core.Agent) {
