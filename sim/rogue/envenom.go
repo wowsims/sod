@@ -54,7 +54,7 @@ func (rogue *Rogue) registerEnvenom() {
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
+		BonusCoefficient: 0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
