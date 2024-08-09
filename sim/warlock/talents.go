@@ -304,21 +304,9 @@ func (warlock *Warlock) applyMasterDemonologist() {
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
 				aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.ArcaneResistance: bonusResistance,
-					stats.FireResistance:   bonusResistance,
-					stats.FrostPower:       bonusResistance,
-					stats.NatureResistance: bonusResistance,
-					stats.ShadowResistance: bonusResistance,
-				})
+				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
 			case warlock.Felhunter:
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.ArcaneResistance: bonusResistance,
-					stats.FireResistance:   bonusResistance,
-					stats.FrostPower:       bonusResistance,
-					stats.NatureResistance: bonusResistance,
-					stats.ShadowResistance: bonusResistance,
-				})
+				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
 			case warlock.Imp:
 				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 			case warlock.Succubus:
@@ -333,21 +321,9 @@ func (warlock *Warlock) applyMasterDemonologist() {
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
 				aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.ArcaneResistance: -bonusResistance,
-					stats.FireResistance:   -bonusResistance,
-					stats.FrostPower:       -bonusResistance,
-					stats.NatureResistance: -bonusResistance,
-					stats.ShadowResistance: -bonusResistance,
-				})
+				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
 			case warlock.Felhunter:
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.ArcaneResistance: -bonusResistance,
-					stats.FireResistance:   -bonusResistance,
-					stats.FrostPower:       -bonusResistance,
-					stats.NatureResistance: -bonusResistance,
-					stats.ShadowResistance: -bonusResistance,
-				})
+				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
 			case warlock.Imp:
 				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 			case warlock.Succubus:

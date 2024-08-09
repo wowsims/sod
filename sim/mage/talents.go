@@ -42,11 +42,7 @@ func (mage *Mage) applyArcaneTalents() {
 	// Magic Absorption
 	if mage.Talents.MagicAbsorption > 0 {
 		magicAbsorptionBonus := 2 * float64(mage.Talents.MagicAbsorption)
-		mage.AddStat(stats.ArcaneResistance, magicAbsorptionBonus)
-		mage.AddStat(stats.FireResistance, magicAbsorptionBonus)
-		mage.AddStat(stats.FrostResistance, magicAbsorptionBonus)
-		mage.AddStat(stats.NatureResistance, magicAbsorptionBonus)
-		mage.AddStat(stats.ShadowResistance, magicAbsorptionBonus)
+		mage.AddResistances(magicAbsorptionBonus)
 	}
 
 	// Arcane Meditation

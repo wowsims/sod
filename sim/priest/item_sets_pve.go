@@ -75,13 +75,7 @@ var ItemSetVestmentsOfTheVirtuous = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 		// +200 Armor.
 		8: func(agent core.Agent) {
@@ -128,11 +122,11 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
 			})
 		},
-		// Mind Blast critical strikes reduce the duration of your next Mind Flay by 50% while increasing its total damage by 100%.
+		// Mind Blast critical strikes reduce the duration of your next Mind Flay by 50% while increasing its total damage by 50%.
 		6: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
 
-			damageMultiplier := 2.0
+			damageMultiplier := 1.50
 			durationDivisor := time.Duration(2)
 
 			buffAura := priest.GetOrRegisterAura(core.Aura{

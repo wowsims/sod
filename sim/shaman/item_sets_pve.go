@@ -157,13 +157,7 @@ var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 		// +200 Armor.
 		8: func(agent core.Agent) {
@@ -272,7 +266,7 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 
 			flurryAura := shaman.makeFlurryAura(5)
 			// The consumption trigger may not exist if the Shaman doesn't talent into Flurry
-			shaman.makeFlurryConsumptionTrigger()
+			shaman.makeFlurryConsumptionTrigger(flurryAura)
 
 			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Shaman - Tank 2P Bonus",

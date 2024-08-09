@@ -86,13 +86,7 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 		// +200 Armor.
 		8: func(agent core.Agent) {
