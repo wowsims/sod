@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 817.99299
-  tps: 818.10344
-  hps: 12.07773
+  dps: 732.25192
+  tps: 732.36237
+  hps: 10.61156
  }
 }
