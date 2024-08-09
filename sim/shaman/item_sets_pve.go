@@ -266,7 +266,7 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 
 			flurryAura := shaman.makeFlurryAura(5)
 			// The consumption trigger may not exist if the Shaman doesn't talent into Flurry
-			shaman.makeFlurryConsumptionTrigger()
+			shaman.makeFlurryConsumptionTrigger(flurryAura)
 
 			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Shaman - Tank 2P Bonus",

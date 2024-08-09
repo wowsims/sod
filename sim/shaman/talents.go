@@ -312,7 +312,7 @@ func (shaman *Shaman) applyFlurry() {
 	// 3 => 2
 	// refresh
 	// 2 => 3
-	shaman.makeFlurryConsumptionTrigger()
+	shaman.makeFlurryConsumptionTrigger(shaman.FlurryAura)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Flurry Proc Trigger",
@@ -323,7 +323,9 @@ func (shaman *Shaman) applyFlurry() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
 				shaman.FlurryAura.Activate(sim)
-				shaman.FlurryAura.SetStacks(sim, 3)
+				if shaman.FlurryAura.IsActive() {
+					shaman.FlurryAura.SetStacks(sim, 3)
+				}
 				return
 			}
 		},
@@ -345,39 +347,43 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 		attackSpeed += .10
 	}
 
-	return shaman.GetOrRegisterAura(core.Aura{
+	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
 		ActionID:  core.ActionID{SpellID: spellID},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	})
+
+	aura.NewExclusiveEffect("Flurry", true, core.ExclusiveEffect{
+		Priority: attackSpeed,
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, attackSpeed)
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
 		},
 	})
+
+	return aura
 }
 
-func (shaman *Shaman) makeFlurryConsumptionTrigger() *core.Aura {
+// With the Warden T1 2pc it's possible to have 2 different Flurry auras if using less than 5/5 points in Flurry.
+// The two different buffs don't stack whatsoever. Instead the stronger aura takes precedence and each one is only refreshed by the corresponding triggers.
+func (shaman *Shaman) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.Aura {
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
 		Duration: time.Millisecond * 500,
 	}
-	return shaman.GetOrRegisterAura(core.Aura{
-		Label:    "Flurry Consume Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	return core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Flurry Consume Trigger - %d", flurryAura.ActionID.SpellID),
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Remove a stack.
-			if shaman.FlurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
+			if flurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
 				icd.Use(sim)
-				shaman.FlurryAura.RemoveStack(sim)
+				flurryAura.RemoveStack(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (shaman *Shaman) concussionMultiplier() float64 {
