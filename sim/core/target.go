@@ -300,10 +300,14 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		if targetDefense-weaponSkill > 10 {
 			table.HitSuppression = (targetDefense - weaponSkill - 10) * 0.002
 			table.BaseMissChance = 0.05 + (targetDefense-weaponSkill)*0.002
-			table.BaseParryChance = 0.05 + (targetDefense-baseWeaponSkill)*0.006 // = 14
 		} else {
 			table.HitSuppression = 0
 			table.BaseMissChance = 0.05 + (targetDefense-weaponSkill)*0.001
+		}
+
+		if targetDefense-baseWeaponSkill > 10 {
+			table.BaseParryChance = 0.05 + (targetDefense-baseWeaponSkill)*0.006 // = 14
+		} else {
 			table.BaseParryChance = 0.05 + (targetDefense-baseWeaponSkill)*0.001 // = 5 / 5.5 / 6
 		}
 
