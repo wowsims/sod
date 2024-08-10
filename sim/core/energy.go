@@ -1,3 +1,7 @@
+// This file contains energy and combo point calculations for classes that use them (Rogue, Feral Druid).
+//
+// Exported Structs:
+// EnergyCostOptions, EnergyCost
 package core
 
 import (
@@ -11,8 +15,8 @@ import (
 
 type OnComboPointsSpent func(sim *Simulation, spell *Spell, comboPoints int32)
 
-// Time between energy ticks.
-const EnergyTickDuration = time.Millisecond * 2020
+
+const EnergyTickDuration = time.Millisecond * 2020 // Time between energy ticks.
 const EnergyPerTick = 20.2
 
 type energyBar struct {

@@ -1,3 +1,7 @@
+// This file contains calculations for pet DPS (hunter pets, trinket pets)
+//
+// Exported Structs:
+// Pet
 package core
 
 import (

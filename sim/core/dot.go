@@ -1,3 +1,8 @@
+// This file contains all calculations for Damage over Time (DoT) effects.
+//
+// Structs exported:
+// DotConfig, Dot
+
 package core
 
 import (
@@ -9,38 +14,34 @@ type OnSnapshot func(sim *Simulation, target *Unit, dot *Dot, isRollover bool)
 type OnTick func(sim *Simulation, target *Unit, dot *Dot)
 
 type DotConfig struct {
-	IsAOE    bool // Set to true for AOE dots (Blizzard, Hurricane, Consecrate, etc)
-	SelfOnly bool // Set to true to only create the self-hot.
+	IsAOE    bool 				// Set to true for AOE dots (Blizzard, Hurricane, Consecrate, etc)
+	SelfOnly bool 				// Set to true to only create the self-hot.
 
-	// Optional, will default to the corresponding spell.
-	Spell *Spell
+	Spell *Spell 				// Optional, will default to the corresponding spell.
 
 	Aura Aura
 
 	NumberOfTicks int32         // number of ticks over the whole duration
 	TickLength    time.Duration // time between each tick
 
-	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed bool 	// If true, tick length will be shortened based on casting speed.
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
 
-	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+	BonusCoefficient float64 	// EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 type Dot struct {
 	Spell *Spell
 
-	// Embed Aura, so we can use IsActive/Refresh/etc directly.
-	*Aura
+	*Aura 								// Embed Aura, so we can use IsActive/Refresh/etc directly.
 
 	OriginalNumberOfTicks int32         // base number of ticks of the original dot
 	NumberOfTicks         int32         // number of ticks over the whole duration
 	TickLength            time.Duration // time between each tick
 
-	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed bool 			// If true, tick length will be shortened based on casting speed.
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
@@ -51,14 +52,13 @@ type Dot struct {
 
 	tickAction *PendingAction
 	tickPeriod time.Duration
-
-	// Number of ticks since last call to Apply().
-	TickCount int32
+	
+	TickCount int32 					// Number of ticks since last call to Apply().
 
 	lastTickTime time.Duration
 	isChanneled  bool
 
-	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+	BonusCoefficient float64 			// EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 // TickPeriod is how fast the snapshot dot ticks.

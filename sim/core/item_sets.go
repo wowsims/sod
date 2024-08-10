@@ -1,3 +1,7 @@
+// File contains calculations for item sets and bonus effects from item sets
+//
+// Exported structs:
+// ItemSet, ActiveSetBonus
 package core
 
 import (

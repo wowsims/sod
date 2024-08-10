@@ -1,3 +1,7 @@
+// File contains calculations for calculating character mana
+// 
+// Exported Structs:
+// ManaCostOptions, ManaCost
 package core
 
 import (

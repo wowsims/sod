@@ -1,3 +1,7 @@
+// File contains calculations for debuffs applied to enemy targets
+//
+// Exported Structs:
+// IsbConfig
 package core
 
 import (
@@ -52,7 +56,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio
+			Priority:        ActionPriorityDOT, // High priority
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -68,7 +72,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio
+			Priority:        ActionPriorityDOT, // High priority
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -104,7 +108,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio
+			Priority:        ActionPriorityDOT, // High priority
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -120,7 +124,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 			Period:          time.Millisecond * 1500,
 			NumTicks:        5,
 			TickImmediately: true,
-			Priority:        ActionPriorityDOT, // High prio
+			Priority:        ActionPriorityDOT, // High priority
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
@@ -179,15 +183,14 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 				},
 			}, raid)
 		}
-
-		if debuffs.SunderArmor {
-			// Sunder Armor
+		// Sunder Armor
+		if debuffs.SunderArmor {	
 			aura := SunderArmorAura(target, level)
 			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:          time.Millisecond * 1500,
 				NumTicks:        5,
 				TickImmediately: true,
-				Priority:        ActionPriorityDOT, // High prio so it comes before actual warrior sunders.
+				Priority:        ActionPriorityDOT, // High priority so it comes before actual warrior sunders.
 				OnAction: func(sim *Simulation) {
 					aura.Activate(sim)
 					if aura.IsActive() {

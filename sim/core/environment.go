@@ -1,3 +1,8 @@
+// This file sets up the encounter environment, including pre pull
+//
+// Exported structs:
+// PrepullAction, Environment
+
 package core
 
 import (

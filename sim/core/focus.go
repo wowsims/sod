@@ -1,3 +1,7 @@
+// File contains calculations for focus (hunter pets)
+
+// Exported structs:
+// FocusCostOptions, FocusCost
 package core
 
 import (

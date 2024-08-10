@@ -1,3 +1,8 @@
+// File contains calculations for weapon swaps mid combat
+// TODO: Currently a WIP and is error-prone
+// 
+// Exported Structs:
+// ItemSwap
 package core
 
 import (
