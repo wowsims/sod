@@ -60,7 +60,13 @@ func (rogue *Rogue) applyCombatPotency() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+			isFoKOH := false
+			
+			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
+				isFoKOH = true
+			}
+			
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOH) || isFoKOH {
 				return
 			}
 
