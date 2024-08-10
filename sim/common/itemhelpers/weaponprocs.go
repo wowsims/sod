@@ -58,7 +58,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
+				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, aura.Label) {
@@ -83,7 +83,7 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: itemName + " Proc Aura",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
+				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {
@@ -109,7 +109,7 @@ func CreateWeaponProcAura(itemId int32, itemName string, ppm float64, procAuraGe
 			Label:    itemName + " Proc Aura",
 			Duration: core.NeverExpires,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
+				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {

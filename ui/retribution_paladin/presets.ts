@@ -167,6 +167,9 @@ export const DefaultConsumes = Consumes.create({
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,

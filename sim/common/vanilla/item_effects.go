@@ -106,6 +106,7 @@ const (
 	BlackbladeOfShahram            = 228606 // 12592
 	SeepingWillow                  = 228666 // 12969
 	DraconicInfusedEmblem          = 228678 // 22268
+	QuelSerrar                     = 228679 // 18348
 	HandOfJustice                  = 228722 // 11815
 	Felstriker                     = 228757 // 12590
 	GutgoreRipperMolten            = 229372
@@ -1169,6 +1170,29 @@ func init() {
 	// Chance on hit: Blasts a target for 98 to 122 Fire damage.
 	itemhelpers.CreateWeaponProcDamage(PerditionsBlade, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
 	itemhelpers.CreateWeaponProcDamage(PerditionsBladeMolten, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=228679/quelserrar
+	// Chance on hit: When active, grants the wielder 25 defense and 300 armor for 10 sec.
+	// Proc rate estimated based on data from WoW Armaments Discord for the original item
+	itemhelpers.CreateWeaponProcAura(QuelSerrar, "Quel'Serrar", 2.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 463105},
+			Label:    "Sanctuary",
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Defense:    25,
+					stats.BonusArmor: 300,
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.Defense:    -25,
+					stats.BonusArmor: -300,
+				})
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcAura(Ravager, "Ravager", 1.0, func(character *core.Character) *core.Aura {
 		tickActionID := core.ActionID{SpellID: 9633}

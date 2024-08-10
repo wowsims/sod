@@ -708,22 +708,10 @@ func spellSchoolResistanceEffect(aura *Aura, school stats.SchoolIndex, amount fl
 	return aura.NewExclusiveEffect("resistance"+strconv.Itoa(int(school)), exclusive, ExclusiveEffect{
 		Priority: amount + extraPriority,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.FireResistance:   -amount,
-				stats.FrostResistance:  -amount,
-				stats.ArcaneResistance: -amount,
-				stats.NatureResistance: -amount,
-				stats.ShadowResistance: -amount,
-			})
+			aura.Unit.AddResistancesDynamic(sim, -amount)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.FireResistance:   amount,
-				stats.FrostResistance:  amount,
-				stats.ArcaneResistance: amount,
-				stats.NatureResistance: amount,
-				stats.ShadowResistance: amount,
-			})
+			aura.Unit.AddResistancesDynamic(sim, amount)
 		},
 	})
 }

@@ -283,7 +283,8 @@ interface EnumInputConfig<ModObject, Message, T> {
 	values: Array<IconEnumValueConfig<ModObject, T>>;
 	direction?: IconPickerDirection;
 	numColumns?: number;
-	faction?: Faction;
+	// faction?: Faction;
+	showWhen?: (modObj: ModObject) => boolean;
 }
 
 export function makeEnumIndividualBuffInput<SpecType extends Spec>(
@@ -292,7 +293,7 @@ export function makeEnumIndividualBuffInput<SpecType extends Spec>(
 	return InputHelpers.makeEnumIconInput<any, IndividualBuffs, Player<SpecType>, number>(
 		{
 			getModObject: (player: Player<SpecType>) => player,
-			showWhen: (player: Player<SpecType>) => !config.faction || config.faction == player.getFaction(),
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 			getValue: (player: Player<SpecType>) => player.getBuffs(),
 			setValue: (eventID: EventID, player: Player<SpecType>, newVal: IndividualBuffs) => player.setBuffs(eventID, newVal),
 			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.buffsChangeEmitter, player.levelChangeEmitter, player.raceChangeEmitter]),

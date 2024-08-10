@@ -44,7 +44,7 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
 
-		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Mana Potion');
+		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Potions');
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
 
 		const pickers = [
@@ -246,11 +246,15 @@ export class ConsumesPicker extends Component {
 			relevantStatOptions(ConsumablesInputs.ZANZA_BUFF_CONSUMES_CONFIG, this.simUI),
 			'Zanza Buffs',
 		);
-		const miscConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_CONSUMES_CONFIG, this.simUI);
+		const mageScrollOptions = ConsumablesInputs.makeMageScrollsInput(ConsumablesInputs.MAGE_SCROLL_CONSUMES_CONFIG, 'Mage Scrolls');
+		const miscOffensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_OFFENSIVE_CONSUMES_CONFIG, this.simUI);
+		const miscDefensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_DEFENSIVE_CONSUMES_CONFIG, this.simUI);
 
 		const pickers = [
 			buildIconInput(miscConsumesElem, this.simUI.player, zanzaBuffOptions),
-			...miscConsumesOptions.map(options => options.picker && new options.picker(miscConsumesElem, this.simUI.player, options.config as any, this.simUI)),
+			buildIconInput(miscConsumesElem, this.simUI.player, mageScrollOptions),
+			ConsumablesInputs.makeMiscOffensiveConsumesInput(miscConsumesElem, this.simUI.player, this.simUI, miscOffensiveConsumesOptions),
+			ConsumablesInputs.makeMiscDefensiveConsumesInput(miscConsumesElem, this.simUI.player, this.simUI, miscDefensiveConsumesOptions),
 		];
 
 		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));

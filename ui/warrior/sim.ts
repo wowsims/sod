@@ -87,18 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			WarriorInputs.StartingRage<Spec.SpecWarrior>(),
-			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
-			OtherInputs.InFrontOfTarget,
-			OtherInputs.TankAssignment,
-			OtherInputs.IncomingHps,
-			OtherInputs.HealingCadence,
-			OtherInputs.HealingCadenceVariation,
-			OtherInputs.BurstWindow,
-			OtherInputs.HpPercentForDefensives,
-			OtherInputs.InspirationUptime,
-		],
+		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(), OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

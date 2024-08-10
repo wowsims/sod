@@ -131,6 +131,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	miscConsumes: {
 		catnip: true,
+		jujuEmber: true,
 	},
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,

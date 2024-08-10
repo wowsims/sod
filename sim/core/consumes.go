@@ -62,13 +62,7 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 			stats.Health: 1200,
 		})
 	case proto.Flask_FlaskOfChromaticResistance:
-		character.AddStats(stats.Stats{
-			stats.ArcaneResistance: 25,
-			stats.FireResistance:   25,
-			stats.FrostResistance:  25,
-			stats.NatureResistance: 25,
-			stats.ShadowResistance: 25,
-		})
+		character.AddResistances(25)
 	case proto.Flask_FlaskOfRestlessDreams:
 		character.AddStats(stats.Stats{
 			// +30 Spell Damage, +45 Healing Power, +12 MP5
@@ -739,6 +733,47 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			stats.Spirit:    1,
 		})
 	}
+
+	if miscConsumes.JujuEmber {
+		character.AddStat(stats.FireResistance, 15)
+	}
+
+	if miscConsumes.JujuChill {
+		character.AddStat(stats.FrostResistance, 15)
+	}
+
+	if miscConsumes.JujuEscape {
+		actionID := ActionID{SpellID: 16321}
+		jujuEscapeAura := character.RegisterAura(Aura{
+			Label:    "Juju Escape",
+			ActionID: actionID,
+			Duration: time.Second * 10,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, 5*DodgeRatingPerDodgeChance)
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, -5*DodgeRatingPerDodgeChance)
+			},
+		})
+		jujuEscapeSpell := character.RegisterSpell(SpellConfig{
+			ActionID: actionID,
+			ProcMask: ProcMaskEmpty,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute,
+				},
+			},
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				jujuEscapeAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    jujuEscapeSpell,
+			Type:     CooldownTypeSurvival,
+			Priority: CooldownPriorityDefault,
+		})
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1022,9 +1057,63 @@ func makePotionActivation(potionType proto.Potions, character *Character, potion
 	return mcd
 }
 
+func makeHealthConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
+	// Using min values for healthstones as locks generally don't spec into improved
+	minRoll := map[int32]float64{
+		858:   140,
+		929:   280,
+		1710:  455,
+		3928:  700,
+		5509:  500,
+		5510:  800,
+		9421:  1200,
+		13446: 1050,
+	}[itemId]
+
+	maxRoll := map[int32]float64{
+		858:   180,
+		929:   360,
+		1710:  585,
+		3928:  900,
+		5509:  500,
+		5510:  800,
+		9421:  1200,
+		13446: 1750,
+	}[itemId]
+
+	cdDuration := time.Minute * 2
+
+	actionID := ActionID{ItemID: itemId}
+	healthMetrics := character.NewHealthMetrics(actionID)
+
+	return MajorCooldown{
+		Type: CooldownTypeSurvival,
+		ShouldActivate: func(sim *Simulation, character *Character) bool {
+			// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
+			return (character.MaxHealth()-(character.CurrentHealth()) >= maxRoll) && !character.IsShapeshifted()
+		},
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				healthGain := sim.RollWithLabel(minRoll, maxRoll, "Health Consumable")
+				character.GainHealth(sim, healthGain, healthMetrics)
+			},
+		}),
+	}
+}
+
 func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
-		3385:  280.0,
 		3827:  455.0,
 		6149:  700.0,
 		4381:  150.0,
@@ -1034,7 +1123,6 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	}[itemId]
 
 	maxRoll := map[int32]float64{
-		3385:  360.0,
 		3827:  585.0,
 		6149:  900.0,
 		4381:  250.0,
@@ -1080,10 +1168,7 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 	cdDuration := time.Minute * 2
 
 	return MajorCooldown{
-		Type: CooldownTypeDPS,
-		ShouldActivate: func(sim *Simulation, character *Character) bool {
-			return true
-		},
+		Type: CooldownTypeSurvival,
 		Spell: character.GetOrRegisterSpell(SpellConfig{
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
@@ -1105,6 +1190,43 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 					greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
 					greaterStoneshieldAura.Activate(sim)
 				}
+			},
+		}),
+	}
+}
+
+func makeMagicResistancePotionMCD(character *Character, cdTimer *Timer) MajorCooldown {
+	actionID := ActionID{ItemID: 4623}
+	cdDuration := time.Minute * 2
+
+	stats := stats.Stats{
+		stats.ArcaneResistance: 50,
+		stats.FireResistance:   50,
+		stats.FrostResistance:  50,
+		stats.NatureResistance: 50,
+		stats.ShadowResistance: 50,
+	}
+
+	// Since many people will keep this rolling as a substitute for capping Fire Resistance, show the stats as a baseline
+	aura := character.NewTemporaryStatsAura("Magic Resistance Potion", actionID, stats, time.Minute*3)
+	aura.BuildPhase = CharacterBuildPhaseConsumes
+
+	return MajorCooldown{
+		Type: CooldownTypeSurvival,
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				aura.Activate(sim)
 			},
 		}),
 	}
@@ -1157,33 +1279,60 @@ func makeRageConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 }
 
 func makePotionActivationInternal(potionType proto.Potions, character *Character, potionCD *Timer) MajorCooldown {
-	if potionType != proto.Potions_UnknownPotion {
-		switch potionType {
-		case proto.Potions_LesserManaPotion:
-			return makeManaConsumableMCD(3385, character, potionCD)
-		case proto.Potions_ManaPotion:
-			return makeManaConsumableMCD(3827, character, potionCD)
-		case proto.Potions_GreaterManaPotion:
-			return makeManaConsumableMCD(6149, character, potionCD)
-		case proto.Potions_SuperiorManaPotion:
-			return makeManaConsumableMCD(13443, character, potionCD)
-		case proto.Potions_MajorManaPotion:
-			return makeManaConsumableMCD(13444, character, potionCD)
-		case proto.Potions_RagePotion:
-			return makeRageConsumableMCD(5631, character, potionCD)
-		case proto.Potions_GreatRagePotion:
-			return makeRageConsumableMCD(5633, character, potionCD)
-		case proto.Potions_MightyRagePotion:
-			return makeRageConsumableMCD(13442, character, potionCD)
-		case proto.Potions_LesserStoneshieldPotion:
-			return makeArmorConsumableMCD(4623, character, potionCD)
-		case proto.Potions_GreaterStoneshieldPotion:
-			return makeArmorConsumableMCD(13455, character, potionCD)
+	if potionType == proto.Potions_UnknownPotion {
+		return MajorCooldown{}
+	}
 
-		default:
-			return MajorCooldown{}
-		}
-	} else {
+	switch potionType {
+	case proto.Potions_LesserHealingPotion:
+		return makeHealthConsumableMCD(858, character, potionCD)
+	case proto.Potions_HealingPotion:
+		return makeHealthConsumableMCD(929, character, potionCD)
+	case proto.Potions_GreaterHealingPotion:
+		return makeHealthConsumableMCD(1710, character, potionCD)
+	case proto.Potions_SuperiorHealingPotion:
+		return makeHealthConsumableMCD(3928, character, potionCD)
+	case proto.Potions_MajorHealingPotion:
+		return makeHealthConsumableMCD(13446, character, potionCD)
+
+	case proto.Potions_LesserManaPotion:
+		return makeManaConsumableMCD(3385, character, potionCD)
+	case proto.Potions_ManaPotion:
+		return makeManaConsumableMCD(3827, character, potionCD)
+	case proto.Potions_GreaterManaPotion:
+		return makeManaConsumableMCD(6149, character, potionCD)
+	case proto.Potions_SuperiorManaPotion:
+		return makeManaConsumableMCD(13443, character, potionCD)
+	case proto.Potions_MajorManaPotion:
+		return makeManaConsumableMCD(13444, character, potionCD)
+
+	case proto.Potions_RagePotion:
+		return makeRageConsumableMCD(5631, character, potionCD)
+	case proto.Potions_GreatRagePotion:
+		return makeRageConsumableMCD(5633, character, potionCD)
+	case proto.Potions_MightyRagePotion:
+		return makeRageConsumableMCD(13442, character, potionCD)
+
+	case proto.Potions_LesserStoneshieldPotion:
+		return makeArmorConsumableMCD(4623, character, potionCD)
+	case proto.Potions_GreaterStoneshieldPotion:
+		return makeArmorConsumableMCD(13455, character, potionCD)
+
+	case proto.Potions_MagicResistancePotion:
+		return makeMagicResistancePotionMCD(character, potionCD)
+	// case proto.Potions_GreaterArcaneProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13461, character, potionCD)
+	// case proto.Potions_GreaterFireProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13457, character, potionCD)
+	// case proto.Potions_GreaterFrostProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13456, character, potionCD)
+	// case proto.Potions_GreaterFrostProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13460, character, potionCD)
+	// case proto.Potions_GreaterFrostProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13458, character, potionCD)
+	// case proto.Potions_GreaterFrostProtectionPotion:
+	// 	return makeSchoolProtectionConsumableMCD(13459, character, potionCD)
+	default:
 		return MajorCooldown{}
 	}
 }
@@ -1192,14 +1341,31 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
 	conjuredType := consumes.DefaultConjured
 
-	if conjuredType == proto.Conjured_ConjuredDemonicRune || conjuredType == proto.Conjured_ConjuredMinorRecombobulator {
-		itemId := map[proto.Conjured]int32{
-			proto.Conjured_ConjuredDemonicRune:         12662,
-			proto.Conjured_ConjuredMinorRecombobulator: 4381,
-		}[conjuredType]
-
-		character.AddMajorCooldown(makeManaConsumableMCD(itemId, character, character.GetConjuredCD()))
+	if conjuredType == proto.Conjured_ConjuredUnknown {
+		return
 	}
+
+	timer := character.GetConjuredCD()
+
+	var mcd MajorCooldown
+	switch conjuredType {
+	case proto.Conjured_ConjuredHealthstone:
+		mcd = makeHealthConsumableMCD(5509, character, timer)
+	case proto.Conjured_ConjuredGreaterHealthstone:
+		mcd = makeHealthConsumableMCD(5510, character, timer)
+	case proto.Conjured_ConjuredMajorHealthstone:
+		mcd = makeHealthConsumableMCD(9421, character, timer)
+	case proto.Conjured_ConjuredDemonicRune:
+		mcd = makeManaConsumableMCD(12662, character, timer)
+	case proto.Conjured_ConjuredMinorRecombobulator:
+		mcd = makeManaConsumableMCD(4381, character, timer)
+	// Handled in the rogue package
+	// case proto.Conjured_ConjuredRogueThistleTea:
+	default:
+		return
+	}
+
+	character.AddMajorCooldown(mcd)
 }
 
 func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {

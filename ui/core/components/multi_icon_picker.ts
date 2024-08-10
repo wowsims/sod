@@ -1,3 +1,5 @@
+import tippy from 'tippy.js';
+
 import { Player } from '../player.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { SimUI } from '../sim_ui.js';
@@ -9,11 +11,13 @@ import { IconPicker, IconPickerConfig, IconPickerDirection } from './icon_picker
 export interface MultiIconPickerItemConfig<ModObject> extends IconPickerConfig<ModObject, any> {}
 
 export interface MultiIconPickerConfig<ModObject> {
-	inputs: Array<MultiIconPickerItemConfig<ModObject>>;
-	label?: string;
+	values: Array<MultiIconPickerItemConfig<ModObject>>;
 	categoryId?: ActionId;
 	// The direction the menu will open in relative to the root element
 	direction?: IconPickerDirection;
+	label?: string;
+	// Hover tooltip.
+	tooltip?: string;
 	showWhen?: (obj: Player<any>) => boolean;
 }
 
@@ -48,7 +52,14 @@ export class MultiIconPicker<ModObject> extends Component {
 			></a>
 			<ul class="dropdown-menu"></ul>
 			<label class="multi-icon-picker-label form-label"></label>
-	    `;
+	  `;
+
+		if (config.tooltip) {
+			const tooltip = tippy(this.rootElem, {
+				content: config.tooltip,
+			});
+			this.addOnDisposeCallback(() => tooltip.destroy());
+		}
 
 		const labelElem = this.rootElem.querySelector('.multi-icon-picker-label') as HTMLElement;
 		if (config.label) {
@@ -80,7 +91,7 @@ export class MultiIconPicker<ModObject> extends Component {
 
 		this.buildBlankOption();
 
-		this.pickers = this.config.inputs.map((pickerConfig, _) => {
+		this.pickers = this.config.values.map((pickerConfig, _) => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-picker-option', 'dropdown-option');
 			this.dropdownMenu.appendChild(optionContainer);

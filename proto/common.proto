@@ -317,19 +317,42 @@ enum Explosive {
 	ExplosiveGoblinLandMine = 6;
 }
 
-// NextIndex: 5
+// NextIndex: 28
 enum Potions {
 	UnknownPotion = 0;
-	LesserManaPotion = 1;
+	
+	// Mana Pots
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
+	
+	// Rage Pots
 	RagePotion = 6;
 	GreatRagePotion = 7;
 	MightyRagePotion = 8;
+	
+	// Armor Pots
 	LesserStoneshieldPotion = 9;
 	GreaterStoneshieldPotion = 10;
+
+	// Healing Pots
+	LesserHealingPotion = 11;
+	HealingPotion = 12;
+	GreaterHealingPotion = 13;
+	SuperiorHealingPotion = 14;
+	MajorHealingPotion = 15;
+
+	// Resistance Pots
+	MagicResistancePotion = 16;
+	GreaterArcaneProtectionPotion = 17;
+	GreaterFireProtectionPotion = 18;
+	GreaterFrostProtectionPotion = 19;
+	GreaterHolyProtectionPotion = 20;
+	GreaterNatureProtectionPotion = 21;
+	GreaterShadowProtectionPotion = 22;
+
+	LesserManaPotion = 1 [deprecated = true];
 }
 
 enum Conjured {
@@ -337,6 +360,10 @@ enum Conjured {
 	ConjuredMinorRecombobulator = 1;
 	ConjuredDemonicRune = 2;
 	ConjuredRogueThistleTea = 3;
+
+	ConjuredHealthstone = 7;
+	ConjuredGreaterHealthstone = 8;
+	ConjuredMajorHealthstone = 9;
 
 	ConjuredDruidCatnip = 4 [deprecated = true];
 }
@@ -459,6 +486,18 @@ message MiscConsumes {
 	bool bogling_root = 1;
 	bool elixir_of_coalesced_regret = 2;
 	bool catnip = 3;
+	bool juju_ember = 4;
+	bool juju_chill = 5;
+	bool juju_escape = 6;
+}
+
+enum MageScroll {
+	MageScrollUnknown = 0;
+	MageScrollArcaneRecovery = 1;
+	MageScrollArcaneAccuracy = 2;
+	MageScrollArcanePower = 3;
+	MageScrollFireProtection = 4;
+	MageScrollFrostProtection = 5;
 }
 
 // NextIndex: 29
@@ -657,7 +696,7 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 31
+// NextIndex: 32
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -686,6 +725,7 @@ message Consumes {
 	ArmorElixir armor_elixir = 28;
 	HealthElixir health_elixir = 29;
 	Alcohol alcohol = 30;
+	MageScroll mage_scroll = 32;
 
 	AtalaiMojo atalai_mojo = 25 [deprecated=true];
 	bool bogling_root = 19 [deprecated=true];

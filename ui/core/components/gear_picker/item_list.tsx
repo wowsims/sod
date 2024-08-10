@@ -709,13 +709,24 @@ export default class ItemList<T extends ItemListType> {
 			);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
-			return makeAnchor(
-				ActionId.makeNpcUrl(src.npcId),
-				<div className="d-flex">
-					{this.getVendorSourceIcon()}
-					<span>{src.npcName}</span>
-				</div>,
-			);
+
+			if (src.npcId) {
+				return makeAnchor(
+					ActionId.makeNpcUrl(src.npcId),
+					<div className="d-flex">
+						{this.getVendorSourceIcon()}
+						<span>{src.npcName}</span>
+					</div>,
+				);
+			} else {
+				return makeAnchor(
+					`${ActionId.makeItemUrl(item.id)}#sold-by`,
+					<div className="d-flex">
+						{this.getVendorSourceIcon()}
+						<span>Vendor</span>
+					</div>,
+				);
+			}
 		}
 		return <></>;
 	}

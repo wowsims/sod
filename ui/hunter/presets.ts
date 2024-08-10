@@ -203,6 +203,9 @@ export const DefaultConsumes = Consumes.create({
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
 	petAttackPowerConsumable: 1,
 	petAgilityConsumable: 1,

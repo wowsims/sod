@@ -89,6 +89,10 @@ func main() {
 	// Ultimately we want to get rid of any item with the same name and icon, but a lower ID than another entry
 	itemNameMap := make(map[string]string, len(wowheadDB.Items))
 	for id, item := range wowheadDB.Items {
+		if _, ok := database.ItemDenyList[item.ID]; ok {
+			continue
+		}
+
 		if otherId, ok := itemNameMap[item.Name]; !ok || otherId < id {
 			itemNameMap[item.Name] = id
 		}
@@ -97,14 +101,21 @@ func main() {
 		id := itemNameMap[item.Name]
 		otherItem := wowheadDB.Items[id]
 
+		if _, ok := database.ItemAllowList[item.ID]; ok {
+			return true
+		}
+
+		if _, ok := database.ItemDenyList[item.ID]; ok {
+			return false
+		}
+
 		// Most new items follow this pattern:
 		// - Higher item ID (this is a given)
 		// - Same icon
 		// - If the items have a ClassMask they should match
 		// - Ilvl either the same or only slightly modified (use a 3 ilvl diff threshold)
 		// - Have a later game version
-		if _, ok := database.ItemAllowList[item.ID]; !ok &&
-			otherItem.ID > item.ID &&
+		if otherItem.ID > item.ID &&
 			otherItem.Icon == item.Icon &&
 			(item.ClassMask == 0 || (otherItem.ClassMask&item.ClassMask) != 0) &&
 			math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 10 &&

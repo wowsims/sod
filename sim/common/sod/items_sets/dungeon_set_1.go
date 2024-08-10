@@ -74,13 +74,7 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -124,13 +118,7 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -171,13 +159,7 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -230,13 +212,7 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -276,13 +252,7 @@ var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -326,13 +296,7 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -387,13 +351,7 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -442,13 +400,7 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })
@@ -494,13 +446,7 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 		// +8 All Resistances.
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.ArcaneResistance: 8,
-				stats.FireResistance:   8,
-				stats.FrostResistance:  8,
-				stats.NatureResistance: 8,
-				stats.ShadowResistance: 8,
-			})
+			c.AddResistances(8)
 		},
 	},
 })

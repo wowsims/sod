@@ -115,6 +115,9 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.RockbiterWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
+	miscConsumes: {
+		jujuEmber: true,
+	},
 	offHandImbue: WeaponImbue.ConductiveShieldCoating,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,

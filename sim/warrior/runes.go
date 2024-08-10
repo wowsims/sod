@@ -10,6 +10,7 @@ import (
 
 func (warrior *Warrior) ApplyRunes() {
 	// Head
+	warrior.applyVigilance()
 	warrior.applyEndlessRage()
 	warrior.applyShieldMastery()
 	warrior.applyTasteForBlood()
@@ -44,6 +45,14 @@ func (warrior *Warrior) ApplyRunes() {
 
 	// Boots
 	// Gladiator implemented on stances.go
+}
+
+func (warrior *Warrior) applyVigilance() {
+	if !warrior.HasRune(proto.WarriorRune_RuneVigilance) {
+		return
+	}
+
+	warrior.PseudoStats.ThreatMultiplier *= 1.1
 }
 
 func (warrior *Warrior) applyEndlessRage() {

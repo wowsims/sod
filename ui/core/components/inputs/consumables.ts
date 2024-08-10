@@ -1,3 +1,4 @@
+import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import {
 	AgilityElixir,
@@ -15,6 +16,7 @@ import {
 	FrostPowerBuff,
 	HealthElixir,
 	ItemSlot,
+	MageScroll,
 	ManaRegenElixir,
 	Potions,
 	Profession,
@@ -32,12 +34,12 @@ import { isBluntWeaponType, isSharpWeaponType, isWeapon } from '../../proto_util
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
 import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
-import { IconPickerDirection } from '../icon_picker';
+import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
-import { MultiIconPicker } from '../multi_icon_picker';
+import { MultiIconPicker, MultiIconPickerConfig, MultiIconPickerItemConfig } from '../multi_icon_picker';
 import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, WoundPoisonWeaponImbue } from './rogue_imbues';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from './shaman_imbues';
-import { ActionInputConfig, ItemStatOption, PickerStatOptions } from './stat_options';
+import { ActionInputConfig, ItemStatOption, PickerStatOptions, StatOptions } from './stat_options';
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {
 	value: T;
@@ -96,9 +98,36 @@ function makeConsumeInputFactory<T extends number>(
 	};
 }
 
+type MultiIconConsumeInputFactoryArg<ModObject> = Omit<MultiIconPickerConfig<ModObject>, 'values'>;
+
+export const makeMultiIconConsumesInputFactory = <ModObject>(
+	config: MultiIconConsumeInputFactoryArg<ModObject>,
+): ((parent: HTMLElement, modObj: ModObject, simUI: IndividualSimUI<Spec>, options: StatOptions<any, any>) => MultiIconPicker<any>) => {
+	return (parent: HTMLElement, modObj: ModObject, simUI: IndividualSimUI<Spec>, options: StatOptions<any, any>) => {
+		const pickerConfig = {
+			...config,
+			values: options.map(option => option.config) as Array<MultiIconPickerItemConfig<ModObject>>,
+		};
+		return new MultiIconPicker(parent, modObj, pickerConfig, simUI);
+	};
+};
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONJURED
 ///////////////////////////////////////////////////////////////////////////
+
+export const ConjuredHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 5509, minLevel: 24 }]),
+	value: Conjured.ConjuredHealthstone,
+};
+export const ConjuredGreaterHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 5510, minLevel: 36 }]),
+	value: Conjured.ConjuredGreaterHealthstone,
+};
+export const ConjuredMajorHealthstone: ConsumableInputConfig<Conjured> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 9421, minLevel: 48 }]),
+	value: Conjured.ConjuredMajorHealthstone,
+};
 
 export const ConjuredMinorRecombobulator: ConsumableInputConfig<Conjured> = {
 	actionId: () => ActionId.fromItemId(4381),
@@ -116,8 +145,13 @@ export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
 };
 
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
-	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
+	{ config: ConjuredMajorHealthstone, stats: [Stat.StatArmor] },
+	{ config: ConjuredGreaterHealthstone, stats: [Stat.StatArmor] },
+	{ config: ConjuredHealthstone, stats: [Stat.StatArmor] },
+
 	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect] },
+	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
+
 	{ config: ConjuredRogueThistleTea, stats: [] },
 ];
 
@@ -248,7 +282,7 @@ export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfChromaticResistance, stats: [Stat.StatStamina] },
+	{ config: FlaskOfChromaticResistance, stats: [] },
 	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
 	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
 ];
@@ -330,7 +364,7 @@ export const DragonBreathChili = makeBooleanConsumeInput({
 
 export const RumseyRumBlackLabel: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21151, minLevel: 1 }]),
-	value: Alcohol.AlcoholRumseyRumLight,
+	value: Alcohol.AlcoholRumseyRumBlackLabel,
 };
 export const GordokGreenGrog: ConsumableInputConfig<Alcohol> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18269, minLevel: 56 }]),
@@ -572,25 +606,79 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 ];
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
-export const MiscConsumesConfig = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanMiscConsumeInput({
-			actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
-			fieldName: 'catnip',
-			showWhen: player => player.getClass() === Class.ClassDruid,
-		}),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' }),
-		makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' }),
-	],
-	'',
-	IconPickerDirection.Vertical,
-);
+export const Catnip = makeBooleanMiscConsumeInput({
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
+	fieldName: 'catnip',
+	showWhen: player => player.getClass() === Class.ClassDruid,
+});
+export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' });
+export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
 
-export const MISC_CONSUMES_CONFIG: PickerStatOptions[] = [{ config: MiscConsumesConfig, picker: MultiIconPicker, stats: [] }];
+export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: Catnip, picker: IconPicker, stats: [] },
+	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },
+	{ config: BoglingRoot, picker: IconPicker, stats: [Stat.StatAttackPower] },
+];
+
+export const makeMiscOffensiveConsumesInput = makeMultiIconConsumesInputFactory({
+	direction: IconPickerDirection.Vertical,
+	tooltip: 'Misc Offensive',
+});
+
+export const JujuEmber = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' });
+export const JujuChill = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' });
+export const JujuEscape = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12459), fieldName: 'jujuEscape' });
+
+export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: JujuEmber, picker: IconPicker, stats: [] },
+	{ config: JujuChill, picker: IconPicker, stats: [] },
+	{ config: JujuEscape, picker: IconPicker, stats: [Stat.StatDodge] },
+];
+
+export const makeMiscDefensiveConsumesInput = makeMultiIconConsumesInputFactory({
+	direction: IconPickerDirection.Vertical,
+	tooltip: 'Misc Defensive',
+});
+
+export const MageScrollArcaneRecovery: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211953),
+	value: MageScroll.MageScrollArcaneRecovery,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollArcaneAccuracy: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211954),
+	value: MageScroll.MageScrollArcaneAccuracy,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollArcanePower: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211957),
+	value: MageScroll.MageScrollArcanePower,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollFireProtection: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211955),
+	value: MageScroll.MageScrollFireProtection,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+export const MageScrollFrostProtection: ConsumableInputConfig<MageScroll> = {
+	actionId: () => ActionId.fromItemId(211956),
+	value: MageScroll.MageScrollFrostProtection,
+	showWhen: player => player.isClass(Class.ClassMage),
+};
+
+export const MAGE_SCROLL_CONSUMES_CONFIG: ConsumableStatOption<MageScroll>[] = [
+	{ config: MageScrollArcaneRecovery, stats: [] },
+	{ config: MageScrollArcaneAccuracy, stats: [] },
+	{ config: MageScrollArcanePower, stats: [] },
+	{ config: MageScrollFireProtection, stats: [] },
+	{ config: MageScrollFrostProtection, stats: [] },
+];
+export const makeMageScrollsInput = makeConsumeInputFactory({ consumesFieldName: 'mageScroll' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
+
 export const PetAttackPowerConsumable = makeEnumConsumeInput({
 	direction: IconPickerDirection.Vertical,
 	values: [
@@ -629,10 +717,19 @@ export const PetStrengthConsumable = makeEnumConsumeInput({
 //                                 POTIONS
 ///////////////////////////////////////////////////////////////////////////
 
-export const LesserManaPotion: ConsumableInputConfig<Potions> = {
-	actionId: () => ActionId.fromItemId(3385),
-	value: Potions.LesserManaPotion,
+export const GreaterHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 1710, minLevel: 21 }]),
+	value: Potions.GreaterHealingPotion,
 };
+export const SuperiorHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 3928, minLevel: 35 }]),
+	value: Potions.SuperiorHealingPotion,
+};
+export const MajorHealingPotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 13446, minLevel: 45 }]),
+	value: Potions.MajorHealingPotion,
+};
+
 export const ManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 3827, minLevel: 22 }]),
 	value: Potions.ManaPotion,
@@ -649,6 +746,7 @@ export const MajorManaPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13444, minLevel: 49 }]),
 	value: Potions.MajorManaPotion,
 };
+
 export const MightRagePotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13442, minLevel: 46 }]),
 	value: Potions.MightyRagePotion,
@@ -664,6 +762,37 @@ export const RagePotion: ConsumableInputConfig<Potions> = {
 	value: Potions.RagePotion,
 	showWhen: player => player.getClass() == Class.ClassWarrior,
 };
+
+export const MagicResistancePotion: ConsumableInputConfig<Potions> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 9036, minLevel: 32 }]),
+	value: Potions.MagicResistancePotion,
+};
+// TODO: Not yet implemented in the back-end. Missing school shields and shields don't actually absorb damage right now
+// export const GreaterArcaneProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13461, minLevel: 48 }]),
+// 	value: Potions.GreaterArcaneProtectionPotion,
+// };
+// export const GreaterFireProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13457, minLevel: 48 }]),
+// 	value: Potions.GreaterFireProtectionPotion,
+// };
+// export const GreaterFrostProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13456, minLevel: 48 }]),
+// 	value: Potions.GreaterFrostProtectionPotion,
+// };
+// export const GreaterHolyProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13460, minLevel: 48 }]),
+// 	value: Potions.GreaterHolyProtectionPotion,
+// };
+// export const GreaterNatureProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13458, minLevel: 48 }]),
+// 	value: Potions.GreaterNatureProtectionPotion,
+// };
+// export const GreaterShadowProtectionPotion: ConsumableInputConfig<Potions> = {
+// 	actionId: player => player.getMatchingItemActionId([{ id: 13459, minLevel: 48 }]),
+// 	value: Potions.GreaterShadowProtectionPotion,
+// };
+
 export const GreaterStoneshieldPotion: ConsumableInputConfig<Potions> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13455, minLevel: 46 }]),
 	value: Potions.GreaterStoneshieldPotion,
@@ -674,14 +803,20 @@ export const LesserStoneshieldPotion: ConsumableInputConfig<Potions> = {
 };
 
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
+	{ config: MajorHealingPotion, stats: [Stat.StatArmor] },
+	{ config: SuperiorHealingPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterHealingPotion, stats: [Stat.StatArmor] },
+
 	{ config: MajorManaPotion, stats: [Stat.StatIntellect] },
 	{ config: SuperiorManaPotion, stats: [Stat.StatIntellect] },
 	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
 	{ config: ManaPotion, stats: [Stat.StatIntellect] },
-	{ config: LesserManaPotion, stats: [Stat.StatIntellect] },
+
 	{ config: MightRagePotion, stats: [] },
 	{ config: GreatRagePotion, stats: [] },
 	{ config: RagePotion, stats: [] },
+
+	// { config: MagicResistancePotion, stats: [] },
 	{ config: GreaterStoneshieldPotion, stats: [Stat.StatArmor] },
 	{ config: LesserStoneshieldPotion, stats: [Stat.StatArmor] },
 ];

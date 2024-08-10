@@ -28,9 +28,9 @@ const (
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
 
-	flags := SpellFlagShaman | SpellFlagFocusable | SpellFlagMaelstrom
+	flags := SpellFlagShaman | SpellFlagFocusable
 	if !isOverload {
-		flags |= core.SpellFlagAPL
+		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
 
 	spell := core.SpellConfig{
@@ -42,7 +42,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: baseCost,
+			FlatCost:   baseCost,
 			Multiplier: 100 - 2*shaman.Talents.Convection,
 		},
 
