@@ -56,6 +56,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 
 			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
 				hunter.RaptorStrike.CD.Reset()
+				spell.CD.Reset()
 			}
 
 			multiplier := 1.0
