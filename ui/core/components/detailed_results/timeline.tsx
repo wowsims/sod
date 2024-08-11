@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 import { ResourceType } from '../../proto/api.js';
 import { OtherAction } from '../../proto/common.js';
 import { ActionId, resourceTypeToIcon } from '../../proto_utils/action_id.js';
-import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
+import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, DamageDealtLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
 import { resourceNames } from '../../proto_utils/names.js';
 import { UnitMetrics } from '../../proto_utils/sim_result.js';
 import { orderedResourceTypes } from '../../proto_utils/utils.js';
@@ -776,16 +776,21 @@ export class Timeline extends ResultComponent {
 		this.rotationHiddenIdsContainer.appendChild(this.makeLabelElem(actionId, true));
 
 		const rowElem = this.makeRowElem(actionId, duration);
-		castLogs.forEach(castLog => {
+
+		var stackedIconCount = 1;
+		var stackedDamageCount = 1;
+	
+		castLogs.forEach( (castLog, index) => {
 			const castElem = (
 				<div
 					className="rotation-timeline-cast"
 					style={{
 						left: this.timeToPx(castLog.timestamp),
 						minWidth: this.timeToPx(castLog.castTime + castLog.travelTime),
-					}}
-				/>
+					}}>
+				</div>
 			);
+
 			rowElem.appendChild(castElem);
 
 			if (castLog.travelTime != 0) {
@@ -821,6 +826,41 @@ export class Timeline extends ResultComponent {
 			const travelTimeStr = castLog.travelTime == 0 ? '' : ` + ${castLog.travelTime.toFixed(2)}s travel time`;
 			const totalDamage = castLog.totalDamage();
 
+			if (index > 0) {
+				var timeDelta = 0.0;
+
+				for (var i=index - 1; i >= 0; i--) {
+					if (castLog.timestamp != castLogs[i].timestamp) {
+						var timeDelta = castLog.timestamp - castLogs[i].timestamp;
+						break;
+					}
+				}
+				if (timeDelta < 0.21) {
+					stackedDamageCount = stackedDamageCount + castLog.damageDealtLogs.length;
+					stackedIconCount = stackedIconCount + 1;
+				} else {
+					stackedDamageCount = castLog.damageDealtLogs.length;
+					stackedIconCount = 1;
+				}
+			} 
+
+			const startIndex = Math.max(0, 1 + index - stackedIconCount);
+			const relevantCastLogs = castLogs.slice(startIndex, index + 1);
+	
+			// Reset and initialize aggregatedData for the current iteration
+			const aggregatedData = relevantCastLogs.reduce<{
+				damageDealtLogs: DamageDealtLog[];
+				totalDamage: number;
+				}>((acc, log) => {
+					// Correct type
+					acc.damageDealtLogs.push(...log.damageDealtLogs);
+					acc.totalDamage += log.totalDamage();
+					return acc;
+				}, {
+					damageDealtLogs: [], // Correctly typed as DamageDealtLog[]
+					totalDamage: 0
+				});
+	
 			const tt = (
 				<div className="timeline-tooltip">
 					<span>
@@ -828,9 +868,9 @@ export class Timeline extends ResultComponent {
 						{castLog.castTime > 0 && `${castLog.castTime.toFixed(2)}s, `}
 						{castLog.effectiveTime > 0 && `${castLog.effectiveTime.toFixed(2)}s GCD Time`}){travelTimeStr.length > 0 && travelTimeStr}
 					</span>
-					{castLog.damageDealtLogs.length > 0 && (
+					{aggregatedData.damageDealtLogs.length > 0 && (
 						<ul className="rotation-timeline-cast-damage-list">
-							{castLog.damageDealtLogs.map(ddl => (
+							{aggregatedData.damageDealtLogs.map((ddl, ddlIndex) => (
 								<li>
 									<span>
 										{ddl.timestamp.toFixed(2)}s - {ddl.result()}
@@ -842,16 +882,31 @@ export class Timeline extends ResultComponent {
 					)}
 					{totalDamage > 0 && (
 						<span>
-							Total: {totalDamage.toFixed(2)} ({(totalDamage / (castLog.effectiveTime || 1)).toFixed(2)} DPET)
+							Total: {aggregatedData.totalDamage.toFixed(2)} ({(aggregatedData.totalDamage / (castLog.effectiveTime || 1)).toFixed(2)} DPET)
 						</span>
 					)}
 				</div>
 			);
+	
 
 			tippy(castElem, {
 				placement: 'bottom',
 				content: tt,
 			});
+
+			if (stackedIconCount > 1) {
+				const numElement = (
+					<div
+						className="stacked-icon-count"
+						style={{
+							backgroundColor: 'black'
+						}}>
+						{String(stackedDamageCount)}
+					</div>
+						
+				);
+				castElem.appendChild(numElement);
+			}
 
 			castLog.damageDealtLogs
 				.filter(ddl => ddl.tick)
