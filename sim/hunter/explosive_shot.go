@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
+func (hunter *Hunter) registerExplosiveShotSpell() {
 	if !hunter.HasRune(proto.HunterRune_RuneHandsExplosiveShot) {
 		return
 	}
@@ -33,7 +33,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.035,
+			BaseCost:   0.035,
 			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
@@ -42,7 +42,7 @@ func (hunter *Hunter) registerExplosiveShotSpell(timer *core.Timer) {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    timer,
+				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
