@@ -218,8 +218,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1952.45287
-  tps: 1825.28209
+  dps: 2847.85759
+  tps: 2720.68681
  }
 }
 dps_results: {
@@ -239,8 +239,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1133.45646
-  tps: 1185.96693
+  dps: 1596.18784
+  tps: 1648.69831
  }
 }
 dps_results: {
@@ -260,8 +260,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1924.89021
-  tps: 1799.16723
+  dps: 2818.78787
+  tps: 2693.06489
  }
 }
 dps_results: {
@@ -281,8 +281,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1134.67825
-  tps: 1180.15061
+  dps: 1591.43243
+  tps: 1636.90479
  }
 }
 dps_results: {
@@ -405,9 +405,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 8001.89283
-  tps: 8086.89309
-  hps: 20.29481
+  dps: 8206.28368
+  tps: 8291.44334
+  hps: 20.40394
  }
 }
 dps_results: {
@@ -429,9 +429,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4164.54786
-  tps: 4452.80126
-  hps: 11.14454
+  dps: 4301.78971
+  tps: 4590.04311
+  hps: 11.27153
  }
 }
 dps_results: {
@@ -453,9 +453,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 8487.73211
-  tps: 8559.58087
-  hps: 20.19748
+  dps: 8703.73506
+  tps: 8775.68216
+  hps: 20.36855
  }
 }
 dps_results: {
@@ -477,9 +477,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4176.70141
-  tps: 4447.26969
-  hps: 11.01087
+  dps: 4307.89732
+  tps: 4578.46559
+  hps: 11.09203
  }
 }
 dps_results: {

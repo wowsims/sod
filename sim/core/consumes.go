@@ -2,7 +2,7 @@ package core
 
 import (
 	"time"
-
+	
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -395,9 +395,37 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			results := make([]*SpellResult, character.Env.GetNumTargets())
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)	
+			}
+			for _, result := range results {
+				if result.Landed() {
+					spell.DealDamage(sim, result)
+				}
+			}
 		},
 	})
+
+//molten copy
+//ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+//	for idx := range results {
+//		// Molten Blast is a magic ability but scales off of Attack Power
+//		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
+//		results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+//		target = sim.Environment.NextTargetUnit(target)
+//	}
+//
+//	for _, result := range results {
+//		if result.Landed() {
+//			spell.DealDamage(sim, result)
+//		}
+//	}
+//},
+//molten copy end
+
+
 
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Dragonbreath Chili",
