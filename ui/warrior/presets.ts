@@ -201,7 +201,6 @@ export const DefaultConsumes = Consumes.create({
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	food: Food.FoodSmokedDesertDumpling,
-	flask: Flask.FlaskOfTheTitans,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	miscConsumes: {
