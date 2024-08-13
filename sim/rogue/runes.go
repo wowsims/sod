@@ -101,7 +101,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() || isFoKOH {
 				return
 			}
-			rogue.AddEnergy(sim, 3, energyMetrics)
+			rogue.AddEnergy(sim, 2, energyMetrics)
 		},
 	})
 }
