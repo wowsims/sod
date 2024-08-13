@@ -70,6 +70,8 @@ func (hunter *Hunter) ApplyTalents() {
 		agiBonus := 0.03 * float64(hunter.Talents.LightningReflexes)
 		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
 	}
+
+	hunter.applyEfficiency()
 }
 
 func (hunter *Hunter) applyFrenzy() {
@@ -159,4 +161,12 @@ func (hunter *Hunter) mortalShots() float64 {
 
 func (hunter *Hunter) trapMastery() float64 {
 	return 5 * float64(hunter.Talents.TrapMastery) * core.SpellHitRatingPerHitChance
+}
+
+func (hunter *Hunter) applyEfficiency() {
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagShot) || spell.Flags.Matches(SpellFlagStrike) && spell != hunter.KillShot {
+			spell.Cost.BaseCost *= (1 - 0.02*float64(hunter.Talents.Efficiency))
+		}
+	})
 }

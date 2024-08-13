@@ -12,13 +12,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		return
 	}
 
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
-
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
-
 	hunter.SteadyShot = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 437123},
 		SpellSchool:  core.SpellSchoolPhysical,
@@ -30,7 +23,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -61,11 +53,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, result)
-
-				if hasCobraStrikes && result.DidCrit() {
-					hunter.CobraStrikesAura.Activate(sim)
-					hunter.CobraStrikesAura.SetStacks(sim, 2)
-				}
 			})
 		},
 	})

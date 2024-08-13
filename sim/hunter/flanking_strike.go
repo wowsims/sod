@@ -13,7 +13,6 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	}
 
 	hasCatlikeReflexes := hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes)
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 
 	cooldownModifier := 1.0
 	if hasCatlikeReflexes {
@@ -67,18 +66,15 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		})
 	}
 
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 415320},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.015,
-			Multiplier: manaCostMultiplier,
 		},
 
 		Cast: core.CastConfig{
@@ -101,12 +97,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-			if hasCobraStrikes && result.DidCrit() {
-				hunter.CobraStrikesAura.Activate(sim)
-				hunter.CobraStrikesAura.SetStacks(sim, 2)
-			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if hunter.pet != nil {
 				hunter.pet.flankingStrike.Cast(sim, hunter.pet.CurrentTarget)

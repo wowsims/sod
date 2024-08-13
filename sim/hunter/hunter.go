@@ -13,6 +13,7 @@ var TalentTreeSizes = [3]int{16, 14, 16}
 
 const (
 	SpellFlagShot = core.SpellFlagAgentReserved1
+	SpellFlagStrike = core.SpellFlagAgentReserved2
 )
 
 const (
