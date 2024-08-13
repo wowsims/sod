@@ -34,7 +34,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * 30,
+				Duration: time.Second * 20,
 			},
 		},
 
