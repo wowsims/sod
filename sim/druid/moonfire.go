@@ -20,7 +20,6 @@ var MoonfireLevel = [MoonfireRanks + 1]int{0, 4, 10, 16, 22, 28, 34, 40, 46, 52,
 
 func (druid *Druid) registerMoonfireSpell() {
 	druid.Moonfire = make([]*DruidSpell, 0)
-	druid.MoonfireDotMultiplier = 1
 
 	for rank := 1; rank <= MoonfireRanks; rank++ {
 		config := druid.getMoonfireBaseConfig(rank)
@@ -57,7 +56,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: druid.MoonglowManaCostMultiplier(),
 		},
 		Cast: core.CastConfig{
