@@ -446,7 +446,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 
 			druid.AddStatDynamic(sim, stats.SpellDamage, float64(2*druid.Level))
 
-			druid.MoonfireDotMultiplier *= 1.5
+			druid.MoonfireDotMultiplier *= 2.0
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
 					spell.Spell.Cost.Multiplier -= 50
@@ -455,7 +455,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
 				druid.Sunfire.Cost.Multiplier -= 50
-				druid.SunfireDotMultiplier *= 1.5
+				druid.SunfireDotMultiplier *= 2.0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -468,11 +468,11 @@ func (druid *Druid) registerMoonkinFormSpell() {
 					spell.Spell.Cost.Multiplier += 50
 				}
 			})
-			druid.MoonfireDotMultiplier /= 1.5
+			druid.MoonfireDotMultiplier /= 2.0
 
 			if druid.HasRune(proto.DruidRune_RuneHandsSunfire) {
 				druid.Sunfire.Cost.Multiplier += 50
-				druid.SunfireDotMultiplier /= 1.5
+				druid.SunfireDotMultiplier /= 2.0
 			}
 		},
 	})
