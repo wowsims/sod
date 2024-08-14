@@ -151,9 +151,9 @@ func (warlock *Warlock) applyNightfall() {
 		return
 	}
 
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
-
 	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
+
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
 
 	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",

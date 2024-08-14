@@ -290,6 +290,9 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		Label:    "Demonic Knowledge",
 		ActionID: core.ActionID{SpellID: int32(proto.WarlockRune_RuneBootsDemonicKnowledge)},
 		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.demonicKnowledgeSp = 0
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.demonicKnowledgeSp = (warlock.ActivePet.GetStat(stats.Stamina) + warlock.ActivePet.GetStat(stats.Intellect)) * .03
 			warlock.AddStatDynamic(sim, stats.SpellPower, warlock.demonicKnowledgeSp)
