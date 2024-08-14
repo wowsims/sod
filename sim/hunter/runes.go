@@ -238,7 +238,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 	})
 }
 
-const RaptorFuryPerStackDamageMultiplier = 0.1
+const RaptorFuryPerStackDamageMultiplier = 0.15
 
 func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
 	stacks := hunter.RaptorFuryAura.GetStacks()
@@ -257,7 +257,7 @@ func (hunter *Hunter) applyRaptorFury() {
 	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Raptor Fury Buff",
 		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
-		Duration:  time.Second * 15,
+		Duration:  time.Second * 30,
 		MaxStacks: 5,
 	})
 }

@@ -32,7 +32,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15 * hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * time.Duration(15*hunter.resourcefulnessCooldownModifier()),
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -54,7 +54,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 				Tag:   "ImmolationTrap",
 			},
 			NumberOfTicks: 5,
-			TickLength:    time.Second * 3,
+			TickLength:    time.Millisecond * 1500,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				tickDamage := (dotDamage + hunter.tntDamageFlatBonus()) / float64(dot.NumberOfTicks)
