@@ -29,7 +29,7 @@ func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       WarlockFlagHaunt | core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
+		Flags:       core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
 
 		RequiredLevel: level,
 		Rank:          rank,
