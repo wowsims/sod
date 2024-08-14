@@ -80,7 +80,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShot) {
-				spell.Cost.BaseCost *= 0.75
+				spell.Cost.Multiplier -= 25
 			}
 		})
 	}

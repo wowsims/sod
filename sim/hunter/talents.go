@@ -166,7 +166,7 @@ func (hunter *Hunter) trapMastery() float64 {
 func (hunter *Hunter) applyEfficiency() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagShot) || spell.Flags.Matches(SpellFlagStrike) && spell != hunter.KillShot {
-			spell.Cost.BaseCost *= (1 - 0.02*float64(hunter.Talents.Efficiency))
+			spell.Cost.Multiplier -= 2*hunter.Talents.Efficiency
 		}
 	})
 }
