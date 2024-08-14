@@ -56,5 +56,4 @@ func (hunter *Hunter) registerKillShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.KillShot)
 }

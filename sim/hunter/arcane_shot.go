@@ -66,7 +66,6 @@ func (hunter *Hunter) registerArcaneShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.ArcaneShot = hunter.GetOrRegisterSpell(config)
-			hunter.Shots = append(hunter.Shots, hunter.ArcaneShot)
 		}
 	}
 }

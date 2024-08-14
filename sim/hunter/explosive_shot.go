@@ -94,5 +94,4 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.ExplosiveShot)
 }

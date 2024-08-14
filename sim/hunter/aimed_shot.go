@@ -83,7 +83,6 @@ func (hunter *Hunter) registerAimedShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.AimedShot = hunter.GetOrRegisterSpell(config)
-			hunter.Shots = append(hunter.Shots, hunter.AimedShot)
 		}
 	}
 }

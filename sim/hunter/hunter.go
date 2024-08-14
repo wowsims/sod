@@ -128,6 +128,12 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagShot) {
+			hunter.Shots = append(hunter.Shots, spell)
+		}
+	})
+
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
 
@@ -171,6 +177,7 @@ func (hunter *Hunter) Initialize() {
 	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
 	hunter.registerFocusFireSpell()
+
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {

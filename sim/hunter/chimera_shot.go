@@ -66,5 +66,4 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.ChimeraShot)
 }

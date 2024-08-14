@@ -109,7 +109,6 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.MultiShot = hunter.GetOrRegisterSpell(config)
-			hunter.Shots = append(hunter.Shots, hunter.MultiShot)
 		}
 	}
 }

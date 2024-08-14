@@ -56,5 +56,4 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.SteadyShot)
 }
