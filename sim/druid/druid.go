@@ -249,8 +249,6 @@ func (druid *Druid) RegisterFeralTankSpells() {
 
 func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.BleedsActive = 0
-	druid.MoonfireDotMultiplier = 1.0
-	druid.SunfireDotMultiplier = 1.0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
 }

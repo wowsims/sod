@@ -434,6 +434,9 @@ func (druid *Druid) registerMoonkinFormSpell() {
 
 	actionID := core.ActionID{SpellID: 24858}
 
+	druid.MoonfireDotMultiplier = 1.0
+	druid.SunfireDotMultiplier = 1.0
+
 	druid.MoonkinFormAura = druid.RegisterAura(core.Aura{
 		Label:    "Moonkin Form",
 		ActionID: actionID,
