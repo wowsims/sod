@@ -23,6 +23,7 @@ const (
 	SpellCode_HunterMongooseBite
 	SpellCode_HunterRaptorStrike
 	SpellCode_HunterMultiShot
+	SpellCode_HunterKillShot
 )
 
 func RegisterHunter() {
@@ -177,7 +178,6 @@ func (hunter *Hunter) Initialize() {
 	// hunter.registerKillCommand()
 	hunter.registerRapidFire()
 	hunter.registerFocusFireSpell()
-
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {

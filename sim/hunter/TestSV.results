@@ -342,7 +342,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
   dps: 3402.77132
-  tps: 3022.45083
+  tps: 3022.39336
   hps: 19.89862
  }
 }
@@ -350,7 +350,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
   dps: 3374.79362
-  tps: 2997.52346
+  tps: 2997.46598
   hps: 19.89862
  }
 }
@@ -390,7 +390,7 @@ dps_results: {
  key: "TestSV-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
   dps: 3342.06763
-  tps: 2964.819
+  tps: 2964.75974
   hps: 19.65676
  }
 }
@@ -398,7 +398,7 @@ dps_results: {
  key: "TestSV-Lvl60-Average-Default"
  value: {
   dps: 3423.23466
-  tps: 3035.56246
+  tps: 3035.50671
   hps: 19.68639
  }
 }
@@ -406,7 +406,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 8001.89283
-  tps: 8086.89309
+  tps: 8085.80438
   hps: 20.29481
  }
 }
@@ -414,7 +414,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3449.39064
-  tps: 3070.19458
+  tps: 3070.18065
   hps: 19.98446
  }
 }
@@ -422,24 +422,24 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 3335.24585
-  tps: 2962.22279
+  tps: 2962.19269
   hps: 18.70695
  }
 }
 dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4164.54786
-  tps: 4452.80126
-  hps: 11.14454
+  dps: 4159.47349
+  tps: 4444.79002
+  hps: 11.21902
  }
 }
 dps_results: {
  key: "TestSV-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1639.85466
-  tps: 1470.66816
-  hps: 10.95835
+  dps: 1642.8487
+  tps: 1474.31552
+  hps: 10.9173
  }
 }
 dps_results: {
@@ -454,7 +454,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 8487.73211
-  tps: 8559.58087
+  tps: 8558.55395
   hps: 20.19748
  }
 }
@@ -462,7 +462,7 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 3661.68713
-  tps: 3275.74181
+  tps: 3275.68857
   hps: 19.73965
  }
 }
@@ -470,24 +470,24 @@ dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 3556.16997
-  tps: 3183.6655
+  tps: 3183.64634
   hps: 18.51523
  }
 }
 dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 4176.70141
-  tps: 4447.26969
-  hps: 11.01087
+  dps: 4175.42788
+  tps: 4450.34453
+  hps: 10.97936
  }
 }
 dps_results: {
  key: "TestSV-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1631.56207
-  tps: 1460.35936
-  hps: 10.67382
+  dps: 1633.43093
+  tps: 1458.4101
+  hps: 10.78553
  }
 }
 dps_results: {
@@ -502,7 +502,7 @@ dps_results: {
  key: "TestSV-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3188.30952
-  tps: 2874.05118
+  tps: 2874.04252
   hps: 19.28741
  }
 }
