@@ -313,10 +313,17 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 			rogue.MultiplyMeleeSpeed(sim, 1/1.2)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			isFoKOH := false
+			
+			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
+				isFoKOH = true
+			}
+			
 			if sim.GetNumTargets() < 2 {
 				return
 			}
-			if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+						
+			if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || isFoKOH {
 				return
 			}
 
