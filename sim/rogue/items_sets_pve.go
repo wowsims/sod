@@ -178,11 +178,11 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// While Just a Flesh Wound and Blade Dance are active, Crimson Tempest, Blunderbuss, and Fan of Knives cost 20 less Energy and generate 100% increased threat.
 		2: func(agent core.Agent) {
-			// Not yet implemented
+			// Implemented in individual rune sections
 		},
 		// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
 		4: func(agent core.Agent) {
-			// Not yet implemented
+			// Immplemented in Vanish.go
 		},
 		// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
 		6: func(agent core.Agent) {
