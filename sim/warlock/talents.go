@@ -151,9 +151,9 @@ func (warlock *Warlock) applyNightfall() {
 		return
 	}
 
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
-
 	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
+
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
 
 	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
@@ -203,9 +203,13 @@ func (warlock *Warlock) applyShadowMastery() {
 		return
 	}
 
+	// These spells have their base damage modded instead
+	// Apply Aura: Modifies Spell Effectiveness (8)
+	excludedSpellCodes := []int32{SpellCode_WarlockCurseOfAgony, SpellCode_WarlockDeathCoil, SpellCode_WarlockDrainLife, SpellCode_WarlockDrainSoul}
+
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		// Shadow Mastery applies a base damage modifier to all dots / channeled spells instead
-		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !spell.Flags.Matches(core.SpellFlagPureDot) && !spell.Flags.Matches(WarlockFlagHaunt) {
+		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !slices.Contains(excludedSpellCodes, spell.SpellCode) {
 			spell.DamageMultiplierAdditive += warlock.shadowMasteryBonus()
 		}
 	})

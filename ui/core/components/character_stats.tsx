@@ -436,7 +436,9 @@ export class CharacterStats extends Component {
 	}
 
 	private shouldShowMeleeCritCap(player: Player<any>): boolean {
-		return [Spec.SpecEnhancementShaman, Spec.SpecRetributionPaladin, Spec.SpecRogue, Spec.SpecWarrior, Spec.SpecHunter].includes(player.spec);
+		// TODO: Disabled for now while we fix displayed crit cap
+		return false;
+		// return [Spec.SpecEnhancementShaman, Spec.SpecRetributionPaladin, Spec.SpecRogue, Spec.SpecWarrior, Spec.SpecHunter].includes(player.spec);
 	}
 
 	private meleeCritCapDisplayString(player: Player<any>, _: Stats): string {

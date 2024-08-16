@@ -61,16 +61,44 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 	Name: "Unstoppable Might",
 	Bonuses: map[int32]core.ApplyEffect{
-		// You gain 10 Rage when you change stances.
+		// After changing stances, your next offensive ability's rage cost is reduced by 10.
 		2: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
-			rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 457652})
+
+			var affectedSpells []*core.Spell
+			tacticianAura := warrior.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 464241},
+				Label:    "Tactician",
+				Duration: time.Second * 10,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range warrior.Spellbook {
+						if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeRage && !spell.Flags.Matches(core.SpellFlagHelpful) {
+							affectedSpells = append(affectedSpells, spell)
+						}
+					}
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.Cost.FlatModifier -= 10
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.Cost.FlatModifier += 10
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if slices.Contains(affectedSpells, spell) {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 457652}, // Intentionally exposing for stance-dancing APL conditions
-				Label:    "S03 - Item - T1 - Warrior - Damage 2P Bonus Trigger",
+				Label: "S03 - Item - T1 - Warrior - Damage 2P Bonus Trigger",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if slices.Contains(StanceCodes, spell.SpellCode) {
-						warrior.AddRage(sim, 10, rageMetrics)
+						tacticianAura.Activate(sim)
 					}
 				},
 			}))

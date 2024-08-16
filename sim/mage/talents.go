@@ -158,8 +158,7 @@ func (mage *Mage) applyArcaneConcentration() {
 		return
 	}
 
-	var proccedAt time.Duration
-	var proccedSpell *core.Spell
+	procChance := 0.02 * float64(mage.Talents.ArcaneConcentration)
 
 	mage.ClearcastingAura = mage.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
@@ -172,17 +171,14 @@ func (mage *Mage) applyArcaneConcentration() {
 			aura.Unit.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(100)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
 			if !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
-			if spell.DefaultCast.Cost == 0 {
-				return
-			}
-			if spell.SpellCode == SpellCode_MageArcaneMissiles && mage.MissileBarrageAura.IsActive() {
-				return
-			}
-			if proccedAt == sim.CurrentTime && proccedSpell == spell {
-				// Means this is another hit from the same cast that procced CC.
+			if spell.Cost != nil && spell.Cost.GetCurrentCost() == 0 {
 				return
 			}
 			aura.Deactivate(sim)
@@ -196,15 +192,9 @@ func (mage *Mage) applyArcaneConcentration() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagMage) || spell.SpellCode == SpellCode_MageArcaneMissiles {
+			if !result.Landed() || !spell.Flags.Matches(SpellFlagMage) || spell.SpellCode == SpellCode_MageArcaneMissiles {
 				return
 			}
-
-			if !result.Landed() {
-				return
-			}
-
-			procChance := 0.02 * float64(mage.Talents.ArcaneConcentration)
 
 			// TODO: Classic verify arcane missile proc chance
 			// Arcane Missile ticks can proc CC, just at a low rate of about 1.5% with 5/5 Arcane Concentration
@@ -212,21 +202,16 @@ func (mage *Mage) applyArcaneConcentration() {
 			// 	procChance *= 0.15
 			// }
 
-			if sim.RandomFloat("Arcane Concentration") > procChance {
-				return
-			}
-
-			proccedAt = sim.CurrentTime
-			proccedSpell = spell
-			mage.ClearcastingAura.Activate(sim)
-			if mage.ArcanePotencyAura != nil {
-				mage.ArcanePotencyAura.Activate(sim)
+			if sim.Proc(procChance, "Arcane Concentration") {
+				mage.ClearcastingAura.Activate(sim)
+				if mage.ArcanePotencyAura != nil {
+					mage.ArcanePotencyAura.Activate(sim)
+				}
 			}
 		},
 	})
 }
 
-// TODO: Classic allow more dynamic choice in PoM with APL
 func (mage *Mage) registerPresenceOfMindCD() {
 	if !mage.Talents.PresenceOfMind {
 		return

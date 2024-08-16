@@ -329,6 +329,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 	DeathWish := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagHelpful,
 		RageCost: core.RageCostOptions{
 			Cost: 10,
 		},
