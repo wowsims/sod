@@ -172,3 +172,45 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Nightslayer Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// While Just a Flesh Wound and Blade Dance are active, Crimson Tempest, Blunderbuss, and Fan of Knives cost 20 less Energy and generate 100% increased threat.
+		2: func(agent core.Agent) {
+			// Not yet implemented
+		},
+		// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
+		4: func(agent core.Agent) {
+			// Not yet implemented
+		},
+		// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
+		6: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			damageTaken := 0.5
+
+			aura := rogue.RegisterAura(core.Aura{
+				Label:    "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)",
+				ActionID: core.ActionID{SpellID: 457469},
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PseudoStats.DamageTakenMultiplier *= damageTaken
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PseudoStats.DamageTakenMultiplier /= damageTaken
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeLanded) {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+				if sim.Proc(0.2*float64(comboPoints), "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)") {
+					aura.Activate(sim)
+				}
+			})
+		},
+	},
+})

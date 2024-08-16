@@ -13,6 +13,7 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	var procMask core.ProcMask
 	var weaponMultiplier float64
 	var actionID core.ActionID
+	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2)  && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 	if isMH {
 		actionID = core.ActionID{SpellID: FanOfKnivesSpellID}.WithTag(1)
 		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 0.75, 0.5)
@@ -32,7 +33,7 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagColdBlooded,
 
 		DamageMultiplier: weaponMultiplier,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 2, 1),
 	})
 }
 
@@ -42,6 +43,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		return
 	}
 
+	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2)  && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 	mhSpell := rogue.makeFanOfKnivesWeaponHitSpell(true)
 	ohSpell := rogue.makeFanOfKnivesWeaponHitSpell(false)
 	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
@@ -52,7 +54,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 50,
+			Cost: 50 - core.TernaryFloat64(activate2PcBonuses, 20, 0),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -67,7 +69,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := ohSpell.Unit.OHWeaponDamage(sim, ohSpell.MeleeAttackPower())
 				baseDamage *= sim.Encounter.AOECapMultiplier()
-				results[i] = ohSpell.CalcDamage(sim, aoeTarget, baseDamage, ohSpell.OutcomeMeleeSpecialNoBlockDodgeParry)
+				results[i] = ohSpell.CalcDamage(sim, aoeTarget, baseDamage, ohSpell.OutcomeMeleeSpecialHit)
 			}
 			for i := range sim.Encounter.TargetUnits {
 				ohSpell.DealDamage(sim, results[i])
@@ -76,7 +78,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := mhSpell.Unit.MHWeaponDamage(sim, mhSpell.MeleeAttackPower())
 				baseDamage *= sim.Encounter.AOECapMultiplier()
-				results[i] = mhSpell.CalcDamage(sim, aoeTarget, baseDamage, mhSpell.OutcomeMeleeSpecialNoBlockDodgeParry)
+				results[i] = mhSpell.CalcDamage(sim, aoeTarget, baseDamage, mhSpell.OutcomeMeleeSpecialHit)
 			}
 			for i := range sim.Encounter.TargetUnits {
 				mhSpell.DealDamage(sim, results[i])
