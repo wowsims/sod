@@ -120,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1933.6414
-  tps: 1719.07109
+  dps: 2792.68605
+  tps: 2578.11574
  }
 }
 dps_results: {
@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1088.24795
-  tps: 1100.20868
+  dps: 1526.13042
+  tps: 1538.09115
  }
 }
 dps_results: {
@@ -204,8 +204,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 514.07538
-  tps: 558.44087
+  dps: 683.46102
+  tps: 729.05433
  }
 }
 dps_results: {
@@ -225,8 +225,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 251.51403
-  tps: 449.54526
+  dps: 335.88913
+  tps: 534.60055
  }
 }
 dps_results: {
@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1851.17138
-  tps: 1628.15847
+  dps: 2675.40153
+  tps: 2452.38862
  }
 }
 dps_results: {
@@ -309,8 +309,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1082.11487
-  tps: 1093.48824
+  dps: 1512.4581
+  tps: 1523.83147
  }
 }
 dps_results: {
@@ -372,8 +372,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 522.96597
-  tps: 554.39406
+  dps: 691.90078
+  tps: 724.64438
  }
 }
 dps_results: {
@@ -393,8 +393,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_ranged_bm-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 258.80012
-  tps: 447.1994
+  dps: 342.80955
+  tps: 531.98582
  }
 }
 dps_results: {
