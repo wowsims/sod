@@ -408,25 +408,6 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		},
 	})
 
-//molten copy
-//ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-//	for idx := range results {
-//		// Molten Blast is a magic ability but scales off of Attack Power
-//		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh) + apCoef*spell.MeleeAttackPower()
-//		results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-//		target = sim.Environment.NextTargetUnit(target)
-//	}
-//
-//	for _, result := range results {
-//		if result.Landed() {
-//			spell.DealDamage(sim, result)
-//		}
-//	}
-//},
-//molten copy end
-
-
-
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Dragonbreath Chili",
 		ActionID: ActionID{SpellID: 15852},
