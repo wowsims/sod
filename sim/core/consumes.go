@@ -2,7 +2,7 @@ package core
 
 import (
 	"time"
-	
+
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -387,7 +387,6 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		Duration: time.Second * 10,
 	}
 
-
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
@@ -403,7 +402,7 @@ func DragonBreathChiliAura(character *Character) *Aura {
 			results := make([]*SpellResult, character.Env.GetNumTargets())
 			for idx := range results {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-				target = sim.Environment.NextTargetUnit(target)	
+				target = sim.Environment.NextTargetUnit(target)
 			}
 			for _, result := range results {
 				if result.Landed() {
@@ -754,6 +753,48 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 
 	if miscConsumes.JujuChill {
 		character.AddStat(stats.FrostResistance, 15)
+	}
+
+	if miscConsumes.JujuFlurry {
+		actionID := ActionID{SpellID: 16322}
+		// In Vanilla Juju Flurry was bugged to act like Seal of the Crusader where it gave attack speed but also reduced damage done.
+		jujuFlurryAura := character.RegisterAura(Aura{
+			Label:    "Juju Flurry",
+			ActionID: actionID,
+			Duration: time.Second * 20,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
+				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
+				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+			},
+		})
+		jujuFlurrySpell := character.RegisterSpell(SpellConfig{
+			ActionID: actionID,
+			ProcMask: ProcMaskEmpty,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute,
+				},
+				SharedCD: Cooldown{
+					Timer:    character.GetAttackSpeedBuffCD(),
+					Duration: time.Second * 10,
+				},
+			},
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				jujuFlurryAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    jujuFlurrySpell,
+			Type:     CooldownTypeDPS,
+			Priority: CooldownPriorityDefault,
+		})
 	}
 
 	if miscConsumes.JujuEscape {

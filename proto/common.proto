@@ -489,6 +489,11 @@ message MiscConsumes {
 	bool juju_ember = 4;
 	bool juju_chill = 5;
 	bool juju_escape = 6;
+	bool juju_flurry = 7;
+}
+
+message PetMiscConsumes {
+	bool juju_flurry = 1;
 }
 
 enum MageScroll {
@@ -696,7 +701,7 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 32
+// NextIndex: 34
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -719,6 +724,7 @@ message Consumes {
 	int32 pet_agility_consumable = 22;
 	int32 pet_strength_consumable = 23;
 	int32 pet_attack_power_consumable = 31;
+	PetMiscConsumes pet_misc_consumes = 33;
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
 	ZanzaBuff zanza_buff = 27;

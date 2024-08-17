@@ -319,10 +319,18 @@ export class ConsumesPicker extends Component {
 			</div>
 		`;
 
-		this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const petConsumesElem = this.rootElem.querySelector('.consumes-pet') as HTMLElement;
 
-		this.simUI.individualConfig.petConsumeInputs.map(iconInput => buildIconInput(petConsumesElem, this.simUI.player, iconInput));
+		const miscPetConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_PET_CONSUMES, this.simUI);
+
+		const pickers = [
+			...this.simUI.individualConfig.petConsumeInputs.map(iconInput => buildIconInput(petConsumesElem, this.simUI.player, iconInput)),
+			// ConsumablesInputs.makeMiscPetConsumesInput(petConsumesElem, this.simUI.player, this.simUI, miscPetConsumesOptions),
+		];
+
+		TypedEvent.onAny([this.simUI.player.levelChangeEmitter]).on(() => this.updateRow(row, pickers));
+		this.updateRow(row, pickers);
 	}
 
 	private updateRow(rowElem: HTMLElement, pickers: (IconPicker<Player<Spec>, any> | IconEnumPicker<Player<Spec>, any> | MultiIconPicker<Player<Spec>>)[]) {
