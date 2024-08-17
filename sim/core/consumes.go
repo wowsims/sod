@@ -382,6 +382,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 func DragonBreathChiliAura(character *Character) *Aura {
 	baseDamage := 60.0
 	procChance := .05
+	icd := Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Second * 10,
+	}
+
 
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    ActionID{SpellID: 15851},
@@ -416,8 +421,8 @@ func DragonBreathChiliAura(character *Character) *Aura {
 			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
 				return
 			}
-
-			if sim.RandomFloat("Dragonbreath Chili") < procChance {
+			if icd.IsReady(sim) && sim.RandomFloat("Dragonbreath Chili") < procChance {
+				icd.Use(sim)
 				procSpell.Cast(sim, result.Target)
 			}
 		},
