@@ -37,7 +37,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		SpellCode:   SpellCode_WarlockDrainLife,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       WarlockFlagHaunt | core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
 
 		RequiredLevel: level,
 		Rank:          rank,

@@ -44,4 +44,9 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 			warlock.DemonicGraceAura.Activate(sim)
 		},
 	})
+
+	warlock.AddMajorCooldown(core.MajorCooldown{
+		Spell: warlock.DemonicGrace,
+		Type:  core.CooldownTypeDPS,
+	})
 }

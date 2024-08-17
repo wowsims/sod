@@ -100,6 +100,7 @@ type Rogue struct {
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura
 	CutthroatProcAura             *core.Aura
+	VanishAura                    *core.Aura
 
 	HonorAmongThieves *core.Aura
 

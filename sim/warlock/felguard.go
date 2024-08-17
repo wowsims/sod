@@ -96,7 +96,11 @@ func (warlock *Warlock) makeFelguard() *WarlockPet {
 		}
 	}
 
-	return warlock.makePet(cfg, warlock.Options.Summon == proto.WarlockOptions_Felguard)
+	pet := warlock.makePet(cfg, warlock.Options.Summon == proto.WarlockOptions_Felguard)
+	// Felguard was given a ~20% damage buff on July 3rd that doesn't seem accounted for in base stats
+	pet.PseudoStats.DamageDealtMultiplier *= 1.20
+
+	return pet
 }
 
 func (wp *WarlockPet) registerFelguardCleaveSpell() {
@@ -134,7 +138,9 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 			for _, result := range results {
-				spell.DealDamage(sim, result)
+				if result.Landed() {
+					spell.DealDamage(sim, result)
+				}
 			}
 		},
 	})

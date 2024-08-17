@@ -15,8 +15,6 @@ func (druid *Druid) registerSunfireSpell() {
 		return
 	}
 
-	druid.SunfireDotMultiplier = 1
-
 	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
 	baseDamageLow := druid.baseRuneAbilityDamage() * 1.3 * talentBaseMultiplier
 	baseDamageHigh := druid.baseRuneAbilityDamage() * 1.52 * talentBaseMultiplier

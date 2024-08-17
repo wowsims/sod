@@ -17,7 +17,6 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
-	raptorFuryDmgMult := 0.1
 	spellConfig := core.SpellConfig{
 		SpellCode:     SpellCode_HunterMongooseBite,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -56,13 +55,12 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 
 			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
 				hunter.RaptorStrike.CD.Reset()
+				spell.CD.Reset()
 			}
 
 			multiplier := 1.0
 			if hasRaptorFury {
-				if stacks := hunter.RaptorFuryAura.GetStacks(); stacks > 0 {
-					multiplier *= 1 + raptorFuryDmgMult*float64(stacks)
-				}
+				multiplier *= hunter.raptorFuryDamageMultiplier()
 			}
 
 			damage := baseDamage

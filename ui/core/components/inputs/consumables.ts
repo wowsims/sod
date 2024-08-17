@@ -33,7 +33,7 @@ import { ActionId } from '../../proto_utils/action_id';
 import { isBluntWeaponType, isSharpWeaponType, isWeapon } from '../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
-import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
+import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeBooleanPetMiscConsumeInput, makeEnumConsumeInput } from '../icon_inputs';
 import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
 import { MultiIconPicker, MultiIconPickerConfig, MultiIconPickerItemConfig } from '../multi_icon_picker';
@@ -611,11 +611,17 @@ export const Catnip = makeBooleanMiscConsumeInput({
 	fieldName: 'catnip',
 	showWhen: player => player.getClass() === Class.ClassDruid,
 });
+export const JujuFlurry = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(12450),
+	fieldName: 'jujuFlurry',
+	showWhen: player => player.getLevel() >= 55,
+});
 export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' });
 export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
 
 export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
 	{ config: Catnip, picker: IconPicker, stats: [] },
+	{ config: JujuFlurry, picker: IconPicker, stats: [Stat.StatAttackPower] },
 	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },
 	{ config: BoglingRoot, picker: IconPicker, stats: [Stat.StatAttackPower] },
 ];
@@ -625,9 +631,21 @@ export const makeMiscOffensiveConsumesInput = makeMultiIconConsumesInputFactory(
 	tooltip: 'Misc Offensive',
 });
 
-export const JujuEmber = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12455), fieldName: 'jujuEmber' });
-export const JujuChill = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12457), fieldName: 'jujuChill' });
-export const JujuEscape = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(12459), fieldName: 'jujuEscape' });
+export const JujuEmber = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(12455),
+	fieldName: 'jujuEmber',
+	showWhen: player => player.getLevel() >= 55,
+});
+export const JujuChill = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(12457),
+	fieldName: 'jujuChill',
+	showWhen: player => player.getLevel() >= 55,
+});
+export const JujuEscape = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(12459),
+	fieldName: 'jujuEscape',
+	showWhen: player => player.getLevel() >= 55,
+});
 
 export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
 	{ config: JujuEmber, picker: IconPicker, stats: [] },
@@ -711,6 +729,19 @@ export const PetStrengthConsumable = makeEnumConsumeInput({
 		{ actionId: () => ActionId.fromItemId(954), value: 5, showWhen: player => player.getLevel() >= 10 },
 	],
 	fieldName: 'petStrengthConsumable',
+});
+
+export const JujuFlurryPet = makeBooleanPetMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(12450),
+	fieldName: 'jujuFlurry',
+	showWhen: player => player.getLevel() >= 55,
+});
+
+export const MISC_PET_CONSUMES: PickerStatOptions[] = [{ config: JujuFlurryPet, picker: IconPicker, stats: [] }];
+
+export const makeMiscPetConsumesInput = makeMultiIconConsumesInputFactory({
+	direction: IconPickerDirection.Vertical,
+	tooltip: 'Misc Pet Consumes',
 });
 
 ///////////////////////////////////////////////////////////////////////////

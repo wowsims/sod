@@ -70,6 +70,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
 				spell.CD.Reset()
+				hunter.MongooseBite.CD.Reset()
 			}
 
 			if hasRaptorFury {

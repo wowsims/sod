@@ -87,6 +87,8 @@ type Character struct {
 	conjuredCD         *Timer
 	// Used by Automatic Crowd Pummeler and Druid's Catnip
 	fiftyPercentHasteBuffCD *Timer
+	// Used by Rapid Fire and Juju Flurry for some strange reason
+	attackSpeedBuffCD *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 
@@ -652,6 +654,9 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
+}
+func (character *Character) GetAttackSpeedBuffCD() *Timer {
+	return character.GetOrInitTimer(&character.attackSpeedBuffCD)
 }
 func (character *Character) GetFiftyPercentHasteBuffCD() *Timer {
 	return character.GetOrInitTimer(&character.fiftyPercentHasteBuffCD)

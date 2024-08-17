@@ -18,6 +18,7 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 	baseDamage *= 1 + warlock.shadowMasteryBonus()
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_WarlockDeathCoil,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,

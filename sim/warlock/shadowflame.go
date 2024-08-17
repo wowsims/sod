@@ -31,7 +31,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagHaunt | WarlockFlagAffliction | WarlockFlagDestruction,
+		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagDestruction | WarlockFlagHaunt,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.27,

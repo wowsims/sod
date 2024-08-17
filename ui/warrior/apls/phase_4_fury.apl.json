@@ -1,8 +1,6 @@
 {
   "type": "TypeAPL",
   "prepullActions": [
-    {"action":{"castSpell":{"spellId":{"spellId":2457}}},"doAtValue":{"const":{"val":"-6s"}}},
-    {"action":{"castSpell":{"spellId":{"spellId":2458}}},"doAtValue":{"const":{"val":"-4s"}}},
     {"action":{"castSpell":{"spellId":{"spellId":2457}}},"doAtValue":{"const":{"val":"-2s"}}},
     {"action":{"castSpell":{"spellId":{"spellId":2458}}},"doAtValue":{"const":{"val":"-1s"}}},
     {"action":{"castSpell":{"spellId":{"spellId":24427}}},"doAtValue":{"const":{"val":"-1s"}}}
@@ -26,8 +24,8 @@
     {"action":{"castSpell":{"spellId":{"spellId":23894,"rank":4}}}},
     {"action":{"castSpell":{"spellId":{"spellId":20662,"rank":5}}}},
     {"action":{"castSpell":{"spellId":{"spellId":11585,"rank":4}}}},
-    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":457652}}},{"auraIsActive":{"auraId":{"spellId":2457}}},{"cmp":{"op":"OpLe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"34"}}}}]}},"castSpell":{"spellId":{"spellId":2458}}}},
-    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":457652}}},{"auraIsActive":{"auraId":{"spellId":2458}}},{"cmp":{"op":"OpLe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"34"}}}}]}},"castSpell":{"spellId":{"spellId":2457}}}},
+    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":464241}}},{"auraIsActive":{"auraId":{"spellId":2457}}},{"cmp":{"op":"OpLe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"25"}}}}]}},"castSpell":{"spellId":{"spellId":2458}}}},
+    {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":464241}}},{"auraIsActive":{"auraId":{"spellId":2458}}},{"cmp":{"op":"OpLe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"25"}}}}]}},"castSpell":{"spellId":{"spellId":2457}}}},
     {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"currentRage":{}},"rhs":{"const":{"val":"12"}}}},"castSpell":{"spellId":{"spellId":2687}}}},
     {"action":{"castSpell":{"spellId":{"spellId":1680}}}},
     {"action":{"castSpell":{"spellId":{"spellId":402911}}}},

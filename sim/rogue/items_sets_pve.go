@@ -142,6 +142,7 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 				Label:    "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)",
 				ActionID: core.ActionID{SpellID: 457342},
 				Duration: time.Second * 15,
+				MaxStacks: 2,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					affectedSpells = core.FilterSlice(
 						rogue.Spellbook,
@@ -160,12 +161,57 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {
 						return
 					}
-					aura.Deactivate(sim)
+					aura.RemoveStack(sim)
+				},
+			})
+			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+				if sim.Proc(.05*float64(comboPoints), "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)") {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+					if spell.ActionID.SpellID == 412096 {
+						aura.AddStack(sim)
+					}
+				}
+			})
+		},
+	},
+})
+
+var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Nightslayer Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// While Just a Flesh Wound and Blade Dance are active, Crimson Tempest, Blunderbuss, and Fan of Knives cost 20 less Energy and generate 100% increased threat.
+		2: func(agent core.Agent) {
+			// Implemented in individual rune sections
+		},
+		// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
+		4: func(agent core.Agent) {
+			// Immplemented in Vanish.go
+		},
+		// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
+		6: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			damageTaken := 0.5
+
+			aura := rogue.RegisterAura(core.Aura{
+				Label:    "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)",
+				ActionID: core.ActionID{SpellID: 457469},
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PseudoStats.DamageTakenMultiplier *= damageTaken
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PseudoStats.DamageTakenMultiplier /= damageTaken
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeLanded) {
+						aura.Deactivate(sim)
+					}
 				},
 			})
 
 			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-				if sim.Proc(.05*float64(comboPoints), "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)") {
+				if sim.Proc(0.2*float64(comboPoints), "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)") {
 					aura.Activate(sim)
 				}
 			})

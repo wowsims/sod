@@ -90,7 +90,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOmen | SpellFlagBuilder,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 50 - float64(druid.Talents.Ferocity),
@@ -108,8 +108,13 @@ func (druid *Druid) registerSwipeCatSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			aoeTarget := target
+			for i := 1; i < len(sim.Encounter.TargetUnits); i++ {
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				if i == 1 && result.Landed() {
+					druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				}
+				aoeTarget = sim.Environment.NextTargetUnit(target)
 			}
 		},
 	})

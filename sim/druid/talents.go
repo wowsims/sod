@@ -207,24 +207,18 @@ func (druid *Druid) applyBloodFrenzy() {
 	actionID := core.ActionID{SpellID: 16953}
 	cpMetrics := druid.NewComboPointMetrics(actionID)
 
-	druid.RegisterAura(core.Aura{
-		Label:    "Blood Frenzy",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Blood Frenzy",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if druid.InForm(Cat) {
-				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
-					if result.Outcome.Matches(core.OutcomeCrit) {
-						if sim.Proc(procChance, "Blood Frenzy") {
-							druid.AddComboPoints(sim, 1, cpMetrics)
-						}
-					}
-				}
+			if druid.InForm(Cat) &&
+				result.Target == aura.Unit.CurrentTarget &&
+				spell.Flags.Matches(SpellFlagBuilder) &&
+				result.Outcome.Matches(core.OutcomeCrit) &&
+				sim.Proc(procChance, "Blood Frenzy") {
+				druid.AddComboPoints(sim, 1, cpMetrics)
 			}
 		},
-	})
+	}))
 }
 
 // We're using an aura so that the APL can know if the Druid has furor for powershifting logic
