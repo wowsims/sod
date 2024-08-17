@@ -143,9 +143,6 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 457342},
 				Duration: time.Second * 15,
 				MaxStacks: 2,
-//				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-//					aura.Activate(sim)
-//				},
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					affectedSpells = core.FilterSlice(
 						rogue.Spellbook,
@@ -165,10 +162,8 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 						return
 					}
 					aura.RemoveStack(sim)
-					//aura.Deactivate(sim)
 				},
 			})
-			
 			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
 				if sim.Proc(.05*float64(comboPoints), "Clearcasting (S03 - Item - T1 - Rogue - Damage 6P Bonus)") {
 					aura.Activate(sim)
