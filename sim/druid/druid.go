@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	SpellFlagOmen = core.SpellFlagAgentReserved1
+	SpellFlagOmen    = core.SpellFlagAgentReserved1
+	SpellFlagBuilder = core.SpellFlagAgentReserved2
 )
 
 var TalentTreeSizes = [3]int{16, 16, 15}
