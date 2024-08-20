@@ -399,15 +399,8 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			results := make([]*SpellResult, character.Env.GetNumTargets())
-			for idx := range results {
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-				target = sim.Environment.NextTargetUnit(target)
-			}
-			for _, result := range results {
-				if result.Landed() {
-					spell.DealDamage(sim, result)
-				}
+			for _, aoeTarget := range sim.Environment.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
