@@ -118,7 +118,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				spell.Dot(result.Target).Apply(sim)
 				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 					shaman.lastFlameShockTarget = target
 				}
@@ -126,8 +126,6 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 				if hasPowerSurgeRune && sim.Proc(ShamanPowerSurgeProcChance, "Power Surge Proc") {
 					shaman.PowerSurgeAura.Activate(sim)
 				}
-
-				target = sim.Environment.NextTargetUnit(target)
 			}
 		}
 	}
