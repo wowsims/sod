@@ -22,3 +22,48 @@ export const TOO_MANY_TALENT_POINTS_WARNING = 'More talent points spent than cur
 export const TITANS_GRIP_WARNING = "Dual wielding two-handed weapon(s) without Titan's Grip spec.";
 
 export const GEAR_MIN_LEVEL_WARNING = (playerLevel: number) => `Wearing gear with a minumum level requirement above level ${playerLevel}.`;
+
+export const TOOLTIP_METRIC_LABELS = {
+	// Damage metrics
+	Damage: 'Total Damage done',
+	DPS: 'Damage / Encounter Duration',
+	DPASP: 'Dark Pact Average Spellpower',
+	TPS: 'Threat / Encounter Duration',
+	DPET: 'Damage / Avg Cast Time',
+	'Damage Avg Cast': 'Damage / Casts and/or Damage / Ticks',
+	'Avg Hit': 'Damage / (Hits + Crits + Glances + Blocks) and/or Damage / (Ticks + Critical Ticks)',
+	// Healing metrics
+	Healing: 'Total Healing done',
+	'Healing Avg Cast': 'Healing / Casts',
+	'Healing Avg Hit': 'Healing / Hits and/or Healing / (Ticks + Critical Ticks)',
+	'Healing Hits': 'Healing / (Hits + Crits + Glances + Blocks) and/or Healing / Ticks + Critical Ticks',
+	HPM: 'Healing / Mana',
+	HPET: 'Healing / Avg Cast Time',
+	HPS: 'Healing / Encounter Duration',
+	// Damage taken metrics
+	'Damage Taken': 'Total Damage taken',
+	DTPS: 'Damage Taken / Encounter Duration',
+	COD: 'Chance of Death',
+	// Cast metrics
+	Casts: 'Casts',
+	CPM: 'Casts / (Encounter Duration / 60 Seconds)',
+	'Cast Time': 'Average cast time in seconds',
+	// Hit metrics
+	Hits: 'Hits + Crits + Glances + Blocks and/or Ticks + Critical Ticks',
+	'Crit %': 'Crits / Hits',
+	'Hit Miss %': 'Misses / (Hits + Crits + Glances + Blocks)',
+	'Cast Miss %': 'Misses / Casts',
+	// Encounter
+	DUR: 'Encounter Duration',
+	OOM: 'Spent Out of Mana',
+	TTO: 'Time to Out of Mana in seconds',
+	// Aura metrcis
+	Procs: 'Procs',
+	PPM: 'Procs Per Minute',
+	Uptime: 'Uptime / Encounter Duration',
+	// Resource Metrics
+	Gain: 'Gain',
+	'Gain / s': 'Gain / Second',
+	'Avg Gain': 'Gain / Event',
+	'Wasted Gain': 'Gain that was wasted because of resource cap.',
+} as const;
