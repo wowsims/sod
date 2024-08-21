@@ -13,6 +13,7 @@ export class ToplineResults extends ResultComponent {
 	onSimResult(resultData: SimResultData) {
 		const noManaSpecs = [Spec.SpecFeralTankDruid, Spec.SpecRogue, Spec.SpecWarrior, Spec.SpecTankWarrior];
 		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
+
 		const content = RaidSimResultsManager.makeToplineResultsContent(resultData.result, resultData.filter, {
 			showOutOfMana: players.length === 1 && !noManaSpecs.includes(players[0].spec),
 		});

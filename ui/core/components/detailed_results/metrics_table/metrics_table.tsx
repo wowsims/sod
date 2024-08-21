@@ -167,7 +167,6 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 		} else {
 			this.rootElem.classList.remove('hide');
 		}
-
 		groupedMetrics.forEach(group => this.addGroup(group));
 		$(this.tableElem).trigger('update');
 		this.onUpdate.emit(resultData.eventID);

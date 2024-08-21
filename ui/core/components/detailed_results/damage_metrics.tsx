@@ -1,3 +1,5 @@
+import { relative } from 'node:path';
+
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
@@ -43,9 +45,13 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					);
 
 					const hitValues = metric.damageDone.hit;
+					const resistedHitValues = metric.damageDone.resistedHit;
 					const critHitValues = metric.damageDone.critHit;
+					const resistedCritHitValues = metric.damageDone.resistedCritHit;
 					const tickValues = metric.damageDone.tick;
+					const resistedTickValues = metric.damageDone.resistedTick;
 					const critTickValues = metric.damageDone.critTick;
+					const resistedCritTickValues = metric.damageDone.resistedCritTick;
 					const glanceValues = metric.damageDone.glance;
 					const blockValues = metric.damageDone.block;
 					const critBlockValues = metric.damageDone.critBlock;
@@ -65,16 +71,32 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 											...hitValues,
 										},
 										{
+											name: 'Resisted Hit',
+											...resistedHitValues,
+										},
+										{
 											name: `Critical Hit`,
 											...critHitValues,
+										},
+										{
+											name: `Resisted Critical Hit`,
+											...resistedCritHitValues,
 										},
 										{
 											name: 'Tick',
 											...tickValues,
 										},
 										{
+											name: 'Resisted Tick',
+											...resistedTickValues,
+										},
+										{
 											name: `Critical Tick`,
 											...critTickValues,
+										},
+										{
+											name: `Resisted Critical Tick`,
+											...resistedCritTickValues,
 										},
 										{
 											name: 'Glancing Blow',
@@ -205,10 +227,14 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					);
 					if (!metric.landedHits && !metric.landedTicks) return;
 
-					const relativeHitPercent = (metric.hits / metric.landedHits) * 100;
-					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
-					const relativeTickPercent = (metric.ticks / metric.landedTicks) * 100;
-					const relativeCritTickPercent = (metric.critTicks / metric.landedTicks) * 100;
+					const relativeHitPercent = ((metric.hits - metric.resistedHits) / metric.landedHits) * 100;
+					const relativeResistedHitPercent = (metric.resistedHits / metric.landedHits) * 100;
+					const relativeCritPercent = ((metric.crits - metric.resistedCrits) / metric.landedHits) * 100;
+					const relativeResistedCritPercent = (metric.resistedCrits / metric.landedHits) * 100;
+					const relativeTickPercent = ((metric.ticks - metric.resistedTicks) / metric.landedTicks) * 100;
+					const relativeResistedTickPercent = (metric.resistedTicks / metric.landedTicks) * 100;
+					const relativeCritTickPercent = ((metric.critTicks - metric.resistedCritTicks) / metric.landedTicks) * 100;
+					const relativeResistedCritTickPercent = (metric.resistedCritTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
 					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
@@ -224,13 +250,23 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 									data: [
 										{
 											name: 'Hit',
-											value: metric.hits,
+											value: metric.hits - metric.resistedHits,
 											percentage: relativeHitPercent,
 										},
 										{
+											name: 'Resisted Hit',
+											value: metric.resistedHits,
+											percentage: relativeResistedHitPercent,
+										},
+										{
 											name: `Critical Hit`,
-											value: metric.crits,
+											value: metric.crits - metric.resistedCrits,
 											percentage: relativeCritPercent,
+										},
+										{
+											name: `Resisted Critical Hit`,
+											value: metric.resistedCrits,
+											percentage: relativeResistedCritPercent,
 										},
 										{
 											name: 'Glancing Blow',
@@ -256,13 +292,23 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 									data: [
 										{
 											name: 'Tick',
-											value: metric.ticks,
+											value: metric.ticks - metric.resistedTicks,
 											percentage: relativeTickPercent,
 										},
 										{
+											name: 'Resisted Tick',
+											value: metric.resistedTicks,
+											percentage: relativeResistedTickPercent,
+										},
+										{
 											name: `Critical Tick`,
-											value: metric.critTicks,
+											value: metric.critTicks - metric.resistedCritTicks,
 											percentage: relativeCritTickPercent,
+										},
+										{
+											name: 'Resisted Critical Tick',
+											value: metric.resistedCritTicks,
+											percentage: relativeResistedCritTickPercent,
 										},
 									],
 								},

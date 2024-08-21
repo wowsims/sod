@@ -53,7 +53,7 @@ func (druid *Druid) registerHurricaneSpell() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: costMultiplier,
 			},
 			Cast: core.CastConfig{
@@ -81,7 +81,7 @@ func (druid *Druid) registerHurricaneSpell() {
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 					}
 				},
 			},

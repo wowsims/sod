@@ -245,6 +245,7 @@ export const spellSchoolNames: Map<number, string> = new Map([
 	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
 	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
 	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
+	[SpellSchool.Arcane + SpellSchool.Fire + SpellSchool.Frost, 'Chimeric'],
 ]);
 
 export const itemTypeNames: Map<ItemType, string> = new Map([

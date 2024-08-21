@@ -199,7 +199,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if spell.Flags.Matches(SpellFlagCastTimeNoGCD) {
 				effectiveTime = max(effectiveTime, spell.Unit.GCD.TimeToReady(sim))
 			}
-			spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
+			// do not add channeled time here as they have variable cast length
+			// cast time for channels is handled in dot.OnExpire
+			if !spell.Flags.Matches(SpellFlagChanneled) {
+				spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
+			}
 			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)
 		}
 

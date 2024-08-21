@@ -159,7 +159,7 @@ func init() {
 					dot.Snapshot(target, 30, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 					enemyDamageTaken[target.UnitIndex] += result.Damage
 				},
 			},
@@ -475,7 +475,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -526,7 +526,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -534,7 +534,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 				if result.Landed() {
-					spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			},
@@ -806,7 +805,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -874,7 +873,7 @@ func init() {
 					dot.Snapshot(target, 55, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -919,7 +918,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 		})
@@ -1363,7 +1362,7 @@ func init() {
 					debuffAuras.Get(target).Activate(sim)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -1372,7 +1371,6 @@ func init() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
 					if result.Landed() {
-						spell.SpellMetrics[result.Target.UnitIndex].Hits--
 						spell.Dot(aoeTarget).Apply(sim)
 					}
 				}
@@ -1405,7 +1403,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 		})
@@ -1458,7 +1456,7 @@ func init() {
 					dot.Snapshot(target, 2, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 					character.GainHealth(sim, result.Damage, healthMetrics)
 				},
 			},
@@ -1997,7 +1995,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -2005,7 +2003,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 				if result.Landed() {
-					spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			},
@@ -2483,7 +2480,7 @@ func init() {
 					dot.Snapshot(target, 20, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,

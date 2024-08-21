@@ -27,7 +27,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: 100 - 2*hunter.Talents.Efficiency,
 		},
 		Cast: core.CastConfig{
@@ -56,7 +56,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -67,7 +67,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				spell.DealOutcome(sim, result)
 
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			})

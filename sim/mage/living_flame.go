@@ -70,7 +70,7 @@ func (mage *Mage) registerLivingFlameSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 				}
 			},
 		},
