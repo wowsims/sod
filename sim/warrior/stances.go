@@ -225,7 +225,7 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 			gladStanceValidationAura.Activate(sim)
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			ee.Aura.Unit.AddStatDynamic(sim, stats.Block, 10*core.BlockRatingPerBlockChance)
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Block, -10*core.BlockRatingPerBlockChance)
 			ee.Aura.Unit.PseudoStats.ArmorMultiplier /= 0.7
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.7
 			if !isTanking {
