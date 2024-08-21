@@ -84,9 +84,9 @@ $sim-transitions: 0.2s ease-in;
 .warning {
 	color: yellow;
 	text-shadow:
-		0 0 map-get($spacers, 2) $danger,
-		0 0 map-get($spacers, 2) $danger,
-		0 0 map-get($spacers, 2) $danger;
+		0 0 var(--spacer-2) $danger,
+		0 0 var(--spacer-2) $danger,
+		0 0 var(--spacer-2) $danger;
 }
 
 .danger {

@@ -63,7 +63,7 @@
 	}
 
 	label {
-		margin-left: map.get($spacers, 2);
+		margin-left: var(--spacer-2);
 		margin-bottom: 0;
 	}
 
