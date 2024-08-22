@@ -16,8 +16,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 
 	baseDamageLow := shaman.baseRuneAbilityDamage() * .72
 	baseDamageHigh := shaman.baseRuneAbilityDamage() * 1.08
-	// TODO: 2024-07-03 added 14% SP coefficient but unsure if the AP coefficient was also removed
-	apCoef := .05
+	apCoef := .10
 	spCoef := .14
 	cooldown := time.Second * 6
 	manaCost := .18
@@ -62,9 +61,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 			}
 
 			for _, result := range results {
-				if result.Landed() {
-					spell.DealDamage(sim, result)
-				}
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

@@ -414,8 +414,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Dwarf-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 425.62023
-  tps: 670.60807
+  dps: 425.61977
+  tps: 670.60761
  }
 }
 dps_results: {
@@ -456,8 +456,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Lvl40-Settings-Human-p2retsoc-P2 Seal of Command Ret-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 425.13135
-  tps: 670.05755
+  dps: 425.12913
+  tps: 670.05533
  }
 }
 dps_results: {

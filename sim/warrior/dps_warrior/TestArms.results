@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl50-Settings-Human-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 315.44224
-  tps: 426.27647
+  dps: 315.44221
+  tps: 426.27644
  }
 }
 dps_results: {
@@ -155,8 +155,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl50-Settings-Orc-phase_3_2h-Arms-phase_3_arms-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 355.22411
-  tps: 463.79636
+  dps: 355.22805
+  tps: 463.79951
  }
 }
 dps_results: {
