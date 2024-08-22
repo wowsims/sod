@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 49.28459
-  tps: 181.50082
+  dps: 52.18386
+  tps: 185.67644
  }
 }
 dps_results: {
@@ -323,8 +323,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 31.06708
-  tps: 134.19384
+  dps: 32.37912
+  tps: 136.42412
  }
 }
 dps_results: {
@@ -344,8 +344,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 49.28459
-  tps: 181.50082
+  dps: 52.18386
+  tps: 185.67644
  }
 }
 dps_results: {
@@ -365,8 +365,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 31.06708
-  tps: 134.19384
+  dps: 32.37912
+  tps: 136.42412
  }
 }
 dps_results: {
@@ -386,8 +386,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 48.7023
-  tps: 179.18776
+  dps: 51.55949
+  tps: 183.37872
  }
 }
 dps_results: {
@@ -407,8 +407,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Auto-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 30.77359
-  tps: 132.48596
+  dps: 32.29672
+  tps: 134.56212
  }
 }
 dps_results: {
@@ -428,8 +428,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 48.7023
-  tps: 179.18776
+  dps: 51.55949
+  tps: 183.37872
  }
 }
 dps_results: {
@@ -449,8 +449,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-Settings-Troll-phase_1-Sync Delay OH-phase_1-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 30.77359
-  tps: 132.48596
+  dps: 32.29672
+  tps: 134.56212
  }
 }
 dps_results: {
