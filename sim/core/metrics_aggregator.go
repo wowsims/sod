@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -408,10 +407,6 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Shielding += spellTargetMetrics.TotalShielding
 		if !spell.Flags.Matches(SpellFlagPassiveSpell) {
 			tam.CastTime += spellTargetMetrics.TotalCastTime
-		}
-
-		if spell.ActionID.SpellID == 12654 {
-			fmt.Println("test isPartialResist", spell.ActionID, tam.ResistedTickDamage)
 		}
 
 		target := spell.Unit.Env.AllUnits[i]
