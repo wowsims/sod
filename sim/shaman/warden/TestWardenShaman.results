@@ -162,8 +162,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1692.12332
-  tps: 2463.2244
+  dps: 1724.60306
+  tps: 2508.41973
  }
 }
 dps_results: {
@@ -183,8 +183,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 585.11633
-  tps: 1092.84491
+  dps: 602.49271
+  tps: 1117.0888
  }
 }
 dps_results: {
@@ -204,8 +204,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1667.52513
-  tps: 2446.47215
+  dps: 1703.14001
+  tps: 2488.58025
  }
 }
 dps_results: {
@@ -225,8 +225,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 573.62563
-  tps: 1081.12765
+  dps: 589.90685
+  tps: 1101.65199
  }
 }
 dps_results: {

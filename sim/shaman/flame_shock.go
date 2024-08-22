@@ -118,9 +118,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-				// shaman.FlameShockDots[rank].Cast(sim, target)
-
+				spell.Dot(result.Target).Apply(sim)
 				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 					shaman.lastFlameShockTarget = target
 				}
