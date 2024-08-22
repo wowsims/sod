@@ -347,7 +347,7 @@ func (spell *Spell) outcomeMeleeWeaponSpecialHitAndCrit(sim *Simulation, result 
 			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
-		spell.outcomeMeleeWeaponSpecialHitAndCrit(sim, result, attackTable, countHits)
+		spell.outcomeMeleeSpecialHitAndCrit(sim, result, attackTable, countHits)
 	}
 }
 
