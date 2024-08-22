@@ -71,7 +71,7 @@ export const MetricsCombinedTooltipTable = ({
 										.map(({ name, value, percentage, average }) => (
 											<>
 												<tr className={clsx(cssClass)}>
-													<td>{name}</td>
+													<td className="text-nowrap">{name}</td>
 													<td>
 														{hasMetricBars ? (
 															<MetricsTotalBar
