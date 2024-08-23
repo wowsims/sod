@@ -2372,7 +2372,7 @@ func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, useAllianceBu
 func ApplyWarchiefsBlessing(unit *Unit, category string) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Warchief's Blessing",
-		ActionID: ActionID{SpellID: 461475},
+		ActionID: ActionID{SpellID: 16609},
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
