@@ -244,10 +244,12 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 	})
 }
 
-func (character *Character) IsAlliance() bool {
-	return slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race)
-}
-
-func (character *Character) IsHorde() bool {
-	return slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race)
+func (character *Character) GetFaction() proto.Faction {
+	if slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race) {
+		return proto.Faction_Alliance
+	} else if slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race) {
+		return proto.Faction_Horde
+	} else {
+		panic("Invalid character faction")
+	}
 }
