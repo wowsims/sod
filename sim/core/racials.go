@@ -250,6 +250,6 @@ func (character *Character) GetFaction() proto.Faction {
 	} else if slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race) {
 		return proto.Faction_Horde
 	} else {
-		panic("Invalid character faction")
+		return proto.Faction_Unknown
 	}
 }
