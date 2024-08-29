@@ -123,7 +123,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToNumber(metric.casts, { fallbackString: '-' })}</>);
 
-					if (!metric.landedHits && !metric.totalMisses) return;
+					if (metric.isPassiveAction || (!metric.landedHits && !metric.totalMisses)) return;
 					const relativeHitPercent = ((metric.landedHits || metric.casts) / ((metric.landedHits || metric.casts) + metric.totalMisses)) * 100;
 
 					cellElem.appendChild(
