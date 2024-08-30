@@ -91,6 +91,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		spellConfig.ProcMask |= core.ProcMaskMeleeMHAuto
 	}
 
+	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrikeMH)
+	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrikeOH)
+
 	return spellConfig
 }
 

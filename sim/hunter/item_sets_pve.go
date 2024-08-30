@@ -74,133 +74,133 @@ var ItemSetBeastmasterArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
-// 	Name: "Giantstalker Prowess",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Your Mongoose Bite also reduces its target's chance to Dodge by 1% and increases your chance to hit by 1% for 30 sec.
-// 		2: func(agent core.Agent) {
-// 			hunter := agent.(HunterAgent).GetHunter()
-
-// 			debuffAuras := hunter.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-// 				return target.RegisterAura(core.Aura{
-// 					Label:    "S03 - Item - T1 - Hunter - Melee 2P Bonus",
-// 					ActionID: core.ActionID{SpellID: 456389},
-// 					Duration: time.Second * 30,
-// 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 						aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
-// 						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
-// 						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
-// 					},
-// 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 						aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
-// 						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
-// 						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
-// 					},
-// 				})
-// 			})
-
-// 			core.MakePermanent(hunter.RegisterAura(core.Aura{
-// 				Label: "S03 - Item - T1 - Hunter - Melee 2P Bonus Trigger",
-// 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 					if spell.SpellCode == SpellCode_HunterMongooseBite && result.Landed() {
-// 						debuffAuras.Get(result.Target).Activate(sim)
-// 					}
-// 				},
-// 			}))
-// 		},
-// 		// While tracking a creature type, you deal 3% increased damage to that creature type.
-// 		// Unsure if this stacks with the Pursuit 4p
-// 		4: func(agent core.Agent) {
-// 			c := agent.GetCharacter()
-// 			// Just adding 3% damage to assume the hunter is tracking their target's type
-// 			c.PseudoStats.DamageDealtMultiplier *= 1.03
-// 		},
-// 		// Mongoose Bite also activates for 5 sec whenever your target Parries or Blocks or when your melee attack misses.
-// 		6: func(agent core.Agent) {
-// 			hunter := agent.(HunterAgent).GetHunter()
-// 			core.MakePermanent(hunter.RegisterAura(core.Aura{
-// 				Label: "S03 - Item - T1 - Hunter - Melee 6P Bonus Trigger",
-// 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 					if spell.ProcMask.Matches(core.ProcMaskMelee) && (result.Outcome == core.OutcomeMiss || result.Outcome == core.OutcomeBlock || result.Outcome == core.OutcomeParry) {
-// 						hunter.DefensiveState.Activate(sim)
-// 					}
-// 				},
-// 			}))
-// 		},
-// 	},
-//})
-
-// var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
-// 	Name: "Giantstalker Pursuit",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// You generate 100% more threat for 8 sec after using Distracting Shot.
-// 		2: func(agent core.Agent) {
-// 			// Nothing to do
-// 		},
-// 		// While tracking a creature type, you deal 3% increased damage to that creature type.
-// 		// Unsure if this stacks with the Prowess 4p
-// 		4: func(agent core.Agent) {
-// 			c := agent.GetCharacter()
-// 			// Just adding 3% damage to assume the hunter is tracking their target's type
-// 			c.PseudoStats.DamageDealtMultiplier *= 1.03
-// 		},
-// 		// Your next Shot ability within 12 sec after Aimed Shot deals 20% more damage.
-// 		6: func(agent core.Agent) {
-// 			hunter := agent.(HunterAgent).GetHunter()
-
-// 			if !hunter.Talents.AimedShot {
-// 				return
-// 			}
-
-// 			procAura := hunter.RegisterAura(core.Aura{
-// 				ActionID: core.ActionID{SpellID: 456379},
-// 				Label:    "S03 - Item - T1 - Hunter - Ranged 6P Bonus",
-// 				Duration: time.Second * 12,
-
-// 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 					for _, spell := range hunter.Shots {
-// 						if spell != nil {
-// 							spell.DamageMultiplier *= 1.20
-// 						}
-// 					}
-// 				},
-// 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 					for _, spell := range hunter.Shots {
-// 						if spell != nil {
-// 							spell.DamageMultiplier /= 1.20
-// 						}
-// 					}
-// 				},
-// 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 					if !spell.Flags.Matches(SpellFlagShot) || (aura.RemainingDuration(sim) == aura.Duration && spell.SpellCode == SpellCode_HunterAimedShot) {
-// 						return
-// 					}
-
-// 					aura.Deactivate(sim)
-// 				},
-// 			})
-
-// 			core.MakePermanent(hunter.RegisterAura(core.Aura{
-// 				Label: "S03 - Item - T1 - Hunter - Ranged 6P Bonus Trigger",
-// 				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 					if spell.SpellCode == SpellCode_HunterAimedShot {
-// 						procAura.Activate(sim)
-// 					}
-// 				},
-// 			}))
-// 		},
-// 	},
-// })
-
 var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 	Name: "Giantstalker Prowess",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Mongoose Bite also reduces its target's chance to Dodge by 1% and increases your chance to hit by 1% for 30 sec.
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+
+			debuffAuras := hunter.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+				return target.RegisterAura(core.Aura{
+					Label:    "S03 - Item - T1 - Hunter - Melee 2P Bonus",
+					ActionID: core.ActionID{SpellID: 456389},
+					Duration: time.Second * 30,
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
+						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
+						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
+						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
+						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
+					},
+				})
+			})
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Hunter - Melee 2P Bonus Trigger",
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_HunterMongooseBite && result.Landed() {
+						debuffAuras.Get(result.Target).Activate(sim)
+					}
+				},
+			}))
+		},
+		// While tracking a creature type, you deal 3% increased damage to that creature type.
+		// Unsure if this stacks with the Pursuit 4p
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			// Just adding 3% damage to assume the hunter is tracking their target's type
+			c.PseudoStats.DamageDealtMultiplier *= 1.03
+		},
+		// Mongoose Bite also activates for 5 sec whenever your target Parries or Blocks or when your melee attack misses.
+		6: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Hunter - Melee 6P Bonus Trigger",
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskMelee) && (result.Outcome == core.OutcomeMiss || result.Outcome == core.OutcomeBlock || result.Outcome == core.OutcomeParry) {
+						hunter.DefensiveState.Activate(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Giantstalker Pursuit",
+	Bonuses: map[int32]core.ApplyEffect{
+		// You generate 100% more threat for 8 sec after using Distracting Shot.
+		2: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// While tracking a creature type, you deal 3% increased damage to that creature type.
+		// Unsure if this stacks with the Prowess 4p
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			// Just adding 3% damage to assume the hunter is tracking their target's type
+			c.PseudoStats.DamageDealtMultiplier *= 1.03
+		},
+		// Your next Shot ability within 12 sec after Aimed Shot deals 20% more damage.
+		6: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+
+			if !hunter.Talents.AimedShot {
+				return
+			}
+
+			procAura := hunter.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 456379},
+				Label:    "S03 - Item - T1 - Hunter - Ranged 6P Bonus",
+				Duration: time.Second * 12,
+
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.Shots {
+						if spell != nil {
+							spell.DamageMultiplier *= 1.20
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.Shots {
+						if spell != nil {
+							spell.DamageMultiplier /= 1.20
+						}
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if !spell.Flags.Matches(SpellFlagShot) || (aura.RemainingDuration(sim) == aura.Duration && spell.SpellCode == SpellCode_HunterAimedShot) {
+						return
+					}
+
+					aura.Deactivate(sim)
+				},
+			})
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Hunter - Ranged 6P Bonus Trigger",
+				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_HunterAimedShot {
+						procAura.Activate(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
+	Name: "Dragonstalker Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Raptor Strike increases the damage done by your next other melee ability within 5 sec by 20%.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 
 			procAura := hunter.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 456389},
+				ActionID: core.ActionID{SpellID: 467329},
 				Label:    "S03 - Item - T2 - Hunter - Melee 2P Bonus",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -211,6 +211,13 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 					}
 
 					hunter.MongooseBite.DamageMultiplier *= 1.20
+					hunter.WingClip.DamageMultiplier *= 1.20
+					if hunter.CarveMH != nil {
+						hunter.CarveMH.DamageMultiplier *= 1.20
+						if hunter.CarveOH != nil {
+							hunter.CarveOH.DamageMultiplier *= 1.20
+						}
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Strikes {
@@ -220,13 +227,23 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 					}
 
 					hunter.MongooseBite.DamageMultiplier /= 1.20
+					hunter.WingClip.DamageMultiplier /= 1.20
+					if hunter.CarveMH != nil {
+						hunter.CarveMH.DamageMultiplier /= 1.20
+						if hunter.CarveOH != nil {
+							hunter.CarveOH.DamageMultiplier /= 1.20
+						}
+					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell == hunter.RaptorStrike {
+					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) {
 						return
 					}
 
 					aura.Deactivate(sim)
+					if spell == hunter.RaptorStrike {
+						aura.Activate(sim)
+					}
 				},
 			})
 
@@ -241,25 +258,27 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 		},
 		// Increases main hand weapon damage by 5%.
 		4: func(agent core.Agent) {
-
+			hunter := agent.(HunterAgent).GetHunter()
+			hunter.PseudoStats.MHDpsMultiplier += 0.05
 		},
 		// Your periodic damage has a 5% chance to reset the cooldown on one of your Strike abilities. The Strike with the longest remaining cooldown is always chosen.
 		6: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Melee 6P Bonus Trigger",
-				ActionID: core.ActionID{SpellID: 456394},
-				OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if sim.Proc(0.05, "Strike Reset") {
-						maxSpell := hunter.Strikes[0]
+				ActionID: core.ActionID{SpellID: 467334},
+				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if sim.Proc(0.05, "T2 Melee 6PC Strike Reset") {
+						maxSpell := hunter.RaptorStrike
 
-						for i := 0; i < len(hunter.Strikes); i++ {
-							if hunter.Strikes[i].CD.TimeToReady(sim) > maxSpell.CD.TimeToReady(sim) {
-								maxSpell = hunter.Strikes[i]
+						for _, strike := range hunter.Strikes {
+							if strike.TimeToReady(sim) > maxSpell.TimeToReady(sim) {
+								maxSpell = strike
 							}
 						}
 
 						maxSpell.CD.Reset()
+						aura.Activate(sim) // used for metrics
 					}
 				},
 			}))
@@ -267,8 +286,8 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Giantstalker Pursuit",
+var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Dragonstalker Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Your Aimed Shot deals 20% more damage to targets afflicted by one of your trap effects.
 		2: func(agent core.Agent) {
@@ -276,6 +295,7 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 			
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Ranged 2P Bonus",
+				ActionID: core.ActionID{SpellID: 467235},
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AimedShot.DamageMultiplier *= 1.20
 				},
@@ -286,7 +306,7 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 			hunter := agent.(HunterAgent).GetHunter()
 
 			procAura := hunter.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 457324},
+				ActionID: core.ActionID{SpellID: 467312},
 				Label:    "S03 - Item - T2 - Hunter - Ranged 4P Bonus",
 				Duration: time.Second * 12,
 
@@ -325,7 +345,7 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 })
 
 var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
-	Name: "Predator's Armor",
+	Name: "Predator Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		// +20 Attack Power.
 		2: func(agent core.Agent) {

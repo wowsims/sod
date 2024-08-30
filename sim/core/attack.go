@@ -107,7 +107,7 @@ func (weapon *Weapon) EnemyWeaponDamage(sim *Simulation, attackPower float64, da
 }
 
 func (weapon *Weapon) BaseDamage(sim *Simulation) float64 {
-	return weapon.BaseDamageMin + (weapon.BaseDamageMax-weapon.BaseDamageMin)*sim.RandomFloat("Weapon Base Damage")
+	return weapon.BaseDamageMin + (weapon.BaseDamageMax-weapon.BaseDamageMin)*sim.RandomFloat("Weapon Base Damage") 
 }
 
 func (weapon *Weapon) AverageDamage() float64 {
@@ -127,10 +127,10 @@ func (weapon *Weapon) CalculateNormalizedWeaponDamage(sim *Simulation, attackPow
 }
 
 func (unit *Unit) MHWeaponDamage(sim *Simulation, attackPower float64) float64 {
-	return unit.AutoAttacks.mh.CalculateWeaponDamage(sim, attackPower)
+	return unit.AutoAttacks.mh.CalculateWeaponDamage(sim, attackPower) * (1 + unit.PseudoStats.MHDpsMultiplier)
 }
 func (unit *Unit) MHNormalizedWeaponDamage(sim *Simulation, attackPower float64) float64 {
-	return unit.AutoAttacks.mh.CalculateNormalizedWeaponDamage(sim, attackPower)
+	return unit.AutoAttacks.mh.CalculateNormalizedWeaponDamage(sim, attackPower) * (1 + unit.PseudoStats.MHDpsMultiplier)
 }
 
 func (unit *Unit) OHWeaponDamage(sim *Simulation, attackPower float64) float64 {

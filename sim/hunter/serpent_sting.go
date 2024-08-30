@@ -15,7 +15,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	spellCoeff := [10]float64{0, .08, .125, .185, .2, .2, .2, .2, .2, .2}[rank]
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
-	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetGiantstalkerPursuit, 6)
+	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetDragonstalkerPursuit, 6)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -83,7 +83,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
-	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetGiantstalkerPursuit, 6)
+	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetDragonstalkerPursuit, 6)
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
