@@ -84,6 +84,8 @@ type Hunter struct {
 	WingClip       *core.Spell
 
 	Shots []*core.Spell
+	Strikes []*core.Spell
+	LastShot *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -99,6 +101,8 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
+
+	HasPredatorArmor [6]bool
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -127,6 +131,9 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
+	hunter.HasPredatorArmor[3] = hunter.HasSetBonus(ItemSetPredatorArmor, 3)
+	hunter.HasPredatorArmor[5] = hunter.HasSetBonus(ItemSetPredatorArmor, 5)
+
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
 

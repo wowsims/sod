@@ -201,6 +201,7 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 	config := hunter.getRaptorStrikeConfig(rank)
 	hunter.RaptorStrike = hunter.GetOrRegisterSpell(config)
+	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrike)
 
 	if !hasMeleeSpecialist {
 		hunter.makeQueueSpellsAndAura()

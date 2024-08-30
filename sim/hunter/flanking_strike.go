@@ -116,4 +116,5 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			hunter.FlankingStrikeAura.AddStack(sim)
 		},
 	})
+	hunter.Strikes = append(hunter.Strikes, hunter.FlankingStrike)
 }
