@@ -165,13 +165,8 @@ func (hunter *Hunter) trapMastery() float64 {
 
 func (hunter *Hunter) applyEfficiency() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		// doesn't work on kill shot for whatever reason
-		if spell.SpellCode == SpellCode_HunterKillShot { 
-			return 
-		}
-
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Flags.Matches(SpellFlagSting) || spell.Flags.Matches(SpellFlagShot) || spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
+		if spell.Flags.Matches(SpellFlagSting | SpellFlagShot | SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
 			spell.Cost.Multiplier -= 2*hunter.Talents.Efficiency
 		}
 	})
