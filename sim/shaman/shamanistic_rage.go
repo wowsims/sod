@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (shaman *Shaman) registerShamanisticRageCD() {
@@ -12,7 +11,7 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 	duration := time.Second * 15
 	cooldown := time.Minute * 1
 
-	actionID := core.ActionID{SpellID: int32(proto.ShamanRune_RuneUtilityShamnisticRage)}
+	actionID := core.ActionID{SpellID: 425336}
 	manaMetrics := shaman.NewManaMetrics(actionID)
 	srAura := shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",

@@ -103,7 +103,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 			}
 
 			if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
-				shaman.PowerSurgeAura.Activate(sim)
+				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
 	}
@@ -124,7 +124,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 				}
 
 				if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
-					shaman.PowerSurgeAura.Activate(sim)
+					shaman.PowerSurgeDamageAura.Activate(sim)
 				}
 			}
 		}

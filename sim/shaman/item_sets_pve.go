@@ -186,8 +186,8 @@ var ItemSetEarthfuryEruption = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if shaman.PowerSurgeAura != nil && spell.SpellCode == SpellCode_ShamanLightningBolt && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.35, "Power Surge") {
-						shaman.PowerSurgeAura.Activate(sim)
+					if spell.SpellCode == SpellCode_ShamanLightningBolt && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.35, "Power Surge") {
+						shaman.PowerSurgeDamageAura.Activate(sim)
 					}
 				},
 			})

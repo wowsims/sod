@@ -32,8 +32,9 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
 
 	spellId := LesserHealingWaveSpellId[rank]
-	baseHealingLow := LesserHealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
-	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
+	baseHealingMultiplier := 1 + shaman.purificationHealingModifier()
+	baseHealingLow := LesserHealingWaveBaseHealing[rank][0] * baseHealingMultiplier
+	baseHealingHigh := LesserHealingWaveBaseHealing[rank][1] * baseHealingMultiplier
 	spellCoeff := LesserHealingWaveSpellCoef[rank]
 	castTime := LesserHealingWaveCastTime[rank]
 	manaCost := LesserHealingWaveManaCost[rank]
@@ -51,7 +52,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellHealing,
-		Flags:        core.SpellFlagHelpful | SpellFlagMaelstrom | core.SpellFlagAPL,
+		Flags:        core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom | SpellFlagShaman,
 		MetricSplits: 6,
 
 		RequiredLevel: level,
@@ -88,8 +89,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
-			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+			result := spell.CalcAndDealHealing(sim, spell.Unit, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				if shaman.HasRune(proto.ShamanRune_RuneFeetAncestralAwakening) {
@@ -97,7 +97,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 
 					// TODO: this should actually target the lowest health target in the raid.
 					//  does it matter in a sim? We currently only simulate tanks taking damage (multiple tanks could be handled here though.)
-					shaman.AncestralAwakening.Cast(sim, target)
+					shaman.AncestralAwakening.Cast(sim, spell.Unit)
 				}
 			}
 		},

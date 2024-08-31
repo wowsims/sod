@@ -40,14 +40,15 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 
 func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	spellId := HealingWaveSpellId[rank]
-	baseHealingLow := HealingWaveBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
-	baseHealingHigh := HealingWaveBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
+	baseHealingMultiplier := 1 + shaman.purificationHealingModifier()
+	baseHealingLow := HealingWaveBaseHealing[rank][0] * baseHealingMultiplier
+	baseHealingHigh := HealingWaveBaseHealing[rank][1] * baseHealingMultiplier
 	spellCoeff := HealingWaveSpellCoef[rank]
 	castTime := HealingWaveCastTime[rank]
 	manaCost := HealingWaveManaCost[rank]
 	level := HealingWaveLevel[rank]
 
-	flags := core.SpellFlagHelpful
+	flags := core.SpellFlagHelpful | SpellFlagShaman
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -85,13 +86,11 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
-
 			// TODO: Take Healing Way into account 6% stacking up to 3x
-			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+			result := spell.CalcAndDealHealing(sim, spell.Unit, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 
 			if canOverload && result.Landed() && sim.RandomFloat("HW Overload") < ShamanOverloadChance {
-				shaman.HealingWaveOverload[rank].Cast(sim, target)
+				shaman.HealingWaveOverload[rank].Cast(sim, spell.Unit)
 			}
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
@@ -100,7 +99,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 
 					// TODO: this should actually target the lowest health target in the raid.
 					//  does it matter in a sim? We currently only simulate tanks taking damage (multiple tanks could be handled here though.)
-					shaman.AncestralAwakening.Cast(sim, target)
+					shaman.AncestralAwakening.Cast(sim, spell.Unit)
 				}
 			}
 		},

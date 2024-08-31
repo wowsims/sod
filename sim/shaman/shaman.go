@@ -125,6 +125,7 @@ type Shaman struct {
 	MagmaTotem             []*core.Spell
 	ManaSpringTotem        []*core.Spell
 	MoltenBlast            *core.Spell
+	Riptide                *core.Spell
 	RollingThunder         *core.Spell
 	SearingTotem           []*core.Spell
 	StoneskinTotem         []*core.Spell
@@ -142,7 +143,8 @@ type Shaman struct {
 	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
 	LoyalBetaAura         *core.Aura
 	MaelstromWeaponAura   *core.Aura
-	PowerSurgeAura        *core.Aura
+	PowerSurgeDamageAura  *core.Aura
+	PowerSurgeHealAura    *core.Aura
 	SpiritOfTheAlphaAura  *core.Aura
 
 	// Totems
