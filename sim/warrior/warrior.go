@@ -188,8 +188,8 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 	return ws
 }
 
-func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) {
-	aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
+func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) *core.ExclusiveEffect {
+	return aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
 		Priority: float64(stance),
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if stance.Matches(BattleStance) {

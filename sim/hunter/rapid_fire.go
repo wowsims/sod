@@ -16,6 +16,7 @@ func (hunter *Hunter) registerRapidFire() {
 	hasRapidKilling := hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling)
 
 	actionID := core.ActionID{SpellID: 3045}
+	cooldown := core.TernaryDuration(hasRapidKilling, time.Minute*1, time.Minute*5)
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
@@ -51,7 +52,11 @@ func (hunter *Hunter) registerRapidFire() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: core.TernaryDuration(hasRapidKilling, time.Minute*1, time.Minute*5),
+				Duration: cooldown,
+			},
+			SharedCD: core.Cooldown{
+				Timer:    hunter.GetAttackSpeedBuffCD(),
+				Duration: cooldown,
 			},
 		},
 

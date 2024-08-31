@@ -18,7 +18,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 		Flags:       core.SpellFlagMeleeMetrics,
 		ProcMask:    core.ProcMaskEmpty,
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -42,6 +42,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 					dot.SnapshotBaseDamage = 0
 				}
+
+				dot.SnapshotAttackerMultiplier /= rogue.saberSlashMultiplier(dot.GetStacks() - 1)
+				dot.SnapshotAttackerMultiplier *= rogue.saberSlashMultiplier(dot.GetStacks())
 
 				// each stack snapshots the AP it was applied with
 				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
@@ -79,8 +82,11 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 
+			dot := rogue.saberSlashTick.Dot(target)
 			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= rogue.saberSlashMultiplier(target)
+			if dot.IsActive() {
+				spell.DamageMultiplier *= rogue.saberSlashMultiplier(dot.GetStacks())
+			}
 
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -89,8 +95,6 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-
-				dot := rogue.saberSlashTick.Dot(target)
 
 				dot.ApplyOrRefresh(sim)
 				if dot.GetStacks() < dot.MaxStacks {
@@ -105,9 +109,6 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	})
 }
 
-func (rogue *Rogue) saberSlashMultiplier(target *core.Unit) float64 {
-	if rogue.saberSlashTick == nil {
-		return 1
-	}
-	return 1 + 0.33*float64(rogue.saberSlashTick.Dot(target).GetStacks())
+func (rogue *Rogue) saberSlashMultiplier(stacks int32) float64 {
+	return []float64{1, 1.33, 1.67, 2.0}[stacks]
 }

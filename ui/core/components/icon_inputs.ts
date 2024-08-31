@@ -1,5 +1,5 @@
 import { Player } from '../player';
-import { MiscConsumes, Spec } from '../proto/common';
+import { MiscConsumes, PetMiscConsumes, Spec } from '../proto/common';
 import { Consumes, Debuffs, Faction, IndividualBuffs, RaidBuffs } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
@@ -103,6 +103,27 @@ export function makeBooleanMiscConsumeInput<SpecType extends Spec>(
 			setValue: (eventID: EventID, player: Player<SpecType>, newVal: MiscConsumes) => {
 				const consumes = player.getConsumes();
 				consumes.miscConsumes = newVal;
+				player.setConsumes(eventID, consumes);
+			},
+			changeEmitter: (player: Player<SpecType>) =>
+				TypedEvent.onAny([player.consumesChangeEmitter, player.levelChangeEmitter, player.professionChangeEmitter]),
+		},
+		config.actionId,
+		config.fieldName,
+		config.value,
+	);
+}
+export function makeBooleanPetMiscConsumeInput<SpecType extends Spec>(
+	config: BooleanInputConfig<PetMiscConsumes>,
+): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
+	return InputHelpers.makeBooleanIconInput<any, PetMiscConsumes, Player<SpecType>>(
+		{
+			getModObject: (player: Player<SpecType>) => player,
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
+			getValue: (player: Player<SpecType>) => player.getConsumes().petMiscConsumes ?? PetMiscConsumes.create(),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: PetMiscConsumes) => {
+				const consumes = player.getConsumes();
+				consumes.petMiscConsumes = newVal;
 				player.setConsumes(eventID, consumes);
 			},
 			changeEmitter: (player: Player<SpecType>) =>

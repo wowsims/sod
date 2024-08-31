@@ -134,9 +134,6 @@ func (warlock *Warlock) applyDecimation() {
 		Label:    "Decimation",
 		ActionID: core.ActionID{SpellID: 440873},
 		Duration: time.Second * 10,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SoulFire {
 				spell.CastTimeMultiplier *= .6
@@ -150,18 +147,14 @@ func (warlock *Warlock) applyDecimation() {
 	})
 
 	// Hidden trigger aura
-	warlock.RegisterAura(core.Aura{
-		Label:    "Decimation Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Decimation Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && sim.IsExecutePhase35() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				decimationAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warlock *Warlock) applyMarkOfChaos() {

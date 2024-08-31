@@ -87,6 +87,8 @@ type Character struct {
 	conjuredCD         *Timer
 	// Used by Automatic Crowd Pummeler and Druid's Catnip
 	fiftyPercentHasteBuffCD *Timer
+	// Used by Rapid Fire and Juju Flurry for some strange reason
+	attackSpeedBuffCD *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 
@@ -323,7 +325,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 
-	applyBuffEffects(agent, true, raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(agent, agent.GetCharacter().GetFaction(), raidBuffs, partyBuffs, individualBuffs)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
 
@@ -333,7 +335,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 
 	for _, petAgent := range character.PetAgents {
-		applyPetBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
+		applyPetBuffEffects(petAgent, character.GetFaction(), raidBuffs, partyBuffs, individualBuffs)
 	}
 
 	return playerStats
@@ -652,6 +654,9 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
+}
+func (character *Character) GetAttackSpeedBuffCD() *Timer {
+	return character.GetOrInitTimer(&character.attackSpeedBuffCD)
 }
 func (character *Character) GetFiftyPercentHasteBuffCD() *Timer {
 	return character.GetOrInitTimer(&character.fiftyPercentHasteBuffCD)
