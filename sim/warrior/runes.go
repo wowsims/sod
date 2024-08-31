@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -385,7 +384,6 @@ func (warrior *Warrior) applyWreckingCrew() {
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println(affectedSpells)
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplier *= 1.1
 			}
