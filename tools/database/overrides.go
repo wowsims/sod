@@ -91,8 +91,23 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
 
-	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
-	// {Id: 44093, Stats: stats.Stats{stats.MeleeCrit: 30, stats.SpellCrit: 30, stats.Resilience: 13, stats.AttackPower: 34}.ToFloatArray()},
+	// 2024-08-30 This item randomly vanished from Wowhead after Phase 5 datamining
+	{
+		Id:                 215161,
+		Name:               "Tempered Interference-Negating Helmet",
+		Icon:               "inv_helmet_49",
+		Type:               1,
+		ArmorType:          4,
+		RequiresLevel:      40,
+		Stats:              []float64{20, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 426, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		WeaponSkills:       []float64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		Ilvl:               45,
+		Phase:              2,
+		Quality:            4,
+		RequiredProfession: 2,
+		Sources: []*proto.UIItemSource{
+			{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: 2}}}},
+	},
 }
 
 // Keep these sorted by item ID.
