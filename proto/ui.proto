@@ -233,13 +233,13 @@ enum DungeonFilterOption {
 }
 
 enum RaidFilterOption {
-	RaidUnknown = 0;
-	RaidBlackfathomDeeps = 719;
-	RaidGnomeregan = 721;
-	RaidSunkenTemple = 1477;
-	RaidMoltenCore = 2717;
-	ZoneZulGurub = 1977;
-	ZoneBlackwingLair = 2677;
+	RaidUnknown						= 0;
+	RaidBlackfathomDeeps	= 719;
+	RaidGnomeregan				= 721;
+	RaidSunkenTemple			= 1477;
+	RaidMoltenCore				= 2717;
+	RaidBlackwingLair			= 2677;
+	RaidZulGurub					= 1977;
 }
 
 // Zones not yet available to players

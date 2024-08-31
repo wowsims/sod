@@ -47,7 +47,7 @@ const (
 	ThrashBlade                    = 17705
 	SatyrsLash                     = 17752
 	MarkOfTheChosen                = 17774
-	Thunderfury                    = 19019
+	Thunderfury                    = 230224 // 19019
 	EbonHand                       = 19170
 	DarkmoonCardHeroism            = 19287
 	DarkmoonCardBlueDragon         = 19288
