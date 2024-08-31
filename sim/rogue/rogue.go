@@ -191,6 +191,7 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
+	rogue.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(rogue.Level)]*core.DodgeRatingPerDodgeChance)
 
 	guardians.ConstructGuardians(&rogue.Character)
 
