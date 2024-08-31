@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -372,16 +373,19 @@ func (warrior *Warrior) applyWreckingCrew() {
 		return
 	}
 
-	affectedSpells := core.FilterSlice(
-		[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
-		func(spell *WarriorSpell) bool { return spell != nil },
-	)
-
+	var affectedSpells []*WarriorSpell
 	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Enrage (Wrecking Crew)",
 		ActionID: core.ActionID{SpellID: 427066},
 		Duration: time.Second * 6,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
+				func(spell *WarriorSpell) bool { return spell != nil },
+			)
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			fmt.Println(affectedSpells)
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplier *= 1.1
 			}
@@ -400,11 +404,9 @@ func (warrior *Warrior) applyWreckingCrew() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
+				warrior.WreckingCrewEnrageAura.Activate(sim)
 			}
-
-			warrior.WreckingCrewEnrageAura.Activate(sim)
 		},
 	})
 }
