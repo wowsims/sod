@@ -224,7 +224,7 @@ func (hunter *Hunter) applyCobraStrikes() {
 
 	hunter.RegisterAura(core.Aura{
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagShot) || spell.Flags.Matches(SpellFlagStrike) {
+			if spell.Flags.Matches(SpellFlagShot) || spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite {
 				if result.DidCrit() {
 					hunter.CobraStrikesAura.Activate(sim)
 					hunter.CobraStrikesAura.SetStacks(sim, 2)

@@ -14,6 +14,8 @@ var TalentTreeSizes = [3]int{16, 14, 16}
 const (
 	SpellFlagShot = core.SpellFlagAgentReserved1
 	SpellFlagStrike = core.SpellFlagAgentReserved2
+	SpellFlagSting = core.SpellFlagAgentReserved3
+	SpellFlagTrap = core.SpellFlagAgentReserved4
 )
 
 const (
@@ -24,6 +26,7 @@ const (
 	SpellCode_HunterRaptorStrike
 	SpellCode_HunterMultiShot
 	SpellCode_HunterKillShot
+	SpellCode_HunterVolley
 )
 
 func RegisterHunter() {
