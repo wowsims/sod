@@ -1132,11 +1132,11 @@ export const WORLD_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [],
 	},
-	// {
-	// 	config: SpiritOfZandalar,
-	// 	picker: IconPicker,
-	// 	stats: [],
-	// },
+	{
+		config: SpiritOfZandalar,
+		picker: IconPicker,
+		stats: [],
+	},
 	{
 		config: WarchiefsBlessing,
 		picker: IconPicker,
