@@ -279,7 +279,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 				return
 			}
 
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 				return

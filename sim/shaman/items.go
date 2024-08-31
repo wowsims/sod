@@ -20,10 +20,15 @@ const (
 	TotemOfThunder           = 228176
 	TotemOfRagingFire        = 228177
 	TotemOfEarthenVitality   = 228178
+	NaturalAlignmentCrystal  = 230273
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	///////////////////////////////////////////////////////////////////////////
+	//                            Totems
+	///////////////////////////////////////////////////////////////////////////
 
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
@@ -205,6 +210,59 @@ func init() {
 				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
 			},
 		}))
+	})
+
+	///////////////////////////////////////////////////////////////////////////
+	//                            Trinkets
+	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
+	// Use: Aligns the Shaman with nature, increasing the damage done by spells by 20%, improving heal effects by 20%, and increasing mana cost of spells by 20% for 20 sec.
+	// (2 Min Cooldown)
+	core.NewItemEffect(NaturalAlignmentCrystal, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		duration := time.Second * 20
+
+		aura := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
+			Label:    "Nature Aligned",
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
+				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
+				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
+				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
+				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
+			},
+		})
+
+		spell := shaman.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
+			ProcMask: core.ProcMaskEmpty,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    shaman.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    shaman.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		shaman.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityBloodlust,
+			Type:     core.CooldownTypeDPS,
+		})
 	})
 
 	core.AddEffectsToTest = true

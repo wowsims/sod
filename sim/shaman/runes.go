@@ -178,7 +178,7 @@ func (shaman *Shaman) applyShieldMastery() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) || (has4PEarthfuryResolve && (result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge))) {
+			if result.DidBlock() || (has4PEarthfuryResolve && (result.DidParry() || result.DidDodge())) {
 				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
 				blockProcAura.Activate(sim)
 				blockProcAura.AddStack(sim)
@@ -321,7 +321,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				spell.Cost.Multiplier -= multDiff
 			}
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagMaelstrom) {
 				shaman.MaelstromWeaponAura.Deactivate(sim)
 			}
@@ -329,6 +329,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	shaman.maelstromWeaponPPMM = &ppmm
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
@@ -342,7 +343,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
@@ -440,37 +441,39 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		return
 	}
 
-	if shaman.IsTanking() {
-		shaman.RegisterAura(core.Aura{
-			Label:    "Spirit of the Alpha",
-			ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	shaman.SpiritOfTheAlphaAura = shaman.RegisterAura(core.Aura{
+		Label:    "Spirit of the Alpha",
+		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			if shaman.IsTanking() {
 				aura.Activate(sim)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.ThreatMultiplier *= 1.45
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.ThreatMultiplier /= 1.45
-			},
-		})
-	} else {
-		shaman.RegisterAura(core.Aura{
-			Label:    "Loyal Beta",
-			ActionID: core.ActionID{SpellID: 443320},
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			}
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.ThreatMultiplier *= 1.45
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.ThreatMultiplier /= 1.45
+		},
+	})
+
+	shaman.LoyalBetaAura = shaman.RegisterAura(core.Aura{
+		Label:    "Loyal Beta",
+		ActionID: core.ActionID{SpellID: 443320},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			if !shaman.IsTanking() {
 				aura.Activate(sim)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-				shaman.PseudoStats.ThreatMultiplier *= .70
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
-				shaman.PseudoStats.ThreatMultiplier /= .70
-			},
-		})
-	}
+			}
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
+			shaman.PseudoStats.ThreatMultiplier *= .70
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
+			shaman.PseudoStats.ThreatMultiplier /= .70
+		},
+	})
 }

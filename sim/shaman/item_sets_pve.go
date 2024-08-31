@@ -1,9 +1,11 @@
 package shaman
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -113,7 +115,7 @@ var ItemSetEmeraldLadenChain = core.NewItemSet(core.ItemSet{
 })
 
 ///////////////////////////////////////////////////////////////////////////
-//                            SoD Phase 3 Item Sets
+//                            SoD Phase 4 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
 var ItemSetTheFiveThunders = core.NewItemSet(core.ItemSet{
@@ -271,7 +273,7 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Shaman - Tank 2P Bonus",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge) || result.Outcome.Matches(core.OutcomeBlock) {
+					if result.DidParry() || result.DidDodge() || result.DidBlock() {
 						flurryAura.Activate(sim)
 						flurryAura.SetStacks(sim, 3)
 					}
@@ -285,6 +287,257 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 		// Your Stoneskin Totem also reduces Physical damage taken by 5% and your Windwall Totem also reduces Magical damage taken by 5%.
 		6: func(agent core.Agent) {
 			// Debuffs implemented in core/buffs.go, activated with a raid buff setting or in earth_totems.go and air_totems.go
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 4 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
+	Name: "Eruption of the Ten Storms",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your spell critical strikes now have a 100% chance trigger your Elemental Focus talent.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.Talents.ElementalFocus {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Elemental 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Flags.Matches(SpellFlagShaman) && result.DidCrit() {
+						shaman.ClearcastingAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Loyal Beta from your Spirit of the Alpha ability now also increases Fire, Frost, and Nature damage by 5%.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Elemental 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain := shaman.LoyalBetaAura.OnGain
+					shaman.LoyalBetaAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnGain(aura, sim)
+						shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.05
+						shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.05
+						shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.05
+					}
+				},
+			}))
+		},
+		// Your Clearcasting also increases the damage of affected spells by 30% [reduced to 10% against player - controlled targets].
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.Talents.ElementalFocus {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Elemental 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain := shaman.ClearcastingAura.OnGain
+					oldOnExpire := shaman.ClearcastingAura.OnExpire
+					affectedSpells := shaman.getClearcastingSpells()
+
+					shaman.ClearcastingAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnGain(aura, sim)
+						core.Each(affectedSpells, func(spell *core.Spell) {
+							spell.DamageMultiplier *= 1.30
+						})
+					}
+					shaman.ClearcastingAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnExpire(aura, sim)
+						core.Each(affectedSpells, func(spell *core.Spell) {
+							spell.DamageMultiplier /= 1.30
+						})
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetResolveOfTheTenStorms = core.NewItemSet(core.ItemSet{
+	Name: "Resolve of the Ten Storms",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Flame Shock also grants 30% increased chance to Block for 5 sec or until you Block an attack.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shieldBlockAura := shaman.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467891},
+				Label:    "Shield Block",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.AddStatDynamic(sim, stats.Block, 30*core.BlockRatingPerBlockChance)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.AddStatDynamic(sim, stats.Block, -30*core.BlockRatingPerBlockChance)
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+					if result.DidBlock() {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Tank 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_ShamanFlameShock {
+						shieldBlockAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Each time you Block, your Block amount is increased by 10% of your Spell Damage for 6 sec, stacking up to 3 times.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			statDeps := []*stats.StatDependency{
+				nil,
+				shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.10),
+				shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.20),
+				shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.30),
+			}
+
+			// Couldn't find a separate spell for this
+			blockAura := shaman.RegisterAura(core.Aura{
+				ActionID:  core.ActionID{SpellID: 467909},
+				Label:     "S03 - Item - T2 - Shaman - Tank 4P Bonus",
+				Duration:  time.Second * 6,
+				MaxStacks: 3,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if oldStacks != 0 {
+						shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
+					}
+					if newStacks != 0 {
+						shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
+					}
+				},
+			})
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Tank 4P Bonus Trigger",
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidBlock() {
+						blockAura.Activate(sim)
+						blockAura.AddStack(sim)
+					}
+				},
+			}))
+		},
+		// Each time you Block an attack, you have a 50% chance to trigger your Maelstrom Weapon rune.
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Tank 6P Bonus",
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidBlock() && sim.Proc(0.50, "T2 6P Proc Maelstrom Weapon") {
+						shaman.MaelstromWeaponAura.Activate(sim)
+						shaman.MaelstromWeaponAura.AddStack(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
+	Name: "Impact of the Ten Storms",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the frequency of Maelstrom Weapon triggering by 100%.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Enhancement 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldPPMM := shaman.maelstromWeaponPPMM
+					newPPMM := shaman.AutoAttacks.NewPPMManager(oldPPMM.GetPPM()*2, core.ProcMaskMelee)
+					shaman.maelstromWeaponPPMM = &newPPMM
+				},
+			}))
+		},
+		// Critical strikes with Stormstrike grant 100% increased critical strike chance with your next Lightning Bolt, Chain Lightning, or Shock spell.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			var affectedSpells []*core.Spell
+			affectedSpellcodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+			stormfuryAura := shaman.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467880},
+				Label:    "Stormfury",
+				Duration: time.Second * 10,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(shaman.Spellbook, func(spell *core.Spell) bool {
+						return slices.Contains(affectedSpellcodes, spell.SpellCode)
+					})
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					core.Each(affectedSpells, func(spell *core.Spell) {
+						spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
+					})
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					core.Each(affectedSpells, func(spell *core.Spell) {
+						spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
+					})
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if slices.Contains(affectedSpellcodes, spell.SpellCode) {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Enhancement 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_ShamanStormstrike && result.DidCrit() {
+						stormfuryAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// You gain 1 charge of Maelstrom Weapon immediately after casting a spell made instant by Maelstrom Weapon.
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Enhancement 6P Bonus",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.Flags.Matches(SpellFlagMaelstrom) && spell.CurCast.CastTime == 0 {
+						// Delay the bonus charge to ensure the aura isn't deactivated by the aura's handler after the charge is granted
+						core.StartDelayedAction(sim, core.DelayedActionOptions{
+							DoAt: sim.CurrentTime + time.Millisecond*1,
+							OnAction: func(sim *core.Simulation) {
+								shaman.MaelstromWeaponAura.Activate(sim)
+								shaman.MaelstromWeaponAura.AddStack(sim)
+							},
+						})
+					}
+				},
+			}))
 		},
 	},
 })

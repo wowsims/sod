@@ -96,6 +96,7 @@ type Shaman struct {
 
 	Talents *proto.ShamanTalents
 
+	// Spells
 	AncestralAwakening     *core.Spell
 	ChainHeal              []*core.Spell
 	ChainHealOverload      []*core.Spell
@@ -134,24 +135,31 @@ type Shaman struct {
 	WindfuryTotem          []*core.Spell
 	WindwallTotem          []*core.Spell
 
-	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
-	ActiveShieldAura *core.Aura
-
+	// Auras
+	ClearcastingAura      *core.Aura
 	FlurryAura            *core.Aura
 	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
+	LoyalBetaAura         *core.Aura
 	MaelstromWeaponAura   *core.Aura
 	PowerSurgeAura        *core.Aura
+	SpiritOfTheAlphaAura  *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
 	Totems           *proto.ShamanTotems
 	TotemExpirations [4]time.Duration // The expiration time of each totem (earth, air, fire, water).
 
+	// Shield
+	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
+	ActiveShieldAura *core.Aura
+
+	// Pets
 	SpiritWolves *SpiritWolves
 
-	lastFlameShockTarget *core.Unit // Used by Ancestral Guidance rune
-
-	ancestralHealingAmount float64 // Used by Ancestral Awakening
+	// Other data
+	ancestralHealingAmount float64    // Used by Ancestral Awakening
+	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
+	maelstromWeaponPPMM    *core.PPMManager
 }
 
 // Implemented by each Shaman spec.

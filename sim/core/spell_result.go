@@ -47,6 +47,18 @@ func (result *SpellResult) DidCrit() bool {
 	return result.Outcome.Matches(OutcomeCrit)
 }
 
+func (result *SpellResult) DidBlock() bool {
+	return result.Outcome.Matches(OutcomeBlock)
+}
+
+func (result *SpellResult) DidParry() bool {
+	return result.Outcome.Matches(OutcomeParry)
+}
+
+func (result *SpellResult) DidDodge() bool {
+	return result.Outcome.Matches(OutcomeDodge)
+}
+
 func (result *SpellResult) DamageString() string {
 	outcomeStr := result.Outcome.String()
 	if !result.Landed() {

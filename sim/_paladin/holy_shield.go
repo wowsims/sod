@@ -44,7 +44,7 @@ func (paladin *Paladin) registerHolyShieldSpell() {
 			paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.DidBlock() {
 				procSpell.Cast(sim, spell.Unit)
 				aura.RemoveStack(sim)
 			}
