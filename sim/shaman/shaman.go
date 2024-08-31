@@ -147,6 +147,10 @@ type Shaman struct {
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
+	EarthTotems      []*core.Spell
+	FireTotems       []*core.Spell
+	WaterTotems      []*core.Spell
+	AirTotems        []*core.Spell
 	Totems           *proto.ShamanTotems
 	TotemExpirations [4]time.Duration // The expiration time of each totem (earth, air, fire, water).
 

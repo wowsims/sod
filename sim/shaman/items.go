@@ -17,18 +17,272 @@ const (
 	TotemCarvedDriftwoodIcon = 209575
 	TotemInvigoratingFlame   = 215436
 	TotemTormentedAncestry   = 220607
+	TerrestrisTank           = 224279
 	TotemOfThunder           = 228176
 	TotemOfRagingFire        = 228177
 	TotemOfEarthenVitality   = 228178
 	NaturalAlignmentCrystal  = 230273
+	TerrestrisEle            = 231890
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
-	///////////////////////////////////////////////////////////////////////////
-	//                            Totems
-	///////////////////////////////////////////////////////////////////////////
+	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
+	// Use: Aligns the Shaman with nature, increasing the damage done by spells by 20%, improving heal effects by 20%, and increasing mana cost of spells by 20% for 20 sec.
+	// (2 Min Cooldown)
+	core.NewItemEffect(NaturalAlignmentCrystal, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		duration := time.Second * 20
+
+		aura := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
+			Label:    "Nature Aligned",
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
+				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
+				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
+				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
+				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
+			},
+		})
+
+		spell := shaman.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
+			ProcMask: core.ProcMaskEmpty,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    shaman.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    shaman.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		shaman.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityBloodlust,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=231890/terrestris
+	core.NewItemEffect(TerrestrisEle, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		boonOfEarth := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 469208},
+			Label:    "Boon of Earth",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+				shaman.AddStatDynamic(sim, stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.MeleeCrit, -1*core.CritRatingPerCritChance)
+				shaman.AddStatDynamic(sim, stats.SpellCrit, -1*core.SpellCritRatingPerCritChance)
+			},
+		})
+
+		boonOfFire := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 469209},
+			Label:    "Boon of Fire",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.SpellDamage, 16)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.SpellDamage, -16)
+			},
+		})
+
+		boonOfWater := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 469210},
+			Label:    "Boon of Water",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
+			},
+		})
+
+		boonOfAir := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 452456},
+			Label:    "Boon of Air",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.MoveSpeed *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.MoveSpeed /= 1.15
+			},
+		})
+
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Terrestris Boon Trigger",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				core.Each(shaman.EarthTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfEarth.Activate(sim)
+					}
+				})
+				core.Each(shaman.FireTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfFire.Activate(sim)
+					}
+				})
+				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfWater.Activate(sim)
+					}
+				})
+				core.Each(shaman.AirTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfAir.Activate(sim)
+					}
+				})
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=224279/terrestris
+	core.NewItemEffect(TerrestrisTank, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		boonOfEarth := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 452464},
+			Label:    "Boon of Earth",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.Block, 3*core.BlockRatingPerBlockChance)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.Block, 31*core.BlockRatingPerBlockChance)
+			},
+		})
+
+		fireExplosion := shaman.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 453085},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 8, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		boonOfFire := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 452460},
+			Label:    "Boon of Fire",
+			Duration: time.Minute * 2,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidBlock() {
+					fireExplosion.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		waterHealActionID := core.ActionID{SpellID: 453081}
+		waterHealthMetrics := shaman.NewHealthMetrics(waterHealActionID)
+		waterHeal := shaman.RegisterSpell(core.SpellConfig{
+			ActionID:    waterHealActionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				shaman.GainHealth(sim, 20, waterHealthMetrics)
+			},
+		})
+
+		boonOfWater := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 452454},
+			Label:    "Boon of Water",
+			Duration: time.Minute * 2,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidBlock() {
+					waterHeal.Cast(sim, aura.Unit)
+				}
+			},
+		})
+
+		boonOfAir := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 452456},
+			Label:    "Boon of Air",
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.MoveSpeed *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.MoveSpeed /= 1.15
+			},
+		})
+
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Terrestris Boon Trigger",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				core.Each(shaman.EarthTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfEarth.Activate(sim)
+					}
+				})
+				core.Each(shaman.FireTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfFire.Activate(sim)
+					}
+				})
+				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfWater.Activate(sim)
+					}
+				})
+				core.Each(shaman.AirTotems, func(spell *core.Spell) {
+					oldApplyEffects := spell.ApplyEffects
+					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+						boonOfAir.Activate(sim)
+					}
+				})
+			},
+		}))
+	})
 
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
@@ -210,59 +464,6 @@ func init() {
 				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
 			},
 		}))
-	})
-
-	///////////////////////////////////////////////////////////////////////////
-	//                            Trinkets
-	///////////////////////////////////////////////////////////////////////////
-
-	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
-	// Use: Aligns the Shaman with nature, increasing the damage done by spells by 20%, improving heal effects by 20%, and increasing mana cost of spells by 20% for 20 sec.
-	// (2 Min Cooldown)
-	core.NewItemEffect(NaturalAlignmentCrystal, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-
-		duration := time.Second * 20
-
-		aura := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
-			Label:    "Nature Aligned",
-			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
-				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
-				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
-				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
-				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
-			},
-		})
-
-		spell := shaman.RegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
-			ProcMask: core.ProcMaskEmpty,
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    shaman.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-				SharedCD: core.Cooldown{
-					Timer:    shaman.GetOffensiveTrinketCD(),
-					Duration: duration,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				aura.Activate(sim)
-			},
-		})
-
-		shaman.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityBloodlust,
-			Type:     core.CooldownTypeDPS,
-		})
 	})
 
 	core.AddEffectsToTest = true
