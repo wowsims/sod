@@ -37,6 +37,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 	}
 
 	return core.SpellConfig{
+		SpellCode: SpellCode_HunterVolley,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,

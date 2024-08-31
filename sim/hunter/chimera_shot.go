@@ -12,16 +12,11 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		return
 	}
 
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	ssProcSpell := make([]*core.Spell, 10)
 	for i := 1; i <= 9; i++ {
 		ssProcSpell[i] = hunter.chimeraShotSerpentStingSpell(i)
 	}
 
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 409433},
 		SpellSchool:  core.SpellSchoolNature,
@@ -33,7 +28,6 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -68,14 +62,8 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 						ssProcSpell[hunter.SerpentSting.Rank].Cast(sim, target)
 						hunter.SerpentSting.Dot(target).Rollover(sim)
 					}
-
-					if hasCobraStrikes && result.DidCrit() {
-						hunter.CobraStrikesAura.Activate(sim)
-						hunter.CobraStrikesAura.SetStacks(sim, 2)
-					}
 				}
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.ChimeraShot)
 }
