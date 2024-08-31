@@ -28,6 +28,8 @@ func (shaman *Shaman) ApplyTalents() {
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
 
+	shaman.ApplyEquipScaling(stats.Armor, 1+.02*float64(shaman.Talents.Toughness))
+
 	if shaman.Talents.Parry {
 		shaman.PseudoStats.CanParry = true
 		shaman.AddStat(stats.Parry, 5)
@@ -47,7 +49,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) && spell.Cost != nil {
 				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
 			}
 		})
@@ -57,9 +59,20 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 
 	if shaman.Talents.HealingGrace > 0 {
+		threatMultiplier := 1 - .05*float64(shaman.Talents.HealingGrace)
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.ThreatMultiplier *= 1 - .05*float64(shaman.Talents.HealingGrace)
+				spell.ThreatMultiplier *= threatMultiplier
+			}
+		})
+	}
+
+	if shaman.Talents.TidalMastery > 0 {
+		critBonus := float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
+				spell.Flags.Matches(SpellFlagLightning)) {
+				spell.BonusCritRating += critBonus
 			}
 		})
 	}
@@ -78,15 +91,12 @@ func (shaman *Shaman) applyElementalFocus() {
 
 	var affectedSpells []*core.Spell
 
-	clearcastingAura := shaman.RegisterAura(core.Aura{
+	shaman.ClearcastingAura = shaman.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 16246},
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
-			)
+			affectedSpells = shaman.getClearcastingSpells()
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
@@ -108,7 +118,7 @@ func (shaman *Shaman) applyElementalFocus() {
 				return
 			}
 
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
+			if spell.Flags.Matches(SpellFlagFocusable) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -121,11 +131,18 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload && sim.RandomFloat("Elemental Focus") < procChance {
-				clearcastingAura.Activate(sim)
+			if spell.Flags.Matches(SpellFlagFocusable) && sim.RandomFloat("Elemental Focus") < procChance {
+				shaman.ClearcastingAura.Activate(sim)
 			}
 		},
 	})
+}
+
+func (shaman *Shaman) getClearcastingSpells() []*core.Spell {
+	return core.FilterSlice(
+		shaman.Spellbook,
+		func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
+	)
 }
 
 func (shaman *Shaman) applyElementalDevastation() {
@@ -201,7 +218,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
+			if spell.Flags.Matches(SpellFlagFocusable) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + time.Millisecond*1,

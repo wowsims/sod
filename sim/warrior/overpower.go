@@ -31,7 +31,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				warrior.OverpowerAura.Activate(sim)
 			}
 		},

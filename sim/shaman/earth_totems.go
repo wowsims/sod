@@ -23,6 +23,11 @@ func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
 			shaman.StrengthOfEarthTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.EarthTotems = append(
+		shaman.EarthTotems,
+		core.FilterSlice(shaman.StrengthOfEarthTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellConfig {
@@ -67,6 +72,11 @@ func (shaman *Shaman) registerStoneskinTotemSpell() {
 			shaman.StoneskinTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.EarthTotems = append(
+		shaman.EarthTotems,
+		core.FilterSlice(shaman.StoneskinTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
@@ -106,4 +116,5 @@ func (shaman *Shaman) registerTremorTotemSpell() {
 		shaman.ActiveTotems[EarthTotem] = spell
 	}
 	shaman.TremorTotem = shaman.RegisterSpell(spell)
+	shaman.EarthTotems = append(shaman.EarthTotems, shaman.TremorTotem)
 }

@@ -594,7 +594,7 @@ export const AtalAiMojoOfLife: ConsumableInputConfig<ZanzaBuff> = {
 };
 
 export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
-	// { config: SpiritOfZanza, stats: [Stat.StatStamina, Stat.StatSpirit] },
+	{ config: SpiritOfZanza, stats: [Stat.StatStamina, Stat.StatSpirit] },
 	{ config: ROIDS, stats: [Stat.StatStrength] },
 	{ config: GroundScorpokAssay, stats: [Stat.StatAgility] },
 	{ config: LungJuiceCocktail, stats: [Stat.StatStamina] },

@@ -47,6 +47,18 @@ func (result *SpellResult) DidCrit() bool {
 	return result.Outcome.Matches(OutcomeCrit)
 }
 
+func (result *SpellResult) DidBlock() bool {
+	return result.Outcome.Matches(OutcomeBlock)
+}
+
+func (result *SpellResult) DidParry() bool {
+	return result.Outcome.Matches(OutcomeParry)
+}
+
+func (result *SpellResult) DidDodge() bool {
+	return result.Outcome.Matches(OutcomeDodge)
+}
+
 func (result *SpellResult) DamageString() string {
 	outcomeStr := result.Outcome.String()
 	if !result.Landed() {
@@ -315,8 +327,14 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.GetBonusDamage()
 		}
+
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		if dot.Spell.Flags.Matches(SpellFlagHelpful) {
+			dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
+		} else {
+			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		}
+
 		if dot.Spell.SchoolIndex == stats.SchoolIndexPhysical {
 			dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 		} else {
@@ -476,6 +494,7 @@ func (spell *Spell) DealPeriodicHealing(sim *Simulation, result *SpellResult) {
 
 func (spell *Spell) CalcAndDealHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
 	result := spell.CalcHealing(sim, target, baseHealing, outcomeApplier)
+	fmt.Println(sim.CurrentTime, spell.ActionID, result.Damage, result.Outcome)
 	spell.DealHealing(sim, result)
 	return result
 }
