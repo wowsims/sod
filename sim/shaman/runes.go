@@ -351,14 +351,14 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 }
 
-const ShamanPowerSurgeProcChance = .05
-
 func (shaman *Shaman) applyPowerSurge() {
 	// TODO: Figure out how this actually works because the 2024-02-27 tuning notes make it sound like
 	// this is not just a fully passive stat boost
 	if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
 		shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
 	}
+
+	shaman.powerSurgeProcChance = 0.05
 
 	// We want to create the power surge aura all the time because it's used by the T1 Ele 4P and can be triggered without the rune
 

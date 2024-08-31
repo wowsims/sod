@@ -160,6 +160,7 @@ type Shaman struct {
 	ancestralHealingAmount float64    // Used by Ancestral Awakening
 	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
 	maelstromWeaponPPMM    *core.PPMManager
+	powerSurgeProcChance   float64
 }
 
 // Implemented by each Shaman spec.

@@ -541,3 +541,33 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Augur's Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increased Defense +7.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.AddStat(stats.Defense, 7)
+		},
+		// Increases your chance to block attacks with a shield by 10%.
+		3: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.AddStat(stats.Block, 10*core.BlockRatingPerBlockChance)
+		},
+		// Increases the chance to trigger your Power Surge rune by an additional 5%.
+		5: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
+				return
+			}
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Shaman - Tank 5P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.powerSurgeProcChance += .05
+				},
+			}))
+		},
+	},
+})

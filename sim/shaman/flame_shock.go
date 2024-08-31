@@ -102,7 +102,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 				shaman.MoltenBlast.CD.Reset()
 			}
 
-			if hasPowerSurgeRune && sim.Proc(ShamanPowerSurgeProcChance, "Power Surge Proc") {
+			if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeAura.Activate(sim)
 			}
 		},
@@ -123,7 +123,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 					shaman.lastFlameShockTarget = target
 				}
 
-				if hasPowerSurgeRune && sim.Proc(ShamanPowerSurgeProcChance, "Power Surge Proc") {
+				if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 					shaman.PowerSurgeAura.Activate(sim)
 				}
 			}
