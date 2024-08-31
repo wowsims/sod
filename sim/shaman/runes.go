@@ -263,9 +263,7 @@ func (shaman *Shaman) applyRollingThunder() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman,
-
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+		Flags:       SpellFlagShaman | SpellFlagLightning,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

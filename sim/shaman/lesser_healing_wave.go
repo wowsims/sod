@@ -82,10 +82,8 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

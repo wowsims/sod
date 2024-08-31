@@ -14,8 +14,9 @@ var TalentTreeSizes = [3]int{15, 16, 15}
 const (
 	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
-	SpellFlagFocusable = core.SpellFlagAgentReserved3
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
+	SpellFlagLightning = core.SpellFlagAgentReserved3
+	SpellFlagFocusable = core.SpellFlagAgentReserved4
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved5
 )
 
 func NewShaman(character *core.Character, talents string) *Shaman {
