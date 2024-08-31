@@ -18,6 +18,10 @@ const (
 	BloodChainGrips         = 227081
 	KnightChainGrips        = 227087
 	WhistleOfTheBeast       = 228432
+	MaelstromsWrath			= 231320
+	ZandalarPredatorsMantle = 231321
+	ZandalarPredatorsBelt	= 231322
+	ZandalarPredatorsBracers= 231323
 )
 
 func init() {
@@ -272,6 +276,46 @@ func init() {
 				spell.DamageMultiplier *= 1.04
 			}
 		})
+	})
+
+	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+	})
+
+	core.NewItemEffect(ZandalarPredatorsMantle, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+	})
+
+	core.NewItemEffect(ZandalarPredatorsBelt, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+	})
+
+	core.NewItemEffect(ZandalarPredatorsBracers, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.01
 	})
 }
 

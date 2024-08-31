@@ -193,7 +193,7 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 })
 
 var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
-	Name: "Dragonstalker Prowess",
+	Name: "Dragonstalker's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Raptor Strike increases the damage done by your next other melee ability within 5 sec by 20%.
 		2: func(agent core.Agent) {
@@ -287,7 +287,7 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 })
 
 var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Dragonstalker Pursuit",
+	Name: "Dragonstalker's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Your Aimed Shot deals 20% more damage to targets afflicted by one of your trap effects.
 		2: func(agent core.Agent) {
@@ -345,7 +345,7 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 })
 
 var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
-	Name: "Predator Armor",
+	Name: "Predator's Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		// +20 Attack Power.
 		2: func(agent core.Agent) {

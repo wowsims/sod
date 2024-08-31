@@ -114,11 +114,11 @@ func (hunter *Hunter) registerBestialWrathCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 19574}
-
+	
 	bestialWrathPetAura := hunter.pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
-		Duration: time.Second * 18,
+		Duration: time.Second * core.TernaryDuration(core.HasItemEffect(MaelstromsWrath), 21, 18),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
 		},
