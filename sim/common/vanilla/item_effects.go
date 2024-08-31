@@ -543,10 +543,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
 	// Chance on hit: Increases your attack speed by 30% for 5 sec.
-	// Uptime measured in SoD exceeds what was measured with the Vanilla version.
-	// Lines up closely with a 2.0 PPM
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 2.0, eskhandarsRightClawAura)
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 2.0, eskhandarsRightClawAura)
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 1.0, eskhandarsRightClawAura)
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 1.0, eskhandarsRightClawAura)
 
 	// https://www.wowhead.com/classic/item=13218/fang-of-the-crystal-spider
 	// Chance on hit: Slows target enemy's casting speed and increases the time between melee and ranged attacks by 10% for 10 sec.
