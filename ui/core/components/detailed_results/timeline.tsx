@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 import { ResourceType } from '../../proto/api.js';
 import { OtherAction } from '../../proto/common.js';
 import { ActionId, resourceTypeToIcon } from '../../proto_utils/action_id.js';
-import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, DamageDealtLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
+import { AuraUptimeLog, CastLog, DamageDealtLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
 import { resourceNames } from '../../proto_utils/names.js';
 import { UnitMetrics } from '../../proto_utils/sim_result.js';
 import { orderedResourceTypes } from '../../proto_utils/utils.js';
@@ -777,18 +777,17 @@ export class Timeline extends ResultComponent {
 
 		const rowElem = this.makeRowElem(actionId, duration);
 
-		var stackedIconCount = 1;
-		var stackedDamageCount = 1;
-	
-		castLogs.forEach( (castLog, index) => {
+		let stackedIconCount = 1;
+		let stackedDamageCount = 1;
+
+		castLogs.forEach((castLog, index) => {
 			const castElem = (
 				<div
 					className="rotation-timeline-cast"
 					style={{
 						left: this.timeToPx(castLog.timestamp),
 						minWidth: this.timeToPx(castLog.castTime + castLog.travelTime),
-					}}>
-				</div>
+					}}></div>
 			);
 
 			rowElem.appendChild(castElem);
@@ -827,11 +826,11 @@ export class Timeline extends ResultComponent {
 			const totalDamage = castLog.totalDamage();
 
 			if (index > 0) {
-				var timeDelta = 0.0;
+				let timeDelta = 0.0;
 
-				for (var i=index - 1; i >= 0; i--) {
+				for (let i = index - 1; i >= 0; i--) {
 					if (castLog.timestamp != castLogs[i].timestamp) {
-						var timeDelta = castLog.timestamp - castLogs[i].timestamp;
+						timeDelta = castLog.timestamp - castLogs[i].timestamp;
 						break;
 					}
 				}
@@ -842,25 +841,28 @@ export class Timeline extends ResultComponent {
 					stackedDamageCount = castLog.damageDealtLogs.length;
 					stackedIconCount = 1;
 				}
-			} 
+			}
 
 			const startIndex = Math.max(0, 1 + index - stackedIconCount);
 			const relevantCastLogs = castLogs.slice(startIndex, index + 1);
-	
+
 			// Reset and initialize aggregatedData for the current iteration
 			const aggregatedData = relevantCastLogs.reduce<{
 				damageDealtLogs: DamageDealtLog[];
 				totalDamage: number;
-				}>((acc, log) => {
+			}>(
+				(acc, log) => {
 					// Correct type
 					acc.damageDealtLogs.push(...log.damageDealtLogs);
 					acc.totalDamage += log.totalDamage();
 					return acc;
-				}, {
+				},
+				{
 					damageDealtLogs: [], // Correctly typed as DamageDealtLog[]
-					totalDamage: 0
-				});
-	
+					totalDamage: 0,
+				},
+			);
+
 			const tt = (
 				<div className="timeline-tooltip">
 					<span>
@@ -887,7 +889,6 @@ export class Timeline extends ResultComponent {
 					)}
 				</div>
 			);
-	
 
 			tippy(castElem, {
 				placement: 'bottom',
@@ -895,17 +896,7 @@ export class Timeline extends ResultComponent {
 			});
 
 			if (stackedIconCount > 1) {
-				const numElement = (
-					<div
-						className="stacked-icon-count"
-						style={{
-							backgroundColor: 'black'
-						}}>
-						{String(stackedDamageCount)}
-					</div>
-						
-				);
-				castElem.appendChild(numElement);
+				castElem.appendChild(<div className="stacked-icon-count">{String(stackedDamageCount)}</div>);
 			}
 
 			castLog.damageDealtLogs
