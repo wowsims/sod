@@ -114,7 +114,7 @@ export class CharacterStats extends Component {
 			const valueElem = (
 				<div className="stat-value-link-container">
 					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
-						{`${this.statDisplayString(finalStats, finalStats, stat)} `}
+						{`${this.statDisplayString(player, finalStats, finalStats, stat)} `}
 					</a>
 				</div>
 			);
@@ -129,39 +129,39 @@ export class CharacterStats extends Component {
 					<div>
 						<div className="character-stats-tooltip-row">
 							<span>Base:</span>
-							<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
+							<span>{this.statDisplayString(player, baseStats, baseDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Gear:</span>
-							<span>{this.statDisplayString(gearStats, gearDelta, stat)}</span>
+							<span>{this.statDisplayString(player, gearStats, gearDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Talents:</span>
-							<span>{this.statDisplayString(talentsStats, talentsDelta, stat)}</span>
+							<span>{this.statDisplayString(player, talentsStats, talentsDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Buffs:</span>
-							<span>{this.statDisplayString(buffsStats, buffsDelta, stat)}</span>
+							<span>{this.statDisplayString(player, buffsStats, buffsDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Consumes:</span>
-							<span>{this.statDisplayString(consumesStats, consumesDelta, stat)}</span>
+							<span>{this.statDisplayString(player, consumesStats, consumesDelta, stat)}</span>
 						</div>
 						{debuffStats.getStat(stat) != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Debuffs:</span>
-								<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
+								<span>{this.statDisplayString(player, debuffStats, debuffStats, stat)}</span>
 							</div>
 						)}
 						{bonusStatValue != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Bonus:</span>
-								<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
+								<span>{this.statDisplayString(player, bonusStats, bonusStats, stat)}</span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
 							<span>Total:</span>
-							<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+							<span>{this.statDisplayString(player, finalStats, finalStats, stat)}</span>
 						</div>
 					</div>
 				</div>
@@ -318,7 +318,7 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat): string {
+	private statDisplayString(player: Player<any>, stats: Stats, deltaStats: Stats, stat: Stat): string {
 		let rawValue = deltaStats.getStat(stat);
 
 		if (stat === Stat.StatBlockValue) {
@@ -359,7 +359,7 @@ export class CharacterStats extends Component {
 			// Expertise is not used in SoD and replaced by weapon skill
 			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
 		} else if (stat === Stat.StatDefense) {
-			displayStr = `${(Mechanics.MAX_CHARACTER_LEVEL * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
+			displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
 		} else if (stat === Stat.StatBlock) {
 			displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
 		} else if (stat === Stat.StatDodge) {
