@@ -41,6 +41,7 @@ const (
 	MasterworkStormhammer          = 12794
 	Frostguard                     = 12797
 	SerpentSlicer                  = 13035
+	TheNeedler                     = 13060
 	SealOfTheDawn                  = 13209
 	JoonhosMercy                   = 17054
 	Deathbringer                   = 17068
@@ -377,14 +378,14 @@ func init() {
 	// https://www.wowhead.com/classic/item=228603/blackhand-doomsaw
 	// Chance on hit: Wounds the target for 324 to 540 damage.
 	// TODO: Proc rate based on the original item
-	itemhelpers.CreateWeaponProcDamage(BlackhandDoomsaw, "Blackhand Doomsaw", 0.4, 16549, core.SpellSchoolPhysical, 324, 216, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(BlackhandDoomsaw, "Blackhand Doomsaw", 0.4, 16549, core.SpellSchoolPhysical, 324, 216, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=220569/blistering-ragehammer
 	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, enrageAura446327)
 
-	itemhelpers.CreateWeaponProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -440,11 +441,11 @@ func init() {
 	// https://www.wowhead.com/classic/item=228586/chillpike
 	// Chance on hit: Blasts a target for 160 to 250 Frost damage.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
-	itemhelpers.CreateWeaponProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228410/dreadblade-of-the-destructor
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
@@ -454,12 +455,12 @@ func init() {
 	// https://www.wowhead.com/classic/item=227842/ebon-fist
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcDamage(EbonFist, "Ebon Fist", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(EbonFist, "Ebon Fist", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=19170/ebon-hand
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcDamage(EbonHand, "Ebon Hand", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(EbonHand, "Ebon Hand", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=227993/ebon-hilt-of-marduk
 	// Chance on hit: Corrupts the target, causing 210 damage over 3 sec.
@@ -893,7 +894,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(GryphonRidersStormhammer, "Gryphon Rider's Stormhammer", 1.0, 18081, core.SpellSchoolNature, 91, 34, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(GryphonRidersStormhammer, "Gryphon Rider's Stormhammer", 1.0, 18081, core.SpellSchoolNature, 91, 34, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228267/gutgore-ripper
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 150 Shadow damage and lowering all stats by 25 for 30 sec.
@@ -931,9 +932,9 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(GutRipper, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(GutRipper, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
 
-	itemhelpers.CreateWeaponProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=2243/hand-of-edward-the-odd
 	// Chance on hit: Next spell cast within 4 sec will cast instantly.
@@ -954,7 +955,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(HanzoSword, "Hanzo Sword", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(HanzoSword, "Hanzo Sword", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=228022/headmasters-charge#comments
 	// Use: Gives 20 additional intellect to party members within 30 yards. (10 Min Cooldown)
@@ -1106,9 +1107,9 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=227940/lord-generals-sword
 	// Chance on hit: Increases attack power by 50 for 30 sec.
@@ -1154,7 +1155,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=19169/nightfall
 	// Removed from SoD
@@ -1162,7 +1163,7 @@ func init() {
 	// 	makeNightfallProc(agent.GetCharacter(), "Nightfall")
 	// })
 
-	itemhelpers.CreateWeaponProcDamage(PendulumOfDoom, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(PendulumOfDoom, "Pendulum of Doom", 0.5, 10373, core.SpellSchoolPhysical, 250, 100, 0, core.DefenseTypeMelee)
 
 	core.NewItemEffect(PipsSkinner, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -1174,8 +1175,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228296/perditions-blade
 	// Chance on hit: Blasts a target for 98 to 122 Fire damage.
-	itemhelpers.CreateWeaponProcDamage(PerditionsBlade, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
-	itemhelpers.CreateWeaponProcDamage(PerditionsBladeMolten, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(PerditionsBlade, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(PerditionsBladeMolten, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228679/quelserrar
 	// Chance on hit: When active, grants the wielder 25 defense and 300 armor for 10 sec.
@@ -1323,10 +1324,10 @@ func init() {
 	// 	makeNightfallProc(agent.GetCharacter(), "Reaving Nightfall")
 	// })
 
-	itemhelpers.CreateWeaponProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
 
 	// TODO Searing Needle adds an "Apply Aura: Mod Damage Done (Fire): 10" aura to the /target/, buffing it; not currently modelled
-	itemhelpers.CreateWeaponProcDamage(SearingNeedle, "Searing Needle", 1.0, 16454, core.SpellSchoolFire, 60, 0, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(SearingNeedle, "Searing Needle", 1.0, 16454, core.SpellSchoolFire, 60, 0, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228666/seeping-willow
 	// Chance on hit: Lowers all stats by 20 and deals 20 Nature damage every 3 sec to all enemies within an 8 yard radius of the caster for 30 sec.
@@ -1417,7 +1418,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(Shadowblade, "Shadowblade", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228272/shadowstrike
 	// Chance on hit: Steals 180 to 220 life from target enemy.
@@ -1440,7 +1441,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(ShortswordOfVengeance, "Shortsword of Vengeance", 1.0, 13519, core.SpellSchoolHoly, 30, 0, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228542/skullforge-reaver
 	// Equip: Drains target for 2 Shadow damage every 1 sec and transfers it to the caster. Lasts for 30 sec.
@@ -1836,11 +1837,13 @@ func init() {
 		})
 	})
 
+	itemhelpers.CreateWeaponCoHProcDamage(TheNeedler, "The Needler", 3.0, 13060, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+
 	itemhelpers.CreateWeaponProcAura(TheJackhammer, "The Jackhammer", 1.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "The Jackhammer Haste Aura",
 			ActionID: core.ActionID{SpellID: 13533},
-			Duration: time.Second * 9,
+			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.3)
 			},
@@ -2021,9 +2024,9 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
-	itemhelpers.CreateWeaponProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=227941/wraith-scythe
 	// Chance on hit: Steals 45 life from target enemy.
@@ -2549,7 +2552,7 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Blazefury Medallion Trigger",
+			Name:              "Blazefury Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,

@@ -105,6 +105,6 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			},
 		})
 
-		paladin.spellsJotC[i] = judgeSpell
+		paladin.spellsJotC = append(paladin.spellsJotC, judgeSpell)
 	}
 }

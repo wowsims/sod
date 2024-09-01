@@ -159,6 +159,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			},
 		})
 
-		paladin.spellsJoR[i] = judgeSpell
-	}
+		paladin.spellsJoR = append(paladin.spellsJoR, judgeSpell)
+	} 
 }

@@ -187,3 +187,47 @@ var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
+	Name: "Radiant Judgement",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
+			paladin := agent.(PaladinAgent).GetPaladin()
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 2P Bonus",
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					if !paladin.t2Judgement2pc {
+						paladin.t2Judgement2pc = true
+						paladin.enableT2Judgement2pc()
+					}
+				},
+			}))
+		},
+		4: func(agent core.Agent) {
+			// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
+			// Implemented in Paladin.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					paladin.t2Judgement4pc = true
+				},
+			}))
+		},
+		6: func(agent core.Agent) {
+			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+			// Implemented in Paladin.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					if !paladin.t2Judgement6pc {
+						paladin.t2Judgement6pc = true
+						paladin.enableT2Judgement6pc()
+					}
+				},
+			}))
+		},
+	},
+})

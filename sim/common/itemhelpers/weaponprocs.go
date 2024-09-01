@@ -8,7 +8,7 @@ import (
 
 // Create a simple weapon proc that deals damage.
 func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
-	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
+	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType, spellFlagExlcude core.SpellFlag) {
 
 	core.NewItemEffect(itemId, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -37,6 +37,12 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicHitAndCrit)
 			}
 		case core.DefenseTypeMelee:
+			// "Phantom Strike Procs"
+			// Can proc itself (Only for CoH proc), can't proc equip effects (in SoD at least - Tested), Weapon Enchants (confirmed - procs fiery), can proc imbues (oils),
+			// WildStrikes/Windfury (Wound/ Phantom Strike can't proc WF/WS in SoD, Tested for both, Appear to behave like equip affects in SoD)
+			sc.ProcMask = core.ProcMaskMeleeSpecial
+			sc.Flags = core.SpellFlagSuppressEquipProcs | core.SpellFlagSupressExtraAttack
+
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
 				spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -59,7 +65,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
+				if spell.Flags.Matches(spellFlagExlcude) { // This check is needed because it doesn't use aura_helpers ApplyProcTriggerCallback
 					return
 				}
 				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, aura.Label) {
@@ -68,6 +74,19 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 			},
 		})
 	})
+}
+
+// CoH is Chance on Hit
+func CreateWeaponCoHProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
+	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
+
+	CreateWeaponProcDamage(itemId, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressWeaponProcs)
+}
+
+func CreateWeaponEquipProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
+	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
+
+	CreateWeaponProcDamage(itemId, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressEquipProcs)
 }
 
 // Create a weapon proc using a custom spell.

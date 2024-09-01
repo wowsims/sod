@@ -41,10 +41,11 @@ type Paladin struct {
 	aurasSoC         [5]*core.Aura
 	aurasSotC        [6]*core.Aura
 	currentJudgement *core.Spell
-	spellJoM         *core.Spell
-	spellsJoR        [8]*core.Spell
-	spellsJoC        [5]*core.Spell
-	spellsJotC       [6]*core.Spell
+	allJudgeSpells   [][]*core.Spell
+	spellsJoM        []*core.Spell
+	spellsJoR        []*core.Spell
+	spellsJoC        []*core.Spell
+	spellsJotC       []*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	holyShockCooldown *core.Cooldown
@@ -61,6 +62,14 @@ type Paladin struct {
 	sealOfMartyrdom     *core.Spell
 
 	lingerDuration time.Duration
+
+	// T2 Bonuses Related (Draconic)
+	t2Judgement2pc        bool
+	t2Judgement2pcApplied bool
+	t2Judgement4pc        bool
+	t2Judgement6pc        bool
+	t2Judgement6pcAura    *core.Aura
+	lastJudgement         int
 }
 
 // Implemented by each Paladin spec.
@@ -92,6 +101,11 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerSealOfMartyrdom()
 	paladin.registerSealOfTheCrusader()
 
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoM)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoR)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoC)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJotC)
+
 	// Active abilities
 	paladin.registerCrusaderStrike()
 	paladin.registerDivineStorm()
@@ -107,6 +121,12 @@ func (paladin *Paladin) Initialize() {
 	paladin.lingerDuration = time.Millisecond * 400
 
 	paladin.registerStopAttackMacros()
+
+	paladin.t2Judgement2pc = false
+	paladin.t2Judgement2pcApplied = false
+	paladin.t2Judgement4pc = false
+	paladin.t2Judgement6pc = false
+
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -167,19 +187,11 @@ func (paladin *Paladin) registerStopAttackMacros() {
 		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if paladin.spellJoM != nil && paladin.Options.IsUsingJudgementStopAttack {
-		paladin.spellJoM.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	for i, v := range paladin.spellsJoR {
-		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-			paladin.spellsJoR[i].Flags |= core.SpellFlagBatchStopAttackMacro
-		}
-	}
-
-	for i, v := range paladin.spellsJoC {
-		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-			paladin.spellsJoC[i].Flags |= core.SpellFlagBatchStopAttackMacro
+	for _, spellsJoX := range paladin.allJudgeSpells {
+		for _, v := range spellsJoX {
+			if v != nil && paladin.Options.IsUsingJudgementStopAttack {
+				v.Flags |= core.SpellFlagBatchStopAttackMacro
+			}
 		}
 	}
 }

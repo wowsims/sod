@@ -21,7 +21,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlag_RV,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
 
 		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),
 		ThreatMultiplier: 1,
@@ -90,5 +90,5 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		},
 	})
 
-	paladin.spellJoM = judgeSpell
+	paladin.spellsJoM = append(paladin.spellsJoM, judgeSpell)
 }
