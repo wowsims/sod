@@ -736,6 +736,7 @@ func (aa *AutoAttacks) NextRangedAttackAt() time.Duration {
 }
 
 type PPMManager struct {
+	ppm         float64
 	procMasks   []ProcMask
 	procChances []float64
 
@@ -777,12 +778,16 @@ func (ppmm *PPMManager) Chance(procMask ProcMask) float64 {
 	return 0
 }
 
+func (ppmm *PPMManager) GetPPM() float64 {
+	return ppmm.ppm
+}
+
 func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) PPMManager {
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return PPMManager{}
 	}
 
-	ppmm := PPMManager{procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
+	ppmm := PPMManager{ppm: ppm, procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
 
 	mergeOrAppend := func(speed float64, mask ProcMask) {
 		if speed == 0 || mask == 0 {
@@ -855,7 +860,7 @@ func (unit *Unit) applyParryHaste() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !result.Outcome.Matches(OutcomeParry) {
+			if !result.DidParry() {
 				return
 			}
 

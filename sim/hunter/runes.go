@@ -10,11 +10,6 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
-		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
-	}
-
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
 		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
 	}
@@ -43,6 +38,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyRaptorFury()
 	hunter.applyCobraSlayer()
 	hunter.applyHitAndRun()
+	hunter.applyMasterMarksman()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -76,6 +72,19 @@ func (hunter *Hunter) ApplyRunes() {
 // 		},
 // 	}))
 // }
+
+func (hunter *Hunter) applyMasterMarksman() {
+	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
+		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
+		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShot) {
+				spell.Cost.Multiplier -= 25
+			}
+		})
+	}
+}
 
 func (hunter *Hunter) applyExposeWeakness() {
 	if !hunter.HasRune(proto.HunterRune_RuneBeltExposeWeakness) {
@@ -212,6 +221,17 @@ func (hunter *Hunter) applyCobraStrikes() {
 			}
 		},
 	})
+
+	hunter.RegisterAura(core.Aura{
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(SpellFlagShot | SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite {
+				if result.DidCrit() {
+					hunter.CobraStrikesAura.Activate(sim)
+					hunter.CobraStrikesAura.SetStacks(sim, 2)
+				}
+			}
+		},
+	})
 }
 
 func (hunter *Hunter) applyLockAndLoad() {
@@ -291,7 +311,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 				return
 			}
 
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 				return

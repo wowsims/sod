@@ -14,8 +14,9 @@ var TalentTreeSizes = [3]int{15, 16, 15}
 const (
 	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
-	SpellFlagFocusable = core.SpellFlagAgentReserved3
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
+	SpellFlagLightning = core.SpellFlagAgentReserved3
+	SpellFlagFocusable = core.SpellFlagAgentReserved4
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved5
 )
 
 func NewShaman(character *core.Character, talents string) *Shaman {
@@ -30,6 +31,7 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	// Add Shaman stat dependencies
 	shaman.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(shaman.Level)]*core.CritRatingPerCritChance)
+	shaman.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(shaman.Level)]*core.DodgeRatingPerDodgeChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
@@ -96,6 +98,7 @@ type Shaman struct {
 
 	Talents *proto.ShamanTalents
 
+	// Spells
 	AncestralAwakening     *core.Spell
 	ChainHeal              []*core.Spell
 	ChainHealOverload      []*core.Spell
@@ -123,6 +126,7 @@ type Shaman struct {
 	MagmaTotem             []*core.Spell
 	ManaSpringTotem        []*core.Spell
 	MoltenBlast            *core.Spell
+	Riptide                *core.Spell
 	RollingThunder         *core.Spell
 	SearingTotem           []*core.Spell
 	StoneskinTotem         []*core.Spell
@@ -134,24 +138,37 @@ type Shaman struct {
 	WindfuryTotem          []*core.Spell
 	WindwallTotem          []*core.Spell
 
-	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
-	ActiveShieldAura *core.Aura
-
+	// Auras
+	ClearcastingAura      *core.Aura
 	FlurryAura            *core.Aura
 	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
+	LoyalBetaAura         *core.Aura
 	MaelstromWeaponAura   *core.Aura
-	PowerSurgeAura        *core.Aura
+	PowerSurgeDamageAura  *core.Aura
+	PowerSurgeHealAura    *core.Aura
+	SpiritOfTheAlphaAura  *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
+	EarthTotems      []*core.Spell
+	FireTotems       []*core.Spell
+	WaterTotems      []*core.Spell
+	AirTotems        []*core.Spell
 	Totems           *proto.ShamanTotems
 	TotemExpirations [4]time.Duration // The expiration time of each totem (earth, air, fire, water).
 
+	// Shield
+	ActiveShield     *core.Spell // Tracks the Shaman's active shield spell
+	ActiveShieldAura *core.Aura
+
+	// Pets
 	SpiritWolves *SpiritWolves
 
-	lastFlameShockTarget *core.Unit // Used by Ancestral Guidance rune
-
-	ancestralHealingAmount float64 // Used by Ancestral Awakening
+	// Other data
+	ancestralHealingAmount float64    // Used by Ancestral Awakening
+	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
+	maelstromWeaponPPMM    *core.PPMManager
+	powerSurgeProcChance   float64
 }
 
 // Implemented by each Shaman spec.

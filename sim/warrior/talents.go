@@ -296,7 +296,7 @@ func (warrior *Warrior) applyShieldSpecialization() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.DidBlock() {
 				if sim.Proc(procChance, "Shield Specialization") {
 					warrior.AddRage(sim, 1.0, rageMetrics)
 				}

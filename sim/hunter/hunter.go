@@ -13,6 +13,9 @@ var TalentTreeSizes = [3]int{16, 14, 16}
 
 const (
 	SpellFlagShot = core.SpellFlagAgentReserved1
+	SpellFlagStrike = core.SpellFlagAgentReserved2
+	SpellFlagSting = core.SpellFlagAgentReserved3
+	SpellFlagTrap = core.SpellFlagAgentReserved4
 )
 
 const (
@@ -22,6 +25,8 @@ const (
 	SpellCode_HunterMongooseBite
 	SpellCode_HunterRaptorStrike
 	SpellCode_HunterMultiShot
+	SpellCode_HunterKillShot
+	SpellCode_HunterVolley
 )
 
 func RegisterHunter() {
@@ -131,6 +136,12 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagShot) {
+			hunter.Shots = append(hunter.Shots, spell)
+		}
+	})
+
 	hunter.HasPredatorArmor[3] = hunter.HasSetBonus(ItemSetPredatorArmor, 3)
 	hunter.HasPredatorArmor[5] = hunter.HasSetBonus(ItemSetPredatorArmor, 5)
 
