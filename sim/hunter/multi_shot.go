@@ -16,13 +16,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	numHits := min(3, hunter.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterMultiShot,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -37,7 +32,6 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -83,11 +77,6 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, results[hitIndex])
 
-					if hasCobraStrikes && results[hitIndex].DidCrit() {
-						hunter.CobraStrikesAura.Activate(sim)
-						hunter.CobraStrikesAura.SetStacks(sim, 2)
-					}
-
 					if hasSerpentSpread {
 						serpentStingAura := hunter.SerpentSting.Dot(curTarget)
 						serpentStingTicks := serpentStingAura.NumberOfTicks
@@ -120,7 +109,6 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.MultiShot = hunter.GetOrRegisterSpell(config)
-			hunter.Shots = append(hunter.Shots, hunter.MultiShot)
 		}
 	}
 }
