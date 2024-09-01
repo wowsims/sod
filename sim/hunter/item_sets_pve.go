@@ -292,12 +292,26 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 		// Your Aimed Shot deals 20% more damage to targets afflicted by one of your trap effects.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
+
+			procAura := hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Ranged 2P Bonus",
 				ActionID: core.ActionID{SpellID: 467235},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				Duration: time.Second * 1, // Duration doesn't really matter as the duration is set to the duration of the trap debuff that applies this aura
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AimedShot.DamageMultiplier *= 1.20
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.AimedShot.DamageMultiplier /= 1.20
+				},
+			})
+			
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Hunter - Ranged 2P Bonus Trigger",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Flags.Matches(SpellFlagTrap) {
+						procAura.Duration = spell.DotOrAOEDot(result.Target).Duration
+						procAura.Activate(sim)
+					}
 				},
 			}))
 		},
