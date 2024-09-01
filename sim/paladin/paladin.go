@@ -124,14 +124,6 @@ func NewPaladin(character *core.Character, options *proto.Player, pallyAura prot
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	// Dodge per agi at a given level behaves identically in classic to Crit per agi at a given level.
-	// paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.DodgeRatingPerDodgeChance)
-
-	// The below requires some verification for the prot paladin sim when it is implemented.
-	// Switch these to AddStat as the PsuedoStats are being removed
-	// paladin.PseudoStats.BaseDodge += 0.034943
-	// paladin.PseudoStats.BaseParry += 0.05
-
 	guardians.ConstructGuardians(&paladin.Character)
 
 	return paladin
