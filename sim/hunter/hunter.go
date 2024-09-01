@@ -140,6 +140,7 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
+	hunter.registerAspectOfTheFalconSpell()
 
 	multiShotTimer := hunter.NewTimer()
 	arcaneShotTimer := hunter.NewTimer()
