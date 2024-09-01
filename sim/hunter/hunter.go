@@ -90,6 +90,7 @@ type Hunter struct {
 
 	Shots []*core.Spell
 	Strikes []*core.Spell
+	MeleeSpells []*core.Spell
 	LastShot *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
@@ -139,6 +140,16 @@ func (hunter *Hunter) Initialize() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagShot) {
 			hunter.Shots = append(hunter.Shots, spell)
+		}
+	})
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagStrike) {
+			hunter.Strikes = append(hunter.Strikes, spell)
+		}
+	})
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial) {
+			hunter.MeleeSpells = append(hunter.MeleeSpells, spell)
 		}
 	})
 

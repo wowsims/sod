@@ -204,34 +204,16 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 				Label:    "S03 - Item - T2 - Hunter - Melee 2P Bonus",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.Strikes {
+					for _, spell := range hunter.MeleeSpells {
 						if spell != nil {
 							spell.DamageMultiplier *= 1.20
 						}
 					}
-
-					hunter.MongooseBite.DamageMultiplier *= 1.20
-					hunter.WingClip.DamageMultiplier *= 1.20
-					if hunter.CarveMH != nil {
-						hunter.CarveMH.DamageMultiplier *= 1.20
-						if hunter.CarveOH != nil {
-							hunter.CarveOH.DamageMultiplier *= 1.20
-						}
-					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.Strikes {
+					for _, spell := range hunter.MeleeSpells {
 						if spell != nil {
 							spell.DamageMultiplier /= 1.20
-						}
-					}
-
-					hunter.MongooseBite.DamageMultiplier /= 1.20
-					hunter.WingClip.DamageMultiplier /= 1.20
-					if hunter.CarveMH != nil {
-						hunter.CarveMH.DamageMultiplier /= 1.20
-						if hunter.CarveOH != nil {
-							hunter.CarveOH.DamageMultiplier /= 1.20
 						}
 					}
 				},
