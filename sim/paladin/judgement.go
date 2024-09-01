@@ -15,7 +15,7 @@ func (paladin *Paladin) registerJudgement() {
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -49,7 +49,6 @@ func (paladin *Paladin) registerJudgement() {
 			for _, sealAura := range paladin.aurasSoC {
 				if sealAura.IsActive() {
 					spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-					//paladin.spellsJoC[i].Cast(sim, target)
 					sealAura.Deactivate(sim)
 				}
 			}

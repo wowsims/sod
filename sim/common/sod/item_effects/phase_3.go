@@ -468,7 +468,7 @@ func init() {
 				}
 
 				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
-					character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{ItemID: 220588})
+					character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 220588}, spell)
 				}
 			},
 		})

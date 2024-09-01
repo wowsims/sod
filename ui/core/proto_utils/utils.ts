@@ -36,14 +36,14 @@ import { Mage, Mage_Options as MageOptions, Mage_Rotation as MageRotation, MageT
 import {
 	Blessings,
 	HolyPaladin,
-	HolyPaladin_Options as HolyPaladinOptions,
+	PaladinOptions as HolyPaladinOptions,
 	HolyPaladin_Rotation as HolyPaladinRotation,
 	PaladinTalents,
 	ProtectionPaladin,
-	ProtectionPaladin_Options as ProtectionPaladinOptions,
+	PaladinOptions as ProtectionPaladinOptions,
 	ProtectionPaladin_Rotation as ProtectionPaladinRotation,
 	RetributionPaladin,
-	RetributionPaladin_Options as RetributionPaladinOptions,
+	PaladinOptions as RetributionPaladinOptions,
 	RetributionPaladin_Rotation as RetributionPaladinRotation,
 } from '../proto/paladin.js';
 import {

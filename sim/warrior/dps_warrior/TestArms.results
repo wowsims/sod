@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestArms-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.30471
-  weights: 0.86087
+  weights: 0.96938
+  weights: 0.94115
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.30888
-  weights: 15.2474
-  weights: 10.77353
+  weights: 0.29689
+  weights: 13.18277
+  weights: 10.97717
   weights: 0
   weights: 0
   weights: 0
@@ -99,15 +99,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestArms-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 825.93579
-  tps: 710.98329
+  dps: 821.7468
+  tps: 709.75671
  }
 }
 dps_results: {
  key: "TestArms-Lvl50-Average-Default"
  value: {
-  dps: 1151.72213
-  tps: 979.02153
+  dps: 1140.11392
+  tps: 969.13226
  }
 }
 dps_results: {
@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestArms-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1057.51691
-  tps: 899.98604
+  dps: 1057.42077
+  tps: 899.84329
  }
 }

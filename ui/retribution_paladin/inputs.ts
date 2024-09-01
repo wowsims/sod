@@ -62,3 +62,21 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) =>
 		TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.levelChangeEmitter]),
 });
+
+export const CrusaderStrikeStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
+	fieldName: 'isUsingCrusaderStrikeStopAttack',
+	label: 'Using Crusader Strike StopAttack Macro',
+	labelTooltip: 'Allows saving of extra attacks',
+});
+
+export const DivineStormStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
+	fieldName: 'isUsingDivineStormStopAttack',
+	label: 'Using Divine Storm StopAttack Macro',
+	labelTooltip: 'Allows saving of extra attacks',
+});
+
+export const JudgementStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
+	fieldName: 'isUsingJudgementStopAttack',
+	label: 'Using Judgement StopAttack Macro',
+	labelTooltip: 'Allows saving of extra attacks',
+});

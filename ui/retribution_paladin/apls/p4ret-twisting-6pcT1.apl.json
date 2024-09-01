@@ -10,6 +10,7 @@
         {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":20920,"rank":5}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"autoTimeToNext":{"autoType":"Any"}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":20920,"rank":5}}}},
         {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":407798}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"autoTimeToNext":{"autoType":"Any"}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":407798}}}},
         {"action":{"condition":{"and":{"vals":[{"spellCanCast":{"spellId":{"spellId":20271}}},{"gcdIsReady":{}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castSpell":{"spellId":{"spellId":407798}}}]}}},
+        {"action":{"condition":{"runeIsEquipped":{"runeId":{"spellId":429152}}},"castSpell":{"spellId":{"spellId":24239,"rank":3}}}},
         {"action":{"castSpell":{"spellId":{"spellId":407778}}}},
         {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
         {"action":{"castSpell":{"spellId":{"spellId":415073}}}},

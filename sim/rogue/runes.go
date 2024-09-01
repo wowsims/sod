@@ -61,11 +61,11 @@ func (rogue *Rogue) applyCombatPotency() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			isFoKOH := false
-			
+
 			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
 				isFoKOH = true
 			}
-			
+
 			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOH) || isFoKOH {
 				return
 			}
@@ -98,7 +98,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 				isFoKOH = true
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.DidCrit() || isFoKOH {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged|core.ProcMaskTriggerInstant) || !result.DidCrit() || isFoKOH {
 				return
 			}
 			rogue.AddEnergy(sim, 2, energyMetrics)
