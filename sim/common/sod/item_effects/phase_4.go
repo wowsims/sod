@@ -34,6 +34,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=228139/fist-of-the-firesworn
 	// Chance on hit: Blasts the enemy for 70 Fire damage.
 	// TODO: Proc rate assumed and needs testing
+
 	itemhelpers.CreateWeaponProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
 	itemhelpers.CreateWeaponProcDamage(FistOfTheFireswornMolten, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
 

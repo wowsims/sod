@@ -128,35 +128,31 @@ enum PaladinSeal {
 	Martyrdom = 3;
 }
 
+message PaladinOptions {
+	PaladinSeal primarySeal = 1;
+	PaladinAura aura = 2;
+	bool IsUsingDivineStormStopAttack = 4;
+	bool IsUsingJudgementStopAttack = 5;
+	bool IsUsingCrusaderStrikeStopAttack = 6;
+}
+
 message RetributionPaladin {
 	message Rotation {
 	}
 	
-	message Options {
-		PaladinSeal primarySeal = 1;
-		PaladinAura aura = 2;
-	}
-	Options options = 3;
+	PaladinOptions options = 3;
 }
 
 message ProtectionPaladin {
 	message Rotation {
 	}
 
-	message Options {
-		PaladinSeal primarySeal = 1;
-		PaladinAura aura = 2;
-	}
-	Options options = 3;
+	PaladinOptions options = 3;
 }
 
 message HolyPaladin {
 	message Rotation {
 	}
 
-	message Options {
-		PaladinSeal primarySeal = 1;
-		PaladinAura aura = 2;
-	}
-	Options options = 3;
+	PaladinOptions options = 3;
 }

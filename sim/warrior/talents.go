@@ -149,7 +149,7 @@ func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				warrior.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 12815})
+				warrior.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 12815}, spell.ActionID)
 			}
 		},
 	})

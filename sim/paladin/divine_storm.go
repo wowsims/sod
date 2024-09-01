@@ -21,7 +21,7 @@ func (paladin *Paladin) registerDivineStorm() {
 
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)})
 
-	paladin.RegisterSpell(core.SpellConfig{
+	divineStormSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    healthMetrics.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -59,4 +59,6 @@ func (paladin *Paladin) registerDivineStorm() {
 			paladin.GainHealth(sim, totalDamageDealt*0.25, healthMetrics)
 		},
 	})
+	
+	paladin.divineStorm = divineStormSpell
 }

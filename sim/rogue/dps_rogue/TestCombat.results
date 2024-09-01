@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.24387
-  weights: 0.46059
+  weights: 0.24298
+  weights: 0.45889
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2217
-  weights: 1.69801
-  weights: 1.8188
+  weights: 0.22089
+  weights: 1.66493
+  weights: 1.81572
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.36503
-  weights: 0.58808
+  weights: 0.36364
+  weights: 0.58621
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33185
-  weights: 3.73658
-  weights: 3.69764
+  weights: 0.33059
+  weights: 3.60127
+  weights: 3.68643
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +197,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 260.08321
-  tps: 184.65908
+  dps: 259.43493
+  tps: 184.1988
  }
 }
 dps_results: {
  key: "TestCombat-Lvl25-Average-Default"
  value: {
-  dps: 215.24493
-  tps: 152.8239
+  dps: 214.7804
+  tps: 152.49408
  }
 }
 dps_results: {
@@ -295,22 +295,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 202.35206
-  tps: 143.66996
+  dps: 202.00453
+  tps: 143.42322
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-AllItems-DarkmantleArmor"
  value: {
-  dps: 266.26603
-  tps: 189.04888
+  dps: 265.13611
+  tps: 188.24664
  }
 }
 dps_results: {
  key: "TestCombat-Lvl40-Average-Default"
  value: {
-  dps: 524.10915
-  tps: 372.11749
+  dps: 523.04449
+  tps: 371.36159
  }
 }
 dps_results: {
@@ -400,7 +400,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 501.23053
-  tps: 355.87368
+  dps: 501.00536
+  tps: 355.7138
  }
 }
