@@ -305,8 +305,8 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
 	character.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
 
-	character.AddStat(stats.Parry, 5)
-	character.AddStat(stats.Block, 5)
+	character.AddStat(stats.Parry, 5*ParryRatingPerParryChance)
+	character.AddStat(stats.Block, 5*BlockRatingPerBlockChance)
 
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)

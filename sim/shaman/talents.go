@@ -32,7 +32,6 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.Parry {
 		shaman.PseudoStats.CanParry = true
-		shaman.AddStat(stats.Parry, 5)
 	}
 
 	// TODO: Check whether this does what it should.
