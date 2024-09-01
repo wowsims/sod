@@ -113,7 +113,7 @@ enum HunterRune {
 	RuneCloakResourcefulness			= 440529;
 	RuneCloakHitAndRun					= 440533;
 
-	RuneChestCobraSlayer				= 458393;
+	RuneChestBeastmastery   			= 409368;
 	RuneChestMasterMarksman 			= 409428;
 	RuneChestLoneWolf					= 415370;
 	RuneChestCobraStrikes   			= 425713;
@@ -122,10 +122,10 @@ enum HunterRune {
 	RuneBracersFocusFire				= 428726;
 	RuneBracersTNT						= 428717;
 
-	RuneHandsBeastmastery   			= 409368;
 	RuneHandsChimeraShot    			= 409433;
 	RuneHandsExplosiveShot  			= 409552;
 	RuneHandsCarve						= 425711;
+	RuneHandsCobraSlayer				= 458393;
 	
 	RuneBeltExposeWeakness 				= 409504;
 	RuneBeltMeleeSpecialist 			= 415352;

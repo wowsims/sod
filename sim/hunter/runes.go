@@ -16,10 +16,10 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.3
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
+	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
 		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
@@ -263,7 +263,7 @@ func (hunter *Hunter) applyRaptorFury() {
 }
 
 func (hunter *Hunter) applyCobraSlayer() {
-	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+	if !hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer) {
 		return
 	}
 
@@ -336,15 +336,15 @@ func (hunter *Hunter) applyHitAndRun() {
 		hunter.HitAndRunAura = hunter.RegisterAura(core.Aura{
 			Label:    "Hit And Run",
 			ActionID: core.ActionID{SpellID: 440533},
-			Duration: time.Second * 8,
+			Duration: time.Second * 15,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1.15
+				hunter.Unit.MoveSpeed *= 1.3
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1 / 1.15
+				hunter.Unit.MoveSpeed *= 1 / 1.3
 			},
 		})
 	}
