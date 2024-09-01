@@ -193,6 +193,8 @@ const (
 	SpellFlagSuppressWeaponProcs // Indicates this spell cannot proc weapon chance on hits or enchants
 	SpellFlagSuppressEquipProcs  // Indicates this spell cannot proc Equip procs
 
+	SpellFlagBatchStopAttackMacro // Indicates this spell is being cast in a Macro with a stopattack following it
+
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
 	SpellFlagAgentReserved2

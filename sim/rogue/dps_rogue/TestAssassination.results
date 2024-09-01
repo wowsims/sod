@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 928.4
+  final_stats: 1069.4
   final_stats: 295.2
   final_stats: 0
   final_stats: 5
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1273.6
+  final_stats: 1536.6
   final_stats: 538.8
   final_stats: 0
   final_stats: 5
@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.30995
-  weights: 0.52741
+  weights: 0.30752
+  weights: 0.52373
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28177
-  weights: 2.5562
-  weights: 2.2096
+  weights: 0.27956
+  weights: 2.49702
+  weights: 2.20022
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.37896
-  weights: 0.62944
+  weights: 0.37862
+  weights: 0.62937
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34451
-  weights: 5.32563
-  weights: 4.25135
+  weights: 0.3442
+  weights: 5.17288
+  weights: 4.2533
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +197,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 145.54751
-  tps: 103.33873
+  dps: 145.02684
+  tps: 102.96905
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl25-Average-Default"
  value: {
-  dps: 275.5004
-  tps: 195.60529
+  dps: 274.33011
+  tps: 194.77438
  }
 }
 dps_results: {
@@ -295,22 +295,22 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 263.34491
-  tps: 186.97489
+  dps: 262.24534
+  tps: 186.19419
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl40-AllItems-DarkmantleArmor"
  value: {
-  dps: 208.03964
-  tps: 147.70814
+  dps: 207.55559
+  tps: 147.36447
  }
 }
 dps_results: {
  key: "TestAssassination-Lvl40-Average-Default"
  value: {
-  dps: 570.29442
-  tps: 404.90904
+  dps: 570.12313
+  tps: 404.78743
  }
 }
 dps_results: {
@@ -400,7 +400,7 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 548.78601
-  tps: 389.63807
+  dps: 548.88284
+  tps: 389.70681
  }
 }

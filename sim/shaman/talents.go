@@ -32,7 +32,6 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.Parry {
 		shaman.PseudoStats.CanParry = true
-		shaman.AddStat(stats.Parry, 5)
 	}
 
 	// TODO: Check whether this does what it should.
@@ -49,7 +48,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) && spell.Cost != nil {
 				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
 			}
 		})
@@ -59,9 +58,20 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 
 	if shaman.Talents.HealingGrace > 0 {
+		threatMultiplier := 1 - .05*float64(shaman.Talents.HealingGrace)
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.ThreatMultiplier *= 1 - .05*float64(shaman.Talents.HealingGrace)
+				spell.ThreatMultiplier *= threatMultiplier
+			}
+		})
+	}
+
+	if shaman.Talents.TidalMastery > 0 {
+		critBonus := float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
+				spell.Flags.Matches(SpellFlagLightning)) {
+				spell.BonusCritRating += critBonus
 			}
 		})
 	}

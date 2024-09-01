@@ -334,6 +334,7 @@ message SavedSettings {
 	bool in_front_of_target = 13;
 	double distance_from_target = 14;
 	HealingModel healing_model = 15;
+
 }
 
 message SavedTalents {

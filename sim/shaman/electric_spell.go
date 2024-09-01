@@ -28,7 +28,7 @@ const (
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
 
-	flags := SpellFlagShaman | SpellFlagFocusable
+	flags := SpellFlagShaman | SpellFlagLightning | SpellFlagFocusable
 	if !isOverload {
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
@@ -66,8 +66,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
-			[]float64{0, 1, 2, 3, 4, 6}[shaman.Talents.CallOfThunder]*core.CritRatingPerCritChance,
+		BonusCritRating: []float64{0, 1, 2, 3, 4, 6}[shaman.Talents.CallOfThunder] * core.CritRatingPerCritChance,
 
 		DamageMultiplier: shaman.concussionMultiplier(),
 		ThreatMultiplier: 1,

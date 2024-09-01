@@ -89,8 +89,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,

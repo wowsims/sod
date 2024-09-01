@@ -22,11 +22,67 @@ const (
 	TotemOfRagingFire        = 228177
 	TotemOfEarthenVitality   = 228178
 	NaturalAlignmentCrystal  = 230273
+	WushoolaysCharmOfSpirits = 231281
 	TerrestrisEle            = 231890
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
+	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(WushoolaysCharmOfSpirits, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		duration := time.Second * 20
+		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
+
+		aura := shaman.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Wushoolay's Charm of Spirits",
+			Duration: time.Second * 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range shaman.LightningShieldProcs {
+					if spell != nil {
+						spell.DamageMultiplier *= 2
+					}
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range shaman.LightningShieldProcs {
+					if spell != nil {
+						spell.DamageMultiplier /= 2
+					}
+				}
+			},
+		})
+
+		spell := shaman.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    shaman.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    shaman.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		shaman.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
 	// Use: Aligns the Shaman with nature, increasing the damage done by spells by 20%, improving heal effects by 20%, and increasing mana cost of spells by 20% for 20 sec.
@@ -55,6 +111,7 @@ func init() {
 		spell := shaman.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
 			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    shaman.NewTimer(),

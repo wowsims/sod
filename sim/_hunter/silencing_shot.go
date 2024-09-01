@@ -52,5 +52,4 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.SilencingShot)
 }

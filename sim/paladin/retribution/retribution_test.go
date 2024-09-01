@@ -229,11 +229,11 @@ var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 	},
 }
 
-var optionsSealOfCommand = &proto.RetributionPaladin_Options{
+var optionsSealOfCommand = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Command,
 }
 
-var optionsSealOfMartyrdom = &proto.RetributionPaladin_Options{
+var optionsSealOfMartyrdom = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
 }
 

@@ -2180,22 +2180,28 @@ func ApplyWildStrikes(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			// charges are removed by every auto or next melee, whether it lands or not
-			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				wsBuffAura.RemoveStack(sim)
-			}
-
 			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
 				return
+			}
+
+			// charges are removed by every auto or next melee, whether it lands or not
+			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				if wsBuffAura.GetStacks() == 2 {
+					wsBuffAura.SetStacks(sim, 1)
+					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
+					wsBuffAura.Refresh(sim) // Apply New Duration
+				}
 			}
 
 			if icd.IsReady(sim) && sim.RandomFloat("Wild Strikes") < 0.2 {
 				icd.Use(sim)
 				wsBuffAura.Activate(sim)
-				// aura is up _after_ the triggering swing lands, so the aura always stays up after the extra attack
+				// aura is up _after_ the triggering swing lands, the extra attack only has 1500ms for the AP bonus but the extra attack does not expire
 				wsBuffAura.SetStacks(sim, 2)
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, buffActionID)
-			}
+				wsBuffAura.Duration = time.Millisecond * 1500
+				wsBuffAura.Refresh(sim) // Apply New Duration
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim , 1, buffActionID, spell)
+			} 	
 		},
 	}))
 
@@ -2262,7 +2268,7 @@ func ApplyWindfury(character *Character) *Aura {
 				} else {
 					windfuryBuffAura.SetStacks(sim, 2)
 				}
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, ActionID{SpellID: 10610})
+				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, ActionID{SpellID: 10610}, spell.ActionID)
 			}
 		},
 	}))

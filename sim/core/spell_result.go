@@ -494,7 +494,6 @@ func (spell *Spell) DealPeriodicHealing(sim *Simulation, result *SpellResult) {
 
 func (spell *Spell) CalcAndDealHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
 	result := spell.CalcHealing(sim, target, baseHealing, outcomeApplier)
-	fmt.Println(sim.CurrentTime, spell.ActionID, result.Damage, result.Outcome)
 	spell.DealHealing(sim, result)
 	return result
 }

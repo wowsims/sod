@@ -61,7 +61,6 @@ package shaman
 // 			},
 // 		},
 
-// 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 // 		DamageMultiplier: 1
 // 		ThreatMultiplier: 1,
 

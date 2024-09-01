@@ -195,26 +195,23 @@ var ItemSetEarthfuryEruption = core.NewItemSet(core.ItemSet{
 		// Lava Burst now also refreshes the duration of Flame Shock on your target back to 12 sec.
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Shaman - Elemental 6P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// Assuming only direct casts (not overloads) proc this for now
-					if spell.SpellCode == SpellCode_ShamanLavaBurst && spell.Flags.Matches(core.SpellFlagAPL) && result.Landed() {
+			core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Shaman - Elemental 6P Bonus",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_ShamanLavaBurst {
 						for _, spell := range shaman.FlameShock {
-							if spell != nil {
-								if dot := spell.Dot(result.Target); dot.IsActive() {
-									dot.NumberOfTicks = 4
-									dot.Rollover(sim)
-								}
+							if spell == nil {
+								continue
+							}
+
+							if dot := spell.Dot(shaman.CurrentTarget); dot.IsActive() {
+								dot.NumberOfTicks = dot.OriginalNumberOfTicks
+								dot.Rollover(sim)
 							}
 						}
 					}
 				},
-			})
+			}))
 		},
 	},
 })
