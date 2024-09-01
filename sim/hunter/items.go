@@ -22,6 +22,7 @@ const (
 	GeneralChainGrips		= 231569
 	GeneralChainVices		= 231575
 	MarshalChainVices		= 231578
+	Peregrine				= 231755
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
@@ -287,6 +288,25 @@ func init() {
 
 	core.NewItemEffect(MarshalChainVices, func(agent core.Agent) {
 		applyMultiShotDamageEffect(agent, 1.04)
+	})
+
+	// https://www.wowhead.com/classic/item=231755/peregrine
+	// Chance on hit: Instantly gain 1 extra attack with both weapons.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Peregrine, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Peregrine Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 469140}, spell)
+				character.AutoAttacks.ExtraOHAttackProc(sim , 1, core.ActionID{SpellID: 469140}, spell)
+			},
+		})
 	})
 }
 

@@ -756,6 +756,23 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 	}
 }
 
+func (aa *AutoAttacks) ExtraOHAttackProc(sim *Simulation, attacks int32, actionID ActionID, spell *Spell) {
+		aa.ExtraMHAttack(sim, attacks, actionID, spell.ActionID)
+}
+
+func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
+    if attacks == 0 {
+		return
+    }
+	if sim.Log != nil {
+		aa.oh.unit.Log(sim, "gains %d extra attacks from %s triggered by %s", attacks, actionID, triggerAction)
+	}
+	aa.oh.swingAt = sim.CurrentTime + SpellBatchWindow
+	aa.oh.spell.SetMetricsSplit(1)
+	sim.rescheduleWeaponAttack(aa.oh.swingAt)
+	aa.oh.extraAttacksPending += attacks
+}
+
 // ExtraRangedAttack should be used for all "extra ranged attack" procs in Classic Era versions, including Hand of Injustice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the Ranged swing timer.
 // Note that Hand of Injustice doesn't seem to reset the swing timer however.
 func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID) {
