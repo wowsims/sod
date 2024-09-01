@@ -28,6 +28,11 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			shaman.SearingTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.FireTotems = append(
+		shaman.FireTotems,
+		core.FilterSlice(shaman.SearingTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
@@ -57,8 +62,8 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 	})
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: totemSpellId},
 		SpellCode:   SpellCode_ShamanSearingTotem,
+		ActionID:    core.ActionID{SpellID: totemSpellId},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -68,7 +73,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: shaman.totemManaMultiplier(),
 		},
 
@@ -128,6 +133,11 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			shaman.MagmaTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.FireTotems = append(
+		shaman.FireTotems,
+		core.FilterSlice(shaman.MagmaTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
@@ -157,8 +167,8 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 	})
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
 		SpellCode:   SpellCode_ShamanMagmaTotem,
+		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
@@ -168,7 +178,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: shaman.totemManaMultiplier(),
 		},
 
@@ -228,6 +238,11 @@ func (shaman *Shaman) registerFireNovaTotemSpell() {
 			shaman.FireNovaTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.FireTotems = append(
+		shaman.FireTotems,
+		core.FilterSlice(shaman.FireNovaTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
@@ -260,10 +275,10 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	})
 
 	spell := core.SpellConfig{
+		SpellCode:   SpellCode_ShamanFireNovaTotem,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		SpellCode:   SpellCode_ShamanFireNovaTotem,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
@@ -271,7 +286,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: shaman.totemManaMultiplier(),
 		},
 

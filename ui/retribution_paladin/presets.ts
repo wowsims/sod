@@ -22,7 +22,7 @@ import {
 	WeaponImbue,
 	ZanzaBuff,
 } from '../core/proto/common.js';
-import { PaladinAura, PaladinSeal, RetributionPaladin_Options as RetributionPaladinOptions } from '../core/proto/paladin.js';
+import { PaladinAura, PaladinSeal, PaladinOptions as RetributionPaladinOptions } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';

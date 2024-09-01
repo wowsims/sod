@@ -233,18 +233,18 @@ enum DungeonFilterOption {
 }
 
 enum RaidFilterOption {
-	RaidUnknown = 0;
-	RaidBlackfathomDeeps = 719;
-	RaidGnomeregan = 721;
-	RaidSunkenTemple = 1477;
-	RaidMoltenCore = 2717;
+	RaidUnknown						= 0;
+	RaidBlackfathomDeeps	= 719;
+	RaidGnomeregan				= 721;
+	RaidSunkenTemple			= 1477;
+	RaidMoltenCore				= 2717;
+	RaidBlackwingLair			= 2677;
+	RaidZulGurub					= 1977;
 }
 
 // Zones not yet available to players
 enum ExcludedZones {
 	ZoneUnknown = 0;
-	ZoneZulGurub = 1977;
-	ZoneBlackwingLair = 2677;
 	ZoneRuinsOfAQ = 3428;
 	ZoneTempleOfAQ = 3429;
 	ZoneNaxxramas = 3456;
@@ -334,6 +334,7 @@ message SavedSettings {
 	bool in_front_of_target = 13;
 	double distance_from_target = 14;
 	HealingModel healing_model = 15;
+
 }
 
 message SavedTalents {

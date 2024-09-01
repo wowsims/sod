@@ -22,6 +22,7 @@ type Paladin struct {
 	core.Character
 
 	Talents *proto.PaladinTalents
+	Options *proto.PaladinOptions
 
 	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
 	primaryPaladinAura proto.PaladinAura
@@ -42,6 +43,8 @@ type Paladin struct {
 	exorcismCooldown  *core.Cooldown
 	holyShockCooldown *core.Cooldown
 	judgement         *core.Spell
+	divineStorm       *core.Spell
+	crusaderStrike    *core.Spell
 	rv                *core.Spell
 
 	// highest rank seal spell if available
@@ -94,27 +97,32 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 
 	paladin.lingerDuration = time.Millisecond * 400
+
+	paladin.registerStopAttackMacros()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
+	//paladin.registerStopAttackMacros()
 }
 
 // maybe need to add stat dependencies
-func NewPaladin(character *core.Character, options *proto.Player, pallyAura proto.PaladinAura) *Paladin {
+func NewPaladin(character *core.Character, options *proto.Player, paladinOptions *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
+		Options: paladinOptions,
 	}
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
-	if pallyAura == proto.PaladinAura_SanctityAura {
-		paladin.primaryPaladinAura = pallyAura
+	if paladin.Options.Aura == proto.PaladinAura_SanctityAura {
+		paladin.primaryPaladinAura = paladin.Options.Aura
 	}
 
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
+	paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.CritRatingPerCritChance)
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
 	// Paladins get 1 block value per 20 str
@@ -122,14 +130,6 @@ func NewPaladin(character *core.Character, options *proto.Player, pallyAura prot
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
-	// Dodge per agi at a given level behaves identically in classic to Crit per agi at a given level.
-	// paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class][int(paladin.Level)]*core.DodgeRatingPerDodgeChance)
-
-	// The below requires some verification for the prot paladin sim when it is implemented.
-	// Switch these to AddStat as the PsuedoStats are being removed
-	// paladin.PseudoStats.BaseDodge += 0.034943
-	// paladin.PseudoStats.BaseParry += 0.05
 
 	guardians.ConstructGuardians(&paladin.Character)
 
@@ -147,6 +147,33 @@ func (paladin *Paladin) has2hEquipped() bool {
 func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.currentSeal = nil
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
+}
+
+func (paladin *Paladin) registerStopAttackMacros() {
+
+	if paladin.divineStorm != nil && paladin.Options.IsUsingDivineStormStopAttack {
+		paladin.divineStorm.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+	
+	if paladin.crusaderStrike != nil && paladin.Options.IsUsingCrusaderStrikeStopAttack {
+		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if paladin.spellJoM != nil && paladin.Options.IsUsingJudgementStopAttack {
+		paladin.spellJoM.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	for i, v := range paladin.spellsJoR {
+		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
+			paladin.spellsJoR[i].Flags |= core.SpellFlagBatchStopAttackMacro
+		}
+	}
+	
+	for i, v := range paladin.spellsJoC {
+		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
+			paladin.spellsJoC[i].Flags |= core.SpellFlagBatchStopAttackMacro
+		}
+	}
 }
 
 func (paladin *Paladin) ResetCurrentPaladinAura() {

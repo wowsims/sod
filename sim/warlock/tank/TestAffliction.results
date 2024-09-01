@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 6.09959
   final_stats: 5
   final_stats: 0
   final_stats: 1667.6
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 121
   final_stats: 9.84
   final_stats: 0
-  final_stats: 6.84
+  final_stats: 15.7885
   final_stats: 9.84
   final_stats: 0
   final_stats: 7833.7
@@ -267,8 +267,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1183.43415
-  tps: 1346.39157
+  dps: 1181.79781
+  tps: 1341.62307
  }
 }
 dps_results: {

@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 6.09959
   final_stats: 5
   final_stats: 0
   final_stats: 1463
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 5.76222
   final_stats: 5
   final_stats: 0
   final_stats: 3363.5
@@ -130,7 +130,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 10.22049
   final_stats: 5
   final_stats: 0
   final_stats: 4814.44
@@ -179,7 +179,7 @@ character_stats_results: {
   final_stats: 121
   final_stats: 9.84
   final_stats: 0
-  final_stats: 6.84
+  final_stats: 15.7885
   final_stats: 9.84
   final_stats: 0
   final_stats: 7833.7
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.06594
+  weights: 0.08042
   weights: 0
-  weights: 0.53553
-  weights: 0
-  weights: 0
+  weights: 0.49847
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.87664
+  weights: 0
+  weights: 0
+  weights: 0.95929
   weights: 0
   weights: 0
   weights: 0
@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.1261
+  weights: 2.08567
   weights: 0
-  weights: 1.22084
-  weights: 0
-  weights: 0
+  weights: 1.13221
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.39903
+  weights: 0
+  weights: 0
+  weights: 8.33086
   weights: 0
   weights: 0
   weights: 0
@@ -393,36 +393,36 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 108.88195
-  tps: 69.69944
+  dps: 105.31072
+  tps: 69.44709
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
-  dps: 210.78899
-  tps: 431.11355
+  dps: 210.46289
+  tps: 431.42229
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 210.0447
-  tps: 693.02166
+  dps: 209.24845
+  tps: 691.35235
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 210.0447
-  tps: 430.22609
+  dps: 209.24845
+  tps: 428.38217
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl25-Settings-Orc-p1.destro.tank-Destruction Warlock-p1.destro.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 219.96986
-  tps: 452.52638
+  dps: 217.46955
+  tps: 454.25358
  }
 }
 dps_results: {
@@ -449,8 +449,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 210.12137
-  tps: 430.34108
+  dps: 209.32511
+  tps: 428.49716
  }
 }
 dps_results: {
@@ -519,17 +519,17 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 346.75155
-  tps: 228.62019
-  hps: 7.43799
+  dps: 344.46525
+  tps: 228.28192
+  hps: 7.27404
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl50-Average-Default"
  value: {
-  dps: 1388.4612
-  tps: 2417.77245
-  hps: 12.33218
+  dps: 1387.89526
+  tps: 2417.81507
+  hps: 12.33358
  }
 }
 dps_results: {
@@ -583,9 +583,9 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1370.84707
-  tps: 2392.63538
-  hps: 12.50539
+  dps: 1372.02456
+  tps: 2395.35807
+  hps: 12.51341
  }
 }
 dps_results: {
@@ -598,8 +598,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1227.4949
-  tps: 1473.15063
+  dps: 1222.95696
+  tps: 1466.52408
  }
 }
 dps_results: {
@@ -633,15 +633,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1785.53721
-  tps: 3258.15275
+  dps: 1786.67142
+  tps: 3253.62943
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1777.69556
-  tps: 3233.20168
+  dps: 1775.98179
+  tps: 3233.07706
  }
 }
 dps_results: {

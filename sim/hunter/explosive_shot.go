@@ -19,10 +19,6 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 	baseLowDamage := hunter.baseRuneAbilityDamage() * 0.36 * 1.15 * 1.5  // 15% Buff from 1/3/2024 - verify with new build and update numbers
 	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15 * 1.5 // Second 50% buff from 23/4/2024
 
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
 	hunter.ExplosiveShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
@@ -34,7 +30,6 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.035,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -94,5 +89,4 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.ExplosiveShot)
 }

@@ -114,7 +114,7 @@ func (paladin *Paladin) applyRedoubt() {
 			paladin.AddStatDynamic(sim, stats.Block, -bonusBlockRating)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.DidBlock() {
 				aura.RemoveStack(sim)
 			}
 		},

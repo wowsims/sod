@@ -36,7 +36,7 @@ func (rogue *Rogue) registerSwordSpecialization(mask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				rogue.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 13964})
+				rogue.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 13964}, spell.ActionID)
 			}
 		},
 	})

@@ -84,7 +84,7 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 		Duration: time.Second * 5,
 
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				aura.Activate(sim)
 			}
 		},

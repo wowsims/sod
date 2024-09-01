@@ -188,8 +188,8 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 	return ws
 }
 
-func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) {
-	aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
+func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) *core.ExclusiveEffect {
+	return aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
 		Priority: float64(stance),
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if stance.Matches(BattleStance) {
@@ -307,7 +307,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .05) // 20 str = 1 block
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(warrior.Level)]*core.CritRatingPerCritChance)
-	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(warrior.Level)])
+	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(warrior.Level)]*core.DodgeRatingPerDodgeChance)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	guardians.ConstructGuardians(&warrior.Character)

@@ -7,7 +7,7 @@ import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	PaladinAura,
-	HolyPaladin_Options as HolyPaladinOptions,
+	PaladinOptions as HolyPaladinOptions,
 } from '../core/proto/paladin.js';
 
 import * as PresetUtils from '../core/preset_utils.js';

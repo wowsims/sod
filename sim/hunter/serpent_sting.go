@@ -20,7 +20,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		SpellSchool:   core.SpellSchoolNature,
 		DefenseType:   core.DefenseTypeRanged,
 		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison,
+		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -28,7 +28,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
-			Multiplier: 100 - 2*hunter.Talents.Efficiency,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

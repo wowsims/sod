@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 5.76222
   final_stats: 5
   final_stats: 0
   final_stats: 3401.45
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 121
   final_stats: 9.84
   final_stats: 0
-  final_stats: 6.84
+  final_stats: 15.7885
   final_stats: 9.84
   final_stats: 0
   final_stats: 8778.655
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.63076
+  weights: 0.6627
   weights: 0
-  weights: 0.87788
-  weights: 0
-  weights: 0
+  weights: 0.88507
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 21.64824
-  weights: 12.41281
+  weights: 0
+  weights: 0
+  weights: 21.27031
+  weights: 12.41905
   weights: 0
   weights: 0
   weights: 0
@@ -260,7 +260,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1166.55476
+  dps: 1104.66393
   tps: 408.50563
  }
 }
@@ -274,14 +274,14 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1163.43323
+  dps: 1101.81326
   tps: 411.79258
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2452.36977
+  dps: 2388.88846
   tps: 4286.15356
  }
 }
@@ -295,56 +295,56 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1166.55476
+  dps: 1104.66393
   tps: 408.50563
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1339.6863
+  dps: 1278.54849
   tps: 1286.70044
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1320.04189
+  dps: 1259.84795
   tps: 1266.21399
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2452.36977
+  dps: 2388.88846
   tps: 4286.15356
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Average-Default"
  value: {
-  dps: 2463.42673
+  dps: 2400.58422
   tps: 4324.49615
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 3106.29223
+  dps: 3027.50007
   tps: 7924.36786
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2398.02643
+  dps: 2334.48707
   tps: 4170.30178
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2378.87654
+  dps: 2315.85162
   tps: 4168.86587
  }
 }
@@ -372,7 +372,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2423.25259
+  dps: 2360.02639
   tps: 4237.80935
  }
 }

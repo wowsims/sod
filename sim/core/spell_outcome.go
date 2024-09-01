@@ -608,7 +608,12 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
 		spell.SpellMetrics[result.Target.UnitIndex].Blocks++
-		result.Damage = max(0, result.Damage-result.Target.BlockValue())
+		// Physical abilities tagged with "Completely Blocked" are fully blocked every time
+		if spell.Flags.Matches(SpellFlagBinary) {
+			result.Damage = 0
+		} else {
+			result.Damage = max(0, result.Damage-result.Target.BlockValue())
+		}
 		return true
 	}
 	return false

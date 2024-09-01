@@ -25,7 +25,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			rogue.AddStatDynamic(sim, stats.Parry, -100*core.ParryRatingPerParryChance)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeParry) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.DidParry() {
 				aura.Deactivate(sim)
 			}
 		},

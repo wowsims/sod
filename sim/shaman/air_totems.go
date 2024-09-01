@@ -24,6 +24,11 @@ func (shaman *Shaman) registerWindfuryTotemSpell() {
 			shaman.WindfuryTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.AirTotems = append(
+		shaman.AirTotems,
+		core.FilterSlice(shaman.WindfuryTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
@@ -61,6 +66,11 @@ func (shaman *Shaman) registerGraceOfAirTotemSpell() {
 			shaman.GraceOfAirTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.AirTotems = append(
+		shaman.AirTotems,
+		core.FilterSlice(shaman.GraceOfAirTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
@@ -105,6 +115,11 @@ func (shaman *Shaman) registerWindwallTotemSpell() {
 			shaman.WindwallTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.AirTotems = append(
+		shaman.AirTotems,
+		core.FilterSlice(shaman.WindwallTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {

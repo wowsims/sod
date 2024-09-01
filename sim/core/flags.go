@@ -167,7 +167,7 @@ const (
 	SpellFlagIgnoreResists           SpellFlag = 1 << iota // skip spell resist/armor
 	SpellFlagIgnoreTargetModifiers                         // skip target damage modifiers
 	SpellFlagIgnoreAttackerModifiers                       // skip attacker damage modifiers
-	SpellFlagBinary                                        // Does not do partial resists and could need a different hit roll.
+	SpellFlagBinary                                        // Does not do partial resists or blocks and could need a different hit roll.
 	SpellFlagChanneled                                     // Spell is channeled
 	SpellFlagDisease                                       // Spell is categorized as disease
 	SpellFlagPoison                                        // Spell is categorized as poison
@@ -189,10 +189,10 @@ const (
 	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
 	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
-
-	SpellFlagSupressExtraAttack  // Mask for Seal of Righteousness, it does not proc Wild Strikes
-	SpellFlagSuppressWeaponProcs // Indicates this spell cannot proc weapon chance on hits or enchants
-	SpellFlagSuppressEquipProcs  // Indicates this spell cannot proc Equip procs
+	SpellFlagSupressExtraAttack                            // Mask for Seal of Righteousness, it does not proc Wild Strikes
+	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants
+	SpellFlagSuppressEquipProcs                            // Indicates this spell cannot proc Equip procs
+	SpellFlagBatchStopAttackMacro                          // Indicates this spell is being cast in a Macro with a stopattack following it
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
