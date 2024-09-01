@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -13,8 +12,6 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 	dotDamage := [6]float64{0, 105, 215, 340, 510, 690}[rank]
 	manaCost := [6]float64{0, 50, 90, 135, 190, 245}[rank]
 	level := [6]int{0, 16, 26, 36, 46, 56}[rank]
-
-	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -72,10 +69,6 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 				if result.Landed() {
 					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
-				}
-
-				if hasLockAndLoad {
-					hunter.LockAndLoadAura.Activate(sim)
 				}
 			})
 		},

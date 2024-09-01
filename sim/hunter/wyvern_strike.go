@@ -87,5 +87,4 @@ func (hunter *Hunter) registerWyvernStrikeSpell() {
 
 	config := hunter.getWyvernStrikeConfig(rank)
 	hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
-	hunter.Strikes = append(hunter.Strikes, hunter.WyvernStrike)
 }

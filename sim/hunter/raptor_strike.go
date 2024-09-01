@@ -91,9 +91,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		spellConfig.ProcMask |= core.ProcMaskMeleeMHAuto
 	}
 
-	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrikeMH)
-	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrikeOH)
-
 	return spellConfig
 }
 
@@ -199,7 +196,6 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 	config := hunter.getRaptorStrikeConfig(rank)
 	hunter.RaptorStrike = hunter.GetOrRegisterSpell(config)
-	hunter.Strikes = append(hunter.Strikes, hunter.RaptorStrike)
 
 	if !hasMeleeSpecialist {
 		hunter.makeQueueSpellsAndAura()

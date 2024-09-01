@@ -250,15 +250,8 @@ func (hunter *Hunter) applyLockAndLoad() {
 		Label:    "Lock And Load",
 		ActionID: core.ActionID{SpellID: 415413},
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if !icd.IsReady(sim) {
-				aura.Deactivate(sim)
-			} else {
-				icd.Use(sim)
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
+			if spell.Flags.Matches(SpellFlagShot) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 
@@ -268,6 +261,20 @@ func (hunter *Hunter) applyLockAndLoad() {
 			}
 		},
 	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Lock And Load Trigger",
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagTrap) {
+				spell.WaitTravelTime(sim, func(s *core.Simulation) {
+					if icd.IsReady(sim) {
+						icd.Use(sim)
+						hunter.LockAndLoadAura.Activate(sim)
+					}
+				})
+			}
+		},
+	}))
 }
 
 const RaptorFuryPerStackDamageMultiplier = 0.15
