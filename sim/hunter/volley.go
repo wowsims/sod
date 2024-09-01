@@ -72,6 +72,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 				damage := baseDamage
 				if hasImprovedVolley {
 					damage += hunter.GetStat(stats.RangedAttackPower) * 0.03
+					damage *= 2
 				}
 				dot.Snapshot(target, damage, isRollover)
 			},
