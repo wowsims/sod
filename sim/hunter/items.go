@@ -17,6 +17,10 @@ const (
 	KnightChainVices        = 227077
 	BloodChainGrips         = 227081
 	KnightChainGrips        = 227087
+        GeneralChainVices       = 231575
+        MarshalChainVices       = 231578
+        GeneralChainGrips       = 231569
+	MarshalChainGrips       = 231560
 	WhistleOfTheBeast       = 228432
 )
 
@@ -265,6 +269,45 @@ func init() {
 	})
 
 	core.NewItemEffect(KnightChainVices, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterMultiShot {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+		core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(MarshalChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(GeneralChainVices, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterMultiShot {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(MarshalChainVices, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
