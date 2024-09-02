@@ -786,7 +786,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 	
 	if raidBuffs.HornOfLordaeron && isAlliance {
-		character.AddStats(BuffSpellByLevel[HornOfLordaeron][level])
+		MakePermanent(HornOfLordaeronAura(&character.Unit, level))		
 	}else if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
 	}
@@ -2086,6 +2086,24 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
 				stats.AttackPower: -1 * math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower]*(1+0.04*float64(impBomPts))),
 			})
+		},
+	})
+	return aura
+}
+
+func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
+	updateStats := BuffSpellByLevel[HornOfLordaeron][level]
+
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Horn Of Lordaeron",
+		ActionID:   ActionID{SpellID: 425600},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
 		},
 	})
 	return aura

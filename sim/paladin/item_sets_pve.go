@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -20,7 +21,8 @@ var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
 		3: func(agent core.Agent) {
-			// handled via paladin.holyCrit()
+			c := agent.GetCharacter()
+			c.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] +=  3 * core.SpellCritRatingPerCritChance			
 		},
 	},
 })
@@ -145,7 +147,22 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 		},
 		5: func(agent core.Agent) {
 			// Reduce cooldown of Exorcism by 3 seconds
-			
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinExorcism {
+					paladin.exorcismCooldown = &core.Cooldown{
+						Timer:    paladin.NewTimer(),
+						Duration: time.Second * 15,
+					}
+
+					if paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
+						paladin.exorcismCooldown.Duration /= 2
+					}
+					paladin.exorcismCooldown.Duration -= time.Second * 3
+
+					spell.CD =  *paladin.exorcismCooldown
+				}				
+			})
 		},
 	},
 })

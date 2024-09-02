@@ -130,25 +130,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		rotations: [
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
-			//...Presets.APLPresets[Phase.Phase3],
-			//...Presets.APLPresets[Phase.Phase2],
-			//...Presets.APLPresets[Phase.Phase1],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
-			//...Presets.TalentPresets[Phase.Phase3],
-			//...Presets.TalentPresets[Phase.Phase2],
-			//...Presets.TalentPresets[Phase.Phase1],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
-			//...Presets.GearPresets[Phase.Phase3],
-			//...Presets.GearPresets[Phase.Phase2],
-			//...Presets.GearPresets[Phase.Phase1],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
 		],
 	},
 

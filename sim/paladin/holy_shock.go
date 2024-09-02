@@ -78,8 +78,7 @@ func (paladin *Paladin) registerHolyShock() {
 				CD: *paladin.holyShockCooldown,
 			},
 
-			BonusCritRating: paladin.holyCrit(),
-
+			
 			DamageMultiplier: damageMultiplier,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.429,

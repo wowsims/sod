@@ -16,10 +16,10 @@ const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
 	LibramOfDraconicDestruction          = 221457
+	GrileksCharmOfValor                  = 231285
 	HerosBrand							 = 231328
-	zandalarFreethinkersBreastplate      = 231329
-	zandalarFreethinkersBelt             = 231330
-	grileksCharmOfValor                  = 231285
+	ZandalarFreethinkersBreastplate      = 231329
+	ZandalarFreethinkersBelt             = 231330	
 )
 
 func init() {
@@ -50,13 +50,13 @@ func init() {
 	})
 
 	
-	core.NewItemEffect(zandalarFreethinkersBreastplate, func(agent core.Agent) {
+	core.NewItemEffect(ZandalarFreethinkersBreastplate, func(agent core.Agent) {
 		character := agent.GetCharacter()		
 		character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 3
 	})
 
 	
-	core.NewItemEffect(zandalarFreethinkersBelt, func(agent core.Agent) {
+	core.NewItemEffect(ZandalarFreethinkersBelt, func(agent core.Agent) {
 		character := agent.GetCharacter()		
 		character.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 2
 	})
@@ -64,38 +64,36 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=231285/grileks-charm-of-valor
 	// Use: Increases the critical hit chance of Holy spells by 10% for 15 sec. If Shock and Awe is engraved, gain an additional 5%. (1 Min, 30 Sec Cooldown)
-	core.NewItemEffect(grileksCharmOfValor, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	core.NewItemEffect(GrileksCharmOfValor, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
 
-		character.PseudoStats.BonusDamage += 4
 
 		duration := time.Second * 15
 
-		aura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: grileksCharmOfValor},
+		aura := paladin.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
 			Label:    "Brilliant Light",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellCrit, core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), 15.0 * core.CritRatingPerCritChance, 10.0 * core.CritRatingPerCritChance))
+				paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), 15.0 * core.CritRatingPerCritChance, 10.0 * core.CritRatingPerCritChance)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellCrit, core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), -15.0 * core.CritRatingPerCritChance, -10.0 * core.CritRatingPerCritChance))
+				paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), -15.0 * core.CritRatingPerCritChance, -10.0 * core.CritRatingPerCritChance)
 			},
 		})
 
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{ItemID: grileksCharmOfValor},
+		spell := paladin.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
 			ProcMask: core.ProcMaskEmpty,
 			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
+					Timer:    paladin.NewTimer(),
 					Duration: time.Second * 90,
 				},
 				SharedCD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
+					Timer:    paladin.GetOffensiveTrinketCD(),
 					Duration: duration,
 				},
 			},
@@ -105,7 +103,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		paladin.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})

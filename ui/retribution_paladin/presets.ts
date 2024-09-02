@@ -50,15 +50,33 @@ import Phase5ShockadinGearJson from './gear_sets/p5shockadin.gear.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const Phase1RetGear = PresetUtils.makePresetGear('P1', Phase1RetGearJson);
-export const Phase2RetSoCGear = PresetUtils.makePresetGear('P2 SoC/DS', Phase2RetSoCGearJson);
-export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSoMGearJson);
-export const Phase3RetSoMGear = PresetUtils.makePresetGear('P3 SoM', Phase3RetSoMGearJson);
-export const Phase4RetTwistGear = PresetUtils.makePresetGear('P4 Twist', Phase4RetGearJson);
-export const Phase4RetTwist6pT1Gear = PresetUtils.makePresetGear('P4 Ret Twist 6pT1', Phase4RetTwisting6PcT1GearJson);
-export const Phase4RetExodinGear = PresetUtils.makePresetGear('P4 Ret Exodin', Phase4RetExodinGearJson);
-export const Phase4RetExodin6pT1Gear = PresetUtils.makePresetGear('P4 Ret Exodin 6pT1', Phase4RetExodin6PcT1GearJson);
-export const Phase5ShockadinGear = PresetUtils.makePresetGear('P5 Shockadin', Phase5ShockadinGearJson);
+export const Phase1RetGear = PresetUtils.makePresetGear('P1', Phase1RetGearJson, {
+	customCondition: player => player.getLevel() == 25,
+});
+export const Phase2RetSoCGear = PresetUtils.makePresetGear('P2 SoC/DS', Phase2RetSoCGearJson, {
+	customCondition: player => player.getLevel() == 40,
+});
+export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSoMGearJson, {
+	customCondition: player => player.getLevel() == 40,
+});
+export const Phase3RetSoMGear = PresetUtils.makePresetGear('P3 SoM', Phase3RetSoMGearJson, {
+	customCondition: player => player.getLevel() == 50,
+});
+export const Phase4RetTwistGear = PresetUtils.makePresetGear('P4 Twist', Phase4RetGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4RetTwist6pT1Gear = PresetUtils.makePresetGear('P4 Ret Twist 6pT1', Phase4RetTwisting6PcT1GearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4RetExodinGear = PresetUtils.makePresetGear('P4 Ret Exodin', Phase4RetExodinGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4RetExodin6pT1Gear = PresetUtils.makePresetGear('P4 Ret Exodin 6pT1', Phase4RetExodin6PcT1GearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase5ShockadinGear = PresetUtils.makePresetGear('P5 Shockadin', Phase5ShockadinGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
 
 export const GearPresets = {
 	[Phase.Phase1]: [Phase1RetGear],
@@ -74,14 +92,30 @@ export const DefaultGear = GearPresets[Phase.Phase4][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
-export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson);
-export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson);
-export const APLP4RetTwist = PresetUtils.makePresetAPLRotation('P4 Ret Twist', APLP4RetJson);
-export const APLP4RetTwist6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Twist 6pT1', APLP4RetTwisting6PcT1Json);
-export const APLP4RetExodin = PresetUtils.makePresetAPLRotation('P4 Ret Exodin', APLP4RetExodinJson);
-export const APLP4RetExodin6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Exodin 6pT1', APLP4RetExodin6PcT1Json);
-export const APLPP5Shockadin = PresetUtils.makePresetAPLRotation('P5 Shockadin', APLPP5ShockadinJson);
+export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson, {
+	customCondition: player => player.getLevel() === 25,
+});
+export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson, {
+	customCondition: player => player.getLevel() === 40,
+});
+export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson, {
+	customCondition: player => player.getLevel() === 50,
+});
+export const APLP4RetTwist = PresetUtils.makePresetAPLRotation('P4 Ret Twist', APLP4RetJson, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLP4RetTwist6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Twist 6pT1', APLP4RetTwisting6PcT1Json, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLP4RetExodin = PresetUtils.makePresetAPLRotation('P4 Ret Exodin', APLP4RetExodinJson, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLP4RetExodin6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Exodin 6pT1', APLP4RetExodin6PcT1Json, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLPP5Shockadin = PresetUtils.makePresetAPLRotation('P5 Shockadin', APLPP5ShockadinJson, {
+	customCondition: player => player.getLevel() === 60,
+});
 
 
 export const APLPresets = {
@@ -106,47 +140,30 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const P1RetTalents = {
-	name: 'P1 Ret',
-	data: SavedTalents.create({
-		talentsString: '--05230051',
-	}),
-};
+export const P1RetTalents = PresetUtils.makePresetTalents('P1 Ret', SavedTalents.create({ talentsString: '--05230051' }), {
+	customCondition: player => player.getLevel() === 25,
+});
 
-export const P2RetTalents = {
-	name: 'P2 Ret',
-	data: SavedTalents.create({
-		talentsString: '--532300512003151',
-	}),
-};
+export const P2RetTalents = PresetUtils.makePresetTalents('P2 Ret', SavedTalents.create({ talentsString: '--532300512003151' }), {
+	customCondition: player => player.getLevel() === 40,
+});
 
-export const P2ShockadinTalents = {
-	name: 'P2 Shockadin',
-	data: SavedTalents.create({
-		talentsString: '55050100521151--',
-	}),
-};
+export const P2ShockadinTalents = PresetUtils.makePresetTalents('P2 Shockadin', SavedTalents.create({ talentsString: '55050100521151--' }), {
+	customCondition: player => player.getLevel() === 40,
+});
 
-export const P3RetTalents = {
-	name: 'P3 Ret',
-	data: SavedTalents.create({
-		talentsString: '500501--53230051200315',
-	}),
-};
+export const P3RetTalents = PresetUtils.makePresetTalents('P3 Ret', SavedTalents.create({ talentsString: '500501--53230051200315' }), {
+	customCondition: player => player.getLevel() === 50,
+});
 
-export const P4RetTalents = {
-	name: 'P4 Ret',
-	data: SavedTalents.create({
-		talentsString: '500501-503-52230351200315',
-	}),
-};
+export const P4RetTalents = PresetUtils.makePresetTalents('P4 Ret', SavedTalents.create({ talentsString: '500501-503-52230351200315' }), {
+	customCondition: player => player.getLevel() === 60,
+});
 
-export const P5ShockadinTalents = {
-	name: 'P5 Shockadin',
-	data: SavedTalents.create({
-		talentsString: '55053100501051--052303511',
-	}),
-};
+export const P5ShockadinTalents = PresetUtils.makePresetTalents('P5 Shockadin', SavedTalents.create({ talentsString: '55053100501051--052303511' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+
 
 export const TalentPresets = {
 	[Phase.Phase1]: [P1RetTalents],

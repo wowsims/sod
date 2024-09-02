@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	Stormwrath     = 231387
-	LightningsCell = 231784
-	Truthbearer1H  = 229806
 	Truthbearer2H  = 229749
+	Truthbearer1H  = 229806
+	Stormwrath     = 231387
+	LightningsCell = 231784	
 )
 
 func init() {
@@ -78,7 +78,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				crusadersZealAura.Activate(sim)
 			},
@@ -100,7 +100,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			PPM:               1, 
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				crusadersZealAura.Activate(sim)
 			},

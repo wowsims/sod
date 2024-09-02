@@ -68,8 +68,7 @@ func (paladin *Paladin) registerHolyWrath() {
 				CD:          cd,
 			},
 
-			BonusCritRating: paladin.holyCrit(),
-
+			
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.19,

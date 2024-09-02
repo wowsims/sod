@@ -17,6 +17,7 @@ const (
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
+	SpellCode_PaladinExorcism
 )
 
 type Paladin struct {
@@ -221,12 +222,4 @@ func (paladin *Paladin) getLibramSealCostReduction() float64 {
 	return 0
 }
 
-func (paladin *Paladin) holyCrit() float64 {
-	var holySpellCrit float64
-	if paladin.HasSetBonus(ItemSetObsessedProphetsPlate, 2) {
-		holySpellCrit += 3 * core.SpellCritRatingPerCritChance
-	}
-	holySpellCrit += paladin.holyPower()
-	holySpellCrit += paladin.fanaticism()
-	return holySpellCrit
-}
+
