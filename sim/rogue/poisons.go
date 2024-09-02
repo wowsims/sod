@@ -278,7 +278,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagRoguePoison | SpellFlagCarnage,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -310,7 +310,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 	})
@@ -396,7 +396,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	// 		},
 
 	// 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-	// 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+	// 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 	// 		},
 	// 	},
 	// })
@@ -444,7 +444,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagDeadlyBrewed | SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagCarnage | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -491,7 +491,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagDeadlyBrewed | core.SpellFlagPoison | SpellFlagRoguePoison,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,

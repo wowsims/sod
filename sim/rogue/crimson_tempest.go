@@ -2,7 +2,7 @@ package rogue
 
 import (
 	"time"
-	
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -11,7 +11,7 @@ import (
 func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 	actionID := core.ActionID{SpellID: 436611}
 	procMask := core.ProcMaskMeleeMHSpecial
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2)  && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
+	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -60,7 +60,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 
 	// Must be updated to match combo points spent
 	rogue.CrimsonTempestBleed = rogue.makeCrimsonTempestHitSpell()
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2)  && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
+	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 412096},
@@ -94,8 +94,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 }
 
 func (rogue *Rogue) CrimsonTempestDamage(comboPoints int32) float64 {
-    tickDamageValues := []float64{0, 0.3, 0.45, 0.6, 0.75, 0.9}
-    tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower)/float64(comboPoints+1)
-    return tickDamage
+	tickDamageValues := []float64{0, 0.3, 0.45, 0.6, 0.75, 0.9}
+	tickDamage := tickDamageValues[comboPoints] * rogue.GetStat(stats.AttackPower) / float64(comboPoints+1)
+	return tickDamage
 }
-

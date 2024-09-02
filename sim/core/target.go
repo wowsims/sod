@@ -225,7 +225,7 @@ func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 		default:
 			return 0
 		}
-	} else {
+	} else if weapon.HandType == proto.HandType_HandTypeMainHand || weapon.HandType == proto.HandType_HandTypeOneHand || weapon.HandType == proto.HandType_HandTypeOffHand {
 		switch weapon.WeaponType {
 		case proto.WeaponType_WeaponTypeAxe:
 			return unit.PseudoStats.AxesSkill
@@ -240,6 +240,11 @@ func GetWeaponSkill(unit *Unit, weapon *Item) float64 {
 		default:
 			return 0
 		}
+	} else if weapon.HandType == proto.HandType_HandTypeUnknown && weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeUnknown {
+		// Needed for Paladin Hammer of Wrath to use 300 skill
+		return float64(unit.Level) * 5.0
+	} else {
+		return 0
 	}
 }
 

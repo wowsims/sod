@@ -18,7 +18,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
 
-	paladin.RegisterSpell(core.SpellConfig{
+	crusaderStrikeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    manaMetrics.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
@@ -51,4 +51,6 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			}
 		},
 	})
+	
+	paladin.crusaderStrike = crusaderStrikeSpell
 }

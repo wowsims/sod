@@ -257,3 +257,9 @@
 .rotation-timeline-cast.outcome-crit .rotation-timeline-cast-icon {
 	border-color: var(--bs-crit);
 }
+
+.stacked-icon-count {
+	display: flex;
+	align-items: center;
+	background-color: black;
+}

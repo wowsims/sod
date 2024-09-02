@@ -38,7 +38,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -147,7 +147,7 @@ func init() {
 
 		regChannel := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagChanneled,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

@@ -56,7 +56,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -67,7 +67,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				spell.DealOutcome(sim, result)
 
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			})
@@ -82,7 +81,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 		BonusCritRating: 1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
 

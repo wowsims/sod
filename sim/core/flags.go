@@ -188,10 +188,11 @@ const (
 	SpellFlagCastTimeNoGCD                                 // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
 	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
 	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
-
-	SpellFlagSupressExtraAttack  // Mask for Seal of Righteousness, it does not proc Wild Strikes
-	SpellFlagSuppressWeaponProcs // Indicates this spell cannot proc weapon chance on hits or enchants
-	SpellFlagSuppressEquipProcs  // Indicates this spell cannot proc Equip procs
+	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
+	SpellFlagSupressExtraAttack                            // Mask for Seal of Righteousness, it does not proc Wild Strikes
+	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants
+	SpellFlagSuppressEquipProcs                            // Indicates this spell cannot proc Equip procs
+	SpellFlagBatchStopAttackMacro                          // Indicates this spell is being cast in a Macro with a stopattack following it
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

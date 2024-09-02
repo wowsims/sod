@@ -99,10 +99,12 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 	}[warrior.Level]
 
 	procMask := core.ProcMaskMeleeMHSpecial
+	flags := core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete
 	damageFunc := warrior.MHWeaponDamage
 	if !isMH {
 		flatDamageBonus /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
+		flags |= core.SpellFlagPassiveSpell
 		damageFunc = warrior.OHWeaponDamage
 	}
 
@@ -112,7 +114,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       flags,
 
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,

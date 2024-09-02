@@ -58,7 +58,7 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 		ActionID:    core.ActionID{SpellID: procSpellId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman | SpellFlagLightning,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagShaman | SpellFlagLightning,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

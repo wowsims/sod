@@ -50,7 +50,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				dot.SnapshotBaseDamage += 0.05 * dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 	})

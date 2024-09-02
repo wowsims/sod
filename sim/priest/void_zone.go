@@ -62,9 +62,9 @@ func (priest *Priest) registerVoidZoneSpell() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if hasDespairRune {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickSnapshotCritCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeSnapshotCrit)
 					} else {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 					}
 				}
 			},

@@ -45,7 +45,7 @@ func (mage *Mage) applyIgnite() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskProc,
-		Flags:       SpellFlagMage,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagMage,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -61,12 +61,11 @@ func (mage *Mage) applyIgnite() {
 			NumberOfTicks: IgniteTicks,
 			TickLength:    time.Second * 2,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).ApplyOrReset(sim)
 		},
 	})
