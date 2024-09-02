@@ -18,6 +18,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 			SpellSchool: school,
 			DefenseType: defType,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -75,6 +76,7 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 		character := agent.GetCharacter()
 
 		procSpell := procSpellGenerator(character)
+		procSpell.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 
 		procMask := character.GetProcMaskForItem(itemId)
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)

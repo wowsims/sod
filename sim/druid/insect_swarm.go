@@ -75,7 +75,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 						}
 					},
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 					},
 				},
 
@@ -83,7 +83,6 @@ func (druid *Druid) registerInsectSwarmSpell() {
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 					if result.Landed() {
 						spell.Dot(target).Apply(sim)
-						spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					}
 					spell.DealOutcome(sim, result)
 				},

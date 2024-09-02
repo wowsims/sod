@@ -240,12 +240,12 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt      time.Duration
-	lastSwingAt  time.Duration
-	extraAttacks int32 // extra attacks that happen right away
-	extraAttacksStored int32 // extra attack that happen on next auto (e.g reckoning)
+	swingAt             time.Duration
+	lastSwingAt         time.Duration
+	extraAttacks        int32 // extra attacks that happen right away
+	extraAttacksStored  int32 // extra attack that happen on next auto (e.g reckoning)
 	extraAttacksPending int32 // extraAttacks prior to previous ones resolving for spell metrics
-	extraAttacksAura *Aura
+	extraAttacksAura    *Aura
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
@@ -270,7 +270,7 @@ func (wa *WeaponAttack) trySwing(sim *Simulation) time.Duration {
 
 func (wa *WeaponAttack) castExtraAttacksStored(sim *Simulation) {
 	wa.castExtraAttacks(sim, wa.extraAttacksStored, 0)
-	wa.extraAttacksStored = 0;
+	wa.extraAttacksStored = 0
 
 	if wa.extraAttacksAura != nil {
 		wa.extraAttacksAura.SetStacks(sim, 0)
@@ -298,10 +298,9 @@ func (wa *WeaponAttack) castExtraAttacks(sim *Simulation, numExtraAttacks int32,
 
 		return true
 	}
-    return false
+	return false
 
 }
-
 
 func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 	isExtraAttack := wa.extraAttacksPending > 0
@@ -328,7 +327,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 	if attackSpell.CanCast(sim, wa.unit.CurrentTarget) {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
-		
+
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
 		wa.lastSwingAt = sim.CurrentTime
 
@@ -346,7 +345,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
 		moreAttacks := !isExtraAttack && wa.extraAttacksPending > 0 // True if above cast is a normal Auto attack that triggered an Extra Attack
-		wa.castExtraAttacksTriggered(sim, moreAttacks) // more attacks means we don't count the above cast
+		wa.castExtraAttacksTriggered(sim, moreAttacks)              // more attacks means we don't count the above cast
 
 		if isExtraAttack {
 			// For ranged extra attacks, we have to wait for the spell to hit before resettings the cast time and metrics split
@@ -717,9 +716,9 @@ func (aa *AutoAttacks) ExtraMHAttackProc(sim *Simulation, attacks int32, actionI
 
 // ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
 func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
-    if attacks == 0 {
+	if attacks == 0 {
 		return
-    }
+	}
 	if sim.Log != nil {
 		aa.mh.unit.Log(sim, "gains %d extra attacks from %s triggered by %s", attacks, actionID, triggerAction)
 	}
@@ -730,25 +729,25 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 }
 
 func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
-    if attacks == 0 {
-        return
-    }
+	if attacks == 0 {
+		return
+	}
 
 	if aa.mh.extraAttacksAura == nil {
 		aa.mh.extraAttacksAura = aa.mh.unit.GetOrRegisterAura(Aura{
-			Label:     "Extra Attacks", // Tracks Stored Extra Attacks from all sources
-			ActionID:   ActionID{SpellID: 21919}, // Thrash ID
+			Label:     "Extra Attacks",          // Tracks Stored Extra Attacks from all sources
+			ActionID:  ActionID{SpellID: 21919}, // Thrash ID
 			Duration:  NeverExpires,
 			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
 		})
 	}
 
-	if 	!aa.mh.extraAttacksAura.IsActive() {
+	if !aa.mh.extraAttacksAura.IsActive() {
 		aa.mh.extraAttacksAura.Activate(sim)
 	}
 
-	aa.mh.extraAttacksStored = min(aa.mh.extraAttacksStored + attacks, 4) // Max is 4 stored extra attacks
-	
+	aa.mh.extraAttacksStored = min(aa.mh.extraAttacksStored+attacks, 4) // Max is 4 stored extra attacks
+
 	aa.mh.extraAttacksAura.SetStacks(sim, aa.mh.extraAttacksStored)
 
 	if sim.Log != nil {

@@ -89,9 +89,9 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 			},
 		},
@@ -103,7 +103,6 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			}
 			for _, result := range results {
 				if result.Landed() {
-					spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					priest.AddShadowWeavingStack(sim, result.Target)
 					spell.Dot(result.Target).Apply(sim)
 				}

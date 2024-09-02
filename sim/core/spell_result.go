@@ -47,8 +47,16 @@ func (result *SpellResult) DidCrit() bool {
 	return result.Outcome.Matches(OutcomeCrit)
 }
 
+func (result *SpellResult) DidGlance() bool {
+	return result.Outcome.Matches(OutcomeGlance)
+}
+
 func (result *SpellResult) DidBlock() bool {
 	return result.Outcome.Matches(OutcomeBlock)
+}
+
+func (result *SpellResult) DidResist() bool {
+	return result.Outcome.Matches(OutcomePartial)
 }
 
 func (result *SpellResult) DidParry() bool {
@@ -355,8 +363,37 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	isPartialResist := result.DidResist()
+
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
+		if isPeriodic {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalTickDamage += result.Damage
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalResistedTickDamage += result.Damage
+			}
+		}
+
+		if result.DidCrit() {
+			if result.DidBlock() {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+				if isPartialResist {
+					spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
+				}
+				if isPeriodic {
+					spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
+					if isPartialResist {
+						spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritTickDamage += result.Damage
+					}
+				}
+			}
+		} else if result.DidGlance() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+		} else if result.DidBlock() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockDamage += result.Damage
+		}
 		spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	}
 
@@ -368,9 +405,9 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 
 	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 		if isPeriodic {
-			spell.Unit.Log(sim, "%s %s tick %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
+			spell.Unit.Log(sim, "%s %s tick %s (SpellSchool: %d). (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), spell.SpellSchool, result.Threat)
 		} else {
-			spell.Unit.Log(sim, "%s %s %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
+			spell.Unit.Log(sim, "%s %s %s (SpellSchool: %d). (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), spell.SpellSchool, result.Threat)
 		}
 	}
 
@@ -462,6 +499,9 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool)
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealHealingInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	if result.DidCrit() {
+		spell.SpellMetrics[result.Target.UnitIndex].TotalCritHealing += result.Damage
+	}
 	spell.SpellMetrics[result.Target.UnitIndex].TotalHealing += result.Damage
 	spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	if result.Target.HasHealthBar() {
