@@ -52,7 +52,7 @@ func (shaman *Shaman) registerRiptideSpell() {
 				dot.Snapshot(target, baseHotHealing, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTick)
 
 				if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 					shaman.PowerSurgeHealAura.Activate(sim)

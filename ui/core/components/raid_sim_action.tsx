@@ -1,12 +1,14 @@
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 
-import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
-import { Encounter as EncounterProto } from '../proto/common.js';
-import { SimRunData } from '../proto/ui.js';
-import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
-import { SimUI } from '../sim_ui.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-import { formatDeltaTextElem } from '../utils.js';
+import { TOOLTIP_METRIC_LABELS } from '../constants/tooltips';
+import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api';
+import { Encounter as EncounterProto } from '../proto/common';
+import { SimRunData } from '../proto/ui';
+import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result';
+import { SimUI } from '../sim_ui';
+import { EventID, TypedEvent } from '../typed_event';
+import { formatDeltaTextElem, formatToNumber, formatToPercent, sum } from '../utils';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
 	simUI.addAction('Simulate', 'dps-action', async () =>
@@ -39,6 +41,7 @@ export interface ResultMetrics {
 	hps: string;
 	tps: string;
 	tto: string;
+	oom: string;
 }
 
 export interface ResultMetricCategories {
@@ -76,6 +79,7 @@ export class RaidSimResultsManager {
 		hps: 'results-sim-hps',
 		tps: 'results-sim-tps',
 		tto: 'results-sim-tto',
+		oom: 'results-sim-oom',
 	};
 
 	static metricsClasses: { [ResultMetricCategories: string]: string } = {
@@ -135,7 +139,7 @@ export class RaidSimResultsManager {
 
 		this.simUI.resultsViewer.setContent(
 			<div className="results-sim">
-				{RaidSimResultsManager.makeToplineResultsContent(simResult)}
+				{RaidSimResultsManager.makeToplineResultsContent(simResult, undefined, { asList: true })}
 				<div className="results-sim-reference">
 					<a href="javascript:void(0)" className="results-sim-set-reference" attributes={{ role: 'button' }}>
 						<i className={`fa fa-map-pin fa-lg text-${this.simUI.cssScheme} me-2`}></i>Save as Reference
@@ -263,19 +267,26 @@ export class RaidSimResultsManager {
 		if (this.simUI.isIndividualSim()) {
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['hps']} .results-reference-diff`, res => res.raidMetrics.hps, 2);
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['dpasp']} .results-reference-diff`, res => res.getPlayers()[0]!.dpasp, 2);
-			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tto']} .results-reference-diff`, res => res.getPlayers()[0]!.tto, 2);
-			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tps']} .results-reference-diff`, res => res.getPlayers()[0]!.tps, 2);
+			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tto']} .results-reference-diff`, res => res.getFirstPlayer()!.tto, 2);
+			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tps']} .results-reference-diff`, res => res.getFirstPlayer()!.tps, 2);
 			this.formatToplineResult(
 				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
-				res => res.getPlayers()[0]!.dtps,
+				res => res.getFirstPlayer()!.dtps,
 				2,
 				true,
 			);
-			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tmi']} .results-reference-diff`, res => res.getPlayers()[0]!.tmi, 2, true);
+			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tmi']} .results-reference-diff`, res => res.getFirstPlayer()!.tmi, 2, true);
 			this.formatToplineResult(
 				`.${RaidSimResultsManager.resultMetricClasses['cod']} .results-reference-diff`,
-				res => res.getPlayers()[0]!.chanceOfDeath,
+				res => res.getFirstPlayer()!.chanceOfDeath,
 				1,
+				true,
+			);
+		} else {
+			this.formatToplineResult(
+				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
+				res => sum(res.getPlayers()!.map(player => player.dtps.avg)) / res.getPlayers().length,
+				2,
 				true,
 			);
 		}
@@ -369,82 +380,75 @@ export class RaidSimResultsManager {
 		};
 	}
 
-	static makeToplineResultsContent(simResult: SimResult, filter?: SimResultFilter): HTMLElement {
+	static makeToplineResultsContent(simResult: SimResult, filter?: SimResultFilter, options: ToplineResultOptions = {}) {
+		const { showOutOfMana = false } = options;
+
 		const players = simResult.getRaidIndexedPlayers(filter);
-		const content = (<></>) as HTMLElement;
+
+		const resultColumns: ResultMetric[] = [];
 
 		if (players.length === 1) {
 			const playerMetrics = players[0];
 			if (playerMetrics.getTargetIndex(filter) === null) {
-				const dpsMetrics = playerMetrics.dps;
-				const dpaspMetrics = playerMetrics.dpasp;
-				const tpsMetrics = playerMetrics.tps;
-				const dtpsMetrics = playerMetrics.dtps;
-				const tmiMetrics = playerMetrics.tmi;
-				content.appendChild(
-					this.buildResultsLine({
-						average: dpsMetrics.avg,
-						stdev: dpsMetrics.stdev,
-						classes: this.getResultsLineClasses('dps'),
-					}),
-				);
+				const { chanceOfDeath, dps: dpsMetrics, dpasp: dpaspMetrics, tps: tpsMetrics, dtps: dtpsMetrics, tmi: tmiMetrics } = playerMetrics;
 
-				// Hide dpasp if it's zero.
-				const dpaspContent = this.buildResultsLine({
-					average: dpaspMetrics.avg,
-					stdev: dpaspMetrics.stdev,
-					classes: this.getResultsLineClasses('dpasp'),
+				resultColumns.push({
+					name: 'DPS',
+					average: dpsMetrics.avg,
+					stdev: dpsMetrics.stdev,
+					classes: this.getResultsLineClasses('dps'),
 				});
-				if (dpaspMetrics.avg === 0) {
-					dpaspContent.classList.add('hide');
+
+				if (dpaspMetrics.avg) {
+					resultColumns.push({
+						name: 'DPASP',
+						average: dpaspMetrics.avg,
+						stdev: dpaspMetrics.stdev,
+						classes: this.getResultsLineClasses('dpasp'),
+					});
 				}
-				content.appendChild(dpaspContent);
 
-				content.appendChild(
-					this.buildResultsLine({
-						average: tpsMetrics.avg,
-						stdev: tpsMetrics.stdev,
-						classes: this.getResultsLineClasses('tps'),
-					}),
-				);
-				content.appendChild(
-					this.buildResultsLine({
-						average: dtpsMetrics.avg,
-						stdev: dtpsMetrics.stdev,
-						classes: this.getResultsLineClasses('dtps'),
-					}),
-				);
+				resultColumns.push({
+					name: 'TPS',
+					average: tpsMetrics.avg,
+					stdev: tpsMetrics.stdev,
+					classes: this.getResultsLineClasses('tps'),
+				});
+				resultColumns.push({
+					name: 'DTPS',
+					average: dtpsMetrics.avg,
+					stdev: dtpsMetrics.stdev,
+					classes: this.getResultsLineClasses('dtps'),
+				});
 
-				content.appendChild(
-					this.buildResultsLine({
-						average: tmiMetrics.avg,
-						stdev: tmiMetrics.stdev,
-						classes: this.getResultsLineClasses('tmi'),
-					}),
-				);
+				resultColumns.push({
+					name: 'HPS',
+					average: tmiMetrics.avg,
+					stdev: tmiMetrics.stdev,
+					classes: this.getResultsLineClasses('tmi'),
+				});
 
-				content.appendChild(
-					this.buildResultsLine({
-						average: playerMetrics.chanceOfDeath,
-						classes: this.getResultsLineClasses('cod'),
-					}),
-				);
+				resultColumns.push({
+					name: 'COD',
+					average: chanceOfDeath,
+					classes: this.getResultsLineClasses('cod'),
+					unit: 'percentage',
+				});
 			} else {
 				const actions = simResult.getRaidIndexedActionMetrics(filter);
 				if (!!actions.length) {
-					const mergedActions = ActionMetrics.merge(actions);
-					content.appendChild(
-						this.buildResultsLine({
-							average: mergedActions.dps,
-							classes: this.getResultsLineClasses('dps'),
-						}),
-					);
-					content.appendChild(
-						this.buildResultsLine({
-							average: mergedActions.tps,
-							classes: this.getResultsLineClasses('tps'),
-						}),
-					);
+					const { dps, tps } = ActionMetrics.merge(actions);
+					resultColumns.push({
+						name: 'DPS',
+						average: dps,
+						classes: this.getResultsLineClasses('dps'),
+					});
+
+					resultColumns.push({
+						name: 'TPS',
+						average: tps,
+						classes: this.getResultsLineClasses('tps'),
+					});
 				}
 
 				const targetActions = simResult
@@ -453,24 +457,24 @@ export class RaidSimResultsManager {
 					.flat()
 					.map(action => action.forTarget({ player: playerMetrics.unitIndex }));
 				if (!!targetActions.length) {
-					const mergedTargetActions = ActionMetrics.merge(targetActions);
-					content.appendChild(
-						this.buildResultsLine({
-							average: mergedTargetActions.dps,
-							classes: this.getResultsLineClasses('dtps'),
-						}),
-					);
+					const { dps: dtps } = ActionMetrics.merge(targetActions);
+
+					resultColumns.push({
+						name: 'DTPS',
+						average: dtps,
+						classes: this.getResultsLineClasses('dtps'),
+					});
 				}
 			}
 		} else {
 			const dpsMetrics = simResult.raidMetrics.dps;
-			content.appendChild(
-				this.buildResultsLine({
-					average: dpsMetrics.avg,
-					stdev: dpsMetrics.stdev,
-					classes: this.getResultsLineClasses('dps'),
-				}),
-			);
+
+			resultColumns.push({
+				name: 'DPS',
+				average: dpsMetrics.avg,
+				stdev: dpsMetrics.stdev,
+				classes: this.getResultsLineClasses('dps'),
+			});
 
 			const targetActions = simResult
 				.getTargets(filter)
@@ -479,34 +483,47 @@ export class RaidSimResultsManager {
 				.map(action => action.forTarget(filter));
 			if (!!targetActions.length) {
 				const mergedTargetActions = ActionMetrics.merge(targetActions);
-				content.appendChild(
-					this.buildResultsLine({
-						average: mergedTargetActions.dps,
-						classes: this.getResultsLineClasses('dtps'),
-					}),
-				);
+				resultColumns.push({
+					name: 'DTPS',
+					average: mergedTargetActions.dps,
+					classes: this.getResultsLineClasses('dtps'),
+				});
 			}
 
 			const hpsMetrics = simResult.raidMetrics.hps;
-			content.appendChild(
-				this.buildResultsLine({
-					average: hpsMetrics.avg,
-					stdev: hpsMetrics.stdev,
-					classes: this.getResultsLineClasses('hps'),
-				}),
-			);
+			resultColumns.push({
+				name: 'HPS',
+				average: hpsMetrics.avg,
+				stdev: hpsMetrics.stdev,
+				classes: this.getResultsLineClasses('hps'),
+			});
 		}
 
 		if (simResult.request.encounter?.useHealth) {
-			content.appendChild(
-				this.buildResultsLine({
-					average: simResult.result.avgIterationDuration,
-					classes: this.getResultsLineClasses('dur'),
-				}),
-			);
+			resultColumns.push({
+				name: 'DUR',
+				average: simResult.result.avgIterationDuration,
+				classes: this.getResultsLineClasses('dur'),
+				unit: 'seconds',
+			});
 		}
 
-		return content;
+		if (showOutOfMana) {
+			const player = players[0];
+			const secondsOOM = player.secondsOomAvg;
+			const percentOOM = secondsOOM / simResult.encounterMetrics.durationSeconds;
+			const dangerLevel = percentOOM < 0.01 ? 'safe' : percentOOM < 0.05 ? 'warning' : 'danger';
+
+			resultColumns.push({
+				name: 'OOM',
+				average: secondsOOM,
+				classes: [this.getResultsLineClasses('oom'), dangerLevel].join(' '),
+				unit: 'seconds',
+			});
+		}
+
+		if (options.asList) return this.buildResultsList(resultColumns);
+		return this.buildResultsTable(resultColumns);
 	}
 
 	private static getResultsLineClasses(metric: keyof ResultMetrics): string {
@@ -516,20 +533,91 @@ export class RaidSimResultsManager {
 		return classes.join(' ');
 	}
 
-	private static buildResultsLine(args: ResultsLineArgs): Element {
+	private static buildResultsTable(data: ResultMetric[]): Element {
 		return (
-			<div className={`results-metric ${args.classes}`}>
-				<span className="topline-result-avg">{args.average.toFixed(2)}</span>
-				{args.stdev && (
-					<span className="topline-result-stdev">
-						(<i className="fas fa-plus-minus fa-xs"></i>
-						{args.stdev.toFixed()})
-					</span>
-				)}
-				<div className="results-reference hide">
-					<span className="results-reference-diff"></span> vs reference
-				</div>
-			</div>
+			<>
+				<table className="metrics-table">
+					<thead className="metrics-table-header">
+						<tr className="metrics-table-header-row">
+							{data.map(({ name, classes }) => {
+								const cell = <th className={clsx('metrics-table-header-cell', classes)}>{name}</th>;
+
+								tippy(cell, {
+									content: TOOLTIP_METRIC_LABELS[name],
+									ignoreAttributes: true,
+								});
+
+								return cell;
+							})}
+						</tr>
+					</thead>
+					<tbody className="metrics-table-body">
+						<tr>
+							{data.map(({ average, stdev, classes, unit }) => {
+								let value = '';
+								switch (unit) {
+									case 'percentage':
+										value = formatToPercent(average);
+										break;
+									case 'seconds':
+										value = formatToNumber(average, { style: 'unit', unit: 'second', unitDisplay: 'narrow' });
+										break;
+									default:
+										value = formatToNumber(average);
+										break;
+								}
+								return (
+									<td className={clsx('text-center align-top', classes)}>
+										<div className="topline-result-avg">{value}</div>
+										{stdev ? (
+											<div className="topline-result-stdev">
+												<i className="fas fa-plus-minus fa-xs"></i> {formatToNumber(stdev, { maximumFractionDigits: 0 })}
+											</div>
+										) : undefined}
+										<div className="results-reference hide">
+											<span className="results-reference-diff"></span> vs reference
+										</div>
+									</td>
+								);
+							})}
+						</tr>
+					</tbody>
+				</table>
+			</>
+		);
+	}
+
+	private static buildResultsList(data: ResultMetric[]): Element {
+		return (
+			<>
+				{data.map(column => (
+					<div className={`results-metric ${column.classes}`}>
+						<span className="topline-result-avg">{column.average.toFixed(2)}</span>
+						{column.stdev && (
+							<span className="topline-result-stdev">
+								(<i className="fas fa-plus-minus fa-xs"></i>
+								{column.stdev.toFixed()})
+							</span>
+						)}
+						<div className="results-reference hide">
+							<span className="results-reference-diff"></span> vs reference
+						</div>
+					</div>
+				))}
+			</>
 		);
 	}
 }
+
+type ToplineResultOptions = {
+	showOutOfMana?: boolean;
+	asList?: boolean;
+};
+
+type ResultMetric = {
+	name: keyof typeof TOOLTIP_METRIC_LABELS;
+	average: number;
+	stdev?: number;
+	classes?: string;
+	unit?: 'percentage' | 'number' | 'seconds' | undefined;
+};

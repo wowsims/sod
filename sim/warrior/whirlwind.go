@@ -66,7 +66,7 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		CritDamageBonus: warrior.impale(),
 

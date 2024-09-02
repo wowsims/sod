@@ -16,7 +16,7 @@
       margin-right: 0 !important;
       
       &:not(:first-child) {
-        margin-left: map-get($spacers, 1);
+        margin-left: var(--spacer-1);
       }
     }
   }

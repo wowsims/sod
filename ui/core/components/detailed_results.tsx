@@ -1,5 +1,3 @@
-import { ref } from 'tsx-vanilla';
-
 import { REPO_NAME } from '../constants/other';
 import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
@@ -8,17 +6,16 @@ import { TypedEvent } from '../typed_event';
 import { Component } from './component';
 import { AuraMetricsTable } from './detailed_results/aura_metrics';
 import { CastMetricsTable } from './detailed_results/cast_metrics';
+import { DamageMetricsTable } from './detailed_results/damage_metrics';
 import { DpsHistogram } from './detailed_results/dps_histogram';
-import { DtpsMeleeMetricsTable } from './detailed_results/dtps_melee_metrics';
-import { DtpsSpellMetricsTable } from './detailed_results/dtps_spell_metrics';
+import { DtpsMetricsTable } from './detailed_results/dtps_metrics';
 import { HealingMetricsTable } from './detailed_results/healing_metrics';
 import { LogRunner } from './detailed_results/log_runner';
-import { MeleeMetricsTable } from './detailed_results/melee_metrics';
 import { PlayerDamageMetricsTable } from './detailed_results/player_damage';
+import { PlayerDamageTakenMetricsTable } from './detailed_results/player_damage_taken';
 import { ResourceMetricsTable } from './detailed_results/resource_metrics';
 import { SimResultData } from './detailed_results/result_component';
 import { ResultsFilter } from './detailed_results/results_filter';
-import { SpellMetricsTable } from './detailed_results/spell_metrics';
 import { Timeline } from './detailed_results/timeline';
 import { ToplineResults } from './detailed_results/topline_results';
 import { RaidSimResultsManager } from './raid_sim_action';
@@ -37,17 +34,17 @@ const tabs: Tab[] = [
 		isActive: true,
 		targetId: 'damageTab',
 		label: 'Damage',
-		classes: ['damage-metrics'],
+		classes: ['damage-metrics-tab'],
 	},
 	{
 		targetId: 'healingTab',
 		label: 'Healing',
-		classes: ['healing-metrics'],
+		classes: ['healing-metrics-tab'],
 	},
 	{
 		targetId: 'damageTakenTab',
 		label: 'Damage Taken',
-		classes: ['threat-metrics'],
+		classes: ['threat-metrics-tab'],
 	},
 	{
 		targetId: 'buffsTab',
@@ -75,104 +72,6 @@ const tabs: Tab[] = [
 	},
 ];
 
-const layoutHTML = (
-	<div className="dr-root dr-no-results">
-		<div className="dr-toolbar">
-			<div className="results-filter"></div>
-			<div className="tabs-filler"></div>
-			<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
-				{tabs.map(({ label, targetId, isActive, classes }) => (
-					<li className={`nav-item dr-tab-tab ${classes?.join(' ') || ''}`} attributes={{ role: 'presentation' }}>
-						<a
-							className={`nav-link${isActive ? ' active' : ''}`}
-							type="button"
-							attributes={{
-								role: 'tab',
-								// @ts-expect-error
-								'aria-controls': targetId,
-								'aria-selected': !!isActive,
-							}}
-							dataset={{
-								bsToggle: 'tab',
-								bsTarget: `#${targetId}`,
-							}}>
-							{label}
-						</a>
-					</li>
-				))}
-			</ul>
-		</div>
-		<div className="tab-content">
-			<div id="noResultsTab" className="tab-pane dr-tab-content fade active show">
-				Run a simulation to view results
-			</div>
-			<div id="damageTab" className="tab-pane dr-tab-content damage-content fade active show">
-				<div className="dr-row topline-results"></div>
-				<div className="dr-row all-players-only">
-					<div className="player-damage-metrics"></div>
-				</div>
-				<div className="dr-row single-player-only">
-					<div className="melee-metrics"></div>
-				</div>
-				<div className="dr-row single-player-only">
-					<div className="spell-metrics"></div>
-				</div>
-				<div className="dr-row dps-histogram"></div>
-			</div>
-			<div id="healingTab" className="tab-pane dr-tab-content healing-content fade">
-				<div className="dr-row topline-results"></div>
-				<div className="dr-row single-player-only">
-					<div className="healing-spell-metrics"></div>
-				</div>
-				<div className="dr-row hps-histogram"></div>
-			</div>
-			<div id="damageTakenTab" className="tab-pane dr-tab-content damage-taken-content fade">
-				<div className="dr-row topline-results"></div>
-				<div className="dr-row all-players-only">
-					<div className="player-damage-taken-metrics"></div>
-				</div>
-				<div className="dr-row single-player-only">
-					<div className="dtps-melee-metrics"></div>
-				</div>
-				<div className="dr-row single-player-only">
-					<div className="dtps-spell-metrics"></div>
-				</div>
-				<div className="dr-row damage-taken-histogram single-player-only"></div>
-			</div>
-			<div id="buffsTab" className="tab-pane dr-tab-content buffs-content fade">
-				<div className="dr-row">
-					<div className="buff-aura-metrics"></div>
-				</div>
-			</div>
-			<div id="debuffsTab" className="tab-pane dr-tab-content debuffs-content fade">
-				<div className="dr-row">
-					<div className="debuff-aura-metrics"></div>
-				</div>
-			</div>
-			<div id="castsTab" className="tab-pane dr-tab-content casts-content fade">
-				<div className="dr-row">
-					<div className="cast-metrics"></div>
-				</div>
-			</div>
-			<div id="resourcesTab" className="tab-pane dr-tab-content resources-content fade">
-				<div className="dr-row">
-					<div className="resource-metrics"></div>
-				</div>
-			</div>
-			<div id="timelineTab" className="tab-pane dr-tab-content timeline-content fade">
-				<div className="dr-row">
-					<div className="timeline"></div>
-				</div>
-			</div>
-			<div id="logTab" className="tab-pane dr-tab-content log-content fade">
-				<div className="dr-row">
-					<div className="log"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-);
-
 export abstract class DetailedResults extends Component {
 	protected readonly simUI: SimUI | null;
 	protected latestRun: SimRunData | null = null;
@@ -184,7 +83,104 @@ export abstract class DetailedResults extends Component {
 
 	constructor(parent: HTMLElement, simUI: SimUI | null, cssScheme: string) {
 		super(parent, 'detailed-results-manager-root');
-		this.rootElem.appendChild(layoutHTML);
+
+		this.rootElem.appendChild(
+			<div className="dr-root dr-no-results">
+				<div className="dr-toolbar">
+					<div className="results-filter"></div>
+					<div className="tabs-filler"></div>
+					<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
+						{tabs.map(({ label, targetId, isActive, classes }) => (
+							<li className={`nav-item dr-tab-tab ${classes?.join(' ') || ''}`} attributes={{ role: 'presentation' }}>
+								<button
+									className={`nav-link${isActive ? ' active' : ''}`}
+									type="button"
+									attributes={{
+										role: 'tab',
+										// @ts-expect-error
+										'aria-controls': targetId,
+										'aria-selected': !!isActive,
+									}}
+									dataset={{
+										bsToggle: 'tab',
+										bsTarget: `#${targetId}`,
+									}}>
+									{label}
+								</button>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div className="tab-content">
+					<div id="noResultsTab" className="tab-pane dr-tab-content fade active show">
+						Run a simulation to view results
+					</div>
+					<div id="damageTab" className="tab-pane dr-tab-content damage-content fade active show">
+						<div className="dr-row topline-results" />
+						<div className="dr-row all-players-only">
+							<div className="player-damage-metrics" />
+						</div>
+						<div className="dr-row single-player-only">
+							<div className="damage-metrics" />
+						</div>
+						{/* <div className="dr-row single-player-only">
+							<div className="melee-metrics" />
+						</div>
+						<div className="dr-row single-player-only">
+							<div className="spell-metrics" />
+						</div> */}
+						<div className="dr-row dps-histogram" />
+					</div>
+					<div id="healingTab" className="tab-pane dr-tab-content healing-content fade">
+						<div className="dr-row topline-results" />
+						<div className="dr-row single-player-only">
+							<div className="healing-spell-metrics" />
+						</div>
+						<div className="dr-row hps-histogram" />
+					</div>
+					<div id="damageTakenTab" className="tab-pane dr-tab-content damage-taken-content fade">
+						<div className="dr-row topline-results" />
+						<div className="dr-row all-players-only">
+							<div className="player-damage-taken-metrics" />
+						</div>
+						<div className="dr-row single-player-only">
+							<div className="dtps-metrics" />
+						</div>
+						<div className="dr-row damage-taken-histogram single-player-only" />
+					</div>
+					<div id="buffsTab" className="tab-pane dr-tab-content buffs-content fade">
+						<div className="dr-row">
+							<div className="buff-aura-metrics" />
+						</div>
+					</div>
+					<div id="debuffsTab" className="tab-pane dr-tab-content debuffs-content fade">
+						<div className="dr-row">
+							<div className="debuff-aura-metrics" />
+						</div>
+					</div>
+					<div id="castsTab" className="tab-pane dr-tab-content casts-content fade">
+						<div className="dr-row">
+							<div className="cast-metrics" />
+						</div>
+					</div>
+					<div id="resourcesTab" className="tab-pane dr-tab-content resources-content fade">
+						<div className="dr-row">
+							<div className="resource-metrics" />
+						</div>
+					</div>
+					<div id="timelineTab" className="tab-pane dr-tab-content timeline-content fade">
+						<div className="dr-row">
+							<div className="timeline" />
+						</div>
+					</div>
+					<div id="logTab" className="tab-pane dr-tab-content log-content fade">
+						<div className="dr-row">
+							<div className="log" />
+						</div>
+					</div>
+				</div>
+			</div>,
+		);
 		this.rootDiv = this.rootElem.querySelector('.dr-root')!;
 		this.simUI = simUI;
 
@@ -218,14 +214,11 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.cast-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		new MeleeMetricsTable({
-			parent: this.rootElem.querySelector('.melee-metrics')!,
+		new DamageMetricsTable({
+			parent: this.rootElem.querySelector('.damage-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		new SpellMetricsTable({
-			parent: this.rootElem.querySelector('.spell-metrics')!,
-			resultsEmitter: this.resultsEmitter,
-		});
+
 		new HealingMetricsTable({
 			parent: this.rootElem.querySelector('.healing-spell-metrics')!,
 			resultsEmitter: this.resultsEmitter,
@@ -238,7 +231,10 @@ export abstract class DetailedResults extends Component {
 			{ parent: this.rootElem.querySelector('.player-damage-metrics')!, resultsEmitter: this.resultsEmitter },
 			this.resultsFilter,
 		);
-	
+		new PlayerDamageTakenMetricsTable(
+			{ parent: this.rootElem.querySelector('.player-damage-taken-metrics')!, resultsEmitter: this.resultsEmitter },
+			this.resultsFilter,
+		);
 		new AuraMetricsTable(
 			{
 				parent: this.rootElem.querySelector('.buff-aura-metrics')!,
@@ -259,12 +255,8 @@ export abstract class DetailedResults extends Component {
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		new DtpsMeleeMetricsTable({
-			parent: this.rootElem.querySelector('.dtps-melee-metrics')!,
-			resultsEmitter: this.resultsEmitter,
-		});
-		new DtpsSpellMetricsTable({
-			parent: this.rootElem.querySelector('.dtps-spell-metrics')!,
+		new DtpsMetricsTable({
+			parent: this.rootElem.querySelector('.dtps-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
 
@@ -274,7 +266,7 @@ export abstract class DetailedResults extends Component {
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		const tabEl = document.querySelector('a[data-bs-target="#timelineTab"]');
+		const tabEl = document.querySelector('button[data-bs-target="#timelineTab"]');
 		tabEl?.addEventListener('shown.bs.tab', () => {
 			timeline.render();
 		});

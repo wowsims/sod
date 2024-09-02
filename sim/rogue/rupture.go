@@ -19,7 +19,7 @@ func (rogue *Rogue) registerRupture() {
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags(),
+		Flags:        core.SpellFlagPassiveSpell | rogue.finisherFlags(),
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{

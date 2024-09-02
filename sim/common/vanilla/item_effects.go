@@ -160,7 +160,7 @@ func init() {
 					dot.Snapshot(target, 30, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 					enemyDamageTaken[target.UnitIndex] += result.Damage
 				},
 			},
@@ -241,7 +241,7 @@ func init() {
 				},
 			})
 		})
-		
+
 		mightOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 16600},
 			SpellSchool: core.SpellSchoolArcane,
@@ -261,11 +261,11 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				counter := 0
-				
+
 				for counter < 10 {
 					fistOfShahramAura := character.GetOrRegisterAura(core.Aura{
 						ActionID: core.ActionID{SpellID: 16601},
-						Label: fmt.Sprintf("Fist of Shahram (%d)", counter),
+						Label:    fmt.Sprintf("Fist of Shahram (%d)", counter),
 						Duration: time.Second * 8,
 						OnGain: func(aura *core.Aura, sim *core.Simulation) {
 							character.MultiplyAttackSpeed(sim, 1.3)
@@ -274,15 +274,15 @@ func init() {
 							character.MultiplyAttackSpeed(sim, 1/(1.3))
 						},
 					})
-					
+
 					if !fistOfShahramAura.IsActive() {
-					    fistOfShahramAura.Activate(sim)
-					    break
+						fistOfShahramAura.Activate(sim)
+						break
 					}
-					
+
 					counter += 1
-					
-				}	
+
+				}
 			},
 		})
 
@@ -292,7 +292,7 @@ func init() {
 			SpellSchool: core.SpellSchoolArcane,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagIgnoreAttackerModifiers,
+			Flags:       core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			Hot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Blessing of Shahram",
@@ -349,7 +349,7 @@ func init() {
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagIgnoreAttackerModifiers,
+			Flags:            core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -484,7 +484,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -535,7 +535,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -543,7 +543,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 				if result.Landed() {
-					spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			},
@@ -735,7 +734,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 18797}, spell)
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 18797}, spell)
 			},
 		})
 	})
@@ -813,7 +812,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -881,7 +880,7 @@ func init() {
 					dot.Snapshot(target, 55, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 
@@ -926,7 +925,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 		})
@@ -1102,7 +1101,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttackProc(sim , 2, core.ActionID{SpellID: 15494}, spell)
+				character.AutoAttacks.ExtraMHAttackProc(sim, 2, core.ActionID{SpellID: 15494}, spell)
 			},
 		})
 	})
@@ -1211,6 +1210,7 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			BonusCoefficient: 1,
@@ -1370,7 +1370,7 @@ func init() {
 					debuffAuras.Get(target).Activate(sim)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -1379,7 +1379,6 @@ func init() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
 					if result.Landed() {
-						spell.SpellMetrics[result.Target.UnitIndex].Hits--
 						spell.Dot(aoeTarget).Apply(sim)
 					}
 				}
@@ -1412,7 +1411,7 @@ func init() {
 					dot.Snapshot(target, 8, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 		})
@@ -1466,7 +1465,7 @@ func init() {
 					dot.Snapshot(target, 2, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 					character.GainHealth(sim, result.Damage, healthMetrics)
 				},
 			},
@@ -1490,6 +1489,7 @@ func init() {
 			SpellSchool:      core.SpellSchoolNature,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			BonusCoefficient: 0.1,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -1544,6 +1544,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			BonusCoefficient: .025,
 			DamageMultiplier: 1,
@@ -1588,6 +1589,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -1857,7 +1859,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 21919}, spell)
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 21919}, spell)
 			},
 		})
 	})
@@ -1978,7 +1980,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 461985}, spell)
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 461985}, spell)
 			},
 		})
 	})
@@ -2005,7 +2007,7 @@ func init() {
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -2013,7 +2015,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 				if result.Landed() {
-					spell.SpellMetrics[result.Target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			},
@@ -2143,6 +2144,7 @@ func init() {
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolHoly,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				character.GainHealth(sim, sim.Roll(120, 180), healthMetrics)
 			},
@@ -2173,6 +2175,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2205,6 +2208,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2279,7 +2283,7 @@ func init() {
 				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfJustice") {
 					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 15600}, spell)
+					aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
 				}
 			},
 		})
@@ -2388,7 +2392,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 26470},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskSpellHealing,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2474,7 +2478,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 17330},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagPoison | core.SpellFlagPureDot,
+			Flags:       core.SpellFlagPoison | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -2491,7 +2495,7 @@ func init() {
 					dot.Snapshot(target, 20, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 			DamageMultiplier: 1,
@@ -2536,6 +2540,7 @@ func init() {
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskTriggerInstant,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
