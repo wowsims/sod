@@ -17,6 +17,14 @@ func (hunter *Hunter) ApplyRunes() {
 	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
 		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Beastmastery Rune Focus",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet != nil {
+					hunter.pet.AddFocusRegenMultiplier(1.50)
+				}
+			},
+		}))
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {

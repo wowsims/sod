@@ -44,6 +44,18 @@ func (hunter *Hunter) ApplyTalents() {
 		})
 	}
 
+	if hunter.Talents.BestialDiscipline > 0 {
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Bestial Discipline",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet != nil {
+					hunter.pet.AddFocusRegenMultiplier(1 + 0.1*float64(hunter.Talents.BestialDiscipline))
+				}
+			},
+		}))
+	}
+
+
 	hunter.AddStat(stats.MeleeHit, float64(hunter.Talents.Surefooted)*1*core.MeleeHitRatingPerHitChance)
 	hunter.AddStat(stats.SpellHit, float64(hunter.Talents.Surefooted)*1*core.SpellHitRatingPerHitChance)
 
@@ -117,10 +129,10 @@ func (hunter *Hunter) registerBestialWrathCD() {
 
 	actionID := core.ActionID{SpellID: 19574}
 	
-	bestialWrathPetAura := hunter.pet.RegisterAura(core.Aura{
+	hunter.BestialWrathPetAura = hunter.pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
-		Duration: time.Second * core.TernaryDuration(core.HasItemEffect(MaelstromsWrath), 21, 18),
+		Duration: time.Second * 18,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
 		},
@@ -145,7 +157,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			bestialWrathPetAura.Activate(sim)
+			hunter.BestialWrathPetAura.Activate(sim)
 		},
 	})
 

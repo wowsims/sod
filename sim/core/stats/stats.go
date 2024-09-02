@@ -418,7 +418,6 @@ type PseudoStats struct {
 	//  This includes almost all "(Normalized) Weapon Damage", but also some "School Damage (Physical)" abilities.
 	BonusDamage float64 // Comes from '+X Weapon Damage' effects
 
-	MHDpsMultiplier float64 // Used by Hunter T2 Melee 4pc
 	BonusMHDps     float64
 	BonusOHDps     float64
 	BonusRangedDps float64

@@ -6,7 +6,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
@@ -15,7 +14,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	spellCoeff := [10]float64{0, .08, .125, .185, .2, .2, .2, .2, .2, .2}[rank]
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
-	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetDragonstalkerPursuit, 6)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -54,10 +52,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := baseDamage
-				if has6PDragonstalkerPursuit {
-					damage = damage + (0.25 * hunter.GetStat(stats.RangedAttackPower)) / 5
-				}
+				damage := baseDamage + (hunter.SerpentStingAPCoeff * dot.Spell.RangedAttackPower(target)) / 5
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -82,7 +77,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
-	has6PDragonstalkerPursuit := hunter.HasSetBonus(ItemSetDragonstalkerPursuit, 6)
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
@@ -100,10 +94,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		BonusCoefficient:         0.4,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage
-			if has6PDragonstalkerPursuit {
-				damage = damage + (0.25 * hunter.GetStat(stats.RangedAttackPower)) / 5
-			}
+			damage := baseDamage + (hunter.SerpentStingAPCoeff * spell.RangedAttackPower(target)) / 5
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedCritOnly)
 		},
 	})
@@ -112,6 +103,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 func (hunter *Hunter) registerSerpentStingSpell() {
 	// TODO: AQ ranks := 9
 	ranks := 8
+	hunter.SerpentStingAPCoeff = 0
 
 	for i := ranks; i >= 0; i-- {
 		config := hunter.getSerpentStingConfig(i)

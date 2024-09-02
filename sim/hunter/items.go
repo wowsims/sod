@@ -286,6 +286,15 @@ func init() {
 		}
 
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+
+		if hunter.Talents.BestialWrath {
+			hunter.RegisterAura(core.Aura{
+				Label: "Maelstroms's Wrath Bestial Wrath",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.BestialWrathPetAura.Duration += (time.Second * 3)
+				},
+			})
+		}
 	})
 
 	core.NewItemEffect(ZandalarPredatorsMantle, func(a core.Agent) {

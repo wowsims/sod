@@ -187,11 +187,7 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 
-	focusRegenMultiplier := (1.0 + 0.1*float64(hp.hunterOwner.Talents.BestialDiscipline)) *
-		core.TernaryFloat64(hp.hunterOwner.HasRune(proto.HunterRune_RuneHandsBeastmastery), 1.5, 1.0) *
-		core.TernaryFloat64(hp.hunterOwner.HasPredatorArmor[5], 1.2, 1.0)
-
-	hp.EnableFocusBar(focusRegenMultiplier, func(sim *core.Simulation) {
+	hp.EnableFocusBar(1, func(sim *core.Simulation) {
 		if hp.GCD.IsReady(sim) {
 			hp.OnGCDReady(sim)
 		}
@@ -278,7 +274,7 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22 * core.TernaryFloat64(hunter.HasPredatorArmor[3], 1.2, 1.0),
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 
 			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
 			stats.SpellCrit: ownerStats[stats.MeleeCrit],

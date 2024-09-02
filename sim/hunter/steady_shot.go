@@ -13,6 +13,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	}
 
 	hunter.SteadyShot = hunter.GetOrRegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_HunterSteadyShot,
 		ActionID:     core.ActionID{SpellID: 437123},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,

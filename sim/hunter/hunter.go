@@ -21,11 +21,24 @@ const (
 const (
 	SpellCode_HunterNone int32 = iota
 
+	// Shots
 	SpellCode_HunterAimedShot
-	SpellCode_HunterMongooseBite
-	SpellCode_HunterRaptorStrike
-	SpellCode_HunterMultiShot
+	SpellCode_HunterArcaneShot
+	SpellCode_HunterChimeraShot
+	SpellCode_HunterExplosiveShot
 	SpellCode_HunterKillShot
+	SpellCode_HunterMultiShot
+	SpellCode_HunterSteadyShot
+
+	// Strikes
+	SpellCode_HunterRaptorStrike
+
+	// Stings
+
+	// Traps
+
+	// Other
+	SpellCode_HunterMongooseBite
 	SpellCode_HunterVolley
 )
 
@@ -57,6 +70,7 @@ type Hunter struct {
 	AmmoDPS                   float64
 	AmmoDamageBonus           float64
 	NormalizedAmmoDamageBonus float64
+	SerpentStingAPCoeff		  float64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
@@ -107,6 +121,7 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
+	BestialWrathPetAura   *core.Aura
 
 	HasPredatorArmor [6]bool
 }
@@ -202,6 +217,9 @@ func (hunter *Hunter) Initialize() {
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
+	hunter.Strikes = nil
+	hunter.MeleeSpells = nil
+	hunter.LastShot = nil
 }
 
 func NewHunter(character *core.Character, options *proto.Player) *Hunter {

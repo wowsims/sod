@@ -22,7 +22,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
+		ProcMask:      core.ProcMaskMeleeSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,

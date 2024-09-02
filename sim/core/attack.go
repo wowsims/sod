@@ -127,10 +127,10 @@ func (weapon *Weapon) CalculateNormalizedWeaponDamage(sim *Simulation, attackPow
 }
 
 func (unit *Unit) MHWeaponDamage(sim *Simulation, attackPower float64) float64 {
-	return unit.AutoAttacks.mh.CalculateWeaponDamage(sim, attackPower) * (1 + unit.PseudoStats.MHDpsMultiplier)
+	return unit.AutoAttacks.mh.CalculateWeaponDamage(sim, attackPower)
 }
 func (unit *Unit) MHNormalizedWeaponDamage(sim *Simulation, attackPower float64) float64 {
-	return unit.AutoAttacks.mh.CalculateNormalizedWeaponDamage(sim, attackPower) * (1 + unit.PseudoStats.MHDpsMultiplier)
+	return unit.AutoAttacks.mh.CalculateNormalizedWeaponDamage(sim, attackPower)
 }
 
 func (unit *Unit) OHWeaponDamage(sim *Simulation, attackPower float64) float64 {
