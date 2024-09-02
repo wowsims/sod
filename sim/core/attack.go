@@ -757,7 +757,7 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 }
 
 func (aa *AutoAttacks) ExtraOHAttackProc(sim *Simulation, attacks int32, actionID ActionID, spell *Spell) {
-		aa.ExtraMHAttack(sim, attacks, actionID, spell.ActionID)
+		aa.ExtraOHAttack(sim, attacks, actionID, spell.ActionID)
 }
 
 func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
