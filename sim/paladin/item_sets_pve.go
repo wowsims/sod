@@ -120,3 +120,63 @@ var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
+	Name: "Freethinker's Armor",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.HolyPower:       14,		
+			})
+		},
+		3: func(agent core.Agent) {
+			//Increases damage done by your holy shock spell by 50%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyShock {
+					spell.DamageMultiplier *= 1.5
+				}
+			})
+		},
+		5: func(agent core.Agent) {
+			// Reduce cooldown of Exorcism by 3 seconds
+			
+		},
+	},
+})
+
+
+var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
+	Name: "Merciful Judgement",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			//Increases critical strike chance of holy shock spell by 20%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyShock {
+					spell.BonusCritRating += 20.0
+				}
+			})
+		},
+		4: func(agent core.Agent) {
+			//Increases damage done by your Consecration spell by 50%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinConsecration {
+					spell.DamageMultiplier *= 1.5
+				}
+			})
+		},
+		6: func(agent core.Agent) {
+			// While you are not your Beacon of Light target, your Beacon of Light target is also healed by 100% of the damage you deal
+			// with Consecration, Exorcism, Holy Shock, Holy Wrath, and Hammer of Wrath
+			// No need to Sim
+			
+		},
+	},
+})

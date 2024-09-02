@@ -16,6 +16,7 @@ const (
 	SpellCode_PaladinNone = iota
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinJudgementOfCommand
+	SpellCode_PaladinConsecration
 )
 
 type Paladin struct {
@@ -190,6 +191,8 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 		return paladin.sealOfMartyrdom
 	case proto.PaladinSeal_Command:
 		return paladin.sealOfCommand
+	case proto.PaladinSeal_Righteousness:
+		return paladin.sealOfRighteousness
 	default:
 		return paladin.sealOfRighteousness
 	}
