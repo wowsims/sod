@@ -1151,7 +1151,7 @@ func RetributionAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolHoly,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1199,7 +1199,7 @@ func ThornsAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -2189,7 +2189,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 				if wsBuffAura.GetStacks() == 2 {
 					wsBuffAura.SetStacks(sim, 1)
 					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
-					wsBuffAura.Refresh(sim) // Apply New Duration
+					wsBuffAura.Refresh(sim)                      // Apply New Duration
 				}
 			}
 
@@ -2200,8 +2200,8 @@ func ApplyWildStrikes(character *Character) *Aura {
 				wsBuffAura.SetStacks(sim, 2)
 				wsBuffAura.Duration = time.Millisecond * 1500
 				wsBuffAura.Refresh(sim) // Apply New Duration
-				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim , 1, buffActionID, spell)
-			} 	
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, buffActionID, spell)
+			}
 		},
 	}))
 

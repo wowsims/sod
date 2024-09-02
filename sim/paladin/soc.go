@@ -70,7 +70,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlag_RV,
 
 			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
 
@@ -137,7 +137,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{

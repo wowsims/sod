@@ -15,10 +15,10 @@ func (paladin *Paladin) registerJudgement() {
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.06,
+			BaseCost:   0.06,
 			Multiplier: paladin.benediction(),
 		},
 		Cast: core.CastConfig{

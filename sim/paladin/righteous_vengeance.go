@@ -33,7 +33,7 @@ func (paladin *Paladin) registerRV() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		// SpellFlagIgnoreTargetModifiers was thought to be used based on wowhead flags
 		// WCL parses show that this is not the case

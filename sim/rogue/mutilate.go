@@ -23,7 +23,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage | core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage,
 
 		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
 
