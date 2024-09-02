@@ -123,6 +123,16 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 
 // Configuration for Aspect of the Falcon spell
 func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfig {
+    var impHawkAura *core.Aura
+
+    if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
+        impHawkAura = hunter.createImprovedHawkAura(
+            "Quick Strikes",
+            core.ActionID{SpellID: 469144},
+            true, // Melee
+        )
+    }
+
     // Get the maximum attack power from Aspect of the Hawk for the given level
     maxAttackPower := hunter.getMaxAspectOfTheHawkAttackPower(level)
 
@@ -135,17 +145,17 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
             stats.AttackPower:       maxAttackPower,
         },
         core.NeverExpires,
-        nil, // No special proc effects
-    )
+        func(aura *core.Aura) {
+            aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+                if spell != hunter.AutoAttacks.MHAuto() {
+                    return
+                }
 
-    var impHawkAura *core.Aura
-    if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
-        impHawkAura = hunter.createImprovedHawkAura(
-            "Quick Strikes",
-            core.ActionID{SpellID: 469144},
-            true, // Melee
-        )
-    }
+                if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < (0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)) {
+                    impHawkAura.Activate(sim)
+                }
+            }
+        })
 
     return core.SpellConfig{
         ActionID:      actionID,
@@ -164,11 +174,6 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
 
         ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
             aspectOfTheFalconAura.Activate(sim)
-
-            // Handle Improved Hawk talent proc for melee attacks
-            if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < (0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)) {
-                impHawkAura.Activate(sim)
-            }
         },
     }
 }
