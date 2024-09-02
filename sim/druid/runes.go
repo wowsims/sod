@@ -304,7 +304,6 @@ func (druid *Druid) applyDreamstate() {
 		Label:    "Dreamstate Mana Regen",
 		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
 		Duration: time.Second * 8,
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.SpiritRegenRateCasting += .5
 		},
@@ -313,11 +312,10 @@ func (druid *Druid) applyDreamstate() {
 		},
 	})
 
-	// Hidden aura
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.SpellCode == SpellCode_DruidStarsurge {
 				druid.DreamstateManaRegenAura.Activate(sim)
 				dreamstateAuras.Get(result.Target).Activate(sim)
 			}
