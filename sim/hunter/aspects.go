@@ -32,47 +32,62 @@ func (hunter *Hunter) createImprovedHawkAura(auraLabel string, actionID core.Act
     })
 }
 
-// Utility function to create a generic Aspect aura
-func (hunter *Hunter) createAspectAura(auraLabel string, actionID core.ActionID, stats stats.Stats, onSpellHitDealt func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult)) *core.Aura {
-    aspectAura := hunter.NewTemporaryStatsAuraWrapped(
-        auraLabel,
-        actionID,
-        stats,
-        core.NeverExpires,
-        func(aura *core.Aura) {
-            aura.OnSpellHitDealt = onSpellHitDealt
-        },
-    )
-    aspectAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
-    return aspectAura
+// Function to get the maximum attack power for Aspect of the Hawk based on character level
+func (hunter *Hunter) getMaxAspectOfTheHawkAttackPower(level int) float64 {
+    attackPower := [8]float64{0, 20, 35, 50, 70, 90, 110, 120} // Static data for attack power per rank
+    levels := [8]int{0, 10, 18, 28, 38, 48, 58, 60} // Levels at which ranks are available
+
+    maxAttackPower := 0.0
+
+    for rank := 1; rank <= 7; rank++ {
+        if level >= levels[rank] {
+            maxAttackPower = attackPower[rank]
+        }
+    }
+    return maxAttackPower
 }
 
-// Config for Aspect of the Hawk
+// Configuration for Aspect of the Hawk spell
 func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
+    var impHawkAura *core.Aura
     improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
-    spellId := [8]int32{0, 13165, 14318, 14319, 14320, 14321, 14322, 25296}[rank]
-    rap := [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[rank]
-    level := [8]int{0, 10, 18, 28, 38, 48, 58, 60}[rank]
 
-    var quickShotsAura *core.Aura
+    spellIds := [8]int32{0, 13165, 14318, 14319, 14320, 14321, 14322, 25296}
+    levels := [8]int{0, 10, 18, 28, 38, 48, 58, 60}
+
+    spellId := spellIds[rank]
+    level := levels[rank]
+
     if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
-        quickShotsAura = hunter.createImprovedHawkAura("Quick Shots", core.ActionID{SpellID: 6150}, false)
+        impHawkAura = hunter.createImprovedHawkAura(
+            "Quick Shots",
+            core.ActionID{SpellID: 6150},
+            false, // Ranged
+        )
     }
 
+    // Use utility function to get the attack power based on rank
+    rap := hunter.getMaxAspectOfTheHawkAttackPower(level)
+
     actionID := core.ActionID{SpellID: spellId}
-    aspectAura := hunter.createAspectAura(
+    aspectOfTheHawkAura := hunter.NewTemporaryStatsAuraWrapped(
         "Aspect of the Hawk"+strconv.Itoa(rank),
         actionID,
         stats.Stats{stats.RangedAttackPower: rap},
-        func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-            if spell != hunter.AutoAttacks.RangedAuto() {
-                return
+        core.NeverExpires,
+        func(aura *core.Aura) {
+            aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+                if spell != hunter.AutoAttacks.RangedAuto() {
+                    return
+                }
+
+                if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
+                    impHawkAura.Activate(sim)
+                }
             }
-            if quickShotsAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
-                quickShotsAura.Activate(sim)
-            }
-        },
-    )
+        })
+
+    aspectOfTheHawkAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
 
     return core.SpellConfig{
         ActionID:      actionID,
@@ -86,81 +101,82 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
             },
         },
         ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-            return !aspectAura.IsActive()
+            return !aspectOfTheHawkAura.IsActive()
         },
 
         ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-            aspectAura.Activate(sim)
+            aspectOfTheHawkAura.Activate(sim)
         },
     }
 }
 
-// Config for Aspect of the Falcon
-func (hunter *Hunter) getAspectOfTheFalconSpellConfig() core.SpellConfig {
-    highestHawkRank := hunter.getHighestAspectOfTheHawkRank()
-    if highestHawkRank == 0 {
-        return core.SpellConfig{}
-    }
-
-    hawkConfig := hunter.getAspectOfTheHawkSpellConfig(highestHawkRank)
-    improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
-
-    quickStrikesAura := hunter.createImprovedHawkAura("Quick Strikes", core.ActionID{SpellID: 469144}, true)
-
-    return core.SpellConfig{
-        ActionID:      core.ActionID{SpellID: 469145},
-        Flags:         core.SpellFlagAPL,
-        Rank:          highestHawkRank,
-        RequiredLevel: hawkConfig.RequiredLevel,
-
-        Cast: core.CastConfig{
-            DefaultCast: core.Cast{
-                GCD: core.GCDDefault,
-            },
-        },
-        ExtraCastCondition: hawkConfig.ExtraCastCondition,
-        ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-            aspectAura := hunter.createAspectAura(
-                "Aspect of the Falcon",
-                core.ActionID{SpellID: 469145},
-                stats.Stats{
-                    stats.RangedAttackPower: [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[highestHawkRank],
-                    stats.AttackPower:  [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[highestHawkRank],
-                },
-                func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-                    if sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
-                        if spell == hunter.AutoAttacks.RangedAuto() || spell == hunter.AutoAttacks.MeleeAuto() {
-                            if spell == hunter.AutoAttacks.MeleeAuto() {
-                                quickStrikesAura.Activate(sim)
-                            }
-                        }
-                    }
-                },
-            )
-            aspectAura.Activate(sim)
-            if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
-                quickStrikesAura.Activate(sim)
-            }
-        },
-    }
-}
-
-// Register Aspect of the Hawk spell configurations
+// Register Aspect of the Hawk spells
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
-    maxRank := 7
-
-    for i := 1; i < maxRank; i++ {
+    for i := 1; i <= 7; i++ {
         config := hunter.getAspectOfTheHawkSpellConfig(i)
+
         if config.RequiredLevel <= int(hunter.Level) {
             hunter.GetOrRegisterSpell(config)
         }
     }
 }
 
-// Register Aspect of the Falcon spell configuration
+// Configuration for Aspect of the Falcon spell
+func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfig {
+    // Get the maximum attack power from Aspect of the Hawk for the given level
+    maxAttackPower := hunter.getMaxAspectOfTheHawkAttackPower(level)
+
+    actionID := core.ActionID{SpellID: 469145}
+    aspectOfTheFalconAura := hunter.NewTemporaryStatsAuraWrapped(
+        "Aspect of the Falcon",
+        actionID,
+        stats.Stats{
+            stats.RangedAttackPower: maxAttackPower,
+            stats.AttackPower:       maxAttackPower,
+        },
+        core.NeverExpires,
+        nil, // No special proc effects
+    )
+
+    var impHawkAura *core.Aura
+    if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
+        impHawkAura = hunter.createImprovedHawkAura(
+            "Quick Strikes",
+            core.ActionID{SpellID: 469144},
+            true, // Melee
+        )
+    }
+
+    return core.SpellConfig{
+        ActionID:      actionID,
+        Flags:         core.SpellFlagAPL,
+        Rank:          1, // Single rank
+        RequiredLevel: level,
+
+        Cast: core.CastConfig{
+            DefaultCast: core.Cast{
+                GCD: core.GCDDefault,
+            },
+        },
+        ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+            return !aspectOfTheFalconAura.IsActive()
+        },
+
+        ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+            aspectOfTheFalconAura.Activate(sim)
+
+            // Handle Improved Hawk talent proc for melee attacks
+            if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < (0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)) {
+                impHawkAura.Activate(sim)
+            }
+        },
+    }
+}
+
+// Register Aspect of the Falcon spell
 func (hunter *Hunter) registerAspectOfTheFalconSpell() {
-    config := hunter.getAspectOfTheFalconSpellConfig()
-    if config.ActionID.SpellID != 0 && config.RequiredLevel <= int(hunter.Level) {
+    config := hunter.getAspectOfTheFalconSpellConfig(int(hunter.Level))
+    if config.RequiredLevel <= int(hunter.Level) {
         hunter.GetOrRegisterSpell(config)
     }
 }
