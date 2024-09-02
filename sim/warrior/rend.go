@@ -35,7 +35,7 @@ func (warrior *Warrior) registerRendSpell() {
 		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10 - warrior.FocusedRageDiscount,

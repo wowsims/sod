@@ -24,7 +24,7 @@
 	align-items: center;
 
 	label {
-		margin-right: map.get($spacers, 2);
+		margin-right: var(--spacer-2);
 	}
 
 	input:not(.form-check-input),
@@ -41,7 +41,7 @@
 		flex: 1;
 
 		&:not(:last-child) {
-			margin-right: map.get($spacers, 3);
+			margin-right: var(--spacer-3);
 		}
 	}
 }

@@ -60,7 +60,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 				if hasPandemicRune {
 					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
 					dot.Spell.CritDamageBonus += 1
-					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 					dot.Spell.CritDamageBonus -= 1
 				} else {
 					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)

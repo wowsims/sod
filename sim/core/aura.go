@@ -59,6 +59,7 @@ type Aura struct {
 
 	startTime time.Duration // Time at which the aura was applied.
 	expires   time.Duration // Time at which aura will be removed.
+	fadeTime  time.Duration // Time at which the aura was actually removed.
 
 	// The unit this aura is attached to.
 	Unit *Unit
@@ -134,6 +135,7 @@ func (aura *Aura) reset(sim *Simulation) {
 		panic("Aura nonzero stacks during reset: " + aura.Label)
 	}
 	aura.metrics.reset()
+	aura.fadeTime = -NeverExpires
 
 	if aura.OnReset != nil {
 		aura.OnReset(aura, sim)
@@ -668,6 +670,7 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 	}
 
 	aura.expires = 0
+	aura.fadeTime = sim.CurrentTime
 	if aura.activeIndex != Inactive {
 		removeActiveIndex := aura.activeIndex
 		aura.Unit.activeAuras = removeBySwappingToBack(aura.Unit.activeAuras, removeActiveIndex)

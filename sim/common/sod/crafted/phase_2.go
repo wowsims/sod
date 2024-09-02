@@ -131,7 +131,7 @@ func init() {
 			SpellSchool: core.SpellSchoolArcane,
 			ProcMask:    core.ProcMaskEmpty,
 			// TODO: Verify if SP affects the damage
-			Flags: core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
+			Flags: core.SpellFlagNoOnCastComplete | core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -252,7 +252,7 @@ func init() {
 			SpellSchool: core.SpellSchoolArcane,
 			ProcMask:    core.ProcMaskEmpty,
 			// TODO: Verify if SP affects the damage
-			Flags: core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
+			Flags: core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagNoMetrics | core.SpellFlagIgnoreAttackerModifiers,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

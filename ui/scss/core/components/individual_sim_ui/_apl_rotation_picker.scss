@@ -21,8 +21,8 @@
 		> * > .list-picker-item-container {
 			background-color: rgba(21, 23, 30, 0.8);
 			border: 1px solid var(--bs-primary) !important;
-			padding: map-get($spacers, 2);
-			margin-bottom: map-get($spacers, 2);
+			padding: var(--spacer-2);
+			margin-bottom: var(--spacer-2);
 
 			.list-picker-item-header {
 				align-items: flex-start;
@@ -34,7 +34,7 @@
 		}
 
 		.form-label {
-			margin-right: map-get($spacers, 2);
+			margin-right: var(--spacer-2);
 			margin-bottom: 0;
 		}
 	}
@@ -71,7 +71,7 @@
 	margin: 0;
 
 	& > :not(:last-child) {
-		margin-right: map-get($spacers, 2);
+		margin-right: var(--spacer-2);
 	}
 
 	.form-label {
@@ -103,7 +103,7 @@
 	margin: 0;
 
 	.apl-action-condition {
-		margin-bottom: map-get($spacers, 2) !important;
+		margin-bottom: var(--spacer-2) !important;
 	}
 
 	.input-root {
@@ -112,7 +112,7 @@
 		border: none;
 
 		&:not(:last-child) {
-			margin-right: map-get($spacers, 2);
+			margin-right: var(--spacer-2);
 		}
 	}
 
@@ -131,7 +131,7 @@
 	flex-wrap: wrap;
 
 	.apl-picker-builder-multi {
-		padding-left: map-get($spacers, 2);
+		padding-left: var(--spacer-2);
 		border-left: 1px solid $border-color;
 	}
 
@@ -156,8 +156,8 @@
 
 			.list-picker-item-header {
 				order: 1;
-				margin-left: map-get($spacers, 2) !important;
-				line-height: map-get($spacers, 4);
+				margin-left: var(--spacer-2) !important;
+				line-height: var(--spacer-4);
 			}
 		}
 	}

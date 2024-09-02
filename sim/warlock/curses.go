@@ -83,9 +83,9 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 				if dot.TickCount%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += snapshotBaseDmgNoBonus
@@ -96,7 +96,6 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 
 				// If the spell's DoT is already applied, do a refresh if the Invocation rune is also being used
 				// Else deactivate the existing curse and apply this one instead
@@ -394,9 +393,9 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 			},
 		},

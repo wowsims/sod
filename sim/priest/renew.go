@@ -38,7 +38,6 @@ package priest
 // 		},
 
 // 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			spell.SpellMetrics[target.UnitIndex].Hits++
 // 			spell.Hot(target).Apply(sim)
 
 // 			if priest.EmpoweredRenew != nil {

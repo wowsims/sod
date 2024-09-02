@@ -206,7 +206,8 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 		ActionID:    ActionID{SpellID: 1382},
 		SpellSchool: SpellSchoolShadow,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskSpellDamage,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -255,7 +256,8 @@ func registerFrostOil(character *Character, isMh bool) {
 		ActionID:    ActionID{SpellID: 1191},
 		SpellSchool: SpellSchoolFrost,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskSpellDamage,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -392,7 +394,7 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagNone,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
