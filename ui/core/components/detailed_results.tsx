@@ -277,7 +277,7 @@ export abstract class DetailedResults extends Component {
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		this.rootElem.classList.add('hide-threat-metrics', 'hide-threat-metrics');
+		this.rootElem.classList.add('hide-threat-metrics');
 
 		this.resultsFilter.changeEmitter.on(() => this.updateResults());
 

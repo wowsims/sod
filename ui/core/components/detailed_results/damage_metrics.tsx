@@ -1,5 +1,3 @@
-import { relative } from 'node:path';
-
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
@@ -20,6 +18,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				: undefined;
 			this.maxDamageAmount = Math.max(...(lastResult || []).map(a => a.damage));
 		});
+		const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
 		super(config, [
 			MetricsTable.nameCellConfig((metric: ActionMetrics) => {
 				return {
@@ -192,7 +191,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							tooltipElement={cellElem}
 							tooltipConfig={{
 								onShow: () => {
-									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
 									if (hideThreatMetrics) return false;
 								},
 							}}
@@ -408,6 +406,43 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'DPET',
 				getValue: (metric: ActionMetrics) => metric.damageThroughput,
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.damageThroughput, { fallbackString: '-' }),
+			},
+			{
+				name: 'TPS',
+				headerCellClass: 'text-body threat-metrics',
+				columnClass: 'text-success threat-metrics',
+				sort: ColumnSortType.Descending,
+				getValue: (metric: ActionMetrics) => metric.tps,
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToNumber(metric.tps, { minimumFractionDigits: 2, fallbackString: '-' })}</>);
+					if (!metric.tps) return;
+
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							headerValues={[, 'Amount']}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.tps,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Per Cast',
+											value: metric.avgCastThreat,
+											percentage: (metric.avgCastThreat / Math.max(metric.avgCastThreat, metric.avgHitThreat)) * 100,
+										},
+										{
+											name: 'Per Hit',
+											value: metric.avgHitThreat,
+											percentage: (metric.avgHitThreat / Math.max(metric.avgCastThreat, metric.avgHitThreat)) * 100,
+										},
+									],
+								},
+							]}
+						/>,
+					);
+				},
 			},
 			{
 				name: 'DPS',
