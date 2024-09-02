@@ -58,8 +58,6 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			},
 		},
 
-		CritDamageBonus: priest.periodicCritBonus(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
