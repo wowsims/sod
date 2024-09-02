@@ -8,51 +8,71 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
-    var impHawkAura *core.Aura
-    improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
+// Utility function to create an Improved Hawk Aura
+func (hunter *Hunter) createImprovedHawkAura(auraLabel string, actionID core.ActionID, isMelee bool) *core.Aura {
+    bonusMultiplier := 1.3
+    return hunter.GetOrRegisterAura(core.Aura{
+        Label:    auraLabel,
+        ActionID: actionID,
+        Duration: time.Second * 12,
+        OnGain: func(aura *core.Aura, sim *core.Simulation) {
+            if isMelee {
+                aura.Unit.MultiplyMeleeSpeed(sim, bonusMultiplier)
+            } else {
+                aura.Unit.MultiplyRangedSpeed(sim, bonusMultiplier)
+            }
+        },
+        OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+            if isMelee {
+                aura.Unit.MultiplyMeleeSpeed(sim, 1/bonusMultiplier)
+            } else {
+                aura.Unit.MultiplyRangedSpeed(sim, 1/bonusMultiplier)
+            }
+        },
+    })
+}
 
+// Utility function to create a generic Aspect aura
+func (hunter *Hunter) createAspectAura(auraLabel string, actionID core.ActionID, stats stats.Stats, onSpellHitDealt func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult)) *core.Aura {
+    aspectAura := hunter.NewTemporaryStatsAuraWrapped(
+        auraLabel,
+        actionID,
+        stats,
+        core.NeverExpires,
+        func(aura *core.Aura) {
+            aura.OnSpellHitDealt = onSpellHitDealt
+        },
+    )
+    aspectAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+    return aspectAura
+}
+
+// Config for Aspect of the Hawk
+func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
+    improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
     spellId := [8]int32{0, 13165, 14318, 14319, 14320, 14321, 14322, 25296}[rank]
     rap := [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[rank]
-	//manaCost := [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[rank]
     level := [8]int{0, 10, 18, 28, 38, 48, 58, 60}[rank]
 
+    var quickShotsAura *core.Aura
     if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
-        improvedHawkBonus := 1.3
-        impHawkAura = hunter.GetOrRegisterAura(core.Aura{
-            Label:    "Quick Shots",
-            ActionID: core.ActionID{SpellID: 6150},
-            Duration: time.Second * 12,
-            OnGain: func(aura *core.Aura, sim *core.Simulation) {
-                aura.Unit.MultiplyRangedSpeed(sim, improvedHawkBonus)
-            },
-            OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-                aura.Unit.MultiplyRangedSpeed(sim, 1/improvedHawkBonus)
-            },
-        })
+        quickShotsAura = hunter.createImprovedHawkAura("Quick Shots", core.ActionID{SpellID: 6150}, false)
     }
 
     actionID := core.ActionID{SpellID: spellId}
-    aspectAura := hunter.NewTemporaryStatsAuraWrapped(
+    aspectAura := hunter.createAspectAura(
         "Aspect of the Hawk"+strconv.Itoa(rank),
         actionID,
-        stats.Stats{
-            stats.RangedAttackPower: rap,
-        },
-        core.NeverExpires,
-        func(aura *core.Aura) {
-            aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-                if spell != hunter.AutoAttacks.RangedAuto() {
-                    return
-                }
-
-                if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
-                    impHawkAura.Activate(sim)
-                }
+        stats.Stats{stats.RangedAttackPower: rap},
+        func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+            if spell != hunter.AutoAttacks.RangedAuto() {
+                return
             }
-        })
-
-    aspectAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
+            if quickShotsAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
+                quickShotsAura.Activate(sim)
+            }
+        },
+    )
 
     return core.SpellConfig{
         ActionID:      actionID,
@@ -75,35 +95,17 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
     }
 }
 
-func (hunter *Hunter) getHighestAspectOfTheHawkRank() int {
-    maxRank := 0
-    for i := 1; i <= 7; i++ {
-        if [8]int{0, 10, 18, 28, 38, 48, 58, 60}[i] <= int(hunter.Level) {
-            maxRank = i
-        }
-    }
-    return maxRank
-}
-
+// Config for Aspect of the Falcon
 func (hunter *Hunter) getAspectOfTheFalconSpellConfig() core.SpellConfig {
     highestHawkRank := hunter.getHighestAspectOfTheHawkRank()
     if highestHawkRank == 0 {
-        return core.SpellConfig{} 
+        return core.SpellConfig{}
     }
 
     hawkConfig := hunter.getAspectOfTheHawkSpellConfig(highestHawkRank)
-	improvedHawkBonus := 1.3
-    quickStrikesAura := hunter.GetOrRegisterAura(core.Aura{
-        Label:    "Quick Strikes",
-        ActionID: core.ActionID{SpellID: 469144},
-        Duration: time.Second * 12,
-        OnGain: func(aura *core.Aura, sim *core.Simulation) {
-            aura.Unit.MultiplyMeleeSpeed(sim, improvedHawkBonus) 
-        },
-        OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-            aura.Unit.MultiplyMeleeSpeed(sim, 1/improvedHawkBonus)
-        },
-    })
+    improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
+
+    quickStrikesAura := hunter.createImprovedHawkAura("Quick Strikes", core.ActionID{SpellID: 469144}, true)
 
     return core.SpellConfig{
         ActionID:      core.ActionID{SpellID: 469145},
@@ -118,18 +120,24 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig() core.SpellConfig {
         },
         ExtraCastCondition: hawkConfig.ExtraCastCondition,
         ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-            // Create a new aura with both melee and ranged attack power for Aspect of the Falcon
-            aspectAura := hunter.NewTemporaryStatsAuraWrapped(
+            aspectAura := hunter.createAspectAura(
                 "Aspect of the Falcon",
                 core.ActionID{SpellID: 469145},
                 stats.Stats{
-                    stats.AttackPower:  [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[highestHawkRank], 
+                    stats.RangedAttackPower: [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[highestHawkRank],
+                    stats.AttackPower:  [8]float64{0, 20, 35, 50, 70, 90, 110, 120}[highestHawkRank],
                 },
-                core.NeverExpires,
-                nil, // Use the same OnSpellHitDealt logic as for Aspect of the Hawk
+                func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+                    if sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
+                        if spell == hunter.AutoAttacks.RangedAuto() || spell == hunter.AutoAttacks.MeleeAuto() {
+                            if spell == hunter.AutoAttacks.MeleeAuto() {
+                                quickStrikesAura.Activate(sim)
+                            }
+                        }
+                    }
+                },
             )
             aspectAura.Activate(sim)
-            // Activate Quick Strikes aura if ImprovedAspectOfTheHawk is active
             if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
                 quickStrikesAura.Activate(sim)
             }
@@ -137,26 +145,26 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig() core.SpellConfig {
     }
 }
 
+// Register Aspect of the Hawk spell configurations
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
     maxRank := 7
 
-	// TODO: AQ <=
     for i := 1; i < maxRank; i++ {
         config := hunter.getAspectOfTheHawkSpellConfig(i)
-
         if config.RequiredLevel <= int(hunter.Level) {
             hunter.GetOrRegisterSpell(config)
         }
     }
 }
 
+// Register Aspect of the Falcon spell configuration
 func (hunter *Hunter) registerAspectOfTheFalconSpell() {
     config := hunter.getAspectOfTheFalconSpellConfig()
-
     if config.ActionID.SpellID != 0 && config.RequiredLevel <= int(hunter.Level) {
         hunter.GetOrRegisterSpell(config)
     }
 }
+
 
 
 
