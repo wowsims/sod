@@ -214,14 +214,11 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) {
+					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_HunterRaptorStrike {
 						return
 					}
 
 					aura.Deactivate(sim)
-					if spell.SpellCode == SpellCode_HunterRaptorStrike {
-						aura.Activate(sim)
-					}
 				},
 			})
 
@@ -286,14 +283,14 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Shots {
-						if hunter.LastShot != nil && spell.SpellCode != hunter.LastShot.SpellCode {
+						if spell.SpellCode != hunter.LastShot.SpellCode {
 							spell.DamageMultiplier *= 1.10
 						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Shots {
-						if hunter.LastShot != nil && spell.SpellCode != hunter.LastShot.SpellCode {
+						if spell.SpellCode != hunter.LastShot.SpellCode {
 							spell.DamageMultiplier /= 1.10
 						}
 					}
@@ -313,7 +310,13 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 		},
 		//  Your Serpent Sting damage is increased by 25% of your Attack Power over its normal duration.
 		6: func(agent core.Agent) {
-			agent.(HunterAgent).GetHunter().SerpentStingAPCoeff += 0.25
+			hunter := agent.(HunterAgent).GetHunter()
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Hunter - Ranged 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.SerpentStingAPCoeff += 0.25
+				},
+			}))
 		},
 	},
 })
@@ -329,6 +332,11 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		// Increases the Attack Power your Beast pet gains from your attributes by 20%.
 		3: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+
+			if hunter.pet == nil {
+				return
+			}
+
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 3P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -347,6 +355,11 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		// Increases the Focus regeneration of your Beast pet by 20%.
 		5: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+
+			if hunter.pet == nil {
+				return
+			}
+
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 5P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
