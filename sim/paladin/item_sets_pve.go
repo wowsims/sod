@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -22,7 +21,7 @@ var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 		},
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] +=  3 * core.SpellCritRatingPerCritChance			
+			c.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 3 * core.SpellCritRatingPerCritChance
 		},
 	},
 })
@@ -133,11 +132,11 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
-				stats.HolyPower:       14,		
+				stats.HolyPower: 14,
 			})
 		},
 		3: func(agent core.Agent) {
-			//Increases damage done by your holy shock spell by 50%
+			// Increases damage done by your holy shock spell by 50%
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
@@ -148,25 +147,17 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 		5: func(agent core.Agent) {
 			// Reduce cooldown of Exorcism by 3 seconds
 			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinExorcism {
-					paladin.exorcismCooldown = &core.Cooldown{
-						Timer:    paladin.NewTimer(),
-						Duration: time.Second * 15,
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range paladin.exorcism {
+						spell.CD.Duration -= time.Second * 3
 					}
-
-					if paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
-						paladin.exorcismCooldown.Duration /= 2
-					}
-					paladin.exorcismCooldown.Duration -= time.Second * 3
-
-					spell.CD =  *paladin.exorcismCooldown
-				}				
+				},
 			})
 		},
 	},
 })
-
 
 var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Merciful Judgement",
@@ -193,7 +184,6 @@ var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 			// While you are not your Beacon of Light target, your Beacon of Light target is also healed by 100% of the damage you deal
 			// with Consecration, Exorcism, Holy Shock, Holy Wrath, and Hammer of Wrath
 			// No need to Sim
-			
 		},
 	},
 })
