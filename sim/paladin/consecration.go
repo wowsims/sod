@@ -51,6 +51,7 @@ func (paladin *Paladin) registerConsecration() {
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
+			SpellCode: SpellCode_PaladinConsecration,
 			ManaCost: core.ManaCostOptions{
 				FlatCost: rank.manaCost,
 			},

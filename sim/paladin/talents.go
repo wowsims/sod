@@ -34,15 +34,13 @@ func (paladin *Paladin) ApplyTalents() {
 	if paladin.Talents.Vindication > 0 {
 		paladin.applyVindication()
 	}
+	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] +=  core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 	// paladin.applyRighteousVengeance()
 	// paladin.applyRedoubt()
 	// paladin.applyReckoning()
 	// paladin.applyArdentDefender()
 }
 
-func (paladin *Paladin) holyPower() float64 {
-	return core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
-}
 
 func (paladin *Paladin) improvedSoR() float64 {
 	return []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.ImprovedSealOfRighteousness]

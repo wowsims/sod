@@ -31,10 +31,6 @@ func (paladin *Paladin) registerHolyWrath() {
 	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
-	if hasPurifyingPower {
-		cd.Duration /= 2
-	}
-
 	var results []*core.SpellResult
 
 	for i, rank := range ranks {
@@ -47,6 +43,7 @@ func (paladin *Paladin) registerHolyWrath() {
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
 		paladin.GetOrRegisterSpell(core.SpellConfig{
+			SpellCode:   SpellCode_PaladinHolyWrath,
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
@@ -67,8 +64,6 @@ func (paladin *Paladin) registerHolyWrath() {
 				IgnoreHaste: true,
 				CD:          cd,
 			},
-
-			BonusCritRating: paladin.holyCrit(),
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,

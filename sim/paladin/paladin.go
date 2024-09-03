@@ -12,10 +12,17 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-	SpellFlag_RV          = core.SpellFlagAgentReserved1
+	SpellFlag_RV = core.SpellFlagAgentReserved1
+)
+
+const (
 	SpellCode_PaladinNone = iota
+
+	SpellCode_PaladinExorcism
 	SpellCode_PaladinHolyShock
+	SpellCode_PaladinHolyWrath
 	SpellCode_PaladinJudgementOfCommand
+	SpellCode_PaladinConsecration
 )
 
 type Paladin struct {
@@ -40,11 +47,12 @@ type Paladin struct {
 	spellsJotC       [6]*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
-	exorcismCooldown  *core.Cooldown
 	holyShockCooldown *core.Cooldown
-	judgement         *core.Spell
-	divineStorm       *core.Spell
+	exorcismCooldown  *core.Cooldown
 	crusaderStrike    *core.Spell
+	divineStorm       *core.Spell
+	exorcism          []*core.Spell
+	judgement         *core.Spell
 	rv                *core.Spell
 
 	// highest rank seal spell if available
@@ -110,7 +118,7 @@ func NewPaladin(character *core.Character, options *proto.Player, paladinOptions
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
-		Options: paladinOptions,
+		Options:   paladinOptions,
 	}
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
@@ -154,7 +162,7 @@ func (paladin *Paladin) registerStopAttackMacros() {
 	if paladin.divineStorm != nil && paladin.Options.IsUsingDivineStormStopAttack {
 		paladin.divineStorm.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
-	
+
 	if paladin.crusaderStrike != nil && paladin.Options.IsUsingCrusaderStrikeStopAttack {
 		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
@@ -168,7 +176,7 @@ func (paladin *Paladin) registerStopAttackMacros() {
 			paladin.spellsJoR[i].Flags |= core.SpellFlagBatchStopAttackMacro
 		}
 	}
-	
+
 	for i, v := range paladin.spellsJoC {
 		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
 			paladin.spellsJoC[i].Flags |= core.SpellFlagBatchStopAttackMacro
@@ -190,6 +198,8 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 		return paladin.sealOfMartyrdom
 	case proto.PaladinSeal_Command:
 		return paladin.sealOfCommand
+	case proto.PaladinSeal_Righteousness:
+		return paladin.sealOfRighteousness
 	default:
 		return paladin.sealOfRighteousness
 	}
@@ -216,14 +226,4 @@ func (paladin *Paladin) getLibramSealCostReduction() float64 {
 		return 20
 	}
 	return 0
-}
-
-func (paladin *Paladin) holyCrit() float64 {
-	var holySpellCrit float64
-	if paladin.HasSetBonus(ItemSetObsessedProphetsPlate, 2) {
-		holySpellCrit += 3 * core.SpellCritRatingPerCritChance
-	}
-	holySpellCrit += paladin.holyPower()
-	holySpellCrit += paladin.fanaticism()
-	return holySpellCrit
 }

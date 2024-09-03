@@ -46,8 +46,6 @@ func (priest *Priest) registerVoidPlagueSpell() {
 			},
 		},
 
-		CritDamageBonus: priest.periodicCritBonus(),
-
 		DamageMultiplier: priest.darknessDamageModifier(),
 		ThreatMultiplier: 1,
 

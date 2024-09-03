@@ -151,6 +151,15 @@ func (unit *Unit) GetSchoolBonusHitChance(spell *Spell) float64 {
 	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolBonusHitChance)
 }
 
+// Get school bonus Crit chance
+// Returns highest multiplier if spell is multi school.
+func (unit *Unit) GetSchoolBonusCritChance(spell *Spell) float64 {
+	if !spell.SchoolIndex.IsMultiSchool() {
+		return unit.PseudoStats.SchoolBonusCritChance[spell.SchoolIndex]
+	}
+	return selectMaxMultInSchoolArray(spell, &unit.PseudoStats.SchoolBonusCritChance)
+}
+
 // Get cost modifier for school
 // Returns highest mod if spell is multi school.
 func (unit *Unit) GetSchoolCostModifier(spell *Spell) int32 {

@@ -293,10 +293,31 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-Hero'sBrand-231328"
+ value: {
+  dps: 245.50419
+  tps: 252.50003
+ }
+}
+dps_results: {
  key: "TestRetribution-Lvl25-AllItems-SoulforgeArmor"
  value: {
   dps: 195.02756
   tps: 196.76706
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-ZandalarFreethinker'sBelt-231330"
+ value: {
+  dps: 246.12564
+  tps: 253.58759
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl25-AllItems-ZandalarFreethinker'sBreastplate-231329"
+ value: {
+  dps: 213.38246
+  tps: 218.85338
  }
 }
 dps_results: {
@@ -398,10 +419,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-Hero'sBrand-231328"
+ value: {
+  dps: 541.585
+  tps: 555.12343
+ }
+}
+dps_results: {
  key: "TestRetribution-Lvl40-AllItems-SoulforgeArmor"
  value: {
   dps: 326.88631
   tps: 333.88558
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-ZandalarFreethinker'sBelt-231330"
+ value: {
+  dps: 466.48731
+  tps: 480.20698
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl40-AllItems-ZandalarFreethinker'sBreastplate-231329"
+ value: {
+  dps: 480.97207
+  tps: 491.2781
  }
 }
 dps_results: {
@@ -503,10 +545,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-Lvl50-AllItems-Hero'sBrand-231328"
+ value: {
+  dps: 1115.49683
+  tps: 1153.76997
+ }
+}
+dps_results: {
  key: "TestRetribution-Lvl50-AllItems-SoulforgeArmor"
  value: {
   dps: 732.84058
   tps: 767.19145
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl50-AllItems-ZandalarFreethinker'sBelt-231330"
+ value: {
+  dps: 971.38291
+  tps: 1009.80523
+ }
+}
+dps_results: {
+ key: "TestRetribution-Lvl50-AllItems-ZandalarFreethinker'sBreastplate-231329"
+ value: {
+  dps: 1103.85867
+  tps: 1142.12028
  }
 }
 dps_results: {

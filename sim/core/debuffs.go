@@ -255,7 +255,17 @@ func StormstrikeAura(unit *Unit) *Aura {
 }
 
 func DreamstateAura(unit *Unit) *Aura {
-	return exclusiveNatureDamageTakenAura(unit, "Dreamstate", ActionID{SpellID: 408258})
+	aura := exclusiveNatureDamageTakenAura(unit, "Dreamstate", ActionID{SpellID: 408258})
+	aura.NewExclusiveEffect("ArcaneDamageTaken", false, ExclusiveEffect{
+		Priority: 20,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1.2
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 1.2
+		},
+	})
+	return aura
 }
 
 func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID) *Aura {
@@ -265,7 +275,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 		Duration: time.Second * 12,
 	})
 
-	aura.NewExclusiveEffect("NatureDamageTaken", true, ExclusiveEffect{
+	aura.NewExclusiveEffect("NatureDamageTaken", false, ExclusiveEffect{
 		Priority: 20,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1.2
