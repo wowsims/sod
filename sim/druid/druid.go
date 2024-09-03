@@ -139,8 +139,6 @@ func (druid *Druid) GetCharacter() *core.Character {
 }
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.GiftOfTheWild = max(raidBuffs.GiftOfTheWild, proto.TristateEffect_TristateEffectRegular)
-
 	if (raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectRegular) && (druid.Talents.ImprovedMarkOfTheWild > 0) {
 		druid.AddStats(core.BuffSpellByLevel[core.MarkOfTheWild][druid.Level].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
