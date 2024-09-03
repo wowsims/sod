@@ -68,7 +68,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		},
 	})
 
-	paladin.auraSoM = aura
+	paladin.aurasSoM = append(paladin.aurasSoM, aura)
 
 	paladin.sealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    aura.ActionID,

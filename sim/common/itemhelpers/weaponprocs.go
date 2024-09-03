@@ -8,7 +8,7 @@ import (
 
 // Create a simple weapon proc that deals damage.
 func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
-	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType, spellFlagExlcude core.SpellFlag) {
+	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType, spellFlagExclude core.SpellFlag) {
 
 	core.NewItemEffect(itemId, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -65,7 +65,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(spellFlagExlcude) { // This check is needed because it doesn't use aura_helpers ApplyProcTriggerCallback
+				if spell.Flags.Matches(spellFlagExclude) { // This check is needed because it doesn't use aura_helpers ApplyProcTriggerCallback
 					return
 				}
 				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, aura.Label) {
@@ -76,13 +76,14 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 	})
 }
 
-// CoH is Chance on Hit
+// Creates a weapon proc for "Chance on Hit" weapon effects
 func CreateWeaponCoHProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
 
 	CreateWeaponProcDamage(itemId, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressWeaponProcs)
 }
 
+// Creates a weapon proc for "Equip" weapon effects
 func CreateWeaponEquipProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
 

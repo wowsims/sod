@@ -77,7 +77,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV | core.SpellFlagSuppressWeaponProcs | core.SpellFlagSuppressEquipProcs,
 
-			
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
@@ -134,7 +133,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			},
 		})
 
-		paladin.aurasSoR[i] = aura
+		paladin.aurasSoR = append(paladin.aurasSoR, aura)
 
 		paladin.sealOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -145,7 +144,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{
@@ -160,5 +159,5 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		})
 
 		paladin.spellsJoR = append(paladin.spellsJoR, judgeSpell)
-	} 
+	}
 }

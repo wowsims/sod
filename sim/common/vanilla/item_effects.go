@@ -1837,8 +1837,6 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponCoHProcDamage(TheNeedler, "The Needler", 3.0, 13060, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
-
 	itemhelpers.CreateWeaponProcAura(TheJackhammer, "The Jackhammer", 1.0, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "The Jackhammer Haste Aura",
@@ -1852,6 +1850,8 @@ func init() {
 			},
 		})
 	})
+
+	itemhelpers.CreateWeaponCoHProcDamage(TheNeedler, "The Needler", 3.0, 13060, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponProcSpell(ThrashBlade, "Thrash Blade", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{

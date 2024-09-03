@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.30314
-  weights: 2.40889
+  weights: 0.32951
+  weights: 1.82519
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.64991
+  weights: 1.68097
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 32.30553
-  weights: 40.13165
+  weights: 31.41354
+  weights: 40.69892
   weights: 0
   weights: 0
-  weights: 0.12527
-  weights: 9.5406
-  weights: 45.90607
+  weights: 0.13616
+  weights: 11.13688
+  weights: 46.51354
   weights: 0
   weights: 0
   weights: 0
@@ -323,57 +323,57 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1066.39168
-  tps: 1110.10106
+  dps: 1110.80674
+  tps: 1155.85596
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1074.35249
-  tps: 1118.05126
+  dps: 1110.18206
+  tps: 1154.84167
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1084.82843
-  tps: 1127.54162
+  dps: 1134.53325
+  tps: 1178.73644
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 3464.07163
-  tps: 3570.90197
+  dps: 3531.44288
+  tps: 3638.23177
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2428.76733
-  tps: 2536.82581
+  dps: 2497.75916
+  tps: 2606.06371
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 3282.39156
-  tps: 3387.75511
+  dps: 3351.42188
+  tps: 3457.09654
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 885.27169
-  tps: 915.01204
+  dps: 970.15256
+  tps: 1002.19415
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Average-Default"
  value: {
-  dps: 3450.97101
-  tps: 3557.4163
+  dps: 3519.95487
+  tps: 3626.48833
  }
 }
 dps_results: {
@@ -463,7 +463,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3354.22835
-  tps: 3460.90682
+  dps: 3408.79418
+  tps: 3515.51187
  }
 }

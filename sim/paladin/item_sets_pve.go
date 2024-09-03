@@ -196,11 +196,14 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			core.MakePermanent(paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 2P Bonus",
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					if !paladin.t2Judgement2pc {
-						paladin.t2Judgement2pc = true
-						paladin.enableT2Judgement2pc()
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, judgeSpells := range paladin.allJudgeSpells {
+						for _, judgeRankSpell := range judgeSpells {
+							judgeRankSpell.DamageMultiplier *= 1.2
+						}
 					}
+
+					paladin.consumeSealsOnJudge = false
 				},
 			}))
 		},
@@ -210,8 +213,27 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			core.MakePermanent(paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.t2Judgement4pc = true
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+
+					originalApplyEffects := paladin.judgement.ApplyEffects
+
+					// Wrap the apply Judgement ApplyEffects with more Effects
+					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+
+						sealsLastJudgement := paladin.lastJudgement // Get Last Judgement Seals before it gets overwritten in originalApplyEffects
+						originalApplyEffects(sim, target, spell)
+						sealsThisJudgement := paladin.lastJudgement // Get Active Seals this Judgement (after lastJudgement is set)
+
+						// Two of the possible implementations - TODO figure out actual implementation
+						// anySealsDifferent := sealsThisJudgement != sealsLastJudgement // Would be nice!
+						// allSealsDifferent := (int(sealsThisJudgement) & int(sealsLastJudgement)) == 0 // More conservative option
+						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) >= 0 // More conservative option (most likely option)
+
+						if anySealsGained {
+							// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
+							paladin.judgement.CD.Reset()
+						}
+					}
 				},
 			}))
 		},
@@ -221,10 +243,31 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			core.MakePermanent(paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					if !paladin.t2Judgement6pc {
-						paladin.t2Judgement6pc = true
-						paladin.enableT2Judgement6pc()
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+						Label:     "Swift Judgement",
+						ActionID:  core.ActionID{SpellID: 467530},
+						Duration:  time.Second * 8,
+						MaxStacks: 5,
+
+						OnReset: func(aura *core.Aura, sim *core.Simulation) {
+							aura.Activate(sim)
+							aura.SetStacks(sim, 0)
+						},
+						OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
+							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
+						},
+					})
+
+					originalApplyEffects := paladin.judgement.ApplyEffects
+
+					// Wrap the apply Judgement ApplyEffects with more Effects
+					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						originalApplyEffects(sim, target, spell)
+						// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+						t2Judgement6pcAura.Activate(sim)
+						t2Judgement6pcAura.AddStack(sim)
 					}
 				},
 			}))

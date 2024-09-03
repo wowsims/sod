@@ -80,7 +80,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			},
 		})
 
-		paladin.aurasSotC[i] = aura
+		paladin.aurasSotC = append(paladin.aurasSotC, aura)
 
 		paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -91,7 +91,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{
