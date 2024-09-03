@@ -20,13 +20,13 @@ func (paladin *Paladin) ApplyRunes() {
 
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
-	// "RuneWristPurifyingPower" is handled in Exorcism
+	paladin.applyPurifyingPower()
 }
 
 func (paladin *Paladin) registerFanaticism() {
 	if paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism) {
 		paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 18
-	}	
+	}
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
@@ -161,5 +161,17 @@ func (paladin *Paladin) registerGuardedByTheLight() {
 			}
 			guardedAura.Activate(sim)
 		},
+	})
+}
+
+func (paladin *Paladin) applyPurifyingPower() {
+	if !paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
+		return
+	}
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
+			spell.CD.Duration /= 2
+		}
 	})
 }

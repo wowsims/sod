@@ -67,7 +67,7 @@ func (paladin *Paladin) registerHolyShock() {
 			SpellCode: SpellCode_PaladinHolyShock,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: manaCostMultiplier,
 			},
 
@@ -78,7 +78,6 @@ func (paladin *Paladin) registerHolyShock() {
 				CD: *paladin.holyShockCooldown,
 			},
 
-			
 			DamageMultiplier: damageMultiplier,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.429,
@@ -95,7 +94,6 @@ func (paladin *Paladin) registerHolyShock() {
 				if hasInfusionOfLight && result.Outcome.Matches(core.OutcomeCrit) {
 					paladin.AddMana(sim, rank.manaCost, manaMetrics)
 					paladin.holyShockCooldown.Reset()
-					//paladin.exorcismCooldown.Reset()
 				}
 			},
 		})
