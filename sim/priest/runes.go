@@ -21,6 +21,7 @@ func (priest *Priest) ApplyRunes() {
 
 	// Bracers
 	priest.applySurgeOfLight()
+	priest.applyDespair()
 	priest.registerVoidZoneSpell()
 
 	// Hands
@@ -82,11 +83,6 @@ func (priest *Priest) applyPainAndSuffering() {
 	})
 }
 
-// With the addition of despair Blizzard made periodic crits deal 200% damage instead of 150%
-func (priest *Priest) periodicCritBonus() float64 {
-	return 1.0
-}
-
 func (priest *Priest) applySurgeOfLight() {
 	if !priest.HasRune(proto.PriestRune_RuneBracersSurgeOfLight) {
 		return
@@ -140,5 +136,17 @@ func (priest *Priest) applySurgeOfLight() {
 		},
 		OnSpellHitDealt: handler,
 		OnHealDealt:     handler,
+	})
+}
+
+func (priest *Priest) applyDespair() {
+	if !priest.HasRune(proto.PriestRune_RuneBracersDespair) {
+		return
+	}
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagHelpful) {
+			spell.CritDamageBonus += 1
+		}
 	})
 }

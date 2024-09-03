@@ -109,7 +109,7 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 				cellElem.dataset.text = String(columnConfig.getValue(metric, isChildRow));
 			}
 			if (columnConfig.columnClass) {
-				cellElem.classList.add(columnConfig.columnClass);
+				cellElem.classList.add(...columnConfig.columnClass.split(' '));
 			}
 			if (columnConfig.fillCell) {
 				columnConfig.fillCell(metric, cellElem, rowElem, isChildRow);

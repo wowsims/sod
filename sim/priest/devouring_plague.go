@@ -67,8 +67,6 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 			},
 		},
 
-		CritDamageBonus: priest.periodicCritBonus(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

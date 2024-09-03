@@ -162,31 +162,31 @@ export class RaidSimResultsManager {
 				tippy(resultDivElem, { content, placement: 'right' });
 			}
 		};
-		setResultTooltip('results-sim-dps', 'Damage Per Second');
-		setResultTooltip('results-sim-dpasp', 'Demonic Pact Average Spell Power');
-		setResultTooltip('results-sim-tto', 'Time To OOM');
-		setResultTooltip('results-sim-hps', 'Healing+Shielding Per Second, including overhealing.');
-		setResultTooltip('results-sim-tps', 'Threat Per Second');
-		setResultTooltip('results-sim-dtps', 'Damage Taken Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dps']}`, 'Damage Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dpasp']}`, 'Demonic Pact Average Spell Power');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tto']}`, 'Time To OOM');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['hps']}`, 'Healing+Shielding Per Second, including overhealing.');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tps']}`, 'Threat Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`, 'Damage Taken Per Second');
 		setResultTooltip(
-			'results-sim-tmi',
+			`.${RaidSimResultsManager.resultMetricClasses['tmi']}`,
 			<>
 				<p>Theck-Meloree Index (TMI)</p>
 				<p>A measure of incoming damage smoothness which combines the benefits of avoidance with effective health.</p>
-				<p>
+				<p className="mb-0">
 					<b>Lower is better.</b> This represents the % of your HP to expect in a 6-second burst window based on the encounter settings.
 				</p>
 			</>,
 		);
 		setResultTooltip(
-			'results-sim-cod',
+			`.${RaidSimResultsManager.resultMetricClasses['cod']}`,
 			<>
 				<p>Chance of Death</p>
 				<p>
 					The percentage of iterations in which the player died, based on incoming damage from the enemies and incoming healing (see the{' '}
 					<b>Incoming HPS</b> and <b>Healing Cadence</b> options).
 				</p>
-				<p>
+				<p className="mb-0">
 					DTPS alone is not a good measure of tankiness because it is not affected by health and ignores damage spikes. Chance of Death attempts to
 					capture overall tankiness.
 				</p>
@@ -194,14 +194,13 @@ export class RaidSimResultsManager {
 		);
 
 		if (!this.simUI.isIndividualSim()) {
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-reference-diff-separator')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-dpasp')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tto')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-hps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-dtps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tmi')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-cod')].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['dpasp']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tto']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['hps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tmi']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['cod']}`)].forEach(e => e.remove());
 		}
 
 		const simReferenceSetButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-set-reference');
