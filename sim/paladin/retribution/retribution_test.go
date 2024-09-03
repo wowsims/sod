@@ -86,6 +86,23 @@ func TestShockadin(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase2ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5shockadin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5Shockadin"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Righteousness Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -216,6 +233,21 @@ var Phase3Consumes = core.ConsumesCombo{
 		ZanzaBuff:         proto.ZanzaBuff_AtalaiMojoOfWar,
 	},
 }
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		Flask:             proto.Flask_FlaskOfSupremePower,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ConductiveShieldCoating,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+	},
+}
 
 var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
@@ -229,12 +261,23 @@ var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 	},
 }
 
+
+var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: optionsSealOfRighteousness,
+	},
+}
+
 var optionsSealOfCommand = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Command,
 }
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
+}
+
+var optionsSealOfRighteousness = &proto.PaladinOptions{
+	PrimarySeal: proto.PaladinSeal_Righteousness,
 }
 
 var ItemFilters = core.ItemFilter{

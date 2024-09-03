@@ -77,8 +77,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV | core.SpellFlagSuppressWeaponProcs | core.SpellFlagSuppressEquipProcs,
 
-			BonusCritRating: paladin.holyCrit(), // TODO to be tested
-
+			
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 

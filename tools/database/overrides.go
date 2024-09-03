@@ -462,7 +462,7 @@ var SharedSpellsIcons = []int32{
 	401556,
 	400574,
 	400573,
-
+	425600,
 	// Gnomeregan on-use item effects
 	437327,
 	437362,

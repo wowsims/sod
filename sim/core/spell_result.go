@@ -204,7 +204,8 @@ func (spell *Spell) spellCritRating(_ *Unit) float64 {
 func (spell *Spell) SpellCritChance(target *Unit) float64 {
 	// TODO: Classic verify crit suppression
 	return spell.spellCritRating(target)/(SpellCritRatingPerCritChance*100) +
-		target.GetSchoolCritTakenChance(spell)
+		target.GetSchoolCritTakenChance(spell) +
+		(spell.Unit.GetSchoolBonusCritChance(spell)/(SpellCritRatingPerCritChance*100))
 	// - spell.Unit.AttackTables[target.UnitIndex][spell.CastType].SpellCritSuppression
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {

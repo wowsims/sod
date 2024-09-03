@@ -246,26 +246,34 @@ export const BloodPactBuff = InputHelpers.makeMultiIconInput({
 });
 
 // Separate Strength buffs allow us to use boolean pickers for each
-export const PaladinPhysicalBuff = withLabel(
-	makeTristateIndividualBuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 19740, minLevel: 4, maxLevel: 11 },
-				{ id: 19834, minLevel: 12, maxLevel: 21 },
-				{ id: 19835, minLevel: 22, maxLevel: 31 },
-				{ id: 19836, minLevel: 32, maxLevel: 41 },
-				{ id: 19837, minLevel: 42, maxLevel: 51 },
-				// TODO: AQ
-				{ id: 19838, minLevel: 52 },
-				// { id: 19838, minLevel: 52, maxLevel: 59 },
-				// { id: 25291, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(20048),
-		fieldName: 'blessingOfMight',
-		showWhen: player => player.getFaction() === Faction.Alliance,
-	}),
-	'Blessing of Might',
-);
+export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput({
+	values: [
+		makeTristateIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 19740, minLevel: 4, maxLevel: 11 },
+					{ id: 19834, minLevel: 12, maxLevel: 21 },
+					{ id: 19835, minLevel: 22, maxLevel: 31 },
+					{ id: 19836, minLevel: 32, maxLevel: 41 },
+					{ id: 19837, minLevel: 42, maxLevel: 51 },
+					// TODO: AQ
+					{ id: 19838, minLevel: 52 },
+					// { id: 19838, minLevel: 52, maxLevel: 59 },
+					// { id: 25291, minLevel: 60 },
+				]),
+			impId: ActionId.fromSpellId(20048),
+			fieldName: 'blessingOfMight',
+			showWhen: player => player.getFaction() === Faction.Alliance,
+		}),
+		makeBooleanRaidBuffInput({
+			actionId: () => ActionId.fromSpellId(425600),
+			fieldName: 'hornOfLordaeron',
+			showWhen: player => player.getFaction() == Faction.Alliance,
+		}),
+
+	],
+	label: 'Paladin Physical',
+});
 
 export const StrengthBuffHorde = withLabel(
 	makeTristateRaidBuffInput({
@@ -1016,7 +1024,7 @@ export const RAID_BUFFS_CONFIG = [
 	// Physical Damage Buffs
 	{
 		config: PaladinPhysicalBuff,
-		picker: IconPicker,
+		picker: MultiIconPicker,
 		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower],
 	},
 	{

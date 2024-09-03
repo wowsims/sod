@@ -7,8 +7,10 @@ import (
 )
 
 const (
+	Truthbearer2H  = 229749
+	Truthbearer1H  = 229806
 	Stormwrath     = 231387
-	LightningsCell = 231784
+	LightningsCell = 231784	
 )
 
 func init() {
@@ -60,6 +62,52 @@ func init() {
 			},
 		})
 	})
+
+	// https://www.wowhead.com/classic/item=229806/truthbearer
+	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Truthbearer2H, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(Truthbearer2H)
+		crusadersZealAura := crusadersZealAura465414(character)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Truthbearer (Crusaders Zeal)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				crusadersZealAura.Activate(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=229749/truthbearer
+	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Truthbearer1H, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(Truthbearer1H)
+		crusadersZealAura := crusadersZealAura465414(character)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Truthbearer (Crusaders Zeal)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, 
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				crusadersZealAura.Activate(sim)
+			},
+		})
+	})
+
+	
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -115,3 +163,23 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
+
+	// https://www.wowhead.com/classic/spell=465414/crusaders-zeal
+	// Used by:
+	// - https://www.wowhead.com/classic/item=229806/truthbearer and
+	// - https://www.wowhead.com/classic/item=229749/truthbearer
+	func crusadersZealAura465414(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 465414},
+			Label:    "Crusaders Zeal (465414)",
+			Duration: time.Second * 8,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.BonusDamage += 15
+				character.MultiplyAttackSpeed(sim, 1.30)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.BonusDamage -= 15
+				character.MultiplyAttackSpeed(sim, 1/1.30)
+			},
+		})
+	}
