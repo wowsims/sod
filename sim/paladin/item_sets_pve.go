@@ -226,7 +226,7 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 						// Two of the possible implementations - TODO figure out actual implementation
 						// anySealsDifferent := sealsThisJudgement != sealsLastJudgement // Would be nice!
 						// allSealsDifferent := (int(sealsThisJudgement) & int(sealsLastJudgement)) == 0 // More conservative option
-						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) >= 0 // More conservative option (most likely option)
+						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) > 0 // More conservative option (most likely option)
 
 						if anySealsGained {
 							paladin.judgement.CD.Reset()

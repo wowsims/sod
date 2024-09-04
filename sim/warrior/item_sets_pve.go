@@ -166,10 +166,10 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 				Label:    "Battle Forecast",
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= 1.10
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.10
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= 1.10
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.10
 				},
 			})
 			defenseAura := warrior.RegisterAura(core.Aura{
@@ -289,7 +289,7 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range []*WarriorSpell{warrior.Bloodthirst, warrior.MortalStrike, warrior.ShieldSlam} {
 						if spell != nil {
-							affectedSpells = append(affectedSpells, warrior.Bloodthirst)
+							affectedSpells = append(affectedSpells, spell)
 						}
 					}
 				},
@@ -400,7 +400,7 @@ var ItemSetVindicatorsBattlegear = core.NewItemSet(core.ItemSet{
 			warrior.AddStat(stats.Defense, 7)
 		},
 		// Reduces the cooldown on your Shield Slam ability by 2 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			if !warrior.Talents.ShieldSlam {
 				return

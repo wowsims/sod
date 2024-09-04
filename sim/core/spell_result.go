@@ -205,7 +205,7 @@ func (spell *Spell) SpellCritChance(target *Unit) float64 {
 	// TODO: Classic verify crit suppression
 	return spell.spellCritRating(target)/(SpellCritRatingPerCritChance*100) +
 		target.GetSchoolCritTakenChance(spell) +
-		(spell.Unit.GetSchoolBonusCritChance(spell)/(SpellCritRatingPerCritChance*100))
+		(spell.Unit.GetSchoolBonusCritChance(spell) / (SpellCritRatingPerCritChance * 100))
 	// - spell.Unit.AttackTables[target.UnitIndex][spell.CastType].SpellCritSuppression
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
@@ -367,6 +367,9 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
+		if isPartialResist {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalResistedDamage += result.Damage
+		}
 		if isPeriodic {
 			spell.SpellMetrics[result.Target.UnitIndex].TotalTickDamage += result.Damage
 			if isPartialResist {

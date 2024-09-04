@@ -39,7 +39,8 @@ func (warrior *Warrior) registerSlamSpell() {
 	}[warrior.Level]
 
 	warrior.SlamMH = warrior.newSlamHitSpell(true)
-	if hasBloodSurgeRune {
+	canHitOffhand := hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding
+	if canHitOffhand {
 		warrior.SlamOH = warrior.newSlamHitSpell(false)
 	}
 
@@ -71,8 +72,9 @@ func (warrior *Warrior) registerSlamSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			doOffhandHit := canHitOffhand && warrior.BloodSurgeAura.IsActive()
 			warrior.SlamMH.Cast(sim, target)
-			if hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding && warrior.BloodSurgeAura.IsActive() {
+			if doOffhandHit {
 				warrior.SlamOH.Cast(sim, target)
 			}
 		},
