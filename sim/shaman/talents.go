@@ -220,7 +220,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			if spell.Flags.Matches(SpellFlagFocusable) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if aura.IsActive() {
 							// Remove the buff and put skill on CD
