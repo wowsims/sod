@@ -18,7 +18,7 @@ import {
 import { Class, Encounter as EncounterProto, Spec, SpellSchool, Target as TargetProto } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
-import { bucket, sum } from '../utils.js';
+import { bucket, formatToNumber, sum } from '../utils.js';
 import {
 	AuraUptimeLog,
 	CastLog,
@@ -1140,17 +1140,26 @@ export class ActionMetrics {
 	}
 
 	get damageDone() {
-		const normalHitAvgDamage =
-			this.avgDamage -
-			this.avgTickDamage -
-			this.avgCritDamage +
-			this.avgCritTickDamage -
-			this.avgGlanceDamage -
-			this.avgBlockDamage -
-			this.avgCritBlockDamage;
+		const normalHitAvgDamage = Number(
+			(
+				this.avgDamage -
+				this.avgCritDamage -
+				this.avgResistedDamage +
+				this.avgResistedCritDamage -
+				this.avgTickDamage +
+				this.avgResistedTickDamage +
+				this.avgCritTickDamage -
+				this.avgGlanceDamage -
+				this.avgBlockDamage -
+				this.avgCritBlockDamage
+			).toFixed(8),
+		);
 
-		const normalTickAvgDamage = this.avgTickDamage - this.avgResistedTickDamage - this.avgCritTickDamage - this.avgResistedCritTickDamage;
-		const critHitAvgDamage = this.avgCritDamage - this.avgResistedCritDamage - this.avgCritTickDamage;
+		const normalResistedHitAvgDamage = Number((this.avgResistedDamage - this.avgResistedTickDamage - this.avgResistedCritDamage).toFixed(8));
+		const normalTickAvgDamage = Number(
+			(this.avgTickDamage - this.avgResistedTickDamage - this.avgCritTickDamage - this.avgResistedCritTickDamage).toFixed(8),
+		);
+		const critHitAvgDamage = Number((this.avgCritDamage - this.avgResistedCritDamage - this.avgCritTickDamage).toFixed(8));
 
 		return {
 			hit: {
@@ -1159,9 +1168,9 @@ export class ActionMetrics {
 				average: normalHitAvgDamage / this.hits,
 			},
 			resistedHit: {
-				value: this.avgResistedDamage,
-				percentage: (this.avgResistedDamage / this.avgDamage) * 100,
-				average: this.avgResistedDamage / this.hits,
+				value: normalResistedHitAvgDamage,
+				percentage: (normalResistedHitAvgDamage / this.avgDamage) * 100,
+				average: normalResistedHitAvgDamage / this.hits,
 			},
 			critHit: {
 				value: critHitAvgDamage,

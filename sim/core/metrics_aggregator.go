@@ -390,6 +390,7 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Dodges += spellTargetMetrics.Dodges
 		tam.Parries += spellTargetMetrics.Parries
 		tam.Blocks += spellTargetMetrics.Blocks
+		tam.Glances += spellTargetMetrics.Glances
 		tam.Damage += spellTargetMetrics.TotalDamage
 		tam.ResistedDamage += spellTargetMetrics.TotalResistedDamage
 		tam.CritDamage += spellTargetMetrics.TotalCritDamage
