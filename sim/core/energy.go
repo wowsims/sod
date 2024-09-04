@@ -10,7 +10,7 @@ import (
 )
 
 type OnComboPointsSpent func(sim *Simulation, spell *Spell, comboPoints int32)
-
+type OnComboPointsGained func(sim *Simulation)
 // Time between energy ticks.
 const EnergyTickDuration = time.Millisecond * 2020
 const EnergyPerTick = 20.2
@@ -25,6 +25,7 @@ type energyBar struct {
 
 	// Lifecycle Callbacks
 	onComboPointsSpentCallbacks []OnComboPointsSpent // Triggered when the energy user successfully spends combo points on a spell
+	onComboPointsGainedCallbacks []OnComboPointsGained // Triggered when the energy user successfully gains combo points
 
 	// List of energy levels that might affect APL decisions. E.g:
 	// [10, 15, 20, 30, 60, 85]
@@ -211,10 +212,17 @@ func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics 
 	}
 
 	eb.comboPoints = newComboPoints
+	for _, callback := range eb.onComboPointsGainedCallbacks {
+		callback(sim)
+	}
 }
 
 func (eb *energyBar) OnComboPointsSpent(callback OnComboPointsSpent) {
 	eb.onComboPointsSpentCallbacks = append(eb.onComboPointsSpentCallbacks, callback)
+}
+
+func (eb *energyBar) OnComboPointsGained(callback OnComboPointsGained) {
+	eb.onComboPointsGainedCallbacks = append(eb.onComboPointsGainedCallbacks, callback)
 }
 
 func (eb *energyBar) SpendComboPoints(sim *Simulation, spell *Spell) {

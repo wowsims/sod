@@ -156,8 +156,9 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier += 100 })
 				},
+				//Poisoned Knife is ignored
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {
+					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 || spell.ActionID.SpellID == 425012 {
 						return
 					}
 					aura.Deactivate(sim)
@@ -181,7 +182,7 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 		},
 		// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
 		4: func(agent core.Agent) {
-			// Immplemented in Vanish.go
+			// Implemented in Vanish.go
 		},
 		// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
 		6: func(agent core.Agent) {
@@ -210,6 +211,97 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				}
 			})
+		},
+	},
+})
+
+var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
+	Name: "Bloodfang Thrill",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your opening moves have a 100% chance to make your next ability cost no energy.
+		2: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+
+			var affectedSpells []*core.Spell
+
+			aura := rogue.RegisterAura(core.Aura{
+				Label:    "Clearcasting (S03 - Item - T2 - Rogue - Damage 2P Bonus)",
+				ActionID: core.ActionID{SpellID: 467735},
+				Duration: time.Second * 15,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(
+						rogue.Spellbook,
+						func(spell *core.Spell) bool {
+							return spell != nil && spell.Cost != nil && spell.Cost.CostType() == core.CostTypeEnergy
+						},
+					)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier -= 100 })
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier += 100 })
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {
+						return
+					}
+					aura.Deactivate(sim)
+				},
+			})
+
+			core.MakePermanent(rogue.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Rogue - Damage 2P Bonus",
+				ActionID: core.ActionID{SpellID: 467708},
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) {
+						return
+					}
+					switch spell {
+					case rogue.Ambush, rogue.Garrote:
+						aura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Increases main hand weapon damage by 10%
+		4: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+					spell.DamageMultiplier *= 1.10
+				}
+			})
+		},
+			// Reduces cooldown on vanish by 2.5 minutes
+		6: func(agent core.Agent) {
+			// Implemented in Vanish.go
+		},
+	},
+})
+
+var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Bloodfang Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Rolling with the Punches now also activates every time you gain a combo point.
+		2: func(agent core.Agent) {
+		rogue := agent.(RogueAgent).GetRogue()
+		rogue.OnComboPointsGained(func(sim *core.Simulation) {
+			if rogue.RollingWithThePunchesProcAura.IsActive() {
+				rogue.RollingWithThePunchesProcAura.AddStack(sim)
+			} else {
+				rogue.RollingWithThePunchesProcAura.Activate(sim)
+			}
+		})
+		},
+		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
+		4: func(agent core.Agent) {
+		//	rogue := agent.(RogueAgent).GetRogue()
+			
+		},
+			// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
+		6: func(agent core.Agent) {
+			// Implemented in Vanish.go
 		},
 	},
 })

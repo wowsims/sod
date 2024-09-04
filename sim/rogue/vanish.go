@@ -7,17 +7,18 @@ import (
 )
 
 func (rogue *Rogue) registerVanishSpell() {
-	has4Pc := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 4)
-	
+	has4PcT1 := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 4)
+	has6PcT2 := rogue.HasSetBonus(ItemSetBloodfangThrill, 6)
+
 	rogue.VanishAura = rogue.RegisterAura(core.Aura{
 		Label:    "Vanish",
 		ActionID: core.ActionID{SpellID:457437},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.5)
+				rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.5)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1/0.5)
+				rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1/0.5)
 		},
 	})
 	
@@ -33,11 +34,11 @@ func (rogue *Rogue) registerVanishSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * time.Duration(300-45*rogue.Talents.Elusiveness),
+				Duration: time.Second*time.Duration(core.TernaryFloat64(has6PcT2, 150, 300) - float64(45*rogue.Talents.Elusiveness)),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if has4Pc {
+			if has4PcT1 {
 				rogue.VanishAura.Activate(sim)
 				return
 			}
