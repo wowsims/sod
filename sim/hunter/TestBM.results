@@ -104,10 +104,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-Lvl40-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 829.17091
+  tps: 341.21022
+ }
+}
+dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
   dps: 803.09062
   tps: 332.18096
+ }
+}
+dps_results: {
+ key: "TestBM-Lvl40-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 690.14342
+  tps: 351.21143
+ }
+}
+dps_results: {
+ key: "TestBM-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 802.48823
+  tps: 329.84795
+ }
+}
+dps_results: {
+ key: "TestBM-Lvl40-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 820.01038
+  tps: 336.80193
  }
 }
 dps_results: {

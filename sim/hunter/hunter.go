@@ -12,20 +12,33 @@ import (
 var TalentTreeSizes = [3]int{16, 14, 16}
 
 const (
-	SpellFlagShot = core.SpellFlagAgentReserved1
+	SpellFlagShot   = core.SpellFlagAgentReserved1
 	SpellFlagStrike = core.SpellFlagAgentReserved2
-	SpellFlagSting = core.SpellFlagAgentReserved3
-	SpellFlagTrap = core.SpellFlagAgentReserved4
+	SpellFlagSting  = core.SpellFlagAgentReserved3
+	SpellFlagTrap   = core.SpellFlagAgentReserved4
 )
 
 const (
 	SpellCode_HunterNone int32 = iota
 
+	// Shots
 	SpellCode_HunterAimedShot
-	SpellCode_HunterMongooseBite
-	SpellCode_HunterRaptorStrike
-	SpellCode_HunterMultiShot
+	SpellCode_HunterArcaneShot
+	SpellCode_HunterChimeraShot
+	SpellCode_HunterExplosiveShot
 	SpellCode_HunterKillShot
+	SpellCode_HunterMultiShot
+	SpellCode_HunterSteadyShot
+
+	// Strikes
+	SpellCode_HunterRaptorStrike
+
+	// Stings
+
+	// Traps
+
+	// Other
+	SpellCode_HunterMongooseBite
 	SpellCode_HunterVolley
 )
 
@@ -57,6 +70,7 @@ type Hunter struct {
 	AmmoDPS                   float64
 	AmmoDamageBonus           float64
 	NormalizedAmmoDamageBonus float64
+	SerpentStingAPCoeff       float64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
@@ -88,7 +102,10 @@ type Hunter struct {
 	CarveOH        *core.Spell
 	WingClip       *core.Spell
 
-	Shots []*core.Spell
+	Shots       []*core.Spell
+	Strikes     []*core.Spell
+	MeleeSpells []*core.Spell
+	LastShot    *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -104,6 +121,9 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
+	BestialWrathPetAura    *core.Aura
+
+	HasPredatorArmor [6]bool
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -137,6 +157,19 @@ func (hunter *Hunter) Initialize() {
 			hunter.Shots = append(hunter.Shots, spell)
 		}
 	})
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagStrike) {
+			hunter.Strikes = append(hunter.Strikes, spell)
+		}
+	})
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial) {
+			hunter.MeleeSpells = append(hunter.MeleeSpells, spell)
+		}
+	})
+
+	hunter.HasPredatorArmor[3] = hunter.HasSetBonus(ItemSetPredatorArmor, 3)
+	hunter.HasPredatorArmor[5] = hunter.HasSetBonus(ItemSetPredatorArmor, 5)
 
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
@@ -184,6 +217,9 @@ func (hunter *Hunter) Initialize() {
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
+	hunter.Strikes = nil
+	hunter.MeleeSpells = nil
+	hunter.LastShot = nil
 }
 
 func NewHunter(character *core.Character, options *proto.Player) *Hunter {

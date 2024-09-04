@@ -263,6 +263,14 @@ func (pet *Pet) Disable(sim *Simulation) {
 	}
 }
 
+func (pet *Pet) UpdateStatInheritance(newStatInheritance PetStatInheritance) {
+	pet.statInheritance = newStatInheritance
+}
+
+func (pet *Pet) GetStatInheritance() PetStatInheritance {
+	return pet.statInheritance
+}
+
 // Default implementations for some Agent functions which most Pets don't need.
 func (pet *Pet) GetCharacter() *Character {
 	return &pet.Character

@@ -79,12 +79,12 @@ func (hunter *Hunter) registerWyvernStrikeSpell() {
 		return
 	}
 
-	maxRank := 3
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getWyvernStrikeConfig(i)
+	rank := map[int32]int{
+		1:  1,
+		50: 2,
+		60: 3,
+	}[hunter.Level]
 
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	config := hunter.getWyvernStrikeConfig(rank)
+	hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
 }
