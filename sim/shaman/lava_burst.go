@@ -88,7 +88,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 
-				if canOverload && result.Landed() && sim.RandomFloat("LvB Overload") < ShamanOverloadChance {
+				if canOverload && sim.RandomFloat("LvB Overload") < ShamanOverloadChance {
 					shaman.LavaBurstOverload.Cast(sim, target)
 				}
 			})

@@ -87,7 +87,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 			// TODO: Take Healing Way into account 6% stacking up to 3x
 			result := spell.CalcAndDealHealing(sim, spell.Unit, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 
-			if canOverload && result.Landed() && sim.RandomFloat("HW Overload") < ShamanOverloadChance {
+			if canOverload && sim.RandomFloat("HW Overload") < ShamanOverloadChance {
 				shaman.HealingWaveOverload[rank].Cast(sim, spell.Unit)
 			}
 
