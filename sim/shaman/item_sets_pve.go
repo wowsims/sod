@@ -253,6 +253,7 @@ var ItemSetEarthfuryImpact = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Shaman - Enhancement 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					shaman.bonusFlurrySpeed += .10
 				},
@@ -564,12 +565,12 @@ var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{
 				return
 			}
 
-			core.MakePermanent(shaman.RegisterAura(core.Aura{
+			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - ZG - Shaman - Tank 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					shaman.powerSurgeProcChance += .05
 				},
-			}))
+			})
 		},
 	},
 })
