@@ -215,10 +215,7 @@ var ItemSetWarlordsThunderfist = core.NewItemSet(core.ItemSet{
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.SpellDamage:  23,
-				stats.HealingPower: 23,
-			})
+			c.AddStat(stats.SpellPower, 23)
 		},
 	},
 })
