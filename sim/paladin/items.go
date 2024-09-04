@@ -3,6 +3,7 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -78,6 +79,7 @@ func init() {
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
 			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ProcMask: core.ProcMaskEmpty,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -104,11 +106,11 @@ func init() {
 
 	core.NewItemEffect(HammerOfTheLightbringer, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		blazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
+		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
 		crusadersZealAura465414(character)
 	})
 
-	// https://www.wowhead.com/classic/item=229749/truthbearer
+	// https://www.wowhead.com/classic/item=229806/truthbearer
 	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Truthbearer1H, func(agent core.Agent) {
@@ -116,12 +118,12 @@ func init() {
 		crusadersZealAura465414(character)
 	})
 
-	// https://www.wowhead.com/classic/item=229806/truthbearer
+	// https://www.wowhead.com/classic/item=229749/truthbearer
 	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Truthbearer2H, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		blazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
+		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
 		crusadersZealAura465414(character)
 	})
 
@@ -182,38 +184,6 @@ func init() {
 	})
 }
 
-func blazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage int32) *core.Aura {
-
-	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: spellID},
-		SpellSchool:      spellSchool,
-		DefenseType:      core.DefenseTypeMagic,
-		ProcMask:         core.ProcMaskTriggerInstant,
-		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, 4, spell.OutcomeMagicCrit)
-		},
-	})
-
-	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              "Blazefury Trigger",
-		Callback:          core.CallbackOnSpellHitDealt,
-		Outcome:           core.OutcomeLanded,
-		ProcMask:          core.ProcMaskMelee,
-		SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-				procSpell.ProcMask = core.ProcMaskEmpty
-			} else {
-				procSpell.ProcMask = core.ProcMaskTriggerInstant
-			}
-			procSpell.Cast(sim, result.Target)
-		},
-	})
-}
-
 // https://www.wowhead.com/classic/spell=465414/crusaders-zeal
 // Used by:
 // - https://www.wowhead.com/classic/item=229806/truthbearer and
@@ -239,7 +209,7 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,
 		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-		PPM:               1, // TBD
+		PPM:               1.0, // TBD
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAura.Activate(sim)
 		},

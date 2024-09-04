@@ -2537,35 +2537,7 @@ func init() {
 	// Equip: Adds 2 fire damage to your melee attacks.
 	core.NewItemEffect(BlazefuryMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-
-		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 7712},
-			SpellSchool:      core.SpellSchoolFire,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskTriggerInstant,
-			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 2, spell.OutcomeMagicCrit)
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Blazefury Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
-			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-					procSpell.ProcMask = core.ProcMaskEmpty
-				} else {
-					procSpell.ProcMask = core.ProcMaskTriggerInstant
-				}
-				procSpell.Cast(sim, result.Target)
-			},
-		})
+		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
@@ -2644,6 +2616,38 @@ func enrageAura446327(character *core.Character) *core.Aura {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			character.PseudoStats.BonusDamage -= 20
 			character.MultiplyAttackSpeed(sim, 1/1.05)
+		},
+	})
+}
+
+func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) *core.Aura {
+
+	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: spellID},
+		SpellSchool:      spellSchool,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskTriggerInstant,
+		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
+		},
+	})
+
+	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              "Blazefury Trigger",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+				procSpell.ProcMask = core.ProcMaskEmpty
+			} else {
+				procSpell.ProcMask = core.ProcMaskTriggerInstant
+			}
+			procSpell.Cast(sim, result.Target)
 		},
 	})
 }

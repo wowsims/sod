@@ -194,7 +194,7 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
 			paladin := agent.(PaladinAgent).GetPaladin()
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
+			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, judgeSpells := range paladin.allJudgeSpells {
@@ -205,13 +205,12 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 
 					paladin.consumeSealsOnJudge = false
 				},
-			}))
+			})
 		},
 		4: func(agent core.Agent) {
 			// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
-			// Implemented in Paladin.go
 			paladin := agent.(PaladinAgent).GetPaladin()
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
+			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 
@@ -230,18 +229,16 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) >= 0 // More conservative option (most likely option)
 
 						if anySealsGained {
-							// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
 							paladin.judgement.CD.Reset()
 						}
 					}
 				},
-			}))
+			})
 		},
 		6: func(agent core.Agent) {
 			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
-			// Implemented in Paladin.go
 			paladin := agent.(PaladinAgent).GetPaladin()
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
+			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
@@ -250,10 +247,6 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 						Duration:  time.Second * 8,
 						MaxStacks: 5,
 
-						OnReset: func(aura *core.Aura, sim *core.Simulation) {
-							aura.Activate(sim)
-							aura.SetStacks(sim, 0)
-						},
 						OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
 							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
@@ -270,7 +263,7 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 						t2Judgement6pcAura.AddStack(sim)
 					}
 				},
-			}))
+			})
 		},
 	},
 })

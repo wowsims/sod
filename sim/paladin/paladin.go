@@ -142,6 +142,7 @@ func (paladin *Paladin) Initialize() {
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
+	paladin.lastJudgement = SealJudgeCodeNone
 }
 
 // maybe need to add stat dependencies
