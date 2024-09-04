@@ -15,6 +15,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 	level := [9]int{0, 6, 12, 20, 28, 36, 44, 52, 60}[rank]
 	
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterArcaneShot,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolArcane,
 		DefenseType:   core.DefenseTypeRanged,

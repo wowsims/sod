@@ -15,7 +15,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage()
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:     SpellCode_HunterKillShot,
+		SpellCode:    SpellCode_HunterKillShot,
 		ActionID:     core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,

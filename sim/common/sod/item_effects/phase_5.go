@@ -3,14 +3,20 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
-	Truthbearer2H  = 229749
-	Truthbearer1H  = 229806
-	Stormwrath     = 231387
-	LightningsCell = 231784	
+	DrakeTalonCleaver         = 230271
+	JekliksCrusher            = 230911
+	HaldberdOfSmiting         = 230991
+	Stormwrath                = 231387
+	WrathOfWray               = 231779
+	LightningsCell            = 231784
+	JekliksCrusherBloodied    = 231861
+	HaldberdOfSmitingBloodied = 231870
 )
 
 func init() {
@@ -19,6 +25,14 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	itemhelpers.CreateWeaponEquipProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
+
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=231387/stormwrath-sanctified-shortblade-of-the-galefinder
 	// Equip: Damaging non-periodic spells have a chance to blast up to 3 targets for 181 to 229.
@@ -62,52 +76,6 @@ func init() {
 			},
 		})
 	})
-
-	// https://www.wowhead.com/classic/item=229806/truthbearer
-	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
-	// TODO: Proc rate assumed and needs testing
-	core.NewItemEffect(Truthbearer2H, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(Truthbearer2H)
-		crusadersZealAura := crusadersZealAura465414(character)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Truthbearer (Crusaders Zeal)",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				crusadersZealAura.Activate(sim)
-			},
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=229749/truthbearer
-	// Chance on hit: Increases damage done by 15 and attack speed by 30% for 8 sec.
-	// TODO: Proc rate assumed and needs testing
-	core.NewItemEffect(Truthbearer1H, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(Truthbearer1H)
-		crusadersZealAura := crusadersZealAura465414(character)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Truthbearer (Crusaders Zeal)",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1, 
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				crusadersZealAura.Activate(sim)
-			},
-		})
-	})
-
-	
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -161,25 +129,7 @@ func init() {
 		})
 	})
 
+	core.NewSimpleStatOffensiveTrinketEffect(WrathOfWray, stats.Stats{stats.Strength: 92}, time.Second*20, time.Minute*2)
+
 	core.AddEffectsToTest = true
 }
-
-	// https://www.wowhead.com/classic/spell=465414/crusaders-zeal
-	// Used by:
-	// - https://www.wowhead.com/classic/item=229806/truthbearer and
-	// - https://www.wowhead.com/classic/item=229749/truthbearer
-	func crusadersZealAura465414(character *core.Character) *core.Aura {
-		return character.GetOrRegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 465414},
-			Label:    "Crusaders Zeal (465414)",
-			Duration: time.Second * 8,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.BonusDamage += 15
-				character.MultiplyAttackSpeed(sim, 1.30)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.BonusDamage -= 15
-				character.MultiplyAttackSpeed(sim, 1/1.30)
-			},
-		})
-	}
