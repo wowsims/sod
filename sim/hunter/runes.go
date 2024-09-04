@@ -233,7 +233,7 @@ func (hunter *Hunter) applyCobraStrikes() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Cobra Strikes Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && spell.Flags.Matches(SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite {
+			if result.DidCrit() && (spell.Flags.Matches(SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) {
 				hunter.CobraStrikesAura.Activate(sim)
 				hunter.CobraStrikesAura.SetStacks(sim, 2)
 			}
