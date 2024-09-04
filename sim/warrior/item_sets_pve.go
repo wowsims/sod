@@ -400,7 +400,7 @@ var ItemSetVindicatorsBattlegear = core.NewItemSet(core.ItemSet{
 			warrior.AddStat(stats.Defense, 7)
 		},
 		// Reduces the cooldown on your Shield Slam ability by 2 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			if !warrior.Talents.ShieldSlam {
 				return
