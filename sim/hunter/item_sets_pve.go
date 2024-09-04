@@ -244,7 +244,7 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Hunter - Melee 6P Bonus Trigger",
+				Label:    "S03 - Item - T2 - Hunter - Melee 6P Bonus Trigger",
 				ActionID: core.ActionID{SpellID: 467334},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if sim.Proc(0.05, "T2 Melee 6PC Strike Reset") {
@@ -332,7 +332,6 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		// Increases the Attack Power your Beast pet gains from your attributes by 20%.
 		3: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
 			if hunter.pet == nil {
 				return
 			}
@@ -340,34 +339,30 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 3P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if hunter.pet != nil {
-						oldStatInheritance := hunter.pet.GetStatInheritance()
-						hunter.pet.UpdateStatInheritance(
-							func(ownerStats stats.Stats) stats.Stats {
-								s := oldStatInheritance(ownerStats)
-								s[stats.AttackPower] *= 1.20
-								return s
-							})
-					}
+					oldStatInheritance := hunter.pet.GetStatInheritance()
+					hunter.pet.UpdateStatInheritance(
+						func(ownerStats stats.Stats) stats.Stats {
+							s := oldStatInheritance(ownerStats)
+							s[stats.AttackPower] *= 1.20
+							return s
+						},
+					)
 				},
 			}))
 		},
 		// Increases the Focus regeneration of your Beast pet by 20%.
 		5: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
 			if hunter.pet == nil {
 				return
 			}
 
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
+			hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 5P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if hunter.pet != nil {
-						hunter.pet.AddFocusRegenMultiplier(1.20)
-					}
+					hunter.pet.AddFocusRegenMultiplier(1.20)
 				},
-			}))
+			})
 		},
 	},
 })
