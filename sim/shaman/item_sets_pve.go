@@ -251,7 +251,12 @@ var ItemSetEarthfuryImpact = core.NewItemSet(core.ItemSet{
 		},
 		// Your Flurry talent grants an additional 10% increase to your attack speed.
 		6: func(agent core.Agent) {
-			// Implemented in talents.go
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.RegisterAura(core.Aura{
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.bonusFlurrySpeed += .10
+				},
+			})
 		},
 	},
 })

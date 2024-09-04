@@ -116,7 +116,7 @@ func (warrior *Warrior) applyBloodFrenzy() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Blood Frenzy Dummy",
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.Rend.StanceMask |= BerserkerStance
 		},
 	}))

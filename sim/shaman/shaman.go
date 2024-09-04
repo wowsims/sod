@@ -139,14 +139,12 @@ type Shaman struct {
 	WindwallTotem          []*core.Spell
 
 	// Auras
-	ClearcastingAura      *core.Aura
-	FlurryAura            *core.Aura
-	FlurryConsumptionAura *core.Aura // Trigger aura for consuming Flurry stacks on hit
-	LoyalBetaAura         *core.Aura
-	MaelstromWeaponAura   *core.Aura
-	PowerSurgeDamageAura  *core.Aura
-	PowerSurgeHealAura    *core.Aura
-	SpiritOfTheAlphaAura  *core.Aura
+	ClearcastingAura     *core.Aura
+	LoyalBetaAura        *core.Aura
+	MaelstromWeaponAura  *core.Aura
+	PowerSurgeDamageAura *core.Aura
+	PowerSurgeHealAura   *core.Aura
+	SpiritOfTheAlphaAura *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
@@ -166,6 +164,7 @@ type Shaman struct {
 
 	// Other data
 	ancestralHealingAmount float64    // Used by Ancestral Awakening
+	bonusFlurrySpeed       float64    // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
 	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
 	maelstromWeaponPPMM    *core.PPMManager
 	powerSurgeProcChance   float64
