@@ -426,7 +426,6 @@ type PseudoStats struct {
 	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
 	DodgeReduction       float64 // Used by Warrior talent 'Weapon Mastery' and SWP boss auras.
 
-
 	MobTypeAttackPower float64 // Bonus AP against mobs of the current type.
 	MobTypeSpellPower  float64 // Bonus SP against mobs of the current type.
 
@@ -550,6 +549,15 @@ func NewPseudoStats() PseudoStats {
 		FeralCombatEnabled: false,
 		FeralCombatSkill:   0,
 	}
+}
+
+func (p PseudoStats) MultiplySchoolDamageTaken(multiplier float64) {
+	p.SchoolDamageTakenMultiplier[SchoolIndexArcane] *= multiplier
+	p.SchoolDamageTakenMultiplier[SchoolIndexFire] *= multiplier
+	p.SchoolDamageTakenMultiplier[SchoolIndexFrost] *= multiplier
+	p.SchoolDamageTakenMultiplier[SchoolIndexHoly] *= multiplier
+	p.SchoolDamageTakenMultiplier[SchoolIndexNature] *= multiplier
+	p.SchoolDamageTakenMultiplier[SchoolIndexShadow] *= multiplier
 }
 
 type UnitStat int

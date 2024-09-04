@@ -151,6 +151,7 @@ message RepSource {
 	Faction player_faction = 3;
 }
 
+// NextIndex: 15
 message UIEnchant {
 	// All enchants have an effect ID. Some also have an item ID, others have a spell ID,
 	// and yet others have both item and spell IDs. No single ID alone is enough to
@@ -175,6 +176,7 @@ message UIEnchant {
 	// Classes that are allowed to use the enchant. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 11;
 	Profession required_profession = 12;
+	int32 requires_level = 14;
 }
 
 message UIRune {

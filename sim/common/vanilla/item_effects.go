@@ -112,6 +112,7 @@ const (
 	Felstriker                     = 228757 // 12590
 	GutgoreRipperMolten            = 229372
 	EskhandarsRightClawMolten      = 229379
+	TheUntamedBlade                = 230242 // 19334
 )
 
 func init() {
@@ -1846,6 +1847,23 @@ func init() {
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1/1.3)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=230242/the-untamed-blade
+	// Chance on hit: Increases Strength by 300 for 8 sec.
+	// Estimated based on data from WoW Armaments Discord
+	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 1.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 23719},
+			Label:    "Untamed Fury",
+			Duration: time.Second * 8,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: 300})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: -300})
 			},
 		})
 	})

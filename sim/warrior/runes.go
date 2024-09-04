@@ -116,7 +116,7 @@ func (warrior *Warrior) applyBloodFrenzy() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Blood Frenzy Dummy",
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.Rend.StanceMask |= BerserkerStance
 		},
 	}))
@@ -221,7 +221,7 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamOH { // removed even if slam doesn't land
+			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamMH { // removed even if slam doesn't land
 				aura.Deactivate(sim)
 			}
 		},
