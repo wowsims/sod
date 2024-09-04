@@ -25,6 +25,16 @@ const (
 	SpellCode_PaladinConsecration
 )
 
+type SealJudgeCode uint8
+
+const (
+	SealJudgeCodeNone        SealJudgeCode = 0
+	SealJudgeOfMartyrdomCode SealJudgeCode = 1 << iota
+	SealJudgeOfRighteousnessCode
+	SealJudgeOfCommandCode
+	SealJudgeOfTheCrusaderCode
+)
+
 type Paladin struct {
 	core.Character
 
@@ -36,15 +46,19 @@ type Paladin struct {
 	currentPaladinAura *core.Aura
 
 	currentSeal      *core.Aura
-	auraSoM          *core.Aura
-	aurasSoR         [8]*core.Aura
-	aurasSoC         [5]*core.Aura
-	aurasSotC        [6]*core.Aura
+	allSealAuras     [][]*core.Aura
+	aurasSoM         []*core.Aura
+	aurasSoR         []*core.Aura
+	aurasSoC         []*core.Aura
+	aurasSotC        []*core.Aura
 	currentJudgement *core.Spell
-	spellJoM         *core.Spell
-	spellsJoR        [8]*core.Spell
-	spellsJoC        [5]*core.Spell
-	spellsJotC       [6]*core.Spell
+	allJudgeSpells   [][]*core.Spell
+	spellsJoM        []*core.Spell
+	spellsJoR        []*core.Spell
+	spellsJoC        []*core.Spell
+	spellsJotC       []*core.Spell
+
+	rollDummyJudgeHit [4]bool
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	holyShockCooldown *core.Cooldown
@@ -60,7 +74,12 @@ type Paladin struct {
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
 
-	lingerDuration time.Duration
+	lingerDuration      time.Duration
+	consumeSealsOnJudge bool
+
+	// T2 Bonuses Related (Draconic)
+	thisJudgement SealJudgeCode
+	lastJudgement SealJudgeCode
 }
 
 // Implemented by each Paladin spec.
@@ -92,6 +111,18 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerSealOfMartyrdom()
 	paladin.registerSealOfTheCrusader()
 
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoM)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoR)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoC)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJotC)
+
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoM)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoR)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
+
+	paladin.rollDummyJudgeHit = [4]bool{false, false, true, false}
+
 	// Active abilities
 	paladin.registerCrusaderStrike()
 	paladin.registerDivineStorm()
@@ -105,12 +136,13 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 
 	paladin.lingerDuration = time.Millisecond * 400
+	paladin.consumeSealsOnJudge = true
 
 	paladin.registerStopAttackMacros()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
-	//paladin.registerStopAttackMacros()
+	paladin.lastJudgement = SealJudgeCodeNone
 }
 
 // maybe need to add stat dependencies
@@ -167,19 +199,11 @@ func (paladin *Paladin) registerStopAttackMacros() {
 		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if paladin.spellJoM != nil && paladin.Options.IsUsingJudgementStopAttack {
-		paladin.spellJoM.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	for i, v := range paladin.spellsJoR {
-		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-			paladin.spellsJoR[i].Flags |= core.SpellFlagBatchStopAttackMacro
-		}
-	}
-
-	for i, v := range paladin.spellsJoC {
-		if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-			paladin.spellsJoC[i].Flags |= core.SpellFlagBatchStopAttackMacro
+	for _, spellsJoX := range paladin.allJudgeSpells {
+		for _, v := range spellsJoX {
+			if v != nil && paladin.Options.IsUsingJudgementStopAttack {
+				v.Flags |= core.SpellFlagBatchStopAttackMacro
+			}
 		}
 	}
 }

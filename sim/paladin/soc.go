@@ -126,7 +126,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			},
 		})
 
-		paladin.aurasSoC[i] = aura
+		paladin.aurasSoC = append(paladin.aurasSoC, aura)
 
 		paladin.sealOfCommand = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
@@ -151,6 +151,6 @@ func (paladin *Paladin) registerSealOfCommand() {
 			},
 		})
 
-		paladin.spellsJoC[i] = judgeSpell
+		paladin.spellsJoC = append(paladin.spellsJoC, judgeSpell)
 	}
 }
