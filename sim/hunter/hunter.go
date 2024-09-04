@@ -12,10 +12,10 @@ import (
 var TalentTreeSizes = [3]int{16, 14, 16}
 
 const (
-	SpellFlagShot = core.SpellFlagAgentReserved1
+	SpellFlagShot   = core.SpellFlagAgentReserved1
 	SpellFlagStrike = core.SpellFlagAgentReserved2
-	SpellFlagSting = core.SpellFlagAgentReserved3
-	SpellFlagTrap = core.SpellFlagAgentReserved4
+	SpellFlagSting  = core.SpellFlagAgentReserved3
+	SpellFlagTrap   = core.SpellFlagAgentReserved4
 )
 
 const (
@@ -70,7 +70,7 @@ type Hunter struct {
 	AmmoDPS                   float64
 	AmmoDamageBonus           float64
 	NormalizedAmmoDamageBonus float64
-	SerpentStingAPCoeff		  float64
+	SerpentStingAPCoeff       float64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
@@ -102,10 +102,10 @@ type Hunter struct {
 	CarveOH        *core.Spell
 	WingClip       *core.Spell
 
-	Shots []*core.Spell
-	Strikes []*core.Spell
+	Shots       []*core.Spell
+	Strikes     []*core.Spell
 	MeleeSpells []*core.Spell
-	LastShot *core.Spell
+	LastShot    *core.Spell
 
 	SerpentStingChimeraShot *core.Spell
 
@@ -121,7 +121,7 @@ type Hunter struct {
 	ImprovedSteadyShotAura *core.Aura
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
-	BestialWrathPetAura   *core.Aura
+	BestialWrathPetAura    *core.Aura
 
 	HasPredatorArmor [6]bool
 }

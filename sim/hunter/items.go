@@ -8,20 +8,20 @@ import (
 )
 
 const (
-	DevilsaurEye            = 19991
-	DevilsaurTooth          = 19992
-	SignetOfBeasts          = 209823
-	BloodlashBow            = 216516
-	GurubashiPitFightersBow = 221450
-	BloodChainVices         = 227075
-	KnightChainVices        = 227077
-	BloodChainGrips         = 227081
-	KnightChainGrips        = 227087
-	WhistleOfTheBeast       = 228432
-	MaelstromsWrath			= 231320
-	ZandalarPredatorsMantle = 231321
-	ZandalarPredatorsBelt	= 231322
-	ZandalarPredatorsBracers= 231323
+	DevilsaurEye             = 19991
+	DevilsaurTooth           = 19992
+	SignetOfBeasts           = 209823
+	BloodlashBow             = 216516
+	GurubashiPitFightersBow  = 221450
+	BloodChainVices          = 227075
+	KnightChainVices         = 227077
+	BloodChainGrips          = 227081
+	KnightChainGrips         = 227087
+	WhistleOfTheBeast        = 228432
+	MaelstromsWrath          = 231320
+	ZandalarPredatorsMantle  = 231321
+	ZandalarPredatorsBelt    = 231322
+	ZandalarPredatorsBracers = 231323
 )
 
 func init() {
@@ -280,26 +280,26 @@ func init() {
 
 	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {
 		hunter := a.(HunterAgent).GetHunter()
-
 		if hunter.pet == nil {
 			return
 		}
 
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
 
-		if hunter.Talents.BestialWrath {
-			hunter.RegisterAura(core.Aura{
-				Label: "Maelstroms's Wrath Bestial Wrath",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.BestialWrathPetAura.Duration += (time.Second * 3)
-				},
-			})
+		if !hunter.Talents.BestialWrath {
+			return
 		}
+
+		hunter.RegisterAura(core.Aura{
+			Label: "Maelstroms's Wrath Bestial Wrath",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.BestialWrathPetAura.Duration += (time.Second * 3)
+			},
+		})
 	})
 
 	core.NewItemEffect(ZandalarPredatorsMantle, func(a core.Agent) {
 		hunter := a.(HunterAgent).GetHunter()
-
 		if hunter.pet == nil {
 			return
 		}
@@ -309,7 +309,6 @@ func init() {
 
 	core.NewItemEffect(ZandalarPredatorsBelt, func(a core.Agent) {
 		hunter := a.(HunterAgent).GetHunter()
-
 		if hunter.pet == nil {
 			return
 		}
