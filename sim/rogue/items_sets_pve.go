@@ -3,6 +3,7 @@ package rogue
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -285,23 +286,39 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Your Rolling with the Punches now also activates every time you gain a combo point.
 		2: func(agent core.Agent) {
-		rogue := agent.(RogueAgent).GetRogue()
-		rogue.OnComboPointsGained(func(sim *core.Simulation) {
-			if rogue.RollingWithThePunchesProcAura.IsActive() {
-				rogue.RollingWithThePunchesProcAura.AddStack(sim)
-			} else {
-				rogue.RollingWithThePunchesProcAura.Activate(sim)
+			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
+				return
 			}
-		})
+
+//			rogue.OnComboPointsGained(func(sim *core.Simulation) {
+//				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
+//					rogue.RollingWithThePunchesProcAura.Refresh(sim)
+//				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
+//					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+//				} else {
+//					rogue.RollingWithThePunchesProcAura.Activate(sim)
+//					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+//				}
+//			})
 		},
 		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
 		4: func(agent core.Agent) {
-		//	rogue := agent.(RogueAgent).GetRogue()
-			
+			//Implemented in runes.go RollingwiththePunches function TO-DO
 		},
 			// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
 		6: func(agent core.Agent) {
-			// Implemented in Vanish.go
+			rogue := agent.(RogueAgent).GetRogue()
+			
+			core.MakePermanent(rogue.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Rogue - Tank 6P Bonus",
+				ActionID: core.ActionID{SpellID: 467803},
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidDodge() || result.DidParry() {
+						rogue.MainGauche.CD.Reset()
+					}
+				},
+			}))
 		},
 	},
 })

@@ -293,10 +293,16 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
 		return
 	}
-
-	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero condition
+	has4PcT2 := rogue.HasSetBonus(ItemSetBloodfangBattlearmor, 4)
+	
+	statDeps := make([]*stats.StatDependency, 6) // 5 stacks + zero condition
 	for i := 1; i < 6; i++ {
 		statDeps[i] = rogue.NewDynamicMultiplyStat(stats.Health, 1.0+.06*float64(i))
+
+	}
+	statDeps2 := make([]*stats.StatDependency, 6) // 5 stacks + zero condition
+	for j := 1; j < 6; j++ {
+		statDeps2[j] = rogue.NewDynamicMultiplyStat(stats.Armor, 1.0+.2*float64(j))
 	}
 
 	rogue.RollingWithThePunchesProcAura = rogue.RegisterAura(core.Aura{
@@ -307,9 +313,15 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
+				if has4PcT2 {
+					aura.Unit.DisableDynamicStatDep(sim, statDeps2[oldStacks])
+				}
 			}
 			if newStacks != 0 {
 				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
+				if has4PcT2 {
+					aura.Unit.EnableDynamicStatDep(sim, statDeps2[newStacks])
+				}
 			}
 		},
 	})
@@ -324,10 +336,13 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) {
-				if rogue.RollingWithThePunchesProcAura.IsActive() {
+				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
+					rogue.RollingWithThePunchesProcAura.Refresh(sim)
+				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				} else {
 					rogue.RollingWithThePunchesProcAura.Activate(sim)
+					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				}
 			}
 		},

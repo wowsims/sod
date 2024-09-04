@@ -210,9 +210,11 @@ func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics 
 	if sim.Log != nil {
 		eb.unit.Log(sim, "Gained %d combo points from %s (%d --> %d)", pointsToAdd, metrics.ActionID, eb.comboPoints, newComboPoints)
 	}
-
+		
 	eb.comboPoints = newComboPoints
+	
 	for _, callback := range eb.onComboPointsGainedCallbacks {
+		eb.unit.Log(sim, "Test")
 		callback(sim)
 	}
 }
