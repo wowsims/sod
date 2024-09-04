@@ -31,11 +31,15 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 1508, ItemId: 11647, SpellId: 15402, Name: "Lesser Arcanum of Voracity", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
 	{EffectId: 1509, ItemId: 11648, SpellId: 15404, Name: "Lesser Arcanum of Voracity", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Intellect: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
 	{EffectId: 1510, ItemId: 11649, SpellId: 15406, Name: "Lesser Arcanum of Voracity", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Spirit: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
+
 	// Drop in Dire Maul
 	{EffectId: 2544, ItemId: 18330, SpellId: 22844, Name: "Arcanum of Focus", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.SpellPower: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
+	{EffectId: 2545, ItemId: 18331, SpellId: 22846, Name: "Arcanum of Protection", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Dodge: 1}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
 	// Melee Haste isn't actually a stat, so use Pseudostats.MeleeSpeedMultiplier
 	{EffectId: 2543, ItemId: 18329, SpellId: 22840, Name: "Arcanum of Rapidity", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
-	{EffectId: 2545, ItemId: 18331, SpellId: 22846, Name: "Arcanum of Protection", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Dodge: 1}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
+
+	// Drop in ZG
+	{EffectId: 2681, ItemId: 22635, SpellId: 28161, Name: "Savage Guard", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.NatureResistance: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit},
 	// Updated ZG Enchants
 	// Druid
 	{EffectId: 7614, ItemId: 231355, SpellId: 468318, Name: "Animist's Balance", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 20, stats.MeleeHit: 1 * core.MeleeHitRatingPerHitChance, stats.SpellHit: 1 * core.SpellHitRatingPerHitChance, stats.SpellPower: 12}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeLegs}, EnchantType: proto.EnchantType_EnchantTypeKit, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}, RequiresLevel: 60},
@@ -83,9 +87,9 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 2483, ItemId: 18169, SpellId: 22593, Name: "Flame Mantle of the Dawn", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.FireResistance: 5}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 7563, ItemId: 227819, SpellId: 460963, Name: "Blessed Flame Mantle of the Dawn", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.FireResistance: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	// Drop in ZG
-	// {EffectId: 2604, ItemId: 20078, SpellId: 24420, Name: "Zandalar Signet of Serenity", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.HealingPower: 33}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
-	// {EffectId: 2605, ItemId: 20076, SpellId: 24421, Name: "Zandalar Signet of Mojo", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 18, stats.HealingPower: 18}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
-	// {EffectId: 2606, ItemId: 20077, SpellId: 24422, Name: "Zandalar Signet of Might", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 30}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 2604, ItemId: 20078, SpellId: 24420, Name: "Zandalar Signet of Serenity", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.HealingPower: 33}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 2605, ItemId: 20076, SpellId: 24421, Name: "Zandalar Signet of Mojo", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 18, stats.HealingPower: 18}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 2606, ItemId: 20077, SpellId: 24422, Name: "Zandalar Signet of Might", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 30}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	// Drop in naxxramas
 	// {EffectId: 2715, ItemId: 23547, SpellId: 29475, Name: "Resilience of the Scourge", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.HealingPower: 31, stats.MP5: 5}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	// {EffectId: 2717, ItemId: 23548, SpellId: 29483, Name: "Might of the Scourge", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.AttackPower: 26, stats.MeleeCrit: 0.01}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
