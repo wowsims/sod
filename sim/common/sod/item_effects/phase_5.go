@@ -9,7 +9,6 @@ import (
 )
 
 const (
-	TheUntamedBlade           = 230242
 	DrakeTalonCleaver         = 230271
 	JekliksCrusher            = 230911
 	HaldberdOfSmiting         = 230991
@@ -34,8 +33,6 @@ func init() {
 
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
-
-	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 1.0, untamedFuryAura23719)
 
 	// https://www.wowhead.com/classic/item=231387/stormwrath-sanctified-shortblade-of-the-galefinder
 	// Equip: Damaging non-periodic spells have a chance to blast up to 3 targets for 181 to 229.
@@ -135,18 +132,4 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(WrathOfWray, stats.Stats{stats.Strength: 92}, time.Second*20, time.Minute*2)
 
 	core.AddEffectsToTest = true
-}
-
-func untamedFuryAura23719(character *core.Character) *core.Aura {
-	return character.GetOrRegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 23719},
-		Label:    "Untamed Fury",
-		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Strength, 300)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Strength, -300)
-		},
-	})
 }
