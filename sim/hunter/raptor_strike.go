@@ -36,6 +36,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterRaptorStrike,
 		ActionID:      core.ActionID{SpellID: spellID},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
@@ -114,7 +115,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterRaptorStrike,
+		SpellCode:   SpellCode_HunterRaptorStrikeHit,
 		ActionID:    core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
