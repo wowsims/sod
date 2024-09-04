@@ -221,7 +221,8 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamMH { // removed even if slam doesn't land
+			// removed even if slam doesn't land
+			if spell.SpellCode == SpellCode_WarriorSlamMH {
 				aura.Deactivate(sim)
 			}
 		},
