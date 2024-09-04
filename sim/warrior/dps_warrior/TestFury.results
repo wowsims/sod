@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFury-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.8252
-  weights: 0.48753
+  weights: 1.9448
+  weights: 0.90479
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.88562
-  weights: 8.36395
-  weights: 8.90307
+  weights: 1.17385
+  weights: 8.07293
+  weights: 8.64591
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.97721
-  weights: 1.56977
+  weights: 2.78236
+  weights: 2.79883
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.72319
-  weights: 7.18434
-  weights: 33.94644
+  weights: 1.10498
+  weights: 8.55265
+  weights: 35.84943
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +197,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestFury-Lvl40-AllItems-BattlegearofHeroism"
  value: {
-  dps: 540.86607
-  tps: 481.87377
+  dps: 540.16968
+  tps: 481.03823
  }
 }
 dps_results: {
  key: "TestFury-Lvl40-Average-Default"
  value: {
-  dps: 599.3854
-  tps: 530.6027
+  dps: 599.06753
+  tps: 530.25155
  }
 }
 dps_results: {
@@ -295,57 +295,57 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 559.00274
-  tps: 496.08213
+  dps: 560.00594
+  tps: 496.78496
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2659.44276
-  tps: 2346.76808
+  dps: 2660.8352
+  tps: 2349.28147
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1912.02256
-  tps: 1708.84011
+  dps: 1910.61832
+  tps: 1706.55871
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2239.72091
-  tps: 1968.29807
+  dps: 2235.47269
+  tps: 1968.12825
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2197.32723
-  tps: 1933.73075
+  dps: 2220.4529
+  tps: 1953.13035
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2239.72091
-  tps: 1968.29807
+  dps: 2235.47269
+  tps: 1968.12825
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2856.08567
-  tps: 2515.28549
+  dps: 2852.77007
+  tps: 2514.95346
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Average-Default"
  value: {
-  dps: 3714.04427
-  tps: 3232.02787
+  dps: 3698.25353
+  tps: 3217.84072
  }
 }
 dps_results: {
@@ -435,7 +435,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2945.67999
-  tps: 2570.14095
+  dps: 2899.02728
+  tps: 2527.51148
  }
 }

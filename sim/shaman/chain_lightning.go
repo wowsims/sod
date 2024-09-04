@@ -43,7 +43,6 @@ func (shaman *Shaman) registerChainLightningSpell() {
 
 func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer, isOverload bool) core.SpellConfig {
 	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
 	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
 	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
 
@@ -103,12 +102,8 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 
-			if canOverload && result.Landed() && sim.Proc(overloadChance, "CL Overload") {
+			if canOverload && sim.Proc(overloadChance, "CL Overload") {
 				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
-			}
-
-			if hasRollingThunderRune {
-				shaman.rollRollingThunderCharge(sim)
 			}
 		}
 

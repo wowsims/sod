@@ -165,7 +165,7 @@ func (mage *Mage) applyFingersOfFrost() {
 			if aura.GetStacks() == 1 {
 				// Brain freeze can be batched with 2x FFBs into Deep Freeze
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if aura.IsActive() {
 							aura.RemoveStack(sim)
@@ -256,7 +256,7 @@ func (mage *Mage) applyHotStreak() {
 				// When batching a Scorch crit into an instant Pyro, the Pyro consumes Hot Streak before the Scorch hits, so the Scorch re-applies Heating Up
 				// We can replicate this by adding a 1ms delay then checking the state of the auras again.
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if heatingUpAura.IsActive() {
 							heatingUpAura.Deactivate(sim)

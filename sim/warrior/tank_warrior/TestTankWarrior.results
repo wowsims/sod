@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.73038
+  weights: -0.49334
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.06078
+  weights: -0.08222
   weights: 0
   weights: 0
   weights: 0
@@ -78,9 +78,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.06921
+  weights: -0.53513
   weights: 0
-  weights: 0.54365
+  weights: 0.54738
   weights: 0
   weights: 0
   weights: 0
@@ -99,50 +99,50 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 1662.45828
-  tps: 3635.97765
+  dps: 1663.17447
+  tps: 3641.71434
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 925.89305
-  tps: 1891.73695
+  dps: 929.57677
+  tps: 1895.44156
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 931.54956
-  tps: 1925.76719
+  dps: 934.82148
+  tps: 1934.1051
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 922.81225
-  tps: 1917.06861
+  dps: 926.57926
+  tps: 1917.63618
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 931.54956
-  tps: 1925.76719
+  dps: 934.82148
+  tps: 1934.1051
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 1748.14203
-  tps: 3754.1606
+  dps: 1746.98957
+  tps: 3754.55789
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Average-Default"
  value: {
-  dps: 1614.4327
-  tps: 4101.93235
+  dps: 1614.46083
+  tps: 4102.22319
  }
 }
 dps_results: {
@@ -232,7 +232,7 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1341.62443
-  tps: 3467.59502
+  dps: 1344.96294
+  tps: 3480.78045
  }
 }

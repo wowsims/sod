@@ -148,18 +148,26 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell) *WarriorS
 		},
 	})
 
+	// Use a 50 ms ICD to simulate realistic delay between re-queueing HS
+	icd := &core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: core.SpellBatchWindow * 5,
+	}
+
 	queueSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: srcSpell.ActionID.WithTag(1),
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.curQueueAura == nil &&
+			return icd.IsReady(sim) &&
+				warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
 				sim.CurrentTime >= warrior.Hardcast.Expires
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			queueAura.Activate(sim)
+			icd.Use(sim)
 		},
 	})
 
