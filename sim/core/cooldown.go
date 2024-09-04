@@ -92,3 +92,19 @@ func (unit *Unit) GetOrInitTimer(timer **Timer) *Timer {
 	}
 	return *timer
 }
+
+type CooldownArray []*Cooldown
+
+func (cooldowns CooldownArray) Get(target *Unit) *Cooldown {
+	return cooldowns[target.UnitIndex]
+}
+
+func (caster *Unit) NewEnemyICDArray(makeCooldown func(*Unit) *Cooldown) CooldownArray {
+	cooldowns := make([]*Cooldown, len(caster.Env.AllUnits))
+	for _, target := range caster.Env.AllUnits {
+		if target.Type == EnemyUnit {
+			cooldowns[target.UnitIndex] = makeCooldown(target)
+		}
+	}
+	return cooldowns
+}

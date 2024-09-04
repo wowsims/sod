@@ -246,9 +246,8 @@ const (
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
 	for _, spell := range druid.Moonfire {
 		if dot := spell.Dot(unit); dot.IsActive() {
-			dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusMoonfireTicks, dot.OriginalNumberOfTicks)
-			dot.RecomputeAuraDuration()
-			dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+			maxExpiresAt := sim.CurrentTime + dot.Duration
+			dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickLength))
 		}
 	}
 }
@@ -258,17 +257,15 @@ func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *c
 		return
 	}
 	if dot := druid.Sunfire.Dot(unit); dot.IsActive() {
-		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusSunfireTicks, dot.OriginalNumberOfTicks)
-		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+		maxExpiresAt := sim.CurrentTime + dot.Duration
+		dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickLength))
 	}
 }
 
 func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.Unit) {
 	if dot := druid.Rip.Dot(unit); dot.IsActive() {
-		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusRipTicks, dot.OriginalNumberOfTicks)
-		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+		maxExpiresAt := sim.CurrentTime + dot.Duration
+		dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusRipTicks)*dot.TickLength))
 	}
 }
 

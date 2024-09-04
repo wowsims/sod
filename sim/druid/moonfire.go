@@ -98,8 +98,6 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = ticks
-				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
 			}
 		},

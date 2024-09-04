@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -115,7 +116,7 @@ func (warrior *Warrior) applyBloodFrenzy() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Blood Frenzy Dummy",
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.Rend.StanceMask |= BerserkerStance
 		},
 	}))
@@ -131,10 +132,12 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1.2)
+			warrior.MultiplyMeleeSpeed(sim, 1.3)
+			warrior.AddDamageDealtRageBonus(1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/1.2)
+			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
+			warrior.AddDamageDealtRageBonus(-1)
 		},
 	})
 
@@ -151,7 +154,9 @@ func (warrior *Warrior) applyFrenziedAssault() {
 						return
 					}
 
-					buffAura.Activate(sim)
+					if !buffAura.IsActive() {
+						buffAura.Activate(sim)
+					}
 				},
 			})
 		},
@@ -216,7 +221,7 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamOH { // removed even if slam doesn't land
+			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamMH { // removed even if slam doesn't land
 				aura.Deactivate(sim)
 			}
 		},
@@ -325,10 +330,6 @@ func (warrior *Warrior) applyFreshMeat() {
 		return
 	}
 
-	hasBloodthirstTalent := warrior.Talents.Bloodthirst
-
-	damagedUnits := make(map[int32]bool)
-
 	warrior.FreshMeatEnrageAura = warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 14201},
 		Label:    "Enrage (Fresh Meat)",
@@ -341,6 +342,9 @@ func (warrior *Warrior) applyFreshMeat() {
 		},
 	})
 
+	var damagedUnits map[int32]bool
+	affectedSpellCodes := []int32{SpellCode_WarriorBloodthirst, SpellCode_WarriorMortalStrike, SpellCode_WarriorShieldSlam}
+
 	warrior.RegisterAura(core.Aura{
 		Label:    "Fresh Meat Trigger",
 		Duration: core.NeverExpires,
@@ -349,7 +353,7 @@ func (warrior *Warrior) applyFreshMeat() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !hasBloodthirstTalent || spell.SpellCode != SpellCode_WarriorBloodthirst {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
 

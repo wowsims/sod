@@ -135,8 +135,6 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = SunfireTicks
-				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
 				onResultLanded(sim, spell)
 			}

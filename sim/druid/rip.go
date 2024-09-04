@@ -133,8 +133,6 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = RipTicks
-				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell)
 			} else {

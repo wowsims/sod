@@ -36,7 +36,6 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 
 			CritDamageBonus:  warrior.impale(),
 			DamageMultiplier: 1.5,
-
 			ThreatMultiplier: 1,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -44,10 +43,17 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				threatMultiplier := 1.0
+				if warrior.Stance == DefensiveStance {
+					threatMultiplier = 1.50
+				}
+				spell.ThreatMultiplier *= threatMultiplier
+
 				weapon := warrior.AutoAttacks.MH()
 				baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
 				multiplier := 1 + 0.1*float64(effectiveStacks)
 				spell.CalcAndDealDamage(sim, target, baseDamage*multiplier, spell.OutcomeMeleeSpecialCritOnly)
+				spell.ThreatMultiplier /= threatMultiplier
 			},
 		})
 	}

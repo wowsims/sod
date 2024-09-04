@@ -351,9 +351,22 @@ func (spell *Spell) outcomeMeleeWeaponSpecialHitAndCrit(sim *Simulation, result 
 	}
 }
 
+// Outcome for counted melee abilities matching:
+// ✓ Miss
+// ✓ Block
+// ✓ Dodge
+// ✓ Parry
+// X Crit
 func (spell *Spell) OutcomeMeleeWeaponSpecialNoCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeWeaponSpecialNoCrit(sim, result, attackTable, true)
 }
+
+// Outcome for un-counted melee abilities matching:
+// ✓ Miss
+// ✓ Block
+// ✓ Dodge
+// ✓ Parry
+// X Crit
 func (spell *Spell) OutcomeMeleeWeaponSpecialNoCritNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeWeaponSpecialNoCrit(sim, result, attackTable, false)
 }
@@ -377,9 +390,22 @@ func (spell *Spell) outcomeMeleeWeaponSpecialNoCrit(sim *Simulation, result *Spe
 	}
 }
 
+// Outcome for counted melee abilities matching:
+// ✓ Miss
+// ✓ Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialNoDodgeParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoDodgeParry(sim, result, attackTable, true)
 }
+
+// Outcome for counted melee abilities matching:
+// ✓ Miss
+// ✓ Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialNoDodgeParryNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoDodgeParry(sim, result, attackTable, false)
 }
@@ -394,9 +420,22 @@ func (spell *Spell) outcomeMeleeSpecialNoDodgeParry(sim *Simulation, result *Spe
 	}
 }
 
+// Outcome for counted melee abilities matching:
+// ✓ Miss
+// X Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoBlockDodgeParry(sim, result, attackTable, true)
 }
+
+// Outcome for un-counted melee abilities matching:
+// ✓ Miss
+// X Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParryNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoBlockDodgeParry(sim, result, attackTable, false)
 }
@@ -410,9 +449,22 @@ func (spell *Spell) outcomeMeleeSpecialNoBlockDodgeParry(sim *Simulation, result
 	}
 }
 
+// Outcome for counted melee abilities matching:
+// ✓ Miss
+// X Block
+// X Dodge
+// X Parry
+// X Crit
 func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParryNoCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoBlockDodgeParryNoCrit(sim, result, attackTable, true)
 }
+
+// Outcome for un-counted melee abilities matching:
+// ✓ Miss
+// X Block
+// X Dodge
+// X Parry
+// X Crit
 func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialNoBlockDodgeParryNoCrit(sim, result, attackTable, false)
 }
@@ -425,9 +477,22 @@ func (spell *Spell) outcomeMeleeSpecialNoBlockDodgeParryNoCrit(sim *Simulation, 
 	}
 }
 
+// Outcome for counted melee abilities matching:
+// X Miss
+// X Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, true)
 }
+
+// Outcome for un-counted melee abilities matching:
+// X Miss
+// X Block
+// X Dodge
+// X Parry
+// ✓ Crit
 func (spell *Spell) OutcomeMeleeSpecialCritOnlyNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, false)
 }
