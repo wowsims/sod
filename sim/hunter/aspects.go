@@ -32,20 +32,18 @@ func (hunter *Hunter) createImprovedHawkAura(auraLabel string, actionID core.Act
     })
 }
 
-// Function to get the maximum attack power for Aspect of the Hawk based on character level
-func (hunter *Hunter) getMaxAspectOfTheHawkAttackPower(level int) float64 {
-    attackPower := [8]float64{0, 20, 35, 50, 70, 90, 110, 120} // Static data for attack power per rank
-    levels := [8]int{0, 10, 18, 28, 38, 48, 58, 60} // Levels at which ranks are available
+// Function to get the maximum attack power for Aspect of the Hawk based on rank
+func (hunter *Hunter) getMaxAspectOfTheHawkAttackPower(rank int) float64 {
+    attackPower := [8]float64{0, 20, 35, 50, 70, 90, 110, 120} 
 
-    maxAttackPower := 0.0
-
-    for rank := 1; rank <= 7; rank++ {
-        if level >= levels[rank] {
-            maxAttackPower = attackPower[rank]
-        }
+    if rank < 1 || rank > 7 {
+        return 0.0
     }
-    return maxAttackPower
+
+    return attackPower[rank]
 }
+
+
 
 // Configuration for Aspect of the Hawk spell
 func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
@@ -67,7 +65,7 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
     }
 
     // Use utility function to get the attack power based on rank
-    rap := hunter.getMaxAspectOfTheHawkAttackPower(level)
+    rap := hunter.getMaxAspectOfTheHawkAttackPower(rank)
 
     actionID := core.ActionID{SpellID: spellId}
     aspectOfTheHawkAura := hunter.NewTemporaryStatsAuraWrapped(
@@ -110,21 +108,32 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
     }
 }
 
-// Register Aspect of the Hawk spells
-func (hunter *Hunter) registerAspectOfTheHawkSpell() {
-    for i := 1; i <= 7; i++ {
-        config := hunter.getAspectOfTheHawkSpellConfig(i)
+func (hunter *Hunter) getMaxHawkRank() int {
+    maxRank := 6   // TODO AQ: 7
 
+    for i := maxRank; i > 0; i-- {
+        config := hunter.getAspectOfTheHawkSpellConfig(i)
         if config.RequiredLevel <= int(hunter.Level) {
-            hunter.GetOrRegisterSpell(config)
+            return i
         }
     }
+    return 1 
+}
+
+// Register Aspect of the Hawk spells
+func (hunter *Hunter) registerAspectOfTheHawkSpell() {
+    maxRank := hunter.getMaxHawkRank()  // Use the helper function
+
+    config := hunter.getAspectOfTheHawkSpellConfig(maxRank)
+    hunter.GetOrRegisterSpell(config)
 }
 
 // Configuration for Aspect of the Falcon spell
-func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfig {
+func (hunter *Hunter) getAspectOfTheFalconSpellConfig() core.SpellConfig {
     var impHawkAura *core.Aura
     improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
+
+    maxHawkRank := hunter.getMaxHawkRank() 
 
     if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
         impHawkAura = hunter.createImprovedHawkAura(
@@ -135,7 +144,7 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
     }
 
     // Get the maximum attack power from Aspect of the Hawk for the given level
-    maxAttackPower := hunter.getMaxAspectOfTheHawkAttackPower(level)
+    maxAttackPower := hunter.getMaxAspectOfTheHawkAttackPower(maxHawkRank)
 
     actionID := core.ActionID{SpellID: 469145}
     aspectOfTheFalconAura := hunter.NewTemporaryStatsAuraWrapped(
@@ -164,7 +173,6 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
         ActionID:      actionID,
         Flags:         core.SpellFlagAPL,
         Rank:          1, // Single rank
-        RequiredLevel: level,
 
         Cast: core.CastConfig{
             DefaultCast: core.Cast{
@@ -183,11 +191,10 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
 
 // Register Aspect of the Falcon spell
 func (hunter *Hunter) registerAspectOfTheFalconSpell() {
-    config := hunter.getAspectOfTheFalconSpellConfig(int(hunter.Level))
-    if config.RequiredLevel <= int(hunter.Level) {
-        hunter.GetOrRegisterSpell(config)
-    }
+    config := hunter.getAspectOfTheFalconSpellConfig() 
+    hunter.GetOrRegisterSpell(config)
 }
+
 
 
 
