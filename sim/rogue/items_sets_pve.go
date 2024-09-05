@@ -274,9 +274,15 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 				}
 			})
 		},
-			// Reduces cooldown on vanish by 2.5 minutes
+		// Reduces cooldown on vanish by 2.5 minutes
 		6: func(agent core.Agent) {
-			// Implemented in Vanish.go
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.RegisterAura(core.Aura{
+ 				Label: "S03 - Item - T2 - Rogue - Damage 6P Bonus",
+  				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+    				rogue.Vanish.CD.Duration -= time.Second * 150
+  				},
+			})
 		},
 	},
 })
@@ -291,20 +297,23 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				return
 			}
 
-//			rogue.OnComboPointsGained(func(sim *core.Simulation) {
-//				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
-//					rogue.RollingWithThePunchesProcAura.Refresh(sim)
-//				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
-//					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-//				} else {
-//					rogue.RollingWithThePunchesProcAura.Activate(sim)
-//					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-//				}
-//			})
+			rogue.OnComboPointsGained(func(sim *core.Simulation) {
+				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
+					rogue.RollingWithThePunchesProcAura.Refresh(sim)
+				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
+					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+				} else {
+					rogue.RollingWithThePunchesProcAura.Activate(sim)
+					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+				}
+			})
 		},
 		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
 		4: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
+				return
+			}
 			initarmor := rogue.BaseEquipStats()[stats.Armor]
 
 			rogue.RegisterAura(core.Aura{
@@ -318,10 +327,13 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				},
 			  })
 		},
-			// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
+		// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			
+			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
+				return
+			}
+
 			core.MakePermanent(rogue.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T2 - Rogue - Tank 6P Bonus",
 				ActionID: core.ActionID{SpellID: 467803},

@@ -8,7 +8,6 @@ import (
 
 func (rogue *Rogue) registerVanishSpell() {
 	has4PcT1 := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 4)
-	has6PcT2 := rogue.HasSetBonus(ItemSetBloodfangThrill, 6)
 
 	rogue.VanishAura = rogue.RegisterAura(core.Aura{
 		Label:    "Vanish",
@@ -34,7 +33,7 @@ func (rogue *Rogue) registerVanishSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second*time.Duration(core.TernaryFloat64(has6PcT2, 150, 300) - float64(45*rogue.Talents.Elusiveness)),
+				Duration: time.Second*time.Duration(300 - float64(45*rogue.Talents.Elusiveness)),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
