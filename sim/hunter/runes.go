@@ -249,10 +249,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
-	icd := core.Cooldown{
-		Timer:    hunter.NewTimer(),
-		Duration: time.Second * 8,
-	}
+	// icd := core.Cooldown{
+	// 	Timer:    hunter.NewTimer(),
+	// 	Duration: time.Second * 8,
+	// }
 
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Lock And Load",
@@ -275,10 +275,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagTrap) {
 				spell.WaitTravelTime(sim, func(s *core.Simulation) {
-					if icd.IsReady(sim) {
-						icd.Use(sim)
+					// if icd.IsReady(sim) {
+					// 	icd.Use(sim)
 						hunter.LockAndLoadAura.Activate(sim)
-					}
+					// }
 				})
 			}
 		},

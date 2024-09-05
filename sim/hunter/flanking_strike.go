@@ -58,7 +58,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskSpellDamage) {
-					if sim.RandomFloat("Flanking Strike Refresh") < 0.33 {
+					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
 						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 					}
 				}
