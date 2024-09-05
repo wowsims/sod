@@ -18,6 +18,10 @@ const (
 	BloodChainGrips         = 227081
 	KnightChainGrips        = 227087
 	WhistleOfTheBeast       = 228432
+	MaelstromsWrath         = 231320
+	ZandalarPredatorsMantle = 231321
+	ZandalarPredatorsBelt   = 231322
+	ZandalarPredatorsBracers= 231323
 	MarshalChainGrips		= 231560
 	GeneralChainGrips		= 231569
 	GeneralChainVices		= 231575
@@ -28,7 +32,7 @@ const (
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
     hunter := agent.(HunterAgent).GetHunter()
     hunter.OnSpellRegistered(func(spell *core.Spell) {
-        if spell.SpellCode == SpellCode_HunterRaptorStrike {
+        if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
             spell.DamageMultiplier *= multiplier
         }
     })

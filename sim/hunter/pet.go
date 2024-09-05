@@ -187,10 +187,7 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 
-	focusRegenMultiplier := (1.0 + 0.1*float64(hp.hunterOwner.Talents.BestialDiscipline)) *
-		core.TernaryFloat64(hp.hunterOwner.HasRune(proto.HunterRune_RuneChestBeastmastery), 1.5, 1.0)
-
-	hp.EnableFocusBar(focusRegenMultiplier, func(sim *core.Simulation) {
+	hp.EnableFocusBar(1, func(sim *core.Simulation) {
 		if hp.GCD.IsReady(sim) {
 			hp.OnGCDReady(sim)
 		}
