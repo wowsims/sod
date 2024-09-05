@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -368,6 +369,9 @@ func (mage *Mage) registerCombustionCD() {
 	if !mage.Talents.Combustion {
 		return
 	}
+
+	hasOverheatRune := mage.HasRune(proto.MageRune_RuneCloakOverheat)
+
 	actionID := core.ActionID{SpellID: 11129}
 	cd := core.Cooldown{
 		Timer:    mage.NewTimer(),
@@ -382,7 +386,7 @@ func (mage *Mage) registerCombustionCD() {
 	})
 
 	numCrits := 0
-	const critPerStack = 10 * core.SpellCritRatingPerCritChance
+	critPerStack := 10.0 * core.SpellCritRatingPerCritChance
 
 	mage.CombustionAura = mage.RegisterAura(core.Aura{
 		Label:     "Combustion",
@@ -403,16 +407,13 @@ func (mage *Mage) registerCombustionCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
+			if !result.Landed() || numCrits >= 3 || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
-			if spell == mage.Ignite || spell == mage.LivingBomb { //LB dot action should be ignored
-				return
-			}
-			if !result.Landed() {
-				return
-			}
-			if numCrits >= 3 {
+
+			// Ignite, Living Bomb explosions, and Fire Blast with Overheart don't consume crit stacks
+			if spell.SpellCode == SpellCode_MageIgnite ||
+				spell.SpellCode == SpellCode_MageLivingBombExplosion || (hasOverheatRune && spell.SpellCode == SpellCode_MageFireBlast) {
 				return
 			}
 
