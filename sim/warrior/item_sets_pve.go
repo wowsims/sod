@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	"fmt"
 	"slices"
 	"time"
 
@@ -427,7 +426,6 @@ var ItemSetVindicatorsBattlegear = core.NewItemSet(core.ItemSet{
 						return ee.Category.Name == stanceEffectCategory
 					})
 					ee := warrior.GladiatorStanceAura.ExclusiveEffects[idx]
-					fmt.Println(ee)
 					oldOnGain := ee.OnGain
 					ee.OnGain = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 						oldOnGain(ee, sim)
