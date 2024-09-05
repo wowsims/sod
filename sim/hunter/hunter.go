@@ -170,6 +170,7 @@ func (hunter *Hunter) Initialize() {
 	})
 
 	hunter.registerAspectOfTheHawkSpell()
+	hunter.registerAspectOfTheFalconSpell()
 	hunter.registerAspectOfTheViperSpell()
 
 	multiShotTimer := hunter.NewTimer()
