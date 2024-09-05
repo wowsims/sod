@@ -22,15 +22,20 @@ const (
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
 	ZandalarPredatorsBracers = 231323
+	MarshalChainGrips        = 231560
+	GeneralChainGrips        = 231569
+	GeneralChainVices        = 231575
+	MarshalChainVices        = 231578
+	Peregrine                = 231755
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
-    hunter := agent.(HunterAgent).GetHunter()
-    hunter.OnSpellRegistered(func(spell *core.Spell) {
-        if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-            spell.DamageMultiplier *= multiplier
-        }
-    })
+	hunter := agent.(HunterAgent).GetHunter()
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
 }
 
 func applyMultiShotDamageEffect(agent core.Agent, multiplier float64) {
@@ -256,34 +261,21 @@ func init() {
 		})
 	})
 
-
 	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
-
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+		applyRaptorStrikeDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
-
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+		applyRaptorStrikeDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
-        applyRaptorStrikeDamageEffect(agent, 1.04)
-    })
+		applyRaptorStrikeDamageEffect(agent, 1.04)
+	})
 
 	core.NewItemEffect(MarshalChainGrips, func(agent core.Agent) {
-        applyRaptorStrikeDamageEffect(agent, 1.04)
-    })
+		applyRaptorStrikeDamageEffect(agent, 1.04)
+	})
 
 	core.NewItemEffect(BloodChainVices, func(agent core.Agent) {
 		applyMultiShotDamageEffect(agent, 1.04)
@@ -314,8 +306,8 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 469140}, spell)
-				character.AutoAttacks.ExtraOHAttackProc(sim , 1, core.ActionID{SpellID: 469140}, spell)
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
+				character.AutoAttacks.ExtraOHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
 			},
 		})
 	})
