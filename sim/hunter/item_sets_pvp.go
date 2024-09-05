@@ -162,19 +162,23 @@ var ItemSetWarlordsPursuit = core.NewItemSet(core.ItemSet{
 var ItemSetWarlordsProwess = core.NewItemSet(core.ItemSet{
 	Name: "Warlord's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility.
+		// +20 Agility, 20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.Agility, 20)
+			c.AddStats(stats.Stats{
+				stats.Agility:       20,
+				stats.Stamina:       20,
 		},
 		// Increases the duration of your Wing Clip by 2 sec.
 		4: func(agent core.Agent) {
 			// Nothing to do
 		},
-		// +40 Attack Power.
+		// +40 Agnostic Attack Power
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.AttackPower, 40)
+			c.AddStats(stats.Stats{
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
 		},
 	},
 })
@@ -182,7 +186,7 @@ var ItemSetWarlordsProwess = core.NewItemSet(core.ItemSet{
 var ItemSetFieldMarshalsPursuit = core.NewItemSet(core.ItemSet{
 	Name: "Field Marshal's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility, 20 stam
+		// +20 Agility, 20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
@@ -208,19 +212,23 @@ var ItemSetFieldMarshalsPursuit = core.NewItemSet(core.ItemSet{
 var ItemSetFieldMarshalsProwess = core.NewItemSet(core.ItemSet{
 	Name: "Field Marshal's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility.
+		// +20 Agility, 20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.Agility, 20)
+			c.AddStats(stats.Stats{
+				stats.Agility:       20,
+				stats.Stamina:       20,
 		},
 		// Increases the duration of your Wing Clip by 2 sec.
 		4: func(agent core.Agent) {
 			// Nothing to do
 		},
-		// +40 Attack Power.
+		// +40 Agnostic Attack Power.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.AttackPower, 40)
+			c.AddStats(stats.Stats{
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
 		},
 	},
 })
