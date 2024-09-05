@@ -77,11 +77,11 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
         core.NeverExpires,
         func(aura *core.Aura) {
             aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-                if spell != hunter.AutoAttacks.RangedAuto() {
+                if !spell.ProcMask.Matches(core.ProcMaskRangedAuto) {
                     return
                 }
 
-                if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < improvedHawkProcChance {
+                if impHawkAura != nil && sim.Proc(improvedHawkProcChance, "Imp Aspect of the Hawk") {
                     impHawkAura.Activate(sim)
                 }
             }
@@ -124,6 +124,7 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 // Configuration for Aspect of the Falcon spell
 func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfig {
     var impHawkAura *core.Aura
+    improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
 
     if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
         impHawkAura = hunter.createImprovedHawkAura(
@@ -147,15 +148,17 @@ func (hunter *Hunter) getAspectOfTheFalconSpellConfig(level int) core.SpellConfi
         core.NeverExpires,
         func(aura *core.Aura) {
             aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-                if spell != hunter.AutoAttacks.MHAuto() {
+                if !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) {
                     return
                 }
 
-                if impHawkAura != nil && sim.RandomFloat("Imp Aspect of the Hawk") < (0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)) {
+                if impHawkAura != nil && sim.Proc(improvedHawkProcChance, "Imp Aspect of the Hawk") {
                     impHawkAura.Activate(sim)
                 }
             }
         })
+
+        aspectOfTheFalconAura.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
 
     return core.SpellConfig{
         ActionID:      actionID,
