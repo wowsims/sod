@@ -551,6 +551,15 @@ func NewPseudoStats() PseudoStats {
 	}
 }
 
+func (p PseudoStats) MultiplySchoolDamageDealt(multiplier float64) {
+	p.SchoolDamageDealtMultiplier[SchoolIndexArcane] *= multiplier
+	p.SchoolDamageDealtMultiplier[SchoolIndexFire] *= multiplier
+	p.SchoolDamageDealtMultiplier[SchoolIndexFrost] *= multiplier
+	p.SchoolDamageDealtMultiplier[SchoolIndexHoly] *= multiplier
+	p.SchoolDamageDealtMultiplier[SchoolIndexNature] *= multiplier
+	p.SchoolDamageDealtMultiplier[SchoolIndexShadow] *= multiplier
+}
+
 func (p PseudoStats) MultiplySchoolDamageTaken(multiplier float64) {
 	p.SchoolDamageTakenMultiplier[SchoolIndexArcane] *= multiplier
 	p.SchoolDamageTakenMultiplier[SchoolIndexFire] *= multiplier
