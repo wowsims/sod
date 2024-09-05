@@ -77,6 +77,8 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
+	StarfallTick         *DruidSpell
+	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
@@ -272,10 +274,8 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Switch to using AddStat as PseudoStat is being removed
-	// druid.PseudoStats.BaseDodge += 0.056097
-
 	guardians.ConstructGuardians(&druid.Character)
+	druid.NewT2Treants()
 
 	return druid
 }

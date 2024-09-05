@@ -42,8 +42,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		}
 
 		damage := rank.damage + float64(min(druid.Level, rank.scaleLevel)-rank.level)*rank.scale
-
-		druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+		spell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskSpellDamage,
@@ -91,5 +90,7 @@ func (druid *Druid) registerHurricaneSpell() {
 				spell.AOEDot().Apply(sim)
 			},
 		})
+
+		druid.Hurricane = append(druid.Hurricane, spell)
 	}
 }
