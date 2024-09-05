@@ -8,25 +8,25 @@ import (
 )
 
 const (
-	DevilsaurEye            = 19991
-	DevilsaurTooth          = 19992
-	SignetOfBeasts          = 209823
-	BloodlashBow            = 216516
-	GurubashiPitFightersBow = 221450
-	BloodChainVices         = 227075
-	KnightChainVices        = 227077
-	BloodChainGrips         = 227081
-	KnightChainGrips        = 227087
-	WhistleOfTheBeast       = 228432
-	MaelstromsWrath         = 231320
-	ZandalarPredatorsMantle = 231321
-	ZandalarPredatorsBelt   = 231322
-	ZandalarPredatorsBracers= 231323
-	MarshalChainGrips		= 231560
-	GeneralChainGrips		= 231569
-	GeneralChainVices		= 231575
-	MarshalChainVices		= 231578
-	Peregrine				= 231755
+	DevilsaurEye             = 19991
+	DevilsaurTooth           = 19992
+	SignetOfBeasts           = 209823
+	BloodlashBow             = 216516
+	GurubashiPitFightersBow  = 221450
+	BloodChainVices          = 227075
+	KnightChainVices         = 227077
+	BloodChainGrips          = 227081
+	KnightChainGrips         = 227087
+	WhistleOfTheBeast        = 228432
+	MaelstromsWrath          = 231320
+	ZandalarPredatorsMantle  = 231321
+	ZandalarPredatorsBelt    = 231322
+	ZandalarPredatorsBracers = 231323
+	MarshalChainGrips		 = 231560
+	GeneralChainGrips		 = 231569
+	GeneralChainVices		 = 231575
+	MarshalChainVices		 = 231578
+	Peregrine				 = 231755
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
@@ -262,13 +262,25 @@ func init() {
 	})
 
 
-    core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
-        applyRaptorStrikeDamageEffect(agent, 1.04)
-    })
+	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
 
-    core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
-        applyRaptorStrikeDamageEffect(agent, 1.04)
-    })
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
+
+	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+				spell.DamageMultiplier *= 1.04
+			}
+		})
+	})
 
 	core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
         applyRaptorStrikeDamageEffect(agent, 1.04)
