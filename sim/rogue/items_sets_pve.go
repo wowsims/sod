@@ -304,7 +304,19 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 		},
 		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
 		4: func(agent core.Agent) {
-			//Implemented in runes.go RollingwiththePunches function TO-DO
+			rogue := agent.(RogueAgent).GetRogue()
+			initarmor := rogue.BaseEquipStats()[stats.Armor]
+
+			rogue.RegisterAura(core.Aura{
+				Label: "T2 Please Replace",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				  oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
+				  rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					oldOnStacksChange(aura, sim, oldStacks, newStacks)
+					rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
+				}
+				},
+			  })
 		},
 			// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
 		6: func(agent core.Agent) {
