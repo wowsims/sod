@@ -290,12 +290,12 @@ func init() {
 			Label:    "Aligned with Nature",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MultiplySchoolDamageDealt(1.15)
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.15)
 				// TODO: healing dealt multiplier?
 				character.AddStatDynamic(sim, stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MultiplySchoolDamageDealt(1 / 1.15)
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.15)
 				// TODO: healing dealt multiplier?
 				character.AddStatDynamic(sim, stats.SpellCrit, -10*core.SpellCritRatingPerCritChance)
 			},
