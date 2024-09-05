@@ -97,12 +97,12 @@ func init() {
 			Label:    "Nature Aligned",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
 			},

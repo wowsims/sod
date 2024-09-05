@@ -381,6 +381,11 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 						spell.CastTimeMultiplier += 1
 					}
 				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_DruidStarfire && spell.CurCast.CastTime == 0 {
+						aura.Deactivate(sim)
+					}
+				},
 			})
 
 			core.MakePermanent(druid.RegisterAura(core.Aura{
