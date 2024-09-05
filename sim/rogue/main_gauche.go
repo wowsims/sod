@@ -37,19 +37,31 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
-			rogue.PoisonedKnife.Cost.FlatModifier -= 20
-			//rogue.QuickDraw.Cost.FlatModifier -= 20
 			rogue.SinisterStrike.ThreatMultiplier *= 1.5
-			rogue.PoisonedKnife.ThreatMultiplier *= 1.5
-			//rogue.QuickDraw.ThreatMultiplier *= 1.5
+
+			if rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
+				rogue.PoisonedKnife.Cost.FlatModifier -= 20
+				rogue.PoisonedKnife.ThreatMultiplier *= 1.5
+			}
+			
+			if rogue.HasRune(proto.RogueRune_RuneQuickDraw) {
+				rogue.QuickDraw.Cost.FlatModifier -= 20
+				rogue.QuickDraw.ThreatMultiplier *= 1.5
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
-			rogue.PoisonedKnife.Cost.FlatModifier += 20
-			//rogue.QuickDraw.Cost.FlatModifier += 20
 			rogue.SinisterStrike.ThreatMultiplier /= 1.5
-			rogue.PoisonedKnife.ThreatMultiplier /= 1.5
-			//rogue.QuickDraw.ThreatMultiplier /= 1.5
+
+			if rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
+				rogue.PoisonedKnife.Cost.FlatModifier += 20
+				rogue.PoisonedKnife.ThreatMultiplier /= 1.5
+			}
+			
+			if rogue.HasRune(proto.RogueRune_RuneQuickDraw) {
+				rogue.QuickDraw.Cost.FlatModifier += 20
+				rogue.QuickDraw.ThreatMultiplier /= 1.5
+			}
 		},
 	})
 
