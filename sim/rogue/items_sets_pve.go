@@ -159,7 +159,7 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 				},
 				//Poisoned Knife is ignored
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 || spell.ActionID.SpellID == 425012 {
+					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 || spell.SpellCode == SpellCode_RoguePoisonedKnife {
 						return
 					}
 					aura.Deactivate(sim)
@@ -195,10 +195,10 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 457469},
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.PseudoStats.DamageTakenMultiplier *= damageTaken
+					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= damageTaken
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.PseudoStats.DamageTakenMultiplier /= damageTaken
+					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= damageTaken
 				},
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeLanded) {
@@ -301,7 +301,7 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				} else {
-					rogue.RollingWithThePunchesProcAura.Activate(sim)
+					//rogue.RollingWithThePunchesProcAura.Activate(sim)
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				}
 			})
@@ -334,7 +334,6 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 
 			core.MakePermanent(rogue.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T2 - Rogue - Tank 6P Bonus",
-				ActionID: core.ActionID{SpellID: 467803},
 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.DidDodge() || result.DidParry() {
 						rogue.MainGauche.CD.Reset()
