@@ -178,11 +178,12 @@ var ItemSetWarlordsWartide = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
+		// Increases healing done by spells and effects by up to 44.
 		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
-				stats.HealingPower: 44,
+				stats.HealingPower: 88,
 				stats.SpellDamage:  15,
 			})
 		},
