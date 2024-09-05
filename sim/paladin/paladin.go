@@ -142,6 +142,8 @@ func (paladin *Paladin) Initialize() {
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
+	paladin.ResetCurrentPaladinAura()
+	paladin.ResetPrimarySeal(paladin.Options.PrimarySeal)
 	paladin.lastJudgement = SealJudgeCodeNone
 }
 
