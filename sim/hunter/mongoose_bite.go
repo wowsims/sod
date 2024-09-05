@@ -90,11 +90,13 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 		},
 	})
 
-	maxRank := 4
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getMongooseBiteConfig(i)
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 4,
+	}[hunter.Level]
+
+	config := hunter.getMongooseBiteConfig(rank)
+	hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
 }

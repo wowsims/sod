@@ -242,7 +242,7 @@ func init() {
 		hunter := agent.(HunterAgent).GetHunter()
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
 				spell.DamageMultiplier *= 1.04
 			}
 		})
@@ -252,7 +252,7 @@ func init() {
 		hunter := agent.(HunterAgent).GetHunter()
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrike {
+			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
 				spell.DamageMultiplier *= 1.04
 			}
 		})
