@@ -301,7 +301,7 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				} else {
-					//rogue.RollingWithThePunchesProcAura.Activate(sim)
+					rogue.RollingWithThePunchesProcAura.Activate(sim)
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
 				}
 			})
@@ -340,6 +340,50 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 					}
 				},
 			}))
+		},
+	},
+})
+
+var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
+	Name: "Madcap's Outfit",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Attack Power
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.AttackPower:       20,
+			})
+		},
+		// Increases your chance to get a critical strike with Daggers by 5%.
+		3: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeDagger) {
+			case core.ProcMaskMelee:
+				rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(5))
+			case core.ProcMaskMeleeMH:
+				// the default character pane displays critical strike chance for main hand only
+				rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(5))
+				rogue.OnSpellRegistered(func(spell *core.Spell) {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+						spell.BonusCritRating -= core.CritRatingPerCritChance * float64(5)
+					}
+				})
+			case core.ProcMaskMeleeOH:
+				rogue.OnSpellRegistered(func(spell *core.Spell) {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+						spell.BonusCritRating += core.CritRatingPerCritChance * float64(5)
+					}
+				})
+			}
+		},
+		// Increases the critical strike chance of your Ambush ability by 30%.
+		5: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_RogueAmbush  {
+					spell.BonusCritRating += 30 * core.SpellCritRatingPerCritChance
+				}
+			})
 		},
 	},
 })
