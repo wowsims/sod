@@ -84,7 +84,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=231784/lightnings-cell
 	// You gain a charge of Gathering Storm each time you cause a damaging spell critical strike.
 	// When you reach 3 charges of Gathering Storm, they will release, firing an Unleashed Storm for 277 to 323 damage.
-	// Gathering Storm cannot be gained more often than once every 2.5 sec. (2.5s cooldown)
+	// Gathering Storm cannot be gained more often than once every 2 sec. (2s cooldown)
 	core.NewItemEffect(LightningsCell, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -121,7 +121,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeCrit,
 			ProcMask: core.ProcMaskSpellDamage,
-			ICD:      time.Millisecond * 2500,
+			ICD:      time.Millisecond * 2000,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				chargeAura.Activate(sim)
 				chargeAura.AddStack(sim)
