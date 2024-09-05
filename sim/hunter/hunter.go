@@ -31,7 +31,10 @@ const (
 	SpellCode_HunterSteadyShot
 
 	// Strikes
+	SpellCode_HunterFlankingStrike
 	SpellCode_HunterRaptorStrike
+	SpellCode_HunterRaptorStrikeHit
+	SpellCode_HunterWyvernStrike
 
 	// Stings
 
@@ -122,8 +125,6 @@ type Hunter struct {
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
 	BestialWrathPetAura    *core.Aura
-
-	HasPredatorArmor [6]bool
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -167,9 +168,6 @@ func (hunter *Hunter) Initialize() {
 			hunter.MeleeSpells = append(hunter.MeleeSpells, spell)
 		}
 	})
-
-	hunter.HasPredatorArmor[3] = hunter.HasSetBonus(ItemSetPredatorArmor, 3)
-	hunter.HasPredatorArmor[5] = hunter.HasSetBonus(ItemSetPredatorArmor, 5)
 
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheViperSpell()
@@ -217,9 +215,6 @@ func (hunter *Hunter) Initialize() {
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
-	hunter.Strikes = nil
-	hunter.MeleeSpells = nil
-	hunter.LastShot = nil
 }
 
 func NewHunter(character *core.Character, options *proto.Player) *Hunter {

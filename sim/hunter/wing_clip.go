@@ -44,13 +44,13 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 }
 
 func (hunter *Hunter) registerWingClipSpell() {
-	maxRank := 3
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 3,
+	}[hunter.Level]
 
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getWingClipConfig(i)
-
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.WingClip = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	config := hunter.getWingClipConfig(rank)
+	hunter.WingClip = hunter.GetOrRegisterSpell(config)
 }
