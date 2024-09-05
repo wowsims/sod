@@ -355,7 +355,7 @@ func init() {
 			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
-				// Add a way to generate a bonus off-hand attack
+				// TODO: Add a way to generate a bonus off-hand attack
 			},
 		})
 	})

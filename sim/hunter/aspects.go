@@ -43,6 +43,18 @@ func (hunter *Hunter) getMaxAspectOfTheHawkAttackPower(rank int) float64 {
     return attackPower[rank]
 }
 
+func (hunter *Hunter) getMaxHawkRank() int {
+    maxRank := 6   // TODO AQ: 7
+
+    for i := maxRank; i > 0; i-- {
+        config := hunter.getAspectOfTheHawkSpellConfig(i)
+        if config.RequiredLevel <= int(hunter.Level) {
+            return i
+        }
+    }
+    return 1 
+}
+
 func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
     var impHawkAura *core.Aura
     improvedHawkProcChance := 0.01 * float64(hunter.Talents.ImprovedAspectOfTheHawk)
@@ -102,18 +114,6 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
             aspectOfTheHawkAura.Activate(sim)
         },
     }
-}
-
-func (hunter *Hunter) getMaxHawkRank() int {
-    maxRank := 6   // TODO AQ: 7
-
-    for i := maxRank; i > 0; i-- {
-        config := hunter.getAspectOfTheHawkSpellConfig(i)
-        if config.RequiredLevel <= int(hunter.Level) {
-            return i
-        }
-    }
-    return 1 
 }
 
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
