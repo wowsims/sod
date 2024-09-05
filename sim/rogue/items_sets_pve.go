@@ -257,8 +257,7 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 					if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) {
 						return
 					}
-					switch spell {
-					case rogue.Ambush, rogue.Garrote:
+					if spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueGarrote {
 						aura.Activate(sim)
 					}
 				},

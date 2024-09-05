@@ -35,6 +35,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 	}
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueAmbush,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

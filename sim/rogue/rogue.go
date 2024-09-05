@@ -21,6 +21,8 @@ const (
 	SpellCode_RogueNone int32 = iota
 
 	SpellCode_RogueBladeFlurry
+	SpellCode_RogueAmbush
+	SpellCode_RogueGarrote
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
