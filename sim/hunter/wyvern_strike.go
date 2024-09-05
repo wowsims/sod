@@ -15,6 +15,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 1, 50, 60}[rank]
 
 	spellConfig := core.SpellConfig{
+		SpellCode: 	   SpellCode_HunterWyvernStrike,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
