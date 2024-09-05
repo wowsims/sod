@@ -253,7 +253,6 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 
 			core.MakePermanent(rogue.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T2 - Rogue - Damage 2P Bonus",
-				ActionID: core.ActionID{SpellID: 467708},
 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) {
 						return
