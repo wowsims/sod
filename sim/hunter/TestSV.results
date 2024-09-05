@@ -202,10 +202,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-Lvl40-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 777.14899
+  tps: 379.17461
+ }
+}
+dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
   dps: 756.20075
   tps: 368.75859
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 599.44644
+  tps: 392.04015
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 754.60421
+  tps: 366.82981
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl40-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 771.15397
+  tps: 374.67216
  }
 }
 dps_results: {
@@ -387,11 +415,43 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-Lvl60-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 3441.17591
+  tps: 3060.00414
+  hps: 19.65676
+ }
+}
+dps_results: {
  key: "TestSV-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
   dps: 3352.72389
   tps: 2971.47517
   hps: 19.79244
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 3073.90096
+  tps: 2735.35193
+  hps: 19.35055
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 3032.38675
+  tps: 2669.63831
+  hps: 19.35055
+ }
+}
+dps_results: {
+ key: "TestSV-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 3314.16514
+  tps: 2948.3719
+  hps: 19.35055
  }
 }
 dps_results: {

@@ -246,7 +246,7 @@ export const BloodPactBuff = InputHelpers.makeMultiIconInput({
 });
 
 // Separate Strength buffs allow us to use boolean pickers for each
-export const PaladinPhysicalBuff = withLabel(
+export const BlessingOfMight = withLabel(
 	makeTristateIndividualBuffInput({
 		actionId: player =>
 			player.getMatchingSpellActionId([
@@ -265,6 +265,15 @@ export const PaladinPhysicalBuff = withLabel(
 		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Blessing of Might',
+);
+
+export const HornOfLordaeron = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(425600),
+		fieldName: 'hornOfLordaeron',
+		showWhen: player => player.getFaction() == Faction.Alliance,
+	}),
+	'Horn of Lordaeron',
 );
 
 export const StrengthBuffHorde = withLabel(
@@ -1015,9 +1024,14 @@ export const RAID_BUFFS_CONFIG = [
 
 	// Physical Damage Buffs
 	{
-		config: PaladinPhysicalBuff,
+		config: BlessingOfMight,
 		picker: IconPicker,
-		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower],
+		stats: [Stat.StatAttackPower],
+	},
+	{
+		config: HornOfLordaeron,
+		picker: IconPicker,
+		stats: [Stat.StatStrength, Stat.StatAgility],
 	},
 	{
 		config: StrengthBuffHorde,

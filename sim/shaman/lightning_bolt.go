@@ -49,8 +49,6 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 
 	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 
-	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
-
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
 		manaCost,
@@ -67,14 +65,10 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-		if hasRollingThunderRune {
-			shaman.rollRollingThunderCharge(sim)
-		}
-
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 			spell.DealDamage(sim, result)
 
-			if canOverload && result.Landed() && sim.Proc(ShamanOverloadChance, "LB Overload") {
+			if canOverload && sim.Proc(ShamanOverloadChance, "LB Overload") {
 				shaman.LightningBoltOverload[rank].Cast(sim, target)
 			}
 		})

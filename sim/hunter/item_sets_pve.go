@@ -191,3 +191,178 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
+	Name: "Dragonstalker's Prowess",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Raptor Strike increases the damage done by your next other melee ability within 5 sec by 20%.
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+
+			procAura := hunter.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467329},
+				Label:    "S03 - Item - T2 - Hunter - Melee 2P Bonus",
+				Duration: time.Second * 5,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.MeleeSpells {
+						spell.DamageMultiplier *= 1.20
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.MeleeSpells {
+						spell.DamageMultiplier /= 1.20
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_HunterRaptorStrike {
+						return
+					}
+
+					aura.Deactivate(sim)
+				},
+			})
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Hunter - Melee 2P Bonus Trigger",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+						procAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Increases main hand weapon damage by 5%.
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			hunter.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+					spell.DamageMultiplier *= 1.05
+				}
+			})
+		},
+		// Your periodic damage has a 5% chance to reset the cooldown on one of your Strike abilities. The Strike with the longest remaining cooldown is always chosen.
+		6: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Hunter - Melee 6P Bonus Trigger",
+				ActionID: core.ActionID{SpellID: 467334},
+				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if sim.Proc(0.05, "T2 Melee 6PC Strike Reset") {
+						maxSpell := hunter.RaptorStrike
+
+						for _, strike := range hunter.Strikes {
+							if strike.TimeToReady(sim) > maxSpell.TimeToReady(sim) {
+								maxSpell = strike
+							}
+						}
+
+						maxSpell.CD.Reset()
+						aura.Activate(sim) // used for metrics
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Dragonstalker's Pursuit",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Aimed Shot deals 20% more damage to targets afflicted by one of your trap effects.
+		2: func(agent core.Agent) {
+			// Implemented in aimed_shot.go
+		},
+		// Your damaging Shot abilities deal 10% increased damage if the previous damaging Shot used was different than the current one.
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+
+			procAura := hunter.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467312},
+				Label:    "S03 - Item - T2 - Hunter - Ranged 4P Bonus",
+				Duration: time.Second * 12,
+
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.Shots {
+						if spell.SpellCode != hunter.LastShot.SpellCode {
+							spell.DamageMultiplier *= 1.10
+						}
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.Shots {
+						if spell.SpellCode != hunter.LastShot.SpellCode {
+							spell.DamageMultiplier /= 1.10
+						}
+					}
+				},
+			})
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Hunter - Ranged 4P Bonus Trigger",
+				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.Flags.Matches(SpellFlagShot) {
+						procAura.Deactivate(sim)
+						hunter.LastShot = spell
+						procAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		//  Your Serpent Sting damage is increased by 25% of your Attack Power over its normal duration.
+		6: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Hunter - Ranged 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.SerpentStingAPCoeff += 0.25
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
+	Name: "Predator's Armor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Attack Power.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 20)
+		},
+		// Increases the Attack Power your Beast pet gains from your attributes by 20%.
+		3: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if hunter.pet == nil {
+				return
+			}
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "Predator's Armor 3P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldStatInheritance := hunter.pet.GetStatInheritance()
+					hunter.pet.UpdateStatInheritance(
+						func(ownerStats stats.Stats) stats.Stats {
+							s := oldStatInheritance(ownerStats)
+							s[stats.AttackPower] *= 1.20
+							return s
+						},
+					)
+				},
+			}))
+		},
+		// Increases the Focus regeneration of your Beast pet by 20%.
+		5: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if hunter.pet == nil {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Predator's Armor 5P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.pet.AddFocusRegenMultiplier(1.20)
+				},
+			})
+		},
+	},
+})

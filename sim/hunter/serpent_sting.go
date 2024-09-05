@@ -52,10 +52,11 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseDamage, isRollover)
+				damage := baseDamage + (hunter.SerpentStingAPCoeff * dot.Spell.RangedAttackPower(target)) / 5
+				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -66,7 +67,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				spell.DealOutcome(sim, result)
 
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 				}
 			})
@@ -81,7 +81,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 		BonusCritRating: 1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance, // This is added manually here because spell uses ProcMaskEmpty
 
@@ -93,7 +93,8 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		BonusCoefficient:         0.4,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
+			damage := baseDamage + (hunter.SerpentStingAPCoeff * spell.RangedAttackPower(target)) / 5
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedCritOnly)
 		},
 	})
 }
@@ -101,6 +102,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 func (hunter *Hunter) registerSerpentStingSpell() {
 	// TODO: AQ ranks := 9
 	ranks := 8
+	hunter.SerpentStingAPCoeff = 0
 
 	for i := ranks; i >= 0; i-- {
 		config := hunter.getSerpentStingConfig(i)

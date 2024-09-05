@@ -14,17 +14,19 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerGuardedByTheLight()
 	paladin.registerShockAndAwe()
 	paladin.registerRV()
+	paladin.registerFanaticism()
 
-	// "RuneHeadFanaticism" is handled in Exorcism, Holy Shock, SoC, and SoR
 	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)
 
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
-	// "RuneWristPurifyingPower" is handled in Exorcism
+	paladin.applyPurifyingPower()
 }
 
-func (paladin *Paladin) fanaticism() float64 {
-	return core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism), 18, 0) * core.SpellCritRatingPerCritChance
+func (paladin *Paladin) registerFanaticism() {
+	if paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism) {
+		paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 18
+	}
 }
 
 func (paladin *Paladin) registerTheArtOfWar() {
@@ -159,5 +161,17 @@ func (paladin *Paladin) registerGuardedByTheLight() {
 			}
 			guardedAura.Activate(sim)
 		},
+	})
+}
+
+func (paladin *Paladin) applyPurifyingPower() {
+	if !paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
+		return
+	}
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
+			spell.CD.Duration /= 2
+		}
 	})
 }

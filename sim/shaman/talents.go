@@ -220,7 +220,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			if spell.Flags.Matches(SpellFlagFocusable) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if aura.IsActive() {
 							// Remove the buff and put skill on CD
@@ -322,13 +322,13 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
-	shaman.FlurryAura = shaman.makeFlurryAura(shaman.Talents.Flurry)
+	talentAura := shaman.makeFlurryAura(shaman.Talents.Flurry)
 
 	// This must be registered before the below trigger because in-game a crit weapon swing consumes a stack before the refresh, so you end up with:
 	// 3 => 2
 	// refresh
 	// 2 => 3
-	shaman.makeFlurryConsumptionTrigger(shaman.FlurryAura)
+	shaman.makeFlurryConsumptionTrigger(talentAura)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Flurry Proc Trigger",
@@ -338,9 +338,9 @@ func (shaman *Shaman) applyFlurry() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
-				shaman.FlurryAura.Activate(sim)
-				if shaman.FlurryAura.IsActive() {
-					shaman.FlurryAura.SetStacks(sim, 3)
+				talentAura.Activate(sim)
+				if talentAura.IsActive() {
+					talentAura.SetStacks(sim, 3)
 				}
 				return
 			}
@@ -355,13 +355,8 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 		return nil
 	}
 
-	has6PEarthfuryImpact := shaman.HasSetBonus(ItemSetEarthfuryImpact, 6)
-
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
-	if has6PEarthfuryImpact {
-		attackSpeed += .10
-	}
 
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
@@ -373,10 +368,10 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 	aura.NewExclusiveEffect("Flurry", true, core.ExclusiveEffect{
 		Priority: attackSpeed,
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, attackSpeed)
+			shaman.MultiplyMeleeSpeed(sim, attackSpeed+shaman.bonusFlurrySpeed)
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
+			shaman.MultiplyMeleeSpeed(sim, 1/(attackSpeed+shaman.bonusFlurrySpeed))
 		},
 	})
 

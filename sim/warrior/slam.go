@@ -39,7 +39,8 @@ func (warrior *Warrior) registerSlamSpell() {
 	}[warrior.Level]
 
 	warrior.SlamMH = warrior.newSlamHitSpell(true)
-	if hasBloodSurgeRune {
+	canHitOffhand := hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding
+	if canHitOffhand {
 		warrior.SlamOH = warrior.newSlamHitSpell(false)
 	}
 
@@ -71,8 +72,9 @@ func (warrior *Warrior) registerSlamSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			doOffhandHit := canHitOffhand && warrior.BloodSurgeAura.IsActive()
 			warrior.SlamMH.Cast(sim, target)
-			if hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding && warrior.BloodSurgeAura.IsActive() {
+			if doOffhandHit {
 				warrior.SlamOH.Cast(sim, target)
 			}
 		},
@@ -99,10 +101,12 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 	}[warrior.Level]
 
 	procMask := core.ProcMaskMeleeMHSpecial
+	flags := core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete
 	damageFunc := warrior.MHWeaponDamage
 	if !isMH {
 		flatDamageBonus /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
+		flags |= core.SpellFlagPassiveSpell
 		damageFunc = warrior.OHWeaponDamage
 	}
 
@@ -112,7 +116,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       flags,
 
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,

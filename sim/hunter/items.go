@@ -319,6 +319,54 @@ func init() {
 			},
 		})
 	})
+
+	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+
+		if !hunter.Talents.BestialWrath {
+			return
+		}
+
+		hunter.RegisterAura(core.Aura{
+			Label: "Maelstroms's Wrath Bestial Wrath",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.BestialWrathPetAura.Duration += (time.Second * 3)
+			},
+		})
+	})
+
+	core.NewItemEffect(ZandalarPredatorsMantle, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+	})
+
+	core.NewItemEffect(ZandalarPredatorsBelt, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+	})
+
+	core.NewItemEffect(ZandalarPredatorsBracers, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.01
+	})
 }
 
 func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellId int32) {

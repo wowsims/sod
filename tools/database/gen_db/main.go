@@ -479,7 +479,7 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Class:     proto.Class_ClassPaladin,
 			Level:     60,
 			Equipment: &proto.EquipmentSpec{},
-		}, &proto.Player_RetributionPaladin{RetributionPaladin: &proto.RetributionPaladin{Options: &proto.RetributionPaladin_Options{}}}), nil, nil, nil)},
+		}, &proto.Player_RetributionPaladin{RetributionPaladin: &proto.RetributionPaladin{Options: &proto.PaladinOptions{}}}), nil, nil, nil)},
 		{Name: "warlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:     proto.Class_ClassWarlock,
 			Level:     60,

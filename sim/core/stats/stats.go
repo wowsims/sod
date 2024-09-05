@@ -426,7 +426,6 @@ type PseudoStats struct {
 	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
 	DodgeReduction       float64 // Used by Warrior talent 'Weapon Mastery' and SWP boss auras.
 
-
 	MobTypeAttackPower float64 // Bonus AP against mobs of the current type.
 	MobTypeSpellPower  float64 // Bonus SP against mobs of the current type.
 
@@ -489,6 +488,7 @@ type PseudoStats struct {
 	SchoolCritTakenChance       SchoolValueArray[float64] // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusDamageTaken      SchoolValueArray[float64] // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusHitChance        SchoolValueArray[float64] // Spell school-specific hit bonuses such as ring runes
+	SchoolBonusCritChance       SchoolValueArray[float64] // Spell school-specific cit bonuses such as Holy Paladin talent - Holy Power
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects

@@ -925,9 +925,8 @@ export const SHADOW_POWER_CONFIG: ConsumableStatOption<ShadowPowerBuff>[] = [{ c
 export const makeShadowPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'shadowPowerBuff' });
 
 // MP5
-// Original lvl 40 but not obtainable until ZG
 export const MagebloodPotion: ConsumableInputConfig<ManaRegenElixir> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 20007, minLevel: 61 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 20007, minLevel: 40 }]),
 	value: ManaRegenElixir.MagebloodPotion,
 };
 
@@ -1108,12 +1107,12 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
 	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
-	// { config: BrillianWizardOil, stats: [Stat.StatSpellPower] },
+	{ config: BrillianWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: WizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: LesserWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower] },
 
-	// { config: BrilliantManaOil, stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
+	{ config: BrilliantManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: LesserManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },

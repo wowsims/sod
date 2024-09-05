@@ -7,13 +7,13 @@
 	}
 
 	// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
-	@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
-		--bs-body-font-size: 24px;
-	}
+	// @media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
+	// 	--bs-body-font-size: 20px;
+	// }
 
-	@include media-breakpoint-up(4k) {
-		--bs-body-font-size: 32px;
-	}
+	// @include media-breakpoint-up(4k) {
+	// 	--bs-body-font-size: 24px;
+	// }
 
 	@include media-breakpoint-up(lg) {
 		--section-spacer: var(--section-spacer-lg) !important;
@@ -116,6 +116,12 @@ kbd {
 	color: var(--bs-white);
 }
 
+.list-reset {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
 .dragto:not(.dragfrom) {
 	filter: brightness(0.75);
 }
@@ -145,12 +151,36 @@ kbd {
 	background-size: cover;
 }
 
+.p-gap {
+	@extend .px-gap;
+	@extend .py-gap;
+}
+.pl-gap {
+	padding-left: var(--gap-width);
+}
+.pr-gap {
+	padding-right: var(--gap-width);
+}
+.pt-gap {
+	padding-top: var(--gap-width);
+}
+.pb-gap {
+	padding-bottom: var(--gap-width);
+}
+.px-gap {
+	@extend .pl-gap;
+	@extend .pr-gap;
+}
+.py-gap {
+	@extend .pt-gap;
+	@extend .pb-gap;
+}
+
 @each $label, $value in $item-quality-colors {
 	.item-quality-#{$label} {
 		color: var(--bs-#{$label}) !important;
 	}
 }
-
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
 		color: var(--bs-#{$label}) !important;
@@ -164,6 +194,27 @@ kbd {
 @each $label, $value in $faction-colors {
 	.faction-#{$label} {
 		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $spell-school-colors {
+	.spell-school-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+	.bg-spell-school-#{$label} {
+		background: var(--bs-#{$label}) !important;
+	}
+}
+
+@each $label, $value in $multi-spell-school-colors {
+	.spell-school-#{$label} {
+		color: var(--bs-primary);
+		background-image: $value;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.bg-spell-school-#{$label} {
+		background: $value;
 	}
 }
 
@@ -180,4 +231,10 @@ kbd {
 .notices-banner {
 	width: 100%;
 	background: color-mix(in srgb, var(--bs-body-bg), var(--bs-white) 5%);
+}
+
+.blurred {
+	filter: blur(2px);
+	overflow: hidden;
+	pointer-events: none;
 }

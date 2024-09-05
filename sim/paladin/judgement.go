@@ -15,12 +15,13 @@ func (paladin *Paladin) registerJudgement() {
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.06,
+			BaseCost:   0.06,
 			Multiplier: paladin.benediction(),
 		},
+
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
 			CD: core.Cooldown{
@@ -45,32 +46,27 @@ func (paladin *Paladin) registerJudgement() {
 			//}
 			// paladin.currentSeal.Deactivate(sim)
 
+			paladin.thisJudgement = SealJudgeCodeNone // Seals Judged this Judgement
+
 			// Phase 4 - (Not tied to T1 6pc bonus) - Judge all Seals (2 possible without 6pc, 2 or 3 with 6pc TBD)
-			for _, sealAura := range paladin.aurasSoC {
-				if sealAura.IsActive() {
-					spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-					sealAura.Deactivate(sim)
+
+			for sealTypeIndex, sealAuraType := range paladin.allSealAuras {
+				for rankIndex, sealAuraRankSpecific := range sealAuraType {
+					if sealAuraRankSpecific.IsActive() {
+						if paladin.rollDummyJudgeHit[sealTypeIndex] {
+							spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+						} else {
+							paladin.allJudgeSpells[sealTypeIndex][rankIndex].Cast(sim, target)
+						}
+						if paladin.consumeSealsOnJudge {
+							sealAuraRankSpecific.Deactivate(sim)
+						}
+						paladin.thisJudgement |= (1 << (sealTypeIndex + 1))
+					}
 				}
 			}
 
-			for i, sealAura := range paladin.aurasSotC {
-				if sealAura.IsActive() {
-					paladin.spellsJotC[i].Cast(sim, target)
-					sealAura.Deactivate(sim)
-				}
-			}
-
-			for i, sealAura := range paladin.aurasSoR {
-				if sealAura.IsActive() {
-					paladin.spellsJoR[i].Cast(sim, target)
-					sealAura.Deactivate(sim)
-				}
-			}
-
-			if paladin.auraSoM.IsActive() {
-				paladin.spellJoM.Cast(sim, target)
-				paladin.auraSoM.Deactivate(sim)
-			}
+			paladin.lastJudgement = paladin.thisJudgement
 
 		},
 	})

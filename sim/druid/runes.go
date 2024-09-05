@@ -246,9 +246,8 @@ const (
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {
 	for _, spell := range druid.Moonfire {
 		if dot := spell.Dot(unit); dot.IsActive() {
-			dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusMoonfireTicks, dot.OriginalNumberOfTicks)
-			dot.RecomputeAuraDuration()
-			dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+			maxExpiresAt := sim.CurrentTime + dot.Duration
+			dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusMoonfireTicks)*dot.TickLength))
 		}
 	}
 }
@@ -258,17 +257,15 @@ func (druid *Druid) tryElunesFiresSunfireExtension(sim *core.Simulation, unit *c
 		return
 	}
 	if dot := druid.Sunfire.Dot(unit); dot.IsActive() {
-		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusSunfireTicks, dot.OriginalNumberOfTicks)
-		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+		maxExpiresAt := sim.CurrentTime + dot.Duration
+		dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusSunfireTicks)*dot.TickLength))
 	}
 }
 
 func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.Unit) {
 	if dot := druid.Rip.Dot(unit); dot.IsActive() {
-		dot.NumberOfTicks = min(dot.NumberOfTicks+ElunesFires_BonusRipTicks, dot.OriginalNumberOfTicks)
-		dot.RecomputeAuraDuration()
-		dot.UpdateExpires(sim, sim.CurrentTime+time.Duration(dot.NumberOfTicks)*dot.TickPeriod())
+		maxExpiresAt := sim.CurrentTime + dot.Duration
+		dot.UpdateExpires(sim, min(maxExpiresAt, dot.ExpiresAt()+time.Duration(ElunesFires_BonusRipTicks)*dot.TickLength))
 	}
 }
 
@@ -304,7 +301,6 @@ func (druid *Druid) applyDreamstate() {
 		Label:    "Dreamstate Mana Regen",
 		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneFeetDreamstate)},
 		Duration: time.Second * 8,
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.SpiritRegenRateCasting += .5
 		},
@@ -313,11 +309,10 @@ func (druid *Druid) applyDreamstate() {
 		},
 	})
 
-	// Hidden aura
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.SpellCode == SpellCode_DruidStarsurge {
 				druid.DreamstateManaRegenAura.Activate(sim)
 				dreamstateAuras.Get(result.Target).Activate(sim)
 			}

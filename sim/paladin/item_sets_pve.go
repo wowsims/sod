@@ -20,7 +20,8 @@ var ItemSetObsessedProphetsPlate = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
 		3: func(agent core.Agent) {
-			// handled via paladin.holyCrit()
+			c := agent.GetCharacter()
+			c.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 3 * core.SpellCritRatingPerCritChance
 		},
 	},
 })
@@ -117,6 +118,152 @@ var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 					paladin.lingerDuration = time.Second * 6
 				},
 			}))
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
+	Name: "Freethinker's Armor",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStats(stats.Stats{
+				stats.HolyPower: 14,
+			})
+		},
+		3: func(agent core.Agent) {
+			// Increases damage done by your holy shock spell by 50%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyShock {
+					spell.DamageMultiplier *= 1.5
+				}
+			})
+		},
+		5: func(agent core.Agent) {
+			// Reduce cooldown of Exorcism by 3 seconds
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range paladin.exorcism {
+						spell.CD.Duration -= time.Second * 3
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
+	Name: "Merciful Judgement",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			//Increases critical strike chance of holy shock spell by 20%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyShock {
+					spell.BonusCritRating += 20.0
+				}
+			})
+		},
+		4: func(agent core.Agent) {
+			//Increases damage done by your Consecration spell by 50%
+			paladin := agent.GetCharacter()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinConsecration {
+					spell.DamageMultiplier *= 1.5
+				}
+			})
+		},
+		6: func(agent core.Agent) {
+			// While you are not your Beacon of Light target, your Beacon of Light target is also healed by 100% of the damage you deal
+			// with Consecration, Exorcism, Holy Shock, Holy Wrath, and Hammer of Wrath
+			// No need to Sim
+		},
+	},
+})
+
+var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
+	Name: "Radiant Judgement",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, judgeSpells := range paladin.allJudgeSpells {
+						for _, judgeRankSpell := range judgeSpells {
+							judgeRankSpell.DamageMultiplier *= 1.2
+						}
+					}
+
+					paladin.consumeSealsOnJudge = false
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+
+					originalApplyEffects := paladin.judgement.ApplyEffects
+
+					// Wrap the apply Judgement ApplyEffects with more Effects
+					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+
+						sealsLastJudgement := paladin.lastJudgement // Get Last Judgement Seals before it gets overwritten in originalApplyEffects
+						originalApplyEffects(sim, target, spell)
+						sealsThisJudgement := paladin.lastJudgement // Get Active Seals this Judgement (after lastJudgement is set)
+
+						// Two of the possible implementations - TODO figure out actual implementation
+						// anySealsDifferent := sealsThisJudgement != sealsLastJudgement // Would be nice!
+						// allSealsDifferent := (int(sealsThisJudgement) & int(sealsLastJudgement)) == 0 // More conservative option
+						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) > 0 // More conservative option (most likely option)
+
+						if anySealsGained {
+							paladin.judgement.CD.Reset()
+						}
+					}
+				},
+			})
+		},
+		6: func(agent core.Agent) {
+			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+						Label:     "Swift Judgement",
+						ActionID:  core.ActionID{SpellID: 467530},
+						Duration:  time.Second * 8,
+						MaxStacks: 5,
+
+						OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
+							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
+						},
+					})
+
+					originalApplyEffects := paladin.judgement.ApplyEffects
+
+					// Wrap the apply Judgement ApplyEffects with more Effects
+					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						originalApplyEffects(sim, target, spell)
+						// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+						t2Judgement6pcAura.Activate(sim)
+						t2Judgement6pcAura.AddStack(sim)
+					}
+				},
+			})
 		},
 	},
 })

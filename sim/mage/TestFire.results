@@ -200,7 +200,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.53133
+  weights: 0.59166
   weights: 0
   weights: 1.33659
   weights: 0
@@ -211,7 +211,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.87853
+  weights: 10.84172
   weights: 0
   weights: 0
   weights: 0
@@ -260,7 +260,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 43.92047
+  weights: 43.91938
   weights: 0
   weights: 0
   weights: 0
@@ -393,99 +393,99 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl50-Average-Default"
  value: {
-  dps: 1274.07355
-  tps: 910.26347
+  dps: 1267.10515
+  tps: 905.38558
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2720.84173
-  tps: 2280.38103
+  dps: 2698.01907
+  tps: 2264.40517
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1287.87093
-  tps: 920.0121
+  dps: 1279.44523
+  tps: 914.11411
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1312.93559
-  tps: 936.61549
+  dps: 1307.34326
+  tps: 932.70085
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1118.58326
-  tps: 1057.28275
+  dps: 1112.73616
+  tps: 1053.18978
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 580.33121
-  tps: 420.383
+  dps: 577.02059
+  tps: 418.06556
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 770.24435
-  tps: 564.42241
+  dps: 766.74351
+  tps: 561.97182
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2681.17535
-  tps: 2247.91101
+  dps: 2659.89623
+  tps: 2233.01562
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1275.42603
-  tps: 911.28122
+  dps: 1267.73597
+  tps: 905.89818
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1351.11503
-  tps: 968.76607
+  dps: 1342.70288
+  tps: 962.87757
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1107.42871
-  tps: 1049.22869
+  dps: 1101.57696
+  tps: 1045.13247
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 558.8104
-  tps: 405.24518
+  dps: 555.81695
+  tps: 403.14976
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 770.92829
-  tps: 564.85804
+  dps: 767.37202
+  tps: 562.36865
  }
 }
 dps_results: {
  key: "TestFire-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1277.04486
-  tps: 912.55635
+  dps: 1270.1017
+  tps: 907.69614
  }
 }
 dps_results: {
@@ -554,8 +554,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-Average-Default"
  value: {
-  dps: 2851.43101
-  tps: 1829.2497
+  dps: 2851.43035
+  tps: 1829.24924
  }
 }
 dps_results: {
@@ -603,8 +603,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 4046.39192
-  tps: 3198.11391
+  dps: 4046.38719
+  tps: 3198.11061
  }
 }
 dps_results: {
@@ -624,8 +624,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1352.79013
-  tps: 1225.64001
+  dps: 1352.78731
+  tps: 1225.63803
  }
 }
 dps_results: {

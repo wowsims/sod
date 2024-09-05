@@ -104,10 +104,10 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 					spell.DamageMultiplier *= 1.25
 					shaman.Riptide.Hot(curTarget).Deactivate(sim)
 				}
-				result := spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
+				spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 				spell.DamageMultiplier = originalDamageMultiplier
 
-				if canOverload && result.Landed() && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
+				if canOverload && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 

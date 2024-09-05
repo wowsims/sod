@@ -41,7 +41,10 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
+
 	Talents *proto.DruidTalents
+
+	DruidSpells []*DruidSpell
 
 	StartingForm DruidForm
 
@@ -77,6 +80,8 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
+	StarfallTick         *DruidSpell
+	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
@@ -139,8 +144,6 @@ func (druid *Druid) GetCharacter() *core.Character {
 }
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.GiftOfTheWild = max(raidBuffs.GiftOfTheWild, proto.TristateEffect_TristateEffectRegular)
-
 	if (raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectRegular) && (druid.Talents.ImprovedMarkOfTheWild > 0) {
 		druid.AddStats(core.BuffSpellByLevel[core.MarkOfTheWild][druid.Level].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
@@ -152,16 +155,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
-	}
-}
-
-func (druid *Druid) NaturesGraceCastTime() func(spell *core.Spell) time.Duration {
-	return func(spell *core.Spell) time.Duration {
-		baseTime := core.TernaryDuration(druid.NaturesGraceProcAura.IsActive(),
-			spell.DefaultCast.CastTime-(time.Millisecond*500),
-			spell.DefaultCast.CastTime,
-		)
-		return spell.Unit.ApplyCastSpeedForSpell(baseTime, spell)
 	}
 }
 
@@ -195,6 +188,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 	}
 
 	ds.Spell = druid.Unit.RegisterSpell(config)
+	druid.DruidSpells = append(druid.DruidSpells, ds)
 
 	return ds
 }
@@ -274,10 +268,8 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Switch to using AddStat as PseudoStat is being removed
-	// druid.PseudoStats.BaseDodge += 0.056097
-
 	guardians.ConstructGuardians(&druid.Character)
+	druid.NewT2Treants()
 
 	return druid
 }

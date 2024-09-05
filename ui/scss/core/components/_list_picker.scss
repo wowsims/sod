@@ -5,12 +5,12 @@
 	align-items: center;
 
 	&:not(:last-child) {
-		margin-bottom: 2 * map.get($spacers, 3);
+		margin-bottom: calc(2 * var(--spacer-3));
 	}
 
 	.list-picker-title {
 		width: 100%;
-		padding-bottom: map-get($spacers, 2);
+		padding-bottom: var(--spacer-2);
 		border-bottom: $border-default;
 		margin-bottom: var(--block-spacer);
 		font-size: 1rem;
@@ -21,7 +21,7 @@
 		width: 100%;
 
 		.list-picker-item-container {
-			margin-bottom: map.get($spacers, 3);
+			margin-bottom: var(--spacer-3);
 
 			&.inline {
 				border: 0;
@@ -36,7 +36,7 @@
 			}
 
 			&:not(.inline) {
-				padding: map.get($spacers, 3) map.get($spacers, 3) 0 map.get($spacers, 3);
+				padding: var(--spacer-3) var(--spacer-3) 0 var(--spacer-3);
 				border: 1px solid $link-color;
 
 				.list-picker-item-header {
@@ -59,7 +59,7 @@
 				}
 
 				.list-picker-item-action {
-					margin-left: map.get($spacers, 2);
+					margin-left: var(--spacer-2);
 				}
 			}
 		}

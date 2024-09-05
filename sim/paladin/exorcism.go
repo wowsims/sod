@@ -37,10 +37,6 @@ func (paladin *Paladin) registerExorcism() {
 		Duration: time.Second * 15,
 	}
 
-	if paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
-		paladin.exorcismCooldown.Duration /= 2
-	}
-
 	for i, rank := range ranks {
 		rank := rank
 		if paladin.Level < rank.level {
@@ -50,7 +46,7 @@ func (paladin *Paladin) registerExorcism() {
 		minDamage := rank.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
-		paladin.RegisterSpell(core.SpellConfig{
+		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
@@ -60,8 +56,9 @@ func (paladin *Paladin) registerExorcism() {
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
+			SpellCode: SpellCode_PaladinExorcism,
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: core.TernaryInt32(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 20, 100),
 			},
 
@@ -71,8 +68,6 @@ func (paladin *Paladin) registerExorcism() {
 				},
 				CD: *paladin.exorcismCooldown,
 			},
-
-			BonusCritRating: paladin.holyCrit(),
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -84,9 +79,7 @@ func (paladin *Paladin) registerExorcism() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(minDamage, maxDamage)
-
-				var bonusCrit float64
+				bonusCrit := 0.0
 				if hasExorcist && (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
 					bonusCrit += 100 * core.CritRatingPerCritChance
 				}
@@ -95,9 +88,11 @@ func (paladin *Paladin) registerExorcism() {
 				}
 
 				spell.BonusCritRating += bonusCrit
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 				spell.BonusCritRating -= bonusCrit
 			},
 		})
+
+		paladin.exorcism = append(paladin.exorcism, spell)
 	}
 }

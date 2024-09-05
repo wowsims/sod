@@ -20,6 +20,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15 * 1.5 // Second 50% buff from 23/4/2024
 
 	hunter.ExplosiveShot = hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_HunterExplosiveShot,
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeRanged,
@@ -61,7 +62,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 

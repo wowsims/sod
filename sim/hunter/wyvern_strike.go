@@ -15,6 +15,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 1, 50, 60}[rank]
 
 	spellConfig := core.SpellConfig{
+		SpellCode: 	   SpellCode_HunterWyvernStrike,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
@@ -58,7 +59,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -79,12 +80,12 @@ func (hunter *Hunter) registerWyvernStrikeSpell() {
 		return
 	}
 
-	maxRank := 3
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getWyvernStrikeConfig(i)
+	rank := map[int32]int{
+		1:  1,
+		50: 2,
+		60: 3,
+	}[hunter.Level]
 
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	config := hunter.getWyvernStrikeConfig(rank)
+	hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
 }

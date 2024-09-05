@@ -242,6 +242,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -256,7 +257,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagBinary,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagBinary,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -320,6 +321,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -468,7 +470,7 @@ func init() {
 				}
 
 				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
-					character.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 220588}, spell)
+					character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 220588}, spell)
 				}
 			},
 		})
@@ -482,7 +484,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagPoison,
+			Flags:       core.SpellFlagPoison | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,

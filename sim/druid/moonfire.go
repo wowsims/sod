@@ -81,13 +81,13 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
 		BonusCoefficient: spellCoeff,
 		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
-		CritDamageBonus:  druid.vengeance(),
+		CritDamageBonus:  druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -98,8 +98,6 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = ticks
-				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
 			}
 		},

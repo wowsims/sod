@@ -4,12 +4,9 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
-
-	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: 13809},
@@ -43,11 +40,6 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				if hasLockAndLoad {
-					hunter.LockAndLoadAura.Activate(sim)
-				}
-			})
 		},
 	}
 }

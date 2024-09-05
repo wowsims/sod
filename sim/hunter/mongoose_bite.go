@@ -22,7 +22,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
+		ProcMask:      core.ProcMaskMeleeSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -90,11 +90,13 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 		},
 	})
 
-	maxRank := 4
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getMongooseBiteConfig(i)
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 4,
+	}[hunter.Level]
+
+	config := hunter.getMongooseBiteConfig(rank)
+	hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
 }

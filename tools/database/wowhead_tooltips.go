@@ -169,6 +169,7 @@ var staminaRegex = regexp.MustCompile(`<!--stat7-->([+-][0-9]+) Stamina`)
 var spellHealingRegex = regexp.MustCompile(`Increases healing done by spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to <!--rtg45-->([0-9]+)\.`)
+var spellPowerRegex3 = regexp.MustCompile(`Increases healing done by up to [0-9]+ and damage done by up to ([0-9]+) for all magical spells and effects\.`)
 
 var arcaneSpellPowerRegex = regexp.MustCompile(`Increases damage done by Arcane spells and effects by up to ([0-9]+)\.`)
 var fireSpellPowerRegex = regexp.MustCompile(`Increases damage done by Fire spells and effects by up to ([0-9]+)\.`)
@@ -249,7 +250,7 @@ var leatherworkingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Leatherwor
 var tailoringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Tailoring<\/a> \([0-9]+\)`)
 
 func (item WowheadItemResponse) GetStats() Stats {
-	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2))
+	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2)) + float64(item.GetIntValue(spellPowerRegex3))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
 	armor, bonusArmor := item.GetArmorValues()
 	return Stats{

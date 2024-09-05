@@ -278,12 +278,18 @@ func (shaman *Shaman) applyRollingThunder() {
 			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
 		},
 	})
-}
 
-func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
-	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
-		shaman.ActiveShieldAura.AddStack(sim)
-	}
+	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Rolling Thunder Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+				if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
+					shaman.ActiveShieldAura.AddStack(sim)
+				}
+			}
+		},
+	}))
 }
 
 func (shaman *Shaman) applyMaelstromWeapon() {

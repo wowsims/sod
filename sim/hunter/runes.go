@@ -17,6 +17,14 @@ func (hunter *Hunter) ApplyRunes() {
 	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
 		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Beastmastery Rune Focus",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet != nil {
+					hunter.pet.AddFocusRegenMultiplier(1.50)
+				}
+			},
+		}))
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
@@ -222,16 +230,15 @@ func (hunter *Hunter) applyCobraStrikes() {
 		},
 	})
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Cobra Strikes Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagShot | SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite {
-				if result.DidCrit() {
-					hunter.CobraStrikesAura.Activate(sim)
-					hunter.CobraStrikesAura.SetStacks(sim, 2)
-				}
+			if result.DidCrit() && (spell.Flags.Matches(SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) {
+				hunter.CobraStrikesAura.Activate(sim)
+				hunter.CobraStrikesAura.SetStacks(sim, 2)
 			}
 		},
-	})
+	}))
 }
 
 func (hunter *Hunter) applyLockAndLoad() {
@@ -241,12 +248,17 @@ func (hunter *Hunter) applyLockAndLoad() {
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
+	icd := core.Cooldown{
+		Timer:    hunter.NewTimer(),
+		Duration: time.Second * 8,
+	}
+
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Lock And Load",
 		ActionID: core.ActionID{SpellID: 415413},
 		Duration: time.Second * 20,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
+			if spell.Flags.Matches(SpellFlagShot) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 
@@ -256,6 +268,20 @@ func (hunter *Hunter) applyLockAndLoad() {
 			}
 		},
 	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Lock And Load Trigger",
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagTrap) {
+				spell.WaitTravelTime(sim, func(s *core.Simulation) {
+					if icd.IsReady(sim) {
+						icd.Use(sim)
+						hunter.LockAndLoadAura.Activate(sim)
+					}
+				})
+			}
+		},
+	}))
 }
 
 const RaptorFuryPerStackDamageMultiplier = 0.15

@@ -65,9 +65,13 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceOrc:
 		character.AxeSpecializationAura()
 
-		// Command (Pet damage +5%)
-		for _, pet := range character.Pets {
-			pet.PseudoStats.DamageDealtMultiplier *= 1.05
+		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+			// Command Damage dealt by Hunter and Warlock pets increased by 5%
+			for _, pet := range character.Pets {
+				if !pet.IsGuardian() {
+					pet.PseudoStats.DamageDealtMultiplier *= 1.05
+				}
+			}
 		}
 
 		// Blood Fury

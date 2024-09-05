@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -17,14 +16,13 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 	level := [4]int{0, 34, 44, 54}[rank]
 
 	numHits := hunter.Env.GetNumTargets()
-	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | SpellFlagTrap,
+		Flags:         core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagTrap,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,
@@ -84,10 +82,6 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 				spell.AOEDot().ApplyOrReset(sim)
-
-				if hasLockAndLoad {
-					hunter.LockAndLoadAura.Activate(sim)
-				}
 			})
 		},
 	}

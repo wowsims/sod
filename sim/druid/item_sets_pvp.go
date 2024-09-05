@@ -188,3 +188,133 @@ var ItemSetLieutenantCommandersRefuge = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetFieldMarshalsWildhide = core.NewItemSet(core.ItemSet{
+	Name: "Field Marshal's Wildhide",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases damage and healing done by magical spells and effects by up to 23.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 23)
+		},
+	},
+})
+
+var ItemSetWarlordsWildhide = core.NewItemSet(core.ItemSet{
+	Name: "Warlord's Wildhide",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases damage and healing done by magical spells and effects by up to 23.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 23)
+		},
+	},
+})
+
+var ItemSetFieldMarshalsRefuge = core.NewItemSet(core.ItemSet{
+	Name: "Field Marshal's Refuge",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases healing done by spells and effects by up to 44.
+		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 88)
+			c.AddStat(stats.SpellDamage, 15)
+		},
+	},
+})
+
+var ItemSetWarlordsRefuge = core.NewItemSet(core.ItemSet{
+	Name: "Warlord's Refuge",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// Increases healing done by spells and effects by up to 44.
+		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.HealingPower, 88)
+			c.AddStat(stats.SpellDamage, 15)
+		},
+	},
+})
+
+var ItemSetFieldMarshalsSanctuary = core.NewItemSet(core.ItemSet{
+	Name: "Field Marshal's Sanctuary",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// +40 Attack Power.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 40)
+			c.AddStat(stats.RangedAttackPower, 40)
+		},
+	},
+})
+
+var ItemSetWarlordsSanctuary = core.NewItemSet(core.ItemSet{
+	Name: "Warlord's Sanctuary",
+	Bonuses: map[int32]core.ApplyEffect{
+		// +20 Stamina.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.Stamina, 20)
+		},
+		// Increases your movement speed by 15% while in Bear, Cat, or Travel Form. Only active outdoors.
+		3: func(agent core.Agent) {
+			// Nothing to do
+		},
+		// +40 Attack Power.
+		6: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.AttackPower, 40)
+			c.AddStat(stats.RangedAttackPower, 40)
+		},
+	},
+})

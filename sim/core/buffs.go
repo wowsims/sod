@@ -18,6 +18,7 @@ const (
 	BattleShout
 	BlessingOfMight
 	BlessingOfWisdom
+	HornOfLordaeron
 	BloodPact
 	CommandingShout
 	DevotionAura
@@ -176,6 +177,30 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		},
 		// 60: stats.Stats{
 		// 	stats.MP5: 33,
+		// },
+	},
+	HornOfLordaeron: {
+		25: stats.Stats{
+			stats.Strength: 17,
+			stats.Agility:  17,
+		},
+		40: stats.Stats{
+			stats.Strength: 26,
+			stats.Agility:  26,
+		},
+		50: stats.Stats{
+			stats.Strength: 45,
+			stats.Agility:  45,
+		},
+		// TODO: AQ
+		// Horn provides the same stats as talented SoE and GoA and uses the pre-AQ values in phase 5
+		60: stats.Stats{
+			stats.Strength: 61 * 1.15,
+			stats.Agility:  61 * 1.15,
+		},
+		// 60: stats.Stats{
+		// 	stats.Strength: 89,
+		// 	stats.Agility:  89,
 		// },
 	},
 	BloodPact: {
@@ -765,7 +790,10 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
-	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
+
+	if raidBuffs.HornOfLordaeron && isAlliance {
+		MakePermanent(HornOfLordaeronAura(&character.Unit, level))
+	} else if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
 	}
 
@@ -1151,7 +1179,7 @@ func RetributionAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolHoly,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1199,7 +1227,7 @@ func ThornsAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -2069,6 +2097,25 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 	return aura
 }
 
+func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
+	updateStats := BuffSpellByLevel[HornOfLordaeron][level]
+
+	aura := MakePermanent(unit.RegisterAura(Aura{
+		Label:    "Horn Of Lordaeron",
+		ActionID: ActionID{SpellID: 425600},
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "ZandalarBuff",
+		Stats: []StatConfig{
+			{stats.Agility, updateStats[stats.Agility], false},
+			{stats.Strength, updateStats[stats.Strength], false},
+		},
+	})
+
+	return aura
+}
+
 // TODO: Are there exclusive AP buffs in SoD?
 // func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
 // 	return aura.NewExclusiveEffect("AttackPowerBonus", false, ExclusiveEffect{
@@ -2189,7 +2236,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 				if wsBuffAura.GetStacks() == 2 {
 					wsBuffAura.SetStacks(sim, 1)
 					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
-					wsBuffAura.Refresh(sim) // Apply New Duration
+					wsBuffAura.Refresh(sim)                      // Apply New Duration
 				}
 			}
 
@@ -2200,8 +2247,8 @@ func ApplyWildStrikes(character *Character) *Aura {
 				wsBuffAura.SetStacks(sim, 2)
 				wsBuffAura.Duration = time.Millisecond * 1500
 				wsBuffAura.Refresh(sim) // Apply New Duration
-				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim , 1, buffActionID, spell)
-			} 	
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, buffActionID, spell)
+			}
 		},
 	}))
 

@@ -32,7 +32,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage,
+		Flags:       SpellFlagMage | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -79,7 +79,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				dot.Snapshot(target, baseDotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
@@ -88,7 +88,6 @@ func (mage *Mage) registerLivingBombSpell() {
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}
-			spell.SpellMetrics[target.UnitIndex].Hits -= 1
 		},
 	})
 }

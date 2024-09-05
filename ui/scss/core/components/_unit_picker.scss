@@ -6,7 +6,7 @@
 	.unit-picker-item-icon {
 		width: var(--icon-size-sm);
 		height: var(--icon-size-sm);
-		margin-right: map-get($spacers, 1);
+		margin-right: var(--spacer-1);
 		display: flex;
 		justify-content: center;
 		align-items: center;
