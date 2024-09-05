@@ -22,11 +22,6 @@ const (
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
 	ZandalarPredatorsBracers = 231323
-	MarshalChainGrips		 = 231560
-	GeneralChainGrips		 = 231569
-	GeneralChainVices		 = 231575
-	MarshalChainVices		 = 231578
-	Peregrine				 = 231755
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
