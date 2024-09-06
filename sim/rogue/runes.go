@@ -335,7 +335,7 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 }
 
 func (rogue *Rogue) rollCutthroat(sim *core.Simulation) {
-	if sim.RandomFloat("Cutthroat") < 0.15 {
+	if sim.RandomFloat("Cutthroat") < (0.15 + rogue.cutthroatBonusChance) {
 		rogue.CutthroatProcAura.Activate(sim)
 	}
 }
