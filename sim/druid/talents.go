@@ -81,8 +81,13 @@ func (druid *Druid) applyNaturesGrace() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+
 			// Make sure the aura actually applied to the spell being cast before deactivating
-			if spell.CurCast.CastTime > 0 && aura.TimeActive(sim) >= spell.CastTime() {
+			if spell.CurCast.CastTime > 0 && (sim.CurrentTime-spell.CurCast.CastTime >= aura.StartedAt()) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -91,7 +96,8 @@ func (druid *Druid) applyNaturesGrace() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Natures Grace",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+			// Spells with travel times have their own implementation because the proc occurs as the cast finishes
+			if spell.MissileSpeed == 0 && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
 				druid.NaturesGraceProcAura.Activate(sim)
 			}
 		},

@@ -84,6 +84,7 @@ func (druid *Druid) applyStarsurge() {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
+			// NG procs when the cast finishes
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
 				druid.NaturesGraceProcAura.Activate(sim)
 			}
