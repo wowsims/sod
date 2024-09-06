@@ -1730,7 +1730,7 @@
 {"id":408700,"name":"Engrave Boots - Waylay","icon":"ability_rogue_waylay","type":10,"requiresLevel":1,"classAllowlist":[6]},
 {"id":409240,"name":"Engrave Cloak - Fan of Knives","icon":"ability_rogue_fanofknives","type":4,"requiresLevel":1,"classAllowlist":[6]},
 {"id":409324,"name":"Engrave Pants - Ancestral Guidance","icon":"ability_druid_lunarguidance","type":9,"requiresLevel":1,"classAllowlist":[7]},
-{"id":409368,"name":"Engrave Gloves - Beast Mastery","icon":"ability_physical_taunt","type":7,"requiresLevel":1,"classAllowlist":[2]},
+{"id":409368,"name":"Engrave Chest - Beast Mastery","icon":"ability_physical_taunt","type":5,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409428,"name":"Engrave Chest - Master Marksman","icon":"ability_hunter_mastermarksman","type":5,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409433,"name":"Engrave Gloves - Chimera Shot","icon":"ability_hunter_chimerashot2","type":7,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409504,"name":"Engrave Belt - Expose Weakness","icon":"ability_rogue_findweakness","type":8,"requiresLevel":1,"classAllowlist":[2]},
@@ -1902,13 +1902,15 @@
 {"id":453622,"name":"Engrave Ring - Feral Combat Specialization","icon":"ability_druid_catformattack","type":11,"requiresLevel":1,"classAllowlist":[1]},
 {"id":458287,"name":"Engrave Chest - Hallowed Ground","icon":"spell_holy_crusade","type":5,"requiresLevel":1,"classAllowlist":[4]},
 {"id":458318,"name":"Engrave Belt - Malleable Protection","icon":"spell_holy_restoration","type":8,"requiresLevel":1,"classAllowlist":[4]},
-{"id":458393,"name":"Engrave Chest - Cobra Slayer","icon":"spell_nature_guardianward","type":5,"classAllowlist":[2]},
+{"id":458393,"name":"Engrave Gloves - Cobra Slayer","icon":"spell_nature_guardianward","type":7,"classAllowlist":[2]},
 {"id":458479,"name":"Engrave Boots - Wyvern Strike","icon":"inv_spear_02","type":10,"requiresLevel":1,"classAllowlist":[2]},
 {"id":458856,"name":"Engrave Cloak - Divine Light","icon":"spell_holy_surgeoflight","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]},
 {"id":462708,"name":"Engrave Gloves - Cutthroat","icon":"ability_rogue_slaughterfromtheshadows","type":7,"requiresLevel":1,"classAllowlist":[6]},
 {"id":462834,"name":"Engrave Cloak - Shock and Awe","icon":"ability_vehicle_sonicshockwave","type":4,"requiresLevel":1,"classAllowlist":[4]},
-{"id":462853,"name":"Engrave Pants - Hand of Sacrifice","icon":"spell_holy_sealofsacrifice","type":9,"requiresLevel":1,"classAllowlist":[4]}
+{"id":462853,"name":"Engrave Pants - Hand of Sacrifice","icon":"spell_holy_sealofsacrifice","type":9,"requiresLevel":1,"classAllowlist":[4]},
+{"id":468758,"name":"Engrave Ring - Healing Specialization","icon":"spell_holy_greaterheal","type":11,"requiresLevel":1,"classAllowlist":[0]},
+{"id":468762,"name":"Engrave Ring - Meditation Specialization","icon":"spell_holy_greaterheal","type":11,"requiresLevel":1,"classAllowlist":[0]}
 ],
 "zones":[
 ],
