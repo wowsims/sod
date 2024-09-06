@@ -61,7 +61,6 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.Paladin.Initialize()
 }
 
-func (prot *ProtectionPaladin) Reset(_ *core.Simulation) {
-	prot.Paladin.ResetCurrentPaladinAura()
-	prot.Paladin.ResetPrimarySeal(prot.primarySeal)
+func (prot *ProtectionPaladin) Reset(sim *core.Simulation) {
+	prot.Paladin.Reset(sim)
 }

@@ -50,27 +50,27 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestProtection-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.08408
-  weights: 0.6254
+  weights: 1.11384
+  weights: 0.6477
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.19004
+  weights: 0.19853
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.11329
+  weights: 0.11836
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.0775
-  weights: 0.09895
+  weights: 2.17113
+  weights: 0.10344
   weights: 0
   weights: 0
-  weights: 0.49277
+  weights: 0.50629
   weights: 0
-  weights: 14.62048
-  weights: 8.26894
+  weights: 15.05503
+  weights: 8.42177
   weights: 0
   weights: 0
   weights: 0
@@ -99,99 +99,99 @@ stat_weights_results: {
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1214.07222
-  tps: 1233.51831
+  dps: 1248.56771
+  tps: 1268.0138
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 1433.11168
-  tps: 1446.43041
+  dps: 1475.25596
+  tps: 1488.57469
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1214.08977
-  tps: 1233.85899
+  dps: 1248.58606
+  tps: 1268.35528
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1297.95731
-  tps: 1318.21138
+  dps: 1334.96072
+  tps: 1355.21479
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 1430.37371
-  tps: 1443.69244
+  dps: 1472.39565
+  tps: 1485.71438
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1308.5591
-  tps: 1328.57011
+  dps: 1345.62795
+  tps: 1365.63897
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 1378.3098
-  tps: 1391.65294
+  dps: 1419.1108
+  tps: 1432.45394
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1062.61611
-  tps: 1075.31383
+  dps: 1089.12269
+  tps: 1101.82041
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1422.84181
-  tps: 1436.14702
+  dps: 1464.74686
+  tps: 1478.05207
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 1416.21729
-  tps: 1429.48944
+  dps: 1458.07055
+  tps: 1471.3427
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Average-Default"
  value: {
-  dps: 1422.9436
-  tps: 1436.36927
+  dps: 1464.81415
+  tps: 1478.23982
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 948.23719
-  tps: 1024.64219
+  dps: 990.6169
+  tps: 1067.0219
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 338.13619
-  tps: 341.85319
+  dps: 353.23638
+  tps: 356.95338
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 407.94199
-  tps: 411.87532
+  dps: 425.13658
+  tps: 429.06991
  }
 }
 dps_results: {
@@ -218,22 +218,22 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 970.09239
-  tps: 1047.87406
+  dps: 1013.4373
+  tps: 1091.21896
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 345.4282
-  tps: 349.21403
+  dps: 360.83827
+  tps: 364.62411
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 411.51033
-  tps: 415.49283
+  dps: 428.7593
+  tps: 432.7418
  }
 }
 dps_results: {
@@ -260,7 +260,7 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1160.61364
-  tps: 1173.5192
+  dps: 1193.91
+  tps: 1206.81556
  }
 }
