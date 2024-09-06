@@ -378,18 +378,14 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 		}
 
 		if result.DidCrit() {
-			if result.DidBlock() {
-				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
-			} else {
-				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+			spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
+			}
+			if isPeriodic {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
 				if isPartialResist {
-					spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
-				}
-				if isPeriodic {
-					spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
-					if isPartialResist {
-						spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritTickDamage += result.Damage
-					}
+					spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritTickDamage += result.Damage
 				}
 			}
 		} else if result.DidGlance() {
