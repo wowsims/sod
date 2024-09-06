@@ -65,7 +65,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 				hunter.AmmoDamageBonus +
 				baseDamage
 				
-			if has2PDragonStalkerPursuit && (target.HasActiveAuraWithTag("ImmolationTrap") || target.HasActiveAuraWithTag("ExplosiveTrap")) {
+			if has2PDragonStalkerPursuit && (target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")) {
 				baseDamage *= 1.20
 			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
