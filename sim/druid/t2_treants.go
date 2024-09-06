@@ -1,12 +1,14 @@
 package druid
 
 import (
-	"math"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
+
+// We have limited data on these treants, so numbers are mostly made up.
+// A lot of the stats and scaling were copied from Felhunter and Warlock pets with tweaks made to
+// adjust to be closer to Testwerk logs.
 
 type T2Treants struct {
 	core.Pet
@@ -18,16 +20,17 @@ type T2Treants struct {
 
 func (druid *Druid) NewT2Treants() *T2Treants {
 	// TODO: Figure out stats
-	baseDamageMin := 0.0
-	baseDamageMax := 0.0
+	baseDamageMin := 70.0
+	baseDamageMax := 97.0
 	baseStats := stats.Stats{
-		stats.Strength:  107,
-		stats.Agility:   71,
-		stats.Stamina:   190,
-		stats.Intellect: 59,
-		stats.Spirit:    123,
-		stats.Mana:      912,
+		stats.Strength:  129,
+		stats.Agility:   85,
+		stats.Stamina:   234,
+		stats.Intellect: 70,
+		stats.Spirit:    150,
+		stats.Mana:      1066,
 		stats.MP5:       0,
+		stats.MeleeHit:  4 * core.MeleeHitRatingPerHitChance,
 		stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
 		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 	}
@@ -52,7 +55,7 @@ func (druid *Druid) NewT2Treants() *T2Treants {
 		MainHand: core.Weapon{
 			BaseDamageMin:     baseDamageMin,
 			BaseDamageMax:     baseDamageMax,
-			SwingSpeed:        0.5,
+			SwingSpeed:        0.6667, // 3 Treants attack at 2 second intervals. To avoid creating 3 pets, have the AI swing at 2/3 second intervals
 			AttackPowerPerDPS: 14.0 / 6.0,
 			SpellSchool:       core.SpellSchoolPhysical,
 		},
@@ -66,21 +69,14 @@ func (druid *Druid) NewT2Treants() *T2Treants {
 
 func (druid *Druid) t2TreantsStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.HolyPower], ownerStats[stats.ShadowPower])
-
 		return stats.Stats{
-			stats.Stamina:          ownerStats[stats.Stamina] * .75,
-			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
-			stats.Armor:            ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower:      highestSchoolPower * 0.57,
-			stats.MP5:              ownerStats[stats.MP5] * 0.3,
-			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
-			stats.SpellDamage:      ownerStats[stats.SpellDamage] * 0.15,
-			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
-			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
-			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.75,
+			stats.Intellect:   ownerStats[stats.Intellect] * 0.3,
+			stats.Armor:       ownerStats[stats.Armor] * 0.35,
+			stats.AttackPower: ownerStats[stats.AttackPower] * 0.565,
+			stats.MP5:         ownerStats[stats.Intellect] * 0.315,
+			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.15,
+			stats.SpellDamage: ownerStats[stats.SpellDamage] * 0.15,
 		}
 	}
 }
