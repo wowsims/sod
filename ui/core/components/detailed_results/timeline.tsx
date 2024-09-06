@@ -1370,7 +1370,6 @@ const idToCategoryMap: Record<number, number> = {
 	[47471]: MELEE_ACTION_CATEGORY + 0.42, // Execute
 	[12867]: SPELL_ACTION_CATEGORY + 0.51, // Deep Wounds
 	[58874]: SPELL_ACTION_CATEGORY + 0.52, // Damage Shield
-	[47296]: SPELL_ACTION_CATEGORY + 0.53, // Critical Block
 	[46924]: SPELL_ACTION_CATEGORY + 0.61, // Bladestorm
 	[2565]: SPELL_ACTION_CATEGORY + 0.62, // Shield Block
 	[64382]: SPELL_ACTION_CATEGORY + 0.65, // Shattering Throw
