@@ -108,7 +108,6 @@ func init() {
 	core.NewItemEffect(RenatakisCharmofTrickery, func(agent core.Agent) {
 		rogue := agent.(RogueAgent).GetRogue()
 		cpMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 468458})
-		duration := time.Second * 10
 		hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 		spell := rogue.RegisterSpell(core.SpellConfig{
@@ -123,7 +122,7 @@ func init() {
 				},
 				SharedCD: core.Cooldown{
 					Timer:    rogue.GetOffensiveTrinketCD(),
-					Duration: duration,
+					Duration: time.Second * 10,
 				},
 			},
 
@@ -155,10 +154,10 @@ func init() {
 			Label:    "Venomous Totem",
 			Duration: time.Second * 20,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.additivePoisonBonus += 0.3
+				rogue.additivePoisonBonusChance += 0.3
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.additivePoisonBonus -= 0.3
+				rogue.additivePoisonBonusChance -= 0.3
 			},
 		})
 
