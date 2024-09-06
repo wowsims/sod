@@ -26,7 +26,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":23925,"rank":4}}}},
     {"action":{"castSpell":{"spellId":{"spellId":11581,"rank":6}}}},
     {"action":{"castSpell":{"spellId":{"spellId":2687}}}},
-    {"action":{"condition":{"spellIsKnown":{"spellId":{"spellId":23894,"rank":4}}},"castSpell":{"spellId":{"spellId":11601,"rank":5}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":11601,"rank":5}}}},
     {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":412507}}},{"not":{"val":{"dotIsActive":{"spellId":{"spellId":11574,"rank":7}}}}}]}},"castSpell":{"spellId":{"spellId":11574,"rank":7}}}},
     {"action":{"condition":{"runeIsEquipped":{"runeId":{"spellId":403195}}},"castSpell":{"spellId":{"spellId":11597,"rank":5}}}},
     {"hide":true,"action":{"condition":{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11581,"rank":6}}}}},"castSpell":{"spellId":{"spellId":11581,"rank":6}}}},
