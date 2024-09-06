@@ -48,7 +48,6 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const critTickValues = metric.damageDone.critTick;
 					const glanceValues = metric.damageDone.glance;
 					const blockValues = metric.damageDone.block;
-					const critBlockValues = metric.damageDone.critBlock;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -83,10 +82,6 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Blocked Hit',
 											...blockValues,
-										},
-										{
-											name: 'Blocked Critical Hit',
-											...critBlockValues,
 										},
 									],
 								},
@@ -173,7 +168,6 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeCritTickPercent = (metric.critTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
-					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -203,11 +197,6 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 											name: 'Blocked Hit',
 											value: metric.blocks,
 											percentage: relativeBlockPercent,
-										},
-										{
-											name: 'Blocked Critical Hit',
-											value: metric.critBlocks,
-											percentage: relativeCritBlockPercent,
 										},
 									],
 								},
