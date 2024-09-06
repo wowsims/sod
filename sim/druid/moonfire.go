@@ -87,7 +87,7 @@ func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
 
 		BonusCoefficient: spellCoeff,
 		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
-		CritDamageBonus:  druid.vengeance(),
+		CritDamageBonus:  druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

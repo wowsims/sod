@@ -215,7 +215,17 @@ var ItemSetCenarionEclipse = core.NewItemSet(core.ItemSet{
 		},
 		// Reduces the cooldown on Starfall by 50%.
 		6: func(agent core.Agent) {
-			// Implemented in starfall.go
+			druid := agent.(DruidAgent).GetDruid()
+			if !druid.HasRune(proto.DruidRune_RuneCloakStarfall) {
+				return
+			}
+
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Druid - Balance 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.Starfall.CD.Duration /= 2
+				},
+			})
 		},
 	},
 })
@@ -301,6 +311,232 @@ var ItemSetCenarionBounty = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown on Tranquility by 100% and increases its healing by 100%.
 		6: func(agent core.Agent) {
 			// Nothing to do
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
+	Name: "Eclipse of Stormrage",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the damage done and damage radius of Starfall's stars and Hurricane by 25%.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Druid - Balance 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range druid.Hurricane {
+						spell.DamageMultiplier *= 1.25
+					}
+					if druid.Starfall != nil {
+						druid.StarfallTick.DamageMultiplier *= 1.25
+						druid.StarfallSplash.DamageMultiplier *= 1.25
+					}
+				},
+			})
+		},
+		// Your Wrath casts have a 5% chance to summon a stand of 3 Treants to attack your target for until cancelled.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Druid - Balance 4P Bonus",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_DruidWrath && sim.Proc(0.05, "Summon Treant") {
+						for _, petAgent := range druid.PetAgents {
+							if treants, ok := petAgent.(*T2Treants); ok {
+								treants.EnableWithTimeout(sim, treants, time.Minute*2)
+								break
+							}
+						}
+					}
+				},
+			}))
+		},
+		// Your Wrath critical strikes have a 30% chance to make your next Starfire instant cast.
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			starfires := []*DruidSpell{}
+			buffAura := druid.RegisterAura(core.Aura{
+				ActionID:  core.ActionID{SpellID: 467088},
+				Label:     "Astral Power",
+				Duration:  time.Second * 15,
+				MaxStacks: 3,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range druid.Starfire {
+						if spell != nil {
+							starfires = append(starfires, spell)
+						}
+					}
+				},
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					for _, spell := range starfires {
+						spell.DamageMultiplier /= 1 + .10*float64(oldStacks)
+						spell.DamageMultiplier *= 1 + .10*float64(newStacks)
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_DruidStarfire {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Druid - Balance 6P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_DruidWrath && result.DidCrit() && sim.Proc(0.30, "Astral Power") {
+						buffAura.Activate(sim)
+						buffAura.AddStack(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
+	Name: "Cunning of Stormrage",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the duration of Rake by 6 sec and its periodic damage by 50%.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2- Druid - Feral 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, dot := range druid.Rake.Dots() {
+						if dot != nil {
+							dot.NumberOfTicks += 2
+							dot.RecomputeAuraDuration()
+							oldOnSnapshot := dot.OnSnapshot
+							dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+								oldOnSnapshot(sim, target, dot, isRollover)
+								dot.SnapshotAttackerMultiplier *= 1.50
+							}
+						}
+					}
+				},
+			})
+		},
+		// Your critical strike chance is increased by 15% while Tiger's Fury is active.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2- Druid - Feral 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain := druid.TigersFuryAura.OnGain
+					druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnGain(aura, sim)
+						druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: 15 * core.CritRatingPerCritChance})
+					}
+					oldOnExpire := druid.TigersFuryAura.OnExpire
+					druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnExpire(aura, sim)
+						druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: -15 * core.CritRatingPerCritChance})
+					}
+				},
+			})
+		},
+		// Your Shred and Mangle(Cat) abilities deal 10% increased damage per your Bleed effect on the target, up to a maximum of 20% increase.
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2- Druid - Feral 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					dotSpells := []*DruidSpell{druid.Rake, druid.Rip}
+					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat} {
+						if spell == nil {
+							continue
+						}
+
+						oldApplyEffects := spell.ApplyEffects
+						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+							bonusMultiplier := 1.0
+							for _, dotSpell := range dotSpells {
+								if dotSpell.Dot(target).IsActive() {
+									bonusMultiplier += .10
+								}
+							}
+							spell.DamageMultiplier *= bonusMultiplier
+							oldApplyEffects(sim, target, spell)
+							spell.DamageMultiplier /= bonusMultiplier
+						}
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
+	Name: "Fury of Stormrage",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
+		2: func(agent core.Agent) {
+		},
+		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
+		4: func(agent core.Agent) {
+		},
+		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
+		6: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetBountyOfStormrage = core.NewItemSet(core.ItemSet{
+	Name: "Bounty of Stormrage",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your healing spell critical strikes trigger the Dreamstate effect, granting you 50% of your mana regeneration while casting for 8 sec.
+		2: func(agent core.Agent) {
+		},
+		// Your non-periodic spell critical strikes reduce the casting time of your next Healing Touch, Regrowth, or Nourish spell by 0.5 sec.
+		4: func(agent core.Agent) {
+		},
+		// Increases healing from Wild Growth by 10%. In addition, Wild Growth can now be used in Moonkin Form, and its healing is increased by an additional 50% in that form.
+		6: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetHaruspexsGarb = core.NewItemSet(core.ItemSet{
+	Name: "Haruspex's Garb",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases damage and healing done by magical spells and effects by up to 12.
+		2: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			c.AddStat(stats.SpellPower, 12)
+		},
+		// Reduces the cast time and global cooldown of Starfire by 0.5 sec.
+		3: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Druid - Balance 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range druid.Starfire {
+						if spell != nil {
+							spell.DefaultCast.CastTime -= time.Millisecond * 500
+							spell.DefaultCast.GCD -= time.Millisecond * 500
+						}
+					}
+				},
+			})
+		},
+		// Increases the critical strike chance of Wrath by 10%.
+		5: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Druid - Balance 5P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range druid.Wrath {
+						if spell != nil {
+							spell.BonusCritRating += 10 * core.SpellCritRatingPerCritChance
+						}
+					}
+				},
+			})
 		},
 	},
 })

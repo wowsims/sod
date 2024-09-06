@@ -41,7 +41,10 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
+
 	Talents *proto.DruidTalents
+
+	DruidSpells []*DruidSpell
 
 	StartingForm DruidForm
 
@@ -77,6 +80,8 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
+	StarfallTick         *DruidSpell
+	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
@@ -153,16 +158,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-func (druid *Druid) NaturesGraceCastTime() func(spell *core.Spell) time.Duration {
-	return func(spell *core.Spell) time.Duration {
-		baseTime := core.TernaryDuration(druid.NaturesGraceProcAura.IsActive(),
-			spell.DefaultCast.CastTime-(time.Millisecond*500),
-			spell.DefaultCast.CastTime,
-		)
-		return spell.Unit.ApplyCastSpeedForSpell(baseTime, spell)
-	}
-}
-
 // func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 // 	return druid.MaulReplaceMH(sim, mhSwingSpell)
 // }
@@ -193,6 +188,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 	}
 
 	ds.Spell = druid.Unit.RegisterSpell(config)
+	druid.DruidSpells = append(druid.DruidSpells, ds)
 
 	return ds
 }
@@ -272,10 +268,8 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Switch to using AddStat as PseudoStat is being removed
-	// druid.PseudoStats.BaseDodge += 0.056097
-
 	guardians.ConstructGuardians(&druid.Character)
+	druid.NewT2Treants()
 
 	return druid
 }

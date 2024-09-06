@@ -41,6 +41,7 @@ func (mage *Mage) applyIgnite() {
 	})
 
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_MageIgnite,
 		ActionID:    core.ActionID{SpellID: 12654},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,

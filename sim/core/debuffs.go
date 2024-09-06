@@ -561,8 +561,8 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.02*float64(oldStacks)))
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.02*float64(newStacks))
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.03*float64(oldStacks)))
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.03*float64(newStacks))
 		},
 	})
 

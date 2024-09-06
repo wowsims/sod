@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.45739
+  weights: -0.47825
   weights: 0
-  weights: 1.94437
-  weights: 0
-  weights: 0
+  weights: 2.03248
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.31026
-  weights: 16.99436
+  weights: 0
+  weights: 0
+  weights: 6.59527
+  weights: 17.76326
   weights: 0
   weights: 0
   weights: 0
@@ -582,92 +582,92 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1680.41107
-  tps: 1472.84733
+  dps: 1756.39461
+  tps: 1537.60965
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 463.63369
-  tps: 230.42652
+  dps: 484.55487
+  tps: 240.48852
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1671.03323
-  tps: 1465.49989
+  dps: 1746.59122
+  tps: 1529.93121
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2721.23269
-  tps: 2401.66902
+  dps: 2844.41178
+  tps: 2507.8958
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 453.49079
-  tps: 230.80074
+  dps: 473.96082
+  tps: 240.85538
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1680.41107
-  tps: 1472.84733
+  dps: 1756.39461
+  tps: 1537.60965
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2224.18824
-  tps: 2007.80825
+  dps: 2324.71456
+  tps: 2096.17688
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 2208.92509
-  tps: 1994.98336
+  dps: 2308.7602
+  tps: 2082.72138
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2683.59839
-  tps: 2365.9435
+  dps: 2805.09167
+  tps: 2470.55136
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Average-Default"
  value: {
-  dps: 2784.85554
-  tps: 2457.97893
+  dps: 2910.93019
+  tps: 2566.73872
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2758.16308
-  tps: 3466.07915
+  dps: 2883.03127
+  tps: 3573.65577
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 2758.16308
-  tps: 2431.66948
+  dps: 2883.03127
+  tps: 2539.2461
  }
 }
 dps_results: {
  key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2850.21481
-  tps: 2518.08566
+  dps: 2977.25574
+  tps: 2629.43966
  }
 }
 dps_results: {
@@ -694,7 +694,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2746.50626
-  tps: 2420.38466
+  dps: 2870.8446
+  tps: 2527.47779
  }
 }

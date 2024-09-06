@@ -14,16 +14,16 @@ const ShredWeaponMultiplierBuff = 0.75 // increases multiplier additively by 75%
 const ShredFlatDmgMultiplier = .75     // decreases flat damage modifier multiplicatively by -25% to counteract 3.0/2.25 overall scaling buff
 
 func (druid *Druid) registerShredSpell() {
-	damageMultiplier := 2.25
+	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
+	// has6pCunningOfStormrage := druid.HasSetBonus(ItemSetCunningOfStormrage, 6)
 
+	damageMultiplier := 2.25
 	flatDamageBonus := map[int32]float64{
 		25: 24,
 		40: 44,
 		50: 64,
 		60: 80,
 	}[druid.Level] * ShredFlatDmgMultiplier
-
-	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	if druid.Ranged().ID == IdolOfTheDream {
 		damageMultiplier *= 1.02
