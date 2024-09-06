@@ -342,13 +342,15 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 		// Your Wrath casts have a 5% chance to summon a stand of 3 Treants to attack your target for until cancelled.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
+
+			affectedSpellCodes := []int32{SpellCode_DruidWrath, SpellCode_DruidStarsurge}
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 4P Bonus",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_DruidWrath && sim.Proc(0.05, "Summon Treant") {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(0.05, "Summon Treants") {
 						for _, petAgent := range druid.PetAgents {
-							if treants, ok := petAgent.(*T2Treants); ok {
-								treants.EnableWithTimeout(sim, treants, time.Minute*2)
+							if treants, ok := petAgent.(*T2Treants); ok && !treants.IsActive() {
+								treants.EnableWithTimeout(sim, treants, time.Second*10)
 								break
 							}
 						}
