@@ -245,36 +245,33 @@ export const BloodPactBuff = InputHelpers.makeMultiIconInput({
 	label: 'Blood Pact',
 });
 
-// Separate Strength buffs allow us to use boolean pickers for each
-export const BlessingOfMight = withLabel(
-	makeTristateIndividualBuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 19740, minLevel: 4, maxLevel: 11 },
-				{ id: 19834, minLevel: 12, maxLevel: 21 },
-				{ id: 19835, minLevel: 22, maxLevel: 31 },
-				{ id: 19836, minLevel: 32, maxLevel: 41 },
-				{ id: 19837, minLevel: 42, maxLevel: 51 },
-				// TODO: AQ
-				{ id: 19838, minLevel: 52 },
-				// { id: 19838, minLevel: 52, maxLevel: 59 },
-				// { id: 25291, minLevel: 60 },
-			]),
-		impId: ActionId.fromSpellId(20048),
-		fieldName: 'blessingOfMight',
-		showWhen: player => player.getFaction() === Faction.Alliance,
-	}),
-	'Blessing of Might',
-);
-
-export const HornOfLordaeron = withLabel(
-	makeBooleanRaidBuffInput({
-		actionId: () => ActionId.fromSpellId(425600),
-		fieldName: 'hornOfLordaeron',
-		showWhen: player => player.getFaction() == Faction.Alliance,
-	}),
-	'Horn of Lordaeron',
-);
+export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput({
+	values: [
+		makeBooleanRaidBuffInput({
+			actionId: () => ActionId.fromSpellId(425600),
+			fieldName: 'hornOfLordaeron',
+			showWhen: player => player.getFaction() == Faction.Alliance,
+		}),
+		makeTristateIndividualBuffInput({
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 19740, minLevel: 4, maxLevel: 11 },
+					{ id: 19834, minLevel: 12, maxLevel: 21 },
+					{ id: 19835, minLevel: 22, maxLevel: 31 },
+					{ id: 19836, minLevel: 32, maxLevel: 41 },
+					{ id: 19837, minLevel: 42, maxLevel: 51 },
+					// TODO: AQ
+					{ id: 19838, minLevel: 52 },
+					// { id: 19838, minLevel: 52, maxLevel: 59 },
+					// { id: 25291, minLevel: 60 },
+				]),
+			impId: ActionId.fromSpellId(20048),
+			fieldName: 'blessingOfMight',
+			showWhen: player => player.getFaction() === Faction.Alliance,
+		}),
+	],
+	label: 'Paladin Physical',
+});
 
 export const StrengthBuffHorde = withLabel(
 	makeTristateRaidBuffInput({
@@ -1024,14 +1021,9 @@ export const RAID_BUFFS_CONFIG = [
 
 	// Physical Damage Buffs
 	{
-		config: BlessingOfMight,
-		picker: IconPicker,
-		stats: [Stat.StatAttackPower],
-	},
-	{
-		config: HornOfLordaeron,
-		picker: IconPicker,
-		stats: [Stat.StatStrength, Stat.StatAgility],
+		config: PaladinPhysicalBuff,
+		picker: MultiIconPicker,
+		stats: [Stat.StatAttackPower, Stat.StatStrength, Stat.StatAgility],
 	},
 	{
 		config: StrengthBuffHorde,

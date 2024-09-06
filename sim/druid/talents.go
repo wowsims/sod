@@ -52,50 +52,56 @@ func (druid *Druid) applyNaturesGrace() {
 		return
 	}
 
-	ngWrathGCD := time.Millisecond * 1000
-
-	var wrathSpells []*DruidSpell
-
+	affectedSpells := []*DruidSpell{}
 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
 		Label:    "Natures Grace Proc",
 		ActionID: core.ActionID{SpellID: 16886},
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			wrathSpells = core.FilterSlice(
-				core.Flatten([][]*DruidSpell{druid.Wrath}),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
+			affectedSpells = core.FilterSlice(druid.DruidSpells, func(ds *DruidSpell) bool {
+				return ds.DefaultCast.CastTime > 0
+			})
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(wrathSpells, func(spell *DruidSpell) {
-				spell.Spell.DefaultCast.GCD = ngWrathGCD
-			})
+			for _, spell := range affectedSpells {
+				spell.DefaultCast.CastTime -= time.Millisecond * 500
+
+				if spell.SpellCode == SpellCode_DruidWrath {
+					spell.DefaultCast.GCD -= time.Millisecond * 500
+				}
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(wrathSpells, func(spell *DruidSpell) {
-				spell.Spell.DefaultCast.GCD = core.GCDDefault
-			})
+			for _, spell := range affectedSpells {
+				spell.DefaultCast.CastTime += time.Millisecond * 500
+
+				if spell.SpellCode == SpellCode_DruidWrath {
+					spell.DefaultCast.GCD += time.Millisecond * 500
+				}
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.CastTime() > 0 && aura.TimeActive(sim) >= spell.CastTime() {
+			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+
+			// Make sure the aura actually applied to the spell being cast before deactivating
+			if spell.CurCast.CastTime > 0 && (sim.CurrentTime-spell.CurCast.CastTime >= aura.StartedAt()) {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	druid.RegisterAura(core.Aura{
-		Label:    "Natures Grace",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Natures Grace",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Spells with travel times have their own calculation prior to the travel time to prevent issues with back-to-back casts
-			if spell.TravelTime() > 0 && result.DidCrit() {
+			// Spells with travel times have their own implementation because the proc occurs as the cast finishes
+			if spell.MissileSpeed == 0 && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
 				druid.NaturesGraceProcAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {
@@ -316,6 +322,6 @@ func (druid *Druid) MoonglowManaCostMultiplier() int32 {
 	return 100 - 3*druid.Talents.Moonglow
 }
 
-func (druid *Druid) vengeance() float64 {
+func (druid *Druid) vengeanceBonusCritDamage() float64 {
 	return 0.2 * float64(druid.Talents.Vengeance)
 }

@@ -124,7 +124,7 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 		},
 
 		BonusCritRating: druid.ImprovedMoonfireCritBonus(),
-		CritDamageBonus: druid.vengeance(),
+		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

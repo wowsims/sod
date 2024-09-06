@@ -12,6 +12,27 @@ const (
 	SpellFlagChillSpell = core.SpellFlagAgentReserved2
 )
 
+const (
+	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneBarrage
+	SpellCode_MageArcaneBlast
+	SpellCode_MageArcaneExplosion
+	SpellCode_MageArcaneMissiles
+	SpellCode_MageArcaneSurge
+	SpellCode_MageBalefireBolt
+	SpellCode_MageFireball
+	SpellCode_MageFireBlast
+	SpellCode_MageFrostbolt
+	SpellCode_MageFrostfireBolt
+	SpellCode_MageFrozenOrb
+	SpellCode_MageIgnite
+	SpellCode_MageLivingBomb
+	SpellCode_MageLivingBombExplosion
+	SpellCode_MageLivingFlame
+	SpellCode_MageScorch
+	SpellCode_MageSpellfrostBolt
+)
+
 var TalentTreeSizes = [3]int{16, 16, 17}
 
 func RegisterMage() {
@@ -30,26 +51,6 @@ func RegisterMage() {
 		},
 	)
 }
-
-const (
-	SpellCode_MageNone int32 = iota
-	SpellCode_MageArcaneBarrage
-	SpellCode_MageArcaneBlast
-	SpellCode_MageArcaneExplosion
-	SpellCode_MageArcaneMissiles
-	SpellCode_MageArcaneSurge
-	SpellCode_MageBalefireBolt
-	SpellCode_MageFireball
-	SpellCode_MageFireBlast
-	SpellCode_MageFrostbolt
-	SpellCode_MageFrostfireBolt
-	SpellCode_MageFrozenOrb
-	SpellCode_MageLivingBomb
-	SpellCode_MageLivingBombExplosion
-	SpellCode_MageLivingFlame
-	SpellCode_MageScorch
-	SpellCode_MageSpellfrostBolt
-)
 
 type Mage struct {
 	core.Character

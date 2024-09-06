@@ -311,8 +311,9 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Elemental 2P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.Flags.Matches(SpellFlagShaman) && result.DidCrit() {
+					if spell.ProcMask == core.ProcMaskSpellDamage && spell.Flags.Matches(SpellFlagShaman) && result.DidCrit() {
 						shaman.ClearcastingAura.Activate(sim)
+						shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 					}
 				},
 			}))

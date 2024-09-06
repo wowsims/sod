@@ -24,6 +24,7 @@ const (
 	NaturalAlignmentCrystal  = 230273
 	WushoolaysCharmOfSpirits = 231281
 	TerrestrisEle            = 231890
+	TotemOfTheElements       = 232409
 )
 
 func init() {
@@ -97,12 +98,12 @@ func init() {
 			Label:    "Nature Aligned",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
 			},
@@ -341,6 +342,21 @@ func init() {
 		}))
 	})
 
+	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.AddStat(stats.MP5, 2)
+	})
+
+	core.NewItemEffect(TotemOfTheElements, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Totem of the Elements",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.ClearcastingAura.MaxStacks = 2
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
@@ -361,11 +377,6 @@ func init() {
 				spell.BonusDamage += 53
 			}
 		})
-	})
-
-	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.AddStat(stats.MP5, 2)
 	})
 
 	core.NewItemEffect(TotemInvigoratingFlame, func(agent core.Agent) {
@@ -456,7 +467,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
-	// Equip: Your Stormstrike spell causes you to gain 50 attack power for 12 sec. (More effective with a two - handed weapon).
+	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
 	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		procAura1H := shaman.RegisterAura(core.Aura{
@@ -464,10 +475,10 @@ func init() {
 			Label:    "Totem of Raging Fire (1H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
 			},
 		})
 		// TODO: Verify 2H value
@@ -476,10 +487,10 @@ func init() {
 			Label:    "Totem of Raging Fire (2H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
 			},
 		})
 
