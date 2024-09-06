@@ -467,7 +467,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
-	// Equip: Your Stormstrike spell causes you to gain 50 attack power for 12 sec. (More effective with a two - handed weapon).
+	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
 	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		procAura1H := shaman.RegisterAura(core.Aura{
@@ -475,10 +475,10 @@ func init() {
 			Label:    "Totem of Raging Fire (1H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
 			},
 		})
 		// TODO: Verify 2H value
@@ -487,10 +487,10 @@ func init() {
 			Label:    "Totem of Raging Fire (2H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
 			},
 		})
 
