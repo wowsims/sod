@@ -140,13 +140,14 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					spell.DamageMultiplier *= 1.5
+					//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
+					spell.DamageMultiplier += 0.5
 				}
 			})
 		},
 		5: func(agent core.Agent) {
 			// Reduce cooldown of Exorcism by 3 seconds
-			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin := agent.(PaladinAgent).GetPaladin()			
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {

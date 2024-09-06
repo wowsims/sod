@@ -1313,8 +1313,14 @@ export class TargetedActionMetrics {
 			this.data.critBlocks +
 			this.data.blocks +
 			this.data.glances +
-			this.data.crits +
-			(this.data.hits || this.data.casts);
+			this.data.crits;
+
+		if (this.data.hits != 0)
+			this.hitAttempts += this.data.hits;
+		else if (this.data.hits == 0 && this.data.ticks > 0)
+			this.hitAttempts += this.data.casts;
+
+			//(this.data.hits || this.data.casts);
 	}
 
 	get damage() {
