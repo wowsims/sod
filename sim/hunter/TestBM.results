@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 802.48823
-  tps: 329.84795
+  dps: 812.17005
+  tps: 336.58557
  }
 }
 dps_results: {
