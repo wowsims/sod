@@ -68,6 +68,7 @@ type Paladin struct {
 	exorcism          []*core.Spell
 	judgement         *core.Spell
 	rv                *core.Spell
+	redoubtAura       *core.Aura
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
