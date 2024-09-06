@@ -374,9 +374,7 @@ export class DamageDealtLog extends SimLog {
 					: this.glance
 					? 'Glance'
 					: this.block
-					? this.crit
-						? 'Critical Block'
-						: 'Block'
+					? 'Block'
 					: this.crit
 					? 'Crit'
 					: this.crush
@@ -422,7 +420,7 @@ export class DamageDealtLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<DamageDealtLog> | null {
 		const match = params.raw.match(
-			/] (.*?) (tick )?((Miss)|(Hit)|(CriticalBlock)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
+			/] (.*?) (tick )?((Miss)|(Hit)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
 		);
 		if (match) {
 			return ActionId.fromLogString(match[1])
@@ -438,12 +436,12 @@ export class DamageDealtLog extends SimLog {
 						amount,
 						type,
 						match[3] == 'Miss',
-						match[3] == 'Crit' || match[3] == 'CriticalBlock',
+						match[3] == 'Crit',
 						match[3] == 'Crush',
 						match[3] == 'Glance',
 						match[3] == 'Dodge',
 						match[3] == 'Parry',
-						match[3] == 'Block' || match[3] == 'CriticalBlock',
+						match[3] == 'Block',
 						Boolean(match[2]) && match[2].includes('tick'),
 						match[14] == '25',
 						match[14] == '50',
