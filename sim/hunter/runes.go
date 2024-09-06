@@ -11,10 +11,10 @@ import (
 
 func (hunter *Hunter) ApplyRunes() {
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.30
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
+	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
 		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
@@ -47,6 +47,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyCobraSlayer()
 	hunter.applyHitAndRun()
 	hunter.applyMasterMarksman()
+	hunter.applyImprovedVolley()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -248,10 +249,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
-	icd := core.Cooldown{
-		Timer:    hunter.NewTimer(),
-		Duration: time.Second * 8,
-	}
+	// icd := core.Cooldown{
+	// 	Timer:    hunter.NewTimer(),
+	// 	Duration: time.Second * 8,
+	// }
 
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Lock And Load",
@@ -274,10 +275,10 @@ func (hunter *Hunter) applyLockAndLoad() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagTrap) {
 				spell.WaitTravelTime(sim, func(s *core.Simulation) {
-					if icd.IsReady(sim) {
-						icd.Use(sim)
+					// if icd.IsReady(sim) {
+					// 	icd.Use(sim)
 						hunter.LockAndLoadAura.Activate(sim)
-					}
+					// }
 				})
 			}
 		},
@@ -309,7 +310,7 @@ func (hunter *Hunter) applyRaptorFury() {
 }
 
 func (hunter *Hunter) applyCobraSlayer() {
-	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+	if !hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer) {
 		return
 	}
 
@@ -382,16 +383,31 @@ func (hunter *Hunter) applyHitAndRun() {
 		hunter.HitAndRunAura = hunter.RegisterAura(core.Aura{
 			Label:    "Hit And Run",
 			ActionID: core.ActionID{SpellID: 440533},
-			Duration: time.Second * 8,
+			Duration: time.Second * 15,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1.15
+				hunter.Unit.MoveSpeed *= 1.30
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1 / 1.15
+				hunter.Unit.MoveSpeed *= 1 / 1.30
 			},
 		})
 	}
+}
+
+func (hunter *Hunter) applyImprovedVolley() {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) && hunter.Volley != nil {
+		return
+	}
+
+	hunter.RegisterAura(core.Aura{
+		Label: "Improved Volley",
+		ActionID: core.ActionID{SpellID: 440520},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
+			hunter.Volley.DamageMultiplier *= 2
+		},
+	})
 }
