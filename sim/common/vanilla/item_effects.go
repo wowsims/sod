@@ -1100,7 +1100,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=227991/ironfoe
 	// Chance on hit: Grants 2 extra attacks on your next swing.
 	// TODO: Need updated proc rate lowered in SoD phase 5
-	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 1.0, func(character *core.Character) *core.Spell {
+	// Original proc rate 0.8 lowered to approximately 0.53 in SoD phase 5
+	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 0.53, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 15494},
 			SpellSchool:      core.SpellSchoolPhysical,
@@ -1863,8 +1864,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=230242/the-untamed-blade
 	// Chance on hit: Increases Strength by 300 for 8 sec.
 	// Estimated based on data from WoW Armaments Discord
-	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
-	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 0.6, func(character *core.Character) *core.Aura {
+	// Original proc rate 1.0 lowered to approximately 0.55 in SoD phase 5
+	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23719},
 			Label:    "Untamed Fury",

@@ -1,6 +1,7 @@
 package druid
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -385,10 +386,11 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 				},
 			})
 
+			procSpellCodes := []int32{SpellCode_DruidWrath, SpellCode_DruidStarsurge}
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_DruidWrath && result.DidCrit() && sim.Proc(0.30, "Astral Power") {
+					if slices.Contains(procSpellCodes, spell.SpellCode) && result.DidCrit() && sim.Proc(0.30, "Astral Power") {
 						buffAura.Activate(sim)
 						buffAura.AddStack(sim)
 					}

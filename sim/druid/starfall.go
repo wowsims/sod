@@ -71,7 +71,7 @@ func (druid *Druid) registerStarfallCD() {
 		SpellCode:   SpellCode_DruidStarfall,
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{

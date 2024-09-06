@@ -84,7 +84,7 @@ type Hunter struct {
 	ExplosiveShot  *core.Spell
 	ExplosiveTrap  *core.Spell
 	ImmolationTrap *core.Spell
-	FrostTrap      *core.Spell
+	FreezingTrap   *core.Spell
 	KillCommand    *core.Spell
 	KillShot       *core.Spell
 	MultiShot      *core.Spell
@@ -201,13 +201,13 @@ func (hunter *Hunter) Initialize() {
 
 		hunter.registerExplosiveTrapSpell(fireTraps)
 		hunter.registerImmolationTrapSpell(fireTraps)
-		hunter.registerFrostTrapSpell(frostTraps)
+		hunter.registerFreezingTrapSpell(frostTraps)
 	} else {
 		traps := hunter.NewTimer()
 
 		hunter.registerExplosiveTrapSpell(traps)
 		hunter.registerImmolationTrapSpell(traps)
-		hunter.registerFrostTrapSpell(traps)
+		hunter.registerFreezingTrapSpell(traps)
 	}
 
 	// hunter.registerKillCommand()
