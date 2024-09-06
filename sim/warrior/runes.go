@@ -86,7 +86,8 @@ func (warrior *Warrior) applyShieldMastery() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
 					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 						buffAura.Deactivate(sim)
@@ -132,7 +133,7 @@ func (warrior *Warrior) applyFrenziedAssault() {
 
 	buffAura := warrior.RegisterAura(core.Aura{
 		ActionID: actionID,
-		Label:    "Frenzied Assault Trigger",
+		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.MultiplyMeleeSpeed(sim, 1.3)
@@ -153,7 +154,8 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
 					if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 						buffAura.Deactivate(sim)
