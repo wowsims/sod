@@ -134,6 +134,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
+	paladin.registerShieldOfRighteousness()
 
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true

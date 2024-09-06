@@ -1556,8 +1556,8 @@
 {"effectId":929,"itemId":16217,"spellId":20069,"name":"Enchant Shield - Greater Stamina","type":13,"enchantType":2,"stats":[0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":930,"spellId":13947,"name":"Enchant Gloves - Riding Skill","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":931,"spellId":13948,"name":"Enchant Gloves - Minor Haste","type":7,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":943,"spellId":13693,"name":"Enchant Weapon - Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":943,"spellId":13529,"name":"Enchant 2H Weapon - Lesser Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":963,"spellId":13937,"name":"Enchant 2H Weapon - Greater Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":1483,"itemId":11622,"spellId":15340,"name":"Lesser Arcanum of Rumination","type":1,"extraTypes":[9],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1503,"itemId":11642,"spellId":15389,"name":"Lesser Arcanum of Constitution","type":1,"extraTypes":[9],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -1730,7 +1730,7 @@
 {"id":408700,"name":"Engrave Boots - Waylay","icon":"ability_rogue_waylay","type":10,"requiresLevel":1,"classAllowlist":[6]},
 {"id":409240,"name":"Engrave Cloak - Fan of Knives","icon":"ability_rogue_fanofknives","type":4,"requiresLevel":1,"classAllowlist":[6]},
 {"id":409324,"name":"Engrave Pants - Ancestral Guidance","icon":"ability_druid_lunarguidance","type":9,"requiresLevel":1,"classAllowlist":[7]},
-{"id":409368,"name":"Engrave Gloves - Beast Mastery","icon":"ability_physical_taunt","type":7,"requiresLevel":1,"classAllowlist":[2]},
+{"id":409368,"name":"Engrave Chest - Beast Mastery","icon":"ability_physical_taunt","type":5,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409428,"name":"Engrave Chest - Master Marksman","icon":"ability_hunter_mastermarksman","type":5,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409433,"name":"Engrave Gloves - Chimera Shot","icon":"ability_hunter_chimerashot2","type":7,"requiresLevel":1,"classAllowlist":[2]},
 {"id":409504,"name":"Engrave Belt - Expose Weakness","icon":"ability_rogue_findweakness","type":8,"requiresLevel":1,"classAllowlist":[2]},
@@ -1881,6 +1881,7 @@
 {"id":440533,"name":"Engrave Cloak - Hit and Run","icon":"ability_hunter_displacement","type":4,"requiresLevel":1,"classAllowlist":[2]},
 {"id":440569,"name":"Engrave Cloak - Storm, Earth, and Fire","icon":"spell_shaman_stormearthfire","type":4,"requiresLevel":1,"classAllowlist":[7]},
 {"id":440580,"name":"Engrave Cloak - Feral Spirit","icon":"spell_shaman_feralspirit","type":4,"requiresLevel":1,"classAllowlist":[7]},
+{"id":440658,"name":"Engrave Cloak - Shield of Righteousness","icon":"ability_paladin_shieldofvengeance","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":440672,"name":"Engrave Cloak - Righteous Vengeance","icon":"ability_paladin_righteousvengeance","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":440802,"name":"Engrave Cloak - Frozen Orb","icon":"spell_frost_frozencore","type":4,"requiresLevel":1,"classAllowlist":[3]},
 {"id":440870,"name":"Engrave Cloak - Decimation","icon":"spell_fire_fireball02","type":4,"requiresLevel":1,"classAllowlist":[8]},
@@ -1908,7 +1909,9 @@
 {"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]},
 {"id":462708,"name":"Engrave Gloves - Cutthroat","icon":"ability_rogue_slaughterfromtheshadows","type":7,"requiresLevel":1,"classAllowlist":[6]},
 {"id":462834,"name":"Engrave Cloak - Shock and Awe","icon":"ability_vehicle_sonicshockwave","type":4,"requiresLevel":1,"classAllowlist":[4]},
-{"id":462853,"name":"Engrave Pants - Hand of Sacrifice","icon":"spell_holy_sealofsacrifice","type":9,"requiresLevel":1,"classAllowlist":[4]}
+{"id":462853,"name":"Engrave Pants - Hand of Sacrifice","icon":"spell_holy_sealofsacrifice","type":9,"requiresLevel":1,"classAllowlist":[4]},
+{"id":468758,"name":"Engrave Ring - Healing Specialization","icon":"spell_holy_greaterheal","type":11,"requiresLevel":1,"classAllowlist":[0]},
+{"id":468762,"name":"Engrave Ring - Meditation Specialization","icon":"spell_holy_greaterheal","type":11,"requiresLevel":1,"classAllowlist":[0]}
 ],
 "zones":[
 ],
