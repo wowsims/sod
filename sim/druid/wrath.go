@@ -74,6 +74,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
+			// NG procs when the cast finishes
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
 				druid.NaturesGraceProcAura.Activate(sim)
 			}
