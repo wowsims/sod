@@ -127,23 +127,29 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 431046}
+	rageMetrics := warrior.NewRageMetrics(actionID)
+
 	buffAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 431046},
-		Label:    "Frenzied Assault",
+		ActionID: actionID,
+		Label:    "Frenzied Assault Trigger",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.MultiplyMeleeSpeed(sim, 1.3)
-			warrior.AddDamageDealtRageBonus(1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
-			warrior.AddDamageDealtRageBonus(-1)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {
+				warrior.AddRage(sim, core.Ternary(result.DidCrit(), 4.0, 2.0), rageMetrics)
+			}
 		},
 	})
 
 	// Use a dummy aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
 	warrior.RegisterAura(core.Aura{
-		Label:    "Frenzied Assault Trigger",
+		Label:    "Frenzied Assault Dummy",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{

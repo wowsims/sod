@@ -361,9 +361,10 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 
 			starfires := []*DruidSpell{}
 			buffAura := druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467088},
-				Label:    "Astral Swiftness",
-				Duration: core.NeverExpires,
+				ActionID:  core.ActionID{SpellID: 467088},
+				Label:     "Astral Power",
+				Duration:  time.Second * 15,
+				MaxStacks: 3,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range druid.Starfire {
 						if spell != nil {
@@ -371,18 +372,14 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 						}
 					}
 				},
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 					for _, spell := range starfires {
-						spell.CastTimeMultiplier -= 1
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range starfires {
-						spell.CastTimeMultiplier += 1
+						spell.DamageMultiplier /= 1 + .10*float64(oldStacks)
+						spell.DamageMultiplier *= 1 + .10*float64(newStacks)
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_DruidStarfire && spell.CurCast.CastTime == 0 {
+					if spell.SpellCode == SpellCode_DruidStarfire {
 						aura.Deactivate(sim)
 					}
 				},
@@ -391,8 +388,9 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_DruidWrath && result.DidCrit() && sim.Proc(0.30, "Astral Swiftness") {
+					if spell.SpellCode == SpellCode_DruidWrath && result.DidCrit() && sim.Proc(0.30, "Astral Power") {
 						buffAura.Activate(sim)
+						buffAura.AddStack(sim)
 					}
 				},
 			}))

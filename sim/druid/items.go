@@ -48,7 +48,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=224281/glasir
 	// Equip: Critical effects from heals have a chance to heal 3 nearby allies for 200 to 350, and critical spell hits have a chance to damage 3 nearby enemies for 100 to 175 nature damage.
-	// (Proc chance: 15%, 30s cooldown)
+	// (Proc chance: 15%, 15s cooldown)
 	core.NewItemEffect(Glasir, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -103,7 +103,7 @@ func init() {
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
-			Duration: time.Second * 30,
+			Duration: time.Second * 15,
 		}
 
 		core.MakePermanent(character.RegisterAura(core.Aura{
