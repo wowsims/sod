@@ -18,12 +18,6 @@ const (
 	ThunderfallTotem         = 45255
 )
 
-const (
-	// This could be value or bitflag if we ended up needing multiple flags at the same time.
-	//1 to 5 are used by MaelstromWeapon Stacks
-	CastTagLightningOverload int32 = 6
-)
-
 // Shared precomputation logic for LB and CL.
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)

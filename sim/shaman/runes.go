@@ -57,7 +57,7 @@ func (shaman *Shaman) applyBurn() {
 	}
 
 	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
+		// shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
 	}
 
 	// Other parts of burn are handled in flame_shock.go
