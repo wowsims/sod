@@ -1863,7 +1863,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=230242/the-untamed-blade
 	// Chance on hit: Increases Strength by 300 for 8 sec.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 1.0, func(character *core.Character) *core.Aura {
+	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
+	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 0.6, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23719},
 			Label:    "Untamed Fury",
