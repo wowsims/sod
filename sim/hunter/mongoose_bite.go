@@ -13,7 +13,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
-	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer)
+	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
