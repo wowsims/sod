@@ -225,8 +225,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 337.2442
-  tps: 179.17103
+  dps: 340.95057
+  tps: 183.11753
  }
 }
 dps_results: {
@@ -441,8 +441,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 724.85995
-  tps: 724.9704
+  dps: 731.17857
+  tps: 731.28902
   hps: 12.56447
  }
 }

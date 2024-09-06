@@ -398,8 +398,16 @@ func (hunter *Hunter) applyHitAndRun() {
 }
 
 func (hunter *Hunter) applyImprovedVolley() {
-	if hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) {
-		// The 3% rAP scaling is applied inside the volley spell config itself
-		hunter.Volley.DamageMultiplier *= 2
+	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) && hunter.Volley != nil {
+		return
 	}
+
+	hunter.RegisterAura(core.Aura{
+		Label: "Improved Volley",
+		ActionID: core.ActionID{SpellID: 440520},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
+			hunter.Volley.DamageMultiplier *= 2
+		},
+	})
 }
