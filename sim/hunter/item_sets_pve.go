@@ -276,20 +276,23 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 
+			shotSpells := []*core.Spell{}
 			procAura := hunter.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 467312},
 				Label:    "S03 - Item - T2 - Hunter - Ranged 4P Bonus",
 				Duration: time.Second * 12,
-
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					shotSpells = core.FilterSlice(hunter.Shots, func(s *core.Spell) bool { return s != nil })
+				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.Shots {
+					for _, spell := range shotSpells {
 						if spell.SpellCode != hunter.LastShot.SpellCode {
 							spell.DamageMultiplier *= 1.10
 						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.Shots {
+					for _, spell := range shotSpells {
 						if spell.SpellCode != hunter.LastShot.SpellCode {
 							spell.DamageMultiplier /= 1.10
 						}
