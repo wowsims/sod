@@ -1276,20 +1276,13 @@ export class TargetedActionMetrics {
 		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.glances;
 		this.landedTicksRaw = this.data.ticks + this.data.critTicks;
 
-		this.hitAttempts =
-			this.data.misses +
-			this.data.dodges +
-			this.data.parries +
-			this.data.blocks +
-			this.data.glances +
-			this.data.crits;
+		this.hitAttempts = this.data.misses + this.data.dodges + this.data.parries + this.data.blocks + this.data.glances + this.data.crits;
 
-		if (this.data.hits != 0)
+		if (this.data.hits != 0) {
 			this.hitAttempts += this.data.hits;
-		else if (this.data.hits == 0 && this.data.ticks > 0)
+		} else if (this.data.hits == 0 && this.data.ticks > 0) {
 			this.hitAttempts += this.data.casts;
-
-			//(this.data.hits || this.data.casts);
+		}
 	}
 
 	get damage() {
