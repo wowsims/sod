@@ -24,6 +24,7 @@ const (
 	NaturalAlignmentCrystal  = 230273
 	WushoolaysCharmOfSpirits = 231281
 	TerrestrisEle            = 231890
+	TotemOfTheElements       = 232409
 )
 
 func init() {
@@ -341,6 +342,21 @@ func init() {
 		}))
 	})
 
+	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.AddStat(stats.MP5, 2)
+	})
+
+	core.NewItemEffect(TotemOfTheElements, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Totem of the Elements",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.ClearcastingAura.MaxStacks = 2
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
@@ -361,11 +377,6 @@ func init() {
 				spell.BonusDamage += 53
 			}
 		})
-	})
-
-	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.AddStat(stats.MP5, 2)
 	})
 
 	core.NewItemEffect(TotemInvigoratingFlame, func(agent core.Agent) {
