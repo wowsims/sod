@@ -274,10 +274,12 @@ func (rogue *Rogue) applyJustAFleshWound() {
 		return
 	}
 	// Mod threat
-	// TODO: Confirm threat mod
-	rogue.PseudoStats.ThreatMultiplier *= 2.112
+	rogue.PseudoStats.ThreatMultiplier *= 2.68
 
 	// Blade Dance 20% Physical DR - Added in registerBladeDance()
+	
+	// -20% damage done mod
+	rogue.PseudoStats.DamageDealtMultiplier *= 0.80 
 
 	// -6% to be critically hit
 	rogue.PseudoStats.ReducedCritTakenChance += 6
@@ -325,14 +327,8 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) {
-				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
-					rogue.RollingWithThePunchesProcAura.Refresh(sim)
-				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
-					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-				} else {
 					rogue.RollingWithThePunchesProcAura.Activate(sim)
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-				}
 			}
 		},
 	})

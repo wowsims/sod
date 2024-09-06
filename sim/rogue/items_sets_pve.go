@@ -272,14 +272,15 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 				}
 			})
 		},
-		// Reduces cooldown on vanish by 2.5 minutes
+		// Reduces cooldown on vanish by 1 minute
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.RegisterAura(core.Aura{
  				Label: "S03 - Item - T2 - Rogue - Damage 6P Bonus",
   				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-    				rogue.Vanish.CD.Duration -= time.Second * 150
-  				},
+				//Applied after talents in sim so does not stack with elusiveness when active.
+					rogue.Vanish.CD.Duration = time.Second * 60
+				},
 			})
 		},
 	},
@@ -294,16 +295,9 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 			if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
 				return
 			}
-
 			rogue.OnComboPointsGained(func(sim *core.Simulation) {
-				if rogue.RollingWithThePunchesProcAura.GetStacks() == 5 {
-					rogue.RollingWithThePunchesProcAura.Refresh(sim)
-				} else if rogue.RollingWithThePunchesProcAura.IsActive() {
-					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-				} else {
 					rogue.RollingWithThePunchesProcAura.Activate(sim)
 					rogue.RollingWithThePunchesProcAura.AddStack(sim)
-				}
 			})
 		},
 		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
@@ -315,7 +309,7 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 			initarmor := rogue.BaseEquipStats()[stats.Armor]
 
 			rogue.RegisterAura(core.Aura{
-				Label: "T2 Please Replace",
+				Label: "S03 - Item - T2 - Rogue - Tank 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				  oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
 				  rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
@@ -352,6 +346,7 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			c.AddStats(stats.Stats{
 				stats.AttackPower:       20,
+				stats.RangedAttackPower: 20,
 			})
 		},
 		// Increases your chance to get a critical strike with Daggers by 5%.
@@ -381,7 +376,7 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_RogueAmbush  {
-					spell.BonusCritRating += 30 * core.SpellCritRatingPerCritChance
+					spell.BonusCritRating += 30 * core.CritRatingPerCritChance
 				}
 			})
 		},
