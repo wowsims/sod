@@ -1204,12 +1204,12 @@ export class ActionMetrics {
 			glance: {
 				value: this.avgGlanceDamage,
 				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
-				average: this.avgGlanceDamage / this.hits,
+				average: this.avgGlanceDamage / this.glances,
 			},
 			block: {
 				value: this.avgBlockDamage,
 				percentage: (this.avgBlockDamage / this.avgDamage) * 100,
-				average: this.avgBlockDamage / this.hits,
+				average: this.avgBlockDamage / this.blocks,
 			},
 		};
 	}
