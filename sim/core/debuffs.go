@@ -409,8 +409,10 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	return aura
 }
 
+var ShadowWeavingSpellIDs = [6]int32{0, 15257, 15331, 15332, 15333, 15334}
+
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
-	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	spellId := ShadowWeavingSpellIDs[rank]
 	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
