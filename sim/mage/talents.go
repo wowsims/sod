@@ -107,9 +107,9 @@ func (mage *Mage) applyFireTalents() {
 }
 
 func (mage *Mage) applyFrostTalents() {
-	mage.applyWintersChill()
-
 	mage.registerColdSnapCD()
+	mage.registerIceBarrierSpell()
+	mage.applyWintersChill()
 
 	// Elemental Precision
 	if mage.Talents.ElementalPrecision > 0 {
@@ -242,6 +242,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier += 1
 			})
+			mage.PresenceOfMind.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !slices.Contains(affectedSpells, spell) {
@@ -252,7 +253,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		},
 	})
 
-	spell := mage.RegisterSpell(core.SpellConfig{
+	mage.PresenceOfMind = mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -270,7 +271,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: mage.PresenceOfMind,
 		Type:  core.CooldownTypeDPS,
 	})
 }

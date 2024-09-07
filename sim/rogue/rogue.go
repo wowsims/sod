@@ -20,7 +20,19 @@ const (
 const (
 	SpellCode_RogueNone int32 = iota
 
+	SpellCode_RogueAmbush
+	SpellCode_RogueBackstab
 	SpellCode_RogueBladeFlurry
+	SpellCode_RogueGarrote
+	SpellCode_RogueGhostlyStrike
+	SpellCode_RogueHemorrhage
+	SpellCode_RogueMainGauche
+	SpellCode_RogueMutilate
+	SpellCode_RoguePoisonedKnife
+	SpellCode_RogueSaberSlash
+	SpellCode_RogueSaberSlashDoT
+	SpellCode_RogueShadowStrike
+	SpellCode_RogueSinisterStrike
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -84,6 +96,8 @@ type Rogue struct {
 	occultPoisonTick *core.Spell
 
 	instantPoisonProcChanceBonus float64
+	additivePoisonBonusChance 	 float64
+	cutthroatBonusChance		 float64
 
 	AdrenalineRushAura            *core.Aura
 	BladeFlurryAura               *core.Aura
