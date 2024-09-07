@@ -13,7 +13,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 
 	// Phase 4: Hammer of the Righteous damage reduced by 50% but threat increased by 2X.
 	// https://www.wowhead.com/classic/news/development-notes-for-phase-4-ptr-season-of-discovery-new-runes-class-changes-3428960
-	results := make([]*core.SpellResult, min(2, paladin.Env.GetNumTargets()))
+	results := make([]*core.SpellResult, min(3, paladin.Env.GetNumTargets()))
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneWristHammerOfTheRighteous)},
