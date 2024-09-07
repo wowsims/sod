@@ -11,20 +11,23 @@ import (
 func (paladin *Paladin) ApplyTalents() {
 	paladin.AddStat(stats.MeleeHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
 	// TODO: paladin.AddStat(stats.RangedHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
-	paladin.AddStat(stats.Defense, float64(paladin.Talents.Anticipation)*core.CritRatingPerCritChance)
+
 	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
 	// TODO: paladin.AddStat(stats.RangedCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
-	paladin.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(paladin.Talents.Toughness))
 
-	if paladin.Talents.DivineStrength > 0 {
-		paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
+	if paladin.Talents.Toughness > 0 {
+		paladin.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(paladin.Talents.Toughness))
 	}
-	if paladin.Talents.DivineIntellect > 0 {
-		paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
-	}
-	if paladin.Talents.ShieldSpecialization > 0 {
-		paladin.MultiplyStat(stats.BlockValue, 1.0+0.1*float64(paladin.Talents.ShieldSpecialization))
-	}
+
+	// These are no-op if untalented.
+	paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
+	paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
+	paladin.AddStat(stats.Defense, 2*float64(paladin.Talents.Anticipation))
+
+	// Shield Specialization bonus is additive. NOTE: Total SBV will be inflated until
+	// https://github.com/wowsims/sod/issues/1025 gets resolved.
+	paladin.PseudoStats.BlockValueMultiplier += 0.1 * float64(paladin.Talents.ShieldSpecialization)
+
 	paladin.AddStat(stats.Parry, 1*float64(paladin.Talents.Deflection))
 
 	paladin.applyWeaponSpecialization()
@@ -34,13 +37,11 @@ func (paladin *Paladin) ApplyTalents() {
 	if paladin.Talents.Vindication > 0 {
 		paladin.applyVindication()
 	}
-	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] +=  core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
-	// paladin.applyRighteousVengeance()
-	// paladin.applyRedoubt()
-	// paladin.applyReckoning()
-	// paladin.applyArdentDefender()
-}
+	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 
+	paladin.applyRedoubt()
+	// paladin.applyReckoning()
+}
 
 func (paladin *Paladin) improvedSoR() float64 {
 	return []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.ImprovedSealOfRighteousness]
@@ -50,51 +51,46 @@ func (paladin *Paladin) benediction() int32 {
 	return []int32{100, 97, 94, 91, 88, 85}[paladin.Talents.Benediction]
 }
 
-// func (paladin *Paladin) applyRedoubt() {
-// 	if paladin.Talents.Redoubt == 0 {
-// 		return
-// 	}
+func (paladin *Paladin) applyRedoubt() {
+	if paladin.Talents.Redoubt == 0 {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 20132}
+	// Redoubt grants 6% block chance per point.
+	blockBonus := 6.0 * float64(paladin.Talents.Redoubt) * core.BlockRatingPerBlockChance
 
-// 	paladin.PseudoStats.BlockValueMultiplier += 0.10 * float64(paladin.Talents.Redoubt)
+	paladin.redoubtAura = paladin.RegisterAura(core.Aura{
+		Label:     "Redoubt",
+		ActionID:  core.ActionID{SpellID: 20134},
+		Duration:  time.Second * 10,
+		MaxStacks: 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.AddStatDynamic(sim, stats.Block, blockBonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidBlock() {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
 
-// 	bonusBlockRating := 10 * core.BlockRatingPerBlockChance * float64(paladin.Talents.Redoubt)
-
-// 	procAura := paladin.RegisterAura(core.Aura{
-// 		Label:     "Redoubt Proc",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 10,
-// 		MaxStacks: 5,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.AddStatDynamic(sim, stats.Block, bonusBlockRating)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.AddStatDynamic(sim, stats.Block, -bonusBlockRating)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Outcome.Matches(core.OutcomeBlock) {
-// 				aura.RemoveStack(sim)
-// 			}
-// 		},
-// 	})
-
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Redoubt",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
-// 				if sim.RandomFloat("Redoubt") < 0.1 {
-// 					procAura.Activate(sim)
-// 					procAura.SetStacks(sim, 5)
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+	paladin.RegisterAura(core.Aura{
+		Label:    "Redoubt Crit Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+				paladin.redoubtAura.Activate(sim)
+				paladin.redoubtAura.SetStacks(sim, 5)
+			}
+		},
+	})
+}
 
 // func (paladin *Paladin) applyReckoning() {
 // 	if paladin.Talents.Reckoning == 0 {

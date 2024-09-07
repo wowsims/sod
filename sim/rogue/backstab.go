@@ -39,6 +39,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 	}
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueBackstab,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

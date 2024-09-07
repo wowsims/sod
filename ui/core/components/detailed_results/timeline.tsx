@@ -1333,7 +1333,7 @@ const idToCategoryMap: Record<number, number> = {
 	[42833]: SPELL_ACTION_CATEGORY + 0.02, // Fireball
 	[42859]: SPELL_ACTION_CATEGORY + 0.03, // Scorch
 	[42891]: SPELL_ACTION_CATEGORY + 0.1, // Pyroblast
-	[42846]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
+	[10212]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
 	[44572]: SPELL_ACTION_CATEGORY + 0.1, // Deep Freeze
 	[44781]: SPELL_ACTION_CATEGORY + 0.2, // Arcane Barrage
 	[42914]: SPELL_ACTION_CATEGORY + 0.2, // Ice Lance
@@ -1370,7 +1370,6 @@ const idToCategoryMap: Record<number, number> = {
 	[47471]: MELEE_ACTION_CATEGORY + 0.42, // Execute
 	[12867]: SPELL_ACTION_CATEGORY + 0.51, // Deep Wounds
 	[58874]: SPELL_ACTION_CATEGORY + 0.52, // Damage Shield
-	[47296]: SPELL_ACTION_CATEGORY + 0.53, // Critical Block
 	[46924]: SPELL_ACTION_CATEGORY + 0.61, // Bladestorm
 	[2565]: SPELL_ACTION_CATEGORY + 0.62, // Shield Block
 	[64382]: SPELL_ACTION_CATEGORY + 0.65, // Shattering Throw

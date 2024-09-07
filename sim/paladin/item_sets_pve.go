@@ -140,7 +140,8 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					spell.DamageMultiplier *= 1.5
+					//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
+					spell.DamageMultiplier += 0.5
 				}
 			})
 		},

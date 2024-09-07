@@ -19,6 +19,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 	flatDamageBonus := rogue.baseRuneAbilityDamage()
 
 	return rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueMutilate,
 		ActionID:    actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

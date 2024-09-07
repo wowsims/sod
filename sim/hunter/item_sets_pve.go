@@ -200,17 +200,21 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 			hunter := agent.(HunterAgent).GetHunter()
 
 			procAura := hunter.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467329},
-				Label:    "S03 - Item - T2 - Hunter - Melee 2P Bonus",
+				ActionID: core.ActionID{SpellID: 467331},
+				Label:    "Clever Strikes",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.MeleeSpells {
-						spell.DamageMultiplier *= 1.20
+						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit {
+							spell.DamageMultiplier *= 1.20
+						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.MeleeSpells {
-						spell.DamageMultiplier /= 1.20
+						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit {
+							spell.DamageMultiplier /= 1.20
+						}
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

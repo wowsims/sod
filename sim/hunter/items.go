@@ -22,7 +22,30 @@ const (
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
 	ZandalarPredatorsBracers = 231323
+	MarshalChainGrips        = 231560
+	GeneralChainGrips        = 231569
+	GeneralChainVices        = 231575
+	MarshalChainVices        = 231578
+	Peregrine                = 231755
 )
+
+func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
+	hunter := agent.(HunterAgent).GetHunter()
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
+}
+
+func applyMultiShotDamageEffect(agent core.Agent, multiplier float64) {
+	hunter := agent.(HunterAgent).GetHunter()
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_HunterMultiShot {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
+}
 
 func init() {
 	core.NewItemEffect(DevilsaurEye, func(agent core.Agent) {
@@ -239,43 +262,35 @@ func init() {
 	})
 
 	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
-
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+		applyRaptorStrikeDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
+		applyRaptorStrikeDamageEffect(agent, 1.04)
+	})
 
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+	core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
+		applyRaptorStrikeDamageEffect(agent, 1.04)
+	})
+
+	core.NewItemEffect(MarshalChainGrips, func(agent core.Agent) {
+		applyRaptorStrikeDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(BloodChainVices, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
-
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterMultiShot {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+		applyMultiShotDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(KnightChainVices, func(agent core.Agent) {
-		hunter := agent.(HunterAgent).GetHunter()
+		applyMultiShotDamageEffect(agent, 1.04)
+	})
 
-		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterMultiShot {
-				spell.DamageMultiplier *= 1.04
-			}
-		})
+	core.NewItemEffect(GeneralChainVices, func(agent core.Agent) {
+		applyMultiShotDamageEffect(agent, 1.04)
+	})
+
+	core.NewItemEffect(MarshalChainVices, func(agent core.Agent) {
+		applyMultiShotDamageEffect(agent, 1.04)
 	})
 
 	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {
@@ -324,6 +339,25 @@ func init() {
 		}
 
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.01
+	})
+
+	// https://www.wowhead.com/classic/item=231755/peregrine
+	// Chance on hit: Instantly gain 1 extra attack with both weapons.
+	// TODO: Proc rate assumed and needs testing
+	core.NewItemEffect(Peregrine, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Peregrine Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeOH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
+				// TODO: Add a way to generate a bonus off-hand attack
+			},
+		})
 	})
 }
 
