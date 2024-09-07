@@ -13,6 +13,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	}
 
 	rogue.saberSlashTick = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueSaberSlashDoT,
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash), Tag: 100},
 		SpellSchool: core.SpellSchoolPhysical,
 		Flags:       core.SpellFlagMeleeMetrics,
@@ -56,6 +57,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	})
 
 	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueSaberSlash,
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
