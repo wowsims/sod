@@ -68,6 +68,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	})
 
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueMainGauche,
 		ActionID:    mainGaucheAura.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

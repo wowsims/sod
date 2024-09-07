@@ -263,16 +263,17 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Increases main hand weapon damage by 10%
+		// Increases damage dealt by your main hand weapon from combo-generating abilities by 20%
 		4: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
-					spell.DamageMultiplier *= 1.10
+				//Currently not working as intended.  The below are tested to have worked.  MG and PK are subspells of Sinister Strike even though they are offhand attacks. SSL DoT confirmed to get the bonus as well.
+				if spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueBackstab || spell.SpellCode == SpellCode_RogueGhostlyStrike || spell.SpellCode == SpellCode_RogueHemorrhage || spell.SpellCode == SpellCode_RogueMainGauche || spell.SpellCode == SpellCode_RoguePoisonedKnife || spell.SpellCode == SpellCode_RogueSaberSlash || spell.SpellCode == SpellCode_RogueSaberSlashDoT || spell.SpellCode == SpellCode_RogueShadowStrike || spell.SpellCode == SpellCode_RogueSinisterStrike || (spell.SpellCode == SpellCode_RogueMutilate && spell.ActionID.Tag == 1) {
+					spell.DamageMultiplier *= 1.20
 				}
 			})
 		},
-		// Reduces cooldown on vanish by 1 minute
+		// Reduces cooldown on vanish to 1 minute
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.RegisterAura(core.Aura{

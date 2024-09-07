@@ -20,10 +20,19 @@ const (
 const (
 	SpellCode_RogueNone int32 = iota
 
-	SpellCode_RogueBladeFlurry
 	SpellCode_RogueAmbush
+	SpellCode_RogueBackstab
+	SpellCode_RogueBladeFlurry
 	SpellCode_RogueGarrote
+	SpellCode_RogueGhostlyStrike
+	SpellCode_RogueHemorrhage
+	SpellCode_RogueMainGauche
+	SpellCode_RogueMutilate
 	SpellCode_RoguePoisonedKnife
+	SpellCode_RogueSaberSlash
+	SpellCode_RogueSaberSlashDoT
+	SpellCode_RogueShadowStrike
+	SpellCode_RogueSinisterStrike
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
