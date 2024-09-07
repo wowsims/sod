@@ -3,17 +3,17 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
-	BloodSpatteredStilletto 		 = 216522
-	ShadowflameSword       			 = 228143
-	DreamEater						 = 224122
-	VenomousTotem 	                 = 230250
-	RenatakisCharmofTrickery		 = 231287
+	BloodSpatteredStilletto          = 216522
+	ShadowflameSword                 = 228143
+	DreamEater                       = 224122
+	VenomousTotem                    = 230250
+	RenatakisCharmofTrickery         = 231287
 	ZandalarianShadowMasteryTalisman = 231336
 )
 
@@ -128,7 +128,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				rogue.AddEnergy(sim, 60, cpMetrics)
-				if hasCutthroatRune{
+				if hasCutthroatRune {
 					rogue.CutthroatProcAura.Activate(sim)
 				}
 			},
@@ -147,7 +147,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=230250/venomous-totem
 	core.NewItemEffect(VenomousTotem, func(agent core.Agent) {
-		rogue := agent.(RogueAgent).GetRogue()	
+		rogue := agent.(RogueAgent).GetRogue()
 
 		aura := rogue.GetOrRegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 467511},
@@ -194,6 +194,6 @@ func init() {
 		rogue := agent.(RogueAgent).GetRogue()
 		rogue.cutthroatBonusChance += 0.05
 	})
-	
+
 	core.AddEffectsToTest = true
 }

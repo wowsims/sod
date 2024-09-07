@@ -16,6 +16,7 @@ import { PlayerDamageTakenMetricsTable } from './detailed_results/player_damage_
 import { ResourceMetricsTable } from './detailed_results/resource_metrics';
 import { SimResultData } from './detailed_results/result_component';
 import { ResultsFilter } from './detailed_results/results_filter';
+import { ThreatMetricsTable } from './detailed_results/threat_metrics';
 import { Timeline } from './detailed_results/timeline';
 import { ToplineResults } from './detailed_results/topline_results';
 import { RaidSimResultsManager } from './raid_sim_action';
@@ -35,6 +36,11 @@ const tabs: Tab[] = [
 		targetId: 'damageTab',
 		label: 'Damage',
 		classes: ['damage-metrics-tab'],
+	},
+	{
+		targetId: 'threatTab',
+		label: 'Threat',
+		classes: ['threat-metrics-tab'],
 	},
 	{
 		targetId: 'healingTab',
@@ -123,13 +129,16 @@ export abstract class DetailedResults extends Component {
 						<div className="dr-row single-player-only">
 							<div className="damage-metrics" />
 						</div>
-						{/* <div className="dr-row single-player-only">
-							<div className="melee-metrics" />
+						<div className="dr-row dps-histogram" />
+					</div>
+					<div id="threatTab" className="tab-pane dr-tab-content threat-content fade">
+						<div className="dr-row topline-results" />
+						<div className="dr-row all-players-only">
+							<div className="player-threat-metrics" />
 						</div>
 						<div className="dr-row single-player-only">
-							<div className="spell-metrics" />
-						</div> */}
-						<div className="dr-row dps-histogram" />
+							<div className="threat-metrics" />
+						</div>
 					</div>
 					<div id="healingTab" className="tab-pane dr-tab-content healing-content fade">
 						<div className="dr-row topline-results" />
@@ -214,6 +223,12 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.cast-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
+
+		new ThreatMetricsTable({
+			parent: this.rootElem.querySelector('.threat-metrics')!,
+			resultsEmitter: this.resultsEmitter,
+		});
+
 		new DamageMetricsTable({
 			parent: this.rootElem.querySelector('.damage-metrics')!,
 			resultsEmitter: this.resultsEmitter,
