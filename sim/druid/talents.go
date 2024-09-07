@@ -29,7 +29,7 @@ func (druid *Druid) ApplyTalents() {
 	// Restoration
 	druid.applyFuror()
 
-	druid.PseudoStats.SpiritRegenRateCasting *= 1 - .05*float64(druid.Talents.Reflection)
+	druid.PseudoStats.SpiritRegenRateCasting += .05 * float64(druid.Talents.Reflection)
 }
 
 func (druid *Druid) ThickHideMultiplier() float64 {

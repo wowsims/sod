@@ -6,6 +6,7 @@
     "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castSpell":{"spellId":{"spellId":407798}}}]}}},
+        {"action":{"castSpell":{"spellId":{"spellId":20928,"rank":3}}}},
         {"action":{"castSpell":{"spellId":{"spellId":407632}}}},
         {"action":{"castSpell":{"spellId":{"spellId":415073}}}},
         {"action":{"castSpell":{"spellId":{"spellId":440658}}}}

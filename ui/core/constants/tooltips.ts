@@ -28,10 +28,15 @@ export const TOOLTIP_METRIC_LABELS = {
 	Damage: 'Total Damage done',
 	DPS: 'Damage / Encounter Duration',
 	DPASP: 'Dark Pact Average Spellpower',
-	TPS: 'Threat / Encounter Duration',
 	DPET: 'Damage / Avg Cast Time',
 	'Damage Avg Cast': 'Damage / Casts and/or Damage / Ticks',
 	'Avg Hit': 'Damage / (Hits + Crits + Glances + Blocks) and/or Damage / (Ticks + Critical Ticks)',
+	// Threat metrics
+	Threat: 'Total Threat done',
+	TPS: 'Threat / Encounter Duration',
+	TPET: 'Threat / Avg Cast Time',
+	'Avg Cast Threat': 'Threat / Casts and/or Threat / Ticks',
+	'Avg Hit Threat': 'Threat / (Hits + Crits + Glances + Blocks) and/or Threat / (Ticks + Critical Ticks)',
 	// Healing metrics
 	Healing: 'Total Healing done',
 	'Healing Avg Cast': 'Healing / Casts',

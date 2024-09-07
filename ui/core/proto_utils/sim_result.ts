@@ -482,6 +482,10 @@ export class UnitMetrics {
 		return this.getActionsForDisplay().filter(e => e.dps !== 0 && e.hps === 0);
 	}
 
+	getThreatActions(): Array<ActionMetrics> {
+		return this.getActionsForDisplay().filter(e => e.tps !== 0 && e.hps === 0);
+	}
+
 	getHealingActions(): Array<ActionMetrics> {
 		return this.getActionsForDisplay();
 	}
@@ -878,6 +882,25 @@ export class ActionMetrics {
 		return this.combinedMetrics.dps;
 	}
 
+	get threat() {
+		return this.combinedMetrics.threat;
+	}
+
+	get avgThreat() {
+		return this.combinedMetrics.avgThreat;
+	}
+
+	get totalThreatPercent() {
+		const totalAvgTps = this.resultData.result.raidMetrics?.parties[0].players[0].threat?.avg;
+		if (!totalAvgTps) return undefined;
+
+		return (this.avgThreat / (totalAvgTps * this.duration)) * 100;
+	}
+
+	get tps() {
+		return this.combinedMetrics.tps;
+	}
+
 	get totalHealingPercent() {
 		const totalAvgHps = this.resultData.result.raidMetrics?.hps?.avg;
 		if (!totalAvgHps) return undefined;
@@ -903,10 +926,6 @@ export class ActionMetrics {
 
 	get hps() {
 		return this.combinedMetrics.hps;
-	}
-
-	get tps() {
-		return this.combinedMetrics.tps;
 	}
 
 	get casts() {
@@ -937,6 +956,11 @@ export class ActionMetrics {
 	get damageThroughput() {
 		if (this.unit?.isPet && !this.actionId.spellId) return 0;
 		return this.combinedMetrics.damageThroughput;
+	}
+
+	get threatThroughput() {
+		if (this.unit?.isPet && !this.actionId.spellId) return 0;
+		return this.combinedMetrics.threatThroughput;
 	}
 
 	get healingThroughput() {
@@ -1180,12 +1204,12 @@ export class ActionMetrics {
 			glance: {
 				value: this.avgGlanceDamage,
 				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
-				average: this.avgGlanceDamage / this.hits,
+				average: this.avgGlanceDamage / this.glances,
 			},
 			block: {
 				value: this.avgBlockDamage,
 				percentage: (this.avgBlockDamage / this.avgDamage) * 100,
-				average: this.avgBlockDamage / this.hits,
+				average: this.avgBlockDamage / this.blocks,
 			},
 		};
 	}
@@ -1369,6 +1393,18 @@ export class TargetedActionMetrics {
 		return this.data.damage / this.iterations / this.duration;
 	}
 
+	get threat() {
+		return this.data.threat;
+	}
+
+	get avgThreat() {
+		return this.data.threat / this.iterations;
+	}
+
+	get tps() {
+		return this.data.threat / this.iterations / this.duration;
+	}
+
 	get healing() {
 		return this.data.healing + this.data.shielding;
 	}
@@ -1393,10 +1429,6 @@ export class TargetedActionMetrics {
 		return (this.data.healing + this.data.shielding) / this.iterations / this.duration;
 	}
 
-	get tps() {
-		return this.data.threat / this.iterations / this.duration;
-	}
-
 	get casts() {
 		return this.data.casts / this.iterations;
 	}
@@ -1412,6 +1444,14 @@ export class TargetedActionMetrics {
 	get damageThroughput() {
 		if (this.avgCastTimeMs) {
 			return this.avgCast / (this.avgCastTimeMs / 1000);
+		} else {
+			return 0;
+		}
+	}
+
+	get threatThroughput() {
+		if (this.avgCastTimeMs) {
+			return Math.max(this.avgHitThreat, this.avgCastThreat) / (this.avgCastTimeMs / 1000);
 		} else {
 			return 0;
 		}
