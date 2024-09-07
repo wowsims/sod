@@ -25,6 +25,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 	}[rogue.Level]
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueSinisterStrike,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

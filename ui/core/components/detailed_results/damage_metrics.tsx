@@ -18,7 +18,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				: undefined;
 			this.maxDamageAmount = Math.max(...(lastResult || []).map(a => a.damage));
 		});
-		const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
 		super(config, [
 			MetricsTable.nameCellConfig((metric: ActionMetrics) => {
 				return {
@@ -178,34 +177,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							)}
 						</>,
 					);
-
-					if (!metric.avgCastHit && !metric.avgCastTick) return;
-
-					cellElem.appendChild(
-						<MetricsCombinedTooltipTable
-							tooltipElement={cellElem}
-							tooltipConfig={{
-								onShow: () => {
-									if (hideThreatMetrics) return false;
-								},
-							}}
-							headerValues={[, 'Amount']}
-							groups={[
-								{
-									spellSchool: metric.spellSchool,
-									total: metric.avgCastThreat,
-									totalPercentage: 100,
-									data: [
-										{
-											name: 'Threat',
-											value: metric.avgCastThreat,
-											percentage: 100,
-										},
-									],
-								},
-							]}
-						/>,
-					);
 				},
 			},
 			{
@@ -314,35 +285,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							{metric.avgHit && metric.avgTick ? <> ({formatToCompactNumber(metric.avgTick, { fallbackString: '-' })})</> : undefined}
 						</>,
 					);
-
-					if (!metric.avgHitThreat) return;
-
-					cellElem.appendChild(
-						<MetricsCombinedTooltipTable
-							tooltipElement={cellElem}
-							tooltipConfig={{
-								onShow: () => {
-									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
-									if (hideThreatMetrics) return false;
-								},
-							}}
-							headerValues={[, 'Amount']}
-							groups={[
-								{
-									spellSchool: metric.spellSchool,
-									total: metric.avgHitThreat,
-									totalPercentage: 100,
-									data: [
-										{
-											name: 'Threat',
-											value: metric.avgHitThreat,
-											percentage: 100,
-										},
-									],
-								},
-							]}
-						/>,
-					);
 				},
 			},
 			{
@@ -397,43 +339,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.damageThroughput, { fallbackString: '-' }),
 			},
 			{
-				name: 'TPS',
-				headerCellClass: 'text-body threat-metrics',
-				columnClass: 'text-success threat-metrics',
-				sort: ColumnSortType.Descending,
-				getValue: (metric: ActionMetrics) => metric.tps,
-				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToNumber(metric.tps, { minimumFractionDigits: 2, fallbackString: '-' })}</>);
-					if (!metric.tps) return;
-
-					cellElem.appendChild(
-						<MetricsCombinedTooltipTable
-							tooltipElement={cellElem}
-							headerValues={[, 'Amount']}
-							groups={[
-								{
-									spellSchool: metric.spellSchool,
-									total: metric.tps,
-									totalPercentage: 100,
-									data: [
-										{
-											name: 'Per Cast',
-											value: metric.avgCastThreat,
-											percentage: (metric.avgCastThreat / Math.max(metric.avgCastThreat, metric.avgHitThreat)) * 100,
-										},
-										{
-											name: 'Per Hit',
-											value: metric.avgHitThreat,
-											percentage: (metric.avgHitThreat / Math.max(metric.avgCastThreat, metric.avgHitThreat)) * 100,
-										},
-									],
-								},
-							]}
-						/>,
-					);
-				},
-			},
-			{
 				name: 'DPS',
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',
@@ -442,42 +347,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToNumber(metric.dps, { minimumFractionDigits: 2, fallbackString: '-' })}</>);
 					if (!metric.dps) return;
-
-					cellElem.appendChild(
-						<MetricsCombinedTooltipTable
-							tooltipElement={cellElem}
-							tooltipConfig={{
-								onShow: () => {
-									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
-									if (hideThreatMetrics) return false;
-								},
-							}}
-							headerValues={[, 'Amount']}
-							groups={[
-								{
-									spellSchool: metric.spellSchool,
-									total: metric.tps,
-									totalPercentage: 100,
-									data: [
-										{
-											name: 'Threat',
-											value: metric.tps,
-											percentage: 100,
-										},
-									],
-								},
-							]}
-						/>,
-					);
 				},
 			},
 		]);
-	}
-
-	customizeRowElem(action: ActionMetrics, rowElem: HTMLElement) {
-		if (action.hitAttempts == 0 && action.dps == 0) {
-			rowElem.classList.add('threat-metrics');
-		}
 	}
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<ActionMetrics>> {

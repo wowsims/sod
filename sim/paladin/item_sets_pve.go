@@ -147,7 +147,7 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 		},
 		5: func(agent core.Agent) {
 			// Reduce cooldown of Exorcism by 3 seconds
-			paladin := agent.(PaladinAgent).GetPaladin()			
+			paladin := agent.(PaladinAgent).GetPaladin()
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
