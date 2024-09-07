@@ -11,16 +11,16 @@ func (rogue *Rogue) registerVanishSpell() {
 
 	rogue.VanishAura = rogue.RegisterAura(core.Aura{
 		Label:    "Vanish",
-		ActionID: core.ActionID{SpellID:457437},
+		ActionID: core.ActionID{SpellID: 457437},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.5)
+			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.5)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1/0.5)
+			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / 0.5)
 		},
 	})
-	
+
 	rogue.Vanish = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1856},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -33,7 +33,7 @@ func (rogue *Rogue) registerVanishSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second*time.Duration(300 - float64(45*rogue.Talents.Elusiveness)),
+				Duration: time.Second * time.Duration(300-float64(45*rogue.Talents.Elusiveness)),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

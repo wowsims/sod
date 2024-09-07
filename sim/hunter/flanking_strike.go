@@ -67,7 +67,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	}
 
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode: 	 SpellCode_HunterFlankingStrike,
+		SpellCode:   SpellCode_HunterFlankingStrike,
 		ActionID:    core.ActionID{SpellID: 415320},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

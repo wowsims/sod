@@ -13,7 +13,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		return
 	}
 	hasPKRune := rogue.HasRune(proto.RogueRune_RunePoisonedKnife)
-	hasQDRune := rogue.HasRune(proto.RogueRune_RuneQuickDraw) 
+	hasQDRune := rogue.HasRune(proto.RogueRune_RuneQuickDraw)
 
 	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
 	mainGaucheAura := rogue.RegisterAura(core.Aura{
@@ -45,7 +45,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
 				rogue.PoisonedKnife.ThreatMultiplier *= 1.5
 			}
-			
+
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier -= 20
 				rogue.QuickDraw.ThreatMultiplier *= 1.5
@@ -59,7 +59,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20
 				rogue.PoisonedKnife.ThreatMultiplier /= 1.5
 			}
-			
+
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier += 20
 				rogue.QuickDraw.ThreatMultiplier /= 1.5

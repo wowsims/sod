@@ -114,7 +114,7 @@ const (
 	GutgoreRipperMolten            = 229372
 	EskhandarsRightClawMolten      = 229379
 	TheUntamedBlade                = 230242 // 19334
-	Windstriker					   = 231817 
+	Windstriker                    = 231817
 )
 
 func init() {

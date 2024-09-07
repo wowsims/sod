@@ -3,8 +3,8 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -252,7 +252,7 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakePermanent(rogue.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T2 - Rogue - Damage 2P Bonus",
+				Label: "S03 - Item - T2 - Rogue - Damage 2P Bonus",
 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) {
 						return
@@ -277,9 +277,9 @@ var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.RegisterAura(core.Aura{
- 				Label: "S03 - Item - T2 - Rogue - Damage 6P Bonus",
-  				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				//Applied after talents in sim so does not stack with elusiveness when active.
+				Label: "S03 - Item - T2 - Rogue - Damage 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					//Applied after talents in sim so does not stack with elusiveness when active.
 					rogue.Vanish.CD.Duration = time.Second * 60
 				},
 			})
@@ -297,8 +297,8 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				return
 			}
 			rogue.OnComboPointsGained(func(sim *core.Simulation) {
-					rogue.RollingWithThePunchesProcAura.Activate(sim)
-					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+				rogue.RollingWithThePunchesProcAura.Activate(sim)
+				rogue.RollingWithThePunchesProcAura.AddStack(sim)
 			})
 		},
 		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
@@ -312,13 +312,13 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 			rogue.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Rogue - Tank 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				  oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
-				  rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					oldOnStacksChange(aura, sim, oldStacks, newStacks)
-					rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
-				}
+					oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
+					rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+						oldOnStacksChange(aura, sim, oldStacks, newStacks)
+						rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
+					}
 				},
-			  })
+			})
 		},
 		// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
 		6: func(agent core.Agent) {
@@ -328,7 +328,7 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakePermanent(rogue.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T2 - Rogue - Tank 6P Bonus",
+				Label: "S03 - Item - T2 - Rogue - Tank 6P Bonus",
 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.DidDodge() || result.DidParry() {
 						rogue.MainGauche.CD.Reset()
@@ -376,7 +376,7 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 		5: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_RogueAmbush  {
+				if spell.SpellCode == SpellCode_RogueAmbush {
 					spell.BonusCritRating += 30 * core.CritRatingPerCritChance
 				}
 			})
