@@ -320,9 +320,13 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
-	if dot := spell.DotOrAOEDot(target); dot.BonusCoefficient > 0 {
+
+	dot := spell.DotOrAOEDot(target)
+	attackerMultiplier *= dot.DamageMultiplier
+	if dot.BonusCoefficient > 0 {
 		baseDamage += dot.BonusCoefficient * spell.GetBonusDamage()
 	}
+
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
@@ -343,6 +347,8 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 		} else {
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 		}
+
+		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
 
 		if dot.Spell.SchoolIndex == stats.SchoolIndexPhysical {
 			dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
@@ -490,9 +496,12 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool)
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
 		}
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
+
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 	}
 }
 

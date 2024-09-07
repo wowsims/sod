@@ -58,7 +58,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * 4,
 			},
 		},
 

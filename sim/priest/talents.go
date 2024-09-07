@@ -42,6 +42,7 @@ func (priest *Priest) ApplyTalents() {
 	// Shadow
 	priest.registerVampiricEmbraceSpell()
 	priest.registerShadowform()
+	priest.applySpiritTap()
 	priest.applyShadowAffinity()
 	priest.applyShadowFocus()
 	priest.applyShadowWeaving()
@@ -127,6 +128,29 @@ func (priest *Priest) applySearingLight() {
 	})
 }
 
+func (priest *Priest) applySpiritTap() {
+	if priest.Talents.SpiritTap == 0 {
+		return
+	}
+
+	spellID := []int32{0, 15270, 15335, 15336, 15337, 15338}[priest.Talents.SpiritTap]
+	statDep := priest.NewDynamicMultiplyStat(stats.Spirit, 2.0)
+
+	priest.SpiritTapAura = priest.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: spellID},
+		Label:    "Spirit Tap",
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			priest.EnableDynamicStatDep(sim, statDep)
+			priest.PseudoStats.SpiritRegenRateCasting += 0.50
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			priest.DisableDynamicStatDep(sim, statDep)
+			priest.PseudoStats.SpiritRegenRateCasting -= 0.50
+		},
+	})
+}
+
 func (priest *Priest) applyShadowAffinity() {
 	if priest.Talents.ShadowAffinity == 0 {
 		return
@@ -163,7 +187,7 @@ func (priest *Priest) applyShadowWeaving() {
 	procChance := 0.2 * float64(priest.Talents.ShadowWeaving)
 
 	priest.ShadowWeavingProc = priest.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 15258},
+		ActionID:    core.ActionID{SpellID: core.ShadowWeavingSpellIDs[int(priest.Talents.ShadowWeaving)]},
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagNoMetrics,
 		SpellSchool: core.SpellSchoolShadow,
 
