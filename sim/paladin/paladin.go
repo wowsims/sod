@@ -23,6 +23,7 @@ const (
 	SpellCode_PaladinHolyWrath
 	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
+	SpellCode_PaladinAvengersShield
 )
 
 type SealJudgeCode uint8
