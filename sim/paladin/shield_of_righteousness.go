@@ -11,11 +11,9 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 		return
 	}
 
-	level := float64(paladin.Level)
-
 	// Base damage formula from wowhead tooltip:
 	// https://www.wowhead.com/classic/spell=440658/shield-of-righteousness
-	damage := 179.0 * (9.046514 + 0.676562*level + 0.019349*level*level) / 100.0
+	damage := 179.0 * paladin.baseRuneAbilityDamage() / 100.0
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},

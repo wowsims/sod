@@ -254,3 +254,7 @@ func (paladin *Paladin) getLibramSealCostReduction() float64 {
 	}
 	return 0
 }
+
+func (paladin *Paladin) baseRuneAbilityDamage() float64 {
+	return 9.046514 + 0.676562*paladin.Level + 0.019349*paladin.Level*paladin.Level
+}
