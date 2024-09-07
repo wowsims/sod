@@ -220,6 +220,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 					spell.Cost.Multiplier += 100
 				}
 			})
+			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagFocusable) {
@@ -239,7 +240,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 	})
 
-	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.ElementalMastery = shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -254,7 +255,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: eleMastSpell,
+		Spell: shaman.ElementalMastery,
 		Type:  core.CooldownTypeDPS,
 	})
 }

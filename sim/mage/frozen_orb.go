@@ -108,7 +108,6 @@ func (ffo *FrozenOrb) registerFrozenOrbTickSpell() {
 		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagNoLogs,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

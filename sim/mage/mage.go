@@ -20,6 +20,7 @@ const (
 	SpellCode_MageArcaneMissiles
 	SpellCode_MageArcaneSurge
 	SpellCode_MageBalefireBolt
+	SpellCode_MageBlastWave
 	SpellCode_MageFireball
 	SpellCode_MageFireBlast
 	SpellCode_MageFrostbolt
@@ -58,7 +59,8 @@ type Mage struct {
 	Talents *proto.MageTalents
 	Options *proto.Mage_Options
 
-	frozenOrb *FrozenOrb
+	activeBarrier *core.Aura
+	frozenOrb     *FrozenOrb
 
 	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
@@ -76,11 +78,13 @@ type Mage struct {
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
 	FrozenOrb               *core.Spell
+	IceBarrier              []*core.Spell
 	IceLance                *core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
 	ManaGem                 []*core.Spell
+	PresenceOfMind          *core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
 	SpellfrostBolt          *core.Spell
@@ -95,11 +99,13 @@ type Mage struct {
 	FingersOfFrostAura  *core.Aura
 	HotStreakAura       *core.Aura
 	IceArmorAura        *core.Aura
+	IceBarrierAuras     []*core.Aura
 	ImprovedScorchAuras core.AuraArray
 	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
 	MoltenArmorAura     *core.Aura
 
+	BonusFireballDoTAmount   float64
 	FingersOfFrostProcChance float64
 }
 
@@ -141,6 +147,7 @@ func (mage *Mage) Initialize() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
+	mage.BonusFireballDoTAmount = 0
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {
@@ -157,6 +164,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 	mage.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[mage.Class][int(mage.Level)]*core.SpellCritRatingPerCritChance)
+	mage.AddStatDependency(stats.Intellect, stats.SpellDamage, 1)
 
 	switch mage.Consumes.MageScroll {
 	case proto.MageScroll_MageScrollArcaneRecovery:
