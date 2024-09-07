@@ -3,6 +3,7 @@ package hunter
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -363,11 +364,9 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(Kestrel, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		kestrelAura := character.RegisterAura(core.Aura{
-			Label: "Kestrel",
+	itemhelpers.CreateWeaponProcAura(Kestrel, "Kestrel", 1, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label: "Kestrel Move Speed Aura",
 			ActionID: core.ActionID{SpellID: 469148},
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -375,18 +374,6 @@ func init() {
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.MoveSpeed /= 1.40
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Kestrel Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMeleeMH,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1.0,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				kestrelAura.Activate(sim)
 			},
 		})
 	})
@@ -443,26 +430,31 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			BonusCoefficient: 0,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					damage := sim.Roll(185, 210)
-					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
+
+		maxCarveTargetsPerCast := int32(5)
+		maxMultishotTargetsPerCast := int32(3)
 
 		arcaneInfused := character.RegisterAura(core.Aura{
 			Label: "Arcane Infused",
 			ActionID: core.ActionID{SpellID: 467446},
 			Duration: time.Second * 15,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				maxCarveTargetsPerCast = min(sim.Environment.GetNumTargets(), 5)
+				maxMultishotTargetsPerCast = min(sim.Environment.GetNumTargets(), 3)
+			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				maxTargetsPerCast := int32(5)
 				// Uses same targeting code as multi-shot however the detonations occur at cast time rather than when the shots land
 				if spell.SpellCode == SpellCode_HunterMultiShot {
 					curTarget := sim.Environment.Encounter.TargetUnits[0]
-					for hitIndex := int32(0); hitIndex < min(3, character.Env.GetNumTargets()); hitIndex++ {
+					for hitIndex := int32(0); hitIndex < maxMultishotTargetsPerCast; hitIndex++ {
 						arcaneDetonation.Cast(sim, curTarget)
 						curTarget = sim.Environment.NextTargetUnit(curTarget)
 					}
@@ -470,7 +462,7 @@ func init() {
 				// 1 explosion per target up to 5 targets per carve cast
 				if spell.SpellCode == SpellCode_HunterCarve {
 					curTarget := sim.Environment.Encounter.TargetUnits[0]
-					for hitIndex := int32(0); hitIndex < min(maxTargetsPerCast, character.Env.GetNumTargets()); hitIndex++ {
+					for hitIndex := int32(0); hitIndex < maxCarveTargetsPerCast; hitIndex++ {
 						arcaneDetonation.Cast(sim, curTarget)
 						curTarget = sim.Environment.NextTargetUnit(curTarget)
 					}
@@ -486,6 +478,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 90,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: arcaneInfused.Duration,
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

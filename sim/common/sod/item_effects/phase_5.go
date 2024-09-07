@@ -141,24 +141,18 @@ func init() {
 			return
 		}
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 1,
-		}
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Heartstriker",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Heartstrike",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskRanged,
+			ICD:      time.Second * 1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
 					return
 				}
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.01, "Heartstriker") {
-					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+				if sim.Proc(0.02, "Heartstriker") {
+					spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
 				}
 			},
 		})
