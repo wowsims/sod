@@ -1903,7 +1903,7 @@
 {"id":453622,"name":"Engrave Ring - Feral Combat Specialization","icon":"ability_druid_catformattack","type":11,"requiresLevel":1,"classAllowlist":[1]},
 {"id":458287,"name":"Engrave Chest - Hallowed Ground","icon":"spell_holy_crusade","type":5,"requiresLevel":1,"classAllowlist":[4]},
 {"id":458318,"name":"Engrave Belt - Malleable Protection","icon":"spell_holy_restoration","type":8,"requiresLevel":1,"classAllowlist":[4]},
-{"id":458393,"name":"Engrave Chest - Cobra Slayer","icon":"spell_nature_guardianward","type":5,"classAllowlist":[2]},
+{"id":458393,"name":"Engrave Gloves - Cobra Slayer","icon":"spell_nature_guardianward","type":7,"classAllowlist":[2]},
 {"id":458479,"name":"Engrave Boots - Wyvern Strike","icon":"inv_spear_02","type":10,"requiresLevel":1,"classAllowlist":[2]},
 {"id":458856,"name":"Engrave Cloak - Divine Light","icon":"spell_holy_surgeoflight","type":4,"requiresLevel":1,"classAllowlist":[4]},
 {"id":459312,"name":"Engrave Ring - Defense Specialization","icon":"inv_shield_06","type":11,"requiresLevel":1,"classAllowlist":[0,9,4,6,7,8,1]},
