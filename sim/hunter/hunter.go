@@ -41,6 +41,8 @@ const (
 	// Traps
 
 	// Other
+	SpellCode_HunterCarve
+	SpellCode_HunterCarveHit
 	SpellCode_HunterMongooseBite
 	SpellCode_HunterVolley
 )

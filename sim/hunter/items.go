@@ -18,6 +18,7 @@ const (
 	BloodChainGrips          = 227081
 	KnightChainGrips         = 227087
 	WhistleOfTheBeast        = 228432
+	ArcaneInfusedGem		 = 230237
 	MaelstromsWrath          = 231320
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
@@ -386,6 +387,77 @@ func init() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				kestrelAura.Activate(sim)
 			},
+		})
+	})
+
+	core.NewItemEffect(ArcaneInfusedGem, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		arcaneDetonation := character.RegisterSpell(core.SpellConfig{
+			ActionID: 		core.ActionID{SpellID: 467447},
+			SpellSchool: 	core.SpellSchoolArcane,
+			DefenseType: 	core.DefenseTypeMagic,
+			ProcMask: 		core.ProcMaskSpellDamage,
+			Flags: 			core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 0,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					damage := sim.Roll(185, 210)
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicCrit)
+				}
+			},
+		})
+
+		arcaneInfused := character.RegisterAura(core.Aura{
+			Label: "Arcane Infused",
+			ActionID: core.ActionID{SpellID: 467446},
+			Duration: time.Second * 15,
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				maxTargetsPerCast := int32(5)
+				// Uses same targeting code as multi-shot however the detonations occur at cast time rather than when the shots land
+				if spell.SpellCode == SpellCode_HunterMultiShot {
+					curTarget := sim.Environment.Encounter.TargetUnits[0]
+					for hitIndex := int32(0); hitIndex < min(3, character.Env.GetNumTargets()); hitIndex++ {
+						arcaneDetonation.Cast(sim, curTarget)
+						curTarget = sim.Environment.NextTargetUnit(curTarget)
+					}
+				}
+				// 1 explosion per target up to 5 targets per carve cast
+				if spell.SpellCode == SpellCode_HunterCarve {
+					curTarget := sim.Environment.Encounter.TargetUnits[0]
+					for hitIndex := int32(0); hitIndex < min(maxTargetsPerCast, character.Env.GetNumTargets()); hitIndex++ {
+						arcaneDetonation.Cast(sim, curTarget)
+						curTarget = sim.Environment.NextTargetUnit(curTarget)
+					}
+				}
+			},
+		})
+
+		spell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: arcaneInfused.ActionID.SpellID},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 90,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				arcaneInfused.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 }
