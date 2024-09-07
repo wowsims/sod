@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestBM-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.89078
+  weights: 0.78207
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33663
-  weights: 9.05738
-  weights: 7.89354
+  weights: 0.3252
+  weights: 8.61622
+  weights: 7.80908
   weights: 0
   weights: 0
   weights: 0
@@ -77,7 +77,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.07303
+  weights: 0.0692
   weights: 0
   weights: 0
   weights: 0
@@ -106,85 +106,85 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 873.31219
-  tps: 338.63979
+  dps: 840.55249
+  tps: 353.77754
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 845.84185
-  tps: 330.28748
+  dps: 814.4993
+  tps: 345.05449
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 742.79797
-  tps: 350.92028
+  dps: 694.31313
+  tps: 361.66111
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 855.34976
-  tps: 334.53194
+  dps: 823.46304
+  tps: 349.5809
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 863.86207
-  tps: 334.23168
+  dps: 831.25474
+  tps: 349.23072
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Average-Default"
  value: {
-  dps: 856.39264
-  tps: 333.42355
+  dps: 822.51573
+  tps: 347.65906
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1922.92856
-  tps: 1664.19376
+  dps: 2128.84768
+  tps: 1942.17148
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 862.59892
-  tps: 343.68138
+  dps: 834.11343
+  tps: 360.93314
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 899.35289
-  tps: 350.4869
+  dps: 882.67338
+  tps: 371.93188
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1103.41807
-  tps: 1065.83333
+  dps: 1220.15693
+  tps: 1239.89109
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 462.0143
-  tps: 185.35009
+  dps: 443.49119
+  tps: 193.74085
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-NightElf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 494.29865
-  tps: 189.0351
+  dps: 481.87349
+  tps: 194.89188
  }
 }
 dps_results: {
@@ -316,43 +316,43 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1893.25391
-  tps: 1637.94747
+  dps: 2066.42319
+  tps: 1878.8871
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 851.47771
-  tps: 335.56057
+  dps: 827.20049
+  tps: 349.91279
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 888.56134
-  tps: 341.72218
+  dps: 863.66458
+  tps: 352.52359
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1084.2824
-  tps: 1042.32177
+  dps: 1211.5367
+  tps: 1220.83482
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 463.43533
-  tps: 183.36383
+  dps: 448.67221
+  tps: 193.58307
  }
 }
 dps_results: {
  key: "TestBM-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 499.46746
-  tps: 187.50624
+  dps: 482.54459
+  tps: 192.64999
  }
 }
 dps_results: {
@@ -484,7 +484,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 810.70605
-  tps: 306.0389
+  dps: 786.71108
+  tps: 322.53489
  }
 }
