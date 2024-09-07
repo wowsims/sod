@@ -35,7 +35,9 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 				Duration: time.Second * 6,
 			},
 		},
-
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
+		},
 		DamageMultiplier: 3,
 		ThreatMultiplier: 2,
 
