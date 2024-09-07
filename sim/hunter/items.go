@@ -19,6 +19,7 @@ const (
 	KnightChainGrips         = 227087
 	WhistleOfTheBeast        = 228432
 	ArcaneInfusedGem		 = 230237
+	RenatakisCharmOfRavaging = 231288
 	MaelstromsWrath          = 231320
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
@@ -390,6 +391,46 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=231288/renatakis-charm-of-ravaging
+	core.NewItemEffect(RenatakisCharmOfRavaging, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		lockedIn := character.RegisterAura(core.Aura{
+			Label: "Locked In",
+			ActionID: core.ActionID{SpellID: 468388},
+			Duration: time.Second * 20,
+			MaxStacks: 3,
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_HunterCarve || spell.SpellCode == SpellCode_HunterMultiShot {
+					spell.CD.Reset()
+					aura.RemoveStack(sim)
+				}
+			},
+		})
+
+		spell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 468388},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				lockedIn.Activate(sim)
+				lockedIn.SetStacks(sim, 3)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=230237/arcane-infused-gem
 	core.NewItemEffect(ArcaneInfusedGem, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -442,9 +483,6 @@ func init() {
 			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
-				DefaultCast: core.Cast{
-					GCD: core.GCDDefault,
-				},
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 90,
