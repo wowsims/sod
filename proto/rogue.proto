@@ -104,7 +104,7 @@ enum RogueRune {
 	RuneBladeDance				= 400012;
 	
 	// Boots
-	RuneRollingWithThePunches	= 400093;
+	RuneRollingWithThePunches	= 400016;
 	RuneWaylay					= 408700;
 	RuneMasterOfSubtlety		= 425096;
 }
