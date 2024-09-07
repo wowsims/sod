@@ -106,6 +106,7 @@ type Shaman struct {
 	ChainLightningOverload []*core.Spell
 	EarthShield            *core.Spell
 	EarthShock             []*core.Spell
+	ElementalMastery       *core.Spell
 	FeralSpirit            *core.Spell
 	FireNova               *core.Spell
 	FireNovaTotem          []*core.Spell

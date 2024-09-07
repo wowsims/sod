@@ -114,6 +114,7 @@ const (
 	GutgoreRipperMolten            = 229372
 	EskhandarsRightClawMolten      = 229379
 	TheUntamedBlade                = 230242 // 19334
+	Windstriker                    = 231817
 )
 
 func init() {
@@ -2053,6 +2054,26 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponCoHProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=231817/windstriker
+	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
+	core.NewItemEffect(Windstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		procMask := character.GetProcMaskForItem(Windstriker)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Felstriker Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               0.6,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				effectAura.Activate(sim)
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=227941/wraith-scythe
 	// Chance on hit: Steals 45 life from target enemy.

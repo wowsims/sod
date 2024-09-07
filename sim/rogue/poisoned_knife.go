@@ -11,13 +11,14 @@ func (rogue *Rogue) registerPoisonedKnife() {
 	if !rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
 		return
 	}
-	
+
 	poisonedKnifeMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 425012})
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	// Poisoned Knife /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=425013/poisoned-knife
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RoguePoisonedKnife,
 		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RunePoisonedKnife)},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -58,9 +59,9 @@ func (rogue *Rogue) registerPoisonedKnife() {
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				dp := rogue.deadlyPoisonTick.Dot(target)
-				numDPStacks := float64(dp.GetStacks()*5)
+				numDPStacks := float64(dp.GetStacks() * 5)
 				rogue.AddEnergy(sim, numDPStacks, poisonedKnifeMetrics)
-				
+
 				// 100% application of OH poison (except for 1%? It can resist extremely rarely)
 				switch rogue.Consumes.OffHandImbue {
 				case proto.WeaponImbue_InstantPoison:

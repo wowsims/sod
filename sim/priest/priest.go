@@ -22,6 +22,7 @@ const (
 	SpellCode_PriestMindBlast
 	SpellCode_PriestMindFlay
 	SpellCode_PriestMindSpike
+	SpellCode_PriestShadowWordPain
 	SpellCode_PriestSmite
 	SpellCode_PriestVampiricTouch
 )
@@ -48,6 +49,7 @@ type Priest struct {
 	MindBlast         []*core.Spell
 	MindFlay          [][]*core.Spell // 1 entry for each tick for each rank
 	MindSear          []*core.Spell   // 1 entry for each tick
+	MindSearTicks     []*core.Spell   // 1 entry for each tick
 	MindSpike         *core.Spell
 	Penance           *core.Spell
 	PenanceHeal       *core.Spell
@@ -71,6 +73,7 @@ type Priest struct {
 	InnerFocusAura   *core.Aura
 	ShadowfiendAura  *core.Aura
 	ShadowformAura   *core.Aura
+	SpiritTapAura    *core.Aura
 	SurgeOfLightAura *core.Aura
 
 	MindSpikeAuras       core.AuraArray
