@@ -18,6 +18,7 @@ const (
 	SpellCode_MageArcaneBlast
 	SpellCode_MageArcaneExplosion
 	SpellCode_MageArcaneMissiles
+	SpellCode_MageArcaneMissilesTick
 	SpellCode_MageArcaneSurge
 	SpellCode_MageBalefireBolt
 	SpellCode_MageBlastWave
@@ -105,8 +106,9 @@ type Mage struct {
 	MissileBarrageAura  *core.Aura
 	MoltenArmorAura     *core.Aura
 
-	BonusFireballDoTAmount   float64
-	FingersOfFrostProcChance float64
+	ArcaneBlastMissileBarrageChance float64
+	BonusFireballDoTAmount          float64
+	FingersOfFrostProcChance        float64
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.

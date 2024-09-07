@@ -277,9 +277,9 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	rogue.PseudoStats.ThreatMultiplier *= 2.68
 
 	// Blade Dance 20% Physical DR - Added in registerBladeDance()
-	
+
 	// -20% damage done mod
-	rogue.PseudoStats.DamageDealtMultiplier *= 0.80 
+	rogue.PseudoStats.DamageDealtMultiplier *= 0.80
 
 	// -6% to be critically hit
 	rogue.PseudoStats.ReducedCritTakenChance += 6
@@ -295,7 +295,7 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
 		return
 	}
-	
+
 	statDeps := make([]*stats.StatDependency, 6) // 5 stacks + zero condition
 	for i := 1; i < 6; i++ {
 		statDeps[i] = rogue.NewDynamicMultiplyStat(stats.Health, 1.0+.06*float64(i))
@@ -327,8 +327,8 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) {
-					rogue.RollingWithThePunchesProcAura.Activate(sim)
-					rogue.RollingWithThePunchesProcAura.AddStack(sim)
+				rogue.RollingWithThePunchesProcAura.Activate(sim)
+				rogue.RollingWithThePunchesProcAura.AddStack(sim)
 			}
 		},
 	})

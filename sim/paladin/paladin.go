@@ -135,6 +135,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
+	paladin.registerShieldOfRighteousness()
 
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
@@ -253,4 +254,8 @@ func (paladin *Paladin) getLibramSealCostReduction() float64 {
 		return 20
 	}
 	return 0
+}
+
+func (paladin *Paladin) baseRuneAbilityDamage() float64 {
+	return 9.046514 + 0.676562*float64(paladin.Level) + 0.019349*float64(paladin.Level*paladin.Level)
 }
