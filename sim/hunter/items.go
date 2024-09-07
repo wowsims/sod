@@ -18,7 +18,7 @@ const (
 	BloodChainGrips          = 227081
 	KnightChainGrips         = 227087
 	WhistleOfTheBeast        = 228432
-	ArcaneInfusedGem		 = 230237
+	ArcaneInfusedGem         = 230237
 	RenatakisCharmOfRavaging = 231288
 	MaelstromsWrath          = 231320
 	ZandalarPredatorsMantle  = 231321

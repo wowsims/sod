@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Hearstriker				  = 230253
+	Heartstriker              = 230253
 	DrakeTalonCleaver         = 230271 // 19353
 	JekliksCrusher            = 230911
 	HaldberdOfSmiting         = 230991
@@ -135,7 +135,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=230253/hearstriker
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 1%, 1s cooldown) // obviously something wrong here lol
-	core.NewItemEffect(Hearstriker, func(agent core.Agent) {
+	core.NewItemEffect(Heartstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if !character.AutoAttacks.AutoSwingRanged {
 			return
