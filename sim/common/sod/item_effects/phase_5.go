@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	Hearstriker				  = 230253
 	DrakeTalonCleaver         = 230271 // 19353
 	JekliksCrusher            = 230911
 	HaldberdOfSmiting         = 230991
@@ -128,6 +129,37 @@ func init() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				chargeAura.Activate(sim)
 				chargeAura.AddStack(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=230253/hearstriker
+	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 1%, 1s cooldown) // obviously something wrong here lol
+	core.NewItemEffect(Hearstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingRanged {
+			return
+		}
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 1,
+		}
+
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Heartstriker",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
+					return
+				}
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.01, "Heartstriker") {
+					icd.Use(sim)
+					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+				}
 			},
 		})
 	})
