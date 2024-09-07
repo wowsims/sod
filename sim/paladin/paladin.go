@@ -23,6 +23,8 @@ const (
 	SpellCode_PaladinHolyWrath
 	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
+	SpellCode_PaladinHolyShield
+	SpellCode_PaladinHolyShieldProc
 )
 
 type SealJudgeCode uint8
@@ -68,6 +70,7 @@ type Paladin struct {
 	exorcism          []*core.Spell
 	judgement         *core.Spell
 	rv                *core.Spell
+	holyShieldAura    [3]*core.Aura
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -134,6 +137,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
 	paladin.registerAuraMastery()
+	paladin.registerHolyShield()
 
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
