@@ -43,6 +43,8 @@ const (
 	// Other
 	SpellCode_HunterMongooseBite
 	SpellCode_HunterVolley
+
+	SpellCode_HunterPetFlankingStrike
 )
 
 func RegisterHunter() {
