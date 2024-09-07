@@ -134,7 +134,7 @@ func (ffo *FrozenOrb) registerFrozenOrbTickSpell() {
 		ffo.FrozenOrbFingerOfFrost = core.MakePermanent(ffo.RegisterAura(core.Aura{
 			Label: "Frozen Orb FoF",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == ffo.FrozenOrbTick && ffo.TickCount == 1 {
+				if spell == ffo.FrozenOrbTick && ffo.TickCount == 0 {
 					ffo.mage.FingersOfFrostAura.Activate(sim)
 					ffo.mage.FingersOfFrostAura.AddStack(sim)
 				}
