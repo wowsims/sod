@@ -171,6 +171,10 @@ func init() {
 					Timer:    rogue.NewTimer(),
 					Duration: time.Minute * 2,
 				},
+				SharedCD: core.Cooldown{
+					Timer:    rogue.GetOffensiveTrinketCD(),
+					Duration: time.Second * 20,
+				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
