@@ -604,8 +604,9 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 
 // Mark of Chaos does not stack with Curse of Shadows and Elements
 func MarkOfChaosDebuffAura(target *Unit) *Aura {
-	dmgMod := 1.11
-	resistance := 75.0
+	// That's right, 10.01%. Sneaky enough to override lock curses without being much stronger
+	dmgMod := 1.1001
+	resistance := 75.01
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Mark of Chaos",

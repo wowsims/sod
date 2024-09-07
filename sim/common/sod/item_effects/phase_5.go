@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	DrakeTalonCleaver         = 230271
+	DrakeTalonCleaver         = 230271 // 19353
 	JekliksCrusher            = 230911
 	HaldberdOfSmiting         = 230991
 	Stormwrath                = 231387
@@ -26,7 +26,10 @@ func init() {
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
 
-	itemhelpers.CreateWeaponEquipProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
+	// Chance on hit: Delivers a fatal wound for 300 damage.
+	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
+	itemhelpers.CreateWeaponEquipProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.6, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
 
 	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
 	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD

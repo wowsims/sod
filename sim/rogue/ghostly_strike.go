@@ -26,6 +26,7 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 	})
 
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueGhostlyStrike,
 		ActionID:    ghostlyStrikeAura.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
