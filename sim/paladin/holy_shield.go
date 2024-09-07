@@ -26,7 +26,7 @@ func (paladin *Paladin) registerHolyShield() {
 		return
 	}
 
-	var numCharges int32 = 4
+	numCharges := int32(4)
 	defendersResolveSPAura := core.DefendersResolveSpellDamage(paladin.GetCharacter())
 	blockBonus := 30.0 * core.BlockRatingPerBlockChance
 
