@@ -428,8 +428,9 @@ export class DamageDealtLog extends SimLog {
 				.then(cause => {
 					params.actionId = cause;
 
-					const amount = match[16] ? parseFloat(match[16]) : 0;
-					const type = match[17] || '';
+					// Note: You must change these indeces when adding or removing capture groups to the regex above
+					const amount = match[15] ? parseFloat(match[15]) : 0;
+					const type = match[16] || '';
 
 					return new DamageDealtLog(
 						params,

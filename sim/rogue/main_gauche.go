@@ -12,6 +12,8 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
 		return
 	}
+	hasPKRune := rogue.HasRune(proto.RogueRune_RunePoisonedKnife)
+	hasQDRune := rogue.HasRune(proto.RogueRune_RuneQuickDraw)
 
 	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
 	mainGaucheAura := rogue.RegisterAura(core.Aura{
@@ -37,13 +39,36 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
+			rogue.SinisterStrike.ThreatMultiplier *= 1.5
+
+			if hasPKRune {
+				rogue.PoisonedKnife.Cost.FlatModifier -= 20
+				rogue.PoisonedKnife.ThreatMultiplier *= 1.5
+			}
+
+			if hasQDRune {
+				rogue.QuickDraw.Cost.FlatModifier -= 20
+				rogue.QuickDraw.ThreatMultiplier *= 1.5
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
+			rogue.SinisterStrike.ThreatMultiplier /= 1.5
+
+			if hasPKRune {
+				rogue.PoisonedKnife.Cost.FlatModifier += 20
+				rogue.PoisonedKnife.ThreatMultiplier /= 1.5
+			}
+
+			if hasQDRune {
+				rogue.QuickDraw.Cost.FlatModifier += 20
+				rogue.QuickDraw.ThreatMultiplier /= 1.5
+			}
 		},
 	})
 
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueMainGauche,
 		ActionID:    mainGaucheAura.ActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
