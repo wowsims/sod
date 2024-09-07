@@ -279,7 +279,7 @@ func (mage *Mage) applyMissileBarrage() {
 	}
 
 	procChance := .20
-	procChanceArcaneBlast := .40
+	mage.ArcaneBlastMissileBarrageChance = .40
 	buffDuration := time.Second * 15
 
 	arcaneMissilesSpells := []*core.Spell{}
@@ -323,7 +323,7 @@ func (mage *Mage) applyMissileBarrage() {
 
 			procChance := procChance
 			if spell.SpellCode == SpellCode_MageArcaneBlast {
-				procChance = procChanceArcaneBlast
+				procChance = mage.ArcaneBlastMissileBarrageChance
 			}
 
 			if sim.RandomFloat("Missile Barrage") < procChance {

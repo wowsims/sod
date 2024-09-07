@@ -233,6 +233,39 @@ var ItemSetNetherwindInsight = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetNetherwindMoment = core.NewItemSet(core.ItemSet{
+	Name: "Netherwind Moment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Arcane Missiles refunds 10% of its base mana cost each time it deals damage.
+		2: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			actionID := core.ActionID{SpellID: 467401}
+			manaMetrics := mage.NewManaMetrics(actionID)
+			core.MakePermanent(mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Mage - Healer 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_MageArcaneMissilesTick && result.Landed() {
+						mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
+					}
+				},
+			}))
+		},
+		// Arcane Blast gains a 10% additional change to trigger Missile Barrage, and Missile Barrage now affects Regeneration the same way it affects Arcane Missiles.
+		4: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Mage - Healer 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					mage.ArcaneBlastMissileBarrageChance += .10
+				},
+			})
+		},
+		// Your Temporal Beacons caused by Mass Regeneration now last 30 sec.
+		6: func(agent core.Agent) {
+		},
+	},
+})
+
 var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 	Name: "Illusionist's Attire",
 	Bonuses: map[int32]core.ApplyEffect{
