@@ -26,6 +26,7 @@ const (
 	GeneralChainGrips        = 231569
 	GeneralChainVices        = 231575
 	MarshalChainVices        = 231578
+	Kestrel                  = 231754
 	Peregrine                = 231755
 )
 
@@ -356,6 +357,34 @@ func init() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
 				character.AutoAttacks.ExtraOHAttack(sim, 1, core.ActionID{SpellID: 469140}, spell.ActionID)
+			},
+		})
+	})
+
+	core.NewItemEffect(Kestrel, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		kestrelAura := character.RegisterAura(core.Aura{
+			Label: "Kestrel",
+			ActionID: core.ActionID{SpellID: 469148},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MoveSpeed *= 1.40
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MoveSpeed /= 1.40
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Kestrel Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMeleeMH,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				kestrelAura.Activate(sim)
 			},
 		})
 	})
