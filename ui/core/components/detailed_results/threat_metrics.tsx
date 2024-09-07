@@ -122,7 +122,6 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeResistedCritTickPercent = (metric.resistedCritTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
-					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -162,12 +161,7 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 											name: 'Blocked Hit',
 											value: metric.blocks,
 											percentage: relativeBlockPercent,
-										},
-										{
-											name: 'Blocked Critical Hit',
-											value: metric.critBlocks,
-											percentage: relativeCritBlockPercent,
-										},
+										}
 									],
 								},
 								{
