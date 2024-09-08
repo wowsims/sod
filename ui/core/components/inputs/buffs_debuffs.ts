@@ -771,6 +771,10 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
 			actionId: () => ActionId.fromSpellId(408699),
 			fieldName: 'waylay',
 		}),
+		makeBooleanDebuffInput({
+			actionId: () => ActionId.fromSpellId(21992),
+			fieldName: 'thunderfury',
+		}),
 	],
 	label: 'Attack Speed',
 });
