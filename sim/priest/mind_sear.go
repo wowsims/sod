@@ -16,10 +16,10 @@ func (priest *Priest) registerMindSearSpell() {
 	}
 
 	priest.MindSear = make([]*core.Spell, MindSearTicks)
+	priest.MindSearTicks = make([]*core.Spell, MindSearTicks)
 
-	var tick int32
-	for tick = 0; tick < MindSearTicks; tick++ {
-		priest.MindSear[tick] = priest.RegisterSpell(priest.newMindSearSpellConfig(tick))
+	for tickIdx := int32(0); tickIdx < MindSearTicks; tickIdx++ {
+		priest.MindSear[tickIdx] = priest.RegisterSpell(priest.newMindSearSpellConfig(tickIdx))
 	}
 }
 
@@ -35,7 +35,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	}
 	tickLength := time.Second
 
-	mindSearTickSpell := priest.newMindSearTickSpell(tickIdx)
+	priest.MindSearTicks[tickIdx] = priest.newMindSearTickSpell(tickIdx)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
@@ -62,15 +62,15 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					mindSearTickSpell.Cast(sim, aoeTarget)
-					mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
+					priest.MindSearTicks[tickIdx].Cast(sim, aoeTarget)
+					priest.MindSearTicks[tickIdx].SpellMetrics[target.UnitIndex].Casts -= 1
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
-			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
+			priest.MindSearTicks[tickIdx].SpellMetrics[target.UnitIndex].Casts += 1
 
 			if result.Landed() {
 				spell.AOEDot().Apply(sim)
@@ -89,7 +89,7 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 		ActionID:    core.ActionID{SpellID: 413260}.WithTag(numTicks),
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskProc,
+		ProcMask:    core.ProcMaskEmpty,
 
 		BonusHitRating: 1, // Not an independent hit once initial lands
 

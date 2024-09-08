@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestSV-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.9079
+  weights: 0.86647
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.3727
-  weights: 5.92163
-  weights: 7.16431
+  weights: 0.35784
+  weights: 6.07529
+  weights: 7.01896
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04165
+  weights: 0.0392
   weights: 0
   weights: 0
   weights: 0
@@ -204,134 +204,134 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl40-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 817.47064
-  tps: 374.84804
+  dps: 781.34377
+  tps: 383.99957
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 795.70906
-  tps: 364.53819
+  dps: 759.619
+  tps: 373.58639
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 649.13332
-  tps: 390.57583
+  dps: 598.32756
+  tps: 394.24214
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 805.17441
-  tps: 369.55348
+  dps: 769.26116
+  tps: 378.97732
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 810.93515
-  tps: 370.23703
+  dps: 775.46268
+  tps: 379.42063
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Average-Default"
  value: {
-  dps: 806.66562
-  tps: 371.13724
+  dps: 773.47608
+  tps: 383.41929
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1983.55713
-  tps: 1808.67002
+  dps: 2198.02498
+  tps: 2088.76628
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 814.31831
-  tps: 376.67774
+  dps: 783.12658
+  tps: 394.07628
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 831.74376
-  tps: 384.84122
+  dps: 821.85463
+  tps: 411.82407
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1147.83883
-  tps: 1142.00979
+  dps: 1275.37536
+  tps: 1322.06068
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 441.5032
-  tps: 202.78843
+  dps: 423.94567
+  tps: 213.13909
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 466.32917
-  tps: 210.2328
+  dps: 450.16914
+  tps: 213.23913
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1959.57764
-  tps: 1786.26014
+  dps: 2152.13268
+  tps: 2044.4712
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 803.88538
-  tps: 370.34959
+  dps: 774.4745
+  tps: 383.46699
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 827.02782
-  tps: 384.23852
+  dps: 810.23513
+  tps: 398.00513
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 1149.7576
-  tps: 1141.47839
+  dps: 1269.43734
+  tps: 1316.27724
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 447.14303
-  tps: 205.0472
+  dps: 429.10971
+  tps: 212.67046
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-Settings-Orc-p2_melee-Basic-p2_melee-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 466.64599
-  tps: 209.68735
+  dps: 459.39801
+  tps: 220.97856
  }
 }
 dps_results: {
  key: "TestSV-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 764.85799
-  tps: 346.58246
+  dps: 730.97538
+  tps: 359.47883
  }
 }
 dps_results: {

@@ -3,6 +3,7 @@ package hunter
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -18,6 +19,8 @@ const (
 	BloodChainGrips          = 227081
 	KnightChainGrips         = 227087
 	WhistleOfTheBeast        = 228432
+	ArcaneInfusedGem         = 230237
+	RenatakisCharmOfRavaging = 231288
 	MaelstromsWrath          = 231320
 	ZandalarPredatorsMantle  = 231321
 	ZandalarPredatorsBelt    = 231322
@@ -26,6 +29,7 @@ const (
 	GeneralChainGrips        = 231569
 	GeneralChainVices        = 231575
 	MarshalChainVices        = 231578
+	Kestrel                  = 231754
 	Peregrine                = 231755
 )
 
@@ -355,8 +359,139 @@ func init() {
 			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
-				// TODO: Add a way to generate a bonus off-hand attack
+				character.AutoAttacks.ExtraOHAttack(sim, 1, core.ActionID{SpellID: 469140}, spell.ActionID)
 			},
+		})
+	})
+
+	itemhelpers.CreateWeaponProcAura(Kestrel, "Kestrel", 1, func(character *core.Character) *core.Aura {
+		return character.GetOrRegisterAura(core.Aura{
+			Label: "Kestrel Move Speed Aura",
+			ActionID: core.ActionID{SpellID: 469148},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MoveSpeed *= 1.40
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MoveSpeed /= 1.40
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=231288/renatakis-charm-of-ravaging
+	core.NewItemEffect(RenatakisCharmOfRavaging, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		lockedIn := character.RegisterAura(core.Aura{
+			Label: "Locked In",
+			ActionID: core.ActionID{SpellID: 468388},
+			Duration: time.Second * 20,
+			MaxStacks: 3,
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_HunterCarve || spell.SpellCode == SpellCode_HunterMultiShot {
+					spell.CD.Reset()
+					aura.RemoveStack(sim)
+				}
+			},
+		})
+
+		spell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 468388},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				lockedIn.Activate(sim)
+				lockedIn.SetStacks(sim, 3)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=230237/arcane-infused-gem
+	core.NewItemEffect(ArcaneInfusedGem, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		arcaneDetonation := character.RegisterSpell(core.SpellConfig{
+			ActionID: 		core.ActionID{SpellID: 467447},
+			SpellSchool: 	core.SpellSchoolArcane,
+			DefenseType: 	core.DefenseTypeMagic,
+			ProcMask: 		core.ProcMaskSpellDamage,
+			Flags: 			core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					damage := sim.Roll(185, 210)
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		maxCarveTargetsPerCast := int32(5)
+		maxMultishotTargetsPerCast := int32(3)
+
+		arcaneInfused := character.RegisterAura(core.Aura{
+			Label: "Arcane Infused",
+			ActionID: core.ActionID{SpellID: 467446},
+			Duration: time.Second * 15,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				maxCarveTargetsPerCast = min(sim.Environment.GetNumTargets(), 5)
+				maxMultishotTargetsPerCast = min(sim.Environment.GetNumTargets(), 3)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				// Uses same targeting code as multi-shot however the detonations occur at cast time rather than when the shots land
+				if spell.SpellCode == SpellCode_HunterMultiShot {
+					curTarget := sim.Environment.Encounter.TargetUnits[0]
+					for hitIndex := int32(0); hitIndex < maxMultishotTargetsPerCast; hitIndex++ {
+						arcaneDetonation.Cast(sim, curTarget)
+						curTarget = sim.Environment.NextTargetUnit(curTarget)
+					}
+				}
+				// 1 explosion per target up to 5 targets per carve cast
+				if spell.SpellCode == SpellCode_HunterCarve {
+					curTarget := sim.Environment.Encounter.TargetUnits[0]
+					for hitIndex := int32(0); hitIndex < maxCarveTargetsPerCast; hitIndex++ {
+						arcaneDetonation.Cast(sim, curTarget)
+						curTarget = sim.Environment.NextTargetUnit(curTarget)
+					}
+				}
+			},
+		})
+
+		spell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: arcaneInfused.ActionID.SpellID},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 90,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: arcaneInfused.Duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				arcaneInfused.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 }

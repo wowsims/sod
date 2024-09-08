@@ -9,8 +9,8 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// Totem Item IDs
 const (
+	// Keep these ordered by ID
 	TotemOfRage              = 22395
 	TotemOfTheStorm          = 23199
 	TotemOfSustaining        = 23200
@@ -29,6 +29,8 @@ const (
 
 func init() {
 	core.AddEffectsToTest = false
+
+	// Keep these ordered by name
 
 	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
 	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)

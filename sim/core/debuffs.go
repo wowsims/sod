@@ -240,6 +240,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
 	}
+	if debuffs.Thunderfury {
+		MakePermanent(ThunderfuryASAura(target, level))
+	}
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
@@ -409,8 +412,10 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	return aura
 }
 
+var ShadowWeavingSpellIDs = [6]int32{0, 15257, 15331, 15332, 15333, 15334}
+
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
-	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	spellId := ShadowWeavingSpellIDs[rank]
 	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
@@ -1281,6 +1286,16 @@ func WaylayAura(target *Unit) *Aura {
 		Duration: time.Second * 8,
 	})
 	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
+func ThunderfuryASAura(target *Unit, _ int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Thunderfury",
+		ActionID: ActionID{SpellID: 21992},
+		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 
