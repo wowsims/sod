@@ -245,7 +245,7 @@ var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
 							continue
 						}
 
-						if dots := spell.Dots(); len(dots) > 0 {
+						if dots := spell.Dots(); len(dots) > 0 || spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
 							priestDots = append(
 								priestDots,
 								core.FilterSlice(dots, func(dot *core.Dot) bool { return dot != nil })...,

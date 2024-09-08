@@ -31,7 +31,7 @@ func init() {
 			Duration: duration,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(priest.Spellbook, func(spell *core.Spell) bool {
-					return spell.Flags.Matches(SpellFlagPriest)
+					return spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled)
 				})
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
