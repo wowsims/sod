@@ -99,11 +99,11 @@ func (mage *Mage) applyEnlightenment() {
 		ActionID: core.ActionID{SpellID: 412325},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting *= 1.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting += 0.10
 			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting /= 1.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting -= .10
 			mage.UpdateManaRegenRates()
 		},
 	})
