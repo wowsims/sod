@@ -48,40 +48,40 @@ var ItemSetBlueDragonMail = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
-// 	Name: "Bloodsoul Embrace",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Restores 12 mana per 5 sec.
-// 		2: func(agent core.Agent) {
-// 			character := agent.GetCharacter()
-// 			character.AddStat(stats.MP5, 12)
-// 		},
-// 	},
-// })
+var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
+	Name: "Bloodsoul Embrace",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Restores 12 mana per 5 sec.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MP5, 12)
+		},
+	},
+})
 
-// var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
-// 	Name: "Bloodvine Garb",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Improves your chance to get a critical strike with spells by 2%.
-// 		2: func(agent core.Agent) {
-// 			character := agent.GetCharacter()
-// 			character.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
-// 		},
-// 	},
-// })
+var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
+	Name: "Bloodvine Garb",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Improves your chance to get a critical strike with spells by 2%.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
+		},
+	},
+})
 
-// var ItemSetBloodTigerHarness = core.NewItemSet(core.ItemSet{
-// 	Name: "Blood Tiger Harness",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Improves your chance to get a critical strike by 1%.
-// 		// Improves your chance to get a critical strike with spells by 1%.
-// 		2: func(agent core.Agent) {
-// 			character := agent.GetCharacter()
-// 			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-// 			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
-// 		},
-// 	},
-// })
+var ItemSetBloodTigerHarness = core.NewItemSet(core.ItemSet{
+	Name: "Blood Tiger Harness",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Improves your chance to get a critical strike by 1%.
+		// Improves your chance to get a critical strike with spells by 1%.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+		},
+	},
+})
 
 // https://www.wowhead.com/classic/item-set=143/devilsaur-armor
 var ItemSetDevilsaurArmor = core.NewItemSet(core.ItemSet{
