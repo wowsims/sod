@@ -738,7 +738,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 40
+// NextIndex: 41
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -776,6 +776,7 @@ message Debuffs {
 
 	TristateEffect thunder_clap = 16;
 	bool waylay = 34;
+	bool thunderfury = 40;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;

@@ -1903,7 +1903,7 @@ func init() {
 
 		procMask := character.GetProcMaskForItem(Thunderfury)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
-
+		thunderfuryASAuras := character.NewEnemyAuraArray(core.ThunderfuryASAura)
 		procActionID := core.ActionID{SpellID: 21992}
 
 		singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -1917,6 +1917,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
+				thunderfuryASAuras.Get(target).Activate(sim)
 			},
 		})
 
