@@ -41,28 +41,19 @@ var ItemSetTwinBladesofHakkari = core.NewItemSet(core.ItemSet{
 			if !character.AutoAttacks.AutoSwingMelee {
 				return
 			}
-	
-			icd := core.Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: time.Millisecond * 100,
-			}
-	
-			character.GetOrRegisterAura(core.Aura{
-				Label:    "Twin Blades of the Hakkari",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
+			
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "Twin Blades of the Hakkari",
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				ProcMask: core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance: 0.02,
+				ICD:      time.Millisecond * 100,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 468255}, spell)
 				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-						return
-					}
-					if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "Twin Blades of the Hakkari") {
-						icd.Use(sim)
-						aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 468255}, spell)
-					}
-				},
-			})	
+			})
 		},
 
 	},
