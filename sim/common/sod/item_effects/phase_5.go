@@ -142,18 +142,16 @@ func init() {
 		}
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Heartstrike",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskRanged,
-			ICD:      time.Second * 1,
+			Name:       "Heartstrike",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskRanged,
+			ProcChance: 0.02,
+			ICD:        time.Second * 1,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-					return
-				}
-				if sim.Proc(0.02, "Heartstriker") {
-					spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
-				}
+				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
 			},
 		})
 	})
