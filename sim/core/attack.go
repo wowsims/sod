@@ -471,6 +471,8 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeOffHand,
 
+		MetricSplits: 2,
+
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
@@ -528,6 +530,7 @@ func (aa *AutoAttacks) finalize() {
 		aa.mh.spell.TagSplitMetric(1, tagExtraAttack)
 		// Will keep the OH spell registered for Item swapping
 		aa.oh.spell = aa.oh.unit.GetOrRegisterSpell(aa.oh.config)
+		aa.oh.spell.TagSplitMetric(1, tagExtraAttack)
 	}
 	if aa.AutoSwingRanged {
 		aa.ranged.spell = aa.ranged.unit.GetOrRegisterSpell(aa.ranged.config)
@@ -558,6 +561,8 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 		aa.mh.swingAt = 0
 
 		if aa.IsDualWielding {
+			aa.oh.extraAttacks = 0
+			aa.oh.spell.SetMetricsSplit(0)
 			aa.oh.updateSwingDuration(aa.mh.curSwingSpeed)
 			aa.oh.swingAt = 0
 
@@ -720,7 +725,7 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 		return
 	}
 	if sim.Log != nil {
-		aa.mh.unit.Log(sim, "gains %d extra attacks from %s triggered by %s", attacks, actionID, triggerAction)
+		aa.mh.unit.Log(sim, "gains %d extra main-hand attacks from %s triggered by %s", attacks, actionID, triggerAction)
 	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
@@ -751,8 +756,22 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 	aa.mh.extraAttacksAura.SetStacks(sim, aa.mh.extraAttacksStored)
 
 	if sim.Log != nil {
-		aa.mh.unit.Log(sim, "stored %d extra attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)
+		aa.mh.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)
 	}
+}
+
+// ExtraMHAttack should be used for all "extra attack" procs in Classic Era versions, including Wild Strikes and Hand of Justice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the MH swing timer.
+func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
+	if attacks == 0 {
+		return
+	}
+	if sim.Log != nil {
+		aa.oh.unit.Log(sim, "gains %d extra off-hand attacks from %s triggered by %s", attacks, actionID, triggerAction)
+	}
+	aa.oh.swingAt = sim.CurrentTime + SpellBatchWindow
+	aa.oh.spell.SetMetricsSplit(1)
+	sim.rescheduleWeaponAttack(aa.oh.swingAt)
+	aa.oh.extraAttacksPending += attacks
 }
 
 // ExtraRangedAttack should be used for all "extra ranged attack" procs in Classic Era versions, including Hand of Injustice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the Ranged swing timer.

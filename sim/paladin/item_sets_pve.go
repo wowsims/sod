@@ -116,6 +116,7 @@ var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T1 - Paladin - Retribution 6P Bonus",
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					paladin.lingerDuration = time.Second * 6
+					paladin.enableMultiJudge = true
 				},
 			}))
 		},
@@ -209,30 +210,14 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent) {
-			// 4 pieces: The cooldown on your Judgement is instantly reset if used on a different Seal than your last Judgement.
+			// 4 pieces: Reduces the cooldown on your Judgement ability by 5 seconds.
 			paladin := agent.(PaladinAgent).GetPaladin()
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
+
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-
-					originalApplyEffects := paladin.judgement.ApplyEffects
-
-					// Wrap the apply Judgement ApplyEffects with more Effects
-					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
-						sealsLastJudgement := paladin.lastJudgement // Get Last Judgement Seals before it gets overwritten in originalApplyEffects
-						originalApplyEffects(sim, target, spell)
-						sealsThisJudgement := paladin.lastJudgement // Get Active Seals this Judgement (after lastJudgement is set)
-
-						// Two of the possible implementations - TODO figure out actual implementation
-						// anySealsDifferent := sealsThisJudgement != sealsLastJudgement // Would be nice!
-						// allSealsDifferent := (int(sealsThisJudgement) & int(sealsLastJudgement)) == 0 // More conservative option
-						anySealsGained := (int(sealsThisJudgement) & ^int(sealsLastJudgement)) > 0 // More conservative option (most likely option)
-
-						if anySealsGained {
-							paladin.judgement.CD.Reset()
-						}
-					}
+					paladin.judgement.CD.Duration -= 5 * time.Second
+					paladin.enableMultiJudge = false // Even though this is baseline in phase 5, we set it here to avoid breaking P4
 				},
 			})
 		},

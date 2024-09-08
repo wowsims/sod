@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	Heartstriker              = 230253
 	DrakeTalonCleaver         = 230271 // 19353
 	JekliksCrusher            = 230911
 	HaldberdOfSmiting         = 230991
@@ -29,10 +30,10 @@ func init() {
 	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
 	// Chance on hit: Delivers a fatal wound for 300 damage.
 	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
-	itemhelpers.CreateWeaponEquipProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.6, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.6, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
 
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // Works as phantom strike
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // Works as phantom strike
 
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
@@ -128,6 +129,29 @@ func init() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				chargeAura.Activate(sim)
 				chargeAura.AddStack(sim)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=230253/hearstriker
+	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 1%, 1s cooldown) // obviously something wrong here lol
+	core.NewItemEffect(Heartstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingRanged {
+			return
+		}
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Heartstrike",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskRanged,
+			ProcChance: 0.02,
+			ICD:        time.Second * 1,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
 			},
 		})
 	})
