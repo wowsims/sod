@@ -917,6 +917,10 @@ export const ImprovedFaerieFire = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingSpellActionId([{ id: 455864, minLevel: 60 }]),
 	fieldName: 'improvedFaerieFire',
 });
+export const MeleeHunter2pcT1Bonus = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 456389, minLevel: 60 }]),
+	fieldName: 'meleeHunterBonus',
+});
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 213409, minLevel: 40, maxLevel: 45 }]),
 	fieldName: 'mekkatorqueFistDebuff',
@@ -1322,6 +1326,11 @@ export const MISC_DEBUFFS_CONFIG = [
 	// Misc Debuffs
 	{
 		config: ImprovedFaerieFire,
+		picker: IconPicker,
+		stats: [],
+	},
+	{
+		config: MeleeHunter2pcT1Bonus,
 		picker: IconPicker,
 		stats: [],
 	},
