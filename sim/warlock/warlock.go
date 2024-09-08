@@ -34,6 +34,7 @@ const (
 	SpellCode_WarlockShadowflame
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
+	SpellCode_WarlockShadowburn
 	SpellCode_WarlockSoulFire
 )
 
@@ -116,6 +117,7 @@ type Warlock struct {
 	zilaGularAura        *core.Aura
 	shadowSparkAura      *core.Aura
 	defendersResolveAura *core.Aura
+	hasWickedNemesis2P   bool
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -154,6 +156,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonDemon()
 
 	warlock.registerPetAbilities()
+	warlock.hasWickedNemesis2P = warlock.HasSetBonus(ItemSetWickedNemesis, 2)
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

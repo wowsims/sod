@@ -248,6 +248,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.ScorpidSting && targetIdx == 0 {
 		MakePermanent(ScorpidStingAura(target))
 	}
+
+	// Dodge
+	if debuffs.MongooseBiteDebuff {
+		MakePermanent(MongooseBiteDebuffAura(target))
+	}
+
 }
 
 func StormstrikeAura(unit *Unit) *Aura {
@@ -1126,6 +1132,20 @@ func ImprovedFaerieFireAura(target *Unit) *Aura {
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * MeleeHitRatingPerHitChance
 			aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
+		},
+	})
+}
+
+func MongooseBiteDebuffAura(target *Unit) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "S03 - Item - T1 - Hunter - Melee 2P Bonus Trigger",
+		ActionID: ActionID{SpellID: 456389},
+		Duration: time.Second * 30,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
 		},
 	})
 }

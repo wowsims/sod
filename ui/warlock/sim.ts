@@ -152,6 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.GiftOfArthas,
 		BuffDebuffInputs.CrystalYield,
 		BuffDebuffInputs.AncientCorrosivePoison,
+		BuffDebuffInputs.MongooseBiteDebuff,
 	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
 	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],

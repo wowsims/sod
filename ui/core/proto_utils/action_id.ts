@@ -660,6 +660,7 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 449288 }), { itemId: 221309 }], // Darkmoon Card: Sandstorm
 	[JSON.stringify({ spellId: 455864 }), { spellId: 9907 }], // Tier 1 Balance Druid "Improved Faerie Fire"
 	[JSON.stringify({ spellId: 457544 }), { spellId: 10408 }], // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
+	[JSON.stringify({ spellId: 456389 }), { spellId: 14271 }], // Tier 1 Melee Hunter "Mongoose Bite Debuff"
 ]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([]);
@@ -683,6 +684,7 @@ const spellIDsToShowBuffs = new Set([
 	11721, // https://www.wowhead.com/classic/spell=11721/curse-of-the-elements
 	11722, // https://www.wowhead.com/classic/spell=11722/curse-of-the-elements
 	14201, // https://www.wowhead.com/classic/spell=14201/enrage
+	14271, // https://www.wowhead.com/classic/spell=14271/mongoose-bite
 	16257, // https://www.wowhead.com/classic/spell=16257/flurry
 	16277, // https://www.wowhead.com/classic/spell=16277/flurry
 	16278, // https://www.wowhead.com/classic/spell=16278/flurry

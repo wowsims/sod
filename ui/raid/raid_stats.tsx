@@ -721,6 +721,16 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						},
 					],
 				},
+				{
+					label: 'Dodge',
+					effects: [
+						{
+							label: 'Mongoose Bite Debuff',
+							actionId: ActionId.fromSpellId(456389),
+							playerData: playerClass(Class.ClassHunter),
+						},
+					],
+				},
 			],
 		},
 	],

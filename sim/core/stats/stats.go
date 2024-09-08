@@ -477,6 +477,7 @@ type PseudoStats struct {
 	BonusRangedAttackPowerTaken float64 // Hunters mark
 	BonusMeleeHitRatingTaken    float64 // Formerly Imp FF and SW Radiance;
 	BonusSpellHitRatingTaken    float64 // Imp FF
+	BonusDodgeRatingTaken       float64 // Mongoose bite
 
 	BonusHealingTaken float64 // Talisman of Troll Divinity
 

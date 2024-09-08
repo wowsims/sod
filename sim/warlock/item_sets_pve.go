@@ -284,3 +284,75 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetWickedNemesis = core.NewItemSet(core.ItemSet{
+	Name: "Wicked Nemesis",
+	Bonuses: map[int32]core.ApplyEffect{
+
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			// The 2-piece bonus modifies Life Tap to deal 50% of its normal damage to the target if they're within 30 yards.
+			warlock.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Warlock - Tank 2P Bonus",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				// Implemented in lifetap.go
+			},
+			)
+		},
+		// The 4-piece bonus removes Soul Shard costs for offensive abilities and Demon summons while Metamorphosis is active, and heals the Warlock for 15% of their maximum health when Shadowburn deals damage.
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			warlock.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Warlock - Tank 4P Bonus",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_WarlockShadowburn && result.Landed() {
+						healAmount := warlock.MaxHealth() * 0.15
+						warlock.GainHealth(sim, healAmount, warlock.NewHealthMetrics(core.ActionID{SpellID: 18871}))
+					}
+				},
+			})
+		},
+		// The 6-piece bonus creates a shield from excess healing, up to 30% of the Warlock's maximum health.
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			maxShieldAmount := warlock.MaxHealth() * 0.3
+			currentShieldAmount := 0.0
+
+			warlock.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Warlock - Tank 6P Bonus",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+					currentShieldAmount = 0
+				},
+				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					excessHealing := result.Damage - (warlock.MaxHealth() - warlock.CurrentHealth())
+					if excessHealing > 0 {
+						shieldGain := min(excessHealing, maxShieldAmount-currentShieldAmount)
+						currentShieldAmount += shieldGain
+					}
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if currentShieldAmount > 0 {
+						absorbedAmount := min(currentShieldAmount, result.Damage)
+						result.Damage -= absorbedAmount
+						currentShieldAmount -= absorbedAmount
+					}
+				},
+			})
+		},
+	},
+})

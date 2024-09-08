@@ -738,7 +738,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 40
+// NextIndex: 41
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -796,6 +796,7 @@ message Debuffs {
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
+	bool mongoose_bite_debuff = 40; // Provided by Tier 1 Melee Hunter set bonus
 
 	TristateEffect curse_of_elements_new = 31 [deprecated=true];
 	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
