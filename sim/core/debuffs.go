@@ -240,6 +240,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
 	}
+	if debuffs.Thunderfury {
+		MakePermanent(ThunderfuryASAura(target, level))
+	}
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
@@ -1283,6 +1286,16 @@ func WaylayAura(target *Unit) *Aura {
 		Duration: time.Second * 8,
 	})
 	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
+func ThunderfuryASAura(target *Unit, _ int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Thunderfury",
+		ActionID: ActionID{SpellID: 21992},
+		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 
