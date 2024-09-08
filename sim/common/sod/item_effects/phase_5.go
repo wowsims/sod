@@ -61,8 +61,9 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=230911/jekliks-crusher
 	// Chance on hit: Wounds the target for 200 to 220 damage.
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
 	// +141 Attack Power when fighting Demons.
