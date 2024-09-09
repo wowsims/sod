@@ -34,6 +34,7 @@ const (
 	SpellCode_WarlockShadowflame
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
+	SpellCode_WarlockShadowburn
 	SpellCode_WarlockSoulFire
 	SpellCode_WarlockUnstableAffliction
 )
@@ -125,6 +126,7 @@ type Warlock struct {
 	zilaGularAura        *core.Aura
 	shadowSparkAura      *core.Aura
 	defendersResolveAura *core.Aura
+	hasWickedNemesis2P   bool
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
