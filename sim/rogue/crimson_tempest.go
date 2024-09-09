@@ -63,6 +63,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueCrimsonTempest,
 		ActionID:     core.ActionID{SpellID: 412096},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
