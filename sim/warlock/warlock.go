@@ -1,8 +1,6 @@
 package warlock
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/common/guardians"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -16,6 +14,8 @@ const (
 	WarlockFlagDemonology  = core.SpellFlagAgentReserved2
 	WarlockFlagDestruction = core.SpellFlagAgentReserved3
 	WarlockFlagHaunt       = core.SpellFlagAgentReserved4
+
+	SpellFlagWarlock = WarlockFlagAffliction | WarlockFlagDemonology | WarlockFlagDestruction
 )
 
 const (
@@ -36,6 +36,7 @@ const (
 	SpellCode_WarlockShadowBolt
 	SpellCode_WarlockShadowburn
 	SpellCode_WarlockSoulFire
+	SpellCode_WarlockUnstableAffliction
 )
 
 type Warlock struct {
@@ -91,6 +92,9 @@ type Warlock struct {
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 
+	// Track all DoT spells for effecrs that add multipliers based on active effects
+	DoTSpells         []*core.Spell
+	DebuffSpells      []*core.Spell
 	SummonDemonSpells []*core.Spell
 
 	DemonicKnowledgeAura    *core.Aura
@@ -99,7 +103,7 @@ type Warlock struct {
 	IncinerateAura          *core.Aura
 	Metamorphosis           *core.Spell
 	MetamorphosisAura       *core.Aura
-	NightfallProcAura       *core.Aura
+	ShadowTranceAura        *core.Aura
 	PyroclasmAura           *core.Aura
 	DemonicGraceAura        *core.Aura
 	AmplifyCurseAura        *core.Aura
@@ -110,10 +114,15 @@ type Warlock struct {
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64
-	PreviousTime  time.Duration
 
-	demonicKnowledgeSp   float64
-	nightfallProcChance  float64
+	// Extra state and logic variables
+	demonicKnowledgeSp      float64
+	masterDemonologistBonus float64 // Bonus multiplier applied to the Master Demonologist talent
+	nightfallProcChance     float64
+	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
+	shadowBoltActiveEffectMultiplierPer float64
+	shadowBoltActiveEffectMultiplierMax float64
+
 	zilaGularAura        *core.Aura
 	shadowSparkAura      *core.Aura
 	defendersResolveAura *core.Aura
@@ -156,7 +165,14 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonDemon()
 
 	warlock.registerPetAbilities()
-	warlock.hasWickedNemesis2P = warlock.HasSetBonus(ItemSetWickedNemesis, 2)
+
+	warlock.DoTSpells = core.FilterSlice(warlock.Spellbook, func(spell *core.Spell) bool {
+		return spell.Flags.Matches(SpellFlagWarlock) && !spell.Flags.Matches(core.SpellFlagChanneled) && len(spell.Dots()) > 0
+	})
+
+	warlock.DebuffSpells = core.FilterSlice(warlock.Spellbook, func(spell *core.Spell) bool {
+		return spell.Flags.Matches(SpellFlagWarlock) && len(spell.RelatedAuras) > 0
+	})
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

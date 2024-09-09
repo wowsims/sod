@@ -147,6 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.PaladinPhysicalBuff,
 		BuffDebuffInputs.StrengthBuffHorde,
 		BuffDebuffInputs.BattleShoutBuff,
+		BuffDebuffInputs.GraceOfAir,
 		BuffDebuffInputs.MeleeCritBuff,
 		BuffDebuffInputs.CurseOfVulnerability,
 		BuffDebuffInputs.GiftOfArthas,

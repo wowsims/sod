@@ -48,12 +48,14 @@ type Paladin struct {
 	currentPaladinAura *core.Aura
 
 	currentSeal      *core.Aura
+	prevSeal         *core.Aura
 	allSealAuras     [][]*core.Aura
 	aurasSoM         []*core.Aura
 	aurasSoR         []*core.Aura
 	aurasSoC         []*core.Aura
 	aurasSotC        []*core.Aura
 	currentJudgement *core.Spell
+	prevJudgement    *core.Spell
 	allJudgeSpells   [][]*core.Spell
 	spellsJoM        []*core.Spell
 	spellsJoR        []*core.Spell
@@ -78,12 +80,9 @@ type Paladin struct {
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
 
+	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
-
-	// T2 Bonuses Related (Draconic)
-	thisJudgement SealJudgeCode
-	lastJudgement SealJudgeCode
 }
 
 // Implemented by each Paladin spec.
@@ -141,6 +140,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
 
+	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
 
@@ -150,7 +150,6 @@ func (paladin *Paladin) Initialize() {
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 	paladin.ResetCurrentPaladinAura()
 	paladin.ResetPrimarySeal(paladin.Options.PrimarySeal)
-	paladin.lastJudgement = SealJudgeCodeNone
 }
 
 // maybe need to add stat dependencies
@@ -238,16 +237,38 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 }
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
-	if seal := paladin.currentSeal; seal.IsActive() && newSeal != seal {
-		if seal.RemainingDuration(sim) >= paladin.lingerDuration {
-			seal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration)
+	isSameSealType := false
+
+	if paladin.currentSeal != nil {
+		if newSeal.Label[:10] == paladin.currentSeal.Label[:10] {
+			isSameSealType = true
+
+			paladin.currentSeal.Deactivate(sim)
+			paladin.currentSeal = newSeal
+			paladin.currentJudgement = judgement
+			paladin.currentSeal.Activate(sim)
+
+			// Set To nil to avoid issues with multi judging during linger window
+			if paladin.prevSeal != nil && paladin.prevSeal.IsActive() {
+				paladin.prevSeal.Deactivate(sim)
+			}
+
+			paladin.prevSeal = nil
+			paladin.prevJudgement = nil
 		}
 	}
 
-	paladin.currentSeal = newSeal
-	paladin.currentJudgement = judgement
-	paladin.currentSeal.Activate(sim)
+	if !isSameSealType {
+		if paladin.currentSeal.IsActive() {
+			paladin.currentSeal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration) // always update, even if it extends duration
+		}
 
+		paladin.prevSeal = paladin.currentSeal
+		paladin.currentSeal = newSeal
+		paladin.prevJudgement = paladin.currentJudgement // Judgment Spell for the previous Seal (doesn't mean it was cast)
+		paladin.currentJudgement = judgement
+		paladin.currentSeal.Activate(sim)
+	}
 }
 
 func (paladin *Paladin) getLibramSealCostReduction() float64 {

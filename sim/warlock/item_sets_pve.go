@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -289,70 +290,100 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 //                            SoD Phase 5 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetWickedNemesis = core.NewItemSet(core.ItemSet{
-	Name: "Wicked Nemesis",
+var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
+	Name: "Corrupted Nemesis",
 	Bonuses: map[int32]core.ApplyEffect{
-
+		// Increases the damage of your periodic spells and Felguard pet by 10%
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
-			// The 2-piece bonus modifies Life Tap to deal 50% of its normal damage to the target if they're within 30 yards.
+
 			warlock.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T2 - Warlock - Tank 2P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
+				Label: "S03 - Item - T2 - Warlock - Damage 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range warlock.Spellbook {
+						if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
+							spell.DamageMultiplier *= 1.10
+						}
+					}
+
+					if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+						warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+					}
 				},
-				// Implemented in lifetap.go
-			},
-			)
+			})
 		},
-		// The 4-piece bonus removes Soul Shard costs for offensive abilities and Demon summons while Metamorphosis is active, and heals the Warlock for 15% of their maximum health when Shadowburn deals damage.
+		// Periodic damage from your Shadowflame, Unstable Affliction, and Curse of Agony spells and damage done by your Felguard have a 4% chance to grant the Shadow Trance effect.
 		4: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T2 - Warlock - Tank 4P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarlockShadowburn && result.Landed() {
-						healAmount := warlock.MaxHealth() * 0.15
-						warlock.GainHealth(sim, healAmount, warlock.NewHealthMetrics(core.ActionID{SpellID: 18871}))
+			procChance := 0.04
+
+			affectedSpellCodes := []int32{SpellCode_WarlockCurseOfAgony, SpellCode_WarlockShadowflame, SpellCode_WarlockUnstableAffliction}
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Warlock - Damage 4P Bonus",
+				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(procChance, "Proc Shadow Trance") {
+						warlock.ShadowTranceAura.Activate(sim)
 					}
 				},
-			})
+			}))
+
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+				return
+			}
+
+			core.MakePermanent(warlock.Felguard.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Warlock - Damage 4P Bonus - Felguard Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && sim.Proc(procChance, "Proc Shadow Trance") {
+						warlock.ShadowTranceAura.Activate(sim)
+					}
+				},
+			}))
 		},
-		// The 6-piece bonus creates a shield from excess healing, up to 30% of the Warlock's maximum health.
+		// Shadowbolt deals 10% increased damage for each of your effects afflicting the target, up to a maximum of 30%.
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			maxShieldAmount := warlock.MaxHealth() * 0.3
-			currentShieldAmount := 0.0
+			warlock.shadowBoltActiveEffectMultiplierPer = .10
+			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
+		},
+	},
+})
 
-			warlock.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T2 - Warlock - Tank 6P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-					currentShieldAmount = 0
-				},
-				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					excessHealing := result.Damage - (warlock.MaxHealth() - warlock.CurrentHealth())
-					if excessHealing > 0 {
-						shieldGain := min(excessHealing, maxShieldAmount-currentShieldAmount)
-						currentShieldAmount += shieldGain
+var ItemSetDemoniacsThreads = core.NewItemSet(core.ItemSet{
+	Name: "Demoniac's Threads",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases damage and healing done by magical spells and effects by up to 12.
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.AddStat(stats.SpellPower, 12)
+		},
+		// Increases the Attack Power and Spell Damage your Demon pet gains from your attributes by 20%.
+		3: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Warlock - Demonology 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, pet := range warlock.BasePets {
+						oldStatInheritance := pet.GetStatInheritance()
+						pet.UpdateStatInheritance(
+							func(ownerStats stats.Stats) stats.Stats {
+								s := oldStatInheritance(ownerStats)
+								s[stats.AttackPower] *= 1.20
+								s[stats.SpellPower] *= 1.20
+								return s
+							},
+						)
 					}
 				},
-				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if currentShieldAmount > 0 {
-						absorbedAmount := min(currentShieldAmount, result.Damage)
-						result.Damage -= absorbedAmount
-						currentShieldAmount -= absorbedAmount
-					}
-				},
-			})
+			}))
+		},
+		// Increases the benefits of your Master Demonologist talent by 50%.
+		5: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.masterDemonologistBonus += .50
 		},
 	},
 })

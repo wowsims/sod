@@ -776,6 +776,7 @@ message Debuffs {
 
 	TristateEffect thunder_clap = 16;
 	bool waylay = 34;
+	bool thunderfury = 40;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;

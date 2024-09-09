@@ -16,6 +16,7 @@ func (hunter *Hunter) registerCarveSpell() {
 	hunter.CarveOH = hunter.newCarveHitSpell(false)
 
 	hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_HunterCarve,
 		ActionID:    core.ActionID{SpellID: 425711},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -61,6 +62,7 @@ func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_HunterCarveHit,
 		ActionID:    core.ActionID{SpellID: 425711}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
