@@ -149,6 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.BattleShoutBuff,
 		BuffDebuffInputs.GraceOfAir,
 		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.BattleSquawkBuff,
 		BuffDebuffInputs.CurseOfVulnerability,
 		BuffDebuffInputs.GiftOfArthas,
 		BuffDebuffInputs.CrystalYield,
