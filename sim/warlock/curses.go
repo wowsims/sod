@@ -96,26 +96,24 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
+				dot := spell.Dot(target)
 
-				// If the spell's DoT is already applied, do a refresh if the Invocation rune is also being used
-				// Else deactivate the existing curse and apply this one instead
-				if spell.Dot(target).IsActive() {
-					if hasInvocationRune {
-						warlock.InvocationRefresh(sim, spell.Dot(target))
-					}
-				} else {
-					if warlock.ActiveCurseAura.Get(target) != nil {
-						warlock.ActiveCurseAura.Get(target).Deactivate(sim)
-					}
-					dot := spell.Dot(target)
-					dot.Apply(sim)
-					warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != dot.Aura {
+					activeCurse.Deactivate(sim)
+				}
 
-					if hasMarkOfChaosRune {
-						warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
-					}
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
+				}
+
+				dot.Apply(sim)
+				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
+
+				if hasMarkOfChaosRune {
+					warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
 				}
 			}
+			spell.DealOutcome(sim, result)
 		},
 	}
 }
@@ -181,10 +179,12 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfRecklessnessAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfRecklessnessAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 
 				if hasMarkOfChaosRune {
@@ -245,10 +245,12 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfElementsAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfElementsAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 			}
 		},
@@ -302,10 +304,12 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfShadowAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfShadowAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 			}
 		},
@@ -403,10 +407,11 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
-				}
 				dot := spell.Dot(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != dot.Aura {
+					activeCurse.Deactivate(sim)
+				}
+
 				dot.Apply(sim)
 				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
 
