@@ -4,7 +4,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (warrior *Warrior) registerHeroicStrikeSpell() {
+func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 	flatDamageBonus := map[int32]float64{
 		25: 44,
 		40: 80,
@@ -60,12 +60,14 @@ func (warrior *Warrior) registerHeroicStrikeSpell() {
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
 			}
+
+			realismICD.Use(sim)
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.HeroicStrike)
+	warrior.makeQueueSpellsAndAura(warrior.HeroicStrike, realismICD)
 }
 
-func (warrior *Warrior) registerCleaveSpell() {
+func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 	flatDamageBonus := map[int32]float64{
 		25: 5,
 		40: 18,
@@ -123,12 +125,14 @@ func (warrior *Warrior) registerCleaveSpell() {
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
 			}
+
+			realismICD.Use(sim)
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.Cleave)
+	warrior.makeQueueSpellsAndAura(warrior.Cleave, realismICD)
 }
 
-func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell) *WarriorSpell {
+func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismICD *core.Cooldown) *WarriorSpell {
 	queueAura := warrior.RegisterAura(core.Aura{
 		Label:    "HS/Cleave Queue Aura-" + srcSpell.ActionID.String(),
 		ActionID: srcSpell.ActionID.WithTag(1),
@@ -148,26 +152,20 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell) *WarriorS
 		},
 	})
 
-	// Use a 50 ms ICD to simulate realistic delay between re-queueing HS
-	icd := &core.Cooldown{
-		Timer:    warrior.NewTimer(),
-		Duration: core.SpellBatchWindow * 5,
-	}
-
 	queueSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: srcSpell.ActionID.WithTag(1),
-		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagCastTimeNoGCD,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return icd.IsReady(sim) &&
-				warrior.curQueueAura == nil &&
+			return warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
-				sim.CurrentTime >= warrior.Hardcast.Expires
+				sim.CurrentTime >= warrior.Hardcast.Expires &&
+				realismICD.IsReady(sim)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			queueAura.Activate(sim)
-			icd.Use(sim)
+			realismICD.Use(sim)
 		},
 	})
 

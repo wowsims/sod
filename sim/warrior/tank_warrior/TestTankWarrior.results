@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.3613
+  weights: 0.20676
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.50842
+  weights: 0.29808
   weights: 0
   weights: 0
   weights: 0
@@ -78,9 +78,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.72669
+  weights: 1.34303
   weights: 0
-  weights: 0.51796
+  weights: 0.5255
   weights: 0
   weights: 0
   weights: 0
@@ -99,50 +99,50 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 1608.61268
-  tps: 3547.896
+  dps: 1599.09481
+  tps: 3524.63624
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 909.41879
-  tps: 1864.8736
+  dps: 909.9455
+  tps: 1855.66385
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 915.57389
-  tps: 1911.8182
+  dps: 911.57015
+  tps: 1903.44726
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 901.49719
-  tps: 1881.38524
+  dps: 901.30218
+  tps: 1879.51743
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 915.57389
-  tps: 1911.8182
+  dps: 911.57015
+  tps: 1903.44726
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 1697.82809
-  tps: 3670.01888
+  dps: 1691.99941
+  tps: 3670.20264
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Average-Default"
  value: {
-  dps: 1535.31704
-  tps: 3975.57391
+  dps: 1534.26683
+  tps: 3975.56695
  }
 }
 dps_results: {
@@ -232,7 +232,7 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1297.31304
-  tps: 3412.89023
+  dps: 1303.75344
+  tps: 3414.54958
  }
 }
