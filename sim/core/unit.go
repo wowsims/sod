@@ -1,6 +1,7 @@
 package core
 
 import (
+	"container/heap"
 	"math"
 	"time"
 
@@ -26,6 +27,62 @@ const (
 )
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
+
+type MoveModifier struct {
+	ActionId *ActionID
+	Modifier float64
+}
+type MoveHeap []MoveModifier
+
+func (h MoveHeap) Len() int           { return len(h) }
+func (h MoveHeap) Less(i, j int) bool { return h[i].Modifier > h[j].Modifier }
+func (h MoveHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MoveHeap) Push(x any) {
+	*h = append(*h, x.(MoveModifier))
+}
+
+func (h *MoveHeap) Pop() any {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+func (h *MoveHeap) ActiveModifier() float64 {
+	heap := *h
+	if len(heap) < 1 {
+		return 1
+	}
+	n := heap[0]
+	return n.Modifier
+}
+
+func (h *MoveHeap) Find(actionId *ActionID) int {
+	for i, mod := range *h {
+		if mod.ActionId == actionId {
+			return i
+		}
+	}
+	return -1
+}
+
+func (unit *Unit) AddMoveSpeedModifier(actionId *ActionID, modifier float64) {
+	moveSpeedMod := MoveModifier{
+		ActionId: actionId,
+		Modifier: modifier,
+	}
+	heap.Push(unit.moveSpeedModifiers, moveSpeedMod)
+}
+
+func (unit *Unit) RemoveMoveSpeedModifier(actionID *ActionID) {
+	index := unit.moveSpeedModifiers.Find(actionID)
+	if index == -1 {
+		return
+	}
+	heap.Remove(unit.moveSpeedModifiers, index)
+}
 
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
@@ -63,6 +120,7 @@ type Unit struct {
 	Moving                  bool
 	moveAura                *Aura
 	moveSpell               *Spell
+	moveSpeedModifiers      *MoveHeap
 	MoveSpeed               float64
 
 	// Environment in which this Unit exists. This will be nil until after the
@@ -449,7 +507,7 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 	unit.moveSpell.Cast(sim, unit.CurrentTarget)
 
 	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 1000 / time.Duration(unit.MoveSpeed),
+		Period:          time.Millisecond * time.Duration(1000/(unit.MoveSpeed*unit.moveSpeedModifiers.ActiveModifier())),
 		NumTicks:        int(moveTicks),
 		TickImmediately: false,
 
@@ -499,6 +557,8 @@ func (unit *Unit) finalize() {
 	unit.initialStats = unit.ApplyStatDependencies(unit.initialStatsWithoutDeps)
 	unit.statsWithoutDeps = unit.initialStatsWithoutDeps
 	unit.stats = unit.initialStats
+
+	unit.moveSpeedModifiers = &MoveHeap{}
 
 	unit.AutoAttacks.finalize()
 

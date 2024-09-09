@@ -184,10 +184,10 @@ func init() {
 			Label:    "Boon of Air",
 			Duration: time.Minute * 2,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.MoveSpeed *= 1.15
+				shaman.Unit.AddMoveSpeedModifier(&aura.ActionID, 1.15)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.MoveSpeed /= 1.15
+				shaman.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 			},
 		})
 
@@ -302,10 +302,10 @@ func init() {
 			Label:    "Boon of Air",
 			Duration: time.Minute * 2,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.MoveSpeed *= 1.15
+				shaman.Unit.AddMoveSpeedModifier(&aura.ActionID, 1.15)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.MoveSpeed /= 1.15
+				shaman.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 			},
 		})
 

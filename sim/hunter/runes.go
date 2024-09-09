@@ -388,10 +388,10 @@ func (hunter *Hunter) applyHitAndRun() {
 				aura.Activate(sim)
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1.30
+				hunter.Unit.AddMoveSpeedModifier(&aura.ActionID, 1.30)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1 / 1.30
+				hunter.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 			},
 		})
 	}
