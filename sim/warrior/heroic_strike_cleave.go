@@ -29,6 +29,10 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		60: 173,
 	}[warrior.Level]
 
+	// Use a pending action to simulate the re-queueing of Heroic Strike without waiting for an event to happen that would trigger the APL.
+	// While this doesn't have an actual performance impact, it creates a more realistic sequence by queueing Heroic Strike sooner like in real gameplay.
+	var realismPA *core.PendingAction
+
 	warrior.HeroicStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -62,9 +66,19 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 			}
 
 			realismICD.Use(sim)
+
+			if realismPA == nil {
+				realismPA = core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + realismICD.Duration,
+					OnAction: func(sim *core.Simulation) {
+						warrior.HeroicStrikeQueue.Cast(sim, target)
+						realismPA = nil
+					},
+				})
+			}
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.HeroicStrike, realismICD)
+	warrior.HeroicStrikeQueue = warrior.makeQueueSpellsAndAura(warrior.HeroicStrike, realismICD)
 }
 
 func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
@@ -92,6 +106,10 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
+
+	// Use a pending action to simulate the re-queueing of Cleave without waiting for an event to happen that would trigger the APL.
+	// While this doesn't have an actual performance impact, it creates a more realistic sequence by queueing Cleave sooner like in real gameplay.
+	var realismPA *core.PendingAction
 
 	warrior.Cleave = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -127,9 +145,19 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 			}
 
 			realismICD.Use(sim)
+
+			if realismPA == nil {
+				realismPA = core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + realismICD.Duration,
+					OnAction: func(sim *core.Simulation) {
+						warrior.HeroicStrikeQueue.Cast(sim, target)
+						realismPA = nil
+					},
+				})
+			}
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.Cleave, realismICD)
+	warrior.CleaveQueue = warrior.makeQueueSpellsAndAura(warrior.Cleave, realismICD)
 }
 
 func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismICD *core.Cooldown) *WarriorSpell {

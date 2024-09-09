@@ -127,8 +127,10 @@ type Warrior struct {
 	Shockwave         *WarriorSpell
 
 	HeroicStrike       *WarriorSpell
+	HeroicStrikeQueue  *WarriorSpell
 	QuickStrike        *WarriorSpell
 	Cleave             *WarriorSpell
+	CleaveQueue        *WarriorSpell
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *WarriorSpell
 
