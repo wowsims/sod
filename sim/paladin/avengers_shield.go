@@ -17,7 +17,7 @@ func (paladin *Paladin) registerAvengersShield() {
 	highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 407669},
+		ActionID:     core.ActionID{SpellID: int32(proto.PaladinRune_RuneLegsAvengersShield)},
 		SpellCode:    SpellCode_PaladinAvengersShield,
 		SpellSchool:  core.SpellSchoolHoly,
 		DefenseType:  core.DefenseTypeMelee, // Crits as if melee for 200%
