@@ -1138,10 +1138,12 @@ func MeleeHunterBonusAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 456389},
 		Duration: time.Second * 30,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
+		//	target.BaseDodgeChance -= 1
+	//		target.AttackTables[target.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand].BaseDodgeChance -= 1
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
+		//	target.BaseDodgeChance += 1
+	//	target.AttackTables[target.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand].BaseDodgeChance += 1
 		},
 	})
 }

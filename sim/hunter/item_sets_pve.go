@@ -80,6 +80,7 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 		// Your Mongoose Bite also reduces its target's chance to Dodge by 1% and increases your chance to hit by 1% for 30 sec.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+			hunter.PseudoStats.DodgeReduction += .01
 
 			debuffAuras := hunter.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 				return target.RegisterAura(core.Aura{
@@ -87,12 +88,12 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 					ActionID: core.ActionID{SpellID: 456389},
 					Duration: time.Second * 30,
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
+						
 						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
 						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
+						
 						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
 						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
 					},
