@@ -147,14 +147,7 @@ func (warlock *Warlock) applySuppression() {
 }
 
 func (warlock *Warlock) applyNightfall() {
-	if warlock.Talents.Nightfall <= 0 {
-		return
-	}
-
-	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
-
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
-
+	// This aura can be procced by some item sets without having it talented
 	warlock.ShadowTranceAura = warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
@@ -184,18 +177,22 @@ func (warlock *Warlock) applyNightfall() {
 		},
 	})
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Nightfall Hidden Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	if warlock.Talents.Nightfall <= 0 {
+		return
+	}
+
+	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
+
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
+
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (hasSoulSiphonRune && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(warlock.nightfallProcChance, "Nightfall") {
 				warlock.ShadowTranceAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warlock *Warlock) applyShadowMastery() {
