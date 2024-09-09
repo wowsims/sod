@@ -22,13 +22,18 @@ const (
 
 	SpellCode_RogueAmbush
 	SpellCode_RogueBackstab
+	SpellCode_RogueBetweentheEyes
 	SpellCode_RogueBladeFlurry
+	SpellCode_RogueCrimsonTempest
+	SpellCode_RogueEnvenom
+	SpellCode_RogueEviscerate
 	SpellCode_RogueGarrote
 	SpellCode_RogueGhostlyStrike
 	SpellCode_RogueHemorrhage
 	SpellCode_RogueMainGauche
 	SpellCode_RogueMutilate
 	SpellCode_RoguePoisonedKnife
+	SpellCode_RogueRupture
 	SpellCode_RogueSaberSlash
 	SpellCode_RogueSaberSlashDoT
 	SpellCode_RogueShadowStrike
