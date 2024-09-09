@@ -11,17 +11,19 @@ func (paladin *Paladin) registerAvengersShield() {
 		return
 	}
 
-	// Avenger's Shield hits up to 3 targets.
+	// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
 	results := make([]*core.SpellResult, min(3, paladin.Env.GetNumTargets()))
+	lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
+	highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 407669},
-		SpellCode:   SpellCode_PaladinAvengersShield,
-		SpellSchool: core.SpellSchoolHoly,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
+		ActionID:     core.ActionID{SpellID: 407669},
+		SpellCode:    SpellCode_PaladinAvengersShield,
+		SpellSchool:  core.SpellSchoolHoly,
+		DefenseType:  core.DefenseTypeMelee, // Crits as if melee for 200%
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        core.SpellFlagIgnoreResists | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed: 35, // Verified from game files using WoW tools.
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.26,
 		},
@@ -42,17 +44,24 @@ func (paladin *Paladin) registerAvengersShield() {
 		BonusCoefficient: 0.091, // for spell damage; we add the AP bonus manually
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
-			highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
 			apBonus := 0.091 * spell.MeleeAttackPower()
 			for idx := range results {
 				baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				// Avenger's Shield cannot miss and uses magic critical _chance_.
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
-
-			for _, result := range results {
-				spell.DealDamage(sim, result)
+			// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
+			// We approximate it by assuming targets are melee distance apart from each
+			// other.
+			for i, result := range results {
+				delay := time.Duration(int(spell.TravelTime()) * int(i+1))
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + delay,
+					OnAction: func(s *core.Simulation) {
+						spell.DealDamage(sim, result)
+					},
+				})
 			}
 		},
 	})
