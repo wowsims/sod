@@ -700,6 +700,7 @@ const spellIDsToShowBuffs = new Set([
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
+	23060, // https://www.wowhead.com/classic/spell=23060/battle-squawk
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
