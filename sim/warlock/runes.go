@@ -429,6 +429,10 @@ func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus
 		multiplier += perDoTMultiplier
 	}
 
+	if warlock.Shadowflame != nil && warlock.Shadowflame.Dot(target).IsActive() {
+		multiplier += perDoTMultiplier
+	}
+
 	if warlock.Haunt != nil && warlock.HauntDebuffAuras.Get(target).IsActive() {
 		multiplier += perDoTMultiplier
 	}
@@ -473,10 +477,7 @@ func (warlock *Warlock) applyDemonicPact() {
 		Label:    "Demonic Pact Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PreviousTime = 0
 			aura.Activate(sim)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.DidCrit() || !icd.IsReady(sim) {
