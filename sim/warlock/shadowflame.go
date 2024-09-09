@@ -80,17 +80,19 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
+				dot := spell.Dot(target)
+
 				// Shadowflame and Immolate are exclusive
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune && spell.Dot(target).IsActive() {
-					warlock.InvocationRefresh(sim, spell.Dot(target))
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
 				}
 
-				spell.Dot(target).Apply(sim)
+				dot.Apply(sim)
 			}
 
 			spell.DealDamage(sim, result)

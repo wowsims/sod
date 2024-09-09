@@ -444,9 +444,9 @@ export class DamageDealtLog extends SimLog {
 						match[3] == 'Parry',
 						match[3] == 'Block',
 						Boolean(match[2]) && match[2].includes('tick'),
-						match[14] == '25',
-						match[14] == '50',
-						match[14] == '75',
+						match[13] == '25',
+						match[13] == '50',
+						match[13] == '75',
 					);
 				});
 		} else {
