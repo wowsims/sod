@@ -52,11 +52,15 @@ func (paladin *Paladin) registerAvengersShield() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 			// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
-			// We approximate it by assuming targets are melee distance apart from each
-			// other.
+			// We approximate it by assuming targets are standing at melee distance from the
+			// player and ~3 yds apart from each other.
+			// The damage for each target is therefore scheduled to arrive at:
+			// T1 = (TravelTime from player == 5yd TravelTime)
+			// T2 = T1 + (3 yd TravelTime)
+			// T3 = T2 + (3 yd TravelTime)
 			baseTravelTime := int(spell.TravelTime())
 			for i, result := range results {
-				delay := time.Duration(baseTravelTime * (i + 1))
+				delay := time.Duration(0.6 * baseTravelTime * i)
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + delay,
 					OnAction: func(s *core.Simulation) {
