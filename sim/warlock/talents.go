@@ -551,11 +551,13 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 	})
 
 	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
-	warlock.RegisterAura(core.Aura{
-		Label:    "ISB Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "ISB Trigger",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.ShadowBolt {
+				spell.RelatedAuras = []core.AuraArray{warlock.ImprovedShadowBoltAuras}
+			}
+			warlock.DebuffSpells = append(warlock.DebuffSpells, warlock.ShadowBolt...)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && result.DidCrit() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
@@ -564,7 +566,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 				impShadowBoltAura.SetStacks(sim, stackCount)
 			}
 		},
-	})
+	}))
 }
 
 func (warlock *Warlock) applyCataclysm() {

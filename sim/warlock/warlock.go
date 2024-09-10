@@ -164,12 +164,16 @@ func (warlock *Warlock) Initialize() {
 
 	warlock.registerPetAbilities()
 
-	warlock.DoTSpells = core.FilterSlice(warlock.Spellbook, func(spell *core.Spell) bool {
-		return spell.Flags.Matches(SpellFlagWarlock) && !spell.Flags.Matches(core.SpellFlagChanneled) && len(spell.Dots()) > 0
-	})
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if !spell.Flags.Matches(SpellFlagWarlock) {
+			return
+		}
 
-	warlock.DebuffSpells = core.FilterSlice(warlock.Spellbook, func(spell *core.Spell) bool {
-		return spell.Flags.Matches(SpellFlagWarlock) && len(spell.RelatedAuras) > 0
+		if !spell.Flags.Matches(core.SpellFlagChanneled) && len(spell.Dots()) > 0 {
+			warlock.DoTSpells = append(warlock.DoTSpells, spell)
+		} else if len(spell.RelatedAuras) > 0 {
+			warlock.DebuffSpells = append(warlock.DebuffSpells, spell)
+		}
 	})
 }
 

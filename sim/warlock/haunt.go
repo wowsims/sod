@@ -72,5 +72,6 @@ func (warlock *Warlock) registerHauntSpell() {
 				}
 			})
 		},
+		RelatedAuras: []core.AuraArray{warlock.HauntDebuffAuras},
 	})
 }
