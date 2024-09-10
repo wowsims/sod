@@ -184,7 +184,7 @@ export class CharacterStats extends Component {
 						{player.spec === Spec.SpecFeralDruid && (
 							<div className="character-stats-tooltip-row">
 								<span>Feral Combat</span>
-								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
+								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)}</span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
