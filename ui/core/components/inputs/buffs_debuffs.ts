@@ -1269,7 +1269,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: NatureSpellDamageDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatNaturePower],
+		stats: [Stat.StatNaturePower, Stat.StatArcanePower],
 	},
 	{
 		config: SpellShadowWeavingDebuff,

@@ -85,7 +85,7 @@ func init() {
 				affectedSpells = core.FilterSlice(
 					core.Flatten([][]*core.Spell{
 						mage.Frostbolt,
-						{mage.FrozenOrb},
+						{mage.frozenOrb.FrozenOrbTick},
 					}),
 					func(spell *core.Spell) bool { return spell != nil },
 				)
