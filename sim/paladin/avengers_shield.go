@@ -58,11 +58,12 @@ func (paladin *Paladin) registerAvengersShield() {
 			// T1 = (TravelTime from player == 5yd TravelTime)
 			// T2 = T1 + (3 yd TravelTime)
 			// T3 = T2 + (3 yd TravelTime)
-			baseTravelTime := int(spell.TravelTime())
+			baseTravelTime := spell.TravelTime()
+			interTargetTravelTime := int(float64(time.Second) * 3.0 / spell.MissileSpeed)
 			for i, result := range results {
-				delay := time.Duration(0.6 * baseTravelTime * i)
+				delay := time.Duration(interTargetTravelTime * i)
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + delay,
+					DoAt: sim.CurrentTime + baseTravelTime + delay,
 					OnAction: func(s *core.Simulation) {
 						spell.DealDamage(sim, result)
 					},
