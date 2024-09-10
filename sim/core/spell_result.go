@@ -361,6 +361,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 func (spell *Spell) DealOutcome(sim *Simulation, result *SpellResult) {
 	spell.DealDamage(sim, result)
 }
+
 func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	result := spell.CalcOutcome(sim, target, outcomeApplier)
 	spell.DealDamage(sim, result)

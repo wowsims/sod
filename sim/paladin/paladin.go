@@ -62,8 +62,6 @@ type Paladin struct {
 	spellsJoC        []*core.Spell
 	spellsJotC       []*core.Spell
 
-	rollDummyJudgeHit [4]bool
-
 	// Active abilities and shared cooldowns that are externally manipulated.
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
@@ -123,8 +121,6 @@ func (paladin *Paladin) Initialize() {
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoR)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
-
-	paladin.rollDummyJudgeHit = [4]bool{false, false, true, false}
 
 	// Active abilities
 	paladin.registerCrusaderStrike()
