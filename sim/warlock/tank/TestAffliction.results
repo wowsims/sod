@@ -202,6 +202,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-Lvl25-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 215.33652
+  tps: 492.54397
+ }
+}
+dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
   dps: 207.32205
@@ -290,6 +297,13 @@ dps_results: {
  value: {
   dps: 1181.32641
   tps: 1329.94205
+ }
+}
+dps_results: {
+ key: "TestAffliction-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 1900.32933
+  tps: 3780.56945
  }
 }
 dps_results: {

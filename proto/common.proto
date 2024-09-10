@@ -584,9 +584,6 @@ enum SaygesFortune {
 // Buffs that affect the entire raid.
 // NextIndex: 43
 message RaidBuffs {
-	//reserved 33;
-	//reserved "horn_of_lordaeron";
-
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 

@@ -88,7 +88,7 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 						spell.Cost.FlatModifier += 10
 					}
 				},
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if slices.Contains(affectedSpells, spell) {
 						aura.Deactivate(sim)
 					}

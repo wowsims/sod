@@ -398,6 +398,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl25-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 261.98444
+  tps: 219.41754
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl25-Average-Default"
  value: {
   dps: 254.79419
@@ -461,6 +468,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 697.95786
+  tps: 601.5865
+ }
+}
+dps_results: {
  key: "TestDestruction-Lvl40-Average-Default"
  value: {
   dps: 695.60224
@@ -521,6 +535,13 @@ dps_results: {
  value: {
   dps: 375.53923
   tps: 251.10785
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 1551.26201
+  tps: 1377.5745
  }
 }
 dps_results: {
@@ -612,6 +633,13 @@ dps_results: {
  value: {
   dps: 469.7336
   tps: 238.78117
+ }
+}
+dps_results: {
+ key: "TestDestruction-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 2844.73331
+  tps: 2509.32567
  }
 }
 dps_results: {

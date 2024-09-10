@@ -18,6 +18,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
 	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockUnstableAffliction,
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerUnstableAffliction)},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
