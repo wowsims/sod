@@ -124,8 +124,9 @@ type Druid struct {
 
 	BleedCategories core.ExclusiveCategoryArray
 
-	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
-	SavageRoarDurationTable        [6]time.Duration
+	SavageRoarDurationTable [6]time.Duration
+
+	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64

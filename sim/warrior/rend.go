@@ -25,10 +25,12 @@ func (warrior *Warrior) registerRendSpell() {
 		60: {spellID: 11574, damage: 21, ticks: 7},
 	}[warrior.Level]
 
-	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
+	baseDamage := rend.damage
 	if hasBloodFrenzyRune {
-		damageMultiplier *= 2
+		baseDamage *= 2
 	}
+
+	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorRend,
@@ -58,7 +60,7 @@ func (warrior *Warrior) registerRendSpell() {
 			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := rend.damage
+				damage := baseDamage
 				if hasBloodFrenzyRune {
 					damage += .03 * dot.Spell.MeleeAttackPower()
 				}

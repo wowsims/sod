@@ -1356,9 +1356,17 @@ const idToCategoryMap: Record<number, number> = {
 	[12536]: SPELL_ACTION_CATEGORY + 0.61, // Clearcasting
 
 	// Warrior
-	[47520]: 0.1, // Cleave
-	[47450]: 0.1, // Heroic Strike
-	[47475]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[845]: 0.1, // Cleave
+	[11608]: 0.1, // Cleave
+	[11609]: 0.1, // Cleave
+	[20569]: 0.1, // Cleave
+	[1608]: 0.1, // Heroic Strike
+	[11565]: 0.1, // Heroic Strike
+	[11566]: 0.1, // Heroic Strike
+	[11567]: 0.1, // Heroic Strike
+	[8820]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[11604]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[11605]: MELEE_ACTION_CATEGORY + 0.05, // Slam
 	[23881]: MELEE_ACTION_CATEGORY + 0.1, // Bloodthirst
 	[47486]: MELEE_ACTION_CATEGORY + 0.1, // Mortal Strike
 	[30356]: MELEE_ACTION_CATEGORY + 0.1, // Shield Slam

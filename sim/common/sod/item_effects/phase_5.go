@@ -13,6 +13,7 @@ const (
 	Heartstriker               = 230253
 	DrakeTalonCleaver          = 230271 // 19353
 	JekliksCrusher             = 230911
+	WillOfArlokk               = 230939
 	HaldberdOfSmiting          = 230991
 	TigulesHarpoon             = 231272
 	GrileksCarver              = 231273
@@ -20,8 +21,10 @@ const (
 	Stormwrath                 = 231387
 	WrathOfWray                = 231779
 	LightningsCell             = 231784
+	Windstriker                = 231817
 	GrileksCarverBloodied      = 231846
 	TigulesHarpoonBloodied     = 231849
+	WillOfArlokkBloodied       = 231850
 	JekliksCrusherBloodied     = 231861
 	PitchforkOfMadnessBloodied = 231864
 	HaldberdOfSmitingBloodied  = 231870
@@ -138,6 +141,37 @@ func init() {
 		}
 	})
 
+	// https://www.wowhead.com/classic/item=230939/will-of-arlokk
+	// Use: Calls forth a charmed snake to worship you, increasing your Spirit by 200 for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(WillOfArlokk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		makeWillOfWarlookOnUseEffect(character, WillOfArlokk)
+	})
+	core.NewItemEffect(WillOfArlokkBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		makeWillOfWarlookOnUseEffect(character, WillOfArlokkBloodied)
+	})
+
+	// https://www.wowhead.com/classic/item=231817/windstriker
+	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
+	core.NewItemEffect(Windstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		procMask := character.GetProcMaskForItem(Windstriker)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Felstriker Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               0.6,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				effectAura.Activate(sim)
+			},
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
@@ -216,4 +250,40 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(WrathOfWray, stats.Stats{stats.Strength: 92}, time.Second*20, time.Minute*2)
 
 	core.AddEffectsToTest = true
+}
+
+func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
+	actionID := core.ActionID{ItemID: itemID}
+
+	buffAura := character.RegisterAura(core.Aura{
+		ActionID: actionID,
+		Label:    "Serpentine Spirit",
+		Duration: time.Second * 20,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Spirit, 200)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Spirit, -200)
+		},
+	})
+
+	spell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolPhysical,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute * 2,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Activate(sim)
+		},
+	})
+
+	character.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
 }

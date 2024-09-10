@@ -70,7 +70,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlag_RV,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
 
 			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
 
@@ -81,7 +81,16 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+
+				// Seal of Command requires this spell to act as its intermediary dummy,
+				// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
+				// melee special attack crit/hit table, necessitating two discrete spells.
+				// All other judgements are cast directly.
+				// Used to decide between spell.OutcomeMeleeSpecialCritOnly and spell.OutcomeAlwaysMiss
+				dummyJudgeLanded := paladin.judgement.CalcOutcome(sim, target, paladin.judgement.OutcomeMagicHit).Landed()
+
+				outcomeApplier := core.Ternary(dummyJudgeLanded, spell.OutcomeMeleeSpecialCritOnly, spell.OutcomeAlwaysMiss)
+				spell.CalcAndDealDamage(sim, target, baseDamage, outcomeApplier)
 			},
 		})
 
@@ -109,11 +118,6 @@ func (paladin *Paladin) registerSealOfCommand() {
 			Duration: time.Second * 30,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
-					return
-				}
-
-				if spell == paladin.judgement {
-					judgeSpell.Cast(sim, result.Target)
 					return
 				}
 

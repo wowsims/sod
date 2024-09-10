@@ -30,6 +30,8 @@ const (
 	KnightLieutenantsDragonhideGrips = 227183
 	WushoolaysCharmOfNature          = 231280
 	PristineEnchantedSouthSeasKelp   = 231316
+	IdolOfCelestialFocus             = 232390
+	IdolOfFelineFocus                = 232391
 )
 
 func init() {
@@ -122,6 +124,36 @@ func init() {
 				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && icd.IsReady(sim) && sim.Proc(.15, "Gla'sir Heal") {
 					healSpell.Cast(sim, result.Target)
 					icd.Use(sim)
+				}
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=232390/idol-of-celestial-focus
+	// Equip: Increases the damage done by Starfall by 10%, but decreases its radius by 50%.
+	core.NewItemEffect(IdolOfCelestialFocus, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_DruidStarfallTick || spell.SpellCode == SpellCode_DruidStarfallSplash {
+				spell.DamageMultiplier *= 1.10
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=232391/idol-of-feline-focus
+	// Equip: Your Ferocious Bite ability no longer converts additional energy into damage, and refunds 30 energy on a Dodge, Miss, or Parry.
+	core.NewItemEffect(IdolOfFelineFocus, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.FerociousBiteExcessEnergyOverride = true
+
+		energyMetrics := druid.NewEnergyMetrics(core.ActionID{SpellID: 470270})
+
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Idol of Feline Focus",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_DruidFerociousBite && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeMiss|core.OutcomeParry) {
+					druid.AddEnergy(sim, 30, energyMetrics)
 				}
 			},
 		}))
