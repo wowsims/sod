@@ -12,7 +12,8 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-	SpellFlag_RV = core.SpellFlagAgentReserved1
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
+	SpellFlag_Forbearance = core.SpellFlagAgentReserved2
 )
 
 const (
@@ -127,6 +128,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.rollDummyJudgeHit = [4]bool{false, false, true, false}
 
 	// Active abilities
+	paladin.registerForbearance()
 	paladin.registerCrusaderStrike()
 	paladin.registerDivineStorm()
 	paladin.registerConsecration()
