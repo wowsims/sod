@@ -202,6 +202,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 342.73597
+  tps: 1010.23617
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
   dps: 336.86424
@@ -290,6 +297,13 @@ dps_results: {
  value: {
   dps: 102.84413
   tps: 113.46026
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 2223.36542
+  tps: 4339.18645
  }
 }
 dps_results: {

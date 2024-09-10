@@ -127,8 +127,10 @@ type Warrior struct {
 	Shockwave         *WarriorSpell
 
 	HeroicStrike       *WarriorSpell
+	HeroicStrikeQueue  *WarriorSpell
 	QuickStrike        *WarriorSpell
 	Cleave             *WarriorSpell
+	CleaveQueue        *WarriorSpell
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *WarriorSpell
 
@@ -238,10 +240,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.registerBerserkerRageSpell()
 	warrior.registerBloodthirstSpell(primaryTimer)
-	warrior.registerCleaveSpell()
 	warrior.registerDemoralizingShoutSpell()
 	warrior.registerExecuteSpell()
-	warrior.registerHeroicStrikeSpell()
 	warrior.registerMortalStrikeSpell(primaryTimer)
 	warrior.registerOverpowerSpell(overpowerRevengeTimer)
 	warrior.registerRevengeSpell(overpowerRevengeTimer)
@@ -251,6 +251,15 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerWhirlwindSpell()
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
+
+	// The sim often re-enables heroic strike in an unrealistic amount of time.
+	// This can cause an unrealistic immediate double-hit around wild strikes procs
+	queuedRealismICD := &core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: core.SpellBatchWindow * 5,
+	}
+	warrior.registerHeroicStrikeSpell(queuedRealismICD)
+	warrior.registerCleaveSpell(queuedRealismICD)
 
 	warrior.SunderArmor = warrior.registerSunderArmorSpell()
 

@@ -147,15 +147,8 @@ func (warlock *Warlock) applySuppression() {
 }
 
 func (warlock *Warlock) applyNightfall() {
-	if warlock.Talents.Nightfall <= 0 {
-		return
-	}
-
-	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
-
-	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
-
-	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
+	// This aura can be procced by some item sets without having it talented
+	warlock.ShadowTranceAura = warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: time.Second * 10,
@@ -184,18 +177,22 @@ func (warlock *Warlock) applyNightfall() {
 		},
 	})
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Nightfall Hidden Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	if warlock.Talents.Nightfall <= 0 {
+		return
+	}
+
+	warlock.nightfallProcChance = 0.02 * float64(warlock.Talents.Nightfall)
+
+	hasSoulSiphonRune := warlock.HasRune(proto.WarlockRune_RuneCloakSoulSiphon)
+
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (hasSoulSiphonRune && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(warlock.nightfallProcChance, "Nightfall") {
-				warlock.NightfallProcAura.Activate(sim)
+				warlock.ShadowTranceAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warlock *Warlock) applyShadowMastery() {
@@ -293,16 +290,21 @@ func (warlock *Warlock) applyMasterDemonologist() {
 	hasMetaRune := warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis)
 
 	points := float64(warlock.Talents.MasterDemonologist)
-	damageDealtMultiplier := 1 + 0.02*points
-	damageTakenMultiplier := 1 - 0.02*points
-	threatMultiplier := core.TernaryFloat64(hasMetaRune, 1+0.04*points, 1-0.04*points)
-	bonusResistance := 2 * points
+	bonusMultiplier := 1 + warlock.masterDemonologistBonus
+	damageDealtMultiplier := 1 + (0.02 * points * bonusMultiplier)
+	damageTakenMultiplier := 1 - (0.02 * points * bonusMultiplier)
+	threatMultiplier := 1 + (core.TernaryFloat64(hasMetaRune, 0.04*points, -0.04*points) * bonusMultiplier)
+	bonusResistance := 2 * points * bonusMultiplier
 
 	masterDemonologistConfig := core.Aura{
 		Label:    "Master Demonologist",
 		ActionID: core.ActionID{SpellID: 23825},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if warlock.ActivePet == nil {
+				return
+			}
+
 			switch warlock.ActivePet {
 			case warlock.Felguard:
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
@@ -320,6 +322,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if warlock.ActivePet == nil {
+				return
+			}
+
 			switch warlock.ActivePet {
 			case warlock.Felguard:
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier

@@ -15,6 +15,7 @@ func (rogue *Rogue) registerRupture() {
 	}[rogue.Level]
 
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueRupture,
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
