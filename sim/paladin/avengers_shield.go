@@ -52,10 +52,9 @@ func (paladin *Paladin) registerAvengersShield() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 			// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
-			// We approximate it by assuming targets are standing at melee distance from the
-			// player and ~3 yds apart from each other.
+			// We approximate it by assuming targets are standing ~3 yds apart from each other.
 			// The damage for each target is therefore scheduled to arrive at:
-			// T1 = (TravelTime from player == 5yd TravelTime)
+			// T1 = (TravelTime from player; by default 5 yard max melee range)
 			// T2 = T1 + (3 yd TravelTime)
 			// T3 = T2 + (3 yd TravelTime)
 			baseTravelTime := spell.TravelTime()
