@@ -2690,8 +2690,8 @@ func bonereaversEdgeEffect(character *core.Character) *core.Spell {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, target := range sim.Encounter.TargetUnits {
-				target.AddStatDynamic(sim, stats.Armor, -700*float64(oldStacks))
-				target.AddStatDynamic(sim, stats.Armor, 700*float64(newStacks))
+				target.AddStatDynamic(sim, stats.Armor, 700*float64(oldStacks))
+				target.AddStatDynamic(sim, stats.Armor, -700*float64(newStacks))
 			}
 		},
 	})
