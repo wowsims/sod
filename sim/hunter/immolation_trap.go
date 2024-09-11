@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -63,7 +64,11 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
+			spellHit := spell.Unit.GetStat(stats.SpellHit) + spell.Unit.GetSchoolBonusHitChance(spell) + target.PseudoStats.BonusSpellHitRatingTaken
+			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit * -1)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealOutcome(sim, result)
 				if result.Landed() {

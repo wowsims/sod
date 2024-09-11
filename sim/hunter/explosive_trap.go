@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -74,6 +75,9 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				curTarget := target
+				// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
+				spellHit := spell.Unit.GetStat(stats.SpellHit) + spell.Unit.GetSchoolBonusHitChance(spell) + target.PseudoStats.BonusSpellHitRatingTaken
+				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit * -1)
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := sim.Roll(minDamage, maxDamage)
 					baseDamage += hunter.tntDamageFlatBonus()
@@ -81,6 +85,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
+				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit)
 				spell.AOEDot().ApplyOrReset(sim)
 			})
 		},
