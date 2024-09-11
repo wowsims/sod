@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestProtection-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.07936
-  weights: 0.86506
+  weights: 1.08281
+  weights: 0.86014
   weights: 0
   weights: 0.03001
   weights: 0
@@ -69,8 +69,8 @@ stat_weights_results: {
   weights: 0
   weights: 0.48381
   weights: 0
-  weights: 15.28639
-  weights: 9.84296
+  weights: 15.30191
+  weights: 9.82877
   weights: 0
   weights: 0
   weights: 0
@@ -80,7 +80,7 @@ stat_weights_results: {
   weights: 0
   weights: 0.41303
   weights: 0
-  weights: 0.27219
+  weights: 0.33501
   weights: 0
   weights: 0
   weights: 0
@@ -106,8 +106,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 1599.6827
-  tps: 1798.5077
+  dps: 1605.47167
+  tps: 1804.29667
  }
 }
 dps_results: {
@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 1599.4123
-  tps: 1798.2373
+  dps: 1605.20126
+  tps: 1804.02626
  }
 }
 dps_results: {
@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 1552.93095
-  tps: 1746.35937
+  dps: 1558.63873
+  tps: 1752.06715
  }
 }
 dps_results: {
@@ -155,8 +155,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1585.40982
-  tps: 1782.58157
+  dps: 1590.20867
+  tps: 1787.38043
  }
 }
 dps_results: {
@@ -169,98 +169,98 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Lvl60-Average-Default"
  value: {
-  dps: 1592.03314
-  tps: 1789.03868
+  dps: 1597.8166
+  tps: 1794.82214
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 948.20078
-  tps: 1627.24045
+  dps: 952.45126
+  tps: 1631.49093
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 354.72521
-  tps: 506.73862
+  dps: 358.92522
+  tps: 510.93862
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 522.70784
-  tps: 707.64141
+  dps: 529.08513
+  tps: 714.01869
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 288.37377
-  tps: 552.66878
+  dps: 289.45074
+  tps: 553.74575
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 113.57937
-  tps: 148.81744
+  dps: 114.6484
+  tps: 149.88646
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 203.3387
-  tps: 261.65131
+  dps: 206.23309
+  tps: 264.5457
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 960.19799
-  tps: 1649.74712
+  dps: 964.58104
+  tps: 1654.13017
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 364.07824
-  tps: 520.52159
+  dps: 368.46271
+  tps: 524.90606
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 527.05693
-  tps: 716.49698
+  dps: 533.48464
+  tps: 722.9247
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 299.10903
-  tps: 566.67134
+  dps: 300.19401
+  tps: 567.75632
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 116.20898
-  tps: 153.0019
+  dps: 117.33396
+  tps: 154.12688
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 210.52067
-  tps: 271.56859
+  dps: 213.46093
+  tps: 274.50885
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1320.12577
-  tps: 1489.8148
+  dps: 1325.15835
+  tps: 1494.84739
  }
 }
