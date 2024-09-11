@@ -75,7 +75,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				curTarget := target
 				// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
-				spellHit := spell.Unit.GetStat(stats.SpellHit) + spell.Unit.GetSchoolBonusHitChance(spell) + target.PseudoStats.BonusSpellHitRatingTaken
+				spellHit := spell.Unit.GetStat(stats.SpellHit) + target.PseudoStats.BonusSpellHitRatingTaken
 				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit*-1)
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := sim.Roll(minDamage, maxDamage)
