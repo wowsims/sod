@@ -15,6 +15,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 	level := [6]int{0, 16, 26, 36, 46, 56}[rank]
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterImmolationTrap,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
@@ -41,9 +42,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
-		BonusHitRating: hunter.trapMastery(),
-
-		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -66,7 +65,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
 			spellHit := spell.Unit.GetStat(stats.SpellHit) + spell.Unit.GetSchoolBonusHitChance(spell) + target.PseudoStats.BonusSpellHitRatingTaken
-			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit * -1)
+			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit*-1)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {

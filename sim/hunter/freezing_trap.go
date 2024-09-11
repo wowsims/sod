@@ -9,6 +9,7 @@ import (
 func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig {
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterFreezingTrap,
 		ActionID:      core.ActionID{SpellID: 409510},
 		SpellSchool:   core.SpellSchoolFrost,
 		DefenseType:   core.DefenseTypeMagic,
@@ -33,8 +34,6 @@ func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
-
-		BonusHitRating: hunter.trapMastery(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

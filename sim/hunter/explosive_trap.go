@@ -19,6 +19,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 	numHits := hunter.Env.GetNumTargets()
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterExplosiveTrap,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
@@ -45,9 +46,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
-		BonusHitRating: hunter.trapMastery(),
-
-		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -77,7 +76,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 				curTarget := target
 				// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
 				spellHit := spell.Unit.GetStat(stats.SpellHit) + spell.Unit.GetSchoolBonusHitChance(spell) + target.PseudoStats.BonusSpellHitRatingTaken
-				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit * -1)
+				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit*-1)
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := sim.Roll(minDamage, maxDamage)
 					baseDamage += hunter.tntDamageFlatBonus()
