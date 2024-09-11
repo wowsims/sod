@@ -18,12 +18,12 @@ func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig 
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 50 * hunter.resourcefulnessManacostModifier(),
+			FlatCost: 50,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15*hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * 15,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

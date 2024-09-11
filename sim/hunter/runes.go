@@ -48,6 +48,8 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyHitAndRun()
 	hunter.applyMasterMarksman()
 	hunter.applyImprovedVolley()
+	hunter.applyTNT()
+	hunter.applyResourcefulness()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -343,11 +345,16 @@ func (hunter *Hunter) applyCobraSlayer() {
 	})
 }
 
-func (hunter *Hunter) tntDamageMultiplier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
-		return 1.1
+func (hunter *Hunter) applyTNT() {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return
 	}
-	return 1.0
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) || spell.SpellCode == SpellCode_HunterExplosiveShot {
+			spell.DamageMultiplier *= 1.10
+		}
+	})
 }
 
 func (hunter *Hunter) tntDamageFlatBonus() float64 {
@@ -364,18 +371,18 @@ func (hunter *Hunter) trapRange() float64 {
 	return 5
 }
 
-func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
-		return 0.0
+func (hunter *Hunter) applyResourcefulness() {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return
 	}
-	return 1.0
-}
 
-func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
-		return 0.6
-	}
-	return 1.0
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			// Ideally I would set Multiplier to 0 but that results in the cost calculation defaulting to 100
+			spell.Cost.FlatModifier = int32(spell.Cost.BaseCost * -1)
+			spell.CD.Duration = spell.CD.Duration / 100 * 60
+		}
+	})
 }
 
 func (hunter *Hunter) applyHitAndRun() {

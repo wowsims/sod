@@ -25,12 +25,12 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * hunter.resourcefulnessManacostModifier(),
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15*hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * 15,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -43,7 +43,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 
 		BonusHitRating: hunter.trapMastery(),
 
-		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
+		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
