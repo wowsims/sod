@@ -242,7 +242,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
 			},
 		})
 	})
