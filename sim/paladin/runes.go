@@ -21,6 +21,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
 	paladin.applyPurifyingPower()
+	paladin.registerAvengersShield()
 }
 
 func (paladin *Paladin) registerFanaticism() {

@@ -2,33 +2,15 @@ package shaman
 
 import (
 	"math"
-	"strconv"
-	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-type SpiritWolf struct {
+type SpiritWolves struct {
 	core.Pet
 
 	shamanOwner *Shaman
-}
-
-type SpiritWolves struct {
-	SpiritWolf1 *SpiritWolf
-	SpiritWolf2 *SpiritWolf
-}
-
-func (SpiritWolves *SpiritWolves) EnableWithTimeout(sim *core.Simulation) {
-	SpiritWolves.SpiritWolf1.EnableWithTimeout(sim, SpiritWolves.SpiritWolf1, time.Second*45)
-	SpiritWolves.SpiritWolf2.EnableWithTimeout(sim, SpiritWolves.SpiritWolf1, time.Second*45)
-}
-
-func (SpiritWolves *SpiritWolves) CancelGCDTimer(sim *core.Simulation) {
-	SpiritWolves.SpiritWolf1.CancelGCDTimer(sim)
-	SpiritWolves.SpiritWolf2.CancelGCDTimer(sim)
 }
 
 var spiritWolfBaseStats = stats.Stats{
@@ -44,33 +26,32 @@ var spiritWolfBaseStats = stats.Stats{
 	stats.MeleeCrit: (1.1515 + 1.8) * core.CritRatingPerCritChance,
 }
 
-func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
-	spiritWolf := &SpiritWolf{
-		Pet:         core.NewPet("Spirit Wolf "+strconv.Itoa(index), &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, false),
+func (shaman *Shaman) NewSpiritWolves() *SpiritWolves {
+	wolves := &SpiritWolves{
+		Pet:         core.NewPet("Spirit Wolves", &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, false),
 		shamanOwner: shaman,
 	}
 
-	spiritWolf.EnableAutoAttacks(spiritWolf, core.AutoAttackOptions{
+	wolves.EnableAutoAttacks(wolves, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin: 55.5,
 			BaseDamageMax: 71.5,
-			SwingSpeed:    1.5,
+			SwingSpeed:    1.5 / 2, // Two dogs attack at 1.5s intervals, but for performance we use 1 pet so divide by 2
 		},
 		AutoSwingMelee: true,
 	})
 
 	// Testing found that wolves gained 2 AP per Str, and ~1 AP per 5 Agi
 	// Tested using different ranks of Strength of Earth and Grace of Air Totems
-	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	spiritWolf.AddStatDependency(stats.Agility, stats.AttackPower, 0.2)
+	wolves.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	wolves.AddStatDependency(stats.Agility, stats.AttackPower, 0.2)
 
 	// Warrior crit scaling
-	spiritWolf.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(spiritWolf.Level)]*core.CritRatingPerCritChance)
-	core.ApplyPetConsumeEffects(&spiritWolf.Character, shaman.Consumes)
+	core.ApplyPetConsumeEffects(&wolves.Character, shaman.Consumes)
 
-	shaman.AddPet(spiritWolf)
+	shaman.AddPet(wolves)
 
-	return spiritWolf
+	return wolves
 }
 
 func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
@@ -82,29 +63,23 @@ func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.AttackPower] * 0.31,
-
-			stats.MeleeHit: hitRatingFromOwner,
+			stats.MeleeCrit:   ownerStats[stats.MeleeCrit], // Logs showed high crit rates consistent with inheriting owner hit but possibly not scaling from Agi
+			stats.MeleeHit:    hitRatingFromOwner,
 		}
 	}
 }
 
-func (spiritWolf *SpiritWolf) Initialize() {
+func (wolves *SpiritWolves) Initialize() {
 	// Nothing
 }
 
-func (spiritWolf *SpiritWolf) ExecuteCustomRotation(_ *core.Simulation) {
+func (wolves *SpiritWolves) ExecuteCustomRotation(_ *core.Simulation) {
 }
 
-func (spiritWolf *SpiritWolf) Reset(sim *core.Simulation) {
-	spiritWolf.Disable(sim)
-	if sim.Log != nil {
-		spiritWolf.Log(sim, "Base Stats: %s", spiritWolfBaseStats)
-		inheritedStats := spiritWolf.shamanOwner.makeStatInheritance()(spiritWolf.shamanOwner.GetStats())
-		spiritWolf.Log(sim, "Inherited Stats: %s", inheritedStats)
-		spiritWolf.Log(sim, "Total Stats: %s", spiritWolf.GetStats())
-	}
+func (wolves *SpiritWolves) Reset(sim *core.Simulation) {
+	wolves.Disable(sim)
 }
 
-func (spiritWolf *SpiritWolf) GetPet() *core.Pet {
+func (spiritWolf *SpiritWolves) GetPet() *core.Pet {
 	return &spiritWolf.Pet
 }
