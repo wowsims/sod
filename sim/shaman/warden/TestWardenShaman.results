@@ -50,24 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWardenShaman-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.94943
+  weights: 0.93998
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.46415
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.43156
+  weights: 0.4635
   weights: 0
   weights: 0
   weights: 0
@@ -78,7 +66,19 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.89426
+  weights: 0
+  weights: 0.42726
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.89
   weights: 0
   weights: 0
   weights: 0
@@ -99,154 +99,154 @@ stat_weights_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1152.79241
-  tps: 1136.94413
+  dps: 1144.60475
+  tps: 1142.90519
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1201.18708
-  tps: 1183.02854
+  dps: 1192.7634
+  tps: 1189.49675
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1197.59915
-  tps: 1182.27222
+  dps: 1188.14377
+  tps: 1193.38596
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1178.76445
-  tps: 1163.11603
+  dps: 1170.60735
+  tps: 1169.04299
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1152.5791
-  tps: 1136.82645
+  dps: 1144.35585
+  tps: 1142.72715
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1185.72083
-  tps: 1168.36079
+  dps: 1177.36149
+  tps: 1174.66089
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1575.88798
-  tps: 1686.25104
+  dps: 1564.43581
+  tps: 1692.01813
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1074.37038
-  tps: 1053.16748
+  dps: 1055.26416
+  tps: 1051.47188
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Average-Default"
  value: {
-  dps: 1751.39298
-  tps: 1341.82042
+  dps: 1735.25336
+  tps: 1341.54603
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1748.72173
-  tps: 2555.25774
+  dps: 1729.88566
+  tps: 2551.55666
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 842.55972
-  tps: 683.42049
+  dps: 824.38564
+  tps: 683.268
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1191.87974
-  tps: 886.23099
+  dps: 1154.75486
+  tps: 888.23616
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 595.65998
-  tps: 1111.81411
+  dps: 586.86253
+  tps: 1108.22936
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 302.34381
-  tps: 247.76929
+  dps: 299.84743
+  tps: 248.40168
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 488.00555
-  tps: 382.1953
+  dps: 485.14197
+  tps: 385.09855
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1732.72711
-  tps: 2534.78819
+  dps: 1729.25808
+  tps: 2548.07079
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 822.25475
-  tps: 662.26879
+  dps: 802.62012
+  tps: 659.2079
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1186.81241
-  tps: 889.74174
+  dps: 1148.85312
+  tps: 891.13308
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 584.86901
-  tps: 1096.39705
+  dps: 577.00204
+  tps: 1091.13513
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 294.87465
-  tps: 242.76245
+  dps: 294.27429
+  tps: 243.43858
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 478.71721
-  tps: 371.26467
+  dps: 470.64943
+  tps: 371.62663
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1498.07084
-  tps: 1166.64953
+  dps: 1490.84682
+  tps: 1172.23059
  }
 }

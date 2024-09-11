@@ -49,8 +49,7 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 
 		core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, multiplier).Activate(sim)
 		if hasFeralSpirit {
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier).Activate(sim)
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier).Activate(sim)
+			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier).Activate(sim)
 		}
 	}
 	return spell

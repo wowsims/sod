@@ -546,6 +546,54 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
+	Name: "Relief of the Ten Storms",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your damaging and healing critical strikes now have a 100% chance to trigger your Water Shield, but do not consume a charge or trigger its cooldown.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+						shaman.WaterShieldRestore.Cast(sim, aura.Unit)
+					}
+				},
+			}))
+		},
+		// Your Chain Lightning now also heals the target of your Earth Shield for 100% of the damage done.
+		4: func(agent core.Agent) {
+			// TODO: Implement Earth Shield
+			// shaman := agent.(ShamanAgent).GetShaman()
+
+			// core.MakePermanent(shaman.RegisterAura())
+		},
+		// Increases the healing of Chain Heal and the damage of Chain Lightning by 20%.
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					spells := core.Flatten([][]*core.Spell{
+						shaman.ChainHeal,
+						shaman.ChainHealOverload,
+						shaman.ChainLightning,
+						shaman.ChainLightningOverload,
+					})
+
+					for _, spell := range spells {
+						if spell != nil {
+							spell.DamageMultiplier *= 1.20
+						}
+					}
+				},
+			})
+		},
+	},
+})
+
 var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Augur's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
