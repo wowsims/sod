@@ -165,6 +165,7 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
+    distanceFromTarget: 5, // Max melee range
 	profession1: Profession.Blacksmithing,
 	profession2: Profession.Engineering,
 };
