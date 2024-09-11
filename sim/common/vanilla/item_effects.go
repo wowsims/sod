@@ -2284,7 +2284,7 @@ func init() {
 				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfInjustice") {
 					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
 				}
 			},
 		})
