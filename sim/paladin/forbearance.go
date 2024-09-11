@@ -25,8 +25,15 @@ func (paladin *Paladin) registerForbearance() {
 				forbearanceAura.Activate(sim)
 			}
 
-			spell.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-				return !forbearanceAura.IsActive()
+			if spell.ExtraCastCondition != nil {
+				oldCondition := spell.ExtraCastCondition
+				spell.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+					return (!forbearanceAura.IsActive()) && oldCondition(sim, target)
+				}
+			} else {
+				spell.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+					return !forbearanceAura.IsActive()
+				}
 			}
 		}
 	})
