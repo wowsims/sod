@@ -92,8 +92,7 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 
 		core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, multiplier).Activate(sim)
 		if hasFeralSpirit {
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier).Activate(sim)
-			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier).Activate(sim)
+			core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier).Activate(sim)
 		}
 	}
 	return spell
