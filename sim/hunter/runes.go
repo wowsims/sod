@@ -378,7 +378,6 @@ func (hunter *Hunter) applyResourcefulness() {
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagTrap) {
-			// Ideally I would set Multiplier to 0 but that results in the cost calculation defaulting to 100
 			spell.Cost.BaseCost = 0
 			spell.CD.Duration = spell.CD.Duration / 100 * 60
 		}
