@@ -354,6 +354,7 @@ func (mage *Mage) applyBrainFreeze() {
 					mage.Fireball,
 					{mage.FrostfireBolt},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
