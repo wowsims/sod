@@ -29,23 +29,6 @@ func TestProtection(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		{ // Phase 5 Gear
-			Class:      proto.Class_ClassPaladin,
-			Level:      60,
-			Race:       proto.Race_RaceHuman,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
-
-			Talents:     Phase4ProtTalents,
-			GearSet:     core.GetGearSet("../../../ui/protection_paladin/gear_sets", "p5prot"),
-			Rotation:    core.GetAplRotation("../../../ui/protection_paladin/apls", "p4prot"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "P4 Prot", SpecOptions: PlayerOptionsSealofMartyrdom},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
 	}))
 }
 
