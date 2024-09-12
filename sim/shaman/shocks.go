@@ -17,10 +17,10 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 		SpellSchool: spellSchool,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagShaman | core.SpellFlagAPL | SpellFlagFocusable,
+		Flags:       SpellFlagShaman | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: baseCost,
+			FlatCost:   baseCost,
 			Multiplier: 100 - 2*shaman.Talents.Convection,
 		},
 		Cast: core.CastConfig{

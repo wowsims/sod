@@ -31,6 +31,11 @@ func (shaman *Shaman) registerWaterShieldSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.DisableDynamicStatDep(sim, mp5StatDep)
+
+			if shaman.ActiveShieldAura == aura {
+				shaman.ActiveShieldAura = nil
+				shaman.ActiveShield = nil
+			}
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {
