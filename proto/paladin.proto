@@ -83,7 +83,7 @@ enum PaladinRune {
 
 	RuneWaistInfusionOfLight		= 426065;
 	RuneWaistSheathOfLight			= 426158;
-	RuneWaistMalleableProtection	= 426173;
+	RuneWaistMalleableProtection	= 458318;
 
 	RuneLegsAuraMastery				= 407624;
 	RuneLegsAvengersShield			= 407669;
