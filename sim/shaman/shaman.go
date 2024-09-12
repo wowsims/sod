@@ -15,8 +15,7 @@ const (
 	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagLightning = core.SpellFlagAgentReserved3
-	SpellFlagFocusable = core.SpellFlagAgentReserved4
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved5
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
 )
 
 func NewShaman(character *core.Character, talents string) *Shaman {
@@ -139,6 +138,7 @@ type Shaman struct {
 
 	// Auras
 	ClearcastingAura     *core.Aura
+	LightningShieldAuras []*core.Aura
 	LoyalBetaAura        *core.Aura
 	MaelstromWeaponAura  *core.Aura
 	PowerSurgeDamageAura *core.Aura
@@ -167,8 +167,10 @@ type Shaman struct {
 	bonusFlurrySpeed       float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
 	bonusWindfuryWeaponAP  float64
 	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit bool
 	maelstromWeaponPPMM    *core.PPMManager
 	powerSurgeProcChance   float64
+	staticSHocksProcChance float64
 }
 
 // Implemented by each Shaman spec.
@@ -239,6 +241,9 @@ func (shaman *Shaman) baseRuneAbilityDamage() float64 {
 }
 
 func (shaman *Shaman) Reset(_ *core.Simulation) {
+	shaman.ActiveShield = nil
+	shaman.ActiveShieldAura = nil
+
 	for i := range shaman.TotemExpirations {
 		shaman.TotemExpirations[i] = 0
 	}

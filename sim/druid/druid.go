@@ -122,15 +122,14 @@ type Druid struct {
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
-	BleedCategories core.ExclusiveCategoryArray
-
+	BleedCategories         core.ExclusiveCategoryArray
 	SavageRoarDurationTable [6]time.Duration
 
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
-
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	SunfireDotMultiplier  float64
+	t26pcTreants          *T2Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -270,7 +269,7 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
 	guardians.ConstructGuardians(&druid.Character)
-	druid.NewT2Treants()
+	druid.t26pcTreants = druid.NewT2Treants()
 
 	return druid
 }
