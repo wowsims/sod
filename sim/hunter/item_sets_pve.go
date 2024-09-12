@@ -207,7 +207,7 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 5,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.MeleeSpells {
-						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterWingClip {
+						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterRaptorStrike && spell.SpellCode != SpellCode_HunterWingClip {
 							affectedSpells[spell] = true
 						}
 					}
