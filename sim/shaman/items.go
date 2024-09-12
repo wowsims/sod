@@ -524,7 +524,12 @@ func init() {
 	// Totem of Tormented Ancestry
 	core.NewItemEffect(TotemTormentedAncestry, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		procAura := shaman.NewTemporaryStatsAura("Totem of Tormented Ancestry Proc", core.ActionID{SpellID: 446219}, stats.Stats{stats.AttackPower: 15, stats.SpellDamage: 15, stats.HealingPower: 15}, 12*time.Second)
+		procAura := shaman.NewTemporaryStatsAura(
+			"Totem of Tormented Ancestry Proc",
+			core.ActionID{SpellID: 446219},
+			stats.Stats{stats.AttackPower: 10, stats.SpellDamage: 10, stats.HealingPower: 10},
+			12*time.Second,
+		)
 
 		shaman.RegisterAura(core.Aura{
 			Label:    "Totem of Tormented Ancestry",
