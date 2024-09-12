@@ -1219,7 +1219,7 @@ const idToCategoryMap: Record<number, number> = {
 
 	[48465]: SPELL_ACTION_CATEGORY + 0.1, // Starfire
 	[48461]: SPELL_ACTION_CATEGORY + 0.2, // Wrath
-	[53201]: SPELL_ACTION_CATEGORY + 0.3, // Starfall
+	[439748]: SPELL_ACTION_CATEGORY + 0.3, // Starfall
 	[48468]: SPELL_ACTION_CATEGORY + 0.4, // Insect Swarm
 	[48463]: SPELL_ACTION_CATEGORY + 0.5, // Moonfire
 

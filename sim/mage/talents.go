@@ -64,6 +64,14 @@ func (mage *Mage) applyArcaneTalents() {
 				spell.BonusCritRating += bonusCritRating
 			}
 		})
+
+		// Frozen orb also benefits from Elemental Precision
+		if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+			mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+				spell.BonusCritRating += bonusCritRating
+			})
+		}
 	}
 }
 
@@ -119,6 +127,13 @@ func (mage *Mage) applyFrostTalents() {
 				spell.BonusHitRating += bonusHit
 			}
 		})
+
+		// Frozen orb also benefits from Elemental Precision
+		if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+			mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+				spell.BonusHitRating += bonusHit
+			})
+		}
 	}
 
 	// Ice Shards
@@ -129,6 +144,13 @@ func (mage *Mage) applyFrostTalents() {
 				spell.CritDamageBonus += critBonus
 			}
 		})
+
+		// Frozen orb also benefits from Ice Shards
+		if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+			mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+				spell.CritDamageBonus += critBonus
+			})
+		}
 	}
 
 	// Piercing Ice
@@ -139,6 +161,13 @@ func (mage *Mage) applyFrostTalents() {
 				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
 			}
 		})
+
+		// Frozen orb also benefits from Piercing Ice
+		if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+			mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+			})
+		}
 	}
 
 	// Frost Channeling
@@ -288,6 +317,13 @@ func (mage *Mage) registerArcanePowerCD() {
 			affectedSpells = append(affectedSpells, spell)
 		}
 	})
+
+	// Frozen Orb also benefits from Arcane Power
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+			affectedSpells = append(affectedSpells, spell)
+		})
+	}
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",

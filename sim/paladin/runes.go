@@ -17,7 +17,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerFanaticism()
 
 	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)
-
+	paladin.registerMalleableProtection()
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
 	paladin.applyPurifyingPower()
@@ -178,6 +178,7 @@ func (paladin *Paladin) applyPurifyingPower() {
 	})
 }
 
+<<<<<<< HEAD
 func (paladin *Paladin) registerAegis() {
 
 	if !paladin.hasRune(proto.PaladinRune_RuneChestAegis) {
@@ -223,5 +224,82 @@ func (paladin *Paladin) registerAegis() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
 		},
+	})
+}
+
+func (paladin *Paladin) registerMalleableProtection() {
+	if !paladin.hasRune(proto.PaladinRune_RuneWaistMalleableProtection) {
+		return
+	}
+	// Activating Holy Shield now grants 4 AP for each point of defense above paladin.Level * 5
+	defendersResolveAPAura := core.DefendersResolveAttackPower(paladin.GetCharacter())
+	handler := func(spell *core.Spell) {
+		if spell.SpellCode != SpellCode_PaladinHolyShield {
+			return
+		}
+		oldEffects := spell.ApplyEffects
+		spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			oldEffects(sim, target, spell)
+			if stacks := int32(paladin.GetStat(stats.Defense)); stacks > 0 {
+				defendersResolveAPAura.Activate(sim)
+				if defendersResolveAPAura.GetStacks() != stacks {
+					defendersResolveAPAura.SetStacks(sim, stacks)
+				}
+			}
+		}
+	}
+	paladin.OnSpellRegistered(handler)
+
+	// A prot paladin will only ever cast Divine Protection in conjunction with Malleable Protection,
+	// so we register only the modified form of the spell when the rune is engraved.
+	// Although there are two spell ranks, intentional downranking is never done in practice,
+	// so we only register the highest spell rank available.
+	if paladin.Level < 10 {
+		return
+	}
+
+	isRank1 := paladin.Level < 18
+	spellID := core.TernaryInt32(isRank1, 458312, 458371)
+	manaCost := core.TernaryFloat64(isRank1, 15, 35)
+	duration := core.TernaryDuration(isRank1, 9, 12)
+
+	actionID := core.ActionID{SpellID: spellID}
+
+	dpAura := paladin.RegisterAura(core.Aura{
+		Label:    "Divine Protection",
+		ActionID: actionID,
+		Duration: time.Second * duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.DamageTakenMultiplier *= 0.5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.DamageTakenMultiplier /= 0.5
+		},
+	})
+
+	divine_protection := paladin.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
+		ManaCost: core.ManaCostOptions{
+			FlatCost: manaCost,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: time.Minute * 5,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dpAura.Activate(sim)
+		},
+	})
+
+	paladin.AddMajorCooldown(core.MajorCooldown{
+		Spell:    divine_protection,
+		Priority: core.CooldownPriorityDrums, // Primary defensive cooldown
+		Type:     core.CooldownTypeSurvival,
 	})
 }

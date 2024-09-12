@@ -22,7 +22,7 @@ const (
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
 
-	flags := SpellFlagShaman | SpellFlagLightning | SpellFlagFocusable
+	flags := SpellFlagShaman | SpellFlagLightning
 	if !isOverload {
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
