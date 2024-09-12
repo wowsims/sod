@@ -339,7 +339,7 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Your Wrath casts have a 5% chance to summon a stand of 3 Treants to attack your target for until cancelled.
+		// Your Wrath casts have a 10% chance to summon a stand of 3 Treants to attack your target for until cancelled.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 
@@ -347,13 +347,8 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 4P Bonus",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(0.05, "Summon Treants") {
-						for _, petAgent := range druid.PetAgents {
-							if treants, ok := petAgent.(*T2Treants); ok && !treants.IsActive() {
-								treants.EnableWithTimeout(sim, treants, time.Second*10)
-								break
-							}
-						}
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && !druid.t26pcTreants.IsActive() && sim.Proc(0.10, "Summon Treants") {
+						druid.t26pcTreants.EnableWithTimeout(sim, druid.t26pcTreants, time.Second*15)
 					}
 				},
 			}))
@@ -392,7 +387,7 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if slices.Contains(procSpellCodes, spell.SpellCode) && result.DidCrit() && sim.Proc(0.30, "Astral Power") {
+					if slices.Contains(procSpellCodes, spell.SpellCode) && result.DidCrit() && sim.Proc(0.50, "Astral Power") {
 						buffAura.Activate(sim)
 						buffAura.AddStack(sim)
 					}
@@ -451,7 +446,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2- Druid - Feral 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					dotSpells := []*DruidSpell{druid.Rake, druid.Rip}
-					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat} {
+					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat, druid.FerociousBite} {
 						if spell == nil {
 							continue
 						}
