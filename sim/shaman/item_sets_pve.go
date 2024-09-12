@@ -515,8 +515,12 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 		},
 		// Your Lightning Shield now gains a charge each time you hit a target with Lightning Bolt or Chain Lightning, up to a maximum of 9 charges.
 		// In addition, your Lightning Shield can now deal critical damage.
+		// Note: Only works with Static Shock
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
+				return
+			}
 
 			affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
