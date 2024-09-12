@@ -199,26 +199,31 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 
+			affectedSpells := make(map[*core.Spell]bool)
+
 			procAura := hunter.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 467331},
 				Label:    "Clever Strikes",
 				Duration: time.Second * 5,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.MeleeSpells {
 						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterWingClip {
-							spell.DamageMultiplier *= 1.20
+							affectedSpells[spell] = true
 						}
+					}
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for spell := range affectedSpells {
+						spell.DamageMultiplier *= 1.20
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.MeleeSpells {
-						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterWingClip {
-							spell.DamageMultiplier /= 1.20
-						}
+					for spell := range affectedSpells {
+						spell.DamageMultiplier /= 1.20
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_HunterRaptorStrike {
+					if !affectedSpells[spell] {
 						return
 					}
 
