@@ -123,16 +123,16 @@ func (shaman *Shaman) applyElementalFocus() {
 				return
 			}
 
-			if aura.GetStacks() > 0 && spell.Flags.Matches(SpellFlagFocusable) {
+			if aura.GetStacks() > 0 && shaman.isShamanDamagingSpell(spell) {
 				aura.RemoveStack(sim)
 			}
 		},
 	})
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "Elemental Focus",
+		Label: "Elemental Focus Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && sim.RandomFloat("Elemental Focus") < procChance {
+			if shaman.isShamanDamagingSpell(spell) && sim.Proc(procChance, "Elemental Focus") {
 				shaman.ClearcastingAura.Activate(sim)
 				shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 			}
@@ -140,11 +140,15 @@ func (shaman *Shaman) applyElementalFocus() {
 	}))
 }
 
+func (shaman *Shaman) isShamanDamagingSpell(spell *core.Spell) bool {
+	return spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
+}
+
 func (shaman *Shaman) getClearcastingSpells() []*core.Spell {
 	return core.FilterSlice(
 		shaman.Spellbook,
 		func(spell *core.Spell) bool {
-			return spell != nil && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.Flags.Matches(SpellFlagFocusable)
+			return spell != nil && shaman.isShamanDamagingSpell(spell)
 		},
 	)
 }
@@ -202,7 +206,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
 				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
+				func(spell *core.Spell) bool { return spell != nil && shaman.isShamanDamagingSpell(spell) },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -223,7 +227,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) {
+			if shaman.isShamanDamagingSpell(spell) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,

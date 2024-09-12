@@ -24,7 +24,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 
 	AvengingWrath := paladin.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlag_Forbearance,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.08,
