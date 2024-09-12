@@ -364,7 +364,7 @@ func init() {
 	// Stacking up to 5 times.
 	core.NewItemEffect(TotemOfConductiveCurrents, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		if shaman.getImbueProcMask(proto.WeaponImbue_FrostbrandWeapon) == core.ProcMaskUnknown || !shaman.HasRune(proto.ShamanRune_RuneHandsWaterShield) {
+		if shaman.Consumes.MainHandImbue != proto.WeaponImbue_FrostbrandWeapon || !shaman.HasRune(proto.ShamanRune_RuneHandsWaterShield) {
 			return
 		}
 
