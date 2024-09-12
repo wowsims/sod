@@ -23,6 +23,7 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyTwoHandedMastery()
 
 	// Bracers
+	shaman.applyStaticShocks()
 	shaman.applyRollingThunder()
 	shaman.registerRiptideSpell()
 
@@ -56,8 +57,8 @@ func (shaman *Shaman) applyBurn() {
 		return
 	}
 
-	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1)
 	}
 
 	// Other parts of burn are handled in flame_shock.go
@@ -246,6 +247,48 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 			}
 		},
 	})
+}
+
+func (shaman *Shaman) applyStaticShocks() {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
+		return
+	}
+
+	// DW chance base doubled by using a 2-handed weapon
+	shaman.staticSHocksProcChance = .06
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Static Shocks",
+		OnInit: func(staticShockAura *core.Aura, sim *core.Simulation) {
+			for _, aura := range shaman.LightningShieldAuras {
+				if aura == nil {
+					continue
+				}
+
+				oldOnGain := aura.OnGain
+				aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain(aura, sim)
+					staticShockAura.Activate(sim)
+				}
+
+				oldOnExpire := aura.OnExpire
+				aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnExpire(aura, sim)
+					staticShockAura.Deactivate(sim)
+				}
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if shaman.ActiveShieldAura == nil || !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() {
+				return
+			}
+
+			staticShockProcChance := core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, shaman.staticSHocksProcChance*2, shaman.staticSHocksProcChance)
+			if sim.RandomFloat("Static Shock") < staticShockProcChance {
+				shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
+			}
+		},
+	}))
 }
 
 var RollingThunderProcChance = .50
