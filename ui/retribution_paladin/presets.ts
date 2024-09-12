@@ -99,7 +99,7 @@ export const GearPresets = {
 	[Phase.Phase5]: [Phase5TwistingGear, Phase5ExodinGear, Phase5ShockadinGear],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][0];
+export const DefaultGear = GearPresets[Phase.Phase5][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -139,8 +139,6 @@ export const APLPP5Shockadin = PresetUtils.makePresetAPLRotation('P5 Shockadin',
 	customCondition: player => player.getLevel() === 60,
 });
 
-APLPP5TwistingSlowJson
-
 export const APLPresets = {
 	[Phase.Phase1]: [APLP1Ret],
 	[Phase.Phase2]: [APLP2Ret],
@@ -153,7 +151,7 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
 	50: APLPresets[Phase.Phase3][0],
-	60: APLPresets[Phase.Phase4][0],
+	60: APLPresets[Phase.Phase5][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -179,7 +177,7 @@ export const P3RetTalents = PresetUtils.makePresetTalents('P3 Ret', SavedTalents
 	customCondition: player => player.getLevel() === 50,
 });
 
-export const P4RetTalents = PresetUtils.makePresetTalents('P4 Ret', SavedTalents.create({ talentsString: '500501-503-52230351200315' }), {
+export const P4RetTalents = PresetUtils.makePresetTalents('P4/P5 Ret', SavedTalents.create({ talentsString: '500501-503-52230351200315' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -196,8 +194,8 @@ export const TalentPresets = {
 	[Phase.Phase5]: [P4RetTalents, P5ShockadinTalents],
 };
 
-// TODO: Phase 3
-export const DefaultTalents = TalentPresets[Phase.Phase4][0];
+
+export const DefaultTalents = TalentPresets[Phase.Phase5][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
