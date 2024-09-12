@@ -23,13 +23,19 @@ func (paladin *Paladin) registerHolyWrath() {
 		{level: 60, spellID: 10318, manaCost: 805, scaleLevel: 60, minDamage: 490, maxDamage: 576, scale: 1.9},
 	}
 
-	cd := core.Cooldown{
-		Timer:    paladin.NewTimer(),
-		Duration: time.Second * 60,
-	}
-
 	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
+
+	cdTime := time.Duration(60)
+	if hasPurifyingPower {
+		cdTime = cdTime / 2
+	}
+	cd := core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Second * cdTime,
+	}
+
+	paladin.holyWrath = make([]*core.Spell, len(ranks))
 
 	var results []*core.SpellResult
 
@@ -42,7 +48,7 @@ func (paladin *Paladin) registerHolyWrath() {
 		minDamage := rank.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
-		paladin.GetOrRegisterSpell(core.SpellConfig{
+		holyWrathSpell := paladin.GetOrRegisterSpell(core.SpellConfig{
 			SpellCode:   SpellCode_PaladinHolyWrath,
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolHoly,
@@ -58,21 +64,21 @@ func (paladin *Paladin) registerHolyWrath() {
 			},
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
-					GCD:      time.Second,
+					GCD:      core.GCDDefault,
 					CastTime: time.Second * 2,
 				},
-				IgnoreHaste: true,
+				
 				CD:          cd,
 			},
 
-			DamageMultiplier: 1,
+			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.19,
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
 				spell.BonusCritRating += bonusCrit
-
+				
 				results = results[:0]
 				for _, target := range paladin.Env.Encounter.TargetUnits {
 					if hasPurifyingPower || (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
@@ -85,9 +91,11 @@ func (paladin *Paladin) registerHolyWrath() {
 				for _, result := range results {
 					spell.DealDamage(sim, result)
 				}
-
+				
 				spell.BonusCritRating -= bonusCrit
 			},
 		})
+
+		paladin.holyWrath = append(paladin.holyWrath, holyWrathSpell)
 	}
 }
