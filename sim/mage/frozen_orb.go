@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -37,7 +38,12 @@ func (mage *Mage) registerFrozenOrbCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.frozenOrb.EnableWithTimeout(sim, mage.frozenOrb, time.Second*15)
+			for _, orb := range mage.frozenOrbPets {
+				if !orb.IsActive() {
+					orb.EnableWithTimeout(sim, orb, time.Second*15)
+					break
+				}
+			}
 		},
 	})
 
@@ -57,9 +63,14 @@ type FrozenOrb struct {
 	TickCount              int64
 }
 
-func (mage *Mage) NewFrozenOrb() *FrozenOrb {
+func (mage *Mage) NewFrozenOrbPets() []*FrozenOrb {
+	// It's possible to have up to 2 Frozen Orbs active at a time because of Cold Snap
+	return []*FrozenOrb{mage.newFrozenOrb(1), mage.newFrozenOrb(2)}
+}
+
+func (mage *Mage) newFrozenOrb(idx int32) *FrozenOrb {
 	frozenOrb := &FrozenOrb{
-		Pet:       core.NewPet("Frozen Orb", &mage.Character, frozenOrbBaseStats, frozenOrbStatInheritance(), false, true),
+		Pet:       core.NewPet(fmt.Sprintf("Frozen Orb %d", idx), &mage.Character, frozenOrbBaseStats, frozenOrbStatInheritance(), false, true),
 		mage:      mage,
 		TickCount: 0,
 	}
@@ -111,7 +122,7 @@ func (orb *FrozenOrb) registerFrozenOrbTickSpell() {
 		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagChillSpell,
+		Flags:       SpellFlagMage | SpellFlagChillSpell,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

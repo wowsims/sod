@@ -102,10 +102,9 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			mainGaucheAura.Activate(sim)
-			mainGaucheSSAura.Activate(sim)
-
 			if result.Landed() {
+				mainGaucheAura.Activate(sim)
+				mainGaucheSSAura.Activate(sim)	
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
